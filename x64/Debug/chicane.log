@@ -1,7 +1,0 @@
-﻿  core.cpp
-C:\Users\Erick\Desktop\projects\game\chicane\core.cpp(173,60): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
-  main.cpp
-  vertex.cpp
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  chicane.vcxproj -> C:\Users\Erick\Desktop\projects\game\chicane\x64\Debug\chicane.exe
