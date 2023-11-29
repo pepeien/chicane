@@ -23,7 +23,7 @@ static std::vector<char> readFile(const std::string& filename)
 
     if (!file.is_open())
     {
-        throw std::runtime_error("[ERROR] Failed to open file");
+        throw std::runtime_error("[ERROR] Failed to open file " + filename);
     }
 
     size_t fileSize = (size_t)file.tellg();
@@ -503,8 +503,8 @@ void Core::initRenderPass()
 
 void Core::initGraphicsPipeline()
 {
-    VkShaderModule vertTriangleShaderModule = initShaderModule(readFile("shaders/vertices/triangle.spv"));
-    VkShaderModule fragTriangleShaderModule = initShaderModule(readFile("shaders/fragments/triangle.spv"));
+    VkShaderModule vertTriangleShaderModule = initShaderModule(readFile("../../shaders/build/triangle.vert.spv"));
+    VkShaderModule fragTriangleShaderModule = initShaderModule(readFile("../../shaders/build/triangle.frag.spv"));
 
     VkPipelineShaderStageCreateInfo vertTriangleShaderStageInfo{};
     vertTriangleShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
