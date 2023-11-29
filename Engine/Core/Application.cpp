@@ -498,7 +498,8 @@ namespace Engine
             renderPassInfo.dependencyCount = 1;
             renderPassInfo.pDependencies = &dependency;
 
-            if (vkCreateRenderPass(selectedDevice, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
+            if (vkCreateRenderPass(selectedDevice, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
+            {
                 throw std::runtime_error("[ERROR] Failed to create render pass");
             }
         }
@@ -665,7 +666,8 @@ namespace Engine
                 framebufferInfo.height = swapChainExtent.height;
                 framebufferInfo.layers = 1;
 
-                if (vkCreateFramebuffer(selectedDevice, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS) {
+                if (vkCreateFramebuffer(selectedDevice, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS)
+                {
                     throw std::runtime_error("[ERROR] Failed to create framebuffer");
                 }
             }
@@ -680,7 +682,8 @@ namespace Engine
             poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
             poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
-            if (vkCreateCommandPool(selectedDevice, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+            if (vkCreateCommandPool(selectedDevice, &poolInfo, nullptr, &commandPool) != VK_SUCCESS)
+            {
                 throw std::runtime_error("[ERROR] Failed to create command pool");
             }
         }
@@ -693,7 +696,8 @@ namespace Engine
             allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
             allocInfo.commandBufferCount = 1;
 
-            if (vkAllocateCommandBuffers(selectedDevice, &allocInfo, &commandBuffer) != VK_SUCCESS) {
+            if (vkAllocateCommandBuffers(selectedDevice, &allocInfo, &commandBuffer) != VK_SUCCESS)
+            {
                 throw std::runtime_error("[ERROR] Failed to allocate command buffers");
             }
         }
@@ -808,7 +812,8 @@ namespace Engine
             vkDestroyPipelineLayout(selectedDevice, pipelineLayout, nullptr);
             vkDestroyRenderPass(selectedDevice, renderPass, nullptr);
 
-            for (auto imageView : swapChainImageViews) {
+            for (auto imageView : swapChainImageViews)
+            {
                 vkDestroyImageView(selectedDevice, imageView, nullptr);
             }
 
