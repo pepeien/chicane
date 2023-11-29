@@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 3.11.0)
 set(NAME Chicane)
 project(${NAME} VERSION 1.0.0)
 
+set(ENGINE_SOURCE "${PROJECT_SOURCE_DIR}/Engine")
+
 message(STATUS "using ${CMAKE_GENERATOR}")
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
@@ -52,7 +54,7 @@ else()
     message(STATUS "Using glfw lib at: ${GLFW_LIB}")
 endif()
  
-file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.cpp)
  
 add_executable(${PROJECT_NAME} ${SOURCES})
  
@@ -73,7 +75,7 @@ if (WIN32)
   	endif()
  
   	target_include_directories(${PROJECT_NAME} PUBLIC
-    	${PROJECT_SOURCE_DIR}/src
+    	${ENGINE_SOURCE}
     	${Vulkan_INCLUDE_DIRS}
     	${GLFW_INCLUDE_DIRS}
     	${GLM_PATH}
@@ -87,7 +89,7 @@ if (WIN32)
   	target_link_libraries(${PROJECT_NAME} glfw3 vulkan-1)
 elseif (UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")
-    target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/src)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_SOURCE})
     target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
 endif()
  
@@ -107,12 +109,12 @@ find_program(GLSL_VALIDATOR glslangValidator HINTS
 file(
 	GLOB_RECURSE
 	GLSL_SOURCE_FILES
-	"${PROJECT_SOURCE_DIR}/shaders/*.frag"
-	"${PROJECT_SOURCE_DIR}/shaders/*.vert"
+	"${ENGINE_SOURCE}/Shaders/Private/*.frag"
+	"${ENGINE_SOURCE}/Shaders/Private/*.vert"
 )
 foreach(GLSL ${GLSL_SOURCE_FILES})
   	get_filename_component(FILE_NAME ${GLSL} NAME)
-  	set(SPIRV "${PROJECT_SOURCE_DIR}/shaders/build/${FILE_NAME}.spv")
+  	set(SPIRV "${ENGINE_SOURCE}/Shaders/Public/${FILE_NAME}.spv")
   	add_custom_command(
     	OUTPUT ${SPIRV}
     	COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}

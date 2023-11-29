@@ -1,9 +1,13 @@
 #define GLFW_INCLUDE_VULKAN
 
-#include "core.h"
+#include <iostream>
+#include <ostream>
 
-int main() {
-    Core application;
+#include "Core/Application.h"
+
+int main()
+{
+    Engine::Core::Application application;
 
     try
     {
