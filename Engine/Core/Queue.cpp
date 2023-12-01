@@ -4,9 +4,12 @@ namespace Engine
 {
     namespace Core
     {
-        bool QueueFamilyIndices::isComplete()
+        namespace Queue
         {
-            return graphicsFamily.has_value() && presentFamily.has_value();
+            bool FamilyIndices::isComplete()
+            {
+                return graphicsFamily.has_value() && presentFamily.has_value();
+            }
         }
     }
 }

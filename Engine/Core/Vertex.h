@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <vulkan/vulkan.h>
+#include "Base.h"
 
 namespace Engine
 {
@@ -10,7 +9,8 @@ namespace Engine
         struct Vertex
         {
         public:
-            VkVertexInputBindingDescription getBindingDescription();
+            static vk::VertexInputBindingDescription getBindingDescription();
+            static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
 
         public:
             glm::vec2 pos;

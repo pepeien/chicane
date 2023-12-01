@@ -6,14 +6,17 @@ namespace Engine
 {
     namespace Core
     {
-        struct QueueFamilyIndices
+        namespace Queue
         {
-        public:
-            bool isComplete();
+            struct FamilyIndices
+            {
+            public:
+                bool isComplete();
 
-        public:
-            std::optional<uint32_t> graphicsFamily;
-            std::optional<uint32_t> presentFamily;
-        };
+            public:
+                std::optional<uint32_t> graphicsFamily;
+                std::optional<uint32_t> presentFamily;
+            };
+        }
     }
 }

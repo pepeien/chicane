@@ -2,19 +2,22 @@
 
 #include <vector>
 
-#include <vulkan/vulkan.h>
+#include <vulkan/vulkan.hpp>
 
 namespace Engine
 {
     namespace Core
     {
-        struct SwapChainSupportDetails
+        namespace SwapChain
         {
-        public:
-            VkSurfaceCapabilitiesKHR capabilities;
+            struct SupportDetails
+            {
+            public:
+                vk::SurfaceCapabilitiesKHR capabilities;
 
-            std::vector<VkSurfaceFormatKHR> formats;
-            std::vector<VkPresentModeKHR> presentModes;
-        };
+                std::vector<vk::SurfaceFormatKHR> formats;
+                std::vector<vk::PresentModeKHR> presentModes;
+            };
+        }
     }
 }

@@ -1,13 +1,14 @@
 #define GLFW_INCLUDE_VULKAN
 
-#include <iostream>
-#include <ostream>
+#include <string>
 
 #include "Core/Application.h"
+#include "Core/Log.h"
 
 int main()
 {
     Engine::Core::Application application;
+    Engine::Core::Log log;
 
     try
     {
@@ -15,7 +16,7 @@ int main()
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << std::endl;
+        log.critical(e.what());
 
         return EXIT_FAILURE;
     }
