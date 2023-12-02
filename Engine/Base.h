@@ -1,10 +1,13 @@
 #pragma once
 
 #include <array>
-#include <vector>
 #include <fstream>
 #include <iostream>
+#include <ostream>
+#include <optional>
+#include <set>
 #include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
@@ -20,10 +23,8 @@
 
 #ifdef NDEBUG
 #define IS_DEBUGGING false
-#define ENABLE_VALIDATION_LAYERS false
 #else
 #define IS_DEBUGGING true
-#define ENABLE_VALIDATION_LAYERS true
 #endif
 
 const std::vector<const char*> VALIDATION_LAYERS = {

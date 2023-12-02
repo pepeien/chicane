@@ -1,7 +1,12 @@
 #pragma once
 
 #include "Base.h"
-#include "Mounter.h"
+#include "Queue.h"
+#include "Mounter/Vulkan/Instance.h"
+#include "Mounter/Vulkan/Debug.h"
+#include "Mounter/Vulkan/Device.h"
+#include "Mounter/Vulkan/Queue.h"
+#include "Mounter/GLFW/Window.h"
 
 namespace Engine
 {
@@ -21,16 +26,15 @@ namespace Engine
             void draw();
 
         private:
-            // Internals
-            Mounter mounter;
-            
             // Vulkan
             vk::Instance instance;
-
             vk::DispatchLoaderDynamic dldi;
- 
             vk::DebugUtilsMessengerEXT debugMessenger;
-            
+
+            vk::PhysicalDevice phyisicalDevice;
+            vk::Device logicalDevice;
+            vk::Queue graphicsQueue;
+
             // GLFW
             GLFWwindow* window;
         };

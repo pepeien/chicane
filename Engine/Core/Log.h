@@ -1,29 +1,26 @@
 #pragma once
 
-#include <string>
-
-enum ELog
-{
-	INFO,
-	WARNING,
-	ERROR,
-	CRITICAL
-};
+#include "Base.h"
 
 namespace Engine
 {
 	namespace Core
 	{
-		class Log
+		namespace Log
 		{
-		public:
+			enum MessageType
+			{
+				INFO,
+				WARNING,
+				ERROR,
+				CRITICAL
+			};
+
 			void info(std::string message);
 			void warning(std::string message);
 			void error(std::string message);
 			void critical(std::string message);
-
-		private:
-			void emmit(ELog type, std::string message);
+			void emmit(MessageType type, std::string message);
 		};
 	}
 }

@@ -1,22 +1,27 @@
 #pragma once
 
-#include <optional>
+#include "Base.h"
 
 namespace Engine
 {
     namespace Core
     {
-        namespace Queue
+        namespace Vulkan
         {
-            struct FamilyIndices
+            namespace Queue
             {
-            public:
-                bool isComplete();
+                struct FamilyIndices
+                {
+                public:
+                    bool isComplete();
 
-            public:
-                std::optional<uint32_t> graphicsFamily;
-                std::optional<uint32_t> presentFamily;
-            };
+                public:
+                    std::optional<uint32_t> graphicsFamily;
+                    std::optional<uint32_t> presentFamily;
+                };
+
+                void findFamilyInidices(FamilyIndices& allocator, vk::PhysicalDevice& inDevice);
+            }
         }
     }
 }

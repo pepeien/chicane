@@ -73,6 +73,9 @@
 		"filesystem": "cpp",
 		"coroutine": "cpp",
 		"stop_token": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"deque": "cpp",
+		"queue": "cpp",
+		"ranges": "cpp"
 	}
 }

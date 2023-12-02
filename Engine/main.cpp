@@ -7,16 +7,15 @@
 
 int main()
 {
-    Engine::Core::Application application;
-    Engine::Core::Log log;
-
     try
     {
+        Engine::Core::Application application;
+
         application.run();
     }
     catch (const std::exception& e)
     {
-        log.critical(e.what());
+        Engine::Core::Log::critical(e.what());
 
         return EXIT_FAILURE;
     }

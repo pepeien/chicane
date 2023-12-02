@@ -1,8 +1,6 @@
 #pragma once
 
-#include <vector>
-
-#include <vulkan/vulkan.hpp>
+#include "Base.h"
 
 namespace Engine
 {

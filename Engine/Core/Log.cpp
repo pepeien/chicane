@@ -1,56 +1,61 @@
 #include "Log.h"
 
-#include <ostream>
-#include <iostream>
-
 namespace Engine
 {
     namespace Core
     {
-		void Log::info(std::string message)
+		namespace Log
 		{
-			emmit(ELog::INFO, message);
-		}
-
-		void Log::warning(std::string message)
-		{
-			emmit(ELog::WARNING, message);
-		}
-
-		void Log::error(std::string message)
-		{
-			emmit(ELog::ERROR, message);
-		}
-
-		void Log::critical(std::string message)
-		{
-			emmit(ELog::CRITICAL, message);
-		}
-
-		void Log::emmit(ELog type, std::string message)
-		{
-			if (type == ELog::INFO)
+			void info(std::string message)
 			{
-				std::cout << "[LOG] " << message << std::endl;
-
-				return;
+				emmit(MessageType::INFO, message);
 			}
 
-			if (type == ELog::WARNING)
+			void warning(std::string message)
 			{
-				std::cout << "[WARNING] " << message << std::endl;
-
-				return;
+				emmit(MessageType::WARNING, message);
 			}
 
-			if (type == ELog::ERROR)
+			void error(std::string message)
 			{
-				std::cerr << "[ERROR] " << message << std::endl;
-
-				return;
+				emmit(MessageType::ERROR, message);
 			}
 
-			std::cerr << "[CRITICAL] " << message << std::endl;
-		}
+			void critical(std::string message)
+			{
+				emmit(MessageType::CRITICAL, message);
+			}
+
+			void emmit(MessageType type, std::string message)
+			{
+				if (IS_DEBUGGING == false)
+				{
+					return;
+				}
+			
+				if (type == MessageType::INFO)
+				{
+					std::cout << "[LOG] " << message << std::endl;
+			
+					return;
+				}
+			
+				if (type == MessageType::WARNING)
+				{
+					std::cout << "[WARNING] " << message << std::endl;
+			
+					return;
+				}
+			
+				if (type == MessageType::ERROR)
+				{
+					std::cerr << "[ERROR] " << message << std::endl;
+			
+					return;
+				}
+			
+				std::cerr << "[CRITICAL] " << message << std::endl;
+			}
+		}		
 	}
 }
