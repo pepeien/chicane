@@ -7,28 +7,28 @@ VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 	void* pUserData
 )
 {
-	if (messageType == VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT)
+	switch (messageType)
 	{
+	case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:
 		Engine::Core::Log::info(pCallbackData->pMessage);
 
-		return VK_FALSE;
-	}
+		break;
 
-	if (messageType == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT)
-	{
+	case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
 		Engine::Core::Log::warning(pCallbackData->pMessage);
 
-		return VK_FALSE;
-	}
+		break;
 
-	if (messageType == VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT)
-	{
+	case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
 		Engine::Core::Log::error(pCallbackData->pMessage);
 
-		return VK_FALSE;
-	}
+		break;
 
-	Engine::Core::Log::critical(pCallbackData->pMessage);
+	default:
+		Engine::Core::Log::critical(pCallbackData->pMessage);
+
+		break;
+	}
 
 	return VK_FALSE;
 }
