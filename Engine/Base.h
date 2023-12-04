@@ -1,19 +1,6 @@
 #pragma once
 
-#include <array>
-#include <fstream>
-#include <iostream>
-#include <ostream>
-#include <optional>
-#include <set>
-#include <string>
-#include <vector>
-
-#include <glm/glm.hpp>
-#include <GLFW/glfw3.h>
-#include <vulkan/vulkan.hpp>
-
-#include "Core/Log.h"
+#define GLFW_INCLUDE_VULKAN
 
 #define APPLICATION_NAME "Chicane Engine"
 
@@ -26,6 +13,23 @@
 #else
 #define IS_DEBUGGING true
 #endif
+
+#include <array>
+#include <fstream>
+#include <iostream>
+#include <math.h>
+#include <ostream>
+#include <optional>
+#include <set>
+#include <string>
+#include <vector>
+
+#include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.hpp>
+
+#include "Core/FileSystem.h"
+#include "Core/Log.h"
 
 const std::vector<const char*> VALIDATION_LAYERS = {
     "VK_LAYER_KHRONOS_validation"

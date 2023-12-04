@@ -1,9 +1,4 @@
-#define GLFW_INCLUDE_VULKAN
-
-#include <string>
-
 #include "Core/Application.h"
-#include "Core/Log.h"
 
 int main()
 {

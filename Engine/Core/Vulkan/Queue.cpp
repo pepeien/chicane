@@ -13,7 +13,11 @@ namespace Engine
                     return graphicsFamily.has_value() && presentFamily.has_value();
                 }
 
-                void findFamilyInidices(FamilyIndices& allocator, vk::PhysicalDevice& inDevice)
+                void findFamilyInidices(
+                    FamilyIndices& allocator,
+                    vk::PhysicalDevice& inDevice,
+                    vk::SurfaceKHR& inSurface
+                )
                 {
                     FamilyIndices nextFamilyIndices;
 
@@ -26,6 +30,10 @@ namespace Engine
                         if (queueFamily.queueFlags & vk::QueueFlagBits::eGraphics)
                         {
                             nextFamilyIndices.graphicsFamily = i;
+                        }
+
+                        if (inDevice.getSurfaceSupportKHR(i, inSurface))
+                        {
                             nextFamilyIndices.presentFamily  = i;
                         }
 

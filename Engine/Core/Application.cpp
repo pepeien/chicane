@@ -1,8 +1,19 @@
 #include "Application.h"
-#include "Vertex.h"
-#include "Queue.h"
 
-const std::vector<Engine::Core::Vertex> vertices = {
+#include "GLFW/Mounter/Window.h"
+
+#include "Vulkan/Queue.h"
+#include "Vulkan/Vertex.h"
+
+#include "Vulkan/Mounter/Instance.h"
+#include "Vulkan/Mounter/Debug.h"
+#include "Vulkan/Mounter/Device.h"
+#include "Vulkan/Mounter/GraphicsPipeline.h"
+#include "Vulkan/Mounter/Queue.h"
+#include "Vulkan/Mounter/Surface.h"
+#include "Vulkan/Mounter/SwapChain.h"
+
+const std::vector<Engine::Core::Vulkan::Vertex> vertices = {
     {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
     {{0.5f, 0.5f},  {0.0f, 1.0f, 0.0f}},
     {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
@@ -14,27 +25,57 @@ namespace Engine
     {
         Application::Application()
         {
+            // GLFW
+            glfwInit();
+            window = GLFW::Mounter::initWindow(windowWidth, windowHeight);
+
             // Vulkan
-            Mounter::Vulkan::initInstance(instance, dldi);
+            Vulkan::Mounter::initInstance(instance, dldi);
             
             if (IS_DEBUGGING)
             {
-                Mounter::Vulkan::initDebugMessenger(debugMessenger, instance, dldi);
+                Vulkan::Mounter::initDebugMessenger(debugMessenger, instance, dldi);
             }
 
-            Mounter::Vulkan::pickPhysicalDevice(phyisicalDevice, instance);
-            Mounter::Vulkan::initLogicalDevice(logicalDevice, phyisicalDevice);
-            Mounter::Vulkan::initGraphicsQueue(graphicsQueue, phyisicalDevice, logicalDevice);
+            Vulkan::Mounter::initSurface(surface, instance, window);
 
-            // GLFW
-            glfwInit();
+            Vulkan::Mounter::pickPhysicalDevice(phyisicalDevice, instance);
+            Vulkan::Mounter::initLogicalDevice(logicalDevice, phyisicalDevice, surface);
+            Vulkan::Mounter::initGraphicsQueue(graphicsQueue, phyisicalDevice, logicalDevice, surface);
+            Vulkan::Mounter::initPresentQueue(presentQueue, phyisicalDevice, logicalDevice, surface);
 
-            window = Mounter::GLFW::initWindow();
+            Vulkan::Mounter::initSwapChain(
+                swapChain,
+                phyisicalDevice,
+                logicalDevice,
+                surface,
+                windowWidth,
+                windowHeight
+            );
+
+            Vulkan::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
+            graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
+            graphicsPipelineCreateInfo.vertexShaderName     = "TriangleH.vert.spv";
+            graphicsPipelineCreateInfo.fragmentShaderName   = "TriangleH.frag.spv";
+            graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
+            graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
+
+            Vulkan::Mounter::initGraphicsPipeline(graphicsPipeline, graphicsPipelineCreateInfo);           
         }
 
         Application::~Application()
         {
             // Vulkan
+            logicalDevice.destroyPipeline(graphicsPipeline.pipeline);
+            logicalDevice.destroyPipelineLayout(graphicsPipeline.layout);
+            logicalDevice.destroyRenderPass(graphicsPipeline.renderPass);
+
+            for (Vulkan::SwapChain::Frame frame : swapChain.frames)
+            {
+                logicalDevice.destroyImageView(frame.imageView);
+            }
+
+            logicalDevice.destroySwapchainKHR(swapChain.swapchain);
             logicalDevice.destroy();
 
             if (IS_DEBUGGING)
@@ -42,6 +83,7 @@ namespace Engine
                 instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
             }
 
+            instance.destroySurfaceKHR(surface);
             instance.destroy();
 
             // GLFW

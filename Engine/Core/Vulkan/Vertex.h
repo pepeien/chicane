@@ -1,0 +1,23 @@
+#pragma once
+
+#include "Base.h"
+
+namespace Engine
+{
+    namespace Core
+    {
+        namespace Vulkan
+        {
+            struct Vertex
+            {
+            public:
+                static vk::VertexInputBindingDescription getBindingDescription();
+                static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
+
+            public:
+                glm::vec2 pos;
+                glm::vec3 color;
+            };
+        }
+    }
+}

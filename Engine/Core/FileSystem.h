@@ -6,13 +6,10 @@ namespace Engine
 {
 	namespace Core
 	{
-		class FileSystem
+		namespace FileSystem
 		{
-		public:
-			std::vector<char> FileSystem::readShader(const std::string& filepath);
-
-		private:
-			std::vector<char> FileSystem::readFile(const std::string& filepath);
+			std::vector<char> readShader(const std::string& filepath);
+			std::vector<char> readFile(const std::string& filepath);
 		};
 	};
 }

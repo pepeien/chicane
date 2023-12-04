@@ -6,9 +6,9 @@ namespace Engine
 {
 	namespace Core
 	{
-		namespace Mounter
+		namespace Vulkan
 		{
-			namespace Vulkan
+			namespace Mounter
 			{
 				void initInstance(vk::Instance& allocator, vk::DispatchLoaderDynamic& dldiAllocator);
 			}

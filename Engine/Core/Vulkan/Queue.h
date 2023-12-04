@@ -20,7 +20,7 @@ namespace Engine
                     std::optional<uint32_t> presentFamily;
                 };
 
-                void findFamilyInidices(FamilyIndices& allocator, vk::PhysicalDevice& inDevice);
+                void findFamilyInidices(FamilyIndices& allocator, vk::PhysicalDevice& inDevice, vk::SurfaceKHR& inSurface);
             }
         }
     }

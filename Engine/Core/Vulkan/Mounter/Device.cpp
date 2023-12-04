@@ -1,5 +1,6 @@
 #include "Device.h"
-#include "Core/Queue.h"
+
+#include "Core/Vulkan/Queue.h"
 
 static bool isPhysicalDeviceSuitable(vk::PhysicalDevice& inPhysicalDevice)
 {
@@ -17,9 +18,9 @@ namespace Engine
 {
 	namespace Core
 	{
-		namespace Mounter
+		namespace Vulkan
 		{
-			namespace Vulkan
+			namespace Mounter
 			{
 				void pickPhysicalDevice(vk::PhysicalDevice& allocator, vk::Instance& inInstance)
 				{
@@ -36,21 +37,38 @@ namespace Engine
 					throw std::runtime_error("Failed to pick a suitable phyisical device");
 				}
 
-				void initLogicalDevice(vk::Device& allocator, vk::PhysicalDevice& inPhysicalDevice)
+				void initLogicalDevice(
+					vk::Device& allocator,
+					vk::PhysicalDevice& inPhysicalDevice,
+					vk::SurfaceKHR& inSurface
+				)
 				{
-            		Core::Vulkan::Queue::FamilyIndices familyIndices;
-					Core::Vulkan::Queue::findFamilyInidices(familyIndices, inPhysicalDevice);
+            		Vulkan::Queue::FamilyIndices familyIndices;
+					Vulkan::Queue::findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
+
+					std::vector<uint32_t> uniqueIndices;
+					uniqueIndices.push_back(familyIndices.graphicsFamily.value());
+
+					if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
+					{
+						uniqueIndices.push_back(familyIndices.presentFamily.value());
+					}
 
 					float queuePriority = 1.0f;
 
-					vk::DeviceQueueCreateInfo queueCreateInfo = vk::DeviceQueueCreateInfo(
-						vk::DeviceQueueCreateFlags(),
-						familyIndices.graphicsFamily.value(),
-						1,
-						&queuePriority
-					);
-
-					vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
+					std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos;
+					
+					for (uint32_t uniqueIndice : uniqueIndices)
+					{
+						queueCreateInfos.push_back(
+							vk::DeviceQueueCreateInfo(
+								vk::DeviceQueueCreateFlags(),
+								familyIndices.graphicsFamily.value(),
+								1,
+								&queuePriority
+							)
+						);
+					}
 
 					std::vector<const char*> usedLayers;
 					
@@ -59,14 +77,20 @@ namespace Engine
 						usedLayers.insert(usedLayers.end(), VALIDATION_LAYERS.begin(), VALIDATION_LAYERS.end());
 					}
 
+					vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
+
 					vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
 						vk::DeviceCreateFlags(),
-						1,
-						&queueCreateInfo,
+
+						static_cast<uint32_t>(queueCreateInfos.size()),
+						queueCreateInfos.data(),
+
 						static_cast<uint32_t>(usedLayers.size()),
 						usedLayers.data(),
-						0,
-						nullptr,
+
+						static_cast<uint32_t>(DEVICE_EXTENSIONS.size()),
+						DEVICE_EXTENSIONS.data(),
+
 						&logicalDeviceFeatures
 					);
 

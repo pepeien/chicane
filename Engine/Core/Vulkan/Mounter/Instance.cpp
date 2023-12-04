@@ -56,9 +56,9 @@ namespace Engine
 {
 	namespace Core
 	{
-		namespace Mounter
+		namespace Vulkan
 		{
-			namespace Vulkan
+			namespace Mounter
 			{
 				void initInstance(vk::Instance& allocator, vk::DispatchLoaderDynamic& dldiAllocator)
 				{
@@ -98,13 +98,15 @@ namespace Engine
 					vk::InstanceCreateInfo createInfo = vk::InstanceCreateInfo(
 						vk::InstanceCreateFlags(),
 						&applicationInfo,
+
 						static_cast<uint32_t>(VALIDATION_LAYERS.size()),
 						VALIDATION_LAYERS.data(),
+
 						static_cast<uint32_t>(glfwExtensions.size()),
 						glfwExtensions.data()
 					);
 
-					allocator     = vk::createInstance(createInfo, nullptr);
+					allocator     = vk::createInstance(createInfo);
 					dldiAllocator = vk::DispatchLoaderDynamic(allocator, vkGetInstanceProcAddr);
 				}
 			}

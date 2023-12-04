@@ -1,12 +1,9 @@
 #pragma once
 
 #include "Base.h"
-#include "Queue.h"
-#include "Mounter/Vulkan/Instance.h"
-#include "Mounter/Vulkan/Debug.h"
-#include "Mounter/Vulkan/Device.h"
-#include "Mounter/Vulkan/Queue.h"
-#include "Mounter/GLFW/Window.h"
+
+#include "Vulkan/GraphicsPipeline.h"
+#include "Vulkan/SwapChain.h"
 
 namespace Engine
 {
@@ -30,13 +27,22 @@ namespace Engine
             vk::Instance instance;
             vk::DispatchLoaderDynamic dldi;
             vk::DebugUtilsMessengerEXT debugMessenger;
+            vk::SurfaceKHR surface;
 
             vk::PhysicalDevice phyisicalDevice;
             vk::Device logicalDevice;
             vk::Queue graphicsQueue;
+            vk::Queue presentQueue;
+
+            Vulkan::SwapChain::Bundle swapChain;
+
+            Vulkan::GraphicsPipeline::Bundle graphicsPipeline;
 
             // GLFW
             GLFWwindow* window;
+
+            int windowWidth;
+            int windowHeight;
         };
     }
 }
