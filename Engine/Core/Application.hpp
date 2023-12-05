@@ -37,8 +37,15 @@ namespace Engine
         private:
             void draw(vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
             void render();
+            void calculateFrameRate();
 
         private:
+            // Stats
+	        int numFrames;
+	        float frameTime;
+            double lastTime;
+            double currentTime;
+
             // Vulkan
             vk::Instance instance;
             vk::DispatchLoaderDynamic dldi;

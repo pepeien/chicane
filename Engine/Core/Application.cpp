@@ -1,5 +1,7 @@
 #include "Application.hpp"
 
+vk::ClearValue clearColor = { std::array<float, 4>{ 0.04f, 0.89f, 0.84f, 1.0f } };
+
 namespace Engine
 {
     namespace Core
@@ -108,6 +110,7 @@ namespace Engine
             {
                 glfwPollEvents();
                 render();
+                calculateFrameRate();
             }
         }
         
@@ -116,8 +119,6 @@ namespace Engine
             vk::CommandBufferBeginInfo beginInfo = {};
 
             inCommandBuffer.begin(beginInfo);
-
-            vk::ClearValue clearColor = { std::array<float, 4>{ 1.0f, 0.5f, 0.25f, 1.0f } };
 
             vk::RenderPassBeginInfo renderPassBeginInfo = {};
             renderPassBeginInfo.renderPass          = graphicsPipeline.renderPass;
@@ -142,7 +143,8 @@ namespace Engine
         void Application::render()
         {
             logicalDevice.waitForFences(1, &inFlightFence, VK_TRUE, UINT64_MAX);
-            logicalDevice.resetFences(1, &inFlightFence);
+
+            logicalDevice.resetFences(1, &inFlightFence) ;
 
             uint32_t imageIndex {
                 logicalDevice.acquireNextImageKHR(swapChain.swapchain, UINT64_MAX, imageAvailableSemaphore, nullptr).value
@@ -178,6 +180,27 @@ namespace Engine
             presentInfo.pImageIndices      = &imageIndex;
 
             presentQueue.presentKHR(presentInfo);
+        }
+
+        void Application::calculateFrameRate()
+        {
+            currentTime = glfwGetTime();
+	        double delta = currentTime - lastTime;
+
+	        if (delta >= 1) {
+		        int framerate{ std::max(1, int(numFrames / delta)) };
+
+		        std::stringstream title;
+		        title << APPLICATION_NAME << " - " << framerate << " FPS";
+
+		        glfwSetWindowTitle(window, title.str().c_str());
+
+		        lastTime  = currentTime;
+		        numFrames = -1;
+		        frameTime = float(1000.0 / framerate);
+	        }
+
+	        ++numFrames;
         }
     }
 }
