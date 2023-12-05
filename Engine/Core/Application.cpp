@@ -1,23 +1,4 @@
-#include "Application.h"
-
-#include "GLFW/Mounter/Window.h"
-
-#include "Vulkan/Queue.h"
-#include "Vulkan/Vertex.h"
-
-#include "Vulkan/Mounter/Instance.h"
-#include "Vulkan/Mounter/Debug.h"
-#include "Vulkan/Mounter/Device.h"
-#include "Vulkan/Mounter/GraphicsPipeline.h"
-#include "Vulkan/Mounter/Queue.h"
-#include "Vulkan/Mounter/Surface.h"
-#include "Vulkan/Mounter/SwapChain.h"
-
-const std::vector<Engine::Core::Vulkan::Vertex> vertices = {
-    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, 0.5f},  {0.0f, 1.0f, 0.0f}},
-    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
-};
+#include "Application.hpp"
 
 namespace Engine
 {
@@ -27,52 +8,83 @@ namespace Engine
         {
             // GLFW
             glfwInit();
-            window = GLFW::Mounter::initWindow(windowWidth, windowHeight);
+            window = Window::init(windowWidth, windowHeight);
 
             // Vulkan
-            Vulkan::Mounter::initInstance(instance, dldi);
+            Render::Instance::init(instance, dldi);
             
             if (IS_DEBUGGING)
             {
-                Vulkan::Mounter::initDebugMessenger(debugMessenger, instance, dldi);
+                Render::Debug::initMessenger(debugMessenger, instance, dldi);
             }
 
-            Vulkan::Mounter::initSurface(surface, instance, window);
+            Render::Surface::init(surface, instance, window);
 
-            Vulkan::Mounter::pickPhysicalDevice(phyisicalDevice, instance);
-            Vulkan::Mounter::initLogicalDevice(logicalDevice, phyisicalDevice, surface);
-            Vulkan::Mounter::initGraphicsQueue(graphicsQueue, phyisicalDevice, logicalDevice, surface);
-            Vulkan::Mounter::initPresentQueue(presentQueue, phyisicalDevice, logicalDevice, surface);
+            Render::Device::pickPhysicalDevice(physicalDevice, instance);
+            Render::Device::initLogicalDevice(logicalDevice, physicalDevice, surface);
+            Render::Queue::initGraphicsQueue(graphicsQueue, physicalDevice, logicalDevice, surface);
+            Render::Queue::initPresentQueue(presentQueue, physicalDevice, logicalDevice, surface);
 
-            Vulkan::Mounter::initSwapChain(
+            Render::SwapChain::init(
                 swapChain,
-                phyisicalDevice,
+                physicalDevice,
                 logicalDevice,
                 surface,
                 windowWidth,
                 windowHeight
             );
 
-            Vulkan::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
+            Render::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
             graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
             graphicsPipelineCreateInfo.vertexShaderName     = "TriangleH.vert.spv";
             graphicsPipelineCreateInfo.fragmentShaderName   = "TriangleH.frag.spv";
             graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
             graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
+            Render::GraphicsPipeline::init(graphicsPipeline, graphicsPipelineCreateInfo);    
 
-            Vulkan::Mounter::initGraphicsPipeline(graphicsPipeline, graphicsPipelineCreateInfo);           
+            Render::Buffer::FramebufferCreateInfo framebufferCreateInfo = {
+                logicalDevice,
+                graphicsPipeline.renderPass,
+                swapChain.extent,
+                swapChain.frames
+            };
+    
+            Render::Buffer::initFramebuffers(framebufferCreateInfo);
+
+            Render::Command::initPool(commandPool, logicalDevice, physicalDevice, surface);
+
+            Render::Buffer::CommandBufferCreateInfo commandBufferInfo = {
+                logicalDevice,
+                commandPool,
+                swapChain.frames
+            };
+
+            Render::Command::initBuffers(mainCommandBuffer, commandBufferInfo);
+
+            Render::Sync::initFence(inFlightFence, logicalDevice);
+            Render::Sync::initSempahore(imageAvailableSemaphore, logicalDevice);
+            Render::Sync::initSempahore(renderFinishedSemaphore, logicalDevice);
         }
 
         Application::~Application()
         {
             // Vulkan
+            logicalDevice.waitIdle();
+
+            logicalDevice.destroyFence(inFlightFence);
+            logicalDevice.destroySemaphore(imageAvailableSemaphore);
+            logicalDevice.destroySemaphore(renderFinishedSemaphore);
+
+            logicalDevice.destroyCommandPool(commandPool);
+
             logicalDevice.destroyPipeline(graphicsPipeline.pipeline);
             logicalDevice.destroyPipelineLayout(graphicsPipeline.layout);
             logicalDevice.destroyRenderPass(graphicsPipeline.renderPass);
 
-            for (Vulkan::SwapChain::Frame frame : swapChain.frames)
+            for (Render::SwapChain::Frame frame : swapChain.frames)
             {
                 logicalDevice.destroyImageView(frame.imageView);
+                logicalDevice.destroyFramebuffer(frame.framebuffer);
             }
 
             logicalDevice.destroySwapchainKHR(swapChain.swapchain);
@@ -95,13 +107,77 @@ namespace Engine
             while (!glfwWindowShouldClose(window))
             {
                 glfwPollEvents();
-                draw();
+                render();
             }
         }
         
-        void Application::draw()
+        void Application::draw(vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex)
         {
-            
+            vk::CommandBufferBeginInfo beginInfo = {};
+
+            inCommandBuffer.begin(beginInfo);
+
+            vk::ClearValue clearColor = { std::array<float, 4>{ 1.0f, 0.5f, 0.25f, 1.0f } };
+
+            vk::RenderPassBeginInfo renderPassBeginInfo = {};
+            renderPassBeginInfo.renderPass          = graphicsPipeline.renderPass;
+            renderPassBeginInfo.framebuffer         = swapChain.frames[inImageIndex].framebuffer;
+            renderPassBeginInfo.renderArea.offset.x = 0;
+            renderPassBeginInfo.renderArea.offset.y = 0;
+            renderPassBeginInfo.renderArea.extent   = swapChain.extent;
+            renderPassBeginInfo.clearValueCount     = 1;
+            renderPassBeginInfo.pClearValues        = &clearColor;
+
+            inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
+
+            inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.pipeline);
+
+            inCommandBuffer.draw(3, 1, 0, 0);
+
+            inCommandBuffer.endRenderPass();
+
+            inCommandBuffer.end();
+        }
+
+        void Application::render()
+        {
+            logicalDevice.waitForFences(1, &inFlightFence, VK_TRUE, UINT64_MAX);
+            logicalDevice.resetFences(1, &inFlightFence);
+
+            uint32_t imageIndex {
+                logicalDevice.acquireNextImageKHR(swapChain.swapchain, UINT64_MAX, imageAvailableSemaphore, nullptr).value
+            };
+
+            vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
+
+            draw(commandBuffer, imageIndex);
+
+            vk::Semaphore waitSemaphores[]      = { imageAvailableSemaphore };
+            vk::Semaphore signalSemaphores[]    = { renderFinishedSemaphore };
+
+            vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
+
+            vk::SubmitInfo submitInfo = {};
+            submitInfo.waitSemaphoreCount   = 1;
+            submitInfo.pWaitSemaphores      = waitSemaphores;
+            submitInfo.pWaitDstStageMask    = waitStages;
+            submitInfo.commandBufferCount   = 1;
+            submitInfo.pCommandBuffers      = &commandBuffer;
+            submitInfo.signalSemaphoreCount = 1;
+            submitInfo.pSignalSemaphores    = signalSemaphores;
+
+            graphicsQueue.submit(submitInfo, inFlightFence);
+
+            vk::SwapchainKHR swapChains[] = { swapChain.swapchain };
+
+            vk::PresentInfoKHR presentInfo = {};
+            presentInfo.waitSemaphoreCount = 1;
+            presentInfo.pWaitSemaphores    = signalSemaphores;
+            presentInfo.swapchainCount     = 1;
+            presentInfo.pSwapchains        = swapChains;
+            presentInfo.pImageIndices      = &imageIndex;
+
+            presentQueue.presentKHR(presentInfo);
         }
     }
 }

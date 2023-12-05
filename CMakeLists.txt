@@ -1,6 +1,6 @@
 include(./.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
 message(STATUS "Local .env.cmake: ${LOCAL_ENV}")
- 
+
 cmake_minimum_required(VERSION 3.11.0)
 
 set(NAME Chicane)
@@ -17,7 +17,7 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     set(CMAKE_C_COMPILER ${MINGW_PATH}/bin/gcc.exe)
     set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
 endif()
- 
+
 # 1. Set VULKAN_SDK_PATH in .env.cmake to target specific vulkan version
 if (DEFINED VULKAN_SDK_PATH)
   	set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/Include") # 1.1 Make sure this include path is correct
@@ -32,7 +32,7 @@ if (NOT Vulkan_FOUND)
 else()
     message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
 endif()
- 
+
 # 2. Set GLFW_PATH in .env.cmake to target specific glfw
 if (DEFINED GLFW_PATH)
   	message(STATUS "Using GLFW path specified in .env")
@@ -53,9 +53,9 @@ if (NOT GLFW_LIB)
 else()
     message(STATUS "Using glfw lib at: ${GLFW_LIB}")
 endif()
- 
-file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.cpp)
- 
+
+file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.hpp ${ENGINE_SOURCE}/*.cpp)
+
 add_executable(${PROJECT_NAME} ${SOURCES})
  
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -66,22 +66,31 @@ if (WIN32)
   	message(STATUS "CREATING BUILD FOR WINDOWS")
  
   	if (USE_MINGW)
-    	target_include_directories(${PROJECT_NAME} PUBLIC
+    	target_include_directories(
+			${PROJECT_NAME}
+			PUBLIC
     	  	${MINGW_PATH}/include
     	)
-    	target_link_directories(${PROJECT_NAME} PUBLIC
+
+    	target_link_directories(
+			${PROJECT_NAME}
+			PUBLIC
     	  	${MINGW_PATH}/lib
     	)
   	endif()
  
-  	target_include_directories(${PROJECT_NAME} PUBLIC
+  	target_include_directories(
+		${PROJECT_NAME}
+		PUBLIC
     	${ENGINE_SOURCE}
     	${Vulkan_INCLUDE_DIRS}
     	${GLFW_INCLUDE_DIRS}
     	${GLM_PATH}
 	)
  
-  	target_link_directories(${PROJECT_NAME} PUBLIC
+  	target_link_directories(
+		${PROJECT_NAME}
+		PUBLIC
   	  	${Vulkan_LIBRARIES}
   	  	${GLFW_LIB}
   	)
@@ -89,8 +98,18 @@ if (WIN32)
   	target_link_libraries(${PROJECT_NAME} glfw3 vulkan-1)
 elseif (UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")
-    target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_SOURCE})
-    target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
+
+    target_include_directories(
+		${PROJECT_NAME}
+		PUBLIC
+		${ENGINE_SOURCE}
+	)
+
+    target_link_libraries(
+		${PROJECT_NAME}
+		glfw
+		${Vulkan_LIBRARIES}
+	)
 endif()
  
  
@@ -109,12 +128,12 @@ find_program(GLSL_VALIDATOR glslangValidator HINTS
 file(
 	GLOB_RECURSE
 	GLSL_SOURCE_FILES
-	"${ENGINE_SOURCE}/Shaders/Private/*.frag"
-	"${ENGINE_SOURCE}/Shaders/Private/*.vert"
+	"${ENGINE_SOURCE}/Shaders/*.frag"
+	"${ENGINE_SOURCE}/Shaders/*.vert"
 )
 foreach(GLSL ${GLSL_SOURCE_FILES})
   	get_filename_component(FILE_NAME ${GLSL} NAME)
-  	set(SPIRV "${ENGINE_SOURCE}/Shaders/Public/${FILE_NAME}.spv")
+  	set(SPIRV "${ENGINE_SOURCE}/Shaders/Compiled/${FILE_NAME}.spv")
   	add_custom_command(
     	OUTPUT ${SPIRV}
     	COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
