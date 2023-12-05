@@ -31,7 +31,7 @@ namespace Engine
 					GraphicsPipeline::CreateInfo& inCreateInfo
 				);
 				vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-				vk::PipelineColorBlendStateCreateInfo createColorBlendState();
+				vk::PipelineColorBlendStateCreateInfo createColorBlendState(vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState);
 				vk::PipelineLayout createLayout(GraphicsPipeline::CreateInfo& inCreateInfo);
 				vk::RenderPass createRendepass(GraphicsPipeline::CreateInfo& inCreateInfo);
 
