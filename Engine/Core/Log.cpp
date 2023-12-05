@@ -32,29 +32,31 @@ namespace Engine
 				{
 					return;
 				}
-			
+
+				std::time_t timestamp = std::time(0);
+
 				if (type == MessageType::INFO)
 				{
-					std::cout << "[LOG] " << message << std::endl;
+					std::cout << timestamp  << " [LOG] " << message << std::endl;
 			
 					return;
 				}
 			
 				if (type == MessageType::WARNING)
 				{
-					std::cout << "[WARNING] " << message << std::endl;
+					std::cout << timestamp  << " [WARNING] " << message << std::endl;
 			
 					return;
 				}
 			
 				if (type == MessageType::ERROR)
 				{
-					std::cerr << "[ERROR] " << message << std::endl;
+					std::cerr << timestamp  << " [ERROR] " << message << std::endl;
 			
 					return;
 				}
 			
-				std::cerr << "[CRITICAL] " << message << std::endl;
+				std::cerr << timestamp  << " [CRITICAL] " << message << std::endl;
 			}
 		}		
 	}

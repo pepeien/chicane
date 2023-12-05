@@ -2,6 +2,8 @@
 
 #include "Base.hpp"
 
+#include <ctime>
+
 namespace Engine
 {
 	namespace Core
