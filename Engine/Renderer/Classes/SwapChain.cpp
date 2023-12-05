@@ -48,6 +48,14 @@ namespace Engine
 
 							return;
 						}
+
+						// Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
+						if (presentMode == vk::PresentModeKHR::eImmediate)
+						{
+							allocator = presentMode;
+
+							return;
+						}
 					}
 
 					allocator = vk::PresentModeKHR::eFifo;
