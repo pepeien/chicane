@@ -1,23 +1,33 @@
-############## Include .env #######################
+############## Include #######################
 include(./.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
 
-############## Setup CMAKE #######################
+############## Setup Project #######################
 cmake_minimum_required(VERSION 3.11.0)
 
-############## Setup App values #######################
+set(CMAKE_CXX_STANDARD 17)
+
 set(NAME Chicane)
 
 project(${NAME} VERSION 1.0.0)
 
-############## Set values  #######################
-set(ENGINE_SOURCE "${PROJECT_SOURCE_DIR}/Engine")
+##############  Set values  #######################
+set(SHADERS_TARGET_NAME "Shaders")
+set(RUNTIME_TARGET_NAME "Runtime")
+set(EDITOR_TARGET_NAME  "Editor")
+
+set(SHADERS_SOURCE_DIR "${PROJECT_SOURCE_DIR}/Engine/Shaders")
+
+set(RUNTIME_SOURCE_DIR "${PROJECT_SOURCE_DIR}/Engine/Source/Runtime")
+set(EDITOR_SOURCE_DIR  "${PROJECT_SOURCE_DIR}/Engine/Source/Editor")
 
 set(BUILD_DIR         "${CMAKE_SOURCE_DIR}/Build")
 set(BUILD_DEPLOY_DIR  "${BUILD_DIR}/Deploy")
 set(BUILD_BINARY_DIR  "${BUILD_DEPLOY_DIR}/Binaries")
 set(BUILD_CONTENT_DIR "${BUILD_DEPLOY_DIR}/Content")
 
+##############  Set compiler  #######################
 message(STATUS "using ${CMAKE_GENERATOR}")
+
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
       	message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
@@ -27,153 +37,9 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
 endif()
 
-# 1. Set VULKAN_SDK_PATH in .env.cmake to target specific vulkan version
-if (DEFINED VULKAN_SDK_PATH)
-  	set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/Include") # 1.1 Make sure this include path is correct
-  	set(Vulkan_LIBRARIES "${VULKAN_SDK_PATH}/Lib") # 1.2 Make sure lib path is correct
-  	set(Vulkan_FOUND "True")
-else()
-  	find_package(Vulkan REQUIRED) # throws error if could not find Vulkan
-  	message(STATUS "Found Vulkan: $ENV{VULKAN_SDK}")
-endif()
-if (NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Could not find Vulkan library!")
-else()
-    message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
-endif()
+##############  Add subdirectories  #######################
 
-# 2. Set GLFW_PATH in .env.cmake to target specific glfw
-if (DEFINED GLFW_PATH)
-  	message(STATUS "Using GLFW path specified in .env")
-  	set(GLFW_INCLUDE_DIRS "${GLFW_PATH}/include")
-  	if (MSVC)
-    	set(GLFW_LIB "${GLFW_PATH}/lib-vc2022") # 2.1 Update lib-vc2022 to use same version as your visual studio
-  	elseif (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
-    	message(STATUS "USING MINGW")
-    	set(GLFW_LIB "${GLFW_PATH}/lib-mingw-w64") # 2.1 make sure matches glfw mingw subdirectory
-  	endif()
-else()
-  	find_package(glfw3 3.3 REQUIRED)
-  	set(GLFW_LIB glfw)
-  	message(STATUS "Found GLFW")
-endif()
-if (NOT GLFW_LIB)
-    message(FATAL_ERROR "Could not find glfw library!")
-else()
-    message(STATUS "Using glfw lib at: ${GLFW_LIB}")
-endif()
+add_subdirectory(Engine/Shaders)
 
-file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.cpp)
-
-add_executable(${PROJECT_NAME} ${SOURCES})
- 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-
-############## Set Property values  #######################
-set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY    "${BUILD_DIR}")
-set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY         "${BUILD_BINARY_DIR}")
-set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_BINARY_DIR}")
-set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_BINARY_DIR}")
-
-if (WIN32)
-  	message(STATUS "CREATING BUILD FOR WINDOWS")
- 
-  	if (USE_MINGW)
-    	target_include_directories(
-			${PROJECT_NAME}
-			PUBLIC
-    	  	${MINGW_PATH}/include
-    	)
-
-    	target_link_directories(
-			${PROJECT_NAME}
-			PUBLIC
-    	  	${MINGW_PATH}/lib
-    	)
-  	endif()
- 
-  	target_include_directories(
-		${PROJECT_NAME}
-		PUBLIC
-    	${ENGINE_SOURCE}
-    	${Vulkan_INCLUDE_DIRS}
-    	${GLFW_INCLUDE_DIRS}
-    	${GLM_PATH}
-	)
- 
-  	target_link_directories(
-		${PROJECT_NAME}
-		PUBLIC
-  	  	${Vulkan_LIBRARIES}
-  	  	${GLFW_LIB}
-  	)
- 
-  	target_link_libraries(${PROJECT_NAME} glfw3 vulkan-1)
-elseif (UNIX)
-    message(STATUS "CREATING BUILD FOR UNIX")
-
-    target_include_directories(
-		${PROJECT_NAME}
-		PUBLIC
-		${ENGINE_SOURCE}
-	)
-
-    target_link_libraries(
-		${PROJECT_NAME}
-		glfw
-		${Vulkan_LIBRARIES}
-	)
-endif()
- 
- 
-############## Build SHADERS #######################
-
-find_program(GLSL_VALIDATOR glslangValidator HINTS 
-  	${Vulkan_GLSLANG_VALIDATOR_EXECUTABLE} 
-  	/usr/bin 
-  	/usr/local/bin 
-  	${VULKAN_SDK_PATH}/Bin
-  	${VULKAN_SDK_PATH}/Bin32
-  	$ENV{VULKAN_SDK}/Bin/ 
-  	$ENV{VULKAN_SDK}/Bin32/
-)
-
-set(SHADER_SOURCE_DIR "${ENGINE_SOURCE}/Shaders")
-
-file(
-	GLOB_RECURSE
-	GLSL_SOURCE_FILES
-	"${SHADER_SOURCE_DIR}/*.frag"
-	"${SHADER_SOURCE_DIR}/*.vert"
-)
-
-set(BUILD_CONTENT_SHADER_DIR "${BUILD_CONTENT_DIR}/Shaders")
-
-foreach(GLSL ${GLSL_SOURCE_FILES})
-	get_filename_component(FILE_DIR  ${GLSL} DIRECTORY)
-  	get_filename_component(FILE_NAME ${GLSL} NAME)
-
-	set(SPIRV_DIR "${FILE_DIR}")
-	string(REPLACE "${SHADER_SOURCE_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
-
-	set(SPIRV_DIR "${BUILD_CONTENT_SHADER_DIR}/${SPIRV_DIR}")
-	string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
-
-	file(MAKE_DIRECTORY "${SPIRV_DIR}")
-
-	set(SPIRV "${SPIRV_DIR}/${FILE_NAME}.spv")
-	string(REPLACE "//" "/" SPIRV ${SPIRV})
-
-  	add_custom_command(
-    	OUTPUT ${SPIRV}
-    	COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
-    	DEPENDS ${GLSL}
-	)
-
-  	list(APPEND SPIRV_BINARY_FILES ${SPIRV})
-endforeach(GLSL)
-
-add_custom_target(
-    Shaders
-    DEPENDS ${SPIRV_BINARY_FILES}
-)
+add_subdirectory(Engine/Source/Runtime)
+add_subdirectory(Engine/Source/Editor)

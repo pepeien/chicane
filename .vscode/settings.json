@@ -76,6 +76,14 @@
 		"thread": "cpp",
 		"deque": "cpp",
 		"queue": "cpp",
-		"ranges": "cpp"
+		"ranges": "cpp",
+		"*.tcc": "cpp",
+		"cwctype": "cpp",
+		"memory_resource": "cpp",
+		"numeric": "cpp",
+		"string_view": "cpp",
+		"numbers": "cpp",
+		"cinttypes": "cpp",
+		"variant": "cpp"
 	}
 }

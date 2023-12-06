@@ -6,7 +6,7 @@ namespace Engine
 	{
 		namespace Window
 		{
-			GLFWwindow* init(int& widthAllocator, int& heightAllocator)
+			GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle)
 			{
 				glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
             	glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
@@ -19,7 +19,7 @@ namespace Engine
             	return glfwCreateWindow(
             	    desktop->width,
             	    desktop->height,
-            	    APPLICATION_NAME,
+            	    inWindowTitle,
             	    nullptr,
             	    nullptr
             	);

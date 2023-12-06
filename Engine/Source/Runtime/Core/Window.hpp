@@ -8,7 +8,7 @@ namespace Engine
 	{
 		namespace Window
 		{
-			GLFWwindow* init(int& widthAllocator, int& heightAllocator);
+			GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle);
 		}
 	}
 }

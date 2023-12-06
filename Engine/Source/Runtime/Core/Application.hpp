@@ -28,7 +28,7 @@ namespace Engine
         class Application
         {
         public:
-            Application();
+            Application(std::string& inWindowTitle);
             ~Application();
 
         public:
@@ -70,6 +70,7 @@ namespace Engine
             // GLFW
             GLFWwindow* window;
 
+            std::string windowTitle;
             int windowWidth;
             int windowHeight;
         };

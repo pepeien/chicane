@@ -1,10 +1,12 @@
-#include "Core/Application.hpp"
+#include "Application.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
     try
     {
-        Engine::Core::Application application;
+        std::string windowTitle = "Chicane Editor";
+
+        Engine::Core::Application application(windowTitle);
 
         application.run();
     }

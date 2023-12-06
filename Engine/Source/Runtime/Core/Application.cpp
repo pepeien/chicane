@@ -6,11 +6,13 @@ namespace Engine
 {
     namespace Core
     {
-        Application::Application()
+        Application::Application(std::string& inWindowTitle)
         {
+            windowTitle = inWindowTitle;
+
             // GLFW
             glfwInit();
-            window = Window::init(windowWidth, windowHeight);
+            window = Window::init(windowWidth, windowHeight, windowTitle.c_str());
 
             // Vulkan
             Render::Instance::init(instance, dldi);
@@ -209,7 +211,7 @@ namespace Engine
 		        int framerate{ std::max(1, int(numFrames / delta)) };
 
 		        std::stringstream title;
-		        title << APPLICATION_NAME << " - " << framerate << " FPS";
+		        title << windowTitle << " - " << framerate << " FPS";
 
 		        glfwSetWindowTitle(window, title.str().c_str());
 
