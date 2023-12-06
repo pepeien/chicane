@@ -2,15 +2,15 @@
 
 namespace Engine
 {
-    namespace Core
+    namespace Runtime
     {
-        namespace Render
+        namespace Renderer
         {
 			namespace Shader
 			{
 				void initModule(vk::ShaderModule& allocator, const std::string& inShaderName, vk::Device& inLogicalDevice)
 				{
-					std::vector<char> shaderCode = FileSystem::readShader(inShaderName);
+					std::vector<char> shaderCode = Core::FileSystem::readShader(inShaderName);
 
 					vk::ShaderModuleCreateInfo moduleInfo = {};
 					moduleInfo.flags    = vk::ShaderModuleCreateFlags();

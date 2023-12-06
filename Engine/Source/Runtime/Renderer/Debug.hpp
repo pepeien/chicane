@@ -4,9 +4,9 @@
 
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Render
+		namespace Renderer
 		{
 			namespace Debug
 			{
@@ -14,6 +14,13 @@ namespace Engine
 					vk::DebugUtilsMessengerEXT& allocator,
 					vk::Instance& inInstance,
 					vk::DispatchLoaderDynamic& inDldi
+				);
+
+				VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+					VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+					VkDebugUtilsMessageTypeFlagsEXT messageType,
+					const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+					void* pUserData
 				);
 			}
 		}

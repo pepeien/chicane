@@ -2,27 +2,30 @@
 
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Window
+		namespace Core
 		{
-			GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle)
+			namespace Window
 			{
-				glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-            	glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
+				GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle)
+				{
+					glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    	        	glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
 
-            	const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    	        	const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-				widthAllocator  = desktop->width;
-             	heightAllocator = desktop->height;
+					widthAllocator  = desktop->width;
+    	         	heightAllocator = desktop->height;
 
-            	return glfwCreateWindow(
-            	    desktop->width,
-            	    desktop->height,
-            	    inWindowTitle,
-            	    nullptr,
-            	    nullptr
-            	);
+    	        	return glfwCreateWindow(
+    	        	    desktop->width,
+    	        	    desktop->height,
+    	        	    inWindowTitle,
+    	        	    nullptr,
+    	        	    nullptr
+    	        	);
+				}
 			}
 		}
 	}

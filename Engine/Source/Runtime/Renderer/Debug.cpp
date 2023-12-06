@@ -1,43 +1,10 @@
 #include "Debug.hpp"
 
-VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
-	VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-	VkDebugUtilsMessageTypeFlagsEXT messageType,
-	const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-	void* pUserData
-)
-{
-	switch (messageType)
-	{
-	case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:
-		Engine::Core::Log::info(pCallbackData->pMessage);
-
-		break;
-
-	case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
-		Engine::Core::Log::warning(pCallbackData->pMessage);
-
-		break;
-
-	case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
-		Engine::Core::Log::error(pCallbackData->pMessage);
-
-		break;
-
-	default:
-		Engine::Core::Log::critical(pCallbackData->pMessage);
-
-		break;
-	}
-
-	return VK_FALSE;
-}
-
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Render
+		namespace Renderer
 		{
 			namespace Debug
 			{
@@ -68,6 +35,39 @@ namespace Engine
 					);
 
 					allocator = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDldi);
+				}
+
+				VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+					VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+					VkDebugUtilsMessageTypeFlagsEXT messageType,
+					const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+					void* pUserData
+				)
+				{
+					switch (messageType)
+					{
+					case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:
+						Core::Log::info(pCallbackData->pMessage);
+
+						break;
+
+					case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
+						Core::Log::warning(pCallbackData->pMessage);
+
+						break;
+
+					case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
+						Core::Log::error(pCallbackData->pMessage);
+
+						break;
+
+					default:
+						Core::Log::critical(pCallbackData->pMessage);
+
+						break;
+					}
+
+					return VK_FALSE;
 				}
 			}
 		}

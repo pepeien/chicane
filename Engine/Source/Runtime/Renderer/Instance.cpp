@@ -54,9 +54,9 @@ static bool areValidationLayersSupported(std::vector<const char*> inValidationLa
 		
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Render
+		namespace Renderer
 		{
 			namespace Instance
 			{

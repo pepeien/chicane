@@ -4,11 +4,14 @@
 
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Window
+		namespace Core
 		{
-			GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle);
+			namespace Window
+			{
+				GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle);
+			}
 		}
 	}
 }

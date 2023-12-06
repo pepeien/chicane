@@ -2,9 +2,9 @@
 
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Render
+		namespace Renderer
 		{
 			namespace SwapChain
         	{
@@ -44,7 +44,7 @@ namespace Engine
 
 					if (doesSupportMailBox)
 					{
-						Log::info("GPU is using Mailbox present mode");
+						Core::Log::info("GPU is using Mailbox present mode");
 
 						allocator = vk::PresentModeKHR::eMailbox;
 
@@ -56,7 +56,7 @@ namespace Engine
 
 					if (doesSupportImmediate)
 					{
-						Log::info("GPU is using Immediate present mode");
+						Core::Log::info("GPU is using Immediate present mode");
 
 						allocator = vk::PresentModeKHR::eImmediate;
 

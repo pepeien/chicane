@@ -7,9 +7,9 @@
 
 namespace Engine
 {
-	namespace Core
+	namespace Runtime
 	{
-		namespace Render
+		namespace Renderer
 		{
 			namespace SwapChain
 			{
