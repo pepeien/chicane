@@ -24,6 +24,9 @@ namespace Engine
                     vk::ImageView imageView;
                     vk::Framebuffer framebuffer;
                     vk::CommandBuffer commandBuffer;
+                    vk::Fence renderFence;
+                    vk::Semaphore presentSemaphore;
+                    vk::Semaphore renderSemaphore;
                 };
 
                 struct Bundle

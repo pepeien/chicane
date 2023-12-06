@@ -63,9 +63,15 @@ namespace Engine
 
             Render::Command::initBuffers(mainCommandBuffer, commandBufferInfo);
 
-            Render::Sync::initFence(inFlightFence, logicalDevice);
-            Render::Sync::initSempahore(imageAvailableSemaphore, logicalDevice);
-            Render::Sync::initSempahore(renderFinishedSemaphore, logicalDevice);
+            maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
+            currentFrameIndex       = 0;
+
+            for (Render::SwapChain::Frame& frame : swapChain.frames)
+            {
+                Render::Sync::initFence(frame.renderFence, logicalDevice);
+                Render::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
+                Render::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
+            }
         }
 
         Application::~Application()
@@ -73,9 +79,12 @@ namespace Engine
             // Vulkan
             logicalDevice.waitIdle();
 
-            logicalDevice.destroyFence(inFlightFence);
-            logicalDevice.destroySemaphore(imageAvailableSemaphore);
-            logicalDevice.destroySemaphore(renderFinishedSemaphore);
+            for (Render::SwapChain::Frame frame : swapChain.frames)
+            {
+                logicalDevice.destroyFence(frame.renderFence);
+                logicalDevice.destroySemaphore(frame.presentSemaphore);
+                logicalDevice.destroySemaphore(frame.renderSemaphore);
+            }
 
             logicalDevice.destroyCommandPool(commandPool);
 
@@ -142,20 +151,27 @@ namespace Engine
 
         void Application::render()
         {
-            logicalDevice.waitForFences(1, &inFlightFence, VK_TRUE, UINT64_MAX);
+            Render::SwapChain::Frame currentFrame = swapChain.frames[currentFrameIndex];
 
-            logicalDevice.resetFences(1, &inFlightFence) ;
+            logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX);
+
+            logicalDevice.resetFences(1, &currentFrame.renderFence) ;
 
             uint32_t imageIndex {
-                logicalDevice.acquireNextImageKHR(swapChain.swapchain, UINT64_MAX, imageAvailableSemaphore, nullptr).value
+                logicalDevice.acquireNextImageKHR(
+                    swapChain.swapchain,
+                    UINT64_MAX,
+                    currentFrame.presentSemaphore,
+                    nullptr
+                ).value
             };
 
             vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
 
             draw(commandBuffer, imageIndex);
 
-            vk::Semaphore waitSemaphores[]      = { imageAvailableSemaphore };
-            vk::Semaphore signalSemaphores[]    = { renderFinishedSemaphore };
+            vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
+            vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
 
             vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
 
@@ -168,7 +184,7 @@ namespace Engine
             submitInfo.signalSemaphoreCount = 1;
             submitInfo.pSignalSemaphores    = signalSemaphores;
 
-            graphicsQueue.submit(submitInfo, inFlightFence);
+            graphicsQueue.submit(submitInfo, currentFrame.renderFence);
 
             vk::SwapchainKHR swapChains[] = { swapChain.swapchain };
 
@@ -180,6 +196,8 @@ namespace Engine
             presentInfo.pImageIndices      = &imageIndex;
 
             presentQueue.presentKHR(presentInfo);
+
+            currentFrameIndex = (currentFrameIndex + 1) % maxInFlightFramesCount;
         }
 
         void Application::calculateFrameRate()

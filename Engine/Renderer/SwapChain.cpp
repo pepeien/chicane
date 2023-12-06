@@ -33,6 +33,11 @@ namespace Engine
 						supportDetails.capabilities.maxImageCount,
 						supportDetails.capabilities.minImageCount + 1
 					);
+					// We don't need more than double buffering
+					imageCount = std::min(
+						imageCount,
+						MAX_BUFFER_MULTIPLIER
+					);
 	
 					vk::SwapchainCreateInfoKHR createInfo = vk::SwapchainCreateInfoKHR(
 						vk::SwapchainCreateFlagsKHR(),

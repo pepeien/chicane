@@ -40,22 +40,27 @@ namespace Engine
 
 				void pickPresentMode(vk::PresentModeKHR& allocator, std::vector<vk::PresentModeKHR>& inPresentModes)
 				{
-					for (vk::PresentModeKHR presentMode : inPresentModes)
+					bool doesSupportMailBox = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) != inPresentModes.end();
+
+					if (doesSupportMailBox)
 					{
-						if (presentMode == vk::PresentModeKHR::eMailbox)
-						{
-							allocator = presentMode;
+						Log::info("GPU is using Mailbox present mode");
 
-							return;
-						}
+						allocator = vk::PresentModeKHR::eMailbox;
 
-						// Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
-						if (presentMode == vk::PresentModeKHR::eImmediate)
-						{
-							allocator = presentMode;
+						return;
+					}
 
-							return;
-						}
+					// Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
+					bool doesSupportImmediate = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eImmediate) != inPresentModes.end();
+
+					if (doesSupportImmediate)
+					{
+						Log::info("GPU is using Immediate present mode");
+
+						allocator = vk::PresentModeKHR::eImmediate;
+
+						return;
 					}
 
 					allocator = vk::PresentModeKHR::eFifo;

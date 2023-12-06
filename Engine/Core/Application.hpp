@@ -64,9 +64,8 @@ namespace Engine
             vk::CommandPool commandPool;
             vk::CommandBuffer mainCommandBuffer;
         
-            vk::Fence inFlightFence;
-            vk::Semaphore imageAvailableSemaphore;
-            vk::Semaphore renderFinishedSemaphore;
+            int maxInFlightFramesCount;
+            int currentFrameIndex;
 
             // GLFW
             GLFWwindow* window;
