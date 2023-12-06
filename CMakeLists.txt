@@ -1,12 +1,21 @@
+############## Include .env #######################
 include(./.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
-message(STATUS "Local .env.cmake: ${LOCAL_ENV}")
 
+############## Setup CMAKE #######################
 cmake_minimum_required(VERSION 3.11.0)
 
+############## Setup App values #######################
 set(NAME Chicane)
+
 project(${NAME} VERSION 1.0.0)
 
+############## Set values  #######################
 set(ENGINE_SOURCE "${PROJECT_SOURCE_DIR}/Engine")
+
+set(BUILD_DIR         "${CMAKE_SOURCE_DIR}/Build")
+set(BUILD_DEPLOY_DIR  "${BUILD_DIR}/Deploy")
+set(BUILD_BINARY_DIR  "${BUILD_DEPLOY_DIR}/Binaries")
+set(BUILD_CONTENT_DIR "${BUILD_DEPLOY_DIR}/Content")
 
 message(STATUS "using ${CMAKE_GENERATOR}")
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
@@ -54,14 +63,18 @@ else()
     message(STATUS "Using glfw lib at: ${GLFW_LIB}")
 endif()
 
-file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.hpp ${ENGINE_SOURCE}/*.cpp)
+file(GLOB_RECURSE SOURCES ${ENGINE_SOURCE}/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
  
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
- 
-set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/Build")
- 
+
+############## Set Property values  #######################
+set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY    "${BUILD_DIR}")
+set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY         "${BUILD_BINARY_DIR}")
+set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_BINARY_DIR}")
+set_property(TARGET ${PROJECT_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_BINARY_DIR}")
+
 if (WIN32)
   	message(STATUS "CREATING BUILD FOR WINDOWS")
  
@@ -125,19 +138,38 @@ find_program(GLSL_VALIDATOR glslangValidator HINTS
   	$ENV{VULKAN_SDK}/Bin32/
 )
 
+set(SHADER_SOURCE_DIR "${ENGINE_SOURCE}/Shaders")
+
 file(
 	GLOB_RECURSE
 	GLSL_SOURCE_FILES
-	"${ENGINE_SOURCE}/Shaders/*.frag"
-	"${ENGINE_SOURCE}/Shaders/*.vert"
+	"${SHADER_SOURCE_DIR}/*.frag"
+	"${SHADER_SOURCE_DIR}/*.vert"
 )
+
+set(BUILD_CONTENT_SHADER_DIR "${BUILD_CONTENT_DIR}/Shaders")
+
 foreach(GLSL ${GLSL_SOURCE_FILES})
+	get_filename_component(FILE_DIR  ${GLSL} DIRECTORY)
   	get_filename_component(FILE_NAME ${GLSL} NAME)
-  	set(SPIRV "${ENGINE_SOURCE}/Shaders/Compiled/${FILE_NAME}.spv")
+
+	set(SPIRV_DIR "${FILE_DIR}")
+	string(REPLACE "${SHADER_SOURCE_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
+
+	set(SPIRV_DIR "${BUILD_CONTENT_SHADER_DIR}/${SPIRV_DIR}")
+	string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
+
+	file(MAKE_DIRECTORY "${SPIRV_DIR}")
+
+	set(SPIRV "${SPIRV_DIR}/${FILE_NAME}.spv")
+	string(REPLACE "//" "/" SPIRV ${SPIRV})
+
   	add_custom_command(
     	OUTPUT ${SPIRV}
     	COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
-    	DEPENDS ${GLSL})
+    	DEPENDS ${GLSL}
+	)
+
   	list(APPEND SPIRV_BINARY_FILES ${SPIRV})
 endforeach(GLSL)
 

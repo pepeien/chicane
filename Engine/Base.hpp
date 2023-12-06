@@ -5,8 +5,8 @@
 #define APPLICATION_NAME "Chicane Engine"
 
 #define ENGINE_NAME        "Chicane"
-#define ENGINE_DIR         "../../Engine/"
-#define ENGINE_SHADERS_DIR "Shaders/Compiled/"
+#define ENGINE_DIR         "../"
+#define ENGINE_SHADERS_DIR "Content/Shaders/"
 
 #ifdef NDEBUG
 #define IS_DEBUGGING false
@@ -38,3 +38,5 @@ const std::vector<const char*> VALIDATION_LAYERS = {
 const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
+
+const uint32_t MAX_BUFFER_MULTIPLIER = 2;
