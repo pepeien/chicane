@@ -8,8 +8,86 @@ namespace Engine
 		{
 			namespace SwapChain
 			{
+				void querySupport(SupportDetails& outSupportDetails, vk::PhysicalDevice& inPhyisicalDevice, vk::SurfaceKHR& inSurface)
+				{
+					outSupportDetails.capabilities = inPhyisicalDevice.getSurfaceCapabilitiesKHR(inSurface);
+					outSupportDetails.formats      = inPhyisicalDevice.getSurfaceFormatsKHR(inSurface);
+					outSupportDetails.presentModes = inPhyisicalDevice.getSurfacePresentModesKHR(inSurface);
+				}
+
+				void pickSurfaceFormat(vk::SurfaceFormatKHR& outSurfaceFormat, std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats)
+				{
+					if (inSurfaceFormats.empty())
+					{
+						throw std::runtime_error("There is no surface formats available");
+					}
+
+					for (vk::SurfaceFormatKHR surfaceFormat : inSurfaceFormats)
+					{
+						if (
+							surfaceFormat.format == vk::Format::eB8G8R8A8Unorm &&
+							surfaceFormat.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear
+						)
+						{
+							outSurfaceFormat = surfaceFormat;
+
+							return;
+						}
+					}
+
+					outSurfaceFormat = inSurfaceFormats[0];
+				}
+
+				void pickPresentMode(vk::PresentModeKHR& outPresentMode, std::vector<vk::PresentModeKHR>& inPresentModes)
+				{
+					bool doesSupportMailBox = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) != inPresentModes.end();
+
+					if (doesSupportMailBox)
+					{
+						outPresentMode = vk::PresentModeKHR::eMailbox;
+
+						return;
+					}
+
+					// Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
+					bool doesSupportImmediate = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eImmediate) != inPresentModes.end();
+
+					if (doesSupportImmediate)
+					{
+						outPresentMode = vk::PresentModeKHR::eImmediate;
+
+						return;
+					}
+
+					outPresentMode = vk::PresentModeKHR::eFifo;
+				}
+
+				void pickExtent(vk::Extent2D& outExtent, uint32_t inWidth, uint32_t inHeight, vk::SurfaceCapabilitiesKHR& inCapabilities)
+				{
+					if (inCapabilities.currentExtent.width != UINT32_MAX)
+					{
+						outExtent = inCapabilities.currentExtent;
+
+						return;
+					}
+
+					outExtent.setWidth(
+						std::min(
+							inCapabilities.maxImageExtent.width,
+							std::max(inCapabilities.minImageExtent.width, inWidth)
+						)
+					);
+
+					outExtent.setHeight(
+						std::min(
+							inCapabilities.maxImageExtent.height,
+							std::max(inCapabilities.minImageExtent.height, inHeight)
+						)
+					);
+				}
+
 				void init(
-					Bundle& allocator,
+					Bundle& outSwapChain,
 					vk::PhysicalDevice& inPhysicalDevice,
 					vk::Device& inLogicalDevice,
 					vk::SurfaceKHR& inSurface,
@@ -70,12 +148,12 @@ namespace Engine
 					createInfo.clipped        = VK_TRUE;
 					createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
 
-					allocator.swapchain = inLogicalDevice.createSwapchainKHR(createInfo);
-					allocator.format    = surfaceFormat.format;
-					allocator.extent    = extent;
+					outSwapChain.instance = inLogicalDevice.createSwapchainKHR(createInfo);
+					outSwapChain.format    = surfaceFormat.format;
+					outSwapChain.extent    = extent;
 
-					std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(allocator.swapchain);
-					allocator.frames.resize(images.size());
+					std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(outSwapChain.instance);
+					outSwapChain.frames.resize(images.size());
 
 					for (int i = 0; i < images.size(); i++)
 					{
@@ -95,8 +173,8 @@ namespace Engine
 						createInfo.subresourceRange.baseArrayLayer = 0;
 						createInfo.subresourceRange.layerCount     = 1;
 
-						allocator.frames[i].image     = images[i];
-						allocator.frames[i].imageView = inLogicalDevice.createImageView(createInfo);
+						outSwapChain.frames[i].image     = images[i];
+						outSwapChain.frames[i].imageView = inLogicalDevice.createImageView(createInfo);
 					}
 				}
 			}

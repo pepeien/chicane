@@ -10,8 +10,8 @@ namespace Engine
 		{
 			namespace FileSystem
 			{
-				std::vector<char> readShader(const std::string& filepath);
-				std::vector<char> readFile(const std::string& filepath);
+				std::vector<char> readShader(const std::string& inFilepath);
+				std::vector<char> readFile(const std::string& inFilepath);
 			}
 		}
 	}

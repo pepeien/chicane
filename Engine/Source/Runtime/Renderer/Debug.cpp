@@ -9,7 +9,7 @@ namespace Engine
 			namespace Debug
 			{
 				void initMessenger(
-					vk::DebugUtilsMessengerEXT& allocator,
+					vk::DebugUtilsMessengerEXT& outDebugMessenger,
 					vk::Instance& inInstance,
 					vk::DispatchLoaderDynamic& inDldi
 				)
@@ -34,7 +34,7 @@ namespace Engine
 						nullptr
 					);
 
-					allocator = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDldi);
+					outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDldi);
 				}
 
 				VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(

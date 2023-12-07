@@ -10,8 +10,8 @@ namespace Engine
 		{
 			namespace Sync
 			{
-				void initSempahore(vk::Semaphore& allocator, vk::Device& inLogicalDevice);
-				void initFence(vk::Fence& allocator, vk::Device& inLogicalDevice);
+				void initSempahore(vk::Semaphore& outSemaphore, vk::Device& inLogicalDevice);
+				void initFence(vk::Fence& outFence, vk::Device& inLogicalDevice);
 			}
 		}
 	}

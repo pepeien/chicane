@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Classes/Buffer.hpp"
+#include "Base.hpp"
+
+#include "SwapChain.hpp"
 
 namespace Engine
 {
@@ -10,7 +12,22 @@ namespace Engine
 		{
 			namespace Buffer
 			{
-				void initFramebuffers(FramebufferCreateInfo& createInfo);
+				struct FramebufferCreateInfo
+				{
+					vk::Device logicalDevice;
+					vk::RenderPass renderPass;
+					vk::Extent2D swapChainExtent;
+					std::vector<SwapChain::Frame>& frames;
+				};
+
+				struct CommandBufferCreateInfo
+				{
+					vk::Device logicalDevice;
+					vk::CommandPool commandPool;
+					std::vector<SwapChain::Frame>& frames;
+				};
+
+				void initFramebuffers(FramebufferCreateInfo& outCreateInfo);
 			}
 		}
 	}

@@ -6,12 +6,16 @@ int main(int argc, char *argv[])
     {
         std::string windowTitle = "Chicane Editor";
 
-        Engine::Runtime::Core::Application application(windowTitle);
+        Engine::Runtime::Renderer::Scene scene;
+
+        Engine::Runtime::Core::Application application(windowTitle, scene);
 
         application.run();
     }
     catch (const std::exception& e)
     {
+        Engine::Runtime::Core::Log::critical(e.what());
+
         return EXIT_FAILURE;
     }
 

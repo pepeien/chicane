@@ -20,11 +20,11 @@ namespace Engine
 					CRITICAL
 				};
 
-				void info(std::string message);
-				void warning(std::string message);
-				void error(std::string message);
-				void critical(std::string message);
-				void emmit(MessageType type, std::string message);
+				void info(std::string inMessage);
+				void warning(std::string inMessage);
+				void error(std::string inMessage);
+				void critical(std::string inMessage);
+				void emmit(MessageType inType, std::string inMessage);
 			}
 		}
 	}

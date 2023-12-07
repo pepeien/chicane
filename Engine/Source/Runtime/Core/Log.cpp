@@ -8,27 +8,27 @@ namespace Engine
     	{
 			namespace Log
 			{
-				void info(std::string message)
+				void info(std::string inMessage)
 				{
-					emmit(MessageType::INFO, message);
+					emmit(MessageType::INFO, inMessage);
 				}
 	
-				void warning(std::string message)
+				void warning(std::string inMessage)
 				{
-					emmit(MessageType::WARNING, message);
+					emmit(MessageType::WARNING, inMessage);
 				}
 	
-				void error(std::string message)
+				void error(std::string inMessage)
 				{
-					emmit(MessageType::ERROR, message);
+					emmit(MessageType::ERROR, inMessage);
 				}
 	
-				void critical(std::string message)
+				void critical(std::string inMessage)
 				{
-					emmit(MessageType::CRITICAL, message);
+					emmit(MessageType::CRITICAL, inMessage);
 				}
 	
-				void emmit(MessageType type, std::string message)
+				void emmit(MessageType inType, std::string inMessage)
 				{
 					if (IS_DEBUGGING == false)
 					{
@@ -37,28 +37,28 @@ namespace Engine
 	
 					std::time_t timestamp = std::time(0);
 	
-					if (type == MessageType::INFO)
+					if (inType == MessageType::INFO)
 					{
-						std::cout << timestamp  << " [LOG] " << message << std::endl;
+						std::cout << timestamp  << " [LOG] " << inMessage << std::endl;
 				
 						return;
 					}
 				
-					if (type == MessageType::WARNING)
+					if (inType == MessageType::WARNING)
 					{
-						std::cout << timestamp  << " [WARNING] " << message << std::endl;
+						std::cout << timestamp  << " [WARNING] " << inMessage << std::endl;
 				
 						return;
 					}
 				
-					if (type == MessageType::ERROR)
+					if (inType == MessageType::ERROR)
 					{
-						std::cerr << timestamp  << " [ERROR] " << message << std::endl;
+						std::cerr << timestamp  << " [ERROR] " << inMessage << std::endl;
 				
 						return;
 					}
 				
-					std::cerr << timestamp  << " [CRITICAL] " << message << std::endl;
+					std::cerr << timestamp  << " [CRITICAL] " << inMessage << std::endl;
 				}
 			}		
 		}

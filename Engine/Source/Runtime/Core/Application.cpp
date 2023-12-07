@@ -8,74 +8,43 @@ namespace Engine
     {
         namespace Core
         {
-            Application::Application(std::string& inWindowTitle)
+            Application::Application(std::string& inWindowTitle, Renderer::Scene& inScene)
             {
                 windowTitle = inWindowTitle;
+                scene       = inScene;
 
                 // GLFW
                 glfwInit();
-                window = Window::init(windowWidth, windowHeight, windowTitle.c_str());
+                
+                buildWindow();
 
                 // Vulkan
-                Renderer::Instance::init(instance, dldi);
+                buildInstance();
 
                 if (IS_DEBUGGING)
                 {
-                    Renderer::Debug::initMessenger(debugMessenger, instance, dldi);
+                    buildDebugMessenger();
                 }
 
-                Renderer::Surface::init(surface, instance, window);
+                buildSurface();
 
-                Renderer::Device::pickPhysicalDevice(physicalDevice, instance);
-                Renderer::Device::initLogicalDevice(logicalDevice, physicalDevice, surface);
-                Renderer::Queue::initGraphicsQueue(graphicsQueue, physicalDevice, logicalDevice, surface);
-                Renderer::Queue::initPresentQueue(presentQueue, physicalDevice, logicalDevice, surface);
+                buildDevices();
 
-                Renderer::SwapChain::init(
-                    swapChain,
-                    physicalDevice,
-                    logicalDevice,
-                    surface,
-                    windowWidth,
-                    windowHeight
-                );
+                buildQueues();
 
-                Renderer::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
-                graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
-                graphicsPipelineCreateInfo.vertexShaderName     = "TriangleH.vert.spv";
-                graphicsPipelineCreateInfo.fragmentShaderName   = "TriangleH.frag.spv";
-                graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
-                graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
-                Renderer::GraphicsPipeline::init(graphicsPipeline, graphicsPipelineCreateInfo);    
+                buildSwapChain();
 
-                Renderer::Buffer::FramebufferCreateInfo framebufferCreateInfo = {
-                    logicalDevice,
-                    graphicsPipeline.renderPass,
-                    swapChain.extent,
-                    swapChain.frames
-                };
+                buildGraphicsPipeline();
 
-                Renderer::Buffer::initFramebuffers(framebufferCreateInfo);
+                buildFramebuffers();
 
-                Renderer::Command::initPool(commandPool, logicalDevice, physicalDevice, surface);
-
-                Renderer::Buffer::CommandBufferCreateInfo commandBufferInfo = {
-                    logicalDevice,
-                    commandPool,
-                    swapChain.frames
-                };
-
-                Renderer::Command::initBuffers(mainCommandBuffer, commandBufferInfo);
+                buildCommandPool();
+                buildCommandBuffers();
 
                 maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
-                currentFrameIndex       = 0;
+                currentFrameIndex      = 0;
 
-                for (Renderer::SwapChain::Frame& frame : swapChain.frames)
-                {
-                    Renderer::Sync::initFence(frame.renderFence, logicalDevice);
-                    Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
-                    Renderer::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
-                }
+                buildSyncObjects();
             }
 
             Application::~Application()
@@ -83,35 +52,22 @@ namespace Engine
                 // Vulkan
                 logicalDevice.waitIdle();
 
-                for (Renderer::SwapChain::Frame frame : swapChain.frames)
-                {
-                    logicalDevice.destroyFence(frame.renderFence);
-                    logicalDevice.destroySemaphore(frame.presentSemaphore);
-                    logicalDevice.destroySemaphore(frame.renderSemaphore);
-                }
+                destroyGraphicsPipeline();
 
-                logicalDevice.destroyCommandPool(commandPool);
+                destroySwapChain();
 
-                logicalDevice.destroyPipeline(graphicsPipeline.pipeline);
-                logicalDevice.destroyPipelineLayout(graphicsPipeline.layout);
-                logicalDevice.destroyRenderPass(graphicsPipeline.renderPass);
+                destroyCommandPool();
 
-                for (Renderer::SwapChain::Frame frame : swapChain.frames)
-                {
-                    logicalDevice.destroyImageView(frame.imageView);
-                    logicalDevice.destroyFramebuffer(frame.framebuffer);
-                }
+                destroyDevices();
 
-                logicalDevice.destroySwapchainKHR(swapChain.swapchain);
-                logicalDevice.destroy();
+                destroySurface();
 
                 if (IS_DEBUGGING)
                 {
-                    instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
+                    destroyDebugMessenger();
                 }
 
-                instance.destroySurfaceKHR(surface);
-                instance.destroy();
+                destroyInstance();
 
                 // GLFW
                 glfwTerminate();
@@ -144,9 +100,25 @@ namespace Engine
 
                 inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
 
-                inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.pipeline);
+                inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.instance);
 
-                inCommandBuffer.draw(3, 1, 0, 0);
+                for (glm::vec3 position : scene.positions)
+                {
+                    glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
+
+                    Renderer::Shader::ObjectData objectData;
+                    objectData.model = model;
+
+                    inCommandBuffer.pushConstants(
+                        graphicsPipeline.layout,
+                        vk::ShaderStageFlagBits::eVertex,
+                        0,
+                        sizeof(objectData),
+                        &objectData
+                    );
+
+                    inCommandBuffer.draw(3, 1, 0, 0);
+                }
 
                 inCommandBuffer.endRenderPass();
 
@@ -159,16 +131,31 @@ namespace Engine
 
                 logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX);
 
-                logicalDevice.resetFences(1, &currentFrame.renderFence) ;
+                logicalDevice.resetFences(1, &currentFrame.renderFence);
 
-                uint32_t imageIndex {
-                    logicalDevice.acquireNextImageKHR(
-                        swapChain.swapchain,
+                uint32_t imageIndex;
+
+                try
+                {
+                    imageIndex = logicalDevice.acquireNextImageKHR(
+                        swapChain.instance,
                         UINT64_MAX,
                         currentFrame.presentSemaphore,
                         nullptr
-                    ).value
-                };
+                    ).value;
+                }
+                catch(vk::OutOfDateKHRError e)
+                {
+                    rebuildSwapChain();
+
+                    return;
+                }
+                catch(vk::IncompatibleDisplayKHRError e)
+                {
+                    rebuildSwapChain();
+
+                    return;
+                }
 
                 vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
 
@@ -190,7 +177,7 @@ namespace Engine
 
                 graphicsQueue.submit(submitInfo, currentFrame.renderFence);
 
-                vk::SwapchainKHR swapChains[] = { swapChain.swapchain };
+                vk::SwapchainKHR swapChains[] = { swapChain.instance };
 
                 vk::PresentInfoKHR presentInfo = {};
                 presentInfo.waitSemaphoreCount = 1;
@@ -199,7 +186,23 @@ namespace Engine
                 presentInfo.pSwapchains        = swapChains;
                 presentInfo.pImageIndices      = &imageIndex;
 
-                presentQueue.presentKHR(presentInfo);
+                vk::Result present;
+
+                try
+                {
+                    present = presentQueue.presentKHR(presentInfo);
+                }
+                catch(vk::OutOfDateKHRError e)
+                {
+                    present = vk::Result::eErrorOutOfDateKHR;
+                }
+
+                if (present == vk::Result::eErrorOutOfDateKHR || present == vk::Result::eSuboptimalKHR)
+                {
+                    rebuildSwapChain();
+
+                    return;
+                }
 
                 currentFrameIndex = (currentFrameIndex + 1) % maxInFlightFramesCount;
             }
@@ -223,6 +226,196 @@ namespace Engine
 	            }
 
 	            ++numFrames;
+            }
+
+            void Application::buildWindow()
+            {
+                window = Window::init(
+                    windowWidth,
+                    windowHeight,
+                    windowTitle.c_str()
+                );
+            }
+
+            void Application::buildInstance()
+            {
+                Renderer::Instance::init(instance, dldi);
+            }
+
+            void Application::destroyInstance()
+            {
+                instance.destroy();
+            }
+
+            void Application::buildDebugMessenger()
+            {
+                Renderer::Debug::initMessenger(debugMessenger, instance, dldi);
+            }
+
+            void Application::destroyDebugMessenger()
+            {
+                instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
+            }
+
+            void Application::buildSurface()
+            {
+                Renderer::Surface::init(surface, instance, window);
+            }
+            
+            void Application::destroySurface()
+            {
+                instance.destroySurfaceKHR(surface);
+            }
+
+            void Application::buildQueues()
+            {
+                Renderer::Queue::initGraphicsQueue(
+                    graphicsQueue,
+                    physicalDevice,
+                    logicalDevice,
+                    surface
+                );
+
+                Renderer::Queue::initPresentQueue(
+                    presentQueue,
+                    physicalDevice,
+                    logicalDevice,
+                    surface
+                );
+            }
+
+            void Application::buildDevices()
+            {
+                Renderer::Device::pickPhysicalDevice(physicalDevice, instance);
+                Renderer::Device::initLogicalDevice(
+                    logicalDevice,
+                    physicalDevice,
+                    surface
+                );
+            }
+            
+            void Application::destroyDevices()
+            {
+                logicalDevice.destroy();
+            }
+
+            void Application::buildSwapChain()
+            {
+                Renderer::SwapChain::init(
+                    swapChain,
+                    physicalDevice,
+                    logicalDevice,
+                    surface,
+                    windowWidth,
+                    windowHeight
+                );
+            }
+
+            void Application::rebuildSwapChain()
+            {
+                windowWidth  = 0;
+	            windowHeight = 0;
+
+	            while (windowWidth == 0 || windowHeight == 0) {
+            		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+            		glfwWaitEvents();
+	            }
+
+	            logicalDevice.waitIdle();
+
+                destroySwapChain();
+                buildSwapChain();
+
+                destroyGraphicsPipeline();
+                buildGraphicsPipeline();
+
+                buildFramebuffers();
+
+                buildSyncObjects();
+
+                buildCommandBuffers();
+            }
+
+            void Application::destroySwapChain()
+            {
+                for (Renderer::SwapChain::Frame frame : swapChain.frames)
+                {
+                    logicalDevice.destroyImageView(frame.imageView);
+                    logicalDevice.destroyFramebuffer(frame.framebuffer);
+
+                    logicalDevice.destroyFence(frame.renderFence);
+                    logicalDevice.destroySemaphore(frame.presentSemaphore);
+                    logicalDevice.destroySemaphore(frame.renderSemaphore);
+                }
+
+                logicalDevice.destroySwapchainKHR(swapChain.instance);
+            }
+
+            void Application::buildGraphicsPipeline()
+            {
+                Renderer::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
+                graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
+                graphicsPipelineCreateInfo.vertexShaderName     = "triangle-push.vert.spv";
+                graphicsPipelineCreateInfo.fragmentShaderName   = "triangle-push.frag.spv";
+                graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
+                graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
+
+                Renderer::GraphicsPipeline::init(graphicsPipeline, graphicsPipelineCreateInfo);    
+            }
+
+            void Application::destroyGraphicsPipeline()
+            {
+                logicalDevice.destroyPipeline(graphicsPipeline.instance);
+                logicalDevice.destroyPipelineLayout(graphicsPipeline.layout);
+                logicalDevice.destroyRenderPass(graphicsPipeline.renderPass);
+            }
+
+            void Application::buildFramebuffers()
+            {
+                Renderer::Buffer::FramebufferCreateInfo framebufferCreateInfo = {
+                    logicalDevice,
+                    graphicsPipeline.renderPass,
+                    swapChain.extent,
+                    swapChain.frames
+                };
+
+                Renderer::Buffer::initFramebuffers(framebufferCreateInfo);
+            }
+
+            void Application::buildCommandPool()
+            {
+                Renderer::Command::initPool(
+                    commandPool,
+                    logicalDevice,
+                    physicalDevice,
+                    surface
+                );
+            }
+
+            void Application::destroyCommandPool()
+            {
+                logicalDevice.destroyCommandPool(commandPool);
+            }
+
+            void Application::buildCommandBuffers()
+            {
+                Renderer::Buffer::CommandBufferCreateInfo commandBufferInfo = {
+                    logicalDevice,
+                    commandPool,
+                    swapChain.frames
+                };
+
+                Renderer::Command::initBuffers(mainCommandBuffer, commandBufferInfo);
+            }
+
+            void Application::buildSyncObjects()
+            {
+                for (Renderer::SwapChain::Frame& frame : swapChain.frames)
+                {
+                    Renderer::Sync::initFence(frame.renderFence, logicalDevice);
+                    Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
+                    Renderer::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
+                }
             }
         }
     }

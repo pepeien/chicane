@@ -8,7 +8,7 @@ namespace Engine
 		{
 			namespace Surface
 			{
-				void init(vk::SurfaceKHR& allocator, vk::Instance& inInstance, GLFWwindow* inWindow)
+				void init(vk::SurfaceKHR& outSurface, vk::Instance& inInstance, GLFWwindow* inWindow)
 				{
 					VkSurfaceKHR c_style_surface;
 
@@ -17,7 +17,7 @@ namespace Engine
             		    throw std::runtime_error("Failed to abtract the GLFW surface for Vulkan");
             		}
 
-					allocator = c_style_surface;
+					outSurface = c_style_surface;
 				}
 			}
 		}

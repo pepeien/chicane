@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Classes/Buffer.hpp"
-#include "Classes/Queue.hpp"
+#include "Base.hpp"
+
+#include "Buffer.hpp"
+#include "Queue.hpp"
 
 namespace Engine
 {
@@ -12,13 +14,13 @@ namespace Engine
 			namespace Command
 			{
 				void initPool(
-					vk::CommandPool& allocator,
+					vk::CommandPool& outCommandPool,
 					vk::Device& inLogicalDevice,
 					vk::PhysicalDevice& inPhysicalDevice,
 					vk::SurfaceKHR& inSurface
 				);
 
-				void initBuffers(vk::CommandBuffer& allocator, Buffer::CommandBufferCreateInfo& createInfo);
+				void initBuffers(vk::CommandBuffer& outCommandPool, Buffer::CommandBufferCreateInfo& inCreateInfo);
 			}
 		}
 	}

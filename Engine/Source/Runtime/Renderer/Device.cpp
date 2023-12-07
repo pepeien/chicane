@@ -20,13 +20,13 @@ namespace Engine
 		{
 			namespace Device
 			{
-				void pickPhysicalDevice(vk::PhysicalDevice& allocator, vk::Instance& inInstance)
+				void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, vk::Instance& inInstance)
 				{
 					for (vk::PhysicalDevice physicalDevice : inInstance.enumeratePhysicalDevices())
 					{
 						if (isPhysicalDeviceSuitable(physicalDevice))
 						{
-							allocator = physicalDevice;
+							outPhysicalDevice = physicalDevice;
 
 							return;
 						}
@@ -36,7 +36,7 @@ namespace Engine
 				}
 
 				void initLogicalDevice(
-					vk::Device& allocator,
+					vk::Device& outPhysicalDevice,
 					vk::PhysicalDevice& inPhysicalDevice,
 					vk::SurfaceKHR& inSurface
 				)
@@ -92,7 +92,7 @@ namespace Engine
 						&logicalDeviceFeatures
 					);
 
-					allocator = inPhysicalDevice.createDevice(logicalDeviceInfo);
+					outPhysicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
 				}
 			}
 		}

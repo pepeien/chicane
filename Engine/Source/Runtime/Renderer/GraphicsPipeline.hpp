@@ -2,8 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Classes/GraphicsPipeline.hpp"
-
+#include "GraphicsPipeline.hpp"
 #include "Shader.hpp"
 
 namespace Engine
@@ -14,28 +13,44 @@ namespace Engine
 		{
 			namespace GraphicsPipeline
 			{
+				struct CreateInfo
+				{
+					vk::Device logicalDevice;
+					std::string vertexShaderName;
+					std::string fragmentShaderName;
+					vk::Extent2D swapChainExtent;
+					vk::Format swapChainImageFormat;
+				};
+
+				struct Bundle
+				{
+					vk::PipelineLayout layout;
+					vk::RenderPass renderPass;
+					vk::Pipeline instance;
+				};
+
 				vk::PipelineVertexInputStateCreateInfo createVertexInputState();
 				vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
 				vk::PipelineShaderStageCreateInfo createVertexShader(
 					vk::ShaderModule& inShaderModule,
-					GraphicsPipeline::CreateInfo& inCreateInfo
+					CreateInfo& inCreateInfo
 				);
 				vk::PipelineViewportStateCreateInfo createViewport(
-					GraphicsPipeline::CreateInfo& inCreateInfo,
+					CreateInfo& inCreateInfo,
 					vk::Viewport& inViewport,
 					vk::Rect2D& inScissor
 				);
 				vk::PipelineRasterizationStateCreateInfo createRasterizerState();
 				vk::PipelineShaderStageCreateInfo createFragmentShader(
 					vk::ShaderModule& inShaderModule,
-					GraphicsPipeline::CreateInfo& inCreateInfo
+					CreateInfo& inCreateInfo
 				);
 				vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-				vk::PipelineColorBlendStateCreateInfo createColorBlendState(vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState);
-				vk::PipelineLayout createLayout(GraphicsPipeline::CreateInfo& inCreateInfo);
-				vk::RenderPass createRendepass(GraphicsPipeline::CreateInfo& inCreateInfo);
+				vk::PipelineColorBlendStateCreateInfo createColorBlendState(vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState);
+				vk::PipelineLayout createLayout(CreateInfo& inCreateInfo);
+				vk::RenderPass createRendepass(CreateInfo& inCreateInfo);
 
-				void init(GraphicsPipeline::Bundle& allocator, GraphicsPipeline::CreateInfo& inCreateInfo);
+				void init(Bundle& outGraphicsPipeline, CreateInfo& inCreateInfo);
 			}
 		}
 	}

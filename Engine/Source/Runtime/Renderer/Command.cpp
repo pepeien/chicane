@@ -9,7 +9,7 @@ namespace Engine
 			namespace Command
 			{
 				void initPool(
-					vk::CommandPool& allocator,
+					vk::CommandPool& outCommandPool,
 					vk::Device& inLogicalDevice,
 					vk::PhysicalDevice& inPhysicalDevice,
 					vk::SurfaceKHR& inSurface
@@ -22,22 +22,22 @@ namespace Engine
 					poolInfo.flags            = vk::CommandPoolCreateFlags() | vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
 					poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
-					allocator = inLogicalDevice.createCommandPool(poolInfo);
+					outCommandPool = inLogicalDevice.createCommandPool(poolInfo);
 				}
 
-				void initBuffers(vk::CommandBuffer& allocator, Buffer::CommandBufferCreateInfo& createInfo)
+				void initBuffers(vk::CommandBuffer& outCommandBuffer, Buffer::CommandBufferCreateInfo& inCreateInfo)
 				{
 					vk::CommandBufferAllocateInfo allocateInfo = {};
-					allocateInfo.commandPool        = createInfo.commandPool;
+					allocateInfo.commandPool        = inCreateInfo.commandPool;
 					allocateInfo.level              = vk::CommandBufferLevel::ePrimary;
 					allocateInfo.commandBufferCount = 1;
 
-					for (int i = 0; i < createInfo.frames.size(); i++)
+					for (int i = 0; i < inCreateInfo.frames.size(); i++)
 					{
-						createInfo.frames[i].commandBuffer = createInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
+						inCreateInfo.frames[i].commandBuffer = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
 					}
 
-					allocator = createInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
+					outCommandBuffer = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
 				}
 			}
 		}

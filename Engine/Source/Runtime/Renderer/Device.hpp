@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Classes/Queue.hpp"
+#include "Queue.hpp"
 
 namespace Engine
 {
@@ -12,9 +12,9 @@ namespace Engine
 		{
 			namespace Device
 			{
-				void pickPhysicalDevice(vk::PhysicalDevice& allocator, vk::Instance& inInstance);
+				void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, vk::Instance& inInstance);
 				void initLogicalDevice(
-					vk::Device& allocator,
+					vk::Device& outLogicalDevice,
 					vk::PhysicalDevice& inPhysicalDevice,
 					vk::SurfaceKHR& inSurface
 				);

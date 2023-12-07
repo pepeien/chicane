@@ -8,15 +8,15 @@ namespace Engine
 		{
 			namespace Window
 			{
-				GLFWwindow* init(int& widthAllocator, int& heightAllocator, const char* inWindowTitle)
+				GLFWwindow* init(int& outWidth, int& outHeight, const char* inWindowTitle)
 				{
 					glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     	        	glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
 
     	        	const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-					widthAllocator  = desktop->width;
-    	         	heightAllocator = desktop->height;
+					outWidth  = desktop->width;
+    	         	outHeight = desktop->height;
 
     	        	return glfwCreateWindow(
     	        	    desktop->width,

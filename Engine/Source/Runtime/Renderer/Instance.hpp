@@ -10,7 +10,7 @@ namespace Engine
 		{
 			namespace Instance
 			{
-				void init(vk::Instance& allocator, vk::DispatchLoaderDynamic& dldiAllocator);
+				void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi);
 			}
 		}
 	}

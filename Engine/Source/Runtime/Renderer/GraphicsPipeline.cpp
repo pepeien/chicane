@@ -114,10 +114,16 @@ namespace Engine
 
 				vk::PipelineLayout createLayout(GraphicsPipeline::CreateInfo& inCreateInfo)
 				{
+					vk::PushConstantRange pushConstantRangeInfo;
+					pushConstantRangeInfo.offset     = 0;
+					pushConstantRangeInfo.size       = sizeof(Shader::ObjectData);
+					pushConstantRangeInfo.stageFlags = vk::ShaderStageFlagBits::eVertex;
+
 					vk::PipelineLayoutCreateInfo layoutCreateInfo = {};
 					layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
 					layoutCreateInfo.setLayoutCount         = 0;
-					layoutCreateInfo.pushConstantRangeCount = 0;
+					layoutCreateInfo.pushConstantRangeCount = 1;
+					layoutCreateInfo.pPushConstantRanges    = &pushConstantRangeInfo;
 
 					return inCreateInfo.logicalDevice.createPipelineLayout(layoutCreateInfo);
 				}
@@ -155,13 +161,21 @@ namespace Engine
 					return inCreateInfo.logicalDevice.createRenderPass(renderPassInfo);
 				}
 
-				void init(GraphicsPipeline::Bundle& allocator, GraphicsPipeline::CreateInfo& inCreateInfo)
+				void init(GraphicsPipeline::Bundle& outGraphicsPipeline, GraphicsPipeline::CreateInfo& inCreateInfo)
 				{
 					vk::ShaderModule vertexShaderModule;
-					Shader::initModule(vertexShaderModule, inCreateInfo.vertexShaderName, inCreateInfo.logicalDevice);
+					Shader::initModule(
+						vertexShaderModule,
+						inCreateInfo.vertexShaderName,
+						inCreateInfo.logicalDevice
+					);
 
 					vk::ShaderModule fragmentShaderModule;
-					Shader::initModule(fragmentShaderModule, inCreateInfo.fragmentShaderName, inCreateInfo.logicalDevice);
+					Shader::initModule(
+						fragmentShaderModule,
+						inCreateInfo.fragmentShaderName,
+						inCreateInfo.logicalDevice
+					);
 
 					vk::Viewport viewport = {};
 					viewport.x        = 0;
@@ -211,9 +225,9 @@ namespace Engine
 					pipelineInfo.subpass             = 0;
 					pipelineInfo.basePipelineHandle  = nullptr;
 
-					allocator.layout     = layout;
-					allocator.renderPass = renderPass;
-					allocator.pipeline   = inCreateInfo.logicalDevice.createGraphicsPipeline(nullptr, pipelineInfo).value;
+					outGraphicsPipeline.layout     = layout;
+					outGraphicsPipeline.renderPass = renderPass;
+					outGraphicsPipeline.instance   = inCreateInfo.logicalDevice.createGraphicsPipeline(nullptr, pipelineInfo).value;
 
 					inCreateInfo.logicalDevice.destroyShaderModule(vertexShaderModule);
 					inCreateInfo.logicalDevice.destroyShaderModule(fragmentShaderModule);

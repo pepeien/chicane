@@ -8,14 +8,14 @@ namespace Engine
 		{
 			namespace FileSystem
 			{
-				std::vector<char> readShader(const std::string& filepath)
+				std::vector<char> readShader(const std::string& inFilepath)
     			{
-    			    return readFile(ENGINE_SHADERS_DIR + filepath);
+    			    return readFile(ENGINE_SHADERS_DIR + inFilepath);
     			}
 
-				std::vector<char> readFile(const std::string& filepath)
+				std::vector<char> readFile(const std::string& inFilepath)
     			{
-    				std::string formattedFilepath = ENGINE_DIR + filepath;
+    				std::string formattedFilepath = ENGINE_DIR + inFilepath;
 
     				std::ifstream file(formattedFilepath, std::ios::ate | std::ios::binary);
 

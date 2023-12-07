@@ -8,20 +8,20 @@ namespace Engine
 		{
 			namespace Sync
 			{
-				void initSempahore(vk::Semaphore& allocator, vk::Device& inLogicalDevice)
+				void initSempahore(vk::Semaphore& outSemaphore, vk::Device& inLogicalDevice)
 				{
 					vk::SemaphoreCreateInfo semaphoreInfo = {};
 					semaphoreInfo.flags = vk::SemaphoreCreateFlags();
 
-					allocator = inLogicalDevice.createSemaphore(semaphoreInfo);
+					outSemaphore = inLogicalDevice.createSemaphore(semaphoreInfo);
 				}
 
-				void initFence(vk::Fence& allocator, vk::Device& inLogicalDevice)
+				void initFence(vk::Fence& outFence, vk::Device& inLogicalDevice)
 				{
 					vk::FenceCreateInfo fenceCreateInfo = {};
 					fenceCreateInfo.flags = vk::FenceCreateFlags() | vk::FenceCreateFlagBits::eSignaled;
 
-					allocator = inLogicalDevice.createFence(fenceCreateInfo);
+					outFence = inLogicalDevice.createFence(fenceCreateInfo);
 				}
 			}
 		}

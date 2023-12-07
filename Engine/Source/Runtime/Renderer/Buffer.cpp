@@ -8,24 +8,24 @@ namespace Engine
 		{
 			namespace Buffer
 			{
-				void initFramebuffers(FramebufferCreateInfo& createInfo)
+				void initFramebuffers(FramebufferCreateInfo& outCreateInfo)
 				{
-					for (int i = 0; i < createInfo.frames.size(); i++)
+					for (int i = 0; i < outCreateInfo.frames.size(); i++)
 					{
 						std::vector<vk::ImageView> attachments = {
-							createInfo.frames[i].imageView
+							outCreateInfo.frames[i].imageView
 						};
 
 						vk::FramebufferCreateInfo framebufferInfo = {};
 						framebufferInfo.flags           = vk::FramebufferCreateFlags();
-						framebufferInfo.renderPass      = createInfo.renderPass;
+						framebufferInfo.renderPass      = outCreateInfo.renderPass;
 						framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
 						framebufferInfo.pAttachments    = attachments.data();
-						framebufferInfo.width           = createInfo.swapChainExtent.width;
-						framebufferInfo.height          = createInfo.swapChainExtent.height;
+						framebufferInfo.width           = outCreateInfo.swapChainExtent.width;
+						framebufferInfo.height          = outCreateInfo.swapChainExtent.height;
 						framebufferInfo.layers          = 1;
 
-						createInfo.frames[i].framebuffer = createInfo.logicalDevice.createFramebuffer(framebufferInfo);
+						outCreateInfo.frames[i].framebuffer = outCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
 					}
 				}
 			}

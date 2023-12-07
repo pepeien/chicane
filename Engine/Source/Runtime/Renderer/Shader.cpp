@@ -8,7 +8,7 @@ namespace Engine
         {
 			namespace Shader
 			{
-				void initModule(vk::ShaderModule& allocator, const std::string& inShaderName, vk::Device& inLogicalDevice)
+				void initModule(vk::ShaderModule& outShaderModule, const std::string& inShaderName, vk::Device& inLogicalDevice)
 				{
 					std::vector<char> shaderCode = Core::FileSystem::readShader(inShaderName);
 
@@ -17,7 +17,7 @@ namespace Engine
 					moduleInfo.codeSize = shaderCode.size();
 					moduleInfo.pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data());
 
-					allocator = inLogicalDevice.createShaderModule(moduleInfo);
+					outShaderModule = inLogicalDevice.createShaderModule(moduleInfo);
 				}
 			}
 		}

@@ -60,7 +60,7 @@ namespace Engine
 		{
 			namespace Instance
 			{
-				void init(vk::Instance& allocator, vk::DispatchLoaderDynamic& dldiAllocator)
+				void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
 				{
 					uint32_t glfwExtensionCount             = 0;
 					const char** glfwRequiredExtensions     = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
@@ -106,8 +106,8 @@ namespace Engine
 						glfwExtensions.data()
 					);
 
-					allocator     = vk::createInstance(createInfo);
-					dldiAllocator = vk::DispatchLoaderDynamic(allocator, vkGetInstanceProcAddr);
+					outInstance = vk::createInstance(createInfo);
+					outDldi     = vk::DispatchLoaderDynamic(outInstance, vkGetInstanceProcAddr);
 				}
 			}
 		}

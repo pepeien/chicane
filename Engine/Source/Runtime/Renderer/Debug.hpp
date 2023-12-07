@@ -11,7 +11,7 @@ namespace Engine
 			namespace Debug
 			{
 				void initMessenger(
-					vk::DebugUtilsMessengerEXT& allocator,
+					vk::DebugUtilsMessengerEXT& outDebugMessenger,
 					vk::Instance& inInstance,
 					vk::DispatchLoaderDynamic& inDldi
 				);

@@ -4,8 +4,6 @@
 
 #include "Window.hpp"
 
-#include "Renderer/Classes/Include.hpp"
-
 #include "Renderer/Include.hpp"
 
 namespace Engine
@@ -17,7 +15,7 @@ namespace Engine
             class Application
             {
             public:
-                Application(std::string& inWindowTitle);
+                Application(std::string& inWindowTitle, Renderer::Scene& inScene);
                 ~Application();
 
             public:
@@ -27,6 +25,40 @@ namespace Engine
                 void draw(vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
                 void render();
                 void calculateFrameRate();
+
+                // GLFW
+                void buildWindow();
+
+                // Vulkan
+                void buildInstance();
+                void destroyInstance();
+
+                void buildDebugMessenger();
+                void destroyDebugMessenger();
+
+                void buildSurface();
+                void destroySurface();
+
+                void buildQueues();
+
+                void buildDevices();
+                void destroyDevices();
+
+                void buildSwapChain();
+                void rebuildSwapChain();
+                void destroySwapChain();
+
+                void buildGraphicsPipeline();
+                void destroyGraphicsPipeline();
+
+                void buildFramebuffers();
+
+                void buildCommandPool();
+                void destroyCommandPool();
+
+                void buildCommandBuffers();
+
+                void buildSyncObjects();
 
             private:
                 // Stats
@@ -58,6 +90,9 @@ namespace Engine
 
                 // GLFW
                 GLFWwindow* window;
+
+                // Context
+                Renderer::Scene scene;
 
                 std::string windowTitle;
                 int windowWidth;
