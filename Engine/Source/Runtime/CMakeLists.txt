@@ -13,7 +13,7 @@ file(
 add_library(${TARGET_NAME} ${SOURCES})
 
 ############## Set Property Balues  #######################
-set_property(TARGET ${TARGET_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY    "${BUILD_DIR}")
+set_property(TARGET ${TARGET_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${BUILD_BINARY_DIR}")
 
 ############## Linking Libs  #######################
 

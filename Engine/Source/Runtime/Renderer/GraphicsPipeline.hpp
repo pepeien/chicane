@@ -3,6 +3,7 @@
 #include "Base.hpp"
 
 #include "GraphicsPipeline.hpp"
+#include "Mesh.hpp"
 #include "Shader.hpp"
 
 namespace Engine
@@ -29,7 +30,10 @@ namespace Engine
 					vk::Pipeline instance;
 				};
 
-				vk::PipelineVertexInputStateCreateInfo createVertexInputState();
+				vk::PipelineVertexInputStateCreateInfo createVertexInputState(
+					vk::VertexInputBindingDescription& inBindingDescription,
+					std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescription
+				);
 				vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
 				vk::PipelineShaderStageCreateInfo createVertexShader(
 					vk::ShaderModule& inShaderModule,

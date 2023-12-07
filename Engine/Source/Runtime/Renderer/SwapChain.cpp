@@ -8,14 +8,21 @@ namespace Engine
 		{
 			namespace SwapChain
 			{
-				void querySupport(SupportDetails& outSupportDetails, vk::PhysicalDevice& inPhyisicalDevice, vk::SurfaceKHR& inSurface)
+				void querySupport(
+					SupportDetails& outSupportDetails,
+					vk::PhysicalDevice& inPhysicalDevice,
+					vk::SurfaceKHR& inSurface
+				)
 				{
-					outSupportDetails.capabilities = inPhyisicalDevice.getSurfaceCapabilitiesKHR(inSurface);
-					outSupportDetails.formats      = inPhyisicalDevice.getSurfaceFormatsKHR(inSurface);
-					outSupportDetails.presentModes = inPhyisicalDevice.getSurfacePresentModesKHR(inSurface);
+					outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
+					outSupportDetails.formats      = inPhysicalDevice.getSurfaceFormatsKHR(inSurface);
+					outSupportDetails.presentModes = inPhysicalDevice.getSurfacePresentModesKHR(inSurface);
 				}
 
-				void pickSurfaceFormat(vk::SurfaceFormatKHR& outSurfaceFormat, std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats)
+				void pickSurfaceFormat(
+					vk::SurfaceFormatKHR& outSurfaceFormat,
+					std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+				)
 				{
 					if (inSurfaceFormats.empty())
 					{
@@ -38,7 +45,10 @@ namespace Engine
 					outSurfaceFormat = inSurfaceFormats[0];
 				}
 
-				void pickPresentMode(vk::PresentModeKHR& outPresentMode, std::vector<vk::PresentModeKHR>& inPresentModes)
+				void pickPresentMode(
+					vk::PresentModeKHR& outPresentMode,
+					std::vector<vk::PresentModeKHR>& inPresentModes
+				)
 				{
 					bool doesSupportMailBox = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) != inPresentModes.end();
 
@@ -62,7 +72,12 @@ namespace Engine
 					outPresentMode = vk::PresentModeKHR::eFifo;
 				}
 
-				void pickExtent(vk::Extent2D& outExtent, uint32_t inWidth, uint32_t inHeight, vk::SurfaceCapabilitiesKHR& inCapabilities)
+				void pickExtent(
+					vk::Extent2D& outExtent,
+					uint32_t inWidth,
+					uint32_t inHeight,
+					vk::SurfaceCapabilitiesKHR& inCapabilities
+				)
 				{
 					if (inCapabilities.currentExtent.width != UINT32_MAX)
 					{

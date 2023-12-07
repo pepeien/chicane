@@ -15,13 +15,13 @@ namespace Engine
 
                 void findFamilyInidices(
                     FamilyIndices& outFamilyIndices,
-                    vk::PhysicalDevice& inDevice,
+                    vk::PhysicalDevice& inPhysicalDevice,
                     vk::SurfaceKHR& inSurface
                 )
                 {
                     FamilyIndices nextFamilyIndices;
 
-                    std::vector<vk::QueueFamilyProperties> queueFamilies = inDevice.getQueueFamilyProperties();
+                    std::vector<vk::QueueFamilyProperties> queueFamilies = inPhysicalDevice.getQueueFamilyProperties();
     
                     for (int i = 0; i < queueFamilies.size(); i++)
                     {
@@ -32,7 +32,7 @@ namespace Engine
                             nextFamilyIndices.graphicsFamily = i;
                         }
 
-                        if (inDevice.getSurfaceSupportKHR(i, inSurface))
+                        if (inPhysicalDevice.getSurfaceSupportKHR(i, inSurface))
                         {
                             nextFamilyIndices.presentFamily  = i;
                         }

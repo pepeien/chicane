@@ -60,6 +60,11 @@ namespace Engine
 
                 void buildSyncObjects();
 
+                void buildAssets();
+                void destroyAssets();
+
+                void buildScene(vk::CommandBuffer& inCommandBuffer);
+
             private:
                 // Stats
 	            int numFrames;
@@ -87,6 +92,8 @@ namespace Engine
 
                 int maxInFlightFramesCount;
                 int currentFrameIndex;
+
+                Renderer::Mesh::Triangle* triangleMesh;
 
                 // GLFW
                 GLFWwindow* window;

@@ -40,11 +40,26 @@ namespace Engine
                     vk::Extent2D extent;
                 };
 
-                void querySupport(SupportDetails& outSupportDetails, vk::PhysicalDevice& inPhyisicalDevice, vk::SurfaceKHR& inSurface);
+                void querySupport(
+                    SupportDetails& outSupportDetails,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::SurfaceKHR& inSurface
+                );
 
-                void pickSurfaceFormat(vk::SurfaceFormatKHR& outSurfaceFormat, std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats);
-                void pickPresentMode(vk::PresentModeKHR& outPresentMode, std::vector<vk::PresentModeKHR>& inPresentModes);
-                void pickExtent(vk::Extent2D& outExtent, uint32_t inWidth, uint32_t inHeight, vk::SurfaceCapabilitiesKHR& inCapabilities);
+                void pickSurfaceFormat(
+                    vk::SurfaceFormatKHR& outSurfaceFormat,
+                    std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                );
+                void pickPresentMode(
+                    vk::PresentModeKHR& outPresentMode,
+                    std::vector<vk::PresentModeKHR>& inPresentModes
+                );
+                void pickExtent(
+                    vk::Extent2D& outExtent,
+                    uint32_t inWidth,
+                    uint32_t inHeight,
+                    vk::SurfaceCapabilitiesKHR& inCapabilities
+                );
 
 				void init(
 					SwapChain::Bundle& outSwapChain,

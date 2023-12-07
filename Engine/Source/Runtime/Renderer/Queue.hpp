@@ -20,7 +20,11 @@ namespace Engine
                     std::optional<uint32_t> presentFamily;
                 };
 
-                void findFamilyInidices(FamilyIndices& outFamilyIndices, vk::PhysicalDevice& inDevice, vk::SurfaceKHR& inSurface);
+                void findFamilyInidices(
+					FamilyIndices& outFamilyIndices,
+					vk::PhysicalDevice& inPhysicalDevice,
+					vk::SurfaceKHR& inSurface
+				);
 
 				void initGraphicsQueue(
 					vk::Queue& outQueue,

@@ -8,13 +8,18 @@ namespace Engine
 		{
 			namespace GraphicsPipeline
 			{
-				vk::PipelineVertexInputStateCreateInfo createVertexInputState()
+				vk::PipelineVertexInputStateCreateInfo createVertexInputState(
+					vk::VertexInputBindingDescription& inBindingDescription,
+					std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescription
+				)
 				{
 					vk::PipelineVertexInputStateCreateInfo vertexInputInfo = {};
 					vertexInputInfo.flags                           = vk::PipelineVertexInputStateCreateFlags();
-					vertexInputInfo.vertexBindingDescriptionCount   = 0;
-					vertexInputInfo.vertexAttributeDescriptionCount = 0;
-				
+					vertexInputInfo.vertexBindingDescriptionCount   = 1;
+					vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
+					vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inAttributeDescription.size());
+					vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescription.data();
+
 					return vertexInputInfo;
 				}
 				
@@ -195,7 +200,13 @@ namespace Engine
 															   vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 					colorBlendAttachmentState.blendEnable    = VK_FALSE;
 
-					vk::PipelineVertexInputStateCreateInfo vertexInputState     = createVertexInputState();
+					auto bindingDescription   = Mesh::getPosColorBindingDescription();
+					auto attributeDescription = Mesh::getPosColorAttributeDescription();
+
+					vk::PipelineVertexInputStateCreateInfo vertexInputState     = createVertexInputState(
+						bindingDescription,
+						attributeDescription
+					);
 					vk::PipelineInputAssemblyStateCreateInfo inputAssemblyState = createInputAssemblyState();
 					vk::PipelineShaderStageCreateInfo vertexShaderCreateInfo    = createVertexShader(vertexShaderModule, inCreateInfo);
 					vk::PipelineViewportStateCreateInfo viewportState           = createViewport(inCreateInfo, viewport, scissor);
@@ -219,7 +230,7 @@ namespace Engine
 					pipelineInfo.stageCount          = static_cast<uint32_t>(shaderStages.size());
 					pipelineInfo.pStages             = shaderStages.data();
 					pipelineInfo.pMultisampleState   = &multisampleState;
-					pipelineInfo.pColorBlendState    = &colorBlendState;
+					pipelineInfo.pColorBlendState    = &colorBlendState; 
 					pipelineInfo.layout              = layout;
 					pipelineInfo.renderPass          = renderPass;
 					pipelineInfo.subpass             = 0;

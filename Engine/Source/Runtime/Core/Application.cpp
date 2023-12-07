@@ -13,6 +13,12 @@ namespace Engine
                 windowTitle = inWindowTitle;
                 scene       = inScene;
 
+                // Stats
+                numFrames   = 0;
+	            frameTime   = 0.0f;
+                lastTime    = 0.0;
+                currentTime = 0.0;
+
                 // GLFW
                 glfwInit();
                 
@@ -21,10 +27,7 @@ namespace Engine
                 // Vulkan
                 buildInstance();
 
-                if (IS_DEBUGGING)
-                {
-                    buildDebugMessenger();
-                }
+                buildDebugMessenger();
 
                 buildSurface();
 
@@ -45,6 +48,8 @@ namespace Engine
                 currentFrameIndex      = 0;
 
                 buildSyncObjects();
+
+                buildAssets();
             }
 
             Application::~Application()
@@ -57,6 +62,8 @@ namespace Engine
                 destroySwapChain();
 
                 destroyCommandPool();
+
+                destroyAssets();
 
                 destroyDevices();
 
@@ -75,7 +82,7 @@ namespace Engine
 
             void Application::run()
             {
-                while (!glfwWindowShouldClose(window))
+                while (glfwWindowShouldClose(window) == false)
                 {
                     glfwPollEvents();
                     render();
@@ -101,6 +108,8 @@ namespace Engine
                 inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
 
                 inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.instance);
+
+                buildScene(inCommandBuffer);
 
                 for (glm::vec3 position : scene.positions)
                 {
@@ -249,6 +258,11 @@ namespace Engine
 
             void Application::buildDebugMessenger()
             {
+                if (IS_DEBUGGING == false)
+                {
+                    return;
+                }
+
                 Renderer::Debug::initMessenger(debugMessenger, instance, dldi);
             }
 
@@ -355,8 +369,8 @@ namespace Engine
             {
                 Renderer::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
                 graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
-                graphicsPipelineCreateInfo.vertexShaderName     = "triangle-push.vert.spv";
-                graphicsPipelineCreateInfo.fragmentShaderName   = "triangle-push.frag.spv";
+                graphicsPipelineCreateInfo.vertexShaderName     = "triangle.vert.spv";
+                graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
                 graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
                 graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
 
@@ -416,6 +430,24 @@ namespace Engine
                     Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
                     Renderer::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
                 }
+            }
+
+            void Application::buildAssets()
+            {
+                triangleMesh = new Renderer::Mesh::Triangle(logicalDevice, physicalDevice);
+            }
+
+            void Application::destroyAssets()
+            {
+                delete triangleMesh;
+            }
+
+            void Application::buildScene(vk::CommandBuffer& inCommandBuffer)
+            {
+                vk::Buffer vertexBuffers[] = { triangleMesh->vertexBuffer.instance };
+                vk::DeviceSize offsets[]   = { 0 };
+
+                inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
             }
         }
     }

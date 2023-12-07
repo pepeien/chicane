@@ -32,7 +32,7 @@ namespace Engine
 						}
 					}
 
-					throw std::runtime_error("Failed to pick a suitable phyisical device");
+					throw std::runtime_error("Failed to pick a suitable physical device");
 				}
 
 				void initLogicalDevice(
@@ -93,6 +93,60 @@ namespace Engine
 					);
 
 					outPhysicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
+				}
+
+				uint32_t findMemoryTypeIndex(
+					vk::PhysicalDevice& inPhysicalDevice,
+					uint32_t inSupportedMemoryIndices,
+					vk::MemoryPropertyFlags inRequestMemoryProperties
+				)
+				{
+					vk::PhysicalDeviceMemoryProperties memoryProperties = inPhysicalDevice.getMemoryProperties();
+
+					for (uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
+					{
+						bool isSupported{ static_cast<bool>(inSupportedMemoryIndices & (1 << i)) };
+						bool isSufficient{
+							(memoryProperties.memoryTypes[i].propertyFlags & inRequestMemoryProperties) == inRequestMemoryProperties
+						};
+
+						if (isSupported && isSufficient)
+						{
+							return i;
+						}
+					}
+
+					return 0;
+				}
+
+				void initBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+				{
+					vk::BufferCreateInfo bufferInfo;
+					bufferInfo.flags       = vk::BufferCreateFlags();
+					bufferInfo.size        = inCreateInfo.size;
+					bufferInfo.usage       = inCreateInfo.usage;
+					bufferInfo.sharingMode = vk::SharingMode::eExclusive;
+
+					outBuffer.instance = inCreateInfo.logicalDevice.createBuffer(bufferInfo);
+
+					allocateBuffer(outBuffer, inCreateInfo);
+				}
+
+				void allocateBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+				{
+					vk::MemoryRequirements memoryRequirements = inCreateInfo.logicalDevice.getBufferMemoryRequirements(outBuffer.instance);
+
+					vk::MemoryAllocateInfo memoryAlocateInfo;
+					memoryAlocateInfo.allocationSize  = memoryRequirements.size;
+					memoryAlocateInfo.memoryTypeIndex = findMemoryTypeIndex(
+						inCreateInfo.physicalDevice,
+						memoryRequirements.memoryTypeBits,
+						vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostVisible
+					);
+
+					outBuffer.memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
+
+					inCreateInfo.logicalDevice.bindBufferMemory(outBuffer.instance, outBuffer.memory, 0);
 				}
 			}
 		}

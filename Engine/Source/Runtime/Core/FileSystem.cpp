@@ -19,7 +19,7 @@ namespace Engine
 
     				std::ifstream file(formattedFilepath, std::ios::ate | std::ios::binary);
 
-    				if (!file.is_open())
+    				if (file.is_open() == false)
     				{
     				    throw std::runtime_error("Failed to open file -> " + formattedFilepath);
     				}
