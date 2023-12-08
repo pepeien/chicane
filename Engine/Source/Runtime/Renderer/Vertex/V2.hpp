@@ -10,16 +10,17 @@ namespace Engine
         {
             namespace Vertex
             {
-				struct V2
+                struct V2
                 {
-				public:
-					static vk::VertexInputBindingDescription getBindingDescription();
-					static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
+                public:
+                    static vk::VertexInputBindingDescription getBindingDescription();
+                    static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
+
                 public:
                     glm::vec2 position;
                     glm::vec3 color;
                 };  
-			}
-		}
-	}
+            }
+        }
+    }
 }

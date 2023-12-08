@@ -4,15 +4,15 @@
 
 namespace Engine
 {
-	namespace Runtime
-	{
-		namespace Core
-		{
-			namespace FileSystem
-			{
-				std::vector<char> readShader(const std::string& inFilepath);
-				std::vector<char> readFile(const std::string& inFilepath);
-			}
-		}
-	}
+    namespace Runtime
+    {
+        namespace Core
+        {
+            namespace FileSystem
+            {
+                std::vector<char> readShader(const std::string& inFilepath);
+                std::vector<char> readFile(const std::string& inFilepath);
+            }
+        }
+    }
 }

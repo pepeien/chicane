@@ -15,40 +15,26 @@ namespace Engine
 
                 // Stats
                 numFrames   = 0;
-	            frameTime   = 0.0f;
+                frameTime   = 0.0f;
                 lastTime    = 0.0;
                 currentTime = 0.0;
 
                 // GLFW
                 glfwInit();
-                
                 buildWindow();
 
                 // Vulkan
                 buildInstance();
-
                 buildDebugMessenger();
-
                 buildSurface();
-
                 buildDevices();
-
                 buildQueues();
-
                 buildSwapChain();
-
                 buildGraphicsPipeline();
-
                 buildFramebuffers();
-
                 buildCommandPool();
                 buildCommandBuffers();
-
-                maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
-                currentFrameIndex      = 0;
-
                 buildSyncObjects();
-
                 buildAssets();
             }
 
@@ -58,15 +44,10 @@ namespace Engine
                 logicalDevice.waitIdle();
 
                 destroyGraphicsPipeline();
-
                 destroySwapChain();
-
                 destroyCommandPool();
-
                 destroyAssets();
-
                 destroyDevices();
-
                 destroySurface();
 
                 if (IS_DEBUGGING)
@@ -219,22 +200,22 @@ namespace Engine
             void Application::calculateFrameRate()
             {
                 currentTime = glfwGetTime();
-	            double delta = currentTime - lastTime;
+                double delta = currentTime - lastTime;
 
-	            if (delta >= 1) {
-	    	        int framerate{ std::max(1, int(numFrames / delta)) };
+                if (delta >= 1) {
+                    int framerate{ std::max(1, int(numFrames / delta)) };
 
-	    	        std::stringstream title;
-	    	        title << windowTitle << " - " << framerate << " FPS";
+                    std::stringstream title;
+                    title << windowTitle << " - " << framerate << " FPS";
 
-	    	        glfwSetWindowTitle(window, title.str().c_str());
+                    glfwSetWindowTitle(window, title.str().c_str());
 
-	    	        lastTime  = currentTime;
-	    	        numFrames = -1;
-	    	        frameTime = float(1000.0 / framerate);
-	            }
+                    lastTime  = currentTime;
+                    numFrames = -1;
+                    frameTime = float(1000.0 / framerate);
+                }
 
-	            ++numFrames;
+                ++numFrames;
             }
 
             void Application::buildWindow()
@@ -323,19 +304,22 @@ namespace Engine
                     windowWidth,
                     windowHeight
                 );
+
+                maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
+                currentFrameIndex      = 0;
             }
 
             void Application::rebuildSwapChain()
             {
                 windowWidth  = 0;
-	            windowHeight = 0;
+                windowHeight = 0;
 
-	            while (windowWidth == 0 || windowHeight == 0) {
-            		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-            		glfwWaitEvents();
-	            }
+                while (windowWidth == 0 || windowHeight == 0) {
+                    glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
+                    glfwWaitEvents();
+                }
 
-	            logicalDevice.waitIdle();
+                logicalDevice.waitIdle();
 
                 destroySwapChain();
                 buildSwapChain();

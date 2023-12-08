@@ -48,7 +48,7 @@ namespace Engine
 
                     return attributeDescriptions;
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

@@ -4,13 +4,13 @@
 
 namespace Engine
 {
-	namespace Runtime
-	{
-		namespace Renderer
-		{
-			namespace Queue
-			{
-				struct FamilyIndices
+    namespace Runtime
+    {
+        namespace Renderer
+        {
+            namespace Queue
+            {
+                struct FamilyIndices
                 {
                 public:
                     bool isComplete();
@@ -21,25 +21,25 @@ namespace Engine
                 };
 
                 void findFamilyInidices(
-					FamilyIndices& outFamilyIndices,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::SurfaceKHR& inSurface
-				);
+                    FamilyIndices& outFamilyIndices,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::SurfaceKHR& inSurface
+                );
 
-				void initGraphicsQueue(
-					vk::Queue& outQueue,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::Device& inLogicalDevice,
-					vk::SurfaceKHR& inSurface
-				);
+                void initGraphicsQueue(
+                    vk::Queue& outQueue,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::Device& inLogicalDevice,
+                    vk::SurfaceKHR& inSurface
+                );
 
-				void initPresentQueue(
-					vk::Queue& outQueue,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::Device& inLogicalDevice,
-					vk::SurfaceKHR& inSurface
-				);
-			}
-		}
-	}
+                void initPresentQueue(
+                    vk::Queue& outQueue,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::Device& inLogicalDevice,
+                    vk::SurfaceKHR& inSurface
+                );
+            }
+        }
+    }
 }

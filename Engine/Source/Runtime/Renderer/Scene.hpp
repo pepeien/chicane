@@ -8,14 +8,14 @@ namespace Engine
     {
         namespace Renderer
         {
-			class Scene
-			{
-			public:
-				Scene();
+            class Scene
+            {
+            public:
+                Scene();
 
-			public:
-				std::vector<glm::vec3> positions;
-			};
-		}
-	}
+            public:
+                std::vector<glm::vec3> positions;
+            };
+        }
+    }
 }

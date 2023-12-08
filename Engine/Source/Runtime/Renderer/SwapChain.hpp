@@ -6,13 +6,13 @@
 
 namespace Engine
 {
-	namespace Runtime
-	{
-		namespace Renderer
-		{
-			namespace SwapChain
-			{
-				struct SupportDetails
+    namespace Runtime
+    {
+        namespace Renderer
+        {
+            namespace SwapChain
+            {
+                struct SupportDetails
                 {
                 public:
                     vk::SurfaceCapabilitiesKHR capabilities;
@@ -61,15 +61,15 @@ namespace Engine
                     vk::SurfaceCapabilitiesKHR& inCapabilities
                 );
 
-				void init(
-					SwapChain::Bundle& outSwapChain,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::Device& inLogicalDevice,
-					vk::SurfaceKHR& inSurface,
-					int inWidth,
-					int inHeight
-				);
-			}
-		}
-	}
+                void init(
+                    SwapChain::Bundle& outSwapChain,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::Device& inLogicalDevice,
+                    vk::SurfaceKHR& inSurface,
+                    int inWidth,
+                    int inHeight
+                );
+            }
+        }
+    }
 }

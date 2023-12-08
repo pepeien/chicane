@@ -2,13 +2,13 @@
 
 namespace Engine
 {
-	namespace Runtime
-	{
-		namespace Renderer
-		{
-			namespace Queue
-			{
-				bool FamilyIndices::isComplete()
+    namespace Runtime
+    {
+        namespace Renderer
+        {
+            namespace Queue
+            {
+                bool FamilyIndices::isComplete()
                 {
                     return graphicsFamily.has_value() && presentFamily.has_value();
                 }
@@ -48,32 +48,32 @@ namespace Engine
                     throw std::runtime_error("Couldn't pick queue families");
                 }
 
-				void initGraphicsQueue(
-					vk::Queue& outQueue,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::Device& inLogicalDevice,
-					vk::SurfaceKHR& inSurface
-				)
-				{
-					FamilyIndices familyIndices;
-					findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
+                void initGraphicsQueue(
+                    vk::Queue& outQueue,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::Device& inLogicalDevice,
+                    vk::SurfaceKHR& inSurface
+                )
+                {
+                    FamilyIndices familyIndices;
+                    findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
-					outQueue = inLogicalDevice.getQueue(familyIndices.graphicsFamily.value(), 0);
-				}
+                    outQueue = inLogicalDevice.getQueue(familyIndices.graphicsFamily.value(), 0);
+                }
 
-				void initPresentQueue(
-					vk::Queue& outQueue,
-					vk::PhysicalDevice& inPhysicalDevice,
-					vk::Device& inLogicalDevice,
-					vk::SurfaceKHR& inSurface
-				)
-				{
-					FamilyIndices familyIndices;
-					findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
+                void initPresentQueue(
+                    vk::Queue& outQueue,
+                    vk::PhysicalDevice& inPhysicalDevice,
+                    vk::Device& inLogicalDevice,
+                    vk::SurfaceKHR& inSurface
+                )
+                {
+                    FamilyIndices familyIndices;
+                    findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
-					outQueue = inLogicalDevice.getQueue(familyIndices.presentFamily.value(), 0);
-				}
-			}
-		}
-	}
+                    outQueue = inLogicalDevice.getQueue(familyIndices.presentFamily.value(), 0);
+                }
+            }
+        }
+    }
 }

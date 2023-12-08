@@ -67,8 +67,8 @@ namespace Engine
 
             private:
                 // Stats
-	            int numFrames;
-	            float frameTime;
+                int numFrames;
+                float frameTime;
                 double lastTime;
                 double currentTime;
 
