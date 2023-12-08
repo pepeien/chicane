@@ -3,8 +3,9 @@
 #include "Base.hpp"
 
 #include "GraphicsPipeline.hpp"
-#include "Vertex.hpp"
 #include "Shader.hpp"
+#include "Vertex.hpp"
+#include "Vertex/V2.hpp"
 
 namespace Engine
 {
