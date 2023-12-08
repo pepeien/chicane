@@ -434,7 +434,19 @@ namespace Engine
 
             void Application::buildAssets()
             {
-                triangleMesh = new Renderer::Mesh::Triangle(logicalDevice, physicalDevice);
+                std::vector<Renderer::Vertex::V2> triangleVertices;
+                triangleVertices.resize(3);
+
+                triangleVertices[0].position = glm::vec2(0.0f, -0.05f);
+                triangleVertices[0].color    = glm::vec3(0.0f, 0.0f, 0.0f);
+
+                triangleVertices[1].position = glm::vec2(0.05f, 0.05f);
+                triangleVertices[1].color    = glm::vec3(0.0f, 0.0f, 0.0f);
+
+                triangleVertices[2].position = glm::vec2(-0.05f, 0.05f);
+                triangleVertices[2].color    = glm::vec3(0.0f, 0.0f, 0.0f);
+
+                triangleMesh = new Renderer::Mesh(logicalDevice, physicalDevice, triangleVertices);
             }
 
             void Application::destroyAssets()

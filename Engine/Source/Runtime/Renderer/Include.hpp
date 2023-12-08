@@ -14,5 +14,3 @@
 #include "SwapChain.hpp"
 #include "Sync.hpp"
 #include "Vertex.hpp"
-
-#include "Mesh/Tringle.hpp"

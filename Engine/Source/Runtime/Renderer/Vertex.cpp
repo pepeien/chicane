@@ -6,33 +6,37 @@ namespace Engine
     {
         namespace Renderer
         {
-            vk::VertexInputBindingDescription Vertex::getBindingDescription()
+            namespace Vertex
             {
-                vk::VertexInputBindingDescription bindingDescription{};
-                bindingDescription.binding   = 0;
-                bindingDescription.stride    = sizeof(Vertex);
-                bindingDescription.inputRate = vk::VertexInputRate::eInstance;
+                void initBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+				{
+					vk::BufferCreateInfo bufferInfo;
+					bufferInfo.flags       = vk::BufferCreateFlags();
+					bufferInfo.size        = inCreateInfo.size;
+					bufferInfo.usage       = inCreateInfo.usage;
+					bufferInfo.sharingMode = vk::SharingMode::eExclusive;
 
-                return bindingDescription;
-            }
+					outBuffer.instance = inCreateInfo.logicalDevice.createBuffer(bufferInfo);
 
-            std::array<vk::VertexInputAttributeDescription, 2> Vertex::getAttributeDescriptions()
-            {
-                std::array<vk::VertexInputAttributeDescription, 2> attributeDescriptions{};
+					allocateBuffer(outBuffer, inCreateInfo);
+				}
 
-                //inPosition
-                attributeDescriptions[0].binding  = 0;
-                attributeDescriptions[0].location = 0;
-                attributeDescriptions[0].format   = vk::Format::eR32G32Sfloat;
-                attributeDescriptions[0].offset   = offsetof(Vertex, pos);
+				void allocateBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+				{
+					vk::MemoryRequirements memoryRequirements = inCreateInfo.logicalDevice.getBufferMemoryRequirements(outBuffer.instance);
 
-                // inColor
-                attributeDescriptions[1].binding  = 0;
-                attributeDescriptions[1].location = 1;
-                attributeDescriptions[1].format   = vk::Format::eR32G32B32Sfloat;
-                attributeDescriptions[1].offset   = offsetof(Vertex, color);
+					vk::MemoryAllocateInfo memoryAlocateInfo;
+					memoryAlocateInfo.allocationSize  = memoryRequirements.size;
+					memoryAlocateInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
+						inCreateInfo.physicalDevice,
+						memoryRequirements.memoryTypeBits,
+						vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostVisible
+					);
 
-                return attributeDescriptions;
+					outBuffer.memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
+
+					inCreateInfo.logicalDevice.bindBufferMemory(outBuffer.instance, outBuffer.memory, 0);
+				}
             }
         }
     }

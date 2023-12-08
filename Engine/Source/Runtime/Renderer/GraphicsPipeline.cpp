@@ -10,15 +10,15 @@ namespace Engine
 			{
 				vk::PipelineVertexInputStateCreateInfo createVertexInputState(
 					vk::VertexInputBindingDescription& inBindingDescription,
-					std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescription
+					std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescriptions
 				)
 				{
 					vk::PipelineVertexInputStateCreateInfo vertexInputInfo = {};
 					vertexInputInfo.flags                           = vk::PipelineVertexInputStateCreateFlags();
 					vertexInputInfo.vertexBindingDescriptionCount   = 1;
 					vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
-					vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inAttributeDescription.size());
-					vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescription.data();
+					vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inAttributeDescriptions.size());
+					vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescriptions.data();
 
 					return vertexInputInfo;
 				}
@@ -200,12 +200,12 @@ namespace Engine
 															   vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 					colorBlendAttachmentState.blendEnable    = VK_FALSE;
 
-					auto bindingDescription   = Mesh::getPosColorBindingDescription();
-					auto attributeDescription = Mesh::getPosColorAttributeDescription();
+					auto bindingDescription    = Vertex::getBindingDescription<Vertex::V2>();
+					auto attributeDescriptions = Vertex::getAttributeDescriptions<Vertex::V2>();
 
 					vk::PipelineVertexInputStateCreateInfo vertexInputState     = createVertexInputState(
 						bindingDescription,
-						attributeDescription
+						attributeDescriptions
 					);
 					vk::PipelineInputAssemblyStateCreateInfo inputAssemblyState = createInputAssemblyState();
 					vk::PipelineShaderStageCreateInfo vertexShaderCreateInfo    = createVertexShader(vertexShaderModule, inCreateInfo);
