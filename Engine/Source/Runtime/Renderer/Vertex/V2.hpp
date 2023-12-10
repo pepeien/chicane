@@ -2,6 +2,8 @@
 
 #include "Base.hpp"
 
+#include "Renderer/Vertex.hpp"
+
 namespace Engine
 {
     namespace Runtime
@@ -10,15 +12,11 @@ namespace Engine
         {
             namespace Vertex
             {
-                struct V2
+                struct V2 : Base
                 {
                 public:
                     static vk::VertexInputBindingDescription getBindingDescription();
                     static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
-
-                public:
-                    glm::vec2 position;
-                    glm::vec3 color;
                 };  
             }
         }

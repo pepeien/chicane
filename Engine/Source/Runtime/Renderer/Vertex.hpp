@@ -26,6 +26,13 @@ namespace Engine
                     vk::DeviceMemory memory;
                 };
 
+                struct Base
+                {
+                public:
+                    glm::vec2 position;
+                    glm::vec3 color;
+                };
+
                 void initBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo);
                 void allocateBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo);
             };

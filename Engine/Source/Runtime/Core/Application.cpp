@@ -430,17 +430,19 @@ namespace Engine
                 triangleVertices[2].position = glm::vec2(-0.15f, 0.15f);
                 triangleVertices[2].color    = glm::vec3(0.5f, 0.0f, 0.5f);
 
-                triangleMesh = new Renderer::Mesh(logicalDevice, physicalDevice, triangleVertices);
+                meshManager2D = new Renderer::Mesh::Manager<Renderer::Vertex::V2>(logicalDevice, physicalDevice);
+                meshManager2D->add("Triangle", triangleVertices);
+                meshManager2D->copyToGPU();
             }
 
             void Application::destroyAssets()
             {
-                delete triangleMesh;
+                delete meshManager2D;
             }
 
             void Application::buildScene(vk::CommandBuffer& inCommandBuffer)
             {
-                vk::Buffer vertexBuffers[] = { triangleMesh->vertexBuffer.instance };
+                vk::Buffer vertexBuffers[] = { meshManager2D->vertexBuffer.instance };
                 vk::DeviceSize offsets[]   = { 0 };
 
                 inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);

@@ -1,8 +1,13 @@
 #pragma once
 
+#include <map>
+#include <concepts>
+
 #include "Base.hpp"
 
 #include "Vertex.hpp"
+#include "Vertex/V2.hpp"
+#include "Vertex/V3.hpp"
 
 namespace Engine
 {
@@ -10,46 +15,76 @@ namespace Engine
     {
         namespace Renderer
         {
-            class Mesh
+            namespace Mesh
             {
-            public:
                 template<typename T>
-                Mesh(
-                    vk::Device& inLogicalDevice,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    std::vector<T>& inVertices
-                )
+                class Manager
                 {
-                    logicalDevice  = inLogicalDevice;
-                    physicalDevice = inPhysicalDevice;
+                public:
+                    Manager(
+                        vk::Device& inLogicalDevice,
+                        vk::PhysicalDevice& inPhysicalDevice
+                    )
+                    {
+                        static_assert(std::derived_from<T, Vertex::Base> == true);
 
-                    Vertex::BufferCreateInfo bufferCreateInfo;
-                    bufferCreateInfo.physicalDevice = inPhysicalDevice;
-                    bufferCreateInfo.logicalDevice  = inLogicalDevice;
-                    bufferCreateInfo.size           = sizeof(T) * inVertices.size();
-                    bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eVertexBuffer;
+                        logicalDevice  = inLogicalDevice;
+                        physicalDevice = inPhysicalDevice;
+                    }
 
-                    Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
+                    ~Manager()
+                    {
+                        logicalDevice.destroyBuffer(vertexBuffer.instance);
+                        logicalDevice.freeMemory(vertexBuffer.memory);
+                    }
 
-                    void* memoryLocation = logicalDevice.mapMemory(vertexBuffer.memory, 0, bufferCreateInfo.size);
-                    memcpy(memoryLocation, inVertices.data(), bufferCreateInfo.size);
+                    void add(std::string inMeshID, std::vector<T> inVertices)
+                    {
+                        if (vertexMap.find(inMeshID) != vertexMap.end())
+                        {
+                            throw std::runtime_error("Mesh already added");
+                        }
 
-                    logicalDevice.unmapMemory(vertexBuffer.memory);
-                }
+                        vertexMap.insert(std::make_pair(inMeshID, inVertices));
+                    }
 
-                ~Mesh()
-                {
-                    logicalDevice.destroyBuffer(vertexBuffer.instance);
-                    logicalDevice.freeMemory(vertexBuffer.memory);
-                }
+                    void copyToGPU()
+                    {
+                        size_t allocationSize = 0;
 
-            public:
-                Vertex::Buffer vertexBuffer;
+                        std::vector<T> allVertices;
 
-            protected:
-                vk::Device logicalDevice;
-                vk::PhysicalDevice physicalDevice;
-            };
+                        for (auto entry : vertexMap)
+                        {
+                            allocationSize =+ sizeof(entry.second[0]) * entry.second.size();
+
+                            allVertices.insert(allVertices.end(), entry.second.begin(), entry.second.end());
+                        }
+
+                        Vertex::BufferCreateInfo bufferCreateInfo;
+                        bufferCreateInfo.physicalDevice = physicalDevice;
+                        bufferCreateInfo.logicalDevice  = logicalDevice;
+                        bufferCreateInfo.size           = allocationSize;
+                        bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eVertexBuffer;
+
+                        Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
+
+                        void* memoryLocation = logicalDevice.mapMemory(vertexBuffer.memory, 0, bufferCreateInfo.size);
+                        memcpy(memoryLocation, allVertices.data(), bufferCreateInfo.size);
+
+                        logicalDevice.unmapMemory(vertexBuffer.memory);
+                    }
+
+                public:
+                    Vertex::Buffer vertexBuffer;
+
+                private:
+                    vk::Device logicalDevice;
+                    vk::PhysicalDevice physicalDevice;
+
+                    std::map<std::string, std::vector<T>> vertexMap;
+                };
+            }
         }
     }
 }

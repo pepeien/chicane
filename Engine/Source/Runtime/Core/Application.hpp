@@ -93,7 +93,7 @@ namespace Engine
                 int maxInFlightFramesCount;
                 int currentFrameIndex;
 
-                Renderer::Mesh* triangleMesh;
+                Renderer::Mesh::Manager<Renderer::Vertex::V2>* meshManager2D;
 
                 // GLFW
                 GLFWwindow* window;
