@@ -14,6 +14,3 @@
 #include "SwapChain.hpp"
 #include "Sync.hpp"
 #include "Vertex.hpp"
-
-#include "Vertex/V2.hpp"
-#include "Vertex/V3.hpp"

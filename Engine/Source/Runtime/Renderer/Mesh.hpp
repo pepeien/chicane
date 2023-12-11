@@ -1,13 +1,11 @@
 #pragma once
 
 #include <map>
-#include <concepts>
+#include <algorithm>
 
 #include "Base.hpp"
 
-#include "Vertex.hpp"
-#include "Vertex/V2.hpp"
-#include "Vertex/V3.hpp"
+#include "Vertex/2D.hpp"
 
 namespace Engine
 {
@@ -17,63 +15,28 @@ namespace Engine
         {
             namespace Mesh
             {
-                template<typename T>
+                struct AllocationInfo
+                {
+                    uint32_t vertexCount;
+                    uint32_t instanceCount;
+                    uint32_t firstVertex;
+                    uint32_t firstInstance;
+                };
+
                 class Manager
                 {
                 public:
-                    Manager(
-                        vk::Device& inLogicalDevice,
-                        vk::PhysicalDevice& inPhysicalDevice
-                    )
-                    {
-                        static_assert(std::derived_from<T, Vertex::Base> == true);
+                    Manager(vk::Device& inLogicalDevice,vk::PhysicalDevice& inPhysicalDevice);
+                    ~Manager();
 
-                        logicalDevice  = inLogicalDevice;
-                        physicalDevice = inPhysicalDevice;
-                    }
+                public:
+                    void addMesh(std::vector<Vertex::Base*> inVertices);
+                    void proccess();
 
-                    ~Manager()
-                    {
-                        logicalDevice.destroyBuffer(vertexBuffer.instance);
-                        logicalDevice.freeMemory(vertexBuffer.memory);
-                    }
+                    std::vector<AllocationInfo> getAllocationInfoList();
 
-                    void add(std::string inMeshID, std::vector<T> inVertices)
-                    {
-                        if (vertexMap.find(inMeshID) != vertexMap.end())
-                        {
-                            throw std::runtime_error("Mesh already added");
-                        }
-
-                        vertexMap.insert(std::make_pair(inMeshID, inVertices));
-                    }
-
-                    void copyToGPU()
-                    {
-                        size_t allocationSize = 0;
-
-                        std::vector<T> allVertices;
-
-                        for (auto entry : vertexMap)
-                        {
-                            allocationSize =+ sizeof(entry.second[0]) * entry.second.size();
-
-                            allVertices.insert(allVertices.end(), entry.second.begin(), entry.second.end());
-                        }
-
-                        Vertex::BufferCreateInfo bufferCreateInfo;
-                        bufferCreateInfo.physicalDevice = physicalDevice;
-                        bufferCreateInfo.logicalDevice  = logicalDevice;
-                        bufferCreateInfo.size           = allocationSize;
-                        bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eVertexBuffer;
-
-                        Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
-
-                        void* memoryLocation = logicalDevice.mapMemory(vertexBuffer.memory, 0, bufferCreateInfo.size);
-                        memcpy(memoryLocation, allVertices.data(), bufferCreateInfo.size);
-
-                        logicalDevice.unmapMemory(vertexBuffer.memory);
-                    }
+                private:
+                    void extractVertices(std::vector<Vertex::Base>& outVertices, size_t& outAllocationSize);
 
                 public:
                     Vertex::Buffer vertexBuffer;
@@ -82,7 +45,9 @@ namespace Engine
                     vk::Device logicalDevice;
                     vk::PhysicalDevice physicalDevice;
 
-                    std::map<std::string, std::vector<T>> vertexMap;
+                    std::vector<std::vector<Vertex::Base*>> meshes;
+
+                    std::vector<AllocationInfo> meshesAllocationInfo;
                 };
             }
         }

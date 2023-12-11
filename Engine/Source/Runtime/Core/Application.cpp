@@ -92,22 +92,28 @@ namespace Engine
 
                 buildScene(inCommandBuffer);
 
-                for (glm::vec3 position : scene.positions)
+                for (auto sceneObject : scene.getObjects())
                 {
-                    glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
+                    for (auto allocationInfo : meshManager->getAllocationInfoList())
+                    {
+                        Renderer::Shader::ObjectData objectData;
+                        objectData.model = glm::translate(glm::mat4(1.0f), sceneObject.position);
 
-                    Renderer::Shader::ObjectData objectData;
-                    objectData.model = model;
+                        inCommandBuffer.pushConstants(
+                            graphicsPipeline.layout,
+                            vk::ShaderStageFlagBits::eVertex,
+                            0,
+                            sizeof(objectData),
+                            &objectData
+                        );
 
-                    inCommandBuffer.pushConstants(
-                        graphicsPipeline.layout,
-                        vk::ShaderStageFlagBits::eVertex,
-                        0,
-                        sizeof(objectData),
-                        &objectData
-                    );
-
-                    inCommandBuffer.draw(3, 1, 0, 0);
+                        inCommandBuffer.draw(
+                            allocationInfo.vertexCount, 
+                            allocationInfo.instanceCount, 
+                            allocationInfo.firstVertex, 
+                            allocationInfo.firstInstance
+                        );
+                    }
                 }
 
                 inCommandBuffer.endRenderPass();
@@ -119,9 +125,15 @@ namespace Engine
             {
                 Renderer::SwapChain::Frame currentFrame = swapChain.frames[currentFrameIndex];
 
-                logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX);
+                if (logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX) != vk::Result::eSuccess)
+                {
+                    Log::warning("Error while waiting the fences");
+                }
 
-                logicalDevice.resetFences(1, &currentFrame.renderFence);
+                if (logicalDevice.resetFences(1, &currentFrame.renderFence) != vk::Result::eSuccess)
+                {
+                    Log::warning("Error while resetting the fences");
+                }
 
                 uint32_t imageIndex;
 
@@ -353,8 +365,8 @@ namespace Engine
             {
                 Renderer::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
                 graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
-                graphicsPipelineCreateInfo.vertexShaderName     = "triangle.vert.spv";
-                graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
+                graphicsPipelineCreateInfo.vertexShaderName     = "triangleS.vert.spv";
+                graphicsPipelineCreateInfo.fragmentShaderName   = "triangleS.frag.spv";
                 graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
                 graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
 
@@ -418,31 +430,24 @@ namespace Engine
 
             void Application::buildAssets()
             {
-                std::vector<Renderer::Vertex::V2> triangleVertices;
-                triangleVertices.resize(3);
+                meshManager = new Renderer::Mesh::Manager(logicalDevice, physicalDevice);
 
-                triangleVertices[0].position = glm::vec2(0.0f, -0.15f);
-                triangleVertices[0].color    = glm::vec3(0.5f, 0.0f, 0.0f);
+                for (auto sceneObject : scene.getObjects())
+                {
+                    meshManager->addMesh(sceneObject.vertices);
+                }
 
-                triangleVertices[1].position = glm::vec2(0.15f, 0.15f);
-                triangleVertices[1].color    = glm::vec3(0.0f, 0.5f, 0.0f);
-
-                triangleVertices[2].position = glm::vec2(-0.15f, 0.15f);
-                triangleVertices[2].color    = glm::vec3(0.5f, 0.0f, 0.5f);
-
-                meshManager2D = new Renderer::Mesh::Manager<Renderer::Vertex::V2>(logicalDevice, physicalDevice);
-                meshManager2D->add("Triangle", triangleVertices);
-                meshManager2D->copyToGPU();
+                meshManager->proccess();
             }
 
             void Application::destroyAssets()
             {
-                delete meshManager2D;
+                delete meshManager;
             }
 
             void Application::buildScene(vk::CommandBuffer& inCommandBuffer)
             {
-                vk::Buffer vertexBuffers[] = { meshManager2D->vertexBuffer.instance };
+                vk::Buffer vertexBuffers[] = { meshManager->vertexBuffer.instance };
                 vk::DeviceSize offsets[]   = { 0 };
 
                 inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);

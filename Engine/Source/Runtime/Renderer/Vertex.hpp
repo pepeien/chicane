@@ -26,7 +26,7 @@ namespace Engine
                     vk::DeviceMemory memory;
                 };
 
-                struct Base
+                class Base
                 {
                 public:
                     glm::vec2 position;

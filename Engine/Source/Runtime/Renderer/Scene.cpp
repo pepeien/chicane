@@ -6,15 +6,18 @@ namespace Engine
     {
         namespace Renderer
         {
-            Scene::Scene()
+            std::vector<SceneObject<Vertex::Base>> Scene::getObjects()
             {
-                for (float x = -1.0f; x < 1.0f; x += 0.2f)
-                {
-                    for (float y = -1.0f; y < 1.0f; y += 0.2f)
-                    {
-                        positions.push_back(glm::vec3(x, y, 0.0f));
-                    }
-                }
+                return objects;
+            }
+
+            void Scene::addObject(SceneObject<Vertex2D>& inObject)
+            {
+                SceneObject<Vertex::Base> convertedSceneObject;
+                convertedSceneObject.position = inObject.position;
+                convertedSceneObject.vertices = Vertex2D::toBaseList(inObject.vertices);
+
+                objects.push_back(convertedSceneObject);
             }
         }
     }

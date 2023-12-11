@@ -200,8 +200,8 @@ namespace Engine
                                                                vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
                     colorBlendAttachmentState.blendEnable    = VK_FALSE;
 
-                    auto bindingDescription    = Vertex::V2::getBindingDescription();
-                    auto attributeDescriptions = Vertex::V2::getAttributeDescriptions();
+                    auto bindingDescription    = Vertex2D::getBindingDescription();
+                    auto attributeDescriptions = Vertex2D::getAttributeDescriptions();
 
                     vk::PipelineVertexInputStateCreateInfo vertexInputState     = createVertexInputState(
                         bindingDescription,
