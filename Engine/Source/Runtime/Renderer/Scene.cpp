@@ -6,18 +6,23 @@ namespace Engine
     {
         namespace Renderer
         {
-            std::vector<SceneObject<Vertex::Base>> Scene::getObjects()
+            namespace Scene
             {
-                return objects;
-            }
+                std::vector<Object<Vertex::Base>> Instance::getObjects()
+                {
+                    return objects;
+                }
 
-            void Scene::addObject(SceneObject<Vertex2D>& inObject)
-            {
-                SceneObject<Vertex::Base> convertedSceneObject;
-                convertedSceneObject.position = inObject.position;
-                convertedSceneObject.vertices = Vertex2D::toBaseList(inObject.vertices);
+                void Instance::addObject(Object<Vertex2D>& inObject)
+                {
+                    Object<Vertex::Base> convertedSceneObject;
+                    convertedSceneObject.translation = inObject.translation;
+                    convertedSceneObject.rotation    = inObject.rotation;
+                    convertedSceneObject.scale       = inObject.scale;
+                    convertedSceneObject.vertices    = Vertex2D::toBaseList(inObject.vertices);
 
-                objects.push_back(convertedSceneObject);
+                    objects.push_back(convertedSceneObject);
+                }
             }
         }
     }

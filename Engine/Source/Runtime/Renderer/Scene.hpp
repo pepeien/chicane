@@ -2,6 +2,7 @@
 
 #include "Base.hpp"
 
+#include "Scene/Object.hpp"
 #include "Vertex/2D.hpp"
 
 namespace Engine
@@ -10,24 +11,18 @@ namespace Engine
     {
         namespace Renderer
         {
-            template<typename T>
-            struct SceneObject
+            namespace Scene
             {
-                std::vector<T*> vertices;
-                glm::vec3 position;
-                glm::vec3 rotation;
-                glm::vec3 transform;
-            };
+                class Instance
+                {
+                public:
+                    std::vector<Object<Vertex::Base>> getObjects();
+                    void addObject(Object<Vertex2D>& inObject);
 
-            class Scene
-            {
-            public:
-                std::vector<SceneObject<Vertex::Base>> getObjects();
-                void addObject(SceneObject<Vertex2D>& inObject);
-
-            private:
-                std::vector<SceneObject<Vertex::Base>> objects;
-            };
+                private:
+                    std::vector<Object<Vertex::Base>> objects;
+                };
+            }
         }
     }
 }

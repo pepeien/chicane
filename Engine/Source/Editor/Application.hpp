@@ -2,6 +2,12 @@
 
 #include "Core/Application.hpp"
 
-void initScene(Engine::Runtime::Renderer::Scene& outScene);
+namespace Engine
+{
+	namespace Editor
+	{
+		void initScene(Runtime::Renderer::Scene::Instance& outScene);
 
-int main(int argc, char *argv[]);
+		int run();
+	}
+}

@@ -8,7 +8,7 @@ namespace Engine
     {
         namespace Core
         {
-            Application::Application(std::string& inWindowTitle, Renderer::Scene& inScene)
+            Application::Application(std::string& inWindowTitle, Renderer::Scene::Instance& inScene)
             {
                 windowTitle = inWindowTitle;
                 scene       = inScene;
@@ -92,28 +92,32 @@ namespace Engine
 
                 buildScene(inCommandBuffer);
 
-                for (auto sceneObject : scene.getObjects())
+                auto sceneObjects      = scene.getObjects();
+                auto allocatorInfoList = meshManager->getAllocationInfoList();
+
+                for (int i = 0; i < sceneObjects.size() && i < allocatorInfoList.size(); i++)
                 {
-                    for (auto allocationInfo : meshManager->getAllocationInfoList())
-                    {
-                        Renderer::Shader::ObjectData objectData;
-                        objectData.model = glm::translate(glm::mat4(1.0f), sceneObject.position);
+                    auto sceneObject    = sceneObjects[i];
+                    auto allocationInfo = allocatorInfoList[i];
 
-                        inCommandBuffer.pushConstants(
-                            graphicsPipeline.layout,
-                            vk::ShaderStageFlagBits::eVertex,
-                            0,
-                            sizeof(objectData),
-                            &objectData
-                        );
+                    Renderer::Shader::ObjectData objectData;
+                    objectData.model = glm::translate(glm::mat4(1.0f), sceneObject.translation);
+                    objectData.model = glm::scale(objectData.model, sceneObject.scale);
 
-                        inCommandBuffer.draw(
-                            allocationInfo.vertexCount, 
-                            allocationInfo.instanceCount, 
-                            allocationInfo.firstVertex, 
-                            allocationInfo.firstInstance
-                        );
-                    }
+                    inCommandBuffer.pushConstants(
+                        graphicsPipeline.layout,
+                        vk::ShaderStageFlagBits::eVertex,
+                        0,
+                        sizeof(objectData),
+                        &objectData
+                    );
+
+                    inCommandBuffer.draw(
+                        allocationInfo.vertexCount, 
+                        allocationInfo.instanceCount, 
+                        allocationInfo.firstVertex, 
+                        allocationInfo.firstInstance
+                    );
                 }
 
                 inCommandBuffer.endRenderPass();
@@ -365,8 +369,8 @@ namespace Engine
             {
                 Renderer::GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
                 graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
-                graphicsPipelineCreateInfo.vertexShaderName     = "triangleS.vert.spv";
-                graphicsPipelineCreateInfo.fragmentShaderName   = "triangleS.frag.spv";
+                graphicsPipelineCreateInfo.vertexShaderName     = "triangle.vert.spv";
+                graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
                 graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
                 graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
 

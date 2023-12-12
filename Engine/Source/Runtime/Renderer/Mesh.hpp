@@ -26,7 +26,7 @@ namespace Engine
                 class Manager
                 {
                 public:
-                    Manager(vk::Device& inLogicalDevice,vk::PhysicalDevice& inPhysicalDevice);
+                    Manager(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice);
                     ~Manager();
 
                 public:
@@ -36,7 +36,12 @@ namespace Engine
                     std::vector<AllocationInfo> getAllocationInfoList();
 
                 private:
-                    void extractVertices(std::vector<Vertex::Base>& outVertices, size_t& outAllocationSize);
+                    void extractVerticesFromMeshList(
+                        std::vector<Vertex::Base>& outVertices,
+                        size_t& outAllocationSize,
+                        std::vector<AllocationInfo>& outAllocationInfoList,
+                        std::vector<std::vector<Vertex::Base*>>& inMeshes
+                    );
 
                 public:
                     Vertex::Buffer vertexBuffer;
@@ -47,7 +52,7 @@ namespace Engine
 
                     std::vector<std::vector<Vertex::Base*>> meshes;
 
-                    std::vector<AllocationInfo> meshesAllocationInfo;
+                    std::vector<AllocationInfo> allocationInfoList;
                 };
             }
         }

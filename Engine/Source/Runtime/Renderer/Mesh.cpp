@@ -27,46 +27,56 @@ namespace Engine
 
                 void Manager::proccess()
                 {
-                    std::vector<Vertex::Base> allVertices;
+                    size_t allocationSize = 0;
 
-                    size_t memoryAllocationSize = 0;
+                    std::vector<Vertex::Base> extractedVertices;
 
-                    extractVertices(allVertices, memoryAllocationSize);
-
+                    extractVerticesFromMeshList(
+                        extractedVertices,
+                        allocationSize,
+                        allocationInfoList,
+                        meshes
+                    );
+  
                     Vertex::BufferCreateInfo bufferCreateInfo;
                     bufferCreateInfo.physicalDevice = physicalDevice;
                     bufferCreateInfo.logicalDevice  = logicalDevice;
-                    bufferCreateInfo.size           = memoryAllocationSize;
+                    bufferCreateInfo.size           = allocationSize;
                     bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eVertexBuffer;
 
                     Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
 
                     void* memoryLocation = logicalDevice.mapMemory(vertexBuffer.memory, 0, bufferCreateInfo.size);
-                    memcpy(memoryLocation, allVertices.data(), bufferCreateInfo.size);
+                    memcpy(memoryLocation, extractedVertices.data(), bufferCreateInfo.size);
 
                     logicalDevice.unmapMemory(vertexBuffer.memory);
                 }
 
                 std::vector<AllocationInfo> Manager::getAllocationInfoList()
                 {
-                    return meshesAllocationInfo;
+                    return allocationInfoList;
                 }
 
-                void Manager::extractVertices(std::vector<Vertex::Base>& outVertices, size_t& outAllocationSize)
+                void Manager::extractVerticesFromMeshList(
+                    std::vector<Vertex::Base>& outVertices,
+                    size_t& outAllocationSize,
+                    std::vector<AllocationInfo>& outAllocationInfoList,
+                    std::vector<std::vector<Vertex::Base*>>& inMeshes
+                )
                 {
-                    for (auto vertices : meshes)
+                    for (auto mesh : inMeshes)
                     {
-                        AllocationInfo vertexMetadata;
-                        vertexMetadata.vertexCount   = vertices.size();
-                        vertexMetadata.firstVertex   = outVertices.size();
-                        vertexMetadata.instanceCount = 1;
-                        vertexMetadata.firstInstance = 0;
+                        AllocationInfo allocationInfo;
+                        allocationInfo.vertexCount   = mesh.size();
+                        allocationInfo.firstVertex   = outVertices.size();
+                        allocationInfo.instanceCount = 1;
+                        allocationInfo.firstInstance = 0;
 
-                        meshesAllocationInfo.push_back(vertexMetadata);
+                        outAllocationInfoList.push_back(allocationInfo);
 
-                        outAllocationSize =+ sizeof(*vertices[0]) * vertices.size();
+                        outAllocationSize += sizeof(*mesh[0]) * allocationInfo.vertexCount;
 
-                        for (auto vertex : vertices)
+                        for (auto vertex : mesh)
                         {
                             outVertices.push_back(*vertex);
                         }

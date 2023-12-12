@@ -15,7 +15,7 @@ namespace Engine
             class Application
             {
             public:
-                Application(std::string& inWindowTitle, Renderer::Scene& inScene);
+                Application(std::string& inWindowTitle, Renderer::Scene::Instance& inScene);
                 ~Application();
 
             public:
@@ -99,7 +99,7 @@ namespace Engine
                 GLFWwindow* window;
 
                 // Context
-                Renderer::Scene scene;
+                Renderer::Scene::Instance scene;
 
                 std::string windowTitle;
                 int windowWidth;

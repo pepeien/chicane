@@ -12,6 +12,7 @@ namespace Engine
                 {
                     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
                     glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
+                    glfwWindowHint(GLFW_MAXIMIZED,  GLFW_TRUE);
 
                     const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
