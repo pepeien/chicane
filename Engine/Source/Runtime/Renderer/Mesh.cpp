@@ -8,16 +8,17 @@ namespace Engine
         {
             namespace Mesh
             {
-                Manager::Manager(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
+                Manager::Manager(ManagerCreateInfo& inCreateInfo)
                 {
-                    logicalDevice  = inLogicalDevice;
-                    physicalDevice = inPhysicalDevice;
+                    logicalDevice  = inCreateInfo.logicalDevice;
+                    physicalDevice = inCreateInfo.physicalDevice;
+                    queue          = inCreateInfo.queue;
+                    commandBuffer  = inCreateInfo.commandBuffer;
                 }
 
                 Manager::~Manager()
                 {
-                    logicalDevice.destroyBuffer(vertexBuffer.instance);
-                    logicalDevice.freeMemory(vertexBuffer.memory);
+                    destroyBuffer(vertexBuffer);
                 }
 
                 void Manager::addMesh(std::vector<Vertex::Base*> inVertices)
@@ -27,7 +28,7 @@ namespace Engine
 
                 void Manager::proccess()
                 {
-                    size_t allocationSize = 0;
+                    vk::DeviceSize allocationSize = 0;
 
                     std::vector<Vertex::Base> extractedVertices;
 
@@ -38,18 +39,43 @@ namespace Engine
                         meshes
                     );
   
-                    Vertex::BufferCreateInfo bufferCreateInfo;
-                    bufferCreateInfo.physicalDevice = physicalDevice;
-                    bufferCreateInfo.logicalDevice  = logicalDevice;
-                    bufferCreateInfo.size           = allocationSize;
-                    bufferCreateInfo.usage          = vk::BufferUsageFlagBits::eVertexBuffer;
+                    Vertex::Buffer stagingBuffer;
+                    Vertex::BufferCreateInfo stagingBufferCreateInfo;
+                    stagingBufferCreateInfo.physicalDevice   = physicalDevice;
+                    stagingBufferCreateInfo.logicalDevice    = logicalDevice;
+                    stagingBufferCreateInfo.size             = allocationSize;
+                    stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+                    stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+                    Vertex::initBuffer(stagingBuffer, stagingBufferCreateInfo);
 
+                    memcpy(
+                        logicalDevice.mapMemory(
+                            stagingBuffer.memory,
+                            0,
+                            stagingBufferCreateInfo.size
+                        ),
+                        extractedVertices.data(),
+                        stagingBufferCreateInfo.size
+                    );
+                    logicalDevice.unmapMemory(stagingBuffer.memory);
+
+                    Vertex::BufferCreateInfo bufferCreateInfo;
+                    bufferCreateInfo.physicalDevice   = physicalDevice;
+                    bufferCreateInfo.logicalDevice    = logicalDevice;
+                    bufferCreateInfo.size             = allocationSize;
+                    bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+                    bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
                     Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
 
-                    void* memoryLocation = logicalDevice.mapMemory(vertexBuffer.memory, 0, bufferCreateInfo.size);
-                    memcpy(memoryLocation, extractedVertices.data(), bufferCreateInfo.size);
+                    Vertex::copyBuffer(
+                        stagingBuffer,
+                        vertexBuffer,
+                        allocationSize,
+                        queue,
+                        commandBuffer
+                    );
 
-                    logicalDevice.unmapMemory(vertexBuffer.memory);
+                    destroyBuffer(stagingBuffer);
                 }
 
                 std::vector<AllocationInfo> Manager::getAllocationInfoList()
@@ -59,7 +85,7 @@ namespace Engine
 
                 void Manager::extractVerticesFromMeshList(
                     std::vector<Vertex::Base>& outVertices,
-                    size_t& outAllocationSize,
+                    vk::DeviceSize& outAllocationSize,
                     std::vector<AllocationInfo>& outAllocationInfoList,
                     std::vector<std::vector<Vertex::Base*>>& inMeshes
                 )
@@ -81,6 +107,12 @@ namespace Engine
                             outVertices.push_back(*vertex);
                         }
                     }
+                }
+
+                void Manager::destroyBuffer(Vertex::Buffer& inBuffer)
+                {
+                    logicalDevice.destroyBuffer(inBuffer.instance);
+                    logicalDevice.freeMemory(inBuffer.memory);
                 }
             }
         }

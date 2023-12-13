@@ -434,7 +434,13 @@ namespace Engine
 
             void Application::buildAssets()
             {
-                meshManager = new Renderer::Mesh::Manager(logicalDevice, physicalDevice);
+                Renderer::Mesh::ManagerCreateInfo meshCreationInfo;
+                meshCreationInfo.logicalDevice  = logicalDevice;
+                meshCreationInfo.physicalDevice = physicalDevice;
+                meshCreationInfo.queue          = graphicsQueue;
+                meshCreationInfo.commandBuffer  = mainCommandBuffer;
+
+                meshManager = new Renderer::Mesh::Manager(meshCreationInfo);
 
                 for (auto sceneObject : scene.getObjects())
                 {

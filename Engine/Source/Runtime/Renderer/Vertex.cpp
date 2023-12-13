@@ -30,12 +30,53 @@ namespace Engine
                     memoryAlocateInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
                         inCreateInfo.physicalDevice,
                         memoryRequirements.memoryTypeBits,
-                        vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostVisible
+                        inCreateInfo.memoryProperties
                     );
 
                     outBuffer.memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
 
                     inCreateInfo.logicalDevice.bindBufferMemory(outBuffer.instance, outBuffer.memory, 0);
+                }
+
+                void copyBuffer(
+                    Buffer& inSourceBuffer,
+                    Buffer& inDestinationBuffer,
+                    vk::DeviceSize& inAllocationSize,
+                    vk::Queue& inQueue,
+                    vk::CommandBuffer& inCommandBuffer
+                )
+                {
+                    inCommandBuffer.reset();
+
+                    vk::CommandBufferBeginInfo commandBufferBegin;
+                    commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+
+                    inCommandBuffer.begin(commandBufferBegin);
+
+                    vk::BufferCopy copyRegion;
+                    copyRegion.srcOffset = 0;
+                    copyRegion.dstOffset = 0;
+                    copyRegion.size      = inAllocationSize;
+
+                    inCommandBuffer.copyBuffer(
+                        inSourceBuffer.instance,
+                        inDestinationBuffer.instance,
+                        1,
+                        &copyRegion
+                    );
+
+                    inCommandBuffer.end();
+
+                    vk::SubmitInfo submitInfo;
+                    submitInfo.commandBufferCount = 1;
+                    submitInfo.pCommandBuffers    = &inCommandBuffer;
+
+                    if (inQueue.submit(1, &submitInfo, nullptr) != vk::Result::eSuccess)
+                    {
+                        Core::Log::warning("Error while trying to copy the vertex buffer");
+                    }
+
+                    inQueue.waitIdle();
                 }
             }
         }

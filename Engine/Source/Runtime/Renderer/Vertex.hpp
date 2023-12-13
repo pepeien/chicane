@@ -14,10 +14,11 @@ namespace Engine
             {
                 struct BufferCreateInfo
                 {
-                    size_t size;
+                    vk::DeviceSize size;
                     vk::BufferUsageFlags usage;
                     vk::Device logicalDevice;
                     vk::PhysicalDevice physicalDevice;
+                    vk::MemoryPropertyFlags memoryProperties;
                 };
 
                 struct Buffer
@@ -35,6 +36,13 @@ namespace Engine
 
                 void initBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo);
                 void allocateBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo);
+                void copyBuffer(
+                    Buffer& inSourceBuffer,
+                    Buffer& inDestinationBuffer,
+                    vk::DeviceSize& inAllocationSize,
+                    vk::Queue& inQueue,
+                    vk::CommandBuffer& inCommandBuffer
+                );
             };
         }
     }

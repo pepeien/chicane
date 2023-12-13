@@ -22,11 +22,19 @@ namespace Engine
                     uint32_t firstVertex;
                     uint32_t firstInstance;
                 };
+                
+                struct ManagerCreateInfo
+                {
+                    vk::Device logicalDevice;
+                    vk::PhysicalDevice physicalDevice;
+                    vk::Queue queue;
+                    vk::CommandBuffer commandBuffer;
+                };
 
                 class Manager
                 {
                 public:
-                    Manager(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice);
+                    Manager(ManagerCreateInfo& inCreateInfo);
                     ~Manager();
 
                 public:
@@ -38,10 +46,12 @@ namespace Engine
                 private:
                     void extractVerticesFromMeshList(
                         std::vector<Vertex::Base>& outVertices,
-                        size_t& outAllocationSize,
+                        vk::DeviceSize& outAllocationSize,
                         std::vector<AllocationInfo>& outAllocationInfoList,
                         std::vector<std::vector<Vertex::Base*>>& inMeshes
                     );
+
+                    void destroyBuffer(Vertex::Buffer& inBuffer);
 
                 public:
                     Vertex::Buffer vertexBuffer;
@@ -49,6 +59,8 @@ namespace Engine
                 private:
                     vk::Device logicalDevice;
                     vk::PhysicalDevice physicalDevice;
+                    vk::Queue queue;
+                    vk::CommandBuffer commandBuffer;
 
                     std::vector<std::vector<Vertex::Base*>> meshes;
 
