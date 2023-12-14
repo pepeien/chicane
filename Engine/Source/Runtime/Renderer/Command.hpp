@@ -2,8 +2,8 @@
 
 #include "Base.hpp"
 
-#include "Buffer.hpp"
 #include "Queue.hpp"
+#include "SwapChain.hpp"
 
 namespace Engine
 {
@@ -13,6 +13,13 @@ namespace Engine
         {
             namespace Command
             {
+                struct BufferCreateInfo
+                {
+                    vk::Device logicalDevice;
+                    vk::CommandPool commandPool;
+                    std::vector<SwapChain::Frame>& frames;
+                };
+
                 void initPool(
                     vk::CommandPool& outCommandPool,
                     vk::Device& inLogicalDevice,
@@ -20,7 +27,7 @@ namespace Engine
                     vk::SurfaceKHR& inSurface
                 );
 
-                void initBuffers(vk::CommandBuffer& outCommandPool, Buffer::CommandBufferCreateInfo& inCreateInfo);
+                void initBuffers(vk::CommandBuffer& outCommandBuffer, BufferCreateInfo& inCreateInfo);
             }
         }
     }

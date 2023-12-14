@@ -3,6 +3,7 @@
 #include "Base.hpp"
 
 #include "Queue.hpp"
+#include "SwapChain/Frame.hpp"
 
 namespace Engine
 {
@@ -14,21 +15,9 @@ namespace Engine
             {
                 struct SupportDetails
                 {
-                public:
                     vk::SurfaceCapabilitiesKHR capabilities;
                     std::vector<vk::SurfaceFormatKHR> formats;
                     std::vector<vk::PresentModeKHR> presentModes;
-                };
-
-                struct Frame
-                {
-                    vk::Image image;
-                    vk::ImageView imageView;
-                    vk::Framebuffer framebuffer;
-                    vk::CommandBuffer commandBuffer;
-                    vk::Fence renderFence;
-                    vk::Semaphore presentSemaphore;
-                    vk::Semaphore renderSemaphore;
                 };
 
                 struct Bundle

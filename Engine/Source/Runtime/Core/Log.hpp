@@ -12,7 +12,7 @@ namespace Engine
         {
             namespace Log
             {
-                enum MessageType
+                enum class MessageType
                 {
                     INFO,
                     WARNING,

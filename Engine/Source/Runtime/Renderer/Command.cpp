@@ -25,7 +25,7 @@ namespace Engine
                     outCommandPool = inLogicalDevice.createCommandPool(poolInfo);
                 }
 
-                void initBuffers(vk::CommandBuffer& outCommandBuffer, Buffer::CommandBufferCreateInfo& inCreateInfo)
+                void initBuffers(vk::CommandBuffer& outCommandBuffer, BufferCreateInfo& inCreateInfo)
                 {
                     vk::CommandBufferAllocateInfo allocateInfo = {};
                     allocateInfo.commandPool        = inCreateInfo.commandPool;

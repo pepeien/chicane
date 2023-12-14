@@ -30,11 +30,12 @@ namespace Engine
                 buildDevices();
                 buildQueues();
                 buildSwapChain();
+                buildDescriptorSetLayout();
                 buildGraphicsPipeline();
                 buildFramebuffers();
                 buildCommandPool();
                 buildCommandBuffers();
-                buildSyncObjects();
+                buildFrameResources();
                 buildAssets();
             }
 
@@ -43,6 +44,7 @@ namespace Engine
                 // Vulkan
                 logicalDevice.waitIdle();
 
+                destroyDescriptorSetLayout();
                 destroyGraphicsPipeline();
                 destroySwapChain();
                 destroyCommandPool();
@@ -88,9 +90,17 @@ namespace Engine
 
                 inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
 
+                inCommandBuffer.bindDescriptorSets(
+                    vk::PipelineBindPoint::eGraphics,
+                    graphicsPipeline.layout,
+                    0,
+                    swapChain.frames[inImageIndex].descriptorSet,
+                    nullptr
+                );
+
                 inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.instance);
 
-                buildScene(inCommandBuffer);
+                prepareScene(inCommandBuffer);
 
                 auto sceneObjects      = scene.getObjects();
                 auto allocatorInfoList = meshManager->getAllocationInfoList();
@@ -127,7 +137,7 @@ namespace Engine
 
             void Application::render()
             {
-                Renderer::SwapChain::Frame currentFrame = swapChain.frames[currentFrameIndex];
+                Renderer::SwapChain::Frame currentFrame = swapChain.frames[currentImageIndex];
 
                 if (logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX) != vk::Result::eSuccess)
                 {
@@ -164,6 +174,8 @@ namespace Engine
                 }
 
                 vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
+
+                prepareFrame(imageIndex);
 
                 draw(commandBuffer, imageIndex);
 
@@ -210,7 +222,7 @@ namespace Engine
                     return;
                 }
 
-                currentFrameIndex = (currentFrameIndex + 1) % maxInFlightFramesCount;
+                currentImageIndex = (currentImageIndex + 1) % maxInFlightFramesCount;
             }
 
             void Application::calculateFrameRate()
@@ -322,7 +334,7 @@ namespace Engine
                 );
 
                 maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
-                currentFrameIndex      = 0;
+                currentImageIndex      = 0;
             }
 
             void Application::rebuildSwapChain()
@@ -345,7 +357,7 @@ namespace Engine
 
                 buildFramebuffers();
 
-                buildSyncObjects();
+                buildFrameResources();
 
                 buildCommandBuffers();
             }
@@ -360,9 +372,35 @@ namespace Engine
                     logicalDevice.destroyFence(frame.renderFence);
                     logicalDevice.destroySemaphore(frame.presentSemaphore);
                     logicalDevice.destroySemaphore(frame.renderSemaphore);
+
+                    logicalDevice.unmapMemory(frame.cameraDataBuffer.memory);
+                    logicalDevice.freeMemory(frame.cameraDataBuffer.memory);
+                    logicalDevice.destroyBuffer(frame.cameraDataBuffer.instance);
                 }
 
                 logicalDevice.destroySwapchainKHR(swapChain.instance);
+                logicalDevice.destroyDescriptorPool(descriptorPool);
+            }
+
+            void Application::buildDescriptorSetLayout()
+            {
+                Renderer::Descriptor::SetLayoutBidingsCreateInfo bidings;
+                bidings.count = 1;
+                bidings.indices.push_back(0);
+                bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+                bidings.counts.push_back(1);
+                bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+                Renderer::Descriptor::initSetLayout(
+                    descriptorSetLayout,
+                    logicalDevice,
+                    bidings
+                );
+            }
+
+            void Application::destroyDescriptorSetLayout()
+            {
+                logicalDevice.destroyDescriptorSetLayout(descriptorSetLayout);
             }
 
             void Application::buildGraphicsPipeline()
@@ -373,6 +411,7 @@ namespace Engine
                 graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
                 graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
                 graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
+                graphicsPipelineCreateInfo.descriptorSetLayout  = descriptorSetLayout;
 
                 Renderer::GraphicsPipeline::init(graphicsPipeline, graphicsPipelineCreateInfo);    
             }
@@ -386,14 +425,14 @@ namespace Engine
 
             void Application::buildFramebuffers()
             {
-                Renderer::Buffer::FramebufferCreateInfo framebufferCreateInfo = {
+                Renderer::SwapChain::FramebufferCreateInfo framebufferCreateInfo = {
                     logicalDevice,
                     graphicsPipeline.renderPass,
                     swapChain.extent,
                     swapChain.frames
                 };
 
-                Renderer::Buffer::initFramebuffers(framebufferCreateInfo);
+                Renderer::SwapChain::initFramebuffers(framebufferCreateInfo);
             }
 
             void Application::buildCommandPool()
@@ -413,7 +452,7 @@ namespace Engine
 
             void Application::buildCommandBuffers()
             {
-                Renderer::Buffer::CommandBufferCreateInfo commandBufferInfo = {
+                Renderer::Command::BufferCreateInfo commandBufferInfo = {
                     logicalDevice,
                     commandPool,
                     swapChain.frames
@@ -422,13 +461,35 @@ namespace Engine
                 Renderer::Command::initBuffers(mainCommandBuffer, commandBufferInfo);
             }
 
-            void Application::buildSyncObjects()
+            void Application::buildFrameResources()
             {
+                Renderer::Descriptor::PoolCreateInfo poolCreateInfo;
+                poolCreateInfo.count = 1;
+                poolCreateInfo.size  = static_cast<uint32_t>(swapChain.frames.size());
+                poolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+
+                Renderer::Descriptor::initPool(
+                    descriptorPool,
+                    logicalDevice,
+                    poolCreateInfo
+                );
+
                 for (Renderer::SwapChain::Frame& frame : swapChain.frames)
                 {
                     Renderer::Sync::initFence(frame.renderFence, logicalDevice);
                     Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
                     Renderer::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
+                   
+                    frame.initResources(logicalDevice, physicalDevice);
+
+                    Renderer::Descriptor::initSet(
+                        frame.descriptorSet,
+                        logicalDevice,
+                        descriptorSetLayout,
+                        descriptorPool
+                    );
+
+                    frame.writeDescriptorSet(logicalDevice);
                 }
             }
 
@@ -455,12 +516,40 @@ namespace Engine
                 delete meshManager;
             }
 
-            void Application::buildScene(vk::CommandBuffer& inCommandBuffer)
+            void Application::prepareScene(vk::CommandBuffer& inCommandBuffer)
             {
                 vk::Buffer vertexBuffers[] = { meshManager->vertexBuffer.instance };
                 vk::DeviceSize offsets[]   = { 0 };
 
                 inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+            }
+
+            // TODO Make Camera Component
+            void Application::prepareFrame(uint32_t inImageIndex)
+            {
+                glm::vec3 eyes   = { 1.0f, 0.0f, -1.0f };
+                glm::vec3 center = { 0.0f, 0.0f, 0.0f };
+                glm::vec3 up     = { 0.0f, 0.0f, -1.0f };
+                glm::mat4 view   = glm::lookAt(eyes, center, up);
+
+                glm::mat4 projection = glm::perspective(
+                    glm::radians(45.0f),
+                    static_cast<float>(swapChain.extent.width) / static_cast<float>(swapChain.extent.height),
+                    0.1f,
+                    10.0f
+                );
+                // Normalize OpenGL's to coordinate system Vulkan
+                projection[1][1] *= -1;
+
+                swapChain.frames[inImageIndex].cameraData.view           = view;
+                swapChain.frames[inImageIndex].cameraData.projection     = projection;
+                swapChain.frames[inImageIndex].cameraData.viewProjection = projection * view;
+
+                memcpy(
+                    swapChain.frames[inImageIndex].cameraDataWriteLocation,
+                    &swapChain.frames[inImageIndex].cameraData,
+                    sizeof(swapChain.frames[inImageIndex].cameraData)
+                );
             }
         }
     }

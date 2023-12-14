@@ -2,7 +2,6 @@
 
 #include "Base.hpp"
 
-#include "GraphicsPipeline.hpp"
 #include "Shader.hpp"
 #include "Vertex/2D.hpp"
 
@@ -21,6 +20,7 @@ namespace Engine
                     std::string fragmentShaderName;
                     vk::Extent2D swapChainExtent;
                     vk::Format swapChainImageFormat;
+                    vk::DescriptorSetLayout descriptorSetLayout;
                 };
 
                 struct Bundle

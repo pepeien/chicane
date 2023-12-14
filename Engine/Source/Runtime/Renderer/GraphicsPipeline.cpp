@@ -126,7 +126,8 @@ namespace Engine
 
                     vk::PipelineLayoutCreateInfo layoutCreateInfo = {};
                     layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
-                    layoutCreateInfo.setLayoutCount         = 0;
+                    layoutCreateInfo.setLayoutCount         = 1;
+                    layoutCreateInfo.pSetLayouts            = &inCreateInfo.descriptorSetLayout;
                     layoutCreateInfo.pushConstantRangeCount = 1;
                     layoutCreateInfo.pPushConstantRanges    = &pushConstantRangeInfo;
 

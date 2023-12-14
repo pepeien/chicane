@@ -4,7 +4,7 @@
 
 #include "Window.hpp"
 
-#include "Renderer/Include.hpp"
+#include "Renderer.hpp"
 
 namespace Engine
 {
@@ -48,6 +48,9 @@ namespace Engine
                 void rebuildSwapChain();
                 void destroySwapChain();
 
+                void buildDescriptorSetLayout();
+                void destroyDescriptorSetLayout();
+
                 void buildGraphicsPipeline();
                 void destroyGraphicsPipeline();
 
@@ -58,12 +61,13 @@ namespace Engine
 
                 void buildCommandBuffers();
 
-                void buildSyncObjects();
+                void buildFrameResources();
 
                 void buildAssets();
                 void destroyAssets();
 
-                void buildScene(vk::CommandBuffer& inCommandBuffer);
+                void prepareScene(vk::CommandBuffer& inCommandBuffer);
+                void prepareFrame(uint32_t inImageIndex);
 
             private:
                 // Stats
@@ -91,7 +95,10 @@ namespace Engine
                 vk::CommandBuffer mainCommandBuffer;
 
                 int maxInFlightFramesCount;
-                int currentFrameIndex;
+                int currentImageIndex;
+
+                vk::DescriptorSetLayout descriptorSetLayout;
+                vk::DescriptorPool descriptorPool;
 
                 Renderer::Mesh::Manager* meshManager;
 
