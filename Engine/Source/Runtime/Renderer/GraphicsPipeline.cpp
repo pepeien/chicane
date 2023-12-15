@@ -119,17 +119,10 @@ namespace Engine
 
                 vk::PipelineLayout createLayout(GraphicsPipeline::CreateInfo& inCreateInfo)
                 {
-                    vk::PushConstantRange pushConstantRangeInfo;
-                    pushConstantRangeInfo.offset     = 0;
-                    pushConstantRangeInfo.size       = sizeof(Shader::ObjectData);
-                    pushConstantRangeInfo.stageFlags = vk::ShaderStageFlagBits::eVertex;
-
                     vk::PipelineLayoutCreateInfo layoutCreateInfo = {};
                     layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
                     layoutCreateInfo.setLayoutCount         = 1;
                     layoutCreateInfo.pSetLayouts            = &inCreateInfo.descriptorSetLayout;
-                    layoutCreateInfo.pushConstantRangeCount = 1;
-                    layoutCreateInfo.pPushConstantRanges    = &pushConstantRangeInfo;
 
                     return inCreateInfo.logicalDevice.createPipelineLayout(layoutCreateInfo);
                 }

@@ -102,30 +102,14 @@ namespace Engine
 
                 prepareScene(inCommandBuffer);
 
-                auto sceneObjects      = scene.getObjects();
                 auto allocatorInfoList = meshManager->getAllocationInfoList();
 
-                for (int i = 0; i < sceneObjects.size() && i < allocatorInfoList.size(); i++)
+                for (auto& allocationInfo : allocatorInfoList)
                 {
-                    auto sceneObject    = sceneObjects[i];
-                    auto allocationInfo = allocatorInfoList[i];
-
-                    Renderer::Shader::ObjectData objectData;
-                    objectData.model = glm::translate(glm::mat4(1.0f), sceneObject.translation);
-                    objectData.model = glm::scale(objectData.model, sceneObject.scale);
-
-                    inCommandBuffer.pushConstants(
-                        graphicsPipeline.layout,
-                        vk::ShaderStageFlagBits::eVertex,
-                        0,
-                        sizeof(objectData),
-                        &objectData
-                    );
-
                     inCommandBuffer.draw(
-                        allocationInfo.vertexCount, 
-                        allocationInfo.instanceCount, 
-                        allocationInfo.firstVertex, 
+                        allocationInfo.vertexCount,
+                        allocationInfo.instanceCount,
+                        allocationInfo.firstVertex,
                         allocationInfo.firstInstance
                     );
                 }
@@ -373,9 +357,13 @@ namespace Engine
                     logicalDevice.destroySemaphore(frame.presentSemaphore);
                     logicalDevice.destroySemaphore(frame.renderSemaphore);
 
-                    logicalDevice.unmapMemory(frame.cameraDataBuffer.memory);
-                    logicalDevice.freeMemory(frame.cameraDataBuffer.memory);
-                    logicalDevice.destroyBuffer(frame.cameraDataBuffer.instance);
+                    logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
+                    logicalDevice.freeMemory(frame.cameraData.buffer.memory);
+                    logicalDevice.destroyBuffer(frame.cameraData.buffer.instance);
+
+                    logicalDevice.unmapMemory(frame.modelData.buffer.memory);
+                    logicalDevice.freeMemory(frame.modelData.buffer.memory);
+                    logicalDevice.destroyBuffer(frame.modelData.buffer.instance);
                 }
 
                 logicalDevice.destroySwapchainKHR(swapChain.instance);
@@ -385,9 +373,17 @@ namespace Engine
             void Application::buildDescriptorSetLayout()
             {
                 Renderer::Descriptor::SetLayoutBidingsCreateInfo bidings;
-                bidings.count = 1;
+                bidings.count = 2;
+
+                // Camera
                 bidings.indices.push_back(0);
                 bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+                bidings.counts.push_back(1);
+                bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+                // Model
+                bidings.indices.push_back(1);
+                bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
                 bidings.counts.push_back(1);
                 bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
@@ -464,9 +460,10 @@ namespace Engine
             void Application::buildFrameResources()
             {
                 Renderer::Descriptor::PoolCreateInfo poolCreateInfo;
-                poolCreateInfo.count = 1;
+                poolCreateInfo.count = 2;
                 poolCreateInfo.size  = static_cast<uint32_t>(swapChain.frames.size());
                 poolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+                poolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
                 Renderer::Descriptor::initPool(
                     descriptorPool,
@@ -480,7 +477,7 @@ namespace Engine
                     Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
                     Renderer::Sync::initSempahore(frame.renderSemaphore, logicalDevice);
                    
-                    frame.initResources(logicalDevice, physicalDevice);
+                    frame.initResources(logicalDevice, physicalDevice, scene);
 
                     Renderer::Descriptor::initSet(
                         frame.descriptorSet,
@@ -488,8 +485,6 @@ namespace Engine
                         descriptorSetLayout,
                         descriptorPool
                     );
-
-                    frame.writeDescriptorSet(logicalDevice);
                 }
             }
 
@@ -524,8 +519,7 @@ namespace Engine
                 inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
             }
 
-            // TODO Make Camera Component
-            void Application::prepareFrame(uint32_t inImageIndex)
+            void Application::prepareCamera(Renderer::SwapChain::Frame& outFrame)
             {
                 glm::vec3 eyes   = { 1.0f, 0.0f, -1.0f };
                 glm::vec3 center = { 0.0f, 0.0f, 0.0f };
@@ -541,15 +535,45 @@ namespace Engine
                 // Normalize OpenGL's to coordinate system Vulkan
                 projection[1][1] *= -1;
 
-                swapChain.frames[inImageIndex].cameraData.view           = view;
-                swapChain.frames[inImageIndex].cameraData.projection     = projection;
-                swapChain.frames[inImageIndex].cameraData.viewProjection = projection * view;
+                outFrame.cameraData.object.view           = view;
+                outFrame.cameraData.object.projection     = projection;
+                outFrame.cameraData.object.viewProjection = projection * view;
+            }
 
+            void Application::prepareModel(Renderer::SwapChain::Frame& outFrame)
+            {
+                auto sceneObjects = scene.getObjects();
+                    
+                for (uint32_t i = 0; i < sceneObjects.size(); i++)
+                {
+                    auto& sceneObject = sceneObjects[i];
+
+                    glm::mat4 transform = glm::translate(glm::mat4(1.0f), sceneObject.transform.translation);
+                    transform           = glm::scale(transform, sceneObject.transform.scale);
+
+                    outFrame.modelData.transforms[i] = transform;
+                }
+            }
+
+            void Application::prepareFrame(uint32_t inImageIndex)
+            {
+                Renderer::SwapChain::Frame& frame = swapChain.frames[inImageIndex];
+
+                prepareCamera(frame);
                 memcpy(
-                    swapChain.frames[inImageIndex].cameraDataWriteLocation,
-                    &swapChain.frames[inImageIndex].cameraData,
-                    sizeof(swapChain.frames[inImageIndex].cameraData)
+                    frame.cameraData.writeLocation,
+                    &frame.cameraData.object,
+                    frame.cameraData.allocationSize
                 );
+
+                prepareModel(frame);
+                memcpy(
+                    frame.modelData.writeLocation,
+                    frame.modelData.transforms.data(),
+                    frame.modelData.allocationSize
+                );
+
+                frame.writeDescriptorSet(logicalDevice);
             }
         }
     }

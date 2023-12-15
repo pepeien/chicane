@@ -22,9 +22,9 @@ namespace Engine
             triangleVertices[2]->color    = glm::vec3(1.0f, 0.0f, 0.0f);
 
             Runtime::Renderer::Scene::Object<Runtime::Renderer::Vertex2D> triangle;
-            triangle.vertices    = triangleVertices;
-            triangle.translation = glm::vec3(-0.5f, -0.5f, 0.0f);
-            triangle.scale       = glm::vec3(0.25f);
+            triangle.vertices              = triangleVertices;
+            triangle.transform.translation = glm::vec3(-0.5f, -0.5f, 0.0f);
+            triangle.transform.scale       = glm::vec3(0.25f);
 
             outScene.addObject(triangle);
 
@@ -56,9 +56,9 @@ namespace Engine
             squareVertices[5]->color    = glm::vec3(0.0f, 0.0f, 1.0f);
 
             Runtime::Renderer::Scene::Object<Runtime::Renderer::Vertex2D> square;
-            square.vertices    = squareVertices;
-            square.translation = glm::vec3(0.5f, 0.5f, 0.0f);
-            square.scale       = glm::vec3(0.25f);
+            square.vertices              = squareVertices;
+            square.transform.translation = glm::vec3(0.5f, 0.5f, 0.0f);
+            square.transform.scale       = glm::vec3(0.25f);
 
             outScene.addObject(square);
         }

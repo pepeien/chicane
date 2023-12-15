@@ -90,13 +90,15 @@ namespace Engine
                     std::vector<std::vector<Vertex::Base*>>& inMeshes
                 )
                 {
+                    uint32_t currentInstance = 0;
+
                     for (auto mesh : inMeshes)
                     {
                         AllocationInfo allocationInfo;
                         allocationInfo.vertexCount   = mesh.size();
                         allocationInfo.firstVertex   = outVertices.size();
                         allocationInfo.instanceCount = 1;
-                        allocationInfo.firstInstance = 0;
+                        allocationInfo.firstInstance = currentInstance;
 
                         outAllocationInfoList.push_back(allocationInfo);
 
@@ -106,6 +108,8 @@ namespace Engine
                         {
                             outVertices.push_back(*vertex);
                         }
+
+                        currentInstance++;
                     }
                 }
 

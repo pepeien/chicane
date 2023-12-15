@@ -8,13 +8,11 @@ namespace Engine
     {
         namespace Renderer
         {
-			namespace Uniform
+			namespace Model
 			{
 				struct BufferObject
                 {
-                    glm::mat4 view;
-                    glm::mat4 projection;
-                    glm::mat4 viewProjection;
+                    std::vector<glm::mat4> transforms;
                 };
 			}
 		}

@@ -16,10 +16,10 @@ namespace Engine
                 void Instance::addObject(Object<Vertex2D>& inObject)
                 {
                     Object<Vertex::Base> convertedSceneObject;
-                    convertedSceneObject.translation = inObject.translation;
-                    convertedSceneObject.rotation    = inObject.rotation;
-                    convertedSceneObject.scale       = inObject.scale;
-                    convertedSceneObject.vertices    = Vertex2D::toBaseList(inObject.vertices);
+                    convertedSceneObject.vertices              = Vertex2D::toBaseList(inObject.vertices);
+                    convertedSceneObject.transform.translation = inObject.transform.translation;
+                    convertedSceneObject.transform.rotation    = inObject.transform.rotation;
+                    convertedSceneObject.transform.scale       = inObject.transform.scale;
 
                     objects.push_back(convertedSceneObject);
                 }

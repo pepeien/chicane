@@ -84,8 +84,8 @@ namespace Engine
                     uint32_t version { 0 };
                     vkEnumerateInstanceVersion(&version);
 
-                    // Drop Vulkan required version by one MAJOR to ensure compability
-                    version = VK_MAKE_API_VERSION(0, 1, 0, 0);
+                    // Picked MAJOR version to ensure compability
+                    version = VK_MAKE_API_VERSION(0, 1, 1, 0);
 
                     vk::ApplicationInfo applicationInfo = vk::ApplicationInfo(
                         APPLICATION_NAME,

@@ -8,7 +8,36 @@ namespace Engine
         {
             namespace SwapChain
             {
-				void Frame::initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
+				void Frame::initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
+                {
+                    createCameraData(inLogicalDevice, inPhysicalDevice);
+                    createModelData(inLogicalDevice, inPhysicalDevice, inScene);
+                }
+
+                void Frame::writeDescriptorSet(vk::Device& inLogicalDevice)
+                {
+                    vk::WriteDescriptorSet uniformWriteInfo;
+                    uniformWriteInfo.dstSet          = descriptorSet;
+                    uniformWriteInfo.dstBinding      = 0;
+                    uniformWriteInfo.dstArrayElement = 0;
+                    uniformWriteInfo.descriptorCount = 1;
+                    uniformWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                    uniformWriteInfo.pBufferInfo     = &uniformDescriptorBufferInfo;
+
+                    inLogicalDevice.updateDescriptorSets(uniformWriteInfo, nullptr);
+
+                    vk::WriteDescriptorSet modelWriteInfo;
+                    modelWriteInfo.dstSet          = descriptorSet;
+                    modelWriteInfo.dstBinding      = 1;
+                    modelWriteInfo.dstArrayElement = 0;
+                    modelWriteInfo.descriptorCount = 1;
+                    modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                    modelWriteInfo.pBufferInfo     = &modelDescriptorBufferInfo;
+
+                    inLogicalDevice.updateDescriptorSets(modelWriteInfo, nullptr);
+                }
+
+                void Frame::createCameraData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
                 {
                     Vertex::BufferCreateInfo cameraBufferCreateInfo;
                     cameraBufferCreateInfo.logicalDevice    = inLogicalDevice;
@@ -17,31 +46,49 @@ namespace Engine
                     cameraBufferCreateInfo.size             = sizeof(Uniform::BufferObject);
                     cameraBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
-                    Vertex::initBuffer(cameraDataBuffer, cameraBufferCreateInfo);
+                    Vertex::initBuffer(cameraData.buffer, cameraBufferCreateInfo);
 
-                    cameraDataWriteLocation = inLogicalDevice.mapMemory(
-                        cameraDataBuffer.memory,
+                    cameraData.allocationSize = cameraBufferCreateInfo.size;
+                    cameraData.writeLocation  = inLogicalDevice.mapMemory(
+                        cameraData.buffer.memory,
                         0,
-                        cameraBufferCreateInfo.size
+                        cameraData.allocationSize
                     );
 
-                    uniformDescriptorBufferInfo.buffer = cameraDataBuffer.instance;
+                    uniformDescriptorBufferInfo.buffer = cameraData.buffer.instance;
                     uniformDescriptorBufferInfo.offset = 0;
-                    uniformDescriptorBufferInfo.range  = sizeof(Uniform::BufferObject);
+                    uniformDescriptorBufferInfo.range  = cameraData.allocationSize;
                 }
 
-                void Frame::writeDescriptorSet(vk::Device& inLogicalDevice)
+                void Frame::createModelData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
                 {
-                    vk::WriteDescriptorSet writeInfo;
+                    auto sceneObjects = inScene.getObjects();
 
-                    writeInfo.dstSet          = descriptorSet;
-                    writeInfo.dstBinding      = 0;
-                    writeInfo.dstArrayElement = 0;
-                    writeInfo.descriptorCount = 1;
-                    writeInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                    writeInfo.pBufferInfo     = &uniformDescriptorBufferInfo;
+                    Vertex::BufferCreateInfo modelBufferCreateInfo;
+                    modelBufferCreateInfo.logicalDevice    = inLogicalDevice;
+                    modelBufferCreateInfo.physicalDevice   = inPhysicalDevice;
+                    modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+                    modelBufferCreateInfo.size             = sizeof(glm::mat4) * sceneObjects.size();
+                    modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
-                    inLogicalDevice.updateDescriptorSets(writeInfo, nullptr);
+                    Vertex::initBuffer(modelData.buffer, modelBufferCreateInfo);
+    
+                    modelData.allocationSize = modelBufferCreateInfo.size;
+                    modelData.writeLocation  = inLogicalDevice.mapMemory(
+                        modelData.buffer.memory,
+                        0,
+                        modelData.allocationSize
+                    );
+                    modelData.transforms.reserve(sceneObjects.size());
+
+                    for (uint32_t i = 0; i < sceneObjects.size(); i++)
+                    {
+                        modelData.transforms.push_back(glm::mat4(1.0f));
+                    }
+                    
+                    modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
+                    modelDescriptorBufferInfo.offset = 0;
+                    modelDescriptorBufferInfo.range  = modelData.allocationSize;
                 }
 
                 void initFramebuffers(FramebufferCreateInfo& outCreateInfo)

@@ -6,9 +6,9 @@ layout(binding = 0) uniform UniformObject {
     mat4 viewProjection;
 } cameraData;
 
-layout(push_constant) uniform constants {
-    mat4 model;
-} ObjectData;
+layout(std140, binding = 1) readonly buffer StorageBuffer {
+    mat4 transforms[];
+} modelData;
 
 layout(location = 0) in vec2 vertexPosition;
 layout(location = 1) in vec3 vertexColor;
@@ -16,6 +16,7 @@ layout(location = 1) in vec3 vertexColor;
 layout(location = 0) out vec3 fragColor;
 
 void main() {
-    gl_Position =  cameraData.viewProjection * (ObjectData.model * vec4(vertexPosition, 0.0, 1.0));
-    fragColor   =  vertexColor;
+    gl_Position = cameraData.viewProjection * modelData.transforms[gl_InstanceIndex] * vec4(vertexPosition, 0.0, 1.0);
+
+    fragColor = vertexColor;
 }
