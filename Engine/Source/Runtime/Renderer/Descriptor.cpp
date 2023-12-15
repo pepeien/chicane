@@ -10,8 +10,8 @@ namespace Engine
 			{
 				void initPool(
 					vk::DescriptorPool& outDescriptorPool,
-					vk::Device& inLogicalDevice,
-					PoolCreateInfo& inCreateInfo
+					const vk::Device& inLogicalDevice,
+					const PoolCreateInfo& inCreateInfo
 				)
 				{
 					std::vector<vk::DescriptorPoolSize> poolSizes;
@@ -36,8 +36,8 @@ namespace Engine
 
 				void initSetLayout(
 					vk::DescriptorSetLayout& outDescriptorSetLayout,
-					vk::Device& inLogicalDevice,
-					SetLayoutBidingsCreateInfo& inBidingsCreateInfo
+					const vk::Device& inLogicalDevice,
+					const SetLayoutBidingsCreateInfo& inBidingsCreateInfo
 				)
 				{
 					std::vector<vk::DescriptorSetLayoutBinding> setLayoutBidings;
@@ -64,9 +64,9 @@ namespace Engine
 
 				void initSet(
 					vk::DescriptorSet& outDescriptorSet,
-					vk::Device& inLogicalDevice,
-					vk::DescriptorSetLayout& inLayout,
-					vk::DescriptorPool& inPool
+					const vk::Device& inLogicalDevice,
+					const vk::DescriptorSetLayout& inLayout,
+					const vk::DescriptorPool& inPool
 				)
 				{
 					vk::DescriptorSetAllocateInfo descriptorSetallocationInfo;

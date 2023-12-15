@@ -35,7 +35,7 @@ namespace Engine
                 return attributeDescriptions;
             }
 
-            std::vector<Vertex::Base*> Vertex2D::toBaseList(std::vector<Vertex2D*>& inVertices)
+            std::vector<Vertex::Base*> Vertex2D::toBaseList(const std::vector<Vertex2D*>& inVertices)
             {
                 std::vector<Vertex::Base*> result;
 

@@ -8,7 +8,10 @@ namespace Engine
         {
             namespace Sync
             {
-                void initSempahore(vk::Semaphore& outSemaphore, vk::Device& inLogicalDevice)
+                void initSempahore(
+                    vk::Semaphore& outSemaphore,
+                    const vk::Device& inLogicalDevice
+                )
                 {
                     vk::SemaphoreCreateInfo semaphoreInfo = {};
                     semaphoreInfo.flags = vk::SemaphoreCreateFlags();
@@ -16,7 +19,10 @@ namespace Engine
                     outSemaphore = inLogicalDevice.createSemaphore(semaphoreInfo);
                 }
 
-                void initFence(vk::Fence& outFence, vk::Device& inLogicalDevice)
+                void initFence(
+                    vk::Fence& outFence,
+                    const vk::Device& inLogicalDevice
+                )
                 {
                     vk::FenceCreateInfo fenceCreateInfo = {};
                     fenceCreateInfo.flags = vk::FenceCreateFlags() | vk::FenceCreateFlagBits::eSignaled;

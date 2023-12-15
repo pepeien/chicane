@@ -9,8 +9,8 @@ namespace Engine
             namespace GraphicsPipeline
             {
                 vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-                    vk::VertexInputBindingDescription& inBindingDescription,
-                    std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescriptions
+                    const vk::VertexInputBindingDescription& inBindingDescription,
+                    const std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescriptions
                 )
                 {
                     vk::PipelineVertexInputStateCreateInfo vertexInputInfo = {};
@@ -33,8 +33,8 @@ namespace Engine
                 }
                 
                 vk::PipelineShaderStageCreateInfo createVertexShader(
-                    vk::ShaderModule& inShaderModule,
-                    GraphicsPipeline::CreateInfo& inCreateInfo
+                    const vk::ShaderModule& inShaderModule,
+                    const GraphicsPipeline::CreateInfo& inCreateInfo
                 )
                 {
                     vk::PipelineShaderStageCreateInfo vertexShaderInfo = {};
@@ -47,9 +47,9 @@ namespace Engine
                 }
 
                 vk::PipelineViewportStateCreateInfo createViewport(
-                    GraphicsPipeline::CreateInfo& inCreateInfo,
-                    vk::Viewport& inViewport,
-                    vk::Rect2D& inScissor
+                    const GraphicsPipeline::CreateInfo& inCreateInfo,
+                    const vk::Viewport& inViewport,
+                    const vk::Rect2D& inScissor
                 )
                 {
                     vk::PipelineViewportStateCreateInfo viewportState = {};
@@ -78,8 +78,8 @@ namespace Engine
                 }
 
                 vk::PipelineShaderStageCreateInfo createFragmentShader(
-                    vk::ShaderModule& inShaderModule,
-                    GraphicsPipeline::CreateInfo& inCreateInfo
+                    const vk::ShaderModule& inShaderModule,
+                    const GraphicsPipeline::CreateInfo& inCreateInfo
                 )
                 {
                     vk::PipelineShaderStageCreateInfo fragmentShaderInfo = {};
@@ -101,7 +101,7 @@ namespace Engine
                     return multisampleState;
                 }
 
-                vk::PipelineColorBlendStateCreateInfo createColorBlendState(vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState)
+                vk::PipelineColorBlendStateCreateInfo createColorBlendState(const vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState)
                 {
                     vk::PipelineColorBlendStateCreateInfo colorBlendState = {};
                     colorBlendState.flags             = vk::PipelineColorBlendStateCreateFlags();
@@ -117,7 +117,7 @@ namespace Engine
                     return colorBlendState;
                 }
 
-                vk::PipelineLayout createLayout(GraphicsPipeline::CreateInfo& inCreateInfo)
+                vk::PipelineLayout createLayout(const GraphicsPipeline::CreateInfo& inCreateInfo)
                 {
                     vk::PipelineLayoutCreateInfo layoutCreateInfo = {};
                     layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
@@ -127,7 +127,7 @@ namespace Engine
                     return inCreateInfo.logicalDevice.createPipelineLayout(layoutCreateInfo);
                 }
 
-                vk::RenderPass createRendepass(GraphicsPipeline::CreateInfo& inCreateInfo)
+                vk::RenderPass createRendepass(const GraphicsPipeline::CreateInfo& inCreateInfo)
                 {
                     vk::AttachmentDescription colorAttachment = {};
                     colorAttachment.flags          = vk::AttachmentDescriptionFlags();
@@ -160,7 +160,10 @@ namespace Engine
                     return inCreateInfo.logicalDevice.createRenderPass(renderPassInfo);
                 }
 
-                void init(GraphicsPipeline::Bundle& outGraphicsPipeline, GraphicsPipeline::CreateInfo& inCreateInfo)
+                void init(
+                    GraphicsPipeline::Bundle& outGraphicsPipeline,
+                    const GraphicsPipeline::CreateInfo& inCreateInfo
+                )
                 {
                     vk::ShaderModule vertexShaderModule;
                     Shader::initModule(

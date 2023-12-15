@@ -21,7 +21,7 @@ namespace Engine
                     destroyBuffer(vertexBuffer);
                 }
 
-                void Manager::addMesh(std::vector<Vertex::Base*> inVertices)
+                void Manager::addMesh(const std::vector<Vertex::Base*>& inVertices)
                 {
                     meshes.push_back(inVertices);
                 }
@@ -87,7 +87,7 @@ namespace Engine
                     std::vector<Vertex::Base>& outVertices,
                     vk::DeviceSize& outAllocationSize,
                     std::vector<AllocationInfo>& outAllocationInfoList,
-                    std::vector<std::vector<Vertex::Base*>>& inMeshes
+                    const std::vector<std::vector<Vertex::Base*>>& inMeshes
                 )
                 {
                     uint32_t currentInstance = 0;
@@ -113,7 +113,7 @@ namespace Engine
                     }
                 }
 
-                void Manager::destroyBuffer(Vertex::Buffer& inBuffer)
+                void Manager::destroyBuffer(const Vertex::Buffer& inBuffer)
                 {
                     logicalDevice.destroyBuffer(inBuffer.instance);
                     logicalDevice.freeMemory(inBuffer.memory);

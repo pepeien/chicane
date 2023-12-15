@@ -12,17 +12,17 @@ namespace Engine
         {
             namespace Device
             {
-                void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, vk::Instance& inInstance);
+                void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance);
 
                 void initLogicalDevice(
                     vk::Device& outLogicalDevice,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
                 
                 uint32_t findMemoryTypeIndex(
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    uint32_t inSupportedMemoryIndices,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const uint32_t& inSupportedMemoryIndices,
                     vk::MemoryPropertyFlags inRequestMemoryProperties
                 );
             }

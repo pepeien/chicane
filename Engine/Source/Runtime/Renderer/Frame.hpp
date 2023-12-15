@@ -34,12 +34,20 @@ namespace Engine
 				struct Instance
                 {
                 public:
-                    void initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene);
-                    void writeDescriptorSet(vk::Device& inLogicalDevice);
+                    void initResources(
+                        const vk::Device& inLogicalDevice,
+                        const vk::PhysicalDevice& inPhysicalDevice,
+                        const Scene::Instance& inScene
+                    );
+                    void writeDescriptorSet(const vk::Device& inLogicalDevice);
 
                 private:
-                    void createCameraData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice);
-                    void createModelData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene);
+                    void createCameraData(const vk::Device& inLogicalDevice, const vk::PhysicalDevice& inPhysicalDevice);
+                    void createModelData(
+                        const vk::Device& inLogicalDevice,
+                        const vk::PhysicalDevice& inPhysicalDevice,
+                        const Scene::Instance& inScene
+                    );
 
                 public:
                     // Swapchain

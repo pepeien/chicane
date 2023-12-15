@@ -22,22 +22,22 @@ namespace Engine
 
                 void findFamilyInidices(
                     FamilyIndices& outFamilyIndices,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
 
                 void initGraphicsQueue(
                     vk::Queue& outQueue,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
 
                 void initPresentQueue(
                     vk::Queue& outQueue,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
             }
         }

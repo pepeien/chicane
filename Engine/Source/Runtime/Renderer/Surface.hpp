@@ -10,7 +10,11 @@ namespace Engine
         {
             namespace Surface
             {
-                void init(vk::SurfaceKHR& outSurface, vk::Instance& inInstance, GLFWwindow* inWindow);
+                void init(
+                    vk::SurfaceKHR& outSurface,
+                    const vk::Instance& inInstance,
+                    GLFWwindow* inWindow
+                );
             }
         }
     }

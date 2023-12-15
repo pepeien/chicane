@@ -8,27 +8,27 @@ namespace Engine
         {
             namespace Log
             {
-                void info(std::string inMessage)
+                void info(const std::string& inMessage)
                 {
                     emmit(MessageType::INFO, inMessage);
                 }
     
-                void warning(std::string inMessage)
+                void warning(const std::string& inMessage)
                 {
                     emmit(MessageType::WARNING, inMessage);
                 }
     
-                void error(std::string inMessage)
+                void error(const std::string& inMessage)
                 {
                     emmit(MessageType::ERROR, inMessage);
                 }
     
-                void critical(std::string inMessage)
+                void critical(const std::string& inMessage)
                 {
                     emmit(MessageType::CRITICAL, inMessage);
                 }
     
-                void emmit(MessageType inType, std::string inMessage)
+                void emmit(MessageType inType, const std::string& inMessage)
                 {
                     if (IS_DEBUGGING == false)
                     {

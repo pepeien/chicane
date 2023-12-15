@@ -8,7 +8,7 @@ namespace Engine
         {
             namespace Vertex
             {
-                void initBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+                void initBuffer(Buffer& outBuffer, const BufferCreateInfo& inCreateInfo)
                 {
                     vk::BufferCreateInfo bufferInfo;
                     bufferInfo.flags       = vk::BufferCreateFlags();
@@ -21,7 +21,7 @@ namespace Engine
                     allocateBuffer(outBuffer, inCreateInfo);
                 }
 
-                void allocateBuffer(Buffer& outBuffer, BufferCreateInfo& inCreateInfo)
+                void allocateBuffer(Buffer& outBuffer, const BufferCreateInfo& inCreateInfo)
                 {
                     vk::MemoryRequirements memoryRequirements = inCreateInfo.logicalDevice.getBufferMemoryRequirements(outBuffer.instance);
 
@@ -39,11 +39,11 @@ namespace Engine
                 }
 
                 void copyBuffer(
-                    Buffer& inSourceBuffer,
-                    Buffer& inDestinationBuffer,
-                    vk::DeviceSize& inAllocationSize,
-                    vk::Queue& inQueue,
-                    vk::CommandBuffer& inCommandBuffer
+                    const Buffer& inSourceBuffer,
+                    const Buffer& inDestinationBuffer,
+                    const vk::DeviceSize& inAllocationSize,
+                    const vk::Queue& inQueue,
+                    const vk::CommandBuffer& inCommandBuffer
                 )
                 {
                     inCommandBuffer.reset();

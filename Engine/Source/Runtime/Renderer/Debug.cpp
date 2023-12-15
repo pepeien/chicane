@@ -10,8 +10,8 @@ namespace Engine
             {
                 void initMessenger(
                     vk::DebugUtilsMessengerEXT& outDebugMessenger,
-                    vk::Instance& inInstance,
-                    vk::DispatchLoaderDynamic& inDldi
+                    const vk::Instance& inInstance,
+                    const vk::DispatchLoaderDynamic& inDldi
                 )
                 {
                     if (IS_DEBUGGING == false)

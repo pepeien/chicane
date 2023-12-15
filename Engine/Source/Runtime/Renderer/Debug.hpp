@@ -12,8 +12,8 @@ namespace Engine
             {
                 void initMessenger(
                     vk::DebugUtilsMessengerEXT& outDebugMessenger,
-                    vk::Instance& inInstance,
-                    vk::DispatchLoaderDynamic& inDldi
+                    const vk::Instance& inInstance,
+                    const vk::DispatchLoaderDynamic& inDldi
                 );
 
                 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(

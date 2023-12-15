@@ -8,13 +8,17 @@ namespace Engine
         {
             namespace Frame
             {
-				void Instance::initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
+				void Instance::initResources(
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const Scene::Instance& inScene
+                )
                 {
                     createCameraData(inLogicalDevice, inPhysicalDevice);
                     createModelData(inLogicalDevice, inPhysicalDevice, inScene);
                 }
 
-                void Instance::writeDescriptorSet(vk::Device& inLogicalDevice)
+                void Instance::writeDescriptorSet(const vk::Device& inLogicalDevice)
                 {
                     vk::WriteDescriptorSet uniformWriteInfo;
                     uniformWriteInfo.dstSet          = descriptorSet;
@@ -37,7 +41,10 @@ namespace Engine
                     inLogicalDevice.updateDescriptorSets(modelWriteInfo, nullptr);
                 }
 
-                void Instance::createCameraData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
+                void Instance::createCameraData(
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice
+                )
                 {
                     Vertex::BufferCreateInfo cameraBufferCreateInfo;
                     cameraBufferCreateInfo.logicalDevice    = inLogicalDevice;
@@ -60,10 +67,14 @@ namespace Engine
                     uniformDescriptorBufferInfo.range  = cameraData.allocationSize;
                 }
 
-                void Instance::createModelData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
+                void Instance::createModelData(
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const Scene::Instance& inScene
+                )
                 {
                     auto sceneObjects = inScene.getObjects();
-
+ 
                     Vertex::BufferCreateInfo modelBufferCreateInfo;
                     modelBufferCreateInfo.logicalDevice    = inLogicalDevice;
                     modelBufferCreateInfo.physicalDevice   = inPhysicalDevice;

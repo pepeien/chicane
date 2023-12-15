@@ -15,7 +15,7 @@ namespace Engine
             public:
                 static vk::VertexInputBindingDescription getBindingDescription();
                 static std::array<vk::VertexInputAttributeDescription, 2> getAttributeDescriptions();
-                static std::vector<Vertex::Base*> toBaseList(std::vector<Vertex2D*>& inVertices);
+                static std::vector<Vertex::Base*> toBaseList(const std::vector<Vertex2D*>& inVertices);
             }; 
         }
     }

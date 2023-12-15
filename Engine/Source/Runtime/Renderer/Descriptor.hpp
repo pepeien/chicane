@@ -28,21 +28,21 @@ namespace Engine
 
 				void initPool(
 					vk::DescriptorPool& outDescriptorPool,
-					vk::Device& inLogicalDevice,
-					PoolCreateInfo& inCreateInfo
+					const vk::Device& inLogicalDevice,
+					const PoolCreateInfo& inCreateInfo
 				);
 
 				void initSetLayout(
 					vk::DescriptorSetLayout& outDescriptorSetLayout,
-					vk::Device& inLogicalDevice,
-					SetLayoutBidingsCreateInfo& inBidingsCreateInfo
+					const vk::Device& inLogicalDevice,
+					const SetLayoutBidingsCreateInfo& inBidingsCreateInfo
 				);
 
 				void initSet(
 					vk::DescriptorSet& outDescriptorSet,
-					vk::Device& inLogicalDevice,
-					vk::DescriptorSetLayout& inLayout,
-					vk::DescriptorPool& inPool
+					const vk::Device& inLogicalDevice,
+					const vk::DescriptorSetLayout& inLayout,
+					const vk::DescriptorPool& inPool
 				);
 			}
 		}

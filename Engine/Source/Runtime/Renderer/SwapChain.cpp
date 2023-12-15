@@ -10,8 +10,8 @@ namespace Engine
             {
                 void querySupport(
                     SupportDetails& outSupportDetails,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 )
                 {
                     outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
@@ -21,7 +21,7 @@ namespace Engine
 
                 void pickSurfaceFormat(
                     vk::SurfaceFormatKHR& outSurfaceFormat,
-                    std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                    const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
                 )
                 {
                     if (inSurfaceFormats.empty())
@@ -47,7 +47,7 @@ namespace Engine
 
                 void pickPresentMode(
                     vk::PresentModeKHR& outPresentMode,
-                    std::vector<vk::PresentModeKHR>& inPresentModes
+                    const std::vector<vk::PresentModeKHR>& inPresentModes
                 )
                 {
                     bool doesSupportMailBox = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) != inPresentModes.end();
@@ -74,9 +74,9 @@ namespace Engine
 
                 void pickExtent(
                     vk::Extent2D& outExtent,
-                    uint32_t inWidth,
-                    uint32_t inHeight,
-                    vk::SurfaceCapabilitiesKHR& inCapabilities
+                    const uint32_t& inWidth,
+                    const uint32_t& inHeight,
+                    const vk::SurfaceCapabilitiesKHR& inCapabilities
                 )
                 {
                     if (inCapabilities.currentExtent.width != UINT32_MAX)
@@ -103,11 +103,11 @@ namespace Engine
 
                 void init(
                     Bundle& outSwapChain,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface,
-                    int inWidth,
-                    int inHeight
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface,
+                    const int& inWidth,
+                    const int& inHeight
                 )
                 {
                     SupportDetails supportDetails;

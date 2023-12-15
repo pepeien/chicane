@@ -15,14 +15,14 @@ namespace Engine
             class Application
             {
             public:
-                Application(std::string& inWindowTitle, Renderer::Scene::Instance& inScene);
+                Application(const std::string& inWindowTitle, const Renderer::Scene::Instance& inScene);
                 ~Application();
 
             public:
                 void run();
 
             private:
-                void draw(vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
+                void draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex);
                 void render();
                 void calculateFrameRate();
 
@@ -66,10 +66,10 @@ namespace Engine
                 void buildAssets();
                 void destroyAssets();
 
-                void prepareScene(vk::CommandBuffer& inCommandBuffer);
+                void prepareScene(const vk::CommandBuffer& inCommandBuffer);
                 void prepareCamera(Renderer::Frame::Instance& outFrame);
                 void prepareModel(Renderer::Frame::Instance& outFrame);
-                void prepareFrame(uint32_t inImageIndex);
+                void prepareFrame(const uint32_t& inImageIndex);
 
             private:
                 // Stats

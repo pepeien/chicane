@@ -8,7 +8,7 @@ namespace Engine
     {
         namespace Core
         {
-            Application::Application(std::string& inWindowTitle, Renderer::Scene::Instance& inScene)
+            Application::Application(const std::string& inWindowTitle, const Renderer::Scene::Instance& inScene)
             {
                 windowTitle = inWindowTitle;
                 scene       = inScene;
@@ -73,7 +73,7 @@ namespace Engine
                 }
             }
 
-            void Application::draw(vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex)
+            void Application::draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex)
             {
                 vk::CommandBufferBeginInfo beginInfo = {};
 
@@ -511,7 +511,7 @@ namespace Engine
                 delete meshManager;
             }
 
-            void Application::prepareScene(vk::CommandBuffer& inCommandBuffer)
+            void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
             {
                 vk::Buffer vertexBuffers[] = { meshManager->vertexBuffer.instance };
                 vk::DeviceSize offsets[]   = { 0 };
@@ -555,7 +555,7 @@ namespace Engine
                 }
             }
 
-            void Application::prepareFrame(uint32_t inImageIndex)
+            void Application::prepareFrame(const uint32_t& inImageIndex)
             {
                 Renderer::Frame::Instance& frame = swapChain.frames[inImageIndex];
 

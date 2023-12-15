@@ -20,7 +20,7 @@ namespace Engine
         {
             namespace Device
             {
-                void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, vk::Instance& inInstance)
+                void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance)
                 {
                     for (vk::PhysicalDevice physicalDevice : inInstance.enumeratePhysicalDevices())
                     {
@@ -37,8 +37,8 @@ namespace Engine
 
                 void initLogicalDevice(
                     vk::Device& outPhysicalDevice,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 )
                 {
                     Queue::FamilyIndices familyIndices;
@@ -96,8 +96,8 @@ namespace Engine
                 }
 
                 uint32_t findMemoryTypeIndex(
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    uint32_t inSupportedMemoryIndices,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const uint32_t& inSupportedMemoryIndices,
                     vk::MemoryPropertyFlags inRequestMemoryProperties
                 )
                 {

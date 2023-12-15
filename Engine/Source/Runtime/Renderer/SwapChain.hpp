@@ -31,32 +31,32 @@ namespace Engine
 
                 void querySupport(
                     SupportDetails& outSupportDetails,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
 
                 void pickSurfaceFormat(
                     vk::SurfaceFormatKHR& outSurfaceFormat,
-                    std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                    const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
                 );
                 void pickPresentMode(
                     vk::PresentModeKHR& outPresentMode,
-                    std::vector<vk::PresentModeKHR>& inPresentModes
+                    const std::vector<vk::PresentModeKHR>& inPresentModes
                 );
                 void pickExtent(
                     vk::Extent2D& outExtent,
-                    uint32_t inWidth,
-                    uint32_t inHeight,
-                    vk::SurfaceCapabilitiesKHR& inCapabilities
+                    const uint32_t& inWidth,
+                    const uint32_t& inHeight,
+                    const vk::SurfaceCapabilitiesKHR& inCapabilities
                 );
 
                 void init(
                     SwapChain::Bundle& outSwapChain,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface,
-                    int inWidth,
-                    int inHeight
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface,
+                    const int& inWidth,
+                    const int& inHeight
                 );
             }
         }

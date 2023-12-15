@@ -29,7 +29,7 @@ namespace Engine
                 class Instance
                 {
                 public:
-                    std::vector<Object<Vertex::Base>> getObjects();
+                    std::vector<Object<Vertex::Base>> getObjects() const;
                     void addObject(Object<Vertex2D>& inObject);
 
                 private:

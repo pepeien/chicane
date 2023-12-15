@@ -23,12 +23,12 @@ namespace Engine
 
                 void initPool(
                     vk::CommandPool& outCommandPool,
-                    vk::Device& inLogicalDevice,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 );
 
-                void initBuffers(vk::CommandBuffer& outCommandBuffer, BufferCreateInfo& inCreateInfo);
+                void initBuffers(vk::CommandBuffer& outCommandBuffer, const BufferCreateInfo& inCreateInfo);
             }
         }
     }

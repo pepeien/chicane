@@ -38,7 +38,7 @@ namespace Engine
                     ~Manager();
 
                 public:
-                    void addMesh(std::vector<Vertex::Base*> inVertices);
+                    void addMesh(const std::vector<Vertex::Base*>& inVertices);
                     void proccess();
 
                     std::vector<AllocationInfo> getAllocationInfoList();
@@ -48,10 +48,10 @@ namespace Engine
                         std::vector<Vertex::Base>& outVertices,
                         vk::DeviceSize& outAllocationSize,
                         std::vector<AllocationInfo>& outAllocationInfoList,
-                        std::vector<std::vector<Vertex::Base*>>& inMeshes
+                        const std::vector<std::vector<Vertex::Base*>>& inMeshes
                     );
 
-                    void destroyBuffer(Vertex::Buffer& inBuffer);
+                    void destroyBuffer(const Vertex::Buffer& inBuffer);
 
                 public:
                     Vertex::Buffer vertexBuffer;

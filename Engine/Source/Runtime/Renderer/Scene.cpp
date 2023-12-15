@@ -8,7 +8,7 @@ namespace Engine
         {
             namespace Scene
             {
-                std::vector<Object<Vertex::Base>> Instance::getObjects()
+                std::vector<Object<Vertex::Base>> Instance::getObjects() const
                 {
                     return objects;
                 }

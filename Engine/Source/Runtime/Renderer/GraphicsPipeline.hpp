@@ -31,30 +31,30 @@ namespace Engine
                 };
 
                 vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-                    vk::VertexInputBindingDescription& inBindingDescription,
-                    std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescriptions
+                    const vk::VertexInputBindingDescription& inBindingDescription,
+                    const std::array<vk::VertexInputAttributeDescription, 2>& inAttributeDescriptions
                 );
                 vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
                 vk::PipelineShaderStageCreateInfo createVertexShader(
-                    vk::ShaderModule& inShaderModule,
-                    CreateInfo& inCreateInfo
+                    const vk::ShaderModule& inShaderModule,
+                    const CreateInfo& inCreateInfo
                 );
                 vk::PipelineViewportStateCreateInfo createViewport(
-                    CreateInfo& inCreateInfo,
-                    vk::Viewport& inViewport,
-                    vk::Rect2D& inScissor
+                    const CreateInfo& inCreateInfo,
+                    const vk::Viewport& inViewport,
+                    const vk::Rect2D& inScissor
                 );
                 vk::PipelineRasterizationStateCreateInfo createRasterizerState();
                 vk::PipelineShaderStageCreateInfo createFragmentShader(
-                    vk::ShaderModule& inShaderModule,
-                    CreateInfo& inCreateInfo
+                    const vk::ShaderModule& inShaderModule,
+                    const CreateInfo& inCreateInfo
                 );
                 vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-                vk::PipelineColorBlendStateCreateInfo createColorBlendState(vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState);
-                vk::PipelineLayout createLayout(CreateInfo& inCreateInfo);
-                vk::RenderPass createRendepass(CreateInfo& inCreateInfo);
+                vk::PipelineColorBlendStateCreateInfo createColorBlendState(const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState);
+                vk::PipelineLayout createLayout(const CreateInfo& inCreateInfo);
+                vk::RenderPass createRendepass(const CreateInfo& inCreateInfo);
 
-                void init(Bundle& outGraphicsPipeline, CreateInfo& inCreateInfo);
+                void init(Bundle& outGraphicsPipeline, const CreateInfo& inCreateInfo);
             }
         }
     }

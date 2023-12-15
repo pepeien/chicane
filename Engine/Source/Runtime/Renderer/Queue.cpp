@@ -15,8 +15,8 @@ namespace Engine
 
                 void findFamilyInidices(
                     FamilyIndices& outFamilyIndices,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 )
                 {
                     FamilyIndices nextFamilyIndices;
@@ -50,9 +50,9 @@ namespace Engine
 
                 void initGraphicsQueue(
                     vk::Queue& outQueue,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 )
                 {
                     FamilyIndices familyIndices;
@@ -63,9 +63,9 @@ namespace Engine
 
                 void initPresentQueue(
                     vk::Queue& outQueue,
-                    vk::PhysicalDevice& inPhysicalDevice,
-                    vk::Device& inLogicalDevice,
-                    vk::SurfaceKHR& inSurface
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Device& inLogicalDevice,
+                    const vk::SurfaceKHR& inSurface
                 )
                 {
                     FamilyIndices familyIndices;
