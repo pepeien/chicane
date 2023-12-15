@@ -67,8 +67,8 @@ namespace Engine
                 void destroyAssets();
 
                 void prepareScene(vk::CommandBuffer& inCommandBuffer);
-                void prepareCamera(Renderer::SwapChain::Frame& outFrame);
-                void prepareModel(Renderer::SwapChain::Frame& outFrame);
+                void prepareCamera(Renderer::Frame::Instance& outFrame);
+                void prepareModel(Renderer::Frame::Instance& outFrame);
                 void prepareFrame(uint32_t inImageIndex);
 
             private:

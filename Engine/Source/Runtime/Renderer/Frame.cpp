@@ -6,15 +6,15 @@ namespace Engine
     {
         namespace Renderer
         {
-            namespace SwapChain
+            namespace Frame
             {
-				void Frame::initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
+				void Instance::initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
                 {
                     createCameraData(inLogicalDevice, inPhysicalDevice);
                     createModelData(inLogicalDevice, inPhysicalDevice, inScene);
                 }
 
-                void Frame::writeDescriptorSet(vk::Device& inLogicalDevice)
+                void Instance::writeDescriptorSet(vk::Device& inLogicalDevice)
                 {
                     vk::WriteDescriptorSet uniformWriteInfo;
                     uniformWriteInfo.dstSet          = descriptorSet;
@@ -37,7 +37,7 @@ namespace Engine
                     inLogicalDevice.updateDescriptorSets(modelWriteInfo, nullptr);
                 }
 
-                void Frame::createCameraData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
+                void Instance::createCameraData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice)
                 {
                     Vertex::BufferCreateInfo cameraBufferCreateInfo;
                     cameraBufferCreateInfo.logicalDevice    = inLogicalDevice;
@@ -60,7 +60,7 @@ namespace Engine
                     uniformDescriptorBufferInfo.range  = cameraData.allocationSize;
                 }
 
-                void Frame::createModelData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
+                void Instance::createModelData(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene)
                 {
                     auto sceneObjects = inScene.getObjects();
 
@@ -91,7 +91,7 @@ namespace Engine
                     modelDescriptorBufferInfo.range  = modelData.allocationSize;
                 }
 
-                void initFramebuffers(FramebufferCreateInfo& outCreateInfo)
+                void initBuffer(BufferCreateInfo& outCreateInfo)
                 {
                     for (int i = 0; i < outCreateInfo.frames.size(); i++)
                     {

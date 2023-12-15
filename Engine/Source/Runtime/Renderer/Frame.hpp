@@ -2,10 +2,10 @@
 
 #include "Base.hpp"
 
-#include "Renderer/Model.hpp"
-#include "Renderer/Scene.hpp"
-#include "Renderer/Uniform.hpp"
-#include "Renderer/Vertex.hpp"
+#include "Model.hpp"
+#include "Scene.hpp"
+#include "Uniform.hpp"
+#include "Vertex.hpp"
 
 namespace Engine
 {
@@ -13,9 +13,9 @@ namespace Engine
     {
         namespace Renderer
         {
-            namespace SwapChain
+            namespace Frame
             {
-                struct FrameCameraData
+                struct CameraData
                 {
                     Uniform::BufferObject object;
                     size_t allocationSize;
@@ -23,7 +23,7 @@ namespace Engine
                     Vertex::Buffer buffer;
                 };
 
-                struct FrameModelData
+                struct ModelData
                 {
                     std::vector<glm::mat4> transforms;
                     size_t allocationSize;
@@ -31,7 +31,7 @@ namespace Engine
                     Vertex::Buffer buffer;
                 };
 
-				struct Frame
+				struct Instance
                 {
                 public:
                     void initResources(vk::Device& inLogicalDevice, vk::PhysicalDevice& inPhysicalDevice, Scene::Instance& inScene);
@@ -54,8 +54,8 @@ namespace Engine
                     vk::Semaphore renderSemaphore;
 
                     // Resources
-                    FrameCameraData cameraData;
-                    FrameModelData modelData;
+                    CameraData cameraData;
+                    ModelData modelData;
 
                     // Resources Descriptors
                     vk::DescriptorBufferInfo uniformDescriptorBufferInfo;
@@ -63,15 +63,15 @@ namespace Engine
                     vk::DescriptorSet descriptorSet;
                 };
 
-                struct FramebufferCreateInfo
+                struct BufferCreateInfo
                 {
                     vk::Device logicalDevice;
                     vk::RenderPass renderPass;
                     vk::Extent2D swapChainExtent;
-                    std::vector<Frame>& frames;
+                    std::vector<Instance>& frames;
                 };
 
-				void initFramebuffers(FramebufferCreateInfo& outCreateInfo);
+				void initBuffer(BufferCreateInfo& outCreateInfo);
 			}
 		}
 	}

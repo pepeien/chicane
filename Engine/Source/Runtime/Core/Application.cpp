@@ -121,7 +121,7 @@ namespace Engine
 
             void Application::render()
             {
-                Renderer::SwapChain::Frame currentFrame = swapChain.frames[currentImageIndex];
+                auto& currentFrame = swapChain.frames[currentImageIndex];
 
                 if (logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX) != vk::Result::eSuccess)
                 {
@@ -348,7 +348,7 @@ namespace Engine
 
             void Application::destroySwapChain()
             {
-                for (Renderer::SwapChain::Frame frame : swapChain.frames)
+                for (auto& frame : swapChain.frames)
                 {
                     logicalDevice.destroyImageView(frame.imageView);
                     logicalDevice.destroyFramebuffer(frame.framebuffer);
@@ -421,14 +421,14 @@ namespace Engine
 
             void Application::buildFramebuffers()
             {
-                Renderer::SwapChain::FramebufferCreateInfo framebufferCreateInfo = {
+                Renderer::Frame::BufferCreateInfo framebufferCreateInfo = {
                     logicalDevice,
                     graphicsPipeline.renderPass,
                     swapChain.extent,
                     swapChain.frames
                 };
 
-                Renderer::SwapChain::initFramebuffers(framebufferCreateInfo);
+                Renderer::Frame::initBuffer(framebufferCreateInfo);
             }
 
             void Application::buildCommandPool()
@@ -471,7 +471,7 @@ namespace Engine
                     poolCreateInfo
                 );
 
-                for (Renderer::SwapChain::Frame& frame : swapChain.frames)
+                for (Renderer::Frame::Instance& frame : swapChain.frames)
                 {
                     Renderer::Sync::initFence(frame.renderFence, logicalDevice);
                     Renderer::Sync::initSempahore(frame.presentSemaphore, logicalDevice);
@@ -519,7 +519,7 @@ namespace Engine
                 inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
             }
 
-            void Application::prepareCamera(Renderer::SwapChain::Frame& outFrame)
+            void Application::prepareCamera(Renderer::Frame::Instance& outFrame)
             {
                 glm::vec3 eyes   = { 1.0f, 0.0f, -1.0f };
                 glm::vec3 center = { 0.0f, 0.0f, 0.0f };
@@ -540,7 +540,7 @@ namespace Engine
                 outFrame.cameraData.object.viewProjection = projection * view;
             }
 
-            void Application::prepareModel(Renderer::SwapChain::Frame& outFrame)
+            void Application::prepareModel(Renderer::Frame::Instance& outFrame)
             {
                 auto sceneObjects = scene.getObjects();
                     
@@ -557,7 +557,7 @@ namespace Engine
 
             void Application::prepareFrame(uint32_t inImageIndex)
             {
-                Renderer::SwapChain::Frame& frame = swapChain.frames[inImageIndex];
+                Renderer::Frame::Instance& frame = swapChain.frames[inImageIndex];
 
                 prepareCamera(frame);
                 memcpy(

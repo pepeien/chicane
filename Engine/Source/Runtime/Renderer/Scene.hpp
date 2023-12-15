@@ -2,7 +2,6 @@
 
 #include "Base.hpp"
 
-#include "Scene/Object.hpp"
 #include "Vertex/2D.hpp"
 
 namespace Engine
@@ -13,6 +12,20 @@ namespace Engine
         {
             namespace Scene
             {
+                struct ObjectTransform
+				{
+					glm::vec3 translation;
+           		    glm::vec3 rotation;
+           		    glm::vec3 scale;
+				};
+
+				template<typename T>
+           		struct Object
+           		{
+           		    std::vector<T*> vertices;
+           		    ObjectTransform transform;
+           		};
+
                 class Instance
                 {
                 public:

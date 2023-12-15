@@ -2,6 +2,7 @@
 
 #include "Base.hpp"
 
+#include "Frame.hpp"
 #include "Queue.hpp"
 #include "SwapChain.hpp"
 
@@ -17,7 +18,7 @@ namespace Engine
                 {
                     vk::Device logicalDevice;
                     vk::CommandPool commandPool;
-                    std::vector<SwapChain::Frame>& frames;
+                    std::vector<Frame::Instance>& frames;
                 };
 
                 void initPool(

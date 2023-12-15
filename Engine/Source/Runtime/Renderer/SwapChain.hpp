@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Queue.hpp"
-#include "SwapChain/Frame.hpp"
+#include "Frame.hpp"
 
 namespace Engine
 {
@@ -24,7 +24,7 @@ namespace Engine
                 {
                 public:
                     vk::SwapchainKHR instance;
-                    std::vector<Frame> frames;
+                    std::vector<Frame::Instance> frames;
                     vk::Format format;
                     vk::Extent2D extent;
                 };
