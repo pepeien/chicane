@@ -4,10 +4,10 @@ set(SOURCES_DIR "${RUNTIME_SOURCE_DIR}")
 
 ##############  Set source files  #######################
 file(
-    GLOB_RECURSE
-    SOURCES
-
-    ${SOURCES_DIR}/*.cpp
+  GLOB_RECURSE
+  SOURCES
+  
+  ${SOURCES_DIR}/*.cpp
 )
 
 add_library(${TARGET_NAME} ${SOURCES})
@@ -16,7 +16,6 @@ add_library(${TARGET_NAME} ${SOURCES})
 set_property(TARGET ${TARGET_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${BUILD_BINARY_DIR}")
 
 ############## Linking Libs  #######################
-
 if (WIN32)
       if (USE_MINGW)
         target_include_directories(
@@ -35,13 +34,12 @@ if (WIN32)
       endif()
 endif()
 
-# 1. Set VULKAN_SDK_PATH in .env.cmake to target specific vulkan version
-if (DEFINED VULKAN_SDK_PATH)
-      set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/Include") # 1.1 Make sure this include path is correct
-      set(Vulkan_LIBRARIES "${VULKAN_SDK_PATH}/Lib") # 1.2 Make sure lib path is correct
+if (DEFINED VULKAN_PATH)
+      set(Vulkan_INCLUDE_DIRS "${VULKAN_PATH}/Include")
+      set(Vulkan_LIBRARIES "${VULKAN_PATH}/Lib")
       set(Vulkan_FOUND "True")
 else()
-      find_package(Vulkan REQUIRED) # throws error if could not find Vulkan
+      find_package(Vulkan REQUIRED)
       message(STATUS "Found Vulkan: $ENV{VULKAN_SDK}")
 endif()
 if (NOT Vulkan_FOUND)
@@ -50,18 +48,17 @@ else()
     message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
 endif()
 
-# 2. Set GLFW_PATH in .env.cmake to target specific glfw
 if (DEFINED GLFW_PATH)
       message(STATUS "Using GLFW path specified in .env")
 
       set(GLFW_INCLUDE_DIRS "${GLFW_PATH}/include")
 
       if (MSVC)
-        set(GLFW_LIB "${GLFW_PATH}/lib-vc2022") # 2.1 Update lib-vc2022 to use same version as your visual studio
+        set(GLFW_LIB "${GLFW_PATH}/lib-vc2022")
       elseif (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
         message(STATUS "USING MINGW")
 
-        set(GLFW_LIB "${GLFW_PATH}/lib-mingw-w64") # 2.1 make sure matches glfw mingw subdirectory
+        set(GLFW_LIB "${GLFW_PATH}/lib-mingw-w64")
       endif()
 else()
       find_package(glfw3 3.3 REQUIRED)
@@ -77,67 +74,67 @@ else()
 endif()
 
 if (WIN32)
-      message(STATUS "CREATING BUILD FOR WINDOWS")
+  message(STATUS "CREATING BUILD FOR WINDOWS")
  
-      if (USE_MINGW)
-        target_include_directories(
-            ${TARGET_NAME}
-            PUBLIC
+  if (USE_MINGW)
+    target_include_directories(
+      ${TARGET_NAME}
+      PUBLIC
 
-              ${MINGW_PATH}/include
-        )
-
-        target_link_directories(
-            ${TARGET_NAME}
-            PUBLIC
-
-              ${MINGW_PATH}/lib
-        )
-      endif()
- 
-      target_include_directories(
-        ${TARGET_NAME}
-        PUBLIC
-
-        # Source
-        ${SOURCES_DIR}
-
-        # Third Party
-        ${Vulkan_INCLUDE_DIRS}
-        ${GLFW_INCLUDE_DIRS}
-        ${GLM_PATH}
+      ${MINGW_PATH}/include
     )
 
-      target_link_directories(
-        ${TARGET_NAME}
-        PUBLIC
+    target_link_directories(
+      ${TARGET_NAME}
+      PUBLIC
 
-            ${Vulkan_LIBRARIES}
-            ${GLFW_LIB}
-      )
-
-      target_link_libraries(
-        ${TARGET_NAME}
-        PUBLIC
-
-        glfw3
-        vulkan-1
+      ${MINGW_PATH}/lib
     )
+  endif()
+ 
+  target_include_directories(
+    ${TARGET_NAME}
+    PUBLIC
+
+    # Source
+    ${SOURCES_DIR}
+
+    # Third Party
+    ${Vulkan_INCLUDE_DIRS}
+    ${GLFW_INCLUDE_DIRS}
+    ${GLM_PATH}
+  )
+
+  target_link_directories(
+    ${TARGET_NAME}
+    PUBLIC
+
+    ${Vulkan_LIBRARIES}
+    ${GLFW_LIB}
+  )
+
+  target_link_libraries(
+    ${TARGET_NAME}
+    PUBLIC
+
+    glfw3
+    vulkan-1
+  )
 elseif (UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")
 
     target_include_directories(
-        ${TARGET_NAME}
-        PUBLIC
+      ${TARGET_NAME}
+      PUBLIC
 
-        ${SOURCES_DIR}
+      ${SOURCES_DIR}
     )
 
     target_link_libraries(
-        ${TARGET_NAME}
-        PUBLIC
+      ${TARGET_NAME}
+      PUBLIC
 
-        glfw
-        ${Vulkan_LIBRARIES}
+      glfw
+      ${Vulkan_LIBRARIES}
     )
 endif()

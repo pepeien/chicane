@@ -17,6 +17,8 @@ Build/
 bld/
 [Bb]in/
 [Oo]bj/
+vulkan/
+__pycache__/
 
 # CMake
 CMakeCache.txt
@@ -203,9 +205,6 @@ FakesAssemblies/
 !data/models/*.obj
 !data/models/lowpoly/*.obj
 !data/models/voyager/*.obj
-
-# DLLs in bin
-!bin/*.dll
 
 # Android validation layer libraries
 android/layers/*/*.so

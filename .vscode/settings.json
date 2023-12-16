@@ -84,6 +84,15 @@
 		"string_view": "cpp",
 		"numbers": "cpp",
 		"cinttypes": "cpp",
-		"variant": "cpp"
+		"variant": "cpp",
+		"bitset": "cpp",
+		"codecvt": "cpp",
+		"condition_variable": "cpp",
+		"csignal": "cpp",
+		"regex": "cpp",
+		"mutex": "cpp",
+		"semaphore": "cpp",
+		"shared_mutex": "cpp",
+		"typeindex": "cpp"
 	}
 }

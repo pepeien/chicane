@@ -2,16 +2,19 @@
 
 static bool areExtensionsSupported(std::vector<const char*> inExtensions)
 {
-    bool isSupported;
+    bool isSupported = false;
+
+    auto supportedExtensions = vk::enumerateInstanceExtensionProperties();
+
     for (const char* extensionName : inExtensions)
     {
         isSupported = false;
 
-        for (const auto& extensionProperties : vk::enumerateInstanceExtensionProperties())
+        for (const auto& extensionProperties : supportedExtensions)
         {
-            if (strcmp(extensionName, extensionProperties.extensionName) == 0)
+            if (strcmp(extensionName, extensionProperties.extensionName) != 0)
             {
-                   isSupported = true;
+                isSupported = true;
 
                 break;
             }
@@ -28,14 +31,17 @@ static bool areExtensionsSupported(std::vector<const char*> inExtensions)
 
 static bool areValidationLayersSupported(std::vector<const char*> inValidationLayers)
 {
-    bool isSupported;
+    bool isSupported = false;
+
+    auto supportedLayers = vk::enumerateInstanceLayerProperties();
+
     for (const char* layerName : inValidationLayers)
     {
         isSupported = false;
 
-        for (const auto& layerProperties : vk::enumerateInstanceLayerProperties())
+        for (const auto& supportedLayer : supportedLayers)
         {
-            if (strcmp(layerName, layerProperties.layerName) == 0)
+            if (strcmp(layerName, supportedLayer.layerName) == 0)
             {
                 isSupported = true;
 
