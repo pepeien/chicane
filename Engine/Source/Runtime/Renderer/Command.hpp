@@ -3,33 +3,32 @@
 #include "Base.hpp"
 
 #include "Frame.hpp"
-#include "Queue.hpp"
-#include "SwapChain.hpp"
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Command
     {
-        namespace Renderer
+        struct BufferCreateInfo
         {
-            namespace Command
-            {
-                struct BufferCreateInfo
-                {
-                    vk::Device logicalDevice;
-                    vk::CommandPool commandPool;
-                    std::vector<Frame::Instance>& frames;
-                };
+            vk::Device logicalDevice;
+            vk::CommandPool commandPool;
+            std::vector<Frame::Instance>& frames;
+        };
+    
+        void initPool(
+            vk::CommandPool& outCommandPool,
+            const vk::Device& inLogicalDevice,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::SurfaceKHR& inSurface
+        );
+    
+        void initBuffers(vk::CommandBuffer& outCommandBuffer, const BufferCreateInfo& inCreateInfo);
 
-                void initPool(
-                    vk::CommandPool& outCommandPool,
-                    const vk::Device& inLogicalDevice,
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::SurfaceKHR& inSurface
-                );
-
-                void initBuffers(vk::CommandBuffer& outCommandBuffer, const BufferCreateInfo& inCreateInfo);
-            }
-        }
+        void startJob(const vk::CommandBuffer& inCommandBuffer);
+        void endJob(
+            const vk::CommandBuffer& inCommandBuffer,
+            const vk::Queue& inQueue,
+            const std::string& inDescription = "Commad Buffer"
+        );
     }
 }

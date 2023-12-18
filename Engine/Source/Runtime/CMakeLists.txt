@@ -76,6 +76,14 @@ endif()
 
 target_include_directories(
   ${TARGET_NAME}
+  PRIVATE
+
+  # Source
+  ${SOURCES_DIR}
+)
+
+target_include_directories(
+  ${TARGET_NAME}
   PUBLIC
 
   # Source

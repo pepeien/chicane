@@ -2,11 +2,15 @@
 
 #define GLFW_INCLUDE_VULKAN
 
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+
 #define APPLICATION_NAME "Chicane Engine"
 
 #define ENGINE_NAME        "Chicane"
 #define ENGINE_DIR         "../"
 #define ENGINE_SHADERS_DIR "Content/Shaders/"
+#define ENGINE_TEXTURES_DIR "Content/Textures/"
 
 #ifdef NDEBUG
 #define IS_DEBUGGING false
@@ -14,21 +18,27 @@
 #define IS_DEBUGGING true
 #endif
 
+#include <algorithm>
 #include <array>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <memory>
 #include <ostream>
 #include <optional>
 #include <set>
 #include <string>
 #include <vector>
+#include <map>
+
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <GLFW/glfw3.h>
-#include <vulkan/vulkan.hpp>
+#include <stb_image.h>
 
 #include "Core/FileSystem.hpp"
 #include "Core/Log.hpp"

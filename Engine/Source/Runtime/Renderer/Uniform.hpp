@@ -4,19 +4,13 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Uniform
     {
-        namespace Renderer
+    	struct BufferObject
         {
-			namespace Uniform
-			{
-				struct BufferObject
-                {
-                    glm::mat4 view;
-                    glm::mat4 projection;
-                    glm::mat4 viewProjection;
-                };
-			}
-		}
-	}
+            glm::mat4 view;
+            glm::mat4 projection;
+            glm::mat4 viewProjection;
+        };
+    }
 }

@@ -8,112 +8,117 @@
 
 namespace Engine
 {
-    namespace Runtime
+    class Application
     {
-        namespace Core
-        {
-            class Application
-            {
-            public:
-                Application(const std::string& inWindowTitle, const Renderer::Scene::Instance& inScene);
-                ~Application();
+    public:
+        Application(const std::string& inWindowTitle, const Scene::Instance& inScene);
+        ~Application();
 
-            public:
-                void run();
+    public:
+        void run();
 
-            private:
-                void draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex);
-                void render();
-                void calculateFrameRate();
+    private:
+        void draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex);
+        void render();
+        void calculateFrameRate();
 
-                // GLFW
-                void buildWindow();
+        // GLFW
+        void buildWindow();
 
-                // Vulkan
-                void buildInstance();
-                void destroyInstance();
+        // Vulkan
+        void buildInstance();
+        void destroyInstance();
 
-                void buildDebugMessenger();
-                void destroyDebugMessenger();
+        void buildDebugMessenger();
+        void destroyDebugMessenger();
 
-                void buildSurface();
-                void destroySurface();
+        void buildSurface();
+        void destroySurface();
 
-                void buildQueues();
+        void buildQueues();
 
-                void buildDevices();
-                void destroyDevices();
+        void buildDevices();
+        void destroyDevices();
 
-                void buildSwapChain();
-                void rebuildSwapChain();
-                void destroySwapChain();
+        void buildSwapChain();
+        void rebuildSwapChain();
+        void destroySwapChain();
 
-                void buildDescriptorSetLayout();
-                void destroyDescriptorSetLayout();
+        void buildFrameDescriptorSetLayout();
+        void buildMeshDescriptorSetLayout();
+        void buildDescriptorSetLayouts();
+        void destroyDescriptorSetLayouts();
 
-                void buildGraphicsPipeline();
-                void destroyGraphicsPipeline();
+        void destroyDescriptorPools();
 
-                void buildFramebuffers();
+        void buildGraphicsPipeline();
+        void destroyGraphicsPipeline();
 
-                void buildCommandPool();
-                void destroyCommandPool();
+        void buildFramebuffers();
 
-                void buildCommandBuffers();
+        void buildCommandPool();
+        void destroyCommandPool();
 
-                void buildFrameResources();
+        void buildCommandBuffers();
 
-                void buildAssets();
-                void destroyAssets();
+        void buildFrameResources();
+        void buildMeshResources();
 
-                void prepareScene(const vk::CommandBuffer& inCommandBuffer);
-                void prepareCamera(Renderer::Frame::Instance& outFrame);
-                void prepareModel(Renderer::Frame::Instance& outFrame);
-                void prepareFrame(const uint32_t& inImageIndex);
+        void buildAssets();
+        void destroyAssets();
 
-            private:
-                // Stats
-                int numFrames;
-                float frameTime;
-                double lastTime;
-                double currentTime;
+        void prepareScene(const vk::CommandBuffer& inCommandBuffer);
+        void prepareCamera(Frame::Instance& outFrame);
+        void prepareModel(Frame::Instance& outFrame);
+        void prepareFrame(const uint32_t& inImageIndex);
 
-                // Vulkan
-                vk::Instance instance;
-                vk::DispatchLoaderDynamic dldi;
-                vk::DebugUtilsMessengerEXT debugMessenger;
-                vk::SurfaceKHR surface;
+    private:
+        // Stats
+        int numFrames;
+        float frameTime;
+        double lastTime;
+        double currentTime;
 
-                vk::PhysicalDevice physicalDevice;
-                vk::Device logicalDevice;
-                vk::Queue graphicsQueue;
-                vk::Queue presentQueue;
+        // Vulkan
+        vk::Instance instance;
+        vk::DispatchLoaderDynamic dldi;
+        vk::DebugUtilsMessengerEXT debugMessenger;
+        vk::SurfaceKHR surface;
 
-                Renderer::SwapChain::Bundle swapChain;
+        vk::PhysicalDevice physicalDevice;
+        vk::Device logicalDevice;
+        vk::Queue graphicsQueue;
+        vk::Queue presentQueue;
 
-                Renderer::GraphicsPipeline::Bundle graphicsPipeline;
+        SwapChain::Bundle swapChain;
 
-                vk::CommandPool commandPool;
-                vk::CommandBuffer mainCommandBuffer;
+        GraphicsPipeline::Bundle graphicsPipeline;
 
-                int maxInFlightFramesCount;
-                int currentImageIndex;
+        vk::CommandPool commandPool;
+        vk::CommandBuffer mainCommandBuffer;
 
-                vk::DescriptorSetLayout descriptorSetLayout;
-                vk::DescriptorPool descriptorPool;
+        int maxInFlightFramesCount;
+        int currentImageIndex;
 
-                Renderer::Mesh::Manager* meshManager;
+        vk::DescriptorSetLayout frameDescriptorSetLayout;
+        vk::DescriptorPool frameDescriptorPool;
 
-                // GLFW
-                GLFWwindow* window;
+        vk::DescriptorSetLayout meshDescriptorSetLayout;
+        vk::DescriptorPool meshDescriptorPool;
 
-                // Context
-                Renderer::Scene::Instance scene;
+        Mesh::Manager* meshManager;
 
-                std::string windowTitle;
-                int windowWidth;
-                int windowHeight;
-            };
-        }
-    }
+        // GLFW
+        GLFWwindow* window;
+
+        // Context
+        Scene::Instance scene;
+
+        //TODO Implement way to add textures for each object
+        Texture::Instance* defaultTexture;
+
+        std::string windowTitle;
+        int windowWidth;
+        int windowHeight;
+    };
 }

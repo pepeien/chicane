@@ -4,18 +4,12 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Surface
     {
-        namespace Renderer
-        {
-            namespace Surface
-            {
-                void init(
-                    vk::SurfaceKHR& outSurface,
-                    const vk::Instance& inInstance,
-                    GLFWwindow* inWindow
-                );
-            }
-        }
+        void init(
+            vk::SurfaceKHR& outSurface,
+            const vk::Instance& inInstance,
+            GLFWwindow* inWindow
+        );
     }
 }

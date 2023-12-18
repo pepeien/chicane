@@ -2,40 +2,39 @@
 
 #include "Base.hpp"
 
-#include "Vertex/2D.hpp"
+#include "Vertex.hpp"
+#include "Texture.hpp"
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Scene
     {
-        namespace Renderer
+        namespace Object
+		{
+			struct Transform
+			{
+				glm::vec3 translation;
+			    glm::vec3 rotation;
+			    glm::vec3 scale;
+			};
+	
+			template<typename T>
+			struct Instance
+			{
+			    std::vector<T*> vertices;
+			    Transform transform;
+				Texture::Instance* texture;
+			};
+		}
+
+        class Instance
         {
-            namespace Scene
-            {
-                struct ObjectTransform
-				{
-					glm::vec3 translation;
-           		    glm::vec3 rotation;
-           		    glm::vec3 scale;
-				};
+        public:
+            std::vector<Object::Instance<Vertex::Base>> getObjects() const;
+            void addObject(const Object::Instance<Vertex2D>& inObject);
 
-				template<typename T>
-           		struct Object
-           		{
-           		    std::vector<T*> vertices;
-           		    ObjectTransform transform;
-           		};
-
-                class Instance
-                {
-                public:
-                    std::vector<Object<Vertex::Base>> getObjects() const;
-                    void addObject(Object<Vertex2D>& inObject);
-
-                private:
-                    std::vector<Object<Vertex::Base>> objects;
-                };
-            }
-        }
+        public:
+            std::vector<Object::Instance<Vertex::Base>> objects;
+        };
     }
 }

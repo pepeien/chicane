@@ -6,7 +6,7 @@ namespace Engine
 {
 	namespace Editor
 	{
-		void initScene(Runtime::Renderer::Scene::Instance& outScene);
+		void initScene(Scene::Instance& outScene);
 
 		int run();
 	}

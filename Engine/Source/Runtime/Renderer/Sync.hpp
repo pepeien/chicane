@@ -4,15 +4,9 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Sync
     {
-        namespace Renderer
-        {
-            namespace Sync
-            {
-                void initSempahore(vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice);
-                void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice);
-            }
-        }
+        void initSempahore(vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice);
+        void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice);
     }
 }

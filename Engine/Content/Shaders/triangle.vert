@@ -12,11 +12,14 @@ layout(std140, binding = 1) readonly buffer StorageBuffer {
 
 layout(location = 0) in vec2 vertexPosition;
 layout(location = 1) in vec3 vertexColor;
+layout(location = 2) in vec2 vertexTexturePosition;
 
 layout(location = 0) out vec3 fragColor;
+layout(location = 1) out vec2 fragTexturePosition;
 
 void main() {
     gl_Position = cameraData.viewProjection * modelData.transforms[gl_InstanceIndex] * vec4(vertexPosition, 0.0, 1.0);
 
-    fragColor = vertexColor;
+    fragColor           = vertexColor;
+    fragTexturePosition = vertexTexturePosition;
 }

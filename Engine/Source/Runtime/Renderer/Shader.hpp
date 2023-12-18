@@ -4,18 +4,12 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Shader
     {
-        namespace Renderer
-        {
-            namespace Shader
-            {
-                void initModule(
-                    vk::ShaderModule& outShaderModule,
-                    const std::string& inShaderName,
-                    const vk::Device& inLogicalDevice
-                );
-            }
-        }
+        void initModule(
+            vk::ShaderModule& outShaderModule,
+            const std::string& inShaderName,
+            const vk::Device& inLogicalDevice
+        );
     }
 }

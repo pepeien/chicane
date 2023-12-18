@@ -4,14 +4,8 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Window
     {
-        namespace Core
-        {
-            namespace Window
-            {
-                GLFWwindow* init(int& outWidth, int& outHeight, const char* inWindowTitle);
-            }
-        }
+        GLFWwindow* init(int& outWidth, int& outHeight, const char* inWindowTitle);
     }
 }

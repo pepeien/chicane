@@ -4,17 +4,11 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Model
     {
-        namespace Renderer
+    	struct BufferObject
         {
-			namespace Model
-			{
-				struct BufferObject
-                {
-                    std::vector<glm::mat4> transforms;
-                };
-			}
-		}
-	}
+            std::vector<glm::mat4> transforms;
+        };
+    }
 }

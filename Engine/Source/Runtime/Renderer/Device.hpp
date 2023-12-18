@@ -6,26 +6,22 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Device
     {
-        namespace Renderer
-        {
-            namespace Device
-            {
-                void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance);
+        bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice);
 
-                void initLogicalDevice(
-                    vk::Device& outLogicalDevice,
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::SurfaceKHR& inSurface
-                );
-                
-                uint32_t findMemoryTypeIndex(
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const uint32_t& inSupportedMemoryIndices,
-                    vk::MemoryPropertyFlags inRequestMemoryProperties
-                );
-            }
-        }
+        void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance);
+
+        void initLogicalDevice(
+            vk::Device& outLogicalDevice,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::SurfaceKHR& inSurface
+        );
+        
+        uint32_t findMemoryTypeIndex(
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const uint32_t& inSupportedMemoryIndices,
+            vk::MemoryPropertyFlags inRequestMemoryProperties
+        );
     }
 }

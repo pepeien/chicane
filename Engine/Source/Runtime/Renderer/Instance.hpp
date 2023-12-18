@@ -4,14 +4,11 @@
 
 namespace Engine
 {
-    namespace Runtime
+    namespace Instance
     {
-        namespace Renderer
-        {
-            namespace Instance
-            {
-                void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi);
-            }
-        }
+        bool areExtensionsSupported(const std::vector<const char*> inExtensions);
+        bool areValidationLayersSupported(const std::vector<const char*> inValidationLayers);
+
+        void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi);
     }
 }

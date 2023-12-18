@@ -2,63 +2,58 @@
 
 #include "Base.hpp"
 
-#include "Queue.hpp"
 #include "Frame.hpp"
+#include "Queue.hpp"
+#include "Image.hpp"
 
 namespace Engine
 {
-    namespace Runtime
+    namespace SwapChain
     {
-        namespace Renderer
+        struct SupportDetails
         {
-            namespace SwapChain
-            {
-                struct SupportDetails
-                {
-                    vk::SurfaceCapabilitiesKHR capabilities;
-                    std::vector<vk::SurfaceFormatKHR> formats;
-                    std::vector<vk::PresentModeKHR> presentModes;
-                };
-
-                struct Bundle
-                {
-                public:
-                    vk::SwapchainKHR instance;
-                    std::vector<Frame::Instance> frames;
-                    vk::Format format;
-                    vk::Extent2D extent;
-                };
-
-                void querySupport(
-                    SupportDetails& outSupportDetails,
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::SurfaceKHR& inSurface
-                );
-
-                void pickSurfaceFormat(
-                    vk::SurfaceFormatKHR& outSurfaceFormat,
-                    const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
-                );
-                void pickPresentMode(
-                    vk::PresentModeKHR& outPresentMode,
-                    const std::vector<vk::PresentModeKHR>& inPresentModes
-                );
-                void pickExtent(
-                    vk::Extent2D& outExtent,
-                    const uint32_t& inWidth,
-                    const uint32_t& inHeight,
-                    const vk::SurfaceCapabilitiesKHR& inCapabilities
-                );
-
-                void init(
-                    SwapChain::Bundle& outSwapChain,
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::Device& inLogicalDevice,
-                    const vk::SurfaceKHR& inSurface,
-                    const int& inWidth,
-                    const int& inHeight
-                );
-            }
-        }
+            vk::SurfaceCapabilitiesKHR capabilities;
+            std::vector<vk::SurfaceFormatKHR> formats;
+            std::vector<vk::PresentModeKHR> presentModes;
+        };
+    
+        struct Bundle
+        {
+        public:
+            vk::SwapchainKHR instance;
+            std::vector<Frame::Instance> frames;
+            vk::Format format;
+            vk::Extent2D extent;
+        };
+    
+        void querySupport(
+            SupportDetails& outSupportDetails,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::SurfaceKHR& inSurface
+        );
+    
+        void pickSurfaceFormat(
+            vk::SurfaceFormatKHR& outSurfaceFormat,
+            const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+        );
+        void pickPresentMode(
+            vk::PresentModeKHR& outPresentMode,
+            const std::vector<vk::PresentModeKHR>& inPresentModes
+        );
+        void pickExtent(
+            vk::Extent2D& outExtent,
+            const uint32_t& inWidth,
+            const uint32_t& inHeight,
+            const vk::SurfaceCapabilitiesKHR& inCapabilities
+        );
+    
+        void init(
+            Bundle& outSwapChain,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::Device& inLogicalDevice,
+            const vk::SurfaceKHR& inSurface,
+            const int& inWidth,
+            const int& inHeight
+        );
     }
 }
