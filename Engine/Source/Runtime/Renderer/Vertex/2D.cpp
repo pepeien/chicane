@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	vk::VertexInputBindingDescription Vertex2D::getBindingDescription()
+    vk::VertexInputBindingDescription Vertex2D::getBindingDescription()
     {
         vk::VertexInputBindingDescription bindingDescription{};
         bindingDescription.binding   = 0;

@@ -8,17 +8,17 @@ namespace Engine
 {
     namespace Frame
     {
-		namespace Buffer
-		{
-			struct CreateInfo
-        	{
-        	    vk::Device logicalDevice;
-        	    vk::RenderPass renderPass;
-        	    vk::Extent2D swapChainExtent;
-        	    std::vector<Instance>& frames;
-        	};
+        namespace Buffer
+        {
+            struct CreateInfo
+            {
+                vk::Device logicalDevice;
+                vk::RenderPass renderPass;
+                vk::Extent2D swapChainExtent;
+                std::vector<Instance>& frames;
+            };
 
-    		void init(CreateInfo& outCreateInfo);
-		}
-	}
+            void init(CreateInfo& outCreateInfo);
+        }
+    }
 }

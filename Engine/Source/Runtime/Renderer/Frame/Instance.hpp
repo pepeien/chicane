@@ -26,7 +26,7 @@ namespace Engine
             Vertex::Buffer::Instance buffer;
         };
     
-    	struct Instance
+        struct Instance
         {
         public:
             void initResources(

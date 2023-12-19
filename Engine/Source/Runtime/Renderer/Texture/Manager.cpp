@@ -47,11 +47,11 @@ namespace Engine
 
             void Instance::buildTextures(
                 const vk::Device& inLogicalDevice,
-			    const vk::PhysicalDevice& inPhysicalDevice,
-			    const vk::CommandBuffer& inCommandBuffer,
-			    const vk::Queue& inQueue,
-			    const vk::DescriptorSetLayout& inDescriptorSetLayout,
-			    const vk::DescriptorPool& inDescriptorPool
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::Queue& inQueue,
+                const vk::DescriptorSetLayout& inDescriptorSetLayout,
+                const vk::DescriptorPool& inDescriptorPool
             )
             {
                 Texture::CreateInfo textureCreateInfo;
@@ -82,5 +82,5 @@ namespace Engine
                 return textureDataMap.size();
             }
         }
-	}
+    }
 }

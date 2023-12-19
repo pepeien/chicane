@@ -4,10 +4,10 @@
 
 namespace Engine
 {
-	namespace Editor
-	{
-		void initScene(Scene::Instance& outScene);
+    namespace Editor
+    {
+        void initScene(Scene::Instance& outScene);
 
-		int run();
-	}
+        int run();
+    }
 }

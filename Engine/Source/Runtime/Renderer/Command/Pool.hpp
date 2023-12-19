@@ -8,14 +8,14 @@ namespace Engine
 {
     namespace Command
     {
-		namespace Pool
-		{
-			void init(
-        	    vk::CommandPool& outCommandPool,
-        	    const vk::Device& inLogicalDevice,
-        	    const vk::PhysicalDevice& inPhysicalDevice,
-        	    const vk::SurfaceKHR& inSurface
-        	);
-		}
-	}
+        namespace Pool
+        {
+            void init(
+                vk::CommandPool& outCommandPool,
+                const vk::Device& inLogicalDevice,
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::SurfaceKHR& inSurface
+            );
+        }
+    }
 }

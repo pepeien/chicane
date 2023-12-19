@@ -2,23 +2,23 @@
 
 namespace Engine
 {
-	namespace Editor
-	{
+    namespace Editor
+    {
         void initScene(Scene::Instance& outScene)
         {
             Scene::Object::Instance triangle;
-            triangle.transform.translation         = glm::vec3(-0.5f, -0.5f, 0.0f);
-            triangle.transform.scale               = glm::vec3(0.25f);
-            triangle.mesh.id                       = "Triangle";
-            triangle.texture.id                    = "Gray";
+            triangle.transform.translation = glm::vec3(0.3f, -0.5f, 0.0f);
+            triangle.transform.scale       = glm::vec3(0.35f);
+            triangle.mesh.id               = "Triangle";
+            triangle.texture.id            = "Grid";
 
             outScene.addObject(triangle);
 
             Scene::Object::Instance square;
-            square.transform.translation         = glm::vec3(0.5f, 0.5f, 0.0f);
-            square.transform.scale               = glm::vec3(0.25f);
-            square.mesh.id                       = "Square";
-            square.texture.id                    = "UV";
+            square.transform.translation = glm::vec3(0.3f, 0.5f, 0.0f);
+            square.transform.scale       = glm::vec3(0.35f);
+            square.mesh.id               = "Square";
+            square.texture.id            = "UV";
 
             outScene.addObject(square);
         }

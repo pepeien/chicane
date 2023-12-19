@@ -4,7 +4,7 @@ namespace Engine
 {
     namespace Frame
     {
-    	void Instance::initResources(
+        void Instance::initResources(
             const vk::Device& inLogicalDevice,
             const vk::PhysicalDevice& inPhysicalDevice,
             const Scene::Instance& inScene

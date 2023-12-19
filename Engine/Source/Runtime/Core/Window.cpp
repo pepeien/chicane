@@ -13,7 +13,7 @@ namespace Engine
             const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
             outWidth  = desktop->width;
-             outHeight = desktop->height;
+            outHeight = desktop->height;
 
             return glfwCreateWindow(
                 desktop->width,

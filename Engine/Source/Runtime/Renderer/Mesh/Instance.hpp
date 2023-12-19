@@ -9,7 +9,7 @@ namespace Engine
 {
     namespace Mesh
     {
-		struct AllocationInfo
+        struct AllocationInfo
         {
             uint32_t vertexCount;
             uint32_t instanceCount;
@@ -22,5 +22,5 @@ namespace Engine
             std::vector<Vertex::Base*> vertices;
             AllocationInfo allocationInfo;
         };
-	}
+    }
 }
