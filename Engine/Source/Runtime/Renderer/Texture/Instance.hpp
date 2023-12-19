@@ -2,19 +2,24 @@
 
 #include "Base.hpp"
 
-#include "Renderer/Vertex.hpp"
 #include "Renderer/Image.hpp"
 #include "Renderer/Descriptor.hpp"
+#include "Renderer/Vertex/Buffer.hpp"
 
 namespace Engine
 {
     namespace Texture
     {
-		struct CreateInfo
+		struct Data
 		{
 			uint32_t width;
 			uint32_t height;
 			std::string filename;
+		};
+
+		struct CreateInfo
+		{
+			Data data;
 			vk::Device logicalDevice;
 			vk::PhysicalDevice physicalDevice;
 			vk::CommandBuffer commandBuffer;
@@ -30,14 +35,15 @@ namespace Engine
 			~Instance();
 
 		public:
-			void use(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
+			void bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
 
 		private:
 			void load();
 			void populate();
-			void makeView();
-			void makeSampler();
-			void makeDescriptorSet();
+	
+			void initView();
+			void initSampler();
+			void initDescriptorSet();
 
 		private:
 			int width;

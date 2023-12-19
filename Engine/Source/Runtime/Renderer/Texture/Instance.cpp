@@ -6,9 +6,9 @@ namespace Engine
     {
 		Instance::Instance(const CreateInfo& inCreateInfo)
 		{
-			width                = inCreateInfo.width;
-			height               = inCreateInfo.height;
-			filename             = FileSystem::getRelativeTexturePath(inCreateInfo.filename);
+			width                = inCreateInfo.data.width;
+			height               = inCreateInfo.data.height;
+			filename             = FileSystem::getRelativeTexturePath(inCreateInfo.data.filename);
 			logicalDevice        = inCreateInfo.logicalDevice;
 			physicalDevice       = inCreateInfo.physicalDevice;
 			commandBuffer        = inCreateInfo.commandBuffer;
@@ -35,9 +35,9 @@ namespace Engine
 
 			free(pixels);
 
-			makeView();
-			makeSampler();
-			makeDescriptorSet();
+			initView();
+			initSampler();
+			initDescriptorSet();
 		}
 
 		Instance::~Instance()
@@ -48,7 +48,7 @@ namespace Engine
 			logicalDevice.destroySampler(image.sampler);
 		}
 
-		void Instance::use(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
+		void Instance::bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
 		{
 			inCommandBuffer.bindDescriptorSets(
 				vk::PipelineBindPoint::eGraphics,
@@ -71,15 +71,15 @@ namespace Engine
 
 		void Instance::populate()
 		{
-			Vertex::BufferCreateInfo stagingBufferCreateInfo;
+			Vertex::Buffer::CreateInfo stagingBufferCreateInfo;
 			stagingBufferCreateInfo.logicalDevice    = logicalDevice;
 			stagingBufferCreateInfo.physicalDevice   = physicalDevice;
 			stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
 			stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
 			stagingBufferCreateInfo.size             = sizeof(float) * (width * height);
 
-			Vertex::Buffer stagingBuffer;
-			Vertex::initBuffer(stagingBuffer, stagingBufferCreateInfo);
+			Vertex::Buffer::Instance stagingBuffer;
+			Vertex::Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
 			void* statingWriteLocation = logicalDevice.mapMemory(stagingBuffer.memory, 0, stagingBufferCreateInfo.size);
 			memcpy(statingWriteLocation, pixels, stagingBufferCreateInfo.size);
@@ -110,10 +110,10 @@ namespace Engine
 				vk::ImageLayout::eShaderReadOnlyOptimal
 			);
 
-			Vertex::destroyBuffer(logicalDevice, stagingBuffer);
+			Vertex::Buffer::destroy(logicalDevice, stagingBuffer);
 		}
 
-		void Instance::makeView()
+		void Instance::initView()
 		{
 			Image::initView(
 				image.view,
@@ -123,7 +123,7 @@ namespace Engine
 			);
 		}
 
-		void Instance::makeSampler()
+		void Instance::initSampler()
 		{
 			vk::SamplerCreateInfo createInfo;
 			createInfo.flags                   = vk::SamplerCreateFlags();
@@ -146,7 +146,7 @@ namespace Engine
 			image.sampler = logicalDevice.createSampler(createInfo);
 		}
 
-		void Instance::makeDescriptorSet()
+		void Instance::initDescriptorSet()
 		{
 			Descriptor::initSet(
 				descriptor.set,

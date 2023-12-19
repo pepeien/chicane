@@ -6,19 +6,6 @@ namespace Engine
     {
         namespace Manager
         {
-            Instance::Instance(CreateInfo& inCreateInfo)
-            {
-                logicalDevice  = inCreateInfo.logicalDevice;
-                physicalDevice = inCreateInfo.physicalDevice;
-                queue          = inCreateInfo.queue;
-                commandBuffer  = inCreateInfo.commandBuffer;
-            }
-
-            Instance::~Instance()
-            {
-                Vertex::destroyBuffer(logicalDevice, vertexBuffer);
-            }
-
             void Instance::addMesh(const std::string& inMeshId, const std::vector<Vertex::Base*>& inVertices)
             {
                 if (meshesMap.find(inMeshId) != meshesMap.end())
@@ -45,26 +32,31 @@ namespace Engine
                 return foundMesh->second;
             }
 
-            void Instance::proccess()
+            void Instance::builMeshes(
+                Vertex::Buffer::Instance& outVertexBuffer,
+                const vk::Device& inLogicalDevice,
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::Queue& inQueue,
+                const vk::CommandBuffer& inCommandBuffer
+            )
             {
-                vk::DeviceSize allocationSize = 0;
-
                 std::vector<Vertex::Base> extractedVertices;
+                vk::DeviceSize extractedAllocationSize = 0;
 
-                extractAllocationDataFromMeshList(extractedVertices, allocationSize);
+                extractFromMeshList(extractedVertices, extractedAllocationSize);
 
-                Vertex::BufferCreateInfo stagingBufferCreateInfo;
-                stagingBufferCreateInfo.physicalDevice   = physicalDevice;
-                stagingBufferCreateInfo.logicalDevice    = logicalDevice;
-                stagingBufferCreateInfo.size             = allocationSize;
+                Vertex::Buffer::CreateInfo stagingBufferCreateInfo;
+                stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
+                stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
+                stagingBufferCreateInfo.size             = extractedAllocationSize;
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
                 stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 
-                Vertex::Buffer stagingBuffer;
-                Vertex::initBuffer(stagingBuffer, stagingBufferCreateInfo);
+                Vertex::Buffer::Instance stagingBuffer;
+                Vertex::Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
                 memcpy(
-                    logicalDevice.mapMemory(
+                    inLogicalDevice.mapMemory(
                         stagingBuffer.memory,
                         0,
                         stagingBufferCreateInfo.size
@@ -72,29 +64,29 @@ namespace Engine
                     extractedVertices.data(),
                     stagingBufferCreateInfo.size
                 );
-                logicalDevice.unmapMemory(stagingBuffer.memory);
+                inLogicalDevice.unmapMemory(stagingBuffer.memory);
 
-                Vertex::BufferCreateInfo bufferCreateInfo;
-                bufferCreateInfo.physicalDevice   = physicalDevice;
-                bufferCreateInfo.logicalDevice    = logicalDevice;
-                bufferCreateInfo.size             = allocationSize;
+                Vertex::Buffer::CreateInfo bufferCreateInfo;
+                bufferCreateInfo.physicalDevice   = inPhysicalDevice;
+                bufferCreateInfo.logicalDevice    = inLogicalDevice;
+                bufferCreateInfo.size             = extractedAllocationSize;
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-                Vertex::initBuffer(vertexBuffer, bufferCreateInfo);
+                Vertex::Buffer::init(outVertexBuffer, bufferCreateInfo);
 
-                Vertex::copyBuffer(
+                Vertex::Buffer::copy(
                     stagingBuffer,
-                    vertexBuffer,
-                    allocationSize,
-                    queue,
-                    commandBuffer
+                    outVertexBuffer,
+                    extractedAllocationSize,
+                    inQueue,
+                    inCommandBuffer
                 );
 
-                Vertex::destroyBuffer(logicalDevice, stagingBuffer);
+                Vertex::Buffer::destroy(inLogicalDevice, stagingBuffer);
             }
 
-            void Instance::extractAllocationDataFromMeshList(std::vector<Vertex::Base>& outVertices, vk::DeviceSize& outAllocationSize)
+            void Instance::extractFromMeshList(std::vector<Vertex::Base>& outVertices, vk::DeviceSize& outAllocationSize)
             {
                 uint32_t currentInstance = 0;
 

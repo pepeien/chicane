@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Base.hpp"
-#include "Renderer/Vertex.hpp"
+
+#include "Renderer/Vertex/Buffer.hpp"
+#include "Renderer/Vertex/Instance.hpp"
 
 namespace Engine
 {

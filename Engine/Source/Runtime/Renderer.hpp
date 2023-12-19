@@ -11,7 +11,6 @@
 #include "Renderer/Surface.hpp"
 #include "Renderer/SwapChain.hpp"
 #include "Renderer/Sync.hpp"
-#include "Renderer/Vertex.hpp"
 #include "Renderer/Uniform.hpp"
 
 #include "Renderer/Command/Buffer.hpp"
@@ -29,3 +28,7 @@
 
 #include "Renderer/Texture/Manager.hpp"
 #include "Renderer/Texture/Instance.hpp"
+
+#include "Renderer/Vertex/Instance.hpp"
+#include "Renderer/Vertex/2D.hpp"
+#include "Renderer/Vertex/Buffer.hpp"

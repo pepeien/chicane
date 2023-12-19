@@ -1,8 +1,5 @@
 #include "GraphicsPipeline.hpp"
 
-#include "Vertex.hpp"
-#include "Shader.hpp"
-
 namespace Engine
 {
     namespace GraphicsPipeline

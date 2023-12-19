@@ -3,8 +3,8 @@
 #include "Base.hpp"
 
 #include "Renderer/Uniform.hpp"
-#include "Renderer/Vertex.hpp"
 #include "Renderer/Scene/Instance.hpp"
+#include "Renderer/Vertex/Buffer.hpp"
 
 namespace Engine
 {
@@ -15,7 +15,7 @@ namespace Engine
             Uniform::BufferObject object;
             size_t allocationSize;
             void* writeLocation;
-            Vertex::Buffer buffer;
+            Vertex::Buffer::Instance buffer;
         };
     
         struct ModelData
@@ -23,7 +23,7 @@ namespace Engine
             std::vector<glm::mat4> transforms;
             size_t allocationSize;
             void* writeLocation;
-            Vertex::Buffer buffer;
+            Vertex::Buffer::Instance buffer;
         };
     
     	struct Instance

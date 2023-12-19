@@ -15,6 +15,12 @@ namespace Engine
         lastTime    = 0.0;
         currentTime = 0.0;
 
+        meshManager    = new Mesh::Manager::Instance();
+        textureManager = new Texture::Manager::Instance();
+
+        prepareMeshes();
+        prepareTextures();
+
         // GLFW
         glfwInit();
         buildWindow();
@@ -45,6 +51,9 @@ namespace Engine
         destroyGraphicsPipeline();
         destroySwapChain();
         destroyCommandPool();
+
+        Vertex::Buffer::destroy(logicalDevice, meshVertexBuffer);
+
         destroyAssets();
         destroyDevices();
         destroySurface();
@@ -349,10 +358,10 @@ namespace Engine
             logicalDevice.destroySemaphore(frame.renderSemaphore);
 
             logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
-            Vertex::destroyBuffer(logicalDevice, frame.cameraData.buffer);
+            Vertex::Buffer::destroy(logicalDevice, frame.cameraData.buffer);
 
             logicalDevice.unmapMemory(frame.modelData.buffer.memory);
-            Vertex::destroyBuffer(logicalDevice, frame.modelData.buffer);
+            Vertex::Buffer::destroy(logicalDevice, frame.modelData.buffer);
         }
 
         logicalDevice.destroySwapchainKHR(swapChain.instance);
@@ -517,7 +526,7 @@ namespace Engine
     {
         Descriptor::PoolCreateInfo poolCreateInfo;
         poolCreateInfo.count = 1;
-        poolCreateInfo.size  = 2;
+        poolCreateInfo.size  = textureManager->getCount();
         poolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
@@ -527,16 +536,8 @@ namespace Engine
         );
     }
 
-    void Application::buildMeshes()
+    void Application::prepareMeshes()
     {
-        Mesh::Manager::CreateInfo meshManagerCreationInfo;
-        meshManagerCreationInfo.logicalDevice  = logicalDevice;
-        meshManagerCreationInfo.physicalDevice = physicalDevice;
-        meshManagerCreationInfo.queue          = graphicsQueue;
-        meshManagerCreationInfo.commandBuffer  = mainCommandBuffer;
-
-        meshManager = new Mesh::Manager::Instance(meshManagerCreationInfo);
-
         std::vector<Vertex2D*> triangleVertices;
         triangleVertices.resize(3);
 
@@ -591,39 +592,53 @@ namespace Engine
         squareVertices[5]->texturePosition = glm::vec2(1.0f, 1.0f);
 
         meshManager->addMesh("Square", Vertex2D::toBaseList(squareVertices));
+    }
 
-        meshManager->proccess();
+    void Application::buildMeshes()
+    {
+        meshManager->builMeshes(
+            meshVertexBuffer,
+            logicalDevice,
+            physicalDevice,
+            graphicsQueue,
+            mainCommandBuffer
+        );
+    }
+
+    void Application::prepareTextures()
+    {
+        Texture::Data grayTextureData;
+        grayTextureData.width    = 512;
+        grayTextureData.height   = 512;
+        grayTextureData.filename = "grid.png";
+
+        textureManager->addTexture("Gray", grayTextureData);
+
+        Texture::Data gridTextureData;
+        gridTextureData.width    = 512;
+        gridTextureData.height   = 512;
+        gridTextureData.filename = "grid.png";
+
+        textureManager->addTexture("Grid", gridTextureData);
+
+        Texture::Data uvTextureData;
+        uvTextureData.width    = 512;
+        uvTextureData.height   = 512;
+        uvTextureData.filename = "uv.png";
+
+        textureManager->addTexture("UV", uvTextureData);
     }
 
     void Application::buildTextures()
     {
-        textureManager = new Texture::Manager::Instance();
-
-        Texture::CreateInfo grayTextureCreateInfo;
-        grayTextureCreateInfo.width               = 512;
-        grayTextureCreateInfo.height              = 512;
-        grayTextureCreateInfo.filename            = "gray.png";
-        grayTextureCreateInfo.logicalDevice       = logicalDevice;
-        grayTextureCreateInfo.physicalDevice      = physicalDevice;
-        grayTextureCreateInfo.commandBuffer       = mainCommandBuffer;
-        grayTextureCreateInfo.queue               = graphicsQueue;
-        grayTextureCreateInfo.descriptorSetLayout = meshDescriptorSetLayout;
-        grayTextureCreateInfo.descriptorPool      = meshDescriptorPool;
-
-        textureManager->addTexture("Gray", grayTextureCreateInfo);
-
-        Texture::CreateInfo gridTextureCreateInfo;
-        gridTextureCreateInfo.width               = 512;
-        gridTextureCreateInfo.height              = 512;
-        gridTextureCreateInfo.filename            = "grid.png";
-        gridTextureCreateInfo.logicalDevice       = logicalDevice;
-        gridTextureCreateInfo.physicalDevice      = physicalDevice;
-        gridTextureCreateInfo.commandBuffer       = mainCommandBuffer;
-        gridTextureCreateInfo.queue               = graphicsQueue;
-        gridTextureCreateInfo.descriptorSetLayout = meshDescriptorSetLayout;
-        gridTextureCreateInfo.descriptorPool      = meshDescriptorPool;
-
-        textureManager->addTexture("Grid", gridTextureCreateInfo);
+        textureManager->buildTextures(
+            logicalDevice,
+            physicalDevice,
+            mainCommandBuffer,
+            graphicsQueue,
+            meshDescriptorSetLayout,
+            meshDescriptorPool
+        );
     }
 
     void Application::buildAssets()
@@ -640,7 +655,7 @@ namespace Engine
 
     void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
     {
-        vk::Buffer vertexBuffers[] = { meshManager->vertexBuffer.instance };
+        vk::Buffer vertexBuffers[] = { meshVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
 
         inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
@@ -708,7 +723,7 @@ namespace Engine
         for (Scene::Object::Instance sceneObject : scene.objects)
         {
             Texture::Instance* objectTexture = textureManager->getTexture(sceneObject.texture);
-            objectTexture->use(inCommandBuffer, graphicsPipeline.layout);
+            objectTexture->bind(inCommandBuffer, graphicsPipeline.layout);
 
             Mesh::Instance objectMesh = meshManager->getMesh(sceneObject.mesh);
             inCommandBuffer.draw(

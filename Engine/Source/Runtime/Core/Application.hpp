@@ -61,8 +61,12 @@ namespace Engine
 
         void buildCommandBuffers();
 
+        void prepareMeshes();
         void buildMeshes();
+
+        void prepareTextures();
         void buildTextures();
+
         void buildAssets();
         void destroyAssets();
 
@@ -109,7 +113,7 @@ namespace Engine
 
         vk::DescriptorSetLayout meshDescriptorSetLayout;
         vk::DescriptorPool meshDescriptorPool;
-
+        Vertex::Buffer::Instance meshVertexBuffer;
         Mesh::Manager::Instance* meshManager;
         Texture::Manager::Instance* textureManager;
 

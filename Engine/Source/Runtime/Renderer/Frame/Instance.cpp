@@ -42,14 +42,14 @@ namespace Engine
             const vk::PhysicalDevice& inPhysicalDevice
         )
         {
-            Vertex::BufferCreateInfo cameraBufferCreateInfo;
+            Vertex::Buffer::CreateInfo cameraBufferCreateInfo;
             cameraBufferCreateInfo.logicalDevice    = inLogicalDevice;
             cameraBufferCreateInfo.physicalDevice   = inPhysicalDevice;
             cameraBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             cameraBufferCreateInfo.size             = sizeof(Uniform::BufferObject);
             cameraBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
     
-            Vertex::initBuffer(cameraData.buffer, cameraBufferCreateInfo);
+            Vertex::Buffer::init(cameraData.buffer, cameraBufferCreateInfo);
     
             cameraData.allocationSize = cameraBufferCreateInfo.size;
             cameraData.writeLocation  = inLogicalDevice.mapMemory(
@@ -71,14 +71,14 @@ namespace Engine
         {
             auto sceneObjects = inScene.getObjects();
     
-            Vertex::BufferCreateInfo modelBufferCreateInfo;
+            Vertex::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = inLogicalDevice;
             modelBufferCreateInfo.physicalDevice   = inPhysicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
             modelBufferCreateInfo.size             = sizeof(glm::mat4) * sceneObjects.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
-            Vertex::initBuffer(modelData.buffer, modelBufferCreateInfo);
+            Vertex::Buffer::init(modelData.buffer, modelBufferCreateInfo);
         
             modelData.allocationSize = modelBufferCreateInfo.size;
             modelData.writeLocation  = inLogicalDevice.mapMemory(

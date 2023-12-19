@@ -2,6 +2,9 @@
 
 #include "Base.hpp"
 
+#include "Shader.hpp"
+#include "Vertex/2D.hpp"
+
 namespace Engine
 {
     namespace GraphicsPipeline
