@@ -29,6 +29,8 @@ namespace Engine
 			vk::Sampler sampler;
 		};
 
+        vk::ImageSubresourceRange getDefaultSubresourceRange();
+
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo);
         void initMemory(vk::DeviceMemory& outDeviceMemory, const CreateInfo& inCreateInfo, const vk::Image& inImage);
         void initView(
@@ -42,14 +44,14 @@ namespace Engine
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
             const vk::Image& inImage,
-            const vk::ImageLayout& oldLayout,
-            const vk::ImageLayout& newLayout
+            const vk::ImageLayout& inOldLayout,
+            const vk::ImageLayout& inNewLayout
         );
         void copyBufferToImage(
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
-            const vk::Image& inDestionationImage,
+            const vk::Image& inDestinationImage,
             const uint32_t& inWidth,
             const uint32_t& inHeight
         );

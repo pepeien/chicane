@@ -38,7 +38,7 @@ namespace Engine
         buildCommandPool();
         buildCommandBuffers();
         buildFrameResources();
-        buildMeshResources();
+        buildMaterialResources();
         buildAssets();
     }
 
@@ -341,7 +341,7 @@ namespace Engine
         buildFramebuffers();
 
         buildFrameResources();
-        buildMeshResources();
+        buildMaterialResources();
 
         buildCommandBuffers();
     }
@@ -393,47 +393,47 @@ namespace Engine
         );
     }
 
-    void Application::buildMeshDescriptorSetLayout()
+    void Application::buildMaterialDescriptorSetLayout()
     {
-        Descriptor::SetLayoutBidingsCreateInfo meshLayoutBidings;
-        meshLayoutBidings.count = 1;
+        Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
+        materialLayoutBidings.count = 1;
 
         // Texture
-        meshLayoutBidings.indices.push_back(0);
-        meshLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-        meshLayoutBidings.counts.push_back(1);
-        meshLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+        materialLayoutBidings.indices.push_back(0);
+        materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+        materialLayoutBidings.counts.push_back(1);
+        materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
-            meshDescriptorSetLayout,
+            materialDescriptorSetLayout,
             logicalDevice,
-            meshLayoutBidings
+            materialLayoutBidings
         );
     }
 
     void Application::buildDescriptorSetLayouts()
     {
         buildFrameDescriptorSetLayout();
-        buildMeshDescriptorSetLayout();
+        buildMaterialDescriptorSetLayout();
     }
 
     void Application::destroyDescriptorSetLayouts()
     {
         logicalDevice.destroyDescriptorSetLayout(frameDescriptorSetLayout);
-        logicalDevice.destroyDescriptorSetLayout(meshDescriptorSetLayout);
+        logicalDevice.destroyDescriptorSetLayout(materialDescriptorSetLayout);
     }
 
     void Application::destroyDescriptorPools()
     {
         logicalDevice.destroyDescriptorPool(frameDescriptorPool);
-        logicalDevice.destroyDescriptorPool(meshDescriptorPool);
+        logicalDevice.destroyDescriptorPool(materialDescriptorPool);
     }
 
     void Application::buildGraphicsPipeline()
     {
         std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
         descriptorSetLayouts.push_back(frameDescriptorSetLayout);
-        descriptorSetLayouts.push_back(meshDescriptorSetLayout);
+        descriptorSetLayouts.push_back(materialDescriptorSetLayout);
     
         GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
         graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
@@ -522,7 +522,7 @@ namespace Engine
         }
     }
 
-    void Application::buildMeshResources()
+    void Application::buildMaterialResources()
     {
         Descriptor::PoolCreateInfo poolCreateInfo;
         poolCreateInfo.count = 1;
@@ -530,7 +530,7 @@ namespace Engine
         poolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
-            meshDescriptorPool,
+            materialDescriptorPool,
             logicalDevice,
             poolCreateInfo
         );
@@ -544,7 +544,7 @@ namespace Engine
         triangleVertices[0] = new Vertex2D();
         triangleVertices[0]->position        = glm::vec2(0.0f, -1.0f);
         triangleVertices[0]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[0]->texturePosition = glm::vec2(1.0f, 1.0f);
+        triangleVertices[0]->texturePosition = glm::vec2(0.5f, 0.0f);
 
         triangleVertices[1] = new Vertex2D();
         triangleVertices[1]->position        = glm::vec2(1.0f, 1.0f);
@@ -554,7 +554,7 @@ namespace Engine
         triangleVertices[2] = new Vertex2D();
         triangleVertices[2]->position        = glm::vec2(-1.0f, 1.0f);
         triangleVertices[2]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[2]->texturePosition = glm::vec2(1.0f, 1.0f);
+        triangleVertices[2]->texturePosition = glm::vec2(0.0f, 1.0f);
 
         meshManager->addMesh("Triangle", Vertex2D::toBaseList(triangleVertices));
 
@@ -564,22 +564,22 @@ namespace Engine
         squareVertices[0] = new Vertex2D();
         squareVertices[0]->position        = glm::vec2(-0.5f, 1.0f);
         squareVertices[0]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[0]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[0]->texturePosition = glm::vec2(0.0f, 1.0f);
 
         squareVertices[1] = new Vertex2D();
         squareVertices[1]->position        = glm::vec2(-0.5f, -1.0f);
         squareVertices[1]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[1]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[1]->texturePosition = glm::vec2(0.0f, 0.0f);
 
         squareVertices[2] = new Vertex2D();
         squareVertices[2]->position        = glm::vec2(0.5f, -1.0f);
         squareVertices[2]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[2]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[2]->texturePosition = glm::vec2(1.0f, 0.0f);
 
         squareVertices[3] = new Vertex2D();
         squareVertices[3]->position        = glm::vec2(0.5f, -1.0f);
         squareVertices[3]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[3]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[3]->texturePosition = glm::vec2(1.0f, 0.0f);
 
         squareVertices[4] = new Vertex2D();
         squareVertices[4]->position        = glm::vec2(0.5f, 1.0f);
@@ -589,7 +589,7 @@ namespace Engine
         squareVertices[5] = new Vertex2D();
         squareVertices[5]->position        = glm::vec2(-0.5f, 1.0f);
         squareVertices[5]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[5]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[5]->texturePosition = glm::vec2(0.0f, 1.0f);
 
         meshManager->addMesh("Square", Vertex2D::toBaseList(squareVertices));
     }
@@ -610,7 +610,7 @@ namespace Engine
         Texture::Data grayTextureData;
         grayTextureData.width    = 512;
         grayTextureData.height   = 512;
-        grayTextureData.filename = "grid.png";
+        grayTextureData.filename = "gray.png";
 
         textureManager->addTexture("Gray", grayTextureData);
 
@@ -636,8 +636,8 @@ namespace Engine
             physicalDevice,
             mainCommandBuffer,
             graphicsQueue,
-            meshDescriptorSetLayout,
-            meshDescriptorPool
+            materialDescriptorSetLayout,
+            materialDescriptorPool
         );
     }
 
@@ -682,7 +682,7 @@ namespace Engine
         outFrame.cameraData.object.viewProjection = projection * view;
     }
 
-    void Application::prepareModel(Frame::Instance& outFrame)
+    void Application::prepareSceneObjects(Frame::Instance& outFrame)
     {
         std::vector<Engine::Scene::Object::Instance> sceneObjects = scene.getObjects();
             
@@ -708,7 +708,7 @@ namespace Engine
             frame.cameraData.allocationSize
         );
 
-        prepareModel(frame);
+        prepareSceneObjects(frame);
         memcpy(
             frame.modelData.writeLocation,
             frame.modelData.transforms.data(),
@@ -722,10 +722,10 @@ namespace Engine
     {
         for (Scene::Object::Instance sceneObject : scene.objects)
         {
-            Texture::Instance* objectTexture = textureManager->getTexture(sceneObject.texture);
+            Texture::Instance* objectTexture = textureManager->getTexture(sceneObject.texture.id);
             objectTexture->bind(inCommandBuffer, graphicsPipeline.layout);
 
-            Mesh::Instance objectMesh = meshManager->getMesh(sceneObject.mesh);
+            Mesh::Instance objectMesh = meshManager->getMesh(sceneObject.mesh.id);
             inCommandBuffer.draw(
                 objectMesh.allocationInfo.vertexCount,
                 objectMesh.allocationInfo.instanceCount,

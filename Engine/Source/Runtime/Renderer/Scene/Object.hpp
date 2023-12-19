@@ -17,10 +17,21 @@ namespace Engine
 			    glm::vec3 scale;
 			};
 
+			struct Mesh
+			{
+				std::string id;
+			};
+			
+
+			struct Texture
+			{
+				std::string id;
+			};
+
 			struct Instance
 			{
-			    std::string mesh;
-				std::string texture;
+			    Mesh mesh;
+				Texture texture;
 			    Transform transform;
 			};
 		}

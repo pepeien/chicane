@@ -4,6 +4,18 @@ namespace Engine
 {
     namespace Image
     {
+        vk::ImageSubresourceRange getDefaultSubresourceRange()
+        {
+            vk::ImageSubresourceRange imageSubresourceRange;
+            imageSubresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            imageSubresourceRange.baseMipLevel   = 0;
+            imageSubresourceRange.levelCount     = 1;
+            imageSubresourceRange.baseArrayLayer = 0;
+            imageSubresourceRange.layerCount     = 1;
+
+            return imageSubresourceRange;
+        }
+
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo)
         {
             vk::ImageCreateInfo createInfo;
@@ -27,7 +39,7 @@ namespace Engine
             vk::MemoryRequirements requirements = inCreateInfo.logicalDevice.getImageMemoryRequirements(inImage);
 
             vk::MemoryAllocateInfo allocationInfo;
-            allocationInfo.allocationSize = requirements.size;
+            allocationInfo.allocationSize  = requirements.size;
             allocationInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
                 inCreateInfo.physicalDevice,
                 requirements.memoryTypeBits,
@@ -46,20 +58,14 @@ namespace Engine
         )
         {
             vk::ImageViewCreateInfo createInfo = {};
-            createInfo.image    = inImage;
-            createInfo.viewType = vk::ImageViewType::e2D;
-            createInfo.format   = inFormat;
-    
-            createInfo.components.r = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.g = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.r = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.a = vk::ComponentSwizzle::eIdentity;
-    
-            createInfo.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
-            createInfo.subresourceRange.baseMipLevel   = 0;
-            createInfo.subresourceRange.levelCount     = 1;
-            createInfo.subresourceRange.baseArrayLayer = 0;
-            createInfo.subresourceRange.layerCount     = 1;
+            createInfo.image            = inImage;
+            createInfo.viewType         = vk::ImageViewType::e2D;
+            createInfo.format           = inFormat;
+            createInfo.subresourceRange = getDefaultSubresourceRange();
+            createInfo.components.r     = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.g     = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.b     = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.a     = vk::ComponentSwizzle::eIdentity;
 
             outImageView = inLogicalDevice.createImageView(createInfo);
         }
@@ -68,37 +74,26 @@ namespace Engine
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
             const vk::Image& inImage,
-            const vk::ImageLayout& oldLayout,
-            const vk::ImageLayout& newLayout
+            const vk::ImageLayout& inOldLayout,
+            const vk::ImageLayout& inNewLayout
         )
         {
             Command::Worker::startJob(inCommandBuffer);
 
-            vk::ImageSubresourceRange imageSubresourceRange;
-            imageSubresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
-            imageSubresourceRange.baseMipLevel   = 0;
-            imageSubresourceRange.levelCount     = 1;
-            imageSubresourceRange.baseArrayLayer = 0;
-            imageSubresourceRange.layerCount     = 1;
-
             vk::ImageMemoryBarrier imageMemoryBarrier;
-            imageMemoryBarrier.oldLayout           = oldLayout;
-            imageMemoryBarrier.newLayout           = newLayout;
+            imageMemoryBarrier.oldLayout           = inOldLayout;
+            imageMemoryBarrier.newLayout           = inNewLayout;
             imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
             imageMemoryBarrier.image               = inImage;
-            imageMemoryBarrier.subresourceRange    = imageSubresourceRange;
+            imageMemoryBarrier.subresourceRange    = getDefaultSubresourceRange();
+            imageMemoryBarrier.srcAccessMask       = vk::AccessFlagBits::eTransferWrite;
+            imageMemoryBarrier.dstAccessMask       = vk::AccessFlagBits::eShaderRead;
 
-            vk::PipelineStageFlags sourceStage;
-            vk::PipelineStageFlags destinationStage;
+            vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
+            vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
 
-            imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
-            imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
-
-            sourceStage      = vk::PipelineStageFlagBits::eTransfer;
-            destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
-
-            if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eTransferDstOptimal)
+            if (inOldLayout == vk::ImageLayout::eUndefined && inNewLayout == vk::ImageLayout::eTransferDstOptimal)
             {
                 imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                 imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
@@ -123,7 +118,7 @@ namespace Engine
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
-            const vk::Image& inDestionationImage,
+            const vk::Image& inDestinationImage,
             const uint32_t& inWidth,
             const uint32_t& inHeight
         )
@@ -146,7 +141,7 @@ namespace Engine
 
             inCommandBuffer.copyBufferToImage(
                 inSourceBuffer,
-                inDestionationImage,
+                inDestinationImage,
                 vk::ImageLayout::eTransferDstOptimal,
                 bufferImageCopy
             );

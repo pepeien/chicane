@@ -7,18 +7,18 @@ namespace Engine
         void initScene(Scene::Instance& outScene)
         {
             Scene::Object::Instance triangle;
-            triangle.mesh                  = "Triangle";
-            triangle.texture               = "UV";
-            triangle.transform.translation = glm::vec3(-0.5f, -0.5f, 0.0f);
-            triangle.transform.scale       = glm::vec3(0.25f);
+            triangle.transform.translation         = glm::vec3(-0.5f, -0.5f, 0.0f);
+            triangle.transform.scale               = glm::vec3(0.25f);
+            triangle.mesh.id                       = "Triangle";
+            triangle.texture.id                    = "Gray";
 
             outScene.addObject(triangle);
 
             Scene::Object::Instance square;
-            square.mesh                  = "Square";
-            square.texture               = "UV";
-            square.transform.translation = glm::vec3(0.5f, 0.5f, 0.0f);
-            square.transform.scale       = glm::vec3(0.25f);
+            square.transform.translation         = glm::vec3(0.5f, 0.5f, 0.0f);
+            square.transform.scale               = glm::vec3(0.25f);
+            square.mesh.id                       = "Square";
+            square.texture.id                    = "UV";
 
             outScene.addObject(square);
         }

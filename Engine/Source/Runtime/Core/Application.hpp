@@ -45,7 +45,7 @@ namespace Engine
         void destroySwapChain();
 
         void buildFrameDescriptorSetLayout();
-        void buildMeshDescriptorSetLayout();
+        void buildMaterialDescriptorSetLayout();
         void buildDescriptorSetLayouts();
         void destroyDescriptorSetLayouts();
 
@@ -71,11 +71,11 @@ namespace Engine
         void destroyAssets();
 
         void buildFrameResources();
-        void buildMeshResources();
+        void buildMaterialResources();
 
         void prepareScene(const vk::CommandBuffer& inCommandBuffer);
         void prepareCamera(Frame::Instance& outFrame);
-        void prepareModel(Frame::Instance& outFrame);
+        void prepareSceneObjects(Frame::Instance& outFrame);
         void prepareFrame(const uint32_t& inImageIndex);
 
         void drawObjects(const vk::CommandBuffer& inCommandBuffer);
@@ -111,11 +111,13 @@ namespace Engine
         vk::DescriptorSetLayout frameDescriptorSetLayout;
         vk::DescriptorPool frameDescriptorPool;
 
-        vk::DescriptorSetLayout meshDescriptorSetLayout;
-        vk::DescriptorPool meshDescriptorPool;
         Vertex::Buffer::Instance meshVertexBuffer;
         Mesh::Manager::Instance* meshManager;
+
         Texture::Manager::Instance* textureManager;
+
+        vk::DescriptorSetLayout materialDescriptorSetLayout;
+        vk::DescriptorPool materialDescriptorPool;
 
         // GLFW
         GLFWwindow* window;

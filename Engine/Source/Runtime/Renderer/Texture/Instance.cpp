@@ -42,7 +42,7 @@ namespace Engine
 
 		Instance::~Instance()
 		{
-			logicalDevice.free(image.memory);
+			logicalDevice.freeMemory(image.memory);
 			logicalDevice.destroyImage(image.instance);
 			logicalDevice.destroyImageView(image.view);
 			logicalDevice.destroySampler(image.sampler);
@@ -132,11 +132,11 @@ namespace Engine
 			createInfo.addressModeU            = vk::SamplerAddressMode::eRepeat;
 			createInfo.addressModeV            = vk::SamplerAddressMode::eRepeat;
 			createInfo.addressModeW            = vk::SamplerAddressMode::eRepeat;
-			createInfo.anisotropyEnable        = VK_FALSE;
+			createInfo.anisotropyEnable        = false;
 			createInfo.maxAnisotropy           = 1.0f;
-			createInfo.borderColor             = vk::BorderColor::eIntOpaqueBlack;
-			createInfo.unnormalizedCoordinates = VK_FALSE;
-			createInfo.compareEnable           = VK_FALSE;
+			createInfo.borderColor             = vk::BorderColor::eIntTransparentBlack;
+			createInfo.unnormalizedCoordinates = false;
+			createInfo.compareEnable           = false;
 			createInfo.compareOp               = vk::CompareOp::eAlways;
 			createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
 			createInfo.mipLodBias              = 0.0f;
