@@ -87,6 +87,11 @@ namespace Engine
 
         inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
 
+        inCommandBuffer.bindPipeline(
+            vk::PipelineBindPoint::eGraphics,
+            graphicsPipeline.instance
+        );
+    
         inCommandBuffer.bindDescriptorSets(
             vk::PipelineBindPoint::eGraphics,
             graphicsPipeline.layout,
@@ -95,27 +100,9 @@ namespace Engine
             nullptr
         );
 
-        inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, graphicsPipeline.instance);
-
         prepareScene(inCommandBuffer);
 
-        //TODO Implement way to add textures for each object
-        for (int i = 0; i < scene.objects.size(); i++)
-        {
-            scene.objects[i].texture->use(inCommandBuffer, graphicsPipeline.layout);
-        }
-
-        std::vector<Mesh::AllocationInfo> allocatorInfoList = meshManager->getAllocationInfoList();
-
-        for (Mesh::AllocationInfo& allocationInfo : allocatorInfoList)
-        {
-            inCommandBuffer.draw(
-                allocationInfo.vertexCount,
-                allocationInfo.instanceCount,
-                allocationInfo.firstVertex,
-                allocationInfo.firstInstance
-            );
-        }
+        drawObjects(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
@@ -362,12 +349,10 @@ namespace Engine
             logicalDevice.destroySemaphore(frame.renderSemaphore);
 
             logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
-            logicalDevice.freeMemory(frame.cameraData.buffer.memory);
-            logicalDevice.destroyBuffer(frame.cameraData.buffer.instance);
+            Vertex::destroyBuffer(logicalDevice, frame.cameraData.buffer);
 
             logicalDevice.unmapMemory(frame.modelData.buffer.memory);
-            logicalDevice.freeMemory(frame.modelData.buffer.memory);
-            logicalDevice.destroyBuffer(frame.modelData.buffer.instance);
+            Vertex::destroyBuffer(logicalDevice, frame.modelData.buffer);
         }
 
         logicalDevice.destroySwapchainKHR(swapChain.instance);
@@ -461,19 +446,19 @@ namespace Engine
 
     void Application::buildFramebuffers()
     {
-        Frame::BufferCreateInfo framebufferCreateInfo = {
+        Frame::Buffer::CreateInfo framebufferCreateInfo = {
             logicalDevice,
             graphicsPipeline.renderPass,
             swapChain.extent,
             swapChain.frames
         };
 
-        Frame::initBuffer(framebufferCreateInfo);
+        Frame::Buffer::init(framebufferCreateInfo);
     }
 
     void Application::buildCommandPool()
     {
-        Command::initPool(
+        Command::Pool::init(
             commandPool,
             logicalDevice,
             physicalDevice,
@@ -488,13 +473,13 @@ namespace Engine
 
     void Application::buildCommandBuffers()
     {
-        Command::BufferCreateInfo commandBufferInfo = {
+        Command::Buffer::CreateInfo commandBufferInfo = {
             logicalDevice,
             commandPool,
             swapChain.frames
         };
 
-        Command::initBuffers(mainCommandBuffer, commandBufferInfo);
+        Command::Buffer::init(mainCommandBuffer, commandBufferInfo);
     }
 
     void Application::buildFrameResources()
@@ -532,7 +517,7 @@ namespace Engine
     {
         Descriptor::PoolCreateInfo poolCreateInfo;
         poolCreateInfo.count = 1;
-        poolCreateInfo.size  = 1; // Due to the usage of one default texture, should be texture.count
+        poolCreateInfo.size  = 2;
         poolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
@@ -542,49 +527,115 @@ namespace Engine
         );
     }
 
-    void Application::buildAssets()
+    void Application::buildMeshes()
     {
-        Mesh::ManagerCreateInfo meshCreationInfo;
-        meshCreationInfo.logicalDevice  = logicalDevice;
-        meshCreationInfo.physicalDevice = physicalDevice;
-        meshCreationInfo.queue          = graphicsQueue;
-        meshCreationInfo.commandBuffer  = mainCommandBuffer;
+        Mesh::Manager::CreateInfo meshManagerCreationInfo;
+        meshManagerCreationInfo.logicalDevice  = logicalDevice;
+        meshManagerCreationInfo.physicalDevice = physicalDevice;
+        meshManagerCreationInfo.queue          = graphicsQueue;
+        meshManagerCreationInfo.commandBuffer  = mainCommandBuffer;
 
-        meshManager = new Mesh::Manager(meshCreationInfo);
+        meshManager = new Mesh::Manager::Instance(meshManagerCreationInfo);
 
-        for (auto sceneObject : scene.getObjects())
-        {
-            meshManager->addMesh(sceneObject.vertices);
-        }
+        std::vector<Vertex2D*> triangleVertices;
+        triangleVertices.resize(3);
+
+        triangleVertices[0] = new Vertex2D();
+        triangleVertices[0]->position        = glm::vec2(0.0f, -1.0f);
+        triangleVertices[0]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[0]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        triangleVertices[1] = new Vertex2D();
+        triangleVertices[1]->position        = glm::vec2(1.0f, 1.0f);
+        triangleVertices[1]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[1]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        triangleVertices[2] = new Vertex2D();
+        triangleVertices[2]->position        = glm::vec2(-1.0f, 1.0f);
+        triangleVertices[2]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[2]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        meshManager->addMesh("Triangle", Vertex2D::toBaseList(triangleVertices));
+
+        std::vector<Vertex2D*> squareVertices;
+        squareVertices.resize(6);
+
+        squareVertices[0] = new Vertex2D();
+        squareVertices[0]->position        = glm::vec2(-0.5f, 1.0f);
+        squareVertices[0]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[0]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        squareVertices[1] = new Vertex2D();
+        squareVertices[1]->position        = glm::vec2(-0.5f, -1.0f);
+        squareVertices[1]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[1]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        squareVertices[2] = new Vertex2D();
+        squareVertices[2]->position        = glm::vec2(0.5f, -1.0f);
+        squareVertices[2]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[2]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        squareVertices[3] = new Vertex2D();
+        squareVertices[3]->position        = glm::vec2(0.5f, -1.0f);
+        squareVertices[3]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[3]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        squareVertices[4] = new Vertex2D();
+        squareVertices[4]->position        = glm::vec2(0.5f, 1.0f);
+        squareVertices[4]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[4]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        squareVertices[5] = new Vertex2D();
+        squareVertices[5]->position        = glm::vec2(-0.5f, 1.0f);
+        squareVertices[5]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[5]->texturePosition = glm::vec2(1.0f, 1.0f);
+
+        meshManager->addMesh("Square", Vertex2D::toBaseList(squareVertices));
 
         meshManager->proccess();
+    }
 
-        //TODO Implement way to add textures for each object
-        Texture::CreateInfo createInfo;
-        createInfo.width               = 512;
-        createInfo.height              = 512;
-        createInfo.filename            = "gray.png";
-        createInfo.logicalDevice       = logicalDevice;
-        createInfo.physicalDevice      = physicalDevice;
-        createInfo.commandBuffer       = mainCommandBuffer;
-        createInfo.queue               = graphicsQueue;
-        createInfo.descriptorSetLayout = meshDescriptorSetLayout;
-        createInfo.descriptorPool      = meshDescriptorPool;
+    void Application::buildTextures()
+    {
+        textureManager = new Texture::Manager::Instance();
 
-        defaultTexture = new Texture::Instance(createInfo);
+        Texture::CreateInfo grayTextureCreateInfo;
+        grayTextureCreateInfo.width               = 512;
+        grayTextureCreateInfo.height              = 512;
+        grayTextureCreateInfo.filename            = "gray.png";
+        grayTextureCreateInfo.logicalDevice       = logicalDevice;
+        grayTextureCreateInfo.physicalDevice      = physicalDevice;
+        grayTextureCreateInfo.commandBuffer       = mainCommandBuffer;
+        grayTextureCreateInfo.queue               = graphicsQueue;
+        grayTextureCreateInfo.descriptorSetLayout = meshDescriptorSetLayout;
+        grayTextureCreateInfo.descriptorPool      = meshDescriptorPool;
 
-        for (int i = 0; i < scene.objects.size(); i++)
-        {
-            scene.objects[i].texture = defaultTexture;
-        }
+        textureManager->addTexture("Gray", grayTextureCreateInfo);
+
+        Texture::CreateInfo gridTextureCreateInfo;
+        gridTextureCreateInfo.width               = 512;
+        gridTextureCreateInfo.height              = 512;
+        gridTextureCreateInfo.filename            = "grid.png";
+        gridTextureCreateInfo.logicalDevice       = logicalDevice;
+        gridTextureCreateInfo.physicalDevice      = physicalDevice;
+        gridTextureCreateInfo.commandBuffer       = mainCommandBuffer;
+        gridTextureCreateInfo.queue               = graphicsQueue;
+        gridTextureCreateInfo.descriptorSetLayout = meshDescriptorSetLayout;
+        gridTextureCreateInfo.descriptorPool      = meshDescriptorPool;
+
+        textureManager->addTexture("Grid", gridTextureCreateInfo);
+    }
+
+    void Application::buildAssets()
+    {
+        buildMeshes();
+        buildTextures();
     }
 
     void Application::destroyAssets()
     {
         delete meshManager;
-
-        //TODO Implement way to add textures for each object
-        delete defaultTexture;
+        delete textureManager;
     }
 
     void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
@@ -618,11 +669,11 @@ namespace Engine
 
     void Application::prepareModel(Frame::Instance& outFrame)
     {
-        auto sceneObjects = scene.getObjects();
+        std::vector<Engine::Scene::Object::Instance> sceneObjects = scene.getObjects();
             
         for (uint32_t i = 0; i < sceneObjects.size(); i++)
         {
-            auto& sceneObject = sceneObjects[i];
+            Engine::Scene::Object::Instance& sceneObject = sceneObjects[i];
 
             glm::mat4 transform = glm::translate(glm::mat4(1.0f), sceneObject.transform.translation);
             transform           = glm::scale(transform, sceneObject.transform.scale);
@@ -650,5 +701,22 @@ namespace Engine
         );
 
         frame.writeDescriptorSet(logicalDevice);
+    }
+
+    void Application::drawObjects(const vk::CommandBuffer& inCommandBuffer)
+    {
+        for (Scene::Object::Instance sceneObject : scene.objects)
+        {
+            Texture::Instance* objectTexture = textureManager->getTexture(sceneObject.texture);
+            objectTexture->use(inCommandBuffer, graphicsPipeline.layout);
+
+            Mesh::Instance objectMesh = meshManager->getMesh(sceneObject.mesh);
+            inCommandBuffer.draw(
+                objectMesh.allocationInfo.vertexCount,
+                objectMesh.allocationInfo.instanceCount,
+                objectMesh.allocationInfo.firstVertex,
+                objectMesh.allocationInfo.firstInstance
+            );
+        }
     }
 }

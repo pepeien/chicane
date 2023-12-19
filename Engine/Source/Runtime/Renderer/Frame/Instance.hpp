@@ -2,9 +2,9 @@
 
 #include "Base.hpp"
 
-#include "Vertex.hpp"
-#include "Uniform.hpp"
-#include "Scene.hpp"
+#include "Renderer/Uniform.hpp"
+#include "Renderer/Vertex.hpp"
+#include "Renderer/Scene/Instance.hpp"
 
 namespace Engine
 {
@@ -65,15 +65,5 @@ namespace Engine
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
             vk::DescriptorSet descriptorSet;
         };
-    
-        struct BufferCreateInfo
-        {
-            vk::Device logicalDevice;
-            vk::RenderPass renderPass;
-            vk::Extent2D swapChainExtent;
-            std::vector<Instance>& frames;
-        };
-    
-    	void initBuffer(BufferCreateInfo& outCreateInfo);
     }
 }

@@ -2,9 +2,9 @@
 
 #include "Base.hpp"
 
-#include "Vertex.hpp"
-#include "Image.hpp"
-#include "Descriptor.hpp"
+#include "Renderer/Vertex.hpp"
+#include "Renderer/Image.hpp"
+#include "Renderer/Descriptor.hpp"
 
 namespace Engine
 {
@@ -21,21 +21,6 @@ namespace Engine
 			vk::Queue queue;
 			vk::DescriptorSetLayout descriptorSetLayout;
 			vk::DescriptorPool descriptorPool;
-		};
-
-		struct ImageBundle
-		{
-			vk::Image instance;
-			vk::DeviceMemory memory;
-			vk::ImageView view;
-			vk::Sampler sampler;
-		};
-
-		struct DescriptorBundle
-		{
-			vk::DescriptorSetLayout setLayout;
-			vk::DescriptorSet set;
-			vk::DescriptorPool pool;
 		};
 
 		class Instance
@@ -63,9 +48,9 @@ namespace Engine
 			vk::PhysicalDevice physicalDevice;
 			stbi_uc* pixels;
 
-			ImageBundle image;
+			Image::Bundle image;
 
-			DescriptorBundle descriptor;
+			Descriptor::Bundle descriptor;
 
 			vk::CommandBuffer commandBuffer;
 			vk::Queue queue;

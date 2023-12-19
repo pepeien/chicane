@@ -1,4 +1,4 @@
-#include "Texture.hpp"
+#include "Instance.hpp"
 
 namespace Engine
 {
@@ -50,7 +50,7 @@ namespace Engine
 
 		void Instance::use(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
 		{
-			commandBuffer.bindDescriptorSets(
+			inCommandBuffer.bindDescriptorSets(
 				vk::PipelineBindPoint::eGraphics,
 				inPipelineLayout,
 				1,
@@ -110,8 +110,7 @@ namespace Engine
 				vk::ImageLayout::eShaderReadOnlyOptimal
 			);
 
-			logicalDevice.freeMemory(stagingBuffer.memory);
-			logicalDevice.destroyBuffer(stagingBuffer.instance);
+			Vertex::destroyBuffer(logicalDevice, stagingBuffer);
 		}
 
 		void Instance::makeView()
@@ -120,7 +119,7 @@ namespace Engine
 				image.view,
 				logicalDevice,
 				image.instance,
-				vk::Format::eR8G8B8Unorm
+				vk::Format::eR8G8B8A8Unorm
 			);
 		}
 
@@ -135,7 +134,7 @@ namespace Engine
 			createInfo.addressModeW            = vk::SamplerAddressMode::eRepeat;
 			createInfo.anisotropyEnable        = VK_FALSE;
 			createInfo.maxAnisotropy           = 1.0f;
-			createInfo.borderColor             = vk::BorderColor::eIntTransparentBlack;
+			createInfo.borderColor             = vk::BorderColor::eIntOpaqueBlack;
 			createInfo.unnormalizedCoordinates = VK_FALSE;
 			createInfo.compareEnable           = VK_FALSE;
 			createInfo.compareOp               = vk::CompareOp::eAlways;

@@ -42,7 +42,7 @@ namespace Engine
             const vk::CommandBuffer& inCommandBuffer
         )
         {
-            Command::Job::start(inCommandBuffer);
+            Command::Worker::startJob(inCommandBuffer);
 
             vk::BufferCopy copyRegion;
             copyRegion.srcOffset = 0;
@@ -56,7 +56,13 @@ namespace Engine
                 &copyRegion
             );
 
-            Command::Job::end(inCommandBuffer, inQueue, "Copy The Vertex Fuffer");
+            Command::Worker::endJob(inCommandBuffer, inQueue, "Copy The Vertex Fuffer");
+        }
+
+        void destroyBuffer(const vk::Device& inLogicalDevice, const Vertex::Buffer& inBuffer)
+        {
+            inLogicalDevice.freeMemory(inBuffer.memory);
+            inLogicalDevice.destroyBuffer(inBuffer.instance);
         }
     }
 

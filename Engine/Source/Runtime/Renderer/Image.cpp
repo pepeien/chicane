@@ -72,7 +72,7 @@ namespace Engine
             const vk::ImageLayout& newLayout
         )
         {
-            Command::Job::start(inCommandBuffer);
+            Command::Worker::startJob(inCommandBuffer);
 
             vk::ImageSubresourceRange imageSubresourceRange;
             imageSubresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -92,19 +92,19 @@ namespace Engine
             vk::PipelineStageFlags sourceStage;
             vk::PipelineStageFlags destinationStage;
 
-            imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
-            imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
+            imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
+            imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
 
-            sourceStage      = vk::PipelineStageFlagBits::eTopOfPipe;
-            destinationStage = vk::PipelineStageFlagBits::eTransfer;
+            sourceStage      = vk::PipelineStageFlagBits::eTransfer;
+            destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
 
-            if (oldLayout != vk::ImageLayout::eUndefined)
+            if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eTransferDstOptimal)
             {
-                imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
-                imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eShaderRead;
+                imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
+                imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
 
-                sourceStage      = vk::PipelineStageFlagBits::eTransfer;
-                destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
+                sourceStage      = vk::PipelineStageFlagBits::eTopOfPipe;
+                destinationStage = vk::PipelineStageFlagBits::eTransfer;
             }
 
             inCommandBuffer.pipelineBarrier(
@@ -116,7 +116,7 @@ namespace Engine
                 imageMemoryBarrier
             );
 
-            Command::Job::end(inCommandBuffer, inQueue, "Transition Image Layout");
+            Command::Worker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
         }
 
         void copyBufferToImage(
@@ -128,7 +128,7 @@ namespace Engine
             const uint32_t& inHeight
         )
         {
-            Command::Job::start(inCommandBuffer);
+            Command::Worker::startJob(inCommandBuffer);
 
             vk::ImageSubresourceLayers imageSubresourceLayers;
             imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -151,7 +151,7 @@ namespace Engine
                 bufferImageCopy
             );
 
-            Command::Job::end(inCommandBuffer, inQueue, "Copy Buffer To Image");
+            Command::Worker::endJob(inCommandBuffer, inQueue, "Copy Buffer To Image");
         }
 	}
 }

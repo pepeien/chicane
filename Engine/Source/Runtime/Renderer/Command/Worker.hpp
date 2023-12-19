@@ -6,10 +6,10 @@ namespace Engine
 {
     namespace Command
     {
-        namespace Job
+        namespace Worker
         {
-            void start(const vk::CommandBuffer& inCommandBuffer);
-            void end(
+            void startJob(const vk::CommandBuffer& inCommandBuffer);
+            void endJob(
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::Queue& inQueue,
                 const std::string& inDescription = "Commad Buffer"

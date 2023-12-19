@@ -22,6 +22,13 @@ namespace Engine
 			std::vector<vk::ShaderStageFlags> stages;
 		};
 
+		struct Bundle
+		{
+			vk::DescriptorSetLayout setLayout;
+			vk::DescriptorSet set;
+			vk::DescriptorPool pool;
+		};
+
 		void initPool(
 			vk::DescriptorPool& outDescriptorPool,
 			const vk::Device& inLogicalDevice,

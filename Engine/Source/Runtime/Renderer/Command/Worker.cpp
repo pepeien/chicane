@@ -1,12 +1,12 @@
-#include "CommandJob.hpp"
+#include "Worker.hpp"
 
 namespace Engine
 {
     namespace Command
     {
-        namespace Job
+        namespace Worker
         {
-            void start(const vk::CommandBuffer& inCommandBuffer)
+            void startJob(const vk::CommandBuffer& inCommandBuffer)
             {
                 inCommandBuffer.reset();
             
@@ -16,7 +16,7 @@ namespace Engine
                 inCommandBuffer.begin(commandBufferBegin);
             }
             
-            void end(
+            void endJob(
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::Queue& inQueue,
                 const std::string& inDescription

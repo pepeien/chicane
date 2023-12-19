@@ -61,16 +61,20 @@ namespace Engine
 
         void buildCommandBuffers();
 
-        void buildFrameResources();
-        void buildMeshResources();
-
+        void buildMeshes();
+        void buildTextures();
         void buildAssets();
         void destroyAssets();
+
+        void buildFrameResources();
+        void buildMeshResources();
 
         void prepareScene(const vk::CommandBuffer& inCommandBuffer);
         void prepareCamera(Frame::Instance& outFrame);
         void prepareModel(Frame::Instance& outFrame);
         void prepareFrame(const uint32_t& inImageIndex);
+
+        void drawObjects(const vk::CommandBuffer& inCommandBuffer);
 
     private:
         // Stats
@@ -106,16 +110,14 @@ namespace Engine
         vk::DescriptorSetLayout meshDescriptorSetLayout;
         vk::DescriptorPool meshDescriptorPool;
 
-        Mesh::Manager* meshManager;
+        Mesh::Manager::Instance* meshManager;
+        Texture::Manager::Instance* textureManager;
 
         // GLFW
         GLFWwindow* window;
 
         // Context
         Scene::Instance scene;
-
-        //TODO Implement way to add textures for each object
-        Texture::Instance* defaultTexture;
 
         std::string windowTitle;
         int windowWidth;

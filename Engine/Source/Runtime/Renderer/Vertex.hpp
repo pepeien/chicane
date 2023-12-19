@@ -2,8 +2,8 @@
 
 #include "Base.hpp"
 
-#include "CommandJob.hpp"
 #include "Device.hpp"
+#include "Command/Worker.hpp"
 
 namespace Engine
 {
@@ -41,6 +41,7 @@ namespace Engine
             const vk::Queue& inQueue,
             const vk::CommandBuffer& inCommandBuffer
         );
+        void destroyBuffer(const vk::Device& inLogicalDevice, const Vertex::Buffer& inBuffer);
     }
 
     class Vertex2D : public Vertex::Base

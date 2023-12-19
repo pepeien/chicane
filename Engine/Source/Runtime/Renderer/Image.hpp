@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Device.hpp"
-#include "CommandJob.hpp"
+#include "Command/Worker.hpp"
 
 namespace Engine
 {
@@ -20,6 +20,14 @@ namespace Engine
             vk::ImageUsageFlags usage;
             vk::MemoryPropertyFlags memoryProperties;
         }; 
+
+		struct Bundle
+		{
+			vk::Image instance;
+			vk::DeviceMemory memory;
+			vk::ImageView view;
+			vk::Sampler sampler;
+		};
 
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo);
         void initMemory(vk::DeviceMemory& outDeviceMemory, const CreateInfo& inCreateInfo, const vk::Image& inImage);
