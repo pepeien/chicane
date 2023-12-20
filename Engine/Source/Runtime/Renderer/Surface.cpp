@@ -12,7 +12,14 @@ namespace Engine
         {
             VkSurfaceKHR c_style_surface;
     
-            if (glfwCreateWindowSurface(inInstance, inWindow, nullptr, &c_style_surface) != VK_SUCCESS)
+            if (
+                glfwCreateWindowSurface(
+                    inInstance,
+                    inWindow,
+                    nullptr,
+                    &c_style_surface
+                ) != VK_SUCCESS
+            )
             {
                 throw std::runtime_error("Failed to abtract the GLFW surface for Vulkan");
             }

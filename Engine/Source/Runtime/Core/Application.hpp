@@ -45,11 +45,8 @@ namespace Engine
         void destroySwapChain();
 
         void buildFrameDescriptorSetLayout();
-        void buildMaterialDescriptorSetLayout();
-        void buildDescriptorSetLayouts();
-        void destroyDescriptorSetLayouts();
 
-        void destroyDescriptorPools();
+        void buildMaterialDescriptorSetLayout();
 
         void buildGraphicsPipeline();
         void destroyGraphicsPipeline();
@@ -59,18 +56,21 @@ namespace Engine
         void buildCommandPool();
         void destroyCommandPool();
 
-        void buildCommandBuffers();
+        void buildMainCommandBuffer();
+        void buildFramesCommandBuffers();
 
         void prepareMeshes();
         void buildMeshes();
 
         void prepareTextures();
         void buildTextures();
+        void destroyTextures();
 
         void buildAssets();
         void destroyAssets();
 
         void buildFrameResources();
+
         void buildMaterialResources();
 
         void prepareScene(const vk::CommandBuffer& inCommandBuffer);
@@ -111,10 +111,10 @@ namespace Engine
         vk::DescriptorSetLayout frameDescriptorSetLayout;
         vk::DescriptorPool frameDescriptorPool;
 
-        Vertex::Buffer::Instance meshVertexBuffer;
-        Mesh::Manager::Instance* meshManager;
+        Buffer::Instance meshVertexBuffer;
+        std::unique_ptr<Mesh::Manager::Instance> meshManager;
 
-        Texture::Manager::Instance* textureManager;
+        std::unique_ptr<Texture::Manager::Instance> textureManager;
 
         vk::DescriptorSetLayout materialDescriptorSetLayout;
         vk::DescriptorPool materialDescriptorPool;

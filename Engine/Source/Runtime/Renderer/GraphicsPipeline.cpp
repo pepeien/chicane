@@ -13,7 +13,9 @@ namespace Engine
             vertexInputInfo.flags                           = vk::PipelineVertexInputStateCreateFlags();
             vertexInputInfo.vertexBindingDescriptionCount   = 1;
             vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
-            vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inAttributeDescriptions.size());
+            vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(
+                inAttributeDescriptions.size()
+            );
             vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescriptions.data();
     
             return vertexInputInfo;
@@ -97,7 +99,9 @@ namespace Engine
             return multisampleState;
         }
     
-        vk::PipelineColorBlendStateCreateInfo createColorBlendState(const vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState)
+        vk::PipelineColorBlendStateCreateInfo createColorBlendState(
+            const vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState
+        )
         {
             vk::PipelineColorBlendStateCreateInfo colorBlendState = {};
             colorBlendState.flags             = vk::PipelineColorBlendStateCreateFlags();
@@ -189,26 +193,40 @@ namespace Engine
             scissor.extent   = inCreateInfo.swapChainExtent;
     
             vk::PipelineColorBlendAttachmentState colorBlendAttachmentState = {};
-            colorBlendAttachmentState.colorWriteMask = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
-                                                       vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
-            colorBlendAttachmentState.blendEnable    = VK_FALSE;
+            colorBlendAttachmentState.colorWriteMask = vk::ColorComponentFlagBits::eR |
+                                                       vk::ColorComponentFlagBits::eG |
+                                                       vk::ColorComponentFlagBits::eB |
+                                                       vk::ColorComponentFlagBits::eA;
+            colorBlendAttachmentState.blendEnable = VK_FALSE;
     
-            auto bindingDescription    = Vertex2D::getBindingDescription();
-            auto attributeDescriptions = Vertex2D::getAttributeDescriptions();
+            auto bindingDescription    = Vertex::getBindingDescription();
+            auto attributeDescriptions = Vertex::getAttributeDescriptions();
     
-            vk::PipelineVertexInputStateCreateInfo vertexInputState     = createVertexInputState(
+            vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState(
                 bindingDescription,
                 attributeDescriptions
             );
             vk::PipelineInputAssemblyStateCreateInfo inputAssemblyState = createInputAssemblyState();
-            vk::PipelineShaderStageCreateInfo vertexShaderCreateInfo    = createVertexShader(vertexShaderModule, inCreateInfo);
-            vk::PipelineViewportStateCreateInfo viewportState           = createViewport(inCreateInfo, viewport, scissor);
+            vk::PipelineShaderStageCreateInfo vertexShaderCreateInfo = createVertexShader(
+                vertexShaderModule,
+                inCreateInfo
+            );
+            vk::PipelineViewportStateCreateInfo viewportState = createViewport(
+                inCreateInfo,
+                viewport,
+                scissor
+            );
             vk::PipelineRasterizationStateCreateInfo rasterizationState = createRasterizerState();
-            vk::PipelineShaderStageCreateInfo fragmentShaderCreateInfo  = createFragmentShader(fragmentShaderModule, inCreateInfo);
-            vk::PipelineMultisampleStateCreateInfo multisampleState     = createMulitsampleState();
-            vk::PipelineColorBlendStateCreateInfo colorBlendState       = createColorBlendState(colorBlendAttachmentState);
-            vk::PipelineLayout layout                                   = createLayout(inCreateInfo);
-            vk::RenderPass renderPass                                   = createRendepass(inCreateInfo);
+            vk::PipelineShaderStageCreateInfo fragmentShaderCreateInfo = createFragmentShader(
+                fragmentShaderModule,
+                inCreateInfo
+            );
+            vk::PipelineMultisampleStateCreateInfo multisampleState = createMulitsampleState();
+            vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState(
+                colorBlendAttachmentState
+            );
+            vk::PipelineLayout layout = createLayout(inCreateInfo);
+            vk::RenderPass renderPass = createRendepass(inCreateInfo);
     
             std::vector<vk::PipelineShaderStageCreateInfo> shaderStages;
             shaderStages.push_back(vertexShaderCreateInfo);
@@ -231,7 +249,12 @@ namespace Engine
     
             outGraphicsPipeline.layout     = layout;
             outGraphicsPipeline.renderPass = renderPass;
-            outGraphicsPipeline.instance   = inCreateInfo.logicalDevice.createGraphicsPipeline(nullptr, pipelineInfo).value;
+            outGraphicsPipeline.instance   = inCreateInfo
+                                             .logicalDevice
+                                             .createGraphicsPipeline(
+                                                nullptr,
+                                                pipelineInfo
+                                             ).value;
     
             inCreateInfo.logicalDevice.destroyShaderModule(vertexShaderModule);
             inCreateInfo.logicalDevice.destroyShaderModule(fragmentShaderModule);

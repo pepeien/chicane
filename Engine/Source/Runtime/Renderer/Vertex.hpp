@@ -6,12 +6,14 @@ namespace Engine
 {
     namespace Vertex
     {
-        class Base
+        struct Instance
         {
-        public:
             glm::vec2 position;
             glm::vec3 color;
             glm::vec2 texturePosition;
         };
+
+        vk::VertexInputBindingDescription getBindingDescription();
+        std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
     }
 }

@@ -8,15 +8,7 @@ namespace Engine
         {
             Instance::~Instance()
             {
-                for (auto [id, texture] : textureInstancesMap)
-                {
-                    if (texture == nullptr)
-                    {
-                        continue;
-                    }
-
-                    delete texture;
-                }
+                destroyTexturesInstances();
             }
 
             void Instance::addTexture(const std::string& inTextureId, const Texture::Data& inData)
@@ -26,26 +18,41 @@ namespace Engine
                     textureInstancesMap.find(inTextureId) != textureInstancesMap.end()
                 )
                 {
-                    throw std::runtime_error("A Texture identified by [" + inTextureId  + "] already exists");
+                    throw std::runtime_error(
+                        "The Texture [" + inTextureId  + "] has already been intiialized"
+                    );
                 }
 
                 textureDataMap.insert(std::make_pair(inTextureId, inData));
                 registeredTextureIds.push_back(inTextureId);
             }
 
-            Texture::Instance* Instance::getTexture(const std::string& inTextureId)
+            void Instance::bindTexture(
+                const std::string& inTextureId,
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::PipelineLayout& inPipelineLayout
+            )
             {
                 auto foundTexture = textureInstancesMap.find(inTextureId);
 
                 if (foundTexture == textureInstancesMap.end())
                 {
-                    throw std::runtime_error("Invalid Texture ID [" + inTextureId + "]");
+                    throw std::runtime_error(
+                        "The Texture [" + inTextureId + "] does not exists"
+                    );
                 }
 
-                return foundTexture->second;
+                if (foundTexture->second == nullptr)
+                {
+                    throw std::runtime_error(
+                        "The Texture [" + inTextureId + "] has not been initialized"
+                    );
+                }
+
+                foundTexture->second->bind(inCommandBuffer, inPipelineLayout);
             }
 
-            void Instance::buildTextures(
+            void Instance::buildTexturesInstances(
                 const vk::Device& inLogicalDevice,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::CommandBuffer& inCommandBuffer,
@@ -68,13 +75,23 @@ namespace Engine
 
                     if (foundTexture == textureDataMap.end())
                     {
-                        throw std::runtime_error("Invalid Texture ID [" + textureId + "]");
+                        throw std::runtime_error("The Texture [" + textureId + "] does not exist");
                     }
 
                     textureCreateInfo.data = foundTexture->second;
 
-                    textureInstancesMap.insert(std::make_pair(textureId, new Texture::Instance(textureCreateInfo)));
+                    textureInstancesMap.insert(
+                        std::make_pair(
+                            textureId,
+                            std::make_unique<Texture::Instance>(textureCreateInfo)
+                        )
+                    );
                 }
+            }
+
+            void Instance::destroyTexturesInstances()
+            {
+                textureInstancesMap.clear();
             }
 
             uint32_t Instance::getCount()

@@ -27,7 +27,9 @@ namespace Engine
             descriptorPoolCreateInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
             descriptorPoolCreateInfo.pPoolSizes    = poolSizes.data();
     
-            outDescriptorPool = inLogicalDevice.createDescriptorPool(descriptorPoolCreateInfo);
+            outDescriptorPool = inLogicalDevice.createDescriptorPool(
+                descriptorPoolCreateInfo
+            );
         }
     
         void initSetLayout(
@@ -55,7 +57,9 @@ namespace Engine
             setLayoutCreateInfo.bindingCount = inBidingsCreateInfo.count;
             setLayoutCreateInfo.pBindings    = setLayoutBidings.data();
     
-            outDescriptorSetLayout = inLogicalDevice.createDescriptorSetLayout(setLayoutCreateInfo);
+            outDescriptorSetLayout = inLogicalDevice.createDescriptorSetLayout(
+                setLayoutCreateInfo
+            );
         }
     
         void initSet(
@@ -70,7 +74,9 @@ namespace Engine
             descriptorSetallocationInfo.descriptorPool     = inPool;
             descriptorSetallocationInfo.pSetLayouts        = &inLayout;
     
-            outDescriptorSet = inLogicalDevice.allocateDescriptorSets(descriptorSetallocationInfo)[0];
+            outDescriptorSet = inLogicalDevice.allocateDescriptorSets(
+                descriptorSetallocationInfo
+            )[0];
         }
     }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Renderer/Buffer.hpp"
 #include "Renderer/Debug.hpp"
 #include "Renderer/Descriptor.hpp"
 #include "Renderer/Device.hpp"
@@ -12,6 +13,7 @@
 #include "Renderer/SwapChain.hpp"
 #include "Renderer/Sync.hpp"
 #include "Renderer/Uniform.hpp"
+#include "Renderer/Vertex.hpp"
 
 #include "Renderer/Command/Buffer.hpp"
 #include "Renderer/Command/Pool.hpp"
@@ -28,7 +30,3 @@
 
 #include "Renderer/Texture/Manager.hpp"
 #include "Renderer/Texture/Instance.hpp"
-
-#include "Renderer/Vertex/Instance.hpp"
-#include "Renderer/Vertex/2D.hpp"
-#include "Renderer/Vertex/Buffer.hpp"

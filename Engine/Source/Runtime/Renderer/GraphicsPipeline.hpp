@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Shader.hpp"
-#include "Vertex/2D.hpp"
+#include "Vertex.hpp"
 
 namespace Engine
 {
@@ -46,7 +46,9 @@ namespace Engine
             const CreateInfo& inCreateInfo
         );
         vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-        vk::PipelineColorBlendStateCreateInfo createColorBlendState(const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState);
+        vk::PipelineColorBlendStateCreateInfo createColorBlendState(
+            const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState
+        );
         vk::PipelineLayout createLayout(const CreateInfo& inCreateInfo);
         vk::RenderPass createRendepass(const CreateInfo& inCreateInfo);
     

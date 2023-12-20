@@ -2,9 +2,9 @@
 
 #include "Base.hpp"
 
-#include "Renderer/Image.hpp"
+#include "Renderer/Buffer.hpp"
 #include "Renderer/Descriptor.hpp"
-#include "Renderer/Vertex/Buffer.hpp"
+#include "Renderer/Image.hpp"
 
 namespace Engine
 {
@@ -35,7 +35,10 @@ namespace Engine
             ~Instance();
 
         public:
-            void bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
+            void bind(
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::PipelineLayout& inPipelineLayout
+            );
 
         private:
             void load();

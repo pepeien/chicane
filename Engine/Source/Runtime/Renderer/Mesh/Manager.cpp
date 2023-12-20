@@ -6,11 +6,14 @@ namespace Engine
     {
         namespace Manager
         {
-            void Instance::addMesh(const std::string& inMeshId, const std::vector<Vertex::Base*>& inVertices)
+            void Instance::addMesh(
+                const std::string& inMeshId,
+                const std::vector<Vertex::Instance>& inVertices
+            )
             {
                 if (meshesMap.find(inMeshId) != meshesMap.end())
                 {
-                    throw std::runtime_error("A Mesh identified by [" + inMeshId  + "] already exists");
+                    throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
                 }
 
                 Mesh::Instance newMesh;
@@ -20,62 +23,75 @@ namespace Engine
                 meshesMap.insert(std::make_pair(inMeshId, newMesh));
             }
 
-            Mesh::Instance Instance::getMesh(const std::string& inMeshId)
+            void Instance::drawMesh(const std::string& inMeshId, const vk::CommandBuffer& inCommadBuffer)
             {
                 auto foundMesh = meshesMap.find(inMeshId);
 
                 if (foundMesh == meshesMap.end())
                 {
-                    throw std::runtime_error("Invalid Mesh ID [" + inMeshId + "]");
+                    throw std::runtime_error("The Mesh [" + inMeshId + "] does not exist");
                 }
 
-                return foundMesh->second;
+                auto mesh = foundMesh->second;
+
+                inCommadBuffer.draw(
+                    mesh.allocationInfo.vertexCount,
+                    mesh.allocationInfo.instanceCount,
+                    mesh.allocationInfo.firstVertex,
+                    mesh.allocationInfo.firstInstance
+                );
             }
 
-            void Instance::builMeshes(
-                Vertex::Buffer::Instance& outVertexBuffer,
+            void Instance::initVertexBuffer(
+                Buffer::Instance& outVertexBuffer,
                 const vk::Device& inLogicalDevice,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Queue& inQueue,
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                std::vector<Vertex::Base> extractedVertices;
+                std::vector<Vertex::Instance> extractedVertices;
                 vk::DeviceSize extractedAllocationSize = 0;
 
-                extractFromMeshList(extractedVertices, extractedAllocationSize);
+                extractFromMeshList(
+                    extractedVertices,
+                    extractedAllocationSize
+                );
 
-                Vertex::Buffer::CreateInfo stagingBufferCreateInfo;
+                Buffer::CreateInfo stagingBufferCreateInfo;
                 stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
                 stagingBufferCreateInfo.size             = extractedAllocationSize;
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-                stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+                stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                                           vk::MemoryPropertyFlagBits::eHostCoherent;
 
-                Vertex::Buffer::Instance stagingBuffer;
-                Vertex::Buffer::init(stagingBuffer, stagingBufferCreateInfo);
+                Buffer::Instance stagingBuffer;
+                Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
+                void* writeLocation = inLogicalDevice.mapMemory(
+                    stagingBuffer.memory,
+                    0,
+                    stagingBufferCreateInfo.size
+                );
                 memcpy(
-                    inLogicalDevice.mapMemory(
-                        stagingBuffer.memory,
-                        0,
-                        stagingBufferCreateInfo.size
-                    ),
+                    writeLocation,
                     extractedVertices.data(),
                     stagingBufferCreateInfo.size
                 );
                 inLogicalDevice.unmapMemory(stagingBuffer.memory);
 
-                Vertex::Buffer::CreateInfo bufferCreateInfo;
+                Buffer::CreateInfo bufferCreateInfo;
                 bufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 bufferCreateInfo.logicalDevice    = inLogicalDevice;
                 bufferCreateInfo.size             = extractedAllocationSize;
-                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                                    vk::BufferUsageFlagBits::eVertexBuffer;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-                Vertex::Buffer::init(outVertexBuffer, bufferCreateInfo);
+                Buffer::init(outVertexBuffer, bufferCreateInfo);
 
-                Vertex::Buffer::copy(
+                Buffer::copy(
                     stagingBuffer,
                     outVertexBuffer,
                     extractedAllocationSize,
@@ -83,10 +99,13 @@ namespace Engine
                     inCommandBuffer
                 );
 
-                Vertex::Buffer::destroy(inLogicalDevice, stagingBuffer);
+                Buffer::destroy(inLogicalDevice, stagingBuffer);
             }
 
-            void Instance::extractFromMeshList(std::vector<Vertex::Base>& outVertices, vk::DeviceSize& outAllocationSize)
+            void Instance::extractFromMeshList(
+                std::vector<Vertex::Instance>& outVertices,
+                vk::DeviceSize& outAllocationSize
+            )
             {
                 uint32_t currentInstance = 0;
 
@@ -102,11 +121,11 @@ namespace Engine
 
                     meshInstance.allocationInfo = allocationInfo;
 
-                    outAllocationSize += sizeof(*meshInstance.vertices[0]) * allocationInfo.vertexCount;
+                    outAllocationSize += sizeof(meshInstance.vertices[0]) * allocationInfo.vertexCount;
 
                     for (auto vertex : meshInstance.vertices)
                     {
-                        outVertices.push_back(*vertex);
+                        outVertices.push_back(vertex);
                     }
 
                     currentInstance++;

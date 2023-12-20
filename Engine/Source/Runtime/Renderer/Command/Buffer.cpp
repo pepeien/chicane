@@ -13,11 +13,6 @@ namespace Engine
                 allocateInfo.level              = vk::CommandBufferLevel::ePrimary;
                 allocateInfo.commandBufferCount = 1;
 
-                for (int i = 0; i < inCreateInfo.frames.size(); i++)
-                {
-                    inCreateInfo.frames[i].commandBuffer = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
-                }
-
                 outCommandBuffer = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
             }
         }

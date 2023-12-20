@@ -10,7 +10,10 @@ namespace Engine
     {
         bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice);
 
-        void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance);
+        void pickPhysicalDevice(
+            vk::PhysicalDevice& outPhysicalDevice,
+            const vk::Instance& inInstance
+        );
 
         void initLogicalDevice(
             vk::Device& outLogicalDevice,

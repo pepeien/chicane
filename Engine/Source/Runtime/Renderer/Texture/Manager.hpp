@@ -17,9 +17,13 @@ namespace Engine
 
             public:
                 void addTexture(const std::string& inTextureId, const Texture::Data& inData);
-                Texture::Instance* getTexture(const std::string& inTextureId); 
+                void bindTexture(
+                    const std::string& inTextureId,
+                    const vk::CommandBuffer& inCommandBuffer,
+                    const vk::PipelineLayout& inPipelineLayout
+                );
 
-                void buildTextures(
+                void buildTexturesInstances(
                     const vk::Device& inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,
                     const vk::CommandBuffer& inCommandBuffer,
@@ -27,13 +31,14 @@ namespace Engine
                     const vk::DescriptorSetLayout& inDescriptorSetLayout,
                     const vk::DescriptorPool& inDescriptorPool
                 );
+                void destroyTexturesInstances();
 
                 uint32_t getCount();
 
             private:
                 std::vector<std::string> registeredTextureIds;
                 std::unordered_map<std::string, Texture::Data> textureDataMap;
-                std::unordered_map<std::string, Texture::Instance*> textureInstancesMap;
+                std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> textureInstancesMap;
             };
         }
     }

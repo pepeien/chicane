@@ -8,7 +8,9 @@ namespace Engine
         {
             width                = inCreateInfo.data.width;
             height               = inCreateInfo.data.height;
-            filename             = FileSystem::getRelativeTexturePath(inCreateInfo.data.filename);
+            filename             = FileSystem::getRelativeTexturePath(
+                inCreateInfo.data.filename
+            );
             logicalDevice        = inCreateInfo.logicalDevice;
             physicalDevice       = inCreateInfo.physicalDevice;
             commandBuffer        = inCreateInfo.commandBuffer;
@@ -25,11 +27,16 @@ namespace Engine
             imageCreateInfo.logicalDevice    = logicalDevice;
             imageCreateInfo.physicalDevice   = physicalDevice;
             imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
-            imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+            imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
+                                               vk::ImageUsageFlagBits::eSampled;
             imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Image::init(image.instance, imageCreateInfo);
-            Image::initMemory(image.memory, imageCreateInfo, image.instance);
+            Image::initMemory(
+                image.memory,
+                imageCreateInfo,
+                image.instance
+            );
 
             populate();
 
@@ -48,7 +55,10 @@ namespace Engine
             logicalDevice.destroySampler(image.sampler);
         }
 
-        void Instance::bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
+        void Instance::bind(
+            const vk::CommandBuffer& inCommandBuffer,
+            const vk::PipelineLayout& inPipelineLayout
+        )
         {
             inCommandBuffer.bindDescriptorSets(
                 vk::PipelineBindPoint::eGraphics,
@@ -61,7 +71,13 @@ namespace Engine
 
         void Instance::load()
         {
-            pixels = stbi_load(filename.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+            pixels = stbi_load(
+                filename.c_str(),
+                &width,
+                &height,
+                &channels,
+                STBI_rgb_alpha
+            );
 
             if (pixels == nullptr)
             {
@@ -71,17 +87,22 @@ namespace Engine
 
         void Instance::populate()
         {
-            Vertex::Buffer::CreateInfo stagingBufferCreateInfo;
+            Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.logicalDevice    = logicalDevice;
             stagingBufferCreateInfo.physicalDevice   = physicalDevice;
-            stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
+            stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
+                                                       vk::MemoryPropertyFlagBits::eHostVisible;
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             stagingBufferCreateInfo.size             = sizeof(float) * (width * height);
 
-            Vertex::Buffer::Instance stagingBuffer;
-            Vertex::Buffer::init(stagingBuffer, stagingBufferCreateInfo);
+            Engine::Buffer::Instance stagingBuffer;
+            Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
-            void* statingWriteLocation = logicalDevice.mapMemory(stagingBuffer.memory, 0, stagingBufferCreateInfo.size);
+            void* statingWriteLocation = logicalDevice.mapMemory(
+                stagingBuffer.memory,
+                0,
+                stagingBufferCreateInfo.size
+            );
             memcpy(statingWriteLocation, pixels, stagingBufferCreateInfo.size);
             logicalDevice.unmapMemory(stagingBuffer.memory);
 
@@ -110,7 +131,7 @@ namespace Engine
                 vk::ImageLayout::eShaderReadOnlyOptimal
             );
 
-            Vertex::Buffer::destroy(logicalDevice, stagingBuffer);
+            Buffer::destroy(logicalDevice, stagingBuffer);
         }
 
         void Instance::initView()
@@ -168,7 +189,10 @@ namespace Engine
             imageWriteDescriptorSet.descriptorCount = 1;
             imageWriteDescriptorSet.pImageInfo      = &imageDescriptorInfo;
 
-            logicalDevice.updateDescriptorSets(imageWriteDescriptorSet, nullptr);
+            logicalDevice.updateDescriptorSets(
+                imageWriteDescriptorSet,
+                nullptr
+            );
         }
     }
 }

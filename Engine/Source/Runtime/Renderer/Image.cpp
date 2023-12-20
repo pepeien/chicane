@@ -34,9 +34,15 @@ namespace Engine
             outImage = inCreateInfo.logicalDevice.createImage(createInfo);
         }
 
-        void initMemory(vk::DeviceMemory& outDeviceMemory, const CreateInfo& inCreateInfo, const vk::Image& inImage)
+        void initMemory(
+            vk::DeviceMemory& outDeviceMemory,
+            const CreateInfo& inCreateInfo,
+            const vk::Image& inImage
+        )
         {
-            vk::MemoryRequirements requirements = inCreateInfo.logicalDevice.getImageMemoryRequirements(inImage);
+            vk::MemoryRequirements requirements = inCreateInfo
+                                                  .logicalDevice
+                                                  .getImageMemoryRequirements(inImage);
 
             vk::MemoryAllocateInfo allocationInfo;
             allocationInfo.allocationSize  = requirements.size;
@@ -47,7 +53,11 @@ namespace Engine
             );
 
             outDeviceMemory = inCreateInfo.logicalDevice.allocateMemory(allocationInfo);
-            inCreateInfo.logicalDevice.bindImageMemory(inImage, outDeviceMemory, 0);
+            inCreateInfo.logicalDevice.bindImageMemory(
+                inImage,
+                outDeviceMemory,
+                0
+            );
         }
 
         void initView(
@@ -93,7 +103,10 @@ namespace Engine
             vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
             vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
 
-            if (inOldLayout == vk::ImageLayout::eUndefined && inNewLayout == vk::ImageLayout::eTransferDstOptimal)
+            if (
+                inOldLayout == vk::ImageLayout::eUndefined &&
+                inNewLayout == vk::ImageLayout::eTransferDstOptimal
+            )
             {
                 imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                 imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
@@ -135,9 +148,9 @@ namespace Engine
             bufferImageCopy.bufferOffset      = 0;
             bufferImageCopy.bufferRowLength   = 0;
             bufferImageCopy.bufferImageHeight = 0;
-            bufferImageCopy.imageSubresource = imageSubresourceLayers;
-            bufferImageCopy.imageOffset      = vk::Offset3D(0, 0, 0);
-            bufferImageCopy.imageExtent      = vk::Extent3D(inWidth, inHeight, 1);
+            bufferImageCopy.imageSubresource  = imageSubresourceLayers;
+            bufferImageCopy.imageOffset       = vk::Offset3D(0, 0, 0);
+            bufferImageCopy.imageExtent       = vk::Extent3D(inWidth, inHeight, 1);
 
             inCommandBuffer.copyBufferToImage(
                 inSourceBuffer,

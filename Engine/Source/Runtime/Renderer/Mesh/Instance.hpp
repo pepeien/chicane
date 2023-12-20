@@ -2,8 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Renderer/Vertex/Buffer.hpp"
-#include "Renderer/Vertex/Instance.hpp"
+#include "Renderer/Vertex.hpp"
 
 namespace Engine
 {
@@ -19,7 +18,7 @@ namespace Engine
 
         struct Instance
         {
-            std::vector<Vertex::Base*> vertices;
+            std::vector<Vertex::Instance> vertices;
             AllocationInfo allocationInfo;
         };
     }

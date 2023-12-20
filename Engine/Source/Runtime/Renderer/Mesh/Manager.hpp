@@ -3,8 +3,8 @@
 #include "Base.hpp"
 
 #include "Instance.hpp"
-#include "Renderer/Vertex/Instance.hpp"
-#include "Renderer/Vertex/Buffer.hpp"
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Vertex.hpp"
 
 namespace Engine
 {
@@ -15,11 +15,17 @@ namespace Engine
             class Instance
             {
             public:
-                void addMesh(const std::string& inMeshId, const std::vector<Vertex::Base*>& inVertices);
-                Mesh::Instance getMesh(const std::string& inMeshId);
+                void addMesh(
+                    const std::string& inMeshId,
+                    const std::vector<Vertex::Instance>& inVertices
+                );
+                void drawMesh(
+                    const std::string& inMeshId,
+                    const vk::CommandBuffer& inCommadBuffer
+                );
 
-                void builMeshes(
-                    Vertex::Buffer::Instance& outVertexBuffer,
+                void initVertexBuffer(
+                    Buffer::Instance& outVertexBuffer,
                     const vk::Device& inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,
                     const vk::Queue& inQueue,
@@ -27,7 +33,10 @@ namespace Engine
                 );
 
             private:
-                void extractFromMeshList(std::vector<Vertex::Base>& outVertices, vk::DeviceSize& outAllocationSize);
+                void extractFromMeshList(
+                    std::vector<Vertex::Instance>& outVertices,
+                    vk::DeviceSize& outAllocationSize
+                );
 
             private:
                 std::vector<std::string> meshesOrder;

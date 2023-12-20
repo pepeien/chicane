@@ -15,8 +15,8 @@ namespace Engine
         lastTime    = 0.0;
         currentTime = 0.0;
 
-        meshManager    = new Mesh::Manager::Instance();
-        textureManager = new Texture::Manager::Instance();
+        meshManager    = std::make_unique<Mesh::Manager::Instance>();
+        textureManager = std::make_unique<Texture::Manager::Instance>();
 
         prepareMeshes();
         prepareTextures();
@@ -32,11 +32,13 @@ namespace Engine
         buildDevices();
         buildQueues();
         buildSwapChain();
-        buildDescriptorSetLayouts();
+        buildFrameDescriptorSetLayout();
+        buildMaterialDescriptorSetLayout();
         buildGraphicsPipeline();
         buildFramebuffers();
         buildCommandPool();
-        buildCommandBuffers();
+        buildMainCommandBuffer();
+        buildFramesCommandBuffers();
         buildFrameResources();
         buildMaterialResources();
         buildAssets();
@@ -47,12 +49,16 @@ namespace Engine
         // Vulkan
         logicalDevice.waitIdle();
 
-        destroyDescriptorSetLayouts();
+        destroyCommandPool();
         destroyGraphicsPipeline();
         destroySwapChain();
-        destroyCommandPool();
 
-        Vertex::Buffer::destroy(logicalDevice, meshVertexBuffer);
+        logicalDevice.destroyDescriptorSetLayout(frameDescriptorSetLayout);
+
+        logicalDevice.destroyDescriptorSetLayout(materialDescriptorSetLayout);
+        logicalDevice.destroyDescriptorPool(materialDescriptorPool);
+
+        Buffer::destroy(logicalDevice, meshVertexBuffer);
 
         destroyAssets();
         destroyDevices();
@@ -94,7 +100,10 @@ namespace Engine
         renderPassBeginInfo.clearValueCount     = 1;
         renderPassBeginInfo.pClearValues        = &clearColor;
 
-        inCommandBuffer.beginRenderPass(&renderPassBeginInfo, vk::SubpassContents::eInline);
+        inCommandBuffer.beginRenderPass(
+            &renderPassBeginInfo,
+            vk::SubpassContents::eInline
+        );
 
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
@@ -122,12 +131,24 @@ namespace Engine
     {
         Frame::Instance& currentFrame = swapChain.frames[currentImageIndex];
 
-        if (logicalDevice.waitForFences(1, &currentFrame.renderFence, VK_TRUE, UINT64_MAX) != vk::Result::eSuccess)
+        if (
+            logicalDevice.waitForFences(
+                1,
+                &currentFrame.renderFence,
+                VK_TRUE,
+                UINT64_MAX
+            ) != vk::Result::eSuccess
+        )
         {
             Log::warning("Error while waiting the fences");
         }
 
-        if (logicalDevice.resetFences(1, &currentFrame.renderFence) != vk::Result::eSuccess)
+        if (
+            logicalDevice.resetFences(
+                1,
+                &currentFrame.renderFence
+            ) != vk::Result::eSuccess
+        )
         {
             Log::warning("Error while resetting the fences");
         }
@@ -322,28 +343,20 @@ namespace Engine
 
     void Application::rebuildSwapChain()
     {
-        windowWidth  = 0;
-        windowHeight = 0;
-
-        while (windowWidth == 0 || windowHeight == 0) {
+        do
+        {
             glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
             glfwWaitEvents();
-        }
+        } while (windowWidth == 0 || windowHeight == 0);
 
         logicalDevice.waitIdle();
 
         destroySwapChain();
         buildSwapChain();
 
-        destroyGraphicsPipeline();
-        buildGraphicsPipeline();
-
         buildFramebuffers();
-
         buildFrameResources();
-        buildMaterialResources();
-
-        buildCommandBuffers();
+        buildFramesCommandBuffers();
     }
 
     void Application::destroySwapChain()
@@ -358,15 +371,15 @@ namespace Engine
             logicalDevice.destroySemaphore(frame.renderSemaphore);
 
             logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
-            Vertex::Buffer::destroy(logicalDevice, frame.cameraData.buffer);
+            Buffer::destroy(logicalDevice, frame.cameraData.buffer);
 
             logicalDevice.unmapMemory(frame.modelData.buffer.memory);
-            Vertex::Buffer::destroy(logicalDevice, frame.modelData.buffer);
+            Buffer::destroy(logicalDevice, frame.modelData.buffer);
         }
 
         logicalDevice.destroySwapchainKHR(swapChain.instance);
 
-        destroyDescriptorPools();
+        logicalDevice.destroyDescriptorPool(frameDescriptorPool);
     }
 
     void Application::buildFrameDescriptorSetLayout()
@@ -411,24 +424,6 @@ namespace Engine
         );
     }
 
-    void Application::buildDescriptorSetLayouts()
-    {
-        buildFrameDescriptorSetLayout();
-        buildMaterialDescriptorSetLayout();
-    }
-
-    void Application::destroyDescriptorSetLayouts()
-    {
-        logicalDevice.destroyDescriptorSetLayout(frameDescriptorSetLayout);
-        logicalDevice.destroyDescriptorSetLayout(materialDescriptorSetLayout);
-    }
-
-    void Application::destroyDescriptorPools()
-    {
-        logicalDevice.destroyDescriptorPool(frameDescriptorPool);
-        logicalDevice.destroyDescriptorPool(materialDescriptorPool);
-    }
-
     void Application::buildGraphicsPipeline()
     {
         std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
@@ -443,7 +438,10 @@ namespace Engine
         graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
         graphicsPipelineCreateInfo.descriptorSetLayouts = descriptorSetLayouts;
 
-        GraphicsPipeline::init(graphicsPipeline, graphicsPipelineCreateInfo);    
+        GraphicsPipeline::init(
+            graphicsPipeline,
+            graphicsPipelineCreateInfo
+        );    
     }
 
     void Application::destroyGraphicsPipeline()
@@ -458,11 +456,10 @@ namespace Engine
         Frame::Buffer::CreateInfo framebufferCreateInfo = {
             logicalDevice,
             graphicsPipeline.renderPass,
-            swapChain.extent,
-            swapChain.frames
+            swapChain.extent
         };
 
-        Frame::Buffer::init(framebufferCreateInfo);
+        Frame::Buffer::init(swapChain.frames, framebufferCreateInfo);
     }
 
     void Application::buildCommandPool()
@@ -480,15 +477,24 @@ namespace Engine
         logicalDevice.destroyCommandPool(commandPool);
     }
 
-    void Application::buildCommandBuffers()
+    void Application::buildMainCommandBuffer()
     {
-        Command::Buffer::CreateInfo commandBufferInfo = {
+        Command::Buffer::CreateInfo createInfo = {
             logicalDevice,
-            commandPool,
-            swapChain.frames
+            commandPool
         };
 
-        Command::Buffer::init(mainCommandBuffer, commandBufferInfo);
+        Command::Buffer::init(mainCommandBuffer, createInfo);
+    }
+
+    void Application::buildFramesCommandBuffers()
+    {
+        Command::Buffer::CreateInfo createInfo = {
+            logicalDevice,
+            commandPool
+        };
+
+        Frame::Buffer::initCommand(swapChain.frames, createInfo);
     }
 
     void Application::buildFrameResources()
@@ -511,7 +517,11 @@ namespace Engine
             Sync::initSempahore(frame.presentSemaphore, logicalDevice);
             Sync::initSempahore(frame.renderSemaphore, logicalDevice);
            
-            frame.initResources(logicalDevice, physicalDevice, scene);
+            frame.initResources(
+                logicalDevice,
+                physicalDevice,
+                scene
+            );
 
             Descriptor::initSet(
                 frame.descriptorSet,
@@ -538,65 +548,62 @@ namespace Engine
 
     void Application::prepareMeshes()
     {
-        std::vector<Vertex2D*> triangleVertices;
+        std::vector<Vertex::Instance> triangleVertices;
         triangleVertices.resize(3);
 
-        triangleVertices[0] = new Vertex2D();
-        triangleVertices[0]->position        = glm::vec2(0.0f, -1.0f);
-        triangleVertices[0]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[0]->texturePosition = glm::vec2(0.5f, 0.0f);
+        triangleVertices[0].position        = glm::vec2(0.0f, -1.0f);
+        triangleVertices[0].color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[0].texturePosition = glm::vec2(0.5f, 0.0f);
 
-        triangleVertices[1] = new Vertex2D();
-        triangleVertices[1]->position        = glm::vec2(1.0f, 1.0f);
-        triangleVertices[1]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[1]->texturePosition = glm::vec2(1.0f, 1.0f);
+        triangleVertices[1].position        = glm::vec2(1.0f, 1.0f);
+        triangleVertices[1].color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[1].texturePosition = glm::vec2(1.0f, 1.0f);
 
-        triangleVertices[2] = new Vertex2D();
-        triangleVertices[2]->position        = glm::vec2(-1.0f, 1.0f);
-        triangleVertices[2]->color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[2]->texturePosition = glm::vec2(0.0f, 1.0f);
+        triangleVertices[2].position        = glm::vec2(-1.0f, 1.0f);
+        triangleVertices[2].color           = glm::vec3(1.0f, 0.0f, 0.0f);
+        triangleVertices[2].texturePosition = glm::vec2(0.0f, 1.0f);
 
-        meshManager->addMesh("Triangle", Vertex2D::toBaseList(triangleVertices));
+        meshManager->addMesh(
+            "Triangle",
+            triangleVertices
+        );
 
-        std::vector<Vertex2D*> squareVertices;
+        std::vector<Vertex::Instance> squareVertices;
         squareVertices.resize(6);
 
-        squareVertices[0] = new Vertex2D();
-        squareVertices[0]->position        = glm::vec2(-0.5f, 1.0f);
-        squareVertices[0]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[0]->texturePosition = glm::vec2(0.0f, 1.0f);
+        squareVertices[0].position        = glm::vec2(-0.5f, 1.0f);
+        squareVertices[0].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[0].texturePosition = glm::vec2(0.0f, 1.0f);
 
-        squareVertices[1] = new Vertex2D();
-        squareVertices[1]->position        = glm::vec2(-0.5f, -1.0f);
-        squareVertices[1]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[1]->texturePosition = glm::vec2(0.0f, 0.0f);
+        squareVertices[1].position        = glm::vec2(-0.5f, -1.0f);
+        squareVertices[1].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[1].texturePosition = glm::vec2(0.0f, 0.0f);
 
-        squareVertices[2] = new Vertex2D();
-        squareVertices[2]->position        = glm::vec2(0.5f, -1.0f);
-        squareVertices[2]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[2]->texturePosition = glm::vec2(1.0f, 0.0f);
+        squareVertices[2].position        = glm::vec2(0.5f, -1.0f);
+        squareVertices[2].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[2].texturePosition = glm::vec2(1.0f, 0.0f);
 
-        squareVertices[3] = new Vertex2D();
-        squareVertices[3]->position        = glm::vec2(0.5f, -1.0f);
-        squareVertices[3]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[3]->texturePosition = glm::vec2(1.0f, 0.0f);
+        squareVertices[3].position        = glm::vec2(0.5f, -1.0f);
+        squareVertices[3].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[3].texturePosition = glm::vec2(1.0f, 0.0f);
 
-        squareVertices[4] = new Vertex2D();
-        squareVertices[4]->position        = glm::vec2(0.5f, 1.0f);
-        squareVertices[4]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[4]->texturePosition = glm::vec2(1.0f, 1.0f);
+        squareVertices[4].position        = glm::vec2(0.5f, 1.0f);
+        squareVertices[4].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[4].texturePosition = glm::vec2(1.0f, 1.0f);
 
-        squareVertices[5] = new Vertex2D();
-        squareVertices[5]->position        = glm::vec2(-0.5f, 1.0f);
-        squareVertices[5]->color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[5]->texturePosition = glm::vec2(0.0f, 1.0f);
+        squareVertices[5].position        = glm::vec2(-0.5f, 1.0f);
+        squareVertices[5].color           = glm::vec3(0.0f, 0.0f, 1.0f);
+        squareVertices[5].texturePosition = glm::vec2(0.0f, 1.0f);
 
-        meshManager->addMesh("Square", Vertex2D::toBaseList(squareVertices));
+        meshManager->addMesh(
+            "Square",
+            squareVertices
+        );
     }
 
     void Application::buildMeshes()
     {
-        meshManager->builMeshes(
+        meshManager->initVertexBuffer(
             meshVertexBuffer,
             logicalDevice,
             physicalDevice,
@@ -631,7 +638,7 @@ namespace Engine
 
     void Application::buildTextures()
     {
-        textureManager->buildTextures(
+        textureManager->buildTexturesInstances(
             logicalDevice,
             physicalDevice,
             mainCommandBuffer,
@@ -639,6 +646,11 @@ namespace Engine
             materialDescriptorSetLayout,
             materialDescriptorPool
         );
+    }
+
+    void Application::destroyTextures()
+    {
+        textureManager->destroyTexturesInstances();
     }
 
     void Application::buildAssets()
@@ -649,8 +661,8 @@ namespace Engine
 
     void Application::destroyAssets()
     {
-        delete meshManager;
-        delete textureManager;
+        meshManager.reset();
+        textureManager.reset();
     }
 
     void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
@@ -658,7 +670,12 @@ namespace Engine
         vk::Buffer vertexBuffers[] = { meshVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
 
-        inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+        inCommandBuffer.bindVertexBuffers(
+            0,
+            1,
+            vertexBuffers,
+            offsets
+        );
     }
 
     void Application::prepareCamera(Frame::Instance& outFrame)
@@ -722,15 +739,15 @@ namespace Engine
     {
         for (Scene::Object::Instance sceneObject : scene.objects)
         {
-            Texture::Instance* objectTexture = textureManager->getTexture(sceneObject.texture.id);
-            objectTexture->bind(inCommandBuffer, graphicsPipeline.layout);
+            textureManager->bindTexture(
+                sceneObject.texture.id,
+                inCommandBuffer,
+                graphicsPipeline.layout
+            );
 
-            Mesh::Instance objectMesh = meshManager->getMesh(sceneObject.mesh.id);
-            inCommandBuffer.draw(
-                objectMesh.allocationInfo.vertexCount,
-                objectMesh.allocationInfo.instanceCount,
-                objectMesh.allocationInfo.firstVertex,
-                objectMesh.allocationInfo.firstInstance
+            meshManager->drawMesh(
+                sceneObject.mesh.id,
+                inCommandBuffer
             );
         }
     }

@@ -32,7 +32,11 @@ namespace Engine
         vk::ImageSubresourceRange getDefaultSubresourceRange();
 
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo);
-        void initMemory(vk::DeviceMemory& outDeviceMemory, const CreateInfo& inCreateInfo, const vk::Image& inImage);
+        void initMemory(
+            vk::DeviceMemory& outDeviceMemory,
+            const CreateInfo& inCreateInfo,
+            const vk::Image& inImage
+        );
         void initView(
             vk::ImageView& outImageView,
             const vk::Device& inLogicalDevice,

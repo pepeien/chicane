@@ -3,6 +3,7 @@
 #include "Base.hpp"
 
 #include "Instance.hpp"
+#include "Renderer/Command/Buffer.hpp"
 
 namespace Engine
 {
@@ -15,10 +16,19 @@ namespace Engine
                 vk::Device logicalDevice;
                 vk::RenderPass renderPass;
                 vk::Extent2D swapChainExtent;
-                std::vector<Instance>& frames;
             };
 
-            void init(CreateInfo& outCreateInfo);
+            void init(std::vector<Instance>& outFrames, const CreateInfo& inCreateInfo);
+            void init(Instance& outFrame, const CreateInfo& inCreateInfo);
+
+            void initCommand(
+                std::vector<Instance>& outFrames,
+                const Command::Buffer::CreateInfo& inCreateInfo
+            );
+            void initCommand(
+                Instance& outFrame,
+                const Command::Buffer::CreateInfo& inCreateInfo
+            );
         }
     }
 }

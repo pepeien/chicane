@@ -14,7 +14,6 @@ namespace Engine
             {
                 vk::Device logicalDevice;
                 vk::CommandPool commandPool;
-                std::vector<Frame::Instance>& frames;
             };
 
             void init(vk::CommandBuffer& outCommandBuffer, const CreateInfo& inCreateInfo);

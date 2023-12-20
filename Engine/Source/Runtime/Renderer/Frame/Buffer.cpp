@@ -6,25 +6,51 @@ namespace Engine
     {
         namespace Buffer
         {
-            void init(CreateInfo& outCreateInfo)
+            void init(std::vector<Instance>& outFrames, const CreateInfo& inCreateInfo)
             {
-                for (int i = 0; i < outCreateInfo.frames.size(); i++)
+                for (int i = 0; i < outFrames.size(); i++)
                 {
-                    std::vector<vk::ImageView> attachments = {
-                        outCreateInfo.frames[i].imageView
-                    };
-
-                    vk::FramebufferCreateInfo framebufferInfo = {};
-                    framebufferInfo.flags           = vk::FramebufferCreateFlags();
-                    framebufferInfo.renderPass      = outCreateInfo.renderPass;
-                    framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
-                    framebufferInfo.pAttachments    = attachments.data();
-                    framebufferInfo.width           = outCreateInfo.swapChainExtent.width;
-                    framebufferInfo.height          = outCreateInfo.swapChainExtent.height;
-                    framebufferInfo.layers          = 1;
-
-                    outCreateInfo.frames[i].framebuffer = outCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
+                    init(outFrames[i], inCreateInfo);
                 }
+            }
+
+            void init(Instance& outFrame, const CreateInfo& inCreateInfo)
+            {
+                std::vector<vk::ImageView> attachments = {
+                    outFrame.imageView
+                };
+
+                vk::FramebufferCreateInfo framebufferInfo = {};
+                framebufferInfo.flags           = vk::FramebufferCreateFlags();
+                framebufferInfo.renderPass      = inCreateInfo.renderPass;
+                framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+                framebufferInfo.pAttachments    = attachments.data();
+                framebufferInfo.width           = inCreateInfo.swapChainExtent.width;
+                framebufferInfo.height          = inCreateInfo.swapChainExtent.height;
+                framebufferInfo.layers          = 1;
+
+                outFrame.framebuffer = inCreateInfo.logicalDevice.createFramebuffer(
+                    framebufferInfo
+                );
+            }
+
+            void initCommand(
+                std::vector<Instance>& outFrames,
+                const Command::Buffer::CreateInfo& inCreateInfo
+            )
+            {
+                for (int i = 0; i < outFrames.size(); i++)
+                {
+                    initCommand(outFrames[i], inCreateInfo);
+                }
+            }
+
+            void initCommand(
+                Instance& outFrame,
+                const Command::Buffer::CreateInfo& inCreateInfo
+            )
+            {
+                Command::Buffer::init(outFrame.commandBuffer, inCreateInfo);
             }
         }
     }

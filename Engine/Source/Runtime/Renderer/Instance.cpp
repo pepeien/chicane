@@ -65,8 +65,13 @@ namespace Engine
         void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
         {
             uint32_t glfwExtensionCount             = 0;
-            const char** glfwRequiredExtensions     = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-            std::vector<const char*> glfwExtensions = std::vector(glfwRequiredExtensions, glfwRequiredExtensions + glfwExtensionCount);
+            const char** glfwRequiredExtensions     = glfwGetRequiredInstanceExtensions(
+                &glfwExtensionCount
+            );
+            std::vector<const char*> glfwExtensions = std::vector(
+                glfwRequiredExtensions,
+                glfwRequiredExtensions + glfwExtensionCount
+            );
 
             if (IS_DEBUGGING)
             {

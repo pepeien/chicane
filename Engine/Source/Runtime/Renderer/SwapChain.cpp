@@ -10,9 +10,15 @@ namespace Engine
             const vk::SurfaceKHR& inSurface
         )
         {
-            outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
-            outSupportDetails.formats      = inPhysicalDevice.getSurfaceFormatsKHR(inSurface);
-            outSupportDetails.presentModes = inPhysicalDevice.getSurfacePresentModesKHR(inSurface);
+            outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(
+                inSurface
+            );
+            outSupportDetails.formats = inPhysicalDevice.getSurfaceFormatsKHR(
+                inSurface
+            );
+            outSupportDetails.presentModes = inPhysicalDevice.getSurfacePresentModesKHR(
+                inSurface
+            );
         }
     
         void pickSurfaceFormat(
@@ -46,7 +52,11 @@ namespace Engine
             const std::vector<vk::PresentModeKHR>& inPresentModes
         )
         {
-            bool doesSupportMailBox = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) != inPresentModes.end();
+            bool doesSupportMailBox = std::find(
+                inPresentModes.begin(),
+                inPresentModes.end(),
+                vk::PresentModeKHR::eMailbox
+            ) != inPresentModes.end();
     
             if (doesSupportMailBox)
             {
@@ -56,7 +66,11 @@ namespace Engine
             }
     
             // Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
-            bool doesSupportImmediate = std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eImmediate) != inPresentModes.end();
+            bool doesSupportImmediate = std::find(
+                inPresentModes.begin(),
+                inPresentModes.end(),
+                vk::PresentModeKHR::eImmediate
+            ) != inPresentModes.end();
     
             if (doesSupportImmediate)
             {
@@ -146,7 +160,10 @@ namespace Engine
     
             if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
             {
-                uint32_t queueFamilyIndices[] = { familyIndices.graphicsFamily.value(), familyIndices.presentFamily.value() };
+                uint32_t queueFamilyIndices[] = {
+                    familyIndices.graphicsFamily.value(),
+                    familyIndices.presentFamily.value()
+                };
     
                 createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
                 createInfo.queueFamilyIndexCount = 2;
@@ -163,7 +180,9 @@ namespace Engine
             outSwapChain.format    = surfaceFormat.format;
             outSwapChain.extent    = extent;
     
-            std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(outSwapChain.instance);
+            std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(
+                outSwapChain.instance
+            );
             outSwapChain.frames.resize(images.size());
     
             for (int i = 0; i < images.size(); i++)

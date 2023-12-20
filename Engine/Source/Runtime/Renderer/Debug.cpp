@@ -19,18 +19,26 @@ namespace Engine
                 vk::DebugUtilsMessengerCreateFlagsEXT(),
 
                 // Severity
-                vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose | vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-                vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo    | vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
+                vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+                vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+                vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo    |
+                vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
 
                 // Type
-                vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral     | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
-                vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance | vk::DebugUtilsMessageTypeFlagBitsEXT::eDeviceAddressBinding,
+                vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+                vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+                vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
+                vk::DebugUtilsMessageTypeFlagBitsEXT::eDeviceAddressBinding,
 
                 debugCallback,
                 nullptr
             );
 
-            outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDldi);
+            outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(
+                createInfo,
+                nullptr,
+                inDldi
+            );
         }
 
         VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
