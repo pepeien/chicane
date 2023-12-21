@@ -24,8 +24,9 @@ namespace Chicane
                     const vk::CommandBuffer& inCommadBuffer
                 );
 
-                void initVertexBuffer(
+                void initBuffers(
                     Buffer::Instance& outVertexBuffer,
+                    Buffer::Instance& outIndexBuffer,
                     const vk::Device& inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,
                     const vk::Queue& inQueue,
@@ -33,14 +34,30 @@ namespace Chicane
                 );
 
             private:
-                void extractFromMeshList(
-                    std::vector<Vertex::Instance>& outVertices,
-                    vk::DeviceSize& outAllocationSize
+                void setup();
+
+                void initVertexBuffer(
+                    Buffer::Instance& outVertexBuffer,
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Queue& inQueue,
+                    const vk::CommandBuffer& inCommandBuffer
+                );
+                void initIndexBuffer(
+                    Buffer::Instance& outIndexBuffer,
+                    const vk::Device& inLogicalDevice,
+                    const vk::PhysicalDevice& inPhysicalDevice,
+                    const vk::Queue& inQueue,
+                    const vk::CommandBuffer& inCommandBuffer
                 );
 
             private:
-                std::vector<std::string> meshesOrder;
-                std::unordered_map<std::string, Mesh::Instance> meshesMap;
+                std::vector<Vertex::Instance> combinedVertices;
+                std::vector<uint32_t> indexedVertices;
+
+                std::vector<std::string> registeredMeshIds;
+                std::unordered_map<std::string, Mesh::AllocationInfo> meshAllocationInfos;
+                std::unordered_map<std::string, Mesh::Instance> meshInstances;
             };
         }
     }

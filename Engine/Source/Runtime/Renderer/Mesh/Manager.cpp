@@ -11,37 +11,112 @@ namespace Chicane
                 const std::vector<Vertex::Instance>& inVertices
             )
             {
-                if (meshesMap.find(inMeshId) != meshesMap.end())
+                if (meshInstances.find(inMeshId) != meshInstances.end())
                 {
                     throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
                 }
 
                 Mesh::Instance newMesh;
-                newMesh.vertices = inVertices;
+                newMesh.verticeInstances = inVertices;
 
-                meshesOrder.push_back(inMeshId);
-                meshesMap.insert(std::make_pair(inMeshId, newMesh));
+                registeredMeshIds.push_back(inMeshId);
+                meshInstances.insert(std::make_pair(inMeshId, newMesh));
             }
 
             void Instance::drawMesh(const std::string& inMeshId, const vk::CommandBuffer& inCommadBuffer)
             {
-                auto foundMesh = meshesMap.find(inMeshId);
+                auto foundMesh = meshAllocationInfos.find(inMeshId);
 
-                if (foundMesh == meshesMap.end())
+                if (foundMesh == meshAllocationInfos.end())
                 {
                     throw std::runtime_error("The Mesh [" + inMeshId + "] does not exist");
                 }
 
-                auto mesh = foundMesh->second;
+                Mesh::AllocationInfo allocationInfo = foundMesh->second;
 
-                inCommadBuffer.draw(
-                    mesh.allocationInfo.vertexCount,
-                    mesh.allocationInfo.instanceCount,
-                    mesh.allocationInfo.firstVertex,
-                    mesh.allocationInfo.firstInstance
+                inCommadBuffer.drawIndexed(
+                    allocationInfo.vertexCount,
+                    allocationInfo.instanceCount,
+                    allocationInfo.firstVertex,
+                    0,
+                    allocationInfo.firstInstance
                 );
             }
 
+            void Instance::initBuffers(
+                Buffer::Instance& outVertexBuffer,
+                Buffer::Instance& outIndexBuffer,
+                const vk::Device& inLogicalDevice,
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::Queue& inQueue,
+                const vk::CommandBuffer& inCommandBuffer
+            )
+            {
+                setup();
+
+                initVertexBuffer(
+                    outVertexBuffer,
+                    inLogicalDevice,
+                    inPhysicalDevice,
+                    inQueue,
+                    inCommandBuffer
+                );
+
+                initIndexBuffer(
+                    outIndexBuffer,
+                    inLogicalDevice,
+                    inPhysicalDevice,
+                    inQueue,
+                    inCommandBuffer
+                );
+            }
+
+            void Instance::setup()
+            {
+                for (uint32_t i = 0; i < registeredMeshIds.size(); i++)
+                {
+                    std::string& meshId          = registeredMeshIds[i];
+                    Mesh::Instance& meshInstance = meshInstances.find(meshId)->second;
+    
+                    AllocationInfo allocationInfo;
+                    allocationInfo.vertexCount   = meshInstance.verticeInstances.size();
+                    allocationInfo.firstVertex   = combinedVertices.size();
+                    allocationInfo.instanceCount = 1;
+                    allocationInfo.firstInstance = i;
+
+                    meshAllocationInfos[meshId] = allocationInfo;
+
+                    for (Vertex::Instance vertex : meshInstance.verticeInstances)
+                    {
+                        combinedVertices.push_back(vertex);
+                    }
+                }
+
+                indexedVertices.resize(combinedVertices.size());
+
+                for (int i = 0; i < combinedVertices.size(); i++)
+                {
+                    Vertex::Instance vertex = combinedVertices[i];
+
+                    for (int j = 0; j < combinedVertices.size(); j++)
+                    {
+                        Vertex::Instance subVertex = combinedVertices[j];
+
+                        if (
+                            fabs(vertex.position.x - subVertex.position.x) > FLT_EPSILON ||
+                            fabs(vertex.position.y - subVertex.position.y) > FLT_EPSILON
+                        )
+                        {
+                            continue;
+                        }
+
+                        indexedVertices[i] = j;
+
+                        break;
+                    }
+                }
+            }
+            
             void Instance::initVertexBuffer(
                 Buffer::Instance& outVertexBuffer,
                 const vk::Device& inLogicalDevice,
@@ -50,18 +125,10 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                std::vector<Vertex::Instance> extractedVertices;
-                vk::DeviceSize extractedAllocationSize = 0;
-
-                extractFromMeshList(
-                    extractedVertices,
-                    extractedAllocationSize
-                );
-
                 Buffer::CreateInfo stagingBufferCreateInfo;
                 stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-                stagingBufferCreateInfo.size             = extractedAllocationSize;
+                stagingBufferCreateInfo.size             = sizeof(Vertex::Instance) * combinedVertices.size();
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
                 stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                            vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -76,7 +143,7 @@ namespace Chicane
                 );
                 memcpy(
                     writeLocation,
-                    extractedVertices.data(),
+                    combinedVertices.data(),
                     stagingBufferCreateInfo.size
                 );
                 inLogicalDevice.unmapMemory(stagingBuffer.memory);
@@ -84,7 +151,7 @@ namespace Chicane
                 Buffer::CreateInfo bufferCreateInfo;
                 bufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 bufferCreateInfo.logicalDevice    = inLogicalDevice;
-                bufferCreateInfo.size             = extractedAllocationSize;
+                bufferCreateInfo.size             = stagingBufferCreateInfo.size;
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
                                                     vk::BufferUsageFlagBits::eVertexBuffer;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -94,7 +161,7 @@ namespace Chicane
                 Buffer::copy(
                     stagingBuffer,
                     outVertexBuffer,
-                    extractedAllocationSize,
+                    bufferCreateInfo.size,
                     inQueue,
                     inCommandBuffer
                 );
@@ -102,34 +169,56 @@ namespace Chicane
                 Buffer::destroy(inLogicalDevice, stagingBuffer);
             }
 
-            void Instance::extractFromMeshList(
-                std::vector<Vertex::Instance>& outVertices,
-                vk::DeviceSize& outAllocationSize
+            void Instance::initIndexBuffer(
+                Buffer::Instance& outIndexBuffer,
+                const vk::Device& inLogicalDevice,
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::Queue& inQueue,
+                const vk::CommandBuffer& inCommandBuffer
             )
             {
-                uint32_t currentInstance = 0;
+                Buffer::CreateInfo stagingBufferCreateInfo;
+                stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
+                stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
+                stagingBufferCreateInfo.size             = sizeof(uint32_t) * indexedVertices.size();
+                stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+                stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                                           vk::MemoryPropertyFlagBits::eHostCoherent;
 
-                for (std::string& meshId : meshesOrder)
-                {
-                    auto& meshInstance = meshesMap.find(meshId)->second;
-    
-                    AllocationInfo allocationInfo;
-                    allocationInfo.vertexCount   = meshInstance.vertices.size();
-                    allocationInfo.firstVertex   = outVertices.size();
-                    allocationInfo.instanceCount = 1;
-                    allocationInfo.firstInstance = currentInstance;
+                Buffer::Instance stagingBuffer;
+                Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
-                    meshInstance.allocationInfo = allocationInfo;
+                void* writeLocation = inLogicalDevice.mapMemory(
+                    stagingBuffer.memory,
+                    0,
+                    stagingBufferCreateInfo.size
+                );
+                memcpy(
+                    writeLocation,
+                    indexedVertices.data(),
+                    stagingBufferCreateInfo.size
+                );
+                inLogicalDevice.unmapMemory(stagingBuffer.memory);
 
-                    outAllocationSize += sizeof(meshInstance.vertices[0]) * allocationInfo.vertexCount;
+                Buffer::CreateInfo bufferCreateInfo;
+                bufferCreateInfo.physicalDevice   = inPhysicalDevice;
+                bufferCreateInfo.logicalDevice    = inLogicalDevice;
+                bufferCreateInfo.size             = stagingBufferCreateInfo.size;
+                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                                    vk::BufferUsageFlagBits::eIndexBuffer;
+                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-                    for (auto vertex : meshInstance.vertices)
-                    {
-                        outVertices.push_back(vertex);
-                    }
+                Buffer::init(outIndexBuffer, bufferCreateInfo);
 
-                    currentInstance++;
-                }
+                Buffer::copy(
+                    stagingBuffer,
+                    outIndexBuffer,
+                    bufferCreateInfo.size,
+                    inQueue,
+                    inCommandBuffer
+                );
+
+                Buffer::destroy(inLogicalDevice, stagingBuffer);
             }
         }
     }

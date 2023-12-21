@@ -8,18 +8,19 @@ namespace Chicane
     {
         windowTitle = inWindowTitle;
         scene       = inScene;
-        LOG_INFO("huh");
+
         // Stats
-        numFrames   = 0;
-        frameTime   = 0.0f;
-        lastTime    = 0.0;
-        currentTime = 0.0;
+        currentImageIndex = 0;
+        numFrames         = 0;
+        frameTime         = 0.0f;
+        lastTime          = 0.0;
+        currentTime       = 0.0;
 
         meshManager    = std::make_unique<Mesh::Manager::Instance>();
         textureManager = std::make_unique<Texture::Manager::Instance>();
 
-        prepareMeshes();
-        prepareTextures();
+        // Assets pre load
+        loadAssets();
 
         // GLFW
         glfwInit();
@@ -41,6 +42,8 @@ namespace Chicane
         buildFramesCommandBuffers();
         buildFrameResources();
         buildMaterialResources();
+
+        // Assets building
         buildAssets();
     }
 
@@ -59,6 +62,7 @@ namespace Chicane
         logicalDevice.destroyDescriptorPool(materialDescriptorPool);
 
         Buffer::destroy(logicalDevice, meshVertexBuffer);
+        Buffer::destroy(logicalDevice, meshIndexBuffer);
 
         destroyAssets();
         destroyDevices();
@@ -338,7 +342,6 @@ namespace Chicane
         );
 
         maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
-        currentImageIndex      = 0;
     }
 
     void Application::rebuildSwapChain()
@@ -513,9 +516,9 @@ namespace Chicane
 
         for (Frame::Instance& frame : swapChain.frames)
         {
-            Sync::initFence(frame.renderFence, logicalDevice);
             Sync::initSempahore(frame.presentSemaphore, logicalDevice);
             Sync::initSempahore(frame.renderSemaphore, logicalDevice);
+            Sync::initFence(frame.renderFence, logicalDevice);
            
             frame.initResources(
                 logicalDevice,
@@ -546,7 +549,7 @@ namespace Chicane
         );
     }
 
-    void Application::prepareMeshes()
+    void Application::loadMeshes()
     {
         std::vector<Vertex::Instance> triangleVertices;
         triangleVertices.resize(3);
@@ -603,8 +606,9 @@ namespace Chicane
 
     void Application::buildMeshes()
     {
-        meshManager->initVertexBuffer(
+        meshManager->initBuffers(
             meshVertexBuffer,
+            meshIndexBuffer,
             logicalDevice,
             physicalDevice,
             graphicsQueue,
@@ -612,7 +616,7 @@ namespace Chicane
         );
     }
 
-    void Application::prepareTextures()
+    void Application::loadTextures()
     {
         Texture::Data grayTextureData;
         grayTextureData.width    = 512;
@@ -653,6 +657,12 @@ namespace Chicane
         textureManager->destroyTexturesInstances();
     }
 
+    void Application::loadAssets()
+    {
+        loadMeshes();
+        loadTextures();
+    }
+
     void Application::buildAssets()
     {
         buildMeshes();
@@ -675,6 +685,12 @@ namespace Chicane
             1,
             vertexBuffers,
             offsets
+        );
+
+        inCommandBuffer.bindIndexBuffer(
+            meshIndexBuffer.instance,
+            0,
+            vk::IndexType::eUint32
         );
     }
 

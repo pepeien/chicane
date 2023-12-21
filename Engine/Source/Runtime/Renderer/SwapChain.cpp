@@ -176,7 +176,7 @@ namespace Chicane
             createInfo.clipped        = VK_TRUE;
             createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
     
-            outSwapChain.instance = inLogicalDevice.createSwapchainKHR(createInfo);
+            outSwapChain.instance  = inLogicalDevice.createSwapchainKHR(createInfo);
             outSwapChain.format    = surfaceFormat.format;
             outSwapChain.extent    = extent;
     

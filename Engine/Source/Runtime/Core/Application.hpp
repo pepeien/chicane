@@ -59,13 +59,14 @@ namespace Chicane
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void prepareMeshes();
+        void loadMeshes();
         void buildMeshes();
 
-        void prepareTextures();
+        void loadTextures();
         void buildTextures();
         void destroyTextures();
 
+        void loadAssets();
         void buildAssets();
         void destroyAssets();
 
@@ -112,6 +113,7 @@ namespace Chicane
         vk::DescriptorPool frameDescriptorPool;
 
         Buffer::Instance meshVertexBuffer;
+        Buffer::Instance meshIndexBuffer;
         std::unique_ptr<Mesh::Manager::Instance> meshManager;
 
         std::unique_ptr<Texture::Manager::Instance> textureManager;
