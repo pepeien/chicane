@@ -6,7 +6,7 @@
 #include "Renderer/Descriptor.hpp"
 #include "Renderer/Image.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Texture
     {

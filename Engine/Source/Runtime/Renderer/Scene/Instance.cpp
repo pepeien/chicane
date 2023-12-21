@@ -1,6 +1,6 @@
 #include "Instance.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Scene
     {

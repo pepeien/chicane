@@ -2,13 +2,13 @@
 
 vk::ClearValue clearColor = { std::array<float, 4>{ 0.04f, 0.89f, 0.84f, 1.0f } };
 
-namespace Engine
+namespace Chicane
 {
     Application::Application(const std::string& inWindowTitle, const Scene::Instance& inScene)
     {
         windowTitle = inWindowTitle;
         scene       = inScene;
-
+        LOG_INFO("huh");
         // Stats
         numFrames   = 0;
         frameTime   = 0.0f;
@@ -140,7 +140,7 @@ namespace Engine
             ) != vk::Result::eSuccess
         )
         {
-            Log::warning("Error while waiting the fences");
+            LOG_WARNING("Error while waiting the fences");
         }
 
         if (
@@ -150,7 +150,7 @@ namespace Engine
             ) != vk::Result::eSuccess
         )
         {
-            Log::warning("Error while resetting the fences");
+            LOG_WARNING("Error while resetting the fences");
         }
 
         uint32_t imageIndex;
@@ -453,13 +453,13 @@ namespace Engine
 
     void Application::buildFramebuffers()
     {
-        Frame::Buffer::CreateInfo framebufferCreateInfo = {
+        Frame::Buffer::CreateInfo createInfo = {
             logicalDevice,
             graphicsPipeline.renderPass,
             swapChain.extent
         };
 
-        Frame::Buffer::init(swapChain.frames, framebufferCreateInfo);
+        Frame::Buffer::init(swapChain.frames, createInfo);
     }
 
     void Application::buildCommandPool()
@@ -701,11 +701,11 @@ namespace Engine
 
     void Application::prepareSceneObjects(Frame::Instance& outFrame)
     {
-        std::vector<Engine::Scene::Object::Instance> sceneObjects = scene.getObjects();
+        std::vector<Scene::Object::Instance> sceneObjects = scene.getObjects();
             
         for (uint32_t i = 0; i < sceneObjects.size(); i++)
         {
-            Engine::Scene::Object::Instance& sceneObject = sceneObjects[i];
+            Scene::Object::Instance& sceneObject = sceneObjects[i];
 
             glm::mat4 transform = glm::translate(glm::mat4(1.0f), sceneObject.transform.translation);
             transform           = glm::scale(transform, sceneObject.transform.scale);

@@ -6,7 +6,7 @@
 #include "Renderer/Uniform.hpp"
 #include "Renderer/Scene/Instance.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Frame
     {
@@ -15,7 +15,7 @@ namespace Engine
             Uniform::BufferObject object;
             size_t allocationSize;
             void* writeLocation;
-            Engine::Buffer::Instance buffer;
+            Buffer::Instance buffer;
         };
     
         struct ModelData
@@ -23,7 +23,7 @@ namespace Engine
             std::vector<glm::mat4> transforms;
             size_t allocationSize;
             void* writeLocation;
-            Engine::Buffer::Instance buffer;
+            Buffer::Instance buffer;
         };
     
         struct Instance

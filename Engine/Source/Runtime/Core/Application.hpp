@@ -6,7 +6,7 @@
 
 #include "Renderer.hpp"
 
-namespace Engine
+namespace Chicane
 {
     class Application
     {

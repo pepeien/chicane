@@ -5,7 +5,7 @@
 #include "Device.hpp"
 #include "Command/Worker.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Buffer
     { 

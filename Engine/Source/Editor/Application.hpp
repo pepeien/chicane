@@ -2,7 +2,7 @@
 
 #include "Core/Application.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Editor
     {

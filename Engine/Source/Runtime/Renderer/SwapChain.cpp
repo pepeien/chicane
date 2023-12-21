@@ -1,6 +1,6 @@
 #include "SwapChain.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace SwapChain
     {

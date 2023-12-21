@@ -1,6 +1,6 @@
 #include "Manager.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Mesh
     {

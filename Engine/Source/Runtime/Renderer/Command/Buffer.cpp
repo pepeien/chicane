@@ -1,6 +1,6 @@
 #include "Buffer.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Command
     {

@@ -4,7 +4,7 @@
 
 #include "Renderer/Vertex.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Mesh
     {

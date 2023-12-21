@@ -1,6 +1,6 @@
 #include "Application.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Editor
     {
@@ -39,7 +39,7 @@ namespace Engine
             }
             catch (const std::exception& e)
             {
-                Log::critical(e.what());
+                LOG_CRITICAL(e.what());
 
                 return EXIT_FAILURE;
             }

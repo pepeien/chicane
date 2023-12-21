@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Queue
     {

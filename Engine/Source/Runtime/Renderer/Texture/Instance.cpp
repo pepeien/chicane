@@ -1,6 +1,6 @@
 #include "Instance.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Texture
     {
@@ -95,7 +95,7 @@ namespace Engine
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             stagingBufferCreateInfo.size             = sizeof(float) * (width * height);
 
-            Engine::Buffer::Instance stagingBuffer;
+            Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
             void* statingWriteLocation = logicalDevice.mapMemory(

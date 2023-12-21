@@ -1,6 +1,6 @@
 #include "Worker.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Command
     {
@@ -30,7 +30,7 @@ namespace Engine
             
                 if (inQueue.submit(1, &submitInfo, nullptr) != vk::Result::eSuccess)
                 {
-                    Log::warning("Error while ending [" + inDescription + "]");
+                    LOG_WARNING("Error while ending [" + inDescription + "]");
                 }
             
                 inQueue.waitIdle();

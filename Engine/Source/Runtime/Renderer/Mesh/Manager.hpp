@@ -6,7 +6,7 @@
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Vertex.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Mesh
     {

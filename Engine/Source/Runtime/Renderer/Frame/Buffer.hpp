@@ -5,7 +5,7 @@
 #include "Instance.hpp"
 #include "Renderer/Command/Buffer.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Frame
     {

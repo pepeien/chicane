@@ -1,6 +1,6 @@
 #include "Debug.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Debug
     {
@@ -51,22 +51,22 @@ namespace Engine
             switch (messageType)
             {
             case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:
-                Log::info(pCallbackData->pMessage);
+                LOG_INFO(pCallbackData->pMessage);
 
                 break;
 
             case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
-                Log::warning(pCallbackData->pMessage);
+                LOG_WARNING(pCallbackData->pMessage);
 
                 break;
 
             case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
-                Log::error(pCallbackData->pMessage);
+                LOG_ERROR(pCallbackData->pMessage);
 
                 break;
 
             default:
-                Log::critical(pCallbackData->pMessage);
+                LOG_CRITICAL(pCallbackData->pMessage);
 
                 break;
             }

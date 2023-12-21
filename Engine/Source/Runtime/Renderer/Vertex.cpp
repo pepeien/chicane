@@ -1,6 +1,6 @@
 #include "Vertex.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Vertex
     {

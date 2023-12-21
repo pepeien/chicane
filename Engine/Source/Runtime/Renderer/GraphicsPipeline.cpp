@@ -1,6 +1,6 @@
 #include "GraphicsPipeline.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace GraphicsPipeline
     {

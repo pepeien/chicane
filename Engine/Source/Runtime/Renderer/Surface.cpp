@@ -1,6 +1,6 @@
 #include "Surface.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Surface
     {

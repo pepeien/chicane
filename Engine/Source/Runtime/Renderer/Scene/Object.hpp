@@ -4,7 +4,7 @@
 
 #include "Renderer/Texture/Instance.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Scene
     {

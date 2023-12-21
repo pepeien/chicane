@@ -1,6 +1,6 @@
 #include "Sync.hpp"
 
-namespace Engine
+namespace Chicane
 {
     namespace Sync
     {
