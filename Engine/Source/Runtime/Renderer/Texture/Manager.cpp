@@ -14,8 +14,8 @@ namespace Chicane
             void Instance::addTexture(const std::string& inTextureId, const Texture::Data& inData)
             {
                 if (
-                    textureDataMap.find(inTextureId) != textureDataMap.end() ||
-                    textureInstancesMap.find(inTextureId) != textureInstancesMap.end()
+                    m_textureDataMap.find(inTextureId) != m_textureDataMap.end() ||
+                    m_textureInstancesMap.find(inTextureId) != m_textureInstancesMap.end()
                 )
                 {
                     throw std::runtime_error(
@@ -23,8 +23,8 @@ namespace Chicane
                     );
                 }
 
-                textureDataMap.insert(std::make_pair(inTextureId, inData));
-                registeredTextureIds.push_back(inTextureId);
+                m_textureDataMap.insert(std::make_pair(inTextureId, inData));
+                m_registeredTextureIds.push_back(inTextureId);
             }
 
             void Instance::bindTexture(
@@ -33,9 +33,9 @@ namespace Chicane
                 const vk::PipelineLayout& inPipelineLayout
             )
             {
-                auto foundTexture = textureInstancesMap.find(inTextureId);
+                auto foundTexture = m_textureInstancesMap.find(inTextureId);
 
-                if (foundTexture == textureInstancesMap.end())
+                if (foundTexture == m_textureInstancesMap.end())
                 {
                     throw std::runtime_error(
                         "The Texture [" + inTextureId + "] does not exists"
@@ -69,18 +69,18 @@ namespace Chicane
                 textureCreateInfo.descriptorSetLayout = inDescriptorSetLayout;
                 textureCreateInfo.descriptorPool      = inDescriptorPool;
 
-                for (std::string& textureId : registeredTextureIds)
+                for (std::string& textureId : m_registeredTextureIds)
                 {
-                    auto foundTexture = textureDataMap.find(textureId);
+                    auto foundTexture = m_textureDataMap.find(textureId);
 
-                    if (foundTexture == textureDataMap.end())
+                    if (foundTexture == m_textureDataMap.end())
                     {
                         throw std::runtime_error("The Texture [" + textureId + "] does not exist");
                     }
 
                     textureCreateInfo.data = foundTexture->second;
 
-                    textureInstancesMap.insert(
+                    m_textureInstancesMap.insert(
                         std::make_pair(
                             textureId,
                             std::make_unique<Texture::Instance>(textureCreateInfo)
@@ -91,12 +91,12 @@ namespace Chicane
 
             void Instance::destroyTexturesInstances()
             {
-                textureInstancesMap.clear();
+                m_textureInstancesMap.clear();
             }
 
             uint32_t Instance::getCount()
             {
-                return textureDataMap.size();
+                return m_textureDataMap.size();
             }
         }
     }

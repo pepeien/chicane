@@ -25,6 +25,14 @@ namespace Chicane
             void* writeLocation;
             Buffer::Instance buffer;
         };
+
+        struct Stats
+        {
+            int count;
+            float time;
+            float lastTime;
+            float currentTime;
+        };
     
         struct Instance
         {

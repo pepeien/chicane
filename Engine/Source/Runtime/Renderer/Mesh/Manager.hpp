@@ -53,12 +53,12 @@ namespace Chicane
                 );
 
             private:
-                std::vector<Vertex::Instance> combinedVertices;
-                std::vector<uint32_t> indexedVertices;
+                std::vector<Vertex::Instance> m_combinedVertices;
+                std::vector<uint32_t> m_indexedVertices;
 
                 std::vector<std::string> registeredMeshIds;
-                std::unordered_map<std::string, Mesh::AllocationInfo> meshAllocationInfos;
-                std::unordered_map<std::string, Mesh::Instance> meshInstances;
+                std::unordered_map<std::string, Mesh::AllocationInfo> m_meshAllocationInfos;
+                std::unordered_map<std::string, Mesh::Instance> m_meshInstances;
             };
         }
     }

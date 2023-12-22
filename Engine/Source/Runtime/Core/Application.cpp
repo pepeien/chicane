@@ -1,24 +1,17 @@
 #include "Application.hpp"
 
-vk::ClearValue clearColor = { std::array<float, 4>{ 0.04f, 0.89f, 0.84f, 1.0f } };
+vk::ClearValue s_clearColor = { std::array<float, 4>{ 0.04f, 0.89f, 0.84f, 1.0f } };
 
 namespace Chicane
 {
     Application::Application(const std::string& inWindowTitle, const Scene::Instance& inScene)
+    : m_window({ nullptr, inWindowTitle, 0, 0 }),
+      m_scene(inScene),
+      m_currentImageIndex(0),
+      m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
+      m_textureManager(std::make_unique<Texture::Manager::Instance>()),
+      m_frameStats({ 0, 0.0f, 0.0f, 0.0f })
     {
-        windowTitle = inWindowTitle;
-        scene       = inScene;
-
-        // Stats
-        currentImageIndex = 0;
-        numFrames         = 0;
-        frameTime         = 0.0f;
-        lastTime          = 0.0;
-        currentTime       = 0.0;
-
-        meshManager    = std::make_unique<Mesh::Manager::Instance>();
-        textureManager = std::make_unique<Texture::Manager::Instance>();
-
         // Assets pre load
         loadAssets();
 
@@ -50,19 +43,19 @@ namespace Chicane
     Application::~Application()
     {
         // Vulkan
-        logicalDevice.waitIdle();
+        m_logicalDevice.waitIdle();
 
         destroyCommandPool();
         destroyGraphicsPipeline();
         destroySwapChain();
 
-        logicalDevice.destroyDescriptorSetLayout(frameDescriptorSetLayout);
+        m_logicalDevice.destroyDescriptorSetLayout(m_frameDescriptors.setLayout);
 
-        logicalDevice.destroyDescriptorSetLayout(materialDescriptorSetLayout);
-        logicalDevice.destroyDescriptorPool(materialDescriptorPool);
+        m_logicalDevice.destroyDescriptorSetLayout(m_materialDescriptors.setLayout);
+        m_logicalDevice.destroyDescriptorPool(m_materialDescriptors.pool);
 
-        Buffer::destroy(logicalDevice, meshVertexBuffer);
-        Buffer::destroy(logicalDevice, meshIndexBuffer);
+        Buffer::destroy(m_logicalDevice, m_meshVertexBuffer);
+        Buffer::destroy(m_logicalDevice, m_meshIndexBuffer);
 
         destroyAssets();
         destroyDevices();
@@ -81,7 +74,7 @@ namespace Chicane
 
     void Application::run()
     {
-        while (glfwWindowShouldClose(window) == false)
+        while (glfwWindowShouldClose(m_window.instance) == false)
         {
             glfwPollEvents();
             render();
@@ -96,13 +89,13 @@ namespace Chicane
         inCommandBuffer.begin(beginInfo);
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = graphicsPipeline.renderPass;
-        renderPassBeginInfo.framebuffer         = swapChain.frames[inImageIndex].framebuffer;
+        renderPassBeginInfo.renderPass          = m_graphicsPipeline.renderPass;
+        renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffer;
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
-        renderPassBeginInfo.renderArea.extent   = swapChain.extent;
+        renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
         renderPassBeginInfo.clearValueCount     = 1;
-        renderPassBeginInfo.pClearValues        = &clearColor;
+        renderPassBeginInfo.pClearValues        = &s_clearColor;
 
         inCommandBuffer.beginRenderPass(
             &renderPassBeginInfo,
@@ -111,14 +104,14 @@ namespace Chicane
 
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
-            graphicsPipeline.instance
+            m_graphicsPipeline.instance
         );
     
         inCommandBuffer.bindDescriptorSets(
             vk::PipelineBindPoint::eGraphics,
-            graphicsPipeline.layout,
+            m_graphicsPipeline.layout,
             0,
-            swapChain.frames[inImageIndex].descriptorSet,
+            m_swapChain.frames[inImageIndex].descriptorSet,
             nullptr
         );
 
@@ -133,10 +126,10 @@ namespace Chicane
 
     void Application::render()
     {
-        Frame::Instance& currentFrame = swapChain.frames[currentImageIndex];
+        Frame::Instance& currentFrame = m_swapChain.frames[m_currentImageIndex];
 
         if (
-            logicalDevice.waitForFences(
+            m_logicalDevice.waitForFences(
                 1,
                 &currentFrame.renderFence,
                 VK_TRUE,
@@ -148,7 +141,7 @@ namespace Chicane
         }
 
         if (
-            logicalDevice.resetFences(
+            m_logicalDevice.resetFences(
                 1,
                 &currentFrame.renderFence
             ) != vk::Result::eSuccess
@@ -161,8 +154,8 @@ namespace Chicane
 
         try
         {
-            imageIndex = logicalDevice.acquireNextImageKHR(
-                swapChain.instance,
+            imageIndex = m_logicalDevice.acquireNextImageKHR(
+                m_swapChain.instance,
                 UINT64_MAX,
                 currentFrame.presentSemaphore,
                 nullptr
@@ -181,7 +174,7 @@ namespace Chicane
             return;
         }
 
-        vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
+        vk::CommandBuffer commandBuffer = m_swapChain.frames[imageIndex].commandBuffer;
 
         commandBuffer.reset();
 
@@ -203,9 +196,9 @@ namespace Chicane
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores    = signalSemaphores;
 
-        graphicsQueue.submit(submitInfo, currentFrame.renderFence);
+        m_graphicsQueue.submit(submitInfo, currentFrame.renderFence);
 
-        vk::SwapchainKHR swapChains[] = { swapChain.instance };
+        vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
 
         vk::PresentInfoKHR presentInfo = {};
         presentInfo.waitSemaphoreCount = 1;
@@ -218,7 +211,7 @@ namespace Chicane
 
         try
         {
-            present = presentQueue.presentKHR(presentInfo);
+            present = m_presentQueue.presentKHR(presentInfo);
         }
         catch(vk::OutOfDateKHRError e)
         {
@@ -232,47 +225,46 @@ namespace Chicane
             return;
         }
 
-        currentImageIndex = (currentImageIndex + 1) % maxInFlightFramesCount;
+        m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightFramesCount;
     }
 
     void Application::calculateFrameRate()
     {
-        currentTime = glfwGetTime();
-        double delta = currentTime - lastTime;
+        m_frameStats.currentTime = glfwGetTime();
+        double delta = m_frameStats.currentTime - m_frameStats.lastTime;
 
         if (delta >= 1) {
-            int framerate{ std::max(1, int(numFrames / delta)) };
+            int framerate{ std::max(1, int(m_frameStats.count / delta)) };
 
             std::stringstream title;
-            title << windowTitle << " - " << framerate << " FPS";
+            title << m_window.title << " - " << framerate << " FPS";
 
-            glfwSetWindowTitle(window, title.str().c_str());
+            glfwSetWindowTitle(
+                m_window.instance,
+                title.str().c_str()
+            );
 
-            lastTime  = currentTime;
-            numFrames = -1;
-            frameTime = float(1000.0 / framerate);
+            m_frameStats.lastTime  = m_frameStats.currentTime;
+            m_frameStats.count     = -1;
+            m_frameStats.time      = float(1000.0 / framerate);
         }
 
-        ++numFrames;
+        m_frameStats.count++;
     }
 
     void Application::buildWindow()
     {
-        window = Window::init(
-            windowWidth,
-            windowHeight,
-            windowTitle.c_str()
-        );
+        Window::init(m_window);
     }
 
     void Application::buildInstance()
     {
-        Instance::init(instance, dldi);
+        Instance::init(m_instance, m_dldi);
     }
 
     void Application::destroyInstance()
     {
-        instance.destroy();
+        m_instance.destroy();
     }
 
     void Application::buildDebugMessenger()
@@ -282,79 +274,84 @@ namespace Chicane
             return;
         }
 
-        Debug::initMessenger(debugMessenger, instance, dldi);
+        Debug::initMessenger(m_debugMessenger, m_instance, m_dldi);
     }
 
     void Application::destroyDebugMessenger()
     {
-        instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
+        m_instance.destroyDebugUtilsMessengerEXT(m_debugMessenger, nullptr, m_dldi);
     }
 
     void Application::buildSurface()
     {
-        Surface::init(surface, instance, window);
+        Surface::init(m_surface, m_instance, m_window.instance);
     }
-                
+
     void Application::destroySurface()
     {
-        instance.destroySurfaceKHR(surface);
+        m_instance.destroySurfaceKHR(m_surface);
     }
 
     void Application::buildQueues()
     {
         Queue::initGraphicsQueue(
-            graphicsQueue,
-            physicalDevice,
-            logicalDevice,
-            surface
+            m_graphicsQueue,
+            m_physicalDevice,
+            m_logicalDevice,
+            m_surface
         );
 
         Queue::initPresentQueue(
-            presentQueue,
-            physicalDevice,
-            logicalDevice,
-            surface
+            m_presentQueue,
+            m_physicalDevice,
+            m_logicalDevice,
+            m_surface
         );
     }
 
     void Application::buildDevices()
     {
-        Device::pickPhysicalDevice(physicalDevice, instance);
+        Device::pickPhysicalDevice(m_physicalDevice, m_instance);
         Device::initLogicalDevice(
-            logicalDevice,
-            physicalDevice,
-            surface
+            m_logicalDevice,
+            m_physicalDevice,
+            m_surface
         );
     }
                 
     void Application::destroyDevices()
     {
-        logicalDevice.destroy();
+        m_logicalDevice.destroy();
     }
 
     void Application::buildSwapChain()
     {
         SwapChain::init(
-            swapChain,
-            physicalDevice,
-            logicalDevice,
-            surface,
-            windowWidth,
-            windowHeight
+            m_swapChain,
+            m_physicalDevice,
+            m_logicalDevice,
+            m_surface,
+            m_window.width,
+            m_window.height
         );
 
-        maxInFlightFramesCount = static_cast<int>(swapChain.frames.size());
+        m_maxInFlightFramesCount = static_cast<int>(m_swapChain.frames.size());
     }
 
     void Application::rebuildSwapChain()
     {
         do
         {
-            glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
-            glfwWaitEvents();
-        } while (windowWidth == 0 || windowHeight == 0);
+            glfwGetFramebufferSize(
+                m_window.instance,
+                &m_window.width,
+                &m_window.height
+            );
 
-        logicalDevice.waitIdle();
+            glfwWaitEvents();
+        } while (m_window.width == 0 || m_window.height == 0);
+
+        m_logicalDevice.waitIdle();
 
         destroySwapChain();
         buildSwapChain();
@@ -366,25 +363,25 @@ namespace Chicane
 
     void Application::destroySwapChain()
     {
-        for (Frame::Instance& frame : swapChain.frames)
+        for (Frame::Instance& frame : m_swapChain.frames)
         {
-            logicalDevice.destroyImageView(frame.imageView);
-            logicalDevice.destroyFramebuffer(frame.framebuffer);
+            m_logicalDevice.destroyImageView(frame.imageView);
+            m_logicalDevice.destroyFramebuffer(frame.framebuffer);
 
-            logicalDevice.destroyFence(frame.renderFence);
-            logicalDevice.destroySemaphore(frame.presentSemaphore);
-            logicalDevice.destroySemaphore(frame.renderSemaphore);
+            m_logicalDevice.destroyFence(frame.renderFence);
+            m_logicalDevice.destroySemaphore(frame.presentSemaphore);
+            m_logicalDevice.destroySemaphore(frame.renderSemaphore);
 
-            logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
-            Buffer::destroy(logicalDevice, frame.cameraData.buffer);
+            m_logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
+            Buffer::destroy(m_logicalDevice, frame.cameraData.buffer);
 
-            logicalDevice.unmapMemory(frame.modelData.buffer.memory);
-            Buffer::destroy(logicalDevice, frame.modelData.buffer);
+            m_logicalDevice.unmapMemory(frame.modelData.buffer.memory);
+            Buffer::destroy(m_logicalDevice, frame.modelData.buffer);
         }
 
-        logicalDevice.destroySwapchainKHR(swapChain.instance);
+        m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
 
-        logicalDevice.destroyDescriptorPool(frameDescriptorPool);
+        m_logicalDevice.destroyDescriptorPool(m_frameDescriptors.pool);
     }
 
     void Application::buildFrameDescriptorSetLayout()
@@ -405,8 +402,8 @@ namespace Chicane
         frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
         Descriptor::initSetLayout(
-            frameDescriptorSetLayout,
-            logicalDevice,
+            m_frameDescriptors.setLayout,
+            m_logicalDevice,
             frameLayoutBidings
         );
     }
@@ -423,8 +420,8 @@ namespace Chicane
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
-            materialDescriptorSetLayout,
-            logicalDevice,
+            m_materialDescriptors.setLayout,
+            m_logicalDevice,
             materialLayoutBidings
         );
     }
@@ -432,107 +429,107 @@ namespace Chicane
     void Application::buildGraphicsPipeline()
     {
         std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
-        descriptorSetLayouts.push_back(frameDescriptorSetLayout);
-        descriptorSetLayouts.push_back(materialDescriptorSetLayout);
+        descriptorSetLayouts.push_back(m_frameDescriptors.setLayout);
+        descriptorSetLayouts.push_back(m_materialDescriptors.setLayout);
     
         GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
-        graphicsPipelineCreateInfo.logicalDevice        = logicalDevice;
+        graphicsPipelineCreateInfo.logicalDevice        = m_logicalDevice;
         graphicsPipelineCreateInfo.vertexShaderName     = "triangle.vert.spv";
         graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
-        graphicsPipelineCreateInfo.swapChainExtent      = swapChain.extent;
-        graphicsPipelineCreateInfo.swapChainImageFormat = swapChain.format;
+        graphicsPipelineCreateInfo.swapChainExtent      = m_swapChain.extent;
+        graphicsPipelineCreateInfo.swapChainImageFormat = m_swapChain.format;
         graphicsPipelineCreateInfo.descriptorSetLayouts = descriptorSetLayouts;
 
         GraphicsPipeline::init(
-            graphicsPipeline,
+            m_graphicsPipeline,
             graphicsPipelineCreateInfo
         );    
     }
 
     void Application::destroyGraphicsPipeline()
     {
-        logicalDevice.destroyPipeline(graphicsPipeline.instance);
-        logicalDevice.destroyPipelineLayout(graphicsPipeline.layout);
-        logicalDevice.destroyRenderPass(graphicsPipeline.renderPass);
+        m_logicalDevice.destroyPipeline(m_graphicsPipeline.instance);
+        m_logicalDevice.destroyPipelineLayout(m_graphicsPipeline.layout);
+        m_logicalDevice.destroyRenderPass(m_graphicsPipeline.renderPass);
     }
 
     void Application::buildFramebuffers()
     {
         Frame::Buffer::CreateInfo createInfo = {
-            logicalDevice,
-            graphicsPipeline.renderPass,
-            swapChain.extent
+            m_logicalDevice,
+            m_graphicsPipeline.renderPass,
+            m_swapChain.extent
         };
 
-        Frame::Buffer::init(swapChain.frames, createInfo);
+        Frame::Buffer::init(m_swapChain.frames, createInfo);
     }
 
     void Application::buildCommandPool()
     {
         Command::Pool::init(
-            commandPool,
-            logicalDevice,
-            physicalDevice,
-            surface
+            m_mainCommandPool,
+            m_logicalDevice,
+            m_physicalDevice,
+            m_surface
         );
     }
 
     void Application::destroyCommandPool()
     {
-        logicalDevice.destroyCommandPool(commandPool);
+        m_logicalDevice.destroyCommandPool(m_mainCommandPool);
     }
 
     void Application::buildMainCommandBuffer()
     {
         Command::Buffer::CreateInfo createInfo = {
-            logicalDevice,
-            commandPool
+            m_logicalDevice,
+            m_mainCommandPool
         };
 
-        Command::Buffer::init(mainCommandBuffer, createInfo);
+        Command::Buffer::init(m_mainCommandBuffer, createInfo);
     }
 
     void Application::buildFramesCommandBuffers()
     {
         Command::Buffer::CreateInfo createInfo = {
-            logicalDevice,
-            commandPool
+            m_logicalDevice,
+            m_mainCommandPool
         };
 
-        Frame::Buffer::initCommand(swapChain.frames, createInfo);
+        Frame::Buffer::initCommand(m_swapChain.frames, createInfo);
     }
 
     void Application::buildFrameResources()
     {
         Descriptor::PoolCreateInfo poolCreateInfo;
         poolCreateInfo.count = 2;
-        poolCreateInfo.size  = static_cast<uint32_t>(swapChain.frames.size());
+        poolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
         poolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         poolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Descriptor::initPool(
-            frameDescriptorPool,
-            logicalDevice,
+            m_frameDescriptors.pool,
+            m_logicalDevice,
             poolCreateInfo
         );
 
-        for (Frame::Instance& frame : swapChain.frames)
+        for (Frame::Instance& frame : m_swapChain.frames)
         {
-            Sync::initSempahore(frame.presentSemaphore, logicalDevice);
-            Sync::initSempahore(frame.renderSemaphore, logicalDevice);
-            Sync::initFence(frame.renderFence, logicalDevice);
+            Sync::initSempahore(frame.presentSemaphore, m_logicalDevice);
+            Sync::initSempahore(frame.renderSemaphore, m_logicalDevice);
+            Sync::initFence(frame.renderFence, m_logicalDevice);
            
             frame.initResources(
-                logicalDevice,
-                physicalDevice,
-                scene
+                m_logicalDevice,
+                m_physicalDevice,
+                m_scene
             );
 
             Descriptor::initSet(
                 frame.descriptorSet,
-                logicalDevice,
-                frameDescriptorSetLayout,
-                frameDescriptorPool
+                m_logicalDevice,
+                m_frameDescriptors.setLayout,
+                m_frameDescriptors.pool
             );
         }
     }
@@ -541,12 +538,12 @@ namespace Chicane
     {
         Descriptor::PoolCreateInfo poolCreateInfo;
         poolCreateInfo.count = 1;
-        poolCreateInfo.size  = textureManager->getCount();
+        poolCreateInfo.size  = m_textureManager->getCount();
         poolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
-            materialDescriptorPool,
-            logicalDevice,
+            m_materialDescriptors.pool,
+            m_logicalDevice,
             poolCreateInfo
         );
     }
@@ -568,7 +565,7 @@ namespace Chicane
         triangleVertices[2].color           = glm::vec3(1.0f, 0.0f, 0.0f);
         triangleVertices[2].texturePosition = glm::vec2(0.0f, 1.0f);
 
-        meshManager->addMesh(
+        m_meshManager->addMesh(
             "Triangle",
             triangleVertices
         );
@@ -600,7 +597,7 @@ namespace Chicane
         squareVertices[5].color           = glm::vec3(0.0f, 0.0f, 1.0f);
         squareVertices[5].texturePosition = glm::vec2(0.0f, 1.0f);
 
-        meshManager->addMesh(
+        m_meshManager->addMesh(
             "Square",
             squareVertices
         );
@@ -608,13 +605,13 @@ namespace Chicane
 
     void Application::buildMeshes()
     {
-        meshManager->initBuffers(
-            meshVertexBuffer,
-            meshIndexBuffer,
-            logicalDevice,
-            physicalDevice,
-            graphicsQueue,
-            mainCommandBuffer
+        m_meshManager->initBuffers(
+            m_meshVertexBuffer,
+            m_meshIndexBuffer,
+            m_logicalDevice,
+            m_physicalDevice,
+            m_graphicsQueue,
+            m_mainCommandBuffer
         );
     }
 
@@ -625,38 +622,38 @@ namespace Chicane
         grayTextureData.height   = 512;
         grayTextureData.filename = "gray.png";
 
-        textureManager->addTexture("Gray", grayTextureData);
+        m_textureManager->addTexture("Gray", grayTextureData);
 
         Texture::Data gridTextureData;
         gridTextureData.width    = 512;
         gridTextureData.height   = 512;
         gridTextureData.filename = "grid.png";
 
-        textureManager->addTexture("Grid", gridTextureData);
+        m_textureManager->addTexture("Grid", gridTextureData);
 
         Texture::Data uvTextureData;
         uvTextureData.width    = 512;
         uvTextureData.height   = 512;
         uvTextureData.filename = "uv.png";
 
-        textureManager->addTexture("UV", uvTextureData);
+        m_textureManager->addTexture("UV", uvTextureData);
     }
 
     void Application::buildTextures()
     {
-        textureManager->buildTexturesInstances(
-            logicalDevice,
-            physicalDevice,
-            mainCommandBuffer,
-            graphicsQueue,
-            materialDescriptorSetLayout,
-            materialDescriptorPool
+        m_textureManager->buildTexturesInstances(
+            m_logicalDevice,
+            m_physicalDevice,
+            m_mainCommandBuffer,
+            m_graphicsQueue,
+            m_materialDescriptors.setLayout,
+            m_materialDescriptors.pool
         );
     }
 
     void Application::destroyTextures()
     {
-        textureManager->destroyTexturesInstances();
+        m_textureManager->destroyTexturesInstances();
     }
 
     void Application::loadAssets()
@@ -673,13 +670,13 @@ namespace Chicane
 
     void Application::destroyAssets()
     {
-        meshManager.reset();
-        textureManager.reset();
+        m_meshManager.reset();
+        m_textureManager.reset();
     }
 
     void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
     {
-        vk::Buffer vertexBuffers[] = { meshVertexBuffer.instance };
+        vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
 
         inCommandBuffer.bindVertexBuffers(
@@ -690,7 +687,7 @@ namespace Chicane
         );
 
         inCommandBuffer.bindIndexBuffer(
-            meshIndexBuffer.instance,
+            m_meshIndexBuffer.instance,
             0,
             vk::IndexType::eUint32
         );
@@ -705,7 +702,7 @@ namespace Chicane
 
         glm::mat4 projection = glm::perspective(
             glm::radians(45.0f),
-            static_cast<float>(swapChain.extent.width) / static_cast<float>(swapChain.extent.height),
+            static_cast<float>(m_swapChain.extent.width) / static_cast<float>(m_swapChain.extent.height),
             0.1f,
             10.0f
         );
@@ -719,7 +716,7 @@ namespace Chicane
 
     void Application::prepareSceneObjects(Frame::Instance& outFrame)
     {
-        std::vector<Scene::Object::Instance> sceneObjects = scene.getObjects();
+        std::vector<Scene::Object::Instance> sceneObjects = m_scene.getObjects();
             
         for (uint32_t i = 0; i < sceneObjects.size(); i++)
         {
@@ -734,7 +731,7 @@ namespace Chicane
 
     void Application::prepareFrame(const uint32_t& inImageIndex)
     {
-        Frame::Instance& frame = swapChain.frames[inImageIndex];
+        Frame::Instance& frame = m_swapChain.frames[inImageIndex];
 
         prepareCamera(frame);
         memcpy(
@@ -750,14 +747,14 @@ namespace Chicane
             frame.modelData.allocationSize
         );
 
-        frame.writeDescriptorSet(logicalDevice);
+        frame.writeDescriptorSet(m_logicalDevice);
     }
 
     void Application::drawObjects(const vk::CommandBuffer& inCommandBuffer)
     {
         std::unordered_map<std::string, uint32_t> usedMeshes;
 
-        for (Scene::Object::Instance sceneObject : scene.objects)
+        for (Scene::Object::Instance sceneObject : m_scene.objects)
         {
             if (usedMeshes.find(sceneObject.mesh.id) != usedMeshes.end())
             {
@@ -772,12 +769,12 @@ namespace Chicane
         std::vector<std::string> drawnMeshes;
         drawnMeshes.reserve(usedMeshes.size());
 
-        for (Scene::Object::Instance sceneObject : scene.objects)
+        for (Scene::Object::Instance sceneObject : m_scene.objects)
         {
-            textureManager->bindTexture(
+            m_textureManager->bindTexture(
                 sceneObject.texture.id,
                 inCommandBuffer,
-                graphicsPipeline.layout
+                m_graphicsPipeline.layout
             );
 
             if (std::find(drawnMeshes.begin(), drawnMeshes.end(), sceneObject.mesh.id) != drawnMeshes.end())
@@ -785,7 +782,7 @@ namespace Chicane
                 continue;
             }
 
-            meshManager->drawMesh(
+            m_meshManager->drawMesh(
                 sceneObject.mesh.id,
                 usedMeshes[sceneObject.mesh.id],
                 inCommandBuffer

@@ -11,7 +11,7 @@ namespace Chicane
                 const std::vector<Vertex::Instance>& inVertices
             )
             {
-                if (meshInstances.find(inMeshId) != meshInstances.end())
+                if (m_meshInstances.find(inMeshId) != m_meshInstances.end())
                 {
                     throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
                 }
@@ -20,7 +20,7 @@ namespace Chicane
                 newMesh.verticeInstances = inVertices;
 
                 registeredMeshIds.push_back(inMeshId);
-                meshInstances.insert(std::make_pair(inMeshId, newMesh));
+                m_meshInstances.insert(std::make_pair(inMeshId, newMesh));
             }
 
             void Instance::drawMesh(
@@ -29,9 +29,9 @@ namespace Chicane
                 const vk::CommandBuffer& inCommadBuffer
             )
             {
-                auto foundMesh = meshAllocationInfos.find(inId);
+                auto foundMesh = m_meshAllocationInfos.find(inId);
 
-                if (foundMesh == meshAllocationInfos.end())
+                if (foundMesh == m_meshAllocationInfos.end())
                 {
                     throw std::runtime_error("The Mesh [" + inId + "] does not exist");
                 }
@@ -80,30 +80,30 @@ namespace Chicane
                 for (uint32_t i = 0; i < registeredMeshIds.size(); i++)
                 {
                     std::string& meshId          = registeredMeshIds[i];
-                    Mesh::Instance& meshInstance = meshInstances.find(meshId)->second;
+                    Mesh::Instance& meshInstance = m_meshInstances.find(meshId)->second;
     
                     AllocationInfo allocationInfo;
                     allocationInfo.vertexCount   = meshInstance.verticeInstances.size();
-                    allocationInfo.firstVertex   = combinedVertices.size();
+                    allocationInfo.firstVertex   = m_combinedVertices.size();
                     allocationInfo.firstInstance = i;
 
-                    meshAllocationInfos[meshId] = allocationInfo;
+                    m_meshAllocationInfos[meshId] = allocationInfo;
 
                     for (Vertex::Instance vertex : meshInstance.verticeInstances)
                     {
-                        combinedVertices.push_back(vertex);
+                        m_combinedVertices.push_back(vertex);
                     }
                 }
 
-                indexedVertices.resize(combinedVertices.size());
+                m_indexedVertices.resize(m_combinedVertices.size());
 
-                for (int i = 0; i < combinedVertices.size(); i++)
+                for (int i = 0; i < m_combinedVertices.size(); i++)
                 {
-                    Vertex::Instance vertex = combinedVertices[i];
+                    Vertex::Instance vertex = m_combinedVertices[i];
 
-                    for (int j = 0; j < combinedVertices.size(); j++)
+                    for (int j = 0; j < m_combinedVertices.size(); j++)
                     {
-                        Vertex::Instance subVertex = combinedVertices[j];
+                        Vertex::Instance subVertex = m_combinedVertices[j];
 
                         if (
                             fabs(vertex.position.x - subVertex.position.x) > FLT_EPSILON ||
@@ -113,7 +113,7 @@ namespace Chicane
                             continue;
                         }
 
-                        indexedVertices[i] = j;
+                        m_indexedVertices[i] = j;
 
                         break;
                     }
@@ -131,7 +131,7 @@ namespace Chicane
                 Buffer::CreateInfo stagingBufferCreateInfo;
                 stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-                stagingBufferCreateInfo.size             = sizeof(Vertex::Instance) * combinedVertices.size();
+                stagingBufferCreateInfo.size             = sizeof(Vertex::Instance) * m_combinedVertices.size();
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
                 stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                            vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -146,7 +146,7 @@ namespace Chicane
                 );
                 memcpy(
                     writeLocation,
-                    combinedVertices.data(),
+                    m_combinedVertices.data(),
                     stagingBufferCreateInfo.size
                 );
                 inLogicalDevice.unmapMemory(stagingBuffer.memory);
@@ -183,7 +183,7 @@ namespace Chicane
                 Buffer::CreateInfo stagingBufferCreateInfo;
                 stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
                 stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-                stagingBufferCreateInfo.size             = sizeof(uint32_t) * indexedVertices.size();
+                stagingBufferCreateInfo.size             = sizeof(uint32_t) * m_indexedVertices.size();
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
                 stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                            vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -198,7 +198,7 @@ namespace Chicane
                 );
                 memcpy(
                     writeLocation,
-                    indexedVertices.data(),
+                    m_indexedVertices.data(),
                     stagingBufferCreateInfo.size
                 );
                 inLogicalDevice.unmapMemory(stagingBuffer.memory);

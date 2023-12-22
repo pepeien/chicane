@@ -6,6 +6,14 @@ namespace Chicane
 {
     namespace Window
     {
-        GLFWwindow* init(int& outWidth, int& outHeight, const char* inWindowTitle);
+        struct Instance
+        {
+            GLFWwindow* instance;
+            std::string title;
+            int width;
+            int height;
+        };
+
+        void init(Instance& outWindow);
     }
 }

@@ -83,52 +83,42 @@ namespace Chicane
 
     private:
         // Stats
-        int numFrames;
-        float frameTime;
-        double lastTime;
-        double currentTime;
+        Frame::Stats m_frameStats;
 
         // Vulkan
-        vk::Instance instance;
-        vk::DispatchLoaderDynamic dldi;
-        vk::DebugUtilsMessengerEXT debugMessenger;
-        vk::SurfaceKHR surface;
+        vk::Instance m_instance;
+        vk::DispatchLoaderDynamic m_dldi;
+        vk::DebugUtilsMessengerEXT m_debugMessenger;
+        vk::SurfaceKHR m_surface;
 
-        vk::PhysicalDevice physicalDevice;
-        vk::Device logicalDevice;
-        vk::Queue graphicsQueue;
-        vk::Queue presentQueue;
+        vk::PhysicalDevice m_physicalDevice;
+        vk::Device m_logicalDevice;
+        vk::Queue m_graphicsQueue;
+        vk::Queue m_presentQueue;
 
-        SwapChain::Bundle swapChain;
+        SwapChain::Bundle m_swapChain;
 
-        GraphicsPipeline::Bundle graphicsPipeline;
+        GraphicsPipeline::Bundle m_graphicsPipeline;
 
-        vk::CommandPool commandPool;
-        vk::CommandBuffer mainCommandBuffer;
+        vk::CommandPool m_mainCommandPool;
+        vk::CommandBuffer m_mainCommandBuffer;
 
-        int maxInFlightFramesCount;
-        int currentImageIndex;
+        int m_maxInFlightFramesCount;
+        int m_currentImageIndex;
 
-        vk::DescriptorSetLayout frameDescriptorSetLayout;
-        vk::DescriptorPool frameDescriptorPool;
+        Descriptor::Bundle m_frameDescriptors;
+        Descriptor::Bundle m_materialDescriptors;
 
-        Buffer::Instance meshVertexBuffer;
-        Buffer::Instance meshIndexBuffer;
-        std::unique_ptr<Mesh::Manager::Instance> meshManager;
-
-        std::unique_ptr<Texture::Manager::Instance> textureManager;
-
-        vk::DescriptorSetLayout materialDescriptorSetLayout;
-        vk::DescriptorPool materialDescriptorPool;
-
-        // GLFW
-        GLFWwindow* window;
+        Buffer::Instance m_meshVertexBuffer;
+        Buffer::Instance m_meshIndexBuffer;
+    
+        std::unique_ptr<Mesh::Manager::Instance> m_meshManager;
+        std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
         // Context
-        Scene::Instance scene;
+        Scene::Instance m_scene;
 
-        std::string windowTitle;
-        int windowWidth;
-        int windowHeight;
+        // Window
+        Window::Instance m_window;
     };
 }

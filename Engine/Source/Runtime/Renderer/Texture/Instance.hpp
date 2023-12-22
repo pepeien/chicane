@@ -49,20 +49,20 @@ namespace Chicane
             void initDescriptorSet();
 
         private:
-            int width;
-            int height;
-            int channels;
-            std::string filename;
-            vk::Device logicalDevice;
-            vk::PhysicalDevice physicalDevice;
-            stbi_uc* pixels;
+            int m_width;
+            int m_height;
+            int m_channels;
+            std::string m_filename;
+            vk::Device m_logicalDevice;
+            vk::PhysicalDevice m_physicalDevice;
+            stbi_uc* m_pixels;
 
-            Image::Bundle image;
+            Image::Bundle m_image;
 
-            Descriptor::Bundle descriptor;
+            Descriptor::Bundle m_descriptor;
 
-            vk::CommandBuffer commandBuffer;
-            vk::Queue queue;
+            vk::CommandBuffer m_commandBuffer;
+            vk::Queue m_queue;
         };
     }
 }

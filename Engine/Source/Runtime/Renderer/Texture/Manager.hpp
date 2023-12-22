@@ -36,9 +36,9 @@ namespace Chicane
                 uint32_t getCount();
 
             private:
-                std::vector<std::string> registeredTextureIds;
-                std::unordered_map<std::string, Texture::Data> textureDataMap;
-                std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> textureInstancesMap;
+                std::vector<std::string> m_registeredTextureIds;
+                std::unordered_map<std::string, Texture::Data> m_textureDataMap;
+                std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_textureInstancesMap;
             };
         }
     }

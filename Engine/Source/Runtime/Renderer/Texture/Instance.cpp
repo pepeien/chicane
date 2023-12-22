@@ -6,41 +6,41 @@ namespace Chicane
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
         {
-            width                = inCreateInfo.data.width;
-            height               = inCreateInfo.data.height;
-            filename             = FileSystem::getRelativeTexturePath(
+            m_width                = inCreateInfo.data.width;
+            m_height               = inCreateInfo.data.height;
+            m_filename             = FileSystem::getRelativeTexturePath(
                 inCreateInfo.data.filename
             );
-            logicalDevice        = inCreateInfo.logicalDevice;
-            physicalDevice       = inCreateInfo.physicalDevice;
-            commandBuffer        = inCreateInfo.commandBuffer;
-            queue                = inCreateInfo.queue;
-            descriptor.setLayout = inCreateInfo.descriptorSetLayout;
-            descriptor.pool      = inCreateInfo.descriptorPool;
+            m_logicalDevice        = inCreateInfo.logicalDevice;
+            m_physicalDevice       = inCreateInfo.physicalDevice;
+            m_commandBuffer        = inCreateInfo.commandBuffer;
+            m_queue                = inCreateInfo.queue;
+            m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
+            m_descriptor.pool      = inCreateInfo.descriptorPool;
 
             load();
 
             Image::CreateInfo imageCreateInfo;
-            imageCreateInfo.width            = width;
-            imageCreateInfo.height           = height;
-            imageCreateInfo.filename         = filename;
-            imageCreateInfo.logicalDevice    = logicalDevice;
-            imageCreateInfo.physicalDevice   = physicalDevice;
+            imageCreateInfo.width            = m_width;
+            imageCreateInfo.height           = m_height;
+            imageCreateInfo.filename         = m_filename;
+            imageCreateInfo.logicalDevice    = m_logicalDevice;
+            imageCreateInfo.physicalDevice   = m_physicalDevice;
             imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
             imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
                                                vk::ImageUsageFlagBits::eSampled;
             imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-            Image::init(image.instance, imageCreateInfo);
+            Image::init(m_image.instance, imageCreateInfo);
             Image::initMemory(
-                image.memory,
+                m_image.memory,
                 imageCreateInfo,
-                image.instance
+                m_image.instance
             );
 
             populate();
 
-            free(pixels);
+            free(m_pixels);
 
             initView();
             initSampler();
@@ -49,10 +49,10 @@ namespace Chicane
 
         Instance::~Instance()
         {
-            logicalDevice.freeMemory(image.memory);
-            logicalDevice.destroyImage(image.instance);
-            logicalDevice.destroyImageView(image.view);
-            logicalDevice.destroySampler(image.sampler);
+            m_logicalDevice.freeMemory(m_image.memory);
+            m_logicalDevice.destroyImage(m_image.instance);
+            m_logicalDevice.destroyImageView(m_image.view);
+            m_logicalDevice.destroySampler(m_image.sampler);
         }
 
         void Instance::bind(
@@ -64,82 +64,82 @@ namespace Chicane
                 vk::PipelineBindPoint::eGraphics,
                 inPipelineLayout,
                 1,
-                descriptor.set,
+                m_descriptor.set,
                 nullptr
             );
         }
 
         void Instance::load()
         {
-            pixels = stbi_load(
-                filename.c_str(),
-                &width,
-                &height,
-                &channels,
+            m_pixels = stbi_load(
+                m_filename.c_str(),
+                &m_width,
+                &m_height,
+                &m_channels,
                 STBI_rgb_alpha
             );
 
-            if (pixels == nullptr)
+            if (m_pixels == nullptr)
             {
-                throw std::runtime_error("Failed to load the pixels for " + filename);
+                throw std::runtime_error("Failed to load the pixels for " + m_filename);
             }
         }
 
         void Instance::populate()
         {
             Buffer::CreateInfo stagingBufferCreateInfo;
-            stagingBufferCreateInfo.logicalDevice    = logicalDevice;
-            stagingBufferCreateInfo.physicalDevice   = physicalDevice;
+            stagingBufferCreateInfo.logicalDevice    = m_logicalDevice;
+            stagingBufferCreateInfo.physicalDevice   = m_physicalDevice;
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
                                                        vk::MemoryPropertyFlagBits::eHostVisible;
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            stagingBufferCreateInfo.size             = sizeof(float) * (width * height);
+            stagingBufferCreateInfo.size             = sizeof(float) * (m_width * m_height);
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
-            void* statingWriteLocation = logicalDevice.mapMemory(
+            void* statingWriteLocation = m_logicalDevice.mapMemory(
                 stagingBuffer.memory,
                 0,
                 stagingBufferCreateInfo.size
             );
-            memcpy(statingWriteLocation, pixels, stagingBufferCreateInfo.size);
-            logicalDevice.unmapMemory(stagingBuffer.memory);
+            memcpy(statingWriteLocation, m_pixels, stagingBufferCreateInfo.size);
+            m_logicalDevice.unmapMemory(stagingBuffer.memory);
 
             Image::transitionLayout(
-                commandBuffer,
-                queue,
-                image.instance,
+                m_commandBuffer,
+                m_queue,
+                m_image.instance,
                 vk::ImageLayout::eUndefined,
                 vk::ImageLayout::eTransferDstOptimal
             );
 
             Image::copyBufferToImage(
-                commandBuffer,
-                queue,
+                m_commandBuffer,
+                m_queue,
                 stagingBuffer.instance,
-                image.instance,
-                width,
-                height
+                m_image.instance,
+                m_width,
+                m_height
             );
 
             Image::transitionLayout(
-                commandBuffer,
-                queue,
-                image.instance,
+                m_commandBuffer,
+                m_queue,
+                m_image.instance,
                 vk::ImageLayout::eTransferDstOptimal,
                 vk::ImageLayout::eShaderReadOnlyOptimal
             );
 
-            Buffer::destroy(logicalDevice, stagingBuffer);
+            Buffer::destroy(m_logicalDevice, stagingBuffer);
         }
 
         void Instance::initView()
         {
             Image::initView(
-                image.view,
-                logicalDevice,
-                image.instance,
+                m_image.view,
+                m_logicalDevice,
+                m_image.instance,
                 vk::Format::eR8G8B8A8Unorm
             );
         }
@@ -164,32 +164,32 @@ namespace Chicane
             createInfo.minLod                  = 0.0f;
             createInfo.maxLod                  = 0.0f;
 
-            image.sampler = logicalDevice.createSampler(createInfo);
+            m_image.sampler = m_logicalDevice.createSampler(createInfo);
         }
 
         void Instance::initDescriptorSet()
         {
             Descriptor::initSet(
-                descriptor.set,
-                logicalDevice,
-                descriptor.setLayout,
-                descriptor.pool
+                m_descriptor.set,
+                m_logicalDevice,
+                m_descriptor.setLayout,
+                m_descriptor.pool
             );
 
             vk::DescriptorImageInfo imageDescriptorInfo;
             imageDescriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-            imageDescriptorInfo.imageView   = image.view;
-            imageDescriptorInfo.sampler     = image.sampler;
+            imageDescriptorInfo.imageView   = m_image.view;
+            imageDescriptorInfo.sampler     = m_image.sampler;
 
             vk::WriteDescriptorSet imageWriteDescriptorSet;
-            imageWriteDescriptorSet.dstSet          = descriptor.set;
+            imageWriteDescriptorSet.dstSet          = m_descriptor.set;
             imageWriteDescriptorSet.dstBinding      = 0;
             imageWriteDescriptorSet.dstArrayElement = 0;
             imageWriteDescriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             imageWriteDescriptorSet.descriptorCount = 1;
             imageWriteDescriptorSet.pImageInfo      = &imageDescriptorInfo;
 
-            logicalDevice.updateDescriptorSets(
+            m_logicalDevice.updateDescriptorSets(
                 imageWriteDescriptorSet,
                 nullptr
             );

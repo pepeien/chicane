@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Window
     {
-        GLFWwindow* init(int& outWidth, int& outHeight, const char* inWindowTitle)
+        void init(Instance& outWindow)
         {
             glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
             glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
@@ -12,13 +12,13 @@ namespace Chicane
 
             const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-            outWidth  = desktop->width;
-            outHeight = desktop->height;
+            outWindow.width  = desktop->width;
+            outWindow.height = desktop->height;
 
-            return glfwCreateWindow(
+            outWindow.instance = glfwCreateWindow(
                 desktop->width,
                 desktop->height,
-                inWindowTitle,
+                outWindow.title.c_str(),
                 nullptr,
                 nullptr
             );
