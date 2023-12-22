@@ -20,7 +20,8 @@ namespace Chicane
                     const std::vector<Vertex::Instance>& inVertices
                 );
                 void drawMesh(
-                    const std::string& inMeshId,
+                    const std::string& inId,
+                    const uint32_t& inInstanceCount,
                     const vk::CommandBuffer& inCommadBuffer
                 );
 

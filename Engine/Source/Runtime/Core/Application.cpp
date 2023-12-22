@@ -183,6 +183,8 @@ namespace Chicane
 
         vk::CommandBuffer commandBuffer = swapChain.frames[imageIndex].commandBuffer;
 
+        commandBuffer.reset();
+
         prepareFrame(imageIndex);
 
         draw(commandBuffer, imageIndex);
@@ -763,6 +765,7 @@ namespace Chicane
 
             meshManager->drawMesh(
                 sceneObject.mesh.id,
+                1,
                 inCommandBuffer
             );
         }

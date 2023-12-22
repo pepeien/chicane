@@ -23,20 +23,24 @@ namespace Chicane
                 meshInstances.insert(std::make_pair(inMeshId, newMesh));
             }
 
-            void Instance::drawMesh(const std::string& inMeshId, const vk::CommandBuffer& inCommadBuffer)
+            void Instance::drawMesh(
+                const std::string& inId,
+                const uint32_t& inInstanceCount,
+                const vk::CommandBuffer& inCommadBuffer
+            )
             {
-                auto foundMesh = meshAllocationInfos.find(inMeshId);
+                auto foundMesh = meshAllocationInfos.find(inId);
 
                 if (foundMesh == meshAllocationInfos.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inMeshId + "] does not exist");
+                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
                 }
 
                 Mesh::AllocationInfo allocationInfo = foundMesh->second;
 
                 inCommadBuffer.drawIndexed(
                     allocationInfo.vertexCount,
-                    allocationInfo.instanceCount,
+                    inInstanceCount,
                     allocationInfo.firstVertex,
                     0,
                     allocationInfo.firstInstance
@@ -81,7 +85,6 @@ namespace Chicane
                     AllocationInfo allocationInfo;
                     allocationInfo.vertexCount   = meshInstance.verticeInstances.size();
                     allocationInfo.firstVertex   = combinedVertices.size();
-                    allocationInfo.instanceCount = 1;
                     allocationInfo.firstInstance = i;
 
                     meshAllocationInfos[meshId] = allocationInfo;
