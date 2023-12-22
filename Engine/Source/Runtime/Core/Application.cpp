@@ -755,6 +755,23 @@ namespace Chicane
 
     void Application::drawObjects(const vk::CommandBuffer& inCommandBuffer)
     {
+        std::unordered_map<std::string, uint32_t> usedMeshes;
+
+        for (Scene::Object::Instance sceneObject : scene.objects)
+        {
+            if (usedMeshes.find(sceneObject.mesh.id) != usedMeshes.end())
+            {
+                usedMeshes[sceneObject.mesh.id]++;
+
+                continue;
+            }
+
+            usedMeshes.insert(std::make_pair(sceneObject.mesh.id, 1));
+        }
+
+        std::vector<std::string> drawnMeshes;
+        drawnMeshes.reserve(usedMeshes.size());
+
         for (Scene::Object::Instance sceneObject : scene.objects)
         {
             textureManager->bindTexture(
@@ -763,11 +780,18 @@ namespace Chicane
                 graphicsPipeline.layout
             );
 
+            if (std::find(drawnMeshes.begin(), drawnMeshes.end(), sceneObject.mesh.id) != drawnMeshes.end())
+            {
+                continue;
+            }
+
             meshManager->drawMesh(
                 sceneObject.mesh.id,
-                1,
+                usedMeshes[sceneObject.mesh.id],
                 inCommandBuffer
             );
+
+            drawnMeshes.push_back(sceneObject.mesh.id);
         }
     }
 }

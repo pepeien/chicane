@@ -21,21 +21,21 @@ set_property(TARGET ${TARGET_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE "${
 ############## Linking Libs  #######################
 
 if (WIN32)
-      if (USE_MINGW)
+    if (USE_MINGW)
         target_include_directories(
             ${TARGET_NAME}
             PUBLIC
 
-              ${MINGW_PATH}/include
+            ${MINGW_PATH}/include
         )
 
         target_link_directories(
             ${TARGET_NAME}
             PUBLIC
 
-              ${MINGW_PATH}/lib
+            ${MINGW_PATH}/lib
         )
-      endif()
+    endif()
 endif()
 
 target_include_directories(

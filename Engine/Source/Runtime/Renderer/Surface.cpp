@@ -24,7 +24,7 @@ namespace Chicane
                 throw std::runtime_error("Failed to abtract the GLFW surface for Vulkan");
             }
     
-            outSurface = c_style_surface;
+            outSurface = vk::SurfaceKHR(c_style_surface);
         }
     }   
 }
