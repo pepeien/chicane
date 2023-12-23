@@ -3,7 +3,9 @@
 #include "Base.hpp"
 
 #include "Renderer/Buffer.hpp"
+#include "Renderer/Descriptor.hpp"
 #include "Renderer/Uniform.hpp"
+#include "Renderer/Sync.hpp"
 #include "Renderer/Scene/Instance.hpp"
 
 namespace Chicane
@@ -15,7 +17,7 @@ namespace Chicane
             Uniform::BufferObject object;
             size_t allocationSize;
             void* writeLocation;
-            Buffer::Instance buffer;
+            Chicane::Buffer::Instance buffer;
         };
     
         struct ModelData
@@ -23,7 +25,7 @@ namespace Chicane
             std::vector<glm::mat4> transforms;
             size_t allocationSize;
             void* writeLocation;
-            Buffer::Instance buffer;
+            Chicane::Buffer::Instance buffer;
         };
 
         struct Stats
@@ -34,30 +36,38 @@ namespace Chicane
             float currentTime;
         };
     
-        struct Instance
+        class Instance
         {
         public:
-            void initResources(
-                const vk::Device& inLogicalDevice,
-                const vk::PhysicalDevice& inPhysicalDevice,
-                const Scene::Instance& inScene
+            void setupSync();
+            void setupCamera();
+            void setupModel(const Scene::Instance& inScene);
+            void setupDescriptors(
+                const vk::DescriptorSetLayout& inLayout,
+                const vk::DescriptorPool& inPool
             );
-            void writeDescriptorSet(const vk::Device& inLogicalDevice);
-    
-        private:
-            void createCameraData(const vk::Device& inLogicalDevice, const vk::PhysicalDevice& inPhysicalDevice);
-            void createModelData(
-                const vk::Device& inLogicalDevice,
-                const vk::PhysicalDevice& inPhysicalDevice,
-                const Scene::Instance& inScene
-            );
-    
+            void setupDepthBuffering();
+            void setupDescriptorSet();
+
+            void destroy();
+
         public:
+            vk::Device logicalDevice;
+            vk::PhysicalDevice physicalDevice;
+
             // Swapchain
+            uint32_t width;
+            uint32_t height;
+
             vk::Image image;
             vk::ImageView imageView;
             vk::Framebuffer framebuffer;
-    
+
+            vk::Image depthImage;
+            vk::ImageView depthImageView;
+            vk::DeviceMemory depthMemory;
+            vk::Format depthFormat;
+
             // Sychronization
             vk::CommandBuffer commandBuffer;
             vk::Fence renderFence;

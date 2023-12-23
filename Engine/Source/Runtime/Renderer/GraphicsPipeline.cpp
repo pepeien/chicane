@@ -88,6 +88,19 @@ namespace Chicane
     
             return fragmentShaderInfo;
         }
+
+        vk::PipelineDepthStencilStateCreateInfo createDepthStencil()
+        {
+            vk::PipelineDepthStencilStateCreateInfo depthStencilCreateInfo = {};
+            depthStencilCreateInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
+            depthStencilCreateInfo.depthTestEnable       = true;
+            depthStencilCreateInfo.depthWriteEnable      = false;
+            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
+            depthStencilCreateInfo.depthBoundsTestEnable = false;
+            depthStencilCreateInfo.stencilTestEnable     = false;
+
+            return depthStencilCreateInfo;
+        }
     
         vk::PipelineMultisampleStateCreateInfo createMulitsampleState()
         {
@@ -126,34 +139,78 @@ namespace Chicane
     
             return inCreateInfo.logicalDevice.createPipelineLayout(layoutCreateInfo);
         }
+
+        vk::AttachmentDescription createColorAttachment(const CreateInfo& inCreateInfo)
+        {
+            vk::AttachmentDescription attachmentDescription = {};
+            attachmentDescription.flags          = vk::AttachmentDescriptionFlags();
+            attachmentDescription.format         = inCreateInfo.swapChainImageFormat;
+            attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
+            attachmentDescription.loadOp         = vk::AttachmentLoadOp::eClear;
+            attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
+            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
+            attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
+            attachmentDescription.initialLayout  = vk::ImageLayout::eUndefined;
+            attachmentDescription.finalLayout    = vk::ImageLayout::ePresentSrcKHR;
+    
+            return attachmentDescription;
+        }
+
+        vk::AttachmentReference createColorAttachmentRef()
+        {
+            vk::AttachmentReference attachmentRef = {};
+            attachmentRef.attachment = 0;
+            attachmentRef.layout     = vk::ImageLayout::eColorAttachmentOptimal;
+
+            return attachmentRef;
+        }
+
+        vk::AttachmentDescription createDepthAttachment(const CreateInfo& inCreateInfo)
+        {
+            vk::AttachmentDescription attachmentDescription = {};
+            attachmentDescription.flags          = vk::AttachmentDescriptionFlags();
+            attachmentDescription.format         = inCreateInfo.depthFormat;
+            attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
+            attachmentDescription.loadOp         = vk::AttachmentLoadOp::eClear;
+            attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
+            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
+            attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
+            attachmentDescription.initialLayout  = vk::ImageLayout::eUndefined;
+            attachmentDescription.finalLayout    = vk::ImageLayout::ePresentSrcKHR;
+    
+            return attachmentDescription;
+        }
+
+        vk::AttachmentReference createDepthAttachmentRef()
+        {
+            vk::AttachmentReference attachmentRef = {};
+            attachmentRef.attachment = 1;
+            attachmentRef.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+
+            return attachmentRef;
+        }
     
         vk::RenderPass createRendepass(const CreateInfo& inCreateInfo)
         {
-            vk::AttachmentDescription colorAttachment = {};
-            colorAttachment.flags          = vk::AttachmentDescriptionFlags();
-            colorAttachment.format         = inCreateInfo.swapChainImageFormat;
-            colorAttachment.samples        = vk::SampleCountFlagBits::e1;
-            colorAttachment.loadOp         = vk::AttachmentLoadOp::eClear;
-            colorAttachment.storeOp        = vk::AttachmentStoreOp::eStore;
-            colorAttachment.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
-            colorAttachment.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
-            colorAttachment.initialLayout  = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout    = vk::ImageLayout::ePresentSrcKHR;
-    
-            vk::AttachmentReference colorAttachmentRef = {};
-            colorAttachmentRef.attachment = 0;
-            colorAttachmentRef.layout     = vk::ImageLayout::eColorAttachmentOptimal;
-    
+            std::vector<vk::AttachmentDescription> attachments;
+            attachments.push_back(createColorAttachment(inCreateInfo));
+            attachments.push_back(createDepthAttachment(inCreateInfo));
+
+            std::vector<vk::AttachmentReference> attachmentReferences;
+            attachmentReferences.push_back(createColorAttachmentRef());
+            attachmentReferences.push_back(createDepthAttachmentRef());
+
             vk::SubpassDescription subpass = {};
-            subpass.flags                = vk::SubpassDescriptionFlags();
-            subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
-            subpass.colorAttachmentCount = 1;
-            subpass.pColorAttachments    = &colorAttachmentRef;
+            subpass.flags                   = vk::SubpassDescriptionFlags();
+            subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
+            subpass.colorAttachmentCount    = 1;
+            subpass.pColorAttachments       = &attachmentReferences[0];
+            subpass.pDepthStencilAttachment = &attachmentReferences[1];
     
             vk::RenderPassCreateInfo renderPassInfo = {};
             renderPassInfo.flags           = vk::RenderPassCreateFlags();
-            renderPassInfo.attachmentCount = 1;
-            renderPassInfo.pAttachments    = &colorAttachment;
+            renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+            renderPassInfo.pAttachments    = attachments.data();
             renderPassInfo.subpassCount    = 1;
             renderPassInfo.pSubpasses      = &subpass;
     
@@ -221,6 +278,7 @@ namespace Chicane
                 fragmentShaderModule,
                 inCreateInfo
             );
+            vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencil();
             vk::PipelineMultisampleStateCreateInfo multisampleState = createMulitsampleState();
             vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState(
                 colorBlendAttachmentState
@@ -241,7 +299,8 @@ namespace Chicane
             pipelineInfo.stageCount          = static_cast<uint32_t>(shaderStages.size());
             pipelineInfo.pStages             = shaderStages.data();
             pipelineInfo.pMultisampleState   = &multisampleState;
-            pipelineInfo.pColorBlendState    = &colorBlendState; 
+            pipelineInfo.pColorBlendState    = &colorBlendState;
+            pipelineInfo.pDepthStencilState  = &depthStencilState; 
             pipelineInfo.layout              = layout;
             pipelineInfo.renderPass          = renderPass;
             pipelineInfo.subpass             = 0;

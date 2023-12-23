@@ -4,16 +4,39 @@ namespace Chicane
 {
     namespace Image
     {
-        vk::ImageSubresourceRange getDefaultSubresourceRange()
+        vk::Format findSupportedFormat(
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const std::vector<vk::Format>& inCandidates,
+            const vk::ImageTiling& inTiling,
+            const vk::FormatFeatureFlags& inFeatures
+        )
         {
-            vk::ImageSubresourceRange imageSubresourceRange;
-            imageSubresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
-            imageSubresourceRange.baseMipLevel   = 0;
-            imageSubresourceRange.levelCount     = 1;
-            imageSubresourceRange.baseArrayLayer = 0;
-            imageSubresourceRange.layerCount     = 1;
+            for(vk::Format format : inCandidates)
+            {
+                vk::FormatProperties properties = inPhysicalDevice.getFormatProperties(format);
 
-            return imageSubresourceRange;
+                bool isTilingLinear                 = inTiling == vk::ImageTiling::eLinear;
+                bool doesFeatureSupportLinearTiling = (
+                    properties.linearTilingFeatures & inFeatures
+                ) == inFeatures;
+
+                if (isTilingLinear && doesFeatureSupportLinearTiling)
+                {
+                    return format;
+                }
+
+                bool isTilingOptimal                 = inTiling == vk::ImageTiling::eOptimal;
+                bool doesFeatureSupportOptimapTiling = (
+                    properties.optimalTilingFeatures & inFeatures
+                ) == inFeatures;
+
+                if (isTilingOptimal && doesFeatureSupportOptimapTiling)
+                {
+                    return format;
+                }
+            }
+
+            throw std::runtime_error("Unable to select suitable format");
         }
 
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo)
@@ -24,7 +47,7 @@ namespace Chicane
             createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
             createInfo.mipLevels     = 1;
             createInfo.arrayLayers   = 1;
-            createInfo.format        = vk::Format::eR8G8B8A8Unorm;
+            createInfo.format        = inCreateInfo.format;
             createInfo.tiling        = inCreateInfo.tiling;
             createInfo.initialLayout = vk::ImageLayout::eUndefined;
             createInfo.usage         = inCreateInfo.usage;
@@ -64,18 +87,23 @@ namespace Chicane
             vk::ImageView& outImageView,
             const vk::Device& inLogicalDevice,
             const vk::Image& inImage,
-            const vk::Format& inFormat
+            const vk::Format& inFormat,
+            const vk::ImageAspectFlags& inAspect
         )
         {
             vk::ImageViewCreateInfo createInfo = {};
-            createInfo.image            = inImage;
-            createInfo.viewType         = vk::ImageViewType::e2D;
-            createInfo.format           = inFormat;
-            createInfo.subresourceRange = getDefaultSubresourceRange();
-            createInfo.components.r     = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.g     = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.b     = vk::ComponentSwizzle::eIdentity;
-            createInfo.components.a     = vk::ComponentSwizzle::eIdentity;
+            createInfo.image                           = inImage;
+            createInfo.viewType                        = vk::ImageViewType::e2D;
+            createInfo.format                          = inFormat;
+            createInfo.components.r                    = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.g                    = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.b                    = vk::ComponentSwizzle::eIdentity;
+            createInfo.components.a                    = vk::ComponentSwizzle::eIdentity;
+            createInfo.subresourceRange.aspectMask     = inAspect;
+            createInfo.subresourceRange.baseMipLevel   = 0;
+            createInfo.subresourceRange.levelCount     = 1;
+            createInfo.subresourceRange.baseArrayLayer = 0;
+            createInfo.subresourceRange.layerCount     = 1;
 
             outImageView = inLogicalDevice.createImageView(createInfo);
         }
@@ -91,14 +119,18 @@ namespace Chicane
             Command::Worker::startJob(inCommandBuffer);
 
             vk::ImageMemoryBarrier imageMemoryBarrier;
-            imageMemoryBarrier.oldLayout           = inOldLayout;
-            imageMemoryBarrier.newLayout           = inNewLayout;
-            imageMemoryBarrier.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            imageMemoryBarrier.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-            imageMemoryBarrier.image               = inImage;
-            imageMemoryBarrier.subresourceRange    = getDefaultSubresourceRange();
-            imageMemoryBarrier.srcAccessMask       = vk::AccessFlagBits::eTransferWrite;
-            imageMemoryBarrier.dstAccessMask       = vk::AccessFlagBits::eShaderRead;
+            imageMemoryBarrier.oldLayout                       = inOldLayout;
+            imageMemoryBarrier.newLayout                       = inNewLayout;
+            imageMemoryBarrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            imageMemoryBarrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+            imageMemoryBarrier.image                           = inImage;
+            imageMemoryBarrier.srcAccessMask                   = vk::AccessFlagBits::eTransferWrite;
+            imageMemoryBarrier.dstAccessMask                   = vk::AccessFlagBits::eShaderRead;
+            imageMemoryBarrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+            imageMemoryBarrier.subresourceRange.baseMipLevel   = 0;
+            imageMemoryBarrier.subresourceRange.levelCount     = 1;
+            imageMemoryBarrier.subresourceRange.baseArrayLayer = 0;
+            imageMemoryBarrier.subresourceRange.layerCount     = 1;
 
             vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
             vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;

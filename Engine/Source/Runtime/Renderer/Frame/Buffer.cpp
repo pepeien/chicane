@@ -17,7 +17,8 @@ namespace Chicane
             void init(Instance& outFrame, const CreateInfo& inCreateInfo)
             {
                 std::vector<vk::ImageView> attachments = {
-                    outFrame.imageView
+                    outFrame.imageView,
+                    outFrame.depthImageView
                 };
 
                 vk::FramebufferCreateInfo framebufferInfo = {};

@@ -187,13 +187,16 @@ namespace Chicane
     
             for (int i = 0; i < images.size(); i++)
             {
-                outSwapChain.frames[i].image = images[i];
+                Frame::Instance& frame = outSwapChain.frames[i];
+    
+                frame.image = images[i];
 
                 Image::initView(
-                    outSwapChain.frames[i].imageView,
+                    frame.imageView,
                     inLogicalDevice,
-                    outSwapChain.frames[i].image,
-                    surfaceFormat.format
+                    frame.image,
+                    surfaceFormat.format,
+                    vk::ImageAspectFlagBits::eColor
                 );
             }
         }

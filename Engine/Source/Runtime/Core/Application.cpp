@@ -1,7 +1,5 @@
 #include "Application.hpp"
 
-vk::ClearValue s_clearColor = { std::array<float, 4>{ 0.04f, 0.89f, 0.84f, 1.0f } };
-
 namespace Chicane
 {
     Application::Application(const std::string& inWindowTitle, const Scene::Instance& inScene)
@@ -88,14 +86,22 @@ namespace Chicane
 
         inCommandBuffer.begin(beginInfo);
 
+        vk::ClearValue clearColor;
+        clearColor.color = vk::ClearColorValue(0.04f, 0.89f, 0.84f, 1.0f);
+
+        vk::ClearValue clearDepth;
+        clearDepth.depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+
+        std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
+
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline.renderPass;
         renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffer;
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
-        renderPassBeginInfo.clearValueCount     = 1;
-        renderPassBeginInfo.pClearValues        = &s_clearColor;
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
+        renderPassBeginInfo.pClearValues        = clearValues.data();
 
         inCommandBuffer.beginRenderPass(
             &renderPassBeginInfo,
@@ -336,6 +342,16 @@ namespace Chicane
         );
 
         m_maxInFlightFramesCount = static_cast<int>(m_swapChain.frames.size());
+
+        for (Frame::Instance& frame : m_swapChain.frames)
+        {
+            frame.physicalDevice = m_physicalDevice;
+            frame.logicalDevice  = m_logicalDevice;
+            frame.width          = m_swapChain.extent.width;
+            frame.height         = m_swapChain.extent.height;
+
+            frame.setupDepthBuffering();
+        }
     }
 
     void Application::rebuildSwapChain()
@@ -365,18 +381,7 @@ namespace Chicane
     {
         for (Frame::Instance& frame : m_swapChain.frames)
         {
-            m_logicalDevice.destroyImageView(frame.imageView);
-            m_logicalDevice.destroyFramebuffer(frame.framebuffer);
-
-            m_logicalDevice.destroyFence(frame.renderFence);
-            m_logicalDevice.destroySemaphore(frame.presentSemaphore);
-            m_logicalDevice.destroySemaphore(frame.renderSemaphore);
-
-            m_logicalDevice.unmapMemory(frame.cameraData.buffer.memory);
-            Buffer::destroy(m_logicalDevice, frame.cameraData.buffer);
-
-            m_logicalDevice.unmapMemory(frame.modelData.buffer.memory);
-            Buffer::destroy(m_logicalDevice, frame.modelData.buffer);
+            frame.destroy();
         }
 
         m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
@@ -438,6 +443,7 @@ namespace Chicane
         graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
         graphicsPipelineCreateInfo.swapChainExtent      = m_swapChain.extent;
         graphicsPipelineCreateInfo.swapChainImageFormat = m_swapChain.format;
+        graphicsPipelineCreateInfo.depthFormat          = m_swapChain.frames[0].depthFormat;
         graphicsPipelineCreateInfo.descriptorSetLayouts = descriptorSetLayouts;
 
         GraphicsPipeline::init(
@@ -515,19 +521,10 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_swapChain.frames)
         {
-            Sync::initSempahore(frame.presentSemaphore, m_logicalDevice);
-            Sync::initSempahore(frame.renderSemaphore, m_logicalDevice);
-            Sync::initFence(frame.renderFence, m_logicalDevice);
-           
-            frame.initResources(
-                m_logicalDevice,
-                m_physicalDevice,
-                m_scene
-            );
-
-            Descriptor::initSet(
-                frame.descriptorSet,
-                m_logicalDevice,
+            frame.setupSync();
+            frame.setupCamera();
+            frame.setupModel(m_scene);
+            frame.setupDescriptors(
                 m_frameDescriptors.setLayout,
                 m_frameDescriptors.pool
             );
@@ -747,7 +744,7 @@ namespace Chicane
             frame.modelData.allocationSize
         );
 
-        frame.writeDescriptorSet(m_logicalDevice);
+        frame.setupDescriptorSet();
     }
 
     void Application::drawObjects(const vk::CommandBuffer& inCommandBuffer)

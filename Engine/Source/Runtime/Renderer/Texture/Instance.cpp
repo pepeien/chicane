@@ -5,19 +5,15 @@ namespace Chicane
     namespace Texture
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
+        : m_width(inCreateInfo.data.width),
+          m_height(inCreateInfo.data.height),
+          m_filename(FileSystem::getRelativeTexturePath(inCreateInfo.data.filename)),
+          m_logicalDevice(inCreateInfo.logicalDevice),
+          m_physicalDevice(inCreateInfo.physicalDevice),
+          m_commandBuffer(inCreateInfo.commandBuffer),
+          m_queue(inCreateInfo.queue),
+          m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
         {
-            m_width                = inCreateInfo.data.width;
-            m_height               = inCreateInfo.data.height;
-            m_filename             = FileSystem::getRelativeTexturePath(
-                inCreateInfo.data.filename
-            );
-            m_logicalDevice        = inCreateInfo.logicalDevice;
-            m_physicalDevice       = inCreateInfo.physicalDevice;
-            m_commandBuffer        = inCreateInfo.commandBuffer;
-            m_queue                = inCreateInfo.queue;
-            m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
-            m_descriptor.pool      = inCreateInfo.descriptorPool;
-
             load();
 
             Image::CreateInfo imageCreateInfo;
@@ -30,6 +26,7 @@ namespace Chicane
             imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
                                                vk::ImageUsageFlagBits::eSampled;
             imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            imageCreateInfo.format           = vk::Format::eR8G8B8A8Unorm;
 
             Image::init(m_image.instance, imageCreateInfo);
             Image::initMemory(
@@ -140,7 +137,8 @@ namespace Chicane
                 m_image.view,
                 m_logicalDevice,
                 m_image.instance,
-                vk::Format::eR8G8B8A8Unorm
+                vk::Format::eR8G8B8A8Unorm,
+                vk::ImageAspectFlagBits::eColor
             );
         }
 
