@@ -17,7 +17,7 @@ namespace Chicane
                 switch (inType)
                 {
                 case Type::Wavefront:
-                    vertices = Wavefront::import(inFilepath);
+                    vertices = Wavefront::parse(inFilepath);
 
                     break;
                 
@@ -121,8 +121,6 @@ namespace Chicane
 
                 for (int i = 0; i < m_combinedVertices.size(); i++)
                 {
-                    Vertex::Instance vertex = m_combinedVertices[i];
-
                     m_indexedVertices[i] = i;
                 }
             }

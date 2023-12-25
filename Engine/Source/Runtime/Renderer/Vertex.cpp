@@ -45,6 +45,15 @@ namespace Chicane
 
             attributeDescriptions.push_back(texturePositionDescription);
 
+            // Normals
+            vk::VertexInputAttributeDescription normalsDescription;
+            normalsDescription.binding  = 0;
+            normalsDescription.location = 3;
+            normalsDescription.format   = vk::Format::eR32G32B32Sfloat;
+            normalsDescription.offset   = offsetof(Instance, normal);
+
+            attributeDescriptions.push_back(normalsDescription);
+
             return attributeDescriptions;
         }
     }

@@ -659,8 +659,7 @@ namespace Chicane
 
         glm::mat4 projection = glm::perspective(
             glm::radians(25.0f),
-            static_cast<float>(m_swapChain.extent.width) /
-                   static_cast<float>(m_swapChain.extent.height),
+            static_cast<float>(m_swapChain.extent.width) / static_cast<float>(m_swapChain.extent.height),
             0.1f,
             10.0f
         );
