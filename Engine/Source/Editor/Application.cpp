@@ -6,19 +6,10 @@ namespace Chicane
     {
         void initLevel(Level::Instance& outLevel)
         {
-            Level::Actor::Instance cube;
-            cube.transform.translation = glm::vec3(-0.1f, -0.5f, 0.0f);
-            cube.transform.scale       = glm::vec3(0.05f);
-            cube.transform.rotation    = glm::vec3(35.0f, 3.0f, 105.0f);
-            cube.mesh.id               = "Cube";
-            cube.texture.id            = "Grid";
-
-            outLevel.addActor(cube);
-
             Level::Actor::Instance aircraft;
             aircraft.transform.translation = glm::vec3(0.0f, 0.0f, 0.0f);
-            aircraft.transform.scale       = glm::vec3(0.0005f);
-            aircraft.transform.rotation    = glm::vec3(35.0f, 3.0f, 105.0f);
+            aircraft.transform.scale       = glm::vec3(1.0f);
+            aircraft.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             aircraft.mesh.id               = "AirCraft";
             aircraft.texture.id            = "Gray";
 

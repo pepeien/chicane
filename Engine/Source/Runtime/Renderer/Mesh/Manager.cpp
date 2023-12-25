@@ -12,12 +12,12 @@ namespace Chicane
                 Type inType = Type::Undefined
             )
             {
-                std::vector<Vertex::Instance> vertices;
+                ParseResult result;
 
                 switch (inType)
                 {
                 case Type::Wavefront:
-                    vertices = Wavefront::parse(inFilepath);
+                    result = Wavefront::parse(inFilepath);
 
                     break;
                 
@@ -25,7 +25,7 @@ namespace Chicane
                     throw std::runtime_error("Failed to add mesh due to invalid type");
                 }
 
-                addMesh(inMeshId, vertices);
+                addMesh(inMeshId, result.vertices);
             }
 
             void Instance::drawMesh(

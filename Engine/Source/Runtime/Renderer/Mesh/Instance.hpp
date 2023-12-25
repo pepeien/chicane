@@ -20,5 +20,11 @@ namespace Chicane
             std::vector<Vertex::Instance> vertexInstances;
             std::vector<uint32_t> vertexIndices;
         };
+
+        struct ParseResult
+        {
+            std::vector<Vertex::Instance> vertices;
+            std::vector<uint32_t> indexes;
+        };
     }
 }

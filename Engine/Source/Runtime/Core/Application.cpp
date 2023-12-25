@@ -548,12 +548,6 @@ namespace Chicane
     void Application::loadMeshes()
     {
         m_meshManager->importMesh(
-            "Cube",
-            "cube.obj",
-            Mesh::Type::Wavefront
-        );
-
-        m_meshManager->importMesh(
             "AirCraft",
             "air_craft.obj",
             Mesh::Type::Wavefront
@@ -652,16 +646,17 @@ namespace Chicane
 
     void Application::prepareCamera(Frame::Instance& outFrame)
     {
-        glm::vec3 eyes   = { 1.0f, 0.0f, -1.0f };
-        glm::vec3 center = { 0.0f, 0.0f, 0.0f };
-        glm::vec3 up     = { 0.0f, 0.0f, -1.0f };
-        glm::mat4 view   = glm::lookAt(eyes, center, up);
+        glm::vec3 position  = { -1000.0f, 0.0f, 0.0f };
+        glm::vec3 direction = { 1.0f, 0.0f, 1.0f };
+        glm::vec3 up        = { 0.0f, 0.0f, 1.0f };
+
+        glm::mat4 view = glm::lookAt(position, direction, up);
 
         glm::mat4 projection = glm::perspective(
-            glm::radians(25.0f),
+            45.0f,
             static_cast<float>(m_swapChain.extent.width) / static_cast<float>(m_swapChain.extent.height),
             0.1f,
-            10.0f
+            2000.0f
         );
 
         // Normalize OpenGL's to coordinate system Vulkan

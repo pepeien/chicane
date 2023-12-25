@@ -115,7 +115,7 @@ namespace Chicane
                 }
             }
 
-            std::vector<Vertex::Instance> parse(const std::string& inFilepath)
+            ParseResult parse(const std::string& inFilepath)
             {    
                 std::vector<std::string> rawData = Helper::splitString(
                     FileSystem::readFile(
@@ -178,12 +178,10 @@ namespace Chicane
                     }
                 }
 
-                size_t huh1 = geometricVertices.size();
-                size_t huh2 = textureVertices.size();
-                size_t huh3 = normalVertices.size();
-                size_t huh4 = faces.size();
+                ParseResult result;
+                result.vertices = faces;
 
-                return faces;
+                return result;
             }
         }
     }

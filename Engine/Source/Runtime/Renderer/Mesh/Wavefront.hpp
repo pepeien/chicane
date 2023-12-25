@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.hpp"
+#include "Instance.hpp"
 #include "Renderer/Vertex.hpp"
 
 namespace Chicane
@@ -45,7 +46,7 @@ namespace Chicane
                 const std::vector<std::string>& inSplittedDataset
             );
 
-            std::vector<Vertex::Instance> parse(const std::string& inFilepath);
+            ParseResult parse(const std::string& inFilepath);
         }
     }
 }
