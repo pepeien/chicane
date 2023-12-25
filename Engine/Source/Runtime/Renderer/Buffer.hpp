@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Device.hpp"
-#include "Command/Worker.hpp"
+#include "CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {

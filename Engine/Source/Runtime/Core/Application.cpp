@@ -2,9 +2,9 @@
 
 namespace Chicane
 {
-    Application::Application(const std::string& inWindowTitle, const Scene::Instance& inScene)
+    Application::Application(const std::string& inWindowTitle, const Level::Instance& inLevel)
     : m_window({ nullptr, inWindowTitle, 0, 0 }),
-      m_scene(inScene),
+      m_level(inLevel),
       m_currentImageIndex(0),
       m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
       m_textureManager(std::make_unique<Texture::Manager::Instance>()),
@@ -80,14 +80,14 @@ namespace Chicane
         }
     }
 
-    void Application::draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex)
+    void Application::draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex)
     {
         vk::CommandBufferBeginInfo beginInfo = {};
 
         inCommandBuffer.begin(beginInfo);
 
         vk::ClearValue clearColor;
-        clearColor.color = vk::ClearColorValue(0.04f, 0.89f, 0.84f, 1.0f);
+        clearColor.color = vk::ClearColorValue(0.051f, 0.051f, 0.051f, 1.0f);
 
         vk::ClearValue clearDepth;
         clearDepth.depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
@@ -121,9 +121,9 @@ namespace Chicane
             nullptr
         );
 
-        prepareScene(inCommandBuffer);
+        prepareLevel(inCommandBuffer);
 
-        drawObjects(inCommandBuffer);
+        drawLevel(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
@@ -472,7 +472,7 @@ namespace Chicane
 
     void Application::buildCommandPool()
     {
-        Command::Pool::init(
+        CommandBuffer::Pool::init(
             m_mainCommandPool,
             m_logicalDevice,
             m_physicalDevice,
@@ -487,17 +487,17 @@ namespace Chicane
 
     void Application::buildMainCommandBuffer()
     {
-        Command::Buffer::CreateInfo createInfo = {
+        CommandBuffer::Instance::CreateInfo createInfo = {
             m_logicalDevice,
             m_mainCommandPool
         };
 
-        Command::Buffer::init(m_mainCommandBuffer, createInfo);
+        CommandBuffer::Instance::init(m_mainCommandBuffer, createInfo);
     }
 
     void Application::buildFramesCommandBuffers()
     {
-        Command::Buffer::CreateInfo createInfo = {
+        CommandBuffer::Instance::CreateInfo createInfo = {
             m_logicalDevice,
             m_mainCommandPool
         };
@@ -523,7 +523,7 @@ namespace Chicane
         {
             frame.setupSync();
             frame.setupCamera();
-            frame.setupModel(m_scene);
+            frame.setupModelData(m_level.getActors());
             frame.setupDescriptors(
                 m_frameDescriptors.setLayout,
                 m_frameDescriptors.pool
@@ -547,56 +547,16 @@ namespace Chicane
 
     void Application::loadMeshes()
     {
-        std::vector<Vertex::Instance> triangleVertices;
-        triangleVertices.resize(3);
-
-        triangleVertices[0].position        = glm::vec2(0.0f, -1.0f);
-        triangleVertices[0].color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[0].texturePosition = glm::vec2(0.5f, 0.0f);
-
-        triangleVertices[1].position        = glm::vec2(1.0f, 1.0f);
-        triangleVertices[1].color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[1].texturePosition = glm::vec2(1.0f, 1.0f);
-
-        triangleVertices[2].position        = glm::vec2(-1.0f, 1.0f);
-        triangleVertices[2].color           = glm::vec3(1.0f, 0.0f, 0.0f);
-        triangleVertices[2].texturePosition = glm::vec2(0.0f, 1.0f);
-
-        m_meshManager->addMesh(
-            "Triangle",
-            triangleVertices
+        m_meshManager->importMesh(
+            "Cube",
+            "cube.obj",
+            Mesh::Type::Wavefront
         );
 
-        std::vector<Vertex::Instance> squareVertices;
-        squareVertices.resize(6);
-
-        squareVertices[0].position        = glm::vec2(-0.5f, 1.0f);
-        squareVertices[0].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[0].texturePosition = glm::vec2(0.0f, 1.0f);
-
-        squareVertices[1].position        = glm::vec2(-0.5f, -1.0f);
-        squareVertices[1].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[1].texturePosition = glm::vec2(0.0f, 0.0f);
-
-        squareVertices[2].position        = glm::vec2(0.5f, -1.0f);
-        squareVertices[2].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[2].texturePosition = glm::vec2(1.0f, 0.0f);
-
-        squareVertices[3].position        = glm::vec2(0.5f, -1.0f);
-        squareVertices[3].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[3].texturePosition = glm::vec2(1.0f, 0.0f);
-
-        squareVertices[4].position        = glm::vec2(0.5f, 1.0f);
-        squareVertices[4].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[4].texturePosition = glm::vec2(1.0f, 1.0f);
-
-        squareVertices[5].position        = glm::vec2(-0.5f, 1.0f);
-        squareVertices[5].color           = glm::vec3(0.0f, 0.0f, 1.0f);
-        squareVertices[5].texturePosition = glm::vec2(0.0f, 1.0f);
-
-        m_meshManager->addMesh(
-            "Square",
-            squareVertices
+        m_meshManager->importMesh(
+            "AirCraft",
+            "air_craft.obj",
+            Mesh::Type::Wavefront
         );
     }
 
@@ -617,21 +577,21 @@ namespace Chicane
         Texture::Data grayTextureData;
         grayTextureData.width    = 512;
         grayTextureData.height   = 512;
-        grayTextureData.filename = "gray.png";
+        grayTextureData.filepath = "Base/gray.png";
 
         m_textureManager->addTexture("Gray", grayTextureData);
 
         Texture::Data gridTextureData;
         gridTextureData.width    = 512;
         gridTextureData.height   = 512;
-        gridTextureData.filename = "grid.png";
+        gridTextureData.filepath = "Base/grid.png";
 
         m_textureManager->addTexture("Grid", gridTextureData);
 
         Texture::Data uvTextureData;
         uvTextureData.width    = 512;
         uvTextureData.height   = 512;
-        uvTextureData.filename = "uv.png";
+        uvTextureData.filepath = "Base/uv.png";
 
         m_textureManager->addTexture("UV", uvTextureData);
     }
@@ -671,7 +631,7 @@ namespace Chicane
         m_textureManager.reset();
     }
 
-    void Application::prepareScene(const vk::CommandBuffer& inCommandBuffer)
+    void Application::prepareLevel(const vk::CommandBuffer& inCommandBuffer)
     {
         vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
@@ -698,11 +658,13 @@ namespace Chicane
         glm::mat4 view   = glm::lookAt(eyes, center, up);
 
         glm::mat4 projection = glm::perspective(
-            glm::radians(45.0f),
-            static_cast<float>(m_swapChain.extent.width) / static_cast<float>(m_swapChain.extent.height),
+            glm::radians(25.0f),
+            static_cast<float>(m_swapChain.extent.width) /
+                   static_cast<float>(m_swapChain.extent.height),
             0.1f,
             10.0f
         );
+
         // Normalize OpenGL's to coordinate system Vulkan
         projection[1][1] *= -1;
 
@@ -711,22 +673,12 @@ namespace Chicane
         outFrame.cameraData.object.viewProjection = projection * view;
     }
 
-    void Application::prepareSceneObjects(Frame::Instance& outFrame)
+    void Application::prepareLevelActors(Frame::Instance& outFrame)
     {
-        std::vector<Scene::Object::Instance> sceneObjects = m_scene.getObjects();
-            
-        for (uint32_t i = 0; i < sceneObjects.size(); i++)
-        {
-            Scene::Object::Instance& sceneObject = sceneObjects[i];
-
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), sceneObject.transform.translation);
-            transform           = glm::scale(transform, sceneObject.transform.scale);
-
-            outFrame.modelData.transforms[i] = transform;
-        }
+        outFrame.updateModelTransforms(m_level.getActors());
     }
 
-    void Application::prepareFrame(const uint32_t& inImageIndex)
+    void Application::prepareFrame(uint32_t inImageIndex)
     {
         Frame::Instance& frame = m_swapChain.frames[inImageIndex];
 
@@ -737,7 +689,7 @@ namespace Chicane
             frame.cameraData.allocationSize
         );
 
-        prepareSceneObjects(frame);
+        prepareLevelActors(frame);
         memcpy(
             frame.modelData.writeLocation,
             frame.modelData.transforms.data(),
@@ -747,45 +699,45 @@ namespace Chicane
         frame.setupDescriptorSet();
     }
 
-    void Application::drawObjects(const vk::CommandBuffer& inCommandBuffer)
+    void Application::drawLevel(const vk::CommandBuffer& inCommandBuffer)
     {
         std::unordered_map<std::string, uint32_t> usedMeshes;
 
-        for (Scene::Object::Instance sceneObject : m_scene.objects)
+        for (Level::Actor::Instance actor : m_level.actors)
         {
-            if (usedMeshes.find(sceneObject.mesh.id) != usedMeshes.end())
+            if (usedMeshes.find(actor.mesh.id) != usedMeshes.end())
             {
-                usedMeshes[sceneObject.mesh.id]++;
+                usedMeshes[actor.mesh.id]++;
 
                 continue;
             }
 
-            usedMeshes.insert(std::make_pair(sceneObject.mesh.id, 1));
+            usedMeshes.insert(std::make_pair(actor.mesh.id, 1));
         }
 
         std::vector<std::string> drawnMeshes;
         drawnMeshes.reserve(usedMeshes.size());
 
-        for (Scene::Object::Instance sceneObject : m_scene.objects)
+        for (Level::Actor::Instance actor : m_level.actors)
         {
             m_textureManager->bindTexture(
-                sceneObject.texture.id,
+                actor.texture.id,
                 inCommandBuffer,
                 m_graphicsPipeline.layout
             );
 
-            if (std::find(drawnMeshes.begin(), drawnMeshes.end(), sceneObject.mesh.id) != drawnMeshes.end())
+            if (std::find(drawnMeshes.begin(), drawnMeshes.end(), actor.mesh.id) != drawnMeshes.end())
             {
                 continue;
             }
 
             m_meshManager->drawMesh(
-                sceneObject.mesh.id,
-                usedMeshes[sceneObject.mesh.id],
+                actor.mesh.id,
+                usedMeshes[actor.mesh.id],
                 inCommandBuffer
             );
 
-            drawnMeshes.push_back(sceneObject.mesh.id);
+            drawnMeshes.push_back(actor.mesh.id);
         }
     }
 }

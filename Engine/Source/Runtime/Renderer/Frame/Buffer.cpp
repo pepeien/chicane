@@ -37,7 +37,7 @@ namespace Chicane
 
             void initCommand(
                 std::vector<Instance>& outFrames,
-                const Command::Buffer::CreateInfo& inCreateInfo
+                const CommandBuffer::Instance::CreateInfo& inCreateInfo
             )
             {
                 for (int i = 0; i < outFrames.size(); i++)
@@ -48,10 +48,10 @@ namespace Chicane
 
             void initCommand(
                 Instance& outFrame,
-                const Command::Buffer::CreateInfo& inCreateInfo
+                const CommandBuffer::Instance::CreateInfo& inCreateInfo
             )
             {
-                Command::Buffer::init(outFrame.commandBuffer, inCreateInfo);
+                CommandBuffer::Instance::init(outFrame.commandBuffer, inCreateInfo);
             }
         }
     }

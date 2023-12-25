@@ -3,6 +3,7 @@
 #include "Base.hpp"
 
 #include "Instance.hpp"
+#include "Wavefront.hpp"
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Vertex.hpp"
 
@@ -10,18 +11,27 @@ namespace Chicane
 {
     namespace Mesh
     {
+        enum class Type
+        {
+            // N/A
+            Undefined,
+            // .obj
+            Wavefront
+        };
+
         namespace Manager
         {
             class Instance
             {
             public:
-                void addMesh(
+                void importMesh(
                     const std::string& inMeshId,
-                    const std::vector<Vertex::Instance>& inVertices
+                    const std::string& inFilePath,
+                    Type inType
                 );
                 void drawMesh(
                     const std::string& inId,
-                    const uint32_t& inInstanceCount,
+                    uint32_t inInstanceCount,
                     const vk::CommandBuffer& inCommadBuffer
                 );
 
@@ -34,7 +44,11 @@ namespace Chicane
                     const vk::CommandBuffer& inCommandBuffer
                 );
 
-            private:
+                void addMesh(
+                    const std::string& inMeshId,
+                    const std::vector<Vertex::Instance>& inVertices
+                );
+
                 void setup();
 
                 void initVertexBuffer(
@@ -52,11 +66,12 @@ namespace Chicane
                     const vk::CommandBuffer& inCommandBuffer
                 );
 
+
             private:
                 std::vector<Vertex::Instance> m_combinedVertices;
                 std::vector<uint32_t> m_indexedVertices;
 
-                std::vector<std::string> registeredMeshIds;
+                std::vector<std::string> m_registeredMeshIds;
                 std::unordered_map<std::string, Mesh::AllocationInfo> m_meshAllocationInfos;
                 std::unordered_map<std::string, Mesh::Instance> m_meshInstances;
             };

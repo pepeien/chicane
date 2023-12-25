@@ -22,7 +22,7 @@ namespace Chicane
             vk::VertexInputAttributeDescription positionDescription;
             positionDescription.binding  = 0;
             positionDescription.location = 0;
-            positionDescription.format   = vk::Format::eR32G32Sfloat;
+            positionDescription.format   = vk::Format::eR32G32B32Sfloat;
             positionDescription.offset   = offsetof(Instance, position);
 
             attributeDescriptions.push_back(positionDescription);

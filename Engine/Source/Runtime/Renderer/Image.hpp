@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Device.hpp"
-#include "Command/Worker.hpp"
+#include "CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {
@@ -13,7 +13,7 @@ namespace Chicane
         {
             uint32_t width;
 			uint32_t height;
-			std::string filename;
+			std::string filepath;
 			vk::Device logicalDevice;
 			vk::PhysicalDevice physicalDevice;
             vk::ImageTiling tiling;
@@ -63,8 +63,8 @@ namespace Chicane
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
-            const uint32_t& inWidth,
-            const uint32_t& inHeight
+            uint32_t inWidth,
+            uint32_t inHeight
         );
 	}
 }

@@ -8,8 +8,9 @@ namespace Chicane
     {
         void initModule(
             vk::ShaderModule& outShaderModule,
-            const std::string& inShaderName,
+            const std::string& inFilepath,
             const vk::Device& inLogicalDevice
         );
+        
     }
 }

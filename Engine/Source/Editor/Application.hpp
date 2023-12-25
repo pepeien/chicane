@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Editor
     {
-        void initScene(Scene::Instance& outScene);
+        void initLevel(Level::Instance& outLevel);
 
         int run();
     }

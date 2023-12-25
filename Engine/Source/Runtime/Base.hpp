@@ -7,9 +7,10 @@
 
 #define APPLICATION_NAME "Chicane Engine"
 
-#define ENGINE_NAME        "Chicane"
-#define ENGINE_DIR         "../"
-#define ENGINE_SHADERS_DIR "Content/Shaders/"
+#define ENGINE_NAME         "Chicane"
+#define ENGINE_DIR          "../"
+#define ENGINE_MODELS_DIR   "Content/Models/"
+#define ENGINE_SHADERS_DIR  "Content/Shaders/"
 #define ENGINE_TEXTURES_DIR "Content/Textures/"
 
 #ifdef NDEBUG
@@ -41,14 +42,15 @@
 #include <stb_image.h>
 
 #include "Core/FileSystem.hpp"
+#include "Core/Helper.hpp"
 #include "Core/Log.hpp"
 
-const std::vector<const char*> VALIDATION_LAYERS = {
+static const std::vector<const char*> VALIDATION_LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
 
-const std::vector<const char*> DEVICE_EXTENSIONS = {
+static const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-const uint32_t MAX_BUFFER_MULTIPLIER = 2;
+static const uint32_t MAX_BUFFER_MULTIPLIER = 2;

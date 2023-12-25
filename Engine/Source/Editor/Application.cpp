@@ -4,31 +4,25 @@ namespace Chicane
 {
     namespace Editor
     {
-        void initScene(Scene::Instance& outScene)
+        void initLevel(Level::Instance& outLevel)
         {
-            Scene::Object::Instance triangle;
-            triangle.transform.translation = glm::vec3(0.3f, -0.5f, 0.0f);
-            triangle.transform.scale       = glm::vec3(0.35f);
-            triangle.mesh.id               = "Triangle";
-            triangle.texture.id            = "Grid";
+            Level::Actor::Instance cube;
+            cube.transform.translation = glm::vec3(-0.1f, -0.5f, 0.0f);
+            cube.transform.scale       = glm::vec3(0.05f);
+            cube.transform.rotation    = glm::vec3(-90.0f, -40.0f, 0.0f);
+            cube.mesh.id               = "Cube";
+            cube.texture.id            = "Grid";
 
-            outScene.addObject(triangle);
+            outLevel.addActor(cube);
 
-            Scene::Object::Instance square;
-            square.transform.translation = glm::vec3(0.3f, 0.5f, 0.0f);
-            square.transform.scale       = glm::vec3(0.35f);
-            square.mesh.id               = "Square";
-            square.texture.id            = "Grid";
+            Level::Actor::Instance aircraft;
+            aircraft.transform.translation = glm::vec3(0.0f, 0.0f, 0.0f);
+            aircraft.transform.scale       = glm::vec3(0.0005f);
+            aircraft.transform.rotation    = glm::vec3(-90.0f, -40.0f, 0.0f);
+            aircraft.mesh.id               = "AirCraft";
+            aircraft.texture.id            = "Gray";
 
-            outScene.addObject(square);
-
-            Scene::Object::Instance square2;
-            square2.transform.translation = glm::vec3(0.25f, 0.5f, -0.2f);
-            square2.transform.scale       = glm::vec3(0.35f);
-            square2.mesh.id               = "Square";
-            square2.texture.id            = "Grid";
-
-            outScene.addObject(square2);
+            outLevel.addActor(aircraft);
         }
 
         int run()
@@ -37,11 +31,11 @@ namespace Chicane
             {
                 std::string windowTitle = "Chicane Editor";
 
-                Scene::Instance scene;
+                Level::Instance level;
 
-                initScene(scene);
+                initLevel(level);
 
-                Application application(windowTitle, scene);
+                Application application(windowTitle, level);
 
                 application.run();
             }

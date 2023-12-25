@@ -7,7 +7,7 @@ namespace Chicane
         Instance::Instance(const CreateInfo& inCreateInfo)
         : m_width(inCreateInfo.data.width),
           m_height(inCreateInfo.data.height),
-          m_filename(FileSystem::getRelativeTexturePath(inCreateInfo.data.filename)),
+          m_filepath(FileSystem::getRelativePath(ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath)),
           m_logicalDevice(inCreateInfo.logicalDevice),
           m_physicalDevice(inCreateInfo.physicalDevice),
           m_commandBuffer(inCreateInfo.commandBuffer),
@@ -19,7 +19,7 @@ namespace Chicane
             Image::CreateInfo imageCreateInfo;
             imageCreateInfo.width            = m_width;
             imageCreateInfo.height           = m_height;
-            imageCreateInfo.filename         = m_filename;
+            imageCreateInfo.filepath         = m_filepath;
             imageCreateInfo.logicalDevice    = m_logicalDevice;
             imageCreateInfo.physicalDevice   = m_physicalDevice;
             imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
@@ -69,7 +69,7 @@ namespace Chicane
         void Instance::load()
         {
             m_pixels = stbi_load(
-                m_filename.c_str(),
+                m_filepath.c_str(),
                 &m_width,
                 &m_height,
                 &m_channels,
@@ -78,7 +78,7 @@ namespace Chicane
 
             if (m_pixels == nullptr)
             {
-                throw std::runtime_error("Failed to load the pixels for " + m_filename);
+                throw std::runtime_error("Failed to load the pixels for " + m_filepath);
             }
         }
 

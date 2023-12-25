@@ -4,9 +4,11 @@
 
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Descriptor.hpp"
+#include "Renderer/Image.hpp"
 #include "Renderer/Uniform.hpp"
 #include "Renderer/Sync.hpp"
-#include "Renderer/Scene/Instance.hpp"
+#include "Renderer/Level/Instance.hpp"
+#include "Renderer/Level/Actor.hpp"
 
 namespace Chicane
 {
@@ -41,13 +43,15 @@ namespace Chicane
         public:
             void setupSync();
             void setupCamera();
-            void setupModel(const Scene::Instance& inScene);
+            void setupModelData(const std::vector<Level::Actor::Instance>& inActors);
             void setupDescriptors(
                 const vk::DescriptorSetLayout& inLayout,
                 const vk::DescriptorPool& inPool
             );
             void setupDepthBuffering();
             void setupDescriptorSet();
+            
+            void updateModelTransforms(const std::vector<Level::Actor::Instance>& inActors);
 
             void destroy();
 

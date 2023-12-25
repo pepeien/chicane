@@ -6,11 +6,13 @@ namespace Chicane
     {
         void initModule(
             vk::ShaderModule& outShaderModule,
-            const std::string& inShaderName,
+            const std::string& inFilepath,
             const vk::Device& inLogicalDevice
         )
         {
-            std::vector<char> shaderCode = FileSystem::readShader(inShaderName);
+            std::vector<char> shaderCode = FileSystem::readFile(
+                ENGINE_SHADERS_DIR + inFilepath
+            );
 
             vk::ShaderModuleCreateInfo moduleInfo = {};
             moduleInfo.flags    = vk::ShaderModuleCreateFlags();

@@ -4,25 +4,10 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        std::vector<char> readShader(const std::string& inFilepath)
-        {
-            return readFile(ENGINE_SHADERS_DIR + inFilepath);
-        }
-
-        std::vector<char> readTexture(const std::string& inFilepath)
-        {
-            return readFile(ENGINE_TEXTURES_DIR + inFilepath);
-        }
-
-        std::string getRelativeTexturePath(const std::string& inFilepath)
-        {
-            return getRelativePath(ENGINE_TEXTURES_DIR + inFilepath);
-        }
-
         std::vector<char> readFile(const std::string& inFilepath)
         {
-            std::string formattedFilepath = ENGINE_DIR + inFilepath;
-    
+            std::string formattedFilepath = getRelativePath(inFilepath);
+
             std::ifstream file(formattedFilepath, std::ios::ate | std::ios::binary);
     
             if (file.is_open() == false)

@@ -84,8 +84,8 @@ namespace Chicane
     
         void pickExtent(
             vk::Extent2D& outExtent,
-            const uint32_t& inWidth,
-            const uint32_t& inHeight,
+            uint32_t inWidth,
+            uint32_t inHeight,
             const vk::SurfaceCapabilitiesKHR& inCapabilities
         )
         {
@@ -116,8 +116,8 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            const int& inWidth,
-            const int& inHeight
+            int inWidth,
+            int inHeight
         )
         {
             SupportDetails supportDetails;

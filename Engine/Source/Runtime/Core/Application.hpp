@@ -11,14 +11,14 @@ namespace Chicane
     class Application
     {
     public:
-        Application(const std::string& inWindowTitle, const Scene::Instance& inScene);
+        Application(const std::string& inWindowTitle, const Level::Instance& inLevel);
         ~Application();
 
     public:
         void run();
 
     private:
-        void draw(const vk::CommandBuffer& inCommandBuffer, const uint32_t& inImageIndex);
+        void draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
         void render();
         void calculateFrameRate();
 
@@ -74,12 +74,12 @@ namespace Chicane
 
         void buildMaterialResources();
 
-        void prepareScene(const vk::CommandBuffer& inCommandBuffer);
+        void prepareLevel(const vk::CommandBuffer& inCommandBuffer);
         void prepareCamera(Frame::Instance& outFrame);
-        void prepareSceneObjects(Frame::Instance& outFrame);
-        void prepareFrame(const uint32_t& inImageIndex);
+        void prepareLevelActors(Frame::Instance& outFrame);
+        void prepareFrame(uint32_t inImageIndex);
 
-        void drawObjects(const vk::CommandBuffer& inCommandBuffer);
+        void drawLevel(const vk::CommandBuffer& inCommandBuffer);
 
     private:
         // Stats
@@ -116,7 +116,7 @@ namespace Chicane
         std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
         // Context
-        Scene::Instance m_scene;
+        Level::Instance m_level;
 
         // Window
         Window::Instance m_window;

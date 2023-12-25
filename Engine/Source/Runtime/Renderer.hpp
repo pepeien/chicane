@@ -15,9 +15,9 @@
 #include "Renderer/Uniform.hpp"
 #include "Renderer/Vertex.hpp"
 
-#include "Renderer/Command/Buffer.hpp"
-#include "Renderer/Command/Pool.hpp"
-#include "Renderer/Command/Worker.hpp"
+#include "Renderer/CommandBuffer/Instance.hpp"
+#include "Renderer/CommandBuffer/Pool.hpp"
+#include "Renderer/CommandBuffer/Worker.hpp"
 
 #include "Renderer/Frame/Buffer.hpp"
 #include "Renderer/Frame/Instance.hpp"
@@ -25,8 +25,8 @@
 #include "Renderer/Mesh/Manager.hpp"
 #include "Renderer/Mesh/Instance.hpp"
 
-#include "Renderer/Scene/Instance.hpp"
-#include "Renderer/Scene/Object.hpp"
+#include "Renderer/Level/Actor.hpp"
+#include "Renderer/Level/Instance.hpp"
 
 #include "Renderer/Texture/Manager.hpp"
 #include "Renderer/Texture/Instance.hpp"

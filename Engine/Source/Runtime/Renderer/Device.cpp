@@ -93,7 +93,7 @@ namespace Chicane
 
         uint32_t findMemoryTypeIndex(
             const vk::PhysicalDevice& inPhysicalDevice,
-            const uint32_t& inSupportedMemoryIndices,
+            uint32_t inSupportedMemoryIndices,
             vk::MemoryPropertyFlags inRequestMemoryProperties
         )
         {

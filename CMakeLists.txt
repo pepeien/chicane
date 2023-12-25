@@ -11,6 +11,7 @@ set(NAME Chicane)
 project(${NAME} VERSION 1.0.0)
 
 ##############  Set values  #######################
+set(MODELS_TARGET_NAME   "Models")
 set(SHADERS_TARGET_NAME  "Shaders")
 set(TEXTURES_TARGET_NAME "Textures")
 
@@ -20,6 +21,7 @@ set(EDITOR_TARGET_NAME  "Editor")
 set(ENGINE_SOURCE_DIR "${PROJECT_SOURCE_DIR}/Engine")
 set(LIBS_DIR          "${PROJECT_SOURCE_DIR}/Libs")
 
+set(MODELS_SOURCE_DIR   "${ENGINE_SOURCE_DIR}/Content/Models")
 set(SHADERS_SOURCE_DIR  "${ENGINE_SOURCE_DIR}/Content/Shaders")
 set(TEXTURES_SOURCE_DIR "${ENGINE_SOURCE_DIR}/Content/Textures")
 
@@ -52,6 +54,7 @@ endif()
 
 ##############  Add subdirectories  #######################
 
+add_subdirectory(Engine/Content/Models)
 add_subdirectory(Engine/Content/Shaders)
 add_subdirectory(Engine/Content/Textures)
 

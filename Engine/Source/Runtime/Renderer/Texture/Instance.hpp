@@ -14,7 +14,7 @@ namespace Chicane
         {
             uint32_t width;
             uint32_t height;
-            std::string filename;
+            std::string filepath;
         };
 
         struct CreateInfo
@@ -52,7 +52,7 @@ namespace Chicane
             int m_width;
             int m_height;
             int m_channels;
-            std::string m_filename;
+            std::string m_filepath;
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;
             stbi_uc* m_pixels;

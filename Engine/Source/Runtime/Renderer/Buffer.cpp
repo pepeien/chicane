@@ -50,7 +50,7 @@ namespace Chicane
             const vk::CommandBuffer& inCommandBuffer
         )
         {
-            Command::Worker::startJob(inCommandBuffer);
+            CommandBuffer::Worker::startJob(inCommandBuffer);
 
             vk::BufferCopy copyRegion;
             copyRegion.srcOffset = 0;
@@ -64,7 +64,7 @@ namespace Chicane
                 &copyRegion
             );
 
-            Command::Worker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
+            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
         }
 
         void destroy(const vk::Device& inLogicalDevice, const Instance& inBuffer)

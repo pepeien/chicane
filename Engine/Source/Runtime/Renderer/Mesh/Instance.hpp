@@ -17,8 +17,8 @@ namespace Chicane
 
         struct Instance
         {
-            std::vector<Vertex::Instance> verticeInstances;
-            std::vector<uint32_t> verticeIndexes;
+            std::vector<Vertex::Instance> vertexInstances;
+            std::vector<uint32_t> vertexIndices;
         };
     }
 }

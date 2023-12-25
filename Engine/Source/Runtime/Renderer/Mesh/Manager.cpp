@@ -6,26 +6,31 @@ namespace Chicane
     {
         namespace Manager
         {
-            void Instance::addMesh(
+            void Instance::importMesh(
                 const std::string& inMeshId,
-                const std::vector<Vertex::Instance>& inVertices
+                const std::string& inFilepath,
+                Type inType = Type::Undefined
             )
             {
-                if (m_meshInstances.find(inMeshId) != m_meshInstances.end())
+                std::vector<Vertex::Instance> vertices;
+
+                switch (inType)
                 {
-                    throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
+                case Type::Wavefront:
+                    vertices = Wavefront::import(inFilepath);
+
+                    break;
+                
+                default:
+                    throw std::runtime_error("Failed to add mesh due to invalid type");
                 }
 
-                Mesh::Instance newMesh;
-                newMesh.verticeInstances = inVertices;
-
-                registeredMeshIds.push_back(inMeshId);
-                m_meshInstances.insert(std::make_pair(inMeshId, newMesh));
+                addMesh(inMeshId, vertices);
             }
 
             void Instance::drawMesh(
                 const std::string& inId,
-                const uint32_t& inInstanceCount,
+                uint32_t inInstanceCount,
                 const vk::CommandBuffer& inCommadBuffer
             )
             {
@@ -75,21 +80,38 @@ namespace Chicane
                 );
             }
 
+            void Instance::addMesh(
+                const std::string& inMeshId,
+                const std::vector<Vertex::Instance>& inVertices
+            )
+            {
+                if (m_meshInstances.find(inMeshId) != m_meshInstances.end())
+                {
+                    throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
+                }
+
+                Mesh::Instance newMesh;
+                newMesh.vertexInstances = inVertices;
+
+                m_registeredMeshIds.push_back(inMeshId);
+                m_meshInstances.insert(std::make_pair(inMeshId, newMesh));
+            }
+
             void Instance::setup()
             {
-                for (uint32_t i = 0; i < registeredMeshIds.size(); i++)
+                for (uint32_t i = 0; i < m_registeredMeshIds.size(); i++)
                 {
-                    std::string& meshId          = registeredMeshIds[i];
+                    std::string& meshId          = m_registeredMeshIds[i];
                     Mesh::Instance& meshInstance = m_meshInstances.find(meshId)->second;
     
                     AllocationInfo allocationInfo;
-                    allocationInfo.vertexCount   = meshInstance.verticeInstances.size();
+                    allocationInfo.vertexCount   = meshInstance.vertexInstances.size();
                     allocationInfo.firstVertex   = m_combinedVertices.size();
                     allocationInfo.firstInstance = i;
 
                     m_meshAllocationInfos[meshId] = allocationInfo;
 
-                    for (Vertex::Instance vertex : meshInstance.verticeInstances)
+                    for (Vertex::Instance vertex : meshInstance.vertexInstances)
                     {
                         m_combinedVertices.push_back(vertex);
                     }
@@ -101,22 +123,7 @@ namespace Chicane
                 {
                     Vertex::Instance vertex = m_combinedVertices[i];
 
-                    for (int j = 0; j < m_combinedVertices.size(); j++)
-                    {
-                        Vertex::Instance subVertex = m_combinedVertices[j];
-
-                        if (
-                            fabs(vertex.position.x - subVertex.position.x) > FLT_EPSILON ||
-                            fabs(vertex.position.y - subVertex.position.y) > FLT_EPSILON
-                        )
-                        {
-                            continue;
-                        }
-
-                        m_indexedVertices[i] = j;
-
-                        break;
-                    }
+                    m_indexedVertices[i] = i;
                 }
             }
             

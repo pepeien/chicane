@@ -3,7 +3,7 @@
 #include "Base.hpp"
 
 #include "Instance.hpp"
-#include "Renderer/Command/Buffer.hpp"
+#include "Renderer/CommandBuffer/Instance.hpp"
 
 namespace Chicane
 {
@@ -23,11 +23,11 @@ namespace Chicane
 
             void initCommand(
                 std::vector<Instance>& outFrames,
-                const Command::Buffer::CreateInfo& inCreateInfo
+                const CommandBuffer::Instance::CreateInfo& inCreateInfo
             );
             void initCommand(
                 Instance& outFrame,
-                const Command::Buffer::CreateInfo& inCreateInfo
+                const CommandBuffer::Instance::CreateInfo& inCreateInfo
             );
         }
     }

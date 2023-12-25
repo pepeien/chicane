@@ -35,16 +35,14 @@ namespace Chicane
             uniformDescriptorBufferInfo.range  = cameraData.allocationSize;
         }
     
-        void Instance::setupModel(const Scene::Instance& inScene)
+        void Instance::setupModelData(const std::vector<Level::Actor::Instance>& inActors)
         {
-            auto sceneObjects = inScene.getObjects();
-    
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
-            modelBufferCreateInfo.size             = sizeof(glm::mat4) * sceneObjects.size();
+            modelBufferCreateInfo.size             = sizeof(glm::mat4) * inActors.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
             Buffer::init(modelData.buffer, modelBufferCreateInfo);
@@ -55,9 +53,9 @@ namespace Chicane
                 0,
                 modelData.allocationSize
             );
-            modelData.transforms.reserve(sceneObjects.size());
+            modelData.transforms.reserve(inActors.size());
     
-            for (uint32_t i = 0; i < sceneObjects.size(); i++)
+            for (uint32_t i = 0; i < inActors.size(); i++)
             {
                 modelData.transforms.push_back(glm::mat4(1.0f));
             }
@@ -141,6 +139,34 @@ namespace Chicane
                 modelWriteInfo,
                 nullptr
             );
+        }
+
+        void Instance::updateModelTransforms(const std::vector<Level::Actor::Instance>& inActors)
+        {
+            for (uint32_t i = 0; i < inActors.size(); i++)
+            {
+                Level::Actor::Instance actor = inActors[i];
+
+                glm::mat4 transform = glm::translate(glm::mat4(1.0f), actor.transform.translation);
+                transform = glm::rotate(
+                    transform,
+                    glm::radians(actor.transform.rotation.x),
+                    glm::vec3(1.0f, 0.0f, 0.0f)
+                );
+                transform = glm::rotate(
+                    transform,
+                    glm::radians(actor.transform.rotation.y),
+                    glm::vec3(0.0f, 1.0f, 0.0f)
+                );
+                transform = glm::rotate(
+                    transform,
+                    glm::radians(actor.transform.rotation.z),
+                    glm::vec3(0.0f, 0.0f, 1.0f)
+                );
+                transform = glm::scale(transform, actor.transform.scale);
+
+                modelData.transforms[i] = transform;
+            }
         }
 
         void Instance::destroy()

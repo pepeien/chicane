@@ -116,7 +116,7 @@ namespace Chicane
             const vk::ImageLayout& inNewLayout
         )
         {
-            Command::Worker::startJob(inCommandBuffer);
+            CommandBuffer::Worker::startJob(inCommandBuffer);
 
             vk::ImageMemoryBarrier imageMemoryBarrier;
             imageMemoryBarrier.oldLayout                       = inOldLayout;
@@ -156,7 +156,7 @@ namespace Chicane
                 imageMemoryBarrier
             );
 
-            Command::Worker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
+            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
         }
 
         void copyBufferToImage(
@@ -164,11 +164,11 @@ namespace Chicane
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
-            const uint32_t& inWidth,
-            const uint32_t& inHeight
+            uint32_t inWidth,
+            uint32_t inHeight
         )
         {
-            Command::Worker::startJob(inCommandBuffer);
+            CommandBuffer::Worker::startJob(inCommandBuffer);
 
             vk::ImageSubresourceLayers imageSubresourceLayers;
             imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
@@ -191,7 +191,7 @@ namespace Chicane
                 bufferImageCopy
             );
 
-            Command::Worker::endJob(inCommandBuffer, inQueue, "Copy Buffer To Image");
+            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy Buffer To Image");
         }
 	}
 }
