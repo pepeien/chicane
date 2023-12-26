@@ -11,7 +11,7 @@ namespace Chicane
             actor.transform.scale       = glm::vec3(100.0f);
             actor.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             actor.mesh.id               = "Model";
-            actor.texture.id            = "Grid";
+            actor.texture.id            = "Gray";
 
             outLevel.addActor(actor);
         }

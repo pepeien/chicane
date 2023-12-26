@@ -549,7 +549,7 @@ namespace Chicane
     {
         m_meshManager->importMesh(
             "Model",
-            "cube.obj",
+            "air_craft.obj",
             Mesh::Type::Wavefront
         );
     }

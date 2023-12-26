@@ -50,7 +50,7 @@ namespace Chicane
                     const std::vector<uint32_t>& inIndexes
                 );
 
-                void setup();
+                void combineVertices();
 
                 void initVertexBuffer(
                     Buffer::Instance& outVertexBuffer,

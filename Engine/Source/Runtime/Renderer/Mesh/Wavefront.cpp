@@ -72,6 +72,7 @@ namespace Chicane
             void combineVertices(
                 std::vector<Vertex::Instance>& outVertices,
                 std::vector<uint32_t>& outIndexes,
+                std::unordered_map<std::string, uint32_t>& outIndexesMap,
                 const std::vector<glm::vec3>& inGeometryVertices,
                 const std::vector<glm::vec2>& inTextureVertices,
                 const std::vector<glm::vec3>& inNormalVertices,
@@ -80,8 +81,22 @@ namespace Chicane
             {
                 for (int i = 1; i < inSplittedDataset.size(); i++)
                 {
-                    std::vector<std::string> rawFaces = Helper::splitString(
-                        inSplittedDataset[i],
+                    std::string rawFace = inSplittedDataset[i];
+
+                    if (outIndexesMap.find(rawFace) != outIndexesMap.end())
+                    {
+                        uint32_t index = outIndexesMap[rawFace];
+
+                        outVertices.push_back(outVertices[index]);
+                        outIndexes.push_back(index);
+
+                        continue;
+                    }
+
+                    outIndexesMap.insert(std::make_pair(rawFace, outVertices.size()));
+
+                    std::vector<std::string> faceData = Helper::splitString(
+                        rawFace,
                         "/"
                     );
 
@@ -91,29 +106,28 @@ namespace Chicane
                     value.texturePosition = glm::vec2(1.0f);
                     value.normal          = glm::vec3(1.0f);
 
-                    if (rawFaces[0].compare("") != 0)
+                    if (faceData[0].compare("") != 0)
                     {
-                        int index = std::atoi(rawFaces[0].c_str()) - 1;
+                        int index = std::atoi(faceData[0].c_str()) - 1;
 
                         value.position = inGeometryVertices[index];
-
-                        outIndexes.push_back(index);
                     }
 
-                    if (rawFaces[1].compare("") != 0)
+                    if (faceData[1].compare("") != 0)
                     {
-                        int index = std::atoi(rawFaces[1].c_str()) - 1;
+                        int index = std::atoi(faceData[1].c_str()) - 1;
 
                         value.texturePosition = inTextureVertices[index];
                     }
 
-                    if (rawFaces[2].compare("") != 0)
+                    if (faceData[2].compare("") != 0)
                     {
-                        int index = std::atoi(rawFaces[2].c_str()) - 1;
+                        int index = std::atoi(faceData[2].c_str()) - 1;
 
                         value.normal = inNormalVertices[index];
                     }
 
+                    outIndexes.push_back(outVertices.size());
                     outVertices.push_back(value);
                 }
             }
@@ -132,6 +146,7 @@ namespace Chicane
                 std::vector<glm::vec3> geometricVertices;
                 std::vector<glm::vec2> textureVertices;
                 std::vector<glm::vec3> normalVertices;
+                std::unordered_map<std::string, uint32_t> indexesMap;
 
                 for (std::string& dataset : rawData)
                 {
@@ -170,6 +185,7 @@ namespace Chicane
                         combineVertices(
                             result.vertices,
                             result.indexes,
+                            indexesMap,
                             geometricVertices,
                             textureVertices,
                             normalVertices,

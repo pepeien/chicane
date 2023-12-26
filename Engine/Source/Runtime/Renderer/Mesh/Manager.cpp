@@ -65,7 +65,7 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                setup();
+                combineVertices();
 
                 initVertexBuffer(
                     outVertexBuffer,
@@ -107,7 +107,7 @@ namespace Chicane
                 );
             }
 
-            void Instance::setup()
+            void Instance::combineVertices()
             {
                 for (uint32_t i = 0; i < m_registeredMeshIds.size(); i++)
                 {

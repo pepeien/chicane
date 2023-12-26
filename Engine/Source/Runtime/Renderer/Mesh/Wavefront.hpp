@@ -41,6 +41,7 @@ namespace Chicane
             void combineVertices(
                 std::vector<Vertex::Instance>& outVertices,
                 std::vector<uint32_t>& outIndexes,
+                std::unordered_map<std::string, uint32_t>& outIndexesMap,
                 const std::vector<glm::vec3>& inGeometryVertices,
                 const std::vector<glm::vec2>& inTextureVertices,
                 const std::vector<glm::vec3>& inNormalVertices,
