@@ -548,8 +548,8 @@ namespace Chicane
     void Application::loadMeshes()
     {
         m_meshManager->importMesh(
-            "AirCraft",
-            "air_craft.obj",
+            "Model",
+            "cube.obj",
             Mesh::Type::Wavefront
         );
     }

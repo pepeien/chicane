@@ -38,8 +38,9 @@ namespace Chicane
                 std::vector<glm::vec3>& outNormalVertices,
                 const std::vector<std::string>& inSplittedDataset
             );
-            void extractFaces(
-                std::vector<Vertex::Instance>& outFaces,
+            void combineVertices(
+                std::vector<Vertex::Instance>& outVertices,
+                std::vector<uint32_t>& outIndexes,
                 const std::vector<glm::vec3>& inGeometryVertices,
                 const std::vector<glm::vec2>& inTextureVertices,
                 const std::vector<glm::vec3>& inNormalVertices,

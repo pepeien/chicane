@@ -25,7 +25,11 @@ namespace Chicane
                     throw std::runtime_error("Failed to add mesh due to invalid type");
                 }
 
-                addMesh(inMeshId, result.vertices);
+                addMesh(
+                    inMeshId,
+                    result.vertices,
+                    result.indexes
+                );
             }
 
             void Instance::drawMesh(
@@ -82,7 +86,8 @@ namespace Chicane
 
             void Instance::addMesh(
                 const std::string& inMeshId,
-                const std::vector<Vertex::Instance>& inVertices
+                const std::vector<Vertex::Instance>& inVertices,
+                const std::vector<uint32_t>& inIndexes
             )
             {
                 if (m_meshInstances.find(inMeshId) != m_meshInstances.end())
@@ -95,6 +100,11 @@ namespace Chicane
 
                 m_registeredMeshIds.push_back(inMeshId);
                 m_meshInstances.insert(std::make_pair(inMeshId, newMesh));
+                m_indexedVertices.insert(
+                    m_indexedVertices.end(),
+                    inIndexes.begin(),
+                    inIndexes.end()
+                );
             }
 
             void Instance::setup()
@@ -115,13 +125,6 @@ namespace Chicane
                     {
                         m_combinedVertices.push_back(vertex);
                     }
-                }
-
-                m_indexedVertices.resize(m_combinedVertices.size());
-
-                for (int i = 0; i < m_combinedVertices.size(); i++)
-                {
-                    m_indexedVertices[i] = i;
                 }
             }
             

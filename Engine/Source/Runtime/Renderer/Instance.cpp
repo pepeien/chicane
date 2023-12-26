@@ -92,7 +92,7 @@ namespace Chicane
             vkEnumerateInstanceVersion(&version);
 
             // Picked MAJOR version to ensure compability
-            version = VK_MAKE_API_VERSION(0, 1, 1, 0);
+            version = VK_MAKE_API_VERSION(0, 1, 2, 0);
 
             vk::ApplicationInfo applicationInfo = vk::ApplicationInfo(
                 APPLICATION_NAME,

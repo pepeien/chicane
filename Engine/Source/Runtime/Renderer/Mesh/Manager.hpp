@@ -46,7 +46,8 @@ namespace Chicane
 
                 void addMesh(
                     const std::string& inMeshId,
-                    const std::vector<Vertex::Instance>& inVertices
+                    const std::vector<Vertex::Instance>& inVertices,
+                    const std::vector<uint32_t>& inIndexes
                 );
 
                 void setup();

@@ -69,8 +69,9 @@ namespace Chicane
                 outNormalVertices.push_back(value);
             }
 
-            void extractFaces(
-                std::vector<Vertex::Instance>& outFaces,
+            void combineVertices(
+                std::vector<Vertex::Instance>& outVertices,
+                std::vector<uint32_t>& outIndexes,
                 const std::vector<glm::vec3>& inGeometryVertices,
                 const std::vector<glm::vec2>& inTextureVertices,
                 const std::vector<glm::vec3>& inNormalVertices,
@@ -95,6 +96,8 @@ namespace Chicane
                         int index = std::atoi(rawFaces[0].c_str()) - 1;
 
                         value.position = inGeometryVertices[index];
+
+                        outIndexes.push_back(index);
                     }
 
                     if (rawFaces[1].compare("") != 0)
@@ -111,7 +114,7 @@ namespace Chicane
                         value.normal = inNormalVertices[index];
                     }
 
-                    outFaces.push_back(value);
+                    outVertices.push_back(value);
                 }
             }
 
@@ -123,8 +126,9 @@ namespace Chicane
                     ),
                     "\n"
                 );
+                
+                ParseResult result;
 
-                std::vector<Vertex::Instance> faces;
                 std::vector<glm::vec3> geometricVertices;
                 std::vector<glm::vec2> textureVertices;
                 std::vector<glm::vec3> normalVertices;
@@ -163,8 +167,9 @@ namespace Chicane
                         continue;
 
                     case Property::Faces:
-                        extractFaces(
-                            faces,
+                        combineVertices(
+                            result.vertices,
+                            result.indexes,
                             geometricVertices,
                             textureVertices,
                             normalVertices,
@@ -177,9 +182,6 @@ namespace Chicane
                         continue;
                     }
                 }
-
-                ParseResult result;
-                result.vertices = faces;
 
                 return result;
             }
