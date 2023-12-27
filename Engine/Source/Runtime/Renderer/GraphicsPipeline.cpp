@@ -65,12 +65,12 @@ namespace Chicane
             vk::PipelineRasterizationStateCreateInfo rasterizationState = {};
             rasterizationState.flags                   = vk::PipelineRasterizationStateCreateFlags();
             rasterizationState.depthClampEnable        = VK_FALSE;
+            rasterizationState.depthBiasEnable         = VK_FALSE;
             rasterizationState.rasterizerDiscardEnable = VK_FALSE;
             rasterizationState.polygonMode             = vk::PolygonMode::eFill;
-            rasterizationState.lineWidth               = 1.0f;
             rasterizationState.cullMode                = vk::CullModeFlagBits::eBack;
-            rasterizationState.frontFace               = vk::FrontFace::eClockwise;
-            rasterizationState.depthBiasEnable         = VK_FALSE;
+            rasterizationState.frontFace               = vk::FrontFace::eCounterClockwise;
+            rasterizationState.lineWidth               = 1.0f;
     
             return rasterizationState;
         }
@@ -93,11 +93,11 @@ namespace Chicane
         {
             vk::PipelineDepthStencilStateCreateInfo depthStencilCreateInfo = {};
             depthStencilCreateInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-            depthStencilCreateInfo.depthTestEnable       = VK_FALSE;
-            depthStencilCreateInfo.depthWriteEnable      = VK_FALSE;
-            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eEqual;
+            depthStencilCreateInfo.depthTestEnable       = VK_TRUE;
+            depthStencilCreateInfo.depthWriteEnable      = VK_TRUE;
             depthStencilCreateInfo.depthBoundsTestEnable = VK_FALSE;
             depthStencilCreateInfo.stencilTestEnable     = VK_FALSE;
+            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
             depthStencilCreateInfo.minDepthBounds        = 0.0f;
             depthStencilCreateInfo.maxDepthBounds        = 1.0f;
 
