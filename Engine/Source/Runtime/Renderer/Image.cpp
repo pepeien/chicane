@@ -48,11 +48,11 @@ namespace Chicane
             createInfo.mipLevels     = 1;
             createInfo.arrayLayers   = 1;
             createInfo.format        = inCreateInfo.format;
+            createInfo.samples       = vk::SampleCountFlagBits::e1;
             createInfo.tiling        = inCreateInfo.tiling;
             createInfo.initialLayout = vk::ImageLayout::eUndefined;
             createInfo.usage         = inCreateInfo.usage;
             createInfo.sharingMode   = vk::SharingMode::eExclusive;
-            createInfo.samples       = vk::SampleCountFlagBits::e1;
 
             outImage = inCreateInfo.logicalDevice.createImage(createInfo);
         }

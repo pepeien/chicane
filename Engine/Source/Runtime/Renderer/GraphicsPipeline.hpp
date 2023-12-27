@@ -54,8 +54,10 @@ namespace Chicane
         vk::PipelineLayout createLayout(const CreateInfo& inCreateInfo);
         vk::AttachmentDescription createColorAttachment(const CreateInfo& inCreateInfo);
         vk::AttachmentReference createColorAttachmentRef();
+        vk::SubpassDependency createColorSubpassDepedency();
         vk::AttachmentDescription createDepthAttachment(const CreateInfo& inCreateInfo);
         vk::AttachmentReference createDepthAttachmentRef();
+        vk::SubpassDependency createDepthSubpassDepedency();
         vk::RenderPass createRendepass(const CreateInfo& inCreateInfo);
     
         void init(Bundle& outGraphicsPipeline, const CreateInfo& inCreateInfo);

@@ -76,12 +76,19 @@ namespace Chicane
 
         void prepareLevel(const vk::CommandBuffer& inCommandBuffer);
         void prepareCamera(Frame::Instance& outFrame);
-        void prepareLevelActors(Frame::Instance& outFrame);
+        void prepareActors(Frame::Instance& outFrame);
         void prepareFrame(uint32_t inImageIndex);
 
         void drawLevel(const vk::CommandBuffer& inCommandBuffer);
 
     private:
+        // Movement
+        float baseMultiplier = 0.025f;
+
+        int forwardMultiplier  = 1;
+        float forwardCount     = 0.0f;
+        float rotationCount    = 0.0f;
+
         // Stats
         Frame::Stats m_frameStats;
 

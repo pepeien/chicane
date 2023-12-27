@@ -549,7 +549,7 @@ namespace Chicane
     {
         m_meshManager->importMesh(
             "Model",
-            "air_craft.obj",
+            "apple.obj",
             Mesh::Type::Wavefront
         );
     }
@@ -646,17 +646,18 @@ namespace Chicane
 
     void Application::prepareCamera(Frame::Instance& outFrame)
     {
-        glm::vec3 position  = { -1000.0f, 0.0f, 0.0f };
+        glm::vec3 position  = { -1500.0f, 0.0f, 0.0f };
         glm::vec3 direction = { 1.0f, 0.0f, 1.0f };
         glm::vec3 up        = { 0.0f, 0.0f, 1.0f };
 
         glm::mat4 view = glm::lookAt(position, direction, up);
 
         glm::mat4 projection = glm::perspective(
-            45.0f,
-            static_cast<float>(m_swapChain.extent.width) / static_cast<float>(m_swapChain.extent.height),
+            glm::radians(45.0f),
+            static_cast<float>(m_swapChain.extent.width) /
+                    static_cast<float>(m_swapChain.extent.height),
             0.1f,
-            2000.0f
+            5000.0f
         );
 
         // Normalize OpenGL's to coordinate system Vulkan
@@ -667,9 +668,36 @@ namespace Chicane
         outFrame.cameraData.object.viewProjection = projection * view;
     }
 
-    void Application::prepareLevelActors(Frame::Instance& outFrame)
+    void Application::prepareActors(Frame::Instance& outFrame)
     {
-        outFrame.updateModelTransforms(m_level.getActors());
+        auto movingActors = m_level.getActors();
+
+        if (forwardCount > 2000.0f)
+        {
+            forwardMultiplier = -1;
+        }
+
+        if (forwardCount < 0.0f)
+        {
+            forwardMultiplier = 1;
+        }
+
+        forwardCount += baseMultiplier * forwardMultiplier;
+    
+        if (rotationCount >= 360)
+        {
+            rotationCount = 0.0f;
+        }
+        else
+        {
+            rotationCount += baseMultiplier;
+        }
+
+        movingActors[0].transform.translation.x = forwardCount;
+
+        movingActors[0].transform.rotation.z = rotationCount;
+
+        outFrame.updateModelTransforms(movingActors);
     }
 
     void Application::prepareFrame(uint32_t inImageIndex)
@@ -683,7 +711,7 @@ namespace Chicane
             frame.cameraData.allocationSize
         );
 
-        prepareLevelActors(frame);
+        prepareActors(frame);
         memcpy(
             frame.modelData.writeLocation,
             frame.modelData.transforms.data(),

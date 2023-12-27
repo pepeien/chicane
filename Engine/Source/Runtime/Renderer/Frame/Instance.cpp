@@ -150,8 +150,8 @@ namespace Chicane
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), actor.transform.translation);
                 transform = glm::rotate(
                     transform,
-                    glm::radians(actor.transform.rotation.x),
-                    glm::vec3(1.0f, 0.0f, 0.0f)
+                    glm::radians(actor.transform.rotation.z),
+                    glm::vec3(0.0f, 0.0f, 1.0f)
                 );
                 transform = glm::rotate(
                     transform,
@@ -160,8 +160,8 @@ namespace Chicane
                 );
                 transform = glm::rotate(
                     transform,
-                    glm::radians(actor.transform.rotation.z),
-                    glm::vec3(0.0f, 0.0f, 1.0f)
+                    glm::radians(actor.transform.rotation.x),
+                    glm::vec3(1.0f, 0.0f, 0.0f)
                 );
                 transform = glm::scale(transform, actor.transform.scale);
 

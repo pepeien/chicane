@@ -93,11 +93,13 @@ namespace Chicane
         {
             vk::PipelineDepthStencilStateCreateInfo depthStencilCreateInfo = {};
             depthStencilCreateInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-            depthStencilCreateInfo.depthTestEnable       = true;
-            depthStencilCreateInfo.depthWriteEnable      = false;
-            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
-            depthStencilCreateInfo.depthBoundsTestEnable = false;
-            depthStencilCreateInfo.stencilTestEnable     = false;
+            depthStencilCreateInfo.depthTestEnable       = VK_FALSE;
+            depthStencilCreateInfo.depthWriteEnable      = VK_FALSE;
+            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eEqual;
+            depthStencilCreateInfo.depthBoundsTestEnable = VK_FALSE;
+            depthStencilCreateInfo.stencilTestEnable     = VK_FALSE;
+            depthStencilCreateInfo.minDepthBounds        = 0.0f;
+            depthStencilCreateInfo.maxDepthBounds        = 1.0f;
 
             return depthStencilCreateInfo;
         }
@@ -165,6 +167,19 @@ namespace Chicane
             return attachmentRef;
         }
 
+        vk::SubpassDependency createColorSubpassDepedency()
+        {
+            vk::SubpassDependency subpassDepedency = {};
+            subpassDepedency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+            subpassDepedency.dstSubpass    = 0;
+            subpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            subpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;
+            subpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            subpassDepedency.dstAccessMask = vk::AccessFlagBits::eColorAttachmentWrite;
+
+            return subpassDepedency;
+        }
+
         vk::AttachmentDescription createDepthAttachment(const CreateInfo& inCreateInfo)
         {
             vk::AttachmentDescription attachmentDescription = {};
@@ -173,10 +188,10 @@ namespace Chicane
             attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
             attachmentDescription.loadOp         = vk::AttachmentLoadOp::eClear;
             attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
-            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
+            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eClear;
             attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
             attachmentDescription.initialLayout  = vk::ImageLayout::eUndefined;
-            attachmentDescription.finalLayout    = vk::ImageLayout::ePresentSrcKHR;
+            attachmentDescription.finalLayout    = vk::ImageLayout::eDepthStencilAttachmentOptimal;
     
             return attachmentDescription;
         }
@@ -189,6 +204,21 @@ namespace Chicane
 
             return attachmentRef;
         }
+
+        vk::SubpassDependency createDepthSubpassDepedency()
+        {
+            vk::SubpassDependency subpassDepedency = {};
+            subpassDepedency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+            subpassDepedency.dstSubpass    = 0;
+            subpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eEarlyFragmentTests |
+                                             vk::PipelineStageFlagBits::eLateFragmentTests;
+            subpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eEarlyFragmentTests |
+                                             vk::PipelineStageFlagBits::eLateFragmentTests;
+            subpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;  
+            subpassDepedency.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+
+            return subpassDepedency;
+        }
     
         vk::RenderPass createRendepass(const CreateInfo& inCreateInfo)
         {
@@ -199,6 +229,10 @@ namespace Chicane
             std::vector<vk::AttachmentReference> attachmentReferences;
             attachmentReferences.push_back(createColorAttachmentRef());
             attachmentReferences.push_back(createDepthAttachmentRef());
+
+            std::vector<vk::SubpassDependency> subpassDependecies;   
+            subpassDependecies.push_back(createColorSubpassDepedency());
+            subpassDependecies.push_back(createDepthSubpassDepedency());
 
             vk::SubpassDescription subpass = {};
             subpass.flags                   = vk::SubpassDescriptionFlags();
@@ -211,6 +245,8 @@ namespace Chicane
             renderPassInfo.flags           = vk::RenderPassCreateFlags();
             renderPassInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
             renderPassInfo.pAttachments    = attachments.data();
+            renderPassInfo.dependencyCount = static_cast<uint32_t>(subpassDependecies.size());
+            renderPassInfo.pDependencies   = subpassDependecies.data();
             renderPassInfo.subpassCount    = 1;
             renderPassInfo.pSubpasses      = &subpass;
     

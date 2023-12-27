@@ -9,8 +9,11 @@ layout(location = 0) out vec4 outColor;
 layout(set = 1, binding = 0) uniform sampler2D material;
 
 const vec4 lightColor     = vec4(1.0);
-const vec3 lightDirection = normalize(vec3(1.0, 1.0, -1.0));
+const vec3 lightDirection = normalize(vec3(1.0, -1.0, -1.0));
 
 void main() {
-    outColor = lightColor * max(0.0, dot(fragNormalPosition, -lightDirection)) * texture(material, fragTexturePosition);
+    float angle = clamp(dot(fragNormalPosition, -lightDirection.xyz), 0.0f, 1.0f);
+    vec3 color  = lightColor.xyz * angle;
+
+    outColor = vec4(color, 0.5f) * texture(material, fragTexturePosition);
 }
