@@ -69,66 +69,77 @@ namespace Chicane
                 outNormalVertices.push_back(value);
             }
 
-            void combineVertices(
-                std::vector<Vertex::Instance>& outVertices,
-                std::vector<uint32_t>& outIndexes,
-                std::unordered_map<std::string, uint32_t>& outIndexesMap,
-                const std::vector<glm::vec3>& inGeometryVertices,
-                const std::vector<glm::vec2>& inTextureVertices,
-                const std::vector<glm::vec3>& inNormalVertices,
-                const std::vector<std::string>& inSplittedDataset
+            void extractTriangleVertex(
+                ParseResult& outResult,
+                const ParseBundle& outBundle,
+                const std::string& inDataSet
             )
             {
-                for (int i = 1; i < inSplittedDataset.size(); i++)
+                if (outResult.indexesMap.find(inDataSet) != outResult.indexesMap.end())
                 {
-                    std::string rawFace = inSplittedDataset[i];
+                    uint32_t index = outResult.indexesMap[inDataSet];
 
-                    if (outIndexesMap.find(rawFace) != outIndexesMap.end())
-                    {
-                        uint32_t index = outIndexesMap[rawFace];
+                    outResult.indexes.push_back(index);
 
-                        outVertices.push_back(outVertices[index]);
-                        outIndexes.push_back(index);
+                    return;
+                }
 
-                        continue;
-                    }
+                Vertex::Instance vertex;
+                vertex.color           = glm::vec3(1.0f, 0.0f, 0.0f);
+                vertex.position        = glm::vec3(1.0f);
+                vertex.texturePosition = glm::vec2(1.0f);
+                vertex.normal          = glm::vec3(1.0f);
 
-                    outIndexesMap.insert(std::make_pair(rawFace, outVertices.size()));
+                std::vector<std::string> inSplittedDataset = Helper::splitString(
+                    inDataSet,
+                    "/"
+                );
 
-                    std::vector<std::string> faceData = Helper::splitString(
-                        rawFace,
-                        "/"
+                if (inSplittedDataset[0].compare("") != 0)
+                {
+                    int index = std::atoi(inSplittedDataset[0].c_str()) - 1;
+
+                    vertex.position = outBundle.geometryVertices[index];
+                }
+
+                if (inSplittedDataset[1].compare("") != 0)
+                {
+                    int index = std::atoi(inSplittedDataset[1].c_str()) - 1;
+
+                    vertex.texturePosition = outBundle.textureVertices[index];
+                }
+
+                if (inSplittedDataset[2].compare("") != 0)
+                {
+                    int index = std::atoi(inSplittedDataset[2].c_str()) - 1;
+
+                    vertex.normal = outBundle.normalVertices[index];
+                }
+
+                uint32_t vertexCount = outResult.vertices.size();
+                
+                outResult.indexesMap.insert(std::make_pair(inDataSet, vertexCount));
+                outResult.indexes.push_back(vertexCount);
+                outResult.vertices.push_back(vertex);
+            }
+
+            void extractTriangleVertices(
+                ParseResult& outParseResult,
+                const ParseBundle& inParseBundle,
+                const std::vector<int>& inVertexLayout,
+                const std::vector<std::string>& inDataSet
+            )
+            {
+                int count  = inDataSet.size();
+                int offset = 1;
+
+                for (int vertexIndex : inVertexLayout)
+                {
+                    extractTriangleVertex(
+                        outParseResult,
+                        inParseBundle,
+                        inDataSet[offset + vertexIndex]
                     );
-
-                    Vertex::Instance value;
-                    value.color           = glm::vec3(1.0f, 0.0f, 0.0f);
-                    value.position        = glm::vec3(1.0f);
-                    value.texturePosition = glm::vec2(1.0f);
-                    value.normal          = glm::vec3(1.0f);
-
-                    if (faceData[0].compare("") != 0)
-                    {
-                        int index = std::atoi(faceData[0].c_str()) - 1;
-
-                        value.position = inGeometryVertices[index];
-                    }
-
-                    if (faceData[1].compare("") != 0)
-                    {
-                        int index = std::atoi(faceData[1].c_str()) - 1;
-
-                        value.texturePosition = inTextureVertices[index];
-                    }
-
-                    if (faceData[2].compare("") != 0)
-                    {
-                        int index = std::atoi(faceData[2].c_str()) - 1;
-
-                        value.normal = inNormalVertices[index];
-                    }
-
-                    outIndexes.push_back(outVertices.size());
-                    outVertices.push_back(value);
                 }
             }
 
@@ -141,12 +152,8 @@ namespace Chicane
                     "\n"
                 );
                 
-                ParseResult result;
-
-                std::vector<glm::vec3> geometricVertices;
-                std::vector<glm::vec2> textureVertices;
-                std::vector<glm::vec3> normalVertices;
-                std::unordered_map<std::string, uint32_t> indexesMap;
+                ParseResult parseResult;
+                ParseBundle parseBundle;
 
                 for (std::string& dataset : rawData)
                 {
@@ -159,47 +166,63 @@ namespace Chicane
                     {
                     case Property::GeometryVertices:
                         extractGeometryVertices(
-                            geometricVertices,
+                            parseBundle.geometryVertices,
                             splittedDataset
                         );
 
-                        continue;
+                        break;
                     
                     case Property::TextureVertices:
                         extractTextureVertices(
-                            textureVertices,
+                            parseBundle.textureVertices,
                             splittedDataset
                         );
 
-                        continue;
+                        break;
                     
                     case Property::VertexNormals:
                         extractNormalVertices(
-                            normalVertices,
+                            parseBundle.normalVertices,
                             splittedDataset
                         );
 
-                        continue;
+                        break;
 
                     case Property::Faces:
-                        combineVertices(
-                            result.vertices,
-                            result.indexes,
-                            indexesMap,
-                            geometricVertices,
-                            textureVertices,
-                            normalVertices,
+                        /**
+                         * Quad detection:
+                         * 
+                         * Calculate face count minus 1 due to the identifier at the start
+                         * 
+                         * e.g. f 1,1,1 1,0,1 0,0,1
+                        */
+                        if ((splittedDataset.size() - 1) > 3)
+                        {
+                            extractTriangleVertices(
+                                parseResult,
+                                parseBundle,
+                                { 0, 1, 2, 2, 3, 0 },
+                                splittedDataset
+                            );
+
+                            break;
+                        }
+
+                        extractTriangleVertices(
+                            parseResult,
+                            parseBundle,
+                            { 0, 1, 2 },
                             splittedDataset
                         );
 
-                        continue;
+                        break;
 
                     default:
-                        continue;
+                        break;
                     }
                 }
 
-                return result;
+                return parseResult;
             }
         }
     }

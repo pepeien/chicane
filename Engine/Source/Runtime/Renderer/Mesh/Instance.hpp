@@ -25,6 +25,14 @@ namespace Chicane
         {
             std::vector<Vertex::Instance> vertices;
             std::vector<uint32_t> indexes;
+            std::unordered_map<std::string, uint32_t> indexesMap;
+        };
+
+        struct ParseBundle
+        {
+            std::vector<glm::vec3> geometryVertices;
+            std::vector<glm::vec2> textureVertices;
+            std::vector<glm::vec3> normalVertices;
         };
     }
 }

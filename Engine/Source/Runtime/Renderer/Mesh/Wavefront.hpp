@@ -38,14 +38,16 @@ namespace Chicane
                 std::vector<glm::vec3>& outNormalVertices,
                 const std::vector<std::string>& inSplittedDataset
             );
-            void combineVertices(
-                std::vector<Vertex::Instance>& outVertices,
-                std::vector<uint32_t>& outIndexes,
-                std::unordered_map<std::string, uint32_t>& outIndexesMap,
-                const std::vector<glm::vec3>& inGeometryVertices,
-                const std::vector<glm::vec2>& inTextureVertices,
-                const std::vector<glm::vec3>& inNormalVertices,
-                const std::vector<std::string>& inSplittedDataset
+            void extractTriangleVertex(
+                ParseResult& outResult,
+                const ParseBundle& inBundle,
+                const std::string& inDataSet
+            );
+            void extractTriangleVertices(
+                ParseResult& outResult,
+                const ParseBundle& inBundle,
+                const std::vector<int>& inVertexLayout,
+                const std::vector<std::string>& inDataSet
             );
 
             ParseResult parse(const std::string& inFilepath);
