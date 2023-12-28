@@ -7,8 +7,8 @@ namespace Chicane
         void initLevel(Level::Instance& outLevel)
         {
             Level::Actor::Instance actor;
-            actor.transform.translation = glm::vec3(0.0f, 0.0f, -2000.0f);
-            actor.transform.scale       = glm::vec3(10.0f);
+            actor.transform.translation = glm::vec3(0.0f, 0.0f, 0.0f);
+            actor.transform.scale       = glm::vec3(1.25f);
             actor.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             actor.mesh.id               = "Model";
             actor.texture.id            = "Gray";

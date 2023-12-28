@@ -549,7 +549,7 @@ namespace Chicane
     {
         m_meshManager->importMesh(
             "Model",
-            "apple_q.obj",
+            "air_craft.obj",
             Mesh::Type::Wavefront
         );
     }
@@ -672,18 +672,6 @@ namespace Chicane
     {
         auto movingActors = m_level.getActors();
 
-        if (forwardCount > 2000.0f)
-        {
-            forwardMultiplier = -1;
-        }
-
-        if (forwardCount < 0.0f)
-        {
-            forwardMultiplier = 1;
-        }
-
-        forwardCount += baseMultiplier * forwardMultiplier;
-    
         if (rotationCount >= 360)
         {
             rotationCount = 0.0f;
@@ -693,9 +681,10 @@ namespace Chicane
             rotationCount += baseMultiplier;
         }
 
-        movingActors[0].transform.translation.x = forwardCount;
-
-        movingActors[0].transform.rotation.z = rotationCount;
+        for (auto& actor : movingActors)
+        {
+            actor.transform.rotation.z = rotationCount;
+        }
 
         outFrame.updateModelTransforms(movingActors);
     }

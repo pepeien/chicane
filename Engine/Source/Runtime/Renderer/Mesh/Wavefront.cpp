@@ -33,45 +33,45 @@ namespace Chicane
 
             void extractGeometryVertices(
                 std::vector<glm::vec3>& outGeometryVertices,
-                const std::vector<std::string>& inSplittedDataset
+                const std::vector<std::string>& inDataSet
             )
             {
                 glm::vec3 value;
-                value.x = std::atof(inSplittedDataset[1].c_str());
-                value.y = std::atof(inSplittedDataset[2].c_str());
-                value.z = std::atof(inSplittedDataset[3].c_str());
+                value.x = std::stod(inDataSet[1].c_str());
+                value.y = std::stod(inDataSet[2].c_str());
+                value.z = std::stod(inDataSet[3].c_str());
 
                 outGeometryVertices.push_back(value);
             }
 
             void extractTextureVertices(
                 std::vector<glm::vec2>& outTextureVertices,
-                const std::vector<std::string>& inSplittedDataset
+                const std::vector<std::string>& inDataSet
             )
             {
                 glm::vec2 value;
-                value.x = std::atof(inSplittedDataset[1].c_str());
-                value.y = std::atof(inSplittedDataset[2].c_str());
+                value.x = std::stod(inDataSet[1].c_str());
+                value.y = std::stod(inDataSet[2].c_str());
 
                 outTextureVertices.push_back(value);
             }
 
             void extractNormalVertices(
                 std::vector<glm::vec3>& outNormalVertices,
-                const std::vector<std::string>& inSplittedDataset
+                const std::vector<std::string>& inDataSet
             )
             {
                 glm::vec3 value;
-                value.x = std::atof(inSplittedDataset[1].c_str());
-                value.y = std::atof(inSplittedDataset[2].c_str());
-                value.z = std::atof(inSplittedDataset[3].c_str());
+                value.x = std::stod(inDataSet[1].c_str());
+                value.y = std::stod(inDataSet[2].c_str());
+                value.z = std::stod(inDataSet[3].c_str());
 
                 outNormalVertices.push_back(value);
             }
 
             void extractTriangleVertex(
                 ParseResult& outResult,
-                const ParseBundle& outBundle,
+                const ParseBundle& inBundle,
                 const std::string& inDataSet
             )
             {
@@ -86,9 +86,9 @@ namespace Chicane
 
                 Vertex::Instance vertex;
                 vertex.color           = glm::vec3(1.0f, 0.0f, 0.0f);
-                vertex.position        = glm::vec3(1.0f);
-                vertex.texturePosition = glm::vec2(1.0f);
-                vertex.normal          = glm::vec3(1.0f);
+                vertex.position        = glm::vec3(0.0f);
+                vertex.texturePosition = glm::vec2(0.0f);
+                vertex.normal          = glm::vec3(0.0f);
 
                 std::vector<std::string> inSplittedDataset = Helper::splitString(
                     inDataSet,
@@ -99,120 +99,112 @@ namespace Chicane
                 {
                     int index = std::atoi(inSplittedDataset[0].c_str()) - 1;
 
-                    vertex.position = outBundle.geometryVertices[index];
+                    vertex.position = inBundle.geometryVertices[index];
                 }
 
                 if (inSplittedDataset[1].compare("") != 0)
                 {
                     int index = std::atoi(inSplittedDataset[1].c_str()) - 1;
 
-                    vertex.texturePosition = outBundle.textureVertices[index];
+                    vertex.texturePosition = inBundle.textureVertices[index];
                 }
 
                 if (inSplittedDataset[2].compare("") != 0)
                 {
                     int index = std::atoi(inSplittedDataset[2].c_str()) - 1;
 
-                    vertex.normal = outBundle.normalVertices[index];
+                    vertex.normal = inBundle.normalVertices[index];
                 }
 
-                uint32_t vertexCount = outResult.vertices.size();
+                uint32_t currentIndex = outResult.vertices.size();
                 
-                outResult.indexesMap.insert(std::make_pair(inDataSet, vertexCount));
-                outResult.indexes.push_back(vertexCount);
+                outResult.indexesMap.insert(std::make_pair(inDataSet, currentIndex));
+                outResult.indexes.push_back(currentIndex);
                 outResult.vertices.push_back(vertex);
             }
 
             void extractTriangleVertices(
-                ParseResult& outParseResult,
-                const ParseBundle& inParseBundle,
+                ParseResult& outResult,
+                const ParseBundle& inBundle,
                 const std::vector<int>& inVertexLayout,
-                const std::vector<std::string>& inDataSet
+                const std::vector<std::string>& inDataSetList,
+                uint32_t inOffset = 1
             )
             {
-                int count  = inDataSet.size();
-                int offset = 1;
-
                 for (int vertexIndex : inVertexLayout)
                 {
                     extractTriangleVertex(
-                        outParseResult,
-                        inParseBundle,
-                        inDataSet[offset + vertexIndex]
+                        outResult,
+                        inBundle,
+                        inDataSetList[inOffset + vertexIndex]
                     );
                 }
             }
 
             ParseResult parse(const std::string& inFilepath)
             {    
-                std::vector<std::string> rawData = Helper::splitString(
+                std::vector<std::string> dataSets = Helper::splitString(
                     FileSystem::readFile(
                         ENGINE_MODELS_DIR + inFilepath
                     ),
                     "\n"
                 );
                 
-                ParseResult parseResult;
-                ParseBundle parseBundle;
+                ParseResult result;
+                ParseBundle bundle;
 
-                for (std::string& dataset : rawData)
+                for (const std::string& dataSet : dataSets)
                 {
-                    std::vector<std::string> splittedDataset = Helper::splitString(
-                        dataset,
+                    std::vector<std::string> splittedDataSet = Helper::splitString(
+                        dataSet,
                         " "
                     );
 
-                    switch (indetifyProperty(splittedDataset[0]))
+                    switch (indetifyProperty(splittedDataSet[0]))
                     {
                     case Property::GeometryVertices:
                         extractGeometryVertices(
-                            parseBundle.geometryVertices,
-                            splittedDataset
+                            bundle.geometryVertices,
+                            splittedDataSet
                         );
 
                         break;
-                    
+
                     case Property::TextureVertices:
                         extractTextureVertices(
-                            parseBundle.textureVertices,
-                            splittedDataset
+                            bundle.textureVertices,
+                            splittedDataSet
                         );
 
                         break;
-                    
+
                     case Property::VertexNormals:
                         extractNormalVertices(
-                            parseBundle.normalVertices,
-                            splittedDataset
+                            bundle.normalVertices,
+                            splittedDataSet
                         );
 
                         break;
 
                     case Property::Faces:
-                        /**
-                         * Quad detection:
-                         * 
-                         * Calculate face count minus 1 due to the identifier at the start
-                         * 
-                         * e.g. f 1,1,1 1,0,1 0,0,1
-                        */
-                        if ((splittedDataset.size() - 1) > 3)
+                        // Quad detection
+                        if ((splittedDataSet.size() - 1) > 3)
                         {
                             extractTriangleVertices(
-                                parseResult,
-                                parseBundle,
+                                result,
+                                bundle,
                                 { 0, 1, 2, 2, 3, 0 },
-                                splittedDataset
+                                splittedDataSet
                             );
 
                             break;
                         }
 
                         extractTriangleVertices(
-                            parseResult,
-                            parseBundle,
+                            result,
+                            bundle,
                             { 0, 1, 2 },
-                            splittedDataset
+                            splittedDataSet
                         );
 
                         break;
@@ -222,7 +214,7 @@ namespace Chicane
                     }
                 }
 
-                return parseResult;
+                return result;
             }
         }
     }

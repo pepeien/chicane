@@ -97,6 +97,7 @@ namespace Chicane
 
                 Mesh::Instance newMesh;
                 newMesh.vertexInstances = inVertices;
+                newMesh.vertexIndices   = inIndexes;
 
                 m_registeredMeshIds.push_back(inMeshId);
                 m_meshInstances.insert(std::make_pair(inMeshId, newMesh));

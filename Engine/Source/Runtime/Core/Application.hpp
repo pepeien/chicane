@@ -85,8 +85,6 @@ namespace Chicane
         // Movement
         float baseMultiplier = 0.025f;
 
-        int forwardMultiplier  = 1;
-        float forwardCount     = 0.0f;
         float rotationCount    = 0.0f;
 
         // Stats
