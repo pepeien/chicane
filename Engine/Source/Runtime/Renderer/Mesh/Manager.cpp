@@ -6,12 +6,41 @@ namespace Chicane
     {
         namespace Manager
         {
+            std::vector<std::string> Instance::getMeshIds()
+            {
+                return m_registeredMeshIds;
+            }
+
+            void Instance::addMesh(
+                const std::string& inId,
+                const std::vector<Vertex::Instance>& inVertices,
+                const std::vector<uint32_t>& inIndexes
+            )
+            {
+                if (m_meshInstances.find(inId) != m_meshInstances.end())
+                {
+                    throw std::runtime_error("The Mesh [" + inId  + "] has already been added");
+                }
+
+                Mesh::Instance newMesh;
+                newMesh.vertexInstances = inVertices;
+                newMesh.vertexIndices   = inIndexes;
+
+                m_registeredMeshIds.push_back(inId);
+                m_meshInstances.insert(std::make_pair(inId, newMesh));
+            }
+
             void Instance::importMesh(
-                const std::string& inMeshId,
+                const std::string& inId,
                 const std::string& inFilepath,
                 Type inType = Type::Undefined
             )
             {
+                if (m_meshInstances.find(inId) != m_meshInstances.end())
+                {
+                    throw std::runtime_error("The Mesh [" + inId  + "] has already been added");
+                }
+
                 ParseResult result;
 
                 switch (inType)
@@ -22,11 +51,11 @@ namespace Chicane
                     break;
                 
                 default:
-                    throw std::runtime_error("Failed to add mesh due to invalid type");
+                    throw std::runtime_error("Failed to import mesh due to invalid type");
                 }
 
                 addMesh(
-                    inMeshId,
+                    inId,
                     result.vertices,
                     result.indexes
                 );
@@ -34,8 +63,9 @@ namespace Chicane
 
             void Instance::drawMesh(
                 const std::string& inId,
+                const vk::CommandBuffer& inCommadBuffer,
                 uint32_t inInstanceCount,
-                const vk::CommandBuffer& inCommadBuffer
+                uint32_t inFirstInstance
             )
             {
                 auto foundMesh = m_meshAllocationInfos.find(inId);
@@ -45,18 +75,18 @@ namespace Chicane
                     throw std::runtime_error("The Mesh [" + inId + "] does not exist");
                 }
 
-                Mesh::AllocationInfo allocationInfo = foundMesh->second;
+                Mesh::AllocationInfo& allocationInfo = foundMesh->second;
 
                 inCommadBuffer.drawIndexed(
-                    allocationInfo.vertexCount,
+                    allocationInfo.indexCount,
                     inInstanceCount,
-                    allocationInfo.firstVertex,
+                    allocationInfo.firstIndex,
                     0,
-                    allocationInfo.firstInstance
+                    inFirstInstance
                 );
             }
 
-            void Instance::initBuffers(
+            void Instance::loadMeshes(
                 Buffer::Instance& outVertexBuffer,
                 Buffer::Instance& outIndexBuffer,
                 const vk::Device& inLogicalDevice,
@@ -65,7 +95,7 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                combineVertices();
+                processMeshes();
 
                 initVertexBuffer(
                     outVertexBuffer,
@@ -74,7 +104,6 @@ namespace Chicane
                     inQueue,
                     inCommandBuffer
                 );
-
                 initIndexBuffer(
                     outIndexBuffer,
                     inLogicalDevice,
@@ -84,47 +113,36 @@ namespace Chicane
                 );
             }
 
-            void Instance::addMesh(
-                const std::string& inMeshId,
-                const std::vector<Vertex::Instance>& inVertices,
-                const std::vector<uint32_t>& inIndexes
-            )
+            void Instance::processMeshes()
             {
-                if (m_meshInstances.find(inMeshId) != m_meshInstances.end())
+                for (std::string& meshId : m_registeredMeshIds)
                 {
-                    throw std::runtime_error("The Mesh [" + inMeshId  + "] has already been initialized");
-                }
+                    auto foundMesh = m_meshInstances.find(meshId);
 
-                Mesh::Instance newMesh;
-                newMesh.vertexInstances = inVertices;
-                newMesh.vertexIndices   = inIndexes;
+                    if (foundMesh == m_meshInstances.end())
+                    {
+                        throw std::runtime_error("The Mesh [" + meshId + "] does not exist");
+                    }
 
-                m_registeredMeshIds.push_back(inMeshId);
-                m_meshInstances.insert(std::make_pair(inMeshId, newMesh));
-                m_indexedVertices.insert(
-                    m_indexedVertices.end(),
-                    inIndexes.begin(),
-                    inIndexes.end()
-                );
-            }
-
-            void Instance::combineVertices()
-            {
-                for (uint32_t i = 0; i < m_registeredMeshIds.size(); i++)
-                {
-                    std::string& meshId          = m_registeredMeshIds[i];
-                    Mesh::Instance& meshInstance = m_meshInstances.find(meshId)->second;
+                    Mesh::Instance& meshInstance = foundMesh->second;
     
                     AllocationInfo allocationInfo;
                     allocationInfo.vertexCount   = meshInstance.vertexInstances.size();
                     allocationInfo.firstVertex   = m_combinedVertices.size();
-                    allocationInfo.firstInstance = i;
+                    allocationInfo.indexCount    = meshInstance.vertexIndices.size();
+                    allocationInfo.firstIndex    = m_indexedVertices.size();
 
-                    m_meshAllocationInfos[meshId] = allocationInfo;
+                    m_meshAllocationInfos.insert(std::make_pair(meshId, allocationInfo));
 
-                    for (Vertex::Instance vertex : meshInstance.vertexInstances)
+                    m_combinedVertices.insert(
+                        m_combinedVertices.end(),
+                        meshInstance.vertexInstances.begin(),
+                        meshInstance.vertexInstances.end()
+                    );
+
+                    for (uint32_t vertexIndex : meshInstance.vertexIndices)
                     {
-                        m_combinedVertices.push_back(vertex);
+                        m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
                     }
                 }
             }

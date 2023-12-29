@@ -24,18 +24,25 @@ namespace Chicane
             class Instance
             {
             public:
+                std::vector<std::string> getMeshIds();
+
+                void addMesh(
+                    const std::string& inId,
+                    const std::vector<Vertex::Instance>& inVertices,
+                    const std::vector<uint32_t>& inIndexes
+                );
                 void importMesh(
-                    const std::string& inMeshId,
+                    const std::string& inId,
                     const std::string& inFilePath,
                     Type inType
                 );
                 void drawMesh(
                     const std::string& inId,
+                    const vk::CommandBuffer& inCommadBuffer,
                     uint32_t inInstanceCount,
-                    const vk::CommandBuffer& inCommadBuffer
+                    uint32_t inFirstInstance
                 );
-
-                void initBuffers(
+                void loadMeshes(
                     Buffer::Instance& outVertexBuffer,
                     Buffer::Instance& outIndexBuffer,
                     const vk::Device& inLogicalDevice,
@@ -44,13 +51,8 @@ namespace Chicane
                     const vk::CommandBuffer& inCommandBuffer
                 );
 
-                void addMesh(
-                    const std::string& inMeshId,
-                    const std::vector<Vertex::Instance>& inVertices,
-                    const std::vector<uint32_t>& inIndexes
-                );
-
-                void combineVertices();
+            private:
+                void processMeshes();
 
                 void initVertexBuffer(
                     Buffer::Instance& outVertexBuffer,

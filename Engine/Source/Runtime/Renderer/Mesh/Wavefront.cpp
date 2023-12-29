@@ -37,9 +37,9 @@ namespace Chicane
             )
             {
                 glm::vec3 value;
-                value.x = std::stod(inDataSet[1].c_str());
-                value.y = std::stod(inDataSet[2].c_str());
-                value.z = std::stod(inDataSet[3].c_str());
+                value.x = std::stof(inDataSet[1].c_str());
+                value.y = std::stof(inDataSet[2].c_str());
+                value.z = std::stof(inDataSet[3].c_str());
 
                 outGeometryVertices.push_back(value);
             }
@@ -50,8 +50,8 @@ namespace Chicane
             )
             {
                 glm::vec2 value;
-                value.x = std::stod(inDataSet[1].c_str());
-                value.y = std::stod(inDataSet[2].c_str());
+                value.x = std::stof(inDataSet[1].c_str());
+                value.y = std::stof(inDataSet[2].c_str());
 
                 outTextureVertices.push_back(value);
             }
@@ -62,9 +62,9 @@ namespace Chicane
             )
             {
                 glm::vec3 value;
-                value.x = std::stod(inDataSet[1].c_str());
-                value.y = std::stod(inDataSet[2].c_str());
-                value.z = std::stod(inDataSet[3].c_str());
+                value.x = std::stof(inDataSet[1].c_str());
+                value.y = std::stof(inDataSet[2].c_str());
+                value.z = std::stof(inDataSet[3].c_str());
 
                 outNormalVertices.push_back(value);
             }

@@ -7,13 +7,40 @@ namespace Chicane
         void initLevel(Level::Instance& outLevel)
         {
             Level::Actor::Instance actor;
-            actor.transform.translation = glm::vec3(0.0f, 0.0f, 0.0f);
-            actor.transform.scale       = glm::vec3(1.25f);
+            actor.transform.translation = glm::vec3(0.0f, -600.0f, 300.0f);
+            actor.transform.scale       = glm::vec3(0.5f);
             actor.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
-            actor.mesh.id               = "Model";
-            actor.texture.id            = "Gray";
+            actor.mesh.id               = "model-one";
+            actor.texture.id            = "gray";
 
             outLevel.addActor(actor);
+
+            Level::Actor::Instance actor2;
+            actor2.transform.translation = glm::vec3(0.0f, 600.0f, 300.0f);
+            actor2.transform.scale       = glm::vec3(0.75f);
+            actor2.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
+            actor2.mesh.id               = "model-two";
+            actor2.texture.id            = "uv";
+
+            outLevel.addActor(actor2);
+
+            Level::Actor::Instance actor3;
+            actor3.transform.translation = glm::vec3(0.0f, 600.0f, -300.0f);
+            actor3.transform.scale       = glm::vec3(0.75f);
+            actor3.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
+            actor3.mesh.id               = "model-three";
+            actor3.texture.id            = "grid";
+
+            outLevel.addActor(actor3);
+
+            Level::Actor::Instance actor4;
+            actor4.transform.translation = glm::vec3(0.0f, -600.0f, -300.0f);
+            actor4.transform.scale       = glm::vec3(60.0f);
+            actor4.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
+            actor4.mesh.id               = "model-four";
+            actor4.texture.id            = "sugoi";
+
+            outLevel.addActor(actor4);
         }
 
         int run()

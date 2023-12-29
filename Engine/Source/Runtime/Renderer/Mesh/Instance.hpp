@@ -13,6 +13,8 @@ namespace Chicane
             uint32_t vertexCount;
             uint32_t firstVertex;
             uint32_t firstInstance;
+            uint32_t indexCount;
+            uint32_t firstIndex;
         };
 
         struct Instance

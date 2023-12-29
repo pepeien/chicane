@@ -80,6 +80,45 @@ namespace Chicane
         }
     }
 
+    void Application::drawLevel(const vk::CommandBuffer& inCommandBuffer)
+    {
+        std::vector<Level::Actor::Instance> actors = m_level.getActors();
+        std::vector<std::string> meshIds           = m_meshManager->getMeshIds();
+    
+        std::unordered_map<std::string, uint32_t> usedMeshes;
+
+        for (std::string& meshId : meshIds)
+        {
+            int referenceCount = std::count_if(
+                actors.begin(),
+                actors.end(),
+                [meshId](const Level::Actor::Instance& inActor) { return inActor.mesh.id == meshId; }
+            );
+
+            usedMeshes.insert(std::make_pair(meshId, referenceCount));
+        }
+
+        uint32_t drawCount = 0;
+
+        for (Level::Actor::Instance actor : actors)
+        {
+            m_textureManager->bindTexture(
+                actor.texture.id,
+                inCommandBuffer,
+                m_graphicsPipeline.layout
+            );
+
+            m_meshManager->drawMesh(
+                actor.mesh.id,
+                inCommandBuffer,
+                usedMeshes[actor.mesh.id],
+                drawCount
+            );
+
+            drawCount += usedMeshes[actor.mesh.id];
+        }
+    }
+
     void Application::draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex)
     {
         vk::CommandBufferBeginInfo beginInfo = {};
@@ -548,15 +587,33 @@ namespace Chicane
     void Application::loadMeshes()
     {
         m_meshManager->importMesh(
-            "Model",
+            "model-one",
             "air_craft.obj",
+            Mesh::Type::Wavefront
+        );
+
+        m_meshManager->importMesh(
+            "model-two",
+            "apple.obj",
+            Mesh::Type::Wavefront
+        );
+
+        m_meshManager->importMesh(
+            "model-three",
+            "apple_q.obj",
+            Mesh::Type::Wavefront
+        );
+
+        m_meshManager->importMesh(
+            "model-four",
+            "cube.obj",
             Mesh::Type::Wavefront
         );
     }
 
     void Application::buildMeshes()
     {
-        m_meshManager->initBuffers(
+        m_meshManager->loadMeshes(
             m_meshVertexBuffer,
             m_meshIndexBuffer,
             m_logicalDevice,
@@ -573,21 +630,28 @@ namespace Chicane
         grayTextureData.height   = 512;
         grayTextureData.filepath = "Base/gray.png";
 
-        m_textureManager->addTexture("Gray", grayTextureData);
+        m_textureManager->addTexture("gray", grayTextureData);
 
         Texture::Data gridTextureData;
         gridTextureData.width    = 512;
         gridTextureData.height   = 512;
         gridTextureData.filepath = "Base/grid.png";
 
-        m_textureManager->addTexture("Grid", gridTextureData);
+        m_textureManager->addTexture("grid", gridTextureData);
 
         Texture::Data uvTextureData;
         uvTextureData.width    = 512;
         uvTextureData.height   = 512;
         uvTextureData.filepath = "Base/uv.png";
 
-        m_textureManager->addTexture("UV", uvTextureData);
+        m_textureManager->addTexture("uv", uvTextureData);
+
+        Texture::Data sugoiTextureData;
+        sugoiTextureData.width    = 720;
+        sugoiTextureData.height   = 565;
+        sugoiTextureData.filepath = "Base/sugoi.png";
+
+        m_textureManager->addTexture("sugoi", sugoiTextureData);
     }
 
     void Application::buildTextures()
@@ -708,47 +772,5 @@ namespace Chicane
         );
 
         frame.setupDescriptorSet();
-    }
-
-    void Application::drawLevel(const vk::CommandBuffer& inCommandBuffer)
-    {
-        std::unordered_map<std::string, uint32_t> usedMeshes;
-
-        for (Level::Actor::Instance actor : m_level.actors)
-        {
-            if (usedMeshes.find(actor.mesh.id) != usedMeshes.end())
-            {
-                usedMeshes[actor.mesh.id]++;
-
-                continue;
-            }
-
-            usedMeshes.insert(std::make_pair(actor.mesh.id, 1));
-        }
-
-        std::vector<std::string> drawnMeshes;
-        drawnMeshes.reserve(usedMeshes.size());
-
-        for (Level::Actor::Instance actor : m_level.actors)
-        {
-            m_textureManager->bindTexture(
-                actor.texture.id,
-                inCommandBuffer,
-                m_graphicsPipeline.layout
-            );
-
-            if (std::find(drawnMeshes.begin(), drawnMeshes.end(), actor.mesh.id) != drawnMeshes.end())
-            {
-                continue;
-            }
-
-            m_meshManager->drawMesh(
-                actor.mesh.id,
-                usedMeshes[actor.mesh.id],
-                inCommandBuffer
-            );
-
-            drawnMeshes.push_back(actor.mesh.id);
-        }
     }
 }

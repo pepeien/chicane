@@ -18,6 +18,7 @@ namespace Chicane
         void run();
 
     private:
+        void drawLevel(const vk::CommandBuffer& inCommandBuffer);
         void draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
         void render();
         void calculateFrameRate();
@@ -78,8 +79,6 @@ namespace Chicane
         void prepareCamera(Frame::Instance& outFrame);
         void prepareActors(Frame::Instance& outFrame);
         void prepareFrame(uint32_t inImageIndex);
-
-        void drawLevel(const vk::CommandBuffer& inCommandBuffer);
 
     private:
         // Movement

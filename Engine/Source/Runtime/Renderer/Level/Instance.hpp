@@ -14,7 +14,7 @@ namespace Chicane
             std::vector<Actor::Instance> getActors();
             void addActor(const Actor::Instance& inObject);
 
-        public:
+        private:
             std::vector<Actor::Instance> actors;
         };
     }
