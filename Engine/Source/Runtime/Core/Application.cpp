@@ -646,12 +646,12 @@ namespace Chicane
 
         m_textureManager->addTexture("uv", uvTextureData);
 
-        Texture::Data sugoiTextureData;
-        sugoiTextureData.width    = 720;
-        sugoiTextureData.height   = 565;
-        sugoiTextureData.filepath = "Base/sugoi.png";
+        Texture::Data missingTextureData;
+        missingTextureData.width    = 512;
+        missingTextureData.height   = 512;
+        missingTextureData.filepath = "Base/missing.png";
 
-        m_textureManager->addTexture("sugoi", sugoiTextureData);
+        m_textureManager->addTexture("missing", missingTextureData);
     }
 
     void Application::buildTextures()

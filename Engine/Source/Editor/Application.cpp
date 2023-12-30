@@ -16,8 +16,8 @@ namespace Chicane
             outLevel.addActor(actor);
 
             Level::Actor::Instance actor2;
-            actor2.transform.translation = glm::vec3(0.0f, 600.0f, 300.0f);
-            actor2.transform.scale       = glm::vec3(0.75f);
+            actor2.transform.translation = glm::vec3(0.0f, 600.0f, 150.0f);
+            actor2.transform.scale       = glm::vec3(0.9f);
             actor2.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             actor2.mesh.id               = "model-two";
             actor2.texture.id            = "uv";
@@ -25,8 +25,8 @@ namespace Chicane
             outLevel.addActor(actor2);
 
             Level::Actor::Instance actor3;
-            actor3.transform.translation = glm::vec3(0.0f, 600.0f, -300.0f);
-            actor3.transform.scale       = glm::vec3(0.75f);
+            actor3.transform.translation = glm::vec3(0.0f, 600.0f, -400.0f);
+            actor3.transform.scale       = glm::vec3(0.9f);
             actor3.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             actor3.mesh.id               = "model-three";
             actor3.texture.id            = "grid";
@@ -35,10 +35,9 @@ namespace Chicane
 
             Level::Actor::Instance actor4;
             actor4.transform.translation = glm::vec3(0.0f, -600.0f, -300.0f);
-            actor4.transform.scale       = glm::vec3(60.0f);
+            actor4.transform.scale       = glm::vec3(100.0f);
             actor4.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
             actor4.mesh.id               = "model-four";
-            actor4.texture.id            = "sugoi";
 
             outLevel.addActor(actor4);
         }

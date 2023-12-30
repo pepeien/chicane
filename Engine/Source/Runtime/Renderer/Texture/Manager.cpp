@@ -28,24 +28,26 @@ namespace Chicane
             }
 
             void Instance::bindTexture(
-                const std::string& inTextureId,
+                const std::string& inId,
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::PipelineLayout& inPipelineLayout
             )
             {
-                auto foundTexture = m_textureInstancesMap.find(inTextureId);
+                std::string standarizedId = inId.size() > 0 ? inId : "missing";
+
+                auto foundTexture = m_textureInstancesMap.find(standarizedId);
 
                 if (foundTexture == m_textureInstancesMap.end())
                 {
                     throw std::runtime_error(
-                        "The Texture [" + inTextureId + "] does not exists"
+                        "The Texture [" + standarizedId + "] does not exists"
                     );
                 }
 
                 if (foundTexture->second == nullptr)
                 {
                     throw std::runtime_error(
-                        "The Texture [" + inTextureId + "] has not been initialized"
+                        "The Texture [" + standarizedId + "] has not been initialized"
                     );
                 }
 
