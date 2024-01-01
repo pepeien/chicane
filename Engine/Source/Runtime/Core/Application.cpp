@@ -11,7 +11,8 @@ namespace Chicane
       m_currentImageIndex(0),
       m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
       m_textureManager(std::make_unique<Texture::Manager::Instance>()),
-      m_frameStats({})
+      m_frameStats({}),
+      m_camera(std::make_unique<Camera::Instance>())
     {
         // Assets pre load
         loadAssets();
@@ -49,6 +50,8 @@ namespace Chicane
         destroyCommandPool();
         destroyGraphicsPipeline();
         destroySwapChain();
+
+        m_camera.reset();
 
         m_logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptors.setLayout
@@ -105,6 +108,12 @@ namespace Chicane
                 
                 case SDL_WINDOWEVENT:
                     onWindowEvent(event.window);
+
+                    break;
+                
+                case SDL_KEYDOWN:
+                case SDL_KEYUP:
+                    onKeyboardInput(event.key);
 
                     break;
                 
@@ -366,14 +375,13 @@ namespace Chicane
     {
         switch (inEvent.event)
         {
+        case SDL_WINDOWEVENT_RESIZED:
+        case SDL_WINDOWEVENT_RESTORED:
+        case SDL_WINDOWEVENT_MAXIMIZED:
         case SDL_WINDOWEVENT_MINIMIZED:
-            m_window.isMinimized = true;
+        case SDL_WINDOWEVENT_EXPOSED:
+            m_window.isMinimized = inEvent.event == SDL_WINDOWEVENT_MINIMIZED;
             
-            rebuildSwapChain();
-
-            return;
-
-        case SDL_WINDOWEVENT_SIZE_CHANGED:
             rebuildSwapChain();
 
             return;
@@ -381,6 +389,41 @@ namespace Chicane
         default:
             return;
         }
+    }
+
+    void Application::onKeyboardInput(const SDL_KeyboardEvent& inEvent)
+    {
+        float cameraStepSize = 12.25;
+
+        glm::vec3 nextPosition = m_camera->getPosition();
+
+        switch (inEvent.keysym.scancode)
+        {
+        case SDL_SCANCODE_W:
+            nextPosition.x += cameraStepSize;
+
+            break;
+
+        case SDL_SCANCODE_A:
+            nextPosition.y += cameraStepSize;
+
+            break;
+
+        case SDL_SCANCODE_S:
+            nextPosition.x -= cameraStepSize;   
+
+            break;    
+
+        case SDL_SCANCODE_D:
+            nextPosition.y -= cameraStepSize;
+
+            break;
+
+        default:
+            return;
+        }
+
+        m_camera->updatePosition(nextPosition);
     }
 
     void Application::buildInstance()
@@ -480,7 +523,7 @@ namespace Chicane
             m_window.height
         );
 
-        m_camera = std::make_unique<Camera::Instance>(
+        m_camera->updateResolution(
             m_swapChain.extent.width,
             m_swapChain.extent.height
         );
@@ -535,8 +578,6 @@ namespace Chicane
 
     void Application::destroySwapChain()
     {
-        m_camera.reset();
-
         for (Frame::Instance& frame : m_swapChain.frames)
         {
             frame.destroy();
@@ -835,42 +876,12 @@ namespace Chicane
 
     void Application::prepareCamera(Frame::Instance& outFrame)
     {
-        if (cameraPosition <= -3000.0f)
-        {
-            cameraPositionModifier = 1;
-        }
-        
-        if (cameraPosition > -1500.0f)
-        {
-            cameraPositionModifier = -1;
-        }
-
-        cameraPosition += cameraPositionMultiplier *cameraPositionModifier;
-
-        m_camera->updatePosition({ cameraPosition, 0.0f, 0.0f });
-
         outFrame.cameraData.object = m_camera->getUniformBufferObject();
     }
 
     void Application::prepareActors(Frame::Instance& outFrame)
     {
-        auto movingActors = m_level.getActors();
-
-        if (rotation >= 360)
-        {
-            rotation = 0.0f;
-        }
-        else
-        {
-            rotation += rotationMultiplier;
-        }
-
-        for (auto& actor : movingActors)
-        {
-            actor.transform.rotation.z = rotation;
-        }
-
-        outFrame.updateModelTransforms(movingActors);
+        outFrame.updateModelTransforms(m_level.getActors());
     }
 
     void Application::prepareFrame(uint32_t inImageIndex)

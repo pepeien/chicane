@@ -34,6 +34,7 @@ namespace Chicane
         void initSDL();
         void buildWindow();
         void onWindowEvent(const SDL_WindowEvent& inEvent);
+        void onKeyboardInput(const SDL_KeyboardEvent& inEvent);
 
         // Vulkan
         void buildInstance();
@@ -90,14 +91,6 @@ namespace Chicane
         void prepareFrame(uint32_t inImageIndex);
 
     private:
-        // Movement
-        float rotationMultiplier = 0.025f;
-        float rotation           = 0.0f;
-
-        int cameraPositionModifier     = 1;
-        float cameraPositionMultiplier = 0.05f;
-        float cameraPosition           = -1500.0f;
-
         // Stats
         Frame::Stats m_frameStats;
 

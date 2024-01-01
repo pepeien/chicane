@@ -4,17 +4,32 @@ namespace Chicane
 {
     namespace Camera
     {
-        Instance::Instance(float inWidth, float inHeight)
-        : m_eyes({ 0.0f, 0.0f, 0.0f }),
+        Instance::Instance()
+        :
+          m_ubo({}),
+          m_eyes({ -1500.0f, 0.0f, 0.0f }),
           m_look({ 1.0f, 0.0f, 1.0f }),
           m_up({ 0.0f, 0.0f, 1.0f }),
-          m_width(inWidth),
-          m_height(inHeight)
+          m_width(0),
+          m_height(0)
         {}
+
+        glm::vec3 Instance::getPosition()
+        {
+            return m_eyes;
+        }
 
         void Instance::updatePosition(const glm::vec3& inPosition)
         {
             m_eyes = inPosition;
+
+            updateUBO();
+        }
+
+        void Instance::updateResolution(uint32_t inWidth, uint32_t inHeight)
+        {
+            m_width  = inWidth;
+            m_height = inHeight;
 
             updateUBO();
         }
@@ -37,7 +52,7 @@ namespace Chicane
         {
             glm::mat4 result = glm::perspective(
                 glm::radians(45.0f),
-                m_width / m_height,
+                static_cast<float>(m_width / m_height),
                 0.1f,
                 5000.0f
             );

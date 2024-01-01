@@ -26,10 +26,13 @@ namespace Chicane
         class Instance
         {
         public:
-            Instance(float inWidth, float inHeight);
+            Instance();
 
         public:
+            glm::vec3 getPosition();
             void updatePosition(const glm::vec3& inPosition);
+            
+            void updateResolution(uint32_t inWidth, uint32_t inHeight);
 
             UniformBufferObject getUniformBufferObject();
 
@@ -46,8 +49,8 @@ namespace Chicane
             glm::vec3 m_look;
             glm::vec3 m_up;
 
-            float m_width;
-            float m_height;
+            uint32_t m_width;
+            uint32_t m_height;
         };
     }
 }
