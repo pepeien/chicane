@@ -6,22 +6,27 @@ namespace Chicane
     {
         void init(Instance& outWindow)
         {
-            glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-            glfwWindowHint(GLFW_RESIZABLE,  GLFW_TRUE);
-            glfwWindowHint(GLFW_MAXIMIZED,  GLFW_TRUE);
+            SDL_DisplayMode desktop;
+            SDL_GetCurrentDisplayMode(0, &desktop);
 
-            const GLFWvidmode* desktop = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            outWindow.width  = desktop.w;
+            outWindow.height = desktop.h;
 
-            outWindow.width  = desktop->width;
-            outWindow.height = desktop->height;
-
-            outWindow.instance = glfwCreateWindow(
-                desktop->width,
-                desktop->height,
+            outWindow.instance = SDL_CreateWindow(
                 outWindow.title.c_str(),
-                nullptr,
-                nullptr
+                SDL_WINDOWPOS_CENTERED,
+                SDL_WINDOWPOS_CENTERED,
+                outWindow.width,
+                outWindow.height,
+                SDL_WINDOW_RESIZABLE |
+                SDL_WINDOW_MAXIMIZED |
+                SDL_WINDOW_VULKAN
             );
+
+            if (outWindow.instance == NULL)
+            {
+                throw std::runtime_error(SDL_GetError());
+            }
         }
     }
 }

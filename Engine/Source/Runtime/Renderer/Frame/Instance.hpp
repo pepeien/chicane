@@ -3,7 +3,9 @@
 #include "Base.hpp"
 
 #include "Renderer/Buffer.hpp"
+#include "Renderer/Camera.hpp"
 #include "Renderer/Descriptor.hpp"
+#include "Renderer/Model.hpp"
 #include "Renderer/Image.hpp"
 #include "Renderer/Uniform.hpp"
 #include "Renderer/Sync.hpp"
@@ -14,28 +16,12 @@ namespace Chicane
 {
     namespace Frame
     {
-        struct CameraData
-        {
-            Uniform::BufferObject object;
-            size_t allocationSize;
-            void* writeLocation;
-            Chicane::Buffer::Instance buffer;
-        };
-    
-        struct ModelData
-        {
-            std::vector<glm::mat4> transforms;
-            size_t allocationSize;
-            void* writeLocation;
-            Chicane::Buffer::Instance buffer;
-        };
-
         struct Stats
         {
-            int count;
-            float time;
-            float lastTime;
-            float currentTime;
+            int count            = 0;
+            float time           = 0.0f;
+            uint64_t lastTime    = 0;
+            uint64_t currentTime = 0;
         };
     
         class Instance
@@ -43,7 +29,9 @@ namespace Chicane
         public:
             void setupSync();
             void setupCamera();
-            void setupModelData(const std::vector<Level::Actor::Instance>& inActors);
+            void setupModelData(
+                const std::vector<Level::Actor::Instance>& inActors
+            );
             void setupDescriptors(
                 const vk::DescriptorSetLayout& inLayout,
                 const vk::DescriptorPool& inPool
@@ -51,7 +39,9 @@ namespace Chicane
             void setupDepthBuffering();
             void setupDescriptorSet();
             
-            void updateModelTransforms(const std::vector<Level::Actor::Instance>& inActors);
+            void updateModelTransforms(
+                const std::vector<Level::Actor::Instance>& inActors
+            );
 
             void destroy();
 
@@ -79,8 +69,8 @@ namespace Chicane
             vk::Semaphore renderSemaphore;
     
             // Resources
-            CameraData cameraData;
-            ModelData modelData;
+            Camera::Bundle cameraData;
+            Model::Bundle modelData;
     
             // Resources Descriptors
             vk::DescriptorBufferInfo uniformDescriptorBufferInfo;

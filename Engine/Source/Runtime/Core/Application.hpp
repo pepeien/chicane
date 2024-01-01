@@ -2,6 +2,7 @@
 
 #include "Base.hpp"
 
+#include "Controller.hpp"
 #include "Window.hpp"
 
 #include "Renderer.hpp"
@@ -11,7 +12,10 @@ namespace Chicane
     class Application
     {
     public:
-        Application(const std::string& inWindowTitle, const Level::Instance& inLevel);
+        Application(
+            const std::string& inWindowTitle,
+            const Level::Instance& inLevel
+        );
         ~Application();
 
     public:
@@ -19,12 +23,17 @@ namespace Chicane
 
     private:
         void drawLevel(const vk::CommandBuffer& inCommandBuffer);
-        void draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex);
+        void draw(
+            const vk::CommandBuffer& inCommandBuffer,
+            uint32_t inImageIndex
+        );
         void render();
         void calculateFrameRate();
 
-        // GLFW
+        // Window
+        void initSDL();
         void buildWindow();
+        void onWindowEvent(const SDL_WindowEvent& inEvent);
 
         // Vulkan
         void buildInstance();
@@ -82,9 +91,12 @@ namespace Chicane
 
     private:
         // Movement
-        float baseMultiplier = 0.025f;
+        float rotationMultiplier = 0.025f;
+        float rotation           = 0.0f;
 
-        float rotationCount    = 0.0f;
+        int cameraPositionModifier     = 1;
+        float cameraPositionMultiplier = 0.05f;
+        float cameraPosition           = -1500.0f;
 
         // Stats
         Frame::Stats m_frameStats;
@@ -121,6 +133,9 @@ namespace Chicane
 
         // Context
         Level::Instance m_level;
+
+        // Camera
+        std::unique_ptr<Camera::Instance> m_camera;
 
         // Window
         Window::Instance m_window;

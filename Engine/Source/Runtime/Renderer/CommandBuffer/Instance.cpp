@@ -13,7 +13,9 @@ namespace Chicane
                 allocateInfo.level              = vk::CommandBufferLevel::ePrimary;
                 allocateInfo.commandBufferCount = 1;
 
-                outCommandBuffer = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo)[0];
+                outCommandBuffer = inCreateInfo
+                                   .logicalDevice
+                                   .allocateCommandBuffers(allocateInfo)[0];
             }
         }
     }

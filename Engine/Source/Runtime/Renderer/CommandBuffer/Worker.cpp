@@ -28,7 +28,13 @@ namespace Chicane
                 submitInfo.commandBufferCount = 1;
                 submitInfo.pCommandBuffers    = &inCommandBuffer;
             
-                if (inQueue.submit(1, &submitInfo, nullptr) != vk::Result::eSuccess)
+                if (
+                    inQueue.submit(
+                        1,
+                        &submitInfo,
+                        nullptr
+                    ) != vk::Result::eSuccess
+                )
                 {
                     LOG_WARNING("Error while ending [" + inDescription + "]");
                 }

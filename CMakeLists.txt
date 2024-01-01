@@ -29,10 +29,10 @@ set(RUNTIME_SOURCE_DIR "${ENGINE_SOURCE_DIR}/Source/Runtime")
 set(EDITOR_SOURCE_DIR  "${ENGINE_SOURCE_DIR}/Source/Editor")
 
 set(GLFW_PATH   "${LIBS_DIR}/glfw")
+set(STB_PATH    "${LIBS_DIR}/stb")
 set(VULKAN_PATH "${LIBS_DIR}/vulkan")
 set(SDL_PATH    "${VULKAN_PATH}/include/SDL2")
-set(GLM_PATH    "${LIBS_DIR}/glm")
-set(STB_PATH    "${LIBS_DIR}/stb")
+set(GLM_PATH    "${VULKAN_PATH}/include/glm")
 
 set(BUILD_DIR         "${CMAKE_SOURCE_DIR}/Build")
 set(BUILD_DEPLOY_DIR  "${BUILD_DIR}/Deploy")
@@ -48,7 +48,7 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     endif()
 
     set(USE_MINGW "True")
-    set(CMAKE_C_COMPILER ${MINGW_PATH}/bin/gcc.exe)
+    set(CMAKE_C_COMPILER    ${MINGW_PATH}/bin/gcc.exe)
     set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
 endif()
 

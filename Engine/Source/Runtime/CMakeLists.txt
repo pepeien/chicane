@@ -13,7 +13,13 @@ file(
 add_library(${TARGET_NAME} ${SOURCES})
 
 ############## Set Property Balues  #######################
-set_property(TARGET ${TARGET_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${BUILD_BINARY_DIR}")
+set_property(
+    TARGET
+    ${TARGET_NAME}
+    PROPERTY
+    VS_DEBUGGER_WORKING_DIRECTORY
+    "${BUILD_BINARY_DIR}"
+)
 
 ############## Linking Libs  #######################
 if (WIN32)
@@ -83,6 +89,10 @@ target_include_directories(
     ${SOURCES_DIR}
 )
 
+set(SDL2_DIR "${VULKAN_PATH}/cmake")
+
+find_package(SDL2 REQUIRED)
+
 target_include_directories(
     ${TARGET_NAME}
     PUBLIC
@@ -115,12 +125,12 @@ if (WIN32)
     endif()
  
     target_include_directories(
-          ${TARGET_NAME}
-          PUBLIC
+        ${TARGET_NAME}
+        PUBLIC
 
-          # Third Party
-          ${Vulkan_INCLUDE_DIRS}
-          ${GLFW_INCLUDE_DIRS}
+        # Third Party
+        ${Vulkan_INCLUDE_DIRS}
+        ${GLFW_INCLUDE_DIRS}
     )
 
     target_link_directories(
@@ -137,6 +147,7 @@ if (WIN32)
 
         glfw3
         vulkan-1
+        SDL2::SDL2
     )
 elseif (UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")

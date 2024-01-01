@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer/Buffer.hpp"
+#include "Renderer/Camera.hpp"
 #include "Renderer/Debug.hpp"
 #include "Renderer/Descriptor.hpp"
 #include "Renderer/Device.hpp"

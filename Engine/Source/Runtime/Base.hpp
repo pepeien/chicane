@@ -1,6 +1,6 @@
 #pragma once
 
-#define GLFW_INCLUDE_VULKAN
+#define SDL_MAIN_HANDLED
 
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
@@ -33,7 +33,9 @@
 #include <vector>
 #include <unordered_map>
 
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_vulkan.h>
+
 #include <vulkan/vulkan.hpp>
 
 #include <glm/glm.hpp>

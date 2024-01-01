@@ -7,21 +7,20 @@ namespace Chicane
         void init(
             vk::SurfaceKHR& outSurface,
             const vk::Instance& inInstance,
-            GLFWwindow* inWindow
+            SDL_Window* inWindow
         )
         {
             VkSurfaceKHR c_style_surface;
     
             if (
-                glfwCreateWindowSurface(
-                    inInstance,
+                SDL_Vulkan_CreateSurface(
                     inWindow,
-                    nullptr,
+                    inInstance,
                     &c_style_surface
-                ) != VK_SUCCESS
+                ) == SDL_FALSE
             )
             {
-                throw std::runtime_error("Failed to abtract the GLFW surface for Vulkan");
+                throw std::runtime_error(SDL_GetError());
             }
     
             outSurface = vk::SurfaceKHR(c_style_surface);

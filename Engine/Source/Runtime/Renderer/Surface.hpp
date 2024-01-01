@@ -9,7 +9,7 @@ namespace Chicane
         void init(
             vk::SurfaceKHR& outSurface,
             const vk::Instance& inInstance,
-            GLFWwindow* inWindow
+            SDL_Window* inWindow
         );
     }
 }

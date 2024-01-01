@@ -7,7 +7,11 @@ namespace Chicane
         Instance::Instance(const CreateInfo& inCreateInfo)
         : m_width(inCreateInfo.data.width),
           m_height(inCreateInfo.data.height),
-          m_filepath(FileSystem::getRelativePath(ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath)),
+          m_filepath(
+            FileSystem::getRelativePath(
+                ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath
+            )
+          ),
           m_logicalDevice(inCreateInfo.logicalDevice),
           m_physicalDevice(inCreateInfo.physicalDevice),
           m_commandBuffer(inCreateInfo.commandBuffer),

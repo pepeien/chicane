@@ -62,25 +62,51 @@ namespace Chicane
             return true;
         }
     
-        void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
+        void init(
+            vk::Instance& outInstance,
+            vk::DispatchLoaderDynamic& outDldi,
+            SDL_Window* inWindow
+        )
         {
-            uint32_t glfwExtensionCount             = 0;
-            const char** glfwRequiredExtensions     = glfwGetRequiredInstanceExtensions(
-                &glfwExtensionCount
-            );
-            std::vector<const char*> glfwExtensions = std::vector(
-                glfwRequiredExtensions,
-                glfwRequiredExtensions + glfwExtensionCount
+            uint32_t sdlExtensionCount = 0;
+
+            if (
+                SDL_Vulkan_GetInstanceExtensions(
+                    inWindow,
+                    &sdlExtensionCount,
+                    nullptr
+                ) == SDL_FALSE
+            )
+            {
+                throw std::runtime_error(SDL_GetError());
+            }
+
+            const char** sdlRawExtensions = new const char*[sdlExtensionCount];
+
+            if (
+                SDL_Vulkan_GetInstanceExtensions(
+                    inWindow,
+                    &sdlExtensionCount,
+                    sdlRawExtensions
+                ) == SDL_FALSE
+            )
+            {
+                throw std::runtime_error(SDL_GetError());
+            }
+
+            std::vector<const char*> sdlExtensions(
+                sdlRawExtensions,
+                sdlRawExtensions + sdlExtensionCount
             );
 
             if (IS_DEBUGGING)
             {
-                glfwExtensions.push_back("VK_EXT_debug_utils");
+                sdlExtensions.push_back("VK_EXT_debug_utils");
             }
 
-            if (areExtensionsSupported(glfwExtensions) == false)
+            if (areExtensionsSupported(sdlExtensions) == false)
             {
-                throw std::runtime_error("GLFW extensions are not fully supported");
+                throw std::runtime_error("SDL extensions are not fully supported");
             }
 
             if (areValidationLayersSupported(VALIDATION_LAYERS) == false)
@@ -109,8 +135,8 @@ namespace Chicane
                 static_cast<uint32_t>(VALIDATION_LAYERS.size()),
                 VALIDATION_LAYERS.data(),
 
-                static_cast<uint32_t>(glfwExtensions.size()),
-                glfwExtensions.data()
+                static_cast<uint32_t>(sdlExtensions.size()),
+                sdlExtensions.data()
             );
 
             outInstance = vk::createInstance(createInfo);

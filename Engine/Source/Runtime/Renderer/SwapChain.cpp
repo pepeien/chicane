@@ -121,16 +121,31 @@ namespace Chicane
         )
         {
             SupportDetails supportDetails;
-            querySupport(supportDetails, inPhysicalDevice, inSurface);
+            querySupport(
+                supportDetails,
+                inPhysicalDevice,
+                inSurface
+            );
     
             vk::SurfaceFormatKHR surfaceFormat;
-            pickSurfaceFormat(surfaceFormat, supportDetails.formats);
+            pickSurfaceFormat(
+                surfaceFormat,
+                supportDetails.formats
+            );
     
             vk::PresentModeKHR presentMode;
-            pickPresentMode(presentMode, supportDetails.presentModes);
+            pickPresentMode(
+                presentMode,
+                supportDetails.presentModes
+            );
     
             vk::Extent2D extent;
-            pickExtent(extent, inWidth, inHeight, supportDetails.capabilities);
+            pickExtent(
+                extent,
+                inWidth,
+                inHeight,
+                supportDetails.capabilities
+            );
     
             uint32_t imageCount = std::min(
                 supportDetails.capabilities.maxImageCount,
@@ -154,7 +169,11 @@ namespace Chicane
             );
     
             Queue::FamilyIndices familyIndices;
-            Queue::findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
+            Queue::findFamilyInidices(
+                familyIndices,
+                inPhysicalDevice,
+                inSurface
+            );
     
             createInfo.imageSharingMode = vk::SharingMode::eExclusive;
     

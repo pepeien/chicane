@@ -6,9 +6,18 @@ namespace Chicane
     {
         void Instance::setupSync()
         {
-            Sync::initSempahore(presentSemaphore, logicalDevice);
-            Sync::initSempahore(renderSemaphore, logicalDevice);
-            Sync::initFence(renderFence, logicalDevice);
+            Sync::initSempahore(
+                presentSemaphore,
+                logicalDevice
+            );
+            Sync::initSempahore(
+                renderSemaphore,
+                logicalDevice
+            );
+            Sync::initFence(
+                renderFence,
+                logicalDevice
+            );
         }
             
         void Instance::setupCamera()
@@ -141,13 +150,18 @@ namespace Chicane
             );
         }
 
-        void Instance::updateModelTransforms(const std::vector<Level::Actor::Instance>& inActors)
+        void Instance::updateModelTransforms(
+            const std::vector<Level::Actor::Instance>& inActors
+        )
         {
             for (uint32_t i = 0; i < inActors.size(); i++)
             {
                 Level::Actor::Instance actor = inActors[i];
 
-                glm::mat4 transform = glm::translate(glm::mat4(1.0f), actor.transform.translation);
+                glm::mat4 transform = glm::translate(
+                    glm::mat4(1.0f),
+                    actor.transform.translation
+                );
                 transform = glm::rotate(
                     transform,
                     glm::radians(actor.transform.rotation.z),
@@ -183,10 +197,16 @@ namespace Chicane
             logicalDevice.destroySemaphore(renderSemaphore);
 
             logicalDevice.unmapMemory(cameraData.buffer.memory);
-            Buffer::destroy(logicalDevice, cameraData.buffer);
+            Buffer::destroy(
+                logicalDevice,
+                cameraData.buffer
+            );
 
             logicalDevice.unmapMemory(modelData.buffer.memory);
-            Buffer::destroy(logicalDevice, modelData.buffer);
+            Buffer::destroy(
+                logicalDevice,
+                modelData.buffer
+            );
         }
     }
 }

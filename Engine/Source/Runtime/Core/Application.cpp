@@ -2,19 +2,22 @@
 
 namespace Chicane
 {
-    Application::Application(const std::string& inWindowTitle, const Level::Instance& inLevel)
+    Application::Application(
+        const std::string& inWindowTitle,
+        const Level::Instance& inLevel
+    )
     : m_window({ nullptr, inWindowTitle, 0, 0 }),
       m_level(inLevel),
       m_currentImageIndex(0),
       m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
       m_textureManager(std::make_unique<Texture::Manager::Instance>()),
-      m_frameStats({ 0, 0.0f, 0.0f, 0.0f })
+      m_frameStats({})
     {
         // Assets pre load
         loadAssets();
 
-        // GLFW
-        glfwInit();
+        // Window
+        initSDL();
         buildWindow();
 
         // Vulkan
@@ -47,13 +50,25 @@ namespace Chicane
         destroyGraphicsPipeline();
         destroySwapChain();
 
-        m_logicalDevice.destroyDescriptorSetLayout(m_frameDescriptors.setLayout);
+        m_logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptors.setLayout
+        );
 
-        m_logicalDevice.destroyDescriptorSetLayout(m_materialDescriptors.setLayout);
-        m_logicalDevice.destroyDescriptorPool(m_materialDescriptors.pool);
+        m_logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptors.setLayout
+        );
+        m_logicalDevice.destroyDescriptorPool(
+            m_materialDescriptors.pool
+        );
 
-        Buffer::destroy(m_logicalDevice, m_meshVertexBuffer);
-        Buffer::destroy(m_logicalDevice, m_meshIndexBuffer);
+        Buffer::destroy(
+            m_logicalDevice,
+            m_meshVertexBuffer
+        );
+        Buffer::destroy(
+            m_logicalDevice,
+            m_meshIndexBuffer
+        );
 
         destroyAssets();
         destroyDevices();
@@ -66,15 +81,38 @@ namespace Chicane
 
         destroyInstance();
 
-        // GLFW
-        glfwTerminate();
+        // Window
+        SDL_DestroyWindow(m_window.instance);
+        SDL_Quit();
     }
 
     void Application::run()
     {
-        while (glfwWindowShouldClose(m_window.instance) == false)
+        bool shouldClose = false;
+
+        SDL_Event event;
+
+        while (shouldClose == false)
         {
-            glfwPollEvents();
+            while(SDL_PollEvent(&event))
+            {
+                switch (event.type)
+                {
+                case SDL_QUIT:
+                    shouldClose = true;
+
+                    break;
+                
+                case SDL_WINDOWEVENT:
+                    onWindowEvent(event.window);
+
+                    break;
+                
+                default:
+                    break;
+                }
+            }
+
             render();
             calculateFrameRate();
         }
@@ -92,7 +130,9 @@ namespace Chicane
             int referenceCount = std::count_if(
                 actors.begin(),
                 actors.end(),
-                [meshId](const Level::Actor::Instance& inActor) { return inActor.mesh.id == meshId; }
+                [meshId](const Level::Actor::Instance& inActor) {
+                    return inActor.mesh.id == meshId;
+                }
             );
 
             usedMeshes.insert(std::make_pair(meshId, referenceCount));
@@ -119,7 +159,10 @@ namespace Chicane
         }
     }
 
-    void Application::draw(const vk::CommandBuffer& inCommandBuffer, uint32_t inImageIndex)
+    void Application::draw(
+        const vk::CommandBuffer& inCommandBuffer,
+        uint32_t inImageIndex
+    )
     {
         vk::CommandBufferBeginInfo beginInfo = {};
 
@@ -230,7 +273,9 @@ namespace Chicane
         vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
         vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
 
-        vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
+        vk::PipelineStageFlags waitStages[] = {
+            vk::PipelineStageFlagBits::eColorAttachmentOutput
+        };
 
         vk::SubmitInfo submitInfo = {};
         submitInfo.waitSemaphoreCount   = 1;
@@ -241,7 +286,10 @@ namespace Chicane
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores    = signalSemaphores;
 
-        m_graphicsQueue.submit(submitInfo, currentFrame.renderFence);
+        m_graphicsQueue.submit(
+            submitInfo,
+            currentFrame.renderFence
+        );
 
         vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
 
@@ -263,7 +311,10 @@ namespace Chicane
             present = vk::Result::eErrorOutOfDateKHR;
         }
 
-        if (present == vk::Result::eErrorOutOfDateKHR || present == vk::Result::eSuboptimalKHR)
+        if (
+            present == vk::Result::eErrorOutOfDateKHR ||
+            present == vk::Result::eSuboptimalKHR
+        )
         {
             rebuildSwapChain();
 
@@ -275,7 +326,8 @@ namespace Chicane
 
     void Application::calculateFrameRate()
     {
-        m_frameStats.currentTime = glfwGetTime();
+        m_frameStats.currentTime = SDL_GetTicks64() / 1000;
+
         double delta = m_frameStats.currentTime - m_frameStats.lastTime;
 
         if (delta >= 1) {
@@ -284,7 +336,7 @@ namespace Chicane
             std::stringstream title;
             title << m_window.title << " - " << framerate << " FPS";
 
-            glfwSetWindowTitle(
+            SDL_SetWindowTitle(
                 m_window.instance,
                 title.str().c_str()
             );
@@ -297,14 +349,47 @@ namespace Chicane
         m_frameStats.count++;
     }
 
+    void Application::initSDL()
+    {
+        if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        {
+            throw std::runtime_error("Failed to initialize SDL");
+        }
+    }
+
     void Application::buildWindow()
     {
         Window::init(m_window);
     }
 
+    void Application::onWindowEvent(const SDL_WindowEvent& inEvent)
+    {
+        switch (inEvent.event)
+        {
+        case SDL_WINDOWEVENT_MINIMIZED:
+            m_window.isMinimized = true;
+            
+            rebuildSwapChain();
+
+            return;
+
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+            rebuildSwapChain();
+
+            return;
+        
+        default:
+            return;
+        }
+    }
+
     void Application::buildInstance()
     {
-        Instance::init(m_instance, m_dldi);
+        Instance::init(
+            m_instance,
+            m_dldi,
+            m_window.instance
+        );
     }
 
     void Application::destroyInstance()
@@ -319,17 +404,29 @@ namespace Chicane
             return;
         }
 
-        Debug::initMessenger(m_debugMessenger, m_instance, m_dldi);
+        Debug::initMessenger(
+            m_debugMessenger,
+            m_instance,
+            m_dldi
+        );
     }
 
     void Application::destroyDebugMessenger()
     {
-        m_instance.destroyDebugUtilsMessengerEXT(m_debugMessenger, nullptr, m_dldi);
+        m_instance.destroyDebugUtilsMessengerEXT(
+            m_debugMessenger,
+            nullptr,
+            m_dldi
+        );
     }
 
     void Application::buildSurface()
     {
-        Surface::init(m_surface, m_instance, m_window.instance);
+        Surface::init(
+            m_surface,
+            m_instance,
+            m_window.instance
+        );
     }
 
     void Application::destroySurface()
@@ -356,7 +453,10 @@ namespace Chicane
 
     void Application::buildDevices()
     {
-        Device::pickPhysicalDevice(m_physicalDevice, m_instance);
+        Device::pickPhysicalDevice(
+            m_physicalDevice,
+            m_instance
+        );
         Device::initLogicalDevice(
             m_logicalDevice,
             m_physicalDevice,
@@ -380,6 +480,11 @@ namespace Chicane
             m_window.height
         );
 
+        m_camera = std::make_unique<Camera::Instance>(
+            m_swapChain.extent.width,
+            m_swapChain.extent.height
+        );
+
         m_maxInFlightFramesCount = static_cast<int>(m_swapChain.frames.size());
 
         for (Frame::Instance& frame : m_swapChain.frames)
@@ -395,16 +500,28 @@ namespace Chicane
 
     void Application::rebuildSwapChain()
     {
-        do
-        {
-            glfwGetFramebufferSize(
-                m_window.instance,
-                &m_window.width,
-                &m_window.height
-            );
+        m_window.width   = 0;
+        m_window.height  = 0;
 
-            glfwWaitEvents();
-        } while (m_window.width == 0 || m_window.height == 0);
+        if (m_window.isMinimized)
+        {
+            return;
+        }
+
+        SDL_Vulkan_GetDrawableSize(
+            m_window.instance,
+            &m_window.width,
+            &m_window.height
+        );
+
+        if (m_window.width == 0 || m_window.height == 0)
+        {
+            m_window.isMinimized = true;
+
+            return;
+        }
+
+        m_window.isMinimized = false;
 
         m_logicalDevice.waitIdle();
 
@@ -418,6 +535,8 @@ namespace Chicane
 
     void Application::destroySwapChain()
     {
+        m_camera.reset();
+
         for (Frame::Instance& frame : m_swapChain.frames)
         {
             frame.destroy();
@@ -531,7 +650,10 @@ namespace Chicane
             m_mainCommandPool
         };
 
-        CommandBuffer::Instance::init(m_mainCommandBuffer, createInfo);
+        CommandBuffer::Instance::init(
+            m_mainCommandBuffer,
+            createInfo
+        );
     }
 
     void Application::buildFramesCommandBuffers()
@@ -541,7 +663,10 @@ namespace Chicane
             m_mainCommandPool
         };
 
-        Frame::Buffer::initCommand(m_swapChain.frames, createInfo);
+        Frame::Buffer::initCommand(
+            m_swapChain.frames,
+            createInfo
+        );
     }
 
     void Application::buildFrameResources()
@@ -710,44 +835,39 @@ namespace Chicane
 
     void Application::prepareCamera(Frame::Instance& outFrame)
     {
-        glm::vec3 position  = { -1500.0f, 0.0f, 0.0f };
-        glm::vec3 direction = { 1.0f, 0.0f, 1.0f };
-        glm::vec3 up        = { 0.0f, 0.0f, 1.0f };
+        if (cameraPosition <= -3000.0f)
+        {
+            cameraPositionModifier = 1;
+        }
+        
+        if (cameraPosition > -1500.0f)
+        {
+            cameraPositionModifier = -1;
+        }
 
-        glm::mat4 view = glm::lookAt(position, direction, up);
+        cameraPosition += cameraPositionMultiplier *cameraPositionModifier;
 
-        glm::mat4 projection = glm::perspective(
-            glm::radians(45.0f),
-            static_cast<float>(m_swapChain.extent.width) /
-                    static_cast<float>(m_swapChain.extent.height),
-            0.1f,
-            5000.0f
-        );
+        m_camera->updatePosition({ cameraPosition, 0.0f, 0.0f });
 
-        // Normalize OpenGL's to coordinate system Vulkan
-        projection[1][1] *= -1;
-
-        outFrame.cameraData.object.view           = view;
-        outFrame.cameraData.object.projection     = projection;
-        outFrame.cameraData.object.viewProjection = projection * view;
+        outFrame.cameraData.object = m_camera->getUniformBufferObject();
     }
 
     void Application::prepareActors(Frame::Instance& outFrame)
     {
         auto movingActors = m_level.getActors();
 
-        if (rotationCount >= 360)
+        if (rotation >= 360)
         {
-            rotationCount = 0.0f;
+            rotation = 0.0f;
         }
         else
         {
-            rotationCount += baseMultiplier;
+            rotation += rotationMultiplier;
         }
 
         for (auto& actor : movingActors)
         {
-            actor.transform.rotation.z = rotationCount;
+            actor.transform.rotation.z = rotation;
         }
 
         outFrame.updateModelTransforms(movingActors);
