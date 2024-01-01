@@ -55,32 +55,6 @@ else()
     message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
 endif()
 
-if (DEFINED GLFW_PATH)
-    message(STATUS "Using GLFW path specified in .env")
-
-    set(GLFW_INCLUDE_DIRS "${GLFW_PATH}/include")
-
-    if (MSVC)
-        set(GLFW_LIB "${GLFW_PATH}/lib-vc2022")
-    elseif (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
-        message(STATUS "USING MINGW")
-
-        set(GLFW_LIB "${GLFW_PATH}/lib-mingw-w64")
-    endif()
-else()
-    find_package(glfw3 3.3 REQUIRED)
-
-    set(GLFW_LIB glfw)
-
-    message(STATUS "Found GLFW")
-endif()
-
-if (NOT GLFW_LIB)
-    message(FATAL_ERROR "Could not find glfw library!")
-else()
-    message(STATUS "Using glfw lib at: ${GLFW_LIB}")
-endif()
-
 target_include_directories(
     ${TARGET_NAME}
     PRIVATE
@@ -130,7 +104,6 @@ if (WIN32)
 
         # Third Party
         ${Vulkan_INCLUDE_DIRS}
-        ${GLFW_INCLUDE_DIRS}
     )
 
     target_link_directories(
@@ -138,14 +111,12 @@ if (WIN32)
         PUBLIC
 
         ${Vulkan_LIBRARIES}
-        ${GLFW_LIB}
     )
 
     target_link_libraries(
         ${TARGET_NAME}
         PUBLIC
 
-        glfw3
         vulkan-1
         SDL2::SDL2
     )
@@ -156,7 +127,6 @@ elseif (UNIX)
         ${TARGET_NAME}
         PUBLIC
 
-        glfw
         ${Vulkan_LIBRARIES}
     )
 endif()
