@@ -30,7 +30,6 @@ set(EDITOR_SOURCE_DIR  "${ENGINE_SOURCE_DIR}/Source/Editor")
 
 set(STB_PATH    "${LIBS_DIR}/stb")
 set(VULKAN_PATH "${LIBS_DIR}/vulkan")
-set(SDL_PATH    "${VULKAN_PATH}/include/SDL2")
 set(GLM_PATH    "${VULKAN_PATH}/include/glm")
 
 set(BUILD_DIR         "${CMAKE_SOURCE_DIR}/Build")

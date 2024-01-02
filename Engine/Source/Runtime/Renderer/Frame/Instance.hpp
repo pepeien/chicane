@@ -10,7 +10,7 @@
 #include "Renderer/Uniform.hpp"
 #include "Renderer/Sync.hpp"
 #include "Renderer/Level/Instance.hpp"
-#include "Renderer/Level/Actor.hpp"
+#include "Renderer/Level/Actor/Pawn.hpp"
 
 namespace Chicane
 {
@@ -30,7 +30,7 @@ namespace Chicane
             void setupSync();
             void setupCamera();
             void setupModelData(
-                const std::vector<Level::Actor::Instance>& inActors
+                const std::vector<Level::Actor::Pawn>& inActors
             );
             void setupDescriptors(
                 const vk::DescriptorSetLayout& inLayout,
@@ -40,7 +40,7 @@ namespace Chicane
             void setupDescriptorSet();
             
             void updateModelTransforms(
-                const std::vector<Level::Actor::Instance>& inActors
+                const std::vector<Level::Actor::Pawn>& inActors
             );
 
             void destroy();

@@ -4,13 +4,13 @@ set(SOURCES_DIR "${RUNTIME_SOURCE_DIR}")
 
 ##############  Set source files  #######################
 file(
-  GLOB_RECURSE
-  SOURCES
-  
-  ${SOURCES_DIR}/*.cpp
+    GLOB_RECURSE
+    SOURCES
+ 
+    ${SOURCES_DIR}/*.cpp
 )
 
-add_library(${TARGET_NAME} ${SOURCES})
+add_library(${TARGET_NAME} STATIC ${SOURCES})
 
 ############## Set Property Balues  #######################
 set_property(
@@ -54,14 +54,6 @@ if (NOT Vulkan_FOUND)
 else()
     message(STATUS "Using vulkan lib at: ${Vulkan_LIBRARIES}")
 endif()
-
-target_include_directories(
-    ${TARGET_NAME}
-    PRIVATE
-
-    # Source
-    ${SOURCES_DIR}
-)
 
 set(SDL2_DIR "${VULKAN_PATH}/cmake")
 
@@ -110,6 +102,7 @@ if (WIN32)
         ${TARGET_NAME}
         PUBLIC
 
+        # Third Party
         ${Vulkan_LIBRARIES}
     )
 
@@ -117,6 +110,7 @@ if (WIN32)
         ${TARGET_NAME}
         PUBLIC
 
+        # Third Party
         vulkan-1
         SDL2::SDL2
     )
@@ -127,6 +121,7 @@ elseif (UNIX)
         ${TARGET_NAME}
         PUBLIC
 
+        # Third Party
         ${Vulkan_LIBRARIES}
     )
 endif()

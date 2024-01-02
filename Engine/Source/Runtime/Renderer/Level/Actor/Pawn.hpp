@@ -2,19 +2,14 @@
 
 #include "Base.hpp"
 
+#include "Instance.hpp"
+
 namespace Chicane
 {
     namespace Level
     {
-        struct Transform
-        {
-            glm::vec3 translation;
-            glm::vec3 rotation;
-            glm::vec3 scale;
-        };
-
-        namespace Actor 
-        {
+        namespace Actor
+        {         
             struct Mesh
             {
                 std::string id;
@@ -25,11 +20,10 @@ namespace Chicane
                 std::string id;
             };
 
-            struct Instance
+            struct Pawn : public Actor::Instance
             {
                 Mesh mesh;
                 Texture texture;
-                Transform transform;
             };
         }
     }

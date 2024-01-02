@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Actor.hpp"
+#include "Actor/Pawn.hpp"
 
 namespace Chicane
 {
@@ -11,11 +11,11 @@ namespace Chicane
         class Instance
         {
         public:
-            std::vector<Actor::Instance> getActors();
-            void addActor(const Actor::Instance& inObject);
+            std::vector<Actor::Pawn> getActors();
+            void addActor(const Actor::Pawn& inObject);
 
         private:
-            std::vector<Actor::Instance> actors;
+            std::vector<Actor::Pawn> actors;
         };
     }
 }

@@ -13,10 +13,34 @@ file(
 add_executable(${TARGET_NAME} ${SOURCES})
 
 ############## Set Property Balues  #######################
-set_property(TARGET ${TARGET_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY    "${BUILD_BINARY_DIR}")
-set_property(TARGET ${TARGET_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY         "${BUILD_BINARY_DIR}")
-set_property(TARGET ${TARGET_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_BINARY_DIR}")
-set_property(TARGET ${TARGET_NAME} PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_BINARY_DIR}")
+set_property(
+    TARGET
+    ${TARGET_NAME}
+    PROPERTY
+    VS_DEBUGGER_WORKING_DIRECTORY
+    "${BUILD_BINARY_DIR}"
+)
+set_property(
+    TARGET
+    ${TARGET_NAME}
+    PROPERTY
+    RUNTIME_OUTPUT_DIRECTORY
+    "${BUILD_BINARY_DIR}"
+)
+set_property(
+    TARGET
+    ${TARGET_NAME}
+    PROPERTY
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG
+    "${BUILD_BINARY_DIR}"
+)
+set_property(
+    TARGET
+    ${TARGET_NAME}
+    PROPERTY
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE
+    "${BUILD_BINARY_DIR}"
+)
 
 ############## Linking Libs  #######################
 
@@ -24,14 +48,14 @@ if (WIN32)
     if (USE_MINGW)
         target_include_directories(
             ${TARGET_NAME}
-            PUBLIC
+            PRIVATE
 
             ${MINGW_PATH}/include
         )
 
         target_link_directories(
             ${TARGET_NAME}
-            PUBLIC
+            PRIVATE
 
             ${MINGW_PATH}/lib
         )
@@ -40,7 +64,7 @@ endif()
 
 target_include_directories(
     ${TARGET_NAME}
-    PUBLIC
+    PRIVATE
 
     # Source
     ${SOURCES_DIR}
@@ -48,7 +72,7 @@ target_include_directories(
 
 target_link_libraries(
     ${TARGET_NAME}
-    PUBLIC
+    PRIVATE
 
     ${RUNTIME_TARGET_NAME}
 )

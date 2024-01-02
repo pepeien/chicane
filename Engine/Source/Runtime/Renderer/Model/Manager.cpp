@@ -2,43 +2,43 @@
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         namespace Manager
         {
-            std::vector<std::string> Instance::getMeshIds()
+            std::vector<std::string> Instance::getModelIds()
             {
-                return m_registeredMeshIds;
+                return m_registeredModelIds;
             }
 
-            void Instance::addMesh(
+            void Instance::addModel(
                 const std::string& inId,
                 const std::vector<Vertex::Instance>& inVertices,
                 const std::vector<uint32_t>& inIndexes
             )
             {
-                if (m_meshInstances.find(inId) != m_meshInstances.end())
+                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inId  + "] has already been added");
+                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
                 }
 
-                Mesh::Instance newMesh;
-                newMesh.vertexInstances = inVertices;
-                newMesh.vertexIndices   = inIndexes;
+                Model::Instance newModel;
+                newModel.vertexInstances = inVertices;
+                newModel.vertexIndices   = inIndexes;
 
-                m_registeredMeshIds.push_back(inId);
-                m_meshInstances.insert(std::make_pair(inId, newMesh));
+                m_registeredModelIds.push_back(inId);
+                m_ModelInstances.insert(std::make_pair(inId, newModel));
             }
 
-            void Instance::importMesh(
+            void Instance::importModel(
                 const std::string& inId,
                 const std::string& inFilepath,
                 Vendor inVendor = Vendor::Undefined
             )
             {
-                if (m_meshInstances.find(inId) != m_meshInstances.end())
+                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inId  + "] has already been added");
+                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
                 }
 
                 ParseResult result;
@@ -51,31 +51,31 @@ namespace Chicane
                     break;
                 
                 default:
-                    throw std::runtime_error("Failed to import mesh due to invalid type");
+                    throw std::runtime_error("Failed to import Model due to invalid type");
                 }
 
-                addMesh(
+                addModel(
                     inId,
                     result.vertices,
                     result.indexes
                 );
             }
 
-            void Instance::drawMesh(
+            void Instance::drawModel(
                 const std::string& inId,
                 const vk::CommandBuffer& inCommadBuffer,
                 uint32_t inInstanceCount,
                 uint32_t inFirstInstance
             )
             {
-                auto foundMesh = m_meshAllocationInfos.find(inId);
+                auto foundModel = m_ModelAllocationInfos.find(inId);
 
-                if (foundMesh == m_meshAllocationInfos.end())
+                if (foundModel == m_ModelAllocationInfos.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
                 }
 
-                Mesh::AllocationInfo& allocationInfo = foundMesh->second;
+                Model::AllocationInfo& allocationInfo = foundModel->second;
 
                 inCommadBuffer.drawIndexed(
                     allocationInfo.indexCount,
@@ -86,7 +86,7 @@ namespace Chicane
                 );
             }
 
-            void Instance::loadMeshes(
+            void Instance::loadModels(
                 Buffer::Instance& outVertexBuffer,
                 Buffer::Instance& outIndexBuffer,
                 const vk::Device& inLogicalDevice,
@@ -95,7 +95,7 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                processMeshes();
+                processModels();
 
                 initVertexBuffer(
                     outVertexBuffer,
@@ -113,34 +113,34 @@ namespace Chicane
                 );
             }
 
-            void Instance::processMeshes()
+            void Instance::processModels()
             {
-                for (std::string& meshId : m_registeredMeshIds)
+                for (std::string& ModelId : m_registeredModelIds)
                 {
-                    auto foundMesh = m_meshInstances.find(meshId);
+                    auto foundModel = m_ModelInstances.find(ModelId);
 
-                    if (foundMesh == m_meshInstances.end())
+                    if (foundModel == m_ModelInstances.end())
                     {
-                        throw std::runtime_error("The Mesh [" + meshId + "] does not exist");
+                        throw std::runtime_error("The Model [" + ModelId + "] does not exist");
                     }
 
-                    Mesh::Instance& meshInstance = foundMesh->second;
+                    Model::Instance& ModelInstance = foundModel->second;
     
                     AllocationInfo allocationInfo;
-                    allocationInfo.vertexCount   = meshInstance.vertexInstances.size();
+                    allocationInfo.vertexCount   = ModelInstance.vertexInstances.size();
                     allocationInfo.firstVertex   = m_combinedVertices.size();
-                    allocationInfo.indexCount    = meshInstance.vertexIndices.size();
+                    allocationInfo.indexCount    = ModelInstance.vertexIndices.size();
                     allocationInfo.firstIndex    = m_indexedVertices.size();
 
-                    m_meshAllocationInfos.insert(std::make_pair(meshId, allocationInfo));
+                    m_ModelAllocationInfos.insert(std::make_pair(ModelId, allocationInfo));
 
                     m_combinedVertices.insert(
                         m_combinedVertices.end(),
-                        meshInstance.vertexInstances.begin(),
-                        meshInstance.vertexInstances.end()
+                        ModelInstance.vertexInstances.begin(),
+                        ModelInstance.vertexInstances.end()
                     );
 
-                    for (uint32_t vertexIndex : meshInstance.vertexIndices)
+                    for (uint32_t vertexIndex : ModelInstance.vertexIndices)
                     {
                         m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
                     }

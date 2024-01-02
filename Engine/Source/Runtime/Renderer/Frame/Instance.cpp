@@ -44,7 +44,7 @@ namespace Chicane
             uniformDescriptorBufferInfo.range  = cameraData.allocationSize;
         }
     
-        void Instance::setupModelData(const std::vector<Level::Actor::Instance>& inActors)
+        void Instance::setupModelData(const std::vector<Level::Actor::Pawn>& inActors)
         {
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
@@ -151,12 +151,12 @@ namespace Chicane
         }
 
         void Instance::updateModelTransforms(
-            const std::vector<Level::Actor::Instance>& inActors
+            const std::vector<Level::Actor::Pawn>& inActors
         )
         {
             for (uint32_t i = 0; i < inActors.size(); i++)
             {
-                Level::Actor::Instance actor = inActors[i];
+                auto actor = inActors[i];
 
                 glm::mat4 transform = glm::translate(
                     glm::mat4(1.0f),

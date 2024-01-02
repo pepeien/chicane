@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Base.hpp"
-#include "Instance.hpp"
 #include "Renderer/Vertex.hpp"
+#include "Renderer/Model/Instance.hpp"
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         namespace Wavefront
         {

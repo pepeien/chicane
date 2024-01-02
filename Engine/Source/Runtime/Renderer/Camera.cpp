@@ -7,8 +7,8 @@ namespace Chicane
         Instance::Instance()
         :
           m_ubo({}),
-          m_eyes({ -1500.0f, 0.0f, 0.0f }),
-          m_look({ 1.0f, 0.0f, 1.0f }),
+          m_eyes({ -550.0f, 0.0f, 100.0f }),
+          m_look({ 0.0f, 0.0f, 0.0f }),
           m_up({ 0.0f, 0.0f, 1.0f }),
           m_width(0),
           m_height(0)

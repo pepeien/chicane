@@ -9,7 +9,7 @@
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         enum class Vendor
         {
@@ -24,25 +24,25 @@ namespace Chicane
             class Instance
             {
             public:
-                std::vector<std::string> getMeshIds();
+                std::vector<std::string> getModelIds();
 
-                void addMesh(
+                void addModel(
                     const std::string& inId,
                     const std::vector<Vertex::Instance>& inVertices,
                     const std::vector<uint32_t>& inIndexes
                 );
-                void importMesh(
+                void importModel(
                     const std::string& inId,
                     const std::string& inFilePath,
                     Vendor inVendor
                 );
-                void drawMesh(
+                void drawModel(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommadBuffer,
                     uint32_t inInstanceCount,
                     uint32_t inFirstInstance
                 );
-                void loadMeshes(
+                void loadModels(
                     Buffer::Instance& outVertexBuffer,
                     Buffer::Instance& outIndexBuffer,
                     const vk::Device& inLogicalDevice,
@@ -52,7 +52,7 @@ namespace Chicane
                 );
 
             private:
-                void processMeshes();
+                void processModels();
 
                 void initVertexBuffer(
                     Buffer::Instance& outVertexBuffer,
@@ -74,9 +74,9 @@ namespace Chicane
                 std::vector<Vertex::Instance> m_combinedVertices;
                 std::vector<uint32_t> m_indexedVertices;
 
-                std::vector<std::string> m_registeredMeshIds;
-                std::unordered_map<std::string, Mesh::AllocationInfo> m_meshAllocationInfos;
-                std::unordered_map<std::string, Mesh::Instance> m_meshInstances;
+                std::vector<std::string> m_registeredModelIds;
+                std::unordered_map<std::string, Model::AllocationInfo> m_ModelAllocationInfos;
+                std::unordered_map<std::string, Model::Instance> m_ModelInstances;
             };
         }
     }
