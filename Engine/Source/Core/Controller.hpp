@@ -12,6 +12,6 @@ namespace Chicane
             Instance();
         };
 
-        std::vector<SDL_GameController*> findAvailable();
+        //std::vector<SDL_GameController*> findAvailable();
     }
 }

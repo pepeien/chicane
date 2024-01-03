@@ -1,6 +1,0 @@
-[submodule "glm"]
-	path = Libs/glm
-	url = https://github.com/pepeien/glm.git
-[submodule "stb"]
-	path = Libs/stb
-	url = https://github.com/pepeien/stb
