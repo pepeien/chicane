@@ -30,9 +30,11 @@ namespace Chicane
                 framebufferInfo.height          = inCreateInfo.swapChainExtent.height;
                 framebufferInfo.layers          = 1;
 
-                outFrame.framebuffer = inCreateInfo.logicalDevice.createFramebuffer(
-                    framebufferInfo
-                );
+                outFrame.framebuffers[GraphicsPipeline::Type::STANDARD] = inCreateInfo
+                    .logicalDevice
+                    .createFramebuffer(
+                        framebufferInfo
+                    );
             }
 
             void initCommand(

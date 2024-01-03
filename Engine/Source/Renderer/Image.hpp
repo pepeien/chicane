@@ -13,7 +13,7 @@ namespace Chicane
         {
             uint32_t width;
 			uint32_t height;
-			std::string filepath;
+            std::string filepath;
 			vk::Device logicalDevice;
 			vk::PhysicalDevice physicalDevice;
             vk::ImageTiling tiling;

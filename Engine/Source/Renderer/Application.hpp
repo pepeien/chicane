@@ -95,8 +95,8 @@ namespace Chicane
 
             void buildMaterialDescriptorSetLayout();
 
-            void buildGraphicsPipeline();
-            void destroyGraphicsPipeline();
+            void buildGraphicsPipelines();
+            void destroyGraphicsPipelines();
 
             void buildFramebuffers();
 
@@ -130,37 +130,50 @@ namespace Chicane
             // Stats
             Frame::Stats m_frameStats;
 
-            // Vulkan
+            // Instance
             vk::Instance m_instance;
             vk::DispatchLoaderDynamic m_dldi;
             vk::DebugUtilsMessengerEXT m_debugMessenger;
+
+            // Surface
             vk::SurfaceKHR m_surface;
 
+            // Devices
             vk::PhysicalDevice m_physicalDevice;
             vk::Device m_logicalDevice;
+
+            // Queues
             vk::Queue m_graphicsQueue;
             vk::Queue m_presentQueue;
 
+            // Swap Chain
             SwapChain::Bundle m_swapChain;
 
-            GraphicsPipeline::Bundle m_graphicsPipeline;
+            // Graphics Pipline
+            std::unordered_map<
+                GraphicsPipeline::Type,
+                std::unique_ptr<GraphicsPipeline::Instance>
+            > m_graphicPipelines;
 
+            // Command
             vk::CommandPool m_mainCommandPool;
             vk::CommandBuffer m_mainCommandBuffer;
 
+            // Frame
             int m_maxInFlightFramesCount;
             int m_currentImageIndex;
 
             Descriptor::Bundle m_frameDescriptors;
             Descriptor::Bundle m_materialDescriptors;
 
+            // Mesh
             Buffer::Instance m_meshVertexBuffer;
             Buffer::Instance m_meshIndexBuffer;
         
             std::unique_ptr<Model::Manager::Instance> m_modelManager;
             std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
-            // Context
+            // Level
             Level::Instance m_level;
 
             // Camera

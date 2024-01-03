@@ -32,7 +32,7 @@ namespace Chicane
             buildSwapChain();
             buildFrameDescriptorSetLayout();
             buildMaterialDescriptorSetLayout();
-            buildGraphicsPipeline();
+            buildGraphicsPipelines();
             buildFramebuffers();
             buildCommandPool();
             buildMainCommandBuffer();
@@ -50,7 +50,7 @@ namespace Chicane
             m_logicalDevice.waitIdle();
 
             destroyCommandPool();
-            destroyGraphicsPipeline();
+            destroyGraphicsPipelines();
             destroySwapChain();
 
             m_camera.reset();
@@ -151,12 +151,12 @@ namespace Chicane
 
             uint32_t drawCount = 0;
 
-            for (auto actor : actors)
+            for (auto& actor : actors)
             {
                 m_textureManager->bindTexture(
                     actor.texture.id,
                     inCommandBuffer,
-                    m_graphicsPipeline.layout
+                    m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->layout
                 );
 
                 m_modelManager->drawModel(
@@ -188,8 +188,12 @@ namespace Chicane
             std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
 
             vk::RenderPassBeginInfo renderPassBeginInfo = {};
-            renderPassBeginInfo.renderPass          = m_graphicsPipeline.renderPass;
-            renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffer;
+            renderPassBeginInfo.renderPass = m_graphicPipelines[
+                GraphicsPipeline::Type::STANDARD
+            ]->renderPass;
+            renderPassBeginInfo.framebuffer = m_swapChain
+                .frames[inImageIndex]
+                .framebuffers[GraphicsPipeline::Type::STANDARD];
             renderPassBeginInfo.renderArea.offset.x = 0;
             renderPassBeginInfo.renderArea.offset.y = 0;
             renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -203,14 +207,14 @@ namespace Chicane
 
             inCommandBuffer.bindPipeline(
                 vk::PipelineBindPoint::eGraphics,
-                m_graphicsPipeline.instance
+                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->instance
             );
         
             inCommandBuffer.bindDescriptorSets(
                 vk::PipelineBindPoint::eGraphics,
-                m_graphicsPipeline.layout,
+                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->layout,
                 0,
-                m_swapChain.frames[inImageIndex].descriptorSet,
+                m_swapChain.frames[inImageIndex].descriptorSets[GraphicsPipeline::Type::STANDARD],
                 nullptr
             );
 
@@ -632,7 +636,7 @@ namespace Chicane
             );
         }
 
-        void Application::buildGraphicsPipeline()
+        void Application::buildGraphicsPipelines()
         {
             std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
             descriptorSetLayouts.push_back(m_frameDescriptors.setLayout);
@@ -647,24 +651,27 @@ namespace Chicane
             graphicsPipelineCreateInfo.depthFormat          = m_swapChain.frames[0].depthFormat;
             graphicsPipelineCreateInfo.descriptorSetLayouts = descriptorSetLayouts;
 
-            GraphicsPipeline::init(
-                m_graphicsPipeline,
-                graphicsPipelineCreateInfo
-            );    
+            m_graphicPipelines.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::STANDARD,
+                    std::make_unique<GraphicsPipeline::Instance>(graphicsPipelineCreateInfo)
+                )
+            );
         }
 
-        void Application::destroyGraphicsPipeline()
+        void Application::destroyGraphicsPipelines()
         {
-            m_logicalDevice.destroyPipeline(m_graphicsPipeline.instance);
-            m_logicalDevice.destroyPipelineLayout(m_graphicsPipeline.layout);
-            m_logicalDevice.destroyRenderPass(m_graphicsPipeline.renderPass);
+            for (auto& [type, instance] : m_graphicPipelines)
+            {
+                instance.reset();
+            }
         }
 
         void Application::buildFramebuffers()
         {
             Frame::Buffer::CreateInfo createInfo = {
                 m_logicalDevice,
-                m_graphicsPipeline.renderPass,
+                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->renderPass,
                 m_swapChain.extent
             };
 

@@ -2,15 +2,18 @@
 set(TARGET_NAME "${MODELS_TARGET_NAME}")
 set(SOURCES_DIR "${MODELS_SOURCE_DIR}")
 
+set(BUILD_CONTENT_MODELS_DIR "${CONTENT_BUILD_DIR}/Models")
+
+##############  Set source files  #######################
 file(
     GLOB_RECURSE
     SOURCES
+
     "${SOURCES_DIR}/*.obj"
     "${SOURCES_DIR}/*.mtl"
 )
 
-set(BUILD_CONTENT_MODELS_DIR "${BUILD_CONTENT_DIR}/Models")
-
+##############  Copy files  #######################
 foreach(ITEM ${SOURCES})
     get_filename_component(FILE_DIR  ${ITEM} DIRECTORY)
     get_filename_component(FILE_NAME ${ITEM} NAME)

@@ -5,6 +5,7 @@
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Camera.hpp"
 #include "Renderer/Descriptor.hpp"
+#include "Renderer/GraphicsPipeline.hpp"
 #include "Renderer/Model.hpp"
 #include "Renderer/Image.hpp"
 #include "Renderer/Uniform.hpp"
@@ -55,7 +56,7 @@ namespace Chicane
 
             vk::Image image;
             vk::ImageView imageView;
-            vk::Framebuffer framebuffer;
+            std::unordered_map<GraphicsPipeline::Type, vk::Framebuffer> framebuffers;
 
             vk::Image depthImage;
             vk::ImageView depthImageView;
@@ -75,7 +76,8 @@ namespace Chicane
             // Resources Descriptors
             vk::DescriptorBufferInfo uniformDescriptorBufferInfo;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
-            vk::DescriptorSet descriptorSet;
+
+            std::unordered_map<GraphicsPipeline::Type, vk::DescriptorSet> descriptorSets;
         };
     }
 }

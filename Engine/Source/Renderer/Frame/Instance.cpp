@@ -80,7 +80,7 @@ namespace Chicane
         )
         {
             Descriptor::initSet(
-                descriptorSet,
+                descriptorSets[GraphicsPipeline::Type::STANDARD],
                 logicalDevice,
                 inLayout,
                 inPool
@@ -124,7 +124,7 @@ namespace Chicane
         void Instance::setupDescriptorSet()
         {
             vk::WriteDescriptorSet uniformWriteInfo;
-            uniformWriteInfo.dstSet          = descriptorSet;
+            uniformWriteInfo.dstSet          = descriptorSets[GraphicsPipeline::Type::STANDARD];
             uniformWriteInfo.dstBinding      = 0;
             uniformWriteInfo.dstArrayElement = 0;
             uniformWriteInfo.descriptorCount = 1;
@@ -137,7 +137,7 @@ namespace Chicane
             );
 
             vk::WriteDescriptorSet modelWriteInfo;
-            modelWriteInfo.dstSet          = descriptorSet;
+            modelWriteInfo.dstSet          = descriptorSets[GraphicsPipeline::Type::STANDARD];
             modelWriteInfo.dstBinding      = 1;
             modelWriteInfo.dstArrayElement = 0;
             modelWriteInfo.descriptorCount = 1;
@@ -156,7 +156,7 @@ namespace Chicane
         {
             for (uint32_t i = 0; i < inActors.size(); i++)
             {
-                auto actor = inActors[i];
+                auto& actor = inActors[i];
 
                 glm::mat4 transform = glm::translate(
                     glm::mat4(1.0f),
@@ -186,7 +186,11 @@ namespace Chicane
         void Instance::destroy()
         {
             logicalDevice.destroyImageView(imageView);
-            logicalDevice.destroyFramebuffer(framebuffer);
+
+            for (auto& [type, instance] : framebuffers)
+            {
+                logicalDevice.destroyFramebuffer(instance);
+            }
 
             logicalDevice.destroyImage(depthImage);
             logicalDevice.freeMemory(depthMemory);
