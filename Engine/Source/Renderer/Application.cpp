@@ -1005,12 +1005,12 @@ namespace Chicane
             skyCubeMapData.width     = 512;
             skyCubeMapData.height    = 512;
             skyCubeMapData.filepaths = {
-                "Base/grid.png",
-                "Base/grid.png",
-                "Base/grid.png",
-                "Base/grid.png",
-                "Base/grid.png",
-                "Base/grid.png"
+                "Skybox/Sunset/front.tga",
+                "Skybox/Sunset/back.tga",
+                "Skybox/Sunset/left.tga",
+                "Skybox/Sunset/right.tga",
+                "Skybox/Sunset/up.tga",
+                "Skybox/Sunset/down.tga"
             };
 
             m_cubeMapManager->add(

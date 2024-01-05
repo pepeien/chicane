@@ -9,7 +9,8 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    "${SOURCES_DIR}/*.png"
+    "${SOURCES_DIR}/**.png"
+    "${SOURCES_DIR}/**.tga"
 )
 
 ##############  Copy files  #######################
