@@ -13,19 +13,6 @@ project(${NAME} VERSION 1.0.0)
 ##############  Set values  #######################
 set(BUILD_DIR "${CMAKE_SOURCE_DIR}/Build/Deploy")
 
-# Content
-set(CONTENT_BUILD_DIR   "${BUILD_DIR}/Content")
-
-set(CONTENT_SOURCES_DIR "${PROJECT_SOURCE_DIR}/Content")
-
-set(MODELS_TARGET_NAME   "Models")
-set(SHADERS_TARGET_NAME  "Shaders")
-set(TEXTURES_TARGET_NAME "Textures")
-
-set(MODELS_SOURCE_DIR   "${CONTENT_SOURCES_DIR}/Models")
-set(SHADERS_SOURCE_DIR  "${CONTENT_SOURCES_DIR}/Shaders")
-set(TEXTURES_SOURCE_DIR "${CONTENT_SOURCES_DIR}/Textures")
-
 # Engine
 set(ENGINE_TARGET_NAME "Engine")
 
@@ -67,7 +54,3 @@ endif()
 
 add_subdirectory(Engine)
 add_subdirectory(Editor)
-
-add_subdirectory(Content/Models)
-add_subdirectory(Content/Shaders)
-add_subdirectory(Content/Textures)

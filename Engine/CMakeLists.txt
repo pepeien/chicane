@@ -2,6 +2,19 @@
 set(TARGET_NAME "${ENGINE_TARGET_NAME}")
 set(SOURCES_DIR "${ENGINE_SOURCE_DIR}")
 
+# Content
+set(ENGINE_CONTENT_BUILD_DIR   "${ENGINE_BUILD_DIR}/Content")
+
+set(ENGINE_CONTENT_SOURCES_DIR "${ENGINE_DIR}/Content")
+
+set(ENGINE_MODELS_TARGET_NAME   "Models")
+set(ENGINE_SHADERS_TARGET_NAME  "Shaders")
+set(ENGINE_TEXTURES_TARGET_NAME "Textures")
+
+set(ENGINE_MODELS_SOURCE_DIR   "${ENGINE_CONTENT_SOURCES_DIR}/Models")
+set(ENGINE_SHADERS_SOURCE_DIR  "${ENGINE_CONTENT_SOURCES_DIR}/Shaders")
+set(ENGINE_TEXTURES_SOURCE_DIR "${ENGINE_CONTENT_SOURCES_DIR}/Textures")
+
 ##############  Set source files  #######################
 file(
     GLOB_RECURSE
@@ -96,3 +109,7 @@ target_link_libraries(
     vulkan-1
     SDL2
 )
+
+add_subdirectory(Content/Models)
+add_subdirectory(Content/Shaders)
+add_subdirectory(Content/Textures)

@@ -215,7 +215,9 @@ namespace Chicane
                     inLogicalDevice,
                     frame.image,
                     surfaceFormat.format,
-                    vk::ImageAspectFlagBits::eColor
+                    vk::ImageAspectFlagBits::eColor,
+                    vk::ImageViewType::e2D,
+                    1
                 );
             }
         }

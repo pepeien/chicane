@@ -42,11 +42,11 @@ namespace Chicane
 		void init(vk::Image& outImage, const CreateInfo& inCreateInfo)
         {
             vk::ImageCreateInfo createInfo;
-            createInfo.flags         = vk::ImageCreateFlags();
+            createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.create;
             createInfo.imageType     = vk::ImageType::e2D;
             createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
             createInfo.mipLevels     = 1;
-            createInfo.arrayLayers   = 1;
+            createInfo.arrayLayers   = inCreateInfo.count;
             createInfo.format        = inCreateInfo.format;
             createInfo.samples       = vk::SampleCountFlagBits::e1;
             createInfo.tiling        = inCreateInfo.tiling;
@@ -64,8 +64,8 @@ namespace Chicane
         )
         {
             vk::MemoryRequirements requirements = inCreateInfo
-                                                  .logicalDevice
-                                                  .getImageMemoryRequirements(inImage);
+                .logicalDevice
+                .getImageMemoryRequirements(inImage);
 
             vk::MemoryAllocateInfo allocationInfo;
             allocationInfo.allocationSize  = requirements.size;
@@ -88,12 +88,14 @@ namespace Chicane
             const vk::Device& inLogicalDevice,
             const vk::Image& inImage,
             const vk::Format& inFormat,
-            const vk::ImageAspectFlags& inAspect
+            const vk::ImageAspectFlags& inAspect,
+            vk::ImageViewType inViewType,
+            uint32_t inCount
         )
         {
             vk::ImageViewCreateInfo createInfo = {};
             createInfo.image                           = inImage;
-            createInfo.viewType                        = vk::ImageViewType::e2D;
+            createInfo.viewType                        = inViewType;
             createInfo.format                          = inFormat;
             createInfo.components.r                    = vk::ComponentSwizzle::eIdentity;
             createInfo.components.g                    = vk::ComponentSwizzle::eIdentity;
@@ -103,7 +105,7 @@ namespace Chicane
             createInfo.subresourceRange.baseMipLevel   = 0;
             createInfo.subresourceRange.levelCount     = 1;
             createInfo.subresourceRange.baseArrayLayer = 0;
-            createInfo.subresourceRange.layerCount     = 1;
+            createInfo.subresourceRange.layerCount     = inCount;
 
             outImageView = inLogicalDevice.createImageView(createInfo);
         }
@@ -113,7 +115,8 @@ namespace Chicane
             const vk::Queue& inQueue,
             const vk::Image& inImage,
             const vk::ImageLayout& inOldLayout,
-            const vk::ImageLayout& inNewLayout
+            const vk::ImageLayout& inNewLayout,
+            uint32_t inCount
         )
         {
             CommandBuffer::Worker::startJob(inCommandBuffer);
@@ -130,7 +133,7 @@ namespace Chicane
             imageMemoryBarrier.subresourceRange.baseMipLevel   = 0;
             imageMemoryBarrier.subresourceRange.levelCount     = 1;
             imageMemoryBarrier.subresourceRange.baseArrayLayer = 0;
-            imageMemoryBarrier.subresourceRange.layerCount     = 1;
+            imageMemoryBarrier.subresourceRange.layerCount     = inCount;
 
             vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
             vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
@@ -165,7 +168,8 @@ namespace Chicane
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
             uint32_t inWidth,
-            uint32_t inHeight
+            uint32_t inHeight,
+            uint32_t inCount
         )
         {
             CommandBuffer::Worker::startJob(inCommandBuffer);
@@ -174,7 +178,7 @@ namespace Chicane
             imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
             imageSubresourceLayers.mipLevel       = 0;
             imageSubresourceLayers.baseArrayLayer = 0;
-            imageSubresourceLayers.layerCount     = 1;
+            imageSubresourceLayers.layerCount     = inCount;
 
             vk::BufferImageCopy bufferImageCopy;
             bufferImageCopy.bufferOffset      = 0;
@@ -191,7 +195,11 @@ namespace Chicane
                 bufferImageCopy
             );
 
-            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy Buffer To Image");
+            CommandBuffer::Worker::endJob(
+                inCommandBuffer,
+                inQueue,
+                "Copy Buffer To Image"
+            );
         }
 	}
 }

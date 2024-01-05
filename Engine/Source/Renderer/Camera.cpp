@@ -6,7 +6,8 @@ namespace Chicane
     {
         Instance::Instance()
         :
-          m_ubo({}),
+          m_matrixUBO({}),
+          m_vectorUBO({}),
           m_eyes({ -550.0f, 0.0f, 100.0f }),
           m_look({ 0.0f, 0.0f, 0.0f }),
           m_up({ 0.0f, 0.0f, 1.0f }),
@@ -23,7 +24,7 @@ namespace Chicane
         {
             m_eyes = inPosition;
 
-            updateUBO();
+            updateUBOs();
         }
 
         void Instance::updateResolution(uint32_t inWidth, uint32_t inHeight)
@@ -31,12 +32,17 @@ namespace Chicane
             m_width  = inWidth;
             m_height = inHeight;
 
-            updateUBO();
+            updateUBOs();
         }
 
-        UniformBufferObject Instance::getUniformBufferObject()
+        VectorUBO Instance::getVectorUBO()
         {
-            return m_ubo;
+            return m_vectorUBO;
+        }
+
+        MatrixUBO Instance::getMatrixUBO()
+        {
+            return m_matrixUBO;
         }
 
         glm::mat4 Instance::generateView()
@@ -62,11 +68,11 @@ namespace Chicane
             return result;
         }
 
-        void Instance::updateUBO()
+        void Instance::updateUBOs()
         {
-            m_ubo.view           = generateView();
-            m_ubo.projection     = generateProjection();
-            m_ubo.viewProjection = m_ubo.projection * m_ubo.view;
+            m_matrixUBO.view           = generateView();
+            m_matrixUBO.projection     = generateProjection();
+            m_matrixUBO.viewProjection = m_matrixUBO.projection * m_matrixUBO.view;
         }
     }
 }

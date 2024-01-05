@@ -26,23 +26,13 @@ namespace Chicane
             public:
                 std::vector<std::string> getModelIds();
 
-                void addModel(
-                    const std::string& inId,
-                    const std::vector<Vertex::Instance>& inVertices,
-                    const std::vector<uint32_t>& inIndexes
-                );
-                void importModel(
+                void add(
                     const std::string& inId,
                     const std::string& inFilePath,
                     Vendor inVendor
                 );
-                void drawModel(
-                    const std::string& inId,
-                    const vk::CommandBuffer& inCommadBuffer,
-                    uint32_t inInstanceCount,
-                    uint32_t inFirstInstance
-                );
-                void loadModels(
+
+                void buildAll(
                     Buffer::Instance& outVertexBuffer,
                     Buffer::Instance& outIndexBuffer,
                     const vk::Device& inLogicalDevice,
@@ -51,7 +41,20 @@ namespace Chicane
                     const vk::CommandBuffer& inCommandBuffer
                 );
 
+                void draw(
+                    const std::string& inId,
+                    const vk::CommandBuffer& inCommadBuffer,
+                    uint32_t inInstanceCount,
+                    uint32_t inFirstInstance
+                );
+
             private:
+                void addModel(
+                    const std::string& inId,
+                    const std::vector<Vertex::Instance>& inVertices,
+                    const std::vector<uint32_t>& inIndexes
+                );
+
                 void processModels();
 
                 void initVertexBuffer(

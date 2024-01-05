@@ -8,7 +8,6 @@
 #include "Renderer/GraphicsPipeline.hpp"
 #include "Renderer/Model.hpp"
 #include "Renderer/Image.hpp"
-#include "Renderer/Uniform.hpp"
 #include "Renderer/Sync.hpp"
 #include "Renderer/Level/Instance.hpp"
 #include "Renderer/Level/Actor/Pawn.hpp"
@@ -29,11 +28,13 @@ namespace Chicane
         {
         public:
             void setupSync();
-            void setupCamera();
+            void setupCameraVectorUBO();
+            void setupCameraMatrixUBO();
             void setupModelData(
                 const std::vector<Level::Actor::Pawn>& inActors
             );
-            void setupDescriptors(
+            void setupDescriptorSet(
+                GraphicsPipeline::Type inType,
                 const vk::DescriptorSetLayout& inLayout,
                 const vk::DescriptorPool& inPool
             );
@@ -70,11 +71,13 @@ namespace Chicane
             vk::Semaphore renderSemaphore;
     
             // Resources
-            Camera::Bundle cameraData;
+            Camera::MatrixUBOBundle cameraMatrixUBO;
+            vk::DescriptorBufferInfo cameraMatrixDescriptorBufferInfo;
+
+            Camera::VectorUBOBundle cameraVectorUBO;
+            vk::DescriptorBufferInfo cameraVectorDescriptorBufferInfo;
+
             Model::Bundle modelData;
-    
-            // Resources Descriptors
-            vk::DescriptorBufferInfo uniformDescriptorBufferInfo;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
             std::unordered_map<GraphicsPipeline::Type, vk::DescriptorSet> descriptorSets;

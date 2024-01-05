@@ -1,8 +1,9 @@
 ##############  Set values  #######################
-set(TARGET_NAME "${MODELS_TARGET_NAME}")
-set(SOURCES_DIR "${MODELS_SOURCE_DIR}")
+set(TARGET_NAME "${ENGINE_MODELS_TARGET_NAME}")
+set(SOURCES_DIR "${ENGINE_MODELS_SOURCE_DIR}")
+message("${ENGINE_MODELS_SOURCE_DIR}")
 
-set(BUILD_CONTENT_MODELS_DIR "${CONTENT_BUILD_DIR}/Models")
+set(BUILD_CONTENT_MODELS_DIR "${ENGINE_CONTENT_BUILD_DIR}/Models")
 
 ##############  Set source files  #######################
 file(

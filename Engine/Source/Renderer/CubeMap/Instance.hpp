@@ -6,17 +6,17 @@
 #include "Renderer/Descriptor.hpp"
 #include "Renderer/Image.hpp"
 
-constexpr uint32_t TEXTURE_IMAGE_COUNT = 1;
+constexpr uint32_t CUBEMAP_IMAGE_COUNT = 6;
 
 namespace Chicane
 {
-    namespace Texture
+    namespace CubeMap
     {
         struct Data
         {
             uint32_t width;
             uint32_t height;
-            std::string filepath;
+            std::array<std::string, CUBEMAP_IMAGE_COUNT> filepaths;
         };
 
         struct CreateInfo
@@ -54,10 +54,10 @@ namespace Chicane
             int m_width;
             int m_height;
             int m_channels;
-            std::string m_filepath;
+            std::array<std::string, CUBEMAP_IMAGE_COUNT> m_filepaths;
+            stbi_uc* m_pixels[CUBEMAP_IMAGE_COUNT];
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;
-            stbi_uc* m_pixels;
 
             Image::Bundle m_image;
 

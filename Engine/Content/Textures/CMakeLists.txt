@@ -1,8 +1,8 @@
 ##############  Set values  #######################
-set(TARGET_NAME "${TEXTURES_TARGET_NAME}")
-set(SOURCES_DIR "${TEXTURES_SOURCE_DIR}")
+set(TARGET_NAME "${ENGINE_TEXTURES_TARGET_NAME}")
+set(SOURCES_DIR "${ENGINE_TEXTURES_SOURCE_DIR}")
 
-set(BUILD_CONTENT_TEXTURES_DIR "${CONTENT_BUILD_DIR}/Textures")
+set(BUILD_CONTENT_TEXTURES_DIR "${ENGINE_CONTENT_BUILD_DIR}/Textures")
 
 ##############  Set source files  #######################
 file(

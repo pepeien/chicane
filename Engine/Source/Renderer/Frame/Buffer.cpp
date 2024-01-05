@@ -16,25 +16,40 @@ namespace Chicane
 
             void init(Instance& outFrame, const CreateInfo& inCreateInfo)
             {
-                std::vector<vk::ImageView> attachments = {
+                // Sky
+                std::vector<vk::ImageView> skyAttachments = {
+                    outFrame.imageView
+                };
+
+                vk::FramebufferCreateInfo skyFramebufferInfo = {};
+                skyFramebufferInfo.flags           = vk::FramebufferCreateFlags();
+                skyFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(GraphicsPipeline::Type::SKY);
+                skyFramebufferInfo.attachmentCount = static_cast<uint32_t>(skyAttachments.size());
+                skyFramebufferInfo.pAttachments    = skyAttachments.data();
+                skyFramebufferInfo.width           = inCreateInfo.swapChainExtent.width;
+                skyFramebufferInfo.height          = inCreateInfo.swapChainExtent.height;
+                skyFramebufferInfo.layers          = 1;
+
+                vk::Framebuffer skyFrameBuffer = inCreateInfo.logicalDevice.createFramebuffer(skyFramebufferInfo);
+                outFrame.framebuffers[GraphicsPipeline::Type::SKY] = skyFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
+
+                // Scene
+                std::vector<vk::ImageView> sceneAttachments = {
                     outFrame.imageView,
                     outFrame.depthImageView
                 };
 
-                vk::FramebufferCreateInfo framebufferInfo = {};
-                framebufferInfo.flags           = vk::FramebufferCreateFlags();
-                framebufferInfo.renderPass      = inCreateInfo.renderPass;
-                framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
-                framebufferInfo.pAttachments    = attachments.data();
-                framebufferInfo.width           = inCreateInfo.swapChainExtent.width;
-                framebufferInfo.height          = inCreateInfo.swapChainExtent.height;
-                framebufferInfo.layers          = 1;
+                vk::FramebufferCreateInfo sceneFramebufferInfo = {};
+                sceneFramebufferInfo.flags           = vk::FramebufferCreateFlags();
+                sceneFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(GraphicsPipeline::Type::SCENE);
+                sceneFramebufferInfo.attachmentCount = static_cast<uint32_t>(sceneAttachments.size());
+                sceneFramebufferInfo.pAttachments    = sceneAttachments.data();
+                sceneFramebufferInfo.width           = inCreateInfo.swapChainExtent.width;
+                sceneFramebufferInfo.height          = inCreateInfo.swapChainExtent.height;
+                sceneFramebufferInfo.layers          = 1;
 
-                outFrame.framebuffers[GraphicsPipeline::Type::STANDARD] = inCreateInfo
-                    .logicalDevice
-                    .createFramebuffer(
-                        framebufferInfo
-                    );
+                vk::Framebuffer sceneFrameBuffer = inCreateInfo.logicalDevice.createFramebuffer(sceneFramebufferInfo);
+                outFrame.framebuffers[GraphicsPipeline::Type::SCENE] = sceneFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
             }
 
             void initCommand(

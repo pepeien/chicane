@@ -13,11 +13,12 @@ namespace Chicane
         {
             uint32_t width;
 			uint32_t height;
-            std::string filepath;
+            uint32_t count;
 			vk::Device logicalDevice;
 			vk::PhysicalDevice physicalDevice;
             vk::ImageTiling tiling;
             vk::ImageUsageFlags usage;
+            vk::ImageCreateFlags create;
             vk::MemoryPropertyFlags memoryProperties;
             vk::Format format;
         }; 
@@ -48,7 +49,9 @@ namespace Chicane
             const vk::Device& inLogicalDevice,
             const vk::Image& inImage,
             const vk::Format& inFormat,
-            const vk::ImageAspectFlags& inAspect
+            const vk::ImageAspectFlags& inAspect,
+            vk::ImageViewType inViewType,
+            uint32_t inCount
         );
 
         void transitionLayout(
@@ -56,7 +59,8 @@ namespace Chicane
             const vk::Queue& inQueue,
             const vk::Image& inImage,
             const vk::ImageLayout& inOldLayout,
-            const vk::ImageLayout& inNewLayout
+            const vk::ImageLayout& inNewLayout,
+            uint32_t inCount
         );
         void copyBufferToImage(
             const vk::CommandBuffer& inCommandBuffer,
@@ -64,7 +68,8 @@ namespace Chicane
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
             uint32_t inWidth,
-            uint32_t inHeight
+            uint32_t inHeight,
+            uint32_t inCount
         );
 	}
 }

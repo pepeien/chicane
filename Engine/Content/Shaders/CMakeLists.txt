@@ -1,8 +1,8 @@
 ##############  Set values  #######################
-set(TARGET_NAME "${SHADERS_TARGET_NAME}")
-set(SOURCES_DIR "${SHADERS_SOURCE_DIR}")
+set(TARGET_NAME "${ENGINE_SHADERS_TARGET_NAME}")
+set(SOURCES_DIR "${ENGINE_SHADERS_SOURCE_DIR}")
 
-set(BUILD_CONTENT_SHADER_DIR "${CONTENT_BUILD_DIR}/Shaders")
+set(BUILD_CONTENT_SHADER_DIR "${ENGINE_CONTENT_BUILD_DIR}/Shaders")
 
 ##############  Set source files  #######################
 file(

@@ -6,7 +6,7 @@
 
 namespace Chicane
 {
-    namespace Texture
+    namespace CubeMap
     {
         namespace Manager
         {
@@ -16,7 +16,7 @@ namespace Chicane
                 ~Instance();
 
             public:
-                void add(const std::string& inId, const Texture::Data& inData);
+                void add(const std::string& inId, const CubeMap::Data& inData);
                 void bind(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommandBuffer,
@@ -37,8 +37,8 @@ namespace Chicane
 
             private:
                 std::vector<std::string> m_registeredIds;
-                std::unordered_map<std::string, Texture::Data> m_dataMap;
-                std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instancesMap;
+                std::unordered_map<std::string, CubeMap::Data> m_dataMap;
+                std::unordered_map<std::string, std::unique_ptr<CubeMap::Instance>> m_instancesMap;
             };
         }
     }

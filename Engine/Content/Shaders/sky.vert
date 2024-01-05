@@ -1,7 +1,7 @@
 #version 460
 
 layout(set = 0, binding = 0) uniform CameraData {
-    vec4 forwards;
+    vec4 forward;
     vec4 right;
     vec4 up;
 } cameraData;
@@ -23,6 +23,6 @@ void main() {
     gl_Position = vec4(pos, 0.0, 1.0);
 
     forwards = normalize(
-        cameraData.forwards + pos.x * cameraData.right - pos.y * cameraData.up
+        cameraData.forward + pos.x * cameraData.right - pos.y * cameraData.up
     ).xyz;
 }

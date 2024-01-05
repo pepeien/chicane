@@ -8,30 +8,36 @@ namespace Chicane
             const std::string& inWindowTitle,
             const Level::Instance& inLevel
         )
-        : m_window({ nullptr, inWindowTitle, 0, 0 }),
-          m_level(inLevel),
-          m_currentImageIndex(0),
-          m_modelManager(std::make_unique<Model::Manager::Instance>()),
-          m_textureManager(std::make_unique<Texture::Manager::Instance>()),
-          m_frameStats({}),
-          m_camera(std::make_unique<Camera::Instance>())
+            : m_frameStats({}),
+            m_swapChain({}),
+            m_maxInFlightFramesCount(0),
+            m_currentImageIndex(0),
+            m_meshVertexBuffer({}),
+            m_meshIndexBuffer({}),
+            m_cubeMapManager(std::make_unique<CubeMap::Manager::Instance>()),
+            m_modelManager(std::make_unique<Model::Manager::Instance>()),
+            m_textureManager(std::make_unique<Texture::Manager::Instance>()),
+            m_level(inLevel),
+            m_camera(std::make_unique<Camera::Instance>()),
+            m_window({ nullptr, inWindowTitle, 0, 0 })
         {
             // Assets pre load
-            loadAssets();
+            includeAssets();
 
             // Window
             initSDL();
             buildWindow();
 
             // Vulkan
+            initializeDescriptors();
+
             buildInstance();
             buildDebugMessenger();
             buildSurface();
             buildDevices();
             buildQueues();
             buildSwapChain();
-            buildFrameDescriptorSetLayout();
-            buildMaterialDescriptorSetLayout();
+            buildDescriptorSetLayouts();
             buildGraphicsPipelines();
             buildFramebuffers();
             buildCommandPool();
@@ -55,16 +61,22 @@ namespace Chicane
 
             m_camera.reset();
 
-            m_logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptors.setLayout
-            );
+            for (auto [type, instance] : m_frameDescriptors)
+            {
+                m_logicalDevice.destroyDescriptorSetLayout(
+                    instance.setLayout
+                );
+            }
 
-            m_logicalDevice.destroyDescriptorSetLayout(
-                m_materialDescriptors.setLayout
-            );
-            m_logicalDevice.destroyDescriptorPool(
-                m_materialDescriptors.pool
-            );
+            for (auto [type, instance] : m_materialDescriptors)
+            {
+                m_logicalDevice.destroyDescriptorSetLayout(
+                    instance.setLayout
+                );
+                m_logicalDevice.destroyDescriptorPool(
+                    instance.pool
+                );
+            }
 
             Buffer::destroy(
                 m_logicalDevice,
@@ -129,6 +141,79 @@ namespace Chicane
             }
         }
 
+        void Application::drawSky(
+            const vk::CommandBuffer& inCommandBuffer,
+            uint32_t inImageIndex
+        )
+        {
+            vk::ClearValue clearColor;
+            clearColor.color = vk::ClearColorValue(0.051f, 0.051f, 0.051f, 1.0f);
+
+            std::vector<vk::ClearValue> clearValues = {{ clearColor }};
+
+            vk::RenderPassBeginInfo renderPassBeginInfo = {};
+            renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass;
+            renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SKY);
+            renderPassBeginInfo.renderArea.offset.x = 0;
+            renderPassBeginInfo.renderArea.offset.y = 0;
+            renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
+            renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
+            renderPassBeginInfo.pClearValues        = clearValues.data();
+
+            inCommandBuffer.beginRenderPass(
+                &renderPassBeginInfo,
+                vk::SubpassContents::eInline
+            );
+
+            inCommandBuffer.bindPipeline(
+                vk::PipelineBindPoint::eGraphics,
+                m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->instance
+            );
+        
+            inCommandBuffer.bindDescriptorSets(
+                vk::PipelineBindPoint::eGraphics,
+                m_graphicPipelines.at(
+                    GraphicsPipeline::Type::SKY
+                )->layout,
+                0,
+                m_swapChain.frames[inImageIndex].descriptorSets.at(
+                    GraphicsPipeline::Type::SKY
+                ),
+                nullptr
+            );
+
+            m_cubeMapManager->bind(
+                "Sky",
+                inCommandBuffer,
+                m_graphicPipelines.at(
+                    GraphicsPipeline::Type::SKY
+                )->layout
+            );
+
+            inCommandBuffer.draw(6, 1, 0, 0);
+
+            inCommandBuffer.endRenderPass();
+        }
+
+        void Application::prepareLevel(const vk::CommandBuffer& inCommandBuffer)
+        {
+            vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
+            vk::DeviceSize offsets[]   = { 0 };
+
+            inCommandBuffer.bindVertexBuffers(
+                0,
+                1,
+                vertexBuffers,
+                offsets
+            );
+
+            inCommandBuffer.bindIndexBuffer(
+                m_meshIndexBuffer.instance,
+                0,
+                vk::IndexType::eUint32
+            );
+        }
+
         void Application::drawLevel(const vk::CommandBuffer& inCommandBuffer)
         {
             auto actors  = m_level.getActors();
@@ -153,13 +238,13 @@ namespace Chicane
 
             for (auto& actor : actors)
             {
-                m_textureManager->bindTexture(
+                m_textureManager->bind(
                     actor.texture.id,
                     inCommandBuffer,
-                    m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->layout
+                    m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout
                 );
 
-                m_modelManager->drawModel(
+                m_modelManager->draw(
                     actor.mesh.id,
                     inCommandBuffer,
                     usedMeshes[actor.mesh.id],
@@ -170,17 +255,13 @@ namespace Chicane
             }
         }
 
-        void Application::draw(
+        void Application::drawScene(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
         )
         {
-            vk::CommandBufferBeginInfo beginInfo = {};
-
-            inCommandBuffer.begin(beginInfo);
-
             vk::ClearValue clearColor;
-            clearColor.color = vk::ClearColorValue(0.051f, 0.051f, 0.051f, 1.0f);
+            clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
 
             vk::ClearValue clearDepth;
             clearDepth.depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
@@ -188,12 +269,8 @@ namespace Chicane
             std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
 
             vk::RenderPassBeginInfo renderPassBeginInfo = {};
-            renderPassBeginInfo.renderPass = m_graphicPipelines[
-                GraphicsPipeline::Type::STANDARD
-            ]->renderPass;
-            renderPassBeginInfo.framebuffer = m_swapChain
-                .frames[inImageIndex]
-                .framebuffers[GraphicsPipeline::Type::STANDARD];
+            renderPassBeginInfo.renderPass  = m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass;
+            renderPassBeginInfo.framebuffer = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
             renderPassBeginInfo.renderArea.offset.x = 0;
             renderPassBeginInfo.renderArea.offset.y = 0;
             renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -207,14 +284,14 @@ namespace Chicane
 
             inCommandBuffer.bindPipeline(
                 vk::PipelineBindPoint::eGraphics,
-                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->instance
+                m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->instance
             );
-        
+
             inCommandBuffer.bindDescriptorSets(
                 vk::PipelineBindPoint::eGraphics,
-                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->layout,
+                m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout,
                 0,
-                m_swapChain.frames[inImageIndex].descriptorSets[GraphicsPipeline::Type::STANDARD],
+                m_swapChain.frames[inImageIndex].descriptorSets.at(GraphicsPipeline::Type::SCENE),
                 nullptr
             );
 
@@ -223,8 +300,6 @@ namespace Chicane
             drawLevel(inCommandBuffer);
 
             inCommandBuffer.endRenderPass();
-
-            inCommandBuffer.end();
         }
 
         void Application::render()
@@ -283,10 +358,16 @@ namespace Chicane
 
             prepareFrame(imageIndex);
 
-            draw(commandBuffer, imageIndex);
+            vk::CommandBufferBeginInfo beginInfo = {};
+            commandBuffer.begin(beginInfo);
 
-            vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
-            vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
+            drawSky(commandBuffer, imageIndex);
+            drawScene(commandBuffer, imageIndex);
+
+            commandBuffer.end();
+
+            vk::Semaphore waitSemaphores[]   = { currentFrame.presentSemaphore };
+            vk::Semaphore signalSemaphores[] = { currentFrame.renderSemaphore };
 
             vk::PipelineStageFlags waitStages[] = {
                 vk::PipelineStageFlagBits::eColorAttachmentOutput
@@ -381,13 +462,18 @@ namespace Chicane
         {
             switch (inEvent.event)
             {
-            case SDL_WINDOWEVENT_RESIZED:
-            case SDL_WINDOWEVENT_RESTORED:
-            case SDL_WINDOWEVENT_MAXIMIZED:
             case SDL_WINDOWEVENT_MINIMIZED:
-            case SDL_WINDOWEVENT_EXPOSED:
-                m_window.isMinimized = inEvent.event == SDL_WINDOWEVENT_MINIMIZED;
-                
+                m_window.width   = 0;
+                m_window.height  = 0;
+
+                m_window.isMinimized = true;
+
+                return;
+
+            case SDL_WINDOWEVENT_RESIZED:
+            case SDL_WINDOWEVENT_MAXIMIZED:
+                m_window.isMinimized = false;
+
                 rebuildSwapChain();
 
                 return;
@@ -549,9 +635,6 @@ namespace Chicane
 
         void Application::rebuildSwapChain()
         {
-            m_window.width   = 0;
-            m_window.height  = 0;
-
             if (m_window.isMinimized)
             {
                 return;
@@ -565,12 +648,8 @@ namespace Chicane
 
             if (m_window.width == 0 || m_window.height == 0)
             {
-                m_window.isMinimized = true;
-
                 return;
             }
-
-            m_window.isMinimized = false;
 
             m_logicalDevice.waitIdle();
 
@@ -591,72 +670,184 @@ namespace Chicane
 
             m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
 
-            m_logicalDevice.destroyDescriptorPool(m_frameDescriptors.pool);
+            for (auto [type, instance] : m_frameDescriptors)
+            {
+                m_logicalDevice.destroyDescriptorPool(
+                    instance.pool
+                );
+            }
         }
 
-        void Application::buildFrameDescriptorSetLayout()
+        void Application::initializeDescriptors()
         {
-            Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
-            frameLayoutBidings.count = 2;
+            Descriptor::Bundle defaultDescriptor {};
 
-            // Camera
+            // Sky
+            m_frameDescriptors.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SKY,
+                    defaultDescriptor
+                )
+            );
+            m_materialDescriptors.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SKY,
+                    defaultDescriptor
+                )
+            );
+
+            // Scene
+            m_frameDescriptors.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SCENE,
+                    defaultDescriptor
+                )
+            );
+            m_materialDescriptors.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SCENE,
+                    defaultDescriptor
+                )
+            );
+        }
+
+        void Application::buildSkyDescriptorSetLayouts()
+        {
+            // Frame
+            Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
+            frameLayoutBidings.count = 1;
+
+            /// Camera
             frameLayoutBidings.indices.push_back(0);
             frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
             frameLayoutBidings.counts.push_back(1);
             frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            // Model
-            frameLayoutBidings.indices.push_back(1);
-            frameLayoutBidings.types.push_back(vk::DescriptorType::eStorageBuffer);
-            frameLayoutBidings.counts.push_back(1);
-            frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
             Descriptor::initSetLayout(
-                m_frameDescriptors.setLayout,
+                m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
                 m_logicalDevice,
                 frameLayoutBidings
             );
-        }
 
-        void Application::buildMaterialDescriptorSetLayout()
-        {
+            // Material
             Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
             materialLayoutBidings.count = 1;
 
-            // Texture
+            /// Texture
             materialLayoutBidings.indices.push_back(0);
             materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
             materialLayoutBidings.counts.push_back(1);
             materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             Descriptor::initSetLayout(
-                m_materialDescriptors.setLayout,
+                m_materialDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
                 m_logicalDevice,
                 materialLayoutBidings
             );
         }
 
-        void Application::buildGraphicsPipelines()
+        void Application::buildSceneDescriptorSetLayouts()
         {
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
-            descriptorSetLayouts.push_back(m_frameDescriptors.setLayout);
-            descriptorSetLayouts.push_back(m_materialDescriptors.setLayout);
-        
-            GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
-            graphicsPipelineCreateInfo.logicalDevice        = m_logicalDevice;
-            graphicsPipelineCreateInfo.vertexShaderName     = "triangle.vert.spv";
-            graphicsPipelineCreateInfo.fragmentShaderName   = "triangle.frag.spv";
-            graphicsPipelineCreateInfo.swapChainExtent      = m_swapChain.extent;
-            graphicsPipelineCreateInfo.swapChainImageFormat = m_swapChain.format;
-            graphicsPipelineCreateInfo.depthFormat          = m_swapChain.frames[0].depthFormat;
-            graphicsPipelineCreateInfo.descriptorSetLayouts = descriptorSetLayouts;
+            // Frame
+            Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
+            frameLayoutBidings.count = 2;
+
+            /// Camera
+            frameLayoutBidings.indices.push_back(0);
+            frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+            frameLayoutBidings.counts.push_back(1);
+            frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            /// Model
+            frameLayoutBidings.indices.push_back(1);
+            frameLayoutBidings.types.push_back(vk::DescriptorType::eStorageBuffer);
+            frameLayoutBidings.counts.push_back(1);
+            frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            Descriptor::initSetLayout(
+                m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+                m_logicalDevice,
+                frameLayoutBidings
+            );
+
+            // Material
+            Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
+            materialLayoutBidings.count = 1;
+
+            /// Texture
+            materialLayoutBidings.indices.push_back(0);
+            materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            materialLayoutBidings.counts.push_back(1);
+            materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            Descriptor::initSetLayout(
+                m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+                m_logicalDevice,
+                materialLayoutBidings
+            );
+        }
+
+        void Application::buildDescriptorSetLayouts()
+        {
+            buildSkyDescriptorSetLayouts();
+            buildSceneDescriptorSetLayouts();
+        }
+
+        void Application::buildSkyGraphicsPipeline()
+        {
+            GraphicsPipeline::CreateInfo createInfo = {};
+            createInfo.canOverwrite         = false;
+            createInfo.hasVertices          = false;
+            createInfo.hasDepth             = false;
+            createInfo.logicalDevice        = m_logicalDevice;
+            createInfo.vertexShaderName     = "sky.vert.spv";
+            createInfo.fragmentShaderName   = "sky.frag.spv";
+            createInfo.swapChainExtent      = m_swapChain.extent;
+            createInfo.swapChainImageFormat = m_swapChain.format;
+            createInfo.descriptorSetLayouts = {
+                m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
+                m_materialDescriptors.at(GraphicsPipeline::Type::SKY).setLayout
+            };
 
             m_graphicPipelines.insert(
                 std::make_pair(
-                    GraphicsPipeline::Type::STANDARD,
-                    std::make_unique<GraphicsPipeline::Instance>(graphicsPipelineCreateInfo)
+                    GraphicsPipeline::Type::SKY,
+                    std::make_unique<GraphicsPipeline::Instance>(createInfo)
                 )
             );
+        }
+
+        void Application::buildSceneGraphicsPipeline()
+        {
+            GraphicsPipeline::CreateInfo createInfo = {};
+            createInfo.canOverwrite          = true;
+            createInfo.hasVertices           = true;
+            createInfo.hasDepth              = true;
+            createInfo.logicalDevice         = m_logicalDevice;
+            createInfo.vertexShaderName      = "triangle.vert.spv";
+            createInfo.fragmentShaderName    = "triangle.frag.spv";
+            createInfo.bindingDescription    = Vertex::getBindingDescription();
+            createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
+            createInfo.swapChainExtent       = m_swapChain.extent;
+            createInfo.swapChainImageFormat  = m_swapChain.format;
+            createInfo.depthFormat           = m_swapChain.frames[0].depthFormat;
+            createInfo.descriptorSetLayouts  = {
+                m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+                m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout
+            };
+
+            m_graphicPipelines.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SCENE,
+                    std::make_unique<GraphicsPipeline::Instance>(createInfo)
+                )
+            );
+        }
+
+        void Application::buildGraphicsPipelines()
+        {
+            buildSkyGraphicsPipeline();
+            buildSceneGraphicsPipeline();
         }
 
         void Application::destroyGraphicsPipelines()
@@ -669,9 +860,23 @@ namespace Chicane
 
         void Application::buildFramebuffers()
         {
+            std::unordered_map<GraphicsPipeline::Type, vk::RenderPass> renderPasses;
+            renderPasses.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SKY,
+                    m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass
+                )
+            );
+            renderPasses.insert(
+                std::make_pair(
+                    GraphicsPipeline::Type::SCENE,
+                    m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass
+                )
+            );
+
             Frame::Buffer::CreateInfo createInfo = {
                 m_logicalDevice,
-                m_graphicPipelines[GraphicsPipeline::Type::STANDARD]->renderPass,
+                renderPasses,
                 m_swapChain.extent
             };
 
@@ -721,47 +926,118 @@ namespace Chicane
 
         void Application::buildFrameResources()
         {
-            Descriptor::PoolCreateInfo poolCreateInfo;
-            poolCreateInfo.count = 2;
-            poolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
-            poolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-            poolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
+            // Sky
+            Descriptor::PoolCreateInfo skyPoolCreateInfo;
+            skyPoolCreateInfo.count = 2;
+            skyPoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
+            skyPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+            skyPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
             Descriptor::initPool(
-                m_frameDescriptors.pool,
+                m_frameDescriptors.at(GraphicsPipeline::Type::SKY).pool,
                 m_logicalDevice,
-                poolCreateInfo
+                skyPoolCreateInfo
+            );
+
+            // Scene
+            Descriptor::PoolCreateInfo scenePoolCreateInfo;
+            scenePoolCreateInfo.count = 2;
+            scenePoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
+            scenePoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+            scenePoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
+
+            Descriptor::initPool(
+                m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).pool,
+                m_logicalDevice,
+                scenePoolCreateInfo
             );
 
             for (Frame::Instance& frame : m_swapChain.frames)
             {
                 frame.setupSync();
-                frame.setupCamera();
+                frame.setupCameraVectorUBO();
+                frame.setupCameraMatrixUBO();
                 frame.setupModelData(m_level.getActors());
-                frame.setupDescriptors(
-                    m_frameDescriptors.setLayout,
-                    m_frameDescriptors.pool
+
+                frame.setupDescriptorSet(
+                    GraphicsPipeline::Type::SKY,
+                    m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
+                    m_frameDescriptors.at(GraphicsPipeline::Type::SKY).pool
+                );
+                frame.setupDescriptorSet(
+                    GraphicsPipeline::Type::SCENE,
+                    m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+                    m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).pool
                 );
             }
         }
 
         void Application::buildMaterialResources()
         {
-            Descriptor::PoolCreateInfo poolCreateInfo;
-            poolCreateInfo.count = 1;
-            poolCreateInfo.size  = m_textureManager->getCount();
-            poolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            // Sky
+            Descriptor::PoolCreateInfo skyPoolCreateInfo;
+            skyPoolCreateInfo.count = 1;
+            skyPoolCreateInfo.size  = 1;
+            skyPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
             Descriptor::initPool(
-                m_materialDescriptors.pool,
+                m_materialDescriptors.at(GraphicsPipeline::Type::SKY).pool,
                 m_logicalDevice,
-                poolCreateInfo
+                skyPoolCreateInfo
+            );
+
+            // Scene
+            Descriptor::PoolCreateInfo scenePoolCreateInfo;
+            scenePoolCreateInfo.count = 1;
+            scenePoolCreateInfo.size  = m_textureManager->getCount();
+            scenePoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+
+            Descriptor::initPool(
+                m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).pool,
+                m_logicalDevice,
+                scenePoolCreateInfo
             );
         }
 
-        void Application::loadModels()
+        void Application::includeCubeMaps()
         {
-            m_modelManager->importModel(
+            CubeMap::Data skyCubeMapData;
+            skyCubeMapData.width     = 512;
+            skyCubeMapData.height    = 512;
+            skyCubeMapData.filepaths = {
+                "Base/grid.png",
+                "Base/grid.png",
+                "Base/grid.png",
+                "Base/grid.png",
+                "Base/grid.png",
+                "Base/grid.png"
+            };
+
+            m_cubeMapManager->add(
+                "Sky",
+                skyCubeMapData
+            );
+        }
+
+        void Application::buildCubeMaps()
+        {
+            m_cubeMapManager->buildAll(
+                m_logicalDevice,
+                m_physicalDevice,
+                m_mainCommandBuffer,
+                m_graphicsQueue,
+                m_materialDescriptors.at(
+                    GraphicsPipeline::Type::SKY
+                ).setLayout,
+                m_materialDescriptors.at(
+                    GraphicsPipeline::Type::SKY
+                ).pool
+            );
+        }
+
+        void Application::includeModels()
+        {
+            m_modelManager->add(
                 "floor",
                 "floor.obj",
                 Model::Vendor::Wavefront
@@ -770,7 +1046,7 @@ namespace Chicane
 
         void Application::buildModels()
         {
-            m_modelManager->loadModels(
+            m_modelManager->buildAll(
                 m_meshVertexBuffer,
                 m_meshIndexBuffer,
                 m_logicalDevice,
@@ -780,94 +1056,74 @@ namespace Chicane
             );
         }
 
-        void Application::loadTextures()
+        void Application::includeTextures()
         {
             Texture::Data grayTextureData;
             grayTextureData.width    = 512;
             grayTextureData.height   = 512;
             grayTextureData.filepath = "Base/gray.png";
 
-            m_textureManager->addTexture("gray", grayTextureData);
+            m_textureManager->add("gray", grayTextureData);
 
             Texture::Data gridTextureData;
             gridTextureData.width    = 512;
             gridTextureData.height   = 512;
             gridTextureData.filepath = "Base/grid.png";
 
-            m_textureManager->addTexture("grid", gridTextureData);
+            m_textureManager->add("grid", gridTextureData);
 
             Texture::Data uvTextureData;
             uvTextureData.width    = 512;
             uvTextureData.height   = 512;
             uvTextureData.filepath = "Base/uv.png";
 
-            m_textureManager->addTexture("uv", uvTextureData);
+            m_textureManager->add("uv", uvTextureData);
 
             Texture::Data missingTextureData;
             missingTextureData.width    = 512;
             missingTextureData.height   = 512;
             missingTextureData.filepath = "Base/missing.png";
 
-            m_textureManager->addTexture("missing", missingTextureData);
+            m_textureManager->add("missing", missingTextureData);
         }
 
         void Application::buildTextures()
         {
-            m_textureManager->buildTexturesInstances(
+            m_textureManager->buildAll(
                 m_logicalDevice,
                 m_physicalDevice,
                 m_mainCommandBuffer,
                 m_graphicsQueue,
-                m_materialDescriptors.setLayout,
-                m_materialDescriptors.pool
+                m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+                m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).pool
             );
         }
 
-        void Application::destroyTextures()
+        void Application::includeAssets()
         {
-            m_textureManager->destroyTexturesInstances();
-        }
-
-        void Application::loadAssets()
-        {
-            loadModels();
-            loadTextures();
+            includeCubeMaps();
+            includeModels();
+            includeTextures();
         }
 
         void Application::buildAssets()
         {
+            buildCubeMaps();
             buildModels();
             buildTextures();
         }
 
         void Application::destroyAssets()
         {
+            m_cubeMapManager.reset();
             m_modelManager.reset();
             m_textureManager.reset();
         }
 
-        void Application::prepareLevel(const vk::CommandBuffer& inCommandBuffer)
-        {
-            vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
-            vk::DeviceSize offsets[]   = { 0 };
-
-            inCommandBuffer.bindVertexBuffers(
-                0,
-                1,
-                vertexBuffers,
-                offsets
-            );
-
-            inCommandBuffer.bindIndexBuffer(
-                m_meshIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
-        }
-
         void Application::prepareCamera(Frame::Instance& outFrame)
         {
-            outFrame.cameraData.object = m_camera->getUniformBufferObject();
+            outFrame.cameraVectorUBO.instance = m_camera->getVectorUBO();
+            outFrame.cameraMatrixUBO.instance = m_camera->getMatrixUBO();
         }
 
         void Application::prepareActors(Frame::Instance& outFrame)
@@ -881,9 +1137,14 @@ namespace Chicane
 
             prepareCamera(frame);
             memcpy(
-                frame.cameraData.writeLocation,
-                &frame.cameraData.object,
-                frame.cameraData.allocationSize
+                frame.cameraVectorUBO.writeLocation,
+                &frame.cameraVectorUBO.instance,
+                frame.cameraVectorUBO.allocationSize
+            );
+            memcpy(
+                frame.cameraMatrixUBO.writeLocation,
+                &frame.cameraMatrixUBO.instance,
+                frame.cameraMatrixUBO.allocationSize
             );
 
             prepareActors(frame);

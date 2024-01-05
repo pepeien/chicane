@@ -18,12 +18,14 @@
 #include "Surface.hpp"
 #include "SwapChain.hpp"
 #include "Sync.hpp"
-#include "Uniform.hpp"
 #include "Vertex.hpp"
 
 #include "CommandBuffer/Instance.hpp"
 #include "CommandBuffer/Pool.hpp"
 #include "CommandBuffer/Worker.hpp"
+
+#include "CubeMap/Instance.hpp"
+#include "CubeMap/Manager.hpp"
 
 #include "Frame/Buffer.hpp"
 #include "Frame/Instance.hpp"
@@ -58,12 +60,20 @@ namespace Chicane
             void run();
 
         private:
-            void drawLevel(const vk::CommandBuffer& inCommandBuffer);
-            void draw(
+            void drawSky(
                 const vk::CommandBuffer& inCommandBuffer,
                 uint32_t inImageIndex
             );
+
+            void prepareLevel(const vk::CommandBuffer& inCommandBuffer);
+            void drawLevel(const vk::CommandBuffer& inCommandBuffer);
+            void drawScene(
+                const vk::CommandBuffer& inCommandBuffer,
+                uint32_t inImageIndex
+            );
+
             void render();
+
             void calculateFrameRate();
 
             // Window
@@ -91,10 +101,13 @@ namespace Chicane
             void rebuildSwapChain();
             void destroySwapChain();
 
-            void buildFrameDescriptorSetLayout();
+            void initializeDescriptors();
+            void buildSkyDescriptorSetLayouts();
+            void buildSceneDescriptorSetLayouts();
+            void buildDescriptorSetLayouts();
 
-            void buildMaterialDescriptorSetLayout();
-
+            void buildSkyGraphicsPipeline();
+            void buildSceneGraphicsPipeline();
             void buildGraphicsPipelines();
             void destroyGraphicsPipelines();
 
@@ -106,14 +119,16 @@ namespace Chicane
             void buildMainCommandBuffer();
             void buildFramesCommandBuffers();
 
-            void loadModels();
+            void includeCubeMaps();
+            void buildCubeMaps();
+
+            void includeModels();
             void buildModels();
 
-            void loadTextures();
+            void includeTextures();
             void buildTextures();
-            void destroyTextures();
 
-            void loadAssets();
+            void includeAssets();
             void buildAssets();
             void destroyAssets();
 
@@ -121,7 +136,6 @@ namespace Chicane
 
             void buildMaterialResources();
 
-            void prepareLevel(const vk::CommandBuffer& inCommandBuffer);
             void prepareCamera(Frame::Instance& outFrame);
             void prepareActors(Frame::Instance& outFrame);
             void prepareFrame(uint32_t inImageIndex);
@@ -155,6 +169,16 @@ namespace Chicane
                 std::unique_ptr<GraphicsPipeline::Instance>
             > m_graphicPipelines;
 
+            std::unordered_map<
+                GraphicsPipeline::Type,
+                Descriptor::Bundle
+            > m_frameDescriptors;
+
+            std::unordered_map<
+                GraphicsPipeline::Type,
+                Descriptor::Bundle
+            > m_materialDescriptors;
+    
             // Command
             vk::CommandPool m_mainCommandPool;
             vk::CommandBuffer m_mainCommandBuffer;
@@ -163,13 +187,11 @@ namespace Chicane
             int m_maxInFlightFramesCount;
             int m_currentImageIndex;
 
-            Descriptor::Bundle m_frameDescriptors;
-            Descriptor::Bundle m_materialDescriptors;
-
             // Mesh
             Buffer::Instance m_meshVertexBuffer;
             Buffer::Instance m_meshIndexBuffer;
-        
+
+            std::unique_ptr<CubeMap::Manager::Instance> m_cubeMapManager;
             std::unique_ptr<Model::Manager::Instance> m_modelManager;
             std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 

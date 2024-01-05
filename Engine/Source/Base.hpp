@@ -8,7 +8,7 @@
 #define APPLICATION_NAME "Chicane Engine"
 
 #define ENGINE_NAME         "Chicane"
-#define ENGINE_DIR          "../"
+#define ENGINE_DIR          "../Engine/"
 #define ENGINE_MODELS_DIR   "Content/Models/"
 #define ENGINE_SHADERS_DIR  "Content/Shaders/"
 #define ENGINE_TEXTURES_DIR "Content/Textures/"

@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    namespace Texture
+    namespace CubeMap
     {
         namespace Manager
         {
@@ -11,7 +11,7 @@ namespace Chicane
                 destroyAll();
             }
 
-            void Instance::add(const std::string& inId, const Texture::Data& inData)
+            void Instance::add(const std::string& inId, const CubeMap::Data& inData)
             {
                 if (
                     m_dataMap.find(inId) != m_dataMap.end() ||
@@ -19,7 +19,7 @@ namespace Chicane
                 )
                 {
                     throw std::runtime_error(
-                        "The Texture [" + inId  + "] has already been intiialized"
+                        "The Cube Map [" + inId  + "] has already been intiialized"
                     );
                 }
 
@@ -40,14 +40,14 @@ namespace Chicane
                 if (foundPair == m_instancesMap.end())
                 {
                     throw std::runtime_error(
-                        "The Texture [" + standarizedId + "] does not exists"
+                        "The Cube Map [" + standarizedId + "] does not exists"
                     );
                 }
 
                 if (foundPair->second == nullptr)
                 {
                     throw std::runtime_error(
-                        "The Texture [" + standarizedId + "] has not been initialized"
+                        "The Cube Map [" + standarizedId + "] has not been initialized"
                     );
                 }
 
@@ -63,13 +63,13 @@ namespace Chicane
                 const vk::DescriptorPool& inDescriptorPool
             )
             {
-                Texture::CreateInfo textureCreateInfo;
-                textureCreateInfo.logicalDevice       = inLogicalDevice;
-                textureCreateInfo.physicalDevice      = inPhysicalDevice;
-                textureCreateInfo.commandBuffer       = inCommandBuffer;
-                textureCreateInfo.queue               = inQueue;
-                textureCreateInfo.descriptorSetLayout = inDescriptorSetLayout;
-                textureCreateInfo.descriptorPool      = inDescriptorPool;
+                CubeMap::CreateInfo createInfo;
+                createInfo.logicalDevice       = inLogicalDevice;
+                createInfo.physicalDevice      = inPhysicalDevice;
+                createInfo.commandBuffer       = inCommandBuffer;
+                createInfo.queue               = inQueue;
+                createInfo.descriptorSetLayout = inDescriptorSetLayout;
+                createInfo.descriptorPool      = inDescriptorPool;
 
                 for (std::string& id : m_registeredIds)
                 {
@@ -77,15 +77,17 @@ namespace Chicane
 
                     if (foundPair == m_dataMap.end())
                     {
-                        throw std::runtime_error("The Texture [" + id + "] does not exist");
+                        throw std::runtime_error(
+                            "The Cube Map [" + id + "] does not exist"
+                        );
                     }
 
-                    textureCreateInfo.data = foundPair->second;
+                    createInfo.data = foundPair->second;
 
                     m_instancesMap.insert(
                         std::make_pair(
                             id,
-                            std::make_unique<Texture::Instance>(textureCreateInfo)
+                            std::make_unique<CubeMap::Instance>(createInfo)
                         )
                     );
                 }

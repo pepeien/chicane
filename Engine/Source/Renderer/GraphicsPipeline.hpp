@@ -9,21 +9,41 @@ namespace Chicane
 {
     namespace GraphicsPipeline
     {
-        struct CreateInfo
-        {
-            vk::Device logicalDevice;
-            std::string vertexShaderName;
-            std::string fragmentShaderName;
-            vk::Extent2D swapChainExtent;
-            vk::Format swapChainImageFormat;
-            vk::Format depthFormat;
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
-        };
 
         enum class Type
         {
-            STANDARD,
-            SKY
+            SKY,
+            SCENE
+        };
+
+        struct CreateInfo
+        {
+            // Modifiers
+
+            bool canOverwrite;
+            bool hasVertices;
+            bool hasDepth;
+
+            // Devices
+
+            vk::Device logicalDevice;
+
+            // Vertex
+
+            std::string vertexShaderName;
+            std::string fragmentShaderName;
+            vk::VertexInputBindingDescription bindingDescription;
+            std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
+
+            // Viewport
+
+            vk::Extent2D swapChainExtent;
+            vk::Format swapChainImageFormat;
+            vk::Format depthFormat; // Optional if `hasDepth` == false
+
+            // Depth
+
+            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == false
         };
 
         class Instance
@@ -38,27 +58,25 @@ namespace Chicane
             vk::Pipeline instance;
 
         private:
-            vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-                const vk::VertexInputBindingDescription& inBindingDescription,
-                const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
-            );
-            vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
             vk::PipelineShaderStageCreateInfo createVertexShader(
                 const vk::ShaderModule& inShaderModule
             );
-            vk::PipelineViewportStateCreateInfo createViewport(
-                const vk::Viewport& inViewport,
-                const vk::Rect2D& inScissor
-            );
-            vk::PipelineRasterizationStateCreateInfo createRasterizerState();
             vk::PipelineShaderStageCreateInfo createFragmentShader(
                 const vk::ShaderModule& inShaderModule
             );
-            vk::PipelineDepthStencilStateCreateInfo createDepthStencil();
+            vk::PipelineVertexInputStateCreateInfo createVertexInputState();
+            vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
+            vk::PipelineViewportStateCreateInfo createViewportState(
+                const vk::Viewport& inViewport,
+                const vk::Rect2D& inScissor
+            );
+            vk::PipelineRasterizationStateCreateInfo createRasterizationState();
             vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
             vk::PipelineColorBlendStateCreateInfo createColorBlendState(
                 const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState
             );
+            vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
+
             vk::PipelineLayout createLayout();
             vk::AttachmentDescription createColorAttachment();
             vk::AttachmentReference createColorAttachmentRef();
@@ -71,12 +89,28 @@ namespace Chicane
             void init();
 
         private:
+            // Modifiers
+            bool m_canOverwrite;
+            bool m_hasVertices;
+            bool m_hasDepth;
+
+            // Devices
             vk::Device m_logicalDevice;
+
+            // Vertex
             std::string m_vertexShaderName;
             std::string m_fragmentShaderName;
+            vk::VertexInputBindingDescription m_bindingDescription;
+            std::vector<vk::VertexInputAttributeDescription> m_attributeDescriptions;
+
+            // Viewport
             vk::Extent2D m_swapChainExtent;
             vk::Format m_swapChainImageFormat;
+
+            // Depth
             vk::Format m_depthFormat;
+
+            // Layout
             std::vector<vk::DescriptorSetLayout> m_descriptorSetLayouts;
         };
     }

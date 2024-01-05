@@ -3,6 +3,7 @@
 #include "Base.hpp"
 
 #include "Instance.hpp"
+#include "Renderer/GraphicsPipeline.hpp"
 #include "Renderer/CommandBuffer/Instance.hpp"
 
 namespace Chicane
@@ -14,12 +15,21 @@ namespace Chicane
             struct CreateInfo
             {
                 vk::Device logicalDevice;
-                vk::RenderPass renderPass;
+                std::unordered_map<
+                    GraphicsPipeline::Type,
+                    vk::RenderPass
+                > renderPasses;
                 vk::Extent2D swapChainExtent;
             };
 
-            void init(std::vector<Instance>& outFrames, const CreateInfo& inCreateInfo);
-            void init(Instance& outFrame, const CreateInfo& inCreateInfo);
+            void init(
+                std::vector<Instance>& outFrames,
+                const CreateInfo& inCreateInfo
+            );
+            void init(
+                Instance& outFrame,
+                const CreateInfo& inCreateInfo
+            );
 
             void initCommand(
                 std::vector<Instance>& outFrames,

@@ -2,25 +2,40 @@
 
 #include "Base.hpp"
 #include "Buffer.hpp"
-#include "Uniform.hpp"
 
 namespace Chicane
 {
     namespace Camera
     {
-        struct UniformBufferObject
+        struct MatrixUBO
         {
             glm::mat4 view;
             glm::mat4 projection;
             glm::mat4 viewProjection;
         };
 
-        struct Bundle
+        struct VectorUBO
+        {
+            glm::vec4 forward = { 1.0f, 0.0f, 0.0f, 0.0f };
+            glm::vec4 right   = { 0.0f, -1.0f, 0.0f, 0.0f };
+            glm::vec4 up      = { 0.0f, 0.0f, 1.0f, 0.0f };
+        };
+
+        struct UBOBundle
         {
             size_t allocationSize;
             void* writeLocation;
             Buffer::Instance buffer;
-            UniformBufferObject object;
+        };
+
+        struct MatrixUBOBundle : public UBOBundle
+        {
+            MatrixUBO instance;
+        };
+
+        struct VectorUBOBundle : public UBOBundle
+        {
+            VectorUBO instance;
         };
 
         class Instance
@@ -34,16 +49,18 @@ namespace Chicane
             
             void updateResolution(uint32_t inWidth, uint32_t inHeight);
 
-            UniformBufferObject getUniformBufferObject();
+            VectorUBO getVectorUBO();
+            MatrixUBO getMatrixUBO();
 
         private:
             glm::mat4 generateView();
             glm::mat4 generateProjection();
 
-            void updateUBO();
+            void updateUBOs();
 
         private:
-            UniformBufferObject m_ubo;
+            MatrixUBO m_matrixUBO;
+            VectorUBO m_vectorUBO;
 
             glm::vec3 m_eyes;
             glm::vec3 m_look;

@@ -11,26 +11,7 @@ namespace Chicane
                 return m_registeredModelIds;
             }
 
-            void Instance::addModel(
-                const std::string& inId,
-                const std::vector<Vertex::Instance>& inVertices,
-                const std::vector<uint32_t>& inIndexes
-            )
-            {
-                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
-                {
-                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
-                }
-
-                Model::Instance newModel;
-                newModel.vertexInstances = inVertices;
-                newModel.vertexIndices   = inIndexes;
-
-                m_registeredModelIds.push_back(inId);
-                m_ModelInstances.insert(std::make_pair(inId, newModel));
-            }
-
-            void Instance::importModel(
+            void Instance::add(
                 const std::string& inId,
                 const std::string& inFilepath,
                 Vendor inVendor = Vendor::Undefined
@@ -61,32 +42,7 @@ namespace Chicane
                 );
             }
 
-            void Instance::drawModel(
-                const std::string& inId,
-                const vk::CommandBuffer& inCommadBuffer,
-                uint32_t inInstanceCount,
-                uint32_t inFirstInstance
-            )
-            {
-                auto foundModel = m_ModelAllocationInfos.find(inId);
-
-                if (foundModel == m_ModelAllocationInfos.end())
-                {
-                    throw std::runtime_error("The Model [" + inId + "] does not exist");
-                }
-
-                Model::AllocationInfo& allocationInfo = foundModel->second;
-
-                inCommadBuffer.drawIndexed(
-                    allocationInfo.indexCount,
-                    inInstanceCount,
-                    allocationInfo.firstIndex,
-                    0,
-                    inFirstInstance
-                );
-            }
-
-            void Instance::loadModels(
+            void Instance::buildAll(
                 Buffer::Instance& outVertexBuffer,
                 Buffer::Instance& outIndexBuffer,
                 const vk::Device& inLogicalDevice,
@@ -111,6 +67,50 @@ namespace Chicane
                     inQueue,
                     inCommandBuffer
                 );
+            }
+
+            void Instance::draw(
+                const std::string& inId,
+                const vk::CommandBuffer& inCommadBuffer,
+                uint32_t inInstanceCount,
+                uint32_t inFirstInstance
+            )
+            {
+                auto foundModel = m_ModelAllocationInfos.find(inId);
+
+                if (foundModel == m_ModelAllocationInfos.end())
+                {
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                }
+
+                Model::AllocationInfo& allocationInfo = foundModel->second;
+
+                inCommadBuffer.drawIndexed(
+                    allocationInfo.indexCount,
+                    inInstanceCount,
+                    allocationInfo.firstIndex,
+                    0,
+                    inFirstInstance
+                );
+            }
+
+            void Instance::addModel(
+                const std::string& inId,
+                const std::vector<Vertex::Instance>& inVertices,
+                const std::vector<uint32_t>& inIndexes
+            )
+            {
+                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
+                {
+                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
+                }
+
+                Model::Instance newModel;
+                newModel.vertexInstances = inVertices;
+                newModel.vertexIndices   = inIndexes;
+
+                m_registeredModelIds.push_back(inId);
+                m_ModelInstances.insert(std::make_pair(inId, newModel));
             }
 
             void Instance::processModels()

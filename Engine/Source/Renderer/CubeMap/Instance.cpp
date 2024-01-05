@@ -2,33 +2,36 @@
 
 namespace Chicane
 {
-    namespace Texture
+    namespace CubeMap
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
-        : m_width(inCreateInfo.data.width),
-          m_height(inCreateInfo.data.height),
-          m_filepath(
-            FileSystem::getRelativePath(
-                ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath
-            )
-          ),
-          m_logicalDevice(inCreateInfo.logicalDevice),
-          m_physicalDevice(inCreateInfo.physicalDevice),
-          m_commandBuffer(inCreateInfo.commandBuffer),
-          m_queue(inCreateInfo.queue),
-          m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
+            : m_width(inCreateInfo.data.width),
+              m_height(inCreateInfo.data.height),
+              m_logicalDevice(inCreateInfo.logicalDevice),
+              m_physicalDevice(inCreateInfo.physicalDevice),
+              m_commandBuffer(inCreateInfo.commandBuffer),
+              m_queue(inCreateInfo.queue),
+              m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
         {
+            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            {
+                m_filepaths[i] = FileSystem::getRelativePath(
+                    ENGINE_TEXTURES_DIR + inCreateInfo.data.filepaths[i]
+                );
+            }
+
             load();
 
             Image::CreateInfo imageCreateInfo;
             imageCreateInfo.width            = m_width;
             imageCreateInfo.height           = m_height;
-            imageCreateInfo.count            = TEXTURE_IMAGE_COUNT;
+            imageCreateInfo.count            = CUBEMAP_IMAGE_COUNT;
             imageCreateInfo.logicalDevice    = m_logicalDevice;
             imageCreateInfo.physicalDevice   = m_physicalDevice;
             imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
             imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
                                                vk::ImageUsageFlagBits::eSampled;
+            imageCreateInfo.create           = vk::ImageCreateFlagBits::eCubeCompatible;
             imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
             imageCreateInfo.format           = vk::Format::eR8G8B8A8Unorm;
 
@@ -41,7 +44,10 @@ namespace Chicane
 
             populate();
 
-            free(m_pixels);
+            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            {
+                free(m_pixels[i]);
+            }
 
             initView();
             initSampler();
@@ -72,42 +78,54 @@ namespace Chicane
 
         void Instance::load()
         {
-            m_pixels = stbi_load(
-                m_filepath.c_str(),
-                &m_width,
-                &m_height,
-                &m_channels,
-                STBI_rgb_alpha
-            );
-
-            if (m_pixels == nullptr)
+            for (int i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                throw std::runtime_error(
-                    "Failed to load the pixels for " + m_filepath
+                m_pixels[i] = stbi_load(
+                    m_filepaths[i].c_str(),
+                    &m_width,
+                    &m_height,
+                    &m_channels,
+                    STBI_rgb_alpha
                 );
+
+                if (m_pixels == nullptr)
+                {
+                    throw std::runtime_error(
+                        "Failed to load the pixels for " + m_filepaths[i]
+                    );
+                }
             }
         }
 
         void Instance::populate()
         {
+            uint32_t imageSize = sizeof(float) * (m_width * m_height);
+
             Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.logicalDevice    = m_logicalDevice;
             stagingBufferCreateInfo.physicalDevice   = m_physicalDevice;
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
                                                        vk::MemoryPropertyFlagBits::eHostVisible;
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            stagingBufferCreateInfo.size             = sizeof(float) * (m_width * m_height);
+            stagingBufferCreateInfo.size             = imageSize * CUBEMAP_IMAGE_COUNT;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
-            void* statingWriteLocation = m_logicalDevice.mapMemory(
-                stagingBuffer.memory,
-                0,
-                stagingBufferCreateInfo.size
-            );
-            memcpy(statingWriteLocation, m_pixels, stagingBufferCreateInfo.size);
-            m_logicalDevice.unmapMemory(stagingBuffer.memory);
+            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            {
+                void* statingWriteLocation = m_logicalDevice.mapMemory(
+                    stagingBuffer.memory,
+                    imageSize * i,
+                    imageSize
+                );
+                memcpy(
+                    statingWriteLocation,
+                    m_pixels[i],
+                    imageSize
+                );
+                m_logicalDevice.unmapMemory(stagingBuffer.memory);
+            }
 
             Image::transitionLayout(
                 m_commandBuffer,
@@ -115,7 +133,7 @@ namespace Chicane
                 m_image.instance,
                 vk::ImageLayout::eUndefined,
                 vk::ImageLayout::eTransferDstOptimal,
-                TEXTURE_IMAGE_COUNT
+                CUBEMAP_IMAGE_COUNT
             );
 
             Image::copyBufferToImage(
@@ -125,7 +143,7 @@ namespace Chicane
                 m_image.instance,
                 m_width,
                 m_height,
-                TEXTURE_IMAGE_COUNT
+                CUBEMAP_IMAGE_COUNT
             );
 
             Image::transitionLayout(
@@ -134,7 +152,7 @@ namespace Chicane
                 m_image.instance,
                 vk::ImageLayout::eTransferDstOptimal,
                 vk::ImageLayout::eShaderReadOnlyOptimal,
-                TEXTURE_IMAGE_COUNT
+                CUBEMAP_IMAGE_COUNT
             );
 
             Buffer::destroy(m_logicalDevice, stagingBuffer);
@@ -148,8 +166,8 @@ namespace Chicane
                 m_image.instance,
                 vk::Format::eR8G8B8A8Unorm,
                 vk::ImageAspectFlagBits::eColor,
-                vk::ImageViewType::e2D,
-                TEXTURE_IMAGE_COUNT
+                vk::ImageViewType::eCube,
+                CUBEMAP_IMAGE_COUNT
             );
         }
 
