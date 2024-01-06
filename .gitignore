@@ -13,11 +13,13 @@
 [Rr]elease/
 [Rr]eleases/
 x64/
-Build/
+[Bb]uild/
 bld/
 [Bb]in/
 [Oo]bj/
 vulkan/
+sdl/
+!sdl/builder/
 __pycache__/
 
 # CMake

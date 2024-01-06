@@ -19,6 +19,7 @@ find_program(
     glslangValidator
     HINTS 
 
+    ${ENGINE_VENDOR_DIR}/vulkan/bin
     ${ENGINE_VENDOR_DIR}/vulkan/Bin
     ${ENGINE_VENDOR_DIR}/vulkan/Bin32
 )

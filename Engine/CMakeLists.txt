@@ -61,6 +61,18 @@ set_property(
 )
 
 ############## Linking Libs  #######################
+
+target_include_directories(
+    ${TARGET_NAME}
+    PUBLIC
+
+    # Source
+    ${SOURCES_DIR}
+
+    # Vendor
+    ${ENGINE_INCLUDE_STB_PATH}
+)
+
 if (WIN32)
     message(STATUS "CREATING BUILD FOR WINDOWS")
 
@@ -79,36 +91,46 @@ if (WIN32)
             ${MINGW_PATH}/lib
         )
     endif()
+
+    target_include_directories(
+        ${TARGET_NAME}
+        PUBLIC
+
+        # Vendor
+        ${ENGINE_INCLUDE_VULKAN_PATH}
+    )
+
+    target_link_directories(
+        ${TARGET_NAME}
+        PUBLIC
+
+        # Vendor
+        ${ENGINE_LIBRARY_VULKAN_PATH}
+    )
+
+    target_link_libraries(
+        ${TARGET_NAME}
+        PRIVATE
+
+        # Vendor
+        vulkan-1
+        SDL2
+    )
+elseif(UNIX)
+    find_package(Vulkan REQUIRED FATAL_ERROR)
+    find_package(glm    REQUIRED FATAL_ERROR)
+    find_package(SDL2   REQUIRED FATAL_ERROR)
+
+    target_link_libraries(
+        ${TARGET_NAME}
+        PRIVATE
+
+        # Vendor
+        vulkan
+        glm::glm
+        SDL2::SDL2
+    )
 endif()
-
-target_include_directories(
-    ${TARGET_NAME}
-    PUBLIC
-
-    # Source
-    ${SOURCES_DIR}
-
-    # Vendor
-    ${ENGINE_INCLUDE_STB_PATH}
-    ${ENGINE_INCLUDE_VULKAN_PATH}
-)
-
-target_link_directories(
-    ${TARGET_NAME}
-    PUBLIC
-
-    # Vendor
-    ${ENGINE_LIBRARY_VULKAN_PATH}
-)
-
-target_link_libraries(
-    ${TARGET_NAME}
-    PRIVATE
-
-    # Vendor
-    vulkan-1
-    SDL2
-)
 
 add_subdirectory(Content/Models)
 add_subdirectory(Content/Shaders)

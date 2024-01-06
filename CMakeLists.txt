@@ -11,7 +11,7 @@ set(NAME Chicane)
 project(${NAME} VERSION 1.0.0)
 
 ##############  Set values  #######################
-set(BUILD_DIR "${CMAKE_SOURCE_DIR}/Build/Deploy")
+set(BUILD_DIR "${CMAKE_SOURCE_DIR}/build/Deploy")
 
 # Engine
 set(ENGINE_TARGET_NAME "Engine")
@@ -24,9 +24,11 @@ set(ENGINE_SOURCE_DIR  "${ENGINE_DIR}/Source")
 set(ENGINE_VENDOR_DIR  "${ENGINE_DIR}/Vendor")
 
 set(ENGINE_INCLUDE_STB_PATH    "${ENGINE_VENDOR_DIR}/stb")
-set(ENGINE_INCLUDE_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Include")
 
-set(ENGINE_LIBRARY_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Lib")
+if(WIN32)
+    set(ENGINE_INCLUDE_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Include")
+    set(ENGINE_LIBRARY_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Lib")
+endif()
 
 # Editor
 set(EDITOR_TARGET_NAME "Editor")

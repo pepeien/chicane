@@ -449,7 +449,7 @@ namespace Chicane
         {
             if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
             {
-                throw std::runtime_error("Failed to initialize SDL");
+                throw std::runtime_error(SDL_GetError());
             }
         }
 
