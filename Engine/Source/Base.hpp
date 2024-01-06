@@ -55,4 +55,4 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-static const uint32_t MAX_BUFFER_MULTIPLIER = 2;
+static const uint32_t MAX_BUFFER_MULTIPLIER = 3;

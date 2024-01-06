@@ -146,16 +146,30 @@ namespace Chicane
                 inHeight,
                 supportDetails.capabilities
             );
-    
-            uint32_t imageCount = std::min(
-                supportDetails.capabilities.maxImageCount,
-                supportDetails.capabilities.minImageCount + 1
-            );
-            // We don't need more than double buffering
-            imageCount = std::min(
-                imageCount,
-                MAX_BUFFER_MULTIPLIER
-            );
+                
+            uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
+
+            if (supportDetails.capabilities.maxImageCount > 0)
+            {
+                if (imageCount > supportDetails.capabilities.maxImageCount)
+                {
+                    imageCount = supportDetails.capabilities.maxImageCount;
+                }
+                else
+                {
+                    imageCount = std::max(
+                        supportDetails.capabilities.maxImageCount,
+                        MAX_BUFFER_MULTIPLIER
+                    );
+                }
+            }
+            else
+            {
+                imageCount = std::max(
+                    supportDetails.capabilities.minImageCount,
+                    MAX_BUFFER_MULTIPLIER
+                );
+            }
         
             vk::SwapchainCreateInfoKHR createInfo = vk::SwapchainCreateInfoKHR(
                 vk::SwapchainCreateFlagsKHR(),
