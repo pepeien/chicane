@@ -28,18 +28,22 @@ namespace Chicane
         {
         public:
             void setupSync();
+
             void setupCameraVectorUBO();
             void setupCameraMatrixUBO();
             void setupModelData(
                 const std::vector<Level::Actor::Pawn>& inActors
             );
-            void setupDescriptorSet(
+    
+            void setupDepthBuffering();
+
+            void addDescriptorSet(
                 GraphicsPipeline::Type inType,
                 const vk::DescriptorSetLayout& inLayout,
                 const vk::DescriptorPool& inPool
             );
-            void setupDepthBuffering();
-            void setupDescriptorSet();
+            void setupDescriptorSets();
+            void updateDescriptorSets();
             
             void updateModelTransforms(
                 const std::vector<Level::Actor::Pawn>& inActors
@@ -80,6 +84,7 @@ namespace Chicane
             Model::Bundle modelData;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
+            std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
             std::unordered_map<GraphicsPipeline::Type, vk::DescriptorSet> descriptorSets;
         };
     }

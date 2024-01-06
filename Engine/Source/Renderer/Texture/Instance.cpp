@@ -5,8 +5,8 @@ namespace Chicane
     namespace Texture
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
-        : m_width(inCreateInfo.data.width),
-          m_height(inCreateInfo.data.height),
+        : m_width(0),
+          m_height(0),
           m_filepath(
             FileSystem::getRelativePath(
                 ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath

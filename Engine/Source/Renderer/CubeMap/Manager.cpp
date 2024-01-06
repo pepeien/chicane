@@ -8,14 +8,19 @@ namespace Chicane
         {
             Instance::~Instance()
             {
-                destroyAll();
+                m_instanceMap.clear();
+            }
+
+            uint32_t Instance::getCount()
+            {
+                return m_dataMap.size();
             }
 
             void Instance::add(const std::string& inId, const CubeMap::Data& inData)
             {
                 if (
                     m_dataMap.find(inId) != m_dataMap.end() ||
-                    m_instancesMap.find(inId) != m_instancesMap.end()
+                    m_instanceMap.find(inId) != m_instanceMap.end()
                 )
                 {
                     throw std::runtime_error(
@@ -35,9 +40,9 @@ namespace Chicane
             {
                 std::string standarizedId = inId.size() > 0 ? inId : "missing";
 
-                auto foundPair = m_instancesMap.find(standarizedId);
+                auto foundPair = m_instanceMap.find(standarizedId);
 
-                if (foundPair == m_instancesMap.end())
+                if (foundPair == m_instanceMap.end())
                 {
                     throw std::runtime_error(
                         "The Cube Map [" + standarizedId + "] does not exists"
@@ -84,23 +89,13 @@ namespace Chicane
 
                     createInfo.data = foundPair->second;
 
-                    m_instancesMap.insert(
+                    m_instanceMap.insert(
                         std::make_pair(
                             id,
                             std::make_unique<CubeMap::Instance>(createInfo)
                         )
                     );
                 }
-            }
-
-            void Instance::destroyAll()
-            {
-                m_instancesMap.clear();
-            }
-
-            uint32_t Instance::getCount()
-            {
-                return m_dataMap.size();
             }
         }
     }

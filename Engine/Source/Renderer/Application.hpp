@@ -60,6 +60,7 @@ namespace Chicane
             void run();
 
         private:
+            // Render
             void drawSky(
                 const vk::CommandBuffer& inCommandBuffer,
                 uint32_t inImageIndex
@@ -74,6 +75,7 @@ namespace Chicane
 
             void render();
 
+            // Stats
             void calculateFrameRate();
 
             // Window
@@ -132,13 +134,13 @@ namespace Chicane
             void buildAssets();
             void destroyAssets();
 
+            void prepareFrame(Frame::Instance& outFrame);
             void buildFrameResources();
 
             void buildMaterialResources();
 
             void prepareCamera(Frame::Instance& outFrame);
             void prepareActors(Frame::Instance& outFrame);
-            void prepareFrame(uint32_t inImageIndex);
 
         private:
             // Stats

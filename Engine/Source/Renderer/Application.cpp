@@ -216,8 +216,10 @@ namespace Chicane
 
         void Application::drawLevel(const vk::CommandBuffer& inCommandBuffer)
         {
+            prepareLevel(inCommandBuffer);
+
             auto actors  = m_level.getActors();
-            auto meshIds = m_modelManager->getModelIds();
+            auto meshIds = m_modelManager->getRegisteredIds();
         
             std::unordered_map<std::string, uint32_t> usedMeshes;
 
@@ -269,8 +271,8 @@ namespace Chicane
             std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
 
             vk::RenderPassBeginInfo renderPassBeginInfo = {};
-            renderPassBeginInfo.renderPass  = m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass;
-            renderPassBeginInfo.framebuffer = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
+            renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass;
+            renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
             renderPassBeginInfo.renderArea.offset.x = 0;
             renderPassBeginInfo.renderArea.offset.y = 0;
             renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -294,8 +296,6 @@ namespace Chicane
                 m_swapChain.frames[inImageIndex].descriptorSets.at(GraphicsPipeline::Type::SCENE),
                 nullptr
             );
-
-            prepareLevel(inCommandBuffer);
 
             drawLevel(inCommandBuffer);
 
@@ -352,35 +352,32 @@ namespace Chicane
                 return;
             }
 
-            vk::CommandBuffer commandBuffer = m_swapChain.frames[imageIndex].commandBuffer;
+            vk::CommandBuffer commandBuffer = currentFrame.commandBuffer;
 
             commandBuffer.reset();
 
-            prepareFrame(imageIndex);
+            prepareFrame(m_swapChain.frames[imageIndex]);
 
             vk::CommandBufferBeginInfo beginInfo = {};
             commandBuffer.begin(beginInfo);
 
-            drawSky(commandBuffer, imageIndex);
+            drawSky(commandBuffer,   imageIndex);
             drawScene(commandBuffer, imageIndex);
 
             commandBuffer.end();
 
-            vk::Semaphore waitSemaphores[]   = { currentFrame.presentSemaphore };
-            vk::Semaphore signalSemaphores[] = { currentFrame.renderSemaphore };
-
-            vk::PipelineStageFlags waitStages[] = {
-                vk::PipelineStageFlagBits::eColorAttachmentOutput
-            };
+            vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
+            vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
+            vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
 
             vk::SubmitInfo submitInfo = {};
             submitInfo.waitSemaphoreCount   = 1;
             submitInfo.pWaitSemaphores      = waitSemaphores;
-            submitInfo.pWaitDstStageMask    = waitStages;
             submitInfo.commandBufferCount   = 1;
             submitInfo.pCommandBuffers      = &commandBuffer;
             submitInfo.signalSemaphoreCount = 1;
             submitInfo.pSignalSemaphores    = signalSemaphores;
+            submitInfo.pWaitDstStageMask    = waitStages;
 
             m_graphicsQueue.submit(
                 submitInfo,
@@ -924,6 +921,14 @@ namespace Chicane
             );
         }
 
+        void Application::prepareFrame(Frame::Instance& outFrame)
+        {
+            prepareCamera(outFrame);
+            prepareActors(outFrame);
+
+            outFrame.updateDescriptorSets();
+        }
+
         void Application::buildFrameResources()
         {
             // Sky
@@ -954,21 +959,26 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_swapChain.frames)
             {
+                // Sync
                 frame.setupSync();
+
+                // Data
                 frame.setupCameraVectorUBO();
                 frame.setupCameraMatrixUBO();
                 frame.setupModelData(m_level.getActors());
 
-                frame.setupDescriptorSet(
+                // Sets
+                frame.addDescriptorSet(
                     GraphicsPipeline::Type::SKY,
                     m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
                     m_frameDescriptors.at(GraphicsPipeline::Type::SKY).pool
                 );
-                frame.setupDescriptorSet(
+                frame.addDescriptorSet(
                     GraphicsPipeline::Type::SCENE,
                     m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
                     m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).pool
                 );
+                frame.setupDescriptorSets();
             }
         }
 
@@ -1002,15 +1012,13 @@ namespace Chicane
         void Application::includeCubeMaps()
         {
             CubeMap::Data skyCubeMapData;
-            skyCubeMapData.width     = 512;
-            skyCubeMapData.height    = 512;
             skyCubeMapData.filepaths = {
-                "Skybox/Sunset/front.tga",
-                "Skybox/Sunset/back.tga",
-                "Skybox/Sunset/left.tga",
-                "Skybox/Sunset/right.tga",
-                "Skybox/Sunset/up.tga",
-                "Skybox/Sunset/down.tga"
+                "SkyBox/Sunset/front.tga",
+                "SkyBox/Sunset/back.tga",
+                "SkyBox/Sunset/left.tga",
+                "SkyBox/Sunset/right.tga",
+                "SkyBox/Sunset/up.tga",
+                "SkyBox/Sunset/down.tga"
             };
 
             m_cubeMapManager->add(
@@ -1046,7 +1054,7 @@ namespace Chicane
 
         void Application::buildModels()
         {
-            m_modelManager->buildAll(
+            m_modelManager->build(
                 m_meshVertexBuffer,
                 m_meshIndexBuffer,
                 m_logicalDevice,
@@ -1059,29 +1067,21 @@ namespace Chicane
         void Application::includeTextures()
         {
             Texture::Data grayTextureData;
-            grayTextureData.width    = 512;
-            grayTextureData.height   = 512;
             grayTextureData.filepath = "Base/gray.png";
 
             m_textureManager->add("gray", grayTextureData);
 
             Texture::Data gridTextureData;
-            gridTextureData.width    = 512;
-            gridTextureData.height   = 512;
             gridTextureData.filepath = "Base/grid.png";
 
             m_textureManager->add("grid", gridTextureData);
 
             Texture::Data uvTextureData;
-            uvTextureData.width    = 512;
-            uvTextureData.height   = 512;
             uvTextureData.filepath = "Base/uv.png";
 
             m_textureManager->add("uv", uvTextureData);
 
             Texture::Data missingTextureData;
-            missingTextureData.width    = 512;
-            missingTextureData.height   = 512;
             missingTextureData.filepath = "Base/missing.png";
 
             m_textureManager->add("missing", missingTextureData);
@@ -1089,7 +1089,7 @@ namespace Chicane
 
         void Application::buildTextures()
         {
-            m_textureManager->buildAll(
+            m_textureManager->build(
                 m_logicalDevice,
                 m_physicalDevice,
                 m_mainCommandBuffer,
@@ -1123,38 +1123,28 @@ namespace Chicane
         void Application::prepareCamera(Frame::Instance& outFrame)
         {
             outFrame.cameraVectorUBO.instance = m_camera->getVectorUBO();
+            memcpy(
+                outFrame.cameraVectorUBO.writeLocation,
+                &outFrame.cameraVectorUBO.instance,
+                outFrame.cameraVectorUBO.allocationSize
+            );
+
             outFrame.cameraMatrixUBO.instance = m_camera->getMatrixUBO();
+            memcpy(
+                outFrame.cameraMatrixUBO.writeLocation,
+                &outFrame.cameraMatrixUBO.instance,
+                outFrame.cameraMatrixUBO.allocationSize
+            );
         }
 
         void Application::prepareActors(Frame::Instance& outFrame)
         {
             outFrame.updateModelTransforms(m_level.getActors());
-        }
-
-        void Application::prepareFrame(uint32_t inImageIndex)
-        {
-            Frame::Instance& frame = m_swapChain.frames[inImageIndex];
-
-            prepareCamera(frame);
             memcpy(
-                frame.cameraVectorUBO.writeLocation,
-                &frame.cameraVectorUBO.instance,
-                frame.cameraVectorUBO.allocationSize
+                outFrame.modelData.writeLocation,
+                outFrame.modelData.transforms.data(),
+                outFrame.modelData.allocationSize
             );
-            memcpy(
-                frame.cameraMatrixUBO.writeLocation,
-                &frame.cameraMatrixUBO.instance,
-                frame.cameraMatrixUBO.allocationSize
-            );
-
-            prepareActors(frame);
-            memcpy(
-                frame.modelData.writeLocation,
-                frame.modelData.transforms.data(),
-                frame.modelData.allocationSize
-            );
-
-            frame.setupDescriptorSet();
         }
     }
 }

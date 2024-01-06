@@ -14,8 +14,6 @@ namespace Chicane
     {
         struct Data
         {
-            uint32_t width;
-            uint32_t height;
             std::array<std::string, CUBEMAP_IMAGE_COUNT> filepaths;
         };
 

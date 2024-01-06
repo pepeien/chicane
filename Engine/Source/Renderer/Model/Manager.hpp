@@ -24,15 +24,14 @@ namespace Chicane
             class Instance
             {
             public:
-                std::vector<std::string> getModelIds();
+                std::vector<std::string> getRegisteredIds();
 
                 void add(
                     const std::string& inId,
                     const std::string& inFilePath,
                     Vendor inVendor
                 );
-
-                void buildAll(
+                void build(
                     Buffer::Instance& outVertexBuffer,
                     Buffer::Instance& outIndexBuffer,
                     const vk::Device& inLogicalDevice,
@@ -40,7 +39,6 @@ namespace Chicane
                     const vk::Queue& inQueue,
                     const vk::CommandBuffer& inCommandBuffer
                 );
-
                 void draw(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommadBuffer,
@@ -77,9 +75,10 @@ namespace Chicane
                 std::vector<Vertex::Instance> m_combinedVertices;
                 std::vector<uint32_t> m_indexedVertices;
 
-                std::vector<std::string> m_registeredModelIds;
-                std::unordered_map<std::string, Model::AllocationInfo> m_ModelAllocationInfos;
-                std::unordered_map<std::string, Model::Instance> m_ModelInstances;
+                std::vector<std::string> m_registeredIds;
+
+                std::unordered_map<std::string, Model::AllocationInfo> m_dataMap;
+                std::unordered_map<std::string, Model::Instance> m_instanceMap;
             };
         }
     }

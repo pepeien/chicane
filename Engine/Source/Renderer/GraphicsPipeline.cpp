@@ -241,8 +241,10 @@ namespace Chicane
             std::vector<vk::AttachmentDescription> attachments;
             attachments.push_back(createColorAttachment());
 
-            std::vector<vk::AttachmentReference> attachmentReferences;
-            attachmentReferences.push_back(createColorAttachmentRef());
+            vk::AttachmentReference depthAttachmentRef;
+
+            std::vector<vk::AttachmentReference> colorAttachmentRefs;
+            colorAttachmentRefs.push_back(createColorAttachmentRef());
 
             std::vector<vk::SubpassDependency> subpassDependecies;   
             subpassDependecies.push_back(createColorSubpassDepedency());
@@ -250,16 +252,17 @@ namespace Chicane
             vk::SubpassDescription subpass = {};
             subpass.flags                   = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
-            subpass.colorAttachmentCount    = 1;
-            subpass.pColorAttachments       = &attachmentReferences[0];
-            
+            subpass.colorAttachmentCount    = colorAttachmentRefs.size();
+            subpass.pColorAttachments       = colorAttachmentRefs.data();
+
             if (m_hasDepth)
             {
                 attachments.push_back(         createDepthAttachment());
-                attachmentReferences.push_back(createDepthAttachmentRef());
                 subpassDependecies.push_back(  createDepthSubpassDepedency());
 
-                subpass.pDepthStencilAttachment = &attachmentReferences[1];
+                depthAttachmentRef = createDepthAttachmentRef();
+
+                subpass.pDepthStencilAttachment = &depthAttachmentRef;
             }
     
             vk::RenderPassCreateInfo renderPassInfo = {};

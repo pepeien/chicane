@@ -6,9 +6,9 @@ namespace Chicane
     {
         namespace Manager
         {
-            std::vector<std::string> Instance::getModelIds()
+            std::vector<std::string> Instance::getRegisteredIds()
             {
-                return m_registeredModelIds;
+                return m_registeredIds;
             }
 
             void Instance::add(
@@ -17,7 +17,7 @@ namespace Chicane
                 Vendor inVendor = Vendor::Undefined
             )
             {
-                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
+                if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
                     throw std::runtime_error("The Model [" + inId  + "] has already been added");
                 }
@@ -42,7 +42,7 @@ namespace Chicane
                 );
             }
 
-            void Instance::buildAll(
+            void Instance::build(
                 Buffer::Instance& outVertexBuffer,
                 Buffer::Instance& outIndexBuffer,
                 const vk::Device& inLogicalDevice,
@@ -76,9 +76,9 @@ namespace Chicane
                 uint32_t inFirstInstance
             )
             {
-                auto foundModel = m_ModelAllocationInfos.find(inId);
+                auto foundModel = m_dataMap.find(inId);
 
-                if (foundModel == m_ModelAllocationInfos.end())
+                if (foundModel == m_dataMap.end())
                 {
                     throw std::runtime_error("The Model [" + inId + "] does not exist");
                 }
@@ -100,7 +100,7 @@ namespace Chicane
                 const std::vector<uint32_t>& inIndexes
             )
             {
-                if (m_ModelInstances.find(inId) != m_ModelInstances.end())
+                if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
                     throw std::runtime_error("The Model [" + inId  + "] has already been added");
                 }
@@ -109,17 +109,17 @@ namespace Chicane
                 newModel.vertexInstances = inVertices;
                 newModel.vertexIndices   = inIndexes;
 
-                m_registeredModelIds.push_back(inId);
-                m_ModelInstances.insert(std::make_pair(inId, newModel));
+                m_registeredIds.push_back(inId);
+                m_instanceMap.insert(std::make_pair(inId, newModel));
             }
 
             void Instance::processModels()
             {
-                for (std::string& ModelId : m_registeredModelIds)
+                for (std::string& ModelId : m_registeredIds)
                 {
-                    auto foundModel = m_ModelInstances.find(ModelId);
+                    auto foundModel = m_instanceMap.find(ModelId);
 
-                    if (foundModel == m_ModelInstances.end())
+                    if (foundModel == m_instanceMap.end())
                     {
                         throw std::runtime_error("The Model [" + ModelId + "] does not exist");
                     }
@@ -132,7 +132,7 @@ namespace Chicane
                     allocationInfo.indexCount    = ModelInstance.vertexIndices.size();
                     allocationInfo.firstIndex    = m_indexedVertices.size();
 
-                    m_ModelAllocationInfos.insert(std::make_pair(ModelId, allocationInfo));
+                    m_dataMap.insert(std::make_pair(ModelId, allocationInfo));
 
                     m_combinedVertices.insert(
                         m_combinedVertices.end(),

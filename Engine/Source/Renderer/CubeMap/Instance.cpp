@@ -5,8 +5,8 @@ namespace Chicane
     namespace CubeMap
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
-            : m_width(inCreateInfo.data.width),
-              m_height(inCreateInfo.data.height),
+            : m_width(0),
+              m_height(0),
               m_logicalDevice(inCreateInfo.logicalDevice),
               m_physicalDevice(inCreateInfo.physicalDevice),
               m_commandBuffer(inCreateInfo.commandBuffer),
@@ -88,7 +88,7 @@ namespace Chicane
                     STBI_rgb_alpha
                 );
 
-                if (m_pixels == nullptr)
+                if (m_pixels[i] == nullptr)
                 {
                     throw std::runtime_error(
                         "Failed to load the pixels for " + m_filepaths[i]

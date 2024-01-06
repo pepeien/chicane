@@ -103,20 +103,6 @@ namespace Chicane
             modelDescriptorBufferInfo.offset = 0;
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
         }
-
-        void Instance::setupDescriptorSet(
-            GraphicsPipeline::Type inType,
-            const vk::DescriptorSetLayout& inLayout,
-            const vk::DescriptorPool& inPool
-        )
-        {
-            Descriptor::initSet(
-                descriptorSets[inType],
-                logicalDevice,
-                inLayout,
-                inPool
-            );
-        }
         
         void Instance::setupDepthBuffering()
         {
@@ -155,7 +141,21 @@ namespace Chicane
             );
         }
     
-        void Instance::setupDescriptorSet()
+        void Instance::addDescriptorSet(
+            GraphicsPipeline::Type inType,
+            const vk::DescriptorSetLayout& inLayout,
+            const vk::DescriptorPool& inPool
+        )
+        {
+            Descriptor::initSet(
+                descriptorSets[inType],
+                logicalDevice,
+                inLayout,
+                inPool
+            );
+        }
+
+        void Instance::setupDescriptorSets()
         {
             // Sky
             vk::WriteDescriptorSet cameraVectorWriteInfo;
@@ -183,12 +183,17 @@ namespace Chicane
             modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
             modelWriteInfo.pBufferInfo     = &modelDescriptorBufferInfo;
 
+            descriptorSetWrites = {
+                cameraVectorWriteInfo,
+                cameraMatrixWriteInfo,
+                modelWriteInfo
+            };
+        }
+
+        void Instance::updateDescriptorSets()
+        {
             logicalDevice.updateDescriptorSets(
-                {
-                    cameraVectorWriteInfo,
-                    cameraMatrixWriteInfo,
-                    modelWriteInfo
-                },
+                descriptorSetWrites,
                 nullptr
             );
         }
