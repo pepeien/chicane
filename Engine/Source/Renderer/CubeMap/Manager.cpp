@@ -59,7 +59,7 @@ namespace Chicane
                 foundPair->second->bind(inCommandBuffer, inPipelineLayout);
             }
 
-            void Instance::buildAll(
+            void Instance::build(
                 const vk::Device& inLogicalDevice,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::CommandBuffer& inCommandBuffer,
@@ -96,6 +96,21 @@ namespace Chicane
                         )
                     );
                 }
+            }
+
+            void Instance::draw(
+                const std::string& inId,
+                const vk::CommandBuffer& inCommadBuffer
+            )
+            {
+                auto foundModel = m_dataMap.find(inId);
+
+                if (foundModel == m_dataMap.end())
+                {
+                    throw std::runtime_error("The Cube Map [" + inId + "] does not exist");
+                }
+
+                inCommadBuffer.draw(CUBEMAP_IMAGE_COUNT, 1, 0, 0);
             }
         }
     }

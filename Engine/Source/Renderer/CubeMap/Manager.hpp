@@ -24,13 +24,17 @@ namespace Chicane
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::PipelineLayout& inPipelineLayout
                 );
-                void buildAll(
+                void build(
                     const vk::Device& inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::Queue& inQueue,
                     const vk::DescriptorSetLayout& inDescriptorSetLayout,
                     const vk::DescriptorPool& inDescriptorPool
+                );
+                void draw(
+                    const std::string& inId,
+                    const vk::CommandBuffer& inCommadBuffer
                 );
 
             private:

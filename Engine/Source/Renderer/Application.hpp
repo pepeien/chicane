@@ -134,13 +134,12 @@ namespace Chicane
             void buildAssets();
             void destroyAssets();
 
+            void prepareCamera(Frame::Instance& outFrame);
+            void prepareActors(Frame::Instance& outFrame);
             void prepareFrame(Frame::Instance& outFrame);
             void buildFrameResources();
 
             void buildMaterialResources();
-
-            void prepareCamera(Frame::Instance& outFrame);
-            void prepareActors(Frame::Instance& outFrame);
 
         private:
             // Stats

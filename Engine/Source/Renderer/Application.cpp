@@ -147,7 +147,7 @@ namespace Chicane
         )
         {
             vk::ClearValue clearColor;
-            clearColor.color = vk::ClearColorValue(0.051f, 0.051f, 0.051f, 1.0f);
+            clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
 
             std::vector<vk::ClearValue> clearValues = {{ clearColor }};
 
@@ -190,7 +190,10 @@ namespace Chicane
                 )->layout
             );
 
-            inCommandBuffer.draw(6, 1, 0, 0);
+            m_cubeMapManager->draw(
+                "Sky",
+                inCommandBuffer
+            );
 
             inCommandBuffer.endRenderPass();
         }
@@ -304,6 +307,8 @@ namespace Chicane
 
         void Application::render()
         {
+            m_logicalDevice.waitIdle();
+
             Frame::Instance& currentFrame = m_swapChain.frames[m_currentImageIndex];
 
             if (
@@ -328,7 +333,7 @@ namespace Chicane
                 LOG_WARNING("Error while resetting the fences");
             }
 
-            uint32_t imageIndex;
+            uint32_t imageIndex = 0;
 
             try
             {
@@ -352,7 +357,7 @@ namespace Chicane
                 return;
             }
 
-            vk::CommandBuffer commandBuffer = currentFrame.commandBuffer;
+            vk::CommandBuffer& commandBuffer = currentFrame.commandBuffer;
 
             commandBuffer.reset();
 
@@ -921,6 +926,33 @@ namespace Chicane
             );
         }
 
+        void Application::prepareCamera(Frame::Instance& outFrame)
+        {
+            outFrame.cameraVectorUBO.instance = m_camera->getVectorUBO();
+            memcpy(
+                outFrame.cameraVectorUBO.writeLocation,
+                &outFrame.cameraVectorUBO.instance,
+                outFrame.cameraVectorUBO.allocationSize
+            );
+
+            outFrame.cameraMatrixUBO.instance = m_camera->getMatrixUBO();
+            memcpy(
+                outFrame.cameraMatrixUBO.writeLocation,
+                &outFrame.cameraMatrixUBO.instance,
+                outFrame.cameraMatrixUBO.allocationSize
+            );
+        }
+
+        void Application::prepareActors(Frame::Instance& outFrame)
+        {
+            outFrame.updateModelTransforms(m_level.getActors());
+            memcpy(
+                outFrame.modelData.writeLocation,
+                outFrame.modelData.transforms.data(),
+                outFrame.modelData.allocationSize
+            );
+        }
+
         void Application::prepareFrame(Frame::Instance& outFrame)
         {
             prepareCamera(outFrame);
@@ -1029,7 +1061,7 @@ namespace Chicane
 
         void Application::buildCubeMaps()
         {
-            m_cubeMapManager->buildAll(
+            m_cubeMapManager->build(
                 m_logicalDevice,
                 m_physicalDevice,
                 m_mainCommandBuffer,
@@ -1118,33 +1150,6 @@ namespace Chicane
             m_cubeMapManager.reset();
             m_modelManager.reset();
             m_textureManager.reset();
-        }
-
-        void Application::prepareCamera(Frame::Instance& outFrame)
-        {
-            outFrame.cameraVectorUBO.instance = m_camera->getVectorUBO();
-            memcpy(
-                outFrame.cameraVectorUBO.writeLocation,
-                &outFrame.cameraVectorUBO.instance,
-                outFrame.cameraVectorUBO.allocationSize
-            );
-
-            outFrame.cameraMatrixUBO.instance = m_camera->getMatrixUBO();
-            memcpy(
-                outFrame.cameraMatrixUBO.writeLocation,
-                &outFrame.cameraMatrixUBO.instance,
-                outFrame.cameraMatrixUBO.allocationSize
-            );
-        }
-
-        void Application::prepareActors(Frame::Instance& outFrame)
-        {
-            outFrame.updateModelTransforms(m_level.getActors());
-            memcpy(
-                outFrame.modelData.writeLocation,
-                outFrame.modelData.transforms.data(),
-                outFrame.modelData.allocationSize
-            );
         }
     }
 }
