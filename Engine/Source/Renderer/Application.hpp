@@ -51,13 +51,17 @@ namespace Chicane
         {
         public:
             Application(
-                const std::string& inWindowTitle,
+                const Window::Instance& inWindow,
                 const Level::Instance& inLevel
             );
             ~Application();
 
         public:
-            void run();
+            void process(const SDL_Event& inEvent);
+
+            void render();
+
+            void updateStats();
 
         private:
             // Render
@@ -73,16 +77,9 @@ namespace Chicane
                 uint32_t inImageIndex
             );
 
-            void render();
-
-            // Stats
-            void calculateFrameRate();
-
             // Window
-            void initSDL();
-            void buildWindow();
             void onWindowEvent(const SDL_WindowEvent& inEvent);
-            void onKeyboardInput(const SDL_KeyboardEvent& inEvent);
+            void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
 
             // Vulkan
             void buildInstance();

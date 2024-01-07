@@ -5,7 +5,7 @@ namespace Chicane
     namespace Renderer
     {
         Application::Application(
-            const std::string& inWindowTitle,
+            const Window::Instance& inWindow,
             const Level::Instance& inLevel
         )
             : m_frameStats({}),
@@ -19,14 +19,10 @@ namespace Chicane
             m_textureManager(std::make_unique<Texture::Manager::Instance>()),
             m_level(inLevel),
             m_camera(std::make_unique<Camera::Instance>()),
-            m_window({ nullptr, inWindowTitle, 0, 0 })
+            m_window(inWindow)
         {
             // Assets pre load
             includeAssets();
-
-            // Window
-            initSDL();
-            buildWindow();
 
             // Vulkan
             initializeDescriptors();
@@ -97,48 +93,168 @@ namespace Chicane
             }
 
             destroyInstance();
-
-            // Window
-            SDL_DestroyWindow(m_window.instance);
-            SDL_Quit();
         }
 
-        void Application::run()
+        void Application::process(const SDL_Event& inEvent)
         {
-            bool shouldClose = false;
-
-            SDL_Event event;
-
-            while (shouldClose == false)
+            switch (inEvent.type)
             {
-                while(SDL_PollEvent(&event))
-                {
-                    switch (event.type)
-                    {
-                    case SDL_QUIT:
-                        shouldClose = true;
+            case SDL_WINDOWEVENT:
+                onWindowEvent(inEvent.window);
 
-                        break;
-                    
-                    case SDL_WINDOWEVENT:
-                        onWindowEvent(event.window);
+                break;
+            
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                onKeyboardEvent(inEvent.key);
 
-                        break;
-                    
-                    case SDL_KEYDOWN:
-                    case SDL_KEYUP:
-                        onKeyboardInput(event.key);
-
-                        break;
-                    
-                    default:
-                        break;
-                    }
-                }
-
-                render();
-                calculateFrameRate();
+                break;
+            
+            default:
+                break;
             }
+        }
+
+        void Application::render()
+        {
+            m_logicalDevice.waitIdle();
+
+            Frame::Instance& currentFrame = m_swapChain.frames[m_currentImageIndex];
+
+            if (
+                m_logicalDevice.waitForFences(
+                    1,
+                    &currentFrame.renderFence,
+                    VK_TRUE,
+                    UINT64_MAX
+                ) != vk::Result::eSuccess
+            )
+            {
+                LOG_WARNING("Error while waiting the fences");
+            }
+
+            if (
+                m_logicalDevice.resetFences(
+                    1,
+                    &currentFrame.renderFence
+                ) != vk::Result::eSuccess
+            )
+            {
+                LOG_WARNING("Error while resetting the fences");
+            }
+
+            uint32_t imageIndex = 0;
+
+            try
+            {
+                imageIndex = m_logicalDevice.acquireNextImageKHR(
+                    m_swapChain.instance,
+                    UINT64_MAX,
+                    currentFrame.presentSemaphore,
+                    nullptr
+                ).value;
+            }
+            catch(vk::OutOfDateKHRError e)
+            {
+                rebuildSwapChain();
+
+                return;
+            }
+            catch(vk::IncompatibleDisplayKHRError e)
+            {
+                rebuildSwapChain();
+
+                return;
+            }
+
+            vk::CommandBuffer& commandBuffer = currentFrame.commandBuffer;
+
+            commandBuffer.reset();
+
+            prepareFrame(m_swapChain.frames[imageIndex]);
+
+            vk::CommandBufferBeginInfo beginInfo = {};
+            commandBuffer.begin(beginInfo);
+
+            drawSky(commandBuffer,   imageIndex);
+            drawScene(commandBuffer, imageIndex);
+
+            commandBuffer.end();
+
+            vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
+            vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
+            vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
+
+            vk::SubmitInfo submitInfo = {};
+            submitInfo.waitSemaphoreCount   = 1;
+            submitInfo.pWaitSemaphores      = waitSemaphores;
+            submitInfo.commandBufferCount   = 1;
+            submitInfo.pCommandBuffers      = &commandBuffer;
+            submitInfo.signalSemaphoreCount = 1;
+            submitInfo.pSignalSemaphores    = signalSemaphores;
+            submitInfo.pWaitDstStageMask    = waitStages;
+
+            m_graphicsQueue.submit(
+                submitInfo,
+                currentFrame.renderFence
+            );
+
+            vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
+
+            vk::PresentInfoKHR presentInfo = {};
+            presentInfo.waitSemaphoreCount = 1;
+            presentInfo.pWaitSemaphores    = signalSemaphores;
+            presentInfo.swapchainCount     = 1;
+            presentInfo.pSwapchains        = swapChains;
+            presentInfo.pImageIndices      = &imageIndex;
+
+            vk::Result present;
+
+            try
+            {
+                present = m_presentQueue.presentKHR(presentInfo);
+            }
+            catch(vk::OutOfDateKHRError e)
+            {
+                present = vk::Result::eErrorOutOfDateKHR;
+            }
+
+            if (
+                present == vk::Result::eErrorOutOfDateKHR ||
+                present == vk::Result::eSuboptimalKHR
+            )
+            {
+                rebuildSwapChain();
+
+                return;
+            }
+
+            m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightFramesCount;
+        }
+
+        void Application::updateStats()
+        {
+            m_frameStats.currentTime = SDL_GetTicks64() / 1000;
+
+            double delta = m_frameStats.currentTime - m_frameStats.lastTime;
+
+            if (delta >= 1) {
+                int framerate{ std::max(1, int(m_frameStats.count / delta)) };
+
+                std::stringstream title;
+                title << m_window.title << " - " << framerate << " FPS";
+
+                SDL_SetWindowTitle(
+                    m_window.instance,
+                    title.str().c_str()
+                );
+
+                m_frameStats.lastTime  = m_frameStats.currentTime;
+                m_frameStats.count     = -1;
+                m_frameStats.time      = float(1000.0 / framerate);
+            }
+
+            m_frameStats.count++;
         }
 
         void Application::drawSky(
@@ -305,161 +421,6 @@ namespace Chicane
             inCommandBuffer.endRenderPass();
         }
 
-        void Application::render()
-        {
-            m_logicalDevice.waitIdle();
-
-            Frame::Instance& currentFrame = m_swapChain.frames[m_currentImageIndex];
-
-            if (
-                m_logicalDevice.waitForFences(
-                    1,
-                    &currentFrame.renderFence,
-                    VK_TRUE,
-                    UINT64_MAX
-                ) != vk::Result::eSuccess
-            )
-            {
-                LOG_WARNING("Error while waiting the fences");
-            }
-
-            if (
-                m_logicalDevice.resetFences(
-                    1,
-                    &currentFrame.renderFence
-                ) != vk::Result::eSuccess
-            )
-            {
-                LOG_WARNING("Error while resetting the fences");
-            }
-
-            uint32_t imageIndex = 0;
-
-            try
-            {
-                imageIndex = m_logicalDevice.acquireNextImageKHR(
-                    m_swapChain.instance,
-                    UINT64_MAX,
-                    currentFrame.presentSemaphore,
-                    nullptr
-                ).value;
-            }
-            catch(vk::OutOfDateKHRError e)
-            {
-                rebuildSwapChain();
-
-                return;
-            }
-            catch(vk::IncompatibleDisplayKHRError e)
-            {
-                rebuildSwapChain();
-
-                return;
-            }
-
-            vk::CommandBuffer& commandBuffer = currentFrame.commandBuffer;
-
-            commandBuffer.reset();
-
-            prepareFrame(m_swapChain.frames[imageIndex]);
-
-            vk::CommandBufferBeginInfo beginInfo = {};
-            commandBuffer.begin(beginInfo);
-
-            drawSky(commandBuffer,   imageIndex);
-            drawScene(commandBuffer, imageIndex);
-
-            commandBuffer.end();
-
-            vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
-            vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
-            vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
-
-            vk::SubmitInfo submitInfo = {};
-            submitInfo.waitSemaphoreCount   = 1;
-            submitInfo.pWaitSemaphores      = waitSemaphores;
-            submitInfo.commandBufferCount   = 1;
-            submitInfo.pCommandBuffers      = &commandBuffer;
-            submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores    = signalSemaphores;
-            submitInfo.pWaitDstStageMask    = waitStages;
-
-            m_graphicsQueue.submit(
-                submitInfo,
-                currentFrame.renderFence
-            );
-
-            vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
-
-            vk::PresentInfoKHR presentInfo = {};
-            presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores    = signalSemaphores;
-            presentInfo.swapchainCount     = 1;
-            presentInfo.pSwapchains        = swapChains;
-            presentInfo.pImageIndices      = &imageIndex;
-
-            vk::Result present;
-
-            try
-            {
-                present = m_presentQueue.presentKHR(presentInfo);
-            }
-            catch(vk::OutOfDateKHRError e)
-            {
-                present = vk::Result::eErrorOutOfDateKHR;
-            }
-
-            if (
-                present == vk::Result::eErrorOutOfDateKHR ||
-                present == vk::Result::eSuboptimalKHR
-            )
-            {
-                rebuildSwapChain();
-
-                return;
-            }
-
-            m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightFramesCount;
-        }
-
-        void Application::calculateFrameRate()
-        {
-            m_frameStats.currentTime = SDL_GetTicks64() / 1000;
-
-            double delta = m_frameStats.currentTime - m_frameStats.lastTime;
-
-            if (delta >= 1) {
-                int framerate{ std::max(1, int(m_frameStats.count / delta)) };
-
-                std::stringstream title;
-                title << m_window.title << " - " << framerate << " FPS";
-
-                SDL_SetWindowTitle(
-                    m_window.instance,
-                    title.str().c_str()
-                );
-
-                m_frameStats.lastTime  = m_frameStats.currentTime;
-                m_frameStats.count     = -1;
-                m_frameStats.time      = float(1000.0 / framerate);
-            }
-
-            m_frameStats.count++;
-        }
-
-        void Application::initSDL()
-        {
-            if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
-            {
-                throw std::runtime_error(SDL_GetError());
-            }
-        }
-
-        void Application::buildWindow()
-        {
-            Window::init(m_window);
-        }
-
         void Application::onWindowEvent(const SDL_WindowEvent& inEvent)
         {
             switch (inEvent.event)
@@ -485,7 +446,7 @@ namespace Chicane
             }
         }
 
-        void Application::onKeyboardInput(const SDL_KeyboardEvent& inEvent)
+        void Application::onKeyboardEvent(const SDL_KeyboardEvent& inEvent)
         {
             float cameraStepSize = 12.25;
 
