@@ -763,8 +763,8 @@ namespace Chicane
             createInfo.hasVertices          = false;
             createInfo.hasDepth             = false;
             createInfo.logicalDevice        = m_logicalDevice;
-            createInfo.vertexShaderName     = "sky.vert.spv";
-            createInfo.fragmentShaderName   = "sky.frag.spv";
+            createInfo.vertexShaderPath     = FileSystem::Paths::contentDir() + "Shaders/sky.vert.spv";
+            createInfo.fragmentShaderPath   = FileSystem::Paths::contentDir() + "Shaders/sky.frag.spv";
             createInfo.swapChainExtent      = m_swapChain.extent;
             createInfo.swapChainImageFormat = m_swapChain.format;
             createInfo.descriptorSetLayouts = {
@@ -787,8 +787,8 @@ namespace Chicane
             createInfo.hasVertices           = true;
             createInfo.hasDepth              = true;
             createInfo.logicalDevice         = m_logicalDevice;
-            createInfo.vertexShaderName      = "triangle.vert.spv";
-            createInfo.fragmentShaderName    = "triangle.frag.spv";
+            createInfo.vertexShaderPath      = FileSystem::Paths::contentDir() + "Shaders/triangle.vert.spv";
+            createInfo.fragmentShaderPath    = FileSystem::Paths::contentDir() + "Shaders/triangle.frag.spv";
             createInfo.bindingDescription    = Vertex::getBindingDescription();
             createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
             createInfo.swapChainExtent       = m_swapChain.extent;
@@ -1006,12 +1006,12 @@ namespace Chicane
         {
             CubeMap::Data skyCubeMapData;
             skyCubeMapData.filepaths = {
-                "SkyBox/Sunset/front.tga",
-                "SkyBox/Sunset/back.tga",
-                "SkyBox/Sunset/left.tga",
-                "SkyBox/Sunset/right.tga",
-                "SkyBox/Sunset/up.tga",
-                "SkyBox/Sunset/down.tga"
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/front.tga",
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/back.tga",
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/left.tga",
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/right.tga",
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/up.tga",
+                FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/down.tga"
             };
 
             m_cubeMapManager->add(
@@ -1040,7 +1040,7 @@ namespace Chicane
         {
             m_modelManager->add(
                 "floor",
-                "floor.obj",
+                FileSystem::Paths::contentDir() + "Models/floor.obj",
                 Model::Vendor::Wavefront
             );
         }
@@ -1060,22 +1060,22 @@ namespace Chicane
         void Application::includeTextures()
         {
             Texture::Data grayTextureData;
-            grayTextureData.filepath = "Base/gray.png";
+            grayTextureData.filepath = FileSystem::Paths::contentDir() + "Textures/Base/gray.png";
 
             m_textureManager->add("gray", grayTextureData);
 
             Texture::Data gridTextureData;
-            gridTextureData.filepath = "Base/grid.png";
+            gridTextureData.filepath = FileSystem::Paths::contentDir() + "Textures/Base/grid.png";
 
             m_textureManager->add("grid", gridTextureData);
 
             Texture::Data uvTextureData;
-            uvTextureData.filepath = "Base/uv.png";
+            uvTextureData.filepath = FileSystem::Paths::contentDir() + "Textures/Base/uv.png";
 
             m_textureManager->add("uv", uvTextureData);
 
             Texture::Data missingTextureData;
-            missingTextureData.filepath = "Base/missing.png";
+            missingTextureData.filepath = FileSystem::Paths::contentDir() + "Textures/Base/missing.png";
 
             m_textureManager->add("missing", missingTextureData);
         }

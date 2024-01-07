@@ -30,8 +30,8 @@ namespace Chicane
 
             // Vertex
 
-            std::string vertexShaderName;
-            std::string fragmentShaderName;
+            std::string vertexShaderPath;
+            std::string fragmentShaderPath;
             vk::VertexInputBindingDescription bindingDescription;
             std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
 
@@ -98,8 +98,8 @@ namespace Chicane
             vk::Device m_logicalDevice;
 
             // Vertex
-            std::string m_vertexShaderName;
-            std::string m_fragmentShaderName;
+            std::string m_vertexShaderPath;
+            std::string m_fragmentShaderPath;
             vk::VertexInputBindingDescription m_bindingDescription;
             std::vector<vk::VertexInputAttributeDescription> m_attributeDescriptions;
 

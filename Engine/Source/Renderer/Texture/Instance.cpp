@@ -5,18 +5,14 @@ namespace Chicane
     namespace Texture
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
-        : m_width(0),
-          m_height(0),
-          m_filepath(
-            FileSystem::getRelativePath(
-                ENGINE_TEXTURES_DIR + inCreateInfo.data.filepath
-            )
-          ),
-          m_logicalDevice(inCreateInfo.logicalDevice),
-          m_physicalDevice(inCreateInfo.physicalDevice),
-          m_commandBuffer(inCreateInfo.commandBuffer),
-          m_queue(inCreateInfo.queue),
-          m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
+            : m_width(0),
+              m_height(0),
+              m_filepath(inCreateInfo.data.filepath),
+              m_logicalDevice(inCreateInfo.logicalDevice),
+              m_physicalDevice(inCreateInfo.physicalDevice),
+              m_commandBuffer(inCreateInfo.commandBuffer),
+              m_queue(inCreateInfo.queue),
+              m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
         {
             load();
 

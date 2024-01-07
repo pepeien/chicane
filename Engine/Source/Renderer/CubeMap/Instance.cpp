@@ -15,9 +15,7 @@ namespace Chicane
         {
             for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                m_filepaths[i] = FileSystem::getRelativePath(
-                    ENGINE_TEXTURES_DIR + inCreateInfo.data.filepaths[i]
-                );
+                m_filepaths[i] = inCreateInfo.data.filepaths[i];
             }
 
             load();

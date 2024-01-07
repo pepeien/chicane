@@ -144,9 +144,7 @@ namespace Chicane
             ParseResult parse(const std::string& inFilepath)
             {    
                 std::vector<std::string> dataSets = Helper::splitString(
-                    FileSystem::readFile(
-                        ENGINE_MODELS_DIR + inFilepath
-                    ),
+                    FileSystem::readFile(inFilepath),
                     "\n"
                 );
                 

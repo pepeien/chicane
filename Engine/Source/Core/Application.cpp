@@ -37,6 +37,13 @@ namespace Chicane
             {
                 switch (event.type)
                 {
+                case SDL_MOUSEBUTTONUP:
+                    FileSystem::Pak::write(
+                        { FileSystem::Paths::contentDir() + "Models/apple.obj" },
+                        FileSystem::Paths::contentDir() + "Models/apple.apk"
+                    );
+
+                    break;
                 case SDL_QUIT:
                     shouldClose = true;
 

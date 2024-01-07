@@ -34,9 +34,6 @@
 #include "Level/Actor/Instance.hpp"
 #include "Level/Actor/Pawn.hpp"
 
-#include "Mesh/Manager.hpp"
-#include "Mesh/Instance.hpp"
-
 #include "Model/Manager.hpp"
 #include "Model/Instance.hpp"
 

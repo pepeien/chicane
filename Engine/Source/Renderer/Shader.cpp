@@ -10,9 +10,7 @@ namespace Chicane
             const vk::Device& inLogicalDevice
         )
         {
-            std::vector<char> shaderCode = FileSystem::readFile(
-                ENGINE_SHADERS_DIR + inFilepath
-            );
+            std::vector<char> shaderCode = FileSystem::readFile(inFilepath);
 
             vk::ShaderModuleCreateInfo moduleInfo = {};
             moduleInfo.flags    = vk::ShaderModuleCreateFlags();

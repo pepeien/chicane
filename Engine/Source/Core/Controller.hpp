@@ -2,16 +2,16 @@
 
 #include "Base.hpp"
 
+class Actor;
+
 namespace Chicane
 {
-    namespace Controller
+    class Controller
     {
-        class Instance
-        {
-        public:
-            Instance();
-        };
+    public:
+        void possess(std::shared_ptr<Actor> inActor);
 
-        //std::vector<SDL_GameController*> findAvailable();
-    }
+    private:
+        std::shared_ptr<Actor> m_character;
+    };
 }

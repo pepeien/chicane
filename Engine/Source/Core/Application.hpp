@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Window.hpp"
+#include "FileSystem.hpp"
+
 #include "Renderer/Application.hpp"
 
 namespace Chicane

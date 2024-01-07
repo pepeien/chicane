@@ -9,8 +9,8 @@ namespace Chicane
             m_hasVertices(inCreateInfo.hasVertices),
             m_hasDepth(inCreateInfo.hasDepth),
             m_logicalDevice(inCreateInfo.logicalDevice),
-            m_vertexShaderName(inCreateInfo.vertexShaderName),
-            m_fragmentShaderName(inCreateInfo.fragmentShaderName),
+            m_vertexShaderPath(inCreateInfo.vertexShaderPath),
+            m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
             m_bindingDescription(inCreateInfo.bindingDescription),
             m_attributeDescriptions(inCreateInfo.attributeDescriptions),
             m_swapChainExtent(inCreateInfo.swapChainExtent),
@@ -282,14 +282,14 @@ namespace Chicane
             vk::ShaderModule vertexShaderModule;
             Shader::initModule(
                 vertexShaderModule,
-                m_vertexShaderName,
+                m_vertexShaderPath,
                 m_logicalDevice
             );
 
             vk::ShaderModule fragmentShaderModule;
             Shader::initModule(
                 fragmentShaderModule,
-                m_fragmentShaderName,
+                m_fragmentShaderPath,
                 m_logicalDevice
             );
 

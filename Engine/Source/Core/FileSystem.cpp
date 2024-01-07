@@ -4,15 +4,26 @@ namespace Chicane
 {
     namespace FileSystem
     {
+        namespace Paths
+        {
+            std::string rootDir()
+            {
+                return ENGINE_DIR;
+            }
+
+            std::string contentDir()
+            {
+                return rootDir() + "Content/";
+            }
+        }
+
         std::vector<char> readFile(const std::string& inFilepath)
         {
-            std::string formattedFilepath = getRelativePath(inFilepath);
-
-            std::ifstream file(formattedFilepath, std::ios::ate | std::ios::binary);
+            std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);
     
             if (file.is_open() == false)
             {
-                throw std::runtime_error("Failed to open file -> " + formattedFilepath);
+                throw std::runtime_error("Failed to open file -> " + inFilepath);
             }
     
             size_t fileSize = (size_t)file.tellg();
@@ -23,11 +34,6 @@ namespace Chicane
             file.close();
     
             return buffer;
-        }
-
-        std::string getRelativePath(const std::string& inFilepath)
-        {
-            return ENGINE_DIR + inFilepath;
         }
     }
 }
