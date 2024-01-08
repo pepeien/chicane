@@ -35,5 +35,30 @@ namespace Chicane
     
             return buffer;
         }
+
+        stbi_uc* readImage(
+            int& outWidth,
+            int& outHeight,
+            int& outChannel,
+            const std::string& inFilepath
+        )
+        {
+            stbi_uc* result = stbi_load(
+                inFilepath.c_str(),
+                &outWidth,
+                &outHeight,
+                &outChannel,
+                STBI_rgb_alpha
+            );
+
+            if (result == nullptr)
+            {
+                throw std::runtime_error(
+                    "Failed to load the pixels for " + inFilepath
+                );
+            }
+
+            return result;
+        }
     }
 }

@@ -35,13 +35,24 @@ namespace Chicane
         {
             while(SDL_PollEvent(&event))
             {
+                FileSystem::Pak::WriteInfo writeInfo;
+
                 switch (event.type)
                 {
                 case SDL_MOUSEBUTTONUP:
-                    FileSystem::Pak::write(
-                        { FileSystem::Paths::contentDir() + "Models/apple.obj" },
-                        FileSystem::Paths::contentDir() + "Models/apple.apk"
-                    );
+                    writeInfo.type       = FileSystem::Pak::Type::Mesh;
+                    writeInfo.name       = "Floor";
+                    writeInfo.outputPath = FileSystem::Paths::contentDir() + "Pak/";
+                    writeInfo.entries.push_back({
+                        FileSystem::Pak::EntryType::Model,
+                        FileSystem::Paths::contentDir() + "Models/floor.obj"
+                    });
+                    writeInfo.entries.push_back({
+                        FileSystem::Pak::EntryType::Texture,
+                        FileSystem::Paths::contentDir() + "Textures/Base/grid.png"
+                    });
+
+                    FileSystem::Pak::write(writeInfo);
 
                     break;
                 case SDL_QUIT:

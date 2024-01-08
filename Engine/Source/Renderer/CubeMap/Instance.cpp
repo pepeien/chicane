@@ -78,20 +78,12 @@ namespace Chicane
         {
             for (int i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                m_pixels[i] = stbi_load(
-                    m_filepaths[i].c_str(),
-                    &m_width,
-                    &m_height,
-                    &m_channels,
-                    STBI_rgb_alpha
+                m_pixels[i] = FileSystem::readImage(
+                    m_width,
+                    m_height,
+                    m_channels,
+                    m_filepaths[i]
                 );
-
-                if (m_pixels[i] == nullptr)
-                {
-                    throw std::runtime_error(
-                        "Failed to load the pixels for " + m_filepaths[i]
-                    );
-                }
             }
         }
 

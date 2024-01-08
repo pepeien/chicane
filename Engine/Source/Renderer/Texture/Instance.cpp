@@ -68,20 +68,12 @@ namespace Chicane
 
         void Instance::load()
         {
-            m_pixels = stbi_load(
-                m_filepath.c_str(),
-                &m_width,
-                &m_height,
-                &m_channels,
-                STBI_rgb_alpha
+            m_pixels = FileSystem::readImage(
+                m_width,
+                m_height,
+                m_channels,
+                m_filepath
             );
-
-            if (m_pixels == nullptr)
-            {
-                throw std::runtime_error(
-                    "Failed to load the pixels for " + m_filepath
-                );
-            }
         }
 
         void Instance::populate()

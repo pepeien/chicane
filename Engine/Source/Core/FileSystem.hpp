@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "FileSystem/Pak.hpp"
+#include "File/Pak.hpp"
 
 namespace Chicane
 {
@@ -15,5 +15,11 @@ namespace Chicane
         };
 
         std::vector<char> readFile(const std::string& inFilepath);
+        stbi_uc* readImage(
+            int& outWidth,
+            int& outHeight,
+            int& outChannel,
+            const std::string& inFilepath
+        );
     }
 }
