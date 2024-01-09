@@ -8,7 +8,7 @@
 
 constexpr uint32_t TEXTURE_IMAGE_COUNT = 1;
 
-namespace Chicane
+namespace Engine
 {
     namespace Texture
     {

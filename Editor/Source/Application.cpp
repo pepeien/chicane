@@ -1,43 +1,34 @@
 #include "Application.hpp"
 
-namespace Chicane
+namespace Editor
 {
-    namespace Editor
+    int run()
     {
-        void initLevel(Level::Instance& outLevel)
+        try
         {
-            Level::Actor::Pawn actor;
-            actor.transform.translation = glm::vec3(0.0f, 0.0f, 0.0f);
-            actor.transform.scale       = glm::vec3(512.0f, 512.0f, 2.0f);
-            actor.transform.rotation    = glm::vec3(0.0f, 0.0f, 0.0f);
-            actor.mesh.id               = "floor";
-            actor.texture.id            = "grid";
+            std::string windowTitle = "Chicane Editor";
 
-            outLevel.addActor(actor);
+            std::unique_ptr<Engine::Actor::Default> floor = std::make_unique<Engine::Actor::Default>();
+            floor->translate(glm::vec3(0.0f, 0.0f, 0.0f));
+            floor->scale(glm::vec3(512.0f, 512.0f, 20.0f));
+            floor->setMesh({
+                "floor",
+                "grid"
+            });
+
+            std::shared_ptr<Engine::Level> level = std::make_shared<Engine::Level>();
+            level->addActor(floor.get());
+
+            std::unique_ptr<Engine::Core> engineCore = std::make_unique<Engine::Core>(windowTitle, level);
+            engineCore->run();
+        }
+        catch (const std::exception& e)
+        {
+            LOG_CRITICAL(e.what());
+
+            return EXIT_FAILURE;
         }
 
-        int run()
-        {
-            try
-            {
-                std::string windowTitle = "Chicane Editor";
-
-                Level::Instance level;
-
-                initLevel(level);
-
-                Application application(windowTitle, level);
-
-                application.run();
-            }
-            catch (const std::exception& e)
-            {
-                LOG_CRITICAL(e.what());
-
-                return EXIT_FAILURE;
-            }
-
-            return EXIT_SUCCESS;
-        }
+        return EXIT_SUCCESS;
     }
 }

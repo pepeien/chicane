@@ -1,6 +1,6 @@
 #include "Image.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Image
     {

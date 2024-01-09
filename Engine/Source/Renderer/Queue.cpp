@@ -1,6 +1,6 @@
 #include "Queue.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Queue
     {

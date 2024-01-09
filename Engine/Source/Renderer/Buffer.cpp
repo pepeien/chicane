@@ -1,6 +1,6 @@
 #include "Buffer.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Buffer
     {

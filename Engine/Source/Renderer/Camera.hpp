@@ -3,7 +3,7 @@
 #include "Base.hpp"
 #include "Buffer.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Camera
     {

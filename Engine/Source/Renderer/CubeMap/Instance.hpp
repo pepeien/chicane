@@ -8,7 +8,7 @@
 
 constexpr uint32_t CUBEMAP_IMAGE_COUNT = 6;
 
-namespace Chicane
+namespace Engine
 {
     namespace CubeMap
     {

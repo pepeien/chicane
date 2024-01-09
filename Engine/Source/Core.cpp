@@ -1,10 +1,12 @@
-#include "Application.hpp"
+#include "Core.hpp"
 
-namespace Chicane
+#include "Renderer.hpp"
+
+namespace Engine
 {
-    Application::Application(
+    Core::Core(
         const std::string& inWindowTitle,
-        const Level::Instance& inLevel
+        std::shared_ptr<Level> inLevel
     )
         : m_renderer(nullptr),
         m_window({ nullptr, inWindowTitle, 0, 0 })
@@ -12,20 +14,21 @@ namespace Chicane
         initSDL();
         buildWindow();
 
-        m_renderer = std::make_unique<Renderer::Application>(
+        m_level    = inLevel;
+        m_renderer = std::make_unique<Renderer>(
             m_window,
             inLevel
         );
     }
 
-    Application::~Application()
+    Core::~Core()
     {
         // Window
         SDL_DestroyWindow(m_window.instance);
         SDL_Quit();
     }
 
-    void Application::run()
+    void Core::run()
     {
         bool shouldClose = false;
 
@@ -72,7 +75,7 @@ namespace Chicane
         }
     }
 
-    void Application::initSDL()
+    void Core::initSDL()
     {
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
@@ -80,7 +83,7 @@ namespace Chicane
         }
     }
 
-    void Application::buildWindow()
+    void Core::buildWindow()
     {
         Window::init(m_window);
     }

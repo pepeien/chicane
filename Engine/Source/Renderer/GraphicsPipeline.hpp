@@ -5,7 +5,7 @@
 #include "Shader.hpp"
 #include "Vertex.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace GraphicsPipeline
     {

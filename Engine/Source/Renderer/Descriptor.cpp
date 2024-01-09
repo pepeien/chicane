@@ -1,6 +1,6 @@
 #include "Descriptor.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Descriptor
     {

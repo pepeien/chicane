@@ -4,7 +4,7 @@
 #include "Renderer/Vertex.hpp"
 #include "Renderer/Model/Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Model
     {

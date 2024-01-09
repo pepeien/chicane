@@ -4,7 +4,7 @@
 
 #include "Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Texture
     {

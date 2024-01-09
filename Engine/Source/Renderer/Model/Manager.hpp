@@ -7,7 +7,7 @@
 #include "Renderer/Vertex.hpp"
 #include "Vendors/Wavefront.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Model
     {

@@ -2,5 +2,5 @@
 
 int main(int argc, char *argv[])
 {
-    return Chicane::Editor::run();
+    return Editor::run();
 }

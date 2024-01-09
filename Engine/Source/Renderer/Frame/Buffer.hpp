@@ -6,7 +6,7 @@
 #include "Renderer/GraphicsPipeline.hpp"
 #include "Renderer/CommandBuffer/Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Frame
     {

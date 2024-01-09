@@ -1,6 +1,6 @@
 #include "Log.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Log
     {

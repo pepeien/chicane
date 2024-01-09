@@ -1,6 +1,6 @@
 #include "Window.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Window
     {

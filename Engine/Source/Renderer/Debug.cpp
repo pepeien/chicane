@@ -1,6 +1,6 @@
 #include "Debug.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Debug
     {

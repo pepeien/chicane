@@ -1,6 +1,6 @@
 #include "Manager.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace CubeMap
     {

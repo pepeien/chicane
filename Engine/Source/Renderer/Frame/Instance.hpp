@@ -2,6 +2,8 @@
 
 #include "Base.hpp"
 
+#include "Game/Actor.hpp"
+
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Camera.hpp"
 #include "Renderer/Descriptor.hpp"
@@ -9,10 +11,8 @@
 #include "Renderer/Model.hpp"
 #include "Renderer/Image.hpp"
 #include "Renderer/Sync.hpp"
-#include "Renderer/Level/Instance.hpp"
-#include "Renderer/Level/Actor/Pawn.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Frame
     {
@@ -31,9 +31,7 @@ namespace Chicane
 
             void setupCameraVectorUBO();
             void setupCameraMatrixUBO();
-            void setupModelData(
-                const std::vector<Level::Actor::Pawn>& inActors
-            );
+            void setupModelData(std::vector<Actor::Default*> inActors);
     
             void setupDepthBuffering();
 
@@ -44,10 +42,6 @@ namespace Chicane
             );
             void setupDescriptorSets();
             void updateDescriptorSets();
-            
-            void updateModelTransforms(
-                const std::vector<Level::Actor::Pawn>& inActors
-            );
 
             void destroy();
 

@@ -6,7 +6,7 @@
 #include "Image.hpp"
 #include "Frame/Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace SwapChain
     {

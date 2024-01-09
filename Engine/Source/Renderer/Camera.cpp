@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Camera
     {

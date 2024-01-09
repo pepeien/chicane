@@ -5,7 +5,7 @@
 #include "Device.hpp"
 #include "CommandBuffer/Worker.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Image
     {

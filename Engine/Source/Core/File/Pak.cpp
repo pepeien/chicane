@@ -7,7 +7,7 @@
 
 #include "Renderer/Image.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace FileSystem
     {

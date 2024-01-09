@@ -1,6 +1,6 @@
 #include "Wavefront.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Model
     {

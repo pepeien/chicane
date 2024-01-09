@@ -4,7 +4,7 @@
 
 #include "Renderer/Frame/Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace CommandBuffer
     {

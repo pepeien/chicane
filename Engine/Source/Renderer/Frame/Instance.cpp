@@ -1,6 +1,6 @@
 #include "Instance.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Frame
     {
@@ -22,7 +22,7 @@ namespace Chicane
 
         void Instance::setupCameraVectorUBO()
         {
-            Chicane::Buffer::CreateInfo bufferCreateInfo;
+            Engine::Buffer::CreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice    = logicalDevice;
             bufferCreateInfo.physicalDevice   = physicalDevice;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -49,7 +49,7 @@ namespace Chicane
             
         void Instance::setupCameraMatrixUBO()
         {
-            Chicane::Buffer::CreateInfo bufferCreateInfo;
+            Engine::Buffer::CreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice    = logicalDevice;
             bufferCreateInfo.physicalDevice   = physicalDevice;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -74,9 +74,9 @@ namespace Chicane
             cameraMatrixDescriptorBufferInfo.range  = cameraMatrixUBO.allocationSize;
         }
     
-        void Instance::setupModelData(const std::vector<Level::Actor::Pawn>& inActors)
+        void Instance::setupModelData(std::vector<Actor::Default*> inActors)
         {
-            Chicane::Buffer::CreateInfo modelBufferCreateInfo;
+            Engine::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -94,9 +94,9 @@ namespace Chicane
             );
             modelData.transforms.reserve(inActors.size());
     
-            for (uint32_t i = 0; i < inActors.size(); i++)
+            for (auto actor : inActors)
             {
-                modelData.transforms.push_back(glm::mat4(1.0f));
+                modelData.transforms.push_back(actor->getPosition());
             }
             
             modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
@@ -196,39 +196,6 @@ namespace Chicane
                 descriptorSetWrites,
                 nullptr
             );
-        }
-
-        void Instance::updateModelTransforms(
-            const std::vector<Level::Actor::Pawn>& inActors
-        )
-        {
-            for (uint32_t i = 0; i < inActors.size(); i++)
-            {
-                auto& actor = inActors[i];
-
-                glm::mat4 transform = glm::translate(
-                    glm::mat4(1.0f),
-                    actor.transform.translation
-                );
-                transform = glm::rotate(
-                    transform,
-                    glm::radians(actor.transform.rotation.z),
-                    glm::vec3(0.0f, 0.0f, 1.0f)
-                );
-                transform = glm::rotate(
-                    transform,
-                    glm::radians(actor.transform.rotation.y),
-                    glm::vec3(0.0f, 1.0f, 0.0f)
-                );
-                transform = glm::rotate(
-                    transform,
-                    glm::radians(actor.transform.rotation.x),
-                    glm::vec3(1.0f, 0.0f, 0.0f)
-                );
-                transform = glm::scale(transform, actor.transform.scale);
-
-                modelData.transforms[i] = transform;
-            }
         }
 
         void Instance::destroy()

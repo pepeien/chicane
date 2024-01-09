@@ -1,6 +1,6 @@
 #include "Device.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Device
     {

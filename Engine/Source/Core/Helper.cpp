@@ -1,6 +1,6 @@
 #include "Helper.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Helper
     {

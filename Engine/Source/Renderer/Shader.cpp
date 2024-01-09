@@ -1,6 +1,6 @@
 #include "Shader.hpp"
 
-namespace Chicane
+namespace Engine
 {
     namespace Shader
     {
