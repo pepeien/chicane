@@ -75,6 +75,7 @@ namespace Engine
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
         void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
+        void onMouseClick();
 
         // Vulkan
         void buildInstance();
@@ -196,5 +197,7 @@ namespace Engine
 
         // Window
         Window::Instance m_window;
+  
+        bool m_isHasFocus = false;
     };
 }

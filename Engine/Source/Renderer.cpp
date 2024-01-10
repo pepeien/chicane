@@ -102,12 +102,18 @@ namespace Engine
 
             break;
 
+
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             onKeyboardEvent(inEvent.key);
 
             break;
 
+        case SDL_MOUSEBUTTONDOWN:
+            onMouseClick();
+
+            break;
+    
         case SDL_MOUSEMOTION:
             onMouseMotionEvent(inEvent.motion);
 
@@ -426,6 +432,11 @@ namespace Engine
 
     void Renderer::onKeyboardEvent(const SDL_KeyboardEvent& inEvent)
     {
+        if (!m_isHasFocus)
+        {
+            return;
+        }
+
         float cameraStepSize = 12.25;
 
         glm::vec3 nextPosition = m_camera->getPosition();
@@ -461,6 +472,11 @@ namespace Engine
 
     void Renderer::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
     {
+        if (!m_isHasFocus)
+        {
+            return;
+        }
+
         float castedMidWidth = (float) m_swapChain.midPoints.width;
         float yawDiff = castedMidWidth - ((float) inEvent.x);
         yawDiff = std::clamp(
@@ -481,6 +497,13 @@ namespace Engine
 
         m_camera->addYaw(yaw);
         m_camera->addPitch(pitch);
+    }
+
+    void Renderer::onMouseClick()
+    {
+        m_isHasFocus = !m_isHasFocus;
+
+        SDL_SetRelativeMouseMode(m_isHasFocus ? SDL_TRUE : SDL_FALSE);
     }
 
     void Renderer::buildInstance()
