@@ -8,9 +8,9 @@ namespace Editor
         {
             std::string windowTitle = "Chicane Editor";
 
-            std::unique_ptr<Engine::Actor::Default> floor = std::make_unique<Engine::Actor::Default>();
-            floor->translate(glm::vec3(0.0f, 0.0f, 0.0f));
-            floor->scale(glm::vec3(512.0f, 512.0f, 20.0f));
+            std::unique_ptr<Engine::Actor> floor = std::make_unique<Engine::Actor>();
+            floor->setAbsoluteTranslation(glm::vec3(0.0f, 0.0f, 0.0f));
+            floor->setAbsoluteScale(glm::vec3(512.0f, 512.0f, 20.0f));
             floor->setMesh({
                 "floor",
                 "grid"

@@ -9,10 +9,10 @@ namespace Engine
     class Level
     {
     public:
-        std::vector<Actor::Default*> getActors();
-        void addActor(Actor::Default* inActor);
+        std::vector<Actor*> getActors();
+        void addActor(Actor* inActor);
 
     private:
-        std::vector<Actor::Default*> m_actors;
+        std::vector<Actor*> m_actors;
     };
 }

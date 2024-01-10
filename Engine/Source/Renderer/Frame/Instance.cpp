@@ -74,7 +74,7 @@ namespace Engine
             cameraMatrixDescriptorBufferInfo.range  = cameraMatrixUBO.allocationSize;
         }
     
-        void Instance::setupModelData(std::vector<Actor::Default*> inActors)
+        void Instance::setupModelData(std::vector<Actor*> inActors)
         {
             Engine::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;

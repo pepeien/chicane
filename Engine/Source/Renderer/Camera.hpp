@@ -44,10 +44,13 @@ namespace Engine
             Instance();
 
         public:
+            void setPosition(const glm::vec3& inPosition);
             glm::vec3 getPosition();
-            void updatePosition(const glm::vec3& inPosition);
+
+            void addYaw(float inYaw);
+            void addPitch(float inPitch);
             
-            void updateResolution(uint32_t inWidth, uint32_t inHeight);
+            void setResolution(uint32_t inWidth, uint32_t inHeight);
 
             VectorUBO getVectorUBO();
             MatrixUBO getMatrixUBO();
@@ -62,8 +65,8 @@ namespace Engine
             MatrixUBO m_matrixUBO;
             VectorUBO m_vectorUBO;
 
-            glm::vec3 m_eyes;
-            glm::vec3 m_look;
+            glm::vec3 m_position;
+            glm::vec3 m_aim;
             glm::vec3 m_up;
 
             uint32_t m_width;

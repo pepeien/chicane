@@ -8,26 +8,52 @@ namespace Engine
         :
           m_matrixUBO({}),
           m_vectorUBO({}),
-          m_eyes({ -550.0f, 0.0f, 100.0f }),
-          m_look({ 0.0f, 0.0f, 0.0f }),
+          m_position({ -550.0f, 0.0f, 100.0f }),
+          m_aim({ 0.0f, 0.0f, 0.0f }),
           m_up({ 0.0f, 0.0f, 1.0f }),
           m_width(0),
           m_height(0)
         {}
 
-        glm::vec3 Instance::getPosition()
+        void Instance::setPosition(const glm::vec3& inPosition)
         {
-            return m_eyes;
-        }
-
-        void Instance::updatePosition(const glm::vec3& inPosition)
-        {
-            m_eyes = inPosition;
+            m_position = inPosition;
 
             updateUBOs();
         }
 
-        void Instance::updateResolution(uint32_t inWidth, uint32_t inHeight)
+        glm::vec3 Instance::getPosition()
+        {
+            return m_position;
+        }
+
+        void Instance::addYaw(float inYaw)
+        {
+            float clampedYaw = std::clamp(
+                inYaw,
+                -1.0f,
+                1.0f
+            );
+
+            m_aim.y += clampedYaw;
+
+            updateUBOs();
+        }
+
+        void Instance::addPitch(float inPitch)
+        {
+            float clampedPitch = std::clamp(
+                inPitch,
+                -1.0f,
+                1.0f
+            );
+
+            m_aim.z += clampedPitch;
+
+            updateUBOs();
+        }
+
+        void Instance::setResolution(uint32_t inWidth, uint32_t inHeight)
         {
             m_width  = inWidth;
             m_height = inHeight;
@@ -48,8 +74,8 @@ namespace Engine
         glm::mat4 Instance::generateView()
         {
             return glm::lookAt(
-                m_eyes,
-                m_look,
+                m_position,
+                m_aim,
                 m_up
             );
         }

@@ -93,7 +93,7 @@ namespace Engine
         destroyInstance();
     }
 
-    void Renderer::process(const SDL_Event& inEvent)
+    void Renderer::onEvent(const SDL_Event& inEvent)
     {
         switch (inEvent.type)
         {
@@ -101,13 +101,18 @@ namespace Engine
             onWindowEvent(inEvent.window);
 
             break;
-        
+
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             onKeyboardEvent(inEvent.key);
 
             break;
-        
+
+        case SDL_MOUSEMOTION:
+            onMouseMotionEvent(inEvent.motion);
+
+            break;
+
         default:
             break;
         }
@@ -451,7 +456,31 @@ namespace Engine
             return;
         }
 
-        m_camera->updatePosition(nextPosition);
+        m_camera->setPosition(nextPosition);
+    }
+
+    void Renderer::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
+    {
+        float castedMidWidth = (float) m_swapChain.midPoints.width;
+        float yawDiff = castedMidWidth - ((float) inEvent.x);
+        yawDiff = std::clamp(
+            yawDiff,
+            -castedMidWidth,
+            castedMidWidth
+        );
+        float yaw = yawDiff / castedMidWidth;
+
+        float castedMidHeight = (float) m_swapChain.midPoints.height;
+        float pitchDiff = castedMidHeight - ((float) inEvent.y);
+        pitchDiff = std::clamp(
+            pitchDiff,
+            -castedMidHeight,
+            castedMidHeight
+        );
+        float pitch = pitchDiff / castedMidHeight;
+
+        m_camera->addYaw(yaw);
+        m_camera->addPitch(pitch);
     }
 
     void Renderer::buildInstance()
@@ -551,7 +580,7 @@ namespace Engine
             m_window.height
         );
 
-        m_camera->updateResolution(
+        m_camera->setResolution(
             m_swapChain.extent.width,
             m_swapChain.extent.height
         );

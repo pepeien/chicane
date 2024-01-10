@@ -64,7 +64,7 @@ namespace Engine
                     break;
 
                 default:
-                    m_renderer->process(event);
+                    m_renderer->onEvent(event);
 
                     break;
                 }

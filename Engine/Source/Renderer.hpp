@@ -51,7 +51,7 @@ namespace Engine
         ~Renderer();
 
     public:
-        void process(const SDL_Event& inEvent);
+        void onEvent(const SDL_Event& inEvent);
 
         void render();
 
@@ -74,6 +74,7 @@ namespace Engine
         // Window
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
+        void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
 
         // Vulkan
         void buildInstance();

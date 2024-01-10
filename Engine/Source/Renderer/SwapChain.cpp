@@ -209,9 +209,11 @@ namespace Engine
             createInfo.clipped        = VK_TRUE;
             createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
     
-            outSwapChain.instance  = inLogicalDevice.createSwapchainKHR(createInfo);
-            outSwapChain.format    = surfaceFormat.format;
-            outSwapChain.extent    = extent;
+            outSwapChain.instance         = inLogicalDevice.createSwapchainKHR(createInfo);
+            outSwapChain.format           = surfaceFormat.format;
+            outSwapChain.extent           = extent;
+            outSwapChain.midPoints.width  = extent.width / 2;
+            outSwapChain.midPoints.height = extent.height / 2;
     
             std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(
                 outSwapChain.instance

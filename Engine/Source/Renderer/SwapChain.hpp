@@ -23,6 +23,7 @@ namespace Engine
             std::vector<Frame::Instance> frames;
             vk::Format format;
             vk::Extent2D extent;
+            vk::Extent2D midPoints;
         };
     
         void querySupport(
