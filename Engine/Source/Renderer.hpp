@@ -2,12 +2,6 @@
 
 #include "Base.hpp"
 
-#include "Core/Window.hpp"
-
-#include "Game/Actor.hpp"
-#include "Game/Controller.hpp"
-#include "Game/Level.hpp"
-
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Camera.hpp"
 #include "Renderer/Debug.hpp"
@@ -41,12 +35,20 @@
 
 namespace Engine
 {
+    // Core
+    class Window;
+
+    // Game
+    class Actor;
+    class Controller;
+    class Level;
+
     class Renderer
     {
     public:
         Renderer(
-            const Window::Instance& inWindow,
-            std::shared_ptr<Level> inLevel
+            Window* inWindow,
+            Level* inLevel
         );
         ~Renderer();
 
@@ -72,6 +74,7 @@ namespace Engine
         );
 
         // Window
+        void onWindowResize();
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
         void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
@@ -190,14 +193,12 @@ namespace Engine
         std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
         // Level
-        std::shared_ptr<Level> m_level;
+        Level* m_level;
 
         // Camera
         std::unique_ptr<Camera::Instance> m_camera;
 
         // Window
-        Window::Instance m_window;
-  
-        bool m_isHasFocus = false;
+        Window* m_window;
     };
 }

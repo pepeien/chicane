@@ -1,31 +1,15 @@
 #include "Core.hpp"
 
-#include "Renderer.hpp"
-
 namespace Engine
 {
     Core::Core(
-        const std::string& inWindowTitle,
-        std::shared_ptr<Level> inLevel
+        const WindowCreateInfo& inWindowCreateInfo,
+        Level* inLevel
     )
-        : m_renderer(nullptr),
-        m_window({ nullptr, inWindowTitle, 0, 0 })
     {
-        initSDL();
-        buildWindow();
-
+        window   = std::make_unique<Window>(inWindowCreateInfo);
         m_level    = inLevel;
-        m_renderer = std::make_unique<Renderer>(
-            m_window,
-            inLevel
-        );
-    }
-
-    Core::~Core()
-    {
-        // Window
-        SDL_DestroyWindow(m_window.instance);
-        SDL_Quit();
+        m_renderer = std::make_unique<Renderer>(window.get(), m_level);
     }
 
     void Core::run()
@@ -73,18 +57,5 @@ namespace Engine
             m_renderer->render();
             m_renderer->updateStats();
         }
-    }
-
-    void Core::initSDL()
-    {
-        if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
-        {
-            throw std::runtime_error(SDL_GetError());
-        }
-    }
-
-    void Core::buildWindow()
-    {
-        Window::init(m_window);
     }
 }

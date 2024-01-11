@@ -1,10 +1,13 @@
 #include "Renderer.hpp"
 
+#include "Core.hpp"
+#include "Game.hpp"
+
 namespace Engine
 {
     Renderer::Renderer(
-        const Window::Instance& inWindow,
-        std::shared_ptr<Level> inLevel
+        Window* inWindow,
+        Level* inLevel
     )
         : m_frameStats({}),
         m_swapChain({}),
@@ -165,13 +168,13 @@ namespace Engine
         }
         catch(vk::OutOfDateKHRError e)
         {
-            rebuildSwapChain();
+            onWindowResize();
 
             return;
         }
         catch(vk::IncompatibleDisplayKHRError e)
         {
-            rebuildSwapChain();
+            onWindowResize();
 
             return;
         }
@@ -233,7 +236,7 @@ namespace Engine
             present == vk::Result::eSuboptimalKHR
         )
         {
-            rebuildSwapChain();
+            onWindowResize();
 
             return;
         }
@@ -248,19 +251,9 @@ namespace Engine
         double delta = m_frameStats.currentTime - m_frameStats.lastTime;
 
         if (delta >= 1) {
-            int framerate{ std::max(1, int(m_frameStats.count / delta)) };
-
-            std::stringstream title;
-            title << m_window.title << " - " << framerate << " FPS";
-
-            SDL_SetWindowTitle(
-                m_window.instance,
-                title.str().c_str()
-            );
-
             m_frameStats.lastTime  = m_frameStats.currentTime;
             m_frameStats.count     = -1;
-            m_frameStats.time      = float(1000.0 / framerate);
+            m_frameStats.time      = float(1000.0 / std::max(1, int(m_frameStats.count / delta)));
         }
 
         m_frameStats.count++;
@@ -405,23 +398,24 @@ namespace Engine
         inCommandBuffer.endRenderPass();
     }
 
+    void Renderer::onWindowResize()
+    {
+        m_window->onResize();
+
+        if (!m_window->isOutdated())
+        {
+            return;
+        }
+
+        rebuildSwapChain();
+    }
+
     void Renderer::onWindowEvent(const SDL_WindowEvent& inEvent)
     {
         switch (inEvent.event)
         {
-        case SDL_WINDOWEVENT_MINIMIZED:
-            m_window.width   = 0;
-            m_window.height  = 0;
-
-            m_window.isMinimized = true;
-
-            return;
-
         case SDL_WINDOWEVENT_RESIZED:
-        case SDL_WINDOWEVENT_MAXIMIZED:
-            m_window.isMinimized = false;
-
-            rebuildSwapChain();
+            onWindowResize();
 
             return;
         
@@ -432,7 +426,7 @@ namespace Engine
 
     void Renderer::onKeyboardEvent(const SDL_KeyboardEvent& inEvent)
     {
-        if (!m_isHasFocus)
+        if (!m_window->isFocused())
         {
             return;
         }
@@ -472,7 +466,7 @@ namespace Engine
 
     void Renderer::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
     {
-        if (!m_isHasFocus)
+        if (!m_window->isFocused())
         {
             return;
         }
@@ -501,9 +495,14 @@ namespace Engine
 
     void Renderer::onMouseClick()
     {
-        m_isHasFocus = !m_isHasFocus;
+        if (!m_window->isFocused())
+        {
+            m_window->focus();
 
-        SDL_SetRelativeMouseMode(m_isHasFocus ? SDL_TRUE : SDL_FALSE);
+            return;
+        }
+
+        m_window->blur();
     }
 
     void Renderer::buildInstance()
@@ -511,7 +510,7 @@ namespace Engine
         Instance::init(
             m_instance,
             m_dldi,
-            m_window.instance
+            m_window->instance
         );
     }
 
@@ -548,7 +547,7 @@ namespace Engine
         Surface::init(
             m_surface,
             m_instance,
-            m_window.instance
+            m_window->instance
         );
     }
 
@@ -599,8 +598,7 @@ namespace Engine
             m_physicalDevice,
             m_logicalDevice,
             m_surface,
-            m_window.width,
-            m_window.height
+            m_window->getDisplayResolution()
         );
 
         m_camera->setResolution(
@@ -623,22 +621,6 @@ namespace Engine
 
     void Renderer::rebuildSwapChain()
     {
-        if (m_window.isMinimized)
-        {
-            return;
-        }
-
-        SDL_Vulkan_GetDrawableSize(
-            m_window.instance,
-            &m_window.width,
-            &m_window.height
-        );
-
-        if (m_window.width == 0 || m_window.height == 0)
-        {
-            return;
-        }
-
         m_logicalDevice.waitIdle();
 
         destroySwapChain();

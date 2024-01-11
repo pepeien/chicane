@@ -116,8 +116,7 @@ namespace Engine
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            int inWidth,
-            int inHeight
+            const Resolution& inResolution
         )
         {
             SupportDetails supportDetails;
@@ -142,8 +141,8 @@ namespace Engine
             vk::Extent2D extent;
             pickExtent(
                 extent,
-                inWidth,
-                inHeight,
+                inResolution.width,
+                inResolution.height,
                 supportDetails.capabilities
             );
                 

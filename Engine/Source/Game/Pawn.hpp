@@ -11,6 +11,6 @@ namespace Engine
     class Pawn : public Actor
     {
     private:
-        std::shared_ptr<Controller> m_controller;
+        Controller* m_controller;
     };
 }

@@ -6,6 +6,8 @@
 #include "Image.hpp"
 #include "Frame/Instance.hpp"
 
+#include "Core/Window.hpp"
+
 namespace Engine
 {
     namespace SwapChain
@@ -52,8 +54,7 @@ namespace Engine
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            int inWidth,
-            int inHeight
+            const Resolution& inResolution
         );
     }
 }

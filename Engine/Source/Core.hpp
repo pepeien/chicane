@@ -1,39 +1,32 @@
 #pragma once
 
+#include "Game.hpp"
+#include "Renderer.hpp"
+
 #include "Core/FileSystem.hpp"
 #include "Core/Helper.hpp"
 #include "Core/Log.hpp"
 #include "Core/Window.hpp"
 
-#include "Game/Actor.hpp"
-#include "Game/Controller.hpp"
-#include "Game/Level.hpp"
-
 namespace Engine
 {
-    class Renderer;
-
     class Core
     {
     public:
         Core(
-            const std::string& inWindowTitle,
-            std::shared_ptr<Level> inLevel
+            const WindowCreateInfo& inWindowCreateInfo,
+            Level* inLevel
         );
-        ~Core();
-    
+
     public:
         void run();
-    
+
+    public:
+        std::unique_ptr<Window> window;
+
     private:
-        void initSDL();
-        void buildWindow();
-    
-    private:
-        Window::Instance m_window;
+        Level* m_level;
 
         std::unique_ptr<Renderer> m_renderer;
-
-        std::shared_ptr<Level> m_level;
     };
 }
