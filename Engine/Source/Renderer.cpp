@@ -236,11 +236,22 @@ namespace Engine
         m_frameStats.count++;
     }
 
+    void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
+    {
+        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
+        inCommandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
+        inCommandBuffer.setScissor(0, 1, &scissor);
+    }
+
     void Renderer::prepareSky(
         const vk::CommandBuffer& inCommandBuffer,
         uint32_t inImageIndex
     )
     {
+        updateViewport(inCommandBuffer);
+
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->instance
@@ -265,12 +276,6 @@ namespace Engine
                 GraphicsPipeline::Type::SKY
             )->layout
         );
-
-        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
-        inCommandBuffer.setViewport(0, 1, &viewport);
-
-        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
-        inCommandBuffer.setScissor(0, 1, &scissor);
     }
 
     void Renderer::drawSky(
@@ -312,6 +317,8 @@ namespace Engine
         uint32_t inImageIndex
     )
     {
+        updateViewport(inCommandBuffer);
+
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->instance
@@ -351,12 +358,6 @@ namespace Engine
             inCommandBuffer,
             m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout
         );
-
-        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
-        inCommandBuffer.setViewport(0, 1, &viewport);
-
-        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
-        inCommandBuffer.setScissor(0, 1, &scissor);
     }
 
     void Renderer::drawScene(

@@ -23,9 +23,7 @@ namespace Engine
         Resolution resolution = {};
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
-
-        // Only takes effect when the type is `WindowType::Windowed`
-        bool isResizable      = false;
+        bool isResizable      = true; // Only takes effect when the type is `WindowType::Windowed`
     };
 
     class Window
@@ -50,8 +48,8 @@ namespace Engine
         WindowType getType();
 
         bool isResizable();
-        void enableResizing();
-        void disableResizing();
+        void enableResizing();  // Only takes effect when the type is `WindowType::Windowed`
+        void disableResizing(); // Only takes effect when the type is `WindowType::Windowed`
 
         bool isMinimized();
 
@@ -68,6 +66,6 @@ namespace Engine
 
         bool m_isFocused;
         bool m_isResizable;
-        bool m_isMinimized;
+        bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
     };
 }

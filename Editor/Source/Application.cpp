@@ -21,8 +21,6 @@ namespace Editor
             window.title             = "Chicane Editor";
             window.resolution.width  = 1600;
             window.resolution.height = 900;
-            window.type              = Engine::WindowType::Windowed;
-            window.isResizable       = true;
 
             std::unique_ptr<Engine::Core> engineCore = std::make_unique<Engine::Core>(
                 window,

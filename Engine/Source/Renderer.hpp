@@ -61,6 +61,10 @@ namespace Engine
 
     private:
         // Render
+        void updateViewport(
+            const vk::CommandBuffer& inCommandBuffer
+        );
+
         void prepareSky(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
