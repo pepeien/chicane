@@ -57,7 +57,7 @@ set_property(
 
 target_include_directories(
     ${TARGET_NAME}
-    PUBLIC
+    PRIVATE
 
     # Source
     ${SOURCES_DIR}

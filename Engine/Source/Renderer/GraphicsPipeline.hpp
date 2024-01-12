@@ -73,7 +73,7 @@ namespace Engine
                 const vk::Viewport& inViewport,
                 const vk::Rect2D& inScissor
             );
-            vk::PipelineDynamicStateCreateInfo createDynamicState();
+            vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates);
             vk::PipelineRasterizationStateCreateInfo createRasterizationState();
             vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
             vk::PipelineColorBlendStateCreateInfo createColorBlendState(

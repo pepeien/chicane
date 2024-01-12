@@ -112,7 +112,7 @@ if (WIN32)
 
     target_link_libraries(
         ${TARGET_NAME}
-        PRIVATE
+        PUBLIC
 
         # Vendor
         vulkan-1
@@ -127,7 +127,7 @@ elseif(UNIX)
 
     target_link_libraries(
         ${TARGET_NAME}
-        PRIVATE
+        PUBLIC
 
         # Vendor
         vulkan

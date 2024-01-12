@@ -113,16 +113,11 @@ namespace Engine
             return viewportState;
         }
 
-        vk::PipelineDynamicStateCreateInfo Instance::createDynamicState()
+        vk::PipelineDynamicStateCreateInfo Instance::createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates)
         {
-            std::vector<vk::DynamicState> dynamicStates = {
-                vk::DynamicState::eViewport,
-                vk::DynamicState::eScissor
-            };
-
             vk::PipelineDynamicStateCreateInfo dynamicState = {};
-            dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
-            dynamicState.pDynamicStates    = dynamicStates.data();
+            dynamicState.dynamicStateCount = static_cast<uint32_t>(inDynamicStates.size());
+            dynamicState.pDynamicStates    = inDynamicStates.data();
 
             return dynamicState;
         }
@@ -352,7 +347,13 @@ namespace Engine
             pipelineInfo.pViewportState = &viewportState;
 
             // Dynamic State
-            vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState();
+            std::vector<vk::DynamicState> dynamicStates = {
+                vk::DynamicState::eViewport,
+                vk::DynamicState::eScissor
+            };
+
+            vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
+
             pipelineInfo.pDynamicState = &dynamicState;
 
             // Shader Stage
