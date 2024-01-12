@@ -10,10 +10,22 @@ namespace Engine
         int height = -1;
     };
 
+    enum class WindowType
+    {
+        Windowed,
+        WindowedBorderless,
+        Fullscreen,
+    };
+
     struct WindowCreateInfo
     {
+        std::string title     = "";
         Resolution resolution = {};
-        std::string title    = "";
+        WindowType type       = WindowType::Windowed;
+        bool isFocused        = false;
+
+        // Only takes effect when the type is `WindowType::Windowed`
+        bool isResizable      = false;
     };
 
     class Window
@@ -23,31 +35,39 @@ namespace Engine
         ~Window();
 
     public:
-        // Status
-        bool isOutdated();
-        bool isFocused();
+        void onEvent(const SDL_Event& inEvent);
 
-        // Focus
+        bool isFocused();
         void focus();
         void blur();
 
-        // Resolution
-        void onResize();
-        Resolution getDisplayResolution();
-        void setDisplayResolution(const Resolution& inResolution);
-
-        // Properties
         void setTitle(const std::string& inTitle);
+
+        Resolution getResolution();
+        void setResolution(const Resolution& inResolution);
+
+        void setType(WindowType inType);
+        WindowType getType();
+
+        bool isResizable();
+        void enableResizing();
+        void disableResizing();
+
+        bool isMinimized();
 
     public:
         SDL_Window* instance;
 
     private:
-        // Status
-        bool m_isFocused;
+        void onWindowEvent(const SDL_WindowEvent& inEvent);
+        void onMouseClick();
 
-        // Resolution
-        Resolution m_displayResolution;
-        Resolution m_drawResolution;
+    private:
+        // Properties
+        WindowType m_type;
+
+        bool m_isFocused;
+        bool m_isResizable;
+        bool m_isMinimized;
     };
 }

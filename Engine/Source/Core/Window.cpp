@@ -3,37 +3,27 @@
 namespace Engine
 {
     Window::Window(const WindowCreateInfo& inCreateInfo)
-        : m_isFocused(false),
-        m_displayResolution({}),
-        m_drawResolution({}),
-        instance(nullptr)
+        : instance(nullptr),
+        m_isFocused(inCreateInfo.isFocused),
+        m_isResizable(inCreateInfo.isResizable),
+        m_isMinimized(false)
     {
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             throw std::runtime_error(SDL_GetError());
         }
 
-        m_displayResolution = inCreateInfo.resolution;
-
-        if (m_displayResolution.width < 0 || m_displayResolution.height < 0)
+        if (inCreateInfo.resolution.width < 0 || inCreateInfo.resolution.height < 0)
         {
-            SDL_DisplayMode display;
-            SDL_GetCurrentDisplayMode(0, &display);
-
-            m_displayResolution.width  = display.w;
-            m_displayResolution.height = display.h;
+            throw std::runtime_error("Invalid resolution");
         }
-
-        int renderCount = SDL_GetNumRenderDrivers();
 
         instance = SDL_CreateWindow(
             inCreateInfo.title.c_str(),
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            m_displayResolution.width,
-            m_displayResolution.height,
-            SDL_WINDOW_RESIZABLE |
-            SDL_WINDOW_MAXIMIZED |
+            inCreateInfo.resolution.width,
+            inCreateInfo.resolution.height,
             SDL_WINDOW_VULKAN
         );
 
@@ -42,7 +32,7 @@ namespace Engine
             throw std::runtime_error(SDL_GetError());
         }
 
-        onResize();
+        setType(inCreateInfo.type);
     }
 
     Window::~Window()
@@ -51,18 +41,20 @@ namespace Engine
         SDL_Quit();
     }
 
-    bool Window::isOutdated()
+    void Window::onEvent(const SDL_Event& inEvent)
     {
-        int currentWidth  = 0;
-        int currentHeight = 0;
+        switch (inEvent.type)
+        {
+        case SDL_WINDOWEVENT:
+            onWindowEvent(inEvent.window);
 
-        SDL_Vulkan_GetDrawableSize(
-            instance,
-            &currentWidth,
-            &currentHeight
-        );
+            break;
 
-        return currentWidth != m_drawResolution.width && currentHeight != m_drawResolution.height;
+        case SDL_MOUSEBUTTONDOWN:
+            onMouseClick();
+
+            break;
+        }
     }
 
     bool Window::isFocused()
@@ -84,17 +76,7 @@ namespace Engine
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
-    Resolution Window::getDisplayResolution()
-    {
-        return m_displayResolution;
-    }
-
-    void Window::setDisplayResolution(const Resolution& inResolution)
-    {
-        m_displayResolution = inResolution;
-    }
-
-    void Window::onResize()
+    Resolution Window::getResolution()
     {
         int currentWidth  = 0;
         int currentHeight = 0;
@@ -105,8 +87,7 @@ namespace Engine
             &currentHeight
         );
 
-        m_drawResolution.width  = currentWidth;
-        m_drawResolution.height = currentHeight;
+        return { currentWidth, currentHeight };
     }
 
     void Window::setTitle(const std::string& inTitle)
@@ -115,5 +96,124 @@ namespace Engine
             instance,
             inTitle.c_str()
         );
+    }
+    
+
+    void Window::setResolution(const Resolution& inResolution)
+    {
+        if (m_isResizable)
+        {
+            return;
+        }
+
+        SDL_SetWindowSize(
+            instance,
+            inResolution.width,
+            inResolution.height
+        );
+    }
+
+    void Window::setType(WindowType inType)
+    {
+        m_type = inType;
+
+        switch (inType)
+        {
+        case WindowType::Windowed:
+            SDL_SetWindowBordered(instance, SDL_TRUE);
+
+            if (m_isResizable)
+            {
+                enableResizing();
+
+                break;
+            }
+            
+            disableResizing();
+
+            break;
+        
+        case WindowType::WindowedBorderless:
+            disableResizing();
+
+            SDL_SetWindowBordered(instance, SDL_FALSE);
+
+            break;
+        
+        case WindowType::Fullscreen:
+            disableResizing();
+
+            SDL_SetWindowFullscreen(instance, SDL_WINDOW_FULLSCREEN);
+
+            break;
+        }
+    }
+
+    WindowType Window::getType()
+    {
+        return m_type;
+    }
+
+    bool Window::isResizable()
+    {
+        return m_isResizable;
+    }
+
+    void Window::enableResizing()
+    {
+        if (m_type != WindowType::Windowed)
+        {
+            return;
+        }
+
+        SDL_SetWindowResizable(
+            instance,
+            SDL_TRUE
+        );
+
+        m_isResizable = true;
+    }
+
+    void Window::disableResizing()
+    {
+        SDL_SetWindowResizable(
+            instance,
+            SDL_FALSE
+        );
+
+        m_isResizable = false;
+    }
+
+    bool Window::isMinimized()
+    {
+        return m_isMinimized;
+    }
+
+    void Window::onWindowEvent(const SDL_WindowEvent& inEvent)
+    {
+        switch (inEvent.event)
+        {
+        case SDL_WINDOWEVENT_MINIMIZED:
+            m_isMinimized = true;
+
+            break;
+
+        case SDL_WINDOWEVENT_EXPOSED:
+            m_isMinimized = false;
+
+            break;
+        }
+    }
+
+    void Window::onMouseClick()
+    {
+        if (!isFocused())
+        {
+            focus();
+
+            return;
+        }
+
+        blur();
     }
 }

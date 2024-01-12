@@ -61,24 +61,27 @@ namespace Engine
 
     private:
         // Render
+        void prepareSky(
+            const vk::CommandBuffer& inCommandBuffer,
+            uint32_t inImageIndex
+        );
         void drawSky(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
         );
 
-        void prepareLevel(const vk::CommandBuffer& inCommandBuffer);
-        void drawLevel(const vk::CommandBuffer& inCommandBuffer);
+        void prepareScene(
+            const vk::CommandBuffer& inCommandBuffer,
+            uint32_t inImageIndex
+        );
         void drawScene(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
         );
 
         // Window
-        void onWindowResize();
-        void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
         void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
-        void onMouseClick();
 
         // Vulkan
         void buildInstance();
@@ -181,7 +184,7 @@ namespace Engine
         vk::CommandBuffer m_mainCommandBuffer;
 
         // Frame
-        int m_maxInFlightFramesCount;
+        int m_maxInFlightImageCount;
         int m_currentImageIndex;
 
         // Mesh

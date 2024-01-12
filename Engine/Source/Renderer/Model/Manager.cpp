@@ -71,7 +71,7 @@ namespace Engine
 
             void Instance::draw(
                 const std::string& inId,
-                const vk::CommandBuffer& inCommadBuffer,
+                const vk::CommandBuffer& inCommandBuffer,
                 uint32_t inInstanceCount,
                 uint32_t inFirstInstance
             )
@@ -85,7 +85,7 @@ namespace Engine
 
                 Model::AllocationInfo& allocationInfo = foundModel->second;
 
-                inCommadBuffer.drawIndexed(
+                inCommandBuffer.drawIndexed(
                     allocationInfo.indexCount,
                     inInstanceCount,
                     allocationInfo.firstIndex,

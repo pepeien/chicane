@@ -19,6 +19,7 @@
     #define IS_DEBUGGING true
 #endif
 
+// System
 #include <algorithm>
 #include <array>
 #include <ctime>
@@ -33,16 +34,18 @@
 #include <vector>
 #include <unordered_map>
 
-#include <stb/stb_image.h>
+// Vendor
+#include "stb/stb_image.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_vulkan.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_vulkan.h"
 
-#include <vulkan/vulkan.hpp>
+#include "vulkan/vulkan.hpp"
 
+// Source
 #include "Core/FileSystem.hpp"
 #include "Core/Helper.hpp"
 #include "Core/Log.hpp"

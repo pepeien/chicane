@@ -200,15 +200,15 @@ namespace Engine
 
         void Instance::destroy()
         {
-            logicalDevice.destroyImageView(imageView);
-
             for (auto& [type, instance] : framebuffers)
             {
                 logicalDevice.destroyFramebuffer(instance);
             }
 
-            logicalDevice.destroyImage(depthImage);
+            logicalDevice.destroyImageView(imageView);
+
             logicalDevice.freeMemory(depthMemory);
+            logicalDevice.destroyImage(depthImage);
             logicalDevice.destroyImageView(depthImageView);
 
             logicalDevice.destroyFence(renderFence);

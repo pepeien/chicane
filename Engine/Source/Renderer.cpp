@@ -11,7 +11,7 @@ namespace Engine
     )
         : m_frameStats({}),
         m_swapChain({}),
-        m_maxInFlightFramesCount(0),
+        m_maxInFlightImageCount(0),
         m_currentImageIndex(0),
         m_meshVertexBuffer({}),
         m_meshIndexBuffer({}),
@@ -100,20 +100,9 @@ namespace Engine
     {
         switch (inEvent.type)
         {
-        case SDL_WINDOWEVENT:
-            onWindowEvent(inEvent.window);
-
-            break;
-
-
         case SDL_KEYDOWN:
         case SDL_KEYUP:
             onKeyboardEvent(inEvent.key);
-
-            break;
-
-        case SDL_MOUSEBUTTONDOWN:
-            onMouseClick();
 
             break;
     
@@ -131,7 +120,7 @@ namespace Engine
     {
         m_logicalDevice.waitIdle();
 
-        Frame::Instance& currentFrame = m_swapChain.frames[m_currentImageIndex];
+        Frame::Instance& currentFrame = m_swapChain.images[m_currentImageIndex];
 
         if (
             m_logicalDevice.waitForFences(
@@ -145,6 +134,27 @@ namespace Engine
             LOG_WARNING("Error while waiting the fences");
         }
 
+        vk::ResultValue<uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
+            m_swapChain.instance,
+            UINT64_MAX,
+            currentFrame.presentSemaphore,
+            nullptr
+        );
+
+        if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
+        {
+            rebuildSwapChain();
+    
+            return;
+        }
+    
+        if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
+        {
+            throw std::runtime_error("Failed to acquire swap chain image");
+        }
+        
+        uint32_t imageIndex = acquireResult.value;
+
         if (
             m_logicalDevice.resetFences(
                 1,
@@ -154,36 +164,12 @@ namespace Engine
         {
             LOG_WARNING("Error while resetting the fences");
         }
-
-        uint32_t imageIndex = 0;
-
-        try
-        {
-            imageIndex = m_logicalDevice.acquireNextImageKHR(
-                m_swapChain.instance,
-                UINT64_MAX,
-                currentFrame.presentSemaphore,
-                nullptr
-            ).value;
-        }
-        catch(vk::OutOfDateKHRError e)
-        {
-            onWindowResize();
-
-            return;
-        }
-        catch(vk::IncompatibleDisplayKHRError e)
-        {
-            onWindowResize();
-
-            return;
-        }
-
+    
         vk::CommandBuffer& commandBuffer = currentFrame.commandBuffer;
 
         commandBuffer.reset();
 
-        prepareFrame(m_swapChain.frames[imageIndex]);
+        prepareFrame(m_swapChain.images[imageIndex]);
 
         vk::CommandBufferBeginInfo beginInfo = {};
         commandBuffer.begin(beginInfo);
@@ -220,28 +206,19 @@ namespace Engine
         presentInfo.pSwapchains        = swapChains;
         presentInfo.pImageIndices      = &imageIndex;
 
-        vk::Result present;
-
-        try
-        {
-            present = m_presentQueue.presentKHR(presentInfo);
-        }
-        catch(vk::OutOfDateKHRError e)
-        {
-            present = vk::Result::eErrorOutOfDateKHR;
-        }
+        vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
         if (
-            present == vk::Result::eErrorOutOfDateKHR ||
-            present == vk::Result::eSuboptimalKHR
+            presentResult == vk::Result::eErrorOutOfDateKHR ||
+            presentResult == vk::Result::eSuboptimalKHR
         )
         {
-            onWindowResize();
+            rebuildSwapChain();
 
             return;
         }
 
-        m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightFramesCount;
+        m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightImageCount;
     }
 
     void Renderer::updateStats()
@@ -259,42 +236,23 @@ namespace Engine
         m_frameStats.count++;
     }
 
-    void Renderer::drawSky(
+    void Renderer::prepareSky(
         const vk::CommandBuffer& inCommandBuffer,
         uint32_t inImageIndex
     )
     {
-        vk::ClearValue clearColor;
-        clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
-
-        std::vector<vk::ClearValue> clearValues = {{ clearColor }};
-
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SKY);
-        renderPassBeginInfo.renderArea.offset.x = 0;
-        renderPassBeginInfo.renderArea.offset.y = 0;
-        renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
-
-        inCommandBuffer.beginRenderPass(
-            &renderPassBeginInfo,
-            vk::SubpassContents::eInline
-        );
-
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->instance
         );
-            
+
         inCommandBuffer.bindDescriptorSets(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(
                 GraphicsPipeline::Type::SKY
             )->layout,
             0,
-            m_swapChain.frames[inImageIndex].descriptorSets.at(
+            m_swapChain.images[inImageIndex].descriptorSets.at(
                 GraphicsPipeline::Type::SKY
             ),
             nullptr
@@ -308,6 +266,39 @@ namespace Engine
             )->layout
         );
 
+        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
+        inCommandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
+        inCommandBuffer.setScissor(0, 1, &scissor);
+    }
+
+    void Renderer::drawSky(
+        const vk::CommandBuffer& inCommandBuffer,
+        uint32_t inImageIndex
+    )
+    {
+        vk::ClearValue clearColor;
+        clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
+
+        std::vector<vk::ClearValue> clearValues = {{ clearColor }};
+
+        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass;
+        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SKY);
+        renderPassBeginInfo.renderArea.offset.x = 0;
+        renderPassBeginInfo.renderArea.offset.y = 0;
+        renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
+        renderPassBeginInfo.pClearValues        = clearValues.data();
+
+        inCommandBuffer.beginRenderPass(
+            &renderPassBeginInfo,
+            vk::SubpassContents::eInline
+        );
+
+        prepareSky(inCommandBuffer, inImageIndex);
+
         m_cubeMapManager->draw(
             "Sky",
             inCommandBuffer
@@ -316,8 +307,28 @@ namespace Engine
         inCommandBuffer.endRenderPass();
     }
 
-    void Renderer::prepareLevel(const vk::CommandBuffer& inCommandBuffer)
+    void Renderer::prepareScene(
+        const vk::CommandBuffer& inCommandBuffer,
+        uint32_t inImageIndex
+    )
     {
+        inCommandBuffer.bindPipeline(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->instance
+        );
+
+        inCommandBuffer.bindDescriptorSets(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicPipelines.at(
+                GraphicsPipeline::Type::SCENE
+            )->layout,
+            0,
+            m_swapChain.images[inImageIndex].descriptorSets.at(
+                GraphicsPipeline::Type::SCENE
+            ),
+            nullptr
+        );
+
         vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
 
@@ -333,24 +344,19 @@ namespace Engine
             0,
             vk::IndexType::eUint32
         );
-    }
 
-    void Renderer::drawLevel(const vk::CommandBuffer& inCommandBuffer)
-    {
-        prepareLevel(inCommandBuffer);
-
+        // TODO Change to bind all used
         m_textureManager->bind(
             "grid",
             inCommandBuffer,
             m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout
         );
 
-        m_modelManager->draw(
-            "floor",
-            inCommandBuffer,
-            1,
-            0
-        );
+        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
+        inCommandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
+        inCommandBuffer.setScissor(0, 1, &scissor);
     }
 
     void Renderer::drawScene(
@@ -368,7 +374,7 @@ namespace Engine
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.frames[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
+        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -380,48 +386,16 @@ namespace Engine
             vk::SubpassContents::eInline
         );
 
-        inCommandBuffer.bindPipeline(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->instance
-        );
+        prepareScene(inCommandBuffer, inImageIndex);
 
-        inCommandBuffer.bindDescriptorSets(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout,
-            0,
-            m_swapChain.frames[inImageIndex].descriptorSets.at(GraphicsPipeline::Type::SCENE),
-            nullptr
+        m_modelManager->draw(
+            "floor",
+            inCommandBuffer,
+            1,
+            0
         );
-
-        drawLevel(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
-    }
-
-    void Renderer::onWindowResize()
-    {
-        m_window->onResize();
-
-        if (!m_window->isOutdated())
-        {
-            return;
-        }
-
-        rebuildSwapChain();
-    }
-
-    void Renderer::onWindowEvent(const SDL_WindowEvent& inEvent)
-    {
-        switch (inEvent.event)
-        {
-        case SDL_WINDOWEVENT_RESIZED:
-            onWindowResize();
-
-            return;
-        
-        default:
-            return;
-        }
     }
 
     void Renderer::onKeyboardEvent(const SDL_KeyboardEvent& inEvent)
@@ -491,18 +465,6 @@ namespace Engine
 
         m_camera->addYaw(yaw);
         m_camera->addPitch(pitch);
-    }
-
-    void Renderer::onMouseClick()
-    {
-        if (!m_window->isFocused())
-        {
-            m_window->focus();
-
-            return;
-        }
-
-        m_window->blur();
     }
 
     void Renderer::buildInstance()
@@ -598,7 +560,7 @@ namespace Engine
             m_physicalDevice,
             m_logicalDevice,
             m_surface,
-            m_window->getDisplayResolution()
+            m_window->getResolution()
         );
 
         m_camera->setResolution(
@@ -606,21 +568,16 @@ namespace Engine
             m_swapChain.extent.height
         );
 
-        m_maxInFlightFramesCount = static_cast<int>(m_swapChain.frames.size());
-
-        for (Frame::Instance& frame : m_swapChain.frames)
-        {
-            frame.physicalDevice = m_physicalDevice;
-            frame.logicalDevice  = m_logicalDevice;
-            frame.width          = m_swapChain.extent.width;
-            frame.height         = m_swapChain.extent.height;
-
-            frame.setupDepthBuffering();
-        }
+        m_maxInFlightImageCount = static_cast<int>(m_swapChain.images.size());
     }
 
     void Renderer::rebuildSwapChain()
     {
+        if (m_window->isMinimized())
+        {
+            return;
+        }
+
         m_logicalDevice.waitIdle();
 
         destroySwapChain();
@@ -633,14 +590,16 @@ namespace Engine
 
     void Renderer::destroySwapChain()
     {
-        for (Frame::Instance& frame : m_swapChain.frames)
+        for (Frame::Instance& frame : m_swapChain.images)
         {
             frame.destroy();
         }
 
         m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
 
-        for (auto [type, instance] : m_frameDescriptors)
+        m_swapChain.images.clear();
+
+        for (auto& [type, instance] : m_frameDescriptors)
         {
             m_logicalDevice.destroyDescriptorPool(
                 instance.pool
@@ -800,7 +759,7 @@ namespace Engine
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
         createInfo.swapChainExtent       = m_swapChain.extent;
         createInfo.swapChainImageFormat  = m_swapChain.format;
-        createInfo.depthFormat           = m_swapChain.frames[0].depthFormat;
+        createInfo.depthFormat           = m_swapChain.images[0].depthFormat;
         createInfo.descriptorSetLayouts  = {
             m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
             m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout
@@ -850,7 +809,7 @@ namespace Engine
             m_swapChain.extent
         };
 
-        Frame::Buffer::init(m_swapChain.frames, createInfo);
+        Frame::Buffer::init(m_swapChain.images, createInfo);
     }
 
     void Renderer::buildCommandPool()
@@ -889,7 +848,7 @@ namespace Engine
         };
 
         Frame::Buffer::initCommand(
-            m_swapChain.frames,
+            m_swapChain.images,
             createInfo
         );
     }
@@ -933,7 +892,7 @@ namespace Engine
         // Sky
         Descriptor::PoolCreateInfo skyPoolCreateInfo;
         skyPoolCreateInfo.count = 2;
-        skyPoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
+        skyPoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.images.size());
         skyPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         skyPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
@@ -946,7 +905,7 @@ namespace Engine
         // Scene
         Descriptor::PoolCreateInfo scenePoolCreateInfo;
         scenePoolCreateInfo.count = 2;
-        scenePoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.frames.size());
+        scenePoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.images.size());
         scenePoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         scenePoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
@@ -956,7 +915,7 @@ namespace Engine
             scenePoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_swapChain.frames)
+        for (Frame::Instance& frame : m_swapChain.images)
         {
             // Sync
             frame.setupSync();

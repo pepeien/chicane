@@ -41,7 +41,7 @@ namespace Engine
                 );
                 void draw(
                     const std::string& inId,
-                    const vk::CommandBuffer& inCommadBuffer,
+                    const vk::CommandBuffer& inCommandBuffer,
                     uint32_t inInstanceCount,
                     uint32_t inFirstInstance
                 );

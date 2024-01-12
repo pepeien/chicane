@@ -12,7 +12,7 @@ namespace Engine
             void endJob(
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::Queue& inQueue,
-                const std::string& inDescription = "Commad Buffer"
+                const std::string& inDescription = "Command Buffer"
             );
         }
     }

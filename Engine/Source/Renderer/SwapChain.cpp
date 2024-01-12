@@ -20,7 +20,7 @@ namespace Engine
                 inSurface
             );
         }
-    
+
         void pickSurfaceFormat(
             vk::SurfaceFormatKHR& outSurfaceFormat,
             const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
@@ -30,7 +30,7 @@ namespace Engine
             {
                 throw std::runtime_error("There is no surface formats available");
             }
-    
+
             for (vk::SurfaceFormatKHR surfaceFormat : inSurfaceFormats)
             {
                 if (
@@ -39,14 +39,14 @@ namespace Engine
                 )
                 {
                     outSurfaceFormat = surfaceFormat;
-    
+
                     return;
                 }
             }
-    
+
             outSurfaceFormat = inSurfaceFormats[0];
         }
-    
+
         void pickPresentMode(
             vk::PresentModeKHR& outPresentMode,
             const std::vector<vk::PresentModeKHR>& inPresentModes
@@ -64,24 +64,24 @@ namespace Engine
     
                 return;
             }
-    
+
             // Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
             bool doesSupportImmediate = std::find(
                 inPresentModes.begin(),
                 inPresentModes.end(),
                 vk::PresentModeKHR::eImmediate
             ) != inPresentModes.end();
-    
+
             if (doesSupportImmediate)
             {
                 outPresentMode = vk::PresentModeKHR::eImmediate;
     
                 return;
             }
-    
+
             outPresentMode = vk::PresentModeKHR::eFifo;
         }
-    
+
         void pickExtent(
             vk::Extent2D& outExtent,
             uint32_t inWidth,
@@ -95,14 +95,14 @@ namespace Engine
     
                 return;
             }
-    
+
             outExtent.setWidth(
                 std::min(
                     inCapabilities.maxImageExtent.width,
                     std::max(inCapabilities.minImageExtent.width, inWidth)
                 )
             );
-    
+
             outExtent.setHeight(
                 std::min(
                     inCapabilities.maxImageExtent.height,
@@ -110,7 +110,7 @@ namespace Engine
                 )
             );
         }
-    
+
         void init(
             Bundle& outSwapChain,
             const vk::PhysicalDevice& inPhysicalDevice,
@@ -125,19 +125,19 @@ namespace Engine
                 inPhysicalDevice,
                 inSurface
             );
-    
+
             vk::SurfaceFormatKHR surfaceFormat;
             pickSurfaceFormat(
                 surfaceFormat,
                 supportDetails.formats
             );
-    
+
             vk::PresentModeKHR presentMode;
             pickPresentMode(
                 presentMode,
                 supportDetails.presentModes
             );
-    
+
             vk::Extent2D extent;
             pickExtent(
                 extent,
@@ -145,7 +145,7 @@ namespace Engine
                 inResolution.height,
                 supportDetails.capabilities
             );
-                
+
             uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
 
             if (supportDetails.capabilities.maxImageCount > 0)
@@ -169,7 +169,7 @@ namespace Engine
                     MAX_BUFFER_MULTIPLIER
                 );
             }
-        
+
             vk::SwapchainCreateInfoKHR createInfo = vk::SwapchainCreateInfoKHR(
                 vk::SwapchainCreateFlagsKHR(),
                 inSurface,
@@ -180,14 +180,14 @@ namespace Engine
                 1,
                 vk::ImageUsageFlagBits::eColorAttachment
             );
-    
+
             Queue::FamilyIndices familyIndices;
             Queue::findFamilyInidices(
                 familyIndices,
                 inPhysicalDevice,
                 inSurface
             );
-    
+
             createInfo.imageSharingMode = vk::SharingMode::eExclusive;
     
             if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
@@ -217,13 +217,16 @@ namespace Engine
             std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(
                 outSwapChain.instance
             );
-            outSwapChain.frames.resize(images.size());
+            outSwapChain.images.resize(images.size());
     
             for (int i = 0; i < images.size(); i++)
             {
-                Frame::Instance& frame = outSwapChain.frames[i];
-    
-                frame.image = images[i];
+                Frame::Instance& frame = outSwapChain.images[i];
+                frame.image            = images[i];
+                frame.width            = extent.width;
+                frame.height           = extent.height;
+                frame.physicalDevice   = inPhysicalDevice;
+                frame.logicalDevice    = inLogicalDevice;
 
                 Image::initView(
                     frame.imageView,
@@ -234,6 +237,8 @@ namespace Engine
                     vk::ImageViewType::e2D,
                     1
                 );
+
+                frame.setupDepthBuffering();
             }
         }
     }

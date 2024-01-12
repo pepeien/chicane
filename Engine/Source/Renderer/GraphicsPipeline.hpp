@@ -39,12 +39,15 @@ namespace Engine
 
             vk::Extent2D swapChainExtent;
             vk::Format swapChainImageFormat;
-            vk::Format depthFormat; // Optional if `hasDepth` == false
+            vk::Format depthFormat; // Optional if `hasDepth` == `false`
 
             // Depth
 
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == false
+            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == `false`
         };
+
+        vk::Viewport createViewport(const vk::Extent2D& inExtent);
+        vk::Rect2D createScissor(const vk::Extent2D& inExtent);
 
         class Instance
         {
@@ -70,6 +73,7 @@ namespace Engine
                 const vk::Viewport& inViewport,
                 const vk::Rect2D& inScissor
             );
+            vk::PipelineDynamicStateCreateInfo createDynamicState();
             vk::PipelineRasterizationStateCreateInfo createRasterizationState();
             vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
             vk::PipelineColorBlendStateCreateInfo createColorBlendState(

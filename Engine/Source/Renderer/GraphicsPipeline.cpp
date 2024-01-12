@@ -4,6 +4,29 @@ namespace Engine
 {
     namespace GraphicsPipeline
     {
+        vk::Viewport createViewport(const vk::Extent2D& inExtent)
+        {
+            vk::Viewport viewport = {};
+            viewport.x        = 0;
+            viewport.y        = 0;
+            viewport.width    = static_cast<float>(inExtent.width);
+            viewport.height   = static_cast<float>(inExtent.height);
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
+
+            return viewport;
+        }
+
+        vk::Rect2D createScissor(const vk::Extent2D& inExtent)
+        {
+            vk::Rect2D scissor = {};
+            scissor.offset.x = 0;
+            scissor.offset.y = 0;
+            scissor.extent   = inExtent;
+
+            return scissor;
+        }
+
         Instance::Instance(const CreateInfo& inCreateInfo)
             : m_canOverwrite(inCreateInfo.canOverwrite),
             m_hasVertices(inCreateInfo.hasVertices),
@@ -88,6 +111,20 @@ namespace Engine
             viewportState.pScissors     = &inScissor;
 
             return viewportState;
+        }
+
+        vk::PipelineDynamicStateCreateInfo Instance::createDynamicState()
+        {
+            std::vector<vk::DynamicState> dynamicStates = {
+                vk::DynamicState::eViewport,
+                vk::DynamicState::eScissor
+            };
+
+            vk::PipelineDynamicStateCreateInfo dynamicState = {};
+            dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
+            dynamicState.pDynamicStates    = dynamicStates.data();
+
+            return dynamicState;
         }
     
         vk::PipelineRasterizationStateCreateInfo Instance::createRasterizationState()
@@ -305,25 +342,19 @@ namespace Engine
             pipelineInfo.pInputAssemblyState = &inputAsstembyState;
 
             // Viewport
-            vk::Viewport viewport = {};
-            viewport.x        = 0;
-            viewport.y        = 0;
-            viewport.width    = static_cast<float>(m_swapChainExtent.width);
-            viewport.height   = static_cast<float>(m_swapChainExtent.height);
-            viewport.minDepth = 0.0f;
-            viewport.maxDepth = 1.0f;
-
-            vk::Rect2D scissor = {};
-            scissor.offset.x = 0;
-            scissor.offset.y = 0;
-            scissor.extent   = m_swapChainExtent;
+            vk::Viewport viewport = createViewport(m_swapChainExtent);
+            vk::Rect2D scissor = createScissor(m_swapChainExtent);
 
             vk::PipelineViewportStateCreateInfo viewportState = createViewportState(
                 viewport,
                 scissor
             );
             pipelineInfo.pViewportState = &viewportState;
-            
+
+            // Dynamic State
+            vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState();
+            pipelineInfo.pDynamicState = &dynamicState;
+
             // Shader Stage
             std::vector<vk::PipelineShaderStageCreateInfo> shaderStages = {
                 createVertexShader(

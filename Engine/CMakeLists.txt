@@ -98,6 +98,8 @@ if (WIN32)
 
         # Vendor
         ${ENGINE_INCLUDE_VULKAN_PATH}
+        ${ENGINE_INCLUDE_VULKAN_PATH}/glm
+        ${ENGINE_INCLUDE_VULKAN_PATH}/SDL2
     )
 
     target_link_directories(
@@ -117,6 +119,8 @@ if (WIN32)
         SDL2
     )
 elseif(UNIX)
+    message(STATUS "CREATING BUILD FOR UNIX")
+
     find_package(Vulkan REQUIRED FATAL_ERROR)
     find_package(glm    REQUIRED FATAL_ERROR)
     find_package(SDL2   REQUIRED FATAL_ERROR)

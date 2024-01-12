@@ -23,7 +23,7 @@ set(ENGINE_DIR "${PROJECT_SOURCE_DIR}/Engine")
 set(ENGINE_SOURCE_DIR  "${ENGINE_DIR}/Source")
 set(ENGINE_VENDOR_DIR  "${ENGINE_DIR}/Vendor")
 
-set(ENGINE_INCLUDE_STB_PATH    "${ENGINE_VENDOR_DIR}/stb")
+set(ENGINE_INCLUDE_STB_PATH "${ENGINE_VENDOR_DIR}/stb")
 
 if(WIN32)
     set(ENGINE_INCLUDE_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Include")
@@ -38,6 +38,9 @@ set(EDITOR_BUILD_DIR "${BUILD_DIR}/Editor")
 set(EDITOR_DIR "${PROJECT_SOURCE_DIR}/Editor")
 
 set(EDITOR_SOURCE_DIR "${EDITOR_DIR}/Source")
+set(EDITOR_VENDOR_DIR "${EDITOR_DIR}/Vendor")
+
+set(EDITOR_INCLUDE_IMGUI_PATH "${EDITOR_VENDOR_DIR}/imgui")
 
 ##############  Set compiler  #######################
 message(STATUS "using ${CMAKE_GENERATOR}")
