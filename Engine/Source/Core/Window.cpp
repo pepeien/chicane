@@ -33,12 +33,41 @@ namespace Engine
         }
 
         setType(inCreateInfo.type);
+
+        m_renderer = std::make_unique<Renderer>(
+            this,
+            inCreateInfo.level
+        );
     }
 
     Window::~Window()
     {
         SDL_DestroyWindow(instance);
         SDL_Quit();
+    }
+
+    void Window::run()
+    {
+        SDL_Event event;
+
+        bool shouldClose = false;
+        while (shouldClose == false)
+        {
+            while(SDL_PollEvent(&event))
+            {
+                switch (event.type)
+                {
+                case SDL_QUIT:
+                    shouldClose = true;
+
+                    break;
+                }
+
+                onEvent(event);
+            }
+
+            m_renderer->render();
+        }
     }
 
     void Window::onEvent(const SDL_Event& inEvent)

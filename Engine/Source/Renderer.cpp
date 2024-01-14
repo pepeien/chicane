@@ -9,9 +9,8 @@ namespace Engine
         Window* inWindow,
         Level* inLevel
     )
-        : m_frameStats({}),
-        m_swapChain({}),
-        m_maxInFlightImageCount(0),
+        : m_swapChain({}),
+        m_imageCount(0),
         m_currentImageIndex(0),
         m_meshVertexBuffer({}),
         m_meshIndexBuffer({}),
@@ -96,36 +95,16 @@ namespace Engine
         destroyInstance();
     }
 
-    void Renderer::onEvent(const SDL_Event& inEvent)
-    {
-        switch (inEvent.type)
-        {
-        case SDL_KEYDOWN:
-        case SDL_KEYUP:
-            onKeyboardEvent(inEvent.key);
-
-            break;
-    
-        case SDL_MOUSEMOTION:
-            onMouseMotionEvent(inEvent.motion);
-
-            break;
-
-        default:
-            break;
-        }
-    }
-
     void Renderer::render()
     {
         m_logicalDevice.waitIdle();
 
-        Frame::Instance& currentFrame = m_swapChain.images[m_currentImageIndex];
+        Frame::Instance& currentImage = m_swapChain.images[m_currentImageIndex];
 
         if (
             m_logicalDevice.waitForFences(
                 1,
-                &currentFrame.renderFence,
+                &currentImage.renderFence,
                 VK_TRUE,
                 UINT64_MAX
             ) != vk::Result::eSuccess
@@ -137,7 +116,7 @@ namespace Engine
         vk::ResultValue<uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
             m_swapChain.instance,
             UINT64_MAX,
-            currentFrame.presentSemaphore,
+            currentImage.presentSemaphore,
             nullptr
         );
 
@@ -158,14 +137,14 @@ namespace Engine
         if (
             m_logicalDevice.resetFences(
                 1,
-                &currentFrame.renderFence
+                &currentImage.renderFence
             ) != vk::Result::eSuccess
         )
         {
             LOG_WARNING("Error while resetting the fences");
         }
     
-        vk::CommandBuffer& commandBuffer = currentFrame.commandBuffer;
+        vk::CommandBuffer& commandBuffer = currentImage.commandBuffer;
 
         commandBuffer.reset();
 
@@ -179,22 +158,25 @@ namespace Engine
 
         commandBuffer.end();
 
-        vk::Semaphore waitSemaphores[]      = { currentFrame.presentSemaphore };
-        vk::Semaphore signalSemaphores[]    = { currentFrame.renderSemaphore };
+        vk::Semaphore waitSemaphores[]      = { currentImage.presentSemaphore };
+        vk::Semaphore signalSemaphores[]    = { currentImage.renderSemaphore };
         vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
 
+        std::vector<vk::CommandBuffer> commandBuffers;
+        commandBuffers.push_back(commandBuffer);
+    
         vk::SubmitInfo submitInfo = {};
         submitInfo.waitSemaphoreCount   = 1;
         submitInfo.pWaitSemaphores      = waitSemaphores;
-        submitInfo.commandBufferCount   = 1;
-        submitInfo.pCommandBuffers      = &commandBuffer;
+        submitInfo.commandBufferCount   = static_cast<uint32_t>(commandBuffers.size());
+        submitInfo.pCommandBuffers      = commandBuffers.data();
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores    = signalSemaphores;
         submitInfo.pWaitDstStageMask    = waitStages;
 
         m_graphicsQueue.submit(
             submitInfo,
-            currentFrame.renderFence
+            currentImage.renderFence
         );
 
         vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
@@ -218,22 +200,7 @@ namespace Engine
             return;
         }
 
-        m_currentImageIndex = (m_currentImageIndex + 1) % m_maxInFlightImageCount;
-    }
-
-    void Renderer::updateStats()
-    {
-        m_frameStats.currentTime = SDL_GetTicks64() / 1000;
-
-        double delta = m_frameStats.currentTime - m_frameStats.lastTime;
-
-        if (delta >= 1) {
-            m_frameStats.lastTime  = m_frameStats.currentTime;
-            m_frameStats.count     = -1;
-            m_frameStats.time      = float(1000.0 / std::max(1, int(m_frameStats.count / delta)));
-        }
-
-        m_frameStats.count++;
+        m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
     }
 
     void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
@@ -254,17 +221,17 @@ namespace Engine
 
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->instance
+            m_graphicPipelines.at(Layer::SKY)->instance
         );
 
         inCommandBuffer.bindDescriptorSets(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(
-                GraphicsPipeline::Type::SKY
+                Layer::SKY
             )->layout,
             0,
             m_swapChain.images[inImageIndex].descriptorSets.at(
-                GraphicsPipeline::Type::SKY
+                Layer::SKY
             ),
             nullptr
         );
@@ -273,7 +240,7 @@ namespace Engine
             "Sky",
             inCommandBuffer,
             m_graphicPipelines.at(
-                GraphicsPipeline::Type::SKY
+                Layer::SKY
             )->layout
         );
     }
@@ -289,8 +256,8 @@ namespace Engine
         std::vector<vk::ClearValue> clearValues = {{ clearColor }};
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SKY);
+        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(Layer::SKY)->renderPass;
+        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(Layer::SKY);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -321,17 +288,17 @@ namespace Engine
 
         inCommandBuffer.bindPipeline(
             vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->instance
+            m_graphicPipelines.at(Layer::SCENE)->instance
         );
 
         inCommandBuffer.bindDescriptorSets(
             vk::PipelineBindPoint::eGraphics,
             m_graphicPipelines.at(
-                GraphicsPipeline::Type::SCENE
+                Layer::SCENE
             )->layout,
             0,
             m_swapChain.images[inImageIndex].descriptorSets.at(
-                GraphicsPipeline::Type::SCENE
+                Layer::SCENE
             ),
             nullptr
         );
@@ -356,7 +323,7 @@ namespace Engine
         m_textureManager->bind(
             "grid",
             inCommandBuffer,
-            m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->layout
+            m_graphicPipelines.at(Layer::SCENE)->layout
         );
     }
 
@@ -374,8 +341,8 @@ namespace Engine
         std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(GraphicsPipeline::Type::SCENE);
+        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(Layer::SCENE)->renderPass;
+        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(Layer::SCENE);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
@@ -397,75 +364,6 @@ namespace Engine
         );
 
         inCommandBuffer.endRenderPass();
-    }
-
-    void Renderer::onKeyboardEvent(const SDL_KeyboardEvent& inEvent)
-    {
-        if (!m_window->isFocused())
-        {
-            return;
-        }
-
-        float cameraStepSize = 12.25;
-
-        glm::vec3 nextPosition = m_camera->getPosition();
-
-        switch (inEvent.keysym.scancode)
-        {
-        case SDL_SCANCODE_W:
-            nextPosition.x += cameraStepSize;
-
-            break;
-
-        case SDL_SCANCODE_A:
-            nextPosition.y += cameraStepSize;
-
-            break;
-
-        case SDL_SCANCODE_S:
-            nextPosition.x -= cameraStepSize;   
-
-            break;    
-
-        case SDL_SCANCODE_D:
-            nextPosition.y -= cameraStepSize;
-
-            break;
-
-        default:
-            return;
-        }
-
-        m_camera->setPosition(nextPosition);
-    }
-
-    void Renderer::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
-    {
-        if (!m_window->isFocused())
-        {
-            return;
-        }
-
-        float castedMidWidth = (float) m_swapChain.midPoints.width;
-        float yawDiff = castedMidWidth - ((float) inEvent.x);
-        yawDiff = std::clamp(
-            yawDiff,
-            -castedMidWidth,
-            castedMidWidth
-        );
-        float yaw = yawDiff / castedMidWidth;
-
-        float castedMidHeight = (float) m_swapChain.midPoints.height;
-        float pitchDiff = castedMidHeight - ((float) inEvent.y);
-        pitchDiff = std::clamp(
-            pitchDiff,
-            -castedMidHeight,
-            castedMidHeight
-        );
-        float pitch = pitchDiff / castedMidHeight;
-
-        m_camera->addYaw(yaw);
-        m_camera->addPitch(pitch);
     }
 
     void Renderer::buildInstance()
@@ -569,7 +467,7 @@ namespace Engine
             m_swapChain.extent.height
         );
 
-        m_maxInFlightImageCount = static_cast<int>(m_swapChain.images.size());
+        m_imageCount = static_cast<int>(m_swapChain.images.size());
     }
 
     void Renderer::rebuildSwapChain()
@@ -615,13 +513,13 @@ namespace Engine
         // Sky
         m_frameDescriptors.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SKY,
+                Layer::SKY,
                 defaultDescriptor
             )
         );
         m_materialDescriptors.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SKY,
+                Layer::SKY,
                 defaultDescriptor
             )
         );
@@ -629,13 +527,13 @@ namespace Engine
         // Scene
         m_frameDescriptors.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SCENE,
+                Layer::SCENE,
                 defaultDescriptor
             )
         );
         m_materialDescriptors.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SCENE,
+                Layer::SCENE,
                 defaultDescriptor
             )
         );
@@ -654,7 +552,7 @@ namespace Engine
         frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
         Descriptor::initSetLayout(
-            m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
+            m_frameDescriptors.at(Layer::SKY).setLayout,
             m_logicalDevice,
             frameLayoutBidings
         );
@@ -670,7 +568,7 @@ namespace Engine
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
-            m_materialDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
+            m_materialDescriptors.at(Layer::SKY).setLayout,
             m_logicalDevice,
             materialLayoutBidings
         );
@@ -695,7 +593,7 @@ namespace Engine
         frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
         Descriptor::initSetLayout(
-            m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+            m_frameDescriptors.at(Layer::SCENE).setLayout,
             m_logicalDevice,
             frameLayoutBidings
         );
@@ -711,7 +609,7 @@ namespace Engine
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
-            m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
+            m_materialDescriptors.at(Layer::SCENE).setLayout,
             m_logicalDevice,
             materialLayoutBidings
         );
@@ -735,13 +633,13 @@ namespace Engine
         createInfo.swapChainExtent      = m_swapChain.extent;
         createInfo.swapChainImageFormat = m_swapChain.format;
         createInfo.descriptorSetLayouts = {
-            m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
-            m_materialDescriptors.at(GraphicsPipeline::Type::SKY).setLayout
+            m_frameDescriptors.at(Layer::SKY).setLayout,
+            m_materialDescriptors.at(Layer::SKY).setLayout
         };
 
         m_graphicPipelines.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SKY,
+                Layer::SKY,
                 std::make_unique<GraphicsPipeline::Instance>(createInfo)
             )
         );
@@ -762,13 +660,13 @@ namespace Engine
         createInfo.swapChainImageFormat  = m_swapChain.format;
         createInfo.depthFormat           = m_swapChain.images[0].depthFormat;
         createInfo.descriptorSetLayouts  = {
-            m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
-            m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout
+            m_frameDescriptors.at(Layer::SCENE).setLayout,
+            m_materialDescriptors.at(Layer::SCENE).setLayout
         };
 
         m_graphicPipelines.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SCENE,
+                Layer::SCENE,
                 std::make_unique<GraphicsPipeline::Instance>(createInfo)
             )
         );
@@ -790,17 +688,17 @@ namespace Engine
 
     void Renderer::buildFramebuffers()
     {
-        std::unordered_map<GraphicsPipeline::Type, vk::RenderPass> renderPasses;
+        std::unordered_map<Layer, vk::RenderPass> renderPasses;
         renderPasses.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SKY,
-                m_graphicPipelines.at(GraphicsPipeline::Type::SKY)->renderPass
+                Layer::SKY,
+                m_graphicPipelines.at(Layer::SKY)->renderPass
             )
         );
         renderPasses.insert(
             std::make_pair(
-                GraphicsPipeline::Type::SCENE,
-                m_graphicPipelines.at(GraphicsPipeline::Type::SCENE)->renderPass
+                Layer::SCENE,
+                m_graphicPipelines.at(Layer::SCENE)->renderPass
             )
         );
 
@@ -892,26 +790,24 @@ namespace Engine
     {
         // Sky
         Descriptor::PoolCreateInfo skyPoolCreateInfo;
-        skyPoolCreateInfo.count = 2;
-        skyPoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.images.size());
+        skyPoolCreateInfo.size = static_cast<uint32_t>(m_swapChain.images.size());
         skyPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         skyPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Descriptor::initPool(
-            m_frameDescriptors.at(GraphicsPipeline::Type::SKY).pool,
+            m_frameDescriptors.at(Layer::SKY).pool,
             m_logicalDevice,
             skyPoolCreateInfo
         );
 
         // Scene
         Descriptor::PoolCreateInfo scenePoolCreateInfo;
-        scenePoolCreateInfo.count = 2;
         scenePoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.images.size());
         scenePoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         scenePoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Descriptor::initPool(
-            m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).pool,
+            m_frameDescriptors.at(Layer::SCENE).pool,
             m_logicalDevice,
             scenePoolCreateInfo
         );
@@ -928,14 +824,14 @@ namespace Engine
 
             // Sets
             frame.addDescriptorSet(
-                GraphicsPipeline::Type::SKY,
-                m_frameDescriptors.at(GraphicsPipeline::Type::SKY).setLayout,
-                m_frameDescriptors.at(GraphicsPipeline::Type::SKY).pool
+                Layer::SKY,
+                m_frameDescriptors.at(Layer::SKY).setLayout,
+                m_frameDescriptors.at(Layer::SKY).pool
             );
             frame.addDescriptorSet(
-                GraphicsPipeline::Type::SCENE,
-                m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
-                m_frameDescriptors.at(GraphicsPipeline::Type::SCENE).pool
+                Layer::SCENE,
+                m_frameDescriptors.at(Layer::SCENE).setLayout,
+                m_frameDescriptors.at(Layer::SCENE).pool
             );
             frame.setupDescriptorSets();
         }
@@ -945,24 +841,22 @@ namespace Engine
     {
         // Sky
         Descriptor::PoolCreateInfo skyPoolCreateInfo;
-        skyPoolCreateInfo.count = 1;
         skyPoolCreateInfo.size  = 1;
         skyPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
-            m_materialDescriptors.at(GraphicsPipeline::Type::SKY).pool,
+            m_materialDescriptors.at(Layer::SKY).pool,
             m_logicalDevice,
             skyPoolCreateInfo
         );
 
         // Scene
         Descriptor::PoolCreateInfo scenePoolCreateInfo;
-        scenePoolCreateInfo.count = 1;
-        scenePoolCreateInfo.size  = m_textureManager->getCount();
+        scenePoolCreateInfo.size = m_textureManager->getCount();
         scenePoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
-            m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).pool,
+            m_materialDescriptors.at(Layer::SCENE).pool,
             m_logicalDevice,
             scenePoolCreateInfo
         );
@@ -994,10 +888,10 @@ namespace Engine
             m_mainCommandBuffer,
             m_graphicsQueue,
             m_materialDescriptors.at(
-                GraphicsPipeline::Type::SKY
+                Layer::SKY
             ).setLayout,
             m_materialDescriptors.at(
-                GraphicsPipeline::Type::SKY
+                Layer::SKY
             ).pool
         );
     }
@@ -1038,8 +932,8 @@ namespace Engine
             m_physicalDevice,
             m_mainCommandBuffer,
             m_graphicsQueue,
-            m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).setLayout,
-            m_materialDescriptors.at(GraphicsPipeline::Type::SCENE).pool
+            m_materialDescriptors.at(Layer::SCENE).setLayout,
+            m_materialDescriptors.at(Layer::SCENE).pool
         );
     }
 

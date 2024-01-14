@@ -6,8 +6,6 @@
 #include "Image.hpp"
 #include "Frame/Instance.hpp"
 
-#include "Core/Window.hpp"
-
 namespace Engine
 {
     namespace SwapChain

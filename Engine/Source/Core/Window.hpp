@@ -2,14 +2,11 @@
 
 #include "Base.hpp"
 
+#include "Game.hpp"
+#include "Renderer.hpp"
+
 namespace Engine
 {
-    struct Resolution
-    {
-        int width  = -1;
-        int height = -1;
-    };
-
     enum class WindowType
     {
         Windowed,
@@ -24,6 +21,7 @@ namespace Engine
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
         bool isResizable      = true; // Only takes effect when the type is `WindowType::Windowed`
+        Level* level          = nullptr;
     };
 
     class Window
@@ -33,6 +31,8 @@ namespace Engine
         ~Window();
 
     public:
+        void run();
+
         void onEvent(const SDL_Event& inEvent);
 
         bool isFocused();
@@ -61,11 +61,12 @@ namespace Engine
         void onMouseClick();
 
     private:
-        // Properties
         WindowType m_type;
 
         bool m_isFocused;
         bool m_isResizable;
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
+
+        std::unique_ptr<Renderer> m_renderer;
     };
 }

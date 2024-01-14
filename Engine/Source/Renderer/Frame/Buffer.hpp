@@ -16,7 +16,7 @@ namespace Engine
             {
                 vk::Device logicalDevice;
                 std::unordered_map<
-                    GraphicsPipeline::Type,
+                    Layer,
                     vk::RenderPass
                 > renderPasses;
                 vk::Extent2D swapChainExtent;

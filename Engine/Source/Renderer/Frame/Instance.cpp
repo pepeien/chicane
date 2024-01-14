@@ -142,7 +142,7 @@ namespace Engine
         }
     
         void Instance::addDescriptorSet(
-            GraphicsPipeline::Type inType,
+            Layer inType,
             const vk::DescriptorSetLayout& inLayout,
             const vk::DescriptorPool& inPool
         )
@@ -159,7 +159,7 @@ namespace Engine
         {
             // Sky
             vk::WriteDescriptorSet cameraVectorWriteInfo;
-            cameraVectorWriteInfo.dstSet          = descriptorSets.at(GraphicsPipeline::Type::SKY);
+            cameraVectorWriteInfo.dstSet          = descriptorSets.at(Layer::SKY);
             cameraVectorWriteInfo.dstBinding      = 0;
             cameraVectorWriteInfo.dstArrayElement = 0;
             cameraVectorWriteInfo.descriptorCount = 1;
@@ -168,7 +168,7 @@ namespace Engine
 
             // Scene
             vk::WriteDescriptorSet cameraMatrixWriteInfo;
-            cameraMatrixWriteInfo.dstSet          = descriptorSets.at(GraphicsPipeline::Type::SCENE);
+            cameraMatrixWriteInfo.dstSet          = descriptorSets.at(Layer::SCENE);
             cameraMatrixWriteInfo.dstBinding      = 0;
             cameraMatrixWriteInfo.dstArrayElement = 0;
             cameraMatrixWriteInfo.descriptorCount = 1;
@@ -176,7 +176,7 @@ namespace Engine
             cameraMatrixWriteInfo.pBufferInfo     = &cameraMatrixDescriptorBufferInfo;
 
             vk::WriteDescriptorSet modelWriteInfo;
-            modelWriteInfo.dstSet          = descriptorSets.at(GraphicsPipeline::Type::SCENE);
+            modelWriteInfo.dstSet          = descriptorSets.at(Layer::SCENE);
             modelWriteInfo.dstBinding      = 1;
             modelWriteInfo.dstArrayElement = 0;
             modelWriteInfo.descriptorCount = 1;

@@ -46,25 +46,19 @@ namespace Engine
     class Renderer
     {
     public:
-        Renderer(
-            Window* inWindow,
-            Level* inLevel
-        );
+        Renderer(Window* inWindow, Level* inLevel);
         ~Renderer();
 
     public:
-        void onEvent(const SDL_Event& inEvent);
-
         void render();
 
-        void updateStats();
-
-    private:
-        // Render
+    public:
+        // Viewport
         void updateViewport(
             const vk::CommandBuffer& inCommandBuffer
         );
 
+        // Sky
         void prepareSky(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
@@ -74,6 +68,7 @@ namespace Engine
             uint32_t inImageIndex
         );
 
+        // Scene
         void prepareScene(
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
@@ -82,10 +77,6 @@ namespace Engine
             const vk::CommandBuffer& inCommandBuffer,
             uint32_t inImageIndex
         );
-
-        // Window
-        void onKeyboardEvent(const SDL_KeyboardEvent& inEvent);
-        void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
 
         // Vulkan
         void buildInstance();
@@ -144,10 +135,7 @@ namespace Engine
 
         void buildMaterialResources();
 
-    private:
-        // Stats
-        Frame::Stats m_frameStats;
-
+    public:
         // Instance
         vk::Instance m_instance;
         vk::DispatchLoaderDynamic m_dldi;
@@ -169,17 +157,17 @@ namespace Engine
 
         // Graphics Pipline
         std::unordered_map<
-            GraphicsPipeline::Type,
+            Layer,
             std::unique_ptr<GraphicsPipeline::Instance>
         > m_graphicPipelines;
 
         std::unordered_map<
-            GraphicsPipeline::Type,
+            Layer,
             Descriptor::Bundle
         > m_frameDescriptors;
 
         std::unordered_map<
-            GraphicsPipeline::Type,
+            Layer,
             Descriptor::Bundle
         > m_materialDescriptors;
 
@@ -188,7 +176,7 @@ namespace Engine
         vk::CommandBuffer m_mainCommandBuffer;
 
         // Frame
-        int m_maxInFlightImageCount;
+        int m_imageCount;
         int m_currentImageIndex;
 
         // Mesh

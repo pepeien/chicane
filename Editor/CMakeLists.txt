@@ -8,14 +8,6 @@ file(
     SOURCES
 
     ${SOURCES_DIR}/**.cpp
-
-    # Vendor
-    ${EDITOR_INCLUDE_IMGUI_PATH}/imgui.cpp
-    ${EDITOR_INCLUDE_IMGUI_PATH}/imgui_draw.cpp
-    ${EDITOR_INCLUDE_IMGUI_PATH}/imgui_tables.cpp
-    ${EDITOR_INCLUDE_IMGUI_PATH}/imgui_widgets.cpp
-    ${EDITOR_INCLUDE_IMGUI_PATH}/backends/imgui_impl_sdl2.cpp
-    ${EDITOR_INCLUDE_IMGUI_PATH}/backends/imgui_impl_vulkan.cpp
 )
 
 add_executable(${TARGET_NAME} ${SOURCES})
@@ -64,10 +56,6 @@ target_include_directories(
 
     # Engine
     ${ENGINE_SOURCE_DIR}
-
-    # Vendor
-    ${EDITOR_INCLUDE_IMGUI_PATH}
-    ${EDITOR_INCLUDE_IMGUI_PATH}/backends
 )
 
 target_link_libraries(

@@ -16,6 +16,7 @@ namespace Engine
                 vk::CommandPool commandPool;
             };
 
+            void init(std::vector<vk::CommandBuffer>& outCommandBuffers, const CreateInfo& inCreateInfo);
             void init(vk::CommandBuffer& outCommandBuffer, const CreateInfo& inCreateInfo);
         }
     }

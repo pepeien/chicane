@@ -9,12 +9,51 @@ namespace Engine
 {
     namespace GraphicsPipeline
     {
+        vk::Viewport createViewport(const vk::Extent2D& inExtent);
+        vk::Rect2D createScissor(const vk::Extent2D& inExtent);
+        vk::PipelineShaderStageCreateInfo createVertexShader(
+            const vk::ShaderModule& inShaderModule
+        );
+        vk::PipelineShaderStageCreateInfo createFragmentShader(
+            const vk::ShaderModule& inShaderModule
+        );
+        vk::PipelineVertexInputStateCreateInfo createVertexInputState(
+            bool isHasVertices,
+            const vk::VertexInputBindingDescription& inBindingDescription,
+            const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
+        );
+        vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
+        vk::PipelineViewportStateCreateInfo createViewportState(
+            const vk::Viewport& inViewport,
+            const vk::Rect2D& inScissor
+        );
+        vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates);
+        vk::PipelineRasterizationStateCreateInfo createRasterizationState();
+        vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
+        vk::PipelineColorBlendStateCreateInfo createColorBlendState(
+            const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState
+        );
+        vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
 
-        enum class Type
-        {
-            SKY,
-            SCENE
-        };
+        vk::PipelineLayout createLayout(
+            const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
+            const vk::Device& inLogicalDevice
+        );
+        vk::AttachmentDescription createColorAttachment(
+            vk::Format inFormat,
+            vk::AttachmentLoadOp inLoadOp,
+            vk::ImageLayout inInitialLayout
+        );
+        vk::AttachmentReference createColorAttachmentRef();
+        vk::SubpassDependency createColorSubpassDepedency();
+        vk::AttachmentDescription createDepthAttachment(const vk::Format& inFormat);
+        vk::AttachmentReference createDepthAttachmentRef();
+        vk::SubpassDependency createDepthSubpassDepedency();
+        vk::RenderPass createRendepass(
+            bool inHasDepth,
+            const std::vector<vk::AttachmentDescription>& inAttachments,
+            const vk::Device& inLogicalDevice
+        );
 
         struct CreateInfo
         {
@@ -46,9 +85,6 @@ namespace Engine
             std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == `false`
         };
 
-        vk::Viewport createViewport(const vk::Extent2D& inExtent);
-        vk::Rect2D createScissor(const vk::Extent2D& inExtent);
-
         class Instance
         {
         public:
@@ -61,35 +97,6 @@ namespace Engine
             vk::Pipeline instance;
 
         private:
-            vk::PipelineShaderStageCreateInfo createVertexShader(
-                const vk::ShaderModule& inShaderModule
-            );
-            vk::PipelineShaderStageCreateInfo createFragmentShader(
-                const vk::ShaderModule& inShaderModule
-            );
-            vk::PipelineVertexInputStateCreateInfo createVertexInputState();
-            vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
-            vk::PipelineViewportStateCreateInfo createViewportState(
-                const vk::Viewport& inViewport,
-                const vk::Rect2D& inScissor
-            );
-            vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates);
-            vk::PipelineRasterizationStateCreateInfo createRasterizationState();
-            vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-            vk::PipelineColorBlendStateCreateInfo createColorBlendState(
-                const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState
-            );
-            vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
-
-            vk::PipelineLayout createLayout();
-            vk::AttachmentDescription createColorAttachment();
-            vk::AttachmentReference createColorAttachmentRef();
-            vk::SubpassDependency createColorSubpassDepedency();
-            vk::AttachmentDescription createDepthAttachment();
-            vk::AttachmentReference createDepthAttachmentRef();
-            vk::SubpassDependency createDepthSubpassDepedency();
-            vk::RenderPass createRendepass();
-
             void init();
 
         private:

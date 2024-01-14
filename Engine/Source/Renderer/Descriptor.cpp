@@ -12,7 +12,7 @@ namespace Engine
         {
             std::vector<vk::DescriptorPoolSize> poolSizes;
             
-            for (uint32_t i = 0; i < inCreateInfo.count; i++)
+            for (uint32_t i = 0; i < inCreateInfo.types.size(); i++)
             {
                 vk::DescriptorPoolSize poolSize;
                 poolSize.type            = inCreateInfo.types[i];

@@ -38,9 +38,6 @@ set(EDITOR_BUILD_DIR "${BUILD_DIR}/Editor")
 set(EDITOR_DIR "${PROJECT_SOURCE_DIR}/Editor")
 
 set(EDITOR_SOURCE_DIR "${EDITOR_DIR}/Source")
-set(EDITOR_VENDOR_DIR "${EDITOR_DIR}/Vendor")
-
-set(EDITOR_INCLUDE_IMGUI_PATH "${EDITOR_VENDOR_DIR}/imgui")
 
 ##############  Set compiler  #######################
 message(STATUS "using ${CMAKE_GENERATOR}")

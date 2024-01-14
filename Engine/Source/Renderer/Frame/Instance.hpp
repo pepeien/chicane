@@ -36,7 +36,7 @@ namespace Engine
             void setupDepthBuffering();
 
             void addDescriptorSet(
-                GraphicsPipeline::Type inType,
+                Layer inType,
                 const vk::DescriptorSetLayout& inLayout,
                 const vk::DescriptorPool& inPool
             );
@@ -55,7 +55,7 @@ namespace Engine
 
             vk::Image image;
             vk::ImageView imageView;
-            std::unordered_map<GraphicsPipeline::Type, vk::Framebuffer> framebuffers;
+            std::unordered_map<Layer, vk::Framebuffer> framebuffers;
 
             vk::Image depthImage;
             vk::ImageView depthImageView;
@@ -79,7 +79,7 @@ namespace Engine
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
             std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
-            std::unordered_map<GraphicsPipeline::Type, vk::DescriptorSet> descriptorSets;
+            std::unordered_map<Layer, vk::DescriptorSet> descriptorSets;
         };
     }
 }

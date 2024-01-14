@@ -23,7 +23,7 @@ namespace Engine
 
                 vk::FramebufferCreateInfo skyFramebufferInfo = {};
                 skyFramebufferInfo.flags           = vk::FramebufferCreateFlags();
-                skyFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(GraphicsPipeline::Type::SKY);
+                skyFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(Layer::SKY);
                 skyFramebufferInfo.attachmentCount = static_cast<uint32_t>(skyAttachments.size());
                 skyFramebufferInfo.pAttachments    = skyAttachments.data();
                 skyFramebufferInfo.width           = inCreateInfo.swapChainExtent.width;
@@ -31,7 +31,7 @@ namespace Engine
                 skyFramebufferInfo.layers          = 1;
 
                 vk::Framebuffer skyFrameBuffer = inCreateInfo.logicalDevice.createFramebuffer(skyFramebufferInfo);
-                outFrame.framebuffers[GraphicsPipeline::Type::SKY] = skyFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
+                outFrame.framebuffers[Layer::SKY] = skyFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
 
                 // Scene
                 std::vector<vk::ImageView> sceneAttachments = {
@@ -41,7 +41,7 @@ namespace Engine
 
                 vk::FramebufferCreateInfo sceneFramebufferInfo = {};
                 sceneFramebufferInfo.flags           = vk::FramebufferCreateFlags();
-                sceneFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(GraphicsPipeline::Type::SCENE);
+                sceneFramebufferInfo.renderPass      = inCreateInfo.renderPasses.at(Layer::SCENE);
                 sceneFramebufferInfo.attachmentCount = static_cast<uint32_t>(sceneAttachments.size());
                 sceneFramebufferInfo.pAttachments    = sceneAttachments.data();
                 sceneFramebufferInfo.width           = inCreateInfo.swapChainExtent.width;
@@ -49,7 +49,7 @@ namespace Engine
                 sceneFramebufferInfo.layers          = 1;
 
                 vk::Framebuffer sceneFrameBuffer = inCreateInfo.logicalDevice.createFramebuffer(sceneFramebufferInfo);
-                outFrame.framebuffers[GraphicsPipeline::Type::SCENE] = sceneFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
+                outFrame.framebuffers[Layer::SCENE] = sceneFrameBuffer; // Used bracket insert due to vulkan not being able to access framebuffer mem addr
             }
 
             void initCommand(

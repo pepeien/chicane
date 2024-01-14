@@ -8,7 +8,6 @@ namespace Engine
     {
         struct PoolCreateInfo
         {
-            uint32_t count;
             uint32_t size;
             std::vector<vk::DescriptorType> types;
         };

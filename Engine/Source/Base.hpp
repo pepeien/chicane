@@ -24,6 +24,7 @@
 #include <array>
 #include <ctime>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -59,3 +60,18 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
 };
 
 static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
+
+namespace Engine
+{
+    struct Resolution
+    {
+        int width  = -1;
+        int height = -1;
+    };
+
+    enum class Layer
+    {
+        SKY,
+        SCENE
+    };
+}
