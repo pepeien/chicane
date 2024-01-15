@@ -410,11 +410,15 @@ namespace Engine
             pipelineInfo.pColorBlendState = &colorBlendState;
 
             // Depthning
+
+            vk::PipelineDepthStencilStateCreateInfo depthStencilState;
+
             if (m_hasDepth)
             {
-                vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
-                pipelineInfo.pDepthStencilState = &depthStencilState;
+                depthStencilState = createDepthStencilState();
             }
+
+            pipelineInfo.pDepthStencilState = &depthStencilState;
 
             layout = createLayout(
                 m_descriptorSetLayouts,
