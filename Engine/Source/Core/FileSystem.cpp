@@ -8,12 +8,19 @@ namespace Engine
         {
             std::string rootDir()
             {
-                return ENGINE_DIR;
+                std::string installLocation = std::getenv(ENGINE_ENV_VARIABALE.c_str());
+
+                if (installLocation.empty())
+                {
+                    throw std::runtime_error("Engine install location is invalid");
+                }
+
+                return installLocation;
             }
 
             std::string contentDir()
             {
-                return rootDir() + "Content/";
+                return rootDir() + "/Content/";
             }
         }
 

@@ -628,8 +628,8 @@ namespace Engine
         createInfo.hasVertices          = false;
         createInfo.hasDepth             = false;
         createInfo.logicalDevice        = m_logicalDevice;
-        createInfo.vertexShaderPath     = FileSystem::Paths::contentDir() + "Shaders/sky.vert.spv";
-        createInfo.fragmentShaderPath   = FileSystem::Paths::contentDir() + "Shaders/sky.frag.spv";
+        createInfo.vertexShaderPath     = FileSystem::Paths::rootDir() + "/Shaders/sky.vert.spv";
+        createInfo.fragmentShaderPath   = FileSystem::Paths::rootDir() + "/Shaders/sky.frag.spv";
         createInfo.swapChainExtent      = m_swapChain.extent;
         createInfo.swapChainImageFormat = m_swapChain.format;
         createInfo.descriptorSetLayouts = {
@@ -652,8 +652,8 @@ namespace Engine
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
         createInfo.logicalDevice         = m_logicalDevice;
-        createInfo.vertexShaderPath      = FileSystem::Paths::contentDir() + "Shaders/triangle.vert.spv";
-        createInfo.fragmentShaderPath    = FileSystem::Paths::contentDir() + "Shaders/triangle.frag.spv";
+        createInfo.vertexShaderPath      = FileSystem::Paths::rootDir() + "/Shaders/triangle.vert.spv";
+        createInfo.fragmentShaderPath    = FileSystem::Paths::rootDir() + "/Shaders/triangle.frag.spv";
         createInfo.bindingDescription    = Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
         createInfo.swapChainExtent       = m_swapChain.extent;

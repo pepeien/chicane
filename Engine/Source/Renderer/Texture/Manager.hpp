@@ -8,6 +8,14 @@ namespace Engine
 {
     namespace Texture
     {
+        enum class Vendor
+        {
+            // N/A
+            Undefined,
+            // .png
+            Png
+        };
+
         namespace Manager
         {
             class Instance

@@ -6,12 +6,7 @@
 #define SDL_MAIN_HANDLED
 
 #define APPLICATION_NAME "Chicane Engine"
-
-#define ENGINE_NAME         "Chicane"
-#define ENGINE_DIR          "../Engine/"
-#define ENGINE_MODELS_DIR   "Content/Models/"
-#define ENGINE_SHADERS_DIR  "Content/Shaders/"
-#define ENGINE_TEXTURES_DIR "Content/Textures/"
+#define ENGINE_NAME      "Chicane"
 
 #ifdef NDEBUG
     #define IS_DEBUGGING false
@@ -22,6 +17,7 @@
 // System
 #include <algorithm>
 #include <array>
+#include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <functional>
@@ -46,11 +42,7 @@
 
 #include "vulkan/vulkan.hpp"
 
-// Source
-#include "Core/FileSystem.hpp"
-#include "Core/Helper.hpp"
-#include "Core/Log.hpp"
-
+// Consts
 static const std::vector<const char*> VALIDATION_LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
@@ -59,7 +51,14 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
+static const std::string ENGINE_ENV_VARIABALE = "CHICANE_SDK";
+
 static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
+
+// Source
+#include "Core/FileSystem.hpp"
+#include "Core/Helper.hpp"
+#include "Core/Log.hpp"
 
 namespace Engine
 {

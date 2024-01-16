@@ -1,5 +1,7 @@
 #include "Window.hpp"
 
+#include "Pak.hpp"
+
 namespace Engine
 {
     Window::Window(const WindowCreateInfo& inCreateInfo)
@@ -238,6 +240,27 @@ namespace Engine
     {
         if (!isFocused())
         {
+            Pak::WriteInfo pakWriteInfo;
+            pakWriteInfo.name = "Debug";
+            pakWriteInfo.type = static_cast<uint8_t>(Pak::Type::Mesh);
+            pakWriteInfo.outputPath = "./Content/Meshes/";
+
+            Pak::WriteEntry modelEntry;
+            modelEntry.type     = static_cast<uint8_t>(Pak::EntryType::Model);
+            modelEntry.vendor   = static_cast<uint8_t>(Model::Vendor::Wavefront);
+            modelEntry.filePath = FileSystem::Paths::contentDir() + "Models/air_craft.obj";
+            pakWriteInfo.entries.push_back(modelEntry);
+
+            Pak::WriteEntry textureEntry;
+            textureEntry.type     = static_cast<uint8_t>(Pak::EntryType::Texture);
+            textureEntry.vendor   = static_cast<uint8_t>(Texture::Vendor::Png);
+            textureEntry.filePath = FileSystem::Paths::contentDir() + "Textures/Base/grid.png";
+            pakWriteInfo.entries.push_back(textureEntry);
+
+            Pak::write(pakWriteInfo);
+
+            Pak::Instance debugPak = Pak::read("./Content/Meshes/Debug.pak");
+
             focus();
 
             return;

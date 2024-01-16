@@ -2,18 +2,11 @@
 set(TARGET_NAME "${ENGINE_TARGET_NAME}")
 set(SOURCES_DIR "${ENGINE_SOURCE_DIR}")
 
-# Content
-set(ENGINE_CONTENT_BUILD_DIR   "${ENGINE_BUILD_DIR}/Content")
-
-set(ENGINE_CONTENT_SOURCES_DIR "${ENGINE_DIR}/Content")
-
-set(ENGINE_MODELS_TARGET_NAME   "Models")
+# Shader
 set(ENGINE_SHADERS_TARGET_NAME  "Shaders")
-set(ENGINE_TEXTURES_TARGET_NAME "Textures")
 
-set(ENGINE_MODELS_SOURCE_DIR   "${ENGINE_CONTENT_SOURCES_DIR}/Models")
-set(ENGINE_SHADERS_SOURCE_DIR  "${ENGINE_CONTENT_SOURCES_DIR}/Shaders")
-set(ENGINE_TEXTURES_SOURCE_DIR "${ENGINE_CONTENT_SOURCES_DIR}/Textures")
+set(ENGINE_SHADERS_SOURCE_DIR "${ENGINE_DIR}/Shaders")
+set(ENGINE_SHADER_BUILD_DIR   "${ENGINE_BUILD_DIR}/Shaders")
 
 ##############  Set source files  #######################
 file(
@@ -62,7 +55,11 @@ set_property(
 
 ############## Linking Libs  #######################
 
-find_package(Vulkan REQUIRED FATAL_ERROR)
+find_package(Vulkan REQUIRED)
+
+if (NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Vulkan not found")
+endif()
 
 target_include_directories(
     ${TARGET_NAME}
@@ -121,8 +118,8 @@ if (WIN32)
 elseif(UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")
 
-    find_package(glm    REQUIRED FATAL_ERROR)
-    find_package(SDL2   REQUIRED FATAL_ERROR)
+    find_package(glm  REQUIRED)
+    find_package(SDL2 REQUIRED)
 
     target_link_libraries(
         ${TARGET_NAME}
@@ -135,6 +132,4 @@ elseif(UNIX)
     )
 endif()
 
-add_subdirectory(Content/Models)
-add_subdirectory(Content/Shaders)
-add_subdirectory(Content/Textures)
+add_subdirectory(Shaders)

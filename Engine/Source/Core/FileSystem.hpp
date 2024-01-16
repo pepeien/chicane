@@ -2,8 +2,6 @@
 
 #include "Base.hpp"
 
-#include "File/Pak.hpp"
-
 namespace Engine
 {
     namespace FileSystem
