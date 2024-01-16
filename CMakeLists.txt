@@ -25,22 +25,8 @@ set(ENGINE_VENDOR_DIR  "${ENGINE_DIR}/Vendor")
 
 set(ENGINE_INCLUDE_STB_PATH "${ENGINE_VENDOR_DIR}/stb")
 
-if(WIN32)
-    set(ENGINE_INCLUDE_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Include")
-    set(ENGINE_LIBRARY_VULKAN_PATH "${ENGINE_VENDOR_DIR}/vulkan/Lib")
-endif()
-
-# Editor
-set(EDITOR_TARGET_NAME "Editor")
-
-set(EDITOR_BUILD_DIR "${BUILD_DIR}/Editor")
-
-set(EDITOR_DIR "${PROJECT_SOURCE_DIR}/Editor")
-
-set(EDITOR_SOURCE_DIR "${EDITOR_DIR}/Source")
-
 ##############  Set compiler  #######################
-message(STATUS "using ${CMAKE_GENERATOR}")
+message(STATUS "Using ${CMAKE_GENERATOR}")
 
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
@@ -55,4 +41,3 @@ endif()
 ##############  Add subdirectories  #######################
 
 add_subdirectory(Engine)
-add_subdirectory(Editor)

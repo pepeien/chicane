@@ -62,6 +62,8 @@ set_property(
 
 ############## Linking Libs  #######################
 
+find_package(Vulkan REQUIRED FATAL_ERROR)
+
 target_include_directories(
     ${TARGET_NAME}
     PUBLIC
@@ -97,17 +99,15 @@ if (WIN32)
         PUBLIC
 
         # Vendor
-        ${ENGINE_INCLUDE_VULKAN_PATH}
-        ${ENGINE_INCLUDE_VULKAN_PATH}/glm
-        ${ENGINE_INCLUDE_VULKAN_PATH}/SDL2
+        ${Vulkan_INCLUDE_DIRS}
     )
 
     target_link_directories(
         ${TARGET_NAME}
         PUBLIC
 
-        # Vendor
-        ${ENGINE_LIBRARY_VULKAN_PATH}
+        # Vulkan
+        $ENV{VULKAN_SDK}/Lib
     )
 
     target_link_libraries(
@@ -121,7 +121,6 @@ if (WIN32)
 elseif(UNIX)
     message(STATUS "CREATING BUILD FOR UNIX")
 
-    find_package(Vulkan REQUIRED FATAL_ERROR)
     find_package(glm    REQUIRED FATAL_ERROR)
     find_package(SDL2   REQUIRED FATAL_ERROR)
 
