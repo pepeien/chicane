@@ -66,7 +66,7 @@ namespace Engine
         public:
             uint8_t type;
             uint8_t vendor;
-            std::vector<char> data;
+            std::vector<unsigned char> data;
 
         public:
             void parse(const std::string& inRawData);

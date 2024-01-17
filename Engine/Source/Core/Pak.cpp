@@ -52,26 +52,24 @@ namespace Engine
 
         void Entry::parse(const std::string& inRawData)
         {
-            std::vector<std::string> splittedEntryHeader = Helper::splitString(
+            std::vector<std::string> splittedEntry = Helper::splitString(
                 inRawData,
+                "DATA"
+            );
+            std::vector<std::string> splittedEntryHeader = Helper::splitString(
+                splittedEntry[0],
                 ";"
             );
+            std::string entryData = splittedEntry[1];
 
             type   = static_cast<uint8_t>(std::stoi(splittedEntryHeader[0]));
             vendor = static_cast<uint8_t>(std::stoi(splittedEntryHeader[1]));
-
-            std::string compiledData = "";
-            for (uint32_t j = 2; j < splittedEntryHeader.size(); j++)
-            {
-                compiledData += splittedEntryHeader[j];
-            }
-
-            data = std::vector<char>(compiledData.begin(), compiledData.end());
+            data   = std::vector<unsigned char>(entryData.begin(), entryData.end());
         }
 
         Instance read(const std::string& inFilePath)
         {
-            std::vector<char> data                = FileSystem::readFile(inFilePath);
+            std::vector<char> data = FileSystem::readFile(inFilePath);
             std::vector<std::string> splittedData = Helper::splitString(
                 std::string(data.begin(), data.end()),
                 "ENTRY"
@@ -107,9 +105,7 @@ namespace Engine
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + ".pak";
             rootHeader.entryCount = inWriteInfo.entries.size();
 
-            std::ofstream file;
-
-            file.open(rootHeader.filePath);
+            std::ofstream file(rootHeader.filePath, std::ios::out | std::ios::binary);
 
             file << rootHeader.toString();
 
@@ -119,38 +115,11 @@ namespace Engine
                 entryHeader.type     = entry.type;
                 entryHeader.vendor   = entry.vendor;
 
-                if (entry.type == static_cast<uint8_t>(EntryType::Model))
-                {
-                    std::vector<char> sourceData = FileSystem::readFile(entry.filePath);
+                std::vector<char> rawData = FileSystem::readFile(entry.filePath);
 
-                    file << entryHeader.toString();
-                    file << std::string(sourceData.begin(), sourceData.end());
-
-                    continue;
-                }
-
-                if (entry.type == static_cast<uint8_t>(EntryType::Texture))
-                {
-                    int width = 0;
-                    int height = 0;
-                    int channels = 0;
-
-                    std::string sourceData = std::string(
-                        reinterpret_cast<char*>(
-                            FileSystem::readImage(
-                                width,
-                                height,
-                                channels,
-                                entry.filePath
-                            )
-                        )
-                    );
-
-                    file << entryHeader.toString();
-                    file << sourceData;
-
-                    continue;
-                }
+                file << entryHeader.toString();
+                file << "DATA";
+                file << std::string(rawData.begin(), rawData.end());
             }
 
             file.close();

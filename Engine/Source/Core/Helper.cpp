@@ -5,7 +5,7 @@ namespace Engine
     namespace Helper
     {
         std::vector<std::string> splitString(
-            const std::vector<char>& inTarget,
+            const std::vector<unsigned char>& inTarget,
             const std::string& inDelimiter
         )
         {

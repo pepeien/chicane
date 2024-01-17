@@ -8,7 +8,9 @@ namespace Engine
         {
             std::string rootDir()
             {
-                std::string installLocation = std::getenv(ENGINE_ENV_VARIABALE.c_str());
+                std::string installLocation = std::string(
+                    std::getenv(ENGINE_ENV_VARIABALE.c_str())
+                ) + "/Bin/Engine";
 
                 if (installLocation.empty())
                 {
@@ -43,7 +45,7 @@ namespace Engine
             return buffer;
         }
 
-        stbi_uc* readImage(
+        stbi_uc* readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
@@ -60,9 +62,31 @@ namespace Engine
 
             if (result == nullptr)
             {
-                throw std::runtime_error(
-                    "Failed to load the pixels for " + inFilepath
-                );
+                throw std::runtime_error(stbi_failure_reason());
+            }
+
+            return result;
+        }
+
+        stbi_uc* readImageFromMemory(
+            int& outWidth,
+            int& outHeight,
+            int& outChannel,
+            const std::vector<unsigned char>& inData
+        )
+        {
+            stbi_uc* result = stbi_load_from_memory(
+                &inData[0],
+                inData.size(),
+                &outWidth,
+                &outHeight,
+                &outChannel,
+                STBI_rgb_alpha
+            );
+
+            if (result == nullptr)
+            {
+                throw std::runtime_error(stbi_failure_reason());
             }
 
             return result;

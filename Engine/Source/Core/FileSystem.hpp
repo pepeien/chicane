@@ -13,11 +13,17 @@ namespace Engine
         };
 
         std::vector<char> readFile(const std::string& inFilepath);
-        stbi_uc* readImage(
+        stbi_uc* readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             const std::string& inFilepath
+        );
+        stbi_uc* readImageFromMemory(
+            int& outWidth,
+            int& outHeight,
+            int& outChannel,
+            const std::vector<unsigned char>& inData
         );
     }
 }
