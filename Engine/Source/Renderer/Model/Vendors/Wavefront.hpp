@@ -51,7 +51,7 @@ namespace Engine
                 uint32_t inOffset
             );
 
-            ParseResult parse(const std::string& inFilepath);
+            ParseResult parse(const std::vector<unsigned char>& inData);
         }
     }
 }

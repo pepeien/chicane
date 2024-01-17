@@ -11,7 +11,7 @@ set(NAME Chicane)
 project(${NAME} VERSION 1.0.0)
 
 ##############  Set values  #######################
-set(BUILD_DIR "${CMAKE_SOURCE_DIR}/build/Deploy")
+set(BUILD_DIR "${CMAKE_SOURCE_DIR}/Bin")
 
 # Engine
 set(ENGINE_TARGET_NAME "Engine")

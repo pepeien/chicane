@@ -319,9 +319,7 @@ namespace Engine
             vk::IndexType::eUint32
         );
 
-        // TODO Change to bind all used
-        m_textureManager->bind(
-            "grid",
+        m_textureManager->bindAll(
             inCommandBuffer,
             m_graphicPipelines.at(Layer::SCENE)->layout
         );
@@ -356,12 +354,7 @@ namespace Engine
 
         prepareScene(inCommandBuffer, inImageIndex);
 
-        m_modelManager->draw(
-            "floor",
-            inCommandBuffer,
-            1,
-            0
-        );
+        m_modelManager->drawAll(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
     }
@@ -896,16 +889,44 @@ namespace Engine
         );
     }
 
-    void Renderer::includeModels()
+    void Renderer::includeMeshes()
     {
-        m_modelManager->add(
-            "floor",
-            FileSystem::Paths::contentDir() + "Models/floor.obj",
-            Model::Vendor::Wavefront
-        );
+        for (Actor* actor : m_level->getActors())
+        {
+            Pak::Instance asset = Pak::read(actor->getMesh());
+
+            if (asset.type != static_cast<uint8_t>(Pak::Type::Mesh))
+            {
+                continue;
+            }
+
+            for (Pak::Entry& assetEntry : asset.entries)
+            {
+                if (assetEntry.type == static_cast<uint8_t>(Pak::EntryType::Model))
+                {
+                    m_modelManager->add(
+                        asset.name,
+                        assetEntry.data,
+                        Model::Vendor::Wavefront
+                    );
+
+                    continue;
+                }
+
+                if (assetEntry.type == static_cast<uint8_t>(Pak::EntryType::Texture))
+                {
+                    m_textureManager->add(
+                        asset.name,
+                        assetEntry.data
+                    );
+
+                    continue;
+                }
+            }
+        }
     }
 
-    void Renderer::buildModels()
+    void Renderer::buildMeshes()
     {
         m_modelManager->build(
             m_meshVertexBuffer,
@@ -915,18 +936,7 @@ namespace Engine
             m_graphicsQueue,
             m_mainCommandBuffer
         );
-    }
 
-    void Renderer::includeTextures()
-    {
-        Texture::Data gridTextureData;
-        gridTextureData.filepath = FileSystem::Paths::contentDir() + "Textures/Base/grid.png";
-
-        m_textureManager->add("grid", gridTextureData);
-    }
-
-    void Renderer::buildTextures()
-    {
         m_textureManager->build(
             m_logicalDevice,
             m_physicalDevice,
@@ -940,15 +950,13 @@ namespace Engine
     void Renderer::includeAssets()
     {
         includeCubeMaps();
-        includeModels();
-        includeTextures();
+        includeMeshes();
     }
 
     void Renderer::buildAssets()
     {
         buildCubeMaps();
-        buildModels();
-        buildTextures();
+        buildMeshes();
     }
 
     void Renderer::destroyAssets()

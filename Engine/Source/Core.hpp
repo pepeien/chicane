@@ -3,4 +3,5 @@
 #include "Core/FileSystem.hpp"
 #include "Core/Helper.hpp"
 #include "Core/Log.hpp"
+#include "Core/Pak.hpp"
 #include "Core/Window.hpp"

@@ -4,8 +4,7 @@ namespace Engine
 {
     Actor::Actor()
         : m_position(glm::mat4(1.0f)),
-        m_transform({}),
-        m_mesh({})
+        m_transform({})
     {}
 
     glm::mat4 Actor::getPosition()
@@ -43,9 +42,14 @@ namespace Engine
         setScale(glm::mat4(1.0f), inScale);
     }
 
-    void Actor::setMesh(const Mesh& inMesh)
+    std::string Actor::getMesh()
     {
-        m_mesh = inMesh;
+        return m_meshPath;
+    }
+
+    void Actor::setMesh(const std::string& inMeshPath)
+    {
+        m_meshPath = inMeshPath;
     }
 
     void Actor::setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation)

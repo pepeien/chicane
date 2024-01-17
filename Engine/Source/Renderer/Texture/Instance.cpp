@@ -7,7 +7,7 @@ namespace Engine
         Instance::Instance(const CreateInfo& inCreateInfo)
             : m_width(0),
               m_height(0),
-              m_filepath(inCreateInfo.data.filepath),
+              m_data(inCreateInfo.data),
               m_logicalDevice(inCreateInfo.logicalDevice),
               m_physicalDevice(inCreateInfo.physicalDevice),
               m_commandBuffer(inCreateInfo.commandBuffer),
@@ -68,11 +68,11 @@ namespace Engine
 
         void Instance::load()
         {
-            m_pixels = FileSystem::readImage(
+            m_pixels = FileSystem::readImageFromMemory(
                 m_width,
                 m_height,
                 m_channels,
-                m_filepath
+                m_data
             );
         }
 

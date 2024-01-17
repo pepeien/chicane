@@ -28,8 +28,8 @@ namespace Engine
 
                 void add(
                     const std::string& inId,
-                    const std::string& inFilePath,
-                    Vendor inVendor
+                    const std::vector<unsigned char>& inData,
+                    Vendor inVendor = Vendor::Undefined
                 );
                 void build(
                     Buffer::Instance& outVertexBuffer,
@@ -39,12 +39,7 @@ namespace Engine
                     const vk::Queue& inQueue,
                     const vk::CommandBuffer& inCommandBuffer
                 );
-                void draw(
-                    const std::string& inId,
-                    const vk::CommandBuffer& inCommandBuffer,
-                    uint32_t inInstanceCount,
-                    uint32_t inFirstInstance
-                );
+                void drawAll(const vk::CommandBuffer& inCommandBuffer);
 
             private:
                 void addModel(
@@ -70,6 +65,12 @@ namespace Engine
                     const vk::CommandBuffer& inCommandBuffer
                 );
 
+                void draw(
+                    const std::string& inId,
+                    const vk::CommandBuffer& inCommandBuffer,
+                    uint32_t inInstanceCount,
+                    uint32_t inFirstInstance
+                );
 
             private:
                 std::vector<Vertex::Instance> m_combinedVertices;

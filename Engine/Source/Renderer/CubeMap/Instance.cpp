@@ -78,7 +78,7 @@ namespace Engine
         {
             for (int i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                m_pixels[i] = FileSystem::readImage(
+                m_pixels[i] = FileSystem::readImageFromFile(
                     m_width,
                     m_height,
                     m_channels,

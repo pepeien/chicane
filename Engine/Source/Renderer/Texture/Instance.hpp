@@ -12,14 +12,9 @@ namespace Engine
 {
     namespace Texture
     {
-        struct Data
-        {
-            std::string filepath;
-        };
-
         struct CreateInfo
         {
-            Data data;
+            std::vector<unsigned char> data;
             vk::Device logicalDevice;
             vk::PhysicalDevice physicalDevice;
             vk::CommandBuffer commandBuffer;
@@ -52,10 +47,10 @@ namespace Engine
             int m_width;
             int m_height;
             int m_channels;
-            std::string m_filepath;
+            std::vector<unsigned char> m_data;
+            stbi_uc* m_pixels;
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;
-            stbi_uc* m_pixels;
 
             Image::Bundle m_image;
 

@@ -11,10 +11,11 @@ namespace Engine
                 return m_registeredIds;
             }
 
+            // TODO Implement instance count
             void Instance::add(
                 const std::string& inId,
-                const std::string& inFilepath,
-                Vendor inVendor = Vendor::Undefined
+                const std::vector<unsigned char>& inData,
+                Vendor inVendor
             )
             {
                 if (m_instanceMap.find(inId) != m_instanceMap.end())
@@ -27,7 +28,7 @@ namespace Engine
                 switch (inVendor)
                 {
                 case Vendor::Wavefront:
-                    result = Wavefront::parse(inFilepath);
+                    result = Wavefront::parse(inData);
 
                     break;
                 
@@ -69,29 +70,18 @@ namespace Engine
                 );
             }
 
-            void Instance::draw(
-                const std::string& inId,
-                const vk::CommandBuffer& inCommandBuffer,
-                uint32_t inInstanceCount,
-                uint32_t inFirstInstance
-            )
+            // TODO Implement instance count
+            void Instance::drawAll(const vk::CommandBuffer& inCommandBuffer)
             {
-                auto foundModel = m_dataMap.find(inId);
-
-                if (foundModel == m_dataMap.end())
+                for (std::string& id : m_registeredIds)
                 {
-                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                    draw(
+                        id,
+                        inCommandBuffer,
+                        1,
+                        0
+                    );
                 }
-
-                Model::AllocationInfo& allocationInfo = foundModel->second;
-
-                inCommandBuffer.drawIndexed(
-                    allocationInfo.indexCount,
-                    inInstanceCount,
-                    allocationInfo.firstIndex,
-                    0,
-                    inFirstInstance
-                );
             }
 
             void Instance::addModel(
@@ -249,6 +239,31 @@ namespace Engine
                 );
 
                 Buffer::destroy(inLogicalDevice, stagingBuffer);
+            }
+
+            void Instance::draw(
+                const std::string& inId,
+                const vk::CommandBuffer& inCommandBuffer,
+                uint32_t inInstanceCount,
+                uint32_t inFirstInstance
+            )
+            {
+                auto foundModel = m_dataMap.find(inId);
+
+                if (foundModel == m_dataMap.end())
+                {
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                }
+
+                Model::AllocationInfo& allocationInfo = foundModel->second;
+
+                inCommandBuffer.drawIndexed(
+                    allocationInfo.indexCount,
+                    inInstanceCount,
+                    allocationInfo.firstIndex,
+                    0,
+                    inFirstInstance
+                );
             }
         }
     }

@@ -141,13 +141,13 @@ namespace Engine
                 }
             }
 
-            ParseResult parse(const std::string& inFilepath)
+            ParseResult parse(const std::vector<unsigned char>& inData)
             {    
                 std::vector<std::string> dataSets = Helper::splitString(
-                    FileSystem::readFile(inFilepath),
+                    std::string(inData.begin(), inData.end()),
                     "\n"
                 );
-                
+
                 ParseResult result;
                 ParseBundle bundle;
 

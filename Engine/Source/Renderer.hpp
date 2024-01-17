@@ -118,11 +118,8 @@ namespace Engine
         void includeCubeMaps();
         void buildCubeMaps();
 
-        void includeModels();
-        void buildModels();
-
-        void includeTextures();
-        void buildTextures();
+        void includeMeshes();
+        void buildMeshes();
 
         void includeAssets();
         void buildAssets();

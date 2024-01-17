@@ -11,12 +11,6 @@ namespace Engine
         glm::vec3 scale       = glm::vec3(1.0f);
     };
 
-    struct Mesh
-    {
-        std::string model;
-        std::string texture;
-    };
-
     class Actor
     {
     public:
@@ -33,7 +27,8 @@ namespace Engine
         void setAbsoluteRotation(const glm::vec3& inRotation);
         void setAbsoluteScale(const glm::vec3& inScale);
     
-        void setMesh(const Mesh& inMesh);
+        std::string getMesh();
+        void setMesh(const std::string& inMeshPath);
 
     private:
         void setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation);
@@ -44,6 +39,6 @@ namespace Engine
         glm::mat4 m_position;
         Transform m_transform;
 
-        Mesh m_mesh;
+        std::string m_meshPath;
     };
 }

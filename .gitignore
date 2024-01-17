@@ -2,6 +2,7 @@
 *.env.*
 
 # Build results
+[Bb]in/
 [Bb]uild/
 vulkan/
 __pycache__/

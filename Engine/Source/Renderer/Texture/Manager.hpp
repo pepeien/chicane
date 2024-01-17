@@ -26,9 +26,11 @@ namespace Engine
             public:
                 uint32_t getCount();
 
-                void add(const std::string& inId, const Texture::Data& inData);
-                void bind(
+                void add(
                     const std::string& inId,
+                    const std::vector<unsigned char>& inData
+                );
+                void bindAll(
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::PipelineLayout& inPipelineLayout
                 );
@@ -42,9 +44,16 @@ namespace Engine
                 );
 
             private:
+                void bind(
+                    const std::string& inId,
+                    const vk::CommandBuffer& inCommandBuffer,
+                    const vk::PipelineLayout& inPipelineLayout
+                );
+
+            private:
                 std::vector<std::string> m_registeredIds;
 
-                std::unordered_map<std::string, Texture::Data> m_dataMap;
+                std::unordered_map<std::string, std::vector<unsigned char>> m_dataMap;
                 std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instanceMap;
             };
         }
