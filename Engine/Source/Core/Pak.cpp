@@ -11,103 +11,89 @@ namespace Engine
 {
     namespace Pak
     {
-        std::string WriteRootHeader::getWritable(const std::string& inDivisor)
+        std::string WriteRootHeader::toString()
         {
-            std::stringstream structData;
-            structData << inDivisor;
-            structData << signature;
-            structData << inDivisor;
-            structData << version;
-            structData << inDivisor;
-            structData << std::to_string(static_cast<uint8_t>(type));
-            structData << inDivisor;
-            structData << id;
-            structData << inDivisor;
-            structData << filePath;
-            structData << inDivisor;
-            structData << entryCount;
-            structData << inDivisor;
+            std::string inDivisor = ";";
 
-            std::string structDataString = structData.str();
-            size_t structDataOffset      = structDataString.size();
-
-            // Calculate the text offset ahead of time
-            std::stringstream offsetData;
-            offsetData << structDataOffset + std::to_string(structDataOffset).size();
-
-            std::string offsetDataString = offsetData.str();
+            std::stringstream data;
+            data << version;
+            data << inDivisor;
+            data << std::to_string(static_cast<uint8_t>(type));
+            data << inDivisor;
+            data << name;
+            data << inDivisor;
+            data << entryCount;
+            data << inDivisor;
 
             std::stringstream result;
-            result << structDataString;
-            result << offsetDataString;
+            result << "CHAK";
+            result << inDivisor;
+            result << data.str(); // TODO Implement encryptor
 
             return result.str();
         }
 
-        std::string WriteEntryHeader::getWritable(const std::string& inDivisor)
+        std::string WriteEntryHeader::toString()
         {
-            std::stringstream structData;
-            structData << inDivisor;
-            structData << std::to_string(static_cast<uint8_t>(type));
-            structData << inDivisor;
-            structData << std::to_string(vendor);
-            structData << inDivisor;
-            structData << offset;
-            structData << inDivisor;
+            std::string inDivisor = ";";
 
-            std::string structDataString = structData.str();
-            size_t structDataOffset      = structDataString.size();
-
-            // Calculate the text offset ahead of time
-            std::stringstream offsetData;
-            offsetData << inDivisor.size() + structDataOffset + std::to_string(structDataOffset).size();
-            offsetData << inDivisor;
-
-            std::string offsetDataString = offsetData.str();
+            std::stringstream data;
+            data << std::to_string(static_cast<uint8_t>(type));
+            data << inDivisor;
+            data << std::to_string(vendor);
+            data << inDivisor;
 
             std::stringstream result;
-            result << structDataString;
-            result << offsetDataString;
+            result << "ENTRY";
+            result << data.str(); // TODO Implement encryptor
 
             return result.str();
+        }
+
+        void Entry::parse(const std::string& inRawData)
+        {
+            std::vector<std::string> splittedEntryHeader = Helper::splitString(
+                inRawData,
+                ";"
+            );
+
+            type   = static_cast<uint8_t>(std::stoi(splittedEntryHeader[0]));
+            vendor = static_cast<uint8_t>(std::stoi(splittedEntryHeader[1]));
+
+            std::string compiledData = "";
+            for (uint32_t j = 2; j < splittedEntryHeader.size(); j++)
+            {
+                compiledData += splittedEntryHeader[j];
+            }
+
+            data = std::vector<char>(compiledData.begin(), compiledData.end());
         }
 
         Instance read(const std::string& inFilePath)
         {
-            std::vector<char> data = FileSystem::readFile(inFilePath);
-
+            std::vector<char> data                = FileSystem::readFile(inFilePath);
             std::vector<std::string> splittedData = Helper::splitString(
                 std::string(data.begin(), data.end()),
+                "ENTRY"
+            );
+
+            std::vector<std::string> splittedRootHeader = Helper::splitString(
+                splittedData[0],
                 ";"
             );
 
             Instance result;
-            result.type = static_cast<uint8_t>(std::stoi(splittedData[2]));
-            result.name = splittedData[4];
-            result.entries.reserve(std::stoi(splittedData[6]));
+            result.type       = static_cast<uint8_t>(std::stoi(splittedRootHeader[2]));
+            result.name       = splittedRootHeader[3];
+            result.entryCount = static_cast<uint32_t>(std::stoi(splittedRootHeader[4]));
+            result.entries.reserve(result.entryCount);
 
-            uint32_t offset = std::stoi(splittedData[7]);
-            for (uint32_t i = offset; i < data.size(); i += offset)
+            for (uint32_t i = 1; i < (result.entryCount + 1); i++)
             {
-                splittedData = Helper::splitString(
-                    std::string(std::next(data.begin(), i), data.end()),
-                    ";"
-                );
-
-                uint8_t type          = static_cast<uint8_t>(std::stoi(splittedData[1]));
-                uint8_t vendor        = static_cast<uint8_t>(std::stoi(splittedData[2]));
-                uint32_t dataOffset   = std::stoi(splittedData[3]);
-                uint32_t headerOffset = std::stoi(splittedData[4]);
-                std::string rawData   = splittedData[5];
-
                 Entry entry;
-                entry.type   = type;
-                entry.vendor = vendor;
-                entry.data   = std::vector<char>(rawData.begin(), rawData.end());
+                entry.parse(splittedData[i]);
 
                 result.entries.push_back(entry);
-
-                offset += dataOffset + headerOffset;
             }
 
             return result;
@@ -117,7 +103,7 @@ namespace Engine
         {
             WriteRootHeader rootHeader;
             rootHeader.type       = inWriteInfo.type;
-            rootHeader.id         = inWriteInfo.name;
+            rootHeader.name         = inWriteInfo.name;
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + ".pak";
             rootHeader.entryCount = inWriteInfo.entries.size();
 
@@ -125,7 +111,7 @@ namespace Engine
 
             file.open(rootHeader.filePath);
 
-            file << rootHeader.getWritable();
+            file << rootHeader.toString();
 
             for (WriteEntry entry : inWriteInfo.entries)
             {
@@ -137,9 +123,7 @@ namespace Engine
                 {
                     std::vector<char> sourceData = FileSystem::readFile(entry.filePath);
 
-                    entryHeader.offset = sizeof(char) * sourceData.size();
-
-                    file << entryHeader.getWritable();
+                    file << entryHeader.toString();
                     file << std::string(sourceData.begin(), sourceData.end());
 
                     continue;
@@ -162,11 +146,9 @@ namespace Engine
                         )
                     );
 
-                    entryHeader.offset = sizeof(char) * sourceData.size();
-
-                    file << entryHeader.getWritable();
+                    file << entryHeader.toString();
                     file << sourceData;
-    
+
                     continue;
                 }
             }
