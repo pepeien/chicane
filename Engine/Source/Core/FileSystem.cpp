@@ -19,11 +19,6 @@ namespace Engine
 
                 return installLocation;
             }
-
-            std::string contentDir()
-            {
-                return rootDir() + "/Content/";
-            }
         }
 
         std::vector<char> readFile(const std::string& inFilepath)

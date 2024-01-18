@@ -855,21 +855,25 @@ namespace Engine
         );
     }
 
-    void Renderer::includeCubeMaps()
+    void Renderer::includeCubeMaps(const Kerb::Instance& inAsset)
     {
-        CubeMap::Data skyCubeMapData;
-        skyCubeMapData.filepaths = {
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/front.tga",
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/back.tga",
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/left.tga",
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/right.tga",
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/up.tga",
-            FileSystem::Paths::contentDir() + "Textures/SkyBox/Sunset/down.tga"
-        };
+        if (inAsset.entryCount != CUBEMAP_IMAGE_COUNT)
+        {
+            throw std::runtime_error(
+                "Cubemap -> " + inAsset.name + " have " + std::to_string(inAsset.entryCount) + " instead of " + std::to_string(CUBEMAP_IMAGE_COUNT)
+            );
+        }
 
         m_cubeMapManager->add(
             "Sky",
-            skyCubeMapData
+            {
+                inAsset.entries[0].data,
+                inAsset.entries[1].data,
+                inAsset.entries[2].data,
+                inAsset.entries[3].data,
+                inAsset.entries[4].data,
+                inAsset.entries[5].data
+            }
         );
     }
 
@@ -889,39 +893,29 @@ namespace Engine
         );
     }
 
-    void Renderer::includeMeshes()
+    void Renderer::includeMesh(const Kerb::Instance& inAsset)
     {
-        for (Actor* actor : m_level->getActors())
+        for (Kerb::Entry assetEntry : inAsset.entries)
         {
-            Kerb::Instance asset = Kerb::read(actor->getMesh());
-
-            if (asset.type != static_cast<uint8_t>(Kerb::Type::Mesh))
+            if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Model))
             {
+                m_modelManager->add(
+                    inAsset.name,
+                    assetEntry.data,
+                    Model::Vendor::Wavefront
+                );
+
                 continue;
             }
 
-            for (Kerb::Entry& assetEntry : asset.entries)
+            if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Texture))
             {
-                if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Model))
-                {
-                    m_modelManager->add(
-                        asset.name,
-                        assetEntry.data,
-                        Model::Vendor::Wavefront
-                    );
+                m_textureManager->add(
+                    inAsset.name,
+                    assetEntry.data
+                );
 
-                    continue;
-                }
-
-                if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Texture))
-                {
-                    m_textureManager->add(
-                        asset.name,
-                        assetEntry.data
-                    );
-
-                    continue;
-                }
+                continue;
             }
         }
     }
@@ -949,8 +943,20 @@ namespace Engine
 
     void Renderer::includeAssets()
     {
-        includeCubeMaps();
-        includeMeshes();
+        if (m_level->hasSkybox())
+        {
+            includeCubeMaps(m_level->getSkybox());
+        }
+
+        for (Actor* actor : m_level->getActors())
+        {
+            if (!actor->hasMesh())
+            {
+                continue;
+            }
+
+            includeMesh(actor->getMesh());
+        }
     }
 
     void Renderer::buildAssets()

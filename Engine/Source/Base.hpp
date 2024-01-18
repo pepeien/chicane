@@ -56,6 +56,7 @@ static const std::string ENGINE_ENV_VARIABALE = "CHICANE_SDK";
 static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
 
 // Source
+#include "Core/Kerb.hpp"
 #include "Core/FileSystem.hpp"
 #include "Core/Helper.hpp"
 #include "Core/Log.hpp"

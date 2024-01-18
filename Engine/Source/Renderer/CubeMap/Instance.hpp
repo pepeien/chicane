@@ -12,10 +12,7 @@ namespace Engine
 {
     namespace CubeMap
     {
-        struct Data
-        {
-            std::array<std::string, CUBEMAP_IMAGE_COUNT> filepaths;
-        };
+        typedef std::array<std::vector<unsigned char>, CUBEMAP_IMAGE_COUNT> Data;
 
         struct CreateInfo
         {
@@ -52,7 +49,7 @@ namespace Engine
             int m_width;
             int m_height;
             int m_channels;
-            std::array<std::string, CUBEMAP_IMAGE_COUNT> m_filepaths;
+            Data m_data;
             stbi_uc* m_pixels[CUBEMAP_IMAGE_COUNT];
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;

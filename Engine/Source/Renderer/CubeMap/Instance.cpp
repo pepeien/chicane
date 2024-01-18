@@ -15,7 +15,7 @@ namespace Engine
         {
             for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                m_filepaths[i] = inCreateInfo.data.filepaths[i];
+                m_data[i] = inCreateInfo.data[i];
             }
 
             load();
@@ -78,11 +78,11 @@ namespace Engine
         {
             for (int i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
-                m_pixels[i] = FileSystem::readImageFromFile(
+                m_pixels[i] = FileSystem::readImageFromMemory(
                     m_width,
                     m_height,
                     m_channels,
-                    m_filepaths[i]
+                    m_data[i]
                 );
             }
         }

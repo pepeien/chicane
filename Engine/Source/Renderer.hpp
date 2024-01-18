@@ -115,10 +115,10 @@ namespace Engine
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void includeCubeMaps();
+        void includeCubeMaps(const Kerb::Instance& inAsset);
         void buildCubeMaps();
 
-        void includeMeshes();
+        void includeMesh(const Kerb::Instance& inAsset);
         void buildMeshes();
 
         void includeAssets();

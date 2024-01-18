@@ -9,7 +9,6 @@ namespace Engine
         namespace Paths
         {
             std::string rootDir();
-            std::string contentDir();
         };
 
         std::vector<char> readFile(const std::string& inFilepath);

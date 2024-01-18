@@ -27,8 +27,9 @@ namespace Engine
         void setAbsoluteRotation(const glm::vec3& inRotation);
         void setAbsoluteScale(const glm::vec3& inScale);
     
-        std::string getMesh();
-        void setMesh(const std::string& inMeshPath);
+        bool hasMesh();
+        Kerb::Instance getMesh();
+        void setMesh(const Kerb::Instance& inMesh);
 
     private:
         void setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation);
@@ -39,6 +40,6 @@ namespace Engine
         glm::mat4 m_position;
         Transform m_transform;
 
-        std::string m_meshPath;
+        Kerb::Instance m_mesh;
     };
 }

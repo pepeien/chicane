@@ -42,14 +42,19 @@ namespace Engine
         setScale(glm::mat4(1.0f), inScale);
     }
 
-    std::string Actor::getMesh()
+    bool Actor::hasMesh()
     {
-        return m_meshPath;
+        return m_mesh.type == static_cast<uint8_t>(Kerb::Type::Mesh);
     }
 
-    void Actor::setMesh(const std::string& inMeshPath)
+    Kerb::Instance Actor::getMesh()
     {
-        m_meshPath = inMeshPath;
+        return m_mesh;
+    }
+
+    void Actor::setMesh(const Kerb::Instance& inMesh)
+    {
+        m_mesh = inMesh;
     }
 
     void Actor::setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation)

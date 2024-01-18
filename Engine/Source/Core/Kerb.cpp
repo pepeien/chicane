@@ -65,7 +65,7 @@ namespace Engine
 
         Instance read(const std::string& inFilePath)
         {
-            std::vector<char> data = FileSystem::readFile(inFilePath);
+            std::vector<char> data = FileSystem::readFile(inFilePath + FILE_EXTENSTION);
             std::vector<std::string> splittedData = Helper::splitString(
                 std::string(data.begin(), data.end()),
                 ENTRY_SIGNATURE
@@ -97,7 +97,7 @@ namespace Engine
         {
             WriteRootHeader rootHeader;
             rootHeader.type       = inWriteInfo.type;
-            rootHeader.name         = inWriteInfo.name;
+            rootHeader.name       = inWriteInfo.name;
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;
             rootHeader.entryCount = inWriteInfo.entries.size();
 
@@ -108,8 +108,8 @@ namespace Engine
             for (WriteEntry entry : inWriteInfo.entries)
             {
                 WriteEntryHeader entryHeader;
-                entryHeader.type     = entry.type;
-                entryHeader.vendor   = entry.vendor;
+                entryHeader.type   = entry.type;
+                entryHeader.vendor = entry.vendor;
 
                 std::vector<char> rawData = FileSystem::readFile(entry.filePath);
 

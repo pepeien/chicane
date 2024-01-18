@@ -16,7 +16,8 @@ namespace Engine
         enum class Type : uint8_t
         {
             Undefined,
-            Mesh
+            Mesh,
+            CubeMap
         };
 
         enum class EntryType : uint8_t
