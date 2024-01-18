@@ -893,16 +893,16 @@ namespace Engine
     {
         for (Actor* actor : m_level->getActors())
         {
-            Pak::Instance asset = Pak::read(actor->getMesh());
+            Kerb::Instance asset = Kerb::read(actor->getMesh());
 
-            if (asset.type != static_cast<uint8_t>(Pak::Type::Mesh))
+            if (asset.type != static_cast<uint8_t>(Kerb::Type::Mesh))
             {
                 continue;
             }
 
-            for (Pak::Entry& assetEntry : asset.entries)
+            for (Kerb::Entry& assetEntry : asset.entries)
             {
-                if (assetEntry.type == static_cast<uint8_t>(Pak::EntryType::Model))
+                if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Model))
                 {
                     m_modelManager->add(
                         asset.name,
@@ -913,7 +913,7 @@ namespace Engine
                     continue;
                 }
 
-                if (assetEntry.type == static_cast<uint8_t>(Pak::EntryType::Texture))
+                if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Texture))
                 {
                     m_textureManager->add(
                         asset.name,

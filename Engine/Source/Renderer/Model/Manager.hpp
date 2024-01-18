@@ -11,7 +11,7 @@ namespace Engine
 {
     namespace Model
     {
-        enum class Vendor
+        enum class Vendor : uint8_t
         {
             // N/A
             Undefined,

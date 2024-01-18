@@ -2,9 +2,16 @@
 
 #include "Base.hpp"
 
+static const std::string HEADER_SIGNATURE     = "KERB";
+static const std::string ENTRY_SIGNATURE      = "ENTRY";
+static const std::string ENTRY_DATA_SIGNATURE = "DATA";
+static const std::string DATA_SEPARATOR       = ";";
+static const std::string FILE_EXTENSTION      = ".kerb";
+
+
 namespace Engine
 {
-    namespace Pak
+    namespace Kerb
     {
         enum class Type : uint8_t
         {

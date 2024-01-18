@@ -7,7 +7,7 @@
 
 namespace Engine
 {
-    enum class WindowType
+    enum class WindowType : uint8_t
     {
         Windowed,
         WindowedBorderless,

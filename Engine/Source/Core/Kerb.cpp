@@ -1,4 +1,4 @@
-#include "Pak.hpp"
+#include "Kerb.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -9,25 +9,23 @@
 
 namespace Engine
 {
-    namespace Pak
+    namespace Kerb
     {
         std::string WriteRootHeader::toString()
         {
-            std::string inDivisor = ";";
-
             std::stringstream data;
             data << version;
-            data << inDivisor;
+            data << DATA_SEPARATOR;
             data << std::to_string(static_cast<uint8_t>(type));
-            data << inDivisor;
+            data << DATA_SEPARATOR;
             data << name;
-            data << inDivisor;
+            data << DATA_SEPARATOR;
             data << entryCount;
-            data << inDivisor;
+            data << DATA_SEPARATOR;
 
             std::stringstream result;
-            result << "CHAK";
-            result << inDivisor;
+            result << HEADER_SIGNATURE;
+            result << DATA_SEPARATOR;
             result << data.str(); // TODO Implement encryptor
 
             return result.str();
@@ -35,16 +33,14 @@ namespace Engine
 
         std::string WriteEntryHeader::toString()
         {
-            std::string inDivisor = ";";
-
             std::stringstream data;
             data << std::to_string(static_cast<uint8_t>(type));
-            data << inDivisor;
+            data << DATA_SEPARATOR;
             data << std::to_string(vendor);
-            data << inDivisor;
+            data << DATA_SEPARATOR;
 
             std::stringstream result;
-            result << "ENTRY";
+            result << ENTRY_SIGNATURE;
             result << data.str(); // TODO Implement encryptor
 
             return result.str();
@@ -54,11 +50,11 @@ namespace Engine
         {
             std::vector<std::string> splittedEntry = Helper::splitString(
                 inRawData,
-                "DATA"
+                ENTRY_DATA_SIGNATURE
             );
             std::vector<std::string> splittedEntryHeader = Helper::splitString(
                 splittedEntry[0],
-                ";"
+                DATA_SEPARATOR
             );
             std::string entryData = splittedEntry[1];
 
@@ -72,12 +68,12 @@ namespace Engine
             std::vector<char> data = FileSystem::readFile(inFilePath);
             std::vector<std::string> splittedData = Helper::splitString(
                 std::string(data.begin(), data.end()),
-                "ENTRY"
+                ENTRY_SIGNATURE
             );
 
             std::vector<std::string> splittedRootHeader = Helper::splitString(
                 splittedData[0],
-                ";"
+                DATA_SEPARATOR
             );
 
             Instance result;
@@ -102,7 +98,7 @@ namespace Engine
             WriteRootHeader rootHeader;
             rootHeader.type       = inWriteInfo.type;
             rootHeader.name         = inWriteInfo.name;
-            rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + ".pak";
+            rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;
             rootHeader.entryCount = inWriteInfo.entries.size();
 
             std::ofstream file(rootHeader.filePath, std::ios::out | std::ios::binary);
@@ -118,7 +114,7 @@ namespace Engine
                 std::vector<char> rawData = FileSystem::readFile(entry.filePath);
 
                 file << entryHeader.toString();
-                file << "DATA";
+                file << ENTRY_DATA_SIGNATURE;
                 file << std::string(rawData.begin(), rawData.end());
             }
 

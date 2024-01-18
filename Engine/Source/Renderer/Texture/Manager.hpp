@@ -8,7 +8,7 @@ namespace Engine
 {
     namespace Texture
     {
-        enum class Vendor
+        enum class Vendor : uint8_t
         {
             // N/A
             Undefined,

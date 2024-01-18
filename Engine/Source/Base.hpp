@@ -68,7 +68,7 @@ namespace Engine
         int height = -1;
     };
 
-    enum class Layer
+    enum class Layer : uint8_t
     {
         SKY,
         SCENE

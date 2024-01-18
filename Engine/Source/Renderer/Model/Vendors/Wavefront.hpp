@@ -10,7 +10,7 @@ namespace Engine
     {
         namespace Wavefront
         {
-            enum class Property
+            enum class Property : uint8_t
             {
                 // N/A
                 Undefined,

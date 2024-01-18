@@ -6,7 +6,7 @@ namespace Engine
 {
     namespace Log
     {
-        enum class MessageType
+        enum class MessageType : uint8_t
         {
             INFO,
             WARNING,
