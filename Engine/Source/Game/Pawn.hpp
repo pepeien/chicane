@@ -4,12 +4,19 @@
 
 #include "Actor.hpp"
 
-class Controller;
-
 namespace Engine
 {
+    class Controller;
+
     class Pawn : public Actor
     {
+    public:
+        Controller* getController();
+
+        bool isPossessed();
+        void getPossesedBy(Controller* inController);
+        void getUnpossessed();
+
     private:
         Controller* m_controller;
     };

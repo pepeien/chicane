@@ -9,7 +9,11 @@ namespace Engine
     class Controller
     {
     public:
+        void possess(Pawn* inPawn);
+        void unPossess();
+
         void bindEvent(SDL_Scancode inScaneCode, std::function<void()> inEvent);
+        void onEvent(SDL_Scancode inScaneCode);
 
     private:
         Pawn* m_pawn;
