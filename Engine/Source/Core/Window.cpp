@@ -2,11 +2,17 @@
 
 namespace Engine
 {
-    Window::Window(const WindowCreateInfo& inCreateInfo)
+    Window::Window(
+        const WindowCreateInfo& inCreateInfo,
+        Level* inLevel,
+        Controller* inController
+    )
         : instance(nullptr),
         m_isFocused(inCreateInfo.isFocused),
         m_isResizable(inCreateInfo.isResizable),
-        m_isMinimized(false)
+        m_isMinimized(false),
+        m_renderer(nullptr),
+        m_controller(inController)
     {
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
@@ -36,7 +42,7 @@ namespace Engine
 
         m_renderer = std::make_unique<Renderer>(
             this,
-            inCreateInfo.level
+            inLevel
         );
     }
 
@@ -76,6 +82,12 @@ namespace Engine
         {
         case SDL_WINDOWEVENT:
             onWindowEvent(inEvent.window);
+
+            break;
+
+        case SDL_KEYUP:
+        case SDL_KEYDOWN:
+            onKeyDown(inEvent.key);
 
             break;
 
@@ -244,5 +256,15 @@ namespace Engine
         }
 
         blur();
+    }
+
+    void Window::onKeyDown(const SDL_KeyboardEvent& inEvent)
+    {
+        if (m_controller == nullptr)
+        {
+            return;
+        }
+
+        m_controller->onEvent(inEvent.keysym.scancode);
     }
 }

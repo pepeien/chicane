@@ -21,13 +21,16 @@ namespace Engine
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
         bool isResizable      = true; // Only takes effect when the type is `WindowType::Windowed`
-        Level* level          = nullptr;
     };
 
     class Window
     {
     public:
-        Window(const WindowCreateInfo& inCreateInfo);
+        Window(
+            const WindowCreateInfo& inCreateInfo,
+            Level* inLevel,
+            Controller* inController
+        );
         ~Window();
 
     public:
@@ -59,6 +62,7 @@ namespace Engine
     private:
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onMouseClick();
+        void onKeyDown(const SDL_KeyboardEvent& inEvent);
 
     private:
         WindowType m_type;
@@ -68,5 +72,7 @@ namespace Engine
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         std::unique_ptr<Renderer> m_renderer;
+
+        Controller* m_controller;
     };
 }
