@@ -94,7 +94,7 @@ namespace Engine
             );
             modelData.transforms.reserve(inActors.size());
     
-            for (auto actor : inActors)
+            for (Actor* actor : inActors)
             {
                 modelData.transforms.push_back(actor->getPosition());
             }
@@ -102,6 +102,14 @@ namespace Engine
             modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
             modelDescriptorBufferInfo.offset = 0;
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
+        }
+
+        void Instance::updateModelData(std::vector<Actor*> inActors)
+        {   
+            for (uint32_t i = 0; i < inActors.size() && i < modelData.transforms.size(); i++)
+            {
+                modelData.transforms[i] = inActors[i]->getPosition();
+            }
         }
         
         void Instance::setupDepthBuffering()

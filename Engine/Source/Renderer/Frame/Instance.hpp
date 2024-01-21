@@ -32,6 +32,7 @@ namespace Engine
             void setupCameraVectorUBO();
             void setupCameraMatrixUBO();
             void setupModelData(std::vector<Actor*> inActors);
+            void updateModelData(std::vector<Actor*> inActors);
     
             void setupDepthBuffering();
 

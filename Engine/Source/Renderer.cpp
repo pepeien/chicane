@@ -764,6 +764,8 @@ namespace Engine
 
     void Renderer::prepareActors(Frame::Instance& outFrame)
     {
+        outFrame.updateModelData(m_level->getActors());
+
         memcpy(
             outFrame.modelData.writeLocation,
             outFrame.modelData.transforms.data(),
