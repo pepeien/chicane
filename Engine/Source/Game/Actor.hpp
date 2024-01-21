@@ -31,7 +31,7 @@ namespace Engine
         Kerb::Instance getMesh();
         void setMesh(const Kerb::Instance& inMesh);
 
-    private:
+    protected:
         void setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation);
         void setRotation(const glm::mat4& inBase, const glm::vec3& inRotation);
         void setScale(const glm::mat4& inBase, const glm::vec3& inScale);

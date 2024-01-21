@@ -85,7 +85,6 @@ namespace Engine
 
             break;
 
-        case SDL_KEYUP:
         case SDL_KEYDOWN:
             onKeyDown(inEvent.key);
 
