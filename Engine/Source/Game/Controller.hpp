@@ -12,8 +12,8 @@ namespace Engine
         void possess(Pawn* inPawn);
         void unPossess();
 
-        void bindEvent(SDL_Scancode inScaneCode, std::function<void()> inEvent);
-        void onEvent(SDL_Scancode inScaneCode);
+        void bindEvent(SDL_Scancode inScanCode, std::function<void()> inEvent);
+        void onEvent(SDL_Scancode inScanCode);
 
     private:
         Pawn* m_pawn;

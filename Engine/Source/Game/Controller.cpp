@@ -48,9 +48,9 @@ namespace Engine
         );
     }
 
-    void Controller::onEvent(SDL_Scancode inScaneCode)
+    void Controller::onEvent(SDL_Scancode inScanCode)
     {
-        auto foundEvent = events.find(inScaneCode);
+        auto foundEvent = events.find(inScanCode);
 
         if (foundEvent == events.end())
         {

@@ -14,10 +14,10 @@ namespace Engine
         Controller* getController();
 
         bool isPossessed();
-        void getPossesedBy(Controller* inController);
-        void getUnpossessed();
+        virtual void getPossesedBy(Controller* inController);
+        virtual void getUnpossessed();
 
-    private:
+    protected:
         Controller* m_controller;
     };
 }
