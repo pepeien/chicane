@@ -8,22 +8,22 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(NAME Chicane)
 
-project(${NAME} VERSION 1.0.0)
+project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(BUILD_DIR "${CMAKE_SOURCE_DIR}/Bin")
+set(BUILD_DIR   "${CMAKE_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
+set(SOURCES_DIR "${CMAKE_SOURCE_DIR}/Sources")
+set(VENDOR_DIR  "${SOURCES_DIR}/Vendor")
 
-# Engine
-set(ENGINE_TARGET_NAME "Engine")
+# Runtime
+set(RUNTIME_TARGET_NAME "Runtime")
+set(RUNTIME_SOURCES_DIR "${SOURCES_DIR}/Runtime")
+set(RUNTIME_BUILD_DIR   "${BUILD_DIR}")
 
-set(ENGINE_BUILD_DIR "${BUILD_DIR}/Engine")
-
-set(ENGINE_DIR "${PROJECT_SOURCE_DIR}/Engine")
-
-set(ENGINE_SOURCE_DIR  "${ENGINE_DIR}/Source")
-set(ENGINE_VENDOR_DIR  "${ENGINE_DIR}/Vendor")
-
-set(ENGINE_INCLUDE_STB_PATH "${ENGINE_VENDOR_DIR}/stb")
+# Shader
+set(SHADER_TARGET_NAME "Shader")
+set(SHADER_SOURCES_DIR "${CMAKE_SOURCE_DIR}/Shaders")
+set(SHADER_BUILD_DIR   "${SHADER_SOURCES_DIR}/Bin")
 
 ##############  Set compiler  #######################
 message(STATUS "Using ${CMAKE_GENERATOR}")
@@ -33,11 +33,12 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
       	message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
     endif()
 
-    set(USE_MINGW "True")
-    set(CMAKE_C_COMPILER    ${MINGW_PATH}/bin/gcc.exe)
-    set(CMAKE_CXX_COMPILER  ${MINGW_PATH}/bin/g++.exe)
+    set(USE_MINGW          "True")
+    set(CMAKE_C_COMPILER   ${MINGW_PATH}/bin/gcc.exe)
+    set(CMAKE_CXX_COMPILER ${MINGW_PATH}/bin/g++.exe)
 endif()
 
 ##############  Add subdirectories  #######################
-
-add_subdirectory(Engine)
+ 
+add_subdirectory(Shaders)
+add_subdirectory(Sources/Runtime)
