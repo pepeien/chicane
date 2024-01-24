@@ -17,21 +17,21 @@
 #include "Renderer/Sync.hpp"
 #include "Renderer/Vertex.hpp"
 
-#include "Renderer/CommandBuffer/Instance.hpp"
+#include "Renderer/CommandBuffer.hpp"
 #include "Renderer/CommandBuffer/Pool.hpp"
 #include "Renderer/CommandBuffer/Worker.hpp"
 
-#include "Renderer/CubeMap/Instance.hpp"
+#include "Renderer/CubeMap.hpp"
 #include "Renderer/CubeMap/Manager.hpp"
 
+#include "Renderer/Frame.hpp"
 #include "Renderer/Frame/Buffer.hpp"
-#include "Renderer/Frame/Instance.hpp"
 
+#include "Renderer/Model.hpp"
 #include "Renderer/Model/Manager.hpp"
-#include "Renderer/Model/Instance.hpp"
 
+#include "Renderer/Texture.hpp"
 #include "Renderer/Texture/Manager.hpp"
-#include "Renderer/Texture/Instance.hpp"
 
 namespace Chicane
 {
@@ -115,10 +115,10 @@ namespace Chicane
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void includeCubeMaps(const Kerb::Instance& inAsset);
+        void includeCubeMaps(const Box::Instance& inAsset);
         void buildCubeMaps();
 
-        void includeMesh(const Kerb::Instance& inAsset);
+        void includeMesh(const Box::Instance& inAsset);
         void buildMeshes();
 
         void includeAssets();
@@ -180,7 +180,7 @@ namespace Chicane
         Buffer::Instance m_meshVertexBuffer;
         Buffer::Instance m_meshIndexBuffer;
 
-        std::unique_ptr<CubeMap::Manager::Instance> m_cubeMapManager;
+        std::unique_ptr<CubeMap::Manager> m_cubeMapManager;
         std::unique_ptr<Model::Manager::Instance> m_modelManager;
         std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 

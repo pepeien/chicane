@@ -10,14 +10,14 @@ namespace Chicane
     {
     public:
         bool hasSkybox();
-        Kerb::Instance getSkybox();
-        void setSkybox(const Kerb::Instance& inSkybox);
+        Box::Instance getSkybox();
+        void setSkybox(const Box::Instance& inSkybox);
 
         std::vector<Actor*> getActors();
         void addActor(Actor* inActor);
 
     private:
-        Kerb::Instance m_skybox;
+        Box::Instance m_skybox;
         std::vector<Actor*> m_actors;
     };
 }

@@ -44,15 +44,15 @@ namespace Chicane
 
     bool Actor::hasMesh()
     {
-        return m_mesh.type == static_cast<uint8_t>(Kerb::Type::Mesh);
+        return m_mesh.type == static_cast<uint8_t>(Box::Type::Mesh);
     }
 
-    Kerb::Instance Actor::getMesh()
+    Box::Instance Actor::getMesh()
     {
         return m_mesh;
     }
 
-    void Actor::setMesh(const Kerb::Instance& inMesh)
+    void Actor::setMesh(const Box::Instance& inMesh)
     {
         m_mesh = inMesh;
     }

@@ -2,11 +2,12 @@
 
 #include "Base.hpp"
 
-#include "Game.hpp"
-#include "Renderer.hpp"
-
 namespace Chicane
 {
+    class Controller;
+    class Renderer;
+    class Level;
+
     enum class WindowType : uint8_t
     {
         Windowed,

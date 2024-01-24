@@ -1,5 +1,8 @@
 #include "Window.hpp"
 
+#include "Game.hpp"
+#include "Renderer.hpp"
+
 namespace Chicane
 {
     Window::Window(

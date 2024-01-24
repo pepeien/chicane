@@ -1,4 +1,4 @@
-#include "Instance.hpp"
+#include "Cubemap.hpp"
 
 namespace Chicane
 {

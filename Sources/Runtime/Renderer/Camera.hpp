@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.hpp"
+
 #include "Buffer.hpp"
 
 namespace Chicane

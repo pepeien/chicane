@@ -3,7 +3,7 @@ file(
     GLOB_RECURSE
     SOURCES
  
-    ${RUNTIME_SOURCES_DIR}/*.cpp
+    ${RUNTIME_RUNTIME_DIR}/*.cpp
 )
 
 add_library(${RUNTIME_TARGET_NAME} STATIC ${SOURCES})
@@ -54,12 +54,12 @@ target_include_directories(
     PUBLIC
 
     # Source
-    ${RUNTIME_SOURCES_DIR}
+    ${RUNTIME_RUNTIME_DIR}
 
     # Vendor
-    ${VENDOR_DIR}/stb
+    ${VENDOR_DIR}
 )
-
+message("${VENDOR_DIR}")
 if (WIN32)
     message(STATUS "CREATING BUILD FOR WINDOWS")
 

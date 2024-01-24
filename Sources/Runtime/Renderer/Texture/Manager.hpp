@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Instance.hpp"
+#include "Renderer/Texture.hpp"
 
 namespace Chicane
 {

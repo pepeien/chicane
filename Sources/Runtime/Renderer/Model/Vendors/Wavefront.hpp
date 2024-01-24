@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Base.hpp"
+
+#include "Core/Helper.hpp"
+
+#include "Renderer/Model.hpp"
 #include "Renderer/Vertex.hpp"
-#include "Renderer/Model/Instance.hpp"
 
 namespace Chicane
 {

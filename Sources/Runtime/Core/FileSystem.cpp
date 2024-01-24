@@ -9,7 +9,7 @@ namespace Chicane
             std::string rootDir()
             {
                 std::string installLocation = std::string(
-                    std::getenv(SOURCE_LOCATION.c_str())
+                    std::getenv(ENV_SOURCE_LOCATION.c_str())
                 );
 
                 if (installLocation.empty())

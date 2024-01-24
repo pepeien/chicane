@@ -51,16 +51,10 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-static const std::string SOURCE_LOCATION = "CHICANE_SDK";
-static const std::string BUILD_LOCATION  = "CHICANE_BUILD";
+static const std::string ENV_SOURCE_LOCATION = "CHICANE_SDK";
+static const std::string ENV_BUILD_LOCATION  = "CHICANE_BUILD";
 
 static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
-
-// Source
-#include "Core/Kerb.hpp"
-#include "Core/FileSystem.hpp"
-#include "Core/Helper.hpp"
-#include "Core/Log.hpp"
 
 namespace Chicane
 {

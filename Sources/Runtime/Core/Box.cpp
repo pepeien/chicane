@@ -1,15 +1,10 @@
-#include "Kerb.hpp"
-
-#include <iostream>
-#include <fstream>
-
-#include "FileSystem.hpp"
+#include "Box.hpp"
 
 #include "Renderer/Image.hpp"
 
 namespace Chicane
 {
-    namespace Kerb
+    namespace Box
     {
         std::string WriteRootHeader::toString()
         {

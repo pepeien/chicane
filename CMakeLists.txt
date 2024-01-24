@@ -11,19 +11,21 @@ set(NAME Chicane)
 project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(BUILD_DIR   "${CMAKE_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 set(SOURCES_DIR "${CMAKE_SOURCE_DIR}/Sources")
-set(VENDOR_DIR  "${SOURCES_DIR}/Vendor")
+set(BUILD_DIR   "${CMAKE_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 
 # Runtime
 set(RUNTIME_TARGET_NAME "Runtime")
-set(RUNTIME_SOURCES_DIR "${SOURCES_DIR}/Runtime")
+set(RUNTIME_RUNTIME_DIR "${SOURCES_DIR}/Runtime")
 set(RUNTIME_BUILD_DIR   "${BUILD_DIR}")
 
-# Shader
-set(SHADER_TARGET_NAME "Shader")
-set(SHADER_SOURCES_DIR "${CMAKE_SOURCE_DIR}/Shaders")
-set(SHADER_BUILD_DIR   "${SHADER_SOURCES_DIR}/Bin")
+# Shaders
+set(SHADERS_TARGET_NAME "Shaders")
+set(SHADERS_RUNTIME_DIR "${CMAKE_SOURCE_DIR}/Shaders")
+set(SHADERS_BUILD_DIR   "${SHADERS_RUNTIME_DIR}/Bin")
+
+# Vendors
+set(VENDOR_DIR "${SOURCES_DIR}/Vendor")
 
 ##############  Set compiler  #######################
 message(STATUS "Using ${CMAKE_GENERATOR}")

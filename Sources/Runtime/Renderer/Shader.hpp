@@ -2,6 +2,8 @@
 
 #include "Base.hpp"
 
+#include "Core/FileSystem.hpp"
+
 namespace Chicane
 {
     namespace Shader

@@ -3,8 +3,8 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    "${SHADER_SOURCES_DIR}/*.frag"
-    "${SHADER_SOURCES_DIR}/*.vert"
+    "${SHADERS_RUNTIME_DIR}/*.frag"
+    "${SHADERS_RUNTIME_DIR}/*.vert"
 )
 
 ##############  Copy files  #######################
@@ -15,9 +15,9 @@ foreach(GLSL ${SOURCES})
     get_filename_component(FILE_NAME ${GLSL} NAME)
 
     set(SPIRV_DIR "${FILE_DIR}")
-    string(REPLACE "${SHADER_SOURCES_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
+    string(REPLACE "${SHADERS_RUNTIME_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
 
-    set(SPIRV_DIR "${SHADER_BUILD_DIR}/${SPIRV_DIR}")
+    set(SPIRV_DIR "${SHADERS_BUILD_DIR}/${SPIRV_DIR}")
     string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
 
     file(MAKE_DIRECTORY "${SPIRV_DIR}")
@@ -35,7 +35,7 @@ foreach(GLSL ${SOURCES})
 endforeach(GLSL)
 
 add_custom_target(
-    ${SHADER_TARGET_NAME}
+    ${SHADERS_TARGET_NAME}
     DEPENDS
 
     ${SPIRV_BINARY_FILES}

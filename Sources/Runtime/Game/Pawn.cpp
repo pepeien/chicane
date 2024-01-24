@@ -20,6 +20,6 @@ namespace Chicane
 
     void Pawn::getUnpossessed()
     {
-        m_controller == nullptr;
+        m_controller = nullptr;
     }
 }

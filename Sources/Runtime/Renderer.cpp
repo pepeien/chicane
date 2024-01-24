@@ -14,7 +14,7 @@ namespace Chicane
         m_currentImageIndex(0),
         m_meshVertexBuffer({}),
         m_meshIndexBuffer({}),
-        m_cubeMapManager(std::make_unique<CubeMap::Manager::Instance>()),
+        m_cubeMapManager(std::make_unique<CubeMap::Manager>()),
         m_modelManager(std::make_unique<Model::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>()),
         m_level(inLevel),
@@ -721,12 +721,12 @@ namespace Chicane
 
     void Renderer::buildMainCommandBuffer()
     {
-        CommandBuffer::Instance::CreateInfo createInfo = {
+        CommandBuffer::CreateInfo createInfo = {
             m_logicalDevice,
             m_mainCommandPool
         };
 
-        CommandBuffer::Instance::init(
+        CommandBuffer::init(
             m_mainCommandBuffer,
             createInfo
         );
@@ -734,7 +734,7 @@ namespace Chicane
 
     void Renderer::buildFramesCommandBuffers()
     {
-        CommandBuffer::Instance::CreateInfo createInfo = {
+        CommandBuffer::CreateInfo createInfo = {
             m_logicalDevice,
             m_mainCommandPool
         };
@@ -857,7 +857,7 @@ namespace Chicane
         );
     }
 
-    void Renderer::includeCubeMaps(const Kerb::Instance& inAsset)
+    void Renderer::includeCubeMaps(const Box::Instance& inAsset)
     {
         if (inAsset.entryCount != CUBEMAP_IMAGE_COUNT)
         {
@@ -895,11 +895,11 @@ namespace Chicane
         );
     }
 
-    void Renderer::includeMesh(const Kerb::Instance& inAsset)
+    void Renderer::includeMesh(const Box::Instance& inAsset)
     {
-        for (Kerb::Entry assetEntry : inAsset.entries)
+        for (Box::Entry assetEntry : inAsset.entries)
         {
-            if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Model))
+            if (assetEntry.type == static_cast<uint8_t>(Box::EntryType::Model))
             {
                 m_modelManager->add(
                     inAsset.name,
@@ -910,7 +910,7 @@ namespace Chicane
                 continue;
             }
 
-            if (assetEntry.type == static_cast<uint8_t>(Kerb::EntryType::Texture))
+            if (assetEntry.type == static_cast<uint8_t>(Box::EntryType::Texture))
             {
                 m_textureManager->add(
                     inAsset.name,

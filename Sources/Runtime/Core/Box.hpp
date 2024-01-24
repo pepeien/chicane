@@ -2,17 +2,19 @@
 
 #include "Base.hpp"
 
-static const std::string HEADER_SIGNATURE     = "KERB";
-static const std::string ENTRY_SIGNATURE      = "ENTRY";
-static const std::string ENTRY_DATA_SIGNATURE = "DATA";
-static const std::string DATA_SEPARATOR       = ";";
-static const std::string FILE_EXTENSTION      = ".kerb";
-
+#include "FileSystem.hpp"
+#include "Helper.hpp"
 
 namespace Chicane
 {
-    namespace Kerb
+    namespace Box
     {
+        static const std::string HEADER_SIGNATURE     = "BOX";
+        static const std::string ENTRY_SIGNATURE      = "ENTRY";
+        static const std::string ENTRY_DATA_SIGNATURE = "DATA";
+        static const std::string DATA_SEPARATOR       = ";";
+        static const std::string FILE_EXTENSTION      = ".box";
+
         enum class Type : uint8_t
         {
             Undefined,

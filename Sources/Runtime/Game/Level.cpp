@@ -4,17 +4,17 @@ namespace Chicane
 {
     bool Level::hasSkybox()
     {
-        return m_skybox.type == static_cast<uint8_t>(Kerb::Type::CubeMap);
+        return m_skybox.type == static_cast<uint8_t>(Box::Type::CubeMap);
     }
 
-    Kerb::Instance Level::getSkybox()
+    Box::Instance Level::getSkybox()
     {
         return m_skybox;
     }
 
-    void Level::setSkybox(const Kerb::Instance& inAsset)
+    void Level::setSkybox(const Box::Instance& inAsset)
     {
-        if (inAsset.type != static_cast<uint8_t>(Kerb::Type::CubeMap))
+        if (inAsset.type != static_cast<uint8_t>(Box::Type::CubeMap))
         {
             throw std::runtime_error("Failed to set skybox, asset is not a cubemap");
         }

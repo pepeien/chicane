@@ -2,21 +2,21 @@
 
 #include "Base.hpp"
 
-#include "Renderer/Buffer.hpp"
-#include "Renderer/Descriptor.hpp"
-#include "Renderer/Image.hpp"
+#include "Core/FileSystem.hpp"
 
-constexpr uint32_t CUBEMAP_IMAGE_COUNT = 6;
+#include "Buffer.hpp"
+#include "Descriptor.hpp"
+#include "Image.hpp"
+
+constexpr uint32_t TEXTURE_IMAGE_COUNT = 1;
 
 namespace Chicane
 {
-    namespace CubeMap
+    namespace Texture
     {
-        typedef std::array<std::vector<unsigned char>, CUBEMAP_IMAGE_COUNT> Data;
-
         struct CreateInfo
         {
-            Data data;
+            std::vector<unsigned char> data;
             vk::Device logicalDevice;
             vk::PhysicalDevice physicalDevice;
             vk::CommandBuffer commandBuffer;
@@ -49,8 +49,8 @@ namespace Chicane
             int m_width;
             int m_height;
             int m_channels;
-            Data m_data;
-            stbi_uc* m_pixels[CUBEMAP_IMAGE_COUNT];
+            std::vector<unsigned char> m_data;
+            stbi_uc* m_pixels;
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;
 

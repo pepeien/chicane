@@ -2,6 +2,8 @@
 
 #include "Base.hpp"
 
+#include "Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Debug

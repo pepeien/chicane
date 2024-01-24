@@ -4,13 +4,13 @@
 
 #include "Game/Actor.hpp"
 
-#include "Renderer/Buffer.hpp"
-#include "Renderer/Camera.hpp"
-#include "Renderer/Descriptor.hpp"
-#include "Renderer/GraphicsPipeline.hpp"
-#include "Renderer/Model.hpp"
-#include "Renderer/Image.hpp"
-#include "Renderer/Sync.hpp"
+#include "Buffer.hpp"
+#include "Camera.hpp"
+#include "Descriptor.hpp"
+#include "GraphicsPipeline.hpp"
+#include "Model.hpp"
+#include "Image.hpp"
+#include "Sync.hpp"
 
 namespace Chicane
 {

@@ -2,10 +2,11 @@
 
 #include "Base.hpp"
 
-#include "Instance.hpp"
-#include "Renderer/Buffer.hpp"
-#include "Renderer/Vertex.hpp"
 #include "Vendors/Wavefront.hpp"
+
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Model.hpp"
+#include "Renderer/Vertex.hpp"
 
 namespace Chicane
 {
