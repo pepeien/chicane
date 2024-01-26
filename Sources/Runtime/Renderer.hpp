@@ -36,6 +36,7 @@
 namespace Chicane
 {
     // Core
+    class Layer;
     class Window;
 
     // Game
@@ -58,26 +59,6 @@ namespace Chicane
             const vk::CommandBuffer& inCommandBuffer
         );
 
-        // Sky
-        void prepareSky(
-            const vk::CommandBuffer& inCommandBuffer,
-            uint32_t inImageIndex
-        );
-        void drawSky(
-            const vk::CommandBuffer& inCommandBuffer,
-            uint32_t inImageIndex
-        );
-
-        // Scene
-        void prepareScene(
-            const vk::CommandBuffer& inCommandBuffer,
-            uint32_t inImageIndex
-        );
-        void drawScene(
-            const vk::CommandBuffer& inCommandBuffer,
-            uint32_t inImageIndex
-        );
-
         // Vulkan
         void buildInstance();
         void destroyInstance();
@@ -97,17 +78,8 @@ namespace Chicane
         void rebuildSwapChain();
         void destroySwapChain();
 
-        void initializeDescriptors();
-        void buildSkyDescriptorSetLayouts();
-        void buildSceneDescriptorSetLayouts();
-        void buildDescriptorSetLayouts();
-
-        void buildSkyGraphicsPipeline();
-        void buildSceneGraphicsPipeline();
-        void buildGraphicsPipelines();
-        void destroyGraphicsPipelines();
-
-        void buildFramebuffers();
+        void buildLayers();
+        void destroyLayers();
 
         void buildCommandPool();
         void destroyCommandPool();
@@ -115,22 +87,9 @@ namespace Chicane
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void includeCubeMaps(const Box::Instance& inAsset);
-        void buildCubeMaps();
-
-        void includeMesh(const Box::Instance& inAsset);
-        void buildMeshes();
-
-        void includeAssets();
-        void buildAssets();
-        void destroyAssets();
-
         void prepareCamera(Frame::Instance& outFrame);
         void prepareActors(Frame::Instance& outFrame);
         void prepareFrame(Frame::Instance& outFrame);
-        void buildFrameResources();
-
-        void buildMaterialResources();
 
     public:
         // Instance
@@ -152,22 +111,6 @@ namespace Chicane
         // Swap Chain
         SwapChain::Bundle m_swapChain;
 
-        // Graphics Pipline
-        std::unordered_map<
-            Layer,
-            std::unique_ptr<GraphicsPipeline::Instance>
-        > m_graphicPipelines;
-
-        std::unordered_map<
-            Layer,
-            Descriptor::Bundle
-        > m_frameDescriptors;
-
-        std::unordered_map<
-            Layer,
-            Descriptor::Bundle
-        > m_materialDescriptors;
-
         // Command
         vk::CommandPool m_mainCommandPool;
         vk::CommandBuffer m_mainCommandBuffer;
@@ -176,16 +119,11 @@ namespace Chicane
         int m_imageCount;
         int m_currentImageIndex;
 
-        // Mesh
-        Buffer::Instance m_meshVertexBuffer;
-        Buffer::Instance m_meshIndexBuffer;
-
-        std::unique_ptr<CubeMap::Manager> m_cubeMapManager;
-        std::unique_ptr<Model::Manager::Instance> m_modelManager;
-        std::unique_ptr<Texture::Manager::Instance> m_textureManager;
-
         // Level
         Level* m_level;
+
+        // Layer
+        std::vector<Layer*> m_layers;
 
         // Camera
         std::unique_ptr<Camera::Instance> m_camera;

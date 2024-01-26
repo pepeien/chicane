@@ -12,38 +12,20 @@ namespace Chicane
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
-        m_meshVertexBuffer({}),
-        m_meshIndexBuffer({}),
-        m_cubeMapManager(std::make_unique<CubeMap::Manager>()),
-        m_modelManager(std::make_unique<Model::Manager::Instance>()),
-        m_textureManager(std::make_unique<Texture::Manager::Instance>()),
         m_level(inLevel),
         m_camera(std::make_unique<Camera::Instance>()),
         m_window(inWindow)
     {
-        // Assets pre load
-        includeAssets();
-
-        // Vulkan
-        initializeDescriptors();
-
         buildInstance();
         buildDebugMessenger();
         buildSurface();
         buildDevices();
         buildQueues();
         buildSwapChain();
-        buildDescriptorSetLayouts();
-        buildGraphicsPipelines();
-        buildFramebuffers();
         buildCommandPool();
         buildMainCommandBuffer();
+        buildLayers();
         buildFramesCommandBuffers();
-        buildFrameResources();
-        buildMaterialResources();
-
-        // Assets building
-        buildAssets();
     }
 
     Renderer::~Renderer()
@@ -51,39 +33,13 @@ namespace Chicane
         // Vulkan
         m_logicalDevice.waitIdle();
 
+        destroyLayers();
+
         destroyCommandPool();
-        destroyGraphicsPipelines();
         destroySwapChain();
 
         m_camera.reset();
 
-        for (auto [type, instance] : m_frameDescriptors)
-        {
-            m_logicalDevice.destroyDescriptorSetLayout(
-                instance.setLayout
-            );
-        }
-
-        for (auto [type, instance] : m_materialDescriptors)
-        {
-            m_logicalDevice.destroyDescriptorSetLayout(
-                instance.setLayout
-            );
-            m_logicalDevice.destroyDescriptorPool(
-                instance.pool
-            );
-        }
-
-        Buffer::destroy(
-            m_logicalDevice,
-            m_meshVertexBuffer
-        );
-        Buffer::destroy(
-            m_logicalDevice,
-            m_meshIndexBuffer
-        );
-
-        destroyAssets();
         destroyDevices();
         destroySurface();
 
@@ -148,13 +104,21 @@ namespace Chicane
 
         commandBuffer.reset();
 
-        prepareFrame(m_swapChain.images[imageIndex]);
+        Frame::Instance& nextImage = m_swapChain.images[imageIndex];
+
+        prepareFrame(nextImage);
 
         vk::CommandBufferBeginInfo beginInfo = {};
         commandBuffer.begin(beginInfo);
 
-        drawSky(commandBuffer,   imageIndex);
-        drawScene(commandBuffer, imageIndex);
+        for (Layer* layer : m_layers)
+        {
+            layer->render(
+                nextImage,
+                commandBuffer,
+                m_swapChain.extent
+            );
+        }
 
         commandBuffer.end();
 
@@ -210,153 +174,6 @@ namespace Chicane
 
         vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
         inCommandBuffer.setScissor(0, 1, &scissor);
-    }
-
-    void Renderer::prepareSky(
-        const vk::CommandBuffer& inCommandBuffer,
-        uint32_t inImageIndex
-    )
-    {
-        updateViewport(inCommandBuffer);
-
-        inCommandBuffer.bindPipeline(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(Layer::SKY)->instance
-        );
-
-        inCommandBuffer.bindDescriptorSets(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(
-                Layer::SKY
-            )->layout,
-            0,
-            m_swapChain.images[inImageIndex].descriptorSets.at(
-                Layer::SKY
-            ),
-            nullptr
-        );
-
-        m_cubeMapManager->bind(
-            "Sky",
-            inCommandBuffer,
-            m_graphicPipelines.at(
-                Layer::SKY
-            )->layout
-        );
-    }
-
-    void Renderer::drawSky(
-        const vk::CommandBuffer& inCommandBuffer,
-        uint32_t inImageIndex
-    )
-    {
-        vk::ClearValue clearColor;
-        clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
-
-        std::vector<vk::ClearValue> clearValues = {{ clearColor }};
-
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(Layer::SKY)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(Layer::SKY);
-        renderPassBeginInfo.renderArea.offset.x = 0;
-        renderPassBeginInfo.renderArea.offset.y = 0;
-        renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
-
-        inCommandBuffer.beginRenderPass(
-            &renderPassBeginInfo,
-            vk::SubpassContents::eInline
-        );
-
-        prepareSky(inCommandBuffer, inImageIndex);
-
-        m_cubeMapManager->draw(
-            "Sky",
-            inCommandBuffer
-        );
-
-        inCommandBuffer.endRenderPass();
-    }
-
-    void Renderer::prepareScene(
-        const vk::CommandBuffer& inCommandBuffer,
-        uint32_t inImageIndex
-    )
-    {
-        updateViewport(inCommandBuffer);
-
-        inCommandBuffer.bindPipeline(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(Layer::SCENE)->instance
-        );
-
-        inCommandBuffer.bindDescriptorSets(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicPipelines.at(
-                Layer::SCENE
-            )->layout,
-            0,
-            m_swapChain.images[inImageIndex].descriptorSets.at(
-                Layer::SCENE
-            ),
-            nullptr
-        );
-
-        vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
-        vk::DeviceSize offsets[]   = { 0 };
-
-        inCommandBuffer.bindVertexBuffers(
-            0,
-            1,
-            vertexBuffers,
-            offsets
-        );
-
-        inCommandBuffer.bindIndexBuffer(
-            m_meshIndexBuffer.instance,
-            0,
-            vk::IndexType::eUint32
-        );
-
-        m_textureManager->bindAll(
-            inCommandBuffer,
-            m_graphicPipelines.at(Layer::SCENE)->layout
-        );
-    }
-
-    void Renderer::drawScene(
-        const vk::CommandBuffer& inCommandBuffer,
-        uint32_t inImageIndex
-    )
-    {
-        vk::ClearValue clearColor;
-        clearColor.color = vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f);
-
-        vk::ClearValue clearDepth;
-        clearDepth.depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
-
-        std::vector<vk::ClearValue> clearValues = {{ clearColor, clearDepth }};
-
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicPipelines.at(Layer::SCENE)->renderPass;
-        renderPassBeginInfo.framebuffer         = m_swapChain.images[inImageIndex].framebuffers.at(Layer::SCENE);
-        renderPassBeginInfo.renderArea.offset.x = 0;
-        renderPassBeginInfo.renderArea.offset.y = 0;
-        renderPassBeginInfo.renderArea.extent   = m_swapChain.extent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
-
-        inCommandBuffer.beginRenderPass(
-            &renderPassBeginInfo,
-            vk::SubpassContents::eInline
-        );
-
-        prepareScene(inCommandBuffer, inImageIndex);
-
-        m_modelManager->drawAll(inCommandBuffer);
-
-        inCommandBuffer.endRenderPass();
     }
 
     void Renderer::buildInstance()
@@ -461,6 +278,11 @@ namespace Chicane
         );
 
         m_imageCount = static_cast<int>(m_swapChain.images.size());
+
+        for (Frame::Instance& frame : m_swapChain.images)
+        {
+            frame.setupSync();
+        }
     }
 
     void Renderer::rebuildSwapChain()
@@ -475,8 +297,7 @@ namespace Chicane
         destroySwapChain();
         buildSwapChain();
 
-        buildFramebuffers();
-        buildFrameResources();
+        buildLayers();
         buildFramesCommandBuffers();
     }
 
@@ -487,221 +308,27 @@ namespace Chicane
             frame.destroy();
         }
 
-        m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
-
         m_swapChain.images.clear();
 
-        for (auto& [type, instance] : m_frameDescriptors)
+        m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
+
+        destroyLayers();
+    }
+
+    void Renderer::buildLayers()
+    {
+        m_layers.push_back(new SkyboxLayer(this));
+        m_layers.push_back(new LevelLayer(this));
+    }
+
+    void Renderer::destroyLayers()
+    {
+        for (Layer* layer : m_layers)
         {
-            m_logicalDevice.destroyDescriptorPool(
-                instance.pool
-            );
+            delete layer;
         }
-    }
 
-    void Renderer::initializeDescriptors()
-    {
-        Descriptor::Bundle defaultDescriptor {};
-
-        // Sky
-        m_frameDescriptors.insert(
-            std::make_pair(
-                Layer::SKY,
-                defaultDescriptor
-            )
-        );
-        m_materialDescriptors.insert(
-            std::make_pair(
-                Layer::SKY,
-                defaultDescriptor
-            )
-        );
-
-        // Scene
-        m_frameDescriptors.insert(
-            std::make_pair(
-                Layer::SCENE,
-                defaultDescriptor
-            )
-        );
-        m_materialDescriptors.insert(
-            std::make_pair(
-                Layer::SCENE,
-                defaultDescriptor
-            )
-        );
-    }
-
-    void Renderer::buildSkyDescriptorSetLayouts()
-    {
-        // Frame
-        Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
-        frameLayoutBidings.count = 1;
-
-        /// Camera
-        frameLayoutBidings.indices.push_back(0);
-        frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
-        frameLayoutBidings.counts.push_back(1);
-        frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-        Descriptor::initSetLayout(
-            m_frameDescriptors.at(Layer::SKY).setLayout,
-            m_logicalDevice,
-            frameLayoutBidings
-        );
-
-        // Material
-        Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
-        materialLayoutBidings.count = 1;
-
-        /// Texture
-        materialLayoutBidings.indices.push_back(0);
-        materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-        materialLayoutBidings.counts.push_back(1);
-        materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
-
-        Descriptor::initSetLayout(
-            m_materialDescriptors.at(Layer::SKY).setLayout,
-            m_logicalDevice,
-            materialLayoutBidings
-        );
-    }
-
-    void Renderer::buildSceneDescriptorSetLayouts()
-    {
-        // Frame
-        Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
-        frameLayoutBidings.count = 2;
-
-        /// Camera
-        frameLayoutBidings.indices.push_back(0);
-        frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
-        frameLayoutBidings.counts.push_back(1);
-        frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-        /// Model
-        frameLayoutBidings.indices.push_back(1);
-        frameLayoutBidings.types.push_back(vk::DescriptorType::eStorageBuffer);
-        frameLayoutBidings.counts.push_back(1);
-        frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-        Descriptor::initSetLayout(
-            m_frameDescriptors.at(Layer::SCENE).setLayout,
-            m_logicalDevice,
-            frameLayoutBidings
-        );
-
-        // Material
-        Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
-        materialLayoutBidings.count = 1;
-
-        /// Texture
-        materialLayoutBidings.indices.push_back(0);
-        materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-        materialLayoutBidings.counts.push_back(1);
-        materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
-
-        Descriptor::initSetLayout(
-            m_materialDescriptors.at(Layer::SCENE).setLayout,
-            m_logicalDevice,
-            materialLayoutBidings
-        );
-    }
-
-    void Renderer::buildDescriptorSetLayouts()
-    {
-        buildSkyDescriptorSetLayouts();
-        buildSceneDescriptorSetLayouts();
-    }
-
-    void Renderer::buildSkyGraphicsPipeline()
-    {
-        GraphicsPipeline::CreateInfo createInfo = {};
-        createInfo.canOverwrite         = false;
-        createInfo.hasVertices          = false;
-        createInfo.hasDepth             = false;
-        createInfo.logicalDevice        = m_logicalDevice;
-        createInfo.vertexShaderPath     = FileSystem::Paths::rootDir() + "/Shaders/Bin/sky.vert.spv";
-        createInfo.fragmentShaderPath   = FileSystem::Paths::rootDir() + "/Shaders/Bin/sky.frag.spv";
-        createInfo.swapChainExtent      = m_swapChain.extent;
-        createInfo.swapChainImageFormat = m_swapChain.format;
-        createInfo.descriptorSetLayouts = {
-            m_frameDescriptors.at(Layer::SKY).setLayout,
-            m_materialDescriptors.at(Layer::SKY).setLayout
-        };
-
-        m_graphicPipelines.insert(
-            std::make_pair(
-                Layer::SKY,
-                std::make_unique<GraphicsPipeline::Instance>(createInfo)
-            )
-        );
-    }
-
-    void Renderer::buildSceneGraphicsPipeline()
-    {
-        GraphicsPipeline::CreateInfo createInfo = {};
-        createInfo.canOverwrite          = true;
-        createInfo.hasVertices           = true;
-        createInfo.hasDepth              = true;
-        createInfo.logicalDevice         = m_logicalDevice;
-        createInfo.vertexShaderPath      = FileSystem::Paths::rootDir() + "/Shaders/Bin/triangle.vert.spv";
-        createInfo.fragmentShaderPath    = FileSystem::Paths::rootDir() + "/Shaders/Bin/triangle.frag.spv";
-        createInfo.bindingDescription    = Vertex::getBindingDescription();
-        createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
-        createInfo.swapChainExtent       = m_swapChain.extent;
-        createInfo.swapChainImageFormat  = m_swapChain.format;
-        createInfo.depthFormat           = m_swapChain.images[0].depthFormat;
-        createInfo.descriptorSetLayouts  = {
-            m_frameDescriptors.at(Layer::SCENE).setLayout,
-            m_materialDescriptors.at(Layer::SCENE).setLayout
-        };
-
-        m_graphicPipelines.insert(
-            std::make_pair(
-                Layer::SCENE,
-                std::make_unique<GraphicsPipeline::Instance>(createInfo)
-            )
-        );
-    }
-
-    void Renderer::buildGraphicsPipelines()
-    {
-        buildSkyGraphicsPipeline();
-        buildSceneGraphicsPipeline();
-    }
-
-    void Renderer::destroyGraphicsPipelines()
-    {
-        for (auto& [type, instance] : m_graphicPipelines)
-        {
-            instance.reset();
-        }
-    }
-
-    void Renderer::buildFramebuffers()
-    {
-        std::unordered_map<Layer, vk::RenderPass> renderPasses;
-        renderPasses.insert(
-            std::make_pair(
-                Layer::SKY,
-                m_graphicPipelines.at(Layer::SKY)->renderPass
-            )
-        );
-        renderPasses.insert(
-            std::make_pair(
-                Layer::SCENE,
-                m_graphicPipelines.at(Layer::SCENE)->renderPass
-            )
-        );
-
-        Frame::Buffer::CreateInfo createInfo = {
-            m_logicalDevice,
-            renderPasses,
-            m_swapChain.extent
-        };
-
-        Frame::Buffer::init(m_swapChain.images, createInfo);
+        m_layers.clear();
     }
 
     void Renderer::buildCommandPool()
@@ -779,198 +406,5 @@ namespace Chicane
         prepareActors(outFrame);
 
         outFrame.updateDescriptorSets();
-    }
-
-    void Renderer::buildFrameResources()
-    {
-        // Sky
-        Descriptor::PoolCreateInfo skyPoolCreateInfo;
-        skyPoolCreateInfo.size = static_cast<uint32_t>(m_swapChain.images.size());
-        skyPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-        skyPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
-
-        Descriptor::initPool(
-            m_frameDescriptors.at(Layer::SKY).pool,
-            m_logicalDevice,
-            skyPoolCreateInfo
-        );
-
-        // Scene
-        Descriptor::PoolCreateInfo scenePoolCreateInfo;
-        scenePoolCreateInfo.size  = static_cast<uint32_t>(m_swapChain.images.size());
-        scenePoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-        scenePoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
-
-        Descriptor::initPool(
-            m_frameDescriptors.at(Layer::SCENE).pool,
-            m_logicalDevice,
-            scenePoolCreateInfo
-        );
-
-        for (Frame::Instance& frame : m_swapChain.images)
-        {
-            // Sync
-            frame.setupSync();
-
-            // Data
-            frame.setupCameraVectorUBO();
-            frame.setupCameraMatrixUBO();
-            frame.setupModelData(m_level->getActors());
-
-            // Sets
-            frame.addDescriptorSet(
-                Layer::SKY,
-                m_frameDescriptors.at(Layer::SKY).setLayout,
-                m_frameDescriptors.at(Layer::SKY).pool
-            );
-            frame.addDescriptorSet(
-                Layer::SCENE,
-                m_frameDescriptors.at(Layer::SCENE).setLayout,
-                m_frameDescriptors.at(Layer::SCENE).pool
-            );
-            frame.setupDescriptorSets();
-        }
-    }
-
-    void Renderer::buildMaterialResources()
-    {
-        // Sky
-        Descriptor::PoolCreateInfo skyPoolCreateInfo;
-        skyPoolCreateInfo.size  = 1;
-        skyPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-
-        Descriptor::initPool(
-            m_materialDescriptors.at(Layer::SKY).pool,
-            m_logicalDevice,
-            skyPoolCreateInfo
-        );
-
-        // Scene
-        Descriptor::PoolCreateInfo scenePoolCreateInfo;
-        scenePoolCreateInfo.size = m_textureManager->getCount();
-        scenePoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-
-        Descriptor::initPool(
-            m_materialDescriptors.at(Layer::SCENE).pool,
-            m_logicalDevice,
-            scenePoolCreateInfo
-        );
-    }
-
-    void Renderer::includeCubeMaps(const Box::Instance& inAsset)
-    {
-        if (inAsset.entryCount != CUBEMAP_IMAGE_COUNT)
-        {
-            throw std::runtime_error(
-                "Cubemap -> " + inAsset.name + " have " + std::to_string(inAsset.entryCount) + " instead of " + std::to_string(CUBEMAP_IMAGE_COUNT)
-            );
-        }
-
-        m_cubeMapManager->add(
-            "Sky",
-            {
-                inAsset.entries[0].data,
-                inAsset.entries[1].data,
-                inAsset.entries[2].data,
-                inAsset.entries[3].data,
-                inAsset.entries[4].data,
-                inAsset.entries[5].data
-            }
-        );
-    }
-
-    void Renderer::buildCubeMaps()
-    {
-        m_cubeMapManager->build(
-            m_logicalDevice,
-            m_physicalDevice,
-            m_mainCommandBuffer,
-            m_graphicsQueue,
-            m_materialDescriptors.at(
-                Layer::SKY
-            ).setLayout,
-            m_materialDescriptors.at(
-                Layer::SKY
-            ).pool
-        );
-    }
-
-    void Renderer::includeMesh(const Box::Instance& inAsset)
-    {
-        for (Box::Entry assetEntry : inAsset.entries)
-        {
-            if (assetEntry.type == static_cast<uint8_t>(Box::EntryType::Model))
-            {
-                m_modelManager->add(
-                    inAsset.name,
-                    assetEntry.data,
-                    Model::Vendor::Wavefront
-                );
-
-                continue;
-            }
-
-            if (assetEntry.type == static_cast<uint8_t>(Box::EntryType::Texture))
-            {
-                m_textureManager->add(
-                    inAsset.name,
-                    assetEntry.data
-                );
-
-                continue;
-            }
-        }
-    }
-
-    void Renderer::buildMeshes()
-    {
-        m_modelManager->build(
-            m_meshVertexBuffer,
-            m_meshIndexBuffer,
-            m_logicalDevice,
-            m_physicalDevice,
-            m_graphicsQueue,
-            m_mainCommandBuffer
-        );
-
-        m_textureManager->build(
-            m_logicalDevice,
-            m_physicalDevice,
-            m_mainCommandBuffer,
-            m_graphicsQueue,
-            m_materialDescriptors.at(Layer::SCENE).setLayout,
-            m_materialDescriptors.at(Layer::SCENE).pool
-        );
-    }
-
-    void Renderer::includeAssets()
-    {
-        if (m_level->hasSkybox())
-        {
-            includeCubeMaps(m_level->getSkybox());
-        }
-
-        for (Actor* actor : m_level->getActors())
-        {
-            if (!actor->hasMesh())
-            {
-                continue;
-            }
-
-            includeMesh(actor->getMesh());
-        }
-    }
-
-    void Renderer::buildAssets()
-    {
-        buildCubeMaps();
-        buildMeshes();
-    }
-
-    void Renderer::destroyAssets()
-    {
-        m_cubeMapManager.reset();
-        m_modelManager.reset();
-        m_textureManager.reset();
     }
 }

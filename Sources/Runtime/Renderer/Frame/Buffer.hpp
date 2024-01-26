@@ -15,17 +15,11 @@ namespace Chicane
             struct CreateInfo
             {
                 vk::Device logicalDevice;
-                std::unordered_map<
-                    Layer,
-                    vk::RenderPass
-                > renderPasses;
+                vk::RenderPass renderPass;
                 vk::Extent2D swapChainExtent;
+                std::vector<vk::ImageView> attachments;
             };
 
-            void init(
-                std::vector<Instance>& outFrames,
-                const CreateInfo& inCreateInfo
-            );
             void init(
                 Instance& outFrame,
                 const CreateInfo& inCreateInfo

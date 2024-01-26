@@ -148,54 +148,40 @@ namespace Chicane
                 1
             );
         }
-    
-        void Instance::addDescriptorSet(
-            Layer inType,
-            const vk::DescriptorSetLayout& inLayout,
-            const vk::DescriptorPool& inPool
-        )
+
+        void Instance::addFrameBuffer(const vk::Framebuffer& inFramebuffer)
         {
-            Descriptor::initSet(
-                descriptorSets[inType],
-                logicalDevice,
-                inLayout,
-                inPool
-            );
+            framebuffers.push_back(inFramebuffer);
         }
 
-        void Instance::setupDescriptorSets()
+        vk::Framebuffer Instance::getFramebuffer(int inIndex)
         {
-            // Sky
-            vk::WriteDescriptorSet cameraVectorWriteInfo;
-            cameraVectorWriteInfo.dstSet          = descriptorSets.at(Layer::SKY);
-            cameraVectorWriteInfo.dstBinding      = 0;
-            cameraVectorWriteInfo.dstArrayElement = 0;
-            cameraVectorWriteInfo.descriptorCount = 1;
-            cameraVectorWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            cameraVectorWriteInfo.pBufferInfo     = &cameraVectorDescriptorBufferInfo;
+            return framebuffers[inIndex];
+        }
 
-            // Scene
-            vk::WriteDescriptorSet cameraMatrixWriteInfo;
-            cameraMatrixWriteInfo.dstSet          = descriptorSets.at(Layer::SCENE);
-            cameraMatrixWriteInfo.dstBinding      = 0;
-            cameraMatrixWriteInfo.dstArrayElement = 0;
-            cameraMatrixWriteInfo.descriptorCount = 1;
-            cameraMatrixWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            cameraMatrixWriteInfo.pBufferInfo     = &cameraMatrixDescriptorBufferInfo;
+        std::vector<vk::Framebuffer> Instance::getFramebuffers()
+        {
+            return framebuffers;
+        }
 
-            vk::WriteDescriptorSet modelWriteInfo;
-            modelWriteInfo.dstSet          = descriptorSets.at(Layer::SCENE);
-            modelWriteInfo.dstBinding      = 1;
-            modelWriteInfo.dstArrayElement = 0;
-            modelWriteInfo.descriptorCount = 1;
-            modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-            modelWriteInfo.pBufferInfo     = &modelDescriptorBufferInfo;
+        void Instance::addDescriptorSet(const vk::DescriptorSet& inDescriptorSet)
+        {
+            descriptorSets.push_back(inDescriptorSet);
+        }
 
-            descriptorSetWrites = {
-                cameraVectorWriteInfo,
-                cameraMatrixWriteInfo,
-                modelWriteInfo
-            };
+        vk::DescriptorSet Instance::getDescriptorSet(int inIndex)
+        {
+            return descriptorSets[inIndex];
+        }
+
+        std::vector<vk::DescriptorSet> Instance::getDescriptorSets()
+        {
+            return descriptorSets;
+        }
+
+        void Instance::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
+        {
+            descriptorSetWrites.push_back(inWriteDescriptorSet);
         }
 
         void Instance::updateDescriptorSets()
@@ -208,9 +194,9 @@ namespace Chicane
 
         void Instance::destroy()
         {
-            for (auto& [type, instance] : framebuffers)
+            for (vk::Framebuffer& frambuffer : framebuffers)
             {
-                logicalDevice.destroyFramebuffer(instance);
+                logicalDevice.destroyFramebuffer(frambuffer);
             }
 
             logicalDevice.destroyImageView(imageView);

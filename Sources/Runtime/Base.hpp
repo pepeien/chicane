@@ -64,7 +64,7 @@ namespace Chicane
         int height = -1;
     };
 
-    enum class Layer : uint8_t
+    enum class LayerType : uint8_t
     {
         SKY,
         SCENE

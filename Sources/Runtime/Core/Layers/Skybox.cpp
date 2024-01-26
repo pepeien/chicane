@@ -1,0 +1,244 @@
+#include "SkyBox.hpp"
+
+#include "Core/Log.hpp"
+
+namespace Chicane
+{
+    SkyboxLayer::SkyboxLayer(Renderer* inRenderer)
+        : Layer("Skybox"),
+        m_renderer(inRenderer),
+        m_manager(std::make_unique<CubeMap::Manager>())
+    {
+        if (!m_renderer->m_level->hasSkybox())
+        {
+            return;
+        }
+
+        loadAssets();
+        initDescriptors();
+        initGraphicsPipeline();
+        initFramebuffers();
+        initFrameResources();
+        initMaterialResources();
+        buildAssets();
+    }
+
+    SkyboxLayer::~SkyboxLayer()
+    {
+        // Graphics Pipeline
+        m_graphicsPipeline.reset();
+
+        // Descriptors
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_frameDescriptor.pool
+        );
+
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_materialDescriptor.pool
+        );
+
+        // Managers
+        m_manager.reset();
+    }
+
+    void SkyboxLayer::render(
+        Frame::Instance& outFrame,
+        const vk::CommandBuffer& inCommandBuffer,
+        const vk::Extent2D& inSwapChainExtent
+    )
+    {
+        // Renderpass
+        std::vector<vk::ClearValue> clearValues;
+        clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
+
+        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(0);
+        renderPassBeginInfo.renderArea.offset.x = 0;
+        renderPassBeginInfo.renderArea.offset.y = 0;
+        renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
+        renderPassBeginInfo.pClearValues        = clearValues.data();
+
+        inCommandBuffer.beginRenderPass(
+            &renderPassBeginInfo,
+            vk::SubpassContents::eInline
+        );
+
+        // Viewport
+        m_renderer->updateViewport(inCommandBuffer);
+
+        // Preparing
+        inCommandBuffer.bindPipeline(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicsPipeline->instance
+        );
+
+        inCommandBuffer.bindDescriptorSets(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicsPipeline->layout,
+            0,
+            outFrame.getDescriptorSet(0),
+            nullptr
+        );
+
+        m_manager->bind(
+            "Skybox",
+            inCommandBuffer,
+            m_graphicsPipeline->layout
+        );
+
+        // Drawing
+        m_manager->draw(
+            "Skybox",
+            inCommandBuffer
+        );
+
+        inCommandBuffer.endRenderPass();
+    }
+
+    void SkyboxLayer::loadAssets()
+    {
+        Box::Instance cubemap = m_renderer->m_level->getSkybox();
+        m_manager->add(
+            "Skybox",
+            {
+                cubemap.entries[0].data,
+                cubemap.entries[1].data,
+                cubemap.entries[2].data,
+                cubemap.entries[3].data,
+                cubemap.entries[4].data,
+                cubemap.entries[5].data
+            }
+        );
+    }
+
+    void SkyboxLayer::initDescriptors()
+    {
+        Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
+        frameLayoutBidings.count = 1;
+        frameLayoutBidings.indices.push_back(0);
+        frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+        frameLayoutBidings.counts.push_back(1);
+        frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+        Descriptor::initSetLayout(
+            m_frameDescriptor.setLayout,
+            m_renderer->m_logicalDevice,
+            frameLayoutBidings
+        );
+
+        Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
+        materialLayoutBidings.count = 1;
+        materialLayoutBidings.indices.push_back(0);
+        materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+        materialLayoutBidings.counts.push_back(1);
+        materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+        Descriptor::initSetLayout(
+            m_materialDescriptor.setLayout,
+            m_renderer->m_logicalDevice,
+            materialLayoutBidings
+        );
+    }
+
+    void SkyboxLayer::initGraphicsPipeline()
+    {
+        GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
+        graphicsPipelineCreateInfo.canOverwrite         = false;
+        graphicsPipelineCreateInfo.hasVertices          = false;
+        graphicsPipelineCreateInfo.hasDepth             = false;
+        graphicsPipelineCreateInfo.logicalDevice        = m_renderer->m_logicalDevice;
+        graphicsPipelineCreateInfo.vertexShaderPath     = FileSystem::Paths::rootDir() + "/Shaders/Bin/sky.vert.spv";
+        graphicsPipelineCreateInfo.fragmentShaderPath   = FileSystem::Paths::rootDir() + "/Shaders/Bin/sky.frag.spv";
+        graphicsPipelineCreateInfo.swapChainExtent      = m_renderer->m_swapChain.extent;
+        graphicsPipelineCreateInfo.swapChainImageFormat = m_renderer->m_swapChain.format;
+        graphicsPipelineCreateInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
+
+        m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(graphicsPipelineCreateInfo);
+    }
+
+    void SkyboxLayer::initFramebuffers()
+    {
+        for (Frame::Instance& frame : m_renderer->m_swapChain.images)
+        {
+            Frame::Buffer::CreateInfo framebufferCreateInfo = {
+                m_renderer->m_logicalDevice,
+                m_graphicsPipeline->renderPass,
+                m_renderer->m_swapChain.extent,
+                { frame.imageView }
+            };
+
+            Frame::Buffer::init(frame, framebufferCreateInfo);
+        }
+    }
+
+    void SkyboxLayer::initFrameResources()
+    {
+        Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
+        frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_renderer->m_swapChain.images.size());
+        frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+        frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
+
+        Descriptor::initPool(
+            m_frameDescriptor.pool,
+            m_renderer->m_logicalDevice,
+            frameDescriptorPoolCreateInfo
+        );
+
+        for (Frame::Instance& frame : m_renderer->m_swapChain.images)
+        {
+            frame.setupCameraVectorUBO();
+
+            vk::DescriptorSet descriptorSet;
+            Descriptor::initSet(
+                descriptorSet,
+                m_renderer->m_logicalDevice,
+                m_frameDescriptor.setLayout,
+                m_frameDescriptor.pool
+            );
+            frame.addDescriptorSet(descriptorSet);
+
+            vk::WriteDescriptorSet writeDescriptorSet;
+            writeDescriptorSet.dstSet          = descriptorSet;
+            writeDescriptorSet.dstBinding      = 0;
+            writeDescriptorSet.dstArrayElement = 0;
+            writeDescriptorSet.descriptorCount = 1;
+            writeDescriptorSet.descriptorType  = vk::DescriptorType::eUniformBuffer;
+            writeDescriptorSet.pBufferInfo     = &frame.cameraVectorDescriptorBufferInfo;
+
+            frame.addWriteDescriptorSet(writeDescriptorSet);
+        }
+    }
+
+    void SkyboxLayer::initMaterialResources()
+    {
+        Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
+        materialDescriptorPoolCreateInfo.size  = 1;
+        materialDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+
+        Descriptor::initPool(
+            m_materialDescriptor.pool,
+            m_renderer->m_logicalDevice,
+            materialDescriptorPoolCreateInfo
+        );
+    }
+
+    void SkyboxLayer::buildAssets()
+    {
+        m_manager->build(
+            m_renderer->m_logicalDevice,
+            m_renderer->m_physicalDevice,
+            m_renderer->m_mainCommandBuffer,
+            m_renderer->m_graphicsQueue,
+            m_materialDescriptor.setLayout,
+            m_materialDescriptor.pool
+        );
+    }
+}

@@ -94,6 +94,8 @@
         "semaphore": "cpp",
         "shared_mutex": "cpp",
         "typeindex": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "expected": "cpp",
+        "*.inc": "cpp"
     }
 }

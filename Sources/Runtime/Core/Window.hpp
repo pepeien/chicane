@@ -19,6 +19,7 @@ namespace Chicane
     {
         std::string title     = "";
         Resolution resolution = {};
+        int displayIndex      = 0;
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
         bool isResizable      = true; // Only takes effect when the type is `WindowType::Windowed`
@@ -47,6 +48,8 @@ namespace Chicane
 
         Resolution getResolution();
         void setResolution(const Resolution& inResolution);
+
+        void setDisplay(int inMonitorIndex);
 
         void setType(WindowType inType);
         WindowType getType();

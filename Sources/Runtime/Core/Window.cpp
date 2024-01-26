@@ -41,6 +41,7 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
+        setDisplay(inCreateInfo.displayIndex);
         setType(inCreateInfo.type);
 
         m_renderer = std::make_unique<Renderer>(
@@ -153,6 +154,15 @@ namespace Chicane
             instance,
             inResolution.width,
             inResolution.height
+        );
+    }
+
+    void Window::setDisplay(int inMonitorIndex)
+    {
+        SDL_SetWindowPosition(
+            instance,
+            SDL_WINDOWPOS_CENTERED_DISPLAY(inMonitorIndex),
+            SDL_WINDOWPOS_CENTERED_DISPLAY(inMonitorIndex)
         );
     }
 
