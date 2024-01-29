@@ -28,10 +28,9 @@ namespace Chicane
         // Vulkan
         m_logicalDevice.waitIdle();
 
-        destroyLayers();
-
         destroyCommandPool();
         destroySwapChain();
+        deleteLayers();
 
         m_camera.reset();
 
@@ -343,6 +342,14 @@ namespace Chicane
         for (Layer* layer : m_layers)
         {
             layer->destroy();
+        }
+    }
+
+    void Renderer::deleteLayers()
+    {
+        for (Layer* layer : m_layers)
+        {
+            delete layer;
         }
 
         m_layers.clear();

@@ -80,6 +80,7 @@ namespace Chicane
 
         void initLayers();
         void destroyLayers();
+        void deleteLayers();
 
         void buildCommandPool();
         void destroyCommandPool();

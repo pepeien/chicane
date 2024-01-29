@@ -116,7 +116,7 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            const Resolution& inResolution
+            const Vec2& inResolution
         )
         {
             SupportDetails supportDetails;
@@ -141,8 +141,8 @@ namespace Chicane
             vk::Extent2D extent;
             pickExtent(
                 extent,
-                inResolution.width,
-                inResolution.height,
+                inResolution.x,
+                inResolution.y,
                 supportDetails.capabilities
             );
 

@@ -27,7 +27,7 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
-        if (inCreateInfo.resolution.width < 0 || inCreateInfo.resolution.height < 0)
+        if (inCreateInfo.resolution.x < 0 || inCreateInfo.resolution.y < 0)
         {
             throw std::runtime_error("Invalid resolution");
         }
@@ -36,8 +36,8 @@ namespace Chicane
             inCreateInfo.title.c_str(),
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            inCreateInfo.resolution.width,
-            inCreateInfo.resolution.height,
+            inCreateInfo.resolution.x,
+            inCreateInfo.resolution.y,
             SDL_WINDOW_VULKAN
         );
 
@@ -136,7 +136,7 @@ namespace Chicane
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
-    Resolution Window::getResolution()
+    Vec2 Window::getResolution()
     {
         int currentWidth  = 0;
         int currentHeight = 0;
@@ -150,15 +150,7 @@ namespace Chicane
         return { currentWidth, currentHeight };
     }
 
-    void Window::setTitle(const std::string& inTitle)
-    {
-        SDL_SetWindowTitle(
-            instance,
-            inTitle.c_str()
-        );
-    }
-
-    void Window::setResolution(const Resolution& inResolution)
+    void Window::setResolution(const Vec2& inResolution)
     {
         if (m_isResizable)
         {
@@ -167,8 +159,30 @@ namespace Chicane
 
         SDL_SetWindowSize(
             instance,
-            inResolution.width,
-            inResolution.height
+            inResolution.x,
+            inResolution.y
+        );
+    }
+
+    Vec2 Window::getPosition()
+    {
+        int currentX  = 0;
+        int currentY  = 0;
+
+        SDL_GetWindowPosition(
+            instance,
+            &currentX,
+            &currentY
+        );
+
+        return { currentX, currentY };
+    }
+
+    void Window::setTitle(const std::string& inTitle)
+    {
+        SDL_SetWindowTitle(
+            instance,
+            inTitle.c_str()
         );
     }
 
@@ -259,11 +273,8 @@ namespace Chicane
 
     void Window::initCoreLayers()
     {
-        m_skyboxLayer = std::make_unique<SkyboxLayer>(this);
-        addLayer(m_skyboxLayer.get());
-
-        m_levelLayer = std::make_unique<LevelLayer>(this);
-        addLayer(m_levelLayer.get());
+        addLayer(new SkyboxLayer(this));
+        addLayer(new LevelLayer(this));
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)

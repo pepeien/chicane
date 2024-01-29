@@ -21,7 +21,7 @@ namespace Chicane
     struct WindowCreateInfo
     {
         std::string title     = "";
-        Resolution resolution = {};
+        Vec2 resolution = {};
         int displayIndex      = 0;
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
@@ -54,8 +54,10 @@ namespace Chicane
 
         void setTitle(const std::string& inTitle);
 
-        Resolution getResolution();
-        void setResolution(const Resolution& inResolution);
+        Vec2 getResolution();
+        void setResolution(const Vec2& inResolution);
+
+        Vec2 getPosition();
 
         void setDisplay(int inMonitorIndex);
 
@@ -86,14 +88,7 @@ namespace Chicane
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         std::unique_ptr<Renderer> m_renderer;
-
-        // Core Layers
-        std::unique_ptr<LevelLayer> m_levelLayer;
-        std::unique_ptr<SkyboxLayer> m_skyboxLayer;
-
-        // Level
         Level* m_level;
-
         Controller* m_controller;
     };
 }

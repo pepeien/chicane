@@ -58,9 +58,9 @@ static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
 
 namespace Chicane
 {
-    struct Resolution
+    struct Vec2
     {
-        int width  = -1;
-        int height = -1;
+        int x = -1;
+        int y = -1;
     };
 }
