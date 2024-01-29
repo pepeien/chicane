@@ -22,7 +22,7 @@ namespace Chicane
             }
     
             vk::DescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.flags         = vk::DescriptorPoolCreateFlags();
+            descriptorPoolCreateInfo.flags         = inCreateInfo.flags;
             descriptorPoolCreateInfo.maxSets       = inCreateInfo.size;
             descriptorPoolCreateInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
             descriptorPoolCreateInfo.pPoolSizes    = poolSizes.data();

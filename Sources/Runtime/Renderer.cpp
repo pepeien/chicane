@@ -5,16 +5,12 @@
 
 namespace Chicane
 {
-    Renderer::Renderer(
-        Window* inWindow,
-        Level* inLevel
-    )
+    Renderer::Renderer(Window* inWindow)
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
-        m_level(inLevel),
-        m_camera(std::make_unique<Camera::Instance>()),
-        m_window(inWindow)
+        m_window(inWindow),
+        m_camera(std::make_unique<Camera::Instance>())
     {
         buildInstance();
         buildDebugMessenger();
@@ -24,7 +20,6 @@ namespace Chicane
         buildSwapChain();
         buildCommandPool();
         buildMainCommandBuffer();
-        buildLayers();
         buildFramesCommandBuffers();
     }
 
@@ -51,20 +46,44 @@ namespace Chicane
         destroyInstance();
     }
 
+    void Renderer::pushLayer(Layer* inLayer)
+    {
+        m_layers.push_back(inLayer);
+
+        inLayer->init();
+    }
+
+    void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
+    {
+        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
+        inCommandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
+        inCommandBuffer.setScissor(0, 1, &scissor);
+    }
+
+    void Renderer::onEvent(const SDL_Event& inEvent)
+    {
+        for (Layer* layer : m_layers)
+        {
+            layer->onEvent(inEvent);
+        }
+    }
+
     void Renderer::render()
     {
         m_logicalDevice.waitIdle();
 
         Frame::Instance& currentImage = m_swapChain.images[m_currentImageIndex];
 
-        if (
-            m_logicalDevice.waitForFences(
-                1,
-                &currentImage.renderFence,
-                VK_TRUE,
-                UINT64_MAX
-            ) != vk::Result::eSuccess
-        )
+        vk::Result fenceWait = m_logicalDevice.waitForFences(
+            1,
+            &currentImage.renderFence,
+            VK_TRUE,
+            UINT64_MAX
+        );
+    
+        if (fenceWait != vk::Result::eSuccess && fenceWait != vk::Result::eTimeout)
         {
             LOG_WARNING("Error while waiting the fences");
         }
@@ -99,17 +118,26 @@ namespace Chicane
         {
             LOG_WARNING("Error while resetting the fences");
         }
-    
+
+        std::vector<vk::CommandBuffer> commandBuffers;
+
         vk::CommandBuffer& commandBuffer = currentImage.commandBuffer;
+        commandBuffers.push_back(commandBuffer);
 
         commandBuffer.reset();
 
         Frame::Instance& nextImage = m_swapChain.images[imageIndex];
 
-        prepareFrame(nextImage);
+        prepareCamera(nextImage);
 
-        vk::CommandBufferBeginInfo beginInfo = {};
-        commandBuffer.begin(beginInfo);
+        for (Layer* layer : m_layers)
+        {
+            layer->setup(nextImage);
+        }
+
+        nextImage.updateDescriptorSets();
+
+        CommandBuffer::Worker::startJob(commandBuffer);
 
         for (Layer* layer : m_layers)
         {
@@ -120,14 +148,9 @@ namespace Chicane
             );
         }
 
-        commandBuffer.end();
-
         vk::Semaphore waitSemaphores[]      = { currentImage.presentSemaphore };
         vk::Semaphore signalSemaphores[]    = { currentImage.renderSemaphore };
         vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
-
-        std::vector<vk::CommandBuffer> commandBuffers;
-        commandBuffers.push_back(commandBuffer);
     
         vk::SubmitInfo submitInfo = {};
         submitInfo.waitSemaphoreCount   = 1;
@@ -138,9 +161,10 @@ namespace Chicane
         submitInfo.pSignalSemaphores    = signalSemaphores;
         submitInfo.pWaitDstStageMask    = waitStages;
 
-        m_graphicsQueue.submit(
+        CommandBuffer::Worker::endJob(
+            m_graphicsQueue,
             submitInfo,
-            currentImage.renderFence
+            "Render submtion"
         );
 
         vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
@@ -165,15 +189,6 @@ namespace Chicane
         }
 
         m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
-    }
-
-    void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
-    {
-        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
-        inCommandBuffer.setViewport(0, 1, &viewport);
-
-        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
-        inCommandBuffer.setScissor(0, 1, &scissor);
     }
 
     void Renderer::buildInstance()
@@ -297,7 +312,7 @@ namespace Chicane
         destroySwapChain();
         buildSwapChain();
 
-        buildLayers();
+        initLayers();
         buildFramesCommandBuffers();
     }
 
@@ -315,17 +330,19 @@ namespace Chicane
         destroyLayers();
     }
 
-    void Renderer::buildLayers()
+    void Renderer::initLayers()
     {
-        m_layers.push_back(new SkyboxLayer(this));
-        m_layers.push_back(new LevelLayer(this));
+        for (Layer* layer : m_layers)
+        {
+            layer->init();
+        }
     }
 
     void Renderer::destroyLayers()
     {
         for (Layer* layer : m_layers)
         {
-            delete layer;
+            layer->destroy();
         }
 
         m_layers.clear();
@@ -387,24 +404,5 @@ namespace Chicane
             &outFrame.cameraMatrixUBO.instance,
             outFrame.cameraMatrixUBO.allocationSize
         );
-    }
-
-    void Renderer::prepareActors(Frame::Instance& outFrame)
-    {
-        outFrame.updateModelData(m_level->getActors());
-
-        memcpy(
-            outFrame.modelData.writeLocation,
-            outFrame.modelData.transforms.data(),
-            outFrame.modelData.allocationSize
-        );
-    }
-
-    void Renderer::prepareFrame(Frame::Instance& outFrame)
-    {
-        prepareCamera(outFrame);
-        prepareActors(outFrame);
-
-        outFrame.updateDescriptorSets();
     }
 }

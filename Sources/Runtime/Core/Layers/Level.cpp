@@ -1,15 +1,25 @@
 #include "Level.hpp"
 
 #include "Core/Log.hpp"
+#include "Core/Window.hpp"
 
 namespace Chicane
 {
-    LevelLayer::LevelLayer(Renderer* inRenderer)
+    LevelLayer::LevelLayer(Window* inWindow)
         : Layer("Level"),
-        m_renderer(inRenderer),
+        m_renderer(inWindow->getRenderer()),
+        m_level(inWindow->getLevel()),
         m_modelManager(std::make_unique<Model::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
+    {}
+
+    void LevelLayer::init()
     {
+        if (!m_level->hasActors())
+        {
+            return;
+        }
+
         loadAssets();
         initDescriptors();
         initGraphicsPipeline();
@@ -19,8 +29,97 @@ namespace Chicane
         buildAssets();
     }
 
-    LevelLayer::~LevelLayer()
+    void LevelLayer::setup(Frame::Instance& outFrame)
     {
+        outFrame.updateModelData(m_level->getActors());
+
+        memcpy(
+            outFrame.modelData.writeLocation,
+            outFrame.modelData.transforms.data(),
+            outFrame.modelData.allocationSize
+        );
+    }
+
+    void LevelLayer::render(
+        Frame::Instance& outFrame,
+        const vk::CommandBuffer& inCommandBuffer,
+        const vk::Extent2D& inSwapChainExtent
+    )
+    {
+        if (!m_level->hasActors())
+        {
+            return;
+        }
+
+        // Renderpass
+        std::vector<vk::ClearValue> clearValues;
+        clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
+        clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
+
+        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_name);
+        renderPassBeginInfo.renderArea.offset.x = 0;
+        renderPassBeginInfo.renderArea.offset.y = 0;
+        renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
+        renderPassBeginInfo.pClearValues        = clearValues.data();
+
+        inCommandBuffer.beginRenderPass(
+            &renderPassBeginInfo,
+            vk::SubpassContents::eInline
+        );
+
+        // Viewport
+        m_renderer->updateViewport(inCommandBuffer);
+
+        // Preparing
+        inCommandBuffer.bindPipeline(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicsPipeline->instance
+        );
+
+        inCommandBuffer.bindDescriptorSets(
+            vk::PipelineBindPoint::eGraphics,
+            m_graphicsPipeline->layout,
+            0,
+            outFrame.getDescriptorSet(m_name),
+            nullptr
+        );
+
+        vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
+        vk::DeviceSize offsets[]   = { 0 };
+
+        inCommandBuffer.bindVertexBuffers(
+            0,
+            1,
+            vertexBuffers,
+            offsets
+        );
+
+        inCommandBuffer.bindIndexBuffer(
+            m_meshIndexBuffer.instance,
+            0,
+            vk::IndexType::eUint32
+        );
+
+        m_textureManager->bindAll(
+            inCommandBuffer,
+            m_graphicsPipeline->layout
+        );
+
+        // Drawing
+        m_modelManager->drawAll(inCommandBuffer);
+
+        inCommandBuffer.endRenderPass();
+
+        return;
+    }
+
+    void LevelLayer::destroy()
+    {
+        m_renderer->m_logicalDevice.waitIdle();
+
         // Graphics Pipeline
         m_graphicsPipeline.reset();
 
@@ -54,78 +153,9 @@ namespace Chicane
         m_textureManager.reset();
     }
 
-    void LevelLayer::render(
-        Frame::Instance& outFrame,
-        const vk::CommandBuffer& inCommandBuffer,
-        const vk::Extent2D& inSwapChainExtent
-    )
-    {
-        // Renderpass
-        std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
-        clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
-
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
-        renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(1);
-        renderPassBeginInfo.renderArea.offset.x = 0;
-        renderPassBeginInfo.renderArea.offset.y = 0;
-        renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
-
-        inCommandBuffer.beginRenderPass(
-            &renderPassBeginInfo,
-            vk::SubpassContents::eInline
-        );
-
-        // Viewport
-        m_renderer->updateViewport(inCommandBuffer);
-
-        // Preparing
-        inCommandBuffer.bindPipeline(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicsPipeline->instance
-        );
-
-        inCommandBuffer.bindDescriptorSets(
-            vk::PipelineBindPoint::eGraphics,
-            m_graphicsPipeline->layout,
-            0,
-            outFrame.getDescriptorSet(1),
-            nullptr
-        );
-
-        vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
-        vk::DeviceSize offsets[]   = { 0 };
-
-        inCommandBuffer.bindVertexBuffers(
-            0,
-            1,
-            vertexBuffers,
-            offsets
-        );
-
-        inCommandBuffer.bindIndexBuffer(
-            m_meshIndexBuffer.instance,
-            0,
-            vk::IndexType::eUint32
-        );
-
-        m_textureManager->bindAll(
-            inCommandBuffer,
-            m_graphicsPipeline->layout
-        );
-
-        // Drawing
-        m_modelManager->drawAll(inCommandBuffer);
-
-        inCommandBuffer.endRenderPass();
-    }
-
     void LevelLayer::loadAssets()
     {
-        for (Actor* actor : m_renderer->m_level->getActors())
+        for (Actor* actor : m_level->getActors())
         {
             if (!actor->hasMesh())
             {
@@ -227,12 +257,13 @@ namespace Chicane
     {
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            Frame::Buffer::CreateInfo framebufferCreateInfo = {
-                m_renderer->m_logicalDevice,
-                m_graphicsPipeline->renderPass,
-                m_renderer->m_swapChain.extent,
-                { frame.imageView, frame.depthImageView }
-            };
+            Frame::Buffer::CreateInfo framebufferCreateInfo = {};
+            framebufferCreateInfo.id              = m_name;
+            framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
+            framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
+            framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;
+            framebufferCreateInfo.attachments.push_back(frame.imageView);
+            framebufferCreateInfo.attachments.push_back(frame.depthImageView);
 
             Frame::Buffer::init(frame, framebufferCreateInfo);
         }
@@ -255,7 +286,7 @@ namespace Chicane
         {
             // Data
             frame.setupCameraMatrixUBO();
-            frame.setupModelData(m_renderer->m_level->getActors());
+            frame.setupModelData(m_level->getActors());
 
             // Scene
             vk::DescriptorSet sceneDescriptorSet;
@@ -265,7 +296,7 @@ namespace Chicane
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
-            frame.addDescriptorSet(sceneDescriptorSet);
+            frame.addDescriptorSet(m_name, sceneDescriptorSet);
     
             vk::WriteDescriptorSet cameraMatrixWriteInfo;
             cameraMatrixWriteInfo.dstSet          = sceneDescriptorSet;

@@ -42,24 +42,24 @@ namespace Chicane
     // Game
     class Actor;
     class Controller;
-    class Level;
 
     class Renderer
     {
     public:
-        Renderer(Window* inWindow, Level* inLevel);
+        Renderer(Window* inWindow);
         ~Renderer();
 
     public:
-        void render();
+        void pushLayer(Layer* inLayer);
 
-    public:
-        // Viewport
         void updateViewport(
             const vk::CommandBuffer& inCommandBuffer
         );
 
-        // Vulkan
+        void onEvent(const SDL_Event& inEvent);
+        void render();
+
+    private:
         void buildInstance();
         void destroyInstance();
 
@@ -78,7 +78,7 @@ namespace Chicane
         void rebuildSwapChain();
         void destroySwapChain();
 
-        void buildLayers();
+        void initLayers();
         void destroyLayers();
 
         void buildCommandPool();
@@ -88,8 +88,6 @@ namespace Chicane
         void buildFramesCommandBuffers();
 
         void prepareCamera(Frame::Instance& outFrame);
-        void prepareActors(Frame::Instance& outFrame);
-        void prepareFrame(Frame::Instance& outFrame);
 
     public:
         // Instance
@@ -119,16 +117,13 @@ namespace Chicane
         int m_imageCount;
         int m_currentImageIndex;
 
-        // Level
-        Level* m_level;
+        // Window
+        Window* m_window;
 
-        // Layer
+        // Layers
         std::vector<Layer*> m_layers;
 
         // Camera
         std::unique_ptr<Camera::Instance> m_camera;
-
-        // Window
-        Window* m_window;
     };
 }

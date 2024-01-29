@@ -36,13 +36,11 @@ namespace Chicane
     
             void setupDepthBuffering();
 
-            void addFrameBuffer(const vk::Framebuffer& inFramebuffer);
-            vk::Framebuffer getFramebuffer(int inIndex);
-            std::vector<vk::Framebuffer> getFramebuffers();
+            void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
+            vk::Framebuffer getFramebuffer(const std::string& inId);
 
-            void addDescriptorSet(const vk::DescriptorSet& inDescriptorSet);
-            vk::DescriptorSet getDescriptorSet(int inIndex);
-            std::vector<vk::DescriptorSet> getDescriptorSets();
+            void addDescriptorSet(const std::string& inId, const vk::DescriptorSet& inDescriptorSet);
+            vk::DescriptorSet getDescriptorSet(const std::string& inId);
 
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();
@@ -59,7 +57,7 @@ namespace Chicane
 
             vk::Image image;
             vk::ImageView imageView;
-            std::vector<vk::Framebuffer> framebuffers;
+            std::unordered_map<std::string, vk::Framebuffer> framebuffers;
 
             vk::Image depthImage;
             vk::ImageView depthImageView;
@@ -82,7 +80,7 @@ namespace Chicane
             Model::Bundle modelData;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
-            std::vector<vk::DescriptorSet> descriptorSets;
+            std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
         };
     }

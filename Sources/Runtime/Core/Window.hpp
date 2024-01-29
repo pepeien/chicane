@@ -7,6 +7,9 @@ namespace Chicane
     class Controller;
     class Renderer;
     class Level;
+    class Layer;
+    class LevelLayer;
+    class SkyboxLayer;
 
     enum class WindowType : uint8_t
     {
@@ -30,12 +33,17 @@ namespace Chicane
     public:
         Window(
             const WindowCreateInfo& inCreateInfo,
-            Level* inLevel,
-            Controller* inController
+            Controller* inController = nullptr,
+            Level* inLevel = nullptr
         );
         ~Window();
 
     public:
+        Renderer* getRenderer();
+        Level* getLevel();
+
+        void addLayer(Layer* inLayer);
+
         void run();
 
         void onEvent(const SDL_Event& inEvent);
@@ -64,6 +72,8 @@ namespace Chicane
         SDL_Window* instance;
 
     private:
+        void initCoreLayers();
+
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onMouseClick();
         void onKeyDown(const SDL_KeyboardEvent& inEvent);
@@ -76,6 +86,13 @@ namespace Chicane
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         std::unique_ptr<Renderer> m_renderer;
+
+        // Core Layers
+        std::unique_ptr<LevelLayer> m_levelLayer;
+        std::unique_ptr<SkyboxLayer> m_skyboxLayer;
+
+        // Level
+        Level* m_level;
 
         Controller* m_controller;
     };

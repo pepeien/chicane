@@ -22,6 +22,11 @@ namespace Chicane
         m_skybox = inAsset;
     }
 
+    bool Level::hasActors()
+    {
+        return m_actors.size() > 0;
+    }
+
     std::vector<Actor*> Level::getActors()
     {
         return m_actors;

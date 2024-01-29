@@ -8,8 +8,9 @@ namespace Chicane
     {
         struct PoolCreateInfo
         {
-            uint32_t size;
-            std::vector<vk::DescriptorType> types;
+            vk::DescriptorPoolCreateFlags flags   = vk::DescriptorPoolCreateFlags();
+            uint32_t size                         = 0;
+            std::vector<vk::DescriptorType> types = {};
         };
 
         struct SetLayoutBidingsCreateInfo

@@ -149,34 +149,34 @@ namespace Chicane
             );
         }
 
-        void Instance::addFrameBuffer(const vk::Framebuffer& inFramebuffer)
+        void Instance::addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer)
         {
-            framebuffers.push_back(inFramebuffer);
+            if (framebuffers.find(inId) != framebuffers.end())
+            {
+                throw std::runtime_error("Framebuffer " + inId + " already exists");
+            }
+
+            framebuffers.insert(std::make_pair(inId, inFramebuffer));
         }
 
-        vk::Framebuffer Instance::getFramebuffer(int inIndex)
+        vk::Framebuffer Instance::getFramebuffer(const std::string& inId)
         {
-            return framebuffers[inIndex];
+            return framebuffers.at(inId);
         }
 
-        std::vector<vk::Framebuffer> Instance::getFramebuffers()
+        void Instance::addDescriptorSet(const std::string& inId, const vk::DescriptorSet& inDescriptorSet)
         {
-            return framebuffers;
+            if (descriptorSets.find(inId) != descriptorSets.end())
+            {
+                throw std::runtime_error("Descriptor set " + inId + " already exists");
+            }
+
+            descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
         }
 
-        void Instance::addDescriptorSet(const vk::DescriptorSet& inDescriptorSet)
+        vk::DescriptorSet Instance::getDescriptorSet(const std::string& inId)
         {
-            descriptorSets.push_back(inDescriptorSet);
-        }
-
-        vk::DescriptorSet Instance::getDescriptorSet(int inIndex)
-        {
-            return descriptorSets[inIndex];
-        }
-
-        std::vector<vk::DescriptorSet> Instance::getDescriptorSets()
-        {
-            return descriptorSets;
+            return descriptorSets.at(inId);
         }
 
         void Instance::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
@@ -194,7 +194,7 @@ namespace Chicane
 
         void Instance::destroy()
         {
-            for (vk::Framebuffer& frambuffer : framebuffers)
+            for (auto& [id, frambuffer] : framebuffers)
             {
                 logicalDevice.destroyFramebuffer(frambuffer);
             }

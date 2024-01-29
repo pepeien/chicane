@@ -13,6 +13,7 @@ namespace Chicane
         Box::Instance getSkybox();
         void setSkybox(const Box::Instance& inSkybox);
 
+        bool hasActors();
         std::vector<Actor*> getActors();
         void addActor(Actor* inActor);
 

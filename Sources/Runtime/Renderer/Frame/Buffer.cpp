@@ -18,7 +18,7 @@ namespace Chicane
                 framebufferInfo.layers          = 1;
 
                 vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
-                outFrame.addFrameBuffer(frameBuffer);
+                outFrame.addFrameBuffer(inCreateInfo.id, frameBuffer);
             }
 
             void initCommand(

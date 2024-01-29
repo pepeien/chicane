@@ -426,6 +426,7 @@ namespace Chicane
             );
 
             std::vector<vk::AttachmentDescription> attachments;
+
             attachments.push_back(
                 createColorAttachment(
                     m_swapChainImageFormat,
@@ -433,7 +434,7 @@ namespace Chicane
                     m_canOverwrite ? vk::ImageLayout::ePresentSrcKHR : vk::ImageLayout::eUndefined
                 )
             );
-            
+
             if (m_hasDepth)
             {
                 attachments.push_back(
@@ -445,7 +446,7 @@ namespace Chicane
                 m_hasDepth,
                 attachments,
                 m_logicalDevice
-            );
+            ); 
 
             pipelineInfo.layout             = layout;
             pipelineInfo.renderPass         = renderPass;

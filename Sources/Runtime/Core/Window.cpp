@@ -1,5 +1,9 @@
 #include "Window.hpp"
 
+#include "Layer.hpp"
+#include "Layers/Level.hpp"
+#include "Layers/Skybox.hpp"
+
 #include "Game.hpp"
 #include "Renderer.hpp"
 
@@ -7,14 +11,15 @@ namespace Chicane
 {
     Window::Window(
         const WindowCreateInfo& inCreateInfo,
-        Level* inLevel,
-        Controller* inController
+        Controller* inController,
+        Level* inLevel
     )
         : instance(nullptr),
         m_isFocused(inCreateInfo.isFocused),
         m_isResizable(inCreateInfo.isResizable),
         m_isMinimized(false),
         m_renderer(nullptr),
+        m_level(inLevel),
         m_controller(inController)
     {
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -44,16 +49,30 @@ namespace Chicane
         setDisplay(inCreateInfo.displayIndex);
         setType(inCreateInfo.type);
 
-        m_renderer = std::make_unique<Renderer>(
-            this,
-            inLevel
-        );
+        m_renderer = std::make_unique<Renderer>(this);
+
+        initCoreLayers();
     }
 
     Window::~Window()
     {
         SDL_DestroyWindow(instance);
         SDL_Quit();
+    }
+
+    Renderer* Window::getRenderer()
+    {
+        return m_renderer.get();
+    }
+
+    Level* Window::getLevel()
+    {
+        return m_level;
+    }
+
+    void Window::addLayer(Layer* inLayer)
+    {
+        m_renderer->pushLayer(inLayer);
     }
 
     void Window::run()
@@ -74,6 +93,8 @@ namespace Chicane
                 }
 
                 onEvent(event);
+
+                m_renderer->onEvent(event);
             }
 
             m_renderer->render();
@@ -91,11 +112,6 @@ namespace Chicane
 
         case SDL_KEYDOWN:
             onKeyDown(inEvent.key);
-
-            break;
-
-        case SDL_MOUSEBUTTONDOWN:
-            onMouseClick();
 
             break;
         }
@@ -141,7 +157,6 @@ namespace Chicane
             inTitle.c_str()
         );
     }
-    
 
     void Window::setResolution(const Resolution& inResolution)
     {
@@ -240,6 +255,15 @@ namespace Chicane
     bool Window::isMinimized()
     {
         return m_isMinimized;
+    }
+
+    void Window::initCoreLayers()
+    {
+        m_skyboxLayer = std::make_unique<SkyboxLayer>(this);
+        addLayer(m_skyboxLayer.get());
+
+        m_levelLayer = std::make_unique<LevelLayer>(this);
+        addLayer(m_levelLayer.get());
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)

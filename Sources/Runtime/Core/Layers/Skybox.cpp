@@ -1,15 +1,20 @@
 #include "SkyBox.hpp"
 
 #include "Core/Log.hpp"
+#include "Core/Window.hpp"
 
 namespace Chicane
 {
-    SkyboxLayer::SkyboxLayer(Renderer* inRenderer)
+    SkyboxLayer::SkyboxLayer(Window* inWindow)
         : Layer("Skybox"),
-        m_renderer(inRenderer),
+        m_renderer(inWindow->getRenderer()),
+        m_level(inWindow->getLevel()),
         m_manager(std::make_unique<CubeMap::Manager>())
+    {}
+
+    void SkyboxLayer::init()
     {
-        if (!m_renderer->m_level->hasSkybox())
+        if (!m_level->hasSkybox())
         {
             return;
         }
@@ -23,43 +28,24 @@ namespace Chicane
         buildAssets();
     }
 
-    SkyboxLayer::~SkyboxLayer()
-    {
-        // Graphics Pipeline
-        m_graphicsPipeline.reset();
-
-        // Descriptors
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_frameDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_frameDescriptor.pool
-        );
-
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_materialDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_materialDescriptor.pool
-        );
-
-        // Managers
-        m_manager.reset();
-    }
-
     void SkyboxLayer::render(
         Frame::Instance& outFrame,
         const vk::CommandBuffer& inCommandBuffer,
         const vk::Extent2D& inSwapChainExtent
     )
     {
+        if (!m_level->hasSkybox())
+        {
+            return;
+        }
+
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
         clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(0);
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_name);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
@@ -84,7 +70,7 @@ namespace Chicane
             vk::PipelineBindPoint::eGraphics,
             m_graphicsPipeline->layout,
             0,
-            outFrame.getDescriptorSet(0),
+            outFrame.getDescriptorSet(m_name),
             nullptr
         );
 
@@ -101,11 +87,39 @@ namespace Chicane
         );
 
         inCommandBuffer.endRenderPass();
+
+        return;
+    }
+
+    void SkyboxLayer::destroy()
+    {
+        m_renderer->m_logicalDevice.waitIdle();
+
+        // Graphics Pipeline
+        m_graphicsPipeline.reset();
+
+        // Descriptors
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_frameDescriptor.pool
+        );
+
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_materialDescriptor.pool
+        );
+
+        // Managers
+        m_manager.reset();
     }
 
     void SkyboxLayer::loadAssets()
     {
-        Box::Instance cubemap = m_renderer->m_level->getSkybox();
+        Box::Instance cubemap = m_level->getSkybox();
         m_manager->add(
             "Skybox",
             {
@@ -168,12 +182,12 @@ namespace Chicane
     {
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            Frame::Buffer::CreateInfo framebufferCreateInfo = {
-                m_renderer->m_logicalDevice,
-                m_graphicsPipeline->renderPass,
-                m_renderer->m_swapChain.extent,
-                { frame.imageView }
-            };
+            Frame::Buffer::CreateInfo framebufferCreateInfo = {};
+            framebufferCreateInfo.id              = m_name;
+            framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
+            framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
+            framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;
+            framebufferCreateInfo.attachments.push_back(frame.imageView);
 
             Frame::Buffer::init(frame, framebufferCreateInfo);
         }
@@ -203,7 +217,7 @@ namespace Chicane
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
-            frame.addDescriptorSet(descriptorSet);
+            frame.addDescriptorSet(m_name, descriptorSet);
 
             vk::WriteDescriptorSet writeDescriptorSet;
             writeDescriptorSet.dstSet          = descriptorSet;

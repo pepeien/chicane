@@ -22,16 +22,33 @@ namespace Chicane
                 const std::string& inDescription
             )
             {
-                inCommandBuffer.end();
-            
                 vk::SubmitInfo submitInfo;
                 submitInfo.commandBufferCount = 1;
                 submitInfo.pCommandBuffers    = &inCommandBuffer;
             
+                endJob(
+                    inQueue,
+                    submitInfo,
+                    inDescription
+                );
+            }
+
+            void endJob(
+                const vk::Queue& inQueue,
+                const vk::SubmitInfo& inSubmitInfo,
+                const std::string& inDescription
+            )
+            {
+
+                for (uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
+                {
+                    inSubmitInfo.pCommandBuffers[i * sizeof(vk::CommandBuffer)].end();
+                }
+
                 if (
                     inQueue.submit(
                         1,
-                        &submitInfo,
+                        &inSubmitInfo,
                         nullptr
                     ) != vk::Result::eSuccess
                 )
