@@ -4,6 +4,10 @@
 
 namespace Chicane
 {
+    Controller::Controller()
+        : m_pawn(nullptr)
+    {}
+
     void Controller::possess(Pawn* inPawn)
     {
         if (inPawn == nullptr)
@@ -15,9 +19,9 @@ namespace Chicane
 
         if (inPawn->isPossessed())
         {
-            LOG_WARNING("This pawn is currently posses, please don't forget to unpossess first next time");
+            LOG_WARNING("This pawn is currently possesed");
 
-            inPawn->getController()->unPossess();
+            return;
         }
 
         inPawn->getPossesedBy(this);
@@ -29,7 +33,7 @@ namespace Chicane
     {
         if (m_pawn == nullptr)
         {
-            LOG_WARNING("The controller doesn't possess a Pawn");
+            LOG_INFO("The controller doesn't possess a Pawn");
 
             return;
         }

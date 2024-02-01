@@ -3,6 +3,11 @@
 
 namespace Chicane
 {
+    Pawn::Pawn()
+        : Actor(),
+        m_controller(nullptr)
+    {}
+
     bool Pawn::isPossessed()
     {
         return m_controller != nullptr;

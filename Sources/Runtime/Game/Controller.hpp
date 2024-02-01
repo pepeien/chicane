@@ -9,6 +9,9 @@ namespace Chicane
     class Controller
     {
     public:
+        Controller();
+
+    public:
         template<class T = Pawn>
         T* getPawn()
         {

@@ -11,6 +11,9 @@ namespace Chicane
     class Pawn : public Actor
     {
     public:
+        Pawn();
+
+    public:
         template<class T = Controller>
         T* getController()
         {
