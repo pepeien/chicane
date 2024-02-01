@@ -3,11 +3,6 @@
 
 namespace Chicane
 {
-    Controller* Pawn::getController()
-    {
-        return m_controller;
-    }
-
     bool Pawn::isPossessed()
     {
         return m_controller != nullptr;

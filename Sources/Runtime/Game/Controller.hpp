@@ -9,6 +9,12 @@ namespace Chicane
     class Controller
     {
     public:
+        template<class T = Pawn>
+        T* getPawn()
+        {
+            return dynamic_cast<T*>(m_pawn);
+        }
+
         void possess(Pawn* inPawn);
         void unPossess();
 

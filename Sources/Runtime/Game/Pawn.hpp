@@ -11,7 +11,11 @@ namespace Chicane
     class Pawn : public Actor
     {
     public:
-        Controller* getController();
+        template<class T = Controller>
+        T* getController()
+        {
+            return dynamic_cast<T*>(m_controller);
+        }
 
         bool isPossessed();
         virtual void getPossesedBy(Controller* inController);
