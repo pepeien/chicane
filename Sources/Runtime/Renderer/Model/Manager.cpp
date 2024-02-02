@@ -73,13 +73,13 @@ namespace Chicane
             // TODO Implement instance count
             void Instance::drawAll(const vk::CommandBuffer& inCommandBuffer)
             {
-                for (std::string& id : m_registeredIds)
+                for (uint32_t i = 0; i < m_registeredIds.size(); i++)
                 {
                     draw(
-                        id,
+                        m_registeredIds[i],
                         inCommandBuffer,
                         1,
-                        0
+                        i
                     );
                 }
             }
