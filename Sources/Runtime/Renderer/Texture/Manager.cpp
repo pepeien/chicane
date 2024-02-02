@@ -26,9 +26,9 @@ namespace Chicane
                     m_instanceMap.find(inId) != m_instanceMap.end()
                 )
                 {
-                    throw std::runtime_error(
-                        "The Texture [" + inId  + "] has already been intiialized"
-                    );
+                    LOG_WARNING("The texture [" + inId  + "] has already been added");
+
+                    return;
                 }
 
                 m_dataMap.insert(std::make_pair(inId, inData));

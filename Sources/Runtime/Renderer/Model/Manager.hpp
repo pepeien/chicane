@@ -25,8 +25,6 @@ namespace Chicane
             class Instance
             {
             public:
-                std::vector<std::string> getRegisteredIds();
-
                 void add(
                     const std::string& inId,
                     const std::vector<unsigned char>& inData,
@@ -43,12 +41,15 @@ namespace Chicane
                 void drawAll(const vk::CommandBuffer& inCommandBuffer);
 
             private:
+                void addDuplicate(const std::string& inId);
                 void addModel(
                     const std::string& inId,
                     const std::vector<Vertex::Instance>& inVertices,
                     const std::vector<uint32_t>& inIndexes
                 );
 
+                void processDuplicate(const std::string& inId);
+                void processModel(const std::string& inId);
                 void processModels();
 
                 void initVertexBuffer(
@@ -69,7 +70,6 @@ namespace Chicane
                 void draw(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommandBuffer,
-                    uint32_t inInstanceCount,
                     uint32_t inFirstInstance
                 );
 
@@ -77,9 +77,10 @@ namespace Chicane
                 std::vector<Vertex::Instance> m_combinedVertices;
                 std::vector<uint32_t> m_indexedVertices;
 
-                std::vector<std::string> m_registeredIds;
+                std::vector<std::string> m_uniqueIds;
+                std::vector<std::string> m_usedIds;
 
-                std::unordered_map<std::string, Model::AllocationInfo> m_dataMap;
+                std::unordered_map<std::string, Model::AllocationInfo> m_allocationMap;
                 std::unordered_map<std::string, Model::Instance> m_instanceMap;
             };
         }

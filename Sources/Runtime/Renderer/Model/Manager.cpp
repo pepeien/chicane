@@ -6,12 +6,6 @@ namespace Chicane
     {
         namespace Manager
         {
-            std::vector<std::string> Instance::getRegisteredIds()
-            {
-                return m_registeredIds;
-            }
-
-            // TODO Implement instance count
             void Instance::add(
                 const std::string& inId,
                 const std::vector<unsigned char>& inData,
@@ -20,7 +14,9 @@ namespace Chicane
             {
                 if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
-                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
+                    addDuplicate(inId);
+
+                    return;
                 }
 
                 ParseResult result;
@@ -70,18 +66,21 @@ namespace Chicane
                 );
             }
 
-            // TODO Implement instance count
             void Instance::drawAll(const vk::CommandBuffer& inCommandBuffer)
             {
-                for (uint32_t i = 0; i < m_registeredIds.size(); i++)
+                for (uint32_t i = 0; i < m_uniqueIds.size(); i++)
                 {
                     draw(
-                        m_registeredIds[i],
+                        m_uniqueIds[i],
                         inCommandBuffer,
-                        1,
                         i
                     );
                 }
+            }
+
+            void Instance::addDuplicate(const std::string& inId)
+            {
+                m_usedIds.push_back(inId);
             }
 
             void Instance::addModel(
@@ -92,48 +91,69 @@ namespace Chicane
             {
                 if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
-                    throw std::runtime_error("The Model [" + inId  + "] has already been added");
+                    LOG_WARNING("The model [" + inId  + "] has already been added");
+
+                    return;
                 }
 
                 Model::Instance newModel;
                 newModel.vertexInstances = inVertices;
                 newModel.vertexIndices   = inIndexes;
 
-                m_registeredIds.push_back(inId);
+                m_uniqueIds.push_back(inId);
+                m_usedIds.push_back(inId);
                 m_instanceMap.insert(std::make_pair(inId, newModel));
+            }
+
+            void Instance::processDuplicate(const std::string& inId)
+            {
+                m_allocationMap[inId].instanceCount += 1;
+            }
+
+            void Instance::processModel(const std::string& inId)
+            {
+                auto foundModel = m_instanceMap.find(inId);
+
+                if (foundModel == m_instanceMap.end())
+                {
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                }
+
+                Model::Instance& instance = foundModel->second;
+    
+                AllocationInfo allocationInfo;
+                allocationInfo.vertexCount   = static_cast<uint32_t>(instance.vertexInstances.size());
+                allocationInfo.firstVertex   = static_cast<uint32_t>(m_combinedVertices.size());
+                allocationInfo.indexCount    = static_cast<uint32_t>(instance.vertexIndices.size());
+                allocationInfo.instanceCount = 1;
+                allocationInfo.firstIndex    = static_cast<uint32_t>(m_indexedVertices.size());
+
+                m_allocationMap.insert(std::make_pair(inId, allocationInfo));
+
+                m_combinedVertices.insert(
+                    m_combinedVertices.end(),
+                    instance.vertexInstances.begin(),
+                    instance.vertexInstances.end()
+                );
+
+                for (uint32_t vertexIndex : instance.vertexIndices)
+                {
+                    m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
+                }
             }
 
             void Instance::processModels()
             {
-                for (std::string& ModelId : m_registeredIds)
+                for (std::string& id : m_usedIds)
                 {
-                    auto foundModel = m_instanceMap.find(ModelId);
-
-                    if (foundModel == m_instanceMap.end())
+                    if (m_allocationMap.find(id) != m_allocationMap.end())
                     {
-                        throw std::runtime_error("The Model [" + ModelId + "] does not exist");
+                        processDuplicate(id);
+
+                        continue;
                     }
 
-                    Model::Instance& ModelInstance = foundModel->second;
-    
-                    AllocationInfo allocationInfo;
-                    allocationInfo.vertexCount   = ModelInstance.vertexInstances.size();
-                    allocationInfo.firstVertex   = m_combinedVertices.size();
-                    allocationInfo.indexCount    = ModelInstance.vertexIndices.size();
-                    allocationInfo.firstIndex    = m_indexedVertices.size();
-
-                    m_dataMap.insert(std::make_pair(ModelId, allocationInfo));
-
-                    m_combinedVertices.insert(
-                        m_combinedVertices.end(),
-                        ModelInstance.vertexInstances.begin(),
-                        ModelInstance.vertexInstances.end()
-                    );
-
-                    for (uint32_t vertexIndex : ModelInstance.vertexIndices)
-                    {
-                        m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
-                    }
+                    processModel(id);
                 }
             }
             
@@ -244,13 +264,12 @@ namespace Chicane
             void Instance::draw(
                 const std::string& inId,
                 const vk::CommandBuffer& inCommandBuffer,
-                uint32_t inInstanceCount,
                 uint32_t inFirstInstance
             )
             {
-                auto foundModel = m_dataMap.find(inId);
+                auto foundModel = m_allocationMap.find(inId);
 
-                if (foundModel == m_dataMap.end())
+                if (foundModel == m_allocationMap.end())
                 {
                     throw std::runtime_error("The Model [" + inId + "] does not exist");
                 }
@@ -259,7 +278,7 @@ namespace Chicane
 
                 inCommandBuffer.drawIndexed(
                     allocationInfo.indexCount,
-                    inInstanceCount,
+                    allocationInfo.instanceCount,
                     allocationInfo.firstIndex,
                     0,
                     inFirstInstance
