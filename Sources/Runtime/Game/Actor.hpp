@@ -14,6 +14,8 @@ namespace Chicane
         glm::vec3 scale       = glm::vec3(1.0f);
     };
 
+    class ActorComponent;
+ 
     class Actor
     {
     public:
@@ -23,10 +25,12 @@ namespace Chicane
         glm::mat4 getPosition();
 
         void setRelativeTranslation(const glm::vec3& inTranslation);
+        // Rotation values should be in degrees
         void setRelativeRotation(const glm::vec3& inRotation);
         void setRelativeScale(const glm::vec3& inScale);
 
         void setAbsoluteTranslation(const glm::vec3& inTranslation);
+        // Rotation values should be in degrees
         void setAbsoluteRotation(const glm::vec3& inRotation);
         void setAbsoluteScale(const glm::vec3& inScale);
     
@@ -44,5 +48,7 @@ namespace Chicane
         Transform m_transform;
 
         Box::Instance m_mesh;
+
+        std::vector<ActorComponent*> m_components;
     };
 }

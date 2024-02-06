@@ -1,4 +1,6 @@
-#include "Actor.hpp"
+#include "Game/Actor.hpp"
+
+#include "Game/Components/Actor.hpp"
 
 namespace Chicane
 {
@@ -14,31 +16,43 @@ namespace Chicane
 
     void Actor::setRelativeTranslation(const glm::vec3& inTranslation)
     {
+        m_transform.translation += inTranslation;
+
         setTranslation(m_position, inTranslation);
     }
 
     void Actor::setRelativeRotation(const glm::vec3& inRotation)
     {
+        m_transform.rotation += inRotation;
+
        setRotation(m_position, inRotation);
     }
 
     void Actor::setRelativeScale(const glm::vec3& inScale)
     {
+        m_transform.scale += inScale;
+
         setScale(m_position, inScale);
     }
 
     void Actor::setAbsoluteTranslation(const glm::vec3& inTranslation)
     {
+        m_transform.translation = inTranslation;
+
         setTranslation(glm::mat4(1.0f), inTranslation);
     }
 
     void Actor::setAbsoluteRotation(const glm::vec3& inRotation)
     {
+        m_transform.rotation = inRotation;
+
         setRotation(glm::mat4(0.0f), inRotation);
     }
 
     void Actor::setAbsoluteScale(const glm::vec3& inScale)
     {
+        m_transform.scale = inScale;
+
         setScale(glm::mat4(1.0f), inScale);
     }
 
@@ -59,24 +73,32 @@ namespace Chicane
 
     void Actor::setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation)
     {
-        m_transform.translation = inTranslation;
-
         m_position *= glm::translate(inBase, inTranslation);
     }
 
     void Actor::setRotation(const glm::mat4& inBase, const glm::vec3& inRotation)
     {
-        m_transform.rotation = inRotation;
+        glm::vec3 radianAngles = glm::radians(inRotation);
 
-        m_position = glm::rotate(inBase, inRotation.x, glm::vec3(0.0f, 1.0f, 0.0f));
-        m_position = glm::rotate(inBase, inRotation.y, glm::vec3(0.0f, 0.0f, 1.0f));
-        m_position = glm::rotate(inBase, inRotation.z, glm::vec3(1.0f, 0.0f, 0.0f));
+        m_position = glm::rotate(
+            inBase,
+            radianAngles.x,
+            glm::vec3(0.0f, 1.0f, 0.0f)
+        );
+        m_position = glm::rotate(
+            inBase,
+            radianAngles.y,
+            glm::vec3(0.0f, 0.0f, 1.0f)
+        );
+        m_position = glm::rotate(
+            inBase,
+            radianAngles.z,
+            glm::vec3(1.0f, 0.0f, 0.0f)
+        );
     }
 
     void Actor::setScale(const glm::mat4& inBase, const glm::vec3& inScale)
     {
-        m_transform.scale = inScale;
-
         m_position *= glm::scale(inBase, inScale);
     }
 }

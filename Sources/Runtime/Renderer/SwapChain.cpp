@@ -1,4 +1,4 @@
-#include "SwapChain.hpp"
+#include "Renderer/SwapChain.hpp"
 
 namespace Chicane
 {
@@ -156,7 +156,7 @@ namespace Chicane
                 }
                 else
                 {
-                    imageCount = std::max(
+                    imageCount = std::min(
                         supportDetails.capabilities.maxImageCount,
                         MAX_BUFFER_MULTIPLIER
                     );

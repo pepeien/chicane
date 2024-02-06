@@ -1,4 +1,4 @@
-#include "Manager.hpp"
+#include "Renderer/CubeMap/Manager.hpp"
 
 namespace Chicane
 {
@@ -11,7 +11,7 @@ namespace Chicane
 
         uint32_t Manager::getCount()
         {
-            return m_dataMap.size();
+            return static_cast<uint32_t>(m_dataMap.size());
         }
 
         void Manager::add(const std::string& inId, const CubeMap::Data& inData)

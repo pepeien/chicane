@@ -1,4 +1,4 @@
-#include "Frame.hpp"
+#include "Renderer/Frame.hpp"
 
 namespace Chicane
 {
@@ -27,7 +27,7 @@ namespace Chicane
             bufferCreateInfo.physicalDevice   = physicalDevice;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                 vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size             = sizeof(Camera::VectorUBO);
+            bufferCreateInfo.size             = sizeof(VectorUBO);
             bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
             Buffer::init(
@@ -54,7 +54,7 @@ namespace Chicane
             bufferCreateInfo.physicalDevice   = physicalDevice;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                 vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size             = sizeof(Camera::MatrixUBO);
+            bufferCreateInfo.size             = sizeof(MatrixUBO);
             bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
             Buffer::init(

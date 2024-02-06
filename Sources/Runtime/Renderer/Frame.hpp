@@ -4,26 +4,18 @@
 
 #include "Game/Actor.hpp"
 
-#include "Buffer.hpp"
-#include "Camera.hpp"
-#include "Descriptor.hpp"
-#include "GraphicsPipeline.hpp"
-#include "Model.hpp"
-#include "Image.hpp"
-#include "Sync.hpp"
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Camera.hpp"
+#include "Renderer/Descriptor.hpp"
+#include "Renderer/GraphicsPipeline.hpp"
+#include "Renderer/Model.hpp"
+#include "Renderer/Image.hpp"
+#include "Renderer/Sync.hpp"
 
 namespace Chicane
 {
     namespace Frame
-    {
-        struct Stats
-        {
-            int count            = 0;
-            float time           = 0.0f;
-            uint64_t lastTime    = 0;
-            uint64_t currentTime = 0;
-        };
-    
+    {    
         class Instance
         {
         public:
@@ -71,10 +63,10 @@ namespace Chicane
             vk::Semaphore renderSemaphore;
     
             // Resources
-            Camera::MatrixUBOBundle cameraMatrixUBO;
+            MatrixUBOBundle cameraMatrixUBO;
             vk::DescriptorBufferInfo cameraMatrixDescriptorBufferInfo;
 
-            Camera::VectorUBOBundle cameraVectorUBO;
+            VectorUBOBundle cameraVectorUBO;
             vk::DescriptorBufferInfo cameraVectorDescriptorBufferInfo;
 
             Model::Bundle modelData;

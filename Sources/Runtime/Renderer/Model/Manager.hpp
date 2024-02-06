@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Vendors/Wavefront.hpp"
+#include "Renderer/Model/Vendors/Wavefront.hpp"
 
 #include "Renderer/Buffer.hpp"
 #include "Renderer/Model.hpp"

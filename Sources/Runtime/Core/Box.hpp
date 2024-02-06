@@ -2,8 +2,8 @@
 
 #include "Base.hpp"
 
-#include "FileSystem.hpp"
-#include "Helper.hpp"
+#include "Core/FileSystem.hpp"
+#include "Core/Helper.hpp"
 
 namespace Chicane
 {

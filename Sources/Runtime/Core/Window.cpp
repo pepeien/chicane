@@ -1,8 +1,8 @@
-#include "Window.hpp"
+#include "Core/Window.hpp"
 
-#include "Layer.hpp"
-#include "Layers/Level.hpp"
-#include "Layers/Skybox.hpp"
+#include "Core/Layer.hpp"
+#include "Core/Layers/Level.hpp"
+#include "Core/Layers/Skybox.hpp"
 
 #include "Game.hpp"
 #include "Renderer.hpp"
@@ -49,8 +49,7 @@ namespace Chicane
         setDisplay(inCreateInfo.displayIndex);
         setType(inCreateInfo.type);
 
-        m_renderer = std::make_unique<Renderer>(this);
-
+        initRenderer();
         initCoreLayers();
     }
 
@@ -58,6 +57,11 @@ namespace Chicane
     {
         SDL_DestroyWindow(instance);
         SDL_Quit();
+    }
+
+    Stats Window::getStats()
+    {
+        return m_stats;
     }
 
     Renderer* Window::getRenderer()
@@ -98,6 +102,8 @@ namespace Chicane
             }
 
             m_renderer->render();
+
+            updateStats();
         }
     }
 
@@ -268,13 +274,36 @@ namespace Chicane
 
     bool Window::isMinimized()
     {
-        return m_isMinimized;
+        Vec2 currentResolution = getResolution();
+
+        return m_isMinimized || (currentResolution.x <= 0.0f || currentResolution.y <= 0.0f);
+    }
+
+    void Window::initRenderer()
+    {
+        m_renderer = std::make_unique<Renderer>(this);
     }
 
     void Window::initCoreLayers()
     {
         addLayer(new SkyboxLayer(this));
         addLayer(new LevelLayer(this));
+    }
+
+    void Window::updateStats()
+    {
+        m_stats.currentTime = SDL_GetTicks64() / 1000;
+
+        uint64_t delta = m_stats.currentTime - m_stats.lastTime;
+
+        if (delta >= 1) {
+            m_stats.framerate = std::max(1, int(m_stats.count / delta));
+            m_stats.lastTime  = m_stats.currentTime;
+            m_stats.count     = -1;
+            m_stats.time      = float(1000.0 / m_stats.framerate);
+        }
+
+        m_stats.count++;
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)

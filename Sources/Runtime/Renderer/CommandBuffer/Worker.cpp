@@ -1,4 +1,4 @@
-#include "Worker.hpp"
+#include "Renderer/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {
@@ -53,9 +53,9 @@ namespace Chicane
                     ) != vk::Result::eSuccess
                 )
                 {
-                    LOG_WARNING("Error while ending [" + inDescription + "]");
+                    throw std::runtime_error("Error while ending [" + inDescription + "]");
                 }
-            
+
                 inQueue.waitIdle();
             }
         }

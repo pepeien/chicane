@@ -1,4 +1,4 @@
-#include "Debug.hpp"
+#include "Renderer/Debug.hpp"
 
 namespace Chicane
 {

@@ -1,4 +1,4 @@
-#include "Vertex.hpp"
+#include "Renderer/Vertex.hpp"
 
 namespace Chicane
 {

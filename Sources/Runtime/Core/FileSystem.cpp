@@ -1,4 +1,4 @@
-#include "FileSystem.hpp"
+#include "Core/FileSystem.hpp"
 
 namespace Chicane
 {
@@ -72,7 +72,7 @@ namespace Chicane
         {
             stbi_uc* result = stbi_load_from_memory(
                 &inData[0],
-                inData.size(),
+                static_cast<int>(inData.size()),
                 &outWidth,
                 &outHeight,
                 &outChannel,

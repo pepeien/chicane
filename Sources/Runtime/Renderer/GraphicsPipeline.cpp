@@ -1,4 +1,4 @@
-#include "GraphicsPipeline.hpp"
+#include "Renderer/GraphicsPipeline.hpp"
 
 namespace Chicane
 {
@@ -174,7 +174,7 @@ namespace Chicane
         {
             vk::PipelineLayoutCreateInfo layoutCreateInfo = {};
             layoutCreateInfo.flags          = vk::PipelineLayoutCreateFlags();
-            layoutCreateInfo.setLayoutCount = inDescriptorSetLayouts.size();
+            layoutCreateInfo.setLayoutCount = static_cast<uint32_t>(inDescriptorSetLayouts.size());
             layoutCreateInfo.pSetLayouts    = inDescriptorSetLayouts.data();
 
             return inLogicalDevice.createPipelineLayout(layoutCreateInfo);

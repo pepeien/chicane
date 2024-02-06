@@ -78,8 +78,8 @@ namespace Chicane
         void rebuildSwapChain();
         void destroySwapChain();
 
-        void initLayers();
         void destroyLayers();
+        void rebuildLayers();
         void deleteLayers();
 
         void buildCommandPool();
@@ -125,6 +125,6 @@ namespace Chicane
         std::vector<Layer*> m_layers;
 
         // Camera
-        std::unique_ptr<Camera::Instance> m_camera;
+        std::unique_ptr<Camera> m_camera;
     };
 }

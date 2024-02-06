@@ -58,6 +58,15 @@ static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
 
 namespace Chicane
 {
+    struct Stats
+    {
+        int count            = 0;
+        float time           = 0.0f;
+        uint64_t framerate   = 0;
+        uint64_t lastTime    = 0;
+        uint64_t currentTime = 0;
+    };
+
     struct Vec2
     {
         int x = -1;

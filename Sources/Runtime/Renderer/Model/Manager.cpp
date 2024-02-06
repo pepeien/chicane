@@ -1,4 +1,4 @@
-#include "Manager.hpp"
+#include "Renderer/Model/Manager.hpp"
 
 namespace Chicane
 {

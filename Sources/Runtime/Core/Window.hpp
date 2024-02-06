@@ -39,6 +39,8 @@ namespace Chicane
         ~Window();
 
     public:
+        Stats getStats();
+
         Renderer* getRenderer();
         Level* getLevel();
 
@@ -74,13 +76,18 @@ namespace Chicane
         SDL_Window* instance;
 
     private:
+        void initRenderer();
         void initCoreLayers();
+
+        void updateStats();
 
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onMouseClick();
         void onKeyDown(const SDL_KeyboardEvent& inEvent);
 
     private:
+        Stats m_stats;
+
         WindowType m_type;
 
         bool m_isFocused;

@@ -1,4 +1,4 @@
-#include "Manager.hpp"
+#include "Renderer/Texture/Manager.hpp"
 
 namespace Chicane
 {
@@ -13,7 +13,7 @@ namespace Chicane
 
             uint32_t Instance::getCount()
             {
-                return m_dataMap.size();
+                return static_cast<uint32_t>(m_dataMap.size());
             }
 
             void Instance::add(

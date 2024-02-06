@@ -1,5 +1,6 @@
-#include "Pawn.hpp"
-#include "Controller.hpp"
+#include "Game/Pawn.hpp"
+
+#include "Game/Controller.hpp"
 
 namespace Chicane
 {

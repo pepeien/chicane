@@ -2,8 +2,8 @@
 
 #include "Base.hpp"
 
-#include "Device.hpp"
-#include "CommandBuffer/Worker.hpp"
+#include "Renderer/Device.hpp"
+#include "Renderer/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {

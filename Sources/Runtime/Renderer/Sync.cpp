@@ -1,4 +1,4 @@
-#include "Sync.hpp"
+#include "Renderer/Sync.hpp"
 
 namespace Chicane
 {

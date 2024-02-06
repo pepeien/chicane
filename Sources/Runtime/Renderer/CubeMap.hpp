@@ -4,9 +4,9 @@
 
 #include "Core/FileSystem.hpp"
 
-#include "Buffer.hpp"
-#include "Descriptor.hpp"
-#include "Image.hpp"
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Descriptor.hpp"
+#include "Renderer/Image.hpp"
 
 constexpr uint32_t CUBEMAP_IMAGE_COUNT = 6;
 

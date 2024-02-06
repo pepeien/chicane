@@ -2,9 +2,9 @@
 
 #include "Base.hpp"
 
-#include "Frame.hpp"
-#include "Queue.hpp"
-#include "Image.hpp"
+#include "Renderer/Frame.hpp"
+#include "Renderer/Queue.hpp"
+#include "Renderer/Image.hpp"
 
 namespace Chicane
 {

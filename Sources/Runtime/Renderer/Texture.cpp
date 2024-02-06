@@ -1,4 +1,4 @@
-#include "Texture.hpp"
+#include "Renderer/Texture.hpp"
 
 namespace Chicane
 {

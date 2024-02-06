@@ -1,4 +1,4 @@
-#include "Wavefront.hpp"
+#include "Renderer/Model/Vendors/Wavefront.hpp"
 
 namespace Chicane
 {
@@ -116,7 +116,7 @@ namespace Chicane
                     vertex.normal = inBundle.normalVertices[index];
                 }
 
-                uint32_t currentIndex = outResult.vertices.size();
+                uint32_t currentIndex = static_cast<uint32_t>(outResult.vertices.size());
                 
                 outResult.indexesMap.insert(std::make_pair(inDataSet, currentIndex));
                 outResult.indexes.push_back(currentIndex);

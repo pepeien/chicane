@@ -1,4 +1,4 @@
-#include "Box.hpp"
+#include "Core/Box.hpp"
 
 #include "Renderer/Image.hpp"
 
@@ -94,7 +94,7 @@ namespace Chicane
             rootHeader.type       = inWriteInfo.type;
             rootHeader.name       = inWriteInfo.name;
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;
-            rootHeader.entryCount = inWriteInfo.entries.size();
+            rootHeader.entryCount = static_cast<uint32_t>(inWriteInfo.entries.size());
 
             std::ofstream file(rootHeader.filePath, std::ios::out | std::ios::binary);
 

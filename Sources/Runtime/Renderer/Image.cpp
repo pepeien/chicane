@@ -1,4 +1,4 @@
-#include "Image.hpp"
+#include "Renderer/Image.hpp"
 
 namespace Chicane
 {

@@ -10,7 +10,7 @@ namespace Chicane
         m_imageCount(0),
         m_currentImageIndex(0),
         m_window(inWindow),
-        m_camera(std::make_unique<Camera::Instance>())
+        m_camera(std::make_unique<Camera>())
     {
         buildInstance();
         buildDebugMessenger();
@@ -49,7 +49,7 @@ namespace Chicane
     {
         m_layers.push_back(inLayer);
 
-        inLayer->init();
+        inLayer->build();
     }
 
     void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
@@ -79,12 +79,22 @@ namespace Chicane
             1,
             &currentImage.renderFence,
             VK_TRUE,
-            UINT64_MAX
+            0
         );
-    
+
         if (fenceWait != vk::Result::eSuccess && fenceWait != vk::Result::eTimeout)
         {
-            LOG_WARNING("Error while waiting the fences");
+            throw std::runtime_error("Error while waiting the fences");
+        }
+
+        if (
+            m_logicalDevice.resetFences(
+                1,
+                &currentImage.renderFence
+            ) != vk::Result::eSuccess
+        )
+        {
+            throw std::runtime_error("Error while resetting the fences");
         }
 
         vk::ResultValue<uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
@@ -107,16 +117,6 @@ namespace Chicane
         }
         
         uint32_t imageIndex = acquireResult.value;
-
-        if (
-            m_logicalDevice.resetFences(
-                1,
-                &currentImage.renderFence
-            ) != vk::Result::eSuccess
-        )
-        {
-            LOG_WARNING("Error while resetting the fences");
-        }
 
         std::vector<vk::CommandBuffer> commandBuffers;
 
@@ -311,7 +311,7 @@ namespace Chicane
         destroySwapChain();
         buildSwapChain();
 
-        initLayers();
+        rebuildLayers();
         buildFramesCommandBuffers();
     }
 
@@ -329,19 +329,19 @@ namespace Chicane
         destroyLayers();
     }
 
-    void Renderer::initLayers()
-    {
-        for (Layer* layer : m_layers)
-        {
-            layer->init();
-        }
-    }
-
     void Renderer::destroyLayers()
     {
         for (Layer* layer : m_layers)
         {
             layer->destroy();
+        }
+    }
+
+    void Renderer::rebuildLayers()
+    {
+        for (Layer* layer : m_layers)
+        {
+            layer->rebuild();
         }
     }
 

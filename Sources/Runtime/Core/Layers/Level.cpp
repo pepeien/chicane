@@ -1,4 +1,4 @@
-#include "Level.hpp"
+#include "Core/Layers/Level.hpp"
 
 #include "Core/Log.hpp"
 #include "Core/Window.hpp"
@@ -13,7 +13,41 @@ namespace Chicane
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
     {}
 
-    void LevelLayer::init()
+    LevelLayer::~LevelLayer()
+    {
+        m_renderer->m_logicalDevice.waitIdle();
+
+        // Graphics Pipeline
+        m_graphicsPipeline.reset();
+
+        // Descriptors
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptor.setLayout
+        );
+
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_materialDescriptor.pool
+        );
+
+        // Buffers
+        Buffer::destroy(
+            m_renderer->m_logicalDevice,
+            m_meshVertexBuffer
+        );
+        Buffer::destroy(
+            m_renderer->m_logicalDevice,
+            m_meshIndexBuffer
+        );
+
+        // Managers
+        m_modelManager.reset();
+        m_textureManager.reset();
+    }
+
+    void LevelLayer::build()
     {
         if (!m_level->hasActors())
         {
@@ -21,12 +55,26 @@ namespace Chicane
         }
 
         loadAssets();
-        initDescriptors();
+        initFrameDescriptorSetLayout();
+        initMaterialDescriptorSetLayout();
         initGraphicsPipeline();
         initFramebuffers();
         initFrameResources();
         initMaterialResources();
         buildAssets();
+    }
+
+    void LevelLayer::destroy()
+    {
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_frameDescriptor.pool
+        );
+    }
+
+    void LevelLayer::rebuild()
+    {
+        initFramebuffers();
+        initFrameResources();
     }
 
     void LevelLayer::setup(Frame::Instance& outFrame)
@@ -116,43 +164,6 @@ namespace Chicane
         return;
     }
 
-    void LevelLayer::destroy()
-    {
-        m_renderer->m_logicalDevice.waitIdle();
-
-        // Graphics Pipeline
-        m_graphicsPipeline.reset();
-
-        // Descriptors
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_frameDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_frameDescriptor.pool
-        );
-
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_materialDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_materialDescriptor.pool
-        );
-
-        // Buffers
-        Buffer::destroy(
-            m_renderer->m_logicalDevice,
-            m_meshVertexBuffer
-        );
-        Buffer::destroy(
-            m_renderer->m_logicalDevice,
-            m_meshIndexBuffer
-        );
-
-        // Managers
-        m_modelManager.reset();
-        m_textureManager.reset();
-    }
-
     void LevelLayer::loadAssets()
     {
         for (Actor* actor : m_level->getActors())
@@ -190,9 +201,8 @@ namespace Chicane
         }
     }
 
-    void LevelLayer::initDescriptors()
+    void LevelLayer::initFrameDescriptorSetLayout()
     {
-        // Frame
         Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 2;
 
@@ -213,8 +223,10 @@ namespace Chicane
             m_renderer->m_logicalDevice,
             frameLayoutBidings
         );
+    }
 
-        // Material
+    void LevelLayer::initMaterialDescriptorSetLayout()
+    {
         Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
         materialLayoutBidings.count = 1;
 

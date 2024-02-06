@@ -1,4 +1,4 @@
-#include "Shader.hpp"
+#include "Renderer/Shader.hpp"
 
 namespace Chicane
 {

@@ -2,7 +2,7 @@
 
 #include "Base.hpp"
 
-#include "Actor.hpp"
+#include "Game/Actor.hpp"
 
 namespace Chicane
 {

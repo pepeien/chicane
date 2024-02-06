@@ -1,4 +1,4 @@
-#include "SkyBox.hpp"
+#include "Core/Layers/Skybox.hpp"
 
 #include "Core/Log.hpp"
 #include "Core/Window.hpp"
@@ -12,7 +12,30 @@ namespace Chicane
         m_manager(std::make_unique<CubeMap::Manager>())
     {}
 
-    void SkyboxLayer::init()
+    SkyboxLayer::~SkyboxLayer()
+    {
+        m_renderer->m_logicalDevice.waitIdle();
+
+        // Graphics Pipeline
+        m_graphicsPipeline.reset();
+
+        // Descriptors
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptor.setLayout
+        );
+
+        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptor.setLayout
+        );
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_materialDescriptor.pool
+        );
+
+        // Managers
+        m_manager.reset();
+    }
+
+    void SkyboxLayer::build()
     {
         if (!m_level->hasSkybox())
         {
@@ -20,12 +43,26 @@ namespace Chicane
         }
 
         loadAssets();
-        initDescriptors();
+        initFrameDescriptorSetLayout();
+        initMaterialDescriptorSetLayout();
         initGraphicsPipeline();
         initFramebuffers();
         initFrameResources();
         initMaterialResources();
         buildAssets();
+    }
+
+    void SkyboxLayer::destroy()
+    {
+        m_renderer->m_logicalDevice.destroyDescriptorPool(
+            m_frameDescriptor.pool
+        );
+    }
+
+    void SkyboxLayer::rebuild()
+    {
+        initFramebuffers();
+        initFrameResources();
     }
 
     void SkyboxLayer::render(
@@ -91,32 +128,6 @@ namespace Chicane
         return;
     }
 
-    void SkyboxLayer::destroy()
-    {
-        m_renderer->m_logicalDevice.waitIdle();
-
-        // Graphics Pipeline
-        m_graphicsPipeline.reset();
-
-        // Descriptors
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_frameDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_frameDescriptor.pool
-        );
-
-        m_renderer->m_logicalDevice.destroyDescriptorSetLayout(
-            m_materialDescriptor.setLayout
-        );
-        m_renderer->m_logicalDevice.destroyDescriptorPool(
-            m_materialDescriptor.pool
-        );
-
-        // Managers
-        m_manager.reset();
-    }
-
     void SkyboxLayer::loadAssets()
     {
         Box::Instance cubemap = m_level->getSkybox();
@@ -133,7 +144,7 @@ namespace Chicane
         );
     }
 
-    void SkyboxLayer::initDescriptors()
+    void SkyboxLayer::initFrameDescriptorSetLayout()
     {
         Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 1;
@@ -147,7 +158,10 @@ namespace Chicane
             m_renderer->m_logicalDevice,
             frameLayoutBidings
         );
+    }
 
+    void SkyboxLayer::initMaterialDescriptorSetLayout()
+    {
         Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
         materialLayoutBidings.count = 1;
         materialLayoutBidings.indices.push_back(0);

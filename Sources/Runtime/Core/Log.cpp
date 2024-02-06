@@ -1,4 +1,4 @@
-#include "Log.hpp"
+#include "Core/Log.hpp"
 
 namespace Chicane
 {

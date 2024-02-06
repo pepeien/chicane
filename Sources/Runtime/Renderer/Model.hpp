@@ -2,8 +2,8 @@
 
 #include "Base.hpp"
 
-#include "Buffer.hpp"
-#include "Vertex.hpp"
+#include "Renderer/Buffer.hpp"
+#include "Renderer/Vertex.hpp"
 
 namespace Chicane
 {
