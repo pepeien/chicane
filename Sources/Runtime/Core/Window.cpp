@@ -1,11 +1,11 @@
 #include "Runtime/Core/Window.hpp"
 
+#include "Runtime/Game.hpp"
+#include "Runtime/Renderer.hpp"
 #include "Runtime/Core/Layer.hpp"
 #include "Runtime/Core/Layers/Level.hpp"
 #include "Runtime/Core/Layers/Skybox.hpp"
-
-#include "Runtime/Game.hpp"
-#include "Runtime/Renderer.hpp"
+#include "Runtime/Core/Layers/UI.hpp"
 
 namespace Chicane
 {
@@ -288,6 +288,7 @@ namespace Chicane
     {
         addLayer(new SkyboxLayer(this));
         addLayer(new LevelLayer(this));
+        addLayer(new UILayer(this));
     }
 
     void Window::updateStats()

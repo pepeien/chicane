@@ -6,6 +6,7 @@
 #include "Runtime/Grid/Components/List.hpp"
 #include "Runtime/Grid/Components/ProgressBar.hpp"
 #include "Runtime/Grid/Components/Text.hpp"
+#include "Runtime/Grid/Views/Gameplay.hpp"
 
 namespace Chicane
 {
@@ -19,6 +20,8 @@ namespace Chicane
             { TextComponent::TAG_ID, &TextComponent::compile }
         };
 
-        const ViewCallbackMap Views = {};
+        const ViewCallbackMap Views = {
+            { GameplayView::VIEW_ID, GameplayView::Callbacks }
+        };
     }
 }
