@@ -11,15 +11,12 @@ set(NAME "Chicane")
 project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(TARGET_NAME "Chicane")
+set(TARGET_NAME         "Chicane")
+set(SHADERS_TARGET_NAME "Shaders")
+
 set(SOURCES_DIR "${CMAKE_SOURCE_DIR}/Sources")
 set(BUILD_DIR   "${CMAKE_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
-
-# Shaders
-set(SHADERS_TARGET_NAME "Shaders")
-set(SHADERS_SOURCES_DIR "${CMAKE_SOURCE_DIR}/Shaders")
-set(SHADERS_BUILD_DIR   "${SHADERS_SOURCES_DIR}/Bin")
 
 ##############  Set compiler  #######################
 message(STATUS "Using ${CMAKE_GENERATOR}")
@@ -94,6 +91,13 @@ set_target_properties(
     PROPERTIES
 
     VS_DEBUGGER_WORKING_DIRECTORY
+    "${BUILD_DIR}"
+
+    ARCHIVE_OUTPUT_DIRECTORY
+    "${BUILD_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG
+    "${BUILD_DIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE
     "${BUILD_DIR}"
 
     RUNTIME_OUTPUT_DIRECTORY
