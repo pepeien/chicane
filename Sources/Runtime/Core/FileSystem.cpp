@@ -4,23 +4,6 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        namespace Paths
-        {
-            std::string rootDir()
-            {
-                std::string installLocation = std::string(
-                    std::getenv(ENV_SOURCE_LOCATION.c_str())
-                );
-
-                if (installLocation.empty())
-                {
-                    throw std::runtime_error("Engine install location is invalid");
-                }
-
-                return installLocation;
-            }
-        }
-
         std::vector<char> readFile(const std::string& inFilepath)
         {
             std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);

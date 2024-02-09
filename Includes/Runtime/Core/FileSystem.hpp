@@ -6,11 +6,6 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        namespace Paths
-        {
-            std::string rootDir();
-        };
-
         std::vector<char> readFile(const std::string& inFilepath);
         stbi_uc* readImageFromFile(
             int& outWidth,

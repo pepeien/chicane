@@ -250,8 +250,8 @@ namespace Chicane
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
         createInfo.logicalDevice         = m_renderer->m_logicalDevice;
-        createInfo.vertexShaderPath      = FileSystem::Paths::rootDir() + "/Shaders/Bin/triangle.vert.spv";
-        createInfo.fragmentShaderPath    = FileSystem::Paths::rootDir() + "/Shaders/Bin/triangle.frag.spv";
+        createInfo.vertexShaderPath      = "Shaders/triangle.vert.spv";
+        createInfo.fragmentShaderPath    = "Shaders/triangle.frag.spv";
         createInfo.bindingDescription    = Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
         createInfo.swapChainExtent       = m_renderer->m_swapChain.extent;
