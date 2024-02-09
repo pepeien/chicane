@@ -2,7 +2,7 @@
 include(./.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
 
 ############## Setup Project #######################
-cmake_minimum_required(VERSION 3.27.0)
+cmake_minimum_required(VERSION 3.11.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
