@@ -1,7 +1,7 @@
-#include "Core/Layers/Level.hpp"
+#include "Runtime/Core/Layers/Level.hpp"
 
-#include "Core/Log.hpp"
-#include "Core/Window.hpp"
+#include "Runtime/Core/Log.hpp"
+#include "Runtime/Core/Window.hpp"
 
 namespace Chicane
 {

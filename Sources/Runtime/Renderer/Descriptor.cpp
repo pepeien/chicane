@@ -1,4 +1,4 @@
-#include "Renderer/Descriptor.hpp"
+#include "Runtime/Renderer/Descriptor.hpp"
 
 namespace Chicane
 {

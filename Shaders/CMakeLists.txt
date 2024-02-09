@@ -3,8 +3,8 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    "${SHADERS_RUNTIME_DIR}/*.frag"
-    "${SHADERS_RUNTIME_DIR}/*.vert"
+    "${SHADERS_SOURCES_DIR}/*.frag"
+    "${SHADERS_SOURCES_DIR}/*.vert"
 )
 
 ##############  Copy files  #######################
@@ -15,7 +15,7 @@ foreach(GLSL ${SOURCES})
     get_filename_component(FILE_NAME ${GLSL} NAME)
 
     set(SPIRV_DIR "${FILE_DIR}")
-    string(REPLACE "${SHADERS_RUNTIME_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
+    string(REPLACE "${SHADERS_SOURCES_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
 
     set(SPIRV_DIR "${SHADERS_BUILD_DIR}/${SPIRV_DIR}")
     string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})

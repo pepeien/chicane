@@ -1,4 +1,4 @@
-#include "Renderer/CubeMap/Manager.hpp"
+#include "Runtime/Renderer/CubeMap/Manager.hpp"
 
 namespace Chicane
 {

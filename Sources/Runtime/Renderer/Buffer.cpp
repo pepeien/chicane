@@ -1,4 +1,4 @@
-#include "Renderer/Buffer.hpp"
+#include "Runtime/Renderer/Buffer.hpp"
 
 namespace Chicane
 {

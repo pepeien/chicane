@@ -1,6 +1,6 @@
-#include "Game/Actor.hpp"
+#include "Runtime/Game/Actor.hpp"
 
-#include "Game/Components/Actor.hpp"
+#include "Runtime/Game/Components/Actor.hpp"
 
 namespace Chicane
 {

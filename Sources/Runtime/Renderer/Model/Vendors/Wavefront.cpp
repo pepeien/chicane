@@ -1,4 +1,4 @@
-#include "Renderer/Model/Vendors/Wavefront.hpp"
+#include "Runtime/Renderer/Model/Vendors/Wavefront.hpp"
 
 namespace Chicane
 {

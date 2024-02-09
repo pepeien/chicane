@@ -1,11 +1,11 @@
-#include "Core/Window.hpp"
+#include "Runtime/Core/Window.hpp"
 
-#include "Core/Layer.hpp"
-#include "Core/Layers/Level.hpp"
-#include "Core/Layers/Skybox.hpp"
+#include "Runtime/Core/Layer.hpp"
+#include "Runtime/Core/Layers/Level.hpp"
+#include "Runtime/Core/Layers/Skybox.hpp"
 
-#include "Game.hpp"
-#include "Renderer.hpp"
+#include "Runtime/Game.hpp"
+#include "Runtime/Renderer.hpp"
 
 namespace Chicane
 {

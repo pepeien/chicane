@@ -1,8 +1,14 @@
+[submodule "Vendors/glm"]
+	path = Vendors/glm
+	url = https://github.com/icaven/glm.git
+[submodule "Vendors/SDL2"]
+	path = Vendors/SDL2
+	url = https://github.com/libsdl-org/SDL.git
+	branch = SDL2
 [submodule "Sources/Vendor/imgui"]
-	path = Sources/Vendor/imgui
+	path = Vendors/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
-[submodule "Sources/Editor/Vendor/imgui"]
-	path = Sources/Editor/Vendor/imgui
-	url = https://github.com/ocornut/imgui.git
-	branch = docking
+[submodule "Sources/Vendor/pugixml"]
+	path = Vendors/pugixml
+	url = https://github.com/zeux/pugixml.git

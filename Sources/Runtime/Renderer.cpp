@@ -1,7 +1,7 @@
-#include "Renderer.hpp"
+#include "Runtime/Renderer.hpp"
 
-#include "Core.hpp"
-#include "Game.hpp"
+#include "Runtime/Core.hpp"
+#include "Runtime/Game.hpp"
 
 namespace Chicane
 {

@@ -1,0 +1,29 @@
+#pragma once
+
+#include "Runtime/Runtime.hpp"
+#include "Runtime/Renderer/Queue.hpp"
+
+namespace Chicane
+{
+    namespace Device
+    {
+        bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice);
+
+        void pickPhysicalDevice(
+            vk::PhysicalDevice& outPhysicalDevice,
+            const vk::Instance& inInstance
+        );
+
+        void initLogicalDevice(
+            vk::Device& outLogicalDevice,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::SurfaceKHR& inSurface
+        );
+        
+        uint32_t findMemoryTypeIndex(
+            const vk::PhysicalDevice& inPhysicalDevice,
+            uint32_t inSupportedMemoryIndices,
+            vk::MemoryPropertyFlags inRequestMemoryProperties
+        );
+    }
+}

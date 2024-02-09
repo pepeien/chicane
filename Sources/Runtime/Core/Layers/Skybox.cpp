@@ -1,7 +1,7 @@
-#include "Core/Layers/Skybox.hpp"
+#include "Runtime/Core/Layers/Skybox.hpp"
 
-#include "Core/Log.hpp"
-#include "Core/Window.hpp"
+#include "Runtime/Core/Log.hpp"
+#include "Runtime/Core/Window.hpp"
 
 namespace Chicane
 {
