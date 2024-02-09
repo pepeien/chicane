@@ -52,7 +52,6 @@ endif()
 ##############  Add subdirectories  #######################
 add_subdirectory(Shaders)
 
-add_subdirectory(Vendors/glm)
 add_subdirectory(Vendors/pugixml)
 add_subdirectory(Vendors/SDL2)
 
@@ -79,7 +78,7 @@ file(
 ############## Setup Shared #######################
 add_library(
     ${TARGET_NAME}
-    SHARED
+    STATIC
     ""
 )
 
@@ -130,7 +129,7 @@ target_include_directories(
         ${VENDORS_DIR}/glm
         ${VENDORS_DIR}/imgui
         ${VENDORS_DIR}/pugixml
-        ${VENDORS_DIR}/SDL2-static
+        ${VENDORS_DIR}/SDL2
     PRIVATE
         ${SOURCES_DIR}
 )
@@ -139,9 +138,8 @@ target_link_libraries(
     ${TARGET_NAME}
 
     PUBLIC
-        glm
-        pugixml
+        pugixml-static
+        SDL2-static
     PRIVATE
         ${Vulkan_LIBRARIES}
-        SDL2-static
 )
