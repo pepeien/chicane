@@ -22,7 +22,7 @@ namespace Chicane
     }
 }
 
-#ifndef NDEBUG
+#ifdef IS_DEBUGGING
     #define LOG_INFO(message)     Chicane::Log::info(    message)
     #define LOG_WARNING(message)  Chicane::Log::warning( message)
     #define LOG_ERROR(message)    Chicane::Log::error(   message)
