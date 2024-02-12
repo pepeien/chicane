@@ -12,12 +12,11 @@ project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
 set(TARGET_NAME         "Chicane")
-set(TARGET_NAME_STATIC  "${TARGET_NAME}-static")
 set(SHADERS_TARGET_NAME "Shaders")
 
-set(SOURCES_DIR "${CMAKE_SOURCE_DIR}/Sources")
-set(BUILD_DIR   "${CMAKE_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
-set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
+set(INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Includes")
+set(SOURCES_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
+set(VENDORS_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Vendors")
 
 ##############  Set compiler  #######################
 message(STATUS "Using ${CMAKE_GENERATOR}")
@@ -53,11 +52,6 @@ add_subdirectory(Shaders)
 add_subdirectory(Vendors/pugixml)
 add_subdirectory(Vendors/SDL2)
 
-##############  Set values  #######################
-set(INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Includes")
-set(SOURCES_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
-set(VENDORS_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Vendors")
-
 ##############  Set source files  #######################
 file(
     GLOB_RECURSE
@@ -82,80 +76,16 @@ endif()
 
 ############## Setup Static #######################
 add_library(
-    ${TARGET_NAME_STATIC}
+    ${TARGET_NAME}
     STATIC
     ""
 )
 
 target_sources(
-    ${TARGET_NAME_STATIC}
-
-    PRIVATE
-        ${SOURCES}
-)
-
-target_include_directories(
-    ${TARGET_NAME_STATIC}
-
-    PUBLIC
-        $<INSTALL_INTERFACE:Includes>
-        $<BUILD_INTERFACE:${INCLUDES_DIR}>
-
-        ${Vulkan_INCLUDE_DIRS}
-        ${VENDORS_DIR}
-        ${VENDORS_DIR}/glm
-        ${VENDORS_DIR}/imgui
-        ${VENDORS_DIR}/pugixml
-        ${VENDORS_DIR}/SDL2
-    PRIVATE
-        ${SOURCES_DIR}
-)
-
-target_link_libraries(
-    ${TARGET_NAME_STATIC}
-
-    PUBLIC
-        pugixml-static
-        SDL2-static
-    PRIVATE
-        ${Vulkan_LIBRARIES}
-)
-
-############## Setup Shared #######################
-
-add_library(
-    ${TARGET_NAME}
-    SHARED
-    ""
-)
-
-target_sources(
     ${TARGET_NAME}
 
     PRIVATE
         ${SOURCES}
-)
-
-set_target_properties(
-    ${TARGET_NAME}
-    PROPERTIES
-
-    VS_DEBUGGER_WORKING_DIRECTORY
-    "${BUILD_DIR}"
-
-    RUNTIME_OUTPUT_DIRECTORY
-    "${BUILD_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG
-    "${BUILD_DIR}"
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE
-    "${BUILD_DIR}"
-
-    LIBRARY_OUTPUT_DIRECTORY
-    "${BUILD_DIR}"
-    LIBRARY_OUTPUT_DIRECTORY_DEBUG
-    "${BUILD_DIR}"
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE
-    "${BUILD_DIR}"
 )
 
 target_include_directories(
