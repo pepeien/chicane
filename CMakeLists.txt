@@ -12,6 +12,7 @@ project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
 set(TARGET_NAME         "Chicane")
+set(TARGET_NAME_STATIC  "${TARGET_NAME}-static")
 set(SHADERS_TARGET_NAME "Shaders")
 
 set(SOURCES_DIR "${CMAKE_SOURCE_DIR}/Sources")
@@ -72,10 +73,59 @@ file(
     ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
 )
 
+############## Setup Libs #######################
+find_package(Vulkan REQUIRED)
+
+if (NOT Vulkan_FOUND)
+    message(FATAL_ERROR "Vulkan not found")
+endif()
+
+############## Setup Static #######################
+add_library(
+    ${TARGET_NAME_STATIC}
+    STATIC
+    ""
+)
+
+target_sources(
+    ${TARGET_NAME_STATIC}
+
+    PRIVATE
+        ${SOURCES}
+)
+
+target_include_directories(
+    ${TARGET_NAME_STATIC}
+
+    PUBLIC
+        $<INSTALL_INTERFACE:Includes>
+        $<BUILD_INTERFACE:${INCLUDES_DIR}>
+
+        ${Vulkan_INCLUDE_DIRS}
+        ${VENDORS_DIR}
+        ${VENDORS_DIR}/glm
+        ${VENDORS_DIR}/imgui
+        ${VENDORS_DIR}/pugixml
+        ${VENDORS_DIR}/SDL2
+    PRIVATE
+        ${SOURCES_DIR}
+)
+
+target_link_libraries(
+    ${TARGET_NAME_STATIC}
+
+    PUBLIC
+        pugixml-static
+        SDL2-static
+    PRIVATE
+        ${Vulkan_LIBRARIES}
+)
+
 ############## Setup Shared #######################
+
 add_library(
     ${TARGET_NAME}
-    STATIC
+    SHARED
     ""
 )
 
@@ -107,12 +157,6 @@ set_target_properties(
     LIBRARY_OUTPUT_DIRECTORY_RELEASE
     "${BUILD_DIR}"
 )
-
-find_package(Vulkan REQUIRED)
-
-if (NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Vulkan not found")
-endif()
 
 target_include_directories(
     ${TARGET_NAME}
