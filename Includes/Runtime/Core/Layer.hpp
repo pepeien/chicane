@@ -13,7 +13,8 @@ namespace Chicane
             : Layer("Unamed")
         {}
         Layer(const std::string& inName)
-            : m_name(inName)
+            : m_name(inName),
+            m_isInitialized(false)
         {}
         virtual ~Layer() = default;
 
@@ -35,6 +36,8 @@ namespace Chicane
         ) { return; }
 
     protected:
+        bool m_isInitialized;
+
         std::string m_name;
     };
 }

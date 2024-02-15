@@ -1,14 +1,15 @@
 #include "Runtime/Grid/Essential.hpp"
 
 #include "Runtime/Grid/Maps.hpp"
-
 #include "Runtime/Game/State.hpp"
+#include "Runtime/Grid/View.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        View m_activeView = {};
+        std::unordered_map<std::string, View*> m_views;
+        View* m_activeView = nullptr;
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
@@ -114,15 +115,38 @@ namespace Chicane
         {
             return inNode.attribute(inName.c_str());
         }
-        
-        View getActiveView()
+
+        void addView(std::vector<View*> inViews)
+        {
+            for (View* view : inViews)
+            {
+                addView(view);
+            }
+        }
+
+        void addView(View* inView)
+        {
+            if (m_views.find(inView->getId()) != m_views.end())
+            {
+                return;
+            }
+
+            m_views.insert(
+                std::make_pair(
+                    inView->getId(),
+                    inView
+                )
+            );
+        }
+
+        View* getActiveView()
         {
             return m_activeView;
         }
         
-        void setActiveView(const View& inView)
+        void setActiveView(const std::string& inViewID)
         {
-            m_activeView = inView;
+            m_activeView = m_views.at(inViewID);
         }
         
         void compileChildren(pugi::xml_node& outNode)
@@ -139,24 +163,24 @@ namespace Chicane
             {
                 return;
             }
-        
+
             std::string tagName = std::string(outNode.name());
-        
+
             if (Components.find(tagName) == Components.end())
             {
                 return;
             }
-        
+
             std::string onTickSignature = getAttribute(ON_TICK_ATTRIBUTE, outNode).as_string();
-        
+
             if (
                 !onTickSignature.empty() &&
-                m_activeView.callbacks.find(onTickSignature) != m_activeView.callbacks.end()
+                m_activeView->hasCallback(onTickSignature)
             )
             {
-                m_activeView.callbacks.at(onTickSignature)(outNode);
+                m_activeView->execCallback(onTickSignature, outNode);
             }
-        
+
             Components.at(tagName)(outNode);
         }
     }

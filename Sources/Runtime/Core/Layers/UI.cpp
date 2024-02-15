@@ -3,7 +3,7 @@
 #include "Runtime/Core/Log.hpp"
 #include "Runtime/Core/Window.hpp"
 #include "Runtime/Game/State.hpp"
-#include "Runtime/Grid/Components/View.hpp"
+#include "Runtime/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -12,6 +12,13 @@ namespace Chicane
         m_window(inWindow),
         m_renderer(inWindow->getRenderer())
     {
+        m_isInitialized = true;
+
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
@@ -35,6 +42,11 @@ namespace Chicane
 
     UILayer::~UILayer()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         m_renderer->m_logicalDevice.waitIdle();
 
         ImGui_ImplVulkan_Shutdown();
@@ -47,6 +59,11 @@ namespace Chicane
 
     void UILayer::build()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         initDescriptorPool();
         initRenderpass();
         initFramebuffers();
@@ -57,6 +74,11 @@ namespace Chicane
 
     void UILayer::rebuild()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         initFramebuffers();
 
         State::setResolution(m_window->getResolution());
@@ -64,16 +86,29 @@ namespace Chicane
 
     void UILayer::onEvent(const SDL_Event& inEvent)
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         ImGui_ImplSDL2_ProcessEvent(&inEvent);
     }
 
     void UILayer::setup(Chicane::Frame::Instance& outFrame)
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         ImGui_ImplVulkan_NewFrame();
         ImGui_ImplSDL2_NewFrame(m_window->instance);
         ImGui::NewFrame();
 
-        parseUI("./Content/UI/HUD/Gameplay.xml");
+        Grid::getActiveView()->show(
+            m_window->getResolution(),
+            m_window->getPosition()
+        );
 
     	ImGui::Render();
     }
@@ -84,6 +119,11 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
         clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
@@ -196,29 +236,5 @@ namespace Chicane
         init_info.ImageCount      = m_renderer->m_imageCount;
 
         ImGui_ImplVulkan_Init(&init_info, m_renderPass);
-    }
-
-    void UILayer::parseUI(const std::string& inFilepath)
-    {
-        pugi::xml_document doc;
-        pugi::xml_parse_result result = doc.load_file(inFilepath.c_str());
-
-        if (!result)
-        {
-            throw std::runtime_error("Failed to read " + inFilepath);
-        }
-
-        if (doc.empty() || doc.children().empty())
-        {
-            throw std::runtime_error("UI document " + inFilepath + " does not have any components");
-        }
-
-        pugi::xml_node rootComponent = doc.first_child();
-
-        Grid::ViewComponent::compile(
-            rootComponent,
-            m_window->getResolution(),
-            m_window->getPosition()
-        );
     }
 }

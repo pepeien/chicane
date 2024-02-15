@@ -11,61 +11,18 @@ set(NAME "Chicane")
 project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(TARGET_NAME         "Chicane")
-set(SHADERS_TARGET_NAME "Shaders")
-
+set(BUILD_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 set(INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Includes")
 set(SOURCES_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
 set(VENDORS_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Vendors")
 
-##############  Set compiler  #######################
-message(STATUS "Using ${CMAKE_GENERATOR}")
+set(RUNTIME_TARGET_NAME "Runtime")
+set(RUNTIME_SOURCE_DIR  "${SOURCES_DIR}/Runtime")
 
-if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
-    if (NOT MINGW_PATH) 
-      	message(FATAL_ERROR "MINGW_PATH not set in .env.cmake")
-    endif()
+set(EDITOR_TARGET_NAME "Editor")
+set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
 
-    set(CMAKE_C_COMPILER   ${MINGW_PATH}/bin/gcc.exe)
-    set(CMAKE_CXX_COMPILER ${MINGW_PATH}/bin/g++.exe)
-
-    if (WIN32)
-        target_include_directories(
-            ${TARGET_NAME}
-
-            PRIVATE
-                ${MINGW_PATH}/include
-        )
-
-        target_link_directories(
-            ${TARGET_NAME}
-
-            PRIVATE
-                ${MINGW_PATH}/lib
-        )
-    endif()
-endif()
-
-##############  Add subdirectories  #######################
-add_subdirectory(Shaders)
-
-add_subdirectory(Vendors/pugixml)
-add_subdirectory(Vendors/SDL2)
-
-##############  Set source files  #######################
-file(
-    GLOB_RECURSE
-    SOURCES
-
-    ${SOURCES_DIR}/*.cpp
-
-    ${VENDORS_DIR}/imgui/imgui_draw.cpp
-    ${VENDORS_DIR}/imgui/imgui_tables.cpp
-    ${VENDORS_DIR}/imgui/imgui_widgets.cpp
-    ${VENDORS_DIR}/imgui/imgui.cpp
-    ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl2.cpp
-    ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
-)
+set(SHADERS_TARGET_NAME "Shaders")
 
 ############## Setup Libs #######################
 find_package(Vulkan REQUIRED)
@@ -74,43 +31,11 @@ if (NOT Vulkan_FOUND)
     message(FATAL_ERROR "Vulkan not found")
 endif()
 
-############## Setup Static #######################
-add_library(
-    ${TARGET_NAME}
-    STATIC
-    ""
-)
+##############  Add subdirectories  #######################
+add_subdirectory(Shaders)
 
-target_sources(
-    ${TARGET_NAME}
+add_subdirectory(Sources/Editor)
+add_subdirectory(Sources/Runtime)
 
-    PRIVATE
-        ${SOURCES}
-)
-
-target_include_directories(
-    ${TARGET_NAME}
-
-    PUBLIC
-        $<INSTALL_INTERFACE:Includes>
-        $<BUILD_INTERFACE:${INCLUDES_DIR}>
-
-        ${Vulkan_INCLUDE_DIRS}
-        ${VENDORS_DIR}
-        ${VENDORS_DIR}/glm
-        ${VENDORS_DIR}/imgui
-        ${VENDORS_DIR}/pugixml
-        ${VENDORS_DIR}/SDL2
-    PRIVATE
-        ${SOURCES_DIR}
-)
-
-target_link_libraries(
-    ${TARGET_NAME}
-
-    PUBLIC
-        pugixml-static
-        SDL2-static
-    PRIVATE
-        ${Vulkan_LIBRARIES}
-)
+add_subdirectory(Vendors/pugixml)
+add_subdirectory(Vendors/SDL2)

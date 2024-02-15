@@ -7,7 +7,7 @@ namespace Chicane
         std::vector<char> readFile(const std::string& inFilepath)
         {
             std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);
-    
+
             if (file.is_open() == false)
             {
                 throw std::runtime_error("Failed to open file -> " + inFilepath);

@@ -6,7 +6,10 @@ namespace Chicane
 {
     namespace Grid
     {
-        typedef std::unordered_map<std::string, void (*)(pugi::xml_node& outNode)> ComponentCallbackMap;
+        class View;
+
+        typedef void (*ComponentCallback)(pugi::xml_node& outNode);
+        typedef std::unordered_map<std::string, ComponentCallback> ComponentCallbackMap;
         typedef std::unordered_map<std::string, ComponentCallbackMap> ViewCallbackMap;
 
         // Value attributes
@@ -16,11 +19,6 @@ namespace Chicane
 
         // Lifecycle attributes
         const std::string ON_TICK_ATTRIBUTE = "onTick";
-
-        struct View
-        {
-            ComponentCallbackMap callbacks;
-        };
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
@@ -39,8 +37,10 @@ namespace Chicane
             const pugi::xml_node& outNode
         );
 
-        View getActiveView();
-        void setActiveView(const View& inView);
+        void addView(std::vector<View*> inViews);
+        void addView(View* inView);
+        View* getActiveView();
+        void setActiveView(const std::string& inViewID);
         
         void compileChildren(pugi::xml_node& outNode);
         void compileChild(pugi::xml_node& outNode);

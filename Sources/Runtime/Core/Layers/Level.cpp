@@ -11,7 +11,9 @@ namespace Chicane
         m_level(inWindow->getLevel()),
         m_modelManager(std::make_unique<Model::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
-    {}
+    {
+        m_isInitialized = (nullptr != m_level) && m_level->hasActors();
+    }
 
     LevelLayer::~LevelLayer()
     {
@@ -49,7 +51,7 @@ namespace Chicane
 
     void LevelLayer::build()
     {
-        if (!m_level->hasActors())
+        if (!m_isInitialized)
         {
             return;
         }
@@ -66,6 +68,11 @@ namespace Chicane
 
     void LevelLayer::destroy()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         m_renderer->m_logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
@@ -73,12 +80,22 @@ namespace Chicane
 
     void LevelLayer::rebuild()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         initFramebuffers();
         initFrameResources();
     }
 
     void LevelLayer::setup(Frame::Instance& outFrame)
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         outFrame.updateModelData(m_level->getActors());
 
         memcpy(
@@ -94,7 +111,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_level->hasActors())
+        if (!m_isInitialized)
         {
             return;
         }
@@ -166,6 +183,11 @@ namespace Chicane
 
     void LevelLayer::loadAssets()
     {
+        if (nullptr == m_level)
+        {
+            return;
+        }
+
         for (Actor* actor : m_level->getActors())
         {
             if (!actor->hasMesh())

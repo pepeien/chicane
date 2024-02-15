@@ -2,10 +2,10 @@
 
 #include "Runtime/Runtime.hpp"
 
+#include "Runtime/Renderer.hpp"
 #include "Runtime/Core/Layer.hpp"
 #include "Runtime/Game/Level.hpp"
-
-#include "Runtime/Renderer.hpp"
+#include "Runtime/Grid/View.hpp"
 
 namespace Chicane
 {
@@ -35,7 +35,6 @@ namespace Chicane
         void initRenderpass();
         void initFramebuffers();
         void initImgui();
-        void parseUI(const std::string& inFilepath);
 
     private:
         Window* m_window;

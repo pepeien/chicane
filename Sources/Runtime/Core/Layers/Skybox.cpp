@@ -10,7 +10,9 @@ namespace Chicane
         m_renderer(inWindow->getRenderer()),
         m_level(inWindow->getLevel()),
         m_manager(std::make_unique<CubeMap::Manager>())
-    {}
+    {
+        m_isInitialized = nullptr != m_level && m_level->hasSkybox();
+    }
 
     SkyboxLayer::~SkyboxLayer()
     {
@@ -37,7 +39,7 @@ namespace Chicane
 
     void SkyboxLayer::build()
     {
-        if (!m_level->hasSkybox())
+        if (!m_isInitialized)
         {
             return;
         }
@@ -54,6 +56,11 @@ namespace Chicane
 
     void SkyboxLayer::destroy()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         m_renderer->m_logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
@@ -61,6 +68,11 @@ namespace Chicane
 
     void SkyboxLayer::rebuild()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         initFramebuffers();
         initFrameResources();
     }
@@ -71,7 +83,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_level->hasSkybox())
+        if (!m_isInitialized)
         {
             return;
         }
@@ -130,6 +142,11 @@ namespace Chicane
 
     void SkyboxLayer::loadAssets()
     {
+        if (nullptr == m_level)
+        {
+            return;
+        }
+
         Box::Instance cubemap = m_level->getSkybox();
         m_manager->add(
             "Skybox",

@@ -209,23 +209,32 @@ namespace Chicane
             logicalDevice.destroySemaphore(presentSemaphore);
             logicalDevice.destroySemaphore(renderSemaphore);
 
-            logicalDevice.unmapMemory(cameraMatrixUBO.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                cameraMatrixUBO.buffer
-            );
+            if (cameraMatrixUBO.buffer.memory)
+            { 
+                logicalDevice.unmapMemory(cameraMatrixUBO.buffer.memory);
+                Buffer::destroy(
+                    logicalDevice,
+                    cameraMatrixUBO.buffer
+                );
+            }
 
-            logicalDevice.unmapMemory(cameraVectorUBO.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                cameraVectorUBO.buffer
-            );
+            if (cameraVectorUBO.buffer.memory)
+            {
+                logicalDevice.unmapMemory(cameraVectorUBO.buffer.memory);
+                Buffer::destroy(
+                    logicalDevice,
+                    cameraVectorUBO.buffer
+                );
+            }
 
-            logicalDevice.unmapMemory(modelData.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                modelData.buffer
-            );
+            if (modelData.buffer.memory)
+            {
+                logicalDevice.unmapMemory(modelData.buffer.memory);
+                Buffer::destroy(
+                    logicalDevice,
+                    modelData.buffer
+                );
+            }
         }
     }
 }
