@@ -103,7 +103,7 @@ namespace Chicane
         }
 
         ImGui_ImplVulkan_NewFrame();
-        ImGui_ImplSDL2_NewFrame(m_window->instance);
+        ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
 
         Grid::getActiveView()->show(
@@ -225,18 +225,19 @@ namespace Chicane
             m_renderer->m_surface
         );
 
-        ImGui_ImplVulkan_InitInfo init_info = {};
-        init_info.Instance        = m_renderer->m_instance;
-        init_info.PhysicalDevice  = m_renderer->m_physicalDevice;
-        init_info.Device          = m_renderer->m_logicalDevice;
-        init_info.QueueFamily     = familyIndices.graphicsFamily.value();
-        init_info.Queue           = m_renderer->m_graphicsQueue;
-        init_info.PipelineCache   = VK_NULL_HANDLE;
-        init_info.DescriptorPool  = m_descriptorPool;
-        init_info.Allocator       = nullptr;
-        init_info.MinImageCount   = 3;
-        init_info.ImageCount      = m_renderer->m_imageCount;
+        ImGui_ImplVulkan_InitInfo imguiInitInfo = {};
+        imguiInitInfo.Instance        = m_renderer->m_instance;
+        imguiInitInfo.PhysicalDevice  = m_renderer->m_physicalDevice;
+        imguiInitInfo.Device          = m_renderer->m_logicalDevice;
+        imguiInitInfo.QueueFamily     = familyIndices.graphicsFamily.value();
+        imguiInitInfo.Queue           = m_renderer->m_graphicsQueue;
+        imguiInitInfo.PipelineCache   = VK_NULL_HANDLE;
+        imguiInitInfo.DescriptorPool  = m_descriptorPool;
+        imguiInitInfo.Allocator       = nullptr;
+        imguiInitInfo.MinImageCount   = 3;
+        imguiInitInfo.ImageCount      = m_renderer->m_imageCount;
+        imguiInitInfo.RenderPass      = m_renderPass;
 
-        ImGui_ImplVulkan_Init(&init_info, m_renderPass);
+        ImGui_ImplVulkan_Init(&imguiInitInfo);
     }
 }
