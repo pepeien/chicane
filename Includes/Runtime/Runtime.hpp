@@ -14,6 +14,14 @@
     #define IS_DEBUGGING true
 #endif
 
+#ifdef _unix__
+    #define OS_LINUX
+#endif
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+    #define OS_WINDOWS
+#endif
+
 // System
 #include <algorithm>
 #include <array>
@@ -38,6 +46,7 @@
 #include "pugixml.hpp"
 
 #include "imgui/imgui.h"
+#include "imgui/imgui_internal.h"
 #include "imgui/backends/imgui_impl_sdl2.h"
 #include "imgui/backends/imgui_impl_vulkan.h"
 
