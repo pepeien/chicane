@@ -4,7 +4,6 @@ file(
     SOURCES
 
     "${CONTENT_SOURCE_DIR}/*.box"
-    "${CONTENT_SOURCE_DIR}/*.xml"
 )
 
 ##############  Copy files  #######################

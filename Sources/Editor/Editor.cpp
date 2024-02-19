@@ -1,5 +1,6 @@
 #include "Editor/Editor.hpp"
 
+#include "Editor/View.hpp"
 #include "Runtime/Grid.hpp"
 
 #include <filesystem>
@@ -20,14 +21,12 @@ namespace Chicane
 
             WindowCreateInfo windowCreateInfo = {};
             windowCreateInfo.title         = "Chicane Editor";
-            windowCreateInfo.resolution.x  = 1600;
-            windowCreateInfo.resolution.y  = 900;
+            windowCreateInfo.resolution.x  = 1024;
+            windowCreateInfo.resolution.y  = 720;
             windowCreateInfo.type          = WindowType::Windowed;
             windowCreateInfo.displayIndex  = 0;
 
-            Grid::View* homeView = new Grid::View("home", "Content/UI/Home.xml");
-
-            Grid::addView(homeView);
+            Grid::addView(new EditorView());
             Grid::setActiveView("home");
 
             std::unique_ptr<Window> window = std::make_unique<Window>(
