@@ -12,7 +12,7 @@ namespace Chicane
         m_window(inWindow),
         m_renderer(inWindow->getRenderer())
     {
-        m_isInitialized = true;
+        m_isInitialized = Grid::hasViews();
 
         if (!m_isInitialized)
         {
@@ -27,6 +27,7 @@ namespace Chicane
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+        io.IniFilename = nullptr;
 
         ImGui::StyleColorsDark();
 
@@ -110,7 +111,15 @@ namespace Chicane
             m_window->getPosition()
         );
 
-    	ImGui::Render();
+    	ImGuiIO &io = ImGui::GetIO();
+
+        ImGui::Render();
+
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
     }
 
     void UILayer::render(
@@ -148,13 +157,6 @@ namespace Chicane
 
         ImGui::EndFrame();
 
-        ImGuiIO &io = ImGui::GetIO();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    	{
-    		ImGui::UpdatePlatformWindows();
-    		ImGui::RenderPlatformWindowsDefault();
-    	}
-
         State::setStats(m_window->getStats());
     }
 
@@ -162,7 +164,7 @@ namespace Chicane
     {
         Descriptor::PoolCreateInfo createInfo;
         createInfo.flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
-        createInfo.size  = static_cast<uint32_t>(m_renderer->m_swapChain.images.size());
+        createInfo.size  = 1000;
         createInfo.types.push_back(vk::DescriptorType::eSampler);
         createInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
         createInfo.types.push_back(vk::DescriptorType::eSampledImage);
