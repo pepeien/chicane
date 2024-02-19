@@ -4,8 +4,13 @@ namespace Chicane
 {
     namespace Grid
     {
-        View::View(const std::string& inId, const std::string inSource)
+        View::View(const std::string& inId)
             : m_id(inId)
+        {}
+
+        View::View(const std::string& inId, const std::string inSource)
+            : m_id(inId),
+            m_callbacks({})
         {
             if (inSource.empty())
             {
@@ -57,7 +62,7 @@ namespace Chicane
 
         void View::addCallback(const std::string& inId, ComponentCallback inCallback)
         {
-            if (!hasCallback(inId))
+            if (hasCallback(inId))
             {
                 return;
             }
