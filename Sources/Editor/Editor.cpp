@@ -11,23 +11,24 @@ namespace Chicane
     {
         void run()
         {
-            std::unique_ptr<Level> level = std::make_unique<Level>();
+            std::unique_ptr<Level> level           = std::make_unique<Level>();
             std::unique_ptr<Controller> controller = std::make_unique<Controller>();
+            std::unique_ptr<View> view             = std::make_unique<View>();
 
             State::setController(controller.get());
 
-            Box::Instance skybox = Box::read("Content/Textures/SKY_Grid");
+            Box::Instance skybox = Box::read("Content/Textures/SKY_Gray.box");
             level->setSkybox(skybox);
 
             WindowCreateInfo windowCreateInfo = {};
             windowCreateInfo.title         = "Chicane Editor";
-            windowCreateInfo.resolution.x  = 1024;
-            windowCreateInfo.resolution.y  = 720;
+            windowCreateInfo.resolution.x  = 1600;
+            windowCreateInfo.resolution.y  = 900;
             windowCreateInfo.type          = WindowType::Windowed;
-            windowCreateInfo.displayIndex  = 0;
+            windowCreateInfo.displayIndex  = 1;
 
-            Grid::addView(new EditorView());
-            Grid::setActiveView("home");
+            Grid::addView(      view.get());
+            Grid::setActiveView(view->getId());
 
             std::unique_ptr<Window> window = std::make_unique<Window>(
                 windowCreateInfo,

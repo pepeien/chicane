@@ -33,9 +33,9 @@ namespace Chicane
         void setAbsoluteRotation(const glm::vec3& inRotation);
         void setAbsoluteScale(const glm::vec3& inScale);
 
-        bool hasMesh();
-        Box::Instance getMesh();
-        void setMesh(const Box::Instance& inMesh);
+        bool hasModel();
+        Box::Instance getModel();
+        void setModel(const Box::Instance& inModel);
 
     protected:
         void setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation);
@@ -46,7 +46,7 @@ namespace Chicane
         glm::mat4 m_position;
         Transform m_transform;
 
-        Box::Instance m_mesh;
+        Box::Instance m_model;
 
         std::vector<ActorComponent*> m_components;
     };

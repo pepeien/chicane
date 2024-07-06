@@ -6,8 +6,9 @@ namespace Chicane
     {
         Controller* m_controller;
         Camera* m_camera;
-        Stats m_stats;
+        Telemetry m_telemetry;
         Vec2 m_resolution;
+        Level* m_level;
 
         void setCamera(Camera* inCamera)
         {
@@ -29,14 +30,14 @@ namespace Chicane
             return m_controller;
         }
 
-        void setStats(const Stats& inStats)
+        void setTelemetry(const Telemetry& inTelemetry)
         {
-            m_stats = inStats;
+            m_telemetry = inTelemetry;
         }
 
-        Stats getStats()
+        Telemetry getTelemetry()
         {
-            return m_stats;
+            return m_telemetry;
         }
 
         void setResolution(const Vec2& inResolution)
@@ -47,6 +48,21 @@ namespace Chicane
         Vec2 getResolution()
         {
             return m_resolution;
+        }
+
+        void setLevel(Level* inLevel)
+        {
+            m_level = inLevel;
+        }
+
+        Level* getLevel()
+        {
+            return m_level;
+        }
+
+        void addModel(const Box::Instance& inBox)
+        {
+            
         }
     }
 }

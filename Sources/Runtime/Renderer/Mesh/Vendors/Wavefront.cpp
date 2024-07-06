@@ -1,8 +1,8 @@
-#include "Runtime/Renderer/Model/Vendors/Wavefront.hpp"
+#include "Runtime/Renderer/Mesh/Vendors/Wavefront.hpp"
 
 namespace Chicane
 {
-    namespace Model
+    namespace Mesh
     {
         namespace Wavefront
         {

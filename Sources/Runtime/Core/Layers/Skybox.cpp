@@ -148,15 +148,21 @@ namespace Chicane
         }
 
         Box::Instance cubemap = m_level->getSkybox();
+
+        if (cubemap.entries.size() < 6)
+        {
+            throw std::runtime_error("The level cubemap isn't valid");
+        }
+
         m_manager->add(
             "Skybox",
             {
-                cubemap.entries[0].data,
-                cubemap.entries[1].data,
-                cubemap.entries[2].data,
-                cubemap.entries[3].data,
-                cubemap.entries[4].data,
-                cubemap.entries[5].data
+                cubemap.entries[0].data, // Positive X
+                cubemap.entries[1].data, // Negative X
+                cubemap.entries[2].data, // Positive Y
+                cubemap.entries[3].data, // Negative Y
+                cubemap.entries[4].data, // Positive Z
+                cubemap.entries[5].data  // Negative Z
             }
         );
     }

@@ -84,31 +84,31 @@ namespace Chicane
             modelBufferCreateInfo.size             = sizeof(glm::mat4) * inActors.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
-            Buffer::init(modelData.buffer, modelBufferCreateInfo);
+            Buffer::init(meshData.buffer, modelBufferCreateInfo);
         
-            modelData.allocationSize = modelBufferCreateInfo.size;
-            modelData.writeLocation  = logicalDevice.mapMemory(
-                modelData.buffer.memory,
+            meshData.allocationSize = modelBufferCreateInfo.size;
+            meshData.writeLocation  = logicalDevice.mapMemory(
+                meshData.buffer.memory,
                 0,
-                modelData.allocationSize
+                meshData.allocationSize
             );
-            modelData.transforms.reserve(inActors.size());
+            meshData.transforms.reserve(inActors.size());
     
             for (Actor* actor : inActors)
             {
-                modelData.transforms.push_back(actor->getPosition());
+                meshData.transforms.push_back(actor->getPosition());
             }
             
-            modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
+            modelDescriptorBufferInfo.buffer = meshData.buffer.instance;
             modelDescriptorBufferInfo.offset = 0;
-            modelDescriptorBufferInfo.range  = modelData.allocationSize;
+            modelDescriptorBufferInfo.range  = meshData.allocationSize;
         }
 
         void Instance::updateModelData(std::vector<Actor*> inActors)
         {   
-            for (uint32_t i = 0; i < inActors.size() && i < modelData.transforms.size(); i++)
+            for (uint32_t i = 0; i < inActors.size() && i < meshData.transforms.size(); i++)
             {
-                modelData.transforms[i] = inActors[i]->getPosition();
+                meshData.transforms[i] = inActors[i]->getPosition();
             }
         }
         
@@ -227,12 +227,12 @@ namespace Chicane
                 );
             }
 
-            if (modelData.buffer.memory)
+            if (meshData.buffer.memory)
             {
-                logicalDevice.unmapMemory(modelData.buffer.memory);
+                logicalDevice.unmapMemory(meshData.buffer.memory);
                 Buffer::destroy(
                     logicalDevice,
-                    modelData.buffer
+                    meshData.buffer
                 );
             }
         }

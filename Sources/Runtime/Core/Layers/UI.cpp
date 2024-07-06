@@ -157,7 +157,7 @@ namespace Chicane
 
         ImGui::EndFrame();
 
-        State::setStats(m_window->getStats());
+        State::setTelemetry(m_window->getTelemetry());
     }
 
     void UILayer::initDescriptorPool()

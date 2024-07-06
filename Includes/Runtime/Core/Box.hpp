@@ -27,7 +27,7 @@ namespace Chicane
             Undefined,
 
             // Mesh
-            Model,
+            Mesh,
             Texture
         };
 

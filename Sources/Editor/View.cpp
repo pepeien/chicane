@@ -1,6 +1,7 @@
 #include "Editor/View.hpp"
 
 #include "Runtime/Core.hpp"
+#include "Runtime/Game/State.hpp"
 
 #include <windows.h>
 #include <tchar.h>
@@ -9,12 +10,35 @@ namespace Chicane
 {
     namespace Editor
     {
-        EditorView::EditorView()
+        View::View()
             : Grid::View("home"),
-            m_activeMenu(Menu::None)
-        {}
+            m_isShowingMetrics(true),
+            m_activeMenu(Menu::None),
+            m_activeToolMenu(ToolMenu::None)
+        {
+            m_cubemapEntryFormats = {
+                {
+                    "Texture",
+                    "tga"
+                }
+            };
+            m_cubemapAxes = {
+                "Select Postive X",
+                "Select Negative X",
+                "Select Postive Y",
+                "Select Negative Y",
+                "Select Postive Z",
+                "Select Negative Z",
+            };
 
-        void EditorView::show(
+            m_cubemapName = new char(256);
+
+            m_cubemapInfo = {};
+            m_cubemapInfo.type = (uint8_t) Box::Type::CubeMap;
+            m_cubemapInfo.entries.resize(6);
+        }
+
+        void View::show(
             const Vec2& inResolution,
             const Vec2& inPosition
         )
@@ -44,17 +68,30 @@ namespace Chicane
                 );
 
                 ImGui::BeginMenuBar();
-                    if (ImGui::Button("Grid"))
+                    if (ImGui::Button("Metrics"))
                     {
-                        onBoxButtonClick();
+                        onMetricsButtonClick();
+                    }
+
+                    if (ImGui::Button("Box"))
+                    {
+                        onGridButtonClick();
                     }
                 ImGui::EndMenuBar();
+
+                if (m_isShowingMetrics)
+                {
+                    Chicane::Telemetry telemetry = Chicane::State::getTelemetry();
+
+                    ImGui::Text("FPS: %d",          telemetry.framerate);
+                    ImGui::Text("Frametime: %.2f ms", telemetry.time);
+                }
 
                 if (m_activeMenu == Menu::Grid)
                 {
                     ImGuiWindow* currentWindow = ImGui::GetCurrentWindow();
  
-                    float width  = Grid::calculateSizeFromViewportWidth(20.0f);
+                    float width  = Grid::calculateSizeFromViewportWidth(30.0f);
                     float height = Grid::calculateSizeFromViewportHeight(100.0f);
 
                     ImGui::SetNextWindowPos(
@@ -74,36 +111,29 @@ namespace Chicane
                         nullptr,
                         ImGuiWindowFlags_::ImGuiWindowFlags_NoNav |
                         ImGuiWindowFlags_::ImGuiWindowFlags_NoDecoration |
-                        ImGuiWindowFlags_::ImGuiWindowFlags_NoMove
+                        ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
+                        ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar
                     );
-                        if (ImGui::Button("Open File"))
+                        ImGui::BeginMenuBar();
+                            if (ImGui::Button("Cubemap"))
+                            {
+                                m_activeToolMenu = ToolMenu::Cubemap;
+                            }
+
+                            if (ImGui::Button("Model"))
+                            {
+                                m_activeToolMenu = ToolMenu::Model;
+                            }
+                        ImGui::EndMenuBar();
+
+                        if (m_activeToolMenu == ToolMenu::Cubemap)
                         {
-                            std::vector<FileSystem::FileFormat> fileFormats;
-                            fileFormats.push_back(
-                                {
-                                    "Texture",
-                                    "png"
-                                }
-                            );
-                            fileFormats.push_back(
-                                {
-                                    "Texture",
-                                    "tga"
-                                }
-                            );
-                            fileFormats.push_back(
-                                {
-                                    "OBJ File",
-                                    "obj"
-                                }
-                            );
+                            renderCubemapToolMenu();
+                        }
 
-                            FileSystem::FileResult selectedFile = FileSystem::openFileDialog(
-                                "Asset File",
-                                fileFormats
-                            );
-
-                            LOG_INFO(selectedFile.path + " => " + selectedFile.extension);
+                        if (m_activeToolMenu == ToolMenu::Model)
+                        {
+                            renderModelToolMenu();
                         }
                     ImGui::End();
                 }
@@ -111,9 +141,104 @@ namespace Chicane
             ImGui::End();
         }
 
-        void EditorView::onBoxButtonClick()
+        void View::onMetricsButtonClick()
+        {
+            m_isShowingMetrics = !m_isShowingMetrics;
+        }
+
+        void View::onGridButtonClick()
         {
             m_activeMenu = Menu::Grid;
         }
+
+        void View::renderCubemapToolMenu()
+        {
+            ImGui::InputText("Name", m_cubemapName, 256);
+
+            m_cubemapInfo.name = m_cubemapName;
+
+            for (int i = 0; i < m_cubemapAxes.size(); i++)
+            {
+                const std::string& axis = m_cubemapAxes[i];
+
+                ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
+
+                if (ImGui::Button(axis.c_str()))
+                {
+                    FileSystem::FileResult selectedFile = FileSystem::openFileDialog(
+                        axis.c_str(),
+                        m_cubemapEntryFormats
+                    );
+
+                    if (!selectedFile.path.empty())
+                    {
+                        Box::WriteEntry entry = {};
+                        entry.filePath = selectedFile.path;
+                        entry.type     = (uint8_t) Box::Type::CubeMap;
+
+                        m_cubemapInfo.entries[i] = entry;
+                    }
+                }
+
+                ImGui::Text(
+                    m_cubemapInfo.entries[i].filePath.empty() ?
+                    "Not Selected" : m_cubemapInfo.entries[i].filePath.c_str()
+                );
+            }
+
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
+
+            if (ImGui::Button("Select Output Location"))
+            {
+                FileSystem::DirectoryResult outputLocation = FileSystem::openDirectoryDialog();
+
+                if (!outputLocation.path.empty())
+                {
+                    m_cubemapInfo.outputPath = outputLocation.path;
+                }
+            }
+
+            ImGui::Text(
+                m_cubemapInfo.outputPath.empty() ?
+                "Not Selected" : m_cubemapInfo.outputPath.c_str()
+            );
+
+            ImGui::SetCursorPosY(ImGui::GetWindowContentRegionMax().y - 20);
+
+            bool isDisabled = m_cubemapInfo.name.empty() || m_cubemapInfo.outputPath.empty();
+
+            for (Box::WriteEntry entry : m_cubemapInfo.entries)
+            {
+                if (entry.filePath.empty())
+                {
+                    isDisabled = true;
+
+                    break;
+                }
+            }
+
+            if (isDisabled)
+            {
+                ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            }
+
+            if (ImGui::Button("Save", ImVec2(ImGui::GetWindowWidth(), 20)))
+            {
+                if (!isDisabled)
+                {
+                    Box::write(m_cubemapInfo);
+                }
+            }
+
+            if (isDisabled)
+            {
+                ImGui::PopItemFlag();
+                ImGui::PopStyleVar();
+            }
+        }
+
+        void View::renderModelToolMenu()
+        {}
     }
 }

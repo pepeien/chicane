@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Runtime/Core.hpp"
 #include "Runtime/Grid.hpp"
 
 namespace Chicane
@@ -12,10 +13,17 @@ namespace Chicane
             Grid
         };
 
-        class EditorView : public Grid::View
+        enum class ToolMenu
+        {
+            None,
+            Cubemap,
+            Model
+        };
+
+        class View : public Grid::View
         {
         public:
-            EditorView();
+            View();
 
         public:
             void show(
@@ -24,10 +32,25 @@ namespace Chicane
             ) override;
 
         private:
-            void onBoxButtonClick();
+            void onMetricsButtonClick();
+            void onGridButtonClick();
+
+            // Tool Menus
+            void renderCubemapToolMenu();
+            void renderModelToolMenu();
 
         private:
+            bool m_isShowingMetrics;
+
             Menu m_activeMenu;
+            ToolMenu m_activeToolMenu;
+
+            // Cubemap
+            std::vector<FileSystem::FileFormat> m_cubemapEntryFormats;
+            std::vector<std::string> m_cubemapAxes;
+
+            char* m_cubemapName;
+            Box::WriteInfo m_cubemapInfo;
         };
     }
 }

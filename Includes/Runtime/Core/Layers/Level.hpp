@@ -31,6 +31,8 @@ namespace Chicane
         ) override;
 
     private:
+        void loadEvents();
+        void loadActor(Actor* inActor);
         void loadAssets();
         void initFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();
@@ -47,7 +49,7 @@ namespace Chicane
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
         vk::DescriptorSet m_descriptorSet;
 
-        std::unique_ptr<Model::Manager::Instance> m_modelManager;
+        std::unique_ptr<Mesh::Manager::Instance> m_meshManager;
         std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
         Descriptor::Bundle m_frameDescriptor;

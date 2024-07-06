@@ -2,6 +2,8 @@
 
 #include "Runtime/Runtime.hpp"
 #include "Runtime/Game/Controller.hpp"
+#include "Runtime/Game/Level.hpp"
+#include "Runtime/Grid.hpp"
 #include "Runtime/Renderer/Camera.hpp"
 
 namespace Chicane
@@ -14,10 +16,15 @@ namespace Chicane
         void setController(Controller* inController);
         Controller* getController();
 
-        void setStats(const Stats& inStats);
-        Stats getStats();
+        void setTelemetry(const Telemetry& inTelemtry);
+        Telemetry getTelemetry();
 
         void setResolution(const Vec2& inResolution);
         Vec2 getResolution();
+
+        void setLevel(Level* inLevel);
+        Level* getLevel();
+
+        void addModel(const Box::Instance& inBox);
     }
 }

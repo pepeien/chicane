@@ -1,8 +1,8 @@
-#include "Runtime/Renderer/Model/Manager.hpp"
+#include "Runtime/Renderer/Mesh/Manager.hpp"
 
 namespace Chicane
 {
-    namespace Model
+    namespace Mesh
     {
         namespace Manager
         {
@@ -29,10 +29,10 @@ namespace Chicane
                     break;
                 
                 default:
-                    throw std::runtime_error("Failed to import Model due to invalid type");
+                    throw std::runtime_error("Failed to import Mesh due to invalid type");
                 }
 
-                addModel(
+                add(
                     inId,
                     result.vertices,
                     result.indexes
@@ -48,7 +48,7 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                processModels();
+                processAll();
 
                 initVertexBuffer(
                     outVertexBuffer,
@@ -83,7 +83,7 @@ namespace Chicane
                 m_usedIds.push_back(inId);
             }
 
-            void Instance::addModel(
+            void Instance::add(
                 const std::string& inId,
                 const std::vector<Vertex::Instance>& inVertices,
                 const std::vector<uint32_t>& inIndexes
@@ -91,18 +91,18 @@ namespace Chicane
             {
                 if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
-                    LOG_WARNING("The model [" + inId  + "] has already been added");
+                    LOG_WARNING("The mesh [" + inId  + "] has already been added");
 
                     return;
                 }
 
-                Model::Instance newModel;
-                newModel.vertexInstances = inVertices;
-                newModel.vertexIndices   = inIndexes;
+                Mesh::Instance newMesh;
+                newMesh.vertexInstances = inVertices;
+                newMesh.vertexIndices   = inIndexes;
 
                 m_uniqueIds.push_back(inId);
                 m_usedIds.push_back(inId);
-                m_instanceMap.insert(std::make_pair(inId, newModel));
+                m_instanceMap.insert(std::make_pair(inId, newMesh));
             }
 
             void Instance::processDuplicate(const std::string& inId)
@@ -110,16 +110,16 @@ namespace Chicane
                 m_allocationMap[inId].instanceCount += 1;
             }
 
-            void Instance::processModel(const std::string& inId)
+            void Instance::process(const std::string& inId)
             {
-                auto foundModel = m_instanceMap.find(inId);
+                auto foundMesh = m_instanceMap.find(inId);
 
-                if (foundModel == m_instanceMap.end())
+                if (foundMesh == m_instanceMap.end())
                 {
-                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
                 }
 
-                Model::Instance& instance = foundModel->second;
+                Mesh::Instance& instance = foundMesh->second;
     
                 AllocationInfo allocationInfo;
                 allocationInfo.vertexCount   = static_cast<uint32_t>(instance.vertexInstances.size());
@@ -142,7 +142,7 @@ namespace Chicane
                 }
             }
 
-            void Instance::processModels()
+            void Instance::processAll()
             {
                 for (std::string& id : m_usedIds)
                 {
@@ -153,7 +153,7 @@ namespace Chicane
                         continue;
                     }
 
-                    processModel(id);
+                    process(id);
                 }
             }
             
@@ -267,14 +267,14 @@ namespace Chicane
                 uint32_t inFirstInstance
             )
             {
-                auto foundModel = m_allocationMap.find(inId);
+                auto foundMesh = m_allocationMap.find(inId);
 
-                if (foundModel == m_allocationMap.end())
+                if (foundMesh == m_allocationMap.end())
                 {
-                    throw std::runtime_error("The Model [" + inId + "] does not exist");
+                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
                 }
 
-                Model::AllocationInfo& allocationInfo = foundModel->second;
+                Mesh::AllocationInfo& allocationInfo = foundMesh->second;
 
                 inCommandBuffer.drawIndexed(
                     allocationInfo.indexCount,

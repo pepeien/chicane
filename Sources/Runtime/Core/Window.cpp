@@ -2,6 +2,7 @@
 
 #include "Runtime/Game.hpp"
 #include "Runtime/Renderer.hpp"
+#include "Runtime/Core/Event.hpp"
 #include "Runtime/Core/Layer.hpp"
 #include "Runtime/Core/Layers/Level.hpp"
 #include "Runtime/Core/Layers/Skybox.hpp"
@@ -51,6 +52,8 @@ namespace Chicane
 
         initRenderer();
         initCoreLayers();
+
+        State::setLevel(m_level);
     }
 
     Window::~Window()
@@ -59,9 +62,9 @@ namespace Chicane
         SDL_Quit();
     }
 
-    Stats Window::getStats()
+    Telemetry Window::getTelemetry()
     {
-        return m_stats;
+        return m_telemetry;
     }
 
     Renderer* Window::getRenderer()
@@ -103,7 +106,7 @@ namespace Chicane
 
             m_renderer->render();
 
-            updateStats();
+            updateTelemetry();
         }
     }
 
@@ -279,6 +282,21 @@ namespace Chicane
         return m_isMinimized || (currentResolution.x <= 0.0f || currentResolution.y <= 0.0f);
     }
 
+    void Window::nextEvent(SDL_Event inEvent)
+    {
+        LOG_INFO("NEXT");
+    }
+
+    void Window::errorEvent(std::string inMessage)
+    {
+        LOG_INFO("ERROR");
+    }
+
+    void Window::completeEvent()
+    {
+        LOG_INFO("COMPLETE");
+    }
+
     void Window::initRenderer()
     {
         m_renderer = std::make_unique<Renderer>(this);
@@ -291,20 +309,20 @@ namespace Chicane
         addLayer(new UILayer(this));
     }
 
-    void Window::updateStats()
+    void Window::updateTelemetry()
     {
-        m_stats.currentTime = SDL_GetTicks64() / 1000;
+        m_telemetry.currentTime = SDL_GetTicks64() / 1000;
 
-        uint64_t delta = m_stats.currentTime - m_stats.lastTime;
+        uint64_t delta = m_telemetry.currentTime - m_telemetry.lastTime;
 
         if (delta >= 1) {
-            m_stats.framerate = std::max(1, int(m_stats.count / delta));
-            m_stats.lastTime  = m_stats.currentTime;
-            m_stats.count     = -1;
-            m_stats.time      = float(1000.0 / m_stats.framerate);
+            m_telemetry.framerate = std::max(1, int(m_telemetry.count / delta));
+            m_telemetry.lastTime  = m_telemetry.currentTime;
+            m_telemetry.count     = -1;
+            m_telemetry.time      = float(1000.0 / m_telemetry.framerate);
         }
 
-        m_stats.count++;
+        m_telemetry.count++;
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)

@@ -70,7 +70,7 @@ static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
 
 namespace Chicane
 {
-    struct Stats
+    struct Telemetry
     {
         int count            = 0;
         float time           = 0.0f;

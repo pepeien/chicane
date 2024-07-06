@@ -1,16 +1,55 @@
 #include "Runtime/Core/FileSystem.hpp"
 
+#include <filesystem>
+
 #include "Runtime/Core/Helper.hpp"
+#include "Runtime/Core/Log.hpp"
 
 #ifdef OS_WINDOWS
     #include <windows.h>
     #include <tchar.h>
+    #include <commdlg.h>
+    #include <ShlObj.h>
 #endif
 
 namespace Chicane
 {
     namespace FileSystem
     {
+        DirectoryResult openDirectoryDialog()
+        {
+            #ifdef OS_WINDOWS
+                char filepath[ MAX_PATH ];
+                ZeroMemory(&filepath, sizeof( filepath ));
+
+                BROWSEINFO browseInfo = { 0 };
+                browseInfo.hwndOwner      = NULL;
+                browseInfo.pidlRoot       = NULL;
+                browseInfo.pszDisplayName = filepath;
+                browseInfo.lpszTitle      = _T("Select a folder");
+                browseInfo.ulFlags        = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+                if (LPITEMIDLIST pidl = SHBrowseForFolder(&browseInfo))
+                {
+                    if (SHGetPathFromIDList(pidl, filepath))
+                    {
+                        std::string path = filepath;
+                        path += "\\";
+
+                        return {
+                            path
+                        };
+                    }
+
+                    CoTaskMemFree(pidl);
+                }
+
+                return {};
+            #elif OS_LINUX
+                return {};
+            #endif
+        }
+
         FileResult openFileDialog(
             const std::string& inTitle,
             const std::vector<FileFormat>& inFileFormats
@@ -19,8 +58,17 @@ namespace Chicane
             #ifdef OS_WINDOWS
                 std::string fileFormatExtensions = "";
 
-                for (FileFormat fileFormat : inFileFormats)
+                for (int i = 0; i < inFileFormats.size(); i++)
                 {
+                    FileFormat fileFormat = inFileFormats[i];
+
+                    if (i + 1 >= inFileFormats.size())
+                    {
+                        fileFormatExtensions.append("*." + fileFormat.extension);
+
+                        break;
+                    }
+
                     fileFormatExtensions.append("*." + fileFormat.extension + ";");
                 }
 
@@ -29,8 +77,10 @@ namespace Chicane
                 fileFilter += fileFormatExtensions;
                 fileFilter.push_back('\0');
 
-                for (FileFormat fileFormat : inFileFormats)
+                for (int i = 0; i < inFileFormats.size(); i++)
                 {
+                    FileFormat fileFormat = inFileFormats[i];
+
                     fileFilter += fileFormat.title + " (*." + fileFormat.extension + ")";
                     fileFilter.push_back('\0');
                     fileFilter += "*." + fileFormat.extension + ";";
@@ -68,6 +118,14 @@ namespace Chicane
             #elif OS_LINUX
                 return {};
             #endif
+        }
+
+        void ls(const std::string& inDir)
+        {
+            for (const auto& entry : std::filesystem::directory_iterator(inDir))
+            {
+                LOG_INFO(entry.path().string());
+            }
         }
 
         std::vector<char> readFile(const std::string& inFilepath)

@@ -9,7 +9,7 @@ namespace Chicane
         : Layer("Level"),
         m_renderer(inWindow->getRenderer()),
         m_level(inWindow->getLevel()),
-        m_modelManager(std::make_unique<Model::Manager::Instance>()),
+        m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
     {
         m_isInitialized = (nullptr != m_level) && m_level->hasActors();
@@ -45,7 +45,7 @@ namespace Chicane
         );
 
         // Managers
-        m_modelManager.reset();
+        m_meshManager.reset();
         m_textureManager.reset();
     }
 
@@ -56,6 +56,7 @@ namespace Chicane
             return;
         }
 
+        loadEvents();
         loadAssets();
         initFrameDescriptorSetLayout();
         initMaterialDescriptorSetLayout();
@@ -99,9 +100,9 @@ namespace Chicane
         outFrame.updateModelData(m_level->getActors());
 
         memcpy(
-            outFrame.modelData.writeLocation,
-            outFrame.modelData.transforms.data(),
-            outFrame.modelData.allocationSize
+            outFrame.meshData.writeLocation,
+            outFrame.meshData.transforms.data(),
+            outFrame.meshData.allocationSize
         );
     }
 
@@ -174,11 +175,45 @@ namespace Chicane
         );
 
         // Drawing
-        m_modelManager->drawAll(inCommandBuffer);
+        m_meshManager->drawAll(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
         return;
+    }
+
+    void LevelLayer::loadActor(Actor* inActor)
+    {
+        if (!inActor->hasModel())
+        {
+            return;
+        }
+
+        Box::Instance mesh = inActor->getModel();
+
+        for (Box::Entry meshComponent : mesh.entries)
+        {
+            if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Mesh))
+            {
+                m_meshManager->add(
+                    mesh.name,
+                    meshComponent.data,
+                    Mesh::Vendor::Wavefront
+                );
+
+                continue;
+            }
+
+            if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Texture))
+            {
+                m_textureManager->add(
+                    mesh.name,
+                    meshComponent.data
+                );
+
+                continue;
+            }
+        }
     }
 
     void LevelLayer::loadAssets()
@@ -190,36 +225,7 @@ namespace Chicane
 
         for (Actor* actor : m_level->getActors())
         {
-            if (!actor->hasMesh())
-            {
-                continue;
-            }
-
-            Box::Instance mesh = actor->getMesh();
-
-            for (Box::Entry meshComponent : mesh.entries)
-            {
-                if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Model))
-                {
-                    m_modelManager->add(
-                        mesh.name,
-                        meshComponent.data,
-                        Model::Vendor::Wavefront
-                    );
-
-                    continue;
-                }
-
-                if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Texture))
-                {
-                    m_textureManager->add(
-                        mesh.name,
-                        meshComponent.data
-                    );
-
-                    continue;
-                }
-            }
+            loadActor(actor);
         }
     }
 
@@ -367,7 +373,7 @@ namespace Chicane
 
     void LevelLayer::buildAssets()
     {
-        m_modelManager->build(
+        m_meshManager->build(
             m_meshVertexBuffer,
             m_meshIndexBuffer,
             m_renderer->m_logicalDevice,
@@ -383,6 +389,22 @@ namespace Chicane
             m_renderer->m_graphicsQueue,
             m_materialDescriptor.setLayout,
             m_materialDescriptor.pool
+        );
+    }
+
+    void LevelLayer::loadEvents()
+    {
+        if (nullptr == m_level)
+        {
+            return;
+        }
+
+        m_level->addActorSubscription(
+            std::bind(
+                &LevelLayer::loadActor,
+                this,
+                std::placeholders::_1
+            )
         );
     }
 }

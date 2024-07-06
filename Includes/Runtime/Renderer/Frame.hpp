@@ -6,7 +6,7 @@
 #include "Runtime/Renderer/Camera.hpp"
 #include "Runtime/Renderer/Descriptor.hpp"
 #include "Runtime/Renderer/GraphicsPipeline.hpp"
-#include "Runtime/Renderer/Model.hpp"
+#include "Runtime/Renderer/Mesh.hpp"
 #include "Runtime/Renderer/Image.hpp"
 #include "Runtime/Renderer/Sync.hpp"
 
@@ -67,7 +67,7 @@ namespace Chicane
             VectorUBOBundle cameraVectorUBO;
             vk::DescriptorBufferInfo cameraVectorDescriptorBufferInfo;
 
-            Model::Bundle modelData;
+            Mesh::Bundle meshData;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
             std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;

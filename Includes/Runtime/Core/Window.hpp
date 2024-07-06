@@ -39,7 +39,7 @@ namespace Chicane
         ~Window();
 
     public:
-        Stats getStats();
+        Telemetry getTelemetry();
 
         Renderer* getRenderer();
         Level* getLevel();
@@ -76,17 +76,22 @@ namespace Chicane
         SDL_Window* instance;
 
     private:
+        // Events
+        void nextEvent(SDL_Event inEvent);
+        void errorEvent(std::string inMessage);
+        void completeEvent();
+
         void initRenderer();
         void initCoreLayers();
 
-        void updateStats();
+        void updateTelemetry();
 
         void onWindowEvent(const SDL_WindowEvent& inEvent);
         void onMouseClick();
         void onKeyDown(const SDL_KeyboardEvent& inEvent);
 
     private:
-        Stats m_stats;
+        Telemetry m_telemetry;
 
         WindowType m_type;
 

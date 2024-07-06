@@ -60,7 +60,7 @@ namespace Chicane
 
         Instance read(const std::string& inFilePath)
         {
-            std::vector<char> data = FileSystem::readFile(inFilePath + FILE_EXTENSTION);
+            std::vector<char> data = FileSystem::readFile(inFilePath);
             std::vector<std::string> splittedData = Helper::splitString(
                 std::string(data.begin(), data.end()),
                 ENTRY_SIGNATURE
@@ -90,7 +90,7 @@ namespace Chicane
 
         void write(const WriteInfo& inWriteInfo)
         {
-            WriteRootHeader rootHeader;
+            WriteRootHeader rootHeader = {};
             rootHeader.type       = inWriteInfo.type;
             rootHeader.name       = inWriteInfo.name;
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;

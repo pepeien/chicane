@@ -6,6 +6,11 @@ namespace Chicane
 {
     namespace FileSystem
     {
+        struct DirectoryResult
+        {
+            std::string path = "";
+        };
+
         struct FileFormat
         {
             std::string title     = "";
@@ -18,10 +23,14 @@ namespace Chicane
             std::string extension = "";
         };
 
+        DirectoryResult openDirectoryDialog();
+
         FileResult openFileDialog(
             const std::string& inTitle,
             const std::vector<FileFormat>& inFileFormats
         );
+
+        void ls(const std::string& inDir = ".");
 
         std::vector<char> readFile(const std::string& inFilepath);
         stbi_uc* readImageFromFile(

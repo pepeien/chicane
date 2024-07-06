@@ -56,19 +56,19 @@ namespace Chicane
         setScale(glm::mat4(1.0f), inScale);
     }
 
-    bool Actor::hasMesh()
+    bool Actor::hasModel()
     {
-        return m_mesh.type == static_cast<uint8_t>(Box::Type::Mesh);
+        return m_model.type == static_cast<uint8_t>(Box::Type::Mesh);
     }
 
-    Box::Instance Actor::getMesh()
+    Box::Instance Actor::getModel()
     {
-        return m_mesh;
+        return m_model;
     }
 
-    void Actor::setMesh(const Box::Instance& inMesh)
+    void Actor::setModel(const Box::Instance& inModel)
     {
-        m_mesh = inMesh;
+        m_model = inModel;
     }
 
     void Actor::setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation)
