@@ -142,7 +142,7 @@ namespace Chicane
 
     void SkyboxLayer::loadAssets()
     {
-        if (nullptr == m_level)
+        if (!m_isInitialized)
         {
             return;
         }

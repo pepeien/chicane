@@ -53,6 +53,7 @@ namespace Chicane
         initRenderer();
         initCoreLayers();
 
+        State::setController(m_controller);
         State::setLevel(m_level);
     }
 
@@ -305,8 +306,8 @@ namespace Chicane
     void Window::initCoreLayers()
     {
         addLayer(new SkyboxLayer(this));
-        addLayer(new LevelLayer(this));
-        addLayer(new UILayer(this));
+        addLayer(new LevelLayer( this));
+        addLayer(new UILayer(    this));
     }
 
     void Window::updateTelemetry()

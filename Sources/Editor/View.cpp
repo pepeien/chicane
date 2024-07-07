@@ -1,10 +1,12 @@
 #include "Editor/View.hpp"
 
+#include <windows.h>
+#include <tchar.h>
+
 #include "Runtime/Core.hpp"
 #include "Runtime/Game/State.hpp"
 
-#include <windows.h>
-#include <tchar.h>
+#include "imgui/misc/cpp/imgui_stdlib.h"
 
 namespace Chicane
 {
@@ -13,29 +15,45 @@ namespace Chicane
         View::View()
             : Grid::View("home"),
             m_isShowingMetrics(true),
-            m_activeMenu(Menu::None),
+            m_activeMenu(Menu::Grid),
             m_activeToolMenu(ToolMenu::None)
         {
+            // Cubemap
             m_cubemapEntryFormats = {
+                {
+                    "Texture",
+                    "jpg"
+                },
                 {
                     "Texture",
                     "tga"
                 }
             };
-            m_cubemapAxes = {
-                "Select Postive X",
-                "Select Negative X",
-                "Select Postive Y",
-                "Select Negative Y",
-                "Select Postive Z",
-                "Select Negative Z",
+
+            m_cubemapForm = {
+                {
+                    { "name",      "Name",              FormFieldType::Text },
+                    { "positiveX", "Select Positive X", FormFieldType::File },
+                    { "negativeX", "Select Negative X", FormFieldType::File },
+                    { "positiveY", "Select Positive Y", FormFieldType::File },
+                    { "negativeY", "Select Negative Y", FormFieldType::File },
+                    { "positiveZ", "Select Positive Z", FormFieldType::File },
+                    { "negativeZ", "Select Negative Z", FormFieldType::File },
+                    { "outputPath", "Select Output",    FormFieldType::Folder }
+                }
             };
 
-            m_cubemapName = new char(256);
+            m_cubemapOptions        = { "Create", "Edit" };
+            m_cubemapSelectedOption = "";
 
             m_cubemapInfo = {};
             m_cubemapInfo.type = (uint8_t) Box::Type::CubeMap;
             m_cubemapInfo.entries.resize(6);
+
+            for (Box::WriteEntry& entry : m_cubemapInfo.entries)
+            {
+                entry.type = (uint8_t) Box::EntryType::Texture;
+            }
         }
 
         void View::show(
@@ -73,7 +91,7 @@ namespace Chicane
                         onMetricsButtonClick();
                     }
 
-                    if (ImGui::Button("Box"))
+                    if (ImGui::Button("Grid"))
                     {
                         onGridButtonClick();
                     }
@@ -115,25 +133,25 @@ namespace Chicane
                         ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar
                     );
                         ImGui::BeginMenuBar();
-                            if (ImGui::Button("Cubemap"))
+                            if (ImGui::BeginMenu("Cubemap"))
                             {
-                                m_activeToolMenu = ToolMenu::Cubemap;
-                            }
+                                for (const std::string& option : m_cubemapOptions)
+                                {
+                                    bool isSelected = m_cubemapSelectedOption == option;
 
-                            if (ImGui::Button("Model"))
-                            {
-                                m_activeToolMenu = ToolMenu::Model;
+                                    if (ImGui::MenuItem(option.c_str(), "", isSelected))
+                                    {
+                                        selectCubemapMenu(option);
+                                    }
+                                }
+
+                                ImGui::EndMenu();
                             }
                         ImGui::EndMenuBar();
 
-                        if (m_activeToolMenu == ToolMenu::Cubemap)
+                        if (m_activeToolMenu == ToolMenu::CubemapNew)
                         {
-                            renderCubemapToolMenu();
-                        }
-
-                        if (m_activeToolMenu == ToolMenu::Model)
-                        {
-                            renderModelToolMenu();
+                            renderCubemapNewMenu();
                         }
                     ImGui::End();
                 }
@@ -151,71 +169,86 @@ namespace Chicane
             m_activeMenu = Menu::Grid;
         }
 
-        void View::renderCubemapToolMenu()
+        void View::selectCubemapMenu(const std::string& inOption)
         {
-            ImGui::InputText("Name", m_cubemapName, 256);
+            m_cubemapSelectedOption = inOption;
 
-            m_cubemapInfo.name = m_cubemapName;
-
-            for (int i = 0; i < m_cubemapAxes.size(); i++)
+            if (inOption == "Create")
             {
-                const std::string& axis = m_cubemapAxes[i];
+                m_activeToolMenu = ToolMenu::CubemapNew;
 
+                return;
+            }
+
+            if (inOption == "Edit")
+            {
+                m_activeToolMenu = ToolMenu::CubemapEdit;
+
+                return;
+            }
+        }
+        
+        void View::renderCubemapNewMenu()
+        {
+            for (FormField& formField : m_cubemapForm.fields)
+            {
                 ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
 
-                if (ImGui::Button(axis.c_str()))
+                switch (formField.type)
                 {
-                    FileSystem::FileResult selectedFile = FileSystem::openFileDialog(
-                        axis.c_str(),
-                        m_cubemapEntryFormats
+                case FormFieldType::Text:
+                    ImGui::InputText(
+                        formField.label.c_str(),
+                        &formField.value
                     );
 
-                    if (!selectedFile.path.empty())
+                    continue;
+                case FormFieldType::File:
+                    if (ImGui::Button(formField.label.c_str()))
                     {
-                        Box::WriteEntry entry = {};
-                        entry.filePath = selectedFile.path;
-                        entry.type     = (uint8_t) Box::Type::CubeMap;
+                        FileSystem::FileResult selectedFile = FileSystem::openFileDialog(
+                            formField.label.c_str(),
+                            m_cubemapEntryFormats
+                        );
 
-                        m_cubemapInfo.entries[i] = entry;
+                        if (!selectedFile.path.empty())
+                        {
+                            formField.value = selectedFile.path;
+                        }
                     }
-                }
 
-                ImGui::Text(
-                    m_cubemapInfo.entries[i].filePath.empty() ?
-                    "Not Selected" : m_cubemapInfo.entries[i].filePath.c_str()
-                );
-            }
+                    ImGui::Text(
+                        formField.value.empty() ?
+                        "Not Selected" : formField.value.c_str()
+                    );
 
-            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
+                    continue;
+                case FormFieldType::Folder:
+                    if (ImGui::Button(formField.label.c_str()))
+                    {
+                        FileSystem::DirectoryResult outputLocation = FileSystem::openDirectoryDialog();
 
-            if (ImGui::Button("Select Output Location"))
-            {
-                FileSystem::DirectoryResult outputLocation = FileSystem::openDirectoryDialog();
+                        if (!outputLocation.path.empty())
+                        {
+                            formField.value = outputLocation.path;
+                        }
+                    }
 
-                if (!outputLocation.path.empty())
-                {
-                    m_cubemapInfo.outputPath = outputLocation.path;
-                }
-            }
+                    ImGui::Text(
+                        formField.value.empty() ?
+                        "Not Selected" : formField.value.c_str()
+                    );
 
-            ImGui::Text(
-                m_cubemapInfo.outputPath.empty() ?
-                "Not Selected" : m_cubemapInfo.outputPath.c_str()
-            );
+                    continue;
 
-            ImGui::SetCursorPosY(ImGui::GetWindowContentRegionMax().y - 20);
-
-            bool isDisabled = m_cubemapInfo.name.empty() || m_cubemapInfo.outputPath.empty();
-
-            for (Box::WriteEntry entry : m_cubemapInfo.entries)
-            {
-                if (entry.filePath.empty())
-                {
-                    isDisabled = true;
-
+                default:
                     break;
                 }
             }
+
+            ImGui::SetCursorPosY(ImGui::GetWindowContentRegionMax().y - 20);
+
+            bool isDisabled = !m_cubemapForm.isValid();
 
             if (isDisabled)
             {
@@ -227,6 +260,17 @@ namespace Chicane
             {
                 if (!isDisabled)
                 {
+                    m_cubemapInfo.name                = m_cubemapForm.get("name").value;
+                    m_cubemapInfo.outputPath          = m_cubemapForm.get("outputPath").value;
+                    m_cubemapInfo.entries[0].filePath = m_cubemapForm.get("positiveX").value;
+                    m_cubemapInfo.entries[1].filePath = m_cubemapForm.get("negativeX").value;
+                    m_cubemapInfo.entries[2].filePath = m_cubemapForm.get("positiveY").value;
+                    m_cubemapInfo.entries[3].filePath = m_cubemapForm.get("negative").value;
+                    m_cubemapInfo.entries[4].filePath = m_cubemapForm.get("positiveZ").value;
+                    m_cubemapInfo.entries[5].filePath = m_cubemapForm.get("negativeZ").value;
+
+                    m_cubemapForm.clear();
+
                     Box::write(m_cubemapInfo);
                 }
             }

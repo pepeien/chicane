@@ -147,6 +147,8 @@ namespace Chicane
             );
         }
 
+        State::setTelemetry(m_window->getTelemetry());
+
         vk::Semaphore waitSemaphores[]      = { currentImage.presentSemaphore };
         vk::Semaphore signalSemaphores[]    = { currentImage.renderSemaphore };
         vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
@@ -297,6 +299,8 @@ namespace Chicane
         {
             frame.setupSync();
         }
+
+        State::setResolution(m_window->getResolution());
     }
 
     void Renderer::rebuildSwapChain()
@@ -313,6 +317,8 @@ namespace Chicane
 
         rebuildLayers();
         buildFramesCommandBuffers();
+
+        State::setResolution(m_window->getResolution());
     }
 
     void Renderer::destroySwapChain()

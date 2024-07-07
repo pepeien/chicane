@@ -35,6 +35,7 @@ file(
     ${VENDORS_DIR}/imgui/imgui_tables.cpp
     ${VENDORS_DIR}/imgui/imgui_widgets.cpp
     ${VENDORS_DIR}/imgui/imgui.cpp
+    ${VENDORS_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
     ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl2.cpp
     ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
 )

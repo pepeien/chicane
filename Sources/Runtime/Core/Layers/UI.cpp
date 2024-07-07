@@ -25,7 +25,6 @@ namespace Chicane
         ImGuiIO& io = ImGui::GetIO();
         (void) io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         io.IniFilename = nullptr;
 
@@ -69,8 +68,6 @@ namespace Chicane
         initRenderpass();
         initFramebuffers();
         initImgui();
-
-        State::setResolution(m_window->getResolution());
     }
 
     void UILayer::rebuild()
@@ -81,8 +78,6 @@ namespace Chicane
         }
 
         initFramebuffers();
-
-        State::setResolution(m_window->getResolution());
     }
 
     void UILayer::onEvent(const SDL_Event& inEvent)
@@ -156,8 +151,6 @@ namespace Chicane
         inCommandBuffer.endRenderPass();
 
         ImGui::EndFrame();
-
-        State::setTelemetry(m_window->getTelemetry());
     }
 
     void UILayer::initDescriptorPool()
