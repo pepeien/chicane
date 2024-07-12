@@ -1,0 +1,25 @@
+<View id="home">
+    <List
+        id="stats"
+        direction="row"
+        width="100vh"
+        height="10vh"
+    >
+        <List
+            id="fps"
+            direction="row"
+            width="8vh"
+            height="3vh"
+        >
+            <Text>FPS: {{ getFPS() }}</Text>
+        </List>
+        <List
+            id="frametime"
+            direction="row"
+            width="15vh"
+            height="3vh"
+        >
+            <Text>Frametime: {{ getFrametime() }}</Text>
+        </List>
+    </List>
+</View>

@@ -4,13 +4,13 @@ namespace Chicane
 {
     namespace Grid
     {
-        View::View(const std::string& inId)
-            : m_id(inId)
-        {}
-
-        View::View(const std::string& inId, const std::string inSource)
+        View::View(
+            const std::string& inId,
+            const std::string& inSource,
+            const ComponentFunctions& inCallbacks
+        )
             : m_id(inId),
-            m_callbacks({})
+            m_callbacks(inCallbacks)
         {
             if (inSource.empty())
             {
@@ -30,6 +30,10 @@ namespace Chicane
             validate(m_document.first_child());
         }
 
+        View::View(const std::string& inId)
+            : m_id(inId)
+        {}
+
         std::string View::getId()
         {
             return m_id;
@@ -47,22 +51,32 @@ namespace Chicane
             );
         }
 
-        bool View::hasCallback(const std::string& inId)
+        bool View::hasFunction(const std::string& inId)
         {
             return m_callbacks.find(inId) != m_callbacks.end();
         }
 
-        void View::addCallback(const ComponentCallbackMap& inCallbacks)
+        ComponentFunction View::getFunction(const std::string& inId)
+        {
+            if (!hasFunction(inId))
+            {
+                return {};
+            }
+
+            return m_callbacks.at(inId);
+        }
+
+        void View::addFunction(const ComponentFunctions& inCallbacks)
         {
             for (auto [id, callback] : inCallbacks)
             {
-                addCallback(id, callback);
+                addFunction(id, callback);
             }
         }
 
-        void View::addCallback(const std::string& inId, ComponentCallback inCallback)
+        void View::addFunction(const std::string& inId, ComponentFunction inCallback)
         {
-            if (hasCallback(inId))
+            if (hasFunction(inId))
             {
                 return;
             }
@@ -75,24 +89,14 @@ namespace Chicane
             );
         }
 
-        void View::removeCallback(const std::string& inId)
+        void View::removeFunction(const std::string& inId)
         {
-            if (!hasCallback(inId))
+            if (!hasFunction(inId))
             {
                 return;
             }
 
             m_callbacks.erase(inId);
-        }
-
-        void View::execCallback(const std::string& inId, pugi::xml_node& outNode)
-        {
-            if (!hasCallback(inId))
-            {
-                return;
-            }
-
-            m_callbacks.at(inId)(outNode);
         }
 
         void View::validate(const pugi::xml_node& inNode)

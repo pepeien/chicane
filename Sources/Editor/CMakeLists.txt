@@ -1,5 +1,5 @@
 ##############  Set values  #######################
-set(CONTENT_TARGET_NAME "Content")
+set(CONTENT_TARGET_NAME "EditorContent")
 set(CONTENT_SOURCE_DIR  "${EDITOR_SOURCE_DIR}/Content")
 set(CONTENT_BUILD_DIR   "${BUILD_DIR}/Content")
 
@@ -28,9 +28,6 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
         )
     endif()
 endif()
-
-##############  Add subdirectories  #######################
-add_subdirectory(Content)
 
 ##############  Set source files  #######################
 file(
@@ -80,3 +77,6 @@ target_link_libraries(
     PRIVATE
         Chicane::Runtime
 )
+
+##############  Add subdirectories  #######################
+add_subdirectory(Content)

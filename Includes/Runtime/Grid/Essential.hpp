@@ -2,6 +2,7 @@
 
 #include "Runtime/Runtime.hpp"
 
+#include <any>
 #include <functional>
 
 namespace Chicane
@@ -10,9 +11,13 @@ namespace Chicane
     {
         class View;
 
-        typedef std::function<void (pugi::xml_node&)> ComponentCallback;
-        typedef std::unordered_map<std::string, ComponentCallback> ComponentCallbackMap;
-        typedef std::unordered_map<std::string, ComponentCallbackMap> ViewCallbackMap;
+        // Types
+        struct ComponentEvent {
+            std::any value = {};
+        };
+
+        typedef std::function<std::any (ComponentEvent)> ComponentFunction;
+        typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
 
         // Value attributes
         const std::string ID_ATTRIBUTE_NAME     = "id";

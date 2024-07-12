@@ -28,7 +28,7 @@ namespace Chicane
     
                 std::string callbackSignature = getAttribute(ON_CLICK_ATTRIBUTE_NAME, outNode).as_string();
     
-                if (!activeView->hasCallback(callbackSignature))
+                if (!activeView->hasFunction(callbackSignature))
                 {
                     ImGui::Button(buttonText);
     
@@ -37,7 +37,7 @@ namespace Chicane
     
                 if (ImGui::Button(buttonText))
                 {
-                    activeView->execCallback(callbackSignature, outNode);
+                    //activeView->execCallback(callbackSignature, outNode);
                 }
             }
         }

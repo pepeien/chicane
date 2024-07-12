@@ -96,6 +96,7 @@
         "typeindex": "cpp",
         "stack": "cpp",
         "expected": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "any": "cpp"
     }
 }

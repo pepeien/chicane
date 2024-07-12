@@ -186,16 +186,6 @@ namespace Chicane
                 return;
             }
 
-            std::string onTickSignature = getAttribute(ON_TICK_ATTRIBUTE, outNode).as_string();
-
-            if (
-                !onTickSignature.empty() &&
-                m_activeView->hasCallback(onTickSignature)
-            )
-            {
-                m_activeView->execCallback(onTickSignature, outNode);
-            }
-
             Components.at(tagName)(outNode);
         }
     }
