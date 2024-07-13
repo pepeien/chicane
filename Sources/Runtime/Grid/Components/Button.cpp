@@ -15,30 +15,23 @@ namespace Chicane
                 {
                     return;
                 }
-    
-                if (outNode.children().empty())
-                {
-                    return;
-                }
-    
-                auto buttonText = outNode.child_value();
-    
-                View* activeView = getActiveView();
-    
-                std::string callbackSignature = getAttribute(ON_CLICK_ATTRIBUTE_NAME, outNode).as_string();
-    
-                if (!activeView->hasFunction(callbackSignature))
-                {
-                    ImGui::Button(buttonText);
-    
-                    return;
-                }
-    
-                if (ImGui::Button(buttonText))
-                {
-                    ComponentFunction componentFunction = activeView->getFunction(callbackSignature);
 
-                    if (!componentFunction)
+                std::string text = outNode.child_value();
+
+                if (ImGui::Button(processText(text).c_str()))
+                {
+                    View* view = getActiveView();
+
+                    if (!view)
+                    {
+                        return;
+                    }
+
+                    ComponentFunction onClickFunction = view->getFunction(
+                        getAttribute(ON_CLICK_ATTRIBUTE_NAME, outNode).as_string()
+                    );
+
+                    if (!onClickFunction)
                     {
                         return;
                     }
@@ -46,7 +39,7 @@ namespace Chicane
                     ComponentEvent event = {};
                     event.values.push_back(outNode);
 
-                    componentFunction(event);
+                    onClickFunction(event);
                 }
             }
         }
