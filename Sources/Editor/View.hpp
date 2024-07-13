@@ -13,7 +13,7 @@ namespace Chicane
             View();
 
         private:
-            std::string getFPS(Grid::ComponentEvent inEvent);
+            std::uint64_t getFPS(Grid::ComponentEvent inEvent);
             std::string getFrametime(Grid::ComponentEvent inEvent);
         };
     }

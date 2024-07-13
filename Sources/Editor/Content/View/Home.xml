@@ -11,7 +11,7 @@
             width="8vh"
             height="3vh"
         >
-            <Text>FPS: {{ getFPS() }}</Text>
+            <Text>{{ getFPS() }} FPS</Text>
         </List>
         <List
             id="frametime"
@@ -19,7 +19,7 @@
             width="15vh"
             height="3vh"
         >
-            <Text>Frametime: {{ getFrametime() }}</Text>
+            <Text>{{ getFrametime() }} ms</Text>
         </List>
     </List>
 </View>

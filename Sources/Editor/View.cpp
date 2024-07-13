@@ -23,18 +23,16 @@ namespace Chicane
             );
         }
 
-        std::string View::getFPS(Grid::ComponentEvent inEvent)
+        std::uint64_t View::getFPS(Grid::ComponentEvent inEvent)
         {
-            std::string FPS = std::to_string(State::getTelemetry().framerate);
-
-            return FPS + " FPS";
+            return State::getTelemetry().framerate;
         }
 
         std::string View::getFrametime(Grid::ComponentEvent inEvent)
         {
             std::string frametime = std::to_string(State::getTelemetry().time);
 
-            return std::string(frametime.begin(), frametime.end() - 5) + " ms";
+            return std::string(frametime.begin(), frametime.end() - 5);
         }
     }
 }
