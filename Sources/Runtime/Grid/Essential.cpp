@@ -1,7 +1,8 @@
 #include "Runtime/Grid/Essential.hpp"
 
-#include "Runtime/Grid/Maps.hpp"
-#include "Runtime/Game/State.hpp"
+#include "Runtime/Core.hpp"
+#include "Runtime/Game.hpp"
+#include "Runtime/Grid/Components.hpp"
 #include "Runtime/Grid/View.hpp"
 
 namespace Chicane
@@ -187,6 +188,74 @@ namespace Chicane
             }
 
             Components.at(tagName)(outNode);
+        }
+
+        bool doesTextHasRefValue(const std::string& inText)
+        {
+            bool hasOpening = inText.find_first_of(REF_VALUE_OPENING) != std::string::npos;
+            bool hasClosing = inText.find_first_of(REF_VALUE_CLOSING) != std::string::npos;
+
+            return hasOpening && hasClosing;
+        }
+
+        bool doesRefValueHasFunction(const std::string& inRefValue)
+        {
+            bool hasOpening = inRefValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
+            bool hasClosing = inRefValue.find_first_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
+
+            return hasOpening && hasClosing;
+        }
+
+        std::any processRefValue(const std::string& inRefValue)
+        {
+            View* view = m_activeView;
+
+            if (!view)
+            {
+                return "";
+            }
+
+            if (!doesRefValueHasFunction(inRefValue))
+            {
+                return inRefValue;
+            }
+
+            std::string trimmedValue = Utils::trim(inRefValue);
+
+            std::size_t paramsStart  = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
+            std::size_t paramsEnd    = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
+
+            std::string functionName = trimmedValue.substr(0, paramsStart);
+
+            ComponentFunction viewFunction = view->getFunction(functionName);
+
+            if (!viewFunction)
+            {
+                return inRefValue;
+            }
+
+            paramsStart += 1;
+            paramsEnd   -= paramsStart;
+
+            std::string functionParams = inRefValue.substr(
+                paramsStart,
+                paramsEnd
+            );
+            functionParams = Utils::trim(functionParams);
+
+            std::vector<std::any> functionParamValues = {};
+
+            for (std::string& value : Utils::split(functionParams, ','))
+            {
+                functionParamValues.push_back(
+                    doesRefValueHasFunction(value) ? processRefValue(value) : value
+                );
+            }
+
+            ComponentEvent event = {};
+            event.values = functionParamValues;
+
+            return viewFunction(event);
         }
     }
 }

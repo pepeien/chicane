@@ -1,7 +1,5 @@
 #include "Runtime/Grid/Components/ProgressBar.hpp"
 
-#include "Runtime/Grid/Maps.hpp"
-
 namespace Chicane
 {
     namespace Grid

@@ -13,11 +13,18 @@ namespace Chicane
 
         // Types
         struct ComponentEvent {
-            std::any value = {};
+            std::vector<std::any> values = {};
         };
 
         typedef std::function<std::any (ComponentEvent)> ComponentFunction;
         typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
+
+        // Ref Value
+        const std::string REF_VALUE_OPENING = "{{";
+        const std::string REF_VALUE_CLOSING = "}}";
+
+        const char FUNCTION_PARAMS_OPENING = '(';
+        const char FUNCTION_PARAMS_CLOSING = ')';
 
         // Value attributes
         const std::string ID_ATTRIBUTE_NAME     = "id";
@@ -56,5 +63,9 @@ namespace Chicane
         
         void compileChildren(pugi::xml_node& outNode);
         void compileChild(pugi::xml_node& outNode);
+
+        bool doesTextHasRefValue(const std::string& inText);
+        bool doesRefValueHasFunction(const std::string& inRefValue);
+        std::any processRefValue(const std::string& inRefValue);
     }
 }

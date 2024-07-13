@@ -28,15 +28,17 @@ namespace Chicane
 
             std::string parseText(const std::string& inText)
             {
-                std::size_t foundOpening = inText.find_first_of("{{");
-                std::size_t foundClosing = inText.find_first_of("}}");
-
-                if (foundOpening == std::string::npos || foundClosing == std::string::npos)
+                if (!doesTextHasRefValue(inText))
                 {
                     return inText;
                 }
 
-                std::string resultText    = inText.substr(0, foundOpening);
+                std::size_t foundOpening = inText.find_first_of(REF_VALUE_OPENING);
+                std::size_t foundClosing = inText.find_first_of(REF_VALUE_CLOSING);
+                std::string resultText = inText.substr(
+                    0,
+                    foundOpening
+                );
                 std::string remainderText = inText.substr(
                     foundClosing + 2,
                     inText.size() - foundClosing
@@ -51,46 +53,12 @@ namespace Chicane
                 );
                 refValue = Utils::trim(refValue);
 
-                bool isFunction = refValue.find_first_of('(') != std::string::npos && refValue.find_first_of(')') != std::string::npos;
-
-                if (isFunction)
+                if (doesRefValueHasFunction(refValue))
                 {
-                    std::size_t functionParamsStart = refValue.find_first_of('(');
-                    std::size_t functionParamsEnd   = refValue.find_last_of(')');
-                    std::string functionName        = refValue.substr(
-                        0,
-                        functionParamsStart
-                    );
-
-                    Grid::View* view                     = Grid::getActiveView();
-                    Grid::ComponentFunction viewFunction = view->getFunction(functionName);
-
-                    isFunction = !!viewFunction;
-
-                    if (isFunction)
-                    {
-                        functionParamsStart += 1;
-                        functionParamsEnd   -= functionParamsStart;
-
-                        std::string functionParams = refValue.substr(
-                            functionParamsStart,
-                            functionParamsEnd
-                        );
-                        functionParams = Utils::trim(functionParams);
-
-                        ComponentEvent event = {};
-                        event.value = Utils::split(functionParams, ',');
-
-                        resultText += std::any_cast<std::string>(viewFunction(event));
-                    }
-                }
-                
-                if (!isFunction)
-                {
-                    resultText += refValue;
+                    resultText += std::any_cast<std::string>(processRefValue(refValue));
                 }
 
-                if (remainderText.find_first_of("{{") != std::string::npos && remainderText.find_first_of("}}") != std::string::npos)
+                if (doesTextHasRefValue(remainderText))
                 {
                     resultText += parseText(remainderText);
                 }

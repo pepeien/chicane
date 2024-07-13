@@ -13,12 +13,14 @@ namespace Chicane
                 "./Content/View/Home.xml"
             )
         {
-           addFunction(
-                {
-                    { "getFPS", std::bind(&View::getFPS, this, std::placeholders::_1) },
-                    { "getFrametime", std::bind(&View::getFrametime, this, std::placeholders::_1) }
-                }
-           );
+            addFunction(
+                "getFPS",
+                std::bind(&View::getFPS, this, std::placeholders::_1)
+            );
+            addFunction(
+                "getFrametime",
+                std::bind(&View::getFrametime, this, std::placeholders::_1)
+            );
         }
 
         std::string View::getFPS(Grid::ComponentEvent inEvent)

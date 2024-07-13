@@ -1,7 +1,6 @@
 #include "Runtime/Grid/Components/Button.hpp"
 
 #include "Runtime/Core.hpp"
-#include "Runtime/Grid/Maps.hpp"
 #include "Runtime/Grid/View.hpp"
 
 namespace Chicane
@@ -37,7 +36,17 @@ namespace Chicane
     
                 if (ImGui::Button(buttonText))
                 {
-                    //activeView->execCallback(callbackSignature, outNode);
+                    ComponentFunction componentFunction = activeView->getFunction(callbackSignature);
+
+                    if (!componentFunction)
+                    {
+                        return;
+                    }
+
+                    ComponentEvent event = {};
+                    event.values.push_back(outNode);
+
+                    componentFunction(event);
                 }
             }
         }
