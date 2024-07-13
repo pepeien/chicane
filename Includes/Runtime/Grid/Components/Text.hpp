@@ -11,8 +11,6 @@ namespace Chicane
             const std::string TAG_ID = "Text";
     
             void compile(pugi::xml_node& outNode);
-
-            std::string parseText(const std::string& inText);
         }
     }
 }

@@ -64,8 +64,11 @@ namespace Chicane
         void compileChildren(pugi::xml_node& outNode);
         void compileChild(pugi::xml_node& outNode);
 
-        bool doesTextHasRefValue(const std::string& inText);
-        bool doesRefValueHasFunction(const std::string& inRefValue);
+        std::string anyToString(const std::any& inValue);
+
+        bool textContainsRefValue(const std::string& inText);
+        bool refValueContainsFunction(const std::string& inRefValue);
         std::any processRefValue(const std::string& inRefValue);
+        std::string processText(const std::string& inText);
     }
 }

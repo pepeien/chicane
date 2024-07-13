@@ -22,7 +22,7 @@ namespace Chicane
             windowCreateInfo.resolution.x  = 1600;
             windowCreateInfo.resolution.y  = 900;
             windowCreateInfo.type          = WindowType::Windowed;
-            windowCreateInfo.displayIndex  = 1;
+            windowCreateInfo.displayIndex  = 0;
 
             Grid::addView(view.get());
             Grid::setActiveView(view->getId());

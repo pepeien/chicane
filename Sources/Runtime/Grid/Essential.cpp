@@ -190,7 +190,37 @@ namespace Chicane
             Components.at(tagName)(outNode);
         }
 
-        bool doesTextHasRefValue(const std::string& inText)
+        std::string anyToString(const std::any& inValue)
+        {
+            if (inValue.type() == typeid(std::string))
+            {
+                return std::any_cast<std::string>(inValue);
+            }
+
+            if (inValue.type() == typeid(int))
+            {
+                return std::to_string(std::any_cast<int>(inValue));
+            }
+
+            if (inValue.type() == typeid(std::uint64_t))
+            {
+                return std::to_string(std::any_cast<std::uint64_t>(inValue));
+            }
+
+            if (inValue.type() == typeid(std::uint32_t))
+            {
+                return std::to_string(std::any_cast<std::uint32_t>(inValue));
+            }
+
+            if (inValue.type() == typeid(float))
+            {
+                return std::to_string(std::any_cast<float>(inValue));
+            }
+
+            return "";
+        }
+
+        bool textContainsRefValue(const std::string& inText)
         {
             bool hasOpening = inText.find_first_of(REF_VALUE_OPENING) != std::string::npos;
             bool hasClosing = inText.find_first_of(REF_VALUE_CLOSING) != std::string::npos;
@@ -198,7 +228,7 @@ namespace Chicane
             return hasOpening && hasClosing;
         }
 
-        bool doesRefValueHasFunction(const std::string& inRefValue)
+        bool refValueContainsFunction(const std::string& inRefValue)
         {
             bool hasOpening = inRefValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
             bool hasClosing = inRefValue.find_first_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
@@ -215,7 +245,7 @@ namespace Chicane
                 return "";
             }
 
-            if (!doesRefValueHasFunction(inRefValue))
+            if (!refValueContainsFunction(inRefValue))
             {
                 return inRefValue;
             }
@@ -248,7 +278,7 @@ namespace Chicane
             for (std::string& value : Utils::split(functionParams, ','))
             {
                 functionParamValues.push_back(
-                    doesRefValueHasFunction(value) ? processRefValue(value) : value
+                    refValueContainsFunction(value) ? processRefValue(value) : value
                 );
             }
 
@@ -256,6 +286,51 @@ namespace Chicane
             event.values = functionParamValues;
 
             return viewFunction(event);
+        }
+
+        std::string processText(const std::string& inText)
+        {
+            if (Utils::trim(inText).empty())
+            {
+                return " ";
+            }
+
+            if (!textContainsRefValue(inText))
+            {
+                return inText;
+            }
+
+            std::size_t foundOpening = inText.find_first_of(REF_VALUE_OPENING);
+            std::size_t foundClosing = inText.find_first_of(REF_VALUE_CLOSING);
+            std::string resultText = inText.substr(
+                0,
+                foundOpening
+            );
+            std::string remainderText = inText.substr(
+                foundClosing + 2,
+                inText.size() - foundClosing
+            );
+
+            foundOpening += 2;
+            foundClosing -= foundOpening;
+
+            std::string refValue = inText.substr(
+                foundOpening,
+                foundClosing
+            );
+            refValue = Utils::trim(refValue);
+
+            if (refValueContainsFunction(refValue))
+            {
+                resultText += anyToString(processRefValue(refValue));
+            }
+
+            if (!remainderText.empty())
+            {
+                resultText += processText(remainderText);
+            }
+
+            return resultText;
         }
     }
 }
