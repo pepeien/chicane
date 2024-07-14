@@ -27,19 +27,36 @@ namespace Chicane
                         return;
                     }
 
-                    ComponentFunction onClickFunction = view->getFunction(
+                    ComponentFunctionData onClickFunctionData = parseFunction(
                         getAttribute(ON_CLICK_ATTRIBUTE_NAME, outNode).as_string()
                     );
 
-                    if (!onClickFunction)
+                    if (!view->hasFunction(onClickFunctionData.name))
                     {
                         return;
                     }
 
-                    ComponentEvent event = {};
-                    event.values.push_back(outNode);
+                    ComponentFunction onClickFunction = view->getFunction(
+                        onClickFunctionData.name
+                    );
 
-                    onClickFunction(event);
+                    ComponentEvent onClickEvent = {};
+                    onClickEvent.values = onClickFunctionData.params;
+
+                    if (onClickFunctionData.params.size() == 1)
+                    {
+                        std::any param = onClickFunctionData.params[0];
+
+                        if (param.type() == typeid(std::string))
+                        {
+                            if (Utils::trim(std::any_cast<std::string>(param)) == "$event")
+                            {
+                                onClickEvent.values[0] = outNode;
+                            }
+                        }
+                    }
+
+                    onClickFunction(onClickEvent);
                 }
             }
         }
