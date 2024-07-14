@@ -7,23 +7,24 @@
 #include "Runtime/Renderer/Camera.hpp"
 
 namespace Chicane
-{ 
+{
+    class Window;
+
     namespace State
     {
-        void setCamera(Camera* inCamera);
-        Camera* getCamera();
+        Window* getWindow();
+        void setWindow(Window* inWindow);
 
-        void setController(Controller* inController);
         Controller* getController();
+        void setController(Controller* inController);
 
-        void setTelemetry(const Telemetry& inTelemtry);
         Telemetry getTelemetry();
 
-        void setResolution(const Vec2& inResolution);
         Vec2 getResolution();
+        void setResolution(const Vec2& inResolution);
 
-        void setLevel(Level* inLevel);
         Level* getLevel();
+        void setLevel(Level* inLevel);
 
         void addModel(const Box::Instance& inBox);
     }

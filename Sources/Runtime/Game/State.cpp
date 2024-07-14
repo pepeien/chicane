@@ -1,63 +1,86 @@
 #include "Runtime/Game/State.hpp"
 
+#include "Runtime/Core.hpp"
+
 namespace Chicane
 {
     namespace State
     {
-        Controller* m_controller;
-        Camera* m_camera;
-        Telemetry m_telemetry;
-        Vec2 m_resolution;
-        Level* m_level;
+        Window* m_window;
 
-        void setCamera(Camera* inCamera)
+        Window* getWindow()
         {
-            m_camera = inCamera;
+            return m_window;
         }
 
-        Camera* getCamera()
+        void setWindow(Window* inWindow)
         {
-            return m_camera;
-        }
-
-        void setController(Controller* inController)
-        {
-            m_controller = inController;
+            m_window = inWindow;
         }
 
         Controller* getController()
         {
-            return m_controller;
+            if (m_window == nullptr)
+            {
+                return nullptr;
+            }
+
+            return m_window->getController();
         }
 
-        void setTelemetry(const Telemetry& inTelemetry)
+        void setController(Controller* inController)
         {
-            m_telemetry = inTelemetry;
+            if (m_window == nullptr)
+            {
+                return;
+            }
+
+            m_window->setController(inController);
         }
 
         Telemetry getTelemetry()
         {
-            return m_telemetry;
+            if (m_window == nullptr)
+            {
+                return {};
+            }
+
+            return m_window->getTelemetry();
         }
 
         void setResolution(const Vec2& inResolution)
         {
-            m_resolution = inResolution;
+            if (m_window == nullptr)
+            {
+                return;
+            }
+
+            m_window->setResolution(inResolution);
         }
 
         Vec2 getResolution()
         {
-            return m_resolution;
+            if (m_window == nullptr)
+            {
+                return {};
+            }
+
+            return m_window->getResolution();
         }
 
         void setLevel(Level* inLevel)
         {
-            m_level = inLevel;
+            if (m_window == nullptr)
+            {
+                return;
+            }
+
+            m_window->setLevel(inLevel);
         }
 
         Level* getLevel()
         {
-            return m_level;
+            return m_window->getLevel();
         }
 
         void addModel(const Box::Instance& inBox)

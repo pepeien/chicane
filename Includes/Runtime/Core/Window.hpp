@@ -39,10 +39,15 @@ namespace Chicane
         ~Window();
 
     public:
-        Telemetry getTelemetry();
-
         Renderer* getRenderer();
+
         Level* getLevel();
+        void setLevel(Level* inLevel);
+
+        Controller* getController();
+        void setController(Controller* inController);
+
+        Telemetry getTelemetry();
 
         void addLayer(Layer* inLayer);
 

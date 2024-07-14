@@ -2,6 +2,7 @@
 
 #include "Runtime/Game.hpp"
 #include "Runtime/Renderer.hpp"
+#include "Runtime/Renderer/Camera.hpp"
 #include "Runtime/Core/Event.hpp"
 #include "Runtime/Core/Layer.hpp"
 #include "Runtime/Core/Layers/Level.hpp"
@@ -53,8 +54,7 @@ namespace Chicane
         initRenderer();
         initCoreLayers();
 
-        State::setController(m_controller);
-        State::setLevel(m_level);
+        State::setWindow(this);
     }
 
     Window::~Window()
@@ -76,6 +76,21 @@ namespace Chicane
     Level* Window::getLevel()
     {
         return m_level;
+    }
+
+    void Window::setLevel(Level* inLevel)
+    {
+        m_level = inLevel;
+    }
+
+    Controller* Window::getController()
+    {
+        return m_controller;
+    }
+
+    void Window::setController(Controller* inController)
+    {
+        m_controller = inController;
     }
 
     void Window::addLayer(Layer* inLayer)
