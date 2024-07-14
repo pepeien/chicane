@@ -12,6 +12,10 @@ namespace Chicane
         class View;
 
         // Types
+        struct ComponentFunctionData {
+            std::string name             = "";
+            std::vector<std::any> params = {};
+        };
         struct ComponentEvent {
             std::vector<std::any> values = {};
         };
@@ -60,11 +64,15 @@ namespace Chicane
         void addView(View* inView);
         View* getActiveView();
         void setActiveView(const std::string& inViewID);
-        
+
+        void execOnTick(const pugi::xml_node& inNode);
+
         void compileChildren(pugi::xml_node& outNode);
         void compileChild(pugi::xml_node& outNode);
 
         std::string anyToString(const std::any& inValue);
+
+        ComponentFunctionData parseFunction(const std::string& inRefValue);
 
         bool textContainsRefValue(const std::string& inText);
         bool refValueContainsFunction(const std::string& inRefValue);

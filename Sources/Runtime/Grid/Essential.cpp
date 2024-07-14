@@ -165,6 +165,18 @@ namespace Chicane
             m_activeView = m_views.at(inViewID);
         }
 
+        void execOnTick(const pugi::xml_node& inNode)
+        {
+            std::string onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode).as_string();
+
+            if (onTickFunction.empty())
+            {
+                return;
+            }
+
+            processRefValue(onTickFunction);
+        }
+
         void compileChildren(pugi::xml_node& outNode)
         {
             for (pugi::xml_node& child : outNode.children())
@@ -186,6 +198,8 @@ namespace Chicane
             {
                 return;
             }
+
+            execOnTick(outNode);
 
             Components.at(tagName)(outNode);
         }
@@ -220,6 +234,43 @@ namespace Chicane
             return "";
         }
 
+        ComponentFunctionData parseFunction(const std::string& inRefValue)
+        {
+            std::string trimmedValue = Utils::trim(inRefValue);
+
+            if (trimmedValue.empty())
+            {
+                return {};
+            }
+
+            std::size_t paramsStart  = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
+            std::size_t paramsEnd    = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
+
+            std::string name   = trimmedValue.substr(0, paramsStart);
+
+            paramsStart += 1;
+            paramsEnd   -= paramsStart;
+
+            std::string params = Utils::trim(
+                inRefValue.substr(
+                    paramsStart,
+                    paramsEnd
+                )
+            );
+
+            ComponentFunctionData data = {};
+            data.name = name;
+
+            for (std::string& value : Utils::split(params, ','))
+            {
+                data.params.push_back(
+                    refValueContainsFunction(value) ? processRefValue(value) : value
+                );
+            }
+
+            return data;
+        }
+
         bool textContainsRefValue(const std::string& inText)
         {
             bool hasOpening = inText.find_first_of(REF_VALUE_OPENING) != std::string::npos;
@@ -250,42 +301,18 @@ namespace Chicane
                 return inRefValue;
             }
 
-            std::string trimmedValue = Utils::trim(inRefValue);
+            ComponentFunctionData functionData = parseFunction(inRefValue);
+            ComponentFunction functionRef      = view->getFunction(functionData.name);
 
-            std::size_t paramsStart  = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
-            std::size_t paramsEnd    = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
-
-            std::string functionName = trimmedValue.substr(0, paramsStart);
-
-            ComponentFunction viewFunction = view->getFunction(functionName);
-
-            if (!viewFunction)
+            if (!functionRef)
             {
                 return inRefValue;
             }
 
-            paramsStart += 1;
-            paramsEnd   -= paramsStart;
-
-            std::string functionParams = inRefValue.substr(
-                paramsStart,
-                paramsEnd
-            );
-            functionParams = Utils::trim(functionParams);
-
-            std::vector<std::any> functionParamValues = {};
-
-            for (std::string& value : Utils::split(functionParams, ','))
-            {
-                functionParamValues.push_back(
-                    refValueContainsFunction(value) ? processRefValue(value) : value
-                );
-            }
-
             ComponentEvent event = {};
-            event.values = functionParamValues;
+            event.values = functionData.params;
 
-            return viewFunction(event);
+            return functionRef(event);
         }
 
         std::string processText(const std::string& inText)

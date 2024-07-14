@@ -126,6 +126,8 @@ namespace Chicane
                                          ImGuiWindowFlags_NoMove |
                                          ImGuiWindowFlags_NoBackground;
 
+            execOnTick(outNode);
+
             ImGui::Begin(
                 m_id.c_str(),
                 nullptr,
