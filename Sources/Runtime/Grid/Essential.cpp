@@ -263,9 +263,7 @@ namespace Chicane
 
             for (std::string& value : Utils::split(params, ','))
             {
-                data.params.push_back(
-                    refValueContainsFunction(value) ? processRefValue(value) : value
-                );
+                data.params.push_back(processRefValue(value));
             }
 
             return data;
@@ -298,7 +296,12 @@ namespace Chicane
 
             if (!refValueContainsFunction(inRefValue))
             {
-                return inRefValue;
+                if (!view->hasVariable(inRefValue))
+                {
+                    return "";
+                }
+
+                return *view->getVariable(inRefValue);
             }
 
             ComponentFunctionData functionData = parseFunction(inRefValue);
@@ -347,7 +350,7 @@ namespace Chicane
             );
             refValue = Utils::trim(refValue);
 
-            if (refValueContainsFunction(refValue))
+            if (!refValue.empty())
             {
                 resultText += anyToString(processRefValue(refValue));
             }

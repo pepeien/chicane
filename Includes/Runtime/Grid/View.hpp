@@ -13,7 +13,8 @@ namespace Chicane
             View(
                 const std::string& inId,
                 const std::string& inSource,
-                const ComponentFunctions& inCallbacks = {} 
+                const ComponentVariables& inVariables = {},
+                const ComponentFunctions& inFunctions = {} 
             );
             View(const std::string& inId);
             virtual ~View() = default;
@@ -26,10 +27,16 @@ namespace Chicane
                 const Vec2& inPosition
             );
 
+            bool hasVariable(const std::string& inId);
+            ComponentVariable getVariable(const std::string& inId);
+            void addVariable(const ComponentVariables& inVariables);
+            void addVariable(const std::string& inId, ComponentVariable inVariable);
+            void removeVariable(const std::string& inId);
+
             bool hasFunction(const std::string& inId);
             ComponentFunction getFunction(const std::string& inId);
-            void addFunction(const ComponentFunctions& inCallbacks);
-            void addFunction(const std::string& inId, ComponentFunction inCallback);
+            void addFunction(const ComponentFunctions& inFunctions);
+            void addFunction(const std::string& inId, ComponentFunction inFunction);
             void removeFunction(const std::string& inId);
 
         protected:
@@ -43,7 +50,8 @@ namespace Chicane
         protected:
             std::string m_id;
             pugi::xml_document m_document;
-            ComponentFunctions m_callbacks;
+            ComponentVariables m_variables;
+            ComponentFunctions m_functions;
         
         private:
             const std::string TAG_ID = "View";

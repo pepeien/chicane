@@ -23,6 +23,9 @@ namespace Chicane
         typedef std::function<std::any (ComponentEvent)> ComponentFunction;
         typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
 
+        typedef std::string* ComponentVariable;
+        typedef std::unordered_map<std::string, ComponentVariable> ComponentVariables;
+
         // Ref Value
         const std::string REF_VALUE_OPENING = "{{";
         const std::string REF_VALUE_CLOSING = "}}";

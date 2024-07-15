@@ -7,10 +7,12 @@ namespace Chicane
         View::View(
             const std::string& inId,
             const std::string& inSource,
-            const ComponentFunctions& inCallbacks
+            const ComponentVariables& inVariables,
+            const ComponentFunctions& inFunctions
         )
             : m_id(inId),
-            m_callbacks(inCallbacks)
+            m_variables(inVariables),
+            m_functions(inFunctions)
         {
             if (inSource.empty())
             {
@@ -31,7 +33,9 @@ namespace Chicane
         }
 
         View::View(const std::string& inId)
-            : m_id(inId)
+            : m_id(inId),
+            m_variables({}),
+            m_functions({})
         {}
 
         std::string View::getId()
@@ -51,9 +55,57 @@ namespace Chicane
             );
         }
 
+        bool View::hasVariable(const std::string& inId)
+        {
+            return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) != nullptr;
+        }
+
+        ComponentVariable View::getVariable(const std::string& inId)
+        {
+            if (!hasVariable(inId))
+            {
+                return nullptr;
+            }
+
+            return m_variables.at(inId);
+        }
+
+        void View::addVariable(const ComponentVariables& inVariables)
+        {
+            for (auto [id, variable] : inVariables)
+            {
+                addVariable(id, variable);
+            }
+        }
+
+        void View::addVariable(const std::string& inId, ComponentVariable inVariable)
+        {
+            if (hasVariable(inId))
+            {
+                return;
+            }
+
+            m_variables.insert(
+                std::make_pair(
+                    inId,
+                    inVariable
+                )
+            );
+        }
+
+        void View::removeVariable(const std::string& inId)
+        {
+            if (!hasVariable(inId))
+            {
+                return;
+            }
+
+            m_variables.erase(inId);
+        }
+
         bool View::hasFunction(const std::string& inId)
         {
-            return m_callbacks.find(inId) != m_callbacks.end();
+            return m_functions.find(inId) != m_functions.end();
         }
 
         ComponentFunction View::getFunction(const std::string& inId)
@@ -63,28 +115,28 @@ namespace Chicane
                 return {};
             }
 
-            return m_callbacks.at(inId);
+            return m_functions.at(inId);
         }
 
-        void View::addFunction(const ComponentFunctions& inCallbacks)
+        void View::addFunction(const ComponentFunctions& inFunctions)
         {
-            for (auto [id, callback] : inCallbacks)
+            for (auto [id, function] : inFunctions)
             {
-                addFunction(id, callback);
+                addFunction(id, function);
             }
         }
 
-        void View::addFunction(const std::string& inId, ComponentFunction inCallback)
+        void View::addFunction(const std::string& inId, ComponentFunction inFunction)
         {
             if (hasFunction(inId))
             {
                 return;
             }
 
-            m_callbacks.insert(
+            m_functions.insert(
                 std::make_pair(
                     inId,
-                    inCallback
+                    inFunction
                 )
             );
         }
@@ -96,7 +148,7 @@ namespace Chicane
                 return;
             }
 
-            m_callbacks.erase(inId);
+            m_functions.erase(inId);
         }
 
         void View::validate(const pugi::xml_node& inNode)
