@@ -33,18 +33,24 @@ namespace Chicane
                 {
                     throw std::runtime_error("The view " + view->getId() + " doesn't have the variable " + variable + " exposed");
                 }
+
+                if (view->getVariable(variable)->type() != typeid(std::string))
+                {
+                    throw std::runtime_error(TAG_ID + " values must be strings");
+                }
             }
 
             void compile(pugi::xml_node& outNode)
             {
                 validate(outNode);
 
-                std::string label    = getAttribute(LABEL_ATTRIBUTE_NAME, outNode).as_string();
-                std::string variable = getAttribute(VALUE_ATTRIBUTE_NAME, outNode).as_string();
+                std::string label          = getAttribute(LABEL_ATTRIBUTE_NAME, outNode).as_string();
+                std::string value          = getAttribute(VALUE_ATTRIBUTE_NAME, outNode).as_string();
+                ComponentVariable variable = Grid::getActiveView()->getVariable(value);
 
                 ImGui::InputText(
                     label.empty() ? " " : label.c_str(),
-                    Grid::getActiveView()->getVariable(variable)
+                    std::any_cast<std::string>(variable)
                 );
             }
         }
