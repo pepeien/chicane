@@ -263,7 +263,9 @@ namespace Chicane
 
             for (std::string& value : Utils::split(params, ','))
             {
-                data.params.push_back(processRefValue(value));
+                data.params.push_back(
+                    processRefValue(Utils::trim(value))
+                );
             }
 
             return data;
