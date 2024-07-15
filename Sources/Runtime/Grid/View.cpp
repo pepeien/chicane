@@ -176,9 +176,31 @@ namespace Chicane
             ImGuiWindowFlags viewFlags = ImGuiWindowFlags_NoNav |
                                          ImGuiWindowFlags_NoDecoration |
                                          ImGuiWindowFlags_NoMove |
-                                         ImGuiWindowFlags_NoBackground;
+                                         ImGuiWindowFlags_NoBackground |
+                                         ImGuiWindowFlags_AlwaysUseWindowPadding;
 
             execOnTick(outNode);
+
+            ImGui::PushStyleVar(
+                ImGuiStyleVar_WindowPadding,
+                ImVec2(0.f, 0.f)
+            );
+            ImGui::PushStyleVar(
+                ImGuiStyleVar_FramePadding,
+                ImVec2(0.f, 0.f)
+            );
+            ImGui::PushStyleVar(
+                ImGuiStyleVar_CellPadding,
+                ImVec2(0.f, 0.f)
+            );
+            ImGui::PushStyleVar(
+                ImGuiStyleVar_ItemSpacing,
+                ImVec2(0.f, 0.f)
+            );
+            ImGui::PushStyleVar(
+                ImGuiStyleVar_ItemInnerSpacing,
+                ImVec2(0.f, 0.f)
+            );
 
             ImGui::Begin(
                 m_id.c_str(),
@@ -200,6 +222,8 @@ namespace Chicane
 
                 compileChildren(outNode);
             ImGui::End();
+
+            ImGui::PopStyleVar(5);
         }
     }
 }
