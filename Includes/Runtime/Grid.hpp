@@ -7,3 +7,4 @@
 #include "Runtime/Grid/Components/List.hpp"
 #include "Runtime/Grid/Components/ProgressBar.hpp"
 #include "Runtime/Grid/Components/Text.hpp"
+#include "Runtime/Grid/Components/TextInput.hpp"

@@ -1,0 +1,52 @@
+#include "Runtime/Grid/Components/TextInput.hpp"
+
+#include "Runtime/Grid/View.hpp"
+
+namespace Chicane
+{
+    namespace Grid
+    {
+        namespace TextInputComponent
+        {
+            void validate(const pugi::xml_node& inNode)
+            {
+                if (TAG_ID.compare(inNode.name()) != 0)
+                {
+                    throw std::runtime_error("Component is not a " + TAG_ID);
+                }
+
+                std::string variable = getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string();
+
+                if (variable.empty())
+                {
+                    throw std::runtime_error(TAG_ID + " components must have a " + VALUE_ATTRIBUTE_NAME + " attribute");
+                }
+
+                View* view = Grid::getActiveView();
+
+                if (view == nullptr)
+                {
+                    throw std::runtime_error("There is no active view");
+                }
+
+                if (!view->hasVariable(variable))
+                {
+                    throw std::runtime_error("The view " + view->getId() + " doesn't have the variable " + variable + " exposed");
+                }
+            }
+
+            void compile(pugi::xml_node& outNode)
+            {
+                validate(outNode);
+
+                std::string label    = getAttribute(LABEL_ATTRIBUTE_NAME, outNode).as_string();
+                std::string variable = getAttribute(VALUE_ATTRIBUTE_NAME, outNode).as_string();
+
+                ImGui::InputText(
+                    label.empty() ? " " : label.c_str(),
+                    Grid::getActiveView()->getVariable(variable)
+                );
+            }
+        }
+    }
+}
