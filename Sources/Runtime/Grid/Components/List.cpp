@@ -25,6 +25,31 @@ namespace Chicane
                 return Direction::Column;
             }
 
+            ImVec4 getBackgroundColor(const pugi::xml_node& inNode)
+            {
+                std::string backgroundColor = getAttribute(BACKGROUND_COLOR_ATTRIBUTE_NAME, inNode).as_string();
+
+                if (backgroundColor.empty() || backgroundColor.size() < 7 || backgroundColor.size() > 9)
+                {
+                    return {};
+                }
+
+                backgroundColor = backgroundColor.substr(
+                    1,
+                    backgroundColor.size() - 1
+                );
+                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
+                std::uint32_t color = std::stoul(
+                    backgroundColor,
+                    nullptr,
+                    16
+                );
+
+                // IDK why the result is #AABBGGRR A.K.A reversed
+                ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
+                return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
+            }
+
             void validate(const pugi::xml_node& inNode)
             {
                 if (TAG_ID.compare(inNode.name()) != 0)
@@ -44,14 +69,21 @@ namespace Chicane
             {
                 validate(outNode);
 
-                Direction direction = getDirection(outNode);
+                Direction direction    = getDirection(outNode);
+                ImVec4 backgroundColor = getBackgroundColor(outNode);
+
+                ImGui::PushStyleColor(
+                    ImGuiCol_ChildBg,
+                    backgroundColor
+                );
 
                 ImGui::BeginChild(
                     getAttribute(ID_ATTRIBUTE_NAME, outNode).as_string(),
                     ImVec2(
                         getSize(WIDTH_ATTRIBUTE_NAME, outNode),
                         getSize(HEIGHT_ATTRIBUTE_NAME, outNode)
-                    )
+                    ),
+                    ImGuiChildFlags_AlwaysUseWindowPadding
                 );
                     if (!outNode.children().empty())
                     {
@@ -66,6 +98,8 @@ namespace Chicane
                         }
                     }
                 ImGui::EndChild();
+
+                ImGui::PopStyleColor();
             }
         }
     }
