@@ -21,6 +21,10 @@ namespace Chicane
                 "getFrametime",
                 std::bind(&View::getFrametime, this, std::placeholders::_1)
             );
+            addFunction(
+                "getActorDetails",
+                std::bind(&View::getActorDetails, this, std::placeholders::_1)
+            );
         }
 
         std::uint64_t View::getFPS(Grid::ComponentEvent inEvent)
@@ -33,6 +37,15 @@ namespace Chicane
             std::string frametime = std::to_string(State::getTelemetry().time);
 
             return std::string(frametime.begin(), frametime.end() - 5);
+        }
+
+        int View::getActorDetails(Grid::ComponentEvent inEvent)
+        {
+            Actor* actor = std::any_cast<Actor*>(inEvent.values[0]);
+
+            Grid::TextComponent::compileRaw(actor->getModel().name);
+
+            return 0;
         }
     }
 }

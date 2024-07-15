@@ -1,5 +1,7 @@
 #include "Runtime/Grid/Components/List.hpp"
 
+#include "Runtime/Grid/View.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -23,6 +25,51 @@ namespace Chicane
                 }
 
                 return Direction::Column;
+            }
+
+            std::vector<std::any> getItems(const pugi::xml_node& inNode)
+            {
+                View* view = getActiveView();
+
+                if (view == nullptr)
+                {
+                    return {};
+                }
+
+                std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
+
+                if (itemsVariableRef.empty() || !view->hasVariable(itemsVariableRef))
+                {
+                    return {};
+                }
+
+                std::any items = *view->getVariable(itemsVariableRef);
+
+                if (items.type() != typeid(std::vector<std::any>))
+                {
+                    return {};
+                }
+
+                return std::any_cast<std::vector<std::any>>(items);
+            }
+
+            ComponentFunction getItemGetter(const pugi::xml_node& inNode)
+            {
+                View* view = getActiveView();
+
+                if (view == nullptr)
+                {
+                    return {};
+                }
+
+                std::string itemGetterFunctionRef = getAttribute(ITEM_GETTER_ATTRIBUTE_NAME, inNode).as_string();
+
+                if (itemGetterFunctionRef.empty() || !view->hasFunction(itemGetterFunctionRef))
+                {
+                    return {};
+                }
+
+                return view->getFunction(itemGetterFunctionRef);
             }
 
             ImVec4 getBackgroundColor(const pugi::xml_node& inNode)
@@ -69,8 +116,10 @@ namespace Chicane
             {
                 validate(outNode);
 
-                Direction direction    = getDirection(outNode);
-                ImVec4 backgroundColor = getBackgroundColor(outNode);
+                Direction direction          = getDirection(outNode);
+                std::vector<std::any> items  = getItems(outNode);
+                ComponentFunction itemGetter = getItemGetter(outNode);
+                ImVec4 backgroundColor       = getBackgroundColor(outNode);
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
@@ -85,6 +134,14 @@ namespace Chicane
                     ),
                     ImGuiChildFlags_AlwaysUseWindowPadding
                 );
+                    for (std::any item : items)
+                    {
+                        ComponentEvent event = {};
+                        event.values.push_back(item);
+
+                        itemGetter(event);
+                    }
+
                     if (!outNode.children().empty())
                     {
                         for (pugi::xml_node& child : outNode.children())

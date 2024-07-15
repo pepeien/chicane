@@ -18,7 +18,14 @@ namespace Chicane
 
                 std::string rawText = outNode.child_value();
 
-                ImGui::Text(processText(rawText).c_str());
+                compileRaw(rawText);
+            }
+
+            void compileRaw(const std::string& inText)
+            {
+                ImGui::Text(
+                    processText(inText).c_str()
+                );
             }
         }
     }
