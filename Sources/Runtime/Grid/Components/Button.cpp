@@ -18,7 +18,15 @@ namespace Chicane
 
                 std::string text = outNode.child_value();
 
-                if (ImGui::Button(processText(text).c_str()))
+                if (
+                    ImGui::Button(
+                        processText(text).c_str(),
+                        ImVec2(
+                            getSize(WIDTH_ATTRIBUTE_NAME, outNode),
+                            getSize(HEIGHT_ATTRIBUTE_NAME, outNode)
+                        )
+                    )
+                )
                 {
                     View* view = getActiveView();
 
