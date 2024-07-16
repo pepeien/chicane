@@ -56,7 +56,6 @@ namespace Chicane
             return;
         }
 
-        loadEvents();
         loadAssets();
         initFrameDescriptorSetLayout();
         initMaterialDescriptorSetLayout();
@@ -65,6 +64,8 @@ namespace Chicane
         initFrameResources();
         initMaterialResources();
         buildAssets();
+
+        loadEvents();
     }
 
     void LevelLayer::destroy()
@@ -213,6 +214,16 @@ namespace Chicane
 
                 continue;
             }
+        }
+    }
+
+    void LevelLayer::loadActorRuntime(Actor* inActor)
+    {
+        loadActor(inActor);
+
+        for (Frame::Instance& frame : m_renderer->m_swapChain.images)
+        {
+            frame.setupModelData(m_level->getActors());
         }
     }
 
@@ -401,7 +412,7 @@ namespace Chicane
 
         m_level->addActorSubscription(
             std::bind(
-                &LevelLayer::loadActor,
+                &LevelLayer::loadActorRuntime,
                 this,
                 std::placeholders::_1
             )

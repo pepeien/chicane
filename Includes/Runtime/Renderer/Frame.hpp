@@ -35,6 +35,9 @@ namespace Chicane
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();
 
+            void destroyCameraMatrixMemory();
+            void destroyCameraVectorMemory();
+            void destroyMeshMemory();
             void destroy();
 
         public:

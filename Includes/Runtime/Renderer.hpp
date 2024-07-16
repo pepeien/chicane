@@ -50,7 +50,9 @@ namespace Chicane
             const vk::CommandBuffer& inCommandBuffer
         );
 
+        // Event
         void onEvent(const SDL_Event& inEvent);
+
         void render();
 
     private:

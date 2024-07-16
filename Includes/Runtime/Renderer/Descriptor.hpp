@@ -24,9 +24,9 @@ namespace Chicane
 
         struct Bundle
         {
-            vk::DescriptorSetLayout setLayout;
-            vk::DescriptorSet set;
-            vk::DescriptorPool pool;
+            vk::DescriptorSetLayout setLayout = {};
+            vk::DescriptorSet set = {};
+            vk::DescriptorPool pool = VK_NULL_HANDLE;
         };
 
         void initPool(

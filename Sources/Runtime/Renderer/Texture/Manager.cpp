@@ -26,8 +26,6 @@ namespace Chicane
                     m_instanceMap.find(inId) != m_instanceMap.end()
                 )
                 {
-                    LOG_WARNING("The texture [" + inId  + "] has already been added");
-
                     return;
                 }
 

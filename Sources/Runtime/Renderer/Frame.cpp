@@ -76,6 +76,8 @@ namespace Chicane
     
         void Instance::setupModelData(std::vector<Actor*> inActors)
         {
+            destroyMeshMemory();
+
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
@@ -192,6 +194,49 @@ namespace Chicane
             );
         }
 
+
+        void Instance::destroyCameraMatrixMemory()
+        {
+            if (!cameraMatrixUBO.buffer.memory)
+            { 
+                return;
+            }
+
+            logicalDevice.unmapMemory(cameraMatrixUBO.buffer.memory);
+            Buffer::destroy(
+                logicalDevice,
+                cameraMatrixUBO.buffer
+            );
+        }
+
+        void Instance::destroyCameraVectorMemory()
+        {
+            if (!cameraVectorUBO.buffer.memory)
+            {
+                return;
+            }
+
+            logicalDevice.unmapMemory(cameraVectorUBO.buffer.memory);
+            Buffer::destroy(
+                logicalDevice,
+                cameraVectorUBO.buffer
+            );
+        }
+    
+        void Instance::destroyMeshMemory()
+        {
+            if (!meshData.buffer.memory)
+            {
+                return;
+            }
+
+            logicalDevice.unmapMemory(meshData.buffer.memory);
+            Buffer::destroy(
+                logicalDevice,
+                meshData.buffer
+            );
+        }
+
         void Instance::destroy()
         {
             for (auto& [id, frambuffer] : framebuffers)
@@ -209,32 +254,9 @@ namespace Chicane
             logicalDevice.destroySemaphore(presentSemaphore);
             logicalDevice.destroySemaphore(renderSemaphore);
 
-            if (cameraMatrixUBO.buffer.memory)
-            { 
-                logicalDevice.unmapMemory(cameraMatrixUBO.buffer.memory);
-                Buffer::destroy(
-                    logicalDevice,
-                    cameraMatrixUBO.buffer
-                );
-            }
-
-            if (cameraVectorUBO.buffer.memory)
-            {
-                logicalDevice.unmapMemory(cameraVectorUBO.buffer.memory);
-                Buffer::destroy(
-                    logicalDevice,
-                    cameraVectorUBO.buffer
-                );
-            }
-
-            if (meshData.buffer.memory)
-            {
-                logicalDevice.unmapMemory(meshData.buffer.memory);
-                Buffer::destroy(
-                    logicalDevice,
-                    meshData.buffer
-                );
-            }
+            destroyCameraMatrixMemory();
+            destroyCameraVectorMemory();
+            destroyMeshMemory();
         }
     }
 }

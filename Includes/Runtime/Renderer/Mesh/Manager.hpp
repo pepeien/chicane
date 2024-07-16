@@ -39,14 +39,6 @@ namespace Chicane
                 void drawAll(const vk::CommandBuffer& inCommandBuffer);
 
             private:
-                void addDuplicate(const std::string& inId);
-                void add(
-                    const std::string& inId,
-                    const std::vector<Vertex::Instance>& inVertices,
-                    const std::vector<uint32_t>& inIndexes
-                );
-
-                void processDuplicate(const std::string& inId);
                 void process(const std::string& inId);
                 void processAll();
 

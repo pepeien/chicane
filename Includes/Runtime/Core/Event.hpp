@@ -12,10 +12,9 @@ namespace Chicane
             std::function<void (T)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback,
             std::function<void ()> inCompleteCallback
-        )
-        : m_nextCallback(inNextCallback),
-        m_errorCallback(inErrorCallback),
-        m_completeCallback(inCompleteCallback)
+        ) : m_nextCallback(inNextCallback),
+            m_errorCallback(inErrorCallback),
+            m_completeCallback(inCompleteCallback)
         {}
 
     public:

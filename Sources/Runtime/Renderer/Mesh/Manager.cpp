@@ -12,31 +12,35 @@ namespace Chicane
                 Vendor inVendor
             )
             {
-                if (m_instanceMap.find(inId) != m_instanceMap.end())
+                if (m_instanceMap.find(inId) == m_instanceMap.end())
                 {
-                    addDuplicate(inId);
+                    ParseResult result;
 
-                    return;
+                    switch (inVendor)
+                    {
+                    case Vendor::Wavefront:
+                        result = Wavefront::parse(inData);
+
+                        break;
+
+                    default:
+                        throw std::runtime_error("Failed to import Mesh due to invalid type");
+                    }
+
+                    Mesh::Instance newMesh;
+                    newMesh.vertexInstances = result.vertices;
+                    newMesh.vertexIndices   = result.indexes;
+
+                    m_uniqueIds.push_back(inId);
+                    m_usedIds.push_back(inId);
+                    m_instanceMap.insert(std::make_pair(inId, newMesh));
+                }
+                else
+                {
+                    m_usedIds.push_back(inId);
                 }
 
-                ParseResult result;
-
-                switch (inVendor)
-                {
-                case Vendor::Wavefront:
-                    result = Wavefront::parse(inData);
-
-                    break;
-                
-                default:
-                    throw std::runtime_error("Failed to import Mesh due to invalid type");
-                }
-
-                add(
-                    inId,
-                    result.vertices,
-                    result.indexes
-                );
+                process(inId);
             }
 
             void Instance::build(
@@ -48,8 +52,6 @@ namespace Chicane
                 const vk::CommandBuffer& inCommandBuffer
             )
             {
-                processAll();
-
                 initVertexBuffer(
                     outVertexBuffer,
                     inLogicalDevice,
@@ -78,38 +80,6 @@ namespace Chicane
                 }
             }
 
-            void Instance::addDuplicate(const std::string& inId)
-            {
-                m_usedIds.push_back(inId);
-            }
-
-            void Instance::add(
-                const std::string& inId,
-                const std::vector<Vertex::Instance>& inVertices,
-                const std::vector<uint32_t>& inIndexes
-            )
-            {
-                if (m_instanceMap.find(inId) != m_instanceMap.end())
-                {
-                    LOG_WARNING("The mesh [" + inId  + "] has already been added");
-
-                    return;
-                }
-
-                Mesh::Instance newMesh;
-                newMesh.vertexInstances = inVertices;
-                newMesh.vertexIndices   = inIndexes;
-
-                m_uniqueIds.push_back(inId);
-                m_usedIds.push_back(inId);
-                m_instanceMap.insert(std::make_pair(inId, newMesh));
-            }
-
-            void Instance::processDuplicate(const std::string& inId)
-            {
-                m_allocationMap[inId].instanceCount += 1;
-            }
-
             void Instance::process(const std::string& inId)
             {
                 auto foundMesh = m_instanceMap.find(inId);
@@ -117,6 +87,13 @@ namespace Chicane
                 if (foundMesh == m_instanceMap.end())
                 {
                     throw std::runtime_error("The Mesh [" + inId + "] does not exist");
+                }
+
+                if (m_allocationMap.find(inId) != m_allocationMap.end())
+                {
+                    m_allocationMap[inId].instanceCount += 1;
+
+                    return;
                 }
 
                 Mesh::Instance& instance = foundMesh->second;
@@ -146,13 +123,6 @@ namespace Chicane
             {
                 for (std::string& id : m_usedIds)
                 {
-                    if (m_allocationMap.find(id) != m_allocationMap.end())
-                    {
-                        processDuplicate(id);
-
-                        continue;
-                    }
-
                     process(id);
                 }
             }
