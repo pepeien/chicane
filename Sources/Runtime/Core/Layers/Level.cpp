@@ -12,7 +12,7 @@ namespace Chicane
         m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
     {
-        m_isInitialized = (nullptr != m_level) && m_level->hasActors();
+        m_isInitialized = nullptr != m_level && m_level->hasActors();
     }
 
     LevelLayer::~LevelLayer()
@@ -51,6 +51,8 @@ namespace Chicane
 
     void LevelLayer::build()
     {
+        loadEvents();
+
         if (!m_isInitialized)
         {
             return;
@@ -64,8 +66,6 @@ namespace Chicane
         initFrameResources();
         initMaterialResources();
         buildAssets();
-
-        loadEvents();
     }
 
     void LevelLayer::destroy()
@@ -190,6 +190,13 @@ namespace Chicane
             return;
         }
 
+        if (!m_isInitialized)
+        {
+            m_isInitialized = true;
+
+            build();
+        }
+
         Box::Instance mesh = inActor->getModel();
 
         for (Box::Entry meshComponent : mesh.entries)
@@ -215,11 +222,6 @@ namespace Chicane
                 continue;
             }
         }
-    }
-
-    void LevelLayer::loadActorRuntime(Actor* inActor)
-    {
-        loadActor(inActor);
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
@@ -229,7 +231,7 @@ namespace Chicane
 
     void LevelLayer::loadAssets()
     {
-        if (nullptr == m_level)
+        if (!m_isInitialized)
         {
             return;
         }
@@ -242,6 +244,11 @@ namespace Chicane
 
     void LevelLayer::initFrameDescriptorSetLayout()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 2;
 
@@ -266,6 +273,11 @@ namespace Chicane
 
     void LevelLayer::initMaterialDescriptorSetLayout()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
         materialLayoutBidings.count = 1;
 
@@ -284,13 +296,18 @@ namespace Chicane
 
     void LevelLayer::initGraphicsPipeline()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         GraphicsPipeline::CreateInfo createInfo = {};
         createInfo.canOverwrite          = true;
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
         createInfo.logicalDevice         = m_renderer->m_logicalDevice;
-        createInfo.vertexShaderPath      = "Shaders/triangle.vert.spv";
-        createInfo.fragmentShaderPath    = "Shaders/triangle.frag.spv";
+        createInfo.vertexShaderPath      = "Shaders/level.vert.spv";
+        createInfo.fragmentShaderPath    = "Shaders/level.frag.spv";
         createInfo.bindingDescription    = Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
         createInfo.swapChainExtent       = m_renderer->m_swapChain.extent;
@@ -306,6 +323,11 @@ namespace Chicane
 
     void LevelLayer::initFramebuffers()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo = {};
@@ -322,6 +344,11 @@ namespace Chicane
 
     void LevelLayer::initFrameResources()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
         descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_renderer->m_swapChain.images.size());
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
@@ -371,6 +398,11 @@ namespace Chicane
 
     void LevelLayer::initMaterialResources()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
         descriptorPoolCreateInfo.size = m_textureManager->getCount();
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
@@ -384,6 +416,11 @@ namespace Chicane
 
     void LevelLayer::buildAssets()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         m_meshManager->build(
             m_meshVertexBuffer,
             m_meshIndexBuffer,
@@ -405,14 +442,9 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        if (nullptr == m_level)
-        {
-            return;
-        }
-
         m_level->addActorSubscription(
             std::bind(
-                &LevelLayer::loadActorRuntime,
+                &LevelLayer::loadActor,
                 this,
                 std::placeholders::_1
             )

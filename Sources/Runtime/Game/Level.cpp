@@ -6,6 +6,16 @@ namespace Chicane
         : m_observable(new Observable<Actor*>())
     {}
 
+    Level::~Level()
+    {
+        for(Actor* actor : m_actors)
+        {
+            delete actor;
+        }
+
+        m_actors.clear();
+    }
+
     bool Level::hasSkybox()
     {
         return m_skybox.type == static_cast<uint8_t>(Box::Type::CubeMap);

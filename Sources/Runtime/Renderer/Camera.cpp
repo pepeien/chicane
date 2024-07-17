@@ -5,7 +5,7 @@ namespace Chicane
     Camera::Camera()
     : m_matrixUBO({}),
       m_vectorUBO({}),
-      m_position({ -550.0f, 0.0f, 100.0f }),
+      m_position({ -300.0f, -50.0f, 50.0f }),
       m_aim({ 0.0f, 0.0f, 0.0f }),
       m_up({ 0.0f, 0.0f, 1.0f }),
       m_width(0),

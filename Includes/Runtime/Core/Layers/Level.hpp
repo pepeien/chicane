@@ -33,7 +33,6 @@ namespace Chicane
     private:
         void loadEvents();
         void loadActor(Actor* inActor);
-        void loadActorRuntime(Actor* inActor);
         void loadAssets();
         void initFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();
@@ -42,6 +41,7 @@ namespace Chicane
         void initFrameResources();
         void initMaterialResources();
         void buildAssets();
+
     private:
         Renderer* m_renderer;
         Level* m_level;
