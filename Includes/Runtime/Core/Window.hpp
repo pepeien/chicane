@@ -21,7 +21,7 @@ namespace Chicane
     struct WindowCreateInfo
     {
         std::string title     = "";
-        Vec2 resolution = {};
+        Vec2 resolution       = {};
         int displayIndex      = 0;
         WindowType type       = WindowType::Windowed;
         bool isFocused        = false;
@@ -49,7 +49,11 @@ namespace Chicane
 
         Telemetry getTelemetry();
 
-        void addLayer(Layer* inLayer);
+        void addLayer(
+            Layer* inLayer,
+            LayerPushTecnique inAdditionTecnique = LayerPushTecnique::Back,
+            const std::string& inId = ""
+        );
 
         void run();
 

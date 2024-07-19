@@ -45,9 +45,81 @@ namespace Chicane
         destroyInstance();
     }
 
-    void Renderer::pushLayer(Layer* inLayer)
+    void Renderer::pushLayerStart(Layer* inLayer)
     {
+        if (hasLayer(inLayer))
+        {
+            return;
+        }
+
+        m_layers.insert(
+            m_layers.begin(),
+            inLayer
+        );
+
+        inLayer->build();
+    }
+
+    void Renderer::pushLayerBack(Layer* inLayer)
+    {
+        if (hasLayer(inLayer))
+        {
+            return;
+        }
+
         m_layers.push_back(inLayer);
+
+        inLayer->build();
+    }
+
+    void Renderer::pushLayerBefore(const std::string& inId, Layer* inLayer)
+    {
+        if (hasLayer(inLayer))
+        {
+            return;
+        }
+
+        auto foundLayer = std::find_if(
+            m_layers.begin(),
+            m_layers.end(),
+            [inId](Layer* _) { return _->getId() == inId; }
+        );
+
+        if (foundLayer == m_layers.end())
+        {
+            return;
+        }
+
+        m_layers.insert(
+            foundLayer,
+            inLayer
+        );
+
+        inLayer->build();
+    }
+
+    void Renderer::pushLayerAfter(const std::string& inId, Layer* inLayer)
+    {
+        if (hasLayer(inLayer))
+        {
+            return;
+        }
+
+        auto foundLayer = std::find_if(
+            m_layers.begin(),
+            m_layers.end(),
+            [inId](Layer* _) { return _->getId() == inId; }
+        );
+
+        if (foundLayer == m_layers.end())
+        {
+            return;
+        }
+
+        m_layers.insert(
+            foundLayer + 1,
+            inLayer
+        );
 
         inLayer->build();
     }
@@ -63,6 +135,34 @@ namespace Chicane
 
     void Renderer::onEvent(const SDL_Event& inEvent)
     {
+        if (inEvent.type == SDL_MOUSEMOTION)
+        {
+            if (inEvent.motion.state == SDL_BUTTON_LMASK)
+            {
+                m_camera->rotateTo(
+                    glm::vec2(
+                        inEvent.motion.xrel,
+                        inEvent.motion.yrel
+                    )
+                );
+            }
+    
+            if (inEvent.motion.state == SDL_BUTTON_MMASK)
+            {
+                m_camera->zoomTo(inEvent.motion.yrel);
+            }
+
+            if (inEvent.motion.state == SDL_BUTTON_RMASK)
+            {
+                m_camera->panTo(
+                    glm::vec2(
+                        inEvent.motion.xrel,
+                        inEvent.motion.yrel
+                    )
+                );
+            }
+        }
+
         for (Layer* layer : m_layers)
         {
             layer->onEvent(inEvent);
@@ -190,6 +290,25 @@ namespace Chicane
         m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
     }
 
+    bool Renderer::hasLayer(Layer* inLayer)
+    {
+        if (inLayer == nullptr)
+        {
+            return false;
+        }
+
+        return hasLayer(inLayer->getId());
+    }
+
+    bool Renderer::hasLayer(const std::string& inId)
+    {
+        return std::find_if(
+            m_layers.begin(),
+            m_layers.end(),
+            [inId](Layer* _) { return _->getId() == inId; }
+        ) != m_layers.end();
+    }
+
     void Renderer::buildInstance()
     {
         Instance::init(
@@ -286,7 +405,7 @@ namespace Chicane
             m_window->getResolution()
         );
 
-        m_camera->setResolution(
+        m_camera->setViewportResolution(
             m_swapChain.extent.width,
             m_swapChain.extent.height
         );

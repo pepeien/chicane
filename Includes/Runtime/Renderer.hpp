@@ -44,7 +44,10 @@ namespace Chicane
         ~Renderer();
 
     public:
-        void pushLayer(Layer* inLayer);
+        void pushLayerStart(Layer* inLayer);
+        void pushLayerBack(Layer* inLayer);
+        void pushLayerBefore(const std::string& inId, Layer* inLayer);
+        void pushLayerAfter(const std::string& inId, Layer* inLayer);
 
         void updateViewport(
             const vk::CommandBuffer& inCommandBuffer
@@ -56,6 +59,9 @@ namespace Chicane
         void render();
 
     private:
+        bool hasLayer(Layer* inLayer);
+        bool hasLayer(const std::string& inId);
+
         void buildInstance();
         void destroyInstance();
 

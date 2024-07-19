@@ -63,11 +63,6 @@ namespace Chicane
         SDL_Quit();
     }
 
-    Telemetry Window::getTelemetry()
-    {
-        return m_telemetry;
-    }
-
     Renderer* Window::getRenderer()
     {
         return m_renderer.get();
@@ -93,9 +88,45 @@ namespace Chicane
         m_controller = inController;
     }
 
-    void Window::addLayer(Layer* inLayer)
+    Telemetry Window::getTelemetry()
     {
-        m_renderer->pushLayer(inLayer);
+        return m_telemetry;
+    }
+
+    void Window::addLayer(
+        Layer* inLayer,
+        LayerPushTecnique inAdditionTecnique,
+        const std::string& inId
+    )
+    {
+        switch (inAdditionTecnique)
+        {
+        case LayerPushTecnique::Front:
+            m_renderer->pushLayerStart(inLayer);
+
+            return;
+
+        case LayerPushTecnique::BeforeLayer:
+            m_renderer->pushLayerBefore(
+                inId,
+                inLayer
+            );
+
+            return;
+
+        case LayerPushTecnique::AfterLayer:
+            m_renderer->pushLayerAfter(
+                inId,
+                inLayer
+            );
+
+            return;
+
+        default:
+            m_renderer->pushLayerBack(inLayer);
+
+            return;
+        }
     }
 
     void Window::run()

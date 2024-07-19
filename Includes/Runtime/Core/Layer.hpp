@@ -12,8 +12,8 @@ namespace Chicane
         Layer()
             : Layer("Unamed")
         {}
-        Layer(const std::string& inName)
-            : m_name(inName),
+        Layer(const std::string& inId)
+            : m_id(inId),
             m_isInitialized(false)
         {}
         virtual ~Layer() = default;
@@ -35,9 +35,12 @@ namespace Chicane
             const vk::Extent2D& inSwapChainExtent
         ) { return; }
 
+    public:
+        std::string getId() { return m_id; }
+
     protected:
         bool m_isInitialized;
 
-        std::string m_name;
+        std::string m_id;
     };
 }
