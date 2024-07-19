@@ -52,7 +52,7 @@ set_target_properties(
     PROPERTIES
 
     VS_DEBUGGER_WORKING_DIRECTORY
-    "${UILD_DIR}"
+    "${BUILD_DIR}"
 
     RUNTIME_OUTPUT_DIRECTORY
     "${BUILD_DIR}"

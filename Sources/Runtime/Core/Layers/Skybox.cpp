@@ -2,16 +2,22 @@
 
 #include "Runtime/Core/Log.hpp"
 #include "Runtime/Core/Window.hpp"
+#include "Runtime/Game/State.hpp"
 
 namespace Chicane
 {
     SkyboxLayer::SkyboxLayer(Window* inWindow)
         : Layer("Skybox"),
         m_renderer(inWindow->getRenderer()),
-        m_level(inWindow->getLevel()),
         m_manager(std::make_unique<CubeMap::Manager>())
     {
-        m_isInitialized = nullptr != m_level && m_level->hasSkybox();
+        if (State::hasLevel() == false)
+        {
+            return;
+        }
+
+        m_level         = State::getLevel();
+        m_isInitialized = m_level->hasSkybox();
     }
 
     SkyboxLayer::~SkyboxLayer()

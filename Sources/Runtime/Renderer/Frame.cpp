@@ -76,7 +76,7 @@ namespace Chicane
     
         void Instance::setupModelData(std::vector<Actor*> inActors)
         {
-            destroyMeshMemory();
+            destroyModelMemory();
 
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
@@ -86,31 +86,31 @@ namespace Chicane
             modelBufferCreateInfo.size             = sizeof(glm::mat4) * inActors.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
-            Buffer::init(meshData.buffer, modelBufferCreateInfo);
+            Buffer::init(modelData.buffer, modelBufferCreateInfo);
         
-            meshData.allocationSize = modelBufferCreateInfo.size;
-            meshData.writeLocation  = logicalDevice.mapMemory(
-                meshData.buffer.memory,
+            modelData.allocationSize = modelBufferCreateInfo.size;
+            modelData.writeLocation  = logicalDevice.mapMemory(
+                modelData.buffer.memory,
                 0,
-                meshData.allocationSize
+                modelData.allocationSize
             );
-            meshData.transforms.reserve(inActors.size());
+            modelData.transforms.reserve(inActors.size());
     
             for (Actor* actor : inActors)
             {
-                meshData.transforms.push_back(actor->getPosition());
+                modelData.transforms.push_back(actor->getPosition());
             }
             
-            modelDescriptorBufferInfo.buffer = meshData.buffer.instance;
+            modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
             modelDescriptorBufferInfo.offset = 0;
-            modelDescriptorBufferInfo.range  = meshData.allocationSize;
+            modelDescriptorBufferInfo.range  = modelData.allocationSize;
         }
 
         void Instance::updateModelData(std::vector<Actor*> inActors)
         {   
-            for (uint32_t i = 0; i < inActors.size() && i < meshData.transforms.size(); i++)
+            for (uint32_t i = 0; i < inActors.size() && i < modelData.transforms.size(); i++)
             {
-                meshData.transforms[i] = inActors[i]->getPosition();
+                modelData.transforms[i] = inActors[i]->getPosition();
             }
         }
         
@@ -223,17 +223,17 @@ namespace Chicane
             );
         }
     
-        void Instance::destroyMeshMemory()
+        void Instance::destroyModelMemory()
         {
-            if (!meshData.buffer.memory)
+            if (!modelData.buffer.memory)
             {
                 return;
             }
 
-            logicalDevice.unmapMemory(meshData.buffer.memory);
+            logicalDevice.unmapMemory(modelData.buffer.memory);
             Buffer::destroy(
                 logicalDevice,
-                meshData.buffer
+                modelData.buffer
             );
         }
 
@@ -256,7 +256,7 @@ namespace Chicane
 
             destroyCameraMatrixMemory();
             destroyCameraVectorMemory();
-            destroyMeshMemory();
+            destroyModelMemory();
         }
     }
 }

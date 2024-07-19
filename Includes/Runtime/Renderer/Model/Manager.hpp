@@ -2,13 +2,13 @@
 
 #include "Runtime/Runtime.hpp"
 #include "Runtime/Renderer/Buffer.hpp"
-#include "Runtime/Renderer/Mesh.hpp"
+#include "Runtime/Renderer/Model.hpp"
 #include "Runtime/Renderer/Vertex.hpp"
-#include "Runtime/Renderer/Mesh/Vendors/Wavefront.hpp"
+#include "Runtime/Renderer/Model/Vendors/Wavefront.hpp"
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         enum class Vendor : uint8_t
         {
@@ -70,8 +70,8 @@ namespace Chicane
                 std::vector<std::string> m_uniqueIds;
                 std::vector<std::string> m_usedIds;
 
-                std::unordered_map<std::string, Mesh::AllocationInfo> m_allocationMap;
-                std::unordered_map<std::string, Mesh::Instance> m_instanceMap;
+                std::unordered_map<std::string, Model::AllocationInfo> m_allocationMap;
+                std::unordered_map<std::string, Model::Instance> m_instanceMap;
             };
         }
     }

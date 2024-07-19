@@ -49,13 +49,13 @@ namespace Chicane
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
         vk::DescriptorSet m_descriptorSet;
 
-        std::unique_ptr<Mesh::Manager::Instance> m_meshManager;
+        std::unique_ptr<Model::Manager::Instance> m_modelManager;
         std::unique_ptr<Texture::Manager::Instance> m_textureManager;
 
         Descriptor::Bundle m_frameDescriptor;
         Descriptor::Bundle m_materialDescriptor;
 
-        Buffer::Instance m_meshVertexBuffer;
-        Buffer::Instance m_meshIndexBuffer;
+        Buffer::Instance m_modelVertexBuffer;
+        Buffer::Instance m_modelIndexBuffer;
     };
 }

@@ -1,8 +1,8 @@
-#include "Runtime/Renderer/Mesh/Manager.hpp"
+#include "Runtime/Renderer/Model/Manager.hpp"
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         namespace Manager
         {
@@ -12,33 +12,34 @@ namespace Chicane
                 Vendor inVendor
             )
             {
+                m_usedIds.push_back(inId);
+
                 if (m_instanceMap.find(inId) == m_instanceMap.end())
                 {
-                    ParseResult result;
+                    process(inId);
 
-                    switch (inVendor)
-                    {
-                    case Vendor::Wavefront:
-                        result = Wavefront::parse(inData);
-
-                        break;
-
-                    default:
-                        throw std::runtime_error("Failed to import Mesh due to invalid type");
-                    }
-
-                    Mesh::Instance newMesh;
-                    newMesh.vertexInstances = result.vertices;
-                    newMesh.vertexIndices   = result.indexes;
-
-                    m_uniqueIds.push_back(inId);
-                    m_usedIds.push_back(inId);
-                    m_instanceMap.insert(std::make_pair(inId, newMesh));
+                    return;
                 }
-                else
+
+                ParseResult result = {};
+
+                switch (inVendor)
                 {
-                    m_usedIds.push_back(inId);
+                case Vendor::Wavefront:
+                    result = Wavefront::parse(inData);
+
+                    break;
+
+                default:
+                    throw std::runtime_error("Failed to import Model due to invalid type");
                 }
+
+                Model::Instance newModel;
+                newModel.vertexInstances = result.vertices;
+                newModel.vertexIndices   = result.indexes;
+
+                m_uniqueIds.push_back(inId);
+                m_instanceMap.insert(std::make_pair(inId, newModel));
 
                 process(inId);
             }
@@ -82,11 +83,11 @@ namespace Chicane
 
             void Instance::process(const std::string& inId)
             {
-                auto foundMesh = m_instanceMap.find(inId);
+                auto foundModel = m_instanceMap.find(inId);
 
-                if (foundMesh == m_instanceMap.end())
+                if (foundModel == m_instanceMap.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
                 }
 
                 if (m_allocationMap.find(inId) != m_allocationMap.end())
@@ -96,7 +97,7 @@ namespace Chicane
                     return;
                 }
 
-                Mesh::Instance& instance = foundMesh->second;
+                Model::Instance& instance = foundModel->second;
     
                 AllocationInfo allocationInfo;
                 allocationInfo.vertexCount   = static_cast<uint32_t>(instance.vertexInstances.size());
@@ -237,14 +238,14 @@ namespace Chicane
                 uint32_t inFirstInstance
             )
             {
-                auto foundMesh = m_allocationMap.find(inId);
+                auto foundModel = m_allocationMap.find(inId);
 
-                if (foundMesh == m_allocationMap.end())
+                if (foundModel == m_allocationMap.end())
                 {
-                    throw std::runtime_error("The Mesh [" + inId + "] does not exist");
+                    throw std::runtime_error("The Model [" + inId + "] does not exist");
                 }
 
-                Mesh::AllocationInfo& allocationInfo = foundMesh->second;
+                Model::AllocationInfo& allocationInfo = foundModel->second;
 
                 inCommandBuffer.drawIndexed(
                     allocationInfo.indexCount,

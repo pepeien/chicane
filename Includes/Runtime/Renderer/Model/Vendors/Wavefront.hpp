@@ -2,12 +2,12 @@
 
 #include "Runtime/Runtime.hpp"
 #include "Runtime/Core/Helper.hpp"
-#include "Runtime/Renderer/Mesh.hpp"
+#include "Runtime/Renderer/Model.hpp"
 #include "Runtime/Renderer/Vertex.hpp"
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         namespace Wavefront
         {

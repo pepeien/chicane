@@ -18,7 +18,7 @@ namespace Chicane
 
     bool Level::hasSkybox()
     {
-        return m_skybox.type == static_cast<uint8_t>(Box::Type::CubeMap);
+        return m_skybox.type == Box::Type::CubeMap;
     }
 
     Box::Instance Level::getSkybox()
@@ -28,7 +28,7 @@ namespace Chicane
 
     void Level::setSkybox(const Box::Instance& inAsset)
     {
-        if (inAsset.type != static_cast<uint8_t>(Box::Type::CubeMap))
+        if (inAsset.type != Box::Type::CubeMap)
         {
             throw std::runtime_error("Failed to set skybox, asset is not a cubemap");
         }

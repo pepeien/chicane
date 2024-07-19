@@ -2,17 +2,23 @@
 
 #include "Runtime/Core/Log.hpp"
 #include "Runtime/Core/Window.hpp"
+#include "Runtime/Game/State.hpp"
 
 namespace Chicane
 {
     LevelLayer::LevelLayer(Window* inWindow)
         : Layer("Level"),
         m_renderer(inWindow->getRenderer()),
-        m_level(inWindow->getLevel()),
-        m_meshManager(std::make_unique<Mesh::Manager::Instance>()),
+        m_modelManager(std::make_unique<Model::Manager::Instance>()),
         m_textureManager(std::make_unique<Texture::Manager::Instance>())
     {
-        m_isInitialized = nullptr != m_level && m_level->hasActors();
+        if (State::hasLevel() == false)
+        {
+            return;
+        }
+
+        m_level         = State::getLevel();
+        m_isInitialized = m_level->hasActors();
     }
 
     LevelLayer::~LevelLayer()
@@ -37,15 +43,15 @@ namespace Chicane
         // Buffers
         Buffer::destroy(
             m_renderer->m_logicalDevice,
-            m_meshVertexBuffer
+            m_modelVertexBuffer
         );
         Buffer::destroy(
             m_renderer->m_logicalDevice,
-            m_meshIndexBuffer
+            m_modelIndexBuffer
         );
 
         // Managers
-        m_meshManager.reset();
+        m_modelManager.reset();
         m_textureManager.reset();
     }
 
@@ -101,9 +107,9 @@ namespace Chicane
         outFrame.updateModelData(m_level->getActors());
 
         memcpy(
-            outFrame.meshData.writeLocation,
-            outFrame.meshData.transforms.data(),
-            outFrame.meshData.allocationSize
+            outFrame.modelData.writeLocation,
+            outFrame.modelData.transforms.data(),
+            outFrame.modelData.allocationSize
         );
     }
 
@@ -154,7 +160,7 @@ namespace Chicane
             nullptr
         );
 
-        vk::Buffer vertexBuffers[] = { m_meshVertexBuffer.instance };
+        vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
         vk::DeviceSize offsets[]   = { 0 };
 
         inCommandBuffer.bindVertexBuffers(
@@ -165,7 +171,7 @@ namespace Chicane
         );
 
         inCommandBuffer.bindIndexBuffer(
-            m_meshIndexBuffer.instance,
+            m_modelIndexBuffer.instance,
             0,
             vk::IndexType::eUint32
         );
@@ -176,7 +182,7 @@ namespace Chicane
         );
 
         // Drawing
-        m_meshManager->drawAll(inCommandBuffer);
+        m_modelManager->drawAll(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
@@ -197,27 +203,31 @@ namespace Chicane
             build();
         }
 
-        Box::Instance mesh = inActor->getModel();
+        Box::Instance model = inActor->getModel();
 
-        for (Box::Entry meshComponent : mesh.entries)
+        for (Box::Entry modelComponent : model.entries)
         {
-            if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Mesh))
+            switch (modelComponent.type)
             {
-                m_meshManager->add(
-                    mesh.name,
-                    meshComponent.data,
-                    Mesh::Vendor::Wavefront
+            case Box::EntryType::Mesh:
+                m_modelManager->add(
+                    model.name,
+                    modelComponent.data,
+                    static_cast<Model::Vendor>(modelComponent.vendor)
                 );
 
-                continue;
-            }
-
-            if (meshComponent.type == static_cast<uint8_t>(Box::EntryType::Texture))
-            {
+                break;
+            
+            case Box::EntryType::Texture:
                 m_textureManager->add(
-                    mesh.name,
-                    meshComponent.data
+                    model.name,
+                    modelComponent.data
                 );
+
+                break;
+
+            default:
+                throw std::runtime_error("The box entry from the " + model.name  + " type is invalid");
 
                 continue;
             }
@@ -420,9 +430,9 @@ namespace Chicane
             return;
         }
 
-        m_meshManager->build(
-            m_meshVertexBuffer,
-            m_meshIndexBuffer,
+        m_modelManager->build(
+            m_modelVertexBuffer,
+            m_modelIndexBuffer,
             m_renderer->m_logicalDevice,
             m_renderer->m_physicalDevice,
             m_renderer->m_graphicsQueue,

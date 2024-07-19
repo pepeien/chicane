@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Runtime/Runtime.hpp"
 #include "Runtime/Core.hpp"
+#include "Runtime/Runtime.hpp"
 #include "Runtime/Renderer.hpp"
 
 namespace Chicane
 {
     namespace Editor
     {
-        class EditorLayer : public Layer
+        class GridLayer : public Layer
         {
         public:
-            EditorLayer(Window* inWindow);
-            ~EditorLayer();
+            GridLayer(Window* inWindow);
+            ~GridLayer();
 
         public:
             void build() override;

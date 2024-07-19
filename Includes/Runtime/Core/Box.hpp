@@ -18,7 +18,11 @@ namespace Chicane
         enum class Type : uint8_t
         {
             Undefined,
+
+            // Actor
             Mesh,
+
+            // Skybox
             CubeMap
         };
 
@@ -26,16 +30,17 @@ namespace Chicane
         {
             Undefined,
 
-            // Mesh
-            Mesh,
-            Texture
+            // Actor
+            Mesh,    // Usually is two entries [Model, Texture] both being the refName
+            Texture,
+            Model
         };
 
         struct WriteRootHeader
         {
         public:
             std::string version   = "1.0";
-            uint8_t type          = static_cast<uint8_t>(Type::Undefined);
+            Type type             = Type::Undefined;
             std::string name      = "";
             std::string filePath  = "";
             uint32_t entryCount   = 0;
@@ -47,8 +52,8 @@ namespace Chicane
         struct WriteEntryHeader
         {
         public:
-            uint8_t type    = static_cast<uint8_t>(EntryType::Undefined);
-            uint8_t vendor  = 0;
+            EntryType type       = EntryType::Undefined;
+            std::uint8_t vendor  = 0;
 
         public:
             std::string toString();
@@ -57,26 +62,29 @@ namespace Chicane
         struct WriteEntry
         {
         public:
-            uint8_t type;
-            uint8_t vendor;
-            std::string filePath;
+            EntryType type       = EntryType::Undefined;
+            uint8_t vendor       = 0;
+            std::string filePath = "";
         };
 
         struct WriteInfo
         {
         public:
-            uint8_t type;
-            std::string name;
-            std::vector<WriteEntry> entries;
-            std::string outputPath;
+            Type type                       = Type::Undefined;
+            std::string name                = "";
+            std::vector<WriteEntry> entries = {};
+            std::string outputPath          = "";
         };
 
         struct Entry
         {
         public:
-            uint8_t type;
-            uint8_t vendor;
-            std::vector<unsigned char> data;
+            EntryType type = EntryType::Undefined;
+
+            uint8_t vendor = 0; // Only pertinent if type is `EntryType::Mesh`
+
+            std::vector<unsigned char> data = {}; // Only pertinent if type is `EntryType::Mesh` or `Entry::Texture`
+            std::string referenceName       = ""; // Only pertinent if type is `EntryType::Model`
 
         public:
             void parse(const std::string& inRawData);
@@ -85,10 +93,10 @@ namespace Chicane
         struct Instance
         {
         public:
-            uint8_t type;
-            std::string name;
-            uint32_t entryCount;
-            std::vector<Entry> entries;
+            Type type                  = Type::Undefined;
+            std::string name           = "";
+            uint32_t entryCount        = 0;
+            std::vector<Entry> entries = {};
         };
 
         Instance read(const std::string& inFilePath);

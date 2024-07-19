@@ -31,21 +31,11 @@ namespace Chicane
     class Window
     {
     public:
-        Window(
-            const WindowCreateInfo& inCreateInfo,
-            Controller* inController = nullptr,
-            Level* inLevel = nullptr
-        );
+        Window(const WindowCreateInfo& inCreateInfo);
         ~Window();
 
     public:
         Renderer* getRenderer();
-
-        Level* getLevel();
-        void setLevel(Level* inLevel);
-
-        Controller* getController();
-        void setController(Controller* inController);
 
         Telemetry getTelemetry();
 
@@ -86,10 +76,6 @@ namespace Chicane
 
     private:
         // Events
-        void nextEvent(SDL_Event inEvent);
-        void errorEvent(std::string inMessage);
-        void completeEvent();
-
         void initRenderer();
         void initCoreLayers();
 
@@ -109,7 +95,5 @@ namespace Chicane
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         std::unique_ptr<Renderer> m_renderer;
-        Level* m_level;
-        Controller* m_controller;
     };
 }

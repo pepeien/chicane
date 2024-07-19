@@ -4,14 +4,14 @@ namespace Chicane
 {
     namespace Editor
     {
-        EditorLayer::EditorLayer(Window* inWindow)
+        GridLayer::GridLayer(Window* inWindow)
             : Layer("Editor"),
             m_renderer(inWindow->getRenderer())
         {
             m_isInitialized = true;
         }
 
-        EditorLayer::~EditorLayer()
+        GridLayer::~GridLayer()
         {
             if (!m_isInitialized)
             {
@@ -35,7 +35,7 @@ namespace Chicane
             );
         }
 
-        void EditorLayer::build()
+        void GridLayer::build()
         {
             if (!m_isInitialized)
             {
@@ -49,7 +49,7 @@ namespace Chicane
             initVertexBuffers();
         }
 
-        void EditorLayer::destroy()
+        void GridLayer::destroy()
         {
             if (!m_isInitialized)
             {
@@ -63,7 +63,7 @@ namespace Chicane
             );
         }
 
-        void EditorLayer::rebuild()
+        void GridLayer::rebuild()
         {
             if (!m_isInitialized)
             {
@@ -74,7 +74,7 @@ namespace Chicane
             initFrameResources();
         }
 
-        void EditorLayer::render(
+        void GridLayer::render(
             Frame::Instance& outFrame,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Extent2D& inSwapChainExtent
@@ -143,7 +143,7 @@ namespace Chicane
             return;
         }
 
-        void EditorLayer::initFrameDescriptorSetLayout()
+        void GridLayer::initFrameDescriptorSetLayout()
         {
             if (!m_isInitialized)
             {
@@ -164,7 +164,7 @@ namespace Chicane
             );
         }
 
-        void EditorLayer::initGraphicsPipeline()
+        void GridLayer::initGraphicsPipeline()
         {
             if (!m_isInitialized)
             {
@@ -186,7 +186,7 @@ namespace Chicane
             m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
-        void EditorLayer::initFramebuffers()
+        void GridLayer::initFramebuffers()
         {
             if (!m_isInitialized)
             {
@@ -207,7 +207,7 @@ namespace Chicane
             }
         }
 
-        void EditorLayer::initFrameResources()
+        void GridLayer::initFrameResources()
         {
             if (!m_isInitialized)
             {
@@ -247,7 +247,7 @@ namespace Chicane
             }
         }
 
-        void EditorLayer::initVertexBuffers()
+        void GridLayer::initVertexBuffers()
         {
             std::vector<float> vertices = {
                 -1.0f, -1.0f,

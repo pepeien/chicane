@@ -11,18 +11,12 @@
 
 namespace Chicane
 {
-    Window::Window(
-        const WindowCreateInfo& inCreateInfo,
-        Controller* inController,
-        Level* inLevel
-    )
+    Window::Window(const WindowCreateInfo& inCreateInfo)
         : instance(nullptr),
         m_isFocused(inCreateInfo.isFocused),
         m_isResizable(inCreateInfo.isResizable),
         m_isMinimized(false),
-        m_renderer(nullptr),
-        m_level(inLevel),
-        m_controller(inController)
+        m_renderer(nullptr)
     {
         if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
@@ -66,26 +60,6 @@ namespace Chicane
     Renderer* Window::getRenderer()
     {
         return m_renderer.get();
-    }
-
-    Level* Window::getLevel()
-    {
-        return m_level;
-    }
-
-    void Window::setLevel(Level* inLevel)
-    {
-        m_level = inLevel;
-    }
-
-    Controller* Window::getController()
-    {
-        return m_controller;
-    }
-
-    void Window::setController(Controller* inController)
-    {
-        m_controller = inController;
     }
 
     Telemetry Window::getTelemetry()
@@ -329,21 +303,6 @@ namespace Chicane
         return m_isMinimized || (currentResolution.x <= 0.0f || currentResolution.y <= 0.0f);
     }
 
-    void Window::nextEvent(SDL_Event inEvent)
-    {
-        LOG_INFO("NEXT");
-    }
-
-    void Window::errorEvent(std::string inMessage)
-    {
-        LOG_INFO("ERROR");
-    }
-
-    void Window::completeEvent()
-    {
-        LOG_INFO("COMPLETE");
-    }
-
     void Window::initRenderer()
     {
         m_renderer = std::make_unique<Renderer>(this);
@@ -402,11 +361,11 @@ namespace Chicane
 
     void Window::onKeyDown(const SDL_KeyboardEvent& inEvent)
     {
-        if (m_controller == nullptr)
+        if (State::hasController() == false)
         {
             return;
         }
 
-        m_controller->onEvent(inEvent.keysym.scancode);
+        State::getController()->onEvent(inEvent.keysym.scancode);
     }
 }

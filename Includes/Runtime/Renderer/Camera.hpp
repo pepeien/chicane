@@ -42,6 +42,9 @@ namespace Chicane
         Camera();
 
     public:
+        virtual void onEvent(const SDL_Event& inEvent) { return; };
+
+    public:
         // State
         void panTo(const glm::vec2& inTarget);
         void rotateTo(const glm::vec2& inTarget);
@@ -59,7 +62,7 @@ namespace Chicane
         VectorUBO getVectorUBO();
         MatrixUBO getMatrixUBO();
 
-    private:
+    protected:
         // State
         glm::vec2 getPanSpeed();
         float getRotationSpeed();
@@ -74,7 +77,7 @@ namespace Chicane
 
         void updateUBOs();
 
-    private:
+    protected:
         // State
         glm::vec3 m_position;
         glm::vec3 m_focalPoint;

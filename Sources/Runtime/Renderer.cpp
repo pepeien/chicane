@@ -9,8 +9,7 @@ namespace Chicane
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
-        m_window(inWindow),
-        m_camera(std::make_unique<Camera>())
+        m_window(inWindow)
     {
         buildInstance();
         buildDebugMessenger();
@@ -31,8 +30,6 @@ namespace Chicane
         destroyCommandPool();
         destroySwapChain();
         deleteLayers();
-
-        m_camera.reset();
 
         destroyDevices();
         destroySurface();
@@ -135,32 +132,9 @@ namespace Chicane
 
     void Renderer::onEvent(const SDL_Event& inEvent)
     {
-        if (inEvent.type == SDL_MOUSEMOTION)
+        if (State::hasCamera())
         {
-            if (inEvent.motion.state == SDL_BUTTON_LMASK)
-            {
-                m_camera->rotateTo(
-                    glm::vec2(
-                        inEvent.motion.xrel,
-                        inEvent.motion.yrel
-                    )
-                );
-            }
-    
-            if (inEvent.motion.state == SDL_BUTTON_MMASK)
-            {
-                m_camera->zoomTo(inEvent.motion.yrel);
-            }
-
-            if (inEvent.motion.state == SDL_BUTTON_RMASK)
-            {
-                m_camera->panTo(
-                    glm::vec2(
-                        inEvent.motion.xrel,
-                        inEvent.motion.yrel
-                    )
-                );
-            }
+            State::getCamera()->onEvent(inEvent);
         }
 
         for (Layer* layer : m_layers)
@@ -405,10 +379,13 @@ namespace Chicane
             m_window->getResolution()
         );
 
-        m_camera->setViewportResolution(
-            m_swapChain.extent.width,
-            m_swapChain.extent.height
-        );
+        if (State::hasCamera())
+        {
+            State::getCamera()->setViewportResolution(
+                m_swapChain.extent.width,
+                m_swapChain.extent.height
+            );
+        }
 
         m_imageCount = static_cast<int>(m_swapChain.images.size());
 
@@ -517,14 +494,21 @@ namespace Chicane
 
     void Renderer::prepareCamera(Frame::Instance& outFrame)
     {
-        outFrame.cameraVectorUBO.instance = m_camera->getVectorUBO();
+        if (State::hasCamera() == false)
+        {
+            return;
+        }
+
+        Camera* camera = State::getCamera();
+
+        outFrame.cameraVectorUBO.instance = camera->getVectorUBO();
         memcpy(
             outFrame.cameraVectorUBO.writeLocation,
             &outFrame.cameraVectorUBO.instance,
             outFrame.cameraVectorUBO.allocationSize
         );
 
-        outFrame.cameraMatrixUBO.instance = m_camera->getMatrixUBO();
+        outFrame.cameraMatrixUBO.instance = camera->getMatrixUBO();
         memcpy(
             outFrame.cameraMatrixUBO.writeLocation,
             &outFrame.cameraMatrixUBO.instance,

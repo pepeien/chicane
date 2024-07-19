@@ -1,10 +1,12 @@
 #include "Editor/Editor.hpp"
 
+#include <filesystem>
+
 #include "Runtime/Grid.hpp"
+
+#include "Editor/Camera.hpp"
 #include "Editor/View.hpp"
 #include "Editor/Layer.hpp"
-
-#include <filesystem>
 
 namespace Chicane
 {
@@ -12,38 +14,30 @@ namespace Chicane
     {
         void run()
         {
-            std::unique_ptr<Level> level           = std::make_unique<Level>();
-            std::unique_ptr<Controller> controller = std::make_unique<Controller>();
-            std::unique_ptr<View> view             = std::make_unique<View>();
+            std::unique_ptr<ViewportCamera> camera = std::make_unique<ViewportCamera>();
+            State::setCamera(camera.get());
 
-            Actor* actor = new Actor();
-            actor->setModel(Box::read("Content/Meshes/Cube.box"));
-
+            std::unique_ptr<Level> level = std::make_unique<Level>();
             level->setSkybox(Box::read("Content/Textures/SKY_Gray.box"));
-            level->addActor(actor);
+            State::setLevel(level.get());
+
+            std::unique_ptr<View> view = std::make_unique<View>();
+            Grid::addView(view.get());
+            Grid::setActiveView(view->getId());
 
             WindowCreateInfo windowCreateInfo = {};
             windowCreateInfo.title         = "Chicane Editor";
             windowCreateInfo.resolution.x  = 1600;
             windowCreateInfo.resolution.y  = 900;
             windowCreateInfo.type          = WindowType::Windowed;
-            windowCreateInfo.displayIndex  = 0;
+            windowCreateInfo.displayIndex  = 1;
 
-            Grid::addView(view.get());
-            Grid::setActiveView(view->getId());
-
-            std::unique_ptr<Window> window = std::make_unique<Window>(
-                windowCreateInfo,
-                controller.get(),
-                level.get()
-            );
-
+            std::unique_ptr<Window> window = std::make_unique<Window>(windowCreateInfo);
             window->addLayer(
-                new EditorLayer(window.get()),
+                new GridLayer(window.get()),
                 LayerPushTecnique::BeforeLayer,
                 "Level"
             );
-
             window->run();
         }
     }

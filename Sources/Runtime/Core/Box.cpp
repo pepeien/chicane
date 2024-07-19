@@ -53,7 +53,7 @@ namespace Chicane
             );
             std::string entryData = splittedEntry[1];
 
-            type   = static_cast<uint8_t>(std::stoi(splittedEntryHeader[0]));
+            type   = static_cast<EntryType>(std::stoi(splittedEntryHeader[0]));
             vendor = static_cast<uint8_t>(std::stoi(splittedEntryHeader[1]));
             data   = std::vector<unsigned char>(entryData.begin(), entryData.end());
         }
@@ -72,7 +72,7 @@ namespace Chicane
             );
 
             Instance result;
-            result.type       = static_cast<uint8_t>(std::stoi(splittedRootHeader[2]));
+            result.type       = static_cast<Type>(std::stoi(splittedRootHeader[2]));
             result.name       = splittedRootHeader[3];
             result.entryCount = static_cast<uint32_t>(std::stoi(splittedRootHeader[4]));
             result.entries.reserve(result.entryCount);

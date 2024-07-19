@@ -22,8 +22,8 @@
 #include "Runtime/Renderer/CubeMap/Manager.hpp"
 #include "Runtime/Renderer/Frame.hpp"
 #include "Runtime/Renderer/Frame/Buffer.hpp"
-#include "Runtime/Renderer/Mesh.hpp"
-#include "Runtime/Renderer/Mesh/Manager.hpp"
+#include "Runtime/Renderer/Model.hpp"
+#include "Runtime/Renderer/Model/Manager.hpp"
 #include "Runtime/Renderer/Texture.hpp"
 #include "Runtime/Renderer/Texture/Manager.hpp"
 
@@ -34,7 +34,6 @@ namespace Chicane
     class Window;
 
     // Game
-    class Actor;
     class Controller;
 
     class Renderer
@@ -125,8 +124,5 @@ namespace Chicane
 
         // Layers
         std::vector<Layer*> m_layers;
-
-        // Camera
-        std::unique_ptr<Camera> m_camera;
     };
 }

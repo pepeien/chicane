@@ -6,7 +6,7 @@
 
 namespace Chicane
 {
-    namespace Mesh
+    namespace Model
     {
         struct AllocationInfo
         {

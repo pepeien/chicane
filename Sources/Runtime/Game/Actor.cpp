@@ -58,7 +58,7 @@ namespace Chicane
 
     bool Actor::hasModel()
     {
-        return m_model.type == static_cast<uint8_t>(Box::Type::Mesh);
+        return m_model.type == Box::Type::Mesh;
     }
 
     Box::Instance Actor::getModel()
