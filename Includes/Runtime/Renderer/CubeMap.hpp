@@ -40,7 +40,7 @@ namespace Chicane
         private:
             void load();
             void populate();
-    
+
             void initView();
             void initSampler();
             void initDescriptorSet();

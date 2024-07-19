@@ -64,12 +64,8 @@ namespace Chicane
                 );
             }
 
-            std::vector<const char*> usedLayers;
-            
-            if (IS_DEBUGGING)
-            {
-                usedLayers.insert(usedLayers.end(), VALIDATION_LAYERS.begin(), VALIDATION_LAYERS.end());
-            }
+            std::vector<const char*> layers     = LAYERS;
+            std::vector<const char*> extensions = DEVICE_EXTENSIONS;
 
             vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
 
@@ -79,11 +75,11 @@ namespace Chicane
                 static_cast<uint32_t>(queueCreateInfos.size()),
                 queueCreateInfos.data(),
 
-                static_cast<uint32_t>(usedLayers.size()),
-                usedLayers.data(),
+                static_cast<uint32_t>(layers.size()),
+                layers.data(),
 
-                static_cast<uint32_t>(DEVICE_EXTENSIONS.size()),
-                DEVICE_EXTENSIONS.data(),
+                static_cast<uint32_t>(extensions.size()),
+                extensions.data(),
 
                 &logicalDeviceFeatures
             );

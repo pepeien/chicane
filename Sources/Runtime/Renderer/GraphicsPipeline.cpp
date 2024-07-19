@@ -322,6 +322,8 @@ namespace Chicane
 
         Instance::~Instance()
         {
+            m_logicalDevice.waitIdle();
+
             m_logicalDevice.destroyPipeline(instance);
             m_logicalDevice.destroyPipelineLayout(layout);
             m_logicalDevice.destroyRenderPass(renderPass);

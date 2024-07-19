@@ -1,20 +1,58 @@
 #include "Runtime/Renderer/Camera.hpp"
 
+constexpr float MAX_CAMERA_SPAN_SPEED = 0.7f;
+
+constexpr float MIN_CAMERA_ZOOM_SPEED = 0.0f;
+constexpr float MAX_CAMERA_ZOOM_SPEED = 4.0f;
+
 namespace Chicane
 {
     Camera::Camera()
-    : m_matrixUBO({}),
-      m_vectorUBO({}),
-      m_position({ -300.0f, -50.0f, 50.0f }),
-      m_aim({ 0.0f, 0.0f, 0.0f }),
-      m_up({ 0.0f, 0.0f, 1.0f }),
-      m_width(0),
-      m_height(0)
+    : m_position({ 0.0f, 0.0f, 0.0f }),
+      m_focalPoint({ 0.0f, 0.0f, 0.0f }),
+      m_yaw(0.0f),
+      m_pitch(0.0f),
+      m_viewportWidth(1280),
+      m_viewportHeight(720),
+      m_fov(45.0f),
+      m_aspectRatio(1.77f),
+      m_nearClip(0.01f),
+      m_farClip(1000.0f),
+      m_moveDistance(0.7f),
+      m_matrixUBO({}),
+      m_vectorUBO({})
     {}
 
-    void Camera::setPosition(const glm::vec3& inPosition)
+    void Camera::panTo(const glm::vec2& inTarget)
     {
-        m_position = inPosition;
+        glm::vec2 panSpeed = getPanSpeed();
+
+		m_focalPoint += -getRight() * inTarget.x * panSpeed.x * m_moveDistance;
+		m_focalPoint += getUp() * inTarget.y * panSpeed.y * m_moveDistance;
+
+        updateUBOs();
+    }
+
+    void Camera::rotateTo(const glm::vec2& inTarget)
+    {
+        float rotationSpeed = getRotationSpeed();
+        float yawSign       = getUp().z < 0 ? -1.0f : 1.0f;
+
+		m_yaw   += yawSign * inTarget.x * rotationSpeed;
+		m_pitch += inTarget.y * rotationSpeed;
+
+        updateUBOs();
+    }
+
+    void Camera::zoomTo(float inTarget)
+    {
+        m_moveDistance -= inTarget * getZoomSpeed();
+
+		if (m_moveDistance < 1.0f)
+		{
+			m_focalPoint  += getUp();
+			m_moveDistance = 1.0f;
+		}
 
         updateUBOs();
     }
@@ -24,38 +62,34 @@ namespace Chicane
         return m_position;
     }
 
-    void Camera::addYaw(float inYaw)
+    void Camera::setViewportResolution(uint32_t inWidth, uint32_t inHeight)
     {
-        float clampedYaw = std::clamp(
-            inYaw,
-            -1.0f,
-            1.0f
+        m_viewportWidth  = inWidth;
+        m_viewportHeight = inHeight;
+
+        setAspectRatio(
+            static_cast<float>(m_viewportWidth / m_viewportHeight)
         );
-
-        m_aim.y += clampedYaw;
-
-        updateUBOs();
     }
 
-    void Camera::addPitch(float inPitch)
+    glm::quat Camera::getOrientation()
     {
-        float clampedPitch = std::clamp(
-            inPitch,
-            -1.0f,
-            1.0f
-        );
-
-        m_aim.z += clampedPitch;
-
-        updateUBOs();
+        return glm::quat(glm::vec3(-m_pitch, -m_yaw, 0.0f));
     }
 
-    void Camera::setResolution(uint32_t inWidth, uint32_t inHeight)
+    glm::vec3 Camera::getForward()
     {
-        m_width  = inWidth;
-        m_height = inHeight;
+        return glm::rotate(getOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
+    }
 
-        updateUBOs();
+    glm::vec3 Camera::getRight()
+    {
+        return glm::rotate(getOrientation(), glm::vec3(0.0f, -1.0f, 0.0f));
+    }
+
+    glm::vec3 Camera::getUp()
+    {
+        return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, 1.0f));
     }
 
     VectorUBO Camera::getVectorUBO()
@@ -68,22 +102,59 @@ namespace Chicane
         return m_matrixUBO;
     }
 
-    glm::mat4 Camera::generateView()
+    glm::vec2 Camera::getPanSpeed()
     {
-        return glm::lookAt(
-            m_position,
-            m_aim,
-            m_up
-        );
+        glm::vec2 result = glm::vec2(0.0f);
+
+        float x = std::min(m_viewportWidth / 1000.0f, MAX_CAMERA_SPAN_SPEED);
+		float y = std::min(m_viewportHeight / 1000.0f, MAX_CAMERA_SPAN_SPEED);
+
+        result.x = 0.0366f * (x * x) - 0.1778f * x + 0.3021f;
+        result.y = 0.0366f * (y * y) - 0.1778f * y + 0.3021f;
+
+		return result;
     }
 
-    glm::mat4 Camera::generateProjection()
+    float Camera::getRotationSpeed()
+    {
+        return 0.01f;
+    }
+
+    float Camera::getZoomSpeed()
+    {
+        float distance = m_moveDistance * 0.2f;
+		distance       = std::max(distance, MIN_CAMERA_ZOOM_SPEED);
+
+		float result = distance * distance;
+		result       = std::min(result, MAX_CAMERA_ZOOM_SPEED);
+
+		return result;
+    }
+
+    void Camera::setAspectRatio(float inAspectRatio)
+    {
+        m_aspectRatio = inAspectRatio;
+
+        updateUBOs();
+    }
+
+    glm::mat4 Camera::getView()
+    {
+		glm::quat orientation = getOrientation();
+
+		glm::mat4 result = glm::translate(glm::mat4(1.0f), m_position) * glm::toMat4(orientation);
+		result           = glm::inverse(result);
+
+        return result;
+    }
+
+    glm::mat4 Camera::getProjection()
     {
         glm::mat4 result = glm::perspective(
-            glm::radians(45.0f),
-            static_cast<float>(m_width / m_height),
-            0.1f,
-            5000.0f
+            glm::radians(m_fov),
+            m_aspectRatio,
+            m_nearClip,
+            m_farClip
         );
         // Normalize OpenGL's to coordinate system Vulkan
         result[1][1] *= -1;
@@ -93,8 +164,14 @@ namespace Chicane
 
     void Camera::updateUBOs()
     {
-        m_matrixUBO.view           = generateView();
-        m_matrixUBO.projection     = generateProjection();
+        m_position = m_focalPoint - getForward() * m_moveDistance;
+
+        m_vectorUBO.forward = getForward();
+        m_vectorUBO.right   = getRight();
+        m_vectorUBO.up      = getUp();
+
+        m_matrixUBO.view           = getView();
+        m_matrixUBO.projection     = getProjection();
         m_matrixUBO.viewProjection = m_matrixUBO.projection * m_matrixUBO.view;
     }
 }

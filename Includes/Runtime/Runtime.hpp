@@ -3,6 +3,8 @@
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 
+#define GLM_ENABLE_EXPERIMENTAL
+
 #define SDL_MAIN_HANDLED
 
 #define APPLICATION_NAME "Chicane Engine"
@@ -42,6 +44,7 @@
 // Vendor
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 #include "pugixml.hpp"
 
@@ -59,7 +62,7 @@
 #include "vulkan/vulkan.hpp"
 
 // Consts
-static const std::vector<const char*> VALIDATION_LAYERS = {
+static const std::vector<const char*> LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
 
@@ -84,5 +87,13 @@ namespace Chicane
     {
         int x = -1;
         int y = -1;
+    };
+
+    enum class LayerPushTecnique
+    {
+        Front,
+        Back,
+        BeforeLayer, // Require to have the ref layer `ID`
+        AfterLayer // Require to have the ref layer `ID`
     };
 }

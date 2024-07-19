@@ -94,22 +94,22 @@ namespace Chicane
                 throw std::runtime_error(SDL_GetError());
             }
 
-            std::vector<const char*> sdlExtensions(
+            std::vector<const char*> extensions(
                 sdlRawExtensions,
                 sdlRawExtensions + sdlExtensionCount
             );
 
             if (IS_DEBUGGING)
             {
-                sdlExtensions.push_back("VK_EXT_debug_utils");
+                extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
             }
 
-            if (areExtensionsSupported(sdlExtensions) == false)
+            if (areExtensionsSupported(extensions) == false)
             {
-                throw std::runtime_error("SDL extensions are not fully supported");
+                throw std::runtime_error("SDL layers are not fully supported");
             }
 
-            if (areValidationLayersSupported(VALIDATION_LAYERS) == false)
+            if (areValidationLayersSupported(LAYERS) == false)
             {
                 throw std::runtime_error("Validation Layers are not fully supported");
             }
@@ -118,7 +118,7 @@ namespace Chicane
             vkEnumerateInstanceVersion(&version);
 
             // Picked MAJOR version to ensure compability
-            version = VK_MAKE_API_VERSION(0, 1, 2, 0);
+            version = VK_MAKE_API_VERSION(0, 1, 3, 0);
 
             vk::ApplicationInfo applicationInfo = vk::ApplicationInfo(
                 APPLICATION_NAME,
@@ -132,11 +132,11 @@ namespace Chicane
                 vk::InstanceCreateFlags(),
                 &applicationInfo,
 
-                static_cast<uint32_t>(VALIDATION_LAYERS.size()),
-                VALIDATION_LAYERS.data(),
+                static_cast<uint32_t>(LAYERS.size()),
+                LAYERS.data(),
 
-                static_cast<uint32_t>(sdlExtensions.size()),
-                sdlExtensions.data()
+                static_cast<uint32_t>(extensions.size()),
+                extensions.data()
             );
 
             outInstance = vk::createInstance(createInfo);

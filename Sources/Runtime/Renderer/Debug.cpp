@@ -20,8 +20,8 @@ namespace Chicane
 
                 // Severity
                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
-                vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo    |
+                vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
 
                 // Type
