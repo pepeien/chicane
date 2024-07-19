@@ -1,9 +1,9 @@
-#version 460
+#version 450
 
 layout(set = 0, binding = 0) uniform CameraData {
-    vec4 forward;
-    vec4 right;
-    vec4 up;
+    vec3 forward;
+    vec3 right;
+    vec3 up;
 } cameraData;
 
 layout(location = 0) out vec3 forwards;

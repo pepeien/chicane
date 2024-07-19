@@ -1,7 +1,8 @@
 #include "Editor/Editor.hpp"
 
-#include "Editor/View.hpp"
 #include "Runtime/Grid.hpp"
+#include "Editor/View.hpp"
+#include "Editor/Layer.hpp"
 
 #include <filesystem>
 
@@ -15,7 +16,11 @@ namespace Chicane
             std::unique_ptr<Controller> controller = std::make_unique<Controller>();
             std::unique_ptr<View> view             = std::make_unique<View>();
 
+            Actor* actor = new Actor();
+            actor->setModel(Box::read("Content/Meshes/Cube.box"));
+
             level->setSkybox(Box::read("Content/Textures/SKY_Gray.box"));
+            level->addActor(actor);
 
             WindowCreateInfo windowCreateInfo = {};
             windowCreateInfo.title         = "Chicane Editor";
@@ -31,6 +36,12 @@ namespace Chicane
                 windowCreateInfo,
                 controller.get(),
                 level.get()
+            );
+
+            window->addLayer(
+                new EditorLayer(window.get()),
+                LayerPushTecnique::BeforeLayer,
+                "Level"
             );
 
             window->run();

@@ -130,11 +130,11 @@ namespace Chicane
 
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
+        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_renderPass;
-        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_name);
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
@@ -195,7 +195,7 @@ namespace Chicane
     void UILayer::initFramebuffers()
     {
         Frame::Buffer::CreateInfo framebufferCreateInfo = {};
-        framebufferCreateInfo.id              = m_name;
+        framebufferCreateInfo.id              = m_id;
         framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
         framebufferCreateInfo.renderPass      = m_renderPass;
         framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;

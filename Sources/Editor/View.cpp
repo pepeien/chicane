@@ -22,8 +22,8 @@ namespace Chicane
                 std::bind(&View::getFrametime, this, std::placeholders::_1)
             );
             addFunction(
-                "getActorDetails",
-                std::bind(&View::getActorDetails, this, std::placeholders::_1)
+                "addActor",
+                std::bind(&View::addActor, this, std::placeholders::_1)
             );
         }
 
@@ -39,12 +39,8 @@ namespace Chicane
             return std::string(frametime.begin(), frametime.end() - 5);
         }
 
-        int View::getActorDetails(Grid::ComponentEvent inEvent)
+        int View::addActor(Grid::ComponentEvent inEvent)
         {
-            Actor* actor = std::any_cast<Actor*>(inEvent.values[0]);
-
-            Grid::TextComponent::compileRaw(actor->getModel().name);
-
             return 0;
         }
     }

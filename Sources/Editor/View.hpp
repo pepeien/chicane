@@ -16,7 +16,7 @@ namespace Chicane
             std::uint64_t getFPS(Grid::ComponentEvent inEvent);
             std::string getFrametime(Grid::ComponentEvent inEvent);
 
-            int getActorDetails(Grid::ComponentEvent inEvent);
+            int addActor(Grid::ComponentEvent inEvent);
         };
     }
 }

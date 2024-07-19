@@ -1,4 +1,4 @@
-#version 460
+#version 450
 
 layout(set = 0, binding = 0) uniform UniformObject {
     mat4 view;
@@ -22,7 +22,7 @@ layout(location = 2) out vec3 fragNormalPosition;
 void main() {
     gl_Position = cameraData.viewProjection *
                   modelData.transforms[gl_InstanceIndex] *
-                  vec4(vertexPosition, 1.0);
+                  vec4(vertexPosition.xyz, 1.0);
 
     fragColor           = vertexColor;
     fragTexturePosition = vertexTexturePosition;

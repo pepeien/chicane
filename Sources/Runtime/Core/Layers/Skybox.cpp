@@ -90,11 +90,11 @@ namespace Chicane
 
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
+        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_name);
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
@@ -119,7 +119,7 @@ namespace Chicane
             vk::PipelineBindPoint::eGraphics,
             m_graphicsPipeline->layout,
             0,
-            outFrame.getDescriptorSet(m_name),
+            outFrame.getDescriptorSet(m_id),
             nullptr
         );
 
@@ -220,7 +220,7 @@ namespace Chicane
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo = {};
-            framebufferCreateInfo.id              = m_name;
+            framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
             framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;
@@ -235,7 +235,6 @@ namespace Chicane
         Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
         frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_renderer->m_swapChain.images.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-        frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Descriptor::initPool(
             m_frameDescriptor.pool,
@@ -245,8 +244,6 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            frame.setupCameraVectorUBO();
-
             vk::DescriptorSet descriptorSet;
             Descriptor::initSet(
                 descriptorSet,
@@ -254,7 +251,7 @@ namespace Chicane
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
-            frame.addDescriptorSet(m_name, descriptorSet);
+            frame.addDescriptorSet(m_id, descriptorSet);
 
             vk::WriteDescriptorSet writeDescriptorSet;
             writeDescriptorSet.dstSet          = descriptorSet;
@@ -262,7 +259,7 @@ namespace Chicane
             writeDescriptorSet.dstArrayElement = 0;
             writeDescriptorSet.descriptorCount = 1;
             writeDescriptorSet.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            writeDescriptorSet.pBufferInfo     = &frame.cameraVectorDescriptorBufferInfo;
+            writeDescriptorSet.pBufferInfo     = &frame.cameraMatrixDescriptorBufferInfo;
 
             frame.addWriteDescriptorSet(writeDescriptorSet);
         }

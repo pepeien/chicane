@@ -120,12 +120,12 @@ namespace Chicane
 
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f));
-        clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
+        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+        clearValues.push_back(vk::ClearDepthStencilValue(1.f, 0u));
 
         vk::RenderPassBeginInfo renderPassBeginInfo = {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_name);
+        renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
@@ -150,7 +150,7 @@ namespace Chicane
             vk::PipelineBindPoint::eGraphics,
             m_graphicsPipeline->layout,
             0,
-            outFrame.getDescriptorSet(m_name),
+            outFrame.getDescriptorSet(m_id),
             nullptr
         );
 
@@ -331,7 +331,7 @@ namespace Chicane
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo = {};
-            framebufferCreateInfo.id              = m_name;
+            framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
             framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;
@@ -363,7 +363,6 @@ namespace Chicane
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
             // Data
-            frame.setupCameraMatrixUBO();
             frame.setupModelData(m_level->getActors());
 
             // Scene
@@ -374,7 +373,7 @@ namespace Chicane
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
-            frame.addDescriptorSet(m_name, sceneDescriptorSet);
+            frame.addDescriptorSet(m_id, sceneDescriptorSet);
     
             vk::WriteDescriptorSet cameraMatrixWriteInfo;
             cameraMatrixWriteInfo.dstSet          = sceneDescriptorSet;

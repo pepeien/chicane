@@ -1,3 +1,4 @@
 <View id="home">
     <Text>{{ getFPS() }} FPS {{ getFrametime() }} ms</Text>
+    <Button onClick="addActor()">Add Actor</Button>
 </View>
