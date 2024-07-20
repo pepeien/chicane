@@ -11,7 +11,7 @@ set(NAME "Chicane")
 project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(BUILD_DIR    "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
+set(BUILD_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 
 set(ASSETS_DIR   "${CMAKE_CURRENT_LIST_DIR}/Assets")
 set(CONTENT_DIR  "${CMAKE_CURRENT_LIST_DIR}/Content")
