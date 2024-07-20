@@ -46,6 +46,9 @@ set_target_properties(
     ${EDITOR_TARGET_NAME}
     PROPERTIES
 
+    OUTPUT_NAME
+    "Editor"
+
     VS_DEBUGGER_WORKING_DIRECTORY
     "${BUILD_DIR}"
 

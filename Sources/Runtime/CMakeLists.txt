@@ -51,29 +51,42 @@ endif()
 add_library(
     ${RUNTIME_TARGET_NAME}
     STATIC
-    ""
+    ${SOURCES}
 )
 
 add_library(
-    "${NAME}::${RUNTIME_TARGET_NAME}"
+    "${NAME}::Runtime"
 
     ALIAS
         ${RUNTIME_TARGET_NAME}
 )
 
-target_sources(
+set_target_properties(
     ${RUNTIME_TARGET_NAME}
+    PROPERTIES
 
-    PRIVATE
-        ${SOURCES}
+    OUTPUT_NAME
+    "Chicane"
+
+    VS_DEBUGGER_WORKING_DIRECTORY
+    "${BUILD_DIR}"
+
+    RUNTIME_OUTPUT_DIRECTORY
+    "${BUILD_DIR}"
+
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG
+    "${BUILD_DIR}"
+
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE
+    "${BUILD_DIR}"
 )
 
 target_include_directories(
     ${RUNTIME_TARGET_NAME}
 
     PUBLIC
-        $<INSTALL_INTERFACE:Includes>
         $<BUILD_INTERFACE:${INCLUDES_DIR}>
+        $<INSTALL_INTERFACE:Includes>
 
         ${Vulkan_INCLUDE_DIRS}
         ${VENDORS_DIR}
@@ -95,4 +108,4 @@ target_link_libraries(
         ${Vulkan_LIBRARIES}
 )
 
-add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENT_TARGET_NAME} ${SHADERS_TARGET_NAME})
+add_dependencies(${RUNTIME_TARGET_NAME} ${ASSETS_TARGET_NAME} ${CONTENT_TARGET_NAME})

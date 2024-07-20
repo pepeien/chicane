@@ -11,25 +11,26 @@ set(NAME "Chicane")
 project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
-set(BUILD_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
+set(BUILD_DIR    "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
 
-set(ASSETS_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/Assets")
-set(CONTENT_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Content")
-set(INCLUDES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Includes")
-set(SOURCES_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
-set(VENDORS_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/Vendors")
+set(ASSETS_DIR   "${CMAKE_CURRENT_LIST_DIR}/Assets")
+set(CONTENT_DIR  "${CMAKE_CURRENT_LIST_DIR}/Content")
+set(CMAKE_DIR    "${CMAKE_CURRENT_LIST_DIR}/CMake")
+set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
+set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
+set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 
-set(CONTENT_TARGET_NAME "Content")
+set(ASSETS_TARGET_NAME "${NAME}_Assets")
+set(ASSETS_SOURCE_DIR  "${ASSETS_DIR}")
+
+set(CONTENT_TARGET_NAME "${NAME}_Content")
 set(CONTENT_SOURCE_DIR  "${CONTENT_DIR}")
 
-set(RUNTIME_TARGET_NAME "Runtime")
+set(RUNTIME_TARGET_NAME "${NAME}_Runtime")
 set(RUNTIME_SOURCE_DIR  "${SOURCES_DIR}/Runtime")
 
-set(EDITOR_TARGET_NAME "Editor")
+set(EDITOR_TARGET_NAME "${NAME}_Editor")
 set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
-
-set(SHADERS_TARGET_NAME "Shaders")
-set(SHADERS_SOURCE_DIR  "${ASSETS_DIR}/Shaders")
 
 ############## Setup Libs #######################
 find_package(Vulkan REQUIRED)
@@ -39,12 +40,13 @@ if (NOT Vulkan_FOUND)
 endif()
 
 ##############  Add subdirectories  #######################
+add_subdirectory(Assets)
+
 add_subdirectory(Content)
 
-add_subdirectory(Assets/Shaders)
+add_subdirectory(Sources/Runtime)
 
 add_subdirectory(Sources/Editor)
-add_subdirectory(Sources/Runtime)
 
 add_subdirectory(Vendors/pugixml)
 add_subdirectory(Vendors/SDL2)

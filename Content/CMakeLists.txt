@@ -5,8 +5,15 @@ file(
     GLOB_RECURSE
 
     SOURCES
-        "${CONTENT_SOURCE_DIR}/*.box"
-        "${CONTENT_SOURCE_DIR}/*.xml"
+        "${CONTENT_SOURCE_DIR}/*"
+)
+
+list(
+    FILTER
+        SOURCES
+    EXCLUDE
+    REGEX
+        ".*CMakeLists.txt$"
 )
 
 ##############  Copy files  #######################
