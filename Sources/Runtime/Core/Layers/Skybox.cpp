@@ -212,8 +212,8 @@ namespace Chicane
         graphicsPipelineCreateInfo.hasVertices          = false;
         graphicsPipelineCreateInfo.hasDepth             = false;
         graphicsPipelineCreateInfo.logicalDevice        = m_renderer->m_logicalDevice;
-        graphicsPipelineCreateInfo.vertexShaderPath     = "Shaders/sky.vert.spv";
-        graphicsPipelineCreateInfo.fragmentShaderPath   = "Shaders/sky.frag.spv";
+        graphicsPipelineCreateInfo.vertexShaderPath     = "Assets/Shaders/sky.vert.spv";
+        graphicsPipelineCreateInfo.fragmentShaderPath   = "Assets/Shaders/sky.frag.spv";
         graphicsPipelineCreateInfo.swapChainExtent      = m_renderer->m_swapChain.extent;
         graphicsPipelineCreateInfo.swapChainImageFormat = m_renderer->m_swapChain.format;
         graphicsPipelineCreateInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };

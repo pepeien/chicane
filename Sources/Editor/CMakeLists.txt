@@ -1,8 +1,3 @@
-##############  Set values  #######################
-set(CONTENT_TARGET_NAME "EditorContent")
-set(CONTENT_SOURCE_DIR  "${EDITOR_SOURCE_DIR}/Content")
-set(CONTENT_BUILD_DIR   "${BUILD_DIR}/Content")
-
 ##############  Set compiler  #######################
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
@@ -78,5 +73,4 @@ target_link_libraries(
         Chicane::Runtime
 )
 
-##############  Add subdirectories  #######################
-add_subdirectory(Content)
+add_dependencies(${EDITOR_TARGET_NAME} ${RUNTIME_TARGET_NAME})

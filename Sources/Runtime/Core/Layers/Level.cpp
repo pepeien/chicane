@@ -316,8 +316,8 @@ namespace Chicane
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
         createInfo.logicalDevice         = m_renderer->m_logicalDevice;
-        createInfo.vertexShaderPath      = "Shaders/level.vert.spv";
-        createInfo.fragmentShaderPath    = "Shaders/level.frag.spv";
+        createInfo.vertexShaderPath      = "Assets/Shaders/level.vert.spv";
+        createInfo.fragmentShaderPath    = "Assets/Shaders/level.frag.spv";
         createInfo.bindingDescription    = Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
         createInfo.swapChainExtent       = m_renderer->m_swapChain.extent;

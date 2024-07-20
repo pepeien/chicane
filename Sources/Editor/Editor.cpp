@@ -18,7 +18,7 @@ namespace Chicane
             State::setCamera(camera.get());
 
             std::unique_ptr<Level> level = std::make_unique<Level>();
-            level->setSkybox(Box::read("Content/Textures/SKY_Gray.box"));
+            level->setSkybox(Box::read("Content/Editor/Textures/SKY_Gray.box"));
             State::setLevel(level.get());
 
             std::unique_ptr<View> view = std::make_unique<View>();

@@ -1,10 +1,12 @@
+add_custom_target(${SHADERS_TARGET_NAME})
+
 ##############  Set source files  #######################
 file(
     GLOB_RECURSE
-    SOURCES
 
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.frag"
-    "${CMAKE_CURRENT_SOURCE_DIR}/*.vert"
+    SOURCES
+        "${SHADERS_SOURCE_DIR}/*.frag"
+        "${SHADERS_SOURCE_DIR}/*.vert"
 )
 
 ##############  Copy files  #######################
@@ -15,9 +17,9 @@ foreach(GLSL ${SOURCES})
     get_filename_component(FILE_NAME ${GLSL} NAME)
 
     set(SPIRV_DIR "${FILE_DIR}")
-    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
+    string(REPLACE "${SHADERS_SOURCE_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
 
-    set(SPIRV_DIR "${BUILD_DIR}/Shaders/${SPIRV_DIR}")
+    set(SPIRV_DIR "${BUILD_DIR}/Assets/Shaders/${SPIRV_DIR}")
     string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
 
     file(MAKE_DIRECTORY "${SPIRV_DIR}")
@@ -25,17 +27,11 @@ foreach(GLSL ${SOURCES})
     set(SPIRV "${SPIRV_DIR}/${FILE_NAME}.spv")
     string(REPLACE "//" "/" SPIRV ${SPIRV})
 
-    execute_process(
-        COMMAND ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
-        OUTPUT_VARIABLE ${SPIRV}
+    add_custom_command(
+        TARGET
+            ${SHADERS_TARGET_NAME}
+        POST_BUILD
+        COMMAND
+            ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
     )
-
-    list(APPEND SPIRV_BINARY_FILES ${SPIRV})
 endforeach(GLSL)
-
-add_custom_target(
-    ${SHADERS_TARGET_NAME}
-    DEPENDS
-
-    ${SPIRV_BINARY_FILES}
-)

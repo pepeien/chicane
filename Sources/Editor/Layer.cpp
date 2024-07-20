@@ -176,8 +176,8 @@ namespace Chicane
             createInfo.hasVertices          = false;
             createInfo.hasDepth             = true;
             createInfo.logicalDevice        = m_renderer->m_logicalDevice;
-            createInfo.vertexShaderPath     = "Shaders/grid.vert.spv";
-            createInfo.fragmentShaderPath   = "Shaders/grid.frag.spv";
+            createInfo.vertexShaderPath     = "Assets/Shaders/grid.vert.spv";
+            createInfo.fragmentShaderPath   = "Assets/Shaders/grid.frag.spv";
             createInfo.swapChainExtent      = m_renderer->m_swapChain.extent;
             createInfo.swapChainImageFormat = m_renderer->m_swapChain.format;
             createInfo.depthFormat          = m_renderer->m_swapChain.images[0].depthFormat;

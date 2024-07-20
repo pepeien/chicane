@@ -10,7 +10,7 @@ namespace Chicane
         View::View()
             : Grid::View(
                 "home",
-                "./Content/View/Home.xml"
+                "Content/Editor/View/Home.xml"
             )
         {
             addFunction(

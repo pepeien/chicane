@@ -94,3 +94,5 @@ target_link_libraries(
     PRIVATE
         ${Vulkan_LIBRARIES}
 )
+
+add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENT_TARGET_NAME} ${SHADERS_TARGET_NAME})
