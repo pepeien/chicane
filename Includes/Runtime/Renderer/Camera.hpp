@@ -5,18 +5,15 @@
 
 namespace Chicane
 {
-    struct VectorUBO
-    {
-        glm::vec3 forward = { 1.0f, 0.0f, 0.0f };
-        glm::vec3 right   = { 0.0f, -1.0f, 0.0f };
-        glm::vec3 up      = { 0.0f, 0.0f, 1.0f };
-    };
-
-    struct MatrixUBO
+    struct UBO
     {
         glm::mat4 view;
         glm::mat4 projection;
         glm::mat4 viewProjection;
+
+        glm::vec4 forward;
+        glm::vec4 right;
+        glm::vec4 up;
     };
 
     struct UBOBundle
@@ -24,16 +21,7 @@ namespace Chicane
         size_t allocationSize;
         void* writeLocation;
         Buffer::Instance buffer;
-    };
-
-    struct MatrixUBOBundle : public UBOBundle
-    {
-        MatrixUBO instance;
-    };
-
-    struct VectorUBOBundle : public UBOBundle
-    {
-        VectorUBO instance;
+        UBO instance;
     };
 
     class Camera
@@ -59,8 +47,7 @@ namespace Chicane
         glm::vec3 getRight();
         glm::vec3 getUp();
 
-        VectorUBO getVectorUBO();
-        MatrixUBO getMatrixUBO();
+        UBO getUBO();
 
     protected:
         // State
@@ -96,7 +83,6 @@ namespace Chicane
         float m_moveDistance;
 
         // Render
-        MatrixUBO m_matrixUBO;
-        VectorUBO m_vectorUBO;
+        UBO m_UBO;
     };
 }

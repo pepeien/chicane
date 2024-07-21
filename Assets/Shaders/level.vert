@@ -1,32 +1,36 @@
 #version 450
 
-layout(set = 0, binding = 0) uniform UniformObject {
+layout(set = 0, binding = 0) uniform CameraUBO {
     mat4 view;
     mat4 projection;
     mat4 viewProjection;
-} cameraData;
+
+    vec4 forward;
+    vec4 right;
+    vec4 up;
+} camera;
 
 layout(std140, set = 0, binding = 1) readonly buffer StorageBuffer {
     mat4 transforms[];
-} modelData;
+} model;
 
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 vertexColor;
-layout(location = 2) in vec2 vertexTexturePosition;
-layout(location = 3) in vec3 vertexNormalPosition;
+layout(location = 0) out vec3 outColor;
+layout(location = 1) out vec2 outTexturePosition;
+layout(location = 2) out vec3 outNormalPosition;
 
-layout(location = 0) out vec3 fragColor;
-layout(location = 1) out vec2 fragTexturePosition;
-layout(location = 2) out vec3 fragNormalPosition;
+layout(location = 0) in vec3 inVertexPosition;
+layout(location = 1) in vec3 inVertexColor;
+layout(location = 2) in vec2 inVertexTexturePosition;
+layout(location = 3) in vec3 inVertexNormalPosition;
 
 void main() {
-    gl_Position = cameraData.viewProjection *
-                  modelData.transforms[gl_InstanceIndex] *
-                  vec4(vertexPosition.xyz, 1.0);
+    gl_Position = camera.viewProjection *
+                  model.transforms[gl_InstanceIndex] *
+                  vec4(inVertexPosition.xyz, 1.0);
 
-    fragColor           = vertexColor;
-    fragTexturePosition = vertexTexturePosition;
-    fragNormalPosition  = normalize(
-        (modelData.transforms[gl_InstanceIndex] * vec4(vertexNormalPosition, 0.0)).xyz
+    outColor           = inVertexColor;
+    outTexturePosition = inVertexTexturePosition;
+    outNormalPosition  = normalize(
+        (model.transforms[gl_InstanceIndex] * vec4(inVertexNormalPosition, 0.0)).xyz
     );
 }

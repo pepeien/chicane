@@ -16,6 +16,7 @@ if (NOT DEFINED BUILD_DIR)
 endif()
 
 set(ASSETS_DIR   "${CMAKE_CURRENT_LIST_DIR}/Assets")
+set(CONTENT_DIR  "${CMAKE_CURRENT_LIST_DIR}/Content")
 set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
 set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
 set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
@@ -23,8 +24,8 @@ set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 set(ASSETS_TARGET_NAME "${NAME}_Assets")
 set(ASSETS_SOURCE_DIR  "${ASSETS_DIR}")
 
-set(RUNTIME_TARGET_NAME "${NAME}_Runtime")
-set(RUNTIME_SOURCE_DIR  "${SOURCES_DIR}/Runtime")
+set(CONTENT_TARGET_NAME "${NAME}_Content")
+set(CONTENT_SOURCE_DIR  "${CONTENT_DIR}")
 
 ############## Setup Libs #######################
 find_package(Vulkan REQUIRED)
@@ -35,8 +36,9 @@ endif()
 
 ##############  Add subdirectories  #######################
 add_subdirectory(Assets)
+add_subdirectory(Content)
 
-add_subdirectory(Sources/Runtime)
+add_subdirectory(Sources)
 
 add_subdirectory(Vendors/pugixml)
 add_subdirectory(Vendors/SDL2)

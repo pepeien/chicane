@@ -19,8 +19,8 @@ namespace Chicane
         public:
             void setupSync();
 
-            void setupCameraVectorUBO();
-            void setupCameraMatrixUBO();
+            void setupCameraUBO();
+
             void setupModelData(std::vector<Actor*> inActors);
             void updateModelData(std::vector<Actor*> inActors);
     
@@ -35,8 +35,7 @@ namespace Chicane
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();
 
-            void destroyCameraMatrixMemory();
-            void destroyCameraVectorMemory();
+            void destroyCameraMemory();
             void destroyModelMemory();
             void destroy();
 
@@ -64,11 +63,8 @@ namespace Chicane
             vk::Semaphore renderSemaphore;
     
             // Resources
-            MatrixUBOBundle cameraMatrixUBO;
-            vk::DescriptorBufferInfo cameraMatrixDescriptorBufferInfo;
-
-            VectorUBOBundle cameraVectorUBO;
-            vk::DescriptorBufferInfo cameraVectorDescriptorBufferInfo;
+            UBOBundle cameraUBO;
+            vk::DescriptorBufferInfo cameraDescriptorBufferInfo;
 
             Model::Bundle modelData;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;

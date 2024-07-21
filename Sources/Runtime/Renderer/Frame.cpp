@@ -19,59 +19,32 @@ namespace Chicane
                 logicalDevice
             );
         }
-
-        void Instance::setupCameraVectorUBO()
-        {
-            Chicane::Buffer::CreateInfo bufferCreateInfo;
-            bufferCreateInfo.logicalDevice    = logicalDevice;
-            bufferCreateInfo.physicalDevice   = physicalDevice;
-            bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                                vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size             = sizeof(VectorUBO);
-            bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
-
-            Buffer::init(
-                cameraVectorUBO.buffer,
-                bufferCreateInfo
-            );
-
-            cameraVectorUBO.allocationSize = bufferCreateInfo.size;
-            cameraVectorUBO.writeLocation  = logicalDevice.mapMemory(
-                cameraVectorUBO.buffer.memory,
-                0,
-                cameraVectorUBO.allocationSize
-            );
-
-            cameraVectorDescriptorBufferInfo.buffer = cameraVectorUBO.buffer.instance;
-            cameraVectorDescriptorBufferInfo.offset = 0;
-            cameraVectorDescriptorBufferInfo.range  = cameraVectorUBO.allocationSize;
-        }
             
-        void Instance::setupCameraMatrixUBO()
+        void Instance::setupCameraUBO()
         {
             Chicane::Buffer::CreateInfo bufferCreateInfo;
             bufferCreateInfo.logicalDevice    = logicalDevice;
             bufferCreateInfo.physicalDevice   = physicalDevice;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                 vk::MemoryPropertyFlagBits::eHostCoherent;
-            bufferCreateInfo.size             = sizeof(MatrixUBO);
+            bufferCreateInfo.size             = sizeof(UBO);
             bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
             Buffer::init(
-                cameraMatrixUBO.buffer,
+                cameraUBO.buffer,
                 bufferCreateInfo
             );
 
-            cameraMatrixUBO.allocationSize = bufferCreateInfo.size;
-            cameraMatrixUBO.writeLocation  = logicalDevice.mapMemory(
-                cameraMatrixUBO.buffer.memory,
+            cameraUBO.allocationSize = bufferCreateInfo.size;
+            cameraUBO.writeLocation  = logicalDevice.mapMemory(
+                cameraUBO.buffer.memory,
                 0,
-                cameraMatrixUBO.allocationSize
+                cameraUBO.allocationSize
             );
 
-            cameraMatrixDescriptorBufferInfo.buffer = cameraMatrixUBO.buffer.instance;
-            cameraMatrixDescriptorBufferInfo.offset = 0;
-            cameraMatrixDescriptorBufferInfo.range  = cameraMatrixUBO.allocationSize;
+            cameraDescriptorBufferInfo.buffer = cameraUBO.buffer.instance;
+            cameraDescriptorBufferInfo.offset = 0;
+            cameraDescriptorBufferInfo.range  = cameraUBO.allocationSize;
         }
     
         void Instance::setupModelData(std::vector<Actor*> inActors)
@@ -195,31 +168,17 @@ namespace Chicane
         }
 
 
-        void Instance::destroyCameraMatrixMemory()
+        void Instance::destroyCameraMemory()
         {
-            if (!cameraMatrixUBO.buffer.memory)
+            if (!cameraUBO.buffer.memory)
             { 
                 return;
             }
 
-            logicalDevice.unmapMemory(cameraMatrixUBO.buffer.memory);
+            logicalDevice.unmapMemory(cameraUBO.buffer.memory);
             Buffer::destroy(
                 logicalDevice,
-                cameraMatrixUBO.buffer
-            );
-        }
-
-        void Instance::destroyCameraVectorMemory()
-        {
-            if (!cameraVectorUBO.buffer.memory)
-            {
-                return;
-            }
-
-            logicalDevice.unmapMemory(cameraVectorUBO.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                cameraVectorUBO.buffer
+                cameraUBO.buffer
             );
         }
     
@@ -254,8 +213,7 @@ namespace Chicane
             logicalDevice.destroySemaphore(presentSemaphore);
             logicalDevice.destroySemaphore(renderSemaphore);
 
-            destroyCameraMatrixMemory();
-            destroyCameraVectorMemory();
+            destroyCameraMemory();
             destroyModelMemory();
         }
     }

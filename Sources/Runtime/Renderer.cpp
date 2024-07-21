@@ -501,18 +501,11 @@ namespace Chicane
 
         Camera* camera = State::getCamera();
 
-        outFrame.cameraVectorUBO.instance = camera->getVectorUBO();
+        outFrame.cameraUBO.instance = camera->getUBO();
         memcpy(
-            outFrame.cameraVectorUBO.writeLocation,
-            &outFrame.cameraVectorUBO.instance,
-            outFrame.cameraVectorUBO.allocationSize
-        );
-
-        outFrame.cameraMatrixUBO.instance = camera->getMatrixUBO();
-        memcpy(
-            outFrame.cameraMatrixUBO.writeLocation,
-            &outFrame.cameraMatrixUBO.instance,
-            outFrame.cameraMatrixUBO.allocationSize
+            outFrame.cameraUBO.writeLocation,
+            &outFrame.cameraUBO.instance,
+            outFrame.cameraUBO.allocationSize
         );
     }
 }

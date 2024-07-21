@@ -177,6 +177,8 @@ namespace Chicane
     {
         Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 1;
+
+        /// Camera
         frameLayoutBidings.indices.push_back(0);
         frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
         frameLayoutBidings.counts.push_back(1);
@@ -265,8 +267,7 @@ namespace Chicane
             writeDescriptorSet.dstArrayElement = 0;
             writeDescriptorSet.descriptorCount = 1;
             writeDescriptorSet.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            writeDescriptorSet.pBufferInfo     = &frame.cameraMatrixDescriptorBufferInfo;
-
+            writeDescriptorSet.pBufferInfo     = &frame.cameraDescriptorBufferInfo;
             frame.addWriteDescriptorSet(writeDescriptorSet);
         }
     }

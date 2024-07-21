@@ -391,7 +391,7 @@ namespace Chicane
             cameraMatrixWriteInfo.dstArrayElement = 0;
             cameraMatrixWriteInfo.descriptorCount = 1;
             cameraMatrixWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-            cameraMatrixWriteInfo.pBufferInfo     = &frame.cameraMatrixDescriptorBufferInfo;
+            cameraMatrixWriteInfo.pBufferInfo     = &frame.cameraDescriptorBufferInfo;
             frame.addWriteDescriptorSet(cameraMatrixWriteInfo);
 
             vk::WriteDescriptorSet modelWriteInfo;

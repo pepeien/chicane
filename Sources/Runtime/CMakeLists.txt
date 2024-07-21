@@ -40,13 +40,6 @@ file(
     ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
 )
 
-############## Setup Libs #######################
-find_package(Vulkan REQUIRED)
-
-if (NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Vulkan not found")
-endif()
-
 ############## Setup Static #######################
 add_library(
     ${RUNTIME_TARGET_NAME}
@@ -108,4 +101,4 @@ target_link_libraries(
         ${Vulkan_LIBRARIES}
 )
 
-add_dependencies(${RUNTIME_TARGET_NAME} ${ASSETS_TARGET_NAME})
+add_dependencies(${RUNTIME_TARGET_NAME} ${ASSETS_TARGET_NAME} ${CONTENT_TARGET_NAME})

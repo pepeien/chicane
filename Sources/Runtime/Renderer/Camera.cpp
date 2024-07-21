@@ -19,8 +19,7 @@ namespace Chicane
       m_nearClip(0.01f),
       m_farClip(1000.0f),
       m_moveDistance(0.7f),
-      m_matrixUBO({}),
-      m_vectorUBO({})
+      m_UBO({})
     {}
 
     void Camera::panTo(const glm::vec2& inTarget)
@@ -74,7 +73,7 @@ namespace Chicane
 
     glm::quat Camera::getOrientation()
     {
-        return glm::quat(glm::vec3(-m_pitch, -m_yaw, 0.0f));
+        return glm::quat(glm::vec3(0.0f, -m_pitch, -m_yaw));
     }
 
     glm::vec3 Camera::getForward()
@@ -92,14 +91,9 @@ namespace Chicane
         return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, 1.0f));
     }
 
-    VectorUBO Camera::getVectorUBO()
+    UBO Camera::getUBO()
     {
-        return m_vectorUBO;
-    }
-
-    MatrixUBO Camera::getMatrixUBO()
-    {
-        return m_matrixUBO;
+        return m_UBO;
     }
 
     glm::vec2 Camera::getPanSpeed()
@@ -166,12 +160,12 @@ namespace Chicane
     {
         m_position = m_focalPoint - getForward() * m_moveDistance;
 
-        m_vectorUBO.forward = getForward();
-        m_vectorUBO.right   = getRight();
-        m_vectorUBO.up      = getUp();
+        m_UBO.view           = getView();
+        m_UBO.projection     = getProjection();
+        m_UBO.viewProjection = m_UBO.projection * m_UBO.view;
 
-        m_matrixUBO.view           = getView();
-        m_matrixUBO.projection     = getProjection();
-        m_matrixUBO.viewProjection = m_matrixUBO.projection * m_matrixUBO.view;
+        m_UBO.forward = glm::vec4(getForward(), 0.0f);
+        m_UBO.right   = glm::vec4(getRight(), 0.0f);
+        m_UBO.up      = glm::vec4(getUp(), 0.0f);
     }
 }
