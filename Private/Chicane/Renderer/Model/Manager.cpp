@@ -14,7 +14,7 @@ namespace Chicane
             {
                 m_usedIds.push_back(inId);
 
-                if (m_instanceMap.find(inId) == m_instanceMap.end())
+                if (m_instanceMap.find(inId) != m_instanceMap.end())
                 {
                     process(inId);
 

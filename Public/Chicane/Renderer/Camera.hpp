@@ -34,9 +34,9 @@ namespace Chicane
 
     public:
         // State
-        void panTo(const glm::vec2& inTarget);
-        void rotateTo(const glm::vec2& inTarget);
-        void zoomTo(float inTarget);
+        void pan(const glm::vec2& inDelta);
+        void rotate(const glm::vec2& inDelta);
+        void zoom(float inDelta);
 
         glm::vec3 getPosition();
         
@@ -62,6 +62,7 @@ namespace Chicane
         glm::mat4 getView();
         glm::mat4 getProjection();
 
+        void updatePosition();
         void updateUBOs();
 
     protected:

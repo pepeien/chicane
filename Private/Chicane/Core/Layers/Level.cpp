@@ -191,7 +191,7 @@ namespace Chicane
 
     void LevelLayer::loadActor(Actor* inActor)
     {
-        if (!inActor->hasModel())
+        if (!inActor->hasMesh())
         {
             return;
         }
@@ -203,7 +203,7 @@ namespace Chicane
             build();
         }
 
-        Box::Instance model = inActor->getModel();
+        Box::Instance model = inActor->getMesh();
 
         for (Box::Entry modelComponent : model.entries)
         {
