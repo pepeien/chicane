@@ -78,6 +78,7 @@ namespace Chicane
     {
         int count            = 0;
         float time           = 0.0f;
+        float delta          = 0.0f;
         uint64_t framerate   = 0;
         uint64_t lastTime    = 0;
         uint64_t currentTime = 0;

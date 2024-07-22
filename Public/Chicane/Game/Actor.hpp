@@ -21,6 +21,12 @@ namespace Chicane
         Actor();
 
     public:
+        virtual void onTick(float inDelta) { return; };
+
+    public:
+        bool canTick();
+        void setCanTick(bool bInCanTick);
+
         glm::mat4 getPosition();
 
         void setRelativeTranslation(const glm::vec3& inTranslation);
@@ -43,6 +49,8 @@ namespace Chicane
         void setScale(const glm::mat4& inBase, const glm::vec3& inScale);
 
     protected:
+        bool m_bCanTick;
+
         glm::mat4 m_position;
         Transform m_transform;
 

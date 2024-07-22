@@ -42,6 +42,8 @@ namespace Chicane
         void initMaterialResources();
         void buildAssets();
 
+        void tickActors();
+
     private:
         Renderer* m_renderer;
         Level* m_level;

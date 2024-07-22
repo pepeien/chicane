@@ -186,7 +186,18 @@ namespace Chicane
 
         inCommandBuffer.endRenderPass();
 
-        return;
+        tickActors();
+    }
+
+    void LevelLayer::loadEvents()
+    {
+        m_level->addActorSubscription(
+            std::bind(
+                &LevelLayer::loadActor,
+                this,
+                std::placeholders::_1
+            )
+        );
     }
 
     void LevelLayer::loadActor(Actor* inActor)
@@ -449,14 +460,23 @@ namespace Chicane
         );
     }
 
-    void LevelLayer::loadEvents()
+    void LevelLayer::tickActors()
     {
-        m_level->addActorSubscription(
-            std::bind(
-                &LevelLayer::loadActor,
-                this,
-                std::placeholders::_1
-            )
-        );
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
+        float deltaTime = State::getTelemetry().delta / 1000.0f;
+
+        for (Actor* actor : m_level->getActors())
+        {
+            if (actor->canTick() == false)
+            {
+                continue;
+            }
+
+            actor->onTick(deltaTime);
+        }
     }
 }

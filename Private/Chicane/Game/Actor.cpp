@@ -5,9 +5,20 @@
 namespace Chicane
 {
     Actor::Actor()
-        : m_position(glm::mat4(1.0f)),
+        : m_bCanTick(false),
+        m_position(glm::mat4(1.0f)),
         m_transform({})
     {}
+
+    bool Actor::canTick()
+    {
+        return m_bCanTick;
+    }
+
+    void Actor::setCanTick(bool bInCanTick)
+    {
+        m_bCanTick = bInCanTick;
+    }
 
     glm::mat4 Actor::getPosition()
     {
@@ -83,17 +94,17 @@ namespace Chicane
         m_position = glm::rotate(
             inBase,
             radianAngles.x,
-            glm::vec3(0.0f, 1.0f, 0.0f)
+            glm::vec3(1.0f, 0.0f, 0.0f)
         );
         m_position = glm::rotate(
             inBase,
             radianAngles.y,
-            glm::vec3(0.0f, 0.0f, 1.0f)
+            glm::vec3(0.0f, 1.0f, 0.0f)
         );
         m_position = glm::rotate(
             inBase,
             radianAngles.z,
-            glm::vec3(1.0f, 0.0f, 0.0f)
+            glm::vec3(0.0f, 0.0f, 1.0f)
         );
     }
 

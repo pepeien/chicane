@@ -326,6 +326,7 @@ namespace Chicane
             m_telemetry.lastTime  = m_telemetry.currentTime;
             m_telemetry.count     = -1;
             m_telemetry.time      = float(1000.0 / m_telemetry.framerate);
+            m_telemetry.delta     = delta;
         }
 
         m_telemetry.count++;
