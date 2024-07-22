@@ -4,6 +4,13 @@
 
 void Camera::onEvent(const SDL_Event& inEvent)
 {
+    if (inEvent.type == SDL_MOUSEWHEEL)
+    {
+        zoom(
+            5.0f * inEvent.wheel.y
+        );
+    }
+
     if (inEvent.type != SDL_MOUSEMOTION)
     {
         return;
