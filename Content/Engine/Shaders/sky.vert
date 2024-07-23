@@ -12,19 +12,19 @@ layout(set = 0, binding = 0) uniform CameraUBO {
 
 layout(location = 0) out vec3 outForward;
 
-const vec2 positions[6] = vec2[](
-	vec2( 1.0,  1.0),
-	vec2(-1.0, -1.0),
-	vec2(-1.0,  1.0),
-	vec2(-1.0, -1.0),
-	vec2( 1.0,  1.0),
-	vec2( 1.0, -1.0)
+const vec3 positions[6] = vec3[](
+	vec3( 1.0,  1.0, 0.0),
+	vec3(-1.0, -1.0, 0.0),
+	vec3(-1.0,  1.0, 0.0),
+	vec3(-1.0, -1.0, 0.0),
+	vec3( 1.0,  1.0, 0.0),
+	vec3( 1.0, -1.0, 0.0)
 );
 
 void main() {
-    vec2 position = positions[gl_VertexIndex];
+    vec3 position = positions[gl_VertexIndex];
 
-    gl_Position = vec4(position, 0.0, 1.0);
+    gl_Position = vec4(position, 1.0);
 
     outForward = normalize(
         camera.forward + (position.x * camera.right) - (position.y * camera.up)
