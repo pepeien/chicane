@@ -318,14 +318,14 @@ namespace Chicane
     {
         m_telemetry.currentTime = SDL_GetTicks64() / 1000;
 
-        float delta = (m_telemetry.currentTime - m_telemetry.lastTime) / 1000.0f;
+        std::uint64_t delta = m_telemetry.currentTime - m_telemetry.lastTime;
 
-        if (delta > 0.0f) {
+        if (delta > 0) {
             m_telemetry.framerate = std::max(1, int(m_telemetry.count / delta));
             m_telemetry.lastTime  = m_telemetry.currentTime;
             m_telemetry.count     = -1;
             m_telemetry.time      = float(1000.0 / m_telemetry.framerate);
-            m_telemetry.delta     = delta;
+            m_telemetry.delta     = delta / 1000.0f;
         }
 
         m_telemetry.count++;
