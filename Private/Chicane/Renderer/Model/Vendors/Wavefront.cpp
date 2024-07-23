@@ -32,11 +32,11 @@ namespace Chicane
             }
 
             void extractGeometryVertices(
-                std::vector<glm::vec3>& outGeometryVertices,
+                std::vector<Vec<float>::Three>& outGeometryVertices,
                 const std::vector<std::string>& inDataSet
             )
             {
-                glm::vec3 value;
+                Vec<float>::Three value;
                 value.x = std::stof(inDataSet[1].c_str());
                 value.y = std::stof(inDataSet[2].c_str());
                 value.z = std::stof(inDataSet[3].c_str());
@@ -45,11 +45,11 @@ namespace Chicane
             }
 
             void extractTextureVertices(
-                std::vector<glm::vec2>& outTextureVertices,
+                std::vector<Vec<float>::Two>& outTextureVertices,
                 const std::vector<std::string>& inDataSet
             )
             {
-                glm::vec2 value;
+                Vec<float>::Two value;
                 value.x = std::stof(inDataSet[1].c_str());
                 value.y = std::stof(inDataSet[2].c_str());
 
@@ -57,11 +57,11 @@ namespace Chicane
             }
 
             void extractNormalVertices(
-                std::vector<glm::vec3>& outNormalVertices,
+                std::vector<Vec<float>::Three>& outNormalVertices,
                 const std::vector<std::string>& inDataSet
             )
             {
-                glm::vec3 value;
+                Vec<float>::Three value;
                 value.x = std::stof(inDataSet[1].c_str());
                 value.y = std::stof(inDataSet[2].c_str());
                 value.z = std::stof(inDataSet[3].c_str());
@@ -85,10 +85,10 @@ namespace Chicane
                 }
 
                 Vertex::Instance vertex;
-                vertex.color           = glm::vec3(1.0f, 0.0f, 0.0f);
-                vertex.position        = glm::vec3(0.0f);
-                vertex.texturePosition = glm::vec2(0.0f);
-                vertex.normal          = glm::vec3(0.0f);
+                vertex.color           = Vec<float>::Three(1.0f, 0.0f, 0.0f);
+                vertex.position        = Vec<float>::Three(0.0f);
+                vertex.texturePosition = Vec<float>::Two(0.0f);
+                vertex.normal          = Vec<float>::Three(0.0f);
 
                 std::vector<std::string> inSplittedDataset = Helper::splitString(
                     inDataSet,

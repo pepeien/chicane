@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Renderer/Buffer.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
 
@@ -20,7 +21,7 @@ namespace Chicane
 
         struct Bundle
         {
-            std::vector<glm::mat4> transforms;
+            std::vector<Mat<float>::Four> transforms;
             size_t allocationSize;
             void* writeLocation;
             Buffer::Instance buffer;
@@ -28,9 +29,9 @@ namespace Chicane
 
         struct ParseBundle
         {
-            std::vector<glm::vec3> geometryVertices;
-            std::vector<glm::vec2> textureVertices;
-            std::vector<glm::vec3> normalVertices;
+            std::vector<Vec<float>::Three> geometryVertices;
+            std::vector<Vec<float>::Two> textureVertices;
+            std::vector<Vec<float>::Three> normalVertices;
         };
 
         struct ParseResult

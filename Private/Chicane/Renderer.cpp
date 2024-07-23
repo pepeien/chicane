@@ -381,7 +381,7 @@ namespace Chicane
 
         if (State::hasCamera())
         {
-            State::getCamera()->setViewportResolution(
+            State::getCamera()->setViewport(
                 m_swapChain.extent.width,
                 m_swapChain.extent.height
             );
@@ -500,6 +500,8 @@ namespace Chicane
         }
 
         Camera* camera = State::getCamera();
+        camera->updatePosition();
+        camera->updateUBO();
 
         outFrame.cameraUBO.instance = camera->getUBO();
         memcpy(

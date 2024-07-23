@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Grid.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Game/Controller.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Renderer/Camera.hpp"
@@ -39,8 +40,8 @@ namespace Chicane
         Window* getWindow();
         void setWindow(Window* inWindow);
 
-        Vec2 getResolution();
-        void setResolution(const Vec2& inResolution);
+        Vec<int>::Two getResolution();
+        void setResolution(const Vec<int>::Two& inResolution);
 
         Telemetry getTelemetry();
     }

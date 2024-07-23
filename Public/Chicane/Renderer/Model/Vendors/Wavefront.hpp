@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Helper.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
 
@@ -28,15 +29,15 @@ namespace Chicane
             Property indetifyProperty(const std::string& inIdentifier);
 
             void extractGeometryVertices(
-                std::vector<glm::vec3>& outGeometryVertices,
+                std::vector<Vec<float>::Three>& outGeometryVertices,
                 const std::vector<std::string>& inDataSet
             );
             void extractTextureVertices(
-                std::vector<glm::vec2>& outTextureVertices,
+                std::vector<Vec<float>::Two>& outTextureVertices,
                 const std::vector<std::string>& inDataSet
             );
             void extractNormalVertices(
-                std::vector<glm::vec3>& outNormalVertices,
+                std::vector<Vec<float>::Three>& outNormalVertices,
                 const std::vector<std::string>& inDataSet
             );
             void extractTriangleVertex(

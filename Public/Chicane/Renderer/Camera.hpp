@@ -1,19 +1,21 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Game/Actor.hpp"
 #include "Chicane/Renderer/Buffer.hpp"
 
 namespace Chicane
 {
     struct UBO
     {
-        glm::mat4 view;
-        glm::mat4 projection;
-        glm::mat4 viewProjection;
+        Mat<float>::Four view;
+        Mat<float>::Four projection;
+        Mat<float>::Four viewProjection;
 
-        glm::vec4 forward;
-        glm::vec4 right;
-        glm::vec4 up;
+        Vec<float>::Four forward;
+        Vec<float>::Four right;
+        Vec<float>::Four up;
     };
 
     struct UBOBundle
@@ -33,25 +35,42 @@ namespace Chicane
         virtual void onEvent(const SDL_Event& inEvent) { return; };
 
     public:
-        // State
-        void pan(const glm::vec2& inDelta);
-        void rotate(const glm::vec2& inDelta);
+        void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
+        void setViewport(const Vec<std::uint32_t>::Two& inViewportResolution);
+
+        // Transform
+        Vec<float>::Three getPosition();
+        void setPosition(float inX, float inY, float inZ);
+        void setPosition(const Vec<float>::Three& inPosition);
+        void updatePosition();
+
+        void setRotation(float inPitch, float inRoll, float inYaw);
+        void setRotation(const Vec<float>::Three& inRotation);
+
+        // Movement
+        void pan(float inX, float inY);
+        void pan(const Vec<float>::Two& inDelta);
+    
         void zoom(float inDelta);
 
-        glm::vec3 getPosition();
-        
-        void setViewportResolution(uint32_t inWidth, uint32_t inHeight);
+        // Rotation Movement
+        void addPitch(float inPitch);
+        void addRoll(float inRoll);
+        void addYaw(float inYaw);
 
-        glm::quat getOrientation();
-        glm::vec3 getForward();
-        glm::vec3 getRight();
-        glm::vec3 getUp();
+        // State
+        Quat<float>::Default getOrientation();
+        Vec<float>::Three getForward();
+        Vec<float>::Three getRight();
+        Vec<float>::Three getUp();
 
+        // Render
         UBO getUBO();
+        void updateUBO();
 
     protected:
         // State
-        glm::vec2 getPanSpeed();
+        Vec<float>::Two getPanSpeed();
         float getRotationSpeed();
         float getZoomSpeed();
 
@@ -59,19 +78,13 @@ namespace Chicane
         void setAspectRatio(float inAspectRatio);
 
         // Render
-        glm::mat4 getView();
-        glm::mat4 getProjection();
-
-        void updatePosition();
-        void updateUBOs();
+        Mat<float>::Four getView();
+        Mat<float>::Four getProjection();
 
     protected:
         // State
-        glm::vec3 m_position;
-        glm::vec3 m_focalPoint;
-
-        float m_yaw;
-        float m_pitch;
+        Transform m_transform;
+        Vec<float>::Three m_focalPoint;
 
         // Settings
         std::uint32_t m_viewportWidth;

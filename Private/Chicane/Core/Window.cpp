@@ -4,7 +4,6 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Camera.hpp"
 #include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Layer.hpp"
 #include "Chicane/Core/Layers/Level.hpp"
 #include "Chicane/Core/Layers/Skybox.hpp"
 #include "Chicane/Core/Layers/UI.hpp"
@@ -69,18 +68,18 @@ namespace Chicane
 
     void Window::addLayer(
         Layer* inLayer,
-        LayerPushTecnique inAdditionTecnique,
+        Layer::PushTecnique inAdditionTecnique,
         const std::string& inId
     )
     {
         switch (inAdditionTecnique)
         {
-        case LayerPushTecnique::Front:
+        case Layer::PushTecnique::Front:
             m_renderer->pushLayerStart(inLayer);
 
             return;
 
-        case LayerPushTecnique::BeforeLayer:
+        case Layer::PushTecnique::BeforeLayer:
             m_renderer->pushLayerBefore(
                 inId,
                 inLayer
@@ -88,7 +87,7 @@ namespace Chicane
 
             return;
 
-        case LayerPushTecnique::AfterLayer:
+        case Layer::PushTecnique::AfterLayer:
             m_renderer->pushLayerAfter(
                 inId,
                 inLayer
@@ -166,7 +165,7 @@ namespace Chicane
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
-    Vec2 Window::getResolution()
+    Vec<int>::Two Window::getResolution()
     {
         int currentWidth  = 0;
         int currentHeight = 0;
@@ -177,10 +176,10 @@ namespace Chicane
             &currentHeight
         );
 
-        return { currentWidth, currentHeight };
+        return Vec<int>::Two(currentWidth, currentHeight);
     }
 
-    void Window::setResolution(const Vec2& inResolution)
+    void Window::setResolution(const Vec<int>::Two& inResolution)
     {
         if (m_isResizable)
         {
@@ -194,7 +193,7 @@ namespace Chicane
         );
     }
 
-    Vec2 Window::getPosition()
+    Vec<int>::Two Window::getPosition()
     {
         int currentX  = 0;
         int currentY  = 0;
@@ -205,7 +204,7 @@ namespace Chicane
             &currentY
         );
 
-        return { currentX, currentY };
+        return Vec<int>::Two(currentX, currentY);
     }
 
     void Window::setTitle(const std::string& inTitle)
@@ -298,7 +297,7 @@ namespace Chicane
 
     bool Window::isMinimized()
     {
-        Vec2 currentResolution = getResolution();
+        Vec<int>::Two currentResolution = getResolution();
 
         return m_isMinimized || (currentResolution.x <= 0.0f || currentResolution.y <= 0.0f);
     }
@@ -319,9 +318,9 @@ namespace Chicane
     {
         m_telemetry.currentTime = SDL_GetTicks64() / 1000;
 
-        uint64_t delta = m_telemetry.currentTime - m_telemetry.lastTime;
+        float delta = (m_telemetry.currentTime - m_telemetry.lastTime) / 1000.0f;
 
-        if (delta >= 1) {
+        if (delta > 0.0f) {
             m_telemetry.framerate = std::max(1, int(m_telemetry.count / delta));
             m_telemetry.lastTime  = m_telemetry.currentTime;
             m_telemetry.count     = -1;

@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Layer.hpp"
 
 namespace Chicane
 {
     class Controller;
     class Renderer;
     class Level;
-    class Layer;
     class LevelLayer;
     class SkyboxLayer;
 
@@ -20,12 +21,12 @@ namespace Chicane
 
     struct WindowCreateInfo
     {
-        std::string title     = "";
-        Vec2 resolution       = {};
-        int displayIndex      = 0;
-        WindowType type       = WindowType::Windowed;
-        bool isFocused        = false;
-        bool isResizable      = true; // Only takes effect when the type is `WindowType::Windowed`
+        std::string title        = "";
+        Vec<int>::Two resolution = Vec<int>::Two(0);
+        int displayIndex         = 0;
+        WindowType type          = WindowType::Windowed;
+        bool isFocused           = false;
+        bool isResizable         = true; // Only takes effect when the type is `WindowType::Windowed`
     };
 
     class Window
@@ -41,7 +42,7 @@ namespace Chicane
 
         void addLayer(
             Layer* inLayer,
-            LayerPushTecnique inAdditionTecnique = LayerPushTecnique::Back,
+            Layer::PushTecnique inAdditionTecnique = Layer::PushTecnique::Back,
             const std::string& inId = ""
         );
 
@@ -55,10 +56,10 @@ namespace Chicane
 
         void setTitle(const std::string& inTitle);
 
-        Vec2 getResolution();
-        void setResolution(const Vec2& inResolution);
+        Vec<int>::Two getResolution();
+        void setResolution(const Vec<int>::Two& inResolution);
 
-        Vec2 getPosition();
+        Vec<int>::Two getPosition();
 
         void setDisplay(int inMonitorIndex);
 

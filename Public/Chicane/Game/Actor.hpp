@@ -2,15 +2,15 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Box.hpp"
-#include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/Math.hpp"
 
 namespace Chicane
 {
     struct Transform
     {
-        glm::vec3 translation = glm::vec3(1.0f);
-        glm::vec3 rotation    = glm::vec3(0.0f);
-        glm::vec3 scale       = glm::vec3(1.0f);
+        Vec<float>::Three translation = Vec<float>::Three(1.0f, 1.0f, 1.0f);
+        Vec<float>::Three rotation    = Vec<float>::Three(0.0f, 0.0f, 0.0f);
+        Vec<float>::Three scale       = Vec<float>::Three(1.0f, 1.0f, 1.0f);
     };
 
     class ActorComponent;
@@ -27,31 +27,31 @@ namespace Chicane
         bool canTick();
         void setCanTick(bool bInCanTick);
 
-        glm::mat4 getPosition();
+        Mat<float>::Four getPosition();
 
-        void setRelativeTranslation(const glm::vec3& inTranslation);
+        void setRelativeTranslation(const Vec<float>::Three& inTranslation);
         // Rotation values should be in degrees
-        void setRelativeRotation(const glm::vec3& inRotation);
-        void setRelativeScale(const glm::vec3& inScale);
+        void setRelativeRotation(const Vec<float>::Three& inRotation);
+        void setRelativeScale(const Vec<float>::Three& inScale);
 
-        void setAbsoluteTranslation(const glm::vec3& inTranslation);
+        void setAbsoluteTranslation(const Vec<float>::Three& inTranslation);
         // Rotation values should be in degrees
-        void setAbsoluteRotation(const glm::vec3& inRotation);
-        void setAbsoluteScale(const glm::vec3& inScale);
+        void setAbsoluteRotation(const Vec<float>::Three& inRotation);
+        void setAbsoluteScale(const Vec<float>::Three& inScale);
 
         bool hasMesh();
         Box::Instance getMesh();
         void setMesh(const Box::Instance& inMesh);
 
     protected:
-        void setTranslation(const glm::mat4& inBase, const glm::vec3& inTranslation);
-        void setRotation(const glm::mat4& inBase, const glm::vec3& inRotation);
-        void setScale(const glm::mat4& inBase, const glm::vec3& inScale);
+        void setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation);
+        void setRotation(const Mat<float>::Four& inBase, const Vec<float>::Three& inRotation);
+        void setScale(const Mat<float>::Four& inBase, const Vec<float>::Three& inScale);
 
     protected:
         bool m_bCanTick;
 
-        glm::mat4 m_position;
+        Mat<float>::Four m_position;
         Transform m_transform;
 
         Box::Instance m_mesh;

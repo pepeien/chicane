@@ -2,9 +2,6 @@
 
 #include "Chicane/Base.hpp"
 
-#include <any>
-#include <functional>
-
 namespace Chicane
 {
     namespace Grid
@@ -16,6 +13,7 @@ namespace Chicane
             std::string name             = "";
             std::vector<std::any> params = {};
         };
+
         struct ComponentEvent {
             std::vector<std::any> values = {};
         };

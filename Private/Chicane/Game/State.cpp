@@ -101,7 +101,7 @@ namespace Chicane
             m_window = inWindow;
         }
 
-        void setResolution(const Vec2& inResolution)
+        void setResolution(const Vec<int>::Two& inResolution)
         {
             if (m_window == nullptr)
             {
@@ -111,7 +111,7 @@ namespace Chicane
             m_window->setResolution(inResolution);
         }
 
-        Vec2 getResolution()
+        Vec<int>::Two getResolution()
         {
             if (m_window == nullptr)
             {

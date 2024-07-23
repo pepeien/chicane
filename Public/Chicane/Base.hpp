@@ -26,6 +26,7 @@
 
 // System
 #include <algorithm>
+#include <any>
 #include <array>
 #include <cstdlib>
 #include <ctime>
@@ -82,19 +83,5 @@ namespace Chicane
         uint64_t framerate   = 0;
         uint64_t lastTime    = 0;
         uint64_t currentTime = 0;
-    };
-
-    struct Vec2
-    {
-        int x = -1;
-        int y = -1;
-    };
-
-    enum class LayerPushTecnique
-    {
-        Front,
-        Back,
-        BeforeLayer, // Require to have the ref layer `ID`
-        AfterLayer // Require to have the ref layer `ID`
     };
 }

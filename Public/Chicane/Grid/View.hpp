@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -23,8 +24,8 @@ namespace Chicane
             std::string getId();
 
             virtual void show(
-                const Vec2& inResolution,
-                const Vec2& inPosition
+                const Vec<int>::Two& inResolution,
+                const Vec<int>::Two& inPosition
             );
 
             bool hasVariable(const std::string& inId);
@@ -43,8 +44,8 @@ namespace Chicane
             void validate(const pugi::xml_node& inNode);
             void compile(
                 pugi::xml_node& outNode,
-                const Vec2& inResolution,
-                const Vec2& inPosition
+                const Vec<int>::Two& inResolution,
+                const Vec<int>::Two& inPosition
             );
 
         protected:

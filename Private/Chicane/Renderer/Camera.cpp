@@ -8,39 +8,91 @@ constexpr float MAX_CAMERA_ZOOM_SPEED = 4.0f;
 namespace Chicane
 {
     Camera::Camera()
-    : m_position({ 0.0f, 0.0f, 0.0f }),
-      m_focalPoint({ 0.0f, 0.0f, 0.0f }),
-      m_yaw(0.0f),
-      m_pitch(0.0f),
-      m_viewportWidth(1280),
-      m_viewportHeight(720),
-      m_fov(45.0f),
-      m_aspectRatio(1.77f),
-      m_nearClip(0.01f),
-      m_farClip(10000.0f),
-      m_moveDistance(0.7f),
-      m_UBO({})
+        : m_transform({}),
+        m_focalPoint({ 0.0f, 0.0f, 0.0f }),
+        m_viewportWidth(1280),
+        m_viewportHeight(720),
+        m_fov(45.0f),
+        m_aspectRatio(1.77f),
+        m_nearClip(0.01f),
+        m_farClip(10000.0f),
+        m_moveDistance(0.7f),
+        m_UBO({})
     {}
 
-    void Camera::pan(const glm::vec2& inDelta)
+    void Camera::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
     {
-        glm::vec2 panSpeed = getPanSpeed();
+        m_viewportWidth  = inWidth;
+        m_viewportHeight = inHeight;
 
-		m_focalPoint += -getRight() * inDelta.x * panSpeed.x * m_moveDistance;
-		m_focalPoint += getUp() * inDelta.y * panSpeed.y * m_moveDistance;
-
-        updateUBOs();
+        setAspectRatio(
+            static_cast<float>(m_viewportWidth / m_viewportHeight)
+        );
     }
 
-    void Camera::rotate(const glm::vec2& inDelta)
+    void Camera::setViewport(const Vec<std::uint32_t>::Two& inViewportResolution)
     {
-        float rotationSpeed = getRotationSpeed();
-        float yawSign       = getUp().y < 0 ? -1.0f : 1.0f;
+        setViewport(
+            inViewportResolution.x,
+            inViewportResolution.y
+        );
+    }
 
-		m_yaw   += yawSign * inDelta.x * rotationSpeed;
-		m_pitch += inDelta.y * rotationSpeed;
+    Vec<float>::Three Camera::getPosition()
+    {
+        return m_transform.translation;
+    }
 
-        updateUBOs();
+    void Camera::setPosition(float inX, float inY, float inZ)
+    {
+        zoom(inX);
+        pan(inY, inZ);
+    }
+
+    void Camera::setPosition(const Vec<float>::Three& inPosition)
+    {
+        setPosition(
+            inPosition.x,
+            inPosition.y,
+            inPosition.z
+        );
+    }
+
+    void Camera::updatePosition()
+    {
+        m_transform.translation = m_focalPoint - getForward() * m_moveDistance;
+    }
+
+    void Camera::setRotation(const Vec<float>::Three& inRotation)
+    {
+        setRotation(
+            inRotation.x,
+            inRotation.y,
+            inRotation.z
+        );
+    }
+
+    void Camera::setRotation(float inPitch, float inRoll, float inYaw)
+    {
+        addPitch(inPitch);
+        addRoll(inRoll);
+        addYaw(inYaw);
+    }
+
+    void Camera::pan(float inX, float inY)
+    {
+        Vec<float>::Two panSpeed = getPanSpeed();
+
+		m_focalPoint += -getRight() * inX * panSpeed.x * m_moveDistance;
+		m_focalPoint += getUp() * inY * panSpeed.y * m_moveDistance;
+    }
+
+    void Camera::pan(const Vec<float>::Two& inDelta)
+    {
+        pan(
+            inDelta.x,
+            inDelta.y
+        );
     }
 
     void Camera::zoom(float inDelta)
@@ -52,43 +104,43 @@ namespace Chicane
 			m_focalPoint  += getForward();
 			m_moveDistance = 1.0f;
 		}
-
-        updateUBOs();
     }
 
-    glm::vec3 Camera::getPosition()
+    void Camera::addPitch(float inPitch)
     {
-        return m_position;
+		m_transform.rotation.x += inPitch * getRotationSpeed();
     }
 
-    void Camera::setViewportResolution(uint32_t inWidth, uint32_t inHeight)
+    void Camera::addRoll(float inRoll)
     {
-        m_viewportWidth  = inWidth;
-        m_viewportHeight = inHeight;
-
-        setAspectRatio(
-            static_cast<float>(m_viewportWidth / m_viewportHeight)
-        );
+        m_transform.rotation.y += inRoll * getRotationSpeed();
     }
 
-    glm::quat Camera::getOrientation()
+    void Camera::addYaw(float inYaw)
     {
-        return glm::quat(glm::vec3(-m_pitch, -m_yaw, 0.0f));
+        float yawSign = getUp().y < 0 ? -1.0f : 1.0f;
+
+		m_transform.rotation.z += inYaw * getRotationSpeed();
     }
 
-    glm::vec3 Camera::getForward()
+    Quat<float>::Default Camera::getOrientation()
     {
-        return glm::rotate(getOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
+        return Quat<float>::Default(m_transform.rotation * -1.0f);
     }
 
-    glm::vec3 Camera::getRight()
+    Vec<float>::Three Camera::getForward()
     {
-        return glm::rotate(getOrientation(), glm::vec3(1.0f, 0.0f, 0.0f));
+        return glm::rotate(getOrientation(), Vec<float>::Three(0.0f, 0.0f, -1.0f));
     }
 
-    glm::vec3 Camera::getUp()
+    Vec<float>::Three Camera::getRight()
     {
-        return glm::rotate(getOrientation(), glm::vec3(0.0f, 1.0f, 0.0f));
+        return glm::rotate(getOrientation(), Vec<float>::Three(1.0f, 0.0f, 0.0f));
+    }
+
+    Vec<float>::Three Camera::getUp()
+    {
+        return glm::rotate(getOrientation(), Vec<float>::Three(0.0f, 1.0f, 0.0f));
     }
 
     UBO Camera::getUBO()
@@ -96,9 +148,20 @@ namespace Chicane
         return m_UBO;
     }
 
-    glm::vec2 Camera::getPanSpeed()
+    void Camera::updateUBO()
     {
-		return glm::vec2(0.01f);
+        m_UBO.view           = getView();
+        m_UBO.projection     = getProjection();
+        m_UBO.viewProjection = m_UBO.projection * m_UBO.view;
+
+        m_UBO.forward = Vec<float>::Four(getForward(), 0.0f);
+        m_UBO.right   = Vec<float>::Four(getRight(), 0.0f);
+        m_UBO.up      = Vec<float>::Four(getUp(), 0.0f);
+    }
+
+    Vec<float>::Two Camera::getPanSpeed()
+    {
+		return Vec<float>::Two(0.01f);
     }
 
     float Camera::getRotationSpeed()
@@ -120,23 +183,19 @@ namespace Chicane
     void Camera::setAspectRatio(float inAspectRatio)
     {
         m_aspectRatio = inAspectRatio;
-
-        updateUBOs();
     }
 
-    glm::mat4 Camera::getView()
+    Mat<float>::Four Camera::getView()
     {
-		glm::quat orientation = getOrientation();
-
-		glm::mat4 result = glm::translate(glm::mat4(1.0f), m_position) * glm::toMat4(orientation);
+		Mat<float>::Four result = glm::translate(Mat<float>::Four(1.0f), m_transform.translation) * glm::toMat4(getOrientation());
 		result           = glm::inverse(result);
 
         return result;
     }
 
-    glm::mat4 Camera::getProjection()
+    Mat<float>::Four Camera::getProjection()
     {
-        glm::mat4 result = glm::perspective(
+        Mat<float>::Four result = glm::perspective(
             glm::radians(m_fov),
             m_aspectRatio,
             m_nearClip,
@@ -146,23 +205,5 @@ namespace Chicane
         result[1][1] *= -1;
 
         return result;
-    }
-
-    void Camera::updatePosition()
-    {
-        m_position = m_focalPoint - getForward() * m_moveDistance;
-    }
-
-    void Camera::updateUBOs()
-    {
-        updatePosition();
-
-        m_UBO.view           = getView();
-        m_UBO.projection     = getProjection();
-        m_UBO.viewProjection = m_UBO.projection * m_UBO.view;
-
-        m_UBO.forward = glm::vec4(getForward(), 0.0f);
-        m_UBO.right   = glm::vec4(getRight(), 0.0f);
-        m_UBO.up      = glm::vec4(getUp(), 0.0f);
     }
 }

@@ -116,7 +116,7 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            const Vec2& inResolution
+            const Vec<int>::Two& inResolution
         )
         {
             SupportDetails supportDetails;

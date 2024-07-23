@@ -1,13 +1,21 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-
 #include "Chicane/Renderer/Frame.hpp"
 
 namespace Chicane
 {
     class Layer
     {
+    public:
+        enum class PushTecnique
+        {
+            Front,
+            Back,
+            BeforeLayer, // Require to have the ref layer `ID`
+            AfterLayer // Require to have the ref layer `ID`
+        };
+
     public:
         Layer()
             : Layer("Unamed")

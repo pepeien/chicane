@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
 
 namespace Chicane
 {
@@ -8,10 +9,10 @@ namespace Chicane
     {
         struct Instance
         {
-            glm::vec3 position;
-            glm::vec3 color;
-            glm::vec2 texturePosition;
-            glm::vec3 normal;
+            Vec<float>::Three position;
+            Vec<float>::Three color;
+            Vec<float>::Two texturePosition;
+            Vec<float>::Three normal;
         };
 
         vk::VertexInputBindingDescription getBindingDescription();
