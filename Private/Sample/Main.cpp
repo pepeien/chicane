@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
 
         Chicane::Actor* floor = new Chicane::Actor();
         floor->setMesh(Chicane::Box::read("Content/Sample/Meshes/Cube.box"));
-        floor->setAbsoluteScale(glm::vec3(2500.0f, 2500.0f, 10.0f));
+        floor->setAbsoluteScale(Chicane::Vec<float>::Three(2500.0f, 2500.0f, 10.0f));
 
         Apple* apple = new Apple();
-        apple->setAbsoluteTranslation(glm::vec3(0.0f, 0.0f, 10.0f));
+        apple->setAbsoluteTranslation(Chicane::Vec<float>::Three(0.0f, 0.0f, 10.0f));
 
         std::unique_ptr<Chicane::Level> level = std::make_unique<Chicane::Level>();
         level->addActor(floor);

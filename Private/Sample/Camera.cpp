@@ -2,6 +2,13 @@
 
 #include "Chicane/Base.hpp"
 
+Camera::Camera()
+    : Chicane::Camera()
+{
+    setPosition(-250000.0f, 0.0f, 0.0f);
+    setRotation(-120.0f, 0.0f, 0.0f);
+}
+
 void Camera::onEvent(const SDL_Event& inEvent)
 {
     if (inEvent.type == SDL_MOUSEWHEEL)
@@ -19,12 +26,8 @@ void Camera::onEvent(const SDL_Event& inEvent)
     switch (inEvent.motion.state)
     {
     case SDL_BUTTON_LMASK:
-        rotate(
-            glm::vec2(
-                inEvent.motion.xrel,
-                inEvent.motion.yrel
-            )
-        );
+        addPitch(inEvent.motion.yrel);
+        addYaw(inEvent.motion.xrel);
 
         break;
     case SDL_BUTTON_MMASK:
@@ -34,7 +37,7 @@ void Camera::onEvent(const SDL_Event& inEvent)
 
     case SDL_BUTTON_RMASK:
         pan(
-            glm::vec2(
+            Chicane::Vec<float>::Two(
                 inEvent.motion.xrel,
                 inEvent.motion.yrel
             )

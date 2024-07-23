@@ -11,5 +11,5 @@ Apple::Apple()
 
 void Apple::onTick(float inDeltaTime)
 {
-    setRelativeRotation(glm::vec3(0.0f, 0.0f, 0.05f));
+    setRelativeRotation(Chicane::Vec<float>::Three(0.0f, 0.0f, 0.05f));
 } 
