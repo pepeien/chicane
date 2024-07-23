@@ -194,14 +194,14 @@ namespace Chicane
 
             std::string tagName = std::string(outNode.name());
 
-            if (Components.find(tagName) == Components.end())
+            if (!hasComponent(tagName))
             {
                 return;
             }
 
             execOnTick(outNode);
 
-            Components.at(tagName)(outNode);
+            getComponent(tagName)(outNode);
         }
 
         std::string anyToString(const std::any& inValue)

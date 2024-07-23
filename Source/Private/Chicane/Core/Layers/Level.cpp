@@ -191,6 +191,11 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
         m_level->addActorSubscription(
             std::bind(
                 &LevelLayer::loadActor,
