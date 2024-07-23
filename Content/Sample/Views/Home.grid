@@ -1,0 +1,4 @@
+<View id="home">
+    <Text>{{ getFPS() }} FPS</Text>
+    <Text>{{ getFrametime() }} ms</Text>
+</View>
