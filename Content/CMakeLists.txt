@@ -45,9 +45,9 @@ endforeach(ITEM)
 
 ##############  Add subdirectories  #######################
 set(SHADERS_TARGET_NAME "${CONTENT_TARGET_NAME}_Shaders")
-set(SHADERS_SOURCE_DIR  "${CONTENT_SOURCE_DIR}/Chicane/Shaders")
+set(SHADERS_SOURCE_DIR  "${CONTENT_SOURCE_DIR}/Engine/Shaders")
 
-add_subdirectory(Chicane/Shaders)
+add_subdirectory(Engine/Shaders)
 
 ##############  Add dependencies  #######################
 add_dependencies(${CONTENT_TARGET_NAME} ${SHADERS_TARGET_NAME})

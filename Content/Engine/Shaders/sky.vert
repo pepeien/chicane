@@ -12,17 +12,17 @@ layout(set = 0, binding = 0) uniform CameraUBO {
 
 layout(location = 0) out vec3 outForward;
 
-const vec2 screen_corners[6] = vec2[](
+const vec2 positions[6] = vec2[](
+	vec2( 1.0,  1.0),
 	vec2(-1.0, -1.0),
 	vec2(-1.0,  1.0),
+	vec2(-1.0, -1.0),
 	vec2( 1.0,  1.0),
-	vec2( 1.0,  1.0),
-	vec2( 1.0, -1.0),
-	vec2(-1.0, -1.0)
+	vec2( 1.0, -1.0)
 );
 
 void main() {
-    vec2 position = screen_corners[gl_VertexIndex];
+    vec2 position = positions[gl_VertexIndex];
 
     gl_Position = vec4(position, 0.0, 1.0);
 
