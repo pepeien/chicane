@@ -6,7 +6,7 @@ namespace Chicane
     {
         namespace ProgressBarComponent
         {
-            void compile(pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& outNode)
             {
                 float percentage = std::clamp(
                     getAttribute(PERCENTAGE_ATTRIBUTE_NAME, outNode).as_float(),

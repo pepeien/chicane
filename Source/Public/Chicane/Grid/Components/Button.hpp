@@ -14,7 +14,7 @@ namespace Chicane
             const std::string ON_CLICK_ATTRIBUTE_NAME = "onClick";
             const std::string ON_CLICK_EVENT_KEYWORD  = "$event";
     
-            void compile(pugi::xml_node& outNode);
+            void compile(const pugi::xml_node& outNode);
         }
     }
 }

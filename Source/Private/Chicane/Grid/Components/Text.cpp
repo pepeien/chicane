@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace TextComponent
         {
-            void compile(pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& outNode)
             {
                 if (std::string(outNode.name()).compare(TAG_ID) != 0)
                 {

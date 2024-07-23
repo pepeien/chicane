@@ -151,7 +151,7 @@ namespace Chicane
             m_functions.erase(inId);
         }
 
-        void View::validate(const pugi::xml_node& inNode)
+        void View::validate(const pugi::xml_node&inNode)
         {
             bool isRoot  = inNode.parent() == inNode.root();
             bool isAlone = isRoot && inNode.next_sibling() == nullptr;
@@ -168,7 +168,7 @@ namespace Chicane
         }
 
         void View::compile(
-            pugi::xml_node& outNode,
+            const pugi::xml_node& outNode,
             const Vec<int>::Two& inResolution,
             const Vec<int>::Two& inPosition
         )

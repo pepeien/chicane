@@ -6,7 +6,7 @@ namespace Chicane
     {
         namespace BoxComponent
         {
-            void compile(pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& outNode)
             {
                 ImGuiContext& context = *GImGui;
                 ImGuiWindow* window   = ImGui::GetCurrentWindow();

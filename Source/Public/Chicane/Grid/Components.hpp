@@ -12,7 +12,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        const std::unordered_map<std::string, std::function<void (pugi::xml_node&)>> Components = {
+        const std::unordered_map<std::string, std::function<void (const pugi::xml_node&)>> Components = {
             { BoxComponent::TAG_ID, &BoxComponent::compile },
             { ButtonComponent::TAG_ID, &ButtonComponent::compile },
             { ListComponent::TAG_ID, &ListComponent::compile },

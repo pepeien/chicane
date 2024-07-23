@@ -26,13 +26,13 @@ namespace Chicane
                 Row
             };
 
-            Direction getDirection(const pugi::xml_node& inNode);
-            std::vector<std::any> getItems(const pugi::xml_node& inNode);
-            ComponentFunction getItemGetter(const pugi::xml_node& inNode);
-            ImVec4 getBackgroundColor(const pugi::xml_node& inNode);
+            Direction getDirection(const pugi::xml_node&inNode);
+            std::vector<std::any> getItems(const pugi::xml_node&inNode);
+            ComponentFunction getItemGetter(const pugi::xml_node&inNode);
+            ImVec4 getBackgroundColor(const pugi::xml_node&inNode);
 
-            void validate(const pugi::xml_node& inNode);
-            void compile(pugi::xml_node& outNode);
+            void validate(const pugi::xml_node&inNode);
+            void compile(const pugi::xml_node& outNode);
         }
     }
 }

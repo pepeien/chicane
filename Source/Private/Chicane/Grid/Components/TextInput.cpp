@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace TextInputComponent
         {
-            void validate(const pugi::xml_node& inNode)
+            void validate(const pugi::xml_node&inNode)
             {
                 if (TAG_ID.compare(inNode.name()) != 0)
                 {
@@ -40,7 +40,7 @@ namespace Chicane
                 }
             }
 
-            void compile(pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& outNode)
             {
                 validate(outNode);
 

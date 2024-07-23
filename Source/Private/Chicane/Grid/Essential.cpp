@@ -17,7 +17,7 @@ namespace Chicane
             return std::string(inTarget.end() - inEnding.size(), inTarget.end()).compare(inEnding) == 0;
         }
 
-        std::string getTag(const pugi::xml_node& inNode)
+        std::string getTag(const pugi::xml_node&inNode)
         {
             return inNode.name();
         }
@@ -89,7 +89,7 @@ namespace Chicane
 
         float getSize(
             const std::string& inAttributeName,
-            const pugi::xml_node& inNode
+            const pugi::xml_node&inNode
         )
         {
             pugi::xml_attribute attributeValue = getAttribute(inAttributeName, inNode);
@@ -121,7 +121,7 @@ namespace Chicane
 
         pugi::xml_attribute getAttribute(
             const std::string& inName,
-            const pugi::xml_node& inNode
+            const pugi::xml_node&inNode
         )
         {
             return inNode.attribute(inName.c_str());
@@ -165,7 +165,7 @@ namespace Chicane
             m_activeView = m_views.at(inViewID);
         }
 
-        void execOnTick(const pugi::xml_node& inNode)
+        void execOnTick(const pugi::xml_node&inNode)
         {
             std::string onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode).as_string();
 
@@ -177,15 +177,15 @@ namespace Chicane
             processRefValue(onTickFunction);
         }
 
-        void compileChildren(pugi::xml_node& outNode)
+        void compileChildren(const pugi::xml_node& outNode)
         {
-            for (pugi::xml_node& child : outNode.children())
+            for (const pugi::xml_node& child : outNode.children())
             {
                 compileChild(child);
             }
         }
 
-        void compileChild(pugi::xml_node& outNode)
+        void compileChild(const pugi::xml_node& outNode)
         {
             if (outNode.name() == nullptr)
             {

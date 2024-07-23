@@ -41,9 +41,9 @@ namespace Chicane
             void removeFunction(const std::string& inId);
 
         protected:
-            void validate(const pugi::xml_node& inNode);
+            void validate(const pugi::xml_node&inNode);
             void compile(
-                pugi::xml_node& outNode,
+                const pugi::xml_node& outNode,
                 const Vec<int>::Two& inResolution,
                 const Vec<int>::Two& inPosition
             );

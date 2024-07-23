@@ -17,7 +17,7 @@ namespace Chicane
             const std::string PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`
             const std::string OVERLAY_ATTRIBUTE_NAME    = "overlay"; // Text that goes inside
     
-            void compile(pugi::xml_node& outNode);
+            void compile(const pugi::xml_node& outNode);
         }
     }
 }

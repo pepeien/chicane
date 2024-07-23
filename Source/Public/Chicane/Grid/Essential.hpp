@@ -41,7 +41,7 @@ namespace Chicane
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
-        std::string getTag(const pugi::xml_node& outNode);
+        std::string getTag(const pugi::xml_node&outNode);
 
         float getSizeFromPixel(const pugi::xml_attribute& inAttribute);
 
@@ -53,12 +53,12 @@ namespace Chicane
 
         float getSize(
             const std::string& inAttributeName,
-            const pugi::xml_node& inNode
+            const pugi::xml_node&inNode
         );
 
         pugi::xml_attribute getAttribute(
             const std::string& inName,
-            const pugi::xml_node& outNode
+            const pugi::xml_node&outNode
         );
 
         bool hasViews();
@@ -66,10 +66,10 @@ namespace Chicane
         View* getActiveView();
         void setActiveView(const std::string& inViewID);
 
-        void execOnTick(const pugi::xml_node& inNode);
+        void execOnTick(const pugi::xml_node&inNode);
 
-        void compileChildren(pugi::xml_node& outNode);
-        void compileChild(pugi::xml_node& outNode);
+        void compileChildren(const pugi::xml_node& outNode);
+        void compileChild(const pugi::xml_node& outNode);
 
         std::string anyToString(const std::any& inValue);
 

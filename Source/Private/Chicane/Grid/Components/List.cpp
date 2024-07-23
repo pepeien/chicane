@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace ListComponent
         {
-            Direction getDirection(const pugi::xml_node& inNode)
+            Direction getDirection(const pugi::xml_node&inNode)
             {
                 std::string rawDirection = getAttribute(DIRECTION_ATTRIBUTE_NAME, inNode).as_string();
 
@@ -27,7 +27,7 @@ namespace Chicane
                 return Direction::Column;
             }
 
-            std::vector<std::any> getItems(const pugi::xml_node& inNode)
+            std::vector<std::any> getItems(const pugi::xml_node&inNode)
             {
                 View* view = getActiveView();
 
@@ -53,7 +53,7 @@ namespace Chicane
                 return std::any_cast<std::vector<std::any>>(items);
             }
 
-            ComponentFunction getItemGetter(const pugi::xml_node& inNode)
+            ComponentFunction getItemGetter(const pugi::xml_node&inNode)
             {
                 View* view = getActiveView();
 
@@ -72,7 +72,7 @@ namespace Chicane
                 return view->getFunction(itemGetterFunctionRef);
             }
 
-            ImVec4 getBackgroundColor(const pugi::xml_node& inNode)
+            ImVec4 getBackgroundColor(const pugi::xml_node&inNode)
             {
                 std::string backgroundColor = getAttribute(BACKGROUND_COLOR_ATTRIBUTE_NAME, inNode).as_string();
 
@@ -97,7 +97,7 @@ namespace Chicane
                 return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
             }
 
-            void validate(const pugi::xml_node& inNode)
+            void validate(const pugi::xml_node&inNode)
             {
                 if (TAG_ID.compare(inNode.name()) != 0)
                 {
@@ -112,7 +112,7 @@ namespace Chicane
                 }
             }
 
-            void compile(pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& outNode)
             {
                 validate(outNode);
 
@@ -144,7 +144,7 @@ namespace Chicane
 
                     if (!outNode.children().empty())
                     {
-                        for (pugi::xml_node& child : outNode.children())
+                        for (const pugi::xml_node& child : outNode.children())
                         {
                             if (direction == Direction::Row)
                             {
