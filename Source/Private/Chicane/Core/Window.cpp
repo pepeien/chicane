@@ -68,18 +68,18 @@ namespace Chicane
 
     void Window::addLayer(
         Layer* inLayer,
-        Layer::PushTecnique inAdditionTecnique,
+        Layer::Push inPushTechnique,
         const std::string& inId
     )
     {
-        switch (inAdditionTecnique)
+        switch (inPushTechnique)
         {
-        case Layer::PushTecnique::Front:
+        case Layer::Push::Front:
             m_renderer->pushLayerStart(inLayer);
 
             return;
 
-        case Layer::PushTecnique::BeforeLayer:
+        case Layer::Push::BeforeLayer:
             m_renderer->pushLayerBefore(
                 inId,
                 inLayer
@@ -87,7 +87,7 @@ namespace Chicane
 
             return;
 
-        case Layer::PushTecnique::AfterLayer:
+        case Layer::Push::AfterLayer:
             m_renderer->pushLayerAfter(
                 inId,
                 inLayer

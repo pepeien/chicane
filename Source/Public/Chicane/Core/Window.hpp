@@ -42,7 +42,7 @@ namespace Chicane
 
         void addLayer(
             Layer* inLayer,
-            Layer::PushTecnique inAdditionTecnique = Layer::PushTecnique::Back,
+            Layer::Push inPushTechnique = Layer::Push::Back,
             const std::string& inId = ""
         );
 
