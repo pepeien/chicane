@@ -16,12 +16,8 @@ if (NOT DEFINED BUILD_DIR)
 endif()
 
 set(CONTENT_DIR "${CMAKE_CURRENT_LIST_DIR}/Content")
-set(PUBLIC_DIR  "${CMAKE_CURRENT_LIST_DIR}/Public")
-set(PRIVATE_DIR "${CMAKE_CURRENT_LIST_DIR}/Private")
+set(SOURCE_DIR  "${CMAKE_CURRENT_LIST_DIR}/Source")
 set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendors")
-
-set(ASSETS_TARGET_NAME "${NAME}_Assets")
-set(ASSETS_SOURCE_DIR  "${ASSETS_DIR}")
 
 set(CONTENT_TARGET_NAME "${NAME}_Content")
 set(CONTENT_SOURCE_DIR  "${CONTENT_DIR}")
@@ -35,8 +31,5 @@ endif()
 
 ##############  Add subdirectories  #######################
 add_subdirectory(Content)
-
-add_subdirectory(Private)
-
-add_subdirectory(Vendors/pugixml)
-add_subdirectory(Vendors/SDL2)
+add_subdirectory(Source)
+add_subdirectory(Vendors)
