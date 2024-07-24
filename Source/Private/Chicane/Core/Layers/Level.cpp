@@ -1,5 +1,6 @@
 #include "Chicane/Core/Layers/Level.hpp"
 
+#include "Chicane/Core/Allocator.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/State.hpp"
@@ -8,9 +9,7 @@ namespace Chicane
 {
     LevelLayer::LevelLayer(Window* inWindow)
         : Layer("Level"),
-        m_renderer(inWindow->getRenderer()),
-        m_modelManager(std::make_unique<Model::Manager::Instance>()),
-        m_textureManager(std::make_unique<Texture::Manager::Instance>())
+        m_renderer(inWindow->getRenderer())
     {
         if (State::hasLevel() == false)
         {
@@ -49,10 +48,6 @@ namespace Chicane
             m_renderer->m_logicalDevice,
             m_modelIndexBuffer
         );
-
-        // Managers
-        m_modelManager.reset();
-        m_textureManager.reset();
     }
 
     void LevelLayer::build()
@@ -176,13 +171,14 @@ namespace Chicane
             vk::IndexType::eUint32
         );
 
-        m_textureManager->bindAll(
+        Allocator::getTextureManager()->bindAll(
             inCommandBuffer,
             m_graphicsPipeline->layout
         );
 
-        // Drawing
-        m_modelManager->drawAll(inCommandBuffer);
+        Allocator::getModelManager()->drawAll(
+            inCommandBuffer
+        );
 
         inCommandBuffer.endRenderPass();
 
@@ -219,35 +215,7 @@ namespace Chicane
             build();
         }
 
-        Box::Instance model = inActor->getMesh();
-
-        for (Box::Entry modelComponent : model.entries)
-        {
-            switch (modelComponent.type)
-            {
-            case Box::EntryType::Mesh:
-                m_modelManager->add(
-                    model.name,
-                    modelComponent.data,
-                    static_cast<Model::Vendor>(modelComponent.vendor)
-                );
-
-                break;
-            
-            case Box::EntryType::Texture:
-                m_textureManager->add(
-                    model.name,
-                    modelComponent.data
-                );
-
-                break;
-
-            default:
-                throw std::runtime_error("The box entry from the " + model.name  + " type is invalid");
-
-                continue;
-            }
-        }
+        Allocator::load(inActor->getMesh());
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
@@ -429,7 +397,7 @@ namespace Chicane
         }
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size = m_textureManager->getCount();
+        descriptorPoolCreateInfo.size = Allocator::getTextureManager()->getCount();
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
@@ -446,7 +414,7 @@ namespace Chicane
             return;
         }
 
-        m_modelManager->build(
+        Allocator::getModelManager()->build(
             m_modelVertexBuffer,
             m_modelIndexBuffer,
             m_renderer->m_logicalDevice,
@@ -455,7 +423,7 @@ namespace Chicane
             m_renderer->m_mainCommandBuffer
         );
 
-        m_textureManager->build(
+        Allocator::getTextureManager()->build(
             m_renderer->m_logicalDevice,
             m_renderer->m_physicalDevice,
             m_renderer->m_mainCommandBuffer,
@@ -472,8 +440,6 @@ namespace Chicane
             return;
         }
 
-        float deltaTime = State::getTelemetry().delta / 1000.0f;
-
         for (Actor* actor : m_level->getActors())
         {
             if (actor->canTick() == false)
@@ -481,7 +447,7 @@ namespace Chicane
                 continue;
             }
 
-            actor->onTick(deltaTime);
+            actor->onTick(State::getTelemetry().delta);
         }
     }
 }

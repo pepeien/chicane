@@ -1,5 +1,6 @@
 #include "Chicane/Core/Layers/Skybox.hpp"
 
+#include "Chicane/Core/Allocator.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/State.hpp"
@@ -8,8 +9,7 @@ namespace Chicane
 {
     SkyboxLayer::SkyboxLayer(Window* inWindow)
         : Layer("Skybox"),
-        m_renderer(inWindow->getRenderer()),
-        m_manager(std::make_unique<CubeMap::Manager>())
+        m_renderer(inWindow->getRenderer())
     {
         if (State::hasLevel() == false)
         {
@@ -38,9 +38,6 @@ namespace Chicane
         m_renderer->m_logicalDevice.destroyDescriptorPool(
             m_materialDescriptor.pool
         );
-
-        // Managers
-        m_manager.reset();
     }
 
     void SkyboxLayer::build()
@@ -129,14 +126,14 @@ namespace Chicane
             nullptr
         );
 
-        m_manager->bind(
+        Allocator::getCubemapManager()->bind(
             "Skybox",
             inCommandBuffer,
             m_graphicsPipeline->layout
         );
 
         // Drawing
-        m_manager->draw(
+        Allocator::getCubemapManager()->draw(
             "Skybox",
             inCommandBuffer
         );
@@ -160,7 +157,7 @@ namespace Chicane
             throw std::runtime_error("The level cubemap isn't valid");
         }
 
-        m_manager->add(
+        Allocator::getCubemapManager()->add(
             "Skybox",
             {
                 cubemap.entries[0].data, // Positive X
@@ -287,7 +284,7 @@ namespace Chicane
 
     void SkyboxLayer::buildAssets()
     {
-        m_manager->build(
+        Allocator::getCubemapManager()->build(
             m_renderer->m_logicalDevice,
             m_renderer->m_physicalDevice,
             m_renderer->m_mainCommandBuffer,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Box.hpp"
 #include "Chicane/Renderer/Texture.hpp"
 
 namespace Chicane
@@ -15,46 +16,39 @@ namespace Chicane
             Png
         };
 
-        namespace Manager
+        class Manager
         {
-            class Instance
-            {
-            public:
-                ~Instance();
+        public:
+            ~Manager();
 
-            public:
-                uint32_t getCount();
+        public:
+            uint32_t getCount();
 
-                void add(
-                    const std::string& inId,
-                    const std::vector<unsigned char>& inData
-                );
-                void bindAll(
-                    const vk::CommandBuffer& inCommandBuffer,
-                    const vk::PipelineLayout& inPipelineLayout
-                );
-                void build(
-                    const vk::Device& inLogicalDevice,
-                    const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::CommandBuffer& inCommandBuffer,
-                    const vk::Queue& inQueue,
-                    const vk::DescriptorSetLayout& inDescriptorSetLayout,
-                    const vk::DescriptorPool& inDescriptorPool
-                );
+            bool contains(const std::string& inId);
+            void add(const std::string& inId, const Box::Entry& inEntry);
+            void bindAll(
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::PipelineLayout& inPipelineLayout
+            );
+            void bind(
+                const std::string& inId,
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::PipelineLayout& inPipelineLayout
+            );
+            void build(
+                const vk::Device& inLogicalDevice,
+                const vk::PhysicalDevice& inPhysicalDevice,
+                const vk::CommandBuffer& inCommandBuffer,
+                const vk::Queue& inQueue,
+                const vk::DescriptorSetLayout& inDescriptorSetLayout,
+                const vk::DescriptorPool& inDescriptorPool
+            );
 
-            private:
-                void bind(
-                    const std::string& inId,
-                    const vk::CommandBuffer& inCommandBuffer,
-                    const vk::PipelineLayout& inPipelineLayout
-                );
+        private:
+            std::vector<std::string> m_registeredIds;
 
-            private:
-                std::vector<std::string> m_registeredIds;
-
-                std::unordered_map<std::string, std::vector<unsigned char>> m_dataMap;
-                std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instanceMap;
-            };
-        }
+            std::unordered_map<std::string, std::vector<unsigned char>> m_dataMap;
+            std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instanceMap;
+        };
     }
 }

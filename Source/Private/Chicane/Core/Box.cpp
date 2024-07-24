@@ -41,7 +41,8 @@ namespace Chicane
             return result.str();
         }
 
-        void Entry::parse(const std::string& inRawData)
+
+        void Entry::parse(const std::string& inRawData, bool isReference)
         {
             std::vector<std::string> splittedEntry = Helper::splitString(
                 inRawData,
@@ -55,14 +56,21 @@ namespace Chicane
 
             type   = static_cast<EntryType>(std::stoi(splittedEntryHeader[0]));
             vendor = static_cast<uint8_t>(std::stoi(splittedEntryHeader[1]));
-            data   = std::vector<unsigned char>(entryData.begin(), entryData.end());
+
+            if (isReference)
+            {
+                referenceName = entryData;
+
+                return;
+            }
+
+            data = std::vector<unsigned char>(entryData.begin(), entryData.end());
         }
 
-        Instance read(const std::string& inFilePath)
+        void parseHeader(const std::string& inRawData, Instance& outInstance)
         {
-            std::vector<char> data = FileSystem::readFile(inFilePath);
             std::vector<std::string> splittedData = Helper::splitString(
-                std::string(data.begin(), data.end()),
+                inRawData,
                 ENTRY_SIGNATURE
             );
 
@@ -71,19 +79,50 @@ namespace Chicane
                 DATA_SEPARATOR
             );
 
-            Instance result;
-            result.type       = static_cast<Type>(std::stoi(splittedRootHeader[2]));
-            result.name       = splittedRootHeader[3];
-            result.entryCount = static_cast<uint32_t>(std::stoi(splittedRootHeader[4]));
-            result.entries.reserve(result.entryCount);
+            outInstance.type       = static_cast<Type>(std::stoi(splittedRootHeader[2]));
+            outInstance.name       = splittedRootHeader[3];
+            outInstance.entryCount = static_cast<uint32_t>(std::stoi(splittedRootHeader[4]));
+        }
 
-            for (uint32_t i = 1; i < (result.entryCount + 1); i++)
+        Instance readHeader(const std::string& inFilePath)
+        {
+            std::vector<char> rawData = FileSystem::readFile(inFilePath);
+            std::string data          = std::string(rawData.begin(), rawData.end());
+
+            Instance result = {};
+            result.filepath = inFilePath;
+
+            parseHeader(data, result);
+
+            return result;
+        }
+
+        void parseData(const std::string& inRawData, Instance& outInstance)
+        {
+            std::vector<std::string> splittedData = Helper::splitString(
+                inRawData,
+                ENTRY_SIGNATURE
+            );
+
+            for (uint32_t i = 1; i < (outInstance.entryCount + 1); i++)
             {
                 Entry entry;
-                entry.parse(splittedData[i]);
+                entry.parse(splittedData[i], outInstance.type == Type::Mesh);
 
-                result.entries.push_back(entry);
+                outInstance.entries.push_back(entry);
             }
+        }
+
+        Instance read(const std::string& inFilePath)
+        {
+            std::vector<char> rawData = FileSystem::readFile(inFilePath);
+            std::string data          = std::string(rawData.begin(), rawData.end());
+
+            Instance result = {};
+            result.filepath = inFilePath;
+
+            parseHeader(data, result);
+            parseData(data, result);
 
             return result;
         }
@@ -106,10 +145,18 @@ namespace Chicane
                 entryHeader.type   = entry.type;
                 entryHeader.vendor = entry.vendor;
 
-                std::vector<char> rawData = FileSystem::readFile(entry.filePath);
-
                 file << entryHeader.toString();
                 file << ENTRY_DATA_SIGNATURE;
+
+                if (!entry.referenceName.empty())
+                {
+                    file << entry.referenceName;
+
+                    continue;
+                }
+
+                std::vector<char> rawData = FileSystem::readFile(entry.dataFilePath);
+
                 file << std::string(rawData.begin(), rawData.end());
             }
 

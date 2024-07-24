@@ -1,7 +1,14 @@
 #include "Application.hpp"
 
+#include "Actor/Apple.hpp"
+#include "Actor/Floor.hpp"
+
 Application::Application()
 {
+    Chicane::Allocator::load("Content/Sample/Texture/Material/Gray.box");
+    Chicane::Allocator::load("Content/Sample/Model/Cube.box");
+    Chicane::Allocator::load("Content/Sample/Model/Apple.box");
+
     initCamera();
     initLevel();
     addActors();
@@ -35,15 +42,28 @@ void Application::initLevel()
 
 void Application::addActors()
 {
-    Chicane::Actor* floor = new Chicane::Actor();
-    floor->setMesh(Chicane::Box::read("Content/Sample/Meshes/Cube.box"));
-    floor->setAbsoluteScale(Chicane::Vec<float>::Three(2500.0f, 2500.0f, 10.0f));
-
-    Apple* apple = new Apple();
-    apple->setAbsoluteTranslation(Chicane::Vec<float>::Three(0.0f, 0.0f, 10.0f));
-
+    Floor* floor = new Floor();
     m_level->addActor(floor);
-    m_level->addActor(apple);
+
+    Apple* appleTopRight = new Apple();
+    appleTopRight->setAbsoluteTranslation(Chicane::Vec<float>::Three(1000.0f, 1000.0f, 10.0f));
+    m_level->addActor(appleTopRight);
+
+    Apple* appleTopLeft = new Apple();
+    appleTopLeft->setAbsoluteTranslation(Chicane::Vec<float>::Three(0.0f, 0.0f, 10.0f));
+    m_level->addActor(appleTopLeft);
+
+    Apple* appleMiddle = new Apple();
+    appleMiddle->setAbsoluteTranslation(Chicane::Vec<float>::Three(1000.0f, -1000.0f, 10.0f));
+    m_level->addActor(appleMiddle);
+
+    Apple* appleBottomRight = new Apple();
+    appleBottomRight->setAbsoluteTranslation(Chicane::Vec<float>::Three(-1000.0f, -1000.0f, 10.0f));
+    m_level->addActor(appleBottomRight);
+
+    Apple* appleBottomLeft = new Apple();
+    appleBottomLeft->setAbsoluteTranslation(Chicane::Vec<float>::Three(-1000.0f, 1000.0f, 10.0f));
+    m_level->addActor(appleBottomLeft);
 }
 
 void Application::addView()

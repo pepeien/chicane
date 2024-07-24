@@ -124,7 +124,9 @@ namespace Chicane
                 m_renderer->onEvent(event);
             }
 
-            m_renderer->render();
+            m_beginFrame = std::clock();
+                m_renderer->render();
+            m_endFrame   = std::clock();
 
             updateTelemetry();
         }
@@ -316,19 +318,17 @@ namespace Chicane
 
     void Window::updateTelemetry()
     {
-        m_telemetry.currentTime = SDL_GetTicks64() / 1000;
+        m_telemetry.delta      += m_endFrame - m_beginFrame;
+        m_telemetry.frameCount += 1;
 
-        std::uint64_t delta = m_telemetry.currentTime - m_telemetry.lastTime;
-
-        if (delta > 0) {
-            m_telemetry.framerate = std::max(1, int(m_telemetry.count / delta));
-            m_telemetry.lastTime  = m_telemetry.currentTime;
-            m_telemetry.count     = -1;
-            m_telemetry.time      = float(1000.0 / m_telemetry.framerate);
-            m_telemetry.delta     = delta / 1000.0f;
+        if (m_telemetry.deltaToMs() <= 1000.0f) {
+            return;
         }
 
-        m_telemetry.count++;
+        m_telemetry.frameRate  = (m_telemetry.frameCount * 0.5) + (m_telemetry.frameRate * 0.5);
+        m_telemetry.frameCount = 0;
+        m_telemetry.frameTime  = float(1000.0 / m_telemetry.frameRate);
+        m_telemetry.delta      = -CLOCKS_PER_SEC;
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)

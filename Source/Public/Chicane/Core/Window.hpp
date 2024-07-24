@@ -87,14 +87,20 @@ namespace Chicane
         void onKeyDown(const SDL_KeyboardEvent& inEvent);
 
     private:
+        // Telemetry
+        std::clock_t m_beginFrame;
+        std::clock_t m_endFrame;
+
         Telemetry m_telemetry;
 
+        // Settings
         WindowType m_type;
 
         bool m_isFocused;
         bool m_isResizable;
         bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
+        // Render
         std::unique_ptr<Renderer> m_renderer;
     };
 }

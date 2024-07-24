@@ -21,10 +21,10 @@ View::View()
 
 std::uint64_t View::getFPS(Chicane::Grid::ComponentEvent inEvent)
 {
-    return Chicane::State::getTelemetry().framerate;
+    return Chicane::State::getTelemetry().frameRate;
 }
 
 float View::getFrametime(Chicane::Grid::ComponentEvent inEvent)
 {
-    return Chicane::State::getTelemetry().time;
+    return Chicane::State::getTelemetry().frameTime;
 }

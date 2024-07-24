@@ -9,37 +9,32 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::string HEADER_SIGNATURE     = "BOX";
-        static const std::string ENTRY_SIGNATURE      = "ENTRY";
-        static const std::string ENTRY_DATA_SIGNATURE = "DATA";
-        static const std::string DATA_SEPARATOR       = ";";
-        static const std::string FILE_EXTENSTION      = ".box";
+        constexpr auto HEADER_SIGNATURE     = "BOX";
+        constexpr auto ENTRY_SIGNATURE      = "ENTRY";
+        constexpr auto ENTRY_DATA_SIGNATURE = "DATA";
+        constexpr auto DATA_SEPARATOR       = ";";
+        constexpr auto FILE_EXTENSTION      = ".box";
 
         enum class Type : uint8_t
         {
             Undefined,
-
-            // Actor
-            Mesh,
-
-            // Skybox
-            CubeMap
+            Mesh,    // Two entries [Model, Texture] both being refNames
+            CubeMap, // 6 entries all being images [Positive X, Negative X, Positive Y, Negative Y, Positive Z, Negative Z]
+            Texture, // Image
+            Model    // 3D Model
         };
 
         enum class EntryType : uint8_t
         {
             Undefined,
-
-            // Actor
-            Mesh,    // Usually is two entries [Model, Texture] both being the refName
-            Texture,
-            Model
+            Model,
+            Texture
         };
 
         struct WriteRootHeader
         {
         public:
-            std::string version   = "1.0";
+            std::string version   = "1.1";
             Type type             = Type::Undefined;
             std::string name      = "";
             std::string filePath  = "";
@@ -62,9 +57,11 @@ namespace Chicane
         struct WriteEntry
         {
         public:
-            EntryType type       = EntryType::Undefined;
-            uint8_t vendor       = 0;
-            std::string filePath = "";
+            EntryType type = EntryType::Undefined;
+            uint8_t vendor = 0;
+
+            std::string dataFilePath  = "";
+            std::string referenceName = "";
         };
 
         struct WriteInfo
@@ -83,11 +80,11 @@ namespace Chicane
 
             uint8_t vendor = 0; // Only pertinent if type is `EntryType::Mesh`
 
-            std::vector<unsigned char> data = {}; // Only pertinent if type is `EntryType::Mesh` or `Entry::Texture`
-            std::string referenceName       = ""; // Only pertinent if type is `EntryType::Model`
+            std::vector<unsigned char> data = {}; // Only pertinent if type is `EntryType::Model` or `Entry::Texture`
+            std::string referenceName       = ""; // Only pertinent if type is `EntryType::Mesh`
 
         public:
-            void parse(const std::string& inRawData);
+            void parse(const std::string& inRawData, bool isReference = false);
         };
 
         struct Instance
@@ -95,11 +92,17 @@ namespace Chicane
         public:
             Type type                  = Type::Undefined;
             std::string name           = "";
+            std::string filepath       = "";
             uint32_t entryCount        = 0;
             std::vector<Entry> entries = {};
         };
 
+        void parseHeader(const std::string& inRawData, Instance& outInstance);
+        Instance readHeader(const std::string& inFilePath);
+
+        void parseData(const std::string& inRawData, Instance& outInstance);
         Instance read(const std::string& inFilePath);
+
         void write(const WriteInfo& inWriteInfo);
     }
 }

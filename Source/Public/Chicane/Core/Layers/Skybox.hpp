@@ -47,7 +47,5 @@ namespace Chicane
         vk::DescriptorSet m_descriptorSet;
         Descriptor::Bundle m_frameDescriptor;
         Descriptor::Bundle m_materialDescriptor;
-
-        std::unique_ptr<CubeMap::Manager> m_manager;
     };
 }

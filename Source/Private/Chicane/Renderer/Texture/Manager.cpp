@@ -4,108 +4,109 @@ namespace Chicane
 {
     namespace Texture
     {
-        namespace Manager
+        Manager::~Manager()
         {
-            Instance::~Instance()
+            m_instanceMap.clear();
+        }
+
+        uint32_t Manager::getCount()
+        {
+            return static_cast<uint32_t>(m_dataMap.size());
+        }
+
+        bool Manager::contains(const std::string& inId)
+        {
+            return m_dataMap.find(inId) != m_dataMap.end();
+        }
+
+        void Manager::add(const std::string& inId, const Box::Entry& inEntry)
+        {
+            if (contains(inId))
             {
-                m_instanceMap.clear();
+                return;
             }
 
-            uint32_t Instance::getCount()
-            {
-                return static_cast<uint32_t>(m_dataMap.size());
-            }
-
-            void Instance::add(
-                const std::string& inId,
-                const std::vector<unsigned char>& inData
-            )
-            {
-                if (
-                    m_dataMap.find(inId) != m_dataMap.end() ||
-                    m_instanceMap.find(inId) != m_instanceMap.end()
+            m_dataMap.insert(
+                std::make_pair(
+                    inId,
+                    inEntry.data
                 )
-                {
-                    return;
-                }
+            );
+            m_registeredIds.push_back(inId);
+        }
 
-                m_dataMap.insert(std::make_pair(inId, inData));
-                m_registeredIds.push_back(inId);
+        void Manager::bindAll(
+            const vk::CommandBuffer& inCommandBuffer,
+            const vk::PipelineLayout& inPipelineLayout
+        )
+        {
+            for (std::string& id : m_registeredIds)
+            {
+                bind(id, inCommandBuffer, inPipelineLayout);
+            }
+        }
+
+        void Manager::bind(
+            const std::string& inId,
+            const vk::CommandBuffer& inCommandBuffer,
+            const vk::PipelineLayout& inPipelineLayout
+        )
+        {
+            std::string standarizedId = inId.size() > 0 ? inId : "missing";
+
+            auto foundPair = m_instanceMap.find(standarizedId);
+
+            if (foundPair == m_instanceMap.end())
+            {
+                throw std::runtime_error(
+                    "The Texture [" + standarizedId + "] does not exists"
+                );
             }
 
-            void Instance::bindAll(
-                const vk::CommandBuffer& inCommandBuffer,
-                const vk::PipelineLayout& inPipelineLayout
-            )
+            if (foundPair->second == nullptr)
             {
-                for (std::string& id : m_registeredIds)
-                {
-                    bind(id, inCommandBuffer, inPipelineLayout);
-                }
+                throw std::runtime_error(
+                    "The Texture [" + standarizedId + "] has not been initialized"
+                );
             }
 
-            void Instance::build(
-                const vk::Device& inLogicalDevice,
-                const vk::PhysicalDevice& inPhysicalDevice,
-                const vk::CommandBuffer& inCommandBuffer,
-                const vk::Queue& inQueue,
-                const vk::DescriptorSetLayout& inDescriptorSetLayout,
-                const vk::DescriptorPool& inDescriptorPool
-            )
+            foundPair->second->bind(inCommandBuffer, inPipelineLayout);
+        }
+
+        void Manager::build(
+            const vk::Device& inLogicalDevice,
+            const vk::PhysicalDevice& inPhysicalDevice,
+            const vk::CommandBuffer& inCommandBuffer,
+            const vk::Queue& inQueue,
+            const vk::DescriptorSetLayout& inDescriptorSetLayout,
+            const vk::DescriptorPool& inDescriptorPool
+        )
+        {
+            Texture::CreateInfo textureCreateInfo;
+            textureCreateInfo.logicalDevice       = inLogicalDevice;
+            textureCreateInfo.physicalDevice      = inPhysicalDevice;
+            textureCreateInfo.commandBuffer       = inCommandBuffer;
+            textureCreateInfo.queue               = inQueue;
+            textureCreateInfo.descriptorSetLayout = inDescriptorSetLayout;
+            textureCreateInfo.descriptorPool      = inDescriptorPool;
+
+            for (std::string& id : m_registeredIds)
             {
-                Texture::CreateInfo textureCreateInfo;
-                textureCreateInfo.logicalDevice       = inLogicalDevice;
-                textureCreateInfo.physicalDevice      = inPhysicalDevice;
-                textureCreateInfo.commandBuffer       = inCommandBuffer;
-                textureCreateInfo.queue               = inQueue;
-                textureCreateInfo.descriptorSetLayout = inDescriptorSetLayout;
-                textureCreateInfo.descriptorPool      = inDescriptorPool;
+                auto foundPair = m_dataMap.find(id);
 
-                for (std::string& id : m_registeredIds)
+                if (foundPair == m_dataMap.end())
                 {
-                    auto foundPair = m_dataMap.find(id);
-
-                    if (foundPair == m_dataMap.end())
-                    {
-                        throw std::runtime_error("The Texture [" + id + "] does not exist");
-                    }
-
-                    textureCreateInfo.data = foundPair->second;
-
-                    m_instanceMap.insert(
-                        std::make_pair(
-                            id,
-                            std::make_unique<Texture::Instance>(textureCreateInfo)
-                        )
-                    );
-                }
-            }
-
-            void Instance::bind(
-                const std::string& inId,
-                const vk::CommandBuffer& inCommandBuffer,
-                const vk::PipelineLayout& inPipelineLayout
-            )
-            {
-                std::string standarizedId = inId.size() > 0 ? inId : "missing";
-
-                auto foundPair = m_instanceMap.find(standarizedId);
-
-                if (foundPair == m_instanceMap.end())
-                {
-                    throw std::runtime_error(
-                        "The Texture [" + standarizedId + "] does not exists"
-                    );
+                    throw std::runtime_error("The Texture [" + id + "] does not exist");
                 }
 
-                if (foundPair->second == nullptr)
-                {
-                    throw std::runtime_error(
-                        "The Texture [" + standarizedId + "] has not been initialized"
-                    );
-                }
+                textureCreateInfo.data = foundPair->second;
 
-                foundPair->second->bind(inCommandBuffer, inPipelineLayout);
+                m_instanceMap.insert(
+                    std::make_pair(
+                        id,
+                        std::make_unique<Texture::Instance>(textureCreateInfo)
+                    )
+                );
             }
         }
     }

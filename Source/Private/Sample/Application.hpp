@@ -6,7 +6,6 @@
 #include "Chicane/Base.hpp"
 
 #include "Camera.hpp"
-#include "Apple.hpp"
 #include "View.hpp"
 
 class Application

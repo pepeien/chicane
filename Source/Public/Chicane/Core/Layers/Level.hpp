@@ -51,9 +51,6 @@ namespace Chicane
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
         vk::DescriptorSet m_descriptorSet;
 
-        std::unique_ptr<Model::Manager::Instance> m_modelManager;
-        std::unique_ptr<Texture::Manager::Instance> m_textureManager;
-
         Descriptor::Bundle m_frameDescriptor;
         Descriptor::Bundle m_materialDescriptor;
 

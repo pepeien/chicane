@@ -15,7 +15,7 @@ namespace Chicane
         m_fov(45.0f),
         m_aspectRatio(1.77f),
         m_nearClip(0.01f),
-        m_farClip(10000.0f),
+        m_farClip(50000.0f),
         m_moveDistance(0.7f),
         m_UBO({})
     {}

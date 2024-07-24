@@ -77,11 +77,17 @@ namespace Chicane
 {
     struct Telemetry
     {
-        int count            = 0;
-        float time           = 0.0f;
-        float delta          = 0.0f;
-        uint64_t framerate   = 0;
-        uint64_t lastTime    = 0;
-        uint64_t currentTime = 0;
+    public:
+        std::clock_t delta = 0;
+
+        uint32_t frameCount = 0;
+        uint32_t frameRate  = 0;
+        float frameTime     = 0.0f;
+    
+    public:
+        float deltaToMs()
+        {
+            return (delta / (float)CLOCKS_PER_SEC) * 1000.0f;
+        }
     };
 }
