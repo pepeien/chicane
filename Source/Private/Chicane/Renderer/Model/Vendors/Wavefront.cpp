@@ -1,218 +1,83 @@
 #include "Chicane/Renderer/Model/Vendors/Wavefront.hpp"
 
+#define FAST_OBJ_IMPLEMENTATION
+#include "fast_obj.h"
+
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Renderer/Vertex.hpp"
+
 namespace Chicane
 {
     namespace Model
     {
         namespace Wavefront
         {
-            Property indetifyProperty(const std::string& inIdentifier)
-            {
-                if (inIdentifier.compare("v") == 0)
-                {
-                    return Property::GeometryVertices;
-                }
-
-                if (inIdentifier.compare("vt") == 0)
-                {
-                    return Property::TextureVertices;
-                }
-
-                if (inIdentifier.compare("vn") == 0)
-                {
-                    return Property::VertexNormals;
-                }
-
-                if (inIdentifier.compare("f") == 0)
-                {
-                    return Property::Faces;
-                }
-
-                return Property::Undefined;
-            }
-
-            void extractGeometryVertices(
-                std::vector<Vec<float>::Three>& outGeometryVertices,
-                const std::vector<std::string>& inDataSet
+            void parse(
+                const std::vector<unsigned char>& inData,
+                ParseResult& outResult
             )
             {
-                Vec<float>::Three value;
-                value.x = std::stof(inDataSet[1].c_str());
-                value.y = std::stof(inDataSet[2].c_str());
-                value.z = std::stof(inDataSet[3].c_str());
+                std::string data = std::string(inData.begin(), inData.end());
+                data.push_back('\n');
 
-                outGeometryVertices.push_back(value);
-            }
-
-            void extractTextureVertices(
-                std::vector<Vec<float>::Two>& outTextureVertices,
-                const std::vector<std::string>& inDataSet
-            )
-            {
-                Vec<float>::Two value;
-                value.x = std::stof(inDataSet[1].c_str());
-                value.y = std::stof(inDataSet[2].c_str());
-
-                outTextureVertices.push_back(value);
-            }
-
-            void extractNormalVertices(
-                std::vector<Vec<float>::Three>& outNormalVertices,
-                const std::vector<std::string>& inDataSet
-            )
-            {
-                Vec<float>::Three value;
-                value.x = std::stof(inDataSet[1].c_str());
-                value.y = std::stof(inDataSet[2].c_str());
-                value.z = std::stof(inDataSet[3].c_str());
-
-                outNormalVertices.push_back(value);
-            }
-
-            void extractTriangleVertex(
-                ParseResult& outResult,
-                const ParseBundle& inBundle,
-                const std::string& inDataSet
-            )
-            {
-                if (outResult.indexesMap.find(inDataSet) != outResult.indexesMap.end())
-                {
-                    uint32_t index = outResult.indexesMap[inDataSet];
-
-                    outResult.indexes.push_back(index);
-
-                    return;
-                }
-
-                Vertex::Instance vertex;
-                vertex.color           = Vec<float>::Three(1.0f, 0.0f, 0.0f);
-                vertex.position        = Vec<float>::Three(0.0f);
-                vertex.texturePosition = Vec<float>::Two(0.0f);
-                vertex.normal          = Vec<float>::Three(0.0f);
-
-                std::vector<std::string> inSplittedDataset = Helper::splitString(
-                    inDataSet,
-                    "/"
+                fastObjMesh* parsedData = fast_obj_read_data(
+                    &data.front(),
+                    &data.back()
                 );
 
-                if (inSplittedDataset[0].compare("") != 0)
-                {
-                    int index = std::atoi(inSplittedDataset[0].c_str()) - 1;
+                std::uint32_t indexPerFace = *parsedData->face_vertices;
 
-                    vertex.position = inBundle.geometryVertices[index];
+                std::vector<std::uint32_t> layout = { 0, 1, 2 };
+
+                if (indexPerFace > 3)
+                {
+                    layout = { 0, 1, 2, 2, 3, 0 };
                 }
 
-                if (inSplittedDataset[1].compare("") != 0)
+                for (std::uint32_t i = 0; i < parsedData->index_count; i += indexPerFace)
                 {
-                    int index = std::atoi(inSplittedDataset[1].c_str()) - 1;
-
-                    vertex.texturePosition = inBundle.textureVertices[index];
-                }
-
-                if (inSplittedDataset[2].compare("") != 0)
-                {
-                    int index = std::atoi(inSplittedDataset[2].c_str()) - 1;
-
-                    vertex.normal = inBundle.normalVertices[index];
-                }
-
-                uint32_t currentIndex = static_cast<uint32_t>(outResult.vertices.size());
-                
-                outResult.indexesMap.insert(std::make_pair(inDataSet, currentIndex));
-                outResult.indexes.push_back(currentIndex);
-                outResult.vertices.push_back(vertex);
-            }
-
-            void extractTriangleVertices(
-                ParseResult& outResult,
-                const ParseBundle& inBundle,
-                const std::vector<int>& inVertexLayout,
-                const std::vector<std::string>& inDataSetList,
-                uint32_t inOffset = 1
-            )
-            {
-                for (int vertexIndex : inVertexLayout)
-                {
-                    extractTriangleVertex(
-                        outResult,
-                        inBundle,
-                        inDataSetList[inOffset + vertexIndex]
-                    );
-                }
-            }
-
-            ParseResult parse(const std::vector<unsigned char>& inData)
-            {    
-                std::vector<std::string> dataSets = Helper::splitString(
-                    std::string(inData.begin(), inData.end()),
-                    "\n"
-                );
-
-                ParseResult result;
-                ParseBundle bundle;
-
-                for (const std::string& dataSet : dataSets)
-                {
-                    std::vector<std::string> splittedDataSet = Helper::splitString(
-                        dataSet,
-                        " "
-                    );
-
-                    switch (indetifyProperty(splittedDataSet[0]))
+                    for (std::uint32_t index : layout)
                     {
-                    case Property::GeometryVertices:
-                        extractGeometryVertices(
-                            bundle.geometryVertices,
-                            splittedDataSet
-                        );
+                        fastObjIndex indices = parsedData->indices[i + index];
 
-                        break;
+                        std::string dataSet = std::to_string(indices.p) + "/" + std::to_string(indices.t) + "/" + std::to_string(indices.n);
 
-                    case Property::TextureVertices:
-                        extractTextureVertices(
-                            bundle.textureVertices,
-                            splittedDataSet
-                        );
-
-                        break;
-
-                    case Property::VertexNormals:
-                        extractNormalVertices(
-                            bundle.normalVertices,
-                            splittedDataSet
-                        );
-
-                        break;
-
-                    case Property::Faces:
-                        // Quad detection
-                        if ((splittedDataSet.size() - 1) > 3)
+                        if (outResult.indexesMap.find(dataSet) != outResult.indexesMap.end())
                         {
-                            extractTriangleVertices(
-                                result,
-                                bundle,
-                                { 0, 1, 2, 2, 3, 0 },
-                                splittedDataSet
-                            );
+                            uint32_t index = outResult.indexesMap.at(dataSet);
 
-                            break;
+                            outResult.indexes.push_back(index);
+
+                            continue;
                         }
 
-                        extractTriangleVertices(
-                            result,
-                            bundle,
-                            { 0, 1, 2 },
-                            splittedDataSet
-                        );
+                        Vertex::Instance vertex;
+                        vertex.color = Vec<float>::Three(1.0f, 0.0f, 0.0f);
 
-                        break;
+                        vertex.position   = Vec<float>::Three(0.0f);
 
-                    default:
-                        break;
+                        vertex.position.x = parsedData->positions[indices.p * 3 + 0];
+                        vertex.position.y = parsedData->positions[indices.p * 3 + 1];
+                        vertex.position.z = parsedData->positions[indices.p * 3 + 2];
+
+                        vertex.normal   = Vec<float>::Three(0.0f);
+                        vertex.normal.x = parsedData->normals[indices.n * 3 + 0];
+                        vertex.normal.y = parsedData->normals[indices.n * 3 + 1];
+                        vertex.normal.z = parsedData->normals[indices.n * 3 + 2];
+
+                        vertex.texturePosition   = Vec<float>::Two(0.0f);
+                        vertex.texturePosition.x = parsedData->texcoords[indices.t * 2 + 0];
+                        vertex.texturePosition.y = parsedData->texcoords[indices.t * 2 + 1];
+
+                        uint32_t currentIndex = static_cast<uint32_t>(outResult.vertices.size());
+
+                        outResult.indexesMap.insert(std::make_pair(dataSet, currentIndex));
+                        outResult.indexes.push_back(currentIndex);
+                        outResult.vertices.push_back(vertex);
                     }
                 }
 
-                return result;
+                fast_obj_destroy(parsedData);
             }
         }
     }

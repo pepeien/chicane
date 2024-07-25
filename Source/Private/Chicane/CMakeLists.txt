@@ -83,6 +83,7 @@ target_include_directories(
 
         ${Vulkan_INCLUDE_DIRS}
         ${VENDORS_DIR}
+        ${VENDORS_DIR}/fast_obj
         ${VENDORS_DIR}/glm
         ${VENDORS_DIR}/imgui
         ${VENDORS_DIR}/pugixml

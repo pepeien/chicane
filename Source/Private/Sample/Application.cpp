@@ -6,12 +6,11 @@
 Application::Application()
 {
     Chicane::Allocator::load("Content/Sample/Texture/Material/Gray.box");
-    Chicane::Allocator::load("Content/Sample/Model/Cube.box");
-    Chicane::Allocator::load("Content/Sample/Model/Apple.box");
 
     initCamera();
     initLevel();
-    addActors();
+    addFloor();
+    addApples();
     addView();
     initWindow();
 }
@@ -40,10 +39,17 @@ void Application::initLevel()
     Chicane::State::setLevel(m_level.get());
 }
 
-void Application::addActors()
+void Application::addFloor()
 {
+    Chicane::Allocator::load("Content/Sample/Model/Cube.box");
+
     Floor* floor = new Floor();
     m_level->addActor(floor);
+}
+
+void Application::addApples()
+{
+    Chicane::Allocator::load("Content/Sample/Model/Apple.box");
 
     Apple* appleTopRight = new Apple();
     appleTopRight->setAbsoluteTranslation(Chicane::Vec<float>::Three(1000.0f, 1000.0f, 10.0f));

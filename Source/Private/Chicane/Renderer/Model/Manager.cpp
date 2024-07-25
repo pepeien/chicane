@@ -35,7 +35,7 @@ namespace Chicane
             switch (static_cast<Vendor>(inEntry.vendor))
             {
             case Vendor::Wavefront:
-                result = Wavefront::parse(inEntry.data);
+                Wavefront::parse(inEntry.data, result);
 
                 break;
 

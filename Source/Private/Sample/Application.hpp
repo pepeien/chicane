@@ -19,7 +19,8 @@ public:
 private:
     void initCamera();
     void initLevel();
-    void addActors();
+    void addFloor();
+    void addApples();
     void addView();
     void initWindow();
 
