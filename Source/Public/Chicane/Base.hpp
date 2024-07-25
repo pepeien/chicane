@@ -94,5 +94,10 @@ namespace Chicane
         {
             return (delta / (float)CLOCKS_PER_SEC) * 1000.0f;
         }
+
+        float deltaToTick()
+        {
+            return delta / 1000.0f;
+        }
     };
 }

@@ -447,7 +447,7 @@ namespace Chicane
                 continue;
             }
 
-            actor->onTick(State::getTelemetry().deltaToMs());
+            actor->onTick(State::getTelemetry().deltaToTick());
         }
     }
 }
