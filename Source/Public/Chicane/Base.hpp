@@ -75,15 +75,20 @@ static const uint32_t MAX_BUFFER_MULTIPLIER = 3;
 
 namespace Chicane
 {
+    struct FrameTelemetry
+    {
+        uint32_t count = 0;
+        uint32_t rate  = 0;
+        float time     = 0.0f;
+    };
+
     struct Telemetry
     {
     public:
         std::clock_t delta = 0;
 
-        uint32_t frameCount = 0;
-        uint32_t frameRate  = 0;
-        float frameTime     = 0.0f;
-    
+        FrameTelemetry frame = {};
+
     public:
         float deltaToMs()
         {

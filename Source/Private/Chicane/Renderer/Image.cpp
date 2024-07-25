@@ -11,7 +11,7 @@ namespace Chicane
             const vk::FormatFeatureFlags& inFeatures
         )
         {
-            for(vk::Format format : inCandidates)
+            for (vk::Format format : inCandidates)
             {
                 vk::FormatProperties properties = inPhysicalDevice.getFormatProperties(format);
 

@@ -8,7 +8,7 @@ namespace Chicane
 
     Level::~Level()
     {
-        for(Actor* actor : m_actors)
+        for (Actor* actor : m_actors)
         {
             delete actor;
         }

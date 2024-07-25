@@ -22,7 +22,7 @@ namespace Chicane
             std::vector<std::string> result = {};
             std::string item                = "";
 
-            while(getline(stream, item, inDelimeter))
+            while (getline(stream, item, inDelimeter))
             {
                 result.push_back(item);
             }

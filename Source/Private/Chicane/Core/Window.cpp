@@ -17,7 +17,7 @@ namespace Chicane
         m_isMinimized(false),
         m_renderer(nullptr)
     {
-        if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             throw std::runtime_error(SDL_GetError());
         }
@@ -109,7 +109,7 @@ namespace Chicane
         bool shouldClose = false;
         while (shouldClose == false)
         {
-            while(SDL_PollEvent(&event))
+            while (SDL_PollEvent(&event))
             {
                 switch (event.type)
                 {
@@ -318,17 +318,17 @@ namespace Chicane
 
     void Window::updateTelemetry()
     {
-        m_telemetry.delta      += m_endFrame - m_beginFrame;
-        m_telemetry.frameCount += 1;
+        m_telemetry.delta       += m_endFrame - m_beginFrame;
+        m_telemetry.frame.count += 1;
 
-        if (m_telemetry.deltaToMs() <= 1000.0f) {
+        if (m_telemetry.delta < CLOCKS_PER_SEC) {
             return;
         }
 
-        m_telemetry.frameRate  = (m_telemetry.frameCount * 0.5) + (m_telemetry.frameRate * 0.5);
-        m_telemetry.frameCount = 0;
-        m_telemetry.frameTime  = float(1000.0 / m_telemetry.frameRate);
-        m_telemetry.delta      = -CLOCKS_PER_SEC;
+        m_telemetry.frame.rate  = std::uint32_t((m_telemetry.frame.count * 0.5) + (m_telemetry.frame.rate * 0.5));
+        m_telemetry.frame.count = 0;
+        m_telemetry.frame.time  = 1000.0f / float(m_telemetry.frame.rate ==0?0.001:m_telemetry.frame.rate);
+        m_telemetry.delta       = 0;
     }
 
     void Window::onWindowEvent(const SDL_WindowEvent& inEvent)
