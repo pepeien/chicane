@@ -4,9 +4,25 @@ namespace Chicane
 {
     namespace Allocator
     {
+        struct CachedEntry
+        {
+        public:
+            std::string identifier = "";
+            Box::EntryType type    = Box::EntryType::Undefined;
+        };
+
+        struct CachedInstance
+        {
+        public:
+            Box::Type type                   = Box::Type::Undefined;
+            std::vector<CachedEntry> entries = {};
+        };
+
         std::unique_ptr<CubeMap::Manager> m_cubemapManager = std::make_unique<CubeMap::Manager>();
         std::unique_ptr<Model::Manager> m_modelManager     = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
+
+        std::unordered_map<std::string, CachedInstance> m_cache = {};
 
         CubeMap::Manager* getCubemapManager()
         {
@@ -23,9 +39,63 @@ namespace Chicane
             return m_textureManager.get();
         }
 
+        bool isCached(const std::string& inIdentifier)
+        {
+            return m_cache.find(inIdentifier) != m_cache.end();
+        }
+
+        bool isCached(const Box::Instance& inInstance)
+        {
+            return isCached(inInstance.filepath);
+        }
+
+        void cacheEntry(const std::string& inIdentifier, const CachedEntry& inEntry)
+        {
+            if (!isCached(inIdentifier))
+            {
+                return;
+            }
+
+            m_cache[inIdentifier].entries.push_back(inEntry);
+        }
+
+        void cacheEntry(const std::string& inIdentifier, const std::vector<CachedEntry>& inEntries)
+        {
+            for (const CachedEntry& entry : inEntries)
+            {
+                cacheEntry(
+                    inIdentifier,
+                    entry
+                );
+            }
+        }
+
+        void cacheInstance(const std::string& inIdentifier, const CachedInstance& inInstance)
+        {
+            if (isCached(inIdentifier))
+            {
+                return;
+            }
+
+            m_cache.insert(
+                std::make_pair(
+                    inIdentifier,
+                    inInstance
+                )
+            );
+        }
+
         void loadMesh(const Box::Instance& inInstance)
         {
+            if (isCached(inInstance))
+            {
+                return;
+            }
+
             Box::Instance instance = Box::read(inInstance.filepath);
+
+            CachedInstance cachedInstance = {};
+            cachedInstance.type = inInstance.type;
 
             for (Box::Entry entry : instance.entries)
             {
@@ -35,11 +105,27 @@ namespace Chicane
                 }
 
                 load(entry.reference);
+
+                CachedEntry cachedEntry = {};
+                cachedEntry.identifier = entry.reference;
+                cachedEntry.type       = entry.type;
+
+                cachedInstance.entries.push_back(cachedEntry);
             }
+
+            cacheInstance(
+                inInstance.filepath,
+                cachedInstance
+            );
         }
 
         void loadCubemap(const Box::Instance& inInstance)
         {
+            if (isCached(inInstance))
+            {
+                return;
+            }
+
             Box::Instance instance = Box::read(inInstance.filepath);
 
             if (instance.entries.size() < CUBEMAP_IMAGE_COUNT)
@@ -74,10 +160,8 @@ namespace Chicane
 
         void loadModel(const Box::Instance& inInstance)
         {
-            if (m_modelManager->contains(inInstance.name))
+            if (isCached(inInstance))
             {
-                m_modelManager->use(inInstance.name);
-
                 return;
             }
 
@@ -85,11 +169,24 @@ namespace Chicane
                 inInstance.name,
                 Box::read(inInstance.filepath).entries[0]
             );
+
+            CachedEntry cachedEntry = {};
+            cachedEntry.type       = Box::EntryType::Model;
+            cachedEntry.identifier = inInstance.name;
+
+            CachedInstance cachedInstance = {};
+            cachedInstance.type = inInstance.type;
+            cachedInstance.entries.push_back(cachedEntry);
+
+            cacheInstance(
+                inInstance.filepath,
+                cachedInstance
+            );
         }
 
         void loadTexture(const Box::Instance& inInstance)
         {
-            if (m_textureManager->contains(inInstance.name))
+            if (isCached(inInstance))
             {
                 return;
             }
@@ -100,8 +197,44 @@ namespace Chicane
             );
         }
 
+        void loadCached(const std::string& inIdentifier)
+        {
+            if (!isCached(inIdentifier))
+            {
+                return;
+            }
+
+            const CachedInstance& instance = m_cache.at(inIdentifier);
+
+            if (instance.type == Box::Type::Mesh)
+            {
+                for (const CachedEntry& entry : instance.entries)
+                {
+                    loadCached(entry.identifier);
+                }
+
+                return;
+            }
+
+            for (const CachedEntry& entry : instance.entries)
+            {
+                switch (entry.type)
+                {
+                case Box::EntryType::Model:
+                    m_modelManager->use(entry.identifier);
+
+                    return;
+                }
+            }
+        }
+
         void load(const Box::Instance& inInstance)
         {
+            if (isCached(inInstance))
+            {
+                return;
+            }
+
             switch (inInstance.type)
             {
             case Box::Type::Mesh:
@@ -131,6 +264,13 @@ namespace Chicane
 
         void load(const std::string& inFilePath)
         {
+            if (isCached(inFilePath))
+            {
+                loadCached(inFilePath);
+
+                return;
+            }
+
             Box::Instance headerOnlyInstance = Box::readHeader(inFilePath);
 
             load(headerOnlyInstance);
