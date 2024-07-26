@@ -402,6 +402,8 @@ namespace Chicane
             return;
         }
 
+        m_logicalDevice.waitIdle();
+
         destroySwapChain();
         buildSwapChain();
 
