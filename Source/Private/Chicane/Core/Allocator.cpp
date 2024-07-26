@@ -25,31 +25,58 @@ namespace Chicane
 
         void loadMesh(const Box::Instance& inInstance)
         {
-            for (Box::Entry entry : inInstance.entries)
+            Box::Instance instance = Box::read(inInstance.filepath);
+
+            for (Box::Entry entry : instance.entries)
             {
-                if (entry.referenceName.empty())
+                if (entry.reference.empty())
                 {
                     continue;
                 }
 
-                switch (entry.type)
-                {
-                case Box::EntryType::Model:
-                    m_modelManager->addDuplicate(entry.referenceName);
-
-                    break;
-
-                default:
-                    break;
-                }
+                load(entry.reference);
             }
+        }
+
+        void loadCubemap(const Box::Instance& inInstance)
+        {
+            Box::Instance instance = Box::read(inInstance.filepath);
+
+            if (instance.entries.size() < CUBEMAP_IMAGE_COUNT)
+            {
+                throw std::runtime_error("The [" + instance.name + "] cubemap isn't valid");
+            }
+
+            std::vector<Box::Entry> textures = {};
+
+            for (Box::Entry entry : instance.entries)
+            {
+                if (entry.reference.empty())
+                {
+                    continue;
+                }
+
+                textures.push_back(Box::read(entry.reference).entries[0]);
+            }
+
+            m_cubemapManager->add(
+                "Skybox",
+                {
+                    textures[0].data, // Positive X
+                    textures[1].data, // Negative X
+                    textures[2].data, // Positive Y
+                    textures[3].data, // Negative Y
+                    textures[4].data, // Positive Z
+                    textures[5].data  // Negative Z
+                }
+            );
         }
 
         void loadModel(const Box::Instance& inInstance)
         {
             if (m_modelManager->contains(inInstance.name))
             {
-                m_modelManager->addDuplicate(inInstance.name);
+                m_modelManager->use(inInstance.name);
 
                 return;
             }
@@ -73,17 +100,20 @@ namespace Chicane
             );
         }
 
-        void load(const std::string& inFilePath)
-        {
-            Box::Instance headerOnlyInstance = Box::readHeader(inFilePath);
-
-            load(headerOnlyInstance);
-        }
-        
         void load(const Box::Instance& inInstance)
         {
             switch (inInstance.type)
             {
+            case Box::Type::Mesh:
+                loadMesh(inInstance);
+
+                return;
+
+            case Box::Type::CubeMap:
+                loadCubemap(inInstance);
+
+                return;
+
             case Box::Type::Texture:
                 loadTexture(inInstance);
 
@@ -93,15 +123,17 @@ namespace Chicane
                 loadModel(inInstance);
 
                 return;
-            
-            case Box::Type::Mesh:
-                loadMesh(Box::read(inInstance.filepath));
-
-                return;
 
             default:
                 return;
             }
+        }
+
+        void load(const std::string& inFilePath)
+        {
+            Box::Instance headerOnlyInstance = Box::readHeader(inFilePath);
+
+            load(headerOnlyInstance);
         }
 
         void reset()

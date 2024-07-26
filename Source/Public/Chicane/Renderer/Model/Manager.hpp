@@ -23,7 +23,7 @@ namespace Chicane
         {
             public:
                 bool contains(const std::string& inId);
-                void addDuplicate(const std::string& inId);
+                void use(const std::string& inId);
                 void add(const std::string& inId, const Box::Entry& inEntry);
                 void build(
                     Buffer::Instance& outVertexBuffer,
@@ -42,7 +42,6 @@ namespace Chicane
 
             private:
                 void process(const std::string& inId);
-                void processAll();
 
                 void initVertexBuffer(
                     Buffer::Instance& outVertexBuffer,

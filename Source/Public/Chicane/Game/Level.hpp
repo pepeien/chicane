@@ -13,10 +13,6 @@ namespace Chicane
         ~Level();
 
     public:
-        bool hasSkybox();
-        Box::Instance getSkybox();
-        void setSkybox(const Box::Instance& inSkybox);
-
         bool hasActors();
         std::vector<Actor*> getActors();
         void addActor(Actor* inActor);
@@ -27,7 +23,6 @@ namespace Chicane
         );
 
     private:
-        Box::Instance m_skybox;
         std::vector<Actor*> m_actors;
         Observable<Actor*>* m_observable;
     };

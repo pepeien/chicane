@@ -29,7 +29,6 @@ namespace Chicane
         ) override;
 
     private:
-        void loadAssets();
         void initFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();
         void initGraphicsPipeline();
@@ -40,7 +39,6 @@ namespace Chicane
 
     private:
         Renderer* m_renderer;
-        Level* m_level;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

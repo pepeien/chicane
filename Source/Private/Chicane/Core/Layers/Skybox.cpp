@@ -11,13 +11,7 @@ namespace Chicane
         : Layer("Skybox"),
         m_renderer(inWindow->getRenderer())
     {
-        if (State::hasLevel() == false)
-        {
-            return;
-        }
-
-        m_level         = State::getLevel();
-        m_isInitialized = m_level->hasSkybox();
+        m_isInitialized = Allocator::getCubemapManager()->getCount() > 0;
     }
 
     SkyboxLayer::~SkyboxLayer()
@@ -47,7 +41,6 @@ namespace Chicane
             return;
         }
 
-        loadAssets();
         initFrameDescriptorSetLayout();
         initMaterialDescriptorSetLayout();
         initGraphicsPipeline();
@@ -141,33 +134,6 @@ namespace Chicane
         inCommandBuffer.endRenderPass();
 
         return;
-    }
-
-    void SkyboxLayer::loadAssets()
-    {
-        if (!m_isInitialized)
-        {
-            return;
-        }
-
-        Box::Instance cubemap = m_level->getSkybox();
-
-        if (cubemap.entries.size() < 6)
-        {
-            throw std::runtime_error("The level cubemap isn't valid");
-        }
-
-        Allocator::getCubemapManager()->add(
-            "Skybox",
-            {
-                cubemap.entries[0].data, // Positive X
-                cubemap.entries[1].data, // Negative X
-                cubemap.entries[2].data, // Positive Y
-                cubemap.entries[3].data, // Negative Y
-                cubemap.entries[4].data, // Positive Z
-                cubemap.entries[5].data  // Negative Z
-            }
-        );
     }
 
     void SkyboxLayer::initFrameDescriptorSetLayout()

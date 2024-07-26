@@ -30,18 +30,14 @@ namespace Chicane
         Mat<float>::Four getPosition();
 
         void setRelativeTranslation(const Vec<float>::Three& inTranslation);
+        void setAbsoluteTranslation(const Vec<float>::Three& inTranslation);
+
         // Rotation values should be in degrees
         void setRelativeRotation(const Vec<float>::Three& inRotation);
-        void setRelativeScale(const Vec<float>::Three& inScale);
-
-        void setAbsoluteTranslation(const Vec<float>::Three& inTranslation);
-        // Rotation values should be in degrees
         void setAbsoluteRotation(const Vec<float>::Three& inRotation);
-        void setAbsoluteScale(const Vec<float>::Three& inScale);
 
-        bool hasMesh();
-        Box::Instance getMesh();
-        void setMesh(const Box::Instance& inMesh);
+        void setRelativeScale(const Vec<float>::Three& inScale);
+        void setAbsoluteScale(const Vec<float>::Three& inScale);
 
     protected:
         void setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation);

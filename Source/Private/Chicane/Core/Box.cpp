@@ -59,7 +59,7 @@ namespace Chicane
 
             if (isReference)
             {
-                referenceName = entryData;
+                reference = entryData;
 
                 return;
             }
@@ -107,7 +107,10 @@ namespace Chicane
             for (uint32_t i = 1; i < (outInstance.entryCount + 1); i++)
             {
                 Entry entry;
-                entry.parse(splittedData[i], outInstance.type == Type::Mesh);
+                entry.parse(
+                    splittedData[i],
+                    outInstance.type == Type::Mesh || outInstance.type == Type::CubeMap
+                );
 
                 outInstance.entries.push_back(entry);
             }
@@ -148,9 +151,9 @@ namespace Chicane
                 file << entryHeader.toString();
                 file << ENTRY_DATA_SIGNATURE;
 
-                if (!entry.referenceName.empty())
+                if (!entry.reference.empty())
                 {
-                    file << entry.referenceName;
+                    file << entry.reference;
 
                     continue;
                 }

@@ -9,24 +9,21 @@ namespace Chicane
             return m_instanceMap.find(inId) != m_instanceMap.end();
         }
 
-        void Manager::addDuplicate(const std::string& inId)
+        void Manager::use(const std::string& inId)
         {
             if (!contains(inId))
             {
                 return;
             }
 
-            process(inId);
+            m_allocationMap.at(inId).instanceCount += 1;
+            m_usedIds.push_back(inId);
         }
 
         void Manager::add(const std::string& inId, const Box::Entry& inEntry)
         {
-            m_usedIds.push_back(inId);
-
             if (contains(inId))
             {
-                addDuplicate(inId);
-
                 return;
             }
 
@@ -51,6 +48,7 @@ namespace Chicane
             m_instanceMap.insert(std::make_pair(inId, newModel));
 
             process(inId);
+            use(inId);
         }
 
         void Manager::build(
@@ -106,6 +104,11 @@ namespace Chicane
 
             Model::AllocationInfo& allocationInfo = foundModel->second;
 
+            if (allocationInfo.instanceCount == 0)
+            {
+                return;
+            }
+
             inCommandBuffer.drawIndexed(
                 allocationInfo.indexCount,
                 allocationInfo.instanceCount,
@@ -134,8 +137,6 @@ namespace Chicane
 
             if (m_allocationMap.find(inId) != m_allocationMap.end())
             {
-                m_allocationMap[inId].instanceCount += 1;
-
                 return;
             }
 
@@ -145,7 +146,7 @@ namespace Chicane
             allocationInfo.vertexCount   = static_cast<uint32_t>(instance.vertexInstances.size());
             allocationInfo.firstVertex   = static_cast<uint32_t>(m_combinedVertices.size());
             allocationInfo.indexCount    = static_cast<uint32_t>(instance.vertexIndices.size());
-            allocationInfo.instanceCount = 1;
+            allocationInfo.instanceCount = 0;
             allocationInfo.firstIndex    = static_cast<uint32_t>(m_indexedVertices.size());
 
             m_allocationMap.insert(std::make_pair(inId, allocationInfo));
@@ -159,14 +160,6 @@ namespace Chicane
             for (uint32_t vertexIndex : instance.vertexIndices)
             {
                 m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
-            }
-        }
-
-        void Manager::processAll()
-        {
-            for (std::string& id : m_usedIds)
-            {
-                process(id);
             }
         }
         

@@ -9,11 +9,16 @@ Apple::Apple()
 {
     setCanTick(true);
 
-    setMesh(Chicane::Box::readHeader("Content/Sample/Meshes/Apple.box"));
+    Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
 }
 
 void Apple::onTick(float inDeltaTime)
 {
-    //setRelativeTranslation(Chicane::Vec<float>::Three(0.0f, 0.0f, 0.05f * inDeltaTime));
-    setRelativeRotation(Chicane::Vec<float>::Three(0.0f, 0.0f, 0.05f * inDeltaTime));
+    setRelativeRotation(
+        Chicane::Vec<float>::Three(
+            0.0f,
+            0.0f,
+            0.5f * inDeltaTime
+        )
+    );
 } 

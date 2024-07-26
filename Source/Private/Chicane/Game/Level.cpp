@@ -16,26 +16,6 @@ namespace Chicane
         m_actors.clear();
     }
 
-    bool Level::hasSkybox()
-    {
-        return m_skybox.type == Box::Type::CubeMap;
-    }
-
-    Box::Instance Level::getSkybox()
-    {
-        return m_skybox;
-    }
-
-    void Level::setSkybox(const Box::Instance& inAsset)
-    {
-        if (inAsset.type != Box::Type::CubeMap)
-        {
-            throw std::runtime_error("Failed to set skybox, asset is not a cubemap");
-        }
-
-        m_skybox = inAsset;
-    }
-
     bool Level::hasActors()
     {
         return m_actors.size() > 0;

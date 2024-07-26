@@ -203,19 +203,12 @@ namespace Chicane
 
     void LevelLayer::loadActor(Actor* inActor)
     {
-        if (!inActor->hasMesh())
-        {
-            return;
-        }
-
         if (!m_isInitialized)
         {
             m_isInitialized = true;
 
             build();
         }
-
-        Allocator::load(inActor->getMesh());
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
@@ -356,9 +349,6 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            // Data
-            frame.setupModelData(m_level->getActors());
-
             // Scene
             vk::DescriptorSet sceneDescriptorSet;
             Descriptor::initSet(

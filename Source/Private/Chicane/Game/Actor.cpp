@@ -32,25 +32,18 @@ namespace Chicane
         setTranslation(m_position, inTranslation);
     }
 
-    void Actor::setRelativeRotation(const Vec<float>::Three& inRotation)
-    {
-        m_transform.rotation += inRotation;
-
-       setRotation(m_position, inRotation);
-    }
-
-    void Actor::setRelativeScale(const Vec<float>::Three& inScale)
-    {
-        m_transform.scale += inScale;
-
-        setScale(m_position, inScale);
-    }
-
     void Actor::setAbsoluteTranslation(const Vec<float>::Three& inTranslation)
     {
         m_transform.translation = inTranslation;
 
         setTranslation(Mat<float>::Four(1.0f), inTranslation);
+    }
+
+    void Actor::setRelativeRotation(const Vec<float>::Three& inRotation)
+    {
+        m_transform.rotation += inRotation;
+
+       setRotation(m_position, inRotation);
     }
 
     void Actor::setAbsoluteRotation(const Vec<float>::Three& inRotation)
@@ -60,26 +53,18 @@ namespace Chicane
         setRotation(Mat<float>::Four(0.0f), inRotation);
     }
 
+    void Actor::setRelativeScale(const Vec<float>::Three& inScale)
+    {
+        m_transform.scale += inScale;
+
+        setScale(m_position, inScale);
+    }
+
     void Actor::setAbsoluteScale(const Vec<float>::Three& inScale)
     {
         m_transform.scale = inScale;
 
         setScale(Mat<float>::Four(1.0f), inScale);
-    }
-
-    bool Actor::hasMesh()
-    {
-        return m_mesh.type == Box::Type::Mesh;
-    }
-
-    Box::Instance Actor::getMesh()
-    {
-        return m_mesh;
-    }
-
-    void Actor::setMesh(const Box::Instance& inMesh)
-    {
-        m_mesh = inMesh;
     }
 
     void Actor::setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation)

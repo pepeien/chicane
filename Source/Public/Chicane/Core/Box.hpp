@@ -60,8 +60,8 @@ namespace Chicane
             EntryType type = EntryType::Undefined;
             uint8_t vendor = 0;
 
-            std::string dataFilePath  = "";
-            std::string referenceName = "";
+            std::string dataFilePath = "";
+            std::string reference    = "";
         };
 
         struct WriteInfo
@@ -81,7 +81,7 @@ namespace Chicane
             uint8_t vendor = 0; // Only pertinent if type is `EntryType::Mesh`
 
             std::vector<unsigned char> data = {}; // Only pertinent if type is `EntryType::Model` or `Entry::Texture`
-            std::string referenceName       = ""; // Only pertinent if type is `EntryType::Mesh`
+            std::string reference           = ""; // Only pertinent if type is `EntryType::Mesh`
 
         public:
             void parse(const std::string& inRawData, bool isReference = false);
