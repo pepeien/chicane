@@ -17,6 +17,8 @@ namespace Chicane
         m_isMinimized(false),
         m_renderer(nullptr)
     {
+        State::setWindow(this);
+
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             throw std::runtime_error(SDL_GetError());
@@ -46,8 +48,6 @@ namespace Chicane
 
         initRenderer();
         initCoreLayers();
-
-        State::setWindow(this);
     }
 
     Window::~Window()

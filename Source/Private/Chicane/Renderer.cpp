@@ -147,8 +147,6 @@ namespace Chicane
 
     void Renderer::render()
     {
-        m_logicalDevice.waitIdle();
-
         Frame::Instance& currentImage = m_swapChain.images[m_currentImageIndex];
 
         vk::Result fenceWait = m_logicalDevice.waitForFences(
@@ -403,8 +401,6 @@ namespace Chicane
         {
             return;
         }
-
-        m_logicalDevice.waitIdle();
 
         destroySwapChain();
         buildSwapChain();
