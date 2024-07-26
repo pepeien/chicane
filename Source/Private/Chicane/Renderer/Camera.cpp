@@ -24,6 +24,12 @@ namespace Chicane
     {
         m_viewportWidth  = inWidth;
         m_viewportHeight = inHeight;
+        m_aspectRatio    = 0;
+
+        if (inWidth == 0 || inHeight == 0)
+        {
+            return;
+        }
 
         setAspectRatio(
             static_cast<float>(m_viewportWidth / m_viewportHeight)

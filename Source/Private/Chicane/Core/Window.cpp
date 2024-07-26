@@ -335,13 +335,13 @@ namespace Chicane
     {
         switch (inEvent.event)
         {
-        case SDL_WINDOWEVENT_MINIMIZED:
-            m_isMinimized = true;
+        case SDL_WINDOWEVENT_EXPOSED:
+            m_isMinimized = m_type == WindowType::Fullscreen ? true : false;
 
             break;
 
-        case SDL_WINDOWEVENT_EXPOSED:
-            m_isMinimized = false;
+        case SDL_WINDOWEVENT_MINIMIZED:
+            m_isMinimized = true;
 
             break;
         }

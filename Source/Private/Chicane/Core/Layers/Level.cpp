@@ -90,6 +90,7 @@ namespace Chicane
 
         initFramebuffers();
         initFrameResources();
+        loadAssets();
     }
 
     void LevelLayer::setup(Frame::Instance& outFrame)
