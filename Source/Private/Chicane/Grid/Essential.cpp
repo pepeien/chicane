@@ -258,7 +258,7 @@ namespace Chicane
                 )
             );
 
-            ComponentFunctionData data = {};
+            ComponentFunctionData data {};
             data.name = name;
 
             for (std::string& value : Utils::split(params, ','))
@@ -314,7 +314,7 @@ namespace Chicane
                 return inRefValue;
             }
 
-            ComponentEvent event = {};
+            ComponentEvent event {};
             event.values = functionData.params;
 
             return functionRef(event);

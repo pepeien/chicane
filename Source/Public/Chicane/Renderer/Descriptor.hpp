@@ -10,7 +10,7 @@ namespace Chicane
         {
             vk::DescriptorPoolCreateFlags flags   = vk::DescriptorPoolCreateFlags();
             uint32_t size                         = 0;
-            std::vector<vk::DescriptorType> types = {};
+            std::vector<vk::DescriptorType> types {};
         };
 
         struct SetLayoutBidingsCreateInfo
@@ -24,8 +24,8 @@ namespace Chicane
 
         struct Bundle
         {
-            vk::DescriptorSetLayout setLayout = {};
-            vk::DescriptorSet set = {};
+            vk::DescriptorSetLayout setLayout {};
+            vk::DescriptorSet set {};
             vk::DescriptorPool pool = VK_NULL_HANDLE;
         };
 

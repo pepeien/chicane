@@ -87,7 +87,7 @@ namespace Chicane
     public:
         std::clock_t delta = 0;
 
-        FrameTelemetry frame = {};
+        FrameTelemetry frame {};
 
     public:
         float deltaToMs()

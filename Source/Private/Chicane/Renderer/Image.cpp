@@ -93,7 +93,7 @@ namespace Chicane
             uint32_t inCount
         )
         {
-            vk::ImageViewCreateInfo createInfo = {};
+            vk::ImageViewCreateInfo createInfo {};
             createInfo.image                           = inImage;
             createInfo.viewType                        = inViewType;
             createInfo.format                          = inFormat;

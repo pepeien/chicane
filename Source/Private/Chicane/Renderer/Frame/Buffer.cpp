@@ -8,7 +8,7 @@ namespace Chicane
         {
             void init(Instance& outFrame, const CreateInfo& inCreateInfo)
             {
-                vk::FramebufferCreateInfo framebufferInfo = {};
+                vk::FramebufferCreateInfo framebufferInfo {};
                 framebufferInfo.flags           = vk::FramebufferCreateFlags();
                 framebufferInfo.renderPass      = inCreateInfo.renderPass;
                 framebufferInfo.attachmentCount = static_cast<uint32_t>(inCreateInfo.attachments.size());

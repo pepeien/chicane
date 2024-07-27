@@ -89,7 +89,7 @@ namespace Chicane
             std::vector<char> rawData = FileSystem::readFile(inFilePath);
             std::string data          = std::string(rawData.begin(), rawData.end());
 
-            Instance result = {};
+            Instance result {};
             result.filepath = inFilePath;
 
             parseHeader(data, result);
@@ -121,7 +121,7 @@ namespace Chicane
             std::vector<char> rawData = FileSystem::readFile(inFilePath);
             std::string data          = std::string(rawData.begin(), rawData.end());
 
-            Instance result = {};
+            Instance result {};
             result.filepath = inFilePath;
 
             parseHeader(data, result);
@@ -132,7 +132,7 @@ namespace Chicane
 
         void write(const WriteInfo& inWriteInfo)
         {
-            WriteRootHeader rootHeader = {};
+            WriteRootHeader rootHeader {};
             rootHeader.type       = inWriteInfo.type;
             rootHeader.name       = inWriteInfo.name;
             rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;

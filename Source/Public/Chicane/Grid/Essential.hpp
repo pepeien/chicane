@@ -11,11 +11,11 @@ namespace Chicane
         // Types
         struct ComponentFunctionData {
             std::string name             = "";
-            std::vector<std::any> params = {};
+            std::vector<std::any> params {};
         };
 
         struct ComponentEvent {
-            std::vector<std::any> values = {};
+            std::vector<std::any> values {};
         };
 
         typedef std::function<std::any (const ComponentEvent&)> ComponentFunction;

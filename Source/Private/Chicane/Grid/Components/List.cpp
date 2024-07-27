@@ -136,7 +136,7 @@ namespace Chicane
                 );
                     for (std::any item : items)
                     {
-                        ComponentEvent event = {};
+                        ComponentEvent event {};
                         event.values.push_back(item);
 
                         itemGetter(event);

@@ -225,7 +225,7 @@ namespace Chicane
         vk::Semaphore signalSemaphores[]    = { currentImage.renderSemaphore };
         vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
     
-        vk::SubmitInfo submitInfo = {};
+        vk::SubmitInfo submitInfo {};
         submitInfo.waitSemaphoreCount   = 1;
         submitInfo.pWaitSemaphores      = waitSemaphores;
         submitInfo.commandBufferCount   = static_cast<uint32_t>(commandBuffers.size());
@@ -242,7 +242,7 @@ namespace Chicane
 
         vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
 
-        vk::PresentInfoKHR presentInfo = {};
+        vk::PresentInfoKHR presentInfo {};
         presentInfo.waitSemaphoreCount = 1;
         presentInfo.pWaitSemaphores    = signalSemaphores;
         presentInfo.swapchainCount     = 1;

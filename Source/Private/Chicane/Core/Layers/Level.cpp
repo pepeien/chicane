@@ -125,7 +125,7 @@ namespace Chicane
         clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
         clearValues.push_back(vk::ClearDepthStencilValue(1.f, 0u));
 
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
         renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
@@ -289,7 +289,7 @@ namespace Chicane
             return;
         }
 
-        GraphicsPipeline::CreateInfo createInfo = {};
+        GraphicsPipeline::CreateInfo createInfo {};
         createInfo.canOverwrite          = true;
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
@@ -318,7 +318,7 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            Frame::Buffer::CreateInfo framebufferCreateInfo = {};
+            Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;

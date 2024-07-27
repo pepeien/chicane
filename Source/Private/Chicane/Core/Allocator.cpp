@@ -15,14 +15,14 @@ namespace Chicane
         {
         public:
             Box::Type type                   = Box::Type::Undefined;
-            std::vector<CachedEntry> entries = {};
+            std::vector<CachedEntry> entries {};
         };
 
         std::unique_ptr<CubeMap::Manager> m_cubemapManager = std::make_unique<CubeMap::Manager>();
         std::unique_ptr<Model::Manager> m_modelManager     = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
-        std::unordered_map<std::string, CachedInstance> m_cache = {};
+        std::unordered_map<std::string, CachedInstance> m_cache {};
 
         CubeMap::Manager* getCubemapManager()
         {
@@ -94,7 +94,7 @@ namespace Chicane
 
             Box::Instance instance = Box::read(inInstance.filepath);
 
-            CachedInstance cachedInstance = {};
+            CachedInstance cachedInstance {};
             cachedInstance.type = inInstance.type;
 
             for (Box::Entry entry : instance.entries)
@@ -106,7 +106,7 @@ namespace Chicane
 
                 load(entry.reference);
 
-                CachedEntry cachedEntry = {};
+                CachedEntry cachedEntry {};
                 cachedEntry.identifier = entry.reference;
                 cachedEntry.type       = entry.type;
 
@@ -133,7 +133,7 @@ namespace Chicane
                 throw std::runtime_error("The [" + instance.name + "] cubemap isn't valid");
             }
 
-            std::vector<Box::Entry> textures = {};
+            std::vector<Box::Entry> textures {};
 
             for (Box::Entry entry : instance.entries)
             {
@@ -170,11 +170,11 @@ namespace Chicane
                 Box::read(inInstance.filepath).entries[0]
             );
 
-            CachedEntry cachedEntry = {};
+            CachedEntry cachedEntry {};
             cachedEntry.type       = Box::EntryType::Model;
             cachedEntry.identifier = inInstance.name;
 
-            CachedInstance cachedInstance = {};
+            CachedInstance cachedInstance {};
             cachedInstance.type = inInstance.type;
             cachedInstance.entries.push_back(cachedEntry);
 

@@ -88,7 +88,7 @@ namespace Chicane
         std::vector<vk::ClearValue> clearValues;
         clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
         renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
@@ -172,7 +172,7 @@ namespace Chicane
 
     void SkyboxLayer::initGraphicsPipeline()
     {
-        GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo = {};
+        GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo {};
         graphicsPipelineCreateInfo.canOverwrite         = false;
         graphicsPipelineCreateInfo.hasVertices          = false;
         graphicsPipelineCreateInfo.hasDepth             = false;
@@ -190,7 +190,7 @@ namespace Chicane
     {
         for (Frame::Instance& frame : m_renderer->m_swapChain.images)
         {
-            Frame::Buffer::CreateInfo framebufferCreateInfo = {};
+            Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;

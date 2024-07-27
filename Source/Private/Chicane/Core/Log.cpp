@@ -33,28 +33,28 @@ namespace Chicane
 
             std::time_t timestamp = std::time(0);
 
-            if (inType == MessageType::INFO)
+            if (inType == MessageType::CRITICAL)
             {
-                std::cout << timestamp  << " [LOG] " << inMessage << std::endl;
+                std::cout << timestamp  << " [CRITICAL] " << inMessage << '\n';
         
                 return;
             }
         
             if (inType == MessageType::WARNING)
             {
-                std::cout << timestamp  << " [WARNING] " << inMessage << std::endl;
+                std::cout << timestamp  << " [WARNING] " << inMessage << '\n';
         
                 return;
             }
         
             if (inType == MessageType::ERROR)
             {
-                std::cerr << timestamp  << " [ERROR] " << inMessage << std::endl;
+                std::cerr << timestamp  << " [ERROR] " << inMessage << '\n';
         
                 return;
             }
         
-            std::cerr << timestamp  << " [CRITICAL] " << inMessage << std::endl;
+            std::cerr << timestamp  << " [LOG] " << inMessage << '\n';
         }
     }
 }

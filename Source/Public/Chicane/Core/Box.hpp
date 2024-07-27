@@ -69,7 +69,7 @@ namespace Chicane
         public:
             Type type                       = Type::Undefined;
             std::string name                = "";
-            std::vector<WriteEntry> entries = {};
+            std::vector<WriteEntry> entries {};
             std::string outputPath          = "";
         };
 
@@ -80,7 +80,7 @@ namespace Chicane
 
             uint8_t vendor = 0; // Only pertinent if type is `EntryType::Mesh`
 
-            std::vector<unsigned char> data = {}; // Only pertinent if type is `EntryType::Model` or `Entry::Texture`
+            std::vector<unsigned char> data {}; // Only pertinent if type is `EntryType::Model` or `Entry::Texture`
             std::string reference           = ""; // Only pertinent if type is `EntryType::Mesh`
 
         public:
@@ -94,7 +94,7 @@ namespace Chicane
             std::string name           = "";
             std::string filepath       = "";
             uint32_t entryCount        = 0;
-            std::vector<Entry> entries = {};
+            std::vector<Entry> entries {};
         };
 
         void parseHeader(const std::string& inRawData, Instance& outInstance);

@@ -73,7 +73,7 @@ void Application::addView()
 
 void Application::initWindow()
 {
-    Chicane::WindowCreateInfo windowCreateInfo = {};
+    Chicane::WindowCreateInfo windowCreateInfo {};
     windowCreateInfo.title         = "Chicane Sample";
     windowCreateInfo.resolution.x  = 1600;
     windowCreateInfo.resolution.y  = 900;

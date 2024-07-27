@@ -19,7 +19,7 @@ namespace Chicane
         {
             std::stringstream stream(inTarget);
 
-            std::vector<std::string> result = {};
+            std::vector<std::string> result {};
             std::string item                = "";
 
             while (getline(stream, item, inDelimeter))

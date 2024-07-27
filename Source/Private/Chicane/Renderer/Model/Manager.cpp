@@ -27,7 +27,7 @@ namespace Chicane
                 return;
             }
 
-            ParseResult result = {};
+            ParseResult result {};
 
             switch (static_cast<Vendor>(inEntry.vendor))
             {

@@ -132,7 +132,7 @@ namespace Chicane
         std::vector<vk::ClearValue> clearValues;
         clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
-        vk::RenderPassBeginInfo renderPassBeginInfo = {};
+        vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_renderPass;
         renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
@@ -194,7 +194,7 @@ namespace Chicane
 
     void UILayer::initFramebuffers()
     {
-        Frame::Buffer::CreateInfo framebufferCreateInfo = {};
+        Frame::Buffer::CreateInfo framebufferCreateInfo {};
         framebufferCreateInfo.id              = m_id;
         framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
         framebufferCreateInfo.renderPass      = m_renderPass;
@@ -218,7 +218,7 @@ namespace Chicane
             m_renderer->m_surface
         );
 
-        ImGui_ImplVulkan_InitInfo imguiInitInfo = {};
+        ImGui_ImplVulkan_InitInfo imguiInitInfo {};
         imguiInitInfo.Instance        = m_renderer->m_instance;
         imguiInitInfo.PhysicalDevice  = m_renderer->m_physicalDevice;
         imguiInitInfo.Device          = m_renderer->m_logicalDevice;

@@ -48,7 +48,7 @@ namespace Chicane
                         onClickFunctionData.name
                     );
 
-                    ComponentEvent onClickEvent = {};
+                    ComponentEvent onClickEvent {};
                     onClickEvent.values = onClickFunctionData.params;
 
                     if (onClickFunctionData.params.size() == 1)
