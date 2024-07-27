@@ -6,8 +6,8 @@ namespace Chicane
 {
     namespace Instance
     {
-        bool areExtensionsSupported(const std::vector<const char*> inExtensions);
-        bool areValidationLayersSupported(const std::vector<const char*> inValidationLayers);
+        bool areExtensionsSupported(const std::vector<const char*>& inExtensions);
+        bool areValidationLayersSupported(const std::vector<const char*>& inValidationLayers);
 
         void init(
             vk::Instance& outInstance,

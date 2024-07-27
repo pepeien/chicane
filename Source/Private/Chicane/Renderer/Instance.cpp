@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Instance
     {
-        bool areExtensionsSupported(const std::vector<const char*> inExtensions)
+        bool areExtensionsSupported(const std::vector<const char*>& inExtensions)
         {
             bool isSupported = false;
 
@@ -33,7 +33,7 @@ namespace Chicane
             return true;
         }
 
-        bool areValidationLayersSupported(const std::vector<const char*> inValidationLayers)
+        bool areValidationLayersSupported(const std::vector<const char*>& inValidationLayers)
         {
             bool isSupported = false;
 

@@ -47,7 +47,7 @@ namespace Chicane
             cameraDescriptorBufferInfo.range  = cameraUBO.allocationSize;
         }
     
-        void Instance::setupModelData(std::vector<Actor*> inActors)
+        void Instance::setupModelData(const std::vector<Actor*>& inActors)
         {
             destroyModelMemory();
 
@@ -79,7 +79,7 @@ namespace Chicane
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
         }
 
-        void Instance::updateModelData(std::vector<Actor*> inActors)
+        void Instance::updateModelData(const std::vector<Actor*>& inActors)
         {   
             for (uint32_t i = 0; i < inActors.size() && i < modelData.transforms.size(); i++)
             {

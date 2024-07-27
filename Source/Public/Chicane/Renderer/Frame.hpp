@@ -21,8 +21,8 @@ namespace Chicane
 
             void setupCameraUBO();
 
-            void setupModelData(std::vector<Actor*> inActors);
-            void updateModelData(std::vector<Actor*> inActors);
+            void setupModelData(const std::vector<Actor*>& inActors);
+            void updateModelData(const std::vector<Actor*>& inActors);
     
             void setupDepthBuffering();
 

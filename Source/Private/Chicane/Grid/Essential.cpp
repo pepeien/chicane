@@ -127,14 +127,6 @@ namespace Chicane
             return inNode.attribute(inName.c_str());
         }
 
-        void addView(std::vector<View*> inViews)
-        {
-            for (View* view : inViews)
-            {
-                addView(view);
-            }
-        }
-
         bool hasViews()
         {
             return m_views.size() > 0;
@@ -153,6 +145,14 @@ namespace Chicane
                     inView
                 )
             );
+        }
+
+        void addView(const std::vector<View*>& inViews)
+        {
+            for (View* view : inViews)
+            {
+                addView(view);
+            }
         }
 
         View* getActiveView()

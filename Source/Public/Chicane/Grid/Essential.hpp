@@ -18,7 +18,7 @@ namespace Chicane
             std::vector<std::any> values = {};
         };
 
-        typedef std::function<std::any (ComponentEvent)> ComponentFunction;
+        typedef std::function<std::any (const ComponentEvent&)> ComponentFunction;
         typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
 
         typedef std::any* ComponentVariable;
@@ -63,6 +63,7 @@ namespace Chicane
 
         bool hasViews();
         void addView(View* inView);
+        void addView(const std::vector<View*>& inViews);
         View* getActiveView();
         void setActiveView(const std::string& inViewID);
 

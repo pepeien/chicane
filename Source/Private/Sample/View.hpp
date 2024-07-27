@@ -9,6 +9,6 @@ public:
     View();
 
 private:
-    std::uint64_t getFPS(Chicane::Grid::ComponentEvent inEvent);
-    float getFrametime(Chicane::Grid::ComponentEvent inEvent);
+    std::uint64_t getFPS(const Chicane::Grid::ComponentEvent& inEvent);
+    float getFrametime(const Chicane::Grid::ComponentEvent& inEvent);
 };
