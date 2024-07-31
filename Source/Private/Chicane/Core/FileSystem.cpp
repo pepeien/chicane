@@ -120,12 +120,34 @@ namespace Chicane
             #endif
         }
 
-        void ls(const std::string& inDir)
+        std::vector<ListItem> ls(const std::string& inDir, std::uint32_t inDepth)
         {
+            std::vector<ListItem> result {};
+
+            if (inDepth > 1)
+            {
+                return result;
+            }
+
             for (const auto& entry : std::filesystem::directory_iterator(inDir))
             {
-                LOG_INFO(entry.path().string());
+                const auto& path = entry.path();
+
+                ListItem item {};
+                item.type      = entry.is_directory() ? ListType::Folder : ListType::File;
+                item.name      = path.filename().string();
+                item.extension = path.extension().string();
+                item.path      = path.string();
+
+                if (item.type == ListType::Folder)
+                {
+                    item.childCount = ls(item.path, 1).size();
+                }
+
+                result.push_back(item);
             }
+
+            return result;
         }
 
         std::vector<char> readFile(const std::string& inFilepath)

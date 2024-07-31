@@ -23,6 +23,27 @@ namespace Chicane
             std::string extension = "";
         };
 
+        enum class ListType : std::uint8_t
+        {
+            Undefined,
+            Folder,
+            File
+        };
+
+        struct ListItem
+        {
+        public:
+            ListType type    = ListType::Undefined;
+            std::string name = "";
+            std::string path = "";
+
+            // File only
+            std::string extension = "";
+
+            // Folder only
+            std::uint32_t childCount = 0;
+        };
+
         DirectoryResult openDirectoryDialog();
 
         FileResult openFileDialog(
@@ -30,7 +51,7 @@ namespace Chicane
             const std::vector<FileFormat>& inFileFormats
         );
 
-        void ls(const std::string& inDir = ".");
+        std::vector<ListItem> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
 
         std::vector<char> readFile(const std::string& inFilepath);
         stbi_uc* readImageFromFile(
