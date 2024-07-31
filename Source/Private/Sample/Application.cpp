@@ -22,7 +22,7 @@ void Application::initCamera()
 {
     m_camera = std::make_unique<Camera>();
 
-    Chicane::State::setCamera(m_camera.get());
+    Chicane::setCamera(m_camera.get());
 }
 
 void Application::initLevel()
@@ -31,7 +31,7 @@ void Application::initLevel()
 
     m_level = std::make_unique<Chicane::Level>();
 
-    Chicane::State::setLevel(m_level.get());
+    Chicane::setLevel(m_level.get());
 }
 
 void Application::addFloor()
