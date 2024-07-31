@@ -221,6 +221,28 @@ namespace Chicane
             return result;
         }
 
+        ComponentPosition getPosition(const pugi::xml_node& inNode)
+        {
+            pugi::xml_attribute attribute = getAttribute(
+                POSITION_ATTRIBUTE_NAME,
+                inNode
+            );
+
+            if (attribute.empty())
+            {
+                return ComponentPosition::Relative;
+            }
+
+            std::string position = Utils::trim(attribute.as_string());
+
+            if (position.compare(POSITION_TYPE_ABSOLUTE) == 0)
+            {
+                return ComponentPosition::Absolute;
+            }
+
+            return ComponentPosition::Relative;
+        }
+
         bool hasViews()
         {
             return m_views.size() > 0;
@@ -297,7 +319,7 @@ namespace Chicane
 
             ComponentMargin margin = getMargin(inNode);
 
-            ImVec2 position = ImGui::GetCursorPos();
+            ImVec2 position = getPosition(inNode) == ComponentPosition::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
             position.x += margin.left + margin.right;
             position.y += margin.top + margin.bottom;
 

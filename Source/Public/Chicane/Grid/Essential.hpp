@@ -9,20 +9,29 @@ namespace Chicane
         class View;
 
         // Types
-        struct ComponentFunctionData {
+        struct ComponentFunctionData
+        {
             std::string name             = "";
             std::vector<std::any> params {};
         };
 
-        struct ComponentEvent {
+        struct ComponentEvent
+        {
             std::vector<std::any> values {};
         };
 
-        struct ComponentMargin {
+        struct ComponentMargin
+        {
             float top    = 0.0f;
             float bottom = 0.0f;
             float left   = 0.0f;
             float right  = 0.0f;
+        };
+
+        enum class ComponentPosition : std::uint8_t
+        {
+            Absolute,
+            Relative
         };
 
         typedef std::function<std::any (const ComponentEvent&)> ComponentFunction;
@@ -42,6 +51,10 @@ namespace Chicane
         constexpr auto ID_ATTRIBUTE_NAME     = "id";
         constexpr auto WIDTH_ATTRIBUTE_NAME  = "width";
         constexpr auto HEIGHT_ATTRIBUTE_NAME = "height";
+
+        constexpr auto POSITION_ATTRIBUTE_NAME = "position";
+        constexpr auto POSITION_TYPE_ABSOLUTE  = "absolute";
+        constexpr auto POSITION_TYPE_RELATIVE  = "relative";
 
         constexpr char MARGIN_SEPARATOR = ' ';
         /*
@@ -84,6 +97,7 @@ namespace Chicane
         );
 
         ComponentMargin getMargin(const pugi::xml_node& inNode);
+        ComponentPosition getPosition(const pugi::xml_node& inNode);
 
         bool hasViews();
         void addView(View* inView);
