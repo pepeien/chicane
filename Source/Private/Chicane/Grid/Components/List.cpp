@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace ListComponent
         {
-            Direction getDirection(const pugi::xml_node&inNode)
+            Direction getDirection(const pugi::xml_node& inNode)
             {
                 std::string rawDirection = getAttribute(DIRECTION_ATTRIBUTE_NAME, inNode).as_string();
 
@@ -27,7 +27,7 @@ namespace Chicane
                 return Direction::Column;
             }
 
-            std::vector<std::any> getItems(const pugi::xml_node&inNode)
+            std::vector<std::any> getItems(const pugi::xml_node& inNode)
             {
                 View* view = getActiveView();
 
@@ -53,7 +53,7 @@ namespace Chicane
                 return std::any_cast<std::vector<std::any>>(items);
             }
 
-            ComponentFunction getItemGetter(const pugi::xml_node&inNode)
+            ComponentFunction getItemGetter(const pugi::xml_node& inNode)
             {
                 View* view = getActiveView();
 
@@ -72,7 +72,7 @@ namespace Chicane
                 return view->getFunction(itemGetterFunctionRef);
             }
 
-            ImVec4 getBackgroundColor(const pugi::xml_node&inNode)
+            ImVec4 getBackgroundColor(const pugi::xml_node& inNode)
             {
                 std::string backgroundColor = getAttribute(BACKGROUND_COLOR_ATTRIBUTE_NAME, inNode).as_string();
 
@@ -97,7 +97,7 @@ namespace Chicane
                 return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
             }
 
-            void validate(const pugi::xml_node&inNode)
+            void validate(const pugi::xml_node& inNode)
             {
                 if (TAG_ID.compare(inNode.name()) != 0)
                 {
@@ -112,14 +112,14 @@ namespace Chicane
                 }
             }
 
-            void compile(const pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& inNode)
             {
-                validate(outNode);
+                validate(inNode);
 
-                Direction direction          = getDirection(outNode);
-                std::vector<std::any> items  = getItems(outNode);
-                ComponentFunction itemGetter = getItemGetter(outNode);
-                ImVec4 backgroundColor       = getBackgroundColor(outNode);
+                Direction direction          = getDirection(inNode);
+                std::vector<std::any> items  = getItems(inNode);
+                ComponentFunction itemGetter = getItemGetter(inNode);
+                ImVec4 backgroundColor       = getBackgroundColor(inNode);
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
@@ -127,10 +127,10 @@ namespace Chicane
                 );
 
                 ImGui::BeginChild(
-                    getAttribute(ID_ATTRIBUTE_NAME, outNode).as_string(),
+                    getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string(),
                     ImVec2(
-                        getSize(WIDTH_ATTRIBUTE_NAME, outNode),
-                        getSize(HEIGHT_ATTRIBUTE_NAME, outNode)
+                        getSize(WIDTH_ATTRIBUTE_NAME, inNode),
+                        getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
                     ),
                     ImGuiChildFlags_AlwaysUseWindowPadding
                 );
@@ -142,9 +142,9 @@ namespace Chicane
                         itemGetter(event);
                     }
 
-                    if (!outNode.children().empty())
+                    if (!inNode.children().empty())
                     {
-                        for (const pugi::xml_node& child : outNode.children())
+                        for (const pugi::xml_node& child : inNode.children())
                         {
                             if (direction == Direction::Row)
                             {

@@ -1,9 +1,6 @@
 #include "Chicane/Core/Layers/Level.hpp"
 
-#include "Chicane/Core/Allocator.hpp"
-#include "Chicane/Core/Log.hpp"
-#include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/State.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -11,12 +8,12 @@ namespace Chicane
         : Layer("Level"),
         m_renderer(inWindow->getRenderer())
     {
-        if (State::hasLevel() == false)
+        if (hasLevel() == false)
         {
             return;
         }
 
-        m_level         = State::getLevel();
+        m_level         = getLevel();
         m_isInitialized = m_level->hasActors();
     }
 
@@ -138,9 +135,6 @@ namespace Chicane
             &renderPassBeginInfo,
             vk::SubpassContents::eInline
         );
-
-        // Viewport
-        m_renderer->updateViewport(inCommandBuffer);
 
         // Preparing
         inCommandBuffer.bindPipeline(
@@ -438,7 +432,7 @@ namespace Chicane
                 continue;
             }
 
-            actor->onTick(State::getTelemetry().deltaToTick());
+            actor->onTick(getTelemetry().deltaToTick());
         }
     }
 }

@@ -72,16 +72,16 @@ namespace Chicane
 
                 std::uint32_t indexPerFace = *mesh->face_vertices;
 
-                std::vector<std::uint32_t> layout = { 0, 1, 2 };
+                std::vector<std::uint32_t> vertexLayout = { 0, 1, 2 };
 
-                if (indexPerFace > 3)
+                if (indexPerFace > 3) // is quad
                 {
-                    layout = { 0, 1, 2, 2, 3, 0 };
+                    vertexLayout = { 0, 1, 2, 2, 3, 0 };
                 }
 
-                for (std::uint32_t i = 0, j = indexPerFace; j < mesh->index_count; i += indexPerFace, j += indexPerFace)
+                for (std::uint32_t i = 0; i < mesh->index_count; i += indexPerFace)
                 {
-                    for (std::uint32_t index : layout)
+                    for (std::uint32_t index : vertexLayout)
                     {
                         parseDataset(
                             outResult,

@@ -12,7 +12,7 @@ namespace Chicane
         {
             const std::string TAG_ID = "Box";
     
-            void compile(const pugi::xml_node& outNode);
+            void compile(const pugi::xml_node& inNode);
         }
     }
 }

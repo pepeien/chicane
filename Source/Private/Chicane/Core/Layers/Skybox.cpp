@@ -1,9 +1,6 @@
 #include "Chicane/Core/Layers/Skybox.hpp"
 
-#include "Chicane/Core/Allocator.hpp"
-#include "Chicane/Core/Log.hpp"
-#include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/State.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -101,9 +98,6 @@ namespace Chicane
             &renderPassBeginInfo,
             vk::SubpassContents::eInline
         );
-
-        // Viewport
-        m_renderer->updateViewport(inCommandBuffer);
 
         // Preparing
         inCommandBuffer.bindPipeline(

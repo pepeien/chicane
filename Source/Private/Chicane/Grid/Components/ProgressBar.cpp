@@ -6,10 +6,10 @@ namespace Chicane
     {
         namespace ProgressBarComponent
         {
-            void compile(const pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& inNode)
             {
                 float percentage = std::clamp(
-                    getAttribute(PERCENTAGE_ATTRIBUTE_NAME, outNode).as_float(),
+                    getAttribute(PERCENTAGE_ATTRIBUTE_NAME, inNode).as_float(),
                     MIN_PERCENTAGE,
                     MAX_PERCENTAGE
                 ) / 100;
@@ -17,10 +17,10 @@ namespace Chicane
                 ImGui::ProgressBar(
                     percentage,
                     ImVec2(
-                        getSize(WIDTH_ATTRIBUTE_NAME, outNode),
-                        getSize(HEIGHT_ATTRIBUTE_NAME, outNode)
+                        getSize(WIDTH_ATTRIBUTE_NAME, inNode),
+                        getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
                     ),
-                    outNode.child_value()
+                    inNode.child_value()
                 );
             }
         }

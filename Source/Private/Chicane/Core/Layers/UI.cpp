@@ -1,9 +1,7 @@
 #include "Chicane/Core/Layers/UI.hpp"
 
-#include "Chicane/Core/Log.hpp"
-#include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/State.hpp"
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {

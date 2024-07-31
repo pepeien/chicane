@@ -151,7 +151,7 @@ namespace Chicane
             m_functions.erase(inId);
         }
 
-        void View::validate(const pugi::xml_node&inNode)
+        void View::validate(const pugi::xml_node& inNode)
         {
             bool isRoot  = inNode.parent() == inNode.root();
             bool isAlone = isRoot && inNode.next_sibling() == nullptr;
@@ -168,7 +168,7 @@ namespace Chicane
         }
 
         void View::compile(
-            const pugi::xml_node& outNode,
+            const pugi::xml_node& inNode,
             const Vec<int>::Two& inResolution,
             const Vec<int>::Two& inPosition
         )
@@ -179,7 +179,7 @@ namespace Chicane
                                          ImGuiWindowFlags_NoBackground |
                                          ImGuiWindowFlags_AlwaysUseWindowPadding;
 
-            execOnTick(outNode);
+            execOnTick(inNode);
 
             ImGui::PushStyleVar(
                 ImGuiStyleVar_WindowPadding,
@@ -220,7 +220,7 @@ namespace Chicane
                     )
                 );
 
-                compileChildren(outNode);
+                compileChildren(inNode);
             ImGui::End();
 
             ImGui::PopStyleVar(5);

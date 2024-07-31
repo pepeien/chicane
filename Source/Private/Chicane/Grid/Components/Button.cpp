@@ -9,21 +9,21 @@ namespace Chicane
     {
         namespace ButtonComponent
         {
-            void compile(const pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& inNode)
             {
-                if (std::string(outNode.name()).compare(TAG_ID) != 0)
+                if (std::string(inNode.name()).compare(TAG_ID) != 0)
                 {
                     return;
                 }
 
-                std::string text = outNode.child_value();
+                std::string text = inNode.child_value();
 
                 if (
                     ImGui::Button(
                         processText(text).c_str(),
                         ImVec2(
-                            getSize(WIDTH_ATTRIBUTE_NAME, outNode),
-                            getSize(HEIGHT_ATTRIBUTE_NAME, outNode)
+                            getSize(WIDTH_ATTRIBUTE_NAME, inNode),
+                            getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
                         )
                     )
                 )
@@ -36,7 +36,7 @@ namespace Chicane
                     }
 
                     ComponentFunctionData onClickFunctionData = parseFunction(
-                        getAttribute(ON_CLICK_ATTRIBUTE_NAME, outNode).as_string()
+                        getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string()
                     );
 
                     if (!view->hasFunction(onClickFunctionData.name))
@@ -59,7 +59,7 @@ namespace Chicane
                         {
                             if (Utils::trim(std::any_cast<std::string>(param)) == "$event")
                             {
-                                onClickEvent.values[0] = outNode;
+                                onClickEvent.values[0] = inNode;
                             }
                         }
                     }

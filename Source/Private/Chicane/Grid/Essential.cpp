@@ -14,12 +14,27 @@ namespace Chicane
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
+            if (inTarget.size() < inEnding.size())
+            {
+                return false;
+            }
+
             return std::string(inTarget.end() - inEnding.size(), inTarget.end()).compare(inEnding) == 0;
         }
 
-        std::string getTag(const pugi::xml_node&inNode)
+        std::string getTag(const pugi::xml_node& inNode)
         {
             return inNode.name();
+        }
+
+        float getSizeFromPixel(const std::string& inValue)
+        {
+            if (!endsWith(inValue, "px"))
+            {
+                return 0.0f;
+            }
+        
+            return std::stof(std::string(inValue.begin(), inValue.end() - 2));
         }
 
         float getSizeFromPixel(const pugi::xml_attribute& inAttribute)
@@ -29,19 +44,24 @@ namespace Chicane
                 return 0.0f;
             }
 
-            std::string rawValue = inAttribute.as_string();
-
-            if (!endsWith(rawValue, "px"))
-            {
-                return 0.0f;
-            }
-        
-            return std::stof(std::string(rawValue.begin(), rawValue.end() - 2));
+            return getSizeFromPixel(inAttribute.as_string());
         }
 
         float calculateSizeFromViewportHeight(float inVhValue)
         {
-            return State::getResolution().y * (inVhValue / 100);
+            return getResolution().y * (inVhValue / 100);
+        }
+
+        float getSizeFromViewportHeight(const std::string& inValue)
+        {
+            if (!endsWith(inValue, "vh"))
+            {
+                return 0.0f;
+            }
+
+            return calculateSizeFromViewportHeight(
+                std::stof(std::string(inValue.begin(), inValue.end() - 2))
+            );
         }
 
         float getSizeFromViewportHeight(const pugi::xml_attribute& inAttribute)
@@ -51,21 +71,24 @@ namespace Chicane
                 return 0.0f;
             }
 
-            std::string rawValue = inAttribute.as_string();
-
-            if (!endsWith(rawValue, "vh"))
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromViewportHeight(
-                std::stof(std::string(rawValue.begin(), rawValue.end() - 2))
-            );
+            return getSizeFromViewportHeight(inAttribute.as_string());
         }
 
         float calculateSizeFromViewportWidth(float inVwValue)
         {
-            return State::getResolution().x * (inVwValue / 100);
+            return getResolution().x * (inVwValue / 100);
+        }
+
+        float getSizeFromViewportWidth(const std::string& inValue)
+        {
+            if (!endsWith(inValue, "vw"))
+            {
+                return 0.0f;
+            }
+
+            return calculateSizeFromViewportWidth(
+                std::stof(std::string(inValue.begin(), inValue.end() - 2))
+            );
         }
 
         float getSizeFromViewportWidth(const pugi::xml_attribute& inAttribute)
@@ -75,21 +98,52 @@ namespace Chicane
                 return 0.0f;
             }
 
-            std::string rawValue = inAttribute.as_string();
+            return getSizeFromViewportWidth(inAttribute.as_string());
+        }
 
-            if (!endsWith(rawValue, "vw"))
+        pugi::xml_attribute getAttribute(
+            const std::string& inName,
+            const pugi::xml_node& inNode
+        )
+        {
+            return inNode.attribute(inName.c_str());
+        }
+
+        float getSize(const std::string inValue)
+        {
+            if (inValue.empty())
             {
                 return 0.0f;
             }
 
-            return calculateSizeFromViewportWidth(
-                std::stof(std::string(rawValue.begin(), rawValue.end() - 2))
-            );
+            if (endsWith(inValue, "px"))
+            {
+                return getSizeFromPixel(inValue);
+            }
+
+            if (endsWith(inValue, "vh"))
+            {
+                return getSizeFromViewportHeight(inValue);
+            }
+
+            if (endsWith(inValue, "vw"))
+            {
+                return getSizeFromViewportWidth(inValue);
+            }
+
+            std::string rawValue = anyToString(processRefValue(inValue));
+
+            if (rawValue.empty())
+            {
+                return 0.0f;
+            }
+
+            return std::stof(rawValue);
         }
 
         float getSize(
             const std::string& inAttributeName,
-            const pugi::xml_node&inNode
+            const pugi::xml_node& inNode
         )
         {
             pugi::xml_attribute attributeValue = getAttribute(inAttributeName, inNode);
@@ -99,32 +153,72 @@ namespace Chicane
                 return 0.0f;
             }
 
-            std::string rawValue = attributeValue.as_string();
-
-            if (endsWith(rawValue, "px"))
-            {
-                return getSizeFromPixel(attributeValue);
-            }
-
-            if (endsWith(rawValue, "vh"))
-            {
-                return getSizeFromViewportHeight(attributeValue);
-            }
-
-            if (endsWith(rawValue, "vw"))
-            {
-                return getSizeFromViewportWidth(attributeValue);
-            }
-
-            return 0.0f;
+            return getSize(attributeValue.as_string());
         }
 
-        pugi::xml_attribute getAttribute(
-            const std::string& inName,
-            const pugi::xml_node&inNode
-        )
+        ComponentMargin getMargin(const pugi::xml_node& inNode)
         {
-            return inNode.attribute(inName.c_str());
+            ComponentMargin result{};
+
+            pugi::xml_attribute oneline = getAttribute(MARGIN_ATTRIBUTE_NAME, inNode);
+
+            if (!oneline.empty())
+            {
+                std::vector<std::string> splittedOneline = Utils::split(
+                    Utils::trim(oneline.as_string()),
+                    MARGIN_SEPARATOR
+                );
+
+                if (splittedOneline.size() == 1) // `SINGLE_MARGIN`
+                {
+                    float margin = getSize(splittedOneline.at(0));
+
+                    result.top    = margin;
+                    result.right  = margin;
+                    result.bottom = margin;
+                    result.left   = margin;
+                }
+
+                if (splittedOneline.size() == 2) // `VERTICAL_MARGIN` `HORIZONTAL_MARGIN`
+                {
+                    float verticalMargin   = getSize(splittedOneline.at(0));
+                    float horizontalMargin = getSize(splittedOneline.at(1));
+
+                    result.top    = verticalMargin;
+                    result.bottom = verticalMargin;
+                    result.right  = horizontalMargin;
+                    result.left   = horizontalMargin;
+                }
+
+                if (splittedOneline.size() == 3) // `TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`
+                {
+                    float topMargin        = getSize(splittedOneline.at(0));
+                    float bottomMargin     = getSize(splittedOneline.at(1));
+                    float horizontalMargin = getSize(splittedOneline.at(2));
+
+                    result.top    = topMargin;
+                    result.bottom = bottomMargin;
+                    result.right  = horizontalMargin;
+                    result.left   = horizontalMargin;
+                }
+
+                if (splittedOneline.size() >= 4) // `TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`
+                {
+                    result.top    = getSize(splittedOneline.at(0));
+                    result.right  = getSize(splittedOneline.at(1));
+                    result.bottom = getSize(splittedOneline.at(2));
+                    result.left   = getSize(splittedOneline.at(3));
+                }
+
+                return result;
+            }
+
+            result.top    = getSize(MARGIN_TOP_ATTRIBUTE_NAME,    inNode);
+            result.bottom = getSize(MARGIN_BOTTOM_ATTRIBUTE_NAME, inNode);
+            result.left   = getSize(MARGIN_LEFT_ATTRIBUTE_NAME,   inNode);
+            result.right  = getSize(MARGIN_RIGHT_ATTRIBUTE_NAME,  inNode);
+
+            return result;
         }
 
         bool hasViews()
@@ -165,7 +259,7 @@ namespace Chicane
             m_activeView = m_views.at(inViewID);
         }
 
-        void execOnTick(const pugi::xml_node&inNode)
+        void execOnTick(const pugi::xml_node& inNode)
         {
             std::string onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode).as_string();
 
@@ -177,31 +271,39 @@ namespace Chicane
             processRefValue(onTickFunction);
         }
 
-        void compileChildren(const pugi::xml_node& outNode)
+        void compileChildren(const pugi::xml_node& inNode)
         {
-            for (const pugi::xml_node& child : outNode.children())
+            for (const pugi::xml_node& child : inNode.children())
             {
                 compileChild(child);
             }
         }
 
-        void compileChild(const pugi::xml_node& outNode)
+        void compileChild(const pugi::xml_node& inNode)
         {
-            if (outNode.name() == nullptr)
+            if (inNode.name() == nullptr)
             {
                 return;
             }
 
-            std::string tagName = std::string(outNode.name());
+            std::string tagName = std::string(inNode.name());
 
             if (!hasComponent(tagName))
             {
                 return;
             }
 
-            execOnTick(outNode);
+            execOnTick(inNode);
 
-            getComponent(tagName)(outNode);
+            ComponentMargin margin = getMargin(inNode);
+
+            ImVec2 position = ImGui::GetCursorPos();
+            position.x += margin.left + margin.right;
+            position.y += margin.top + margin.bottom;
+
+            ImGui::SetCursorPos(position);
+
+            getComponent(tagName)(inNode);
         }
 
         std::string anyToString(const std::any& inValue)
@@ -293,14 +395,14 @@ namespace Chicane
 
             if (!view)
             {
-                return "";
+                return inRefValue;
             }
 
             if (!refValueContainsFunction(inRefValue))
             {
                 if (!view->hasVariable(inRefValue))
                 {
-                    return "";
+                    return inRefValue;
                 }
 
                 return *view->getVariable(inRefValue);

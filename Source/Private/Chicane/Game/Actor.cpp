@@ -79,17 +79,17 @@ namespace Chicane
         m_position = glm::rotate(
             inBase,
             radianAngles.x,
-            Vec<float>::Three(1.0f, 0.0f, 0.0f)
+            FORWARD_DIRECTION
         );
         m_position = glm::rotate(
             inBase,
             radianAngles.y,
-            Vec<float>::Three(0.0f, 1.0f, 0.0f)
+            RIGHT_DIRECTION
         );
         m_position = glm::rotate(
             inBase,
             radianAngles.z,
-            Vec<float>::Three(0.0f, 0.0f, 1.0f)
+            UP_DIRECTION
         );
     }
 

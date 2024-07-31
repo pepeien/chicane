@@ -1,12 +1,8 @@
 #include "Chicane/Core/Window.hpp"
 
+#include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Camera.hpp"
-#include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Layers/Level.hpp"
-#include "Chicane/Core/Layers/Skybox.hpp"
-#include "Chicane/Core/Layers/UI.hpp"
 
 namespace Chicane
 {
@@ -17,7 +13,7 @@ namespace Chicane
         m_isMinimized(false),
         m_renderer(nullptr)
     {
-        State::setWindow(this);
+        setWindow(this);
 
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
@@ -361,11 +357,11 @@ namespace Chicane
 
     void Window::onKeyDown(const SDL_KeyboardEvent& inEvent)
     {
-        if (State::hasController() == false)
+        if (hasController() == false)
         {
             return;
         }
 
-        State::getController()->onEvent(inEvent.keysym.scancode);
+        getController()->onEvent(inEvent.keysym.scancode);
     }
 }

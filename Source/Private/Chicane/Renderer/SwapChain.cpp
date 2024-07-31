@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/SwapChain.hpp"
 
+constexpr uint32_t MAX_BUFFER_MULTIPLIER = 3;
+
 namespace Chicane
 {
     namespace SwapChain
@@ -89,10 +91,10 @@ namespace Chicane
             const vk::SurfaceCapabilitiesKHR& inCapabilities
         )
         {
-            if (inCapabilities.currentExtent.width != UINT32_MAX)
+            if (inCapabilities.currentExtent.width < UINT32_MAX)
             {
                 outExtent = inCapabilities.currentExtent;
-    
+
                 return;
             }
 

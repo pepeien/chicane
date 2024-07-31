@@ -123,20 +123,24 @@ namespace Chicane
         inLayer->build();
     }
 
-    void Renderer::updateViewport(const vk::CommandBuffer& inCommandBuffer)
+    void Renderer::setViewport(const vk::Extent2D& inExtent)
     {
-        vk::Viewport viewport = GraphicsPipeline::createViewport(m_swapChain.extent);
-        inCommandBuffer.setViewport(0, 1, &viewport);
+        m_viewportExtent = inExtent;
 
-        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_swapChain.extent);
-        inCommandBuffer.setScissor(0, 1, &scissor);
+        if (hasCamera())
+        {
+            getCamera()->setViewport(
+                m_viewportExtent.width,
+                m_viewportExtent.height
+            );
+        }
     }
 
     void Renderer::onEvent(const SDL_Event& inEvent)
     {
-        if (State::hasCamera())
+        if (hasCamera())
         {
-            State::getCamera()->onEvent(inEvent);
+            getCamera()->onEvent(inEvent);
         }
 
         for (Layer* layer : m_layers)
@@ -211,6 +215,8 @@ namespace Chicane
         nextImage.updateDescriptorSets();
 
         CommandBuffer::Worker::startJob(commandBuffer);
+
+        prepareViewport(commandBuffer, m_viewportExtent);
 
         for (Layer* layer : m_layers)
         {
@@ -379,20 +385,14 @@ namespace Chicane
             m_window->getResolution()
         );
 
-        if (State::hasCamera())
-        {
-            State::getCamera()->setViewport(
-                m_swapChain.extent.width,
-                m_swapChain.extent.height
-            );
-        }
-
         m_imageCount = static_cast<int>(m_swapChain.images.size());
 
         for (Frame::Instance& frame : m_swapChain.images)
         {
             frame.setupSync();
         }
+
+        setViewport(m_swapChain.extent);
     }
 
     void Renderer::rebuildSwapChain()
@@ -408,6 +408,7 @@ namespace Chicane
         buildSwapChain();
 
         rebuildLayers();
+
         buildFramesCommandBuffers();
     }
 
@@ -492,14 +493,23 @@ namespace Chicane
         );
     }
 
+    void Renderer::prepareViewport(const vk::CommandBuffer& inCommandBuffer, const vk::Extent2D& inExtent)
+    {
+        vk::Viewport viewport = GraphicsPipeline::createViewport(inExtent);
+        inCommandBuffer.setViewport(0, 1, &viewport);
+
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(inExtent);
+        inCommandBuffer.setScissor(0, 1, &scissor);
+    }
+
     void Renderer::prepareCamera(Frame::Instance& outFrame)
     {
-        if (State::hasCamera() == false)
+        if (hasCamera() == false)
         {
             return;
         }
 
-        Camera* camera = State::getCamera();
+        Camera* camera = getCamera();
         camera->updatePosition();
         camera->updateUBO();
 

@@ -136,17 +136,17 @@ namespace Chicane
 
     Vec<float>::Three Camera::getForward()
     {
-        return glm::rotate(getOrientation(), Vec<float>::Three(0.0f, 0.0f, -1.0f));
+        return glm::rotate(getOrientation(), CAMERA_FORWARD_DIRECTION);
     }
 
     Vec<float>::Three Camera::getRight()
     {
-        return glm::rotate(getOrientation(), Vec<float>::Three(1.0f, 0.0f, 0.0f));
+        return glm::rotate(getOrientation(), CAMERA_RIGHT_DIRECTION);
     }
 
     Vec<float>::Three Camera::getUp()
     {
-        return glm::rotate(getOrientation(), Vec<float>::Three(0.0f, 1.0f, 0.0f));
+        return glm::rotate(getOrientation(), CAMERA_UP_DIRECTION);
     }
 
     UBO Camera::getUBO()

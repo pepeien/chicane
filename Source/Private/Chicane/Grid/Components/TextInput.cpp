@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace TextInputComponent
         {
-            void validate(const pugi::xml_node&inNode)
+            void validate(const pugi::xml_node& inNode)
             {
                 if (TAG_ID.compare(inNode.name()) != 0)
                 {
@@ -40,12 +40,12 @@ namespace Chicane
                 }
             }
 
-            void compile(const pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& inNode)
             {
-                validate(outNode);
+                validate(inNode);
 
-                std::string label          = getAttribute(LABEL_ATTRIBUTE_NAME, outNode).as_string();
-                std::string value          = getAttribute(VALUE_ATTRIBUTE_NAME, outNode).as_string();
+                std::string label          = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
+                std::string value          = getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string();
                 ComponentVariable variable = Grid::getActiveView()->getVariable(value);
 
                 ImGui::InputText(

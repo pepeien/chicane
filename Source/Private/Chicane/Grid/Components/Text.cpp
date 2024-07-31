@@ -9,14 +9,14 @@ namespace Chicane
     {
         namespace TextComponent
         {
-            void compile(const pugi::xml_node& outNode)
+            void compile(const pugi::xml_node& inNode)
             {
-                if (std::string(outNode.name()).compare(TAG_ID) != 0)
+                if (std::string(inNode.name()).compare(TAG_ID) != 0)
                 {
                     return;
                 }
 
-                std::string rawText = outNode.child_value();
+                std::string rawText = inNode.child_value();
 
                 compileRaw(rawText);
             }

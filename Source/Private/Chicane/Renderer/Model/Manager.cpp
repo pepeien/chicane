@@ -83,11 +83,15 @@ namespace Chicane
                 throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
-            return std::find(
-                m_uniqueIds.begin(),
-                m_uniqueIds.end(),
-                inId
-            ) - m_uniqueIds.begin();
+            std::uint32_t result = static_cast<std::uint32_t>(
+                std::find(
+                    m_uniqueIds.begin(),
+                    m_uniqueIds.end(),
+                    inId
+                ) - m_uniqueIds.begin()
+            );
+
+            return result;
         }
 
         void Manager::draw(
