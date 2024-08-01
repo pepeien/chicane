@@ -97,6 +97,7 @@
         "stack": "cpp",
         "expected": "cpp",
         "*.inc": "cpp",
-        "any": "cpp"
+        "any": "cpp",
+        "valarray": "cpp"
     }
 }

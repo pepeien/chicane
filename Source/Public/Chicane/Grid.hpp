@@ -8,3 +8,4 @@
 #include "Chicane/Grid/Components/ProgressBar.hpp"
 #include "Chicane/Grid/Components/Text.hpp"
 #include "Chicane/Grid/Components/TextInput.hpp"
+#include "Chicane/Grid/Style.hpp"
