@@ -1,63 +1,25 @@
-<View id="home">
-    <List
-        id="frameTelemetry"
-        direction="row"
-        width="10vw"
-        height="2vh"
-        margin-left="90vw"
-    >
+<View id="home" style="Content/Sample/Views/Home.decal">
+    <List id="frameTelemetry" direction="row" >
         <Text>{{ getFPS() }} FPS</Text>
-        <Text margin-left="2vw">{{ getFrametime() }} ms</Text>
+        <Text id="frameTimeText">{{ getFrametime() }} ms</Text>
     </List>
-    <List
-        id="actorForm"
-        direction="column"
-        width="20vw"
-        height="20vh"
-        margin-top="-2vh"
-        background-color="#2b2b2b"
-    >
+    <List id="actorForm" direction="column">
         <Text>Location</Text>
-        <List
-            id="actorLocation"
-            direction="row"
-            width="21vw"
-            height="4vh"
-        >
-            <List
-                id="actorLocationXInput"
-                direction="column"
-                width="7vw"
-                height="4vh"
-            >
+        <List id="actorLocation" direction="row" >
+            <List id="actorLocationXInput" direction="column">
                 <Text>X</Text>
                 <TextInput value="newAppleX"></TextInput>
             </List>
-            <List
-                id="actorLocationYInput"
-                direction="column"
-                width="7vw"
-                height="4vh"
-            >
+            <List id="actorLocationYInput" direction="column">
                 <Text>Y</Text>
                 <TextInput value="newAppleY"></TextInput>
             </List>
-            <List
-                id="actorLocationZInput"
-                direction="column"
-                width="7vw"
-                height="4vh"
-            >
+            <List id="actorLocationZInput" direction="column" >
                 <Text>Z</Text>
                 <TextInput value="newAppleZ"></TextInput>
             </List>
         </List>
-        <Button
-            width="20vw"
-            height="4.6vh"
-            margin-top="10vh"
-            onClick="addNewApple()"
-        >
+        <Button id="additionButton" onClick="addNewApple()">
             Add Apple
         </Button>
     </List>

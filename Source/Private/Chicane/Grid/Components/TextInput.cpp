@@ -1,6 +1,6 @@
 #include "Chicane/Grid/Components/TextInput.hpp"
 
-#include "Chicane/Grid/View.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {

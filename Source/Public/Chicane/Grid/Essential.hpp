@@ -20,20 +20,6 @@ namespace Chicane
             std::vector<std::any> values {};
         };
 
-        struct ComponentMargin
-        {
-            float top    = 0.0f;
-            float bottom = 0.0f;
-            float left   = 0.0f;
-            float right  = 0.0f;
-        };
-
-        enum class ComponentPosition : std::uint8_t
-        {
-            Absolute,
-            Relative
-        };
-
         typedef std::function<std::any (const ComponentEvent&)> ComponentFunction;
         typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
 
@@ -48,26 +34,7 @@ namespace Chicane
         constexpr char FUNCTION_PARAMS_CLOSING = ')';
 
         // Value attributes
-        constexpr auto ID_ATTRIBUTE_NAME     = "id";
-        constexpr auto WIDTH_ATTRIBUTE_NAME  = "width";
-        constexpr auto HEIGHT_ATTRIBUTE_NAME = "height";
-
-        constexpr auto POSITION_ATTRIBUTE_NAME = "position";
-        constexpr auto POSITION_TYPE_ABSOLUTE  = "absolute";
-        constexpr auto POSITION_TYPE_RELATIVE  = "relative";
-
-        constexpr char MARGIN_SEPARATOR = ' ';
-        /*
-            Template 1: "`SINGLE_MARGIN`"
-            Template 2: "`VERTICAL_MARGIN` `HORIZONTAL_MARGIN`"
-            Template 3: "`TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`"
-            Template 4: "`TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`"
-        */
-        constexpr auto MARGIN_ATTRIBUTE_NAME        = "margin";
-        constexpr auto MARGIN_TOP_ATTRIBUTE_NAME    = "margin-top";
-        constexpr auto MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
-        constexpr auto MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
-        constexpr auto MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
+        constexpr auto ID_ATTRIBUTE_NAME = "id";
 
         // Lifecycle attributes
         constexpr auto ON_TICK_ATTRIBUTE = "onTick";
@@ -95,9 +62,6 @@ namespace Chicane
             const std::string& inAttributeName,
             const pugi::xml_node& inNode
         );
-
-        ComponentMargin getMargin(const pugi::xml_node& inNode);
-        ComponentPosition getPosition(const pugi::xml_node& inNode);
 
         bool hasViews();
         void addView(View* inView);

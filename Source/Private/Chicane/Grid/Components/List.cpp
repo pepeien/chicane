@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Components/List.hpp"
 
-#include "Chicane/Grid/View.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -72,9 +70,9 @@ namespace Chicane
                 return view->getFunction(itemGetterFunctionRef);
             }
 
-            ImVec4 getBackgroundColor(const pugi::xml_node& inNode)
+            ImVec4 getBackgroundColor(const Style& inStyle)
             {
-                std::string backgroundColor = getAttribute(BACKGROUND_COLOR_ATTRIBUTE_NAME, inNode).as_string();
+                std::string backgroundColor = inStyle.backgroundColor;
 
                 if (backgroundColor.empty() || backgroundColor.size() < 7 || backgroundColor.size() > 9)
                 {
@@ -116,10 +114,12 @@ namespace Chicane
             {
                 validate(inNode);
 
+                Style style = getStyle(inNode);
+
                 Direction direction          = getDirection(inNode);
                 std::vector<std::any> items  = getItems(inNode);
                 ComponentFunction itemGetter = getItemGetter(inNode);
-                ImVec4 backgroundColor       = getBackgroundColor(inNode);
+                ImVec4 backgroundColor       = getBackgroundColor(style);
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
@@ -128,10 +128,7 @@ namespace Chicane
 
                 ImGui::BeginChild(
                     getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string(),
-                    ImVec2(
-                        getSize(WIDTH_ATTRIBUTE_NAME, inNode),
-                        getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
-                    ),
+                    ImVec2(style.width, style.height),
                     ImGuiChildFlags_AlwaysUseWindowPadding
                 );
                     for (std::any item : items)

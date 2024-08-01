@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/View.hpp"
+#include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
@@ -11,7 +12,6 @@ namespace Chicane
             const std::string TAG_ID = "List";
 
             // Attributes
-            const std::string BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
             const std::string DIRECTION_ATTRIBUTE_NAME        = "direction";
             const std::string ITEMS_ATTRIBUTE_NAME            = "items";
             const std::string ITEM_GETTER_ATTRIBUTE_NAME      = "itemGetter";
@@ -29,7 +29,7 @@ namespace Chicane
             Direction getDirection(const pugi::xml_node& inNode);
             std::vector<std::any> getItems(const pugi::xml_node& inNode);
             ComponentFunction getItemGetter(const pugi::xml_node& inNode);
-            ImVec4 getBackgroundColor(const pugi::xml_node& inNode);
+            ImVec4 getBackgroundColor(const Style& inStyle);
 
             void validate(const pugi::xml_node& inNode);
             void compile(const pugi::xml_node& inNode);

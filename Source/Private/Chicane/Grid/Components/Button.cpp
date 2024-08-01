@@ -1,7 +1,7 @@
 #include "Chicane/Grid/Components/Button.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Grid/View.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
@@ -18,13 +18,12 @@ namespace Chicane
 
                 std::string text = inNode.child_value();
 
+                Style style = getStyle(inNode);
+
                 if (
                     ImGui::Button(
                         processText(text).c_str(),
-                        ImVec2(
-                            getSize(WIDTH_ATTRIBUTE_NAME, inNode),
-                            getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
-                        )
+                        ImVec2(style.width, style.height)
                     )
                 )
                 {

@@ -1,5 +1,7 @@
 #include "Chicane/Grid/View.hpp"
 
+#include "Chicane/Grid/Style.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -12,7 +14,8 @@ namespace Chicane
         )
             : m_id(inId),
             m_variables(inVariables),
-            m_functions(inFunctions)
+            m_functions(inFunctions),
+            m_wasStyleAdded(false)
         {
             if (inSource.empty())
             {
@@ -201,6 +204,13 @@ namespace Chicane
                 ImGuiStyleVar_ItemInnerSpacing,
                 ImVec2(0.f, 0.f)
             );
+
+            if (!m_wasStyleAdded)
+            {
+                addStyle(inNode);
+
+                m_wasStyleAdded = true;
+            }
 
             ImGui::Begin(
                 m_id.c_str(),

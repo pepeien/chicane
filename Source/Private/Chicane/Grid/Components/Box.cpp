@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Components/Box.hpp"
 
+#include "Chicane/Grid.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -15,13 +17,12 @@ namespace Chicane
                 {
                     return;
                 }
+
+                Style gridStyle = getStyle(inNode);
     
                 ImGuiStyle& style = context.Style;
                 ImVec2 size = ImGui::CalcItemSize(
-                    ImVec2(
-                        getSize(WIDTH_ATTRIBUTE_NAME, inNode),
-                        getSize(HEIGHT_ATTRIBUTE_NAME, inNode)
-                    ),
+                    ImVec2(gridStyle.width, gridStyle.height),
                     ImGui::CalcItemWidth(),
                     context.FontSize + style.FramePadding.y * 2.0f
                 );

@@ -55,6 +55,8 @@ namespace Chicane
             ComponentFunctions m_functions;
         
         private:
+            bool m_wasStyleAdded;
+
             const std::string TAG_ID = "View";
         };
     }

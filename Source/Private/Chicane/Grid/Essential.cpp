@@ -4,6 +4,7 @@
 #include "Chicane/Game.hpp"
 #include "Chicane/Grid/Components.hpp"
 #include "Chicane/Grid/View.hpp"
+#include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
@@ -156,93 +157,6 @@ namespace Chicane
             return getSize(attributeValue.as_string());
         }
 
-        ComponentMargin getMargin(const pugi::xml_node& inNode)
-        {
-            ComponentMargin result{};
-
-            pugi::xml_attribute oneline = getAttribute(MARGIN_ATTRIBUTE_NAME, inNode);
-
-            if (!oneline.empty())
-            {
-                std::vector<std::string> splittedOneline = Utils::split(
-                    Utils::trim(oneline.as_string()),
-                    MARGIN_SEPARATOR
-                );
-
-                if (splittedOneline.size() == 1) // `SINGLE_MARGIN`
-                {
-                    float margin = getSize(splittedOneline.at(0));
-
-                    result.top    = margin;
-                    result.right  = margin;
-                    result.bottom = margin;
-                    result.left   = margin;
-                }
-
-                if (splittedOneline.size() == 2) // `VERTICAL_MARGIN` `HORIZONTAL_MARGIN`
-                {
-                    float verticalMargin   = getSize(splittedOneline.at(0));
-                    float horizontalMargin = getSize(splittedOneline.at(1));
-
-                    result.top    = verticalMargin;
-                    result.bottom = verticalMargin;
-                    result.right  = horizontalMargin;
-                    result.left   = horizontalMargin;
-                }
-
-                if (splittedOneline.size() == 3) // `TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`
-                {
-                    float topMargin        = getSize(splittedOneline.at(0));
-                    float bottomMargin     = getSize(splittedOneline.at(1));
-                    float horizontalMargin = getSize(splittedOneline.at(2));
-
-                    result.top    = topMargin;
-                    result.bottom = bottomMargin;
-                    result.right  = horizontalMargin;
-                    result.left   = horizontalMargin;
-                }
-
-                if (splittedOneline.size() >= 4) // `TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`
-                {
-                    result.top    = getSize(splittedOneline.at(0));
-                    result.right  = getSize(splittedOneline.at(1));
-                    result.bottom = getSize(splittedOneline.at(2));
-                    result.left   = getSize(splittedOneline.at(3));
-                }
-
-                return result;
-            }
-
-            result.top    = getSize(MARGIN_TOP_ATTRIBUTE_NAME,    inNode);
-            result.bottom = getSize(MARGIN_BOTTOM_ATTRIBUTE_NAME, inNode);
-            result.left   = getSize(MARGIN_LEFT_ATTRIBUTE_NAME,   inNode);
-            result.right  = getSize(MARGIN_RIGHT_ATTRIBUTE_NAME,  inNode);
-
-            return result;
-        }
-
-        ComponentPosition getPosition(const pugi::xml_node& inNode)
-        {
-            pugi::xml_attribute attribute = getAttribute(
-                POSITION_ATTRIBUTE_NAME,
-                inNode
-            );
-
-            if (attribute.empty())
-            {
-                return ComponentPosition::Relative;
-            }
-
-            std::string position = Utils::trim(attribute.as_string());
-
-            if (position.compare(POSITION_TYPE_ABSOLUTE) == 0)
-            {
-                return ComponentPosition::Absolute;
-            }
-
-            return ComponentPosition::Relative;
-        }
-
         bool hasViews()
         {
             return m_views.size() > 0;
@@ -317,11 +231,11 @@ namespace Chicane
 
             execOnTick(inNode);
 
-            ComponentMargin margin = getMargin(inNode);
+            Style style = getStyle(inNode);
 
-            ImVec2 position = getPosition(inNode) == ComponentPosition::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
-            position.x += margin.left + margin.right;
-            position.y += margin.top + margin.bottom;
+            ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
+            position.x += style.margin.left + style.margin.right;
+            position.y += style.margin.top + style.margin.bottom;
 
             ImGui::SetCursorPos(position);
 
