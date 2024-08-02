@@ -32,21 +32,28 @@ namespace Chicane
 
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
-        StyleMap m_styles = {};
+        StyleSourceMap m_sources = {};
+        StyleDataMap m_styles    = {};
 
         void setSize(
             Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
+            const StyleSource& inData
         )
         {
             if (inData.find(HEIGHT_ATTRIBUTE_NAME) != inData.end())
             {
-                outStyle.height = getSize(inData.at(HEIGHT_ATTRIBUTE_NAME));
+                outStyle.height = getSize(
+                    inData.at(HEIGHT_ATTRIBUTE_NAME),
+                    Direction::Vertical
+                );
             }
 
             if (inData.find(WIDTH_ATTRIBUTE_NAME) != inData.end())
             {
-                outStyle.width = getSize(inData.at(WIDTH_ATTRIBUTE_NAME));
+                outStyle.width = getSize(
+                    inData.at(WIDTH_ATTRIBUTE_NAME),
+                    Direction::Horizontal
+                );
             }
         }
 
@@ -70,6 +77,22 @@ namespace Chicane
             }
         }
 
+        float calculateMargin(
+            const Style& inStyle,
+            const std::string& rawValue,
+            Direction inDirection
+        )
+        {
+            float result = getSize(rawValue, inDirection);
+
+            if (rawValue.compare("auto") == 0)
+            {
+                result -= inDirection == Direction::Horizontal ? inStyle.width : inStyle.height;
+            }
+
+            return result;
+        }
+
         void setMargin(
             Style& outStyle,
             const std::unordered_map<std::string, std::string>& inData
@@ -87,22 +110,38 @@ namespace Chicane
             {
                 if (inData.find(MARGIN_TOP_ATTRIBUTE_NAME) != inData.end())
                 {
-                    outStyle.margin.top = getSize(inData.at(MARGIN_TOP_ATTRIBUTE_NAME));
+                    outStyle.margin.top = calculateMargin(
+                        outStyle,
+                        inData.at(MARGIN_TOP_ATTRIBUTE_NAME),
+                        Direction::Vertical
+                    );
                 }
 
                 if (inData.find(MARGIN_BOTTOM_ATTRIBUTE_NAME) != inData.end())
                 {
-                    outStyle.margin.bottom = getSize(inData.at(MARGIN_BOTTOM_ATTRIBUTE_NAME));
+                    outStyle.margin.bottom = calculateMargin(
+                        outStyle,
+                        inData.at(MARGIN_BOTTOM_ATTRIBUTE_NAME),
+                        Direction::Vertical
+                    );
                 }
 
                 if (inData.find(MARGIN_LEFT_ATTRIBUTE_NAME) != inData.end())
                 {
-                    outStyle.margin.left = getSize(inData.at(MARGIN_LEFT_ATTRIBUTE_NAME));
+                    outStyle.margin.left = calculateMargin(
+                        outStyle,
+                        inData.at(MARGIN_LEFT_ATTRIBUTE_NAME),
+                        Direction::Horizontal
+                    );
                 }
 
                 if (inData.find(MARGIN_RIGHT_ATTRIBUTE_NAME) != inData.end())
                 {
-                    outStyle.margin.right = getSize(inData.at(MARGIN_RIGHT_ATTRIBUTE_NAME));
+                    outStyle.margin.right =calculateMargin(
+                        outStyle,
+                        inData.at(MARGIN_RIGHT_ATTRIBUTE_NAME),
+                        Direction::Horizontal
+                    );
                 }
 
                 return;
@@ -117,18 +156,37 @@ namespace Chicane
 
             if (splittedOneline.size() == 1) // `SINGLE_MARGIN`
             {
-                float margin = getSize(splittedOneline.at(0));
+                std::string margin = splittedOneline.at(0);
 
-                outStyle.margin.top    = margin;
-                outStyle.margin.right  = margin;
-                outStyle.margin.bottom = margin;
-                outStyle.margin.left   = margin;
+                float verticalMargin = calculateMargin(
+                    outStyle,
+                    margin,
+                    Direction::Vertical
+                );
+                float horizontalMargin = calculateMargin(
+                    outStyle,
+                    margin,
+                    Direction::Horizontal
+                );
+
+                outStyle.margin.top    = verticalMargin;
+                outStyle.margin.right  = horizontalMargin;
+                outStyle.margin.bottom = verticalMargin;
+                outStyle.margin.left   = horizontalMargin;
             }
 
             if (splittedOneline.size() == 2) // `VERTICAL_MARGIN` `HORIZONTAL_MARGIN`
             {
-                float verticalMargin   = getSize(splittedOneline.at(0));
-                float horizontalMargin = getSize(splittedOneline.at(1));
+                float verticalMargin = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(0),
+                    Direction::Vertical
+                );
+                float horizontalMargin = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(1),
+                    Direction::Horizontal
+                );
 
                 outStyle.margin.top    = verticalMargin;
                 outStyle.margin.bottom = verticalMargin;
@@ -138,9 +196,21 @@ namespace Chicane
 
             if (splittedOneline.size() == 3) // `TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`
             {
-                float topMargin        = getSize(splittedOneline.at(0));
-                float bottomMargin     = getSize(splittedOneline.at(1));
-                float horizontalMargin = getSize(splittedOneline.at(2));
+                float topMargin = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(0),
+                    Direction::Vertical
+                );
+                float bottomMargin = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(1),
+                    Direction::Vertical
+                );
+                float horizontalMargin = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(2),
+                    Direction::Horizontal
+                );
 
                 outStyle.margin.top    = topMargin;
                 outStyle.margin.bottom = bottomMargin;
@@ -150,10 +220,26 @@ namespace Chicane
 
             if (splittedOneline.size() >= 4) // `TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`
             {
-                outStyle.margin.top    = getSize(splittedOneline.at(0));
-                outStyle.margin.right  = getSize(splittedOneline.at(1));
-                outStyle.margin.bottom = getSize(splittedOneline.at(2));
-                outStyle.margin.left   = getSize(splittedOneline.at(3));
+                outStyle.margin.top = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(0),
+                    Direction::Vertical
+                );
+                outStyle.margin.right = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(1),
+                    Direction::Horizontal
+                );
+                outStyle.margin.bottom = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(2),
+                    Direction::Vertical
+                );
+                outStyle.margin.left = calculateMargin(
+                    outStyle,
+                    splittedOneline.at(3),
+                    Direction::Horizontal
+                );
             }
         }
 
@@ -170,14 +256,31 @@ namespace Chicane
             outStyle.backgroundColor = Utils::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
         }
 
-        Style parseStyle(const std::string& inData)
+        Style parseStyle(const StyleSource& inSource)
+        {
+            Style result {};
+
+            if (inSource.empty())
+            {
+                return result;
+            }
+
+            setSize(result, inSource);
+            setPosition(result, inSource);
+            setMargin(result, inSource);
+            setBackgroundColor(result, inSource);
+
+            return result;
+        }
+
+        StyleSource extractStyleSource(const std::string& inData)
         {
             std::vector<std::string> blocks = Utils::split(
                 inData,
                 ';'
             );
-
-            std::unordered_map<std::string, std::string> sourceMap {};
+    
+            StyleSource result {};
 
             for (const std::string& block : blocks)
             {
@@ -189,14 +292,14 @@ namespace Chicane
                 const std::string& key   = Utils::trim(splittedBlock.at(0));
                 const std::string& value = Utils::trim(splittedBlock.at(1));
 
-                if (sourceMap.find(key) != sourceMap.end())
+                if (result.find(key) != result.end())
                 {
-                    sourceMap[key] = value;
+                    result[key] = value;
 
                     continue;
                 }
 
-                sourceMap.insert(
+                result.insert(
                     std::make_pair(
                         key,
                         value
@@ -204,24 +307,12 @@ namespace Chicane
                 );
             }
 
-            Style result {};
-
-            if (sourceMap.empty())
-            {
-                return result;
-            }
-
-            setSize(result, sourceMap);
-            setPosition(result, sourceMap);
-            setMargin(result, sourceMap);
-            setBackgroundColor(result, sourceMap);
-
             return result;
         }
 
-        StyleMap parseStyleData(const std::string& inData)
+        StyleSourceMap extractStyleFromString(const std::string& inData)
         {
-            StyleMap result {};
+            StyleSourceMap result {};
 
             std::string data = inData;
             data.erase(
@@ -272,7 +363,7 @@ namespace Chicane
                 result.insert(
                     std::make_pair(
                         identifier,
-                        parseStyle(source)
+                        extractStyleSource(source)
                     )
                 );
             }
@@ -280,17 +371,7 @@ namespace Chicane
             return result;
         }
 
-        StyleMap parseStyleData(const std::vector<char>& inData)
-        {
-            return parseStyleData(
-                std::string(
-                    inData.begin(),
-                    inData.end()
-                )
-            );
-        }
-
-        StyleMap parseStyleFile(const std::string& inFilePath)
+        StyleSourceMap extractStyleFromFile(const std::string& inFilePath)
         {
             if (inFilePath.empty())
             {
@@ -312,37 +393,25 @@ namespace Chicane
                 return {};
             }
 
-            return parseStyleData(
-                FileSystem::readFile(inFilePath)
+            std::vector<char> data = FileSystem::readFile(inFilePath);
+
+            return extractStyleFromString(
+                std::string(
+                    data.begin(),
+                    data.end()
+                )
             );
-        }
-
-        Style getStyle(const pugi::xml_node& inNode)
-        {
-            std::string id = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-
-            if (id.empty())
-            {
-                return {};
-            }
-
-            id = "#" + id;
-
-            if (m_styles.empty() || m_styles.find(id) == m_styles.end())
-            {
-                return {};
-            }
-
-            return m_styles.at(id);
         }
 
         void addStyle(const std::string& inFilePath)
         {
-            StyleMap styles = parseStyleFile(inFilePath);
+            m_sources = extractStyleFromFile(inFilePath);
 
             // TODO Implement property based overwrite
-            for (const auto& [id, style] : styles)
+            for (const auto& [id, source] : m_sources)
             {
+                Style style = parseStyle(source);
+
                 if (m_styles.find(id) != m_styles.end())
                 {
                     m_styles[id] = style;
@@ -364,6 +433,32 @@ namespace Chicane
             std::string styleLocation = getAttribute(STYLE_ATTRIBUTE_NAME, inNode).as_string();
 
             addStyle(styleLocation);
+        }
+
+        Style getStyle(const pugi::xml_node& inNode)
+        {
+            std::string id = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+
+            if (id.empty())
+            {
+                return {};
+            }
+
+            id = "#" + id;
+
+            if (m_styles.empty() || m_styles.find(id) == m_styles.end())
+            {
+                return {};
+            }
+
+            Style style        = m_styles.at(id);
+            StyleSource source = m_sources.at(id);
+
+            setSize(style, source);
+            setPosition(style, source);
+            setMargin(style, source);
+
+            return style;
         }
     }
 }

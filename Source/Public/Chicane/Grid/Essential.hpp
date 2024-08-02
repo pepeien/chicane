@@ -29,6 +29,12 @@ namespace Chicane
         typedef pugi::xml_node_iterator ComponentChild;
         typedef pugi::xml_object_range<ComponentChild> ComponentChildren;
 
+        enum class Direction : std::uint8_t
+        {
+            Vertical,
+            Horizontal
+        };
+
         // Ref Value
         constexpr auto REF_VALUE_OPENING = "{{";
         constexpr auto REF_VALUE_CLOSING = "}}";
@@ -69,7 +75,10 @@ namespace Chicane
             const pugi::xml_node& inNode
         );
 
-        float getSize(const std::string inValue);
+        float getSize(
+            const std::string& inValue,
+            Direction inDirection = Direction::Horizontal
+        );
         float getSize(
             const std::string& inAttributeName,
             const pugi::xml_node& inNode

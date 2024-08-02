@@ -1,11 +1,11 @@
 <View id="home" style="Content/Sample/Views/Home.decal">
-    <List id="frameTelemetry" direction="row" >
+    <List id="frameTelemetry" direction="row">
         <Text>{{ getFPS() }} FPS</Text>
         <Text id="frameTimeText">{{ getFrametime() }} ms</Text>
     </List>
     <List id="actorForm" direction="column">
         <Text>Location</Text>
-        <List id="actorLocation" direction="row" >
+        <List id="actorLocation" direction="row">
             <List id="actorLocationXInput" direction="column">
                 <Text>X</Text>
                 <TextInput value="newAppleX"></TextInput>
@@ -14,7 +14,7 @@
                 <Text>Y</Text>
                 <TextInput value="newAppleY"></TextInput>
             </List>
-            <List id="actorLocationZInput" direction="column" >
+            <List id="actorLocationZInput" direction="column">
                 <Text>Z</Text>
                 <TextInput value="newAppleZ"></TextInput>
             </List>

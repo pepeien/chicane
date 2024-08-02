@@ -97,6 +97,25 @@ namespace Chicane
             return getSizeFromPixel(inAttribute.as_string());
         }
 
+        float getSizeFromPercentage(const std::string& inValue, Direction inDirection)
+        {
+            if (inValue.empty())
+            {
+                return 0.0f;
+            }
+
+            float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
+
+            ImVec2 regionSize = ImGui::GetContentRegionAvail();
+
+            if (inDirection == Direction::Horizontal)
+            {
+                return percentage * regionSize.x;
+            }
+
+            return percentage * regionSize.y;
+        }
+
         float calculateSizeFromViewportHeight(float inVhValue)
         {
             return getResolution().y * (inVhValue / 100);
@@ -159,16 +178,26 @@ namespace Chicane
             return inNode.attribute(inName.c_str());
         }
 
-        float getSize(const std::string inValue)
+        float getSize(const std::string& inValue, Direction inDirection)
         {
             if (inValue.empty())
             {
                 return 0.0f;
             }
 
+            if (inValue.compare("auto") == 0)
+            {
+                return getSizeFromPercentage("100%", inDirection);
+            }
+
             if (endsWith(inValue, "px"))
             {
                 return getSizeFromPixel(inValue);
+            }
+
+            if (endsWith(inValue, "%"))
+            {
+                return getSizeFromPercentage(inValue, inDirection);
             }
 
             if (endsWith(inValue, "vh"))
@@ -283,8 +312,24 @@ namespace Chicane
             Style style = getStyle(inNode);
 
             ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
-            position.x += style.margin.left + style.margin.right;
-            position.y += style.margin.top + style.margin.bottom;
+
+            if (style.margin.left == style.margin.right)
+            {
+                position.x += style.margin.left / 2;
+            }
+            else
+            {
+                position.x += style.margin.left - style.margin.right;
+            }
+
+            if (style.margin.top == style.margin.bottom)
+            {
+                position.y += style.margin.top / 2;
+            }
+            else
+            {
+                position.y += style.margin.top - style.margin.bottom;
+            }
 
             ImGui::SetCursorPos(position);
 

@@ -36,13 +36,15 @@ namespace Chicane
             std::string backgroundColor = "";
         };
 
-        typedef std::unordered_map<std::string, Style> StyleMap;
+        typedef std::unordered_map<std::string, std::string> StyleSource;
 
-        StyleMap parseStyleData(const std::string& inRawData);
-        StyleMap parseStyleData(const std::vector<char>& inRawData);
-        StyleMap parseStyleFile(const std::string& inFilePath);
-        Style getStyle(const pugi::xml_node& inNode);
+        typedef std::unordered_map<std::string, StyleSource> StyleSourceMap;
+        typedef std::unordered_map<std::string, Style> StyleDataMap;
+
+        StyleSourceMap extractStyleFromString(const std::string& inRawData);
+        StyleSourceMap extractStyleFromFile(const std::string& inFilePath);
 
         void addStyle(const pugi::xml_node& inNode);
+        Style getStyle(const pugi::xml_node& inNode);
     }
 }

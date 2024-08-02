@@ -218,6 +218,13 @@ namespace Chicane
                 m_wasStyleAdded = true;
             }
 
+            ImGui::SetNextWindowContentSize(
+                ImVec2(
+                    static_cast<float>(inResolution.x),
+                    static_cast<float>(inResolution.y)
+                )
+            );
+
             ImGui::Begin(
                 m_id.c_str(),
                 nullptr,
