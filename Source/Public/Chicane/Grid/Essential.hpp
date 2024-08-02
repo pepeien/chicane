@@ -52,6 +52,13 @@ namespace Chicane
         constexpr auto ITEMS_ATTRIBUTE_NAME       = "items";
         constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "item-getter";
 
+        // Size units
+        constexpr auto AUTO_SIZE_UNIT            = "auto";
+        constexpr auto PIXEL_SIZE_UNIT           = "px";
+        constexpr auto PERCENTAGE_SIZE_UNIT      = "%";
+        constexpr auto VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
+        constexpr auto VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
+
         // Methods
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 

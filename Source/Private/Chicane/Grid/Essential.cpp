@@ -15,7 +15,7 @@ namespace Chicane
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
-            if (inTarget.size() < inEnding.size())
+            if (inTarget.empty() || inTarget.size() < inEnding.size())
             {
                 return false;
             }
@@ -79,7 +79,7 @@ namespace Chicane
 
         float getSizeFromPixel(const std::string& inValue)
         {
-            if (!endsWith(inValue, "px"))
+            if (!endsWith(inValue, PIXEL_SIZE_UNIT))
             {
                 return 0.0f;
             }
@@ -99,7 +99,7 @@ namespace Chicane
 
         float getSizeFromPercentage(const std::string& inValue, Direction inDirection)
         {
-            if (inValue.empty())
+            if (!endsWith(inValue, PERCENTAGE_SIZE_UNIT))
             {
                 return 0.0f;
             }
@@ -123,7 +123,7 @@ namespace Chicane
 
         float getSizeFromViewportHeight(const std::string& inValue)
         {
-            if (!endsWith(inValue, "vh"))
+            if (!endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
             {
                 return 0.0f;
             }
@@ -150,7 +150,7 @@ namespace Chicane
 
         float getSizeFromViewportWidth(const std::string& inValue)
         {
-            if (!endsWith(inValue, "vw"))
+            if (!endsWith(inValue, VIEWPORT_WIDTH_SIZE_UNIT))
             {
                 return 0.0f;
             }
@@ -185,27 +185,27 @@ namespace Chicane
                 return 0.0f;
             }
 
-            if (inValue.compare("auto") == 0)
+            if (inValue.compare(AUTO_SIZE_UNIT) == 0)
             {
                 return getSizeFromPercentage("100%", inDirection);
             }
 
-            if (endsWith(inValue, "px"))
+            if (endsWith(inValue, PIXEL_SIZE_UNIT))
             {
                 return getSizeFromPixel(inValue);
             }
 
-            if (endsWith(inValue, "%"))
+            if (endsWith(inValue, PERCENTAGE_SIZE_UNIT))
             {
                 return getSizeFromPercentage(inValue, inDirection);
             }
 
-            if (endsWith(inValue, "vh"))
+            if (endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
             {
                 return getSizeFromViewportHeight(inValue);
             }
 
-            if (endsWith(inValue, "vw"))
+            if (endsWith(inValue, VIEWPORT_WIDTH_SIZE_UNIT))
             {
                 return getSizeFromViewportWidth(inValue);
             }

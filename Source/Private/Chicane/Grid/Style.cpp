@@ -85,7 +85,7 @@ namespace Chicane
         {
             float result = getSize(rawValue, inDirection);
 
-            if (rawValue.compare("auto") == 0)
+            if (rawValue.compare(AUTO_SIZE_UNIT) == 0)
             {
                 result -= inDirection == Direction::Horizontal ? inStyle.width : inStyle.height;
             }
