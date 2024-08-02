@@ -30,6 +30,8 @@ namespace Chicane
         constexpr auto MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
         constexpr auto MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
 
+        constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
+
         StyleMap m_styles = {};
 
         void setSize(
@@ -155,6 +157,19 @@ namespace Chicane
             }
         }
 
+        void setBackgroundColor(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            if (inData.empty() || inData.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
+            {
+                return;
+            }
+
+            outStyle.backgroundColor = Utils::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
+        }
+
         Style parseStyle(const std::string& inData)
         {
             std::vector<std::string> blocks = Utils::split(
@@ -196,9 +211,10 @@ namespace Chicane
                 return result;
             }
 
-            setSize(result,     sourceMap);
+            setSize(result, sourceMap);
             setPosition(result, sourceMap);
-            setMargin(result,   sourceMap);
+            setMargin(result, sourceMap);
+            setBackgroundColor(result, sourceMap);
 
             return result;
         }

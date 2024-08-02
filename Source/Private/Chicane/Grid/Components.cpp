@@ -2,6 +2,7 @@
 
 #include "Chicane/Grid/Components/Box.hpp"
 #include "Chicane/Grid/Components/Button.hpp"
+#include "Chicane/Grid/Components/Grid.hpp"
 #include "Chicane/Grid/Components/List.hpp"
 #include "Chicane/Grid/Components/ProgressBar.hpp"
 #include "Chicane/Grid/Components/Text.hpp"
@@ -14,6 +15,7 @@ namespace Chicane
         std::unordered_map<std::string, ComponentCompiler> m_components = {
             { BoxComponent::TAG_ID, &BoxComponent::compile },
             { ButtonComponent::TAG_ID, &ButtonComponent::compile },
+            { GridComponent::TAG_ID, &GridComponent::compile },
             { ListComponent::TAG_ID, &ListComponent::compile },
             { ProgressBarComponent::TAG_ID, &ProgressBarComponent::compile },
             { TextComponent::TAG_ID, &TextComponent::compile },

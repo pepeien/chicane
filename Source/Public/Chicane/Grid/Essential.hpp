@@ -26,6 +26,9 @@ namespace Chicane
         typedef std::any* ComponentVariable;
         typedef std::unordered_map<std::string, ComponentVariable> ComponentVariables;
 
+        typedef pugi::xml_node_iterator ComponentChild;
+        typedef pugi::xml_object_range<ComponentChild> ComponentChildren;
+
         // Ref Value
         constexpr auto REF_VALUE_OPENING = "{{";
         constexpr auto REF_VALUE_CLOSING = "}}";
@@ -39,10 +42,19 @@ namespace Chicane
         // Lifecycle attributes
         constexpr auto ON_TICK_ATTRIBUTE = "onTick";
 
+        // List
+        constexpr auto ITEMS_ATTRIBUTE_NAME       = "items";
+        constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "item-getter";
+
         // Methods
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
         std::string getTag(const pugi::xml_node& inNode);
+
+        ImVec4 hexToColor(const std::string& inColor);
+
+        std::uint32_t getChildrenCount(const ComponentChildren& inChildren);
+        std::vector<pugi::xml_node> extractChildren(const ComponentChildren& inChildren);
 
         float getSizeFromPixel(const pugi::xml_attribute& inAttribute);
 
@@ -82,5 +94,9 @@ namespace Chicane
         bool refValueContainsFunction(const std::string& inRefValue);
         std::any processRefValue(const std::string& inRefValue);
         std::string processText(const std::string& inText);
+
+        // List
+        std::vector<std::any> getItems(const pugi::xml_node& inNode);
+        ComponentFunction getItemGetter(const pugi::xml_node& inNode);
     }
 }

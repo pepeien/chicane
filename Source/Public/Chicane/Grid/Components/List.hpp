@@ -12,9 +12,7 @@ namespace Chicane
             const std::string TAG_ID = "List";
 
             // Attributes
-            const std::string DIRECTION_ATTRIBUTE_NAME        = "direction";
-            const std::string ITEMS_ATTRIBUTE_NAME            = "items";
-            const std::string ITEM_GETTER_ATTRIBUTE_NAME      = "itemGetter";
+            const std::string DIRECTION_ATTRIBUTE_NAME   = "direction";
 
             // Direction
             const std::string DIRECTION_ROW    = "ROW";
@@ -26,12 +24,24 @@ namespace Chicane
                 Row
             };
 
-            Direction getDirection(const pugi::xml_node& inNode);
-            std::vector<std::any> getItems(const pugi::xml_node& inNode);
-            ComponentFunction getItemGetter(const pugi::xml_node& inNode);
-            ImVec4 getBackgroundColor(const Style& inStyle);
+            // Props
+            struct Props
+            {
+            public:
+                std::string id = ""; // Required
 
-            void validate(const pugi::xml_node& inNode);
+                Direction direction = Direction::Column; // Optional
+                Style style         = {}; // Optional
+
+                std::vector<std::any> items = {}; // Optional
+                ComponentFunction itemGetter; // Optional
+
+                ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
+            };
+
+            void validate(const Props& inProps);
+
+            void compileRaw(const Props& inProps);
             void compile(const pugi::xml_node& inNode);
         }
     }

@@ -27,6 +27,55 @@ namespace Chicane
         {
             return inNode.name();
         }
+ 
+        ImVec4 hexToColor(const std::string& inColor)
+        {
+            std::string backgroundColor = inColor;
+
+            if (backgroundColor.empty() || backgroundColor.size() < 7 || backgroundColor.size() > 9)
+            {
+                return {};
+            }
+
+            backgroundColor = backgroundColor.substr(
+                1,
+                backgroundColor.size() - 1
+            );
+            backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
+            std::uint32_t color = std::stoul(
+                backgroundColor,
+                nullptr,
+                16
+            );
+
+            // IDK why the result is #AABBGGRR A.K.A reversed
+            ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
+            return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
+        }
+
+        std::uint32_t getChildrenCount(const ComponentChildren& inChildren)
+        {
+            std::uint32_t result = 0;
+
+            for (const ComponentChild& child : inChildren)
+            {
+                result++;
+            }
+
+            return result;
+        }
+
+        std::vector<pugi::xml_node> extractChildren(const ComponentChildren& inChildren)
+        {
+            std::vector<pugi::xml_node> result {};
+
+            for (const ComponentChild& child : inChildren)
+            {
+                result.push_back(*child);
+            }
+
+            return result;
+        }
 
         float getSizeFromPixel(const std::string& inValue)
         {
@@ -401,6 +450,51 @@ namespace Chicane
             }
 
             return resultText;
+        }
+
+        std::vector<std::any> getItems(const pugi::xml_node& inNode)
+        {
+            View* view = getActiveView();
+
+            if (view == nullptr)
+            {
+                return {};
+            }
+
+            std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
+
+            if (itemsVariableRef.empty() || !view->hasVariable(itemsVariableRef))
+            {
+                return {};
+            }
+
+            std::any items = *view->getVariable(itemsVariableRef);
+
+            if (items.type() != typeid(std::vector<std::any>))
+            {
+                return {};
+            }
+
+            return std::any_cast<std::vector<std::any>>(items);
+        }
+
+        ComponentFunction getItemGetter(const pugi::xml_node& inNode)
+        {
+            View* view = getActiveView();
+
+            if (view == nullptr)
+            {
+                return {};
+            }
+
+            std::string itemGetterFunctionRef = getAttribute(ITEM_GETTER_ATTRIBUTE_NAME, inNode).as_string();
+
+            if (itemGetterFunctionRef.empty() || !view->hasFunction(itemGetterFunctionRef))
+            {
+                return {};
+            }
+
+            return view->getFunction(itemGetterFunctionRef);
         }
     }
 }

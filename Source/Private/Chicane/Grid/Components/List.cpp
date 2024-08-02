@@ -25,125 +25,54 @@ namespace Chicane
                 return Direction::Column;
             }
 
-            std::vector<std::any> getItems(const pugi::xml_node& inNode)
+            Props getProps(const pugi::xml_node& inNode)
             {
-                View* view = getActiveView();
+                Props result {};
+                result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.direction  = getDirection(inNode);
+                result.style      = getStyle(inNode);
+                result.items      = getItems(inNode);
+                result.itemGetter = getItemGetter(inNode);
+                result.children   = inNode.children();
 
-                if (view == nullptr)
-                {
-                    return {};
-                }
-
-                std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
-
-                if (itemsVariableRef.empty() || !view->hasVariable(itemsVariableRef))
-                {
-                    return {};
-                }
-
-                std::any items = *view->getVariable(itemsVariableRef);
-
-                if (items.type() != typeid(std::vector<std::any>))
-                {
-                    return {};
-                }
-
-                return std::any_cast<std::vector<std::any>>(items);
+                return result;
             }
 
-            ComponentFunction getItemGetter(const pugi::xml_node& inNode)
+            void validate(const Props& inProps)
             {
-                View* view = getActiveView();
-
-                if (view == nullptr)
-                {
-                    return {};
-                }
-
-                std::string itemGetterFunctionRef = getAttribute(ITEM_GETTER_ATTRIBUTE_NAME, inNode).as_string();
-
-                if (itemGetterFunctionRef.empty() || !view->hasFunction(itemGetterFunctionRef))
-                {
-                    return {};
-                }
-
-                return view->getFunction(itemGetterFunctionRef);
-            }
-
-            ImVec4 getBackgroundColor(const Style& inStyle)
-            {
-                std::string backgroundColor = inStyle.backgroundColor;
-
-                if (backgroundColor.empty() || backgroundColor.size() < 7 || backgroundColor.size() > 9)
-                {
-                    return {};
-                }
-
-                backgroundColor = backgroundColor.substr(
-                    1,
-                    backgroundColor.size() - 1
-                );
-                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
-                std::uint32_t color = std::stoul(
-                    backgroundColor,
-                    nullptr,
-                    16
-                );
-
-                // IDK why the result is #AABBGGRR A.K.A reversed
-                ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
-                return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
-            }
-
-            void validate(const pugi::xml_node& inNode)
-            {
-                if (TAG_ID.compare(inNode.name()) != 0)
-                {
-                    throw std::runtime_error("Component is not a " + TAG_ID);
-                }
-
-                std::string title = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-
-                if (title.empty())
+                if (inProps.id.empty())
                 {
                     throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
                 }
             }
 
-            void compile(const pugi::xml_node& inNode)
+            void compileRaw(const Props& inProps)
             {
-                validate(inNode);
-
-                Style style = getStyle(inNode);
-
-                Direction direction          = getDirection(inNode);
-                std::vector<std::any> items  = getItems(inNode);
-                ComponentFunction itemGetter = getItemGetter(inNode);
-                ImVec4 backgroundColor       = getBackgroundColor(style);
+                validate(inProps);
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
-                    backgroundColor
+                    hexToColor(inProps.style.backgroundColor)
                 );
 
                 ImGui::BeginChild(
-                    getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string(),
-                    ImVec2(style.width, style.height),
+                    inProps.id.c_str(),
+                    ImVec2(inProps.style.width, inProps.style.height),
                     ImGuiChildFlags_AlwaysUseWindowPadding
                 );
-                    for (std::any item : items)
+                    for (std::any item : inProps.items)
                     {
                         ComponentEvent event {};
                         event.values.push_back(item);
 
-                        itemGetter(event);
+                        inProps.itemGetter(event);
                     }
 
-                    if (!inNode.children().empty())
+                    if (!inProps.children.empty())
                     {
-                        for (const pugi::xml_node& child : inNode.children())
+                        for (const pugi::xml_node& child : inProps.children)
                         {
-                            if (direction == Direction::Row)
+                            if (inProps.direction == Direction::Row)
                             {
                                 ImGui::SameLine();
                             }
@@ -154,6 +83,16 @@ namespace Chicane
                 ImGui::EndChild();
 
                 ImGui::PopStyleColor();
+            }
+
+            void compile(const pugi::xml_node& inNode)
+            {
+                if (TAG_ID.compare(inNode.name()) != 0)
+                {
+                    throw std::runtime_error("Component is not a " + TAG_ID);
+                }
+
+                compileRaw(getProps(inNode));
             }
         }
     }
