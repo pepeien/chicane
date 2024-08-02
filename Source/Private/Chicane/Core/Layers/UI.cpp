@@ -76,6 +76,8 @@ namespace Chicane
         }
 
         initFramebuffers();
+
+        Grid::getActiveView()->rebuild();
     }
 
     void UILayer::onEvent(const SDL_Event& inEvent)

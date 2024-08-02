@@ -38,12 +38,18 @@ namespace Chicane
         View::View(const std::string& inId)
             : m_id(inId),
             m_variables({}),
-            m_functions({})
+            m_functions({}),
+            m_wasStyleAdded(false)
         {}
 
         std::string View::getId()
         {
             return m_id;
+        }
+
+        void View::rebuild()
+        {
+            m_wasStyleAdded = false;
         }
 
         void View::show(

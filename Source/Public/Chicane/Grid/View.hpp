@@ -23,6 +23,7 @@ namespace Chicane
         public:
             std::string getId();
 
+            void rebuild();
             virtual void show(
                 const Vec<int>::Two& inResolution,
                 const Vec<int>::Two& inPosition
