@@ -100,16 +100,14 @@ namespace Chicane
                             {
                                 ImGui::SameLine();
 
-                                std::uint32_t absoluteColumn = column + (row * column);
-
-                                std::string itemId = inProps.id + "Item-" + std::to_string(absoluteColumn);
+                                std::string itemId = inProps.id + "Item-" + std::to_string(chidrenVisited);
 
                                 ImGui::BeginChild(
                                     itemId.c_str(),
                                     itemSize,
                                     ImGuiChildFlags_AlwaysUseWindowPadding
                                 );
-                                    inItemShowCallback(absoluteColumn);
+                                    inItemShowCallback(chidrenVisited);
                                 ImGui::EndChild();
                             }
                         ImGui::EndChild();
