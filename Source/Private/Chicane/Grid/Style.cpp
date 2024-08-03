@@ -331,14 +331,6 @@ namespace Chicane
                 ),
                 data.cend()
             );
-            data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    ' '
-                ),
-                data.cend()
-            );
 
             std::vector<std::string> styles = Utils::split(
                 data,
