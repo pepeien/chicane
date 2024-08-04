@@ -250,6 +250,8 @@ namespace Chicane
         {
             if (inData.empty() || inData.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
             {
+                outStyle.backgroundColor = "transparent";
+
                 return;
             }
 
@@ -443,8 +445,8 @@ namespace Chicane
                 return {};
             }
 
-            Style style        = m_styles.at(id);
-            StyleSource source = m_sources.at(id);
+            Style& style        = m_styles.at(id);
+            StyleSource& source = m_sources.at(id);
 
             setSize(style, source);
             setPosition(style, source);

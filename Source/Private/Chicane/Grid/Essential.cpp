@@ -30,13 +30,16 @@ namespace Chicane
  
         ImVec4 hexToColor(const std::string& inColor)
         {
-            std::string backgroundColor = inColor;
+            std::string backgroundColor = Utils::trim(inColor);
 
-            if (backgroundColor.empty() || backgroundColor.size() < 7 || backgroundColor.size() > 9)
+            bool isTransparent = backgroundColor.empty() || backgroundColor.compare(BACKGROUND_COLOR_TRANSPARENT) == 0;
+            bool isHex         = backgroundColor.size() < 7 || backgroundColor.size() > 9;
+
+            if (isTransparent || isHex)
             {
-                return {};
+                return ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
             }
-
+    
             backgroundColor = backgroundColor.substr(
                 1,
                 backgroundColor.size() - 1
@@ -50,7 +53,7 @@ namespace Chicane
 
             // IDK why the result is #AABBGGRR A.K.A reversed
             ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
-            return { reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x };
+            return ImVec4(reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x);
         }
 
         std::uint32_t getChildrenCount(const ComponentChildren& inChildren)

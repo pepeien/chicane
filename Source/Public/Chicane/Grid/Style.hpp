@@ -36,6 +36,8 @@ namespace Chicane
             std::string backgroundColor = "";
         };
 
+        constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";
+
         typedef std::unordered_map<std::string, std::string> StyleSource;
 
         typedef std::unordered_map<std::string, StyleSource> StyleSourceMap;

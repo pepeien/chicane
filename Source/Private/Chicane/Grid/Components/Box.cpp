@@ -8,6 +8,15 @@ namespace Chicane
     {
         namespace BoxComponent
         {
+            Props getProps(const pugi::xml_node& inNode)
+            {
+                Props result {};
+                result.id    = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.style = getStyle(inNode);
+
+                return result;
+            }
+
             void compile(const pugi::xml_node& inNode)
             {
                 ImGuiContext& context = *GImGui;
@@ -18,13 +27,13 @@ namespace Chicane
                     return;
                 }
 
-                Style gridStyle = getStyle(inNode);
+                Props props = getProps(inNode);
+                Style style = props.style;
     
-                ImGuiStyle& style = context.Style;
                 ImVec2 size = ImGui::CalcItemSize(
-                    ImVec2(gridStyle.width, gridStyle.height),
+                    ImVec2(style.width, style.height),
                     ImGui::CalcItemWidth(),
-                    context.FontSize + style.FramePadding.y * 2.0f
+                    context.FontSize + context.Style.FramePadding.y * 2.0f
                 );
                 ImVec2 position = window->DC.CursorPos;
 
@@ -42,13 +51,18 @@ namespace Chicane
                     return;
                 }
     
+                ImGui::PushStyleColor(
+                    ImGuiCol_FrameBg,
+                    hexToColor(style.backgroundColor)
+                );
                 ImGui::RenderFrame(
                     borderBox.Min,
                     borderBox.Max,
                     ImGui::GetColorU32(ImGuiCol_FrameBg),
                     false,
-                    style.FrameRounding
+                    context.Style.FrameRounding
                 );
+                ImGui::PopStyleColor();
             }
         }
     }
