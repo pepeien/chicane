@@ -12,7 +12,11 @@ project(${NAME} VERSION 0.0.1)
 
 ##############  Set values  #######################
 if (NOT DEFINED BUILD_DIR)
-    set(BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Bin/${CMAKE_SYSTEM_NAME}")
+    if (NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE Debug)
+    endif()
+
+    set(BUILD_DIR "${CMAKE_CURRENT_LIST_DIR}/Bin/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}")
 endif()
 
 set(CONTENT_DIR "${CMAKE_CURRENT_LIST_DIR}/Content")
