@@ -185,30 +185,27 @@ namespace Chicane
             ImGuiWindowFlags viewFlags = ImGuiWindowFlags_NoNav |
                                          ImGuiWindowFlags_NoDecoration |
                                          ImGuiWindowFlags_NoMove |
-                                         ImGuiWindowFlags_NoBackground |
-                                         ImGuiWindowFlags_AlwaysUseWindowPadding;
+                                         ImGuiWindowFlags_NoBackground;
 
             execOnTick(inNode);
 
-            ImGui::PushStyleVar(
-                ImGuiStyleVar_WindowPadding,
-                ImVec2(0.f, 0.f)
+            ImGui::SetNextWindowContentSize(
+                ImVec2(
+                    static_cast<float>(inResolution.x),
+                    static_cast<float>(inResolution.y)
+                )
             );
-            ImGui::PushStyleVar(
-                ImGuiStyleVar_FramePadding,
-                ImVec2(0.f, 0.f)
+            ImGui::SetNextWindowSize(
+                ImVec2(
+                    static_cast<float>(inResolution.x),
+                    static_cast<float>(inResolution.y)
+                )
             );
-            ImGui::PushStyleVar(
-                ImGuiStyleVar_CellPadding,
-                ImVec2(0.f, 0.f)
-            );
-            ImGui::PushStyleVar(
-                ImGuiStyleVar_ItemSpacing,
-                ImVec2(0.f, 0.f)
-            );
-            ImGui::PushStyleVar(
-                ImGuiStyleVar_ItemInnerSpacing,
-                ImVec2(0.f, 0.f)
+            ImGui::SetNextWindowPos(
+                ImVec2(
+                    static_cast<float>(inPosition.x),
+                    static_cast<float>(inPosition.y)
+                )
             );
 
             if (!m_wasStyleAdded)
@@ -218,35 +215,13 @@ namespace Chicane
                 m_wasStyleAdded = true;
             }
 
-            ImGui::SetNextWindowContentSize(
-                ImVec2(
-                    static_cast<float>(inResolution.x),
-                    static_cast<float>(inResolution.y)
-                )
-            );
-
             ImGui::Begin(
                 m_id.c_str(),
                 nullptr,
                 viewFlags
             );
-                ImGui::SetWindowSize(
-                    ImVec2(
-                        static_cast<float>(inResolution.x),
-                        static_cast<float>(inResolution.y)
-                    )
-                );
-                ImGui::SetWindowPos(
-                    ImVec2(
-                        static_cast<float>(inPosition.x),
-                        static_cast<float>(inPosition.y)
-                    )
-                );
-
                 compileChildren(inNode);
             ImGui::End();
-
-            ImGui::PopStyleVar(5);
         }
     }
 }

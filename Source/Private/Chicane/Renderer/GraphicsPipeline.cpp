@@ -4,25 +4,29 @@ namespace Chicane
 {
     namespace GraphicsPipeline
     {
-        vk::Viewport createViewport(const vk::Extent2D& inExtent)
+        vk::Viewport createViewport(
+            const Vec<std::uint32_t>::Two& inSize,
+            const Vec<float>::Two& inPosition
+        )
         {
             vk::Viewport viewport {};
-            viewport.x        = 0;
-            viewport.y        = 0;
-            viewport.width    = static_cast<float>(inExtent.width);
-            viewport.height   = static_cast<float>(inExtent.height);
+            viewport.x        = inPosition.x;
+            viewport.y        = inPosition.y;
+            viewport.width    = static_cast<float>(inSize.x);
+            viewport.height   = static_cast<float>(inSize.y);
             viewport.minDepth = 0.0f;
             viewport.maxDepth = 1.0f;
 
             return viewport;
         }
 
-        vk::Rect2D createScissor(const vk::Extent2D& inExtent)
+        vk::Rect2D createScissor(const Vec<std::uint32_t>::Two& inSize)
         {
             vk::Rect2D scissor {};
-            scissor.offset.x = 0;
-            scissor.offset.y = 0;
-            scissor.extent   = inExtent;
+            scissor.offset.x      = 0.0f;
+            scissor.offset.y      = 0.0f;
+            scissor.extent.width  = inSize.x;
+            scissor.extent.height = inSize.y;
 
             return scissor;
         }
@@ -361,8 +365,10 @@ namespace Chicane
             pipelineInfo.pInputAssemblyState = &inputAsstembyState;
 
             // Viewport
-            vk::Viewport viewport = createViewport(m_swapChainExtent);
-            vk::Rect2D scissor = createScissor(m_swapChainExtent);
+            Vec<std::uint32_t>::Two size(m_swapChainExtent.width, m_swapChainExtent.height);
+
+            vk::Viewport viewport = createViewport(size);
+            vk::Rect2D scissor = createScissor(size);
 
             vk::PipelineViewportStateCreateInfo viewportState = createViewportState(
                 viewport,

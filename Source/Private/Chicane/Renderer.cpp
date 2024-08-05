@@ -9,7 +9,9 @@ namespace Chicane
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
-        m_window(inWindow)
+        m_window(inWindow),
+        m_viewportSize(Vec<std::uint32_t>::Two(0)),
+        m_viewportPosition(Vec<std::uint32_t>::Two(0.0f))
     {
         buildInstance();
         buildDebugMessenger();
@@ -123,15 +125,19 @@ namespace Chicane
         inLayer->build();
     }
 
-    void Renderer::setViewport(const vk::Extent2D& inExtent)
+    void Renderer::setViewport(
+        const Vec<std::uint32_t>::Two& inSize,
+        const Vec<float>::Two& inPosition
+    )
     {
-        m_viewportExtent = inExtent;
+        m_viewportSize     = inSize;
+        m_viewportPosition = inPosition;
 
         if (hasCamera())
         {
             getCamera()->setViewport(
-                m_viewportExtent.width,
-                m_viewportExtent.height
+                m_viewportSize.x,
+                m_viewportSize.y
             );
         }
     }
@@ -216,7 +222,7 @@ namespace Chicane
 
         CommandBuffer::Worker::startJob(commandBuffer);
 
-        prepareViewport(commandBuffer, m_viewportExtent);
+        prepareViewport(commandBuffer);
 
         for (Layer* layer : m_layers)
         {
@@ -392,7 +398,12 @@ namespace Chicane
             frame.setupSync();
         }
 
-        setViewport(m_swapChain.extent);
+        setViewport(
+            Vec<std::uint32_t>::Two(
+                m_swapChain.extent.width,
+                m_swapChain.extent.height
+            )
+        );
     }
 
     void Renderer::rebuildSwapChain()
@@ -493,12 +504,15 @@ namespace Chicane
         );
     }
 
-    void Renderer::prepareViewport(const vk::CommandBuffer& inCommandBuffer, const vk::Extent2D& inExtent)
+    void Renderer::prepareViewport(const vk::CommandBuffer& inCommandBuffer)
     {
-        vk::Viewport viewport = GraphicsPipeline::createViewport(inExtent);
+        vk::Viewport viewport = GraphicsPipeline::createViewport(
+            m_viewportSize,
+            m_viewportPosition
+        );
         inCommandBuffer.setViewport(0, 1, &viewport);
 
-        vk::Rect2D scissor = GraphicsPipeline::createScissor(inExtent);
+        vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewportSize);
         inCommandBuffer.setScissor(0, 1, &scissor);
     }
 

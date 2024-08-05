@@ -21,19 +21,42 @@ namespace Chicane
         ImGui::CreateContext();
 
         ImGuiIO& io = ImGui::GetIO();
-        (void) io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         io.IniFilename = nullptr;
 
-        ImGui::StyleColorsDark();
+        ImVec2 padding = ImVec2(0.0f, 0.0f);
+        ImVec2 minSize = ImVec2(1.0f, 1.0f);
 
         ImGuiStyle& style = ImGui::GetStyle();
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            style.WindowRounding = 0.0f;
-            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-        }
+        style.DisplayWindowPadding   = padding;
+        style.DisplaySafeAreaPadding = padding;
+
+        style.ChildBorderSize = 0.0f;
+
+        style.WindowPadding    = padding;
+        style.WindowBorderSize = 0.0f;
+        style.WindowRounding   = 0.0f;
+        style.WindowMinSize    = minSize;
+
+        style.FramePadding    = padding;
+        style.FrameBorderSize = 0.0f;
+
+        style.SeparatorTextPadding    = padding;
+        style.SeparatorTextBorderSize = 0.0f;
+
+        style.CellPadding = padding;
+    
+        style.ButtonTextAlign = padding;
+
+        style.TabBorderSize = 0.0f;
+
+        style.GrabMinSize = 0.0f;
+
+        style.ItemInnerSpacing = padding;
+        style.ItemSpacing      = padding;
 
         ImGui_ImplSDL2_InitForVulkan(m_window->instance);
     }

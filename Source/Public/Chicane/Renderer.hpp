@@ -48,7 +48,10 @@ namespace Chicane
         void pushLayerBefore(const std::string& inId, Layer* inLayer);
         void pushLayerAfter(const std::string& inId, Layer* inLayer);
 
-        void setViewport(const vk::Extent2D& inExtent);
+        void setViewport(
+            const Vec<std::uint32_t>::Two& inSize,
+            const Vec<float>::Two& inPosition = Vec<float>::Two(0.0f)
+        );
 
         // Event
         void onEvent(const SDL_Event& inEvent);
@@ -87,10 +90,7 @@ namespace Chicane
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void prepareViewport(
-            const vk::CommandBuffer& inCommandBuffer,
-            const vk::Extent2D& inExtent
-        );
+        void prepareViewport(const vk::CommandBuffer& inCommandBuffer);
 
         void prepareCamera(Frame::Instance& outFrame);
 
@@ -124,7 +124,8 @@ namespace Chicane
 
         // Window
         Window* m_window;
-        vk::Extent2D m_viewportExtent;
+        Vec<std::uint32_t>::Two m_viewportSize;
+        Vec<float>::Two m_viewportPosition;
 
         // Layers
         std::vector<Layer*> m_layers;
