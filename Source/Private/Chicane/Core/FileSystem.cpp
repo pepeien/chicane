@@ -120,6 +120,16 @@ namespace Chicane
             #endif
         }
 
+        bool exists(const std::string& inPath)
+        {
+            if (inPath.empty())
+            {
+                return false;
+            }
+
+            return std::filesystem::exists(inPath);
+        }
+
         std::vector<ListItem> ls(const std::string& inDir, std::uint32_t inDepth)
         {
             std::vector<ListItem> result {};

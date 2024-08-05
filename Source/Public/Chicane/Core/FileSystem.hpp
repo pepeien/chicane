@@ -51,6 +51,7 @@ namespace Chicane
             const std::vector<FileFormat>& inFileFormats
         );
 
+        bool exists(const std::string& inPath);
         std::vector<ListItem> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
 
         std::vector<char> readFile(const std::string& inFilepath);

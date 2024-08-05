@@ -22,6 +22,7 @@ namespace Chicane
     struct WindowCreateInfo
     {
         std::string title        = "";
+        std::string icon         = ""; // Optional [file path]
         Vec<int>::Two resolution = Vec<int>::Two(0);
         int displayIndex         = 0;
         WindowType type          = WindowType::Windowed;
@@ -55,6 +56,7 @@ namespace Chicane
         void blur();
 
         void setTitle(const std::string& inTitle);
+        void setIcon(const std::string& inIconPath);
 
         Vec<int>::Two getResolution();
         void setResolution(const Vec<int>::Two& inResolution);

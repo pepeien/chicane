@@ -41,6 +41,7 @@ namespace Chicane
 
         setDisplay(inCreateInfo.displayIndex);
         setType(inCreateInfo.type);
+        setIcon(inCreateInfo.icon);
 
         initRenderer();
         initCoreLayers();
@@ -211,6 +212,34 @@ namespace Chicane
             instance,
             inTitle.c_str()
         );
+    }
+
+    void Window::setIcon(const std::string& inIconPath)
+    {
+        std::string iconPath = Utils::trim(inIconPath);
+
+        if (iconPath.empty())
+        {
+            return;
+        }
+
+        if (!FileSystem::exists(iconPath))
+        {
+            throw std::runtime_error("The file [ " + iconPath + " ] doesn't exist");
+        }
+
+        SDL_Surface* icon = IMG_Load(inIconPath.c_str());
+
+        if (!icon)
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
+
+        SDL_SetWindowIcon(
+            instance,
+            icon
+        );
+        SDL_FreeSurface(icon);
     }
 
     void Window::setDisplay(int inMonitorIndex)
