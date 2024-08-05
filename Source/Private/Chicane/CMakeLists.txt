@@ -28,26 +28,6 @@ add_library(
         ${CHICANE_TARGET_NAME}
 )
 
-set_target_properties(
-    ${CHICANE_TARGET_NAME}
-    PROPERTIES
-
-    OUTPUT_NAME
-    "Chicane"
-
-    VS_DEBUGGER_WORKING_DIRECTORY
-    "${BUILD_DIR}"
-
-    ARCHIVE_OUTPUT_DIRECTORY
-    "${BUILD_DIR}"
-
-    ARCHIVE_OUTPUT_DIRECTORY_DEBUG
-    "${BUILD_DIR}"
-
-    ARCHIVE_OUTPUT_DIRECTORY_RELEASE
-    "${BUILD_DIR}"
-)
-
 target_include_directories(
     ${CHICANE_TARGET_NAME}
 
