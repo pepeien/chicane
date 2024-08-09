@@ -15,6 +15,8 @@ namespace Chicane
 
         m_level         = getLevel();
         m_isInitialized = m_level->hasActors();
+
+        loadEvents();
     }
 
     LevelLayer::~LevelLayer()
@@ -49,8 +51,6 @@ namespace Chicane
 
     void LevelLayer::build()
     {
-        loadEvents();
-
         if (!m_isInitialized)
         {
             return;
@@ -182,11 +182,6 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        if (!m_isInitialized)
-        {
-            return;
-        }
-
         m_level->addActorSubscription(
             std::bind(
                 &LevelLayer::loadActor,
