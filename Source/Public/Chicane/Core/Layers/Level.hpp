@@ -45,7 +45,8 @@ namespace Chicane
         void tickActors();
 
     private:
-        Renderer* m_renderer;
+        Renderer::Internals m_internals;
+
         Level* m_level;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;

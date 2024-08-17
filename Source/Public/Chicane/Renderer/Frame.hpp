@@ -13,7 +13,15 @@
 namespace Chicane
 {
     namespace Frame
-    {    
+    {
+        struct Depth
+        {
+            vk::Image image;
+            vk::ImageView imageView;
+            vk::DeviceMemory memory;
+            vk::Format format;
+        };
+
         class Instance
         {
         public:
@@ -24,7 +32,7 @@ namespace Chicane
             void setupModelData(const std::vector<Actor*>& inActors);
             void updateModelData(const std::vector<Actor*>& inActors);
     
-            void setupDepthBuffering();
+            void setupDepthBuffering(const vk::Format& inFormat);
 
             void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
             vk::Framebuffer getFramebuffer(const std::string& inId);
@@ -47,14 +55,13 @@ namespace Chicane
             uint32_t width;
             uint32_t height;
 
+            // Image
             vk::Image image;
             vk::ImageView imageView;
             std::unordered_map<std::string, vk::Framebuffer> framebuffers;
 
-            vk::Image depthImage;
-            vk::ImageView depthImageView;
-            vk::DeviceMemory depthMemory;
-            vk::Format depthFormat;
+            // Depth
+            Depth depth;
 
             // Sychronization
             vk::CommandBuffer commandBuffer;

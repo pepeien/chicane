@@ -53,9 +53,9 @@ namespace Chicane
         SDL_Quit();
     }
 
-    Renderer* Window::getRenderer()
+    Renderer::Internals& Window::getRendererInternals()
     {
-        return m_renderer.get();
+        return m_rendererInternals;
     }
 
     Telemetry Window::getTelemetry()
@@ -332,6 +332,7 @@ namespace Chicane
     void Window::initRenderer()
     {
         m_renderer = std::make_unique<Renderer>(this);
+        m_rendererInternals = m_renderer->getInternals();
     }
 
     void Window::initCoreLayers()

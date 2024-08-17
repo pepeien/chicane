@@ -38,7 +38,7 @@ namespace Chicane
 
     private:
         Window* m_window;
-        Renderer* m_renderer;
+        Renderer::Internals m_internals;
 
         vk::RenderPass m_renderPass;
         vk::DescriptorPool m_descriptorPool;

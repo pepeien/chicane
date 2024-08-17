@@ -39,10 +39,28 @@ namespace Chicane
     class Renderer
     {
     public:
+        struct Internals
+        {
+        public:
+            // Vulkan
+            vk::PhysicalDevice physicalDevice;
+            vk::Device logicalDevice;
+            vk::SurfaceKHR sufrace;
+            vk::Instance instance;
+            vk::Queue graphicsQueue;
+            vk::CommandBuffer mainCommandBuffer;
+
+            SwapChain::Bundle* swapchain;
+            int imageCount;
+        };
+
+    public:
         Renderer(Window* inWindow);
         ~Renderer();
 
     public:
+        Internals getInternals();
+
         void pushLayerStart(Layer* inLayer);
         void pushLayerBack(Layer* inLayer);
         void pushLayerBefore(const std::string& inId, Layer* inLayer);
@@ -94,7 +112,7 @@ namespace Chicane
 
         void prepareCamera(Frame::Instance& outFrame);
 
-    public:
+    private:
         // Instance
         vk::Instance m_instance;
         vk::DispatchLoaderDynamic m_dldi;

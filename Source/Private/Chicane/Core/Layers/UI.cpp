@@ -7,10 +7,10 @@ namespace Chicane
 {
     UILayer::UILayer(Window* inWindow)
         : Layer("UI"),
-        m_window(inWindow),
-        m_renderer(inWindow->getRenderer())
+        m_window(inWindow)
     {
         m_isInitialized = Grid::hasViews();
+        m_internals = inWindow->getRendererInternals();
 
         if (!m_isInitialized)
         {
@@ -68,14 +68,14 @@ namespace Chicane
             return;
         }
 
-        m_renderer->m_logicalDevice.waitIdle();
+        m_internals.logicalDevice.waitIdle();
 
         ImGui_ImplVulkan_Shutdown();
         ImGui_ImplSDL2_Shutdown();
         ImGui::DestroyContext();
 
-        m_renderer->m_logicalDevice.destroyRenderPass(m_renderPass);
-        m_renderer->m_logicalDevice.destroyDescriptorPool(m_descriptorPool);
+        m_internals.logicalDevice.destroyRenderPass(m_renderPass);
+        m_internals.logicalDevice.destroyDescriptorPool(m_descriptorPool);
     }
 
     void UILayer::build()
@@ -195,7 +195,7 @@ namespace Chicane
 
         Descriptor::initPool(
             m_descriptorPool,
-            m_renderer->m_logicalDevice,
+            m_internals.logicalDevice,
             createInfo
         );
     }
@@ -203,7 +203,7 @@ namespace Chicane
     void UILayer::initRenderpass()
     {
         vk::AttachmentDescription attachment = GraphicsPipeline::createColorAttachment(
-            m_renderer->m_swapChain.format,
+            m_internals.swapchain->format,
             vk::AttachmentLoadOp::eLoad,
             vk::ImageLayout::ePresentSrcKHR
         );
@@ -211,7 +211,7 @@ namespace Chicane
         m_renderPass = GraphicsPipeline::createRendepass(
             false,
             { attachment },
-            m_renderer->m_logicalDevice
+            m_internals.logicalDevice
         );
     }
 
@@ -219,11 +219,11 @@ namespace Chicane
     {
         Frame::Buffer::CreateInfo framebufferCreateInfo {};
         framebufferCreateInfo.id              = m_id;
-        framebufferCreateInfo.logicalDevice   = m_renderer->m_logicalDevice;
+        framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
         framebufferCreateInfo.renderPass      = m_renderPass;
-        framebufferCreateInfo.swapChainExtent = m_renderer->m_swapChain.extent;
+        framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
 
-        for (Frame::Instance& frame : m_renderer->m_swapChain.images)
+        for (Frame::Instance& frame : m_internals.swapchain->images)
         {
             framebufferCreateInfo.attachments.clear();
             framebufferCreateInfo.attachments.push_back(frame.imageView);
@@ -237,21 +237,21 @@ namespace Chicane
         Queue::FamilyIndices familyIndices;
         Queue::findFamilyInidices(
             familyIndices,
-            m_renderer->m_physicalDevice,
-            m_renderer->m_surface
+            m_internals.physicalDevice,
+            m_internals.sufrace
         );
 
         ImGui_ImplVulkan_InitInfo imguiInitInfo {};
-        imguiInitInfo.Instance        = m_renderer->m_instance;
-        imguiInitInfo.PhysicalDevice  = m_renderer->m_physicalDevice;
-        imguiInitInfo.Device          = m_renderer->m_logicalDevice;
+        imguiInitInfo.Instance        = m_internals.instance;
+        imguiInitInfo.PhysicalDevice  = m_internals.physicalDevice;
+        imguiInitInfo.Device          = m_internals.logicalDevice;
         imguiInitInfo.QueueFamily     = familyIndices.graphicsFamily.value();
-        imguiInitInfo.Queue           = m_renderer->m_graphicsQueue;
+        imguiInitInfo.Queue           = m_internals.graphicsQueue;
         imguiInitInfo.PipelineCache   = VK_NULL_HANDLE;
         imguiInitInfo.DescriptorPool  = m_descriptorPool;
         imguiInitInfo.Allocator       = nullptr;
         imguiInitInfo.MinImageCount   = 3;
-        imguiInitInfo.ImageCount      = m_renderer->m_imageCount;
+        imguiInitInfo.ImageCount      = m_internals.imageCount;
         imguiInitInfo.RenderPass      = m_renderPass;
 
         ImGui_ImplVulkan_Init(&imguiInitInfo);

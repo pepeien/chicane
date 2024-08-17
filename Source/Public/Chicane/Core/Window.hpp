@@ -3,11 +3,11 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Layer.hpp"
+#include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
     class Controller;
-    class Renderer;
     class Level;
     class LevelLayer;
     class SkyboxLayer;
@@ -37,7 +37,7 @@ namespace Chicane
         ~Window();
 
     public:
-        Renderer* getRenderer();
+        Renderer::Internals& getRendererInternals();
 
         Telemetry getTelemetry();
 
@@ -104,5 +104,6 @@ namespace Chicane
 
         // Render
         std::unique_ptr<Renderer> m_renderer;
+        Renderer::Internals m_rendererInternals;
     };
 }

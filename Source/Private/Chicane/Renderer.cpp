@@ -46,6 +46,21 @@ namespace Chicane
         destroyInstance();
     }
 
+    Renderer::Internals Renderer::getInternals()
+    {
+        Internals internals {};
+        internals.physicalDevice    = m_physicalDevice;
+        internals.logicalDevice     = m_logicalDevice;
+        internals.sufrace           = m_surface;
+        internals.instance          = m_instance;
+        internals.graphicsQueue     = m_graphicsQueue;
+        internals.swapchain         = &m_swapChain;
+        internals.mainCommandBuffer = m_mainCommandBuffer;
+        internals.imageCount        = m_imageCount;
+
+        return internals;
+    }
+
     void Renderer::pushLayerStart(Layer* inLayer)
     {
         if (hasLayer(inLayer))

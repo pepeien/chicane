@@ -21,6 +21,7 @@ namespace Chicane
             vk::SwapchainKHR instance;
             std::vector<Frame::Instance> images;
             vk::Format format;
+            vk::Format depthFormat;
             vk::Extent2D extent;
             vk::Extent2D midPoints;
         };

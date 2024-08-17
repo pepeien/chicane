@@ -134,6 +134,13 @@ namespace Chicane
                 supportDetails.formats
             );
 
+            vk::Format depthFormat = Image::findSupportedFormat(
+                inPhysicalDevice,
+                { vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint },
+                vk::ImageTiling::eOptimal,
+                vk::FormatFeatureFlagBits::eDepthStencilAttachment
+            );
+
             vk::PresentModeKHR presentMode;
             pickPresentMode(
                 presentMode,
@@ -212,6 +219,7 @@ namespace Chicane
     
             outSwapChain.instance         = inLogicalDevice.createSwapchainKHR(createInfo);
             outSwapChain.format           = surfaceFormat.format;
+            outSwapChain.depthFormat      = depthFormat;
             outSwapChain.extent           = extent;
             outSwapChain.midPoints.width  = extent.width / 2;
             outSwapChain.midPoints.height = extent.height / 2;
@@ -240,7 +248,7 @@ namespace Chicane
                     1
                 );
 
-                frame.setupDepthBuffering();
+                frame.setupDepthBuffering(outSwapChain.depthFormat);
 
                 frame.setupCameraUBO();
             }

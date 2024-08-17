@@ -87,37 +87,32 @@ namespace Chicane
             }
         }
         
-        void Instance::setupDepthBuffering()
+        void Instance::setupDepthBuffering(const vk::Format& inFormat)
         {
-            depthFormat = Image::findSupportedFormat(
-                physicalDevice,
-                { vk::Format::eD32Sfloat, vk::Format::eD24UnormS8Uint },
-                vk::ImageTiling::eOptimal,
-                vk::FormatFeatureFlagBits::eDepthStencilAttachment
-            );
+            depth.format = inFormat;
 
-            Image::CreateInfo depthImageCreateInfo;
-            depthImageCreateInfo.width            = width;
-            depthImageCreateInfo.height           = height;
-            depthImageCreateInfo.count            = 1;
-            depthImageCreateInfo.physicalDevice   = physicalDevice;
-            depthImageCreateInfo.logicalDevice    = logicalDevice;
-            depthImageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
-            depthImageCreateInfo.usage            = vk::ImageUsageFlagBits::eDepthStencilAttachment;
-            depthImageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-            depthImageCreateInfo.format           = depthFormat;
+            Image::CreateInfo imageCreateInfo;
+            imageCreateInfo.width            = width;
+            imageCreateInfo.height           = height;
+            imageCreateInfo.count            = 1;
+            imageCreateInfo.physicalDevice   = physicalDevice;
+            imageCreateInfo.logicalDevice    = logicalDevice;
+            imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
+            imageCreateInfo.usage            = vk::ImageUsageFlagBits::eDepthStencilAttachment;
+            imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            imageCreateInfo.format           = depth.format;
 
-            Image::init(depthImage, depthImageCreateInfo);
+            Image::init(depth.image, imageCreateInfo);
             Image::initMemory(
-                depthMemory,
-                depthImageCreateInfo,
-                depthImage
+                depth.memory,
+                imageCreateInfo,
+                depth.image
             );
             Image::initView(
-                depthImageView,
+                depth.imageView,
                 logicalDevice,
-                depthImage,
-                depthFormat,
+                depth.image,
+                depth.format,
                 vk::ImageAspectFlagBits::eDepth,
                 vk::ImageViewType::e2D,
                 1
@@ -205,9 +200,9 @@ namespace Chicane
 
             logicalDevice.destroyImageView(imageView);
 
-            logicalDevice.freeMemory(depthMemory);
-            logicalDevice.destroyImage(depthImage);
-            logicalDevice.destroyImageView(depthImageView);
+            logicalDevice.freeMemory(depth.memory);
+            logicalDevice.destroyImage(depth.image);
+            logicalDevice.destroyImageView(depth.imageView);
 
             logicalDevice.destroyFence(renderFence);
             logicalDevice.destroySemaphore(presentSemaphore);
