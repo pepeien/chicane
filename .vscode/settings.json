@@ -98,6 +98,8 @@
         "expected": "cpp",
         "*.inc": "cpp",
         "any": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "future": "cpp",
+        "cfenv": "cpp"
     }
 }
