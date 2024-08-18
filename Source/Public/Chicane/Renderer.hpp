@@ -33,6 +33,11 @@ namespace Chicane
     class Layer;
     class Window;
 
+    namespace Thread
+    {
+        class Pool;
+    }
+
     // Game
     class Controller;
 
@@ -52,6 +57,9 @@ namespace Chicane
 
             SwapChain::Bundle* swapchain;
             int imageCount;
+
+            // Multi Thread
+            Thread::Pool* threadPool;
         };
 
     public:
@@ -112,6 +120,9 @@ namespace Chicane
 
         void prepareCamera(Frame::Instance& outFrame);
 
+        void buildThreadPool();
+        void destroyThreadPool();
+
     private:
         // Instance
         vk::Instance m_instance;
@@ -147,5 +158,8 @@ namespace Chicane
 
         // Layers
         std::vector<Layer*> m_layers;
+
+        // Multi Thread
+        std::unique_ptr<Thread::Pool> m_threadPool;
     };
 }

@@ -37,7 +37,7 @@ namespace Chicane
         ~Window();
 
     public:
-        Renderer::Internals& getRendererInternals();
+        const Renderer::Internals& getRendererInternals();
 
         Telemetry getTelemetry();
 

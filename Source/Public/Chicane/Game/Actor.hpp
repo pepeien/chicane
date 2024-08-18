@@ -39,6 +39,8 @@ namespace Chicane
         void setRelativeScale(const Vec<float>::Three& inScale);
         void setAbsoluteScale(const Vec<float>::Three& inScale);
 
+        const Box::Instance& getMesh();
+
     protected:
         void setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation);
         void setRotation(const Mat<float>::Four& inBase, const Vec<float>::Three& inRotation);

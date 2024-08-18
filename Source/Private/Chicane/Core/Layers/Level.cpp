@@ -17,6 +17,9 @@ namespace Chicane
         m_level         = getLevel();
         m_isInitialized = m_level->hasActors();
 
+        m_textureManager = Allocator::getTextureManager();
+        m_modelManager   = Allocator::getModelManager();
+
         loadEvents();
     }
 

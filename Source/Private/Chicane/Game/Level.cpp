@@ -26,6 +26,11 @@ namespace Chicane
         return m_actors;
     }
 
+    std::uint32_t Level::getActorCount()
+    {
+        return m_actors.size();
+    }
+
     void Level::addActor(Actor* inActor)
     {
         m_actors.push_back(inActor);

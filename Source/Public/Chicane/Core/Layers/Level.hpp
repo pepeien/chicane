@@ -1,11 +1,8 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-
 #include "Chicane/Core/Layer.hpp"
-
 #include "Chicane/Game/Level.hpp"
-
 #include "Chicane/Renderer.hpp"
 
 namespace Chicane
@@ -57,5 +54,8 @@ namespace Chicane
 
         Buffer::Instance m_modelVertexBuffer;
         Buffer::Instance m_modelIndexBuffer;
+
+        Texture::Manager* m_textureManager;
+        Model::Manager* m_modelManager;
     };
 }

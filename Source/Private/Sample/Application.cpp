@@ -42,25 +42,42 @@ void Application::addFloor()
 
 void Application::addApples()
 {
-    Apple* appleTopRight = new Apple();
-    appleTopRight->setAbsoluteTranslation(Chicane::Vec<float>::Three(1000.0f, 1000.0f, 10.0f));
-    m_level->addActor(appleTopRight);
+    Chicane::Vec<float>::Three topLeftPosition(     1000.0f,  1000.0f, 0.0f);
+    Chicane::Vec<float>::Three topRightPosition(    0.0f,     0.0f,    0.0f);
+    Chicane::Vec<float>::Three middlePosition(      1000.0f, -1000.0f, 0.0f);
+    Chicane::Vec<float>::Three bottomLeftPosition( -1000.0f, -1000.0f, 0.0f);
+    Chicane::Vec<float>::Three bottomRightPosition(-1000.0f,  1000.0f, 0.0f);
 
-    Apple* appleTopLeft = new Apple();
-    appleTopLeft->setAbsoluteTranslation(Chicane::Vec<float>::Three(0.0f, 0.0f, 10.0f));
-    m_level->addActor(appleTopLeft);
+    for (std::uint32_t i = 0; i < 10; i++)
+    {
+        float height = 10.0f + (i * 200);
 
-    Apple* appleMiddle = new Apple();
-    appleMiddle->setAbsoluteTranslation(Chicane::Vec<float>::Three(1000.0f, -1000.0f, 10.0f));
-    m_level->addActor(appleMiddle);
+        topLeftPosition.z     = height;
+        topRightPosition.z    = height;
+        middlePosition.z      = height;
+        bottomLeftPosition.z  = height;
+        bottomRightPosition.z = height;
 
-    Apple* appleBottomRight = new Apple();
-    appleBottomRight->setAbsoluteTranslation(Chicane::Vec<float>::Three(-1000.0f, -1000.0f, 10.0f));
-    m_level->addActor(appleBottomRight);
+        Apple* appleTopRight = new Apple();
+        appleTopRight->setAbsoluteTranslation(topLeftPosition);
+        m_level->addActor(appleTopRight);
 
-    Apple* appleBottomLeft = new Apple();
-    appleBottomLeft->setAbsoluteTranslation(Chicane::Vec<float>::Three(-1000.0f, 1000.0f, 10.0f));
-    m_level->addActor(appleBottomLeft);
+        Apple* appleTopLeft = new Apple();
+        appleTopLeft->setAbsoluteTranslation(topRightPosition);
+        m_level->addActor(appleTopLeft);
+
+        Apple* appleMiddle = new Apple();
+        appleMiddle->setAbsoluteTranslation(middlePosition);
+        m_level->addActor(appleMiddle);
+
+        Apple* appleBottomRight = new Apple();
+        appleBottomRight->setAbsoluteTranslation(bottomLeftPosition);
+        m_level->addActor(appleBottomRight);
+
+        Apple* appleBottomLeft = new Apple();
+        appleBottomLeft->setAbsoluteTranslation(bottomRightPosition);
+        m_level->addActor(appleBottomLeft);
+    }
 }
 
 void Application::addView()

@@ -67,6 +67,11 @@ namespace Chicane
         setScale(Mat<float>::Four(1.0f), inScale);
     }
 
+    const Box::Instance& Actor::getMesh()
+    {
+        return m_mesh;
+    }
+
     void Actor::setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation)
     {
         m_position *= glm::translate(inBase, inTranslation);

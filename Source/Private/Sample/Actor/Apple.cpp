@@ -9,7 +9,7 @@ Apple::Apple()
 {
     setCanTick(true);
 
-    Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
+    m_mesh = Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
 }
 
 void Apple::onTick(float inDeltaTime)

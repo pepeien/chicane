@@ -14,7 +14,7 @@ namespace Chicane
         Model::Manager* getModelManager();
         Texture::Manager* getTextureManager();
 
-        void load(const std::string& inFilePath);
+        Box::Instance load(const std::string& inFilePath);
 
         void reset();
     }

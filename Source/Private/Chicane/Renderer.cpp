@@ -22,13 +22,17 @@ namespace Chicane
         buildCommandPool();
         buildMainCommandBuffer();
         buildFramesCommandBuffers();
+        buildThreadPool();
     }
 
     Renderer::~Renderer()
     {
-        // Vulkan
         m_logicalDevice.waitIdle();
 
+        // Multi thread
+        destroyThreadPool();
+
+        // Vulkan
         destroyCommandPool();
         destroySwapChain();
         deleteLayers();
@@ -49,14 +53,17 @@ namespace Chicane
     Renderer::Internals Renderer::getInternals()
     {
         Internals internals {};
-        internals.physicalDevice    = m_physicalDevice;
-        internals.logicalDevice     = m_logicalDevice;
-        internals.sufrace           = m_surface;
-        internals.instance          = m_instance;
-        internals.graphicsQueue     = m_graphicsQueue;
-        internals.swapchain         = &m_swapChain;
+        internals.physicalDevice = m_physicalDevice;
+        internals.logicalDevice  = m_logicalDevice;
+        internals.sufrace        = m_surface;
+        internals.instance       = m_instance;
+        internals.graphicsQueue  = m_graphicsQueue;
+        internals.swapchain      = &m_swapChain;
+
         internals.mainCommandBuffer = m_mainCommandBuffer;
         internals.imageCount        = m_imageCount;
+
+        internals.threadPool = m_threadPool.get();
 
         return internals;
     }
@@ -548,5 +555,26 @@ namespace Chicane
             &outFrame.cameraUBO.instance,
             outFrame.cameraUBO.allocationSize
         );
+    }
+
+    void Renderer::buildThreadPool()
+    {
+        if (m_threadPool)
+        {
+            return;
+        }
+
+        m_threadPool = std::make_unique<Thread::Pool>();
+    }
+
+    void Renderer::destroyThreadPool()
+    {
+        if (!m_threadPool)
+        {
+            return;
+        }
+
+        m_threadPool->clear();
+        m_threadPool.reset();
     }
 }

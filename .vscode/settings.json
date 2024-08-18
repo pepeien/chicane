@@ -100,6 +100,7 @@
         "any": "cpp",
         "valarray": "cpp",
         "future": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "*.def": "cpp"
     }
 }

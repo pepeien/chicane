@@ -53,7 +53,7 @@ namespace Chicane
         SDL_Quit();
     }
 
-    Renderer::Internals& Window::getRendererInternals()
+    const Renderer::Internals& Window::getRendererInternals()
     {
         return m_rendererInternals;
     }
