@@ -1,6 +1,7 @@
 #include "Camera.hpp"
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core.hpp"
 
 Camera::Camera()
     : Chicane::Camera()
@@ -11,37 +12,24 @@ Camera::Camera()
 
 void Camera::onEvent(const SDL_Event& inEvent)
 {
-    if (inEvent.type == SDL_MOUSEWHEEL)
+    if (inEvent.type == SDL_MOUSEBUTTONDOWN)
     {
-        zoom(
-            5.0f * inEvent.wheel.y
-        );
+        if (inEvent.button.button == SDL_BUTTON_LEFT)
+        {
+            Chicane::showCursor(!Chicane::isShowingCursor());
+        }
     }
 
-    if (inEvent.type != SDL_MOUSEMOTION)
+    if (Chicane::isShowingCursor())
     {
         return;
     }
 
-    switch (inEvent.motion.state)
+    switch (inEvent.type)
     {
-    case SDL_BUTTON_LMASK:
+    case SDL_MOUSEMOTION:
         addPitch(inEvent.motion.yrel);
         addYaw(inEvent.motion.xrel);
-
-        break;
-    case SDL_BUTTON_MMASK:
-        zoom(inEvent.motion.yrel);
-
-        break;
-
-    case SDL_BUTTON_RMASK:
-        pan(
-            Chicane::Vec<float>::Two(
-                inEvent.motion.xrel,
-                inEvent.motion.yrel
-            )
-        );
 
         break;
 

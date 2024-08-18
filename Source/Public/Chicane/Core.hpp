@@ -50,6 +50,10 @@ namespace Chicane
     Window* getWindow();
     void setWindow(Window* inWindow);
 
+    bool isShowingCursor();
+    void showCursor(bool inWillShowCursor);
+    Vec<int>::Two getCursorPosition();
+
     Vec<int>::Two getResolution();
     void setResolution(const Vec<int>::Two& inResolution);
 

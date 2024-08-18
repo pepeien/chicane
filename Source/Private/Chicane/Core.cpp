@@ -112,6 +112,38 @@ namespace Chicane
         m_window = inWindow;
     }
 
+    bool isShowingCursor()
+    {
+        if (!m_window)
+        {
+            return false;
+        }
+
+        return SDL_GetRelativeMouseMode() == SDL_FALSE;
+    }
+
+    void showCursor(bool inWillShowCursor)
+    {
+        if (!m_window)
+        {
+            return;
+        }
+
+        SDL_SetRelativeMouseMode(inWillShowCursor ? SDL_FALSE : SDL_TRUE);
+    }   
+
+    Vec<int>::Two getCursorPosition()
+    {
+        Vec<int>::Two position(0, 0);
+
+        SDL_GetMouseState(
+            &position.x,
+            &position.y
+        );
+
+        return position;
+    }
+
     void setResolution(const Vec<int>::Two& inResolution)
     {
         if (m_window == nullptr)
