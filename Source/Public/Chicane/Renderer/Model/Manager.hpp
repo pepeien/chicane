@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Model
     {
-        enum class Vendor : uint8_t
+        enum class Vendor : std::uint8_t
         {
             // N/A
             Undefined,

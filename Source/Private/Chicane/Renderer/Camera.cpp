@@ -14,7 +14,7 @@ namespace Chicane
         m_viewportHeight(720),
         m_fov(45.0f),
         m_aspectRatio(1.77f),
-        m_nearClip(0.01f),
+        m_nearClip(0.2f),
         m_farClip(50000.0f),
         m_moveDistance(0.7f),
         m_UBO({})
@@ -193,8 +193,11 @@ namespace Chicane
 
     Mat<float>::Four Camera::getView()
     {
-		Mat<float>::Four result = glm::translate(Mat<float>::Four(1.0f), m_transform.translation) * glm::toMat4(getOrientation());
-		result           = glm::inverse(result);
+		Mat<float>::Four result = glm::translate(
+            Mat<float>::Four(1.0f),
+            m_transform.translation) * glm::toMat4(getOrientation()
+        );
+		result = glm::inverse(result);
 
         return result;
     }
