@@ -118,14 +118,12 @@ namespace Chicane
         return m_UBO;
     }
 
-    // TODO Implement roll
     void Camera::onTransformUpdate()
     {
-        float roll  = glm::radians(m_transform.rotation.x);
+        // Apply Yaw & Pitch
         float yaw   = glm::radians(m_transform.rotation.y);
         float pitch = glm::radians(m_transform.rotation.z);
 
-        // State
         float pitchCos = cos(pitch);
 
         m_forward.x = pitchCos * sin(yaw);
@@ -135,6 +133,12 @@ namespace Chicane
         m_forward = glm::normalize(m_forward);
         m_right   = glm::normalize(glm::cross(m_forward, UP_DIRECTION));
         m_up      = glm::cross(m_right, m_forward);
+
+        // Apply roll
+        float roll  = glm::radians(m_transform.rotation.x);
+
+        m_right = glm::normalize(glm::rotate(m_right, roll, m_forward));
+        m_up    = glm::normalize(glm::rotate(m_up, roll, m_forward));
 
         // UBO
         m_UBO.view = glm::lookAt(
