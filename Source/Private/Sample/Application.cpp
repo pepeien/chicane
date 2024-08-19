@@ -8,7 +8,7 @@ Application::Application()
     initLevel();
     initChacater();
     addFloor();
-    //addApples();
+    addApples();
     addView();
     initWindow();
 }
@@ -52,7 +52,7 @@ void Application::addApples()
     Chicane::Vec<float>::Three bottomLeftPosition( -1000.0f, -1000.0f, 0.0f);
     Chicane::Vec<float>::Three bottomRightPosition(-1000.0f,  1000.0f, 0.0f);
 
-    for (std::uint32_t i = 0; i < 10; i++)
+    for (std::uint32_t i = 0; i < 1; i++)
     {
         float height = 10.0f + (i * 200);
 

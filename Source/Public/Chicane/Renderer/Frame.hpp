@@ -70,7 +70,7 @@ namespace Chicane
             vk::Semaphore renderSemaphore;
     
             // Resources
-            UBOBundle cameraUBO;
+            Camera::UBOBundle cameraUBO;
             vk::DescriptorBufferInfo cameraDescriptorBufferInfo;
 
             Model::Bundle modelData;

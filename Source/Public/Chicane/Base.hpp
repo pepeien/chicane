@@ -48,6 +48,7 @@
 
 // Vendor
 #include "glm/glm.hpp"
+#include "glm/gtx/rotate_vector.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/quaternion.hpp"
 
@@ -78,12 +79,8 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
 };
 
 constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(1.0f,  0.0f, 0.0f);
-constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(0.0f, -1.0f, 0.0f);
+constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(0.0f,  1.0f, 0.0f);
 constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f,  0.0f, 1.0f);
-
-constexpr glm::vec3 CAMERA_FORWARD_DIRECTION = glm::vec3(0.0f, 0.0f, -1.0f);
-constexpr glm::vec3 CAMERA_RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f,  0.0f);
-constexpr glm::vec3 CAMERA_UP_DIRECTION      = glm::vec3(0.0f, 1.0f,  0.0f);
 
 namespace Chicane
 {

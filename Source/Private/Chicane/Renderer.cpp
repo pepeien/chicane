@@ -539,11 +539,7 @@ namespace Chicane
             return;
         }
 
-        Camera* camera = getCamera();
-        //camera->updatePosition();
-        camera->updateUBO();
-
-        outFrame.cameraUBO.instance = camera->getUBO();
+        outFrame.cameraUBO.instance = getCamera()->getUBO();
         memcpy(
             outFrame.cameraUBO.writeLocation,
             &outFrame.cameraUBO.instance,

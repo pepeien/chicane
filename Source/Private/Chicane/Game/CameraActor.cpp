@@ -12,6 +12,7 @@ namespace Chicane
         : Pawn()
     {
         m_camera = new CameraComponent();
+        m_camera->addRotation(0.0f, -90.0f, 0.0f);
     }
 
     void CameraActor::onPossession()
@@ -57,8 +58,11 @@ namespace Chicane
                     return;
                 }
 
-                m_camera->addPitch(inEvent.yrel);
-                m_camera->addYaw(inEvent.xrel);
+                m_camera->addRotation(
+                    0.0f,
+                    inEvent.xrel,
+                    -inEvent.yrel
+                );
             }
         );
         m_controller->bindMouseButtonEvent(
@@ -82,10 +86,11 @@ namespace Chicane
             return;
         }
 
-        Vec<float>::Three position = m_camera->getPosition();
-        position.x += MOVEMENT_COEFFICIENT;
-
-        m_camera->setPosition(position);
+        m_camera->addTranslation(
+            MOVEMENT_COEFFICIENT,
+            0.0f,
+            0.0f
+        );
     }
 
     void CameraActor::moveBackward(bool isKeyDown)
@@ -95,10 +100,11 @@ namespace Chicane
             return;
         }
 
-        Vec<float>::Three position = m_camera->getPosition();
-        position.x -= MOVEMENT_COEFFICIENT;
-
-        m_camera->setPosition(position);
+        m_camera->addTranslation(
+            -MOVEMENT_COEFFICIENT,
+            0.0f,
+            0.0f
+        );
     }
 
     void CameraActor::moveLeft(bool isKeyDown)
@@ -108,10 +114,11 @@ namespace Chicane
             return;
         }
 
-        Vec<float>::Three position = m_camera->getPosition();
-        position.y -= MOVEMENT_COEFFICIENT;
-
-        m_camera->setPosition(position);
+        m_camera->addTranslation(
+            0.0f,
+            -MOVEMENT_COEFFICIENT,
+            0.0f
+        );
     }
 
     void CameraActor::moveRight(bool isKeyDown)
@@ -121,9 +128,10 @@ namespace Chicane
             return;
         }
 
-        Vec<float>::Three position = m_camera->getPosition();
-        position.y += MOVEMENT_COEFFICIENT;
-
-        m_camera->setPosition(position);
+        m_camera->addTranslation(
+            0.0f,
+            MOVEMENT_COEFFICIENT,
+            0.0f
+        );
     }
 }
