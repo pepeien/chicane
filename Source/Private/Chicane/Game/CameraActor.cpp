@@ -17,6 +17,38 @@ namespace Chicane
 
     void CameraActor::onPossession()
     {
+        setupMouseInputs();
+        setupKeyboardInputs();
+        setupControllerInputs();
+    }
+
+    void CameraActor::setupMouseInputs()
+    {
+        m_controller->bindMouseMotionEvent(
+            [this](const SDL_MouseMotionEvent& inEvent)
+            {
+                look(
+                    inEvent.xrel,
+                    -inEvent.yrel
+                );
+            }
+        );
+        m_controller->bindMouseButtonEvent(
+            SDL_BUTTON_LEFT,
+            [](bool isKeyDown)
+            {
+                if (!isKeyDown)
+                {
+                    return;
+                }
+
+                setWindowFocus(!isWindowFocused());
+            }
+        );
+    }
+
+    void CameraActor::setupKeyboardInputs()
+    {
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_W,
             std::bind(
@@ -49,24 +81,26 @@ namespace Chicane
                 std::placeholders::_1
             )
         );
+    }
 
-        m_controller->bindMouseMotionEvent(
-            [this](const SDL_MouseMotionEvent& inEvent)
+    void CameraActor::setupControllerInputs()
+    {
+        // Motion
+        m_controller->bindControllerMotionEvent(
+            [this](const SDL_ControllerAxisEvent& inEvent)
             {
-                if (!isWindowFocused())
-                {
-                    return;
-                }
+                std::uint16_t axisValue = inEvent.value;
 
-                m_camera->addRotation(
-                    0.0f,
-                    inEvent.xrel,
-                    -inEvent.yrel
+                look(
+                    1.0f,
+                    0.0f
                 );
             }
         );
-        m_controller->bindMouseButtonEvent(
-            SDL_BUTTON_LEFT,
+
+        // Button
+        m_controller->bindControllerButtonEvent(
+            SDL_CONTROLLER_BUTTON_A,
             [](bool isKeyDown)
             {
                 if (!isKeyDown)
@@ -76,6 +110,20 @@ namespace Chicane
 
                 setWindowFocus(!isWindowFocused());
             }
+        );
+    }
+
+    void CameraActor::look(float inX, float inY)
+    {
+        if (!isWindowFocused())
+        {
+            return;
+        }
+
+        m_camera->addRotation(
+            0.0f,
+            inX,
+            inY
         );
     }
 

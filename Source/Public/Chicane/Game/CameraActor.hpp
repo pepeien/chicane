@@ -14,6 +14,12 @@ namespace Chicane
         void onPossession() override;
     
     private:
+        void setupMouseInputs();
+        void setupKeyboardInputs();
+        void setupControllerInputs();
+
+        void look(float inX, float inY);
+
         void moveForward(bool isKeyDown);
         void moveBackward(bool isKeyDown);
         void moveLeft(bool isKeyDown);

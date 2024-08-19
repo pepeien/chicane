@@ -116,10 +116,7 @@ namespace Chicane
             break;
 
         // Controller
-        case SDL_CONTROLLER_AXIS_LEFTX:
-        case SDL_CONTROLLER_AXIS_LEFTY:
-        case SDL_CONTROLLER_AXIS_RIGHTX:
-        case SDL_CONTROLLER_AXIS_RIGHTY:
+        case SDL_CONTROLLERAXISMOTION:
             if (m_controllerMotionEvent)
             {
                 m_controllerMotionEvent(inEvent.caxis);
