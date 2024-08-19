@@ -137,12 +137,14 @@ namespace Chicane
             onWindowEvent(inEvent.window);
 
             break;
-
-        case SDL_KEYDOWN:
-            onKeyDown(inEvent.key);
-
-            break;
         }
+
+        if (hasController() == false)
+        {
+            return;
+        }
+
+        getController()->onEvent(inEvent);
     }
 
     bool Window::isFocused()
@@ -371,27 +373,5 @@ namespace Chicane
 
             break;
         }
-    }
-
-    void Window::onMouseClick()
-    {
-        if (!isFocused())
-        {
-            focus();
-
-            return;
-        }
-
-        blur();
-    }
-
-    void Window::onKeyDown(const SDL_KeyboardEvent& inEvent)
-    {
-        if (hasController() == false)
-        {
-            return;
-        }
-
-        getController()->onEvent(inEvent.keysym.scancode);
     }
 }

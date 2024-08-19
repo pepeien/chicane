@@ -5,10 +5,10 @@
 
 Application::Application()
 {
-    initCamera();
     initLevel();
+    initChacater();
     addFloor();
-    addApples();
+    //addApples();
     addView();
     initWindow();
 }
@@ -18,11 +18,15 @@ void Application::run()
     m_window->run();
 }
 
-void Application::initCamera()
+void Application::initChacater()
 {
-    m_camera = std::make_unique<Camera>();
+    m_controller = std::make_unique<Chicane::Controller>();
+    Chicane::setController(m_controller.get());
 
-    Chicane::setCamera(m_camera.get());
+    m_character = std::make_unique<Chicane::CameraActor>();
+    m_level->addActor(m_character.get());
+
+    m_controller->possess(m_character.get());
 }
 
 void Application::initLevel()

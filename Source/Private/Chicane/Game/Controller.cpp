@@ -1,13 +1,26 @@
 #include "Chicane/Game/Controller.hpp"
 
-#include "Chicane/Core/Log.hpp"
 #include "Chicane/Game/Pawn.hpp"
 
 namespace Chicane
 {
     Controller::Controller()
-        : m_pawn(nullptr)
+        : m_pawn(nullptr),
+        m_pawnObservable(std::make_unique<Observable<Pawn*>>())
     {}
+
+    void Controller::watchPossesion(
+        std::function<void (Pawn*)> inNextCallback,
+        std::function<void (const std::string&)> inErrorCallback,
+        std::function<void ()> inCompleteCallback
+    )
+    {
+        m_pawnObservable->subscribe(
+            inNextCallback,
+            inErrorCallback,
+            inCompleteCallback
+        );
+    }
 
     void Controller::possess(Pawn* inPawn)
     {
@@ -20,48 +33,155 @@ namespace Chicane
 
         if (inPawn->isPossessed())
         {
-            LOG_WARNING("This pawn is currently possesed");
+            m_pawnObservable->error("This pawn is currently possesed");
 
             return;
         }
+
+        clearEvents();
 
         inPawn->getPossesedBy(this);
 
         m_pawn = inPawn;
+
+        m_pawnObservable->next(inPawn);
     }
 
-    void Controller::unPossess()
+    void Controller::depossess()
     {
         if (m_pawn == nullptr)
         {
-            LOG_INFO("The controller doesn't possess a Pawn");
+            m_pawnObservable->error("The controller doesn't possess a Pawn");
 
             return;
         }
 
-        m_pawn->getUnpossessed();
+        clearEvents();
+
+        m_pawn->getDepossessed();
         m_pawn = nullptr;
+
+        m_pawnObservable->next(nullptr);
     }
 
-    void Controller::bindEvent(SDL_Scancode inScanCode, std::function<void()> inEvent)
+    void Controller::bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent)
     {
-        events.insert(
-            std::make_pair(
-                inScanCode,
-                inEvent
-            )
-        );
+        m_mouseMotionEvent = inEvent;
     }
 
-    void Controller::onEvent(SDL_Scancode inScanCode)
+    void Controller::bindMouseButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
     {
-        auto foundEvent = events.find(inScanCode);
+        m_mouseButtonEvents[inButtonCode] = inEvent;
+    }
 
-        if (foundEvent == events.end())
+    void Controller::bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent)
+    {
+        m_keyboardButtonEvents[inButtonCode] = inEvent;
+    }
+
+    void Controller::bindControllerMotionEvent(std::function<void(const SDL_ControllerAxisEvent&)> inEvent)
+    {
+        m_controllerMotionEvent = inEvent;
+    }
+
+    void Controller::bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
+    {
+        m_controllerButtonEvents[inButtonCode] = inEvent;
+    }
+
+    void Controller::onEvent(const SDL_Event& inEvent)
+    {
+        switch (inEvent.type)
+        {
+        // Mouse
+        case SDL_MOUSEMOTION:
+            if (m_mouseMotionEvent)
+            {
+                m_mouseMotionEvent(inEvent.motion);
+            }
+
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+            onMouseButtonEvent(inEvent.button);
+
+            break;
+
+        // Keyboard
+        case SDL_KEYDOWN:
+        case SDL_KEYUP:
+            onKeyboardButtonEvent(inEvent.key);
+
+            break;
+
+        // Controller
+        case SDL_CONTROLLER_AXIS_LEFTX:
+        case SDL_CONTROLLER_AXIS_LEFTY:
+        case SDL_CONTROLLER_AXIS_RIGHTX:
+        case SDL_CONTROLLER_AXIS_RIGHTY:
+            if (m_controllerMotionEvent)
+            {
+                m_controllerMotionEvent(inEvent.caxis);
+            }
+
+            break;
+
+        case SDL_CONTROLLERBUTTONDOWN:
+        case SDL_CONTROLLERBUTTONUP:
+            onControllerButtonEvent(inEvent.cbutton);
+
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    void Controller::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
+    {
+        std::uint8_t key = inEvent.button;
+
+        if (m_mouseButtonEvents.find(key) == m_mouseButtonEvents.end())
         {
             return;
         }
 
-        foundEvent->second();
+        m_mouseButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+    }
+
+    void Controller::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
+    {
+        SDL_Scancode key = inEvent.keysym.scancode;
+
+        if (m_keyboardButtonEvents.find(key) == m_keyboardButtonEvents.end())
+        {
+            return;
+        }
+
+        m_keyboardButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+    }
+
+    void Controller::onControllerButtonEvent(const SDL_ControllerButtonEvent& inEvent)
+    {
+        std::uint8_t key = inEvent.button;
+
+        if (m_controllerButtonEvents.find(key) == m_controllerButtonEvents.end())
+        {
+            return;
+        }
+
+        m_controllerButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+    }
+
+    void Controller::clearEvents()
+    {
+        m_mouseMotionEvent = nullptr;
+        m_mouseButtonEvents.clear();
+
+        m_keyboardButtonEvents.clear();
+
+        m_controllerMotionEvent = nullptr;
+        m_controllerButtonEvents.clear();
     }
 }

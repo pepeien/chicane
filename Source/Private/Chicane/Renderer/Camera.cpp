@@ -49,40 +49,23 @@ namespace Chicane
         return m_transform.translation;
     }
 
-    void Camera::setPosition(float inX, float inY, float inZ)
-    {
-        zoom(inX);
-        pan(inY, inZ);
-    }
-
     void Camera::setPosition(const Vec<float>::Three& inPosition)
     {
-        setPosition(
-            inPosition.x,
-            inPosition.y,
-            inPosition.z
-        );
+        m_transform.translation = inPosition;
     }
 
-    void Camera::updatePosition()
+    Vec<float>::Three Camera::getRotation()
     {
-        m_transform.translation = m_focalPoint - getForward() * m_moveDistance;
+        return m_transform.rotation;
     }
 
     void Camera::setRotation(const Vec<float>::Three& inRotation)
     {
-        setRotation(
-            inRotation.x,
-            inRotation.y,
-            inRotation.z
-        );
-    }
+        m_transform.rotation = inRotation;
 
-    void Camera::setRotation(float inPitch, float inRoll, float inYaw)
-    {
-        addPitch(inPitch);
-        addRoll(inRoll);
-        addYaw(inYaw);
+        addPitch(inRotation.x);
+        addRoll(inRotation.y);
+        addYaw(inRotation.z);
     }
 
     void Camera::pan(float inX, float inY)
@@ -107,7 +90,7 @@ namespace Chicane
 
 		if (m_moveDistance < 1.0f)
 		{
-			m_focalPoint  += getForward();
+			m_focalPoint += getForward();
 			m_moveDistance = 1.0f;
 		}
     }
@@ -193,11 +176,12 @@ namespace Chicane
 
     Mat<float>::Four Camera::getView()
     {
-		Mat<float>::Four result = glm::translate(
-            Mat<float>::Four(1.0f),
-            m_transform.translation) * glm::toMat4(getOrientation()
+		Mat<float>::Four result = glm::lookAt(
+            m_transform.translation,
+            m_focalPoint,
+            getUp()
         );
-		result = glm::inverse(result);
+        result = glm::inverse(result);
 
         return result;
     }

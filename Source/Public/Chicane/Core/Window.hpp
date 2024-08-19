@@ -85,8 +85,6 @@ namespace Chicane
         void updateTelemetry();
 
         void onWindowEvent(const SDL_WindowEvent& inEvent);
-        void onMouseClick();
-        void onKeyDown(const SDL_KeyboardEvent& inEvent);
 
     private:
         // Telemetry

@@ -1,19 +1,14 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Components/Actor.hpp"
+#include "Chicane/Renderer/Camera.hpp"
 
 namespace Chicane
 {
-    class CameraComponent : public ActorComponent
+    class CameraComponent : public Camera
     {
     public:
-        CameraComponent()
-            : ActorComponent(),
-            m_isUsingOwnerRotation(false)
-        {}
-    
-    protected:
-        bool m_isUsingOwnerRotation; 
+        CameraComponent();
+        virtual ~CameraComponent() = default;
     };
 }

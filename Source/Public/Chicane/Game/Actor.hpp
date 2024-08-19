@@ -14,11 +14,13 @@ namespace Chicane
     };
 
     class ActorComponent;
+    class CameraComponent;
 
     class Actor
     {
     public:
         Actor();
+        virtual ~Actor();
 
     public:
         virtual void onTick(float inDelta) { return; };
@@ -39,6 +41,21 @@ namespace Chicane
         void setRelativeScale(const Vec<float>::Three& inScale);
         void setAbsoluteScale(const Vec<float>::Three& inScale);
 
+        bool hasCamera();
+
+        template<class T = CameraComponent>
+        T* getCamera()
+        {
+            if (!hasCamera())
+            {
+                return nullptr;
+            }
+
+            return dynamic_cast<T*>(m_camera);
+        }
+
+        const std::vector<ActorComponent*>& getComponents();
+
         const Box::Instance& getMesh();
 
     protected:
@@ -52,8 +69,9 @@ namespace Chicane
         Mat<float>::Four m_position;
         Transform m_transform;
 
-        Box::Instance m_mesh;
-
+        CameraComponent* m_camera;
         std::vector<ActorComponent*> m_components;
+
+        Box::Instance m_mesh;
     };
-}
+} 

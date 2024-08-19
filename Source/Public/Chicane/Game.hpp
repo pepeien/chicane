@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/CameraActor.hpp"
 #include "Chicane/Game/Controller.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Game/Pawn.hpp"

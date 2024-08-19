@@ -17,10 +17,14 @@ namespace Chicane
     void Pawn::getPossesedBy(Controller* inController)
     {
         m_controller = inController;
+
+        onPossession();
     }
 
-    void Pawn::getUnpossessed()
+    void Pawn::getDepossessed()
     {
         m_controller = nullptr;
+
+        onDepossession();
     }
 }

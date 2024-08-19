@@ -1,14 +1,21 @@
 #include "Chicane/Game/Actor.hpp"
 
 #include "Chicane/Game/Components/Actor.hpp"
+#include "Chicane/Game/Components/Camera.hpp"
 
 namespace Chicane
 {
     Actor::Actor()
         : m_bCanTick(false),
         m_position(Mat<float>::Four(1.0f)),
-        m_transform({})
+        m_transform({}),
+        m_camera(nullptr)
     {}
+
+    Actor::~Actor()
+    {
+        delete m_camera;
+    }
 
     bool Actor::canTick()
     {
@@ -65,6 +72,16 @@ namespace Chicane
         m_transform.scale = inScale;
 
         setScale(Mat<float>::Four(1.0f), inScale);
+    }
+
+    bool Actor::hasCamera()
+    {
+        return m_camera != nullptr;
+    }
+
+    const std::vector<ActorComponent*>& Actor::getComponents()
+    {
+        return m_components;
     }
 
     const Box::Instance& Actor::getMesh()

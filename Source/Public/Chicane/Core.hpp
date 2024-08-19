@@ -50,8 +50,9 @@ namespace Chicane
     Window* getWindow();
     void setWindow(Window* inWindow);
 
-    bool isShowingCursor();
-    void showCursor(bool inWillShowCursor);
+    bool isWindowFocused();
+    void setWindowFocus(bool inIsFocused);
+
     Vec<int>::Two getCursorPosition();
 
     Vec<int>::Two getResolution();

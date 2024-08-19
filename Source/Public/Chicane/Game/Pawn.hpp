@@ -20,8 +20,11 @@ namespace Chicane
         }
 
         bool isPossessed();
-        virtual void getPossesedBy(Controller* inController);
-        virtual void getUnpossessed();
+        void getPossesedBy(Controller* inController);
+        void getDepossessed();
+
+        virtual void onPossession() {};
+        virtual void onDepossession() {};
 
     protected:
         Controller* m_controller;

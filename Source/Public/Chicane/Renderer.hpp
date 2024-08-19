@@ -38,9 +38,6 @@ namespace Chicane
         class Pool;
     }
 
-    // Game
-    class Controller;
-
     class Renderer
     {
     public:

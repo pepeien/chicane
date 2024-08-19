@@ -30,6 +30,7 @@ namespace Chicane
     {
     public:
         Camera();
+        virtual ~Camera() = default;
 
     public:
         virtual void onEvent(const SDL_Event& inEvent) { return; };
@@ -40,11 +41,9 @@ namespace Chicane
 
         // Transform
         Vec<float>::Three getPosition();
-        void setPosition(float inX, float inY, float inZ);
         void setPosition(const Vec<float>::Three& inPosition);
-        void updatePosition();
 
-        void setRotation(float inPitch, float inRoll, float inYaw);
+        Vec<float>::Three getRotation();
         void setRotation(const Vec<float>::Three& inRotation);
 
         // Movement

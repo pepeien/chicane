@@ -60,6 +60,12 @@ namespace Chicane
     void setController(Controller* inController)
     {
         m_controller = inController;
+        m_controller->watchPossesion(
+            [](Pawn* inPawn)
+            {
+                setCamera(inPawn->getCamera<Camera>());
+            }
+        );
     }
 
     bool hasLevel()
@@ -112,24 +118,31 @@ namespace Chicane
         m_window = inWindow;
     }
 
-    bool isShowingCursor()
+    bool isWindowFocused()
     {
         if (!m_window)
         {
             return false;
         }
 
-        return SDL_GetRelativeMouseMode() == SDL_FALSE;
+        return m_window->isFocused();
     }
 
-    void showCursor(bool inWillShowCursor)
+    void setWindowFocus(bool inIsFocused)
     {
         if (!m_window)
         {
             return;
         }
 
-        SDL_SetRelativeMouseMode(inWillShowCursor ? SDL_FALSE : SDL_TRUE);
+        if (inIsFocused)
+        {
+            m_window->focus();
+
+            return;
+        }
+
+        m_window->blur();
     }   
 
     Vec<int>::Two getCursorPosition()

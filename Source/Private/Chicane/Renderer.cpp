@@ -1,7 +1,6 @@
 #include "Chicane/Renderer.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Game.hpp"
 
 namespace Chicane
 {
@@ -166,11 +165,6 @@ namespace Chicane
 
     void Renderer::onEvent(const SDL_Event& inEvent)
     {
-        if (hasCamera())
-        {
-            getCamera()->onEvent(inEvent);
-        }
-
         for (Layer* layer : m_layers)
         {
             layer->onEvent(inEvent);
@@ -546,7 +540,7 @@ namespace Chicane
         }
 
         Camera* camera = getCamera();
-        camera->updatePosition();
+        //camera->updatePosition();
         camera->updateUBO();
 
         outFrame.cameraUBO.instance = camera->getUBO();

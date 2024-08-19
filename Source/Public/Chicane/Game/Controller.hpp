@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -13,19 +14,55 @@ namespace Chicane
 
     public:
         template<class T = Pawn>
-        T* getPawn()
+        const T* getPawn()
         {
             return dynamic_cast<T*>(m_pawn);
         }
 
-        void possess(Pawn* inPawn);
-        void unPossess();
+        void watchPossesion(
+            std::function<void (Pawn*)> inNextCallback,
+            std::function<void (const std::string&)> inErrorCallback = nullptr,
+            std::function<void ()> inCompleteCallback = nullptr
+        );
 
-        void bindEvent(SDL_Scancode inScanCode, std::function<void()> inEvent);
-        void onEvent(SDL_Scancode inScanCode);
+        void possess(Pawn* inPawn);
+        void depossess();
+
+        // Mouse Events
+        void bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent);
+        void bindMouseButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent);
+
+        // Keyboard Events
+        void bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent);
+
+        // Controller Events
+        void bindControllerMotionEvent(std::function<void(const SDL_ControllerAxisEvent&)> inEvent);
+        void bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent);
+
+        void onEvent(const SDL_Event& inEvent);
 
     private:
+        // Events
+        void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
+        void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
+        void onControllerButtonEvent(const SDL_ControllerButtonEvent& inEvent);
+
+        void clearEvents();
+
+    private:
+        // Pawn
         Pawn* m_pawn;
-        std::unordered_map<SDL_Scancode, std::function<void()>> events;
+        std::unique_ptr<Observable<Pawn*>> m_pawnObservable;
+
+        // Mouse Events
+        std::function<void(const SDL_MouseMotionEvent&)> m_mouseMotionEvent;
+        std::unordered_map<std::uint8_t, std::function<void(bool)>> m_mouseButtonEvents;
+
+        // Keyboard Events
+        std::unordered_map<SDL_Scancode, std::function<void(bool)>> m_keyboardButtonEvents;
+
+        // Controller Events
+        std::function<void(const SDL_ControllerAxisEvent&)> m_controllerMotionEvent;
+        std::unordered_map<std::uint8_t, std::function<void(bool)>> m_controllerButtonEvents;
     };
 }
