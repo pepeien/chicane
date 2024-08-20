@@ -61,6 +61,11 @@ namespace Chicane
         Vec<int>::Two getResolution();
         void setResolution(const Vec<int>::Two& inResolution);
 
+        void setViewport(
+            const Vec<std::uint32_t>::Two& inSize,
+            const Vec<float>::Two& inPosition = Vec<float>::Two(0.0f)
+        );
+
         Vec<int>::Two getPosition();
 
         void setDisplay(int inMonitorIndex);

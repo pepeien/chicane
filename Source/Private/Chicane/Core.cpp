@@ -157,6 +157,16 @@ namespace Chicane
         return position;
     }
 
+    Vec<int>::Two getResolution()
+    {
+        if (m_window == nullptr)
+        {
+            return {};
+        }
+
+        return m_window->getResolution();
+    }
+
     void setResolution(const Vec<int>::Two& inResolution)
     {
         if (m_window == nullptr)
@@ -167,14 +177,17 @@ namespace Chicane
         m_window->setResolution(inResolution);
     }
 
-    Vec<int>::Two getResolution()
+    void setViewport(
+        const Vec<std::uint32_t>::Two& inSize,
+        const Vec<float>::Two& inPosition
+    )
     {
         if (m_window == nullptr)
         {
-            return {};
+            return;
         }
 
-        return m_window->getResolution();
+        m_window->setViewport(inSize, inPosition);
     }
 
     Telemetry getTelemetry()

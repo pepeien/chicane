@@ -194,6 +194,19 @@ namespace Chicane
         );
     }
 
+    void Window::setViewport(
+        const Vec<std::uint32_t>::Two& inSize,
+        const Vec<float>::Two& inPosition
+    )
+    {
+        if (!m_renderer)
+        {
+            return;
+        }
+
+        m_renderer->setViewport(inSize, inPosition);
+    }
+
     Vec<int>::Two Window::getPosition()
     {
         int currentX  = 0;
