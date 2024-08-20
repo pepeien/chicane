@@ -84,6 +84,11 @@ namespace Chicane
         return m_components;
     }
 
+    bool Actor::hasMesh()
+    {
+        return !m_mesh.name.empty();
+    }
+
     const Box::Instance& Actor::getMesh()
     {
         return m_mesh;

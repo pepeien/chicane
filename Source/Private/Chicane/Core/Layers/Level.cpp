@@ -14,8 +14,15 @@ namespace Chicane
             return;
         }
 
-        m_level         = getLevel();
-        m_isInitialized = m_level->hasActors();
+        m_level = getLevel();
+
+        const std::vector<Actor*>& actors = m_level->getActors();
+
+        m_isInitialized = std::find_if(
+            actors.begin(),
+            actors.end(),
+            [](Actor* actor) { return actor->hasMesh(); }
+        ) != actors.end();
 
         m_textureManager = Allocator::getTextureManager();
         m_modelManager   = Allocator::getModelManager();
@@ -197,6 +204,11 @@ namespace Chicane
 
     void LevelLayer::loadActor(Actor* inActor)
     {
+        if (!inActor->hasMesh())
+        {
+            return;
+        }
+
         if (!m_isInitialized)
         {
             m_isInitialized = true;

@@ -9,7 +9,7 @@ namespace Chicane
         m_pawnObservable(std::make_unique<Observable<Pawn*>>())
     {}
 
-    void Controller::watchPossesion(
+    void Controller::observeAttachment(
         std::function<void (Pawn*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
@@ -22,16 +22,21 @@ namespace Chicane
         );
     }
 
-    void Controller::possess(Pawn* inPawn)
+    bool Controller::isAttached()
     {
-        if (inPawn == nullptr)
+        return m_pawn != nullptr;
+    }
+
+    void Controller::attachTo(Pawn* inPawn)
+    {
+        if (isAttached())
         {
-            LOG_WARNING("Pawn is null");
+            m_pawnObservable->error("Pawn is null");
 
             return;
         }
 
-        if (inPawn->isPossessed())
+        if (inPawn->isControlled())
         {
             m_pawnObservable->error("This pawn is currently possesed");
 
@@ -40,16 +45,16 @@ namespace Chicane
 
         clearEvents();
 
-        inPawn->getPossesedBy(this);
+        inPawn->attachController(this);
 
         m_pawn = inPawn;
 
         m_pawnObservable->next(inPawn);
     }
 
-    void Controller::depossess()
+    void Controller::deattach()
     {
-        if (m_pawn == nullptr)
+        if (!isAttached())
         {
             m_pawnObservable->error("The controller doesn't possess a Pawn");
 
@@ -58,7 +63,7 @@ namespace Chicane
 
         clearEvents();
 
-        m_pawn->getDepossessed();
+        m_pawn->deattachController();
         m_pawn = nullptr;
 
         m_pawnObservable->next(nullptr);

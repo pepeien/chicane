@@ -19,12 +19,17 @@ namespace Chicane
             return dynamic_cast<T*>(m_controller);
         }
 
-        bool isPossessed();
-        void getPossesedBy(Controller* inController);
-        void getDepossessed();
+        bool isControlled();
+        void attachController(Controller* inController);
+        void deattachController();
 
-        virtual void onPossession() {};
-        virtual void onDepossession() {};
+        void addControllerRollInput(float inValue);
+        void addControllerYawInput(float inValue);
+        void addControllerPitchInput(float inValue);
+
+    protected:
+        virtual void onControlAttachment() {};
+        virtual void onControleDeattachment() {};
 
     protected:
         Controller* m_controller;

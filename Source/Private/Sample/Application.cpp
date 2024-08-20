@@ -26,7 +26,7 @@ void Application::initChacater()
     Chicane::CameraActor* character = new Chicane::CameraActor();
     m_level->addActor(character);
 
-    m_controller->possess(character);
+    m_controller->attachTo(character);
 }
 
 void Application::initLevel()

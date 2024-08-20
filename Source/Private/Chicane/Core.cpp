@@ -60,7 +60,7 @@ namespace Chicane
     void setController(Controller* inController)
     {
         m_controller = inController;
-        m_controller->watchPossesion(
+        m_controller->observeAttachment(
             [](Pawn* inPawn)
             {
                 setCamera(inPawn->getCamera<Camera>());

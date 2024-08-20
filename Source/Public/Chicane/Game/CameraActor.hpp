@@ -11,7 +11,7 @@ namespace Chicane
         CameraActor();
     
     public:
-        void onPossession() override;
+        void onControlAttachment() override;
     
     private:
         void setupMouseInputs();

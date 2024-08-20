@@ -19,14 +19,15 @@ namespace Chicane
             return dynamic_cast<T*>(m_pawn);
         }
 
-        void watchPossesion(
+        void observeAttachment(
             std::function<void (Pawn*)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
             std::function<void ()> inCompleteCallback = nullptr
         );
 
-        void possess(Pawn* inPawn);
-        void depossess();
+        bool isAttached();
+        void attachTo(Pawn* inPawn);
+        void deattach();
 
         // Mouse Events
         void bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent);

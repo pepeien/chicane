@@ -1,5 +1,6 @@
 #include "Chicane/Game/Pawn.hpp"
 
+#include "Chicane/Game/Components/Camera.hpp"
 #include "Chicane/Game/Controller.hpp"
 
 namespace Chicane
@@ -9,22 +10,52 @@ namespace Chicane
         m_controller(nullptr)
     {}
 
-    bool Pawn::isPossessed()
+    bool Pawn::isControlled()
     {
         return m_controller != nullptr;
     }
 
-    void Pawn::getPossesedBy(Controller* inController)
+    void Pawn::attachController(Controller* inController)
     {
         m_controller = inController;
 
-        onPossession();
+        onControlAttachment();
     }
 
-    void Pawn::getDepossessed()
+    void Pawn::deattachController()
     {
         m_controller = nullptr;
 
-        onDepossession();
+        onControleDeattachment();
+    }
+
+    void Pawn::addControllerRollInput(float inValue)
+    {
+        if (!hasCamera())
+        {
+            return;
+        }
+
+        m_camera->addRotation(inValue, 0.0f, 0.0f);
+    }
+
+    void Pawn::addControllerYawInput(float inValue)
+    {
+        if (!hasCamera())
+        {
+            return;
+        }
+
+        m_camera->addRotation(0.0f, inValue, 0.0f);
+    }
+
+    void Pawn::addControllerPitchInput(float inValue)
+    {
+        if (!hasCamera())
+        {
+            return;
+        }
+
+        m_camera->addRotation(0.0f, 0.0f, inValue);
     }
 }

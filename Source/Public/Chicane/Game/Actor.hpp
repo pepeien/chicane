@@ -42,7 +42,6 @@ namespace Chicane
         void setAbsoluteScale(const Vec<float>::Three& inScale);
 
         bool hasCamera();
-
         template<class T = CameraComponent>
         T* getCamera()
         {
@@ -56,6 +55,7 @@ namespace Chicane
 
         const std::vector<ActorComponent*>& getComponents();
 
+        bool hasMesh();
         const Box::Instance& getMesh();
 
     protected:

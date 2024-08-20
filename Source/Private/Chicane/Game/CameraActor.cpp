@@ -14,7 +14,7 @@ namespace Chicane
         m_camera = new CameraComponent();
     }
 
-    void CameraActor::onPossession()
+    void CameraActor::onControlAttachment()
     {
         setupMouseInputs();
         setupKeyboardInputs();
