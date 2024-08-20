@@ -28,7 +28,7 @@ namespace Chicane
             {
                 look(
                     inEvent.xrel,
-                    -inEvent.yrel
+                    inEvent.yrel
                 );
             }
         );

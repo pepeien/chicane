@@ -14,8 +14,7 @@ namespace Chicane
         m_farClip(50000.0f),
         m_UBO({})
     {
-        onSettingsUpdate();
-        onTransformUpdate();
+        updateRotation();
     }
 
     const Vec<std::uint32_t>::Two& Camera::getViewport()
@@ -94,26 +93,25 @@ namespace Chicane
 
     void Camera::setTranslation(const Vec<float>::Three& inPosition)
     {
-        m_transform.translation = inPosition;
-
-        onTransformUpdate();
+        onTranslationUpdate(inPosition);
     }
 
     void Camera::addTranslation(float inX, float inY, float inZ)
     {
-        m_transform.translation.x += inX;
-        m_transform.translation.y += inY;
-        m_transform.translation.z += inZ;
+        Vec<float>::Three translation = m_transform.translation;
+        translation.x += inX;
+        translation.y += inY;
+        translation.z += inZ;
 
-        onTransformUpdate();
+        onTranslationUpdate(translation);
     }
 
-    void Camera::addTranslation(const Vec<float>::Three& inPosition)
+    void Camera::addTranslation(const Vec<float>::Three& inTranslation)
     {
         addTranslation(
-            inPosition.x,
-            inPosition.y,
-            inPosition.z
+            inTranslation.x,
+            inTranslation.y,
+            inTranslation.z
         );
     }
 
@@ -124,18 +122,17 @@ namespace Chicane
 
     void Camera::setRotation(const Vec<float>::Three& inRotation)
     {
-        m_transform.rotation = inRotation;
-
-        onTransformUpdate();
+        onRotationUpdate(inRotation);
     }
 
     void Camera::addRotation(float inRoll, float inYaw, float inPitch)
     {
-        m_transform.rotation.x += inRoll;
-        m_transform.rotation.y += inYaw;
-        m_transform.rotation.z += inPitch;
+        Vec<float>::Three rotation = m_transform.rotation;
+        rotation.x += inRoll;
+        rotation.y += inYaw;
+        rotation.z += inPitch;
 
-        onTransformUpdate();
+        onRotationUpdate(rotation);
     }
 
     void Camera::addRotation(const Vec<float>::Three& inRotation)
@@ -181,40 +178,87 @@ namespace Chicane
         m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
     }
 
+    void Camera::onRotationUpdate(const Vec<float>::Three& inRotation)
+    {
+        bool didChange = inRotation.x != m_transform.rotation.x ||
+                         inRotation.y != m_transform.rotation.y ||
+                         inRotation.z != m_transform.rotation.z;
+
+        if (!didChange)
+        {
+            return;
+        }
+
+        m_transform.rotation = inRotation;
+
+        updateRotation();
+    }
+
+    void Camera::updateRotation()
+    {
+        Quat<float>::Default qRoll = glm::angleAxis(
+            glm::radians(m_transform.rotation.x),
+            FORWARD_DIRECTION
+        );
+        Quat<float>::Default qYaw = glm::angleAxis(
+            glm::radians(m_transform.rotation.y),
+            UP_DIRECTION
+        );
+        Quat<float>::Default qPitch = glm::angleAxis(
+            glm::radians(m_transform.rotation.z),
+            RIGHT_DIRECTION
+        );
+
+        m_orientation = glm::normalize(qRoll * qYaw * qPitch);
+
+        onTransformUpdate();
+    }
+
+    void Camera::onTranslationUpdate(const Vec<float>::Three& inTranslation)
+    {
+        bool didChange = std::abs(inTranslation.x - m_transform.translation.x) < FLT_EPSILON ||
+                         std::abs(inTranslation.y - m_transform.translation.y) < FLT_EPSILON ||
+                         std::abs(inTranslation.z - m_transform.translation.z) < FLT_EPSILON;
+
+        if (!didChange)
+        {
+            return;
+        }
+
+        m_transform.translation = inTranslation;
+
+        onTransformUpdate();
+    }
+
     void Camera::onTransformUpdate()
     {
-        // Apply Yaw & Pitch
-        float yaw   = glm::radians(m_transform.rotation.y);
-        float pitch = glm::radians(m_transform.rotation.z);
+        // Rotation
+        m_forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
+        m_right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
+        m_up      = glm::rotate(m_orientation, UP_DIRECTION);
 
-        float pitchCos = cos(pitch);
-
-        m_forward.x = pitchCos * sin(yaw);
-        m_forward.y = pitchCos * cos(yaw);
-        m_forward.z = sin(pitch);
-
-        m_forward = glm::normalize(m_forward);
-        m_right   = glm::normalize(glm::cross(m_forward, UP_DIRECTION));
-        m_up      = glm::cross(m_right, m_forward);
-
-        // Apply roll
-        float roll  = glm::radians(m_transform.rotation.x);
-
-        m_right = glm::normalize(glm::rotate(m_right, roll, m_forward));
-        m_up    = glm::normalize(glm::rotate(m_up, roll, m_forward));
+        glm::mat4 rotation    = glm::mat4_cast(m_orientation);
+        glm::mat4 translation = glm::translate(rotation, -m_transform.translation);
 
         // UBO
-        m_UBO.view = glm::lookAt(
-            m_transform.translation,
-            m_transform.translation + m_forward,
-            m_up
-        );
-        m_UBO.view = glm::inverse(m_UBO.view);
+        m_UBO.view = rotation * translation;
 
         m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
 
-        m_UBO.forward = Vec<float>::Four(m_forward, 0.0f);
-        m_UBO.right   = Vec<float>::Four(m_right, 0.0f);
-        m_UBO.up      = Vec<float>::Four(m_up, 0.0f);
+        // Vec3 size gets wrongfully calculated by sizeof Vec4 is the only one working
+        m_UBO.forward.x = m_forward.x;
+        m_UBO.forward.y = m_forward.y;
+        m_UBO.forward.z = m_forward.z;
+        m_UBO.forward.w = 0;
+
+        m_UBO.right.x = m_right.x;
+        m_UBO.right.y = m_right.y;
+        m_UBO.right.z = m_right.z;
+        m_UBO.right.w = 0;
+
+        m_UBO.up.x = m_up.x;
+        m_UBO.up.y = m_up.y;
+        m_UBO.up.z = m_up.z;
+        m_UBO.up.w = 0;
     }
 }

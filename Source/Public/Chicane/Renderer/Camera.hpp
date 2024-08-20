@@ -53,9 +53,9 @@ namespace Chicane
 
         // Positioning
         const Vec<float>::Three& getTranslation();
-        void setTranslation(const Vec<float>::Three& inPosition);
+        void setTranslation(const Vec<float>::Three& inTranslation);
         void addTranslation(float inX, float inY, float inZ);
-        void addTranslation(const Vec<float>::Three& inPosition);
+        void addTranslation(const Vec<float>::Three& inTranslation);
 
         const Vec<float>::Three& getRotation();
         void setRotation(const Vec<float>::Three& inRotation);
@@ -73,11 +73,19 @@ namespace Chicane
     protected:
         // Updates
         void onSettingsUpdate();
+
+        void onRotationUpdate(const Vec<float>::Three& inRotation);
+        void updateRotation();
+
+        void onTranslationUpdate(const Vec<float>::Three& inTranslation);
+
         void onTransformUpdate();
 
     protected:
         // State
         Transform m_transform;
+
+        Quat<float>::Default m_orientation;
 
         Vec<float>::Three m_forward;
         Vec<float>::Three m_up;
