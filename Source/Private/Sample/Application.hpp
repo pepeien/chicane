@@ -24,7 +24,6 @@ private:
     void initWindow();
 
 private:
-    std::unique_ptr<Chicane::CameraActor> m_character;
     std::unique_ptr<Chicane::Controller> m_controller;
     std::unique_ptr<Chicane::Level> m_level;
     std::unique_ptr<View> m_view;

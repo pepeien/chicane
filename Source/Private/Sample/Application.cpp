@@ -23,10 +23,10 @@ void Application::initChacater()
     m_controller = std::make_unique<Chicane::Controller>();
     Chicane::setController(m_controller.get());
 
-    m_character = std::make_unique<Chicane::CameraActor>();
-    m_level->addActor(m_character.get());
+    Chicane::CameraActor* character = new Chicane::CameraActor();
+    m_level->addActor(character);
 
-    m_controller->possess(m_character.get());
+    m_controller->possess(character);
 }
 
 void Application::initLevel()

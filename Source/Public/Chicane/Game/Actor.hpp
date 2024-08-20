@@ -8,9 +8,9 @@ namespace Chicane
 {
     struct Transform
     {
-        Vec<float>::Three translation = Vec<float>::Three(1.0f, 1.0f, 1.0f);
-        Vec<float>::Three rotation    = Vec<float>::Three(0.0f, 0.0f, 0.0f);
-        Vec<float>::Three scale       = Vec<float>::Three(1.0f, 1.0f, 1.0f);
+        Vec<float>::Three translation = Vec<float>::Three(0.0f);
+        Vec<float>::Three rotation    = Vec<float>::Three(0.0f);
+        Vec<float>::Three scale       = Vec<float>::Three(1.0f);
     };
 
     class ActorComponent;
@@ -29,7 +29,7 @@ namespace Chicane
         bool canTick();
         void setCanTick(bool bInCanTick);
 
-        Mat<float>::Four getPosition();
+        const Mat<float>::Four& getPosition();
 
         void setRelativeTranslation(const Vec<float>::Three& inTranslation);
         void setAbsoluteTranslation(const Vec<float>::Three& inTranslation);

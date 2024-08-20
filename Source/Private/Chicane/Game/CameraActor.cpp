@@ -12,7 +12,6 @@ namespace Chicane
         : Pawn()
     {
         m_camera = new CameraComponent();
-        m_camera->addRotation(0.0f, -90.0f, 0.0f);
     }
 
     void CameraActor::onPossession()
@@ -49,6 +48,22 @@ namespace Chicane
 
     void CameraActor::setupKeyboardInputs()
     {
+        m_controller->bindKeyboardButtonEvent(
+            SDL_SCANCODE_SPACE,
+            std::bind(
+                CameraActor::moveUp,
+                this,
+                std::placeholders::_1
+            )
+        );
+        m_controller->bindKeyboardButtonEvent(
+            SDL_SCANCODE_LSHIFT,
+            std::bind(
+                CameraActor::moveDown,
+                this,
+                std::placeholders::_1
+            )
+        );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_W,
             std::bind(
@@ -125,6 +140,26 @@ namespace Chicane
             inX,
             inY
         );
+    }
+
+    void CameraActor::moveUp(bool isKeyDown)
+    {
+        if (!isKeyDown || !isWindowFocused())
+        {
+            return;
+        }
+
+        m_camera->addTranslation(0.0f, 0.0f, MOVEMENT_COEFFICIENT);
+    }
+
+    void CameraActor::moveDown(bool isKeyDown)
+    {
+        if (!isKeyDown || !isWindowFocused())
+        {
+            return;
+        }
+
+        m_camera->addTranslation(0.0f, 0.0f, -MOVEMENT_COEFFICIENT);
     }
 
     void CameraActor::moveForward(bool isKeyDown)

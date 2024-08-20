@@ -4,30 +4,37 @@ namespace Chicane
 {
     Camera::Camera()
         : m_transform({}),
-        m_viewportWidth(1280),
-        m_viewportHeight(720),
+        m_forward(FORWARD_DIRECTION),
+        m_up(UP_DIRECTION),
+        m_right(RIGHT_DIRECTION),
+        m_viewport(Vec<std::uint32_t>::Two(0.0f)),
+        m_aspectRatio(0.0f),
         m_fov(45.0f),
-        m_aspectRatio(1.77f),
-        m_nearClip(0.2f),
+        m_nearClip(0.0f),
         m_farClip(50000.0f),
-        m_moveDistance(0.7f),
         m_UBO({})
-    {}
+    {
+        onSettingsUpdate();
+        onTransformUpdate();
+    }
+
+    const Vec<std::uint32_t>::Two& Camera::getViewport()
+    {
+        return m_viewport;
+    }
 
     void Camera::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
     {
-        m_viewportWidth  = inWidth;
-        m_viewportHeight = inHeight;
-        m_aspectRatio    = 0;
+        m_viewport.x  = inWidth;
+        m_viewport.y  = inHeight;
+        m_aspectRatio = 0;
 
-        if (inWidth == 0 || inHeight == 0)
+        if (inWidth > 0 && inHeight > 0)
         {
-            return;
+            m_aspectRatio = m_viewport.x / m_viewport.y;
         }
 
-        setAspectRatio(
-            static_cast<float>(m_viewportWidth / m_viewportHeight)
-        );
+        onSettingsUpdate();
     }
 
     void Camera::setViewport(const Vec<std::uint32_t>::Two& inViewportResolution)
@@ -38,9 +45,67 @@ namespace Chicane
         );
     }
 
+    float Camera::getFov()
+    {
+        return m_fov;
+    }
+
+    void Camera::setFov(float inFov)
+    {
+        m_fov = inFov;
+
+        onSettingsUpdate();
+    }
+
+    float Camera::getNearClip()
+    {
+        return m_nearClip;
+    }
+
+    void Camera::setNearClip(float inNearClip)
+    {
+        m_nearClip = inNearClip;
+
+        onSettingsUpdate();
+    }
+
+    float Camera::getFarClip()
+    {
+        return m_farClip;
+    }
+
+    void Camera::setFarClip(float inFarClip)
+    {
+        m_farClip = inFarClip;
+
+        onSettingsUpdate();
+    }
+
+    void Camera::setClip(float inNearClip, float inFarClip)
+    {
+        setNearClip(inNearClip);
+        setFarClip(inFarClip);
+    }
+
     const Vec<float>::Three& Camera::getTranslation()
     {
         return m_transform.translation;
+    }
+
+    void Camera::setTranslation(const Vec<float>::Three& inPosition)
+    {
+        m_transform.translation = inPosition;
+
+        onTransformUpdate();
+    }
+
+    void Camera::addTranslation(float inX, float inY, float inZ)
+    {
+        m_transform.translation.x += inX;
+        m_transform.translation.y += inY;
+        m_transform.translation.z += inZ;
+
+        onTransformUpdate();
     }
 
     void Camera::addTranslation(const Vec<float>::Three& inPosition)
@@ -52,34 +117,16 @@ namespace Chicane
         );
     }
 
-    void Camera::addTranslation(float inX, float inY, float inZ)
-    {
-        m_transform.translation += inX;
-        m_transform.translation += inY;
-        m_transform.translation += inZ;
-
-        onTransformUpdate();
-    }
-
-    void Camera::setTranslation(const Vec<float>::Three& inPosition)
-    {
-        m_transform.translation = inPosition;
-
-        onTransformUpdate();
-    }
-
     const Vec<float>::Three& Camera::getRotation()
     {
         return m_transform.rotation;
     }
 
-    void Camera::addRotation(const Vec<float>::Three& inRotation)
+    void Camera::setRotation(const Vec<float>::Three& inRotation)
     {
-        addRotation(
-            inRotation.x,
-            inRotation.y,
-            inRotation.z
-        );
+        m_transform.rotation = inRotation;
+
+        onTransformUpdate();
     }
 
     void Camera::addRotation(float inRoll, float inYaw, float inPitch)
@@ -91,11 +138,13 @@ namespace Chicane
         onTransformUpdate();
     }
 
-    void Camera::setRotation(const Vec<float>::Three& inRotation)
+    void Camera::addRotation(const Vec<float>::Three& inRotation)
     {
-        m_transform.rotation = inRotation;
-
-        onTransformUpdate();
+        addRotation(
+            inRotation.x,
+            inRotation.y,
+            inRotation.z
+        );
     }
 
     const Vec<float>::Three& Camera::getForward()
@@ -116,6 +165,20 @@ namespace Chicane
     const Camera::UBO& Camera::getUBO()
     {
         return m_UBO;
+    }
+
+    void Camera::onSettingsUpdate()
+    {
+        m_UBO.projection = glm::perspective(
+            glm::radians(m_fov),
+            m_aspectRatio,
+            m_nearClip,
+            m_farClip
+        );
+        // Normalize OpenGL's to Vulkan's coordinate system
+        m_UBO.projection[1][1] *= -1;
+
+        m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
     }
 
     void Camera::onTransformUpdate()
@@ -146,25 +209,12 @@ namespace Chicane
             m_transform.translation + m_forward,
             m_up
         );
-
-        m_UBO.projection = glm::perspective(
-            glm::radians(m_fov),
-            m_aspectRatio,
-            m_nearClip,
-            m_farClip
-        );
-        // Normalize OpenGL's to coordinate system Vulkan
-        m_UBO.projection[1][1] *= -1;
+        m_UBO.view = glm::inverse(m_UBO.view);
 
         m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
 
         m_UBO.forward = Vec<float>::Four(m_forward, 0.0f);
         m_UBO.right   = Vec<float>::Four(m_right, 0.0f);
         m_UBO.up      = Vec<float>::Four(m_up, 0.0f);
-    }
-
-    void Camera::setAspectRatio(float inAspectRatio)
-    {
-        m_aspectRatio = inAspectRatio;
     }
 }

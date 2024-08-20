@@ -20,6 +20,8 @@ namespace Chicane
 
         void look(float inX, float inY);
 
+        void moveUp(bool isKeyDown);
+        void moveDown(bool isKeyDown);
         void moveForward(bool isKeyDown);
         void moveBackward(bool isKeyDown);
         void moveLeft(bool isKeyDown);

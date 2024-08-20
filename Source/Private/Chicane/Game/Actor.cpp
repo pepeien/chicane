@@ -27,7 +27,7 @@ namespace Chicane
         m_bCanTick = bInCanTick;
     }
 
-    Mat<float>::Four Actor::getPosition()
+    const Mat<float>::Four& Actor::getPosition()
     {
         return m_position;
     }

@@ -37,19 +37,30 @@ namespace Chicane
         virtual void onEvent(const SDL_Event& inEvent) { return; };
 
     public:
+        // Settings
+        const Vec<std::uint32_t>::Two& getViewport();
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
         void setViewport(const Vec<std::uint32_t>::Two& inViewportResolution);
 
+        float getFov();
+        void setFov(float inFov);
+
+        float getNearClip();
+        void setNearClip(float inNearClip);
+        float getFarClip();
+        void setFarClip(float inFarClip);
+        void setClip(float inNearClip, float inFarClip);
+
         // Positioning
         const Vec<float>::Three& getTranslation();
-        void addTranslation(const Vec<float>::Three& inPosition);
-        void addTranslation(float inX, float inY, float inZ);
         void setTranslation(const Vec<float>::Three& inPosition);
+        void addTranslation(float inX, float inY, float inZ);
+        void addTranslation(const Vec<float>::Three& inPosition);
 
         const Vec<float>::Three& getRotation();
-        void addRotation(const Vec<float>::Three& inRotation);
-        void addRotation(float inRoll, float inYaw, float inPitch);
         void setRotation(const Vec<float>::Three& inRotation);
+        void addRotation(float inRoll, float inYaw, float inPitch);
+        void addRotation(const Vec<float>::Three& inRotation);
 
         // State
         const Vec<float>::Three& getForward();
@@ -61,10 +72,8 @@ namespace Chicane
 
     protected:
         // Updates
+        void onSettingsUpdate();
         void onTransformUpdate();
-
-        // Settings
-        void setAspectRatio(float inAspectRatio);
 
     protected:
         // State
@@ -75,14 +84,12 @@ namespace Chicane
         Vec<float>::Three m_right;
 
         // Settings
-        std::uint32_t m_viewportWidth;
-        std::uint32_t m_viewportHeight;
+        Vec<std::uint32_t>::Two m_viewport;
+        float m_aspectRatio;
 
         float m_fov;
-        float m_aspectRatio;
         float m_nearClip;
         float m_farClip;
-        float m_moveDistance;
 
         // Render
         UBO m_UBO;
