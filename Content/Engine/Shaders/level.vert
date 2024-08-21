@@ -24,13 +24,11 @@ layout(location = 2) in vec2 inVertexTexturePosition;
 layout(location = 3) in vec3 inVertexNormalPosition;
 
 void main() {
-    gl_Position = camera.viewProjection *
-                  model.transforms[gl_InstanceIndex] *
-                  vec4(inVertexPosition.xyz, 1.0);
+    mat4 transform = model.transforms[gl_InstanceIndex];
+
+    gl_Position = camera.viewProjection * transform * vec4(inVertexPosition.xyz, 1.0);
 
     outColor           = inVertexColor;
     outTexturePosition = inVertexTexturePosition;
-    outNormalPosition  = normalize(
-        (model.transforms[gl_InstanceIndex] * vec4(inVertexNormalPosition, 0.0)).xyz
-    );
+    outNormalPosition  = normalize((transform * vec4(inVertexNormalPosition, 0.0)).xyz);
 }

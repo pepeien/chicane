@@ -108,7 +108,7 @@ namespace Chicane
             return;
         }
 
-        outFrame.updateModelData(m_level->getActors());
+        outFrame.updateModelData(m_level);
 
         memcpy(
             outFrame.modelData.writeLocation,
@@ -218,7 +218,7 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_internals.swapchain->images)
         {
-            frame.setupModelData(m_level->getActors());
+            frame.setupModelData(m_level);
         }
     }
 

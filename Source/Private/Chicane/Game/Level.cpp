@@ -21,9 +21,26 @@ namespace Chicane
         return m_actors.size() > 0;
     }
 
-    std::vector<Actor*> Level::getActors()
+    const std::vector<Actor*>& Level::getActors()
     {
         return m_actors;
+    }
+
+    std::vector<Actor*> Level::getDrawableActors()
+    {
+        std::vector<Actor*> result {};
+
+        for (Actor* actor : m_actors)
+        {
+            if (!actor->hasMesh())
+            {
+                continue;
+            }
+
+            result.push_back(actor);
+        }
+
+        return result;
     }
 
     std::uint32_t Level::getActorCount()

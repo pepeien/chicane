@@ -12,13 +12,13 @@ namespace Chicane
     public:
         struct UBO
         {
-            Mat<float>::Four view;
-            Mat<float>::Four projection;
-            Mat<float>::Four viewProjection;
+            Mat<float>::Four projection     = Mat<float>::Four();
+            Mat<float>::Four view           = Mat<float>::Four();
+            Mat<float>::Four viewProjection = Mat<float>::Four();
 
-            Vec<float>::Four forward;
-            Vec<float>::Four right;
-            Vec<float>::Four up;
+            Vec<float>::Four forward = Vec<float>::Four(FORWARD_DIRECTION, 0.0f);
+            Vec<float>::Four right   = Vec<float>::Four(RIGHT_DIRECTION, 0.0f);
+            Vec<float>::Four up      = Vec<float>::Four(UP_DIRECTION, 0.0f);
         };
 
         struct UBOBundle
@@ -51,16 +51,16 @@ namespace Chicane
         void setFarClip(float inFarClip);
         void setClip(float inNearClip, float inFarClip);
 
-        // Positioning
+        // Transform
         const Vec<float>::Three& getTranslation();
         void setTranslation(const Vec<float>::Three& inTranslation);
-        void addTranslation(float inX, float inY, float inZ);
         void addTranslation(const Vec<float>::Three& inTranslation);
+        void addTranslation(float inX, float inY, float inZ);
 
         const Vec<float>::Three& getRotation();
         void setRotation(const Vec<float>::Three& inRotation);
-        void addRotation(float inRoll, float inYaw, float inPitch);
         void addRotation(const Vec<float>::Three& inRotation);
+        void addRotation(float inRoll, float inYaw, float inPitch);
 
         // State
         const Vec<float>::Three& getForward();
@@ -71,20 +71,21 @@ namespace Chicane
         const UBO& getUBO();
 
     protected:
-        // Updates
-        void onSettingsUpdate();
+        // Transform
+        void updateTranslation(const Vec<float>::Three& inTranslation);
+        void updateRotation(const Vec<float>::Three& inRotation);
+        void updateOrientation();
 
-        void onRotationUpdate(const Vec<float>::Three& inRotation);
-        void updateRotation();
-
-        void onTranslationUpdate(const Vec<float>::Three& inTranslation);
-
-        void onTransformUpdate();
+        // Render
+        void updateProjection();
+        void updateView();
+        void updateViewProjection();
 
     protected:
-        // State
+        // Transform
         Transform m_transform;
 
+        // State
         Quat<float>::Default m_orientation;
 
         Vec<float>::Three m_forward;

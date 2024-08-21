@@ -14,7 +14,8 @@ namespace Chicane
 
     public:
         bool hasActors();
-        std::vector<Actor*> getActors();
+        const std::vector<Actor*>& getActors();
+        std::vector<Actor*> getDrawableActors();
         std::uint32_t getActorCount();
         void addActor(Actor* inActor);
         Subscription<Actor*>* addActorSubscription(

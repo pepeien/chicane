@@ -47,16 +47,18 @@ namespace Chicane
             cameraDescriptorBufferInfo.range  = cameraUBO.allocationSize;
         }
     
-        void Instance::setupModelData(const std::vector<Actor*>& inActors)
+        void Instance::setupModelData(Level* inLevel)
         {
             destroyModelMemory();
+
+            std::vector<Actor*> actors = inLevel->getDrawableActors();
 
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
-            modelBufferCreateInfo.size             = sizeof(Mat<float>::Four) * inActors.size();
+            modelBufferCreateInfo.size             = sizeof(Mat<float>::Four) * actors.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
             Buffer::init(modelData.buffer, modelBufferCreateInfo);
@@ -67,9 +69,9 @@ namespace Chicane
                 0,
                 modelData.allocationSize
             );
-            modelData.transforms.reserve(inActors.size());
+            modelData.transforms.reserve(actors.size());
     
-            for (Actor* actor : inActors)
+            for (Actor* actor : actors)
             {
                 modelData.transforms.push_back(actor->getPosition());
             }
@@ -79,14 +81,16 @@ namespace Chicane
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
         }
 
-        void Instance::updateModelData(const std::vector<Actor*>& inActors)
-        {   
-            for (uint32_t i = 0; i < inActors.size() && i < modelData.transforms.size(); i++)
+        void Instance::updateModelData(Level* inLevel)
+        {
+            std::vector<Actor*> actors = inLevel->getDrawableActors();
+
+            for (uint32_t i = 0; i < actors.size() && i < modelData.transforms.size(); i++)
             {
-                modelData.transforms[i] = inActors[i]->getPosition();
+                modelData.transforms[i] = actors.at(i)->getPosition();
             }
         }
-        
+
         void Instance::setupDepthBuffering(const vk::Format& inFormat)
         {
             depth.format = inFormat;

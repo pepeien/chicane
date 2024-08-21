@@ -36,42 +36,42 @@ namespace Chicane
     {
         m_transform.translation += inTranslation;
 
-        setTranslation(m_position, inTranslation);
+        setTranslation(m_position, m_transform.translation);
     }
 
     void Actor::setAbsoluteTranslation(const Vec<float>::Three& inTranslation)
     {
         m_transform.translation = inTranslation;
 
-        setTranslation(Mat<float>::Four(1.0f), inTranslation);
+        setTranslation(Mat<float>::Four(1.0f), m_transform.translation);
     }
 
     void Actor::setRelativeRotation(const Vec<float>::Three& inRotation)
     {
         m_transform.rotation += inRotation;
 
-       setRotation(m_position, inRotation);
+        setRotation(m_position, m_transform.rotation);
     }
 
     void Actor::setAbsoluteRotation(const Vec<float>::Three& inRotation)
     {
         m_transform.rotation = inRotation;
 
-        setRotation(Mat<float>::Four(0.0f), inRotation);
+        setRotation(Mat<float>::Four(1.0f), m_transform.rotation);
     }
 
     void Actor::setRelativeScale(const Vec<float>::Three& inScale)
     {
         m_transform.scale += inScale;
 
-        setScale(m_position, inScale);
+        setScale(m_position, m_transform.scale);
     }
 
     void Actor::setAbsoluteScale(const Vec<float>::Three& inScale)
     {
         m_transform.scale = inScale;
 
-        setScale(Mat<float>::Four(1.0f), inScale);
+        setScale(Mat<float>::Four(1.0f), m_transform.scale);
     }
 
     bool Actor::hasCamera()
@@ -96,7 +96,7 @@ namespace Chicane
 
     void Actor::setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation)
     {
-        m_position *= glm::translate(inBase, inTranslation);
+        m_position = glm::translate(inBase, inTranslation);
     }
 
     void Actor::setRotation(const Mat<float>::Four& inBase, const Vec<float>::Three& inRotation)
@@ -122,6 +122,6 @@ namespace Chicane
 
     void Actor::setScale(const Mat<float>::Four& inBase, const Vec<float>::Three& inScale)
     {
-        m_position *= glm::scale(inBase, inScale);
+        m_position = glm::scale(inBase, inScale);
     }
 }

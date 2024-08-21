@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/Level.hpp"
 #include "Chicane/Renderer/Buffer.hpp"
 #include "Chicane/Renderer/Camera.hpp"
 #include "Chicane/Renderer/Descriptor.hpp"
@@ -29,8 +29,8 @@ namespace Chicane
 
             void setupCameraUBO();
 
-            void setupModelData(const std::vector<Actor*>& inActors);
-            void updateModelData(const std::vector<Actor*>& inActors);
+            void setupModelData(Level* inLevel);
+            void updateModelData(Level* inLevel);
     
             void setupDepthBuffering(const vk::Format& inFormat);
 

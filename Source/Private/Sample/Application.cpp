@@ -46,15 +46,15 @@ void Application::addFloor()
 
 void Application::addApples()
 {
-    Chicane::Vec<float>::Three topLeftPosition(     1000.0f,  1000.0f, 0.0f);
-    Chicane::Vec<float>::Three topRightPosition(    0.0f,     0.0f,    0.0f);
-    Chicane::Vec<float>::Three middlePosition(      1000.0f, -1000.0f, 0.0f);
-    Chicane::Vec<float>::Three bottomLeftPosition( -1000.0f, -1000.0f, 0.0f);
-    Chicane::Vec<float>::Three bottomRightPosition(-1000.0f,  1000.0f, 0.0f);
+    Chicane::Vec<float>::Three topLeftPosition(    0.0f, 0.f, 0.0f);
+    Chicane::Vec<float>::Three topRightPosition(   0.0f, 0.f, 0.0f);
+    Chicane::Vec<float>::Three middlePosition(     0.0f, 0.f, 0.0f);
+    Chicane::Vec<float>::Three bottomLeftPosition( 0.0f, 0.f, 0.0f);
+    Chicane::Vec<float>::Three bottomRightPosition(0.0f, 0.f, 0.0f);
 
     for (std::uint32_t i = 0; i < 1; i++)
     {
-        float height = 10.0f + (i * 200);
+        float height = 10.0f + (i * 20);
 
         topLeftPosition.z     = height;
         topRightPosition.z    = height;

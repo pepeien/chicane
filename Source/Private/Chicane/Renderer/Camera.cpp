@@ -10,12 +10,10 @@ namespace Chicane
         m_viewport(Vec<std::uint32_t>::Two(0.0f)),
         m_aspectRatio(0.0f),
         m_fov(45.0f),
-        m_nearClip(0.0f),
+        m_nearClip(0.1f),
         m_farClip(50000.0f),
         m_UBO({})
-    {
-        updateRotation();
-    }
+    {}
 
     const Vec<std::uint32_t>::Two& Camera::getViewport()
     {
@@ -30,10 +28,10 @@ namespace Chicane
 
         if (inWidth > 0 && inHeight > 0)
         {
-            m_aspectRatio = m_viewport.x / m_viewport.y;
+            m_aspectRatio = (float) m_viewport.x / m_viewport.y;
         }
 
-        onSettingsUpdate();
+        updateProjection();
     }
 
     void Camera::setViewport(const Vec<std::uint32_t>::Two& inViewportResolution)
@@ -53,7 +51,7 @@ namespace Chicane
     {
         m_fov = inFov;
 
-        onSettingsUpdate();
+        updateProjection();
     }
 
     float Camera::getNearClip()
@@ -65,7 +63,7 @@ namespace Chicane
     {
         m_nearClip = inNearClip;
 
-        onSettingsUpdate();
+        updateProjection();
     }
 
     float Camera::getFarClip()
@@ -77,7 +75,7 @@ namespace Chicane
     {
         m_farClip = inFarClip;
 
-        onSettingsUpdate();
+        updateProjection();
     }
 
     void Camera::setClip(float inNearClip, float inFarClip)
@@ -93,17 +91,7 @@ namespace Chicane
 
     void Camera::setTranslation(const Vec<float>::Three& inPosition)
     {
-        onTranslationUpdate(inPosition);
-    }
-
-    void Camera::addTranslation(float inX, float inY, float inZ)
-    {
-        Vec<float>::Three translation = m_transform.translation;
-        translation.x += inX;
-        translation.y += inY;
-        translation.z += inZ;
-
-        onTranslationUpdate(translation);
+        updateTranslation(inPosition);
     }
 
     void Camera::addTranslation(const Vec<float>::Three& inTranslation)
@@ -115,6 +103,16 @@ namespace Chicane
         );
     }
 
+    void Camera::addTranslation(float inX, float inY, float inZ)
+    {
+        Vec<float>::Three translation = m_transform.translation;
+        translation += inX * m_forward;
+        translation += inY * m_right;
+        translation += inZ * m_up;
+
+        updateTranslation(translation);
+    }
+
     const Vec<float>::Three& Camera::getRotation()
     {
         return m_transform.rotation;
@@ -122,17 +120,7 @@ namespace Chicane
 
     void Camera::setRotation(const Vec<float>::Three& inRotation)
     {
-        onRotationUpdate(inRotation);
-    }
-
-    void Camera::addRotation(float inRoll, float inYaw, float inPitch)
-    {
-        Vec<float>::Three rotation = m_transform.rotation;
-        rotation.x += inRoll;
-        rotation.y += inYaw;
-        rotation.z += inPitch;
-
-        onRotationUpdate(rotation);
+        updateRotation(inRotation);
     }
 
     void Camera::addRotation(const Vec<float>::Three& inRotation)
@@ -142,6 +130,16 @@ namespace Chicane
             inRotation.y,
             inRotation.z
         );
+    }
+
+    void Camera::addRotation(float inRoll, float inYaw, float inPitch)
+    {
+        Vec<float>::Three rotation = m_transform.rotation;
+        rotation.x += inRoll;
+        rotation.y += inYaw;
+        rotation.z += inPitch;
+
+        updateRotation(rotation);
     }
 
     const Vec<float>::Three& Camera::getForward()
@@ -164,57 +162,7 @@ namespace Chicane
         return m_UBO;
     }
 
-    void Camera::onSettingsUpdate()
-    {
-        m_UBO.projection = glm::perspective(
-            glm::radians(m_fov),
-            m_aspectRatio,
-            m_nearClip,
-            m_farClip
-        );
-        // Normalize OpenGL's to Vulkan's coordinate system
-        m_UBO.projection[1][1] *= -1;
-
-        m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
-    }
-
-    void Camera::onRotationUpdate(const Vec<float>::Three& inRotation)
-    {
-        bool didChange = inRotation.x != m_transform.rotation.x ||
-                         inRotation.y != m_transform.rotation.y ||
-                         inRotation.z != m_transform.rotation.z;
-
-        if (!didChange)
-        {
-            return;
-        }
-
-        m_transform.rotation = inRotation;
-
-        updateRotation();
-    }
-
-    void Camera::updateRotation()
-    {
-        Quat<float>::Default qRoll = glm::angleAxis(
-            glm::radians(m_transform.rotation.x),
-            FORWARD_DIRECTION
-        );
-        Quat<float>::Default qYaw = glm::angleAxis(
-            glm::radians(m_transform.rotation.y),
-            UP_DIRECTION
-        );
-        Quat<float>::Default qPitch = glm::angleAxis(
-            glm::radians(m_transform.rotation.z),
-            RIGHT_DIRECTION
-        );
-
-        m_orientation = glm::normalize(qRoll * qYaw * qPitch);
-
-        onTransformUpdate();
-    }
-
-    void Camera::onTranslationUpdate(const Vec<float>::Three& inTranslation)
+    void Camera::updateTranslation(const Vec<float>::Three& inTranslation)
     {
         bool didChange = std::abs(inTranslation.x - m_transform.translation.x) < FLT_EPSILON ||
                          std::abs(inTranslation.y - m_transform.translation.y) < FLT_EPSILON ||
@@ -227,38 +175,87 @@ namespace Chicane
 
         m_transform.translation = inTranslation;
 
-        onTransformUpdate();
+        updateView();
     }
 
-    void Camera::onTransformUpdate()
+    void Camera::updateRotation(const Vec<float>::Three& inRotation)
     {
-        // Rotation
-        m_forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
-        m_right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
-        m_up      = glm::rotate(m_orientation, UP_DIRECTION);
+        bool didChange = inRotation.x != m_transform.rotation.x ||
+                         inRotation.y != m_transform.rotation.y ||
+                         inRotation.z != m_transform.rotation.z;
 
-        glm::mat4 rotation    = glm::mat4_cast(m_orientation);
-        glm::mat4 translation = glm::translate(rotation, -m_transform.translation);
+        if (!didChange)
+        {
+            return;
+        }
 
-        // UBO
-        m_UBO.view = rotation * translation;
+        m_transform.rotation = inRotation;
 
-        m_UBO.viewProjection = m_UBO.view * m_UBO.projection;
+        updateOrientation();
+    }
 
-        // Vec3 size gets wrongfully calculated by sizeof Vec4 is the only one working
+    void Camera::updateOrientation()
+    {
+        m_orientation = glm::angleAxis(
+            glm::radians(m_transform.rotation.x),
+            FORWARD_DIRECTION
+        );
+        m_orientation *= glm::angleAxis(
+            glm::radians(m_transform.rotation.y),
+            UP_DIRECTION
+        );
+        m_orientation *= glm::angleAxis(
+            glm::radians(m_transform.rotation.z),
+            RIGHT_DIRECTION
+        );
+
+        m_orientation = glm::normalize(m_orientation);
+
+        m_forward       = glm::rotate(m_orientation, FORWARD_DIRECTION);
         m_UBO.forward.x = m_forward.x;
         m_UBO.forward.y = m_forward.y;
         m_UBO.forward.z = m_forward.z;
-        m_UBO.forward.w = 0;
 
+        m_right       = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_UBO.right.x = m_right.x;
         m_UBO.right.y = m_right.y;
         m_UBO.right.z = m_right.z;
-        m_UBO.right.w = 0;
 
+        m_up       = glm::rotate(m_orientation, UP_DIRECTION);
         m_UBO.up.x = m_up.x;
         m_UBO.up.y = m_up.y;
         m_UBO.up.z = m_up.z;
-        m_UBO.up.w = 0;
+
+        updateView();
+    }
+
+    void Camera::updateProjection()
+    {
+        m_UBO.projection = glm::perspective(
+            glm::radians(m_fov),
+            m_aspectRatio,
+            m_nearClip,
+            m_farClip
+        );
+        // Normalize OpenGL's to Vulkan's coordinate system
+        m_UBO.projection[1][1] *= -1;
+
+        updateViewProjection();
+    }
+
+    void Camera::updateView()
+    {
+        m_UBO.view = glm::lookAt(
+            m_transform.translation,
+            m_transform.translation + m_forward,
+            m_up
+        );
+
+        updateViewProjection();
+    }
+
+    void Camera::updateViewProjection()
+    {
+        m_UBO.viewProjection = m_UBO.projection * m_UBO.view * Mat<float>::Four(1.0f);
     }
 }

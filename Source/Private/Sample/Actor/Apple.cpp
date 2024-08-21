@@ -7,7 +7,7 @@ Apple::Apple()
     m_willGoUp(true),
     m_upTarget(20.0f)
 {
-    setCanTick(true);
+    setCanTick(false);
 
     m_mesh = Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
 }
