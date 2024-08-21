@@ -1,6 +1,8 @@
 #version 450
 
 layout(set = 0, binding = 0) uniform CameraUBO {
+    vec4 clip;
+
     mat4 view;
     mat4 projection;
     mat4 viewProjection;
@@ -24,9 +26,12 @@ layout(location = 2) in vec2 inVertexTexturePosition;
 layout(location = 3) in vec3 inVertexNormalPosition;
 
 void main() {
+    vec4 position  = vec4(inVertexPosition.xyz, 1.0);
     mat4 transform = model.transforms[gl_InstanceIndex];
 
-    gl_Position = camera.viewProjection * transform * vec4(inVertexPosition.xyz, 1.0);
+    mat4 pvm = camera.viewProjection * transform;
+
+    gl_Position = pvm * position;
 
     outColor           = inVertexColor;
     outTexturePosition = inVertexTexturePosition;

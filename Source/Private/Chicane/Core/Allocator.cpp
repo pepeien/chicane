@@ -232,6 +232,7 @@ namespace Chicane
             const CachedInstance& instance = m_cache.at(inIdentifier);
 
             Box::Instance result {};
+            result.name = inIdentifier;
 
             if (instance.type == Box::Type::Mesh)
             {
@@ -244,6 +245,8 @@ namespace Chicane
                     data.type      = entry.type;
 
                     result.entries.push_back(data);
+
+                    return result;
                 }
             }
 
@@ -259,12 +262,10 @@ namespace Chicane
                     data.type      = entry.type;
 
                     result.entries.push_back(data);
-
-                    return result;
                 }
             }
 
-            return {};
+            return result;
         }
 
         Box::Instance loadFromDisk(const Box::Instance& inInstance)

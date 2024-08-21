@@ -10,10 +10,10 @@ namespace Chicane
         m_viewport(Vec<std::uint32_t>::Two(0.0f)),
         m_aspectRatio(0.0f),
         m_fov(45.0f),
-        m_nearClip(0.1f),
-        m_farClip(50000.0f),
         m_UBO({})
-    {}
+    {
+        setClip(0.1f, 1000.0f);
+    }
 
     const Vec<std::uint32_t>::Two& Camera::getViewport()
     {
@@ -56,24 +56,34 @@ namespace Chicane
 
     float Camera::getNearClip()
     {
-        return m_nearClip;
+        return  m_UBO.clip.x;
     }
 
     void Camera::setNearClip(float inNearClip)
     {
-        m_nearClip = inNearClip;
+        if (fabs(inNearClip - m_UBO.clip.x) > FLT_EPSILON)
+        {
+            return;
+        }
+
+        m_UBO.clip.x = inNearClip;
 
         updateProjection();
     }
 
     float Camera::getFarClip()
     {
-        return m_farClip;
+        return m_UBO.clip.y;
     }
 
     void Camera::setFarClip(float inFarClip)
     {
-        m_farClip = inFarClip;
+        if (fabs(inFarClip - m_UBO.clip.y) > FLT_EPSILON)
+        {
+            return;
+        }
+
+        m_UBO.clip.y = inFarClip;
 
         updateProjection();
     }
@@ -106,9 +116,9 @@ namespace Chicane
     void Camera::addTranslation(float inX, float inY, float inZ)
     {
         Vec<float>::Three translation = m_transform.translation;
-        translation += inX * m_forward;
-        translation += inY * m_right;
-        translation += inZ * m_up;
+        translation += m_right * inX;
+        translation += m_forward * inY;
+        translation += m_up * inZ;
 
         updateTranslation(translation);
     }
@@ -164,9 +174,9 @@ namespace Chicane
 
     void Camera::updateTranslation(const Vec<float>::Three& inTranslation)
     {
-        bool didChange = std::abs(inTranslation.x - m_transform.translation.x) < FLT_EPSILON ||
-                         std::abs(inTranslation.y - m_transform.translation.y) < FLT_EPSILON ||
-                         std::abs(inTranslation.z - m_transform.translation.z) < FLT_EPSILON;
+        bool didChange = std::fabs(inTranslation.x - m_transform.translation.x) > FLT_EPSILON ||
+                         std::fabs(inTranslation.y - m_transform.translation.y) > FLT_EPSILON ||
+                         std::fabs(inTranslation.z - m_transform.translation.z) > FLT_EPSILON;
 
         if (!didChange)
         {
@@ -180,9 +190,9 @@ namespace Chicane
 
     void Camera::updateRotation(const Vec<float>::Three& inRotation)
     {
-        bool didChange = inRotation.x != m_transform.rotation.x ||
-                         inRotation.y != m_transform.rotation.y ||
-                         inRotation.z != m_transform.rotation.z;
+        bool didChange = std::fabs(inRotation.x - m_transform.rotation.x) > FLT_EPSILON ||
+                         std::fabs(inRotation.y - m_transform.rotation.y) > FLT_EPSILON ||
+                         std::fabs(inRotation.z - m_transform.rotation.z) > FLT_EPSILON;
 
         if (!didChange)
         {
@@ -234,8 +244,8 @@ namespace Chicane
         m_UBO.projection = glm::perspective(
             glm::radians(m_fov),
             m_aspectRatio,
-            m_nearClip,
-            m_farClip
+            m_UBO.clip.x,
+            m_UBO.clip.y
         );
         // Normalize OpenGL's to Vulkan's coordinate system
         m_UBO.projection[1][1] *= -1;
@@ -256,6 +266,6 @@ namespace Chicane
 
     void Camera::updateViewProjection()
     {
-        m_UBO.viewProjection = m_UBO.projection * m_UBO.view * Mat<float>::Four(1.0f);
+        m_UBO.viewProjection = m_UBO.projection * m_UBO.view;
     }
 }

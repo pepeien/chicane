@@ -1,13 +1,14 @@
 #include "Application.hpp"
 
 #include "Actor/Apple.hpp"
-#include "Actor/Floor.hpp"
+
+constexpr std::uint32_t APPLE_COLUMN_COUNT = 5;
+constexpr std::uint32_t APPLE_ROW_COUNT    = 5;
 
 Application::Application()
 {
     initLevel();
     initChacater();
-    addFloor();
     addApples();
     addView();
     initWindow();
@@ -38,49 +39,27 @@ void Application::initLevel()
     Chicane::setLevel(m_level.get());
 }
 
-void Application::addFloor()
-{
-    Floor* floor = new Floor();
-    m_level->addActor(floor);
-}
-
 void Application::addApples()
 {
-    Chicane::Vec<float>::Three topLeftPosition(    0.0f, 0.f, 0.0f);
-    Chicane::Vec<float>::Three topRightPosition(   0.0f, 0.f, 0.0f);
-    Chicane::Vec<float>::Three middlePosition(     0.0f, 0.f, 0.0f);
-    Chicane::Vec<float>::Three bottomLeftPosition( 0.0f, 0.f, 0.0f);
-    Chicane::Vec<float>::Three bottomRightPosition(0.0f, 0.f, 0.0f);
+    float step = 400.0f;
 
-    for (std::uint32_t i = 0; i < 1; i++)
+    Chicane::Vec<float>::Three position(0.0f);
+
+    for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
     {
-        float height = 10.0f + (i * 20);
+        position.x += step;
+        position.y += step;
+        position.z = 0.0f;
 
-        topLeftPosition.z     = height;
-        topRightPosition.z    = height;
-        middlePosition.z      = height;
-        bottomLeftPosition.z  = height;
-        bottomRightPosition.z = height;
+        for (std::uint32_t row = 0; row < APPLE_ROW_COUNT; row++)
+        {
+            Apple* apple = new Apple();
+            apple->setAbsoluteTranslation(position);
 
-        Apple* appleTopRight = new Apple();
-        appleTopRight->setAbsoluteTranslation(topLeftPosition);
-        m_level->addActor(appleTopRight);
+            m_level->addActor(apple);
 
-        Apple* appleTopLeft = new Apple();
-        appleTopLeft->setAbsoluteTranslation(topRightPosition);
-        m_level->addActor(appleTopLeft);
-
-        Apple* appleMiddle = new Apple();
-        appleMiddle->setAbsoluteTranslation(middlePosition);
-        m_level->addActor(appleMiddle);
-
-        Apple* appleBottomRight = new Apple();
-        appleBottomRight->setAbsoluteTranslation(bottomLeftPosition);
-        m_level->addActor(appleBottomRight);
-
-        Apple* appleBottomLeft = new Apple();
-        appleBottomLeft->setAbsoluteTranslation(bottomRightPosition);
-        m_level->addActor(appleBottomLeft);
+            position.z += step;
+        }
     }
 }
 

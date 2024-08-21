@@ -34,44 +34,47 @@ namespace Chicane
 
     void Actor::setRelativeTranslation(const Vec<float>::Three& inTranslation)
     {
-        m_transform.translation += inTranslation;
+        Vec<float>::Three translation = m_transform.translation;
+        translation.x += inTranslation.x;
+        translation.y += inTranslation.y;
+        translation.z += inTranslation.z;
 
-        setTranslation(m_position, m_transform.translation);
+        updateTranslation(translation);
     }
 
     void Actor::setAbsoluteTranslation(const Vec<float>::Three& inTranslation)
     {
-        m_transform.translation = inTranslation;
-
-        setTranslation(Mat<float>::Four(1.0f), m_transform.translation);
+        updateTranslation(inTranslation);
     }
 
     void Actor::setRelativeRotation(const Vec<float>::Three& inRotation)
     {
-        m_transform.rotation += inRotation;
+        Vec<float>::Three rotation = m_transform.rotation;
+        rotation.x += inRotation.x;
+        rotation.y += inRotation.y;
+        rotation.z += inRotation.z;
 
-        setRotation(m_position, m_transform.rotation);
+        updateRotation(rotation);
     }
 
     void Actor::setAbsoluteRotation(const Vec<float>::Three& inRotation)
     {
-        m_transform.rotation = inRotation;
-
-        setRotation(Mat<float>::Four(1.0f), m_transform.rotation);
+        updateRotation(inRotation);
     }
 
     void Actor::setRelativeScale(const Vec<float>::Three& inScale)
     {
-        m_transform.scale += inScale;
+        Vec<float>::Three scale = m_transform.scale;
+        scale.x += inScale.x;
+        scale.y += inScale.y;
+        scale.z += inScale.z;
 
-        setScale(m_position, m_transform.scale);
+        updateScale(scale);
     }
 
     void Actor::setAbsoluteScale(const Vec<float>::Three& inScale)
     {
-        m_transform.scale = inScale;
-
-        setScale(Mat<float>::Four(1.0f), m_transform.scale);
+        updateScale(inScale);
     }
 
     bool Actor::hasCamera()
@@ -94,34 +97,67 @@ namespace Chicane
         return m_mesh;
     }
 
-    void Actor::setTranslation(const Mat<float>::Four& inBase, const Vec<float>::Three& inTranslation)
+    void Actor::updateTranslation(const Vec<float>::Three& inTranslation)
     {
-        m_position = glm::translate(inBase, inTranslation);
+        bool didChange = inTranslation.x != m_transform.translation.x ||
+                         inTranslation.y != m_transform.translation.y ||
+                         inTranslation.z != m_transform.translation.z;
+
+        if (!didChange)
+        {
+            return;
+        }
+
+        m_position = glm::translate(m_position, inTranslation);
+
+        m_transform.translation = inTranslation;
     }
 
-    void Actor::setRotation(const Mat<float>::Four& inBase, const Vec<float>::Three& inRotation)
+    void Actor::updateRotation(const Vec<float>::Three& inRotation)
     {
+        bool didChange = inRotation.x != m_transform.rotation.x ||
+                         inRotation.y != m_transform.rotation.y ||
+                         inRotation.z != m_transform.rotation.z;
+
+        if (!didChange)
+        {
+            return;
+        }
+
         Vec<float>::Three radianAngles = glm::radians(inRotation);
 
         m_position = glm::rotate(
-            inBase,
+            m_position,
             radianAngles.x,
             FORWARD_DIRECTION
         );
         m_position = glm::rotate(
-            inBase,
+            m_position,
             radianAngles.y,
             RIGHT_DIRECTION
         );
         m_position = glm::rotate(
-            inBase,
+            m_position,
             radianAngles.z,
             UP_DIRECTION
         );
+
+        m_transform.rotation = inRotation;
     }
 
-    void Actor::setScale(const Mat<float>::Four& inBase, const Vec<float>::Three& inScale)
+    void Actor::updateScale(const Vec<float>::Three& inScale)
     {
-        m_position = glm::scale(inBase, inScale);
+        bool didChange = inScale.x != m_transform.scale.x ||
+                         inScale.y != m_transform.scale.y ||
+                         inScale.z != m_transform.scale.z;
+
+        if (!didChange)
+        {
+            return;
+        }
+
+        m_position = glm::scale(m_position, inScale);
+
+        m_transform.scale = inScale;
     }
 }

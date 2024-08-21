@@ -4,6 +4,14 @@
 
 namespace Chicane
 {
+    template<typename T = float, int O = 1, glm::qualifier Q = glm::packed_highp>
+    struct Math
+    {
+        typedef glm::vec<O, T, Q> Vec;
+        typedef glm::mat<O, O, T, Q> Mat;
+        typedef glm::qua<T, Q> Quat;
+    };
+
     template<typename Type>
     struct Vec
     {

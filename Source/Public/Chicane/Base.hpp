@@ -77,9 +77,10 @@ static const std::vector<const char*> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(1.0f,  0.0f, 0.0f);
-constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(0.0f,  1.0f, 0.0f);
-constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f,  0.0f, 1.0f);
+// Z-Up Right Handed
+constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
+constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);
+constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
 
 namespace Chicane
 {

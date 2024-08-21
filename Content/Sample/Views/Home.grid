@@ -3,24 +3,4 @@
         <Text id="framePerSecond">{{ getFPS() }} FPS</Text>
         <Text id="frameTimeText">{{ getFrametime() }} ms</Text>
     </List>
-    <List id="actorForm" direction="column">
-        <Text id="actorFormTitle">Location</Text>
-        <List id="actorLocation" direction="row">
-            <List id="actorLocationXInput" direction="column">
-                <Text>X</Text>
-                <TextInput value="newAppleX"></TextInput>
-            </List>
-            <List id="actorLocationYInput" direction="column">
-                <Text>Y</Text>
-                <TextInput value="newAppleY"></TextInput>
-            </List>
-            <List id="actorLocationZInput" direction="column">
-                <Text>Z</Text>
-                <TextInput value="newAppleZ"></TextInput>
-            </List>
-        </List>
-        <Button id="additionButton" onClick="addNewApple()">
-            Add Apple
-        </Button>
-    </List>
 </View>

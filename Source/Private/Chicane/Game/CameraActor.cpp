@@ -12,6 +12,8 @@ namespace Chicane
         : Pawn()
     {
         m_camera = new CameraComponent();
+        m_camera->setTranslation(Vec<float>::Three(0.0f, -110.0f, 50.0f));
+        m_camera->setRotation(Vec<float>::Three(0.0f, 0.0f, -30.0f));
     }
 
     void CameraActor::onControlAttachment()
@@ -137,8 +139,8 @@ namespace Chicane
 
         m_camera->addRotation(
             0.0f,
-            inX,
-            inY
+            -inX,
+            -inY
         );
     }
 
@@ -149,7 +151,11 @@ namespace Chicane
             return;
         }
 
-        m_camera->addTranslation(0.0f, 0.0f, MOVEMENT_COEFFICIENT);
+        m_camera->addTranslation(
+            0.0f,
+            0.0f,
+            MOVEMENT_COEFFICIENT
+        );
     }
 
     void CameraActor::moveDown(bool isKeyDown)
@@ -159,7 +165,11 @@ namespace Chicane
             return;
         }
 
-        m_camera->addTranslation(0.0f, 0.0f, -MOVEMENT_COEFFICIENT);
+        m_camera->addTranslation(
+            0.0f,
+            0.0f,
+            -MOVEMENT_COEFFICIENT
+        );
     }
 
     void CameraActor::moveForward(bool isKeyDown)
@@ -170,8 +180,8 @@ namespace Chicane
         }
 
         m_camera->addTranslation(
-            MOVEMENT_COEFFICIENT,
             0.0f,
+            MOVEMENT_COEFFICIENT,
             0.0f
         );
     }
@@ -184,8 +194,8 @@ namespace Chicane
         }
 
         m_camera->addTranslation(
-            -MOVEMENT_COEFFICIENT,
             0.0f,
+            -MOVEMENT_COEFFICIENT,
             0.0f
         );
     }
@@ -198,8 +208,8 @@ namespace Chicane
         }
 
         m_camera->addTranslation(
-            0.0f,
             -MOVEMENT_COEFFICIENT,
+            0.0f,
             0.0f
         );
     }
@@ -212,8 +222,8 @@ namespace Chicane
         }
 
         m_camera->addTranslation(
-            0.0f,
             MOVEMENT_COEFFICIENT,
+            0.0f,
             0.0f
         );
     }

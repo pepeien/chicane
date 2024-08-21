@@ -12,6 +12,8 @@ namespace Chicane
     public:
         struct UBO
         {
+            Vec<float>::Four clip = Vec<float>::Four(0.1f, 1000.0f, 0.0f, 0.0f);
+
             Mat<float>::Four projection     = Mat<float>::Four();
             Mat<float>::Four view           = Mat<float>::Four();
             Mat<float>::Four viewProjection = Mat<float>::Four();
@@ -95,10 +97,7 @@ namespace Chicane
         // Settings
         Vec<std::uint32_t>::Two m_viewport;
         float m_aspectRatio;
-
         float m_fov;
-        float m_nearClip;
-        float m_farClip;
 
         // Render
         UBO m_UBO;
