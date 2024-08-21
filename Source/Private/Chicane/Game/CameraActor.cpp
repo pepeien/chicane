@@ -35,7 +35,7 @@ namespace Chicane
             }
         );
         m_controller->bindMouseButtonEvent(
-            SDL_BUTTON_LEFT,
+            SDL_BUTTON_RIGHT,
             [](bool isKeyDown)
             {
                 if (!isKeyDown)
@@ -59,7 +59,15 @@ namespace Chicane
             )
         );
         m_controller->bindKeyboardButtonEvent(
-            SDL_SCANCODE_LSHIFT,
+            SDL_SCANCODE_LCTRL,
+            std::bind(
+                CameraActor::moveDown,
+                this,
+                std::placeholders::_1
+            )
+        );
+        m_controller->bindKeyboardButtonEvent(
+            SDL_SCANCODE_RCTRL,
             std::bind(
                 CameraActor::moveDown,
                 this,
