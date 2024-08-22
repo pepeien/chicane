@@ -60,48 +60,48 @@ namespace Chicane
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_LCTRL,
-            &std::bind(
-                CameraActor::moveDown,
+            std::bind(
+                &CameraActor::moveDown,
                 this,
                 std::placeholders::_1
             )
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_RCTRL,
-            &std::bind(
-                CameraActor::moveDown,
+            std::bind(
+                &CameraActor::moveDown,
                 this,
                 std::placeholders::_1
             )
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_W,
-            &std::bind(
-                CameraActor::moveForward,
+            std::bind(
+                &CameraActor::moveForward,
                 this,
                 std::placeholders::_1
             )
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_S,
-            &std::bind(
-                CameraActor::moveBackward,
+            std::bind(
+                &CameraActor::moveBackward,
                 this,
                 std::placeholders::_1
             )
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_A,
-            &std::bind(
-                CameraActor::moveLeft,
+            std::bind(
+                &CameraActor::moveLeft,
                 this,
                 std::placeholders::_1
             )
         );
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_D,
-            &std::bind(
-                CameraActor::moveRight,
+            std::bind(
+                &CameraActor::moveRight,
                 this,
                 std::placeholders::_1
             )
