@@ -9,7 +9,7 @@ namespace Chicane
             m_instanceMap.clear();
         }
 
-        uint32_t Manager::getCount()
+        uint32_t Manager::getCount() const
         {
             return static_cast<uint32_t>(m_dataMap.size());
         }

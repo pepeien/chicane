@@ -17,7 +17,7 @@ namespace Chicane
         delete m_camera;
     }
 
-    bool Actor::canTick()
+    bool Actor::canTick() const
     {
         return m_bCanTick;
     }
@@ -27,7 +27,7 @@ namespace Chicane
         m_bCanTick = bInCanTick;
     }
 
-    const Mat<float>::Four& Actor::getPosition()
+    const Mat<float>::Four& Actor::getPosition() const
     {
         return m_position;
     }
@@ -77,22 +77,22 @@ namespace Chicane
         updateScale(inScale);
     }
 
-    bool Actor::hasCamera()
+    bool Actor::hasCamera() const
     {
         return m_camera != nullptr;
     }
 
-    const std::vector<ActorComponent*>& Actor::getComponents()
+    const std::vector<ActorComponent*>& Actor::getComponents() const
     {
         return m_components;
     }
 
-    bool Actor::hasMesh()
+    bool Actor::hasMesh() const
     {
         return !m_mesh.name.empty();
     }
 
-    const Box::Instance& Actor::getMesh()
+    const Box::Instance& Actor::getMesh() const
     {
         return m_mesh;
     }

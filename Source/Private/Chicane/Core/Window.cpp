@@ -4,6 +4,8 @@
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer.hpp"
 
+const Chicane::Vec<int>::Two VEC2_ZERO(0);
+
 namespace Chicane
 {
     Window::Window(const WindowCreateInfo& inCreateInfo)
@@ -43,6 +45,9 @@ namespace Chicane
         setType(inCreateInfo.type);
         setIcon(inCreateInfo.icon);
 
+        refreshSize();
+        refreshPosition();
+
         initRenderer();
         initCoreLayers();
     }
@@ -58,7 +63,7 @@ namespace Chicane
         return m_rendererInternals;
     }
 
-    Telemetry Window::getTelemetry()
+    const Telemetry& Window::getTelemetry() const
     {
         return m_telemetry;
     }
@@ -147,7 +152,7 @@ namespace Chicane
         getController()->onEvent(inEvent);
     }
 
-    bool Window::isFocused()
+    bool Window::isFocused() const
     {
         return m_isFocused;
     }
@@ -166,32 +171,105 @@ namespace Chicane
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
-    Vec<int>::Two Window::getResolution()
+    const Vec<int>::Two& Window::getSize() const
     {
-        int currentWidth  = 0;
-        int currentHeight = 0;
+        if (m_isMinimized)
+        {
+            return VEC2_ZERO;
+        }
 
-        SDL_Vulkan_GetDrawableSize(
-            instance,
-            &currentWidth,
-            &currentHeight
-        );
-
-        return Vec<int>::Two(currentWidth, currentHeight);
+        return m_size;
     }
 
-    void Window::setResolution(const Vec<int>::Two& inResolution)
+    void Window::setSize(const Vec<int>::Two& inSize)
     {
-        if (m_isResizable)
+        setSize(inSize.x, inSize.y);
+    }
+
+    void Window::setSize(int inWidth, int inHeight)
+    {
+        if (!m_isResizable)
+        {
+            return;
+        }
+
+        if (m_size.x == inWidth && m_size.y == inWidth)
         {
             return;
         }
 
         SDL_SetWindowSize(
             instance,
-            inResolution.x,
-            inResolution.y
+            inWidth,
+            inHeight
         );
+
+        m_size.x = inWidth;
+        m_size.y = inHeight;
+    }
+
+    const Vec<int>::Two& Window::getDrawableSize() const
+    {
+        if (m_isMinimized)
+        {
+            return VEC2_ZERO;
+        }
+
+        return m_drawableSize;
+    }
+
+    void Window::setDrawableSize(const Vec<int>::Two& inSize)
+    {
+        setDrawableSize(
+            inSize.x,
+            inSize.y
+        );
+    }
+
+    void Window::setDrawableSize(int inWidth, int inHeight)
+    {
+        if (m_drawableSize.x == inWidth && m_drawableSize.y == inWidth)
+        {
+            return;
+        }
+
+        m_drawableSize.x = inWidth;
+        m_drawableSize.y = inHeight;
+    }
+
+    const Vec<int>::Two& Window::getPosition() const
+    {
+        return m_position;
+    }
+
+    void Window::setPosition(const Vec<int>::Two& inPosition)
+    {
+        setPosition(
+            inPosition.x,
+            inPosition.y
+        );
+    }
+
+    void Window::setPosition(int inX, int inY)
+    {
+        if (!m_isResizable)
+        {
+            return;
+        }
+
+        if (m_position.x == inX && m_position.y == inX)
+        {
+            return;
+        }
+
+        SDL_SetWindowPosition(
+            instance,
+            inX,
+            inY
+        );
+
+        m_position.x = inX;
+        m_position.y = inY;
     }
 
     void Window::setViewport(
@@ -205,20 +283,6 @@ namespace Chicane
         }
 
         m_renderer->setViewport(inSize, inPosition);
-    }
-
-    Vec<int>::Two Window::getPosition()
-    {
-        int currentX  = 0;
-        int currentY  = 0;
-
-        SDL_GetWindowPosition(
-            instance,
-            &currentX,
-            &currentY
-        );
-
-        return Vec<int>::Two(currentX, currentY);
     }
 
     void Window::setTitle(const std::string& inTitle)
@@ -302,7 +366,7 @@ namespace Chicane
         }
     }
 
-    WindowType Window::getType()
+    WindowType Window::getType() const
     {
         return m_type;
     }
@@ -339,15 +403,59 @@ namespace Chicane
 
     bool Window::isMinimized()
     {
-        Vec<int>::Two currentResolution = getResolution();
+        Vec<int>::Two currentSize = getSize();
 
-        return m_isMinimized || (currentResolution.x <= 0.0f || currentResolution.y <= 0.0f);
+        return m_isMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }
 
     void Window::initRenderer()
     {
         m_renderer = std::make_unique<Renderer>(this);
         m_rendererInternals = m_renderer->getInternals();
+    }
+
+    void Window::refreshSize()
+    {
+        int width  = 0;
+        int height = 0;
+
+        SDL_GetWindowSize(
+            instance,
+            &width,
+            &height
+        );
+
+        setSize(width, height);
+
+        refreshDrawableSize();
+    }
+    
+    void Window::refreshDrawableSize()
+    {
+        int width  = 0;
+        int height = 0;
+
+        SDL_Vulkan_GetDrawableSize(
+            instance,
+            &width,
+            &height
+        );
+
+        setDrawableSize(width, height);
+    }
+
+    void Window::refreshPosition()
+    {
+        int x = 0;
+        int y = 0;
+
+        SDL_GetWindowPosition(
+            instance,
+            &x,
+            &y
+        );
+
+        setPosition(x, y);
     }
 
     void Window::initCoreLayers()
@@ -376,13 +484,32 @@ namespace Chicane
     {
         switch (inEvent.event)
         {
+        case SDL_WINDOWEVENT_SHOWN:
+            refreshSize();
+            refreshPosition();
+
+            break;
+
         case SDL_WINDOWEVENT_EXPOSED:
             m_isMinimized = m_type == WindowType::Fullscreen ? true : false;
+
+            refreshSize();
 
             break;
 
         case SDL_WINDOWEVENT_MINIMIZED:
             m_isMinimized = true;
+
+            break;
+
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+            refreshSize();
+
+            break;
+        
+        case SDL_WINDOWEVENT_DISPLAY_CHANGED:
+        case SDL_WINDOWEVENT_MOVED:
+            refreshPosition();
 
             break;
         }

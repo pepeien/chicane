@@ -44,7 +44,7 @@ namespace Chicane
         ) { return; }
 
     public:
-        std::string getId() { return m_id; }
+        const std::string& getId() const { return m_id; }
 
     protected:
         bool m_isInitialized;

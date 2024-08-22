@@ -125,7 +125,7 @@ namespace Chicane
         ImGui::NewFrame();
 
         Grid::getActiveView()->show(
-            m_window->getResolution(),
+            m_window->getDrawableSize(),
             m_window->getPosition()
         );
 

@@ -10,7 +10,7 @@ namespace Chicane
         {
             void compile(const pugi::xml_node& inNode)
             {
-                Style style = getStyle(inNode);
+                const Style& style = getStyle(inNode);
 
                 float percentage = std::clamp(
                     getAttribute(PERCENTAGE_ATTRIBUTE_NAME, inNode).as_float(),

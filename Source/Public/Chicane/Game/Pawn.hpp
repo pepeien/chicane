@@ -14,12 +14,12 @@ namespace Chicane
 
     public:
         template<class T = Controller>
-        T* getController()
+        T* getController() const
         {
             return dynamic_cast<T*>(m_controller);
         }
 
-        bool isControlled();
+        bool isControlled() const;
         void attachController(Controller* inController);
         void deattachController();
 

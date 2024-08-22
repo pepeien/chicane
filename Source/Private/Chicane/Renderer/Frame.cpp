@@ -133,7 +133,7 @@ namespace Chicane
             framebuffers.insert(std::make_pair(inId, inFramebuffer));
         }
 
-        vk::Framebuffer Instance::getFramebuffer(const std::string& inId)
+        vk::Framebuffer Instance::getFramebuffer(const std::string& inId) const
         {
             return framebuffers.at(inId);
         }
@@ -148,7 +148,7 @@ namespace Chicane
             descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
         }
 
-        vk::DescriptorSet Instance::getDescriptorSet(const std::string& inId)
+        vk::DescriptorSet Instance::getDescriptorSet(const std::string& inId) const
         {
             return descriptorSets.at(inId);
         }

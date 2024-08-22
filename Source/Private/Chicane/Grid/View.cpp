@@ -42,7 +42,7 @@ namespace Chicane
             m_wasStyleAdded(false)
         {}
 
-        std::string View::getId()
+        const std::string& View::getId() const
         {
             return m_id;
         }
@@ -64,12 +64,12 @@ namespace Chicane
             );
         }
 
-        bool View::hasVariable(const std::string& inId)
+        bool View::hasVariable(const std::string& inId) const
         {
             return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) != nullptr;
         }
 
-        ComponentVariable View::getVariable(const std::string& inId)
+        const ComponentVariable View::getVariable(const std::string& inId) const
         {
             if (!hasVariable(inId))
             {
@@ -112,12 +112,12 @@ namespace Chicane
             m_variables.erase(inId);
         }
 
-        bool View::hasFunction(const std::string& inId)
+        bool View::hasFunction(const std::string& inId) const
         {
             return m_functions.find(inId) != m_functions.end();
         }
 
-        ComponentFunction View::getFunction(const std::string& inId)
+        const ComponentFunction View::getFunction(const std::string& inId) const
         {
             if (!hasFunction(inId))
             {

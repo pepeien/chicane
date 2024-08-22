@@ -8,16 +8,17 @@ namespace Chicane
     class ActorComponent
     {
     public:
-        ActorComponent()
-        :   m_owner(nullptr)
-        {}
+        ActorComponent();
         virtual ~ActorComponent() = default;
 
     protected:
-        bool hasOwner() { return m_owner != nullptr; }
-        void setOwner(Actor* inActor) { m_owner = inActor; }
+        bool hasOwner() const;
+        void setOwner(Actor* inActor);
+
         template<class T = Actor>
-        T* getOwner() { return dynamic_cast<T*>(m_owner); }
+        T* getOwner() const {
+            return dynamic_cast<T*>(m_owner);
+        }
 
     protected:
         Actor* m_owner;

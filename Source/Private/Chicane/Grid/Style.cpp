@@ -32,6 +32,8 @@ namespace Chicane
 
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
+        const Style EMPTY_STYLE = {};
+
         StyleSourceMap m_sources = {};
         StyleDataMap m_styles    = {};
 
@@ -429,24 +431,24 @@ namespace Chicane
             addStyle(styleLocation);
         }
 
-        Style getStyle(const pugi::xml_node& inNode)
+        const Style& getStyle(const pugi::xml_node& inNode)
         {
             std::string id = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
 
             if (id.empty())
             {
-                return {};
+                return EMPTY_STYLE;
             }
 
             id = "#" + id;
 
             if (m_styles.empty() || m_styles.find(id) == m_styles.end())
             {
-                return {};
+                return EMPTY_STYLE;
             }
 
-            Style& style        = m_styles.at(id);
-            StyleSource& source = m_sources.at(id);
+            Style& style              = m_styles.at(id);
+            const StyleSource& source = m_sources.at(id);
 
             setSize(style, source);
             setPosition(style, source);

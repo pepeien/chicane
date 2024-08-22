@@ -164,7 +164,7 @@ namespace Chicane
             return {};
         }
 
-        return m_window->getResolution();
+        return m_window->getDrawableSize();
     }
 
     void setResolution(const Vec<int>::Two& inResolution)
@@ -174,7 +174,7 @@ namespace Chicane
             return;
         }
 
-        m_window->setResolution(inResolution);
+        m_window->setSize(inResolution);
     }
 
     void setViewport(

@@ -10,7 +10,7 @@ namespace Chicane
         m_controller(nullptr)
     {}
 
-    bool Pawn::isControlled()
+    bool Pawn::isControlled() const
     {
         return m_controller != nullptr;
     }

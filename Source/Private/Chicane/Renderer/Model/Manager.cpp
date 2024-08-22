@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Model
     {
-        bool Manager::contains(const std::string& inId)
+        bool Manager::contains(const std::string& inId) const
         {
             return m_instanceMap.find(inId) != m_instanceMap.end();
         }
@@ -32,7 +32,7 @@ namespace Chicane
             switch (static_cast<Vendor>(inEntry.vendor))
             {
             case Vendor::Wavefront:
-                Wavefront::parse(inEntry.data, result);
+                Wavefront::parse(result, inEntry.data);
 
                 break;
 
@@ -76,7 +76,7 @@ namespace Chicane
             );
         }
 
-        std::uint32_t Manager::getFirstInstance(const std::string& inId)
+        std::uint32_t Manager::getFirstInstance(const std::string& inId) const
         {
             if (!contains(inId))
             {

@@ -22,9 +22,9 @@ namespace Chicane
             ~Manager();
 
         public:
-            uint32_t getCount();
+            uint32_t getCount() const;
 
-            bool contains(const std::string& inId);
+            bool contains(const std::string& inId) const;
             void add(const std::string& inId, const Box::Entry& inEntry);
             void bindAll(
                 const vk::CommandBuffer& inCommandBuffer,

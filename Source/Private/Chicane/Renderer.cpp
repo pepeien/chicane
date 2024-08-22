@@ -404,7 +404,7 @@ namespace Chicane
             m_physicalDevice,
             m_logicalDevice,
             m_surface,
-            m_window->getResolution()
+            m_window->getDrawableSize()
         );
 
         m_imageCount = static_cast<int>(m_swapChain.images.size());

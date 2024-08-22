@@ -21,7 +21,7 @@ namespace Chicane
             virtual ~View() = default;
 
         public:
-            std::string getId();
+            const std::string& getId() const;
 
             void rebuild();
             virtual void show(
@@ -29,14 +29,14 @@ namespace Chicane
                 const Vec<int>::Two& inPosition
             );
 
-            bool hasVariable(const std::string& inId);
-            ComponentVariable getVariable(const std::string& inId);
+            bool hasVariable(const std::string& inId) const;
+            const ComponentVariable getVariable(const std::string& inId) const;
             void addVariable(const ComponentVariables& inVariables);
             void addVariable(const std::string& inId, ComponentVariable inVariable);
             void removeVariable(const std::string& inId);
 
-            bool hasFunction(const std::string& inId);
-            ComponentFunction getFunction(const std::string& inId);
+            bool hasFunction(const std::string& inId) const;
+            const ComponentFunction getFunction(const std::string& inId) const;
             void addFunction(const ComponentFunctions& inFunctions);
             void addFunction(const std::string& inId, ComponentFunction inFunction);
             void removeFunction(const std::string& inId);

@@ -14,7 +14,7 @@ namespace Chicane
 
     public:
         template<class T = Pawn>
-        const T* getPawn()
+        const T* getPawn() const
         {
             return dynamic_cast<T*>(m_pawn);
         }
@@ -25,7 +25,7 @@ namespace Chicane
             std::function<void ()> inCompleteCallback = nullptr
         );
 
-        bool isAttached();
+        bool isAttached() const;
         void attachTo(Pawn* inPawn);
         void deattach();
 

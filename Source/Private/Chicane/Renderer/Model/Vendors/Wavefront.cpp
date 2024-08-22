@@ -58,8 +58,8 @@ namespace Chicane
             }
 
             void parse(
-                const std::vector<unsigned char>& inData,
-                ParseResult& outResult
+                ParseResult& outResult,
+                const std::vector<unsigned char>& inData
             )
             {
                 std::string data = std::string(inData.begin(), inData.end());

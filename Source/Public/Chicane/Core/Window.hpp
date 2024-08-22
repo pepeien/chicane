@@ -39,7 +39,7 @@ namespace Chicane
     public:
         const Renderer::Internals& getRendererInternals();
 
-        Telemetry getTelemetry();
+        const Telemetry& getTelemetry() const;
 
         void addLayer(
             Layer* inLayer,
@@ -51,27 +51,34 @@ namespace Chicane
 
         void onEvent(const SDL_Event& inEvent);
 
-        bool isFocused();
+        bool isFocused() const;
         void focus();
         void blur();
 
         void setTitle(const std::string& inTitle);
         void setIcon(const std::string& inIconPath);
 
-        Vec<int>::Two getResolution();
-        void setResolution(const Vec<int>::Two& inResolution);
+        const Vec<int>::Two& getSize() const;
+        void setSize(const Vec<int>::Two& inSize);
+        void setSize(int inWidth, int inHeight);
+
+        const Vec<int>::Two& getDrawableSize() const;
+        void setDrawableSize(const Vec<int>::Two& inSize);
+        void setDrawableSize(int inWidth, int inHeight);
+
+        const Vec<int>::Two& getPosition() const;
+        void setPosition(const Vec<int>::Two& inPosition);
+        void setPosition(int inX, int inY);
 
         void setViewport(
             const Vec<std::uint32_t>::Two& inSize,
             const Vec<float>::Two& inPosition = Vec<float>::Two(0.0f)
         );
 
-        Vec<int>::Two getPosition();
-
         void setDisplay(int inMonitorIndex);
 
         void setType(WindowType inType);
-        WindowType getType();
+        WindowType getType() const;
 
         bool isResizable();
         void enableResizing();  // Only takes effect when the type is `WindowType::Windowed`
@@ -83,6 +90,11 @@ namespace Chicane
         SDL_Window* instance;
 
     private:
+        // Fetchers
+        void refreshSize();
+        void refreshDrawableSize();
+        void refreshPosition();
+
         // Events
         void initRenderer();
         void initCoreLayers();
@@ -100,6 +112,9 @@ namespace Chicane
 
         // Settings
         WindowType m_type;
+        Vec<int>::Two m_size;
+        Vec<int>::Two m_drawableSize;
+        Vec<int>::Two m_position;
 
         bool m_isFocused;
         bool m_isResizable;

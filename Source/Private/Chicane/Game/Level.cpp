@@ -16,17 +16,17 @@ namespace Chicane
         m_actors.clear();
     }
 
-    bool Level::hasActors()
+    bool Level::hasActors() const
     {
         return m_actors.size() > 0;
     }
 
-    const std::vector<Actor*>& Level::getActors()
+    const std::vector<Actor*>& Level::getActors() const
     {
         return m_actors;
     }
 
-    std::vector<Actor*> Level::getDrawableActors()
+    std::vector<Actor*> Level::getDrawableActors() const
     {
         std::vector<Actor*> result {};
 
@@ -43,13 +43,18 @@ namespace Chicane
         return result;
     }
 
-    std::uint32_t Level::getActorCount()
+    std::uint32_t Level::getActorCount() const
     {
         return m_actors.size();
     }
 
     void Level::addActor(Actor* inActor)
     {
+        if (inActor == nullptr)
+        {
+            return;
+        }
+
         m_actors.push_back(inActor);
 
         m_observable->next(inActor);

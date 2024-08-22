@@ -9,13 +9,13 @@ namespace Chicane
         m_right(RIGHT_DIRECTION),
         m_viewport(Vec<std::uint32_t>::Two(0.0f)),
         m_aspectRatio(0.0f),
-        m_fov(45.0f),
+        m_fieldOfView(45.0f),
         m_UBO({})
     {
         setClip(0.1f, 1000.0f);
     }
 
-    const Vec<std::uint32_t>::Two& Camera::getViewport()
+    const Vec<std::uint32_t>::Two& Camera::getViewport() const
     {
         return m_viewport;
     }
@@ -42,19 +42,19 @@ namespace Chicane
         );
     }
 
-    float Camera::getFov()
+    float Camera::getFieldOfView() const
     {
-        return m_fov;
+        return m_fieldOfView;
     }
 
-    void Camera::setFov(float inFov)
+    void Camera::setFieldOfView(float inFov)
     {
-        m_fov = inFov;
+        m_fieldOfView = inFov;
 
         updateProjection();
     }
 
-    float Camera::getNearClip()
+    float Camera::getNearClip() const
     {
         return  m_UBO.clip.x;
     }
@@ -71,7 +71,7 @@ namespace Chicane
         updateProjection();
     }
 
-    float Camera::getFarClip()
+    float Camera::getFarClip() const
     {
         return m_UBO.clip.y;
     }
@@ -94,7 +94,7 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
-    const Vec<float>::Three& Camera::getTranslation()
+    const Vec<float>::Three& Camera::getTranslation() const
     {
         return m_transform.translation;
     }
@@ -123,7 +123,7 @@ namespace Chicane
         updateTranslation(translation);
     }
 
-    const Vec<float>::Three& Camera::getRotation()
+    const Vec<float>::Three& Camera::getRotation() const
     {
         return m_transform.rotation;
     }
@@ -152,22 +152,22 @@ namespace Chicane
         updateRotation(rotation);
     }
 
-    const Vec<float>::Three& Camera::getForward()
+    const Vec<float>::Three& Camera::getForward() const
     {
         return m_forward;
     }
 
-    const Vec<float>::Three& Camera::getRight()
+    const Vec<float>::Three& Camera::getRight() const
     {
         return m_right;
     }
 
-    const Vec<float>::Three& Camera::getUp()
+    const Vec<float>::Three& Camera::getUp() const
     {
         return m_up;
     }
 
-    const Camera::UBO& Camera::getUBO()
+    const Camera::UBO& Camera::getUBO() const
     {
         return m_UBO;
     }
@@ -242,7 +242,7 @@ namespace Chicane
     void Camera::updateProjection()
     {
         m_UBO.projection = glm::perspective(
-            glm::radians(m_fov),
+            glm::radians(m_fieldOfView),
             m_aspectRatio,
             m_UBO.clip.x,
             m_UBO.clip.y

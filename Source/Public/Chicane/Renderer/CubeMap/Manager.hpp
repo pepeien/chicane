@@ -14,7 +14,7 @@ namespace Chicane
             ~Manager();
 
         public:
-            uint32_t getCount();
+            uint32_t getCount() const;
 
             void add(const std::string& inId, const CubeMap::Data& inData);
             void bind(

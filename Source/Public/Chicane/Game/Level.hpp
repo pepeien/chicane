@@ -13,10 +13,10 @@ namespace Chicane
         ~Level();
 
     public:
-        bool hasActors();
-        const std::vector<Actor*>& getActors();
-        std::vector<Actor*> getDrawableActors();
-        std::uint32_t getActorCount();
+        bool hasActors() const;
+        const std::vector<Actor*>& getActors() const;
+        std::vector<Actor*> getDrawableActors() const;
+        std::uint32_t getActorCount() const;
         void addActor(Actor* inActor);
         Subscription<Actor*>* addActorSubscription(
             std::function<void (Actor*)> inNextCallback,

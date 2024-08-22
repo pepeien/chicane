@@ -9,12 +9,12 @@ namespace Chicane
             m_instanceMap.clear();
         }
 
-        uint32_t Manager::getCount()
+        uint32_t Manager::getCount() const
         {
             return static_cast<uint32_t>(m_dataMap.size());
         }
 
-        bool Manager::contains(const std::string& inId)
+        bool Manager::contains(const std::string& inId) const
         {
             return m_dataMap.find(inId) != m_dataMap.end();
         }

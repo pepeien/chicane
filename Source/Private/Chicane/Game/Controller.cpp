@@ -22,7 +22,7 @@ namespace Chicane
         );
     }
 
-    bool Controller::isAttached()
+    bool Controller::isAttached() const
     {
         return m_pawn != nullptr;
     }

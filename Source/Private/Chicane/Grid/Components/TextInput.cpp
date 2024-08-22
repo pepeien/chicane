@@ -46,11 +46,12 @@ namespace Chicane
 
                 std::string label          = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
                 std::string value          = getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string();
-                ComponentVariable variable = Grid::getActiveView()->getVariable(value);
 
                 ImGui::InputText(
                     label.empty() ? " " : label.c_str(),
-                    std::any_cast<std::string>(variable)
+                    std::any_cast<std::string>(
+                        Grid::getActiveView()->getVariable(value)
+                    )
                 );
             }
         }

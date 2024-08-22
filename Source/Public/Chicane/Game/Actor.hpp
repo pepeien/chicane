@@ -26,10 +26,10 @@ namespace Chicane
         virtual void onTick(float inDelta) { return; };
 
     public:
-        bool canTick();
+        bool canTick() const;
         void setCanTick(bool bInCanTick);
 
-        const Mat<float>::Four& getPosition();
+        const Mat<float>::Four& getPosition() const;
 
         void setRelativeTranslation(const Vec<float>::Three& inTranslation);
         void setAbsoluteTranslation(const Vec<float>::Three& inTranslation);
@@ -41,9 +41,9 @@ namespace Chicane
         void setRelativeScale(const Vec<float>::Three& inScale);
         void setAbsoluteScale(const Vec<float>::Three& inScale);
 
-        bool hasCamera();
+        bool hasCamera() const;
         template<class T = CameraComponent>
-        T* getCamera()
+        T* getCamera() const
         {
             if (!hasCamera())
             {
@@ -53,10 +53,10 @@ namespace Chicane
             return dynamic_cast<T*>(m_camera);
         }
 
-        const std::vector<ActorComponent*>& getComponents();
+        const std::vector<ActorComponent*>& getComponents() const;
 
-        bool hasMesh();
-        const Box::Instance& getMesh();
+        bool hasMesh() const;
+        const Box::Instance& getMesh() const;
 
     protected:
         void updateTranslation(const Vec<float>::Three& inTranslation);

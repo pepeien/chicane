@@ -18,7 +18,7 @@ namespace Chicane
 
                 std::string text = inNode.child_value();
 
-                Style style = getStyle(inNode);
+                const Style& style = getStyle(inNode);
 
                 if (
                     ImGui::Button(

@@ -40,37 +40,37 @@ namespace Chicane
 
     public:
         // Settings
-        const Vec<std::uint32_t>::Two& getViewport();
+        const Vec<std::uint32_t>::Two& getViewport() const;
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
         void setViewport(const Vec<std::uint32_t>::Two& inViewportResolution);
 
-        float getFov();
-        void setFov(float inFov);
+        float getFieldOfView() const;
+        void setFieldOfView(float inFov);
 
-        float getNearClip();
+        float getNearClip() const;
         void setNearClip(float inNearClip);
-        float getFarClip();
+        float getFarClip() const;
         void setFarClip(float inFarClip);
         void setClip(float inNearClip, float inFarClip);
 
         // Transform
-        const Vec<float>::Three& getTranslation();
+        const Vec<float>::Three& getTranslation() const;
         void setTranslation(const Vec<float>::Three& inTranslation);
         void addTranslation(const Vec<float>::Three& inTranslation);
         void addTranslation(float inX, float inY, float inZ);
 
-        const Vec<float>::Three& getRotation();
+        const Vec<float>::Three& getRotation() const;
         void setRotation(const Vec<float>::Three& inRotation);
         void addRotation(const Vec<float>::Three& inRotation);
         void addRotation(float inRoll, float inYaw, float inPitch);
 
         // State
-        const Vec<float>::Three& getForward();
-        const Vec<float>::Three& getRight();
-        const Vec<float>::Three& getUp();
+        const Vec<float>::Three& getForward() const;
+        const Vec<float>::Three& getRight() const;
+        const Vec<float>::Three& getUp() const;
 
         // Render
-        const UBO& getUBO();
+        const UBO& getUBO() const;
 
     protected:
         // Transform
@@ -97,7 +97,7 @@ namespace Chicane
         // Settings
         Vec<std::uint32_t>::Two m_viewport;
         float m_aspectRatio;
-        float m_fov;
+        float m_fieldOfView;
 
         // Render
         UBO m_UBO;

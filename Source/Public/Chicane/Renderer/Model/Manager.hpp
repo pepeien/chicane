@@ -22,7 +22,7 @@ namespace Chicane
         class Manager
         {
             public:
-                bool contains(const std::string& inId);
+                bool contains(const std::string& inId) const;
                 void use(const std::string& inId);
                 void add(const std::string& inId, const Box::Entry& inEntry);
                 void build(
@@ -33,7 +33,7 @@ namespace Chicane
                     const vk::Queue& inQueue,
                     const vk::CommandBuffer& inCommandBuffer
                 );
-                std::uint32_t getFirstInstance(const std::string& inId);
+                std::uint32_t getFirstInstance(const std::string& inId) const;
                 void draw(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommandBuffer

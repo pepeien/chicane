@@ -35,10 +35,10 @@ namespace Chicane
             void setupDepthBuffering(const vk::Format& inFormat);
 
             void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
-            vk::Framebuffer getFramebuffer(const std::string& inId);
+            vk::Framebuffer getFramebuffer(const std::string& inId) const;
 
             void addDescriptorSet(const std::string& inId, const vk::DescriptorSet& inDescriptorSet);
-            vk::DescriptorSet getDescriptorSet(const std::string& inId);
+            vk::DescriptorSet getDescriptorSet(const std::string& inId) const;
 
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();

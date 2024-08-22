@@ -47,6 +47,6 @@ namespace Chicane
         StyleSourceMap extractStyleFromFile(const std::string& inFilePath);
 
         void addStyle(const pugi::xml_node& inNode);
-        Style getStyle(const pugi::xml_node& inNode);
+        const Style& getStyle(const pugi::xml_node& inNode);
     }
 }
