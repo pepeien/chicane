@@ -9,10 +9,10 @@ namespace Chicane
     namespace GraphicsPipeline
     {
         vk::Viewport createViewport(
-            const Math<std::uint32_t, 2>::Vec& inSize = Math<std::uint32_t, 2>::Vec(0),
-            const Math<float, 2>::Vec& inPosition = Math<float, 2>::Vec(0.0f)
+            const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0),
+            const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
         );
-        vk::Rect2D createScissor(const Math<std::uint32_t, 2>::Vec& inSize = Math<std::uint32_t, 2>::Vec(0));
+        vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
         vk::PipelineShaderStageCreateInfo createVertexShader(
             const vk::ShaderModule& inShaderModule
         );

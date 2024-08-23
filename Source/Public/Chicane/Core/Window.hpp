@@ -23,7 +23,7 @@ namespace Chicane
     {
         std::string title        = "";
         std::string icon         = ""; // Optional [file path]
-        Math<int, 2>::Vec resolution = Math<int, 2>::Vec(0);
+        Vec<2, int> resolution = Vec<2, int>(0);
         int displayIndex         = 0;
         WindowType type          = WindowType::Windowed;
         bool isFocused           = false;
@@ -58,21 +58,21 @@ namespace Chicane
         void setTitle(const std::string& inTitle);
         void setIcon(const std::string& inIconPath);
 
-        const Math<int, 2>::Vec& getSize() const;
-        void setSize(const Math<int, 2>::Vec& inSize);
+        const Vec<2, int>& getSize() const;
+        void setSize(const Vec<2, int>& inSize);
         void setSize(int inWidth, int inHeight);
 
-        const Math<int, 2>::Vec& getDrawableSize() const;
-        void setDrawableSize(const Math<int, 2>::Vec& inSize);
+        const Vec<2, int>& getDrawableSize() const;
+        void setDrawableSize(const Vec<2, int>& inSize);
         void setDrawableSize(int inWidth, int inHeight);
 
-        const Math<int, 2>::Vec& getPosition() const;
-        void setPosition(const Math<int, 2>::Vec& inPosition);
+        const Vec<2, int>& getPosition() const;
+        void setPosition(const Vec<2, int>& inPosition);
         void setPosition(int inX, int inY);
 
         void setViewport(
-            const Math<std::uint32_t, 2>::Vec& inSize,
-            const Math<float, 2>::Vec& inPosition = Math<float, 2>::Vec(0.0f)
+            const Vec<2, std::uint32_t>& inSize,
+            const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
         );
 
         void setDisplay(int inMonitorIndex);
@@ -112,9 +112,9 @@ namespace Chicane
 
         // Settings
         WindowType m_type;
-        Math<int, 2>::Vec m_size;
-        Math<int, 2>::Vec m_drawableSize;
-        Math<int, 2>::Vec m_position;
+        Vec<2, int> m_size;
+        Vec<2, int> m_drawableSize;
+        Vec<2, int> m_position;
 
         bool m_isFocused;
         bool m_isResizable;

@@ -21,7 +21,7 @@ namespace Chicane
 
         struct Bundle
         {
-            std::vector<Math<float, 4>::Mat> transforms;
+            std::vector<Mat<4, float>> transforms;
             size_t allocationSize;
             void* writeLocation;
             Buffer::Instance buffer;
@@ -29,9 +29,9 @@ namespace Chicane
 
         struct ParseBundle
         {
-            std::vector<Math<float, 3>::Vec> geometryVertices;
-            std::vector<Math<float, 2>::Vec> textureVertices;
-            std::vector<Math<float, 3>::Vec> normalVertices;
+            std::vector<Vec<3, float>> geometryVertices;
+            std::vector<Vec<2, float>> textureVertices;
+            std::vector<Vec<3, float>> normalVertices;
         };
 
         struct ParseResult

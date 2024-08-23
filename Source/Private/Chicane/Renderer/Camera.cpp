@@ -7,7 +7,7 @@ namespace Chicane
         m_forward(FORWARD_DIRECTION),
         m_up(UP_DIRECTION),
         m_right(RIGHT_DIRECTION),
-        m_viewport(Math<std::uint32_t, 2>::Vec(0)),
+        m_viewport(Vec<2, std::uint32_t>(0)),
         m_aspectRatio(0.0f),
         m_fieldOfView(45.0f),
         m_UBO({})
@@ -15,7 +15,7 @@ namespace Chicane
         setClip(0.1f, 1000.0f);
     }
 
-    const Math<std::uint32_t, 2>::Vec& Camera::getViewport() const
+    const Vec<2, std::uint32_t>& Camera::getViewport() const
     {
         return m_viewport;
     }
@@ -34,7 +34,7 @@ namespace Chicane
         updateProjection();
     }
 
-    void Camera::setViewport(const Math<std::uint32_t, 2>::Vec& inViewportResolution)
+    void Camera::setViewport(const Vec<2, std::uint32_t>& inViewportResolution)
     {
         setViewport(
             inViewportResolution.x,
@@ -94,17 +94,17 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
-    const Math<float, 3>::Vec& Camera::getTranslation() const
+    const Vec<3, float>& Camera::getTranslation() const
     {
         return m_transform.translation;
     }
 
-    void Camera::setTranslation(const Math<float, 3>::Vec& inPosition)
+    void Camera::setTranslation(const Vec<3, float>& inPosition)
     {
         updateTranslation(inPosition);
     }
 
-    void Camera::addTranslation(const Math<float, 3>::Vec& inTranslation)
+    void Camera::addTranslation(const Vec<3, float>& inTranslation)
     {
         addTranslation(
             inTranslation.x,
@@ -115,7 +115,7 @@ namespace Chicane
 
     void Camera::addTranslation(float inX, float inY, float inZ)
     {
-        Math<float, 3>::Vec translation = m_transform.translation;
+        Vec<3, float> translation = m_transform.translation;
         translation += m_right * inX;
         translation += m_forward * inY;
         translation += m_up * inZ;
@@ -123,17 +123,17 @@ namespace Chicane
         updateTranslation(translation);
     }
 
-    const Math<float, 3>::Vec& Camera::getRotation() const
+    const Vec<3, float>& Camera::getRotation() const
     {
         return m_transform.rotation;
     }
 
-    void Camera::setRotation(const Math<float, 3>::Vec& inRotation)
+    void Camera::setRotation(const Vec<3, float>& inRotation)
     {
         updateRotation(inRotation);
     }
 
-    void Camera::addRotation(const Math<float, 3>::Vec& inRotation)
+    void Camera::addRotation(const Vec<3, float>& inRotation)
     {
         addRotation(
             inRotation.x,
@@ -144,7 +144,7 @@ namespace Chicane
 
     void Camera::addRotation(float inRoll, float inYaw, float inPitch)
     {
-        Math<float, 3>::Vec rotation = m_transform.rotation;
+        Vec<3, float> rotation = m_transform.rotation;
         rotation.x += inRoll;
         rotation.y += inYaw;
         rotation.z += inPitch;
@@ -152,17 +152,17 @@ namespace Chicane
         updateRotation(rotation);
     }
 
-    const Math<float, 3>::Vec& Camera::getForward() const
+    const Vec<3, float>& Camera::getForward() const
     {
         return m_forward;
     }
 
-    const Math<float, 3>::Vec& Camera::getRight() const
+    const Vec<3, float>& Camera::getRight() const
     {
         return m_right;
     }
 
-    const Math<float, 3>::Vec& Camera::getUp() const
+    const Vec<3, float>& Camera::getUp() const
     {
         return m_up;
     }
@@ -172,9 +172,13 @@ namespace Chicane
         return m_UBO;
     }
 
-    void Camera::updateTranslation(const Math<float, 3>::Vec& inTranslation)
+    void Camera::updateTranslation(const Vec<3, float>& inTranslation)
     {
-        if (Math<float, 3>::isIdentical(inTranslation, m_transform.translation))
+        bool isIdentical = std::fabs(m_transform.translation.x - inTranslation.x) < FLT_EPSILON &&
+                           std::fabs(m_transform.translation.y - inTranslation.y) < FLT_EPSILON &&
+                           std::fabs(m_transform.translation.z - inTranslation.z) < FLT_EPSILON;
+
+        if (isIdentical)
         {
             return;
         }
@@ -184,9 +188,13 @@ namespace Chicane
         updateView();
     }
 
-    void Camera::updateRotation(const Math<float, 3>::Vec& inRotation)
+    void Camera::updateRotation(const Vec<3, float>& inRotation)
     {
-        if (Math<float, 3>::isIdentical(inRotation, m_transform.rotation))
+        bool isIdentical = std::fabs(m_transform.rotation.x - inRotation.x) < FLT_EPSILON &&
+                           std::fabs(m_transform.rotation.y - inRotation.y) < FLT_EPSILON &&
+                           std::fabs(m_transform.rotation.z - inRotation.z) < FLT_EPSILON;
+
+        if (isIdentical)
         {
             return;
         }

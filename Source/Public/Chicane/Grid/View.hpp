@@ -25,8 +25,8 @@ namespace Chicane
 
             void rebuild();
             virtual void show(
-                const Math<int, 2>::Vec& inResolution,
-                const Math<int, 2>::Vec& inPosition
+                const Vec<2, int>& inResolution,
+                const Vec<2, int>& inPosition
             );
 
             bool hasVariable(const std::string& inId) const;
@@ -45,8 +45,8 @@ namespace Chicane
             void validate(const pugi::xml_node& inNode);
             void compile(
                 const pugi::xml_node& inNode,
-                const Math<int, 2>::Vec& inResolution,
-                const Math<int, 2>::Vec& inPosition
+                const Vec<2, int>& inResolution,
+                const Vec<2, int>& inPosition
             );
 
         protected:

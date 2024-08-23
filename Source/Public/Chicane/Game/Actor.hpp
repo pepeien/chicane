@@ -8,9 +8,9 @@ namespace Chicane
 {
     struct Transform
     {
-        Math<float, 3>::Vec translation = Math<float, 3>::Vec(0.0f);
-        Math<float, 3>::Vec rotation    = Math<float, 3>::Vec(0.0f);
-        Math<float, 3>::Vec scale       = Math<float, 3>::Vec(1.0f);
+        Vec<3, float> translation = Vec<3, float>(0.0f);
+        Vec<3, float> rotation    = Vec<3, float>(0.0f);
+        Vec<3, float> scale       = Vec<3, float>(1.0f);
     };
 
     class ActorComponent;
@@ -29,17 +29,17 @@ namespace Chicane
         bool canTick() const;
         void setCanTick(bool bInCanTick);
 
-        const Math<float, 4>::Mat& getPosition() const;
+        const Mat<4, float>& getPosition() const;
 
-        void setRelativeTranslation(const Math<float, 3>::Vec& inTranslation);
-        void setAbsoluteTranslation(const Math<float, 3>::Vec& inTranslation);
+        void setRelativeTranslation(const Vec<3, float>& inTranslation);
+        void setAbsoluteTranslation(const Vec<3, float>& inTranslation);
 
         // Rotation values should be in degrees
-        void setRelativeRotation(const Math<float, 3>::Vec& inRotation);
-        void setAbsoluteRotation(const Math<float, 3>::Vec& inRotation);
+        void setRelativeRotation(const Vec<3, float>& inRotation);
+        void setAbsoluteRotation(const Vec<3, float>& inRotation);
 
-        void setRelativeScale(const Math<float, 3>::Vec& inScale);
-        void setAbsoluteScale(const Math<float, 3>::Vec& inScale);
+        void setRelativeScale(const Vec<3, float>& inScale);
+        void setAbsoluteScale(const Vec<3, float>& inScale);
 
         bool hasCamera() const;
         template<class T = CameraComponent>
@@ -59,14 +59,14 @@ namespace Chicane
         const Box::Instance& getMesh() const;
 
     protected:
-        void updateTranslation(const Math<float, 3>::Vec& inTranslation);
-        void updateRotation(const Math<float, 3>::Vec& inRotation);
-        void updateScale(const Math<float, 3>::Vec& inScale);
+        void updateTranslation(const Vec<3, float>& inTranslation);
+        void updateRotation(const Vec<3, float>& inRotation);
+        void updateScale(const Vec<3, float>& inScale);
 
     protected:
         bool m_bCanTick;
 
-        Math<float, 4>::Mat m_position;
+        Mat<4, float> m_position;
         Transform m_transform;
 
         CameraComponent* m_camera;

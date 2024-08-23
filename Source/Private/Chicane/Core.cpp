@@ -145,9 +145,9 @@ namespace Chicane
         m_window->blur();
     }   
 
-    Math<int, 2>::Vec getCursorPosition()
+    Vec<2, int> getCursorPosition()
     {
-        Math<int, 2>::Vec position(0, 0);
+        Vec<2, int> position(0, 0);
 
         SDL_GetMouseState(
             &position.x,
@@ -157,7 +157,7 @@ namespace Chicane
         return position;
     }
 
-    Math<int, 2>::Vec getResolution()
+    Vec<2, int> getResolution()
     {
         if (m_window == nullptr)
         {
@@ -167,7 +167,7 @@ namespace Chicane
         return m_window->getDrawableSize();
     }
 
-    void setResolution(const Math<int, 2>::Vec& inResolution)
+    void setResolution(const Vec<2, int>& inResolution)
     {
         if (m_window == nullptr)
         {
@@ -178,8 +178,8 @@ namespace Chicane
     }
 
     void setViewport(
-        const Math<std::uint32_t, 2>::Vec& inSize,
-        const Math<float, 2>::Vec& inPosition
+        const Vec<2, std::uint32_t>& inSize,
+        const Vec<2, float>& inPosition
     )
     {
         if (m_window == nullptr)

@@ -10,12 +10,12 @@ namespace Chicane
     {
         namespace GridComponent
         {
-            Math<float, 2>::Vec getItemSize(const pugi::xml_node& inNode)
+            Vec<2, float> getItemSize(const pugi::xml_node& inNode)
             {
                 float width  = getSize(ITEM_WIDTH_ATTRIBUTE_NAME, inNode);
                 float height = getSize(ITEM_HEIGHT_ATTRIBUTE_NAME, inNode);
 
-                return Math<float, 2>::Vec(
+                return Vec<2, float>(
                     width,
                     height
                 );

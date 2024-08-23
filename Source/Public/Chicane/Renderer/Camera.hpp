@@ -12,15 +12,15 @@ namespace Chicane
     public:
         struct UBO
         {
-            Math<float, 4>::Vec clip = Math<float, 4>::Vec(0.1f, 1000.0f, 0.0f, 0.0f);
+            Vec<4, float> clip = Vec<4, float>(0.1f, 1000.0f, 0.0f, 0.0f);
 
-            Math<float, 4>::Mat projection     = Math<float, 4>::Mat();
-            Math<float, 4>::Mat view           = Math<float, 4>::Mat();
-            Math<float, 4>::Mat viewProjection = Math<float, 4>::Mat();
+            Mat<4, float> projection     = Mat<4, float>();
+            Mat<4, float> view           = Mat<4, float>();
+            Mat<4, float> viewProjection = Mat<4, float>();
 
-            Math<float, 4>::Vec forward = Math<float, 4>::Vec(FORWARD_DIRECTION, 0.0f);
-            Math<float, 4>::Vec right   = Math<float, 4>::Vec(RIGHT_DIRECTION, 0.0f);
-            Math<float, 4>::Vec up      = Math<float, 4>::Vec(UP_DIRECTION, 0.0f);
+            Vec<4, float> forward = Vec<4, float>(FORWARD_DIRECTION, 0.0f);
+            Vec<4, float> right   = Vec<4, float>(RIGHT_DIRECTION, 0.0f);
+            Vec<4, float> up      = Vec<4, float>(UP_DIRECTION, 0.0f);
         };
 
         struct UBOBundle
@@ -40,9 +40,9 @@ namespace Chicane
 
     public:
         // Settings
-        const Math<std::uint32_t, 2>::Vec& getViewport() const;
+        const Vec<2, std::uint32_t>& getViewport() const;
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
-        void setViewport(const Math<std::uint32_t, 2>::Vec& inViewportResolution);
+        void setViewport(const Vec<2, std::uint32_t>& inViewportResolution);
 
         float getFieldOfView() const;
         void setFieldOfView(float inFov);
@@ -54,28 +54,28 @@ namespace Chicane
         void setClip(float inNearClip, float inFarClip);
 
         // Transform
-        const Math<float, 3>::Vec& getTranslation() const;
-        void setTranslation(const Math<float, 3>::Vec& inTranslation);
-        void addTranslation(const Math<float, 3>::Vec& inTranslation);
+        const Vec<3, float>& getTranslation() const;
+        void setTranslation(const Vec<3, float>& inTranslation);
+        void addTranslation(const Vec<3, float>& inTranslation);
         void addTranslation(float inX, float inY, float inZ);
 
-        const Math<float, 3>::Vec& getRotation() const;
-        void setRotation(const Math<float, 3>::Vec& inRotation);
-        void addRotation(const Math<float, 3>::Vec& inRotation);
+        const Vec<3, float>& getRotation() const;
+        void setRotation(const Vec<3, float>& inRotation);
+        void addRotation(const Vec<3, float>& inRotation);
         void addRotation(float inRoll, float inYaw, float inPitch);
 
         // State
-        const Math<float, 3>::Vec& getForward() const;
-        const Math<float, 3>::Vec& getRight() const;
-        const Math<float, 3>::Vec& getUp() const;
+        const Vec<3, float>& getForward() const;
+        const Vec<3, float>& getRight() const;
+        const Vec<3, float>& getUp() const;
 
         // Render
         const UBO& getUBO() const;
 
     protected:
         // Transform
-        void updateTranslation(const Math<float, 3>::Vec& inTranslation);
-        void updateRotation(const Math<float, 3>::Vec& inRotation);
+        void updateTranslation(const Vec<3, float>& inTranslation);
+        void updateRotation(const Vec<3, float>& inRotation);
         void updateOrientation();
 
         // Render
@@ -88,14 +88,14 @@ namespace Chicane
         Transform m_transform;
 
         // State
-        Math<float>::Quat m_orientation;
+        Quat<float> m_orientation;
 
-        Math<float, 3>::Vec m_forward;
-        Math<float, 3>::Vec m_up;
-        Math<float, 3>::Vec m_right;
+        Vec<3, float> m_forward;
+        Vec<3, float> m_up;
+        Vec<3, float> m_right;
 
         // Settings
-        Math<std::uint32_t, 2>::Vec m_viewport;
+        Vec<2, std::uint32_t> m_viewport;
         float m_aspectRatio;
         float m_fieldOfView;
 

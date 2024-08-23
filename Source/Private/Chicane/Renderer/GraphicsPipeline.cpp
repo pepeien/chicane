@@ -5,8 +5,8 @@ namespace Chicane
     namespace GraphicsPipeline
     {
         vk::Viewport createViewport(
-            const Math<std::uint32_t, 2>::Vec& inSize,
-            const Math<float, 2>::Vec& inPosition
+            const Vec<2, std::uint32_t>& inSize,
+            const Vec<2, float>& inPosition
         )
         {
             vk::Viewport viewport {};
@@ -20,7 +20,7 @@ namespace Chicane
             return viewport;
         }
 
-        vk::Rect2D createScissor(const Math<std::uint32_t, 2>::Vec& inSize)
+        vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize)
         {
             vk::Rect2D scissor {};
             scissor.offset.x      = 0;
@@ -365,7 +365,7 @@ namespace Chicane
             pipelineInfo.pInputAssemblyState = &inputAsstembyState;
 
             // Viewport
-            Math<std::uint32_t, 2>::Vec size(m_swapChainExtent.width, m_swapChainExtent.height);
+            Vec<2, std::uint32_t> size(m_swapChainExtent.width, m_swapChainExtent.height);
 
             vk::Viewport viewport = createViewport(size);
             vk::Rect2D scissor = createScissor(size);

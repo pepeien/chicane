@@ -53,14 +53,14 @@ namespace Chicane
     bool isWindowFocused();
     void setWindowFocus(bool inIsFocused);
 
-    Math<int, 2>::Vec getCursorPosition();
+    Vec<2, int> getCursorPosition();
 
-    Math<int, 2>::Vec getResolution();
-    void setResolution(const Math<int, 2>::Vec& inResolution);
+    Vec<2, int> getResolution();
+    void setResolution(const Vec<2, int>& inResolution);
 
     void setViewport(
-        const Math<std::uint32_t, 2>::Vec& inSize,
-        const Math<float, 2>::Vec& inPosition = Math<float, 2>::Vec(0.0f)
+        const Vec<2, std::uint32_t>& inSize,
+        const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
     );
 
     Telemetry getTelemetry();
