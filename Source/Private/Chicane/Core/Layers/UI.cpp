@@ -129,11 +129,10 @@ namespace Chicane
             m_window->getPosition()
         );
 
-    	ImGuiIO &io = ImGui::GetIO();
-
         ImGui::Render();
 
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    	ImGuiIO &io = ImGui::GetIO();
+        if (io.ConfigFlags)
 		{
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();

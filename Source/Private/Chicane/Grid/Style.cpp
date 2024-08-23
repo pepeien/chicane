@@ -139,7 +139,7 @@ namespace Chicane
 
                 if (inData.find(MARGIN_RIGHT_ATTRIBUTE_NAME) != inData.end())
                 {
-                    outStyle.margin.right =calculateMargin(
+                    outStyle.margin.right = calculateMargin(
                         outStyle,
                         inData.at(MARGIN_RIGHT_ATTRIBUTE_NAME),
                         Direction::Horizontal
@@ -156,7 +156,7 @@ namespace Chicane
                 MARGIN_SEPARATOR
             );
 
-            if (splittedOneline.size() == 1) // `SINGLE_MARGIN`
+            if (splittedOneline.size() == 1) // SINGLE_MARGIN
             {
                 std::string margin = splittedOneline.at(0);
 
@@ -177,7 +177,7 @@ namespace Chicane
                 outStyle.margin.left   = horizontalMargin;
             }
 
-            if (splittedOneline.size() == 2) // `VERTICAL_MARGIN` `HORIZONTAL_MARGIN`
+            if (splittedOneline.size() == 2) // VERTICAL_MARGIN HORIZONTAL_MARGIN
             {
                 float verticalMargin = calculateMargin(
                     outStyle,
@@ -196,7 +196,7 @@ namespace Chicane
                 outStyle.margin.left   = horizontalMargin;
             }
 
-            if (splittedOneline.size() == 3) // `TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`
+            if (splittedOneline.size() == 3) // TOP_MARGIN BOTTOM_MARGIN HORIZONTAL_MARGIN
             {
                 float topMargin = calculateMargin(
                     outStyle,
@@ -220,7 +220,7 @@ namespace Chicane
                 outStyle.margin.left   = horizontalMargin;
             }
 
-            if (splittedOneline.size() >= 4) // `TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`
+            if (splittedOneline.size() >= 4) // TOP_MARGIN RIGHT_MARGIN BOTTOM_MARGIN LEFT_MARGIN
             {
                 outStyle.margin.top = calculateMargin(
                     outStyle,

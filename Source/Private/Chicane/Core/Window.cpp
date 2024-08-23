@@ -494,7 +494,7 @@ namespace Chicane
             break;
 
         case SDL_WINDOWEVENT_EXPOSED:
-            m_isMinimized = m_type == WindowType::Fullscreen ? true : false;
+            m_isMinimized = false;
 
             refreshSize();
 

@@ -187,26 +187,18 @@ namespace Chicane
                                          ImGuiWindowFlags_NoMove |
                                          ImGuiWindowFlags_NoBackground;
 
-            execOnTick(inNode);
+            ImVec2 uiResolution = ImVec2(
+                static_cast<float>(inResolution.x),
+                static_cast<float>(inResolution.y)
+            );
+            ImVec2 uiPosition = ImVec2(
+                static_cast<float>(inPosition.x),
+                static_cast<float>(inPosition.y)
+            );
 
-            ImGui::SetNextWindowContentSize(
-                ImVec2(
-                    static_cast<float>(inResolution.x),
-                    static_cast<float>(inResolution.y)
-                )
-            );
-            ImGui::SetNextWindowSize(
-                ImVec2(
-                    static_cast<float>(inResolution.x),
-                    static_cast<float>(inResolution.y)
-                )
-            );
-            ImGui::SetNextWindowPos(
-                ImVec2(
-                    static_cast<float>(inPosition.x),
-                    static_cast<float>(inPosition.y)
-                )
-            );
+            ImGui::SetNextWindowContentSize(uiResolution);
+            ImGui::SetNextWindowSize(uiResolution);
+            ImGui::SetNextWindowPos(uiPosition);
 
             if (!m_wasStyleAdded)
             {
@@ -214,6 +206,8 @@ namespace Chicane
 
                 m_wasStyleAdded = true;
             }
+
+            execOnTick(inNode);
 
             ImGui::Begin(
                 m_id.c_str(),
