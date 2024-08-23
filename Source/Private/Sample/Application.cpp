@@ -43,7 +43,7 @@ void Application::addApples()
 {
     float step = 400.0f;
 
-    Chicane::Vec<float>::Three position(0.0f);
+    Chicane::Math<float, 3>::Vec position(0.0f);
 
     for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
     {

@@ -53,8 +53,8 @@ namespace Chicane
         }
 
         void View::show(
-            const Vec<int>::Two& inResolution,
-            const Vec<int>::Two& inPosition
+            const Math<int, 2>::Vec& inResolution,
+            const Math<int, 2>::Vec& inPosition
         )
         {
             compile(
@@ -178,8 +178,8 @@ namespace Chicane
 
         void View::compile(
             const pugi::xml_node& inNode,
-            const Vec<int>::Two& inResolution,
-            const Vec<int>::Two& inPosition
+            const Math<int, 2>::Vec& inResolution,
+            const Math<int, 2>::Vec& inPosition
         )
         {
             ImGuiWindowFlags viewFlags = ImGuiWindowFlags_NoNav |

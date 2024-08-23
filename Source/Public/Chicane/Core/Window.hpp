@@ -23,7 +23,7 @@ namespace Chicane
     {
         std::string title        = "";
         std::string icon         = ""; // Optional [file path]
-        Vec<int>::Two resolution = Vec<int>::Two(0);
+        Math<int, 2>::Vec resolution = Math<int, 2>::Vec(0);
         int displayIndex         = 0;
         WindowType type          = WindowType::Windowed;
         bool isFocused           = false;
@@ -58,21 +58,21 @@ namespace Chicane
         void setTitle(const std::string& inTitle);
         void setIcon(const std::string& inIconPath);
 
-        const Vec<int>::Two& getSize() const;
-        void setSize(const Vec<int>::Two& inSize);
+        const Math<int, 2>::Vec& getSize() const;
+        void setSize(const Math<int, 2>::Vec& inSize);
         void setSize(int inWidth, int inHeight);
 
-        const Vec<int>::Two& getDrawableSize() const;
-        void setDrawableSize(const Vec<int>::Two& inSize);
+        const Math<int, 2>::Vec& getDrawableSize() const;
+        void setDrawableSize(const Math<int, 2>::Vec& inSize);
         void setDrawableSize(int inWidth, int inHeight);
 
-        const Vec<int>::Two& getPosition() const;
-        void setPosition(const Vec<int>::Two& inPosition);
+        const Math<int, 2>::Vec& getPosition() const;
+        void setPosition(const Math<int, 2>::Vec& inPosition);
         void setPosition(int inX, int inY);
 
         void setViewport(
-            const Vec<std::uint32_t>::Two& inSize,
-            const Vec<float>::Two& inPosition = Vec<float>::Two(0.0f)
+            const Math<std::uint32_t, 2>::Vec& inSize,
+            const Math<float, 2>::Vec& inPosition = Math<float, 2>::Vec(0.0f)
         );
 
         void setDisplay(int inMonitorIndex);
@@ -112,9 +112,9 @@ namespace Chicane
 
         // Settings
         WindowType m_type;
-        Vec<int>::Two m_size;
-        Vec<int>::Two m_drawableSize;
-        Vec<int>::Two m_position;
+        Math<int, 2>::Vec m_size;
+        Math<int, 2>::Vec m_drawableSize;
+        Math<int, 2>::Vec m_position;
 
         bool m_isFocused;
         bool m_isResizable;

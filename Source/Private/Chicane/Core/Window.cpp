@@ -7,7 +7,7 @@
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer.hpp"
 
-const Chicane::Vec<int>::Two VEC2_ZERO(0);
+const Chicane::Math<int, 2>::Vec VEC2_ZERO(0);
 
 namespace Chicane
 {
@@ -174,7 +174,7 @@ namespace Chicane
         SDL_SetRelativeMouseMode(SDL_FALSE);
     }
 
-    const Vec<int>::Two& Window::getSize() const
+    const Math<int, 2>::Vec& Window::getSize() const
     {
         if (m_isMinimized)
         {
@@ -184,7 +184,7 @@ namespace Chicane
         return m_size;
     }
 
-    void Window::setSize(const Vec<int>::Two& inSize)
+    void Window::setSize(const Math<int, 2>::Vec& inSize)
     {
         setSize(inSize.x, inSize.y);
     }
@@ -211,7 +211,7 @@ namespace Chicane
         m_size.y = inHeight;
     }
 
-    const Vec<int>::Two& Window::getDrawableSize() const
+    const Math<int, 2>::Vec& Window::getDrawableSize() const
     {
         if (m_isMinimized)
         {
@@ -221,7 +221,7 @@ namespace Chicane
         return m_drawableSize;
     }
 
-    void Window::setDrawableSize(const Vec<int>::Two& inSize)
+    void Window::setDrawableSize(const Math<int, 2>::Vec& inSize)
     {
         setDrawableSize(
             inSize.x,
@@ -240,12 +240,12 @@ namespace Chicane
         m_drawableSize.y = inHeight;
     }
 
-    const Vec<int>::Two& Window::getPosition() const
+    const Math<int, 2>::Vec& Window::getPosition() const
     {
         return m_position;
     }
 
-    void Window::setPosition(const Vec<int>::Two& inPosition)
+    void Window::setPosition(const Math<int, 2>::Vec& inPosition)
     {
         setPosition(
             inPosition.x,
@@ -276,8 +276,8 @@ namespace Chicane
     }
 
     void Window::setViewport(
-        const Vec<std::uint32_t>::Two& inSize,
-        const Vec<float>::Two& inPosition
+        const Math<std::uint32_t, 2>::Vec& inSize,
+        const Math<float, 2>::Vec& inPosition
     )
     {
         if (!m_renderer)
@@ -406,7 +406,7 @@ namespace Chicane
 
     bool Window::isMinimized()
     {
-        Vec<int>::Two currentSize = getSize();
+        Math<int, 2>::Vec currentSize = getSize();
 
         return m_isMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }

@@ -72,8 +72,8 @@ namespace Chicane
         void pushLayerAfter(const std::string& inId, Layer* inLayer);
 
         void setViewport(
-            const Vec<std::uint32_t>::Two& inSize,
-            const Vec<float>::Two& inPosition = Vec<float>::Two(0.0f)
+            const Math<std::uint32_t, 2>::Vec& inSize,
+            const Math<float, 2>::Vec& inPosition = Math<float, 2>::Vec(0.0f)
         );
 
         // Event
@@ -150,8 +150,8 @@ namespace Chicane
 
         // Window
         Window* m_window;
-        Vec<std::uint32_t>::Two m_viewportSize;
-        Vec<float>::Two m_viewportPosition;
+        Math<std::uint32_t, 2>::Vec m_viewportSize;
+        Math<float, 2>::Vec m_viewportPosition;
 
         // Layers
         std::vector<Layer*> m_layers;

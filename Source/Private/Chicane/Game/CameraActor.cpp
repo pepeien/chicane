@@ -12,8 +12,8 @@ namespace Chicane
         : Pawn()
     {
         m_camera = new CameraComponent();
-        m_camera->setTranslation(Vec<float>::Three(0.0f, -110.0f, 50.0f));
-        m_camera->setRotation(Vec<float>::Three(0.0f, 0.0f, -30.0f));
+        m_camera->setTranslation(Math<float, 3>::Vec(0.0f, -110.0f, 50.0f));
+        m_camera->setRotation(Math<float, 3>::Vec(0.0f, 0.0f, -30.0f));
     }
 
     void CameraActor::onControlAttachment()

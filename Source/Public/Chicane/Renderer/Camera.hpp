@@ -12,15 +12,15 @@ namespace Chicane
     public:
         struct UBO
         {
-            Vec<float>::Four clip = Vec<float>::Four(0.1f, 1000.0f, 0.0f, 0.0f);
+            Math<float, 4>::Vec clip = Math<float, 4>::Vec(0.1f, 1000.0f, 0.0f, 0.0f);
 
-            Mat<float>::Four projection     = Mat<float>::Four();
-            Mat<float>::Four view           = Mat<float>::Four();
-            Mat<float>::Four viewProjection = Mat<float>::Four();
+            Math<float, 4>::Mat projection     = Math<float, 4>::Mat();
+            Math<float, 4>::Mat view           = Math<float, 4>::Mat();
+            Math<float, 4>::Mat viewProjection = Math<float, 4>::Mat();
 
-            Vec<float>::Four forward = Vec<float>::Four(FORWARD_DIRECTION, 0.0f);
-            Vec<float>::Four right   = Vec<float>::Four(RIGHT_DIRECTION, 0.0f);
-            Vec<float>::Four up      = Vec<float>::Four(UP_DIRECTION, 0.0f);
+            Math<float, 4>::Vec forward = Math<float, 4>::Vec(FORWARD_DIRECTION, 0.0f);
+            Math<float, 4>::Vec right   = Math<float, 4>::Vec(RIGHT_DIRECTION, 0.0f);
+            Math<float, 4>::Vec up      = Math<float, 4>::Vec(UP_DIRECTION, 0.0f);
         };
 
         struct UBOBundle
@@ -40,9 +40,9 @@ namespace Chicane
 
     public:
         // Settings
-        const Vec<std::uint32_t>::Two& getViewport() const;
+        const Math<std::uint32_t, 2>::Vec& getViewport() const;
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
-        void setViewport(const Vec<std::uint32_t>::Two& inViewportResolution);
+        void setViewport(const Math<std::uint32_t, 2>::Vec& inViewportResolution);
 
         float getFieldOfView() const;
         void setFieldOfView(float inFov);
@@ -54,28 +54,28 @@ namespace Chicane
         void setClip(float inNearClip, float inFarClip);
 
         // Transform
-        const Vec<float>::Three& getTranslation() const;
-        void setTranslation(const Vec<float>::Three& inTranslation);
-        void addTranslation(const Vec<float>::Three& inTranslation);
+        const Math<float, 3>::Vec& getTranslation() const;
+        void setTranslation(const Math<float, 3>::Vec& inTranslation);
+        void addTranslation(const Math<float, 3>::Vec& inTranslation);
         void addTranslation(float inX, float inY, float inZ);
 
-        const Vec<float>::Three& getRotation() const;
-        void setRotation(const Vec<float>::Three& inRotation);
-        void addRotation(const Vec<float>::Three& inRotation);
+        const Math<float, 3>::Vec& getRotation() const;
+        void setRotation(const Math<float, 3>::Vec& inRotation);
+        void addRotation(const Math<float, 3>::Vec& inRotation);
         void addRotation(float inRoll, float inYaw, float inPitch);
 
         // State
-        const Vec<float>::Three& getForward() const;
-        const Vec<float>::Three& getRight() const;
-        const Vec<float>::Three& getUp() const;
+        const Math<float, 3>::Vec& getForward() const;
+        const Math<float, 3>::Vec& getRight() const;
+        const Math<float, 3>::Vec& getUp() const;
 
         // Render
         const UBO& getUBO() const;
 
     protected:
         // Transform
-        void updateTranslation(const Vec<float>::Three& inTranslation);
-        void updateRotation(const Vec<float>::Three& inRotation);
+        void updateTranslation(const Math<float, 3>::Vec& inTranslation);
+        void updateRotation(const Math<float, 3>::Vec& inRotation);
         void updateOrientation();
 
         // Render
@@ -88,14 +88,14 @@ namespace Chicane
         Transform m_transform;
 
         // State
-        Quat<float>::Default m_orientation;
+        Math<float>::Quat m_orientation;
 
-        Vec<float>::Three m_forward;
-        Vec<float>::Three m_up;
-        Vec<float>::Three m_right;
+        Math<float, 3>::Vec m_forward;
+        Math<float, 3>::Vec m_up;
+        Math<float, 3>::Vec m_right;
 
         // Settings
-        Vec<std::uint32_t>::Two m_viewport;
+        Math<std::uint32_t, 2>::Vec m_viewport;
         float m_aspectRatio;
         float m_fieldOfView;
 

@@ -7,7 +7,7 @@ namespace Chicane
 {
     Actor::Actor()
         : m_bCanTick(false),
-        m_position(Mat<float>::Four(1.0f)),
+        m_position(Math<float, 4>::Mat(1.0f)),
         m_transform({}),
         m_camera(nullptr)
     {}
@@ -27,14 +27,14 @@ namespace Chicane
         m_bCanTick = bInCanTick;
     }
 
-    const Mat<float>::Four& Actor::getPosition() const
+    const Math<float, 4>::Mat& Actor::getPosition() const
     {
         return m_position;
     }
 
-    void Actor::setRelativeTranslation(const Vec<float>::Three& inTranslation)
+    void Actor::setRelativeTranslation(const Math<float, 3>::Vec& inTranslation)
     {
-        Vec<float>::Three translation = m_transform.translation;
+        Math<float, 3>::Vec translation = m_transform.translation;
         translation.x += inTranslation.x;
         translation.y += inTranslation.y;
         translation.z += inTranslation.z;
@@ -42,14 +42,14 @@ namespace Chicane
         updateTranslation(translation);
     }
 
-    void Actor::setAbsoluteTranslation(const Vec<float>::Three& inTranslation)
+    void Actor::setAbsoluteTranslation(const Math<float, 3>::Vec& inTranslation)
     {
         updateTranslation(inTranslation);
     }
 
-    void Actor::setRelativeRotation(const Vec<float>::Three& inRotation)
+    void Actor::setRelativeRotation(const Math<float, 3>::Vec& inRotation)
     {
-        Vec<float>::Three rotation = m_transform.rotation;
+        Math<float, 3>::Vec rotation = m_transform.rotation;
         rotation.x += inRotation.x;
         rotation.y += inRotation.y;
         rotation.z += inRotation.z;
@@ -57,14 +57,14 @@ namespace Chicane
         updateRotation(rotation);
     }
 
-    void Actor::setAbsoluteRotation(const Vec<float>::Three& inRotation)
+    void Actor::setAbsoluteRotation(const Math<float, 3>::Vec& inRotation)
     {
         updateRotation(inRotation);
     }
 
-    void Actor::setRelativeScale(const Vec<float>::Three& inScale)
+    void Actor::setRelativeScale(const Math<float, 3>::Vec& inScale)
     {
-        Vec<float>::Three scale = m_transform.scale;
+        Math<float, 3>::Vec scale = m_transform.scale;
         scale.x += inScale.x;
         scale.y += inScale.y;
         scale.z += inScale.z;
@@ -72,7 +72,7 @@ namespace Chicane
         updateScale(scale);
     }
 
-    void Actor::setAbsoluteScale(const Vec<float>::Three& inScale)
+    void Actor::setAbsoluteScale(const Math<float, 3>::Vec& inScale)
     {
         updateScale(inScale);
     }
@@ -97,7 +97,7 @@ namespace Chicane
         return m_mesh;
     }
 
-    void Actor::updateTranslation(const Vec<float>::Three& inTranslation)
+    void Actor::updateTranslation(const Math<float, 3>::Vec& inTranslation)
     {
         bool didChange = inTranslation.x != m_transform.translation.x ||
                          inTranslation.y != m_transform.translation.y ||
@@ -113,7 +113,7 @@ namespace Chicane
         m_transform.translation = inTranslation;
     }
 
-    void Actor::updateRotation(const Vec<float>::Three& inRotation)
+    void Actor::updateRotation(const Math<float, 3>::Vec& inRotation)
     {
         bool didChange = inRotation.x != m_transform.rotation.x ||
                          inRotation.y != m_transform.rotation.y ||
@@ -124,7 +124,7 @@ namespace Chicane
             return;
         }
 
-        Vec<float>::Three radianAngles = glm::radians(inRotation);
+        Math<float, 3>::Vec radianAngles = glm::radians(inRotation);
 
         m_position = glm::rotate(
             m_position,
@@ -145,7 +145,7 @@ namespace Chicane
         m_transform.rotation = inRotation;
     }
 
-    void Actor::updateScale(const Vec<float>::Three& inScale)
+    void Actor::updateScale(const Math<float, 3>::Vec& inScale)
     {
         bool didChange = inScale.x != m_transform.scale.x ||
                          inScale.y != m_transform.scale.y ||

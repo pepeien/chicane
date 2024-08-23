@@ -8,7 +8,7 @@ Apple::Apple()
     m_upTarget(20.0f)
 {
     setCanTick(true);
-    setAbsoluteScale(Chicane::Vec<float>::Three(0.025f));
+    setAbsoluteScale(Chicane::Math<float, 3>::Vec(0.025f));
 
     m_mesh = Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
 }
@@ -16,7 +16,7 @@ Apple::Apple()
 void Apple::onTick(float inDeltaTime)
 {
     setRelativeRotation(
-        Chicane::Vec<float>::Three(
+        Chicane::Math<float, 3>::Vec(
             0.0f,
             0.0f,
             0.05f * inDeltaTime

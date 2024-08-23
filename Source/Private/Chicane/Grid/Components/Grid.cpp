@@ -10,12 +10,12 @@ namespace Chicane
     {
         namespace GridComponent
         {
-            Vec<float>::Two getItemSize(const pugi::xml_node& inNode)
+            Math<float, 2>::Vec getItemSize(const pugi::xml_node& inNode)
             {
                 float width  = getSize(ITEM_WIDTH_ATTRIBUTE_NAME, inNode);
                 float height = getSize(ITEM_HEIGHT_ATTRIBUTE_NAME, inNode);
 
-                return Vec<float>::Two(
+                return Math<float, 2>::Vec(
                     width,
                     height
                 );
@@ -70,7 +70,9 @@ namespace Chicane
                     inItemCount,
                     static_cast<std::uint32_t>(inProps.style.width / itemSize.x)
                 );
-                std::uint32_t rowCount = std::ceil((inItemCount + 0.0f) / (columnCount + 0.0f));
+                std::uint32_t rowCount = static_cast<std::uint32_t>(
+                    std::ceil(inItemCount / columnCount)
+                );
 
                 std::uint32_t chidrenVisited = 0;
 

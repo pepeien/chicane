@@ -9,8 +9,8 @@ namespace Chicane
         m_imageCount(0),
         m_currentImageIndex(0),
         m_window(inWindow),
-        m_viewportSize(Vec<std::uint32_t>::Two(0)),
-        m_viewportPosition(Vec<std::uint32_t>::Two(0.0f))
+        m_viewportSize(Math<std::uint32_t, 2>::Vec(0)),
+        m_viewportPosition(Math<std::uint32_t, 2>::Vec(0))
     {
         buildInstance();
         buildDebugMessenger();
@@ -147,8 +147,8 @@ namespace Chicane
     }
 
     void Renderer::setViewport(
-        const Vec<std::uint32_t>::Two& inSize,
-        const Vec<float>::Two& inPosition
+        const Math<std::uint32_t, 2>::Vec& inSize,
+        const Math<float, 2>::Vec& inPosition
     )
     {
         m_viewportSize     = inSize;
@@ -415,7 +415,7 @@ namespace Chicane
         }
 
         setViewport(
-            Vec<std::uint32_t>::Two(
+            Math<std::uint32_t, 2>::Vec(
                 m_swapChain.extent.width,
                 m_swapChain.extent.height
             )

@@ -58,7 +58,7 @@ namespace Chicane
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
-            modelBufferCreateInfo.size             = sizeof(Mat<float>::Four) * actors.size();
+            modelBufferCreateInfo.size             = sizeof(Math<float, 4>::Mat) * actors.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
             Buffer::init(modelData.buffer, modelBufferCreateInfo);

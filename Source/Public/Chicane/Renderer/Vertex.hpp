@@ -9,10 +9,10 @@ namespace Chicane
     {
         struct Instance
         {
-            Vec<float>::Three position;
-            Vec<float>::Three color;
-            Vec<float>::Two texturePosition;
-            Vec<float>::Three normal;
+            Math<float, 3>::Vec position;
+            Math<float, 3>::Vec color;
+            Math<float, 2>::Vec texturePosition;
+            Math<float, 3>::Vec normal;
         };
 
         vk::VertexInputBindingDescription getBindingDescription();

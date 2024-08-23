@@ -52,7 +52,7 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::Device& inLogicalDevice,
             const vk::SurfaceKHR& inSurface,
-            const Vec<int>::Two& inResolution
+            const Math<int, 2>::Vec& inResolution
         );
     }
 }
