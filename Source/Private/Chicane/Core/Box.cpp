@@ -1,5 +1,6 @@
 #include "Chicane/Core/Box.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Renderer/Image.hpp"
 
 namespace Chicane

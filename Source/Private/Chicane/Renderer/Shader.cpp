@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Shader.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
+
 namespace Chicane
 {
     namespace Shader

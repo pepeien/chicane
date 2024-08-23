@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Renderer/Buffer.hpp"
 #include "Chicane/Renderer/Descriptor.hpp"
 #include "Chicane/Renderer/Image.hpp"
@@ -48,7 +47,7 @@ namespace Chicane
             int m_height;
             int m_channels;
             std::vector<unsigned char> m_data;
-            stbi_uc* m_pixels;
+            unsigned char* m_pixels;
             vk::Device m_logicalDevice;
             vk::PhysicalDevice m_physicalDevice;
 

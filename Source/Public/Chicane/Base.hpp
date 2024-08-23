@@ -1,8 +1,5 @@
 #pragma once
 
-#define STB_IMAGE_STATIC
-#define STB_IMAGE_IMPLEMENTATION
-
 #define GLM_ENABLE_EXPERIMENTAL
 
 #define SDL_MAIN_HANDLED
@@ -31,6 +28,7 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <ctime>
+#include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -59,12 +57,8 @@
 #include "imgui/backends/imgui_impl_vulkan.h"
 #include "imgui/misc/cpp/imgui_stdlib.h"
 
-#include "stb/stb_image.h"
-
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_vulkan.h"
-
-#include "SDL_image.h"
 
 #include "vulkan/vulkan.hpp"
 
@@ -84,6 +78,8 @@ constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
 
 namespace Chicane
 {
+    typedef unsigned char ImageData;
+
     struct FrameTelemetry
     {
         uint32_t count = 0;

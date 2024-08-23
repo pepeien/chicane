@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Core/FileSystem.hpp"
 
 namespace Chicane
 {
@@ -12,6 +11,5 @@ namespace Chicane
             const std::string& inFilepath,
             const vk::Device& inLogicalDevice
         );
-        
     }
 }

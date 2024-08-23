@@ -55,13 +55,13 @@ namespace Chicane
         std::vector<ListItem> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
 
         std::vector<char> readFile(const std::string& inFilepath);
-        stbi_uc* readImageFromFile(
+        ImageData* readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             const std::string& inFilepath
         );
-        stbi_uc* readImageFromMemory(
+        ImageData* readImageFromMemory(
             int& outWidth,
             int& outHeight,
             int& outChannel,

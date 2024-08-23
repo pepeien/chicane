@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Texture.hpp"
 
+#include "Chicane/Core/FileSystem.hpp"
+
 namespace Chicane
 {
     namespace Texture

@@ -2,7 +2,6 @@
 
 #include "Chicane/Base.hpp"
 
-#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Helper.hpp"
 
 namespace Chicane

@@ -42,7 +42,6 @@ target_include_directories(
         ${VENDORS_DIR}/imgui
         ${VENDORS_DIR}/pugixml
         ${VENDORS_DIR}/SDL2
-        ${VENDORS_DIR}/SDL2_Image/include
     PRIVATE
         ${PRIVATE_DIR}
 )
@@ -53,7 +52,6 @@ target_link_libraries(
     PUBLIC
         pugixml-static
         SDL2-static
-        SDL2_image
     PRIVATE
         ${Vulkan_LIBRARIES}
 )

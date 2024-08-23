@@ -1,6 +1,9 @@
 #include "Chicane/Core/FileSystem.hpp"
 
-#include <filesystem>
+
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
 
 #include "Chicane/Core/Helper.hpp"
 #include "Chicane/Core/Log.hpp"
@@ -179,14 +182,14 @@ namespace Chicane
             return buffer;
         }
 
-        stbi_uc* readImageFromFile(
+        ImageData* readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             const std::string& inFilepath
         )
         {
-            stbi_uc* result = stbi_load(
+            ImageData* result = stbi_load(
                 inFilepath.c_str(),
                 &outWidth,
                 &outHeight,
@@ -202,14 +205,14 @@ namespace Chicane
             return result;
         }
 
-        stbi_uc* readImageFromMemory(
+        ImageData* readImageFromMemory(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             const std::vector<unsigned char>& inData
         )
         {
-            stbi_uc* result = stbi_load_from_memory(
+            ImageData* result = stbi_load_from_memory(
                 &inData[0],
                 static_cast<int>(inData.size()),
                 &outWidth,

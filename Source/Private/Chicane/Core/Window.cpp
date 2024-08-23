@@ -1,6 +1,9 @@
 #include "Chicane/Core/Window.hpp"
 
-#include "Chicane/Core.hpp"
+#define SDL_STBIMG_DEF static
+#define SDL_STBIMAGE_IMPLEMENTATION
+#include "stb/sdl_stb_image.h"
+
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer.hpp"
 
@@ -307,7 +310,7 @@ namespace Chicane
             throw std::runtime_error("The file [ " + iconPath + " ] doesn't exist");
         }
 
-        SDL_Surface* icon = IMG_Load(inIconPath.c_str());
+        SDL_Surface* icon = STBIMG_Load(inIconPath.c_str());
 
         if (!icon)
         {
@@ -476,7 +479,7 @@ namespace Chicane
 
         m_telemetry.frame.rate  = std::uint32_t((m_telemetry.frame.count * 0.5) + (m_telemetry.frame.rate * 0.5));
         m_telemetry.frame.count = 0;
-        m_telemetry.frame.time  = 1000.0f / float(m_telemetry.frame.rate ==0?0.001:m_telemetry.frame.rate);
+        m_telemetry.frame.time  = 1000.0f / float(m_telemetry.frame.rate ==0 ? 0.001 : m_telemetry.frame.rate);
         m_telemetry.delta       = 0;
     }
 
