@@ -18,7 +18,7 @@ namespace Chicane
         std::vector<Actor*> getDrawableActors() const;
         std::uint32_t getActorCount() const;
         void addActor(Actor* inActor);
-        Subscription<Actor*>* addActorSubscription(
+        Subscription<Actor*>* watchActors(
             std::function<void (Actor*)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
             std::function<void ()> inCompleteCallback = nullptr

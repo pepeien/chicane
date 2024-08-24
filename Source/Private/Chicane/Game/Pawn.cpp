@@ -28,34 +28,4 @@ namespace Chicane
 
         onControleDeattachment();
     }
-
-    void Pawn::addControllerRollInput(float inValue)
-    {
-        if (!hasCamera())
-        {
-            return;
-        }
-
-        m_camera->addRotation(inValue, 0.0f, 0.0f);
-    }
-
-    void Pawn::addControllerYawInput(float inValue)
-    {
-        if (!hasCamera())
-        {
-            return;
-        }
-
-        m_camera->addRotation(0.0f, inValue, 0.0f);
-    }
-
-    void Pawn::addControllerPitchInput(float inValue)
-    {
-        if (!hasCamera())
-        {
-            return;
-        }
-
-        m_camera->addRotation(0.0f, 0.0f, inValue);
-    }
 }

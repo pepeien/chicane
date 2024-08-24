@@ -54,9 +54,6 @@ namespace Chicane
 
             SwapChain::Bundle* swapchain;
             int imageCount;
-
-            // Multi Thread
-            Thread::Pool* threadPool;
         };
 
     public:
@@ -117,8 +114,7 @@ namespace Chicane
 
         void prepareCamera(Frame::Instance& outFrame);
 
-        void buildThreadPool();
-        void destroyThreadPool();
+        void buildDefaultCamera();
 
     private:
         // Instance
@@ -156,7 +152,7 @@ namespace Chicane
         // Layers
         std::vector<Layer*> m_layers;
 
-        // Multi Thread
-        std::unique_ptr<Thread::Pool> m_threadPool;
+        // Essentials
+        std::unique_ptr<Camera> m_defaultCamera;
     };
 }

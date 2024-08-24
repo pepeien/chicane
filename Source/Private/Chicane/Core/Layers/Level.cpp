@@ -1,6 +1,7 @@
 #include "Chicane/Core/Layers/Level.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Game/Components/Actor.hpp"
 
 namespace Chicane
 {
@@ -188,12 +189,12 @@ namespace Chicane
 
         inCommandBuffer.endRenderPass();
 
-        tickActors();
+        tickAll();
     }
 
     void LevelLayer::loadEvents()
     {
-        m_level->addActorSubscription(
+        m_level->watchActors(
             std::bind(
                 &LevelLayer::loadActor,
                 this,
@@ -295,7 +296,7 @@ namespace Chicane
         }
 
         GraphicsPipeline::CreateInfo createInfo {};
-        createInfo.canOverwrite          = true;
+        createInfo.canOverwrite          = false;
         createInfo.hasVertices           = true;
         createInfo.hasDepth              = true;
         createInfo.logicalDevice         = m_internals.logicalDevice;
@@ -429,7 +430,7 @@ namespace Chicane
         );
     }
 
-    void LevelLayer::tickActors()
+    void LevelLayer::tickActors(float inDeltaTime)
     {
         if (!m_isInitialized)
         {
@@ -438,12 +439,43 @@ namespace Chicane
 
         for (Actor* actor : m_level->getActors())
         {
-            if (actor->canTick() == false)
+            if (!actor->canTick())
             {
                 continue;
             }
 
-            actor->onTick(getTelemetry().deltaToTick());
+            actor->onTick(inDeltaTime);
         }
+    }
+
+    void LevelLayer::tickComponents(float inDeltaTime)
+    {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
+        for (ActorComponent* component : getComponents())
+        {
+            if (!component->canTick())
+            {
+                continue;
+            }
+
+            component->onTick(inDeltaTime);
+        }
+    }
+
+    void LevelLayer::tickAll()
+    {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
+        float deltaTime = getTelemetry().deltaToTick();
+
+        tickActors(deltaTime);
+        tickComponents(deltaTime);
     }
 }

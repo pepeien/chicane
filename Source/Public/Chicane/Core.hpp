@@ -23,15 +23,6 @@ namespace Chicane
     struct Telemetry;
 
     // Game
-    bool hasCamera();
-    Camera* getCamera();
-    void setCamera(Camera* inCamera);
-    void subscribeToCamera(
-        std::function<void (Camera*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
-    );
-
     bool hasController();
     Controller* getController();
     void setController(Controller* inController);
@@ -39,12 +30,25 @@ namespace Chicane
     bool hasLevel();
     Level* getLevel();
     void setLevel(Level* inLevel);
-    void subscribeToLevel(
+    void watchLevel(
         std::function<void (Level*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     );
+
     void addActor(Actor* inActor);
+
+    bool hasCamera();
+    Camera* getCamera();
+    void setCamera(Camera* inCamera);
+    void watchCamera(
+        std::function<void (Camera*)> inNextCallback,
+        std::function<void (const std::string&)> inErrorCallback = nullptr,
+        std::function<void ()> inCompleteCallback = nullptr
+    );
+
+    std::vector<ActorComponent*> getComponents();
+    void addComponent(ActorComponent* inComponent);
 
     // Window
     Window* getWindow();

@@ -6,26 +6,29 @@
 namespace Chicane
 {
     Actor::Actor()
-        : m_bCanTick(false),
+        : m_canTick(false),
         m_position(Mat<4, float>(1.0f)),
-        m_transform({}),
-        m_camera(nullptr)
+        m_transform({})
     {}
-
-    Actor::~Actor()
-    {
-        delete m_camera;
-    }
 
     bool Actor::canTick() const
     {
-        return m_bCanTick;
+        return m_canTick;
     }
 
-    void Actor::setCanTick(bool bInCanTick)
+    void Actor::setCanTick(bool inCanTick)
     {
-        glm::vec2(1.0f);
-        m_bCanTick = bInCanTick;
+        m_canTick = inCanTick;
+    }
+
+    const Vec<3, float>& Actor::getTranslation() const
+    {
+        return m_transform.translation;
+    }
+
+    const Vec<3, float>& Actor::getRotation() const
+    {
+        return m_transform.rotation;
     }
 
     const Mat<4, float>& Actor::getPosition() const
@@ -78,16 +81,6 @@ namespace Chicane
         updateScale(inScale);
     }
 
-    bool Actor::hasCamera() const
-    {
-        return m_camera != nullptr;
-    }
-
-    const std::vector<ActorComponent*>& Actor::getComponents() const
-    {
-        return m_components;
-    }
-
     bool Actor::hasMesh() const
     {
         return !m_mesh.name.empty();
@@ -97,14 +90,19 @@ namespace Chicane
     {
         return m_mesh;
     }
+  
+    void Actor::setMesh(const Box::Instance& inMesh)
+    {
+        m_mesh = inMesh;
+    }
 
     void Actor::updateTranslation(const Vec<3, float>& inTranslation)
     {
-        bool didChange = inTranslation.x != m_transform.translation.x ||
-                         inTranslation.y != m_transform.translation.y ||
-                         inTranslation.z != m_transform.translation.z;
+        bool isIdentical = std::fabs(m_transform.translation.x - inTranslation.x) < FLT_EPSILON &&
+                           std::fabs(m_transform.translation.y - inTranslation.y) < FLT_EPSILON &&
+                           std::fabs(m_transform.translation.z - inTranslation.z) < FLT_EPSILON;
 
-        if (!didChange)
+        if (isIdentical)
         {
             return;
         }
@@ -116,11 +114,11 @@ namespace Chicane
 
     void Actor::updateRotation(const Vec<3, float>& inRotation)
     {
-        bool didChange = inRotation.x != m_transform.rotation.x ||
-                         inRotation.y != m_transform.rotation.y ||
-                         inRotation.z != m_transform.rotation.z;
+        bool isIdentical = std::fabs(inRotation.x != m_transform.rotation.x) < FLT_EPSILON &&
+                           std::fabs(inRotation.y != m_transform.rotation.y) < FLT_EPSILON &&
+                           std::fabs(inRotation.z != m_transform.rotation.z) < FLT_EPSILON;
 
-        if (!didChange)
+        if (isIdentical)
         {
             return;
         }
@@ -146,11 +144,11 @@ namespace Chicane
 
     void Actor::updateScale(const Vec<3, float>& inScale)
     {
-        bool didChange = inScale.x != m_transform.scale.x ||
-                         inScale.y != m_transform.scale.y ||
-                         inScale.z != m_transform.scale.z;
+        bool isIdentical = std::fabs(m_transform.scale.x - inScale.x) < FLT_EPSILON &&
+                           std::fabs(m_transform.scale.y - inScale.y) < FLT_EPSILON &&
+                           std::fabs(m_transform.scale.z - inScale.z) < FLT_EPSILON;
 
-        if (!didChange)
+        if (isIdentical)
         {
             return;
         }

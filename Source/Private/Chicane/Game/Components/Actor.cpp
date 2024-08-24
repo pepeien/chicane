@@ -1,10 +1,25 @@
 #include "Chicane/Game/Components/Actor.hpp"
 
+#include "Chicane/Core.hpp"
+
 namespace Chicane
 {
     ActorComponent::ActorComponent()
-    :   m_owner(nullptr)
-    {}
+        : m_canTick(false),
+        m_owner(nullptr)
+    {
+        addComponent(this);
+    }
+
+    bool ActorComponent::canTick() const
+    {
+        return m_canTick;
+    }
+
+    void ActorComponent::setCanTick(bool inCanTick)
+    {
+        m_canTick = inCanTick;
+    }
 
     bool ActorComponent::hasOwner() const
     {
@@ -13,5 +28,7 @@ namespace Chicane
 
     void ActorComponent::setOwner(Actor* inActor) {
         m_owner = inActor;
+
+        onAttachment();
     }
 }

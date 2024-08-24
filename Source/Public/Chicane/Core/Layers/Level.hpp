@@ -39,7 +39,9 @@ namespace Chicane
         void initMaterialResources();
         void buildAssets();
 
-        void tickActors();
+        void tickComponents(float inDeltaTime);
+        void tickActors(float inDeltaTime);
+        void tickAll();
 
     private:
         Renderer::Internals m_internals;

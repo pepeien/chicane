@@ -21,15 +21,12 @@ namespace Chicane
         buildCommandPool();
         buildMainCommandBuffer();
         buildFramesCommandBuffers();
-        buildThreadPool();
+        buildDefaultCamera();
     }
 
     Renderer::~Renderer()
     {
         m_logicalDevice.waitIdle();
-
-        // Multi thread
-        destroyThreadPool();
 
         // Vulkan
         destroyCommandPool();
@@ -61,8 +58,6 @@ namespace Chicane
 
         internals.mainCommandBuffer = m_mainCommandBuffer;
         internals.imageCount        = m_imageCount;
-
-        internals.threadPool = m_threadPool.get();
 
         return internals;
     }
@@ -547,24 +542,22 @@ namespace Chicane
         );
     }
 
-    void Renderer::buildThreadPool()
+    void Renderer::buildDefaultCamera()
     {
-        if (m_threadPool)
+        if (hasCamera())
         {
             return;
         }
 
-        m_threadPool = std::make_unique<Thread::Pool>();
-    }
+        m_defaultCamera = std::make_unique<Camera>();
 
-    void Renderer::destroyThreadPool()
-    {
-        if (!m_threadPool)
-        {
-            return;
-        }
-
-        m_threadPool->clear();
-        m_threadPool.reset();
+        watchCamera(
+            [this](Camera* inCamera) {
+                if (inCamera == nullptr)
+                {
+                    setCamera(m_defaultCamera.get());
+                }
+            }
+        );
     }
 }

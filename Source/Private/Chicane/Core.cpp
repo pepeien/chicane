@@ -7,13 +7,15 @@
 
 namespace Chicane
 {
-    Camera* m_camera = nullptr;
-    std::unique_ptr<Observable<Camera*>> m_cameraObservable = std::make_unique<Observable<Camera*>>();
-
     Controller* m_controller = nullptr;
 
     Level* m_level = nullptr;
     std::unique_ptr<Observable<Level*>> m_levelObservable = std::make_unique<Observable<Level*>>();
+
+    Camera* m_camera = nullptr;
+    std::unique_ptr<Observable<Camera*>> m_cameraObservable = std::make_unique<Observable<Camera*>>();
+
+    std::vector<ActorComponent*> m_components {};
 
     Window* m_window = nullptr;
 
@@ -34,7 +36,7 @@ namespace Chicane
         m_cameraObservable->next(inCamera);
     }
 
-    void subscribeToCamera(
+    void watchCamera(
         std::function<void (Camera*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
@@ -60,12 +62,6 @@ namespace Chicane
     void setController(Controller* inController)
     {
         m_controller = inController;
-        m_controller->observeAttachment(
-            [](Pawn* inPawn)
-            {
-                setCamera(inPawn->getCamera<Camera>());
-            }
-        );
     }
 
     bool hasLevel()
@@ -85,7 +81,7 @@ namespace Chicane
         m_levelObservable->next(inLevel);
     }
 
-    void subscribeToLevel(
+    void watchLevel(
         std::function<void (Level*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
@@ -106,6 +102,21 @@ namespace Chicane
         }
 
         m_level->addActor(inActor);
+    }
+
+    std::vector<ActorComponent*> getComponents()
+    {
+        return m_components;
+    }
+
+    void addComponent(ActorComponent* inComponent)
+    {
+        if (!inComponent)
+        {
+            return;
+        }
+
+        m_components.push_back(inComponent);
     }
 
     Window* getWindow()

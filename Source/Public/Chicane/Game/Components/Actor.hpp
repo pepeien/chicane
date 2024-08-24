@@ -11,16 +11,26 @@ namespace Chicane
         ActorComponent();
         virtual ~ActorComponent() = default;
 
-    protected:
-        bool hasOwner() const;
-        void setOwner(Actor* inActor);
+    public:
+        bool canTick() const;
+        void setCanTick(bool inCanTick);
 
+        bool hasOwner() const;
         template<class T = Actor>
         T* getOwner() const {
             return dynamic_cast<T*>(m_owner);
         }
+        void setOwner(Actor* inActor);
+
+    public:
+        virtual void activate() { return; }
+
+        virtual void onAttachment() { return; }
+        virtual void onTick(float inDeltaTime) { return; }
 
     protected:
+        bool m_canTick;
+
         Actor* m_owner;
     };
 }

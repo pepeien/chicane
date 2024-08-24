@@ -20,15 +20,17 @@ namespace Chicane
     {
     public:
         Actor();
-        virtual ~Actor();
+        virtual ~Actor() = default;
 
     public:
-        virtual void onTick(float inDelta) { return; };
+        virtual void onTick(float inDeltaTime) { return; };
 
     public:
         bool canTick() const;
-        void setCanTick(bool bInCanTick);
+        void setCanTick(bool inCanTick);
 
+        const Vec<3, float>& getTranslation() const;
+        const Vec<3, float>& getRotation() const;
         const Mat<4, float>& getPosition() const;
 
         void setRelativeTranslation(const Vec<3, float>& inTranslation);
@@ -41,22 +43,9 @@ namespace Chicane
         void setRelativeScale(const Vec<3, float>& inScale);
         void setAbsoluteScale(const Vec<3, float>& inScale);
 
-        bool hasCamera() const;
-        template<class T = CameraComponent>
-        T* getCamera() const
-        {
-            if (!hasCamera())
-            {
-                return nullptr;
-            }
-
-            return dynamic_cast<T*>(m_camera);
-        }
-
-        const std::vector<ActorComponent*>& getComponents() const;
-
         bool hasMesh() const;
         const Box::Instance& getMesh() const;
+        void setMesh(const Box::Instance& inMesh);
 
     protected:
         void updateTranslation(const Vec<3, float>& inTranslation);
@@ -64,13 +53,10 @@ namespace Chicane
         void updateScale(const Vec<3, float>& inScale);
 
     protected:
-        bool m_bCanTick;
+        bool m_canTick;
 
         Mat<4, float> m_position;
         Transform m_transform;
-
-        CameraComponent* m_camera;
-        std::vector<ActorComponent*> m_components;
 
         Box::Instance m_mesh;
     };

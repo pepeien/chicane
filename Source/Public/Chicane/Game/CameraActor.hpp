@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Pawn.hpp"
+#include "Chicane/Game/Components/Camera.hpp"
 
 namespace Chicane
 {
@@ -9,16 +10,14 @@ namespace Chicane
     {
     public:
         CameraActor();
-    
-    public:
+
+    protected:
         void onControlAttachment() override;
-    
+
     private:
         void setupMouseInputs();
         void setupKeyboardInputs();
         void setupControllerInputs();
-
-        void look(float inX, float inY);
 
         void moveUp(bool isKeyDown);
         void moveDown(bool isKeyDown);
@@ -26,5 +25,8 @@ namespace Chicane
         void moveBackward(bool isKeyDown);
         void moveLeft(bool isKeyDown);
         void moveRight(bool isKeyDown);
+
+    protected:
+        std::unique_ptr<CameraComponent> m_camera;
     };
 }

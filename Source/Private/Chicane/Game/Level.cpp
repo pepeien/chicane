@@ -60,7 +60,7 @@ namespace Chicane
         m_observable->next(inActor);
     }
 
-    Subscription<Actor*>* Level::addActorSubscription(
+    Subscription<Actor*>* Level::watchActors(
         std::function<void (Actor*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
