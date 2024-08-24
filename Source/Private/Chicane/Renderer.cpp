@@ -149,13 +149,7 @@ namespace Chicane
         m_viewportSize     = inSize;
         m_viewportPosition = inPosition;
 
-        if (hasCamera())
-        {
-            getCamera()->setViewport(
-                m_viewportSize.x,
-                m_viewportSize.y
-            );
-        }
+        refreshCameraViewport();
     }
 
     void Renderer::onEvent(const SDL_Event& inEvent)
@@ -529,12 +523,12 @@ namespace Chicane
 
     void Renderer::prepareCamera(Frame::Instance& outFrame)
     {
-        if (hasCamera() == false)
+        if (!hasActiveCamera())
         {
             return;
         }
 
-        outFrame.cameraUBO.instance = getCamera()->getUBO();
+        outFrame.cameraUBO.instance = getActiveCamera()->getUBO();
         memcpy(
             outFrame.cameraUBO.writeLocation,
             &outFrame.cameraUBO.instance,
@@ -542,22 +536,39 @@ namespace Chicane
         );
     }
 
+    void Renderer::refreshCameraViewport()
+    {
+        if (!hasActiveCamera())
+        {
+            return;
+        }
+
+        getActiveCamera()->setViewport(
+            m_viewportSize.x,
+            m_viewportSize.y
+        );
+    }
+
     void Renderer::buildDefaultCamera()
     {
-        if (hasCamera())
+        watchActiveCamera(
+            [this](Camera* inCamera) {
+                if (inCamera == nullptr)
+                {
+                    setActiveCamera(m_defaultCamera.get());
+
+                    return;
+                }
+
+                refreshCameraViewport();
+            }
+        );
+
+        if (hasActiveCamera())
         {
             return;
         }
 
         m_defaultCamera = std::make_unique<Camera>();
-
-        watchCamera(
-            [this](Camera* inCamera) {
-                if (inCamera == nullptr)
-                {
-                    setCamera(m_defaultCamera.get());
-                }
-            }
-        );
     }
 }

@@ -113,6 +113,7 @@ namespace Chicane
         void prepareViewport(const vk::CommandBuffer& inCommandBuffer);
 
         void prepareCamera(Frame::Instance& outFrame);
+        void refreshCameraViewport();
 
         void buildDefaultCamera();
 

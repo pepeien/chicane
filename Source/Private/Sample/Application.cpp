@@ -22,7 +22,7 @@ void Application::run()
 void Application::initChacater()
 {
     m_controller = std::make_unique<Chicane::Controller>();
-    Chicane::setController(m_controller.get());
+    Chicane::setActiveController(m_controller.get());
 
     Chicane::CameraActor* character = new Chicane::CameraActor();
     m_level->addActor(character);
@@ -36,7 +36,7 @@ void Application::initLevel()
 
     m_level = std::make_unique<Chicane::Level>();
 
-    Chicane::setLevel(m_level.get());
+    Chicane::setActiveLevel(m_level.get());
 }
 
 void Application::addApples()

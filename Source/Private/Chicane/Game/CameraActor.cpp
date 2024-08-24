@@ -110,7 +110,7 @@ namespace Chicane
             SDL_CONTROLLER_BUTTON_A,
             [](bool isKeyDown)
             {
-                if (!isKeyDown)
+                if (!isKeyDown || !isWindowFocused())
                 {
                     return;
                 }

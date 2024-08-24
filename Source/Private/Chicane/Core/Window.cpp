@@ -147,12 +147,12 @@ namespace Chicane
             break;
         }
 
-        if (hasController() == false)
+        if (hasActiveController() == false)
         {
             return;
         }
 
-        getController()->onEvent(inEvent);
+        getActiveController()->onEvent(inEvent);
     }
 
     bool Window::isFocused() const

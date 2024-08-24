@@ -10,12 +10,12 @@ namespace Chicane
     {
         m_internals = inWindow->getRendererInternals();
 
-        if (hasLevel() == false)
+        if (hasActiveLevel() == false)
         {
             return;
         }
 
-        m_level = getLevel();
+        m_level = getActiveLevel();
 
         const std::vector<Actor*>& actors = m_level->getActors();
 

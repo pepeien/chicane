@@ -28,5 +28,6 @@ namespace Chicane
 
     protected:
         std::unique_ptr<CameraComponent> m_camera;
+        std::unique_ptr<CameraComponent> m_headCamera;
     };
 }

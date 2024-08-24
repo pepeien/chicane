@@ -19,24 +19,24 @@ namespace Chicane
 
     Window* m_window = nullptr;
 
-    bool hasCamera()
+    bool hasActiveCamera()
     {
         return m_camera != nullptr;
     }
 
-    Camera* getCamera()
+    Camera* getActiveCamera()
     {
         return m_camera;
     }
 
-    void setCamera(Camera* inCamera)
+    void setActiveCamera(Camera* inCamera)
     {
         m_camera = inCamera;
 
         m_cameraObservable->next(inCamera);
     }
 
-    void watchCamera(
+    void watchActiveCamera(
         std::function<void (Camera*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
@@ -49,39 +49,39 @@ namespace Chicane
         );
     }
 
-    bool hasController()
+    bool hasActiveController()
     {
         return m_controller != nullptr;
     }
 
-    Controller* getController()
+    Controller* getActiveController()
     {
         return m_controller;
     }
 
-    void setController(Controller* inController)
+    void setActiveController(Controller* inController)
     {
         m_controller = inController;
     }
 
-    bool hasLevel()
+    bool hasActiveLevel()
     {
         return m_level != nullptr;
     }
 
-    Level* getLevel()
+    Level* getActiveLevel()
     {
         return m_level;
     }
 
-    void setLevel(Level* inLevel)
+    void setActiveLevel(Level* inLevel)
     {
         m_level = inLevel;
 
         m_levelObservable->next(inLevel);
     }
 
-    void watchLevel(
+    void watchActiveLevel(
         std::function<void (Level*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
@@ -96,7 +96,7 @@ namespace Chicane
 
     void addActor(Actor* inActor)
     {
-        if (!hasLevel())
+        if (!hasActiveLevel())
         {
             return;
         }

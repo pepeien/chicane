@@ -23,10 +23,6 @@ namespace Chicane
         void attachController(Controller* inController);
         void deattachController();
 
-        void addControllerRollInput(float inValue);
-        void addControllerYawInput(float inValue);
-        void addControllerPitchInput(float inValue);
-
     protected:
         virtual void onControlAttachment() {};
         virtual void onControleDeattachment() {};

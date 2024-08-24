@@ -13,17 +13,14 @@ namespace Chicane
         virtual ~CameraComponent() = default;
 
     public:
-        void activate() override;
-
+        void onActivation() override;
+        void onDeactivation() override;
         void onAttachment() override;
         void onTick(float inDeltaTime) override;
 
     public:
         bool willFollowOwner() const;
         void setWillFollowOwner(bool inWillFollowOwner);
-
-    protected:
-        void refreshPosition();
 
     protected:
         bool m_willFollowOwner;

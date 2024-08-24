@@ -10,20 +10,40 @@ namespace Chicane
         m_camera(std::make_unique<Camera>())
     {}
 
-    void CameraComponent::activate()
+    void CameraComponent::onActivation()
     {
-        setCamera(m_camera.get());
+        setActiveCamera(m_camera.get());
+    }
+
+    void CameraComponent::onDeactivation()
+    {
+        if (getActiveCamera() != m_camera.get())
+        {
+            return;
+        }
+
+        setActiveCamera(nullptr);
     }
 
     void CameraComponent::onAttachment()
     {
         m_owner->setAbsoluteTranslation(Vec<3, float>(0.0f, -110.0f, 50.0f));
-        m_owner->setAbsoluteRotation(Vec<3, float>(0.0f, 0.0f, -30.0f));
     }
 
     void CameraComponent::onTick(float inDeltaTime)
     {
-        refreshPosition();
+        m_camera->setRotation(m_transform.rotation);
+
+        if (!willFollowOwner() || !hasOwner())
+        {
+            m_camera->setTranslation(m_transform.translation);
+
+            return;
+        }
+
+        Vec<3, float> translation = m_owner->getTranslation() + m_transform.translation;
+
+        m_camera->setTranslation(translation);
     }
 
     bool CameraComponent::willFollowOwner() const
@@ -34,15 +54,5 @@ namespace Chicane
     void CameraComponent::setWillFollowOwner(bool inWillFollowOwner)
     {
         m_willFollowOwner = inWillFollowOwner;
-    }
-
-    void CameraComponent::refreshPosition()
-    {
-        if (!willFollowOwner() || !hasOwner())
-        {
-            return;
-        }
-
-        m_camera->setTranslation(m_owner->getTranslation());
     }
 }
