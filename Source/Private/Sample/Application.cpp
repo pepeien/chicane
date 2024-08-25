@@ -25,9 +25,11 @@ void Application::initChacater()
     Chicane::setActiveController(m_controller.get());
 
     Chicane::CameraActor* character = new Chicane::CameraActor();
-    m_level->addActor(character);
+    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -110.0f, 40.0f));
 
     m_controller->attachTo(character);
+
+    m_level->addActor(character);
 }
 
 void Application::initLevel()

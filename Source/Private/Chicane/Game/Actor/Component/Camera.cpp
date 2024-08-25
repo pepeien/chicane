@@ -24,11 +24,6 @@ namespace Chicane
         setActiveCamera(nullptr);
     }
 
-    void CameraComponent::onAttachment()
-    {
-        m_owner->setAbsoluteTranslation(Vec<3, float>(0.0f, -110.0f, 50.0f));
-    }
-
     void CameraComponent::onTick(float inDeltaTime)
     {
         m_camera->setTranslation(m_transform.translation);

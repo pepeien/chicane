@@ -15,7 +15,6 @@ namespace Chicane
     public:
         void onActivation() override;
         void onDeactivation() override;
-        void onAttachment() override;
         void onTick(float inDeltaTime) override;
 
     protected:

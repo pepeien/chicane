@@ -14,7 +14,6 @@ namespace Chicane
     {
         m_camera->setOwner(this);
         m_camera->setCanTick(true);
-        m_camera->setAttachmentRule(AttachmentRule::FollowTranslation);
     }
 
     void CameraActor::onControlAttachment()
