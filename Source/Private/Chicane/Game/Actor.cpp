@@ -1,8 +1,5 @@
 #include "Chicane/Game/Actor.hpp"
 
-#include "Chicane/Game/Components/Actor.hpp"
-#include "Chicane/Game/Components/Camera.hpp"
-
 namespace Chicane
 {
     Actor::Actor()
@@ -29,6 +26,11 @@ namespace Chicane
     const Vec<3, float>& Actor::getRotation() const
     {
         return m_transform.rotation;
+    }
+
+    const Vec<3, float>& Actor::getScale() const
+    {
+        return m_transform.scale;
     }
 
     const Mat<4, float>& Actor::getPosition() const
@@ -79,21 +81,6 @@ namespace Chicane
     void Actor::setAbsoluteScale(const Vec<3, float>& inScale)
     {
         updateScale(inScale);
-    }
-
-    bool Actor::hasMesh() const
-    {
-        return !m_mesh.name.empty();
-    }
-
-    const Box::Instance& Actor::getMesh() const
-    {
-        return m_mesh;
-    }
-  
-    void Actor::setMesh(const Box::Instance& inMesh)
-    {
-        m_mesh = inMesh;
     }
 
     void Actor::updateTranslation(const Vec<3, float>& inTranslation)

@@ -29,7 +29,7 @@ namespace Chicane
 
     private:
         void loadEvents();
-        void loadActor(Actor* inActor);
+        void loadMesh(MeshComponent* inMesh);
         void loadAssets();
         void initFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();

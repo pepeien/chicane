@@ -1,4 +1,4 @@
-#include "Chicane/Game/Components/Actor.hpp"
+#include "Chicane/Game/Actor/Component.hpp"
 
 #include "Chicane/Core.hpp"
 
@@ -38,26 +38,6 @@ namespace Chicane
     void ActorComponent::setCanTick(bool inCanTick)
     {
         m_canTick = inCanTick;
-    }
-
-    const Vec<3, float>& ActorComponent::getTranslation() const
-    {
-        return m_transform.translation;
-    }
-
-    void ActorComponent::setTranslation(const Vec<3, float>& inTranslation)
-    {
-        m_transform.translation = inTranslation;
-    }
-
-    const Vec<3, float>& ActorComponent::getRotation() const
-    {
-        return m_transform.rotation;
-    }
-
-    void ActorComponent::setRotation(const Vec<3, float>& inRotation)
-    {
-        m_transform.rotation = inRotation;
     }
 
     bool ActorComponent::hasOwner() const

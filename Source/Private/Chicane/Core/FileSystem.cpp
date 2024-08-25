@@ -167,7 +167,7 @@ namespace Chicane
         {
             std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);
 
-            if (file.is_open() == false)
+            if (!file.is_open())
             {
                 throw std::runtime_error("Failed to open file -> " + inFilepath);
             }

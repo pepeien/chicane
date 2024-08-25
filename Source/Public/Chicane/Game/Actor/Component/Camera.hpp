@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Components/Actor.hpp"
+#include "Chicane/Game/Actor/Component.hpp"
 #include "Chicane/Renderer/Camera.hpp"
 
 namespace Chicane
@@ -26,5 +26,5 @@ namespace Chicane
         bool m_willFollowOwner;
 
         std::unique_ptr<Camera> m_camera;
-    };
+    }; 
 }

@@ -51,14 +51,14 @@ namespace Chicane
         {
             destroyModelMemory();
 
-            std::vector<Actor*> actors = inLevel->getDrawableActors();
+            const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
 
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
             modelBufferCreateInfo.physicalDevice   = physicalDevice;
             modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
-            modelBufferCreateInfo.size             = sizeof(Mat<4, float>) * actors.size();
+            modelBufferCreateInfo.size             = sizeof(Mat<4, float>) * meshes.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
     
             Buffer::init(modelData.buffer, modelBufferCreateInfo);
@@ -69,13 +69,13 @@ namespace Chicane
                 0,
                 modelData.allocationSize
             );
-            modelData.transforms.reserve(actors.size());
+            modelData.transforms.reserve(meshes.size());
     
-            for (Actor* actor : actors)
+            for (const MeshComponent* mesh : meshes)
             {
-                modelData.transforms.push_back(actor->getPosition());
+                modelData.transforms.push_back(mesh->getOwner()->getPosition());
             }
-            
+
             modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
             modelDescriptorBufferInfo.offset = 0;
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
@@ -83,11 +83,11 @@ namespace Chicane
 
         void Instance::updateModelData(Level* inLevel)
         {
-            std::vector<Actor*> actors = inLevel->getDrawableActors();
+            const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
 
-            for (uint32_t i = 0; i < actors.size() && i < modelData.transforms.size(); i++)
+            for (uint32_t i = 0; i < meshes.size(); i++)
             {
-                modelData.transforms[i] = actors.at(i)->getPosition();
+                modelData.transforms[i] = meshes.at(i)->getOwner()->getPosition();
             }
         }
 

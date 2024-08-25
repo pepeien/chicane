@@ -316,7 +316,7 @@ namespace Chicane
 
     void Renderer::buildDebugMessenger()
     {
-        if (IS_DEBUGGING == false)
+        if (!IS_DEBUGGING)
         {
             return;
         }

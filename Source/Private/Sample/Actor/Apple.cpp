@@ -5,12 +5,15 @@
 Apple::Apple()
     : Chicane::Actor(),
     m_willGoUp(true),
-    m_upTarget(20.0f)
+    m_upTarget(20.0f),
+    m_mesh(std::make_unique<Chicane::MeshComponent>())
 {
     setCanTick(true);
     setAbsoluteScale(Chicane::Vec<3, float>(0.025f));
 
-    m_mesh = Chicane::Allocator::load("Content/Sample/Meshes/Apple.box");
+    m_mesh->setOwner(this);
+    m_mesh->setMesh("Content/Sample/Meshes/Apple.box");
+    m_mesh->activate();
 }
 
 void Apple::onTick(float inDeltaTime)

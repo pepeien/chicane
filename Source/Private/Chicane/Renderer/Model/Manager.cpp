@@ -17,7 +17,6 @@ namespace Chicane
             }
 
             m_allocationMap.at(inId).instanceCount += 1;
-            m_usedIds.push_back(inId);
         }
 
         void Manager::add(const std::string& inId, const Box::Entry& inEntry)
@@ -44,7 +43,8 @@ namespace Chicane
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
 
-            m_uniqueIds.push_back(inId);
+            m_entries.push_back(inId);
+
             m_instanceMap.insert(std::make_pair(inId, newModel));
 
             process(inId);
@@ -85,10 +85,10 @@ namespace Chicane
 
             std::uint32_t result = static_cast<std::uint32_t>(
                 std::find(
-                    m_uniqueIds.begin(),
-                    m_uniqueIds.end(),
+                    m_entries.begin(),
+                    m_entries.end(),
                     inId
-                ) - m_uniqueIds.begin()
+                ) - m_entries.begin()
             );
 
             return result;
@@ -124,7 +124,7 @@ namespace Chicane
 
         void Manager::drawAll(const vk::CommandBuffer& inCommandBuffer)
         {
-            for (std::string& id : m_uniqueIds)
+            for (std::string& id : m_entries)
             {
                 draw(id, inCommandBuffer);
             }

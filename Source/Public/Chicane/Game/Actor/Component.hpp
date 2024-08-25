@@ -19,12 +19,6 @@ namespace Chicane
         bool canTick() const;
         void setCanTick(bool inCanTick);
 
-        const Vec<3, float>& getTranslation() const;
-        void setTranslation(const Vec<3, float>& inTranslation);
-
-        const Vec<3, float>& getRotation() const;
-        void setRotation(const Vec<3, float>& inRotation);
-
         bool hasOwner() const;
         template<class T = Actor>
         T* getOwner() const {
@@ -33,6 +27,13 @@ namespace Chicane
         void setOwner(Actor* inActor);
 
     public:
+        virtual const Vec<3, float>& getTranslation() const { return m_transform.translation; }
+        virtual const Vec<3, float>& getRotation() const { return m_transform.rotation; }
+        virtual const Vec<3, float>& getScale() const { return m_transform.scale; }
+        virtual void setTranslation(const Vec<3, float>& inTranslation) { m_transform.translation = inTranslation; }
+        virtual void setRotation(const Vec<3, float>& inRotation) { m_transform.rotation = inRotation; }
+        virtual void setScale(const Vec<3, float>& inScale) { m_transform.scale = inScale; }
+
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
         virtual void onAttachment() { return; }

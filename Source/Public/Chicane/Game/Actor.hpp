@@ -1,21 +1,10 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Core/Box.hpp"
 #include "Chicane/Core/Math.hpp"
 
 namespace Chicane
 {
-    struct Transform
-    {
-        Vec<3, float> translation = Vec<3, float>(0.0f);
-        Vec<3, float> rotation    = Vec<3, float>(0.0f);
-        Vec<3, float> scale       = Vec<3, float>(1.0f);
-    };
-
-    class ActorComponent;
-    class CameraComponent;
-
     class Actor
     {
     public:
@@ -31,6 +20,7 @@ namespace Chicane
 
         const Vec<3, float>& getTranslation() const;
         const Vec<3, float>& getRotation() const;
+        const Vec<3, float>& getScale() const;
         const Mat<4, float>& getPosition() const;
 
         void setRelativeTranslation(const Vec<3, float>& inTranslation);
@@ -43,10 +33,6 @@ namespace Chicane
         void setRelativeScale(const Vec<3, float>& inScale);
         void setAbsoluteScale(const Vec<3, float>& inScale);
 
-        bool hasMesh() const;
-        const Box::Instance& getMesh() const;
-        void setMesh(const Box::Instance& inMesh);
-
     protected:
         void updateTranslation(const Vec<3, float>& inTranslation);
         void updateRotation(const Vec<3, float>& inRotation);
@@ -57,7 +43,5 @@ namespace Chicane
 
         Mat<4, float> m_position;
         Transform m_transform;
-
-        Box::Instance m_mesh;
     };
 } 

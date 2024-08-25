@@ -9,6 +9,8 @@
 
 namespace Chicane
 {
+    class MeshComponent;
+
     namespace Model
     {
         enum class Vendor : std::uint8_t
@@ -62,8 +64,7 @@ namespace Chicane
                 std::vector<Vertex::Instance> m_combinedVertices;
                 std::vector<uint32_t> m_indexedVertices;
 
-                std::vector<std::string> m_uniqueIds;
-                std::vector<std::string> m_usedIds;
+                std::vector<std::string> m_entries;
 
                 std::unordered_map<std::string, Model::AllocationInfo> m_allocationMap;
                 std::unordered_map<std::string, Model::Instance> m_instanceMap;

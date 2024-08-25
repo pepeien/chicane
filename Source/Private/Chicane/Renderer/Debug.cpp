@@ -10,7 +10,7 @@ namespace Chicane
             const vk::DispatchLoaderDynamic& inDldi
         )
         {
-            if (IS_DEBUGGING == false)
+            if (!IS_DEBUGGING)
             {
                 return;
             }

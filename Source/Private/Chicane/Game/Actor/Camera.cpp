@@ -1,8 +1,8 @@
-#include "Chicane/Game/CameraActor.hpp"
+#include "Chicane/Game/Actor/Camera.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Controller.hpp"
-#include "Chicane/Game/Components/Camera.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 
 constexpr float MOVEMENT_COEFFICIENT = 5.0f;
 

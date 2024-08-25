@@ -31,4 +31,11 @@ namespace Chicane
             : glm::qua<T, Q>(args...)
         {}
     };
+
+    struct Transform
+    {
+        Vec<3, float> translation = Vec<3, float>(0.0f);
+        Vec<3, float> rotation    = Vec<3, float>(0.0f);
+        Vec<3, float> scale       = Vec<3, float>(1.0f);
+    };
 }

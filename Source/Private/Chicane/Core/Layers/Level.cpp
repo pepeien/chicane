@@ -1,7 +1,7 @@
 #include "Chicane/Core/Layers/Level.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Components/Actor.hpp"
+#include "Chicane/Game/Actor/Component.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
     {
         m_internals = inWindow->getRendererInternals();
 
-        if (hasActiveLevel() == false)
+        if (!hasActiveLevel())
         {
             return;
         }
@@ -19,11 +19,7 @@ namespace Chicane
 
         const std::vector<Actor*>& actors = m_level->getActors();
 
-        m_isInitialized = std::find_if(
-            actors.begin(),
-            actors.end(),
-            [](Actor* actor) { return actor->hasMesh(); }
-        ) != actors.end();
+        m_isInitialized = m_level->hasMeshes();
 
         m_textureManager = Allocator::getTextureManager();
         m_modelManager   = Allocator::getModelManager();
@@ -194,18 +190,18 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        m_level->watchActors(
+        m_level->watchMeshes(
             std::bind(
-                &LevelLayer::loadActor,
+                &LevelLayer::loadMesh,
                 this,
                 std::placeholders::_1
             )
         );
     }
 
-    void LevelLayer::loadActor(Actor* inActor)
+    void LevelLayer::loadMesh(MeshComponent* inMesh)
     {
-        if (!inActor->hasMesh())
+        if (!m_level->hasMeshes())
         {
             return;
         }
@@ -230,9 +226,9 @@ namespace Chicane
             return;
         }
 
-        for (Actor* actor : m_level->getActors())
+        for (MeshComponent* mesh : m_level->getMeshes())
         {
-            loadActor(actor);
+            loadMesh(mesh);
         }
     }
 

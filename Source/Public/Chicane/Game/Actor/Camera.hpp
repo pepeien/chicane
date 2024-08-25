@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Pawn.hpp"
-#include "Chicane/Game/Components/Camera.hpp"
+#include "Chicane/Game/Actor/Pawn.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 
 namespace Chicane
 {
@@ -28,6 +28,5 @@ namespace Chicane
 
     protected:
         std::unique_ptr<CameraComponent> m_camera;
-        std::unique_ptr<CameraComponent> m_headCamera;
     };
 }

@@ -1,6 +1,6 @@
 #include "Chicane/Game/Controller.hpp"
 
-#include "Chicane/Game/Pawn.hpp"
+#include "Chicane/Game/Actor/Pawn.hpp"
 
 namespace Chicane
 {
@@ -9,7 +9,7 @@ namespace Chicane
         m_pawnObservable(std::make_unique<Observable<Pawn*>>())
     {}
 
-    void Controller::observeAttachment(
+    void Controller::watchAttachment(
         std::function<void (Pawn*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback

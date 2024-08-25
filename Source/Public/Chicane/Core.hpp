@@ -16,6 +16,8 @@
 
 namespace Chicane
 {
+    class Actor;
+    class ActorComponent;
     class Camera;
     class Controller;
     class Level;

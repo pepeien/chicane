@@ -1,9 +1,12 @@
 #include "Chicane/Game/Level.hpp"
 
+#include "Chicane/Core.hpp"
+
 namespace Chicane
 {
     Level::Level()
-        : m_observable(new Observable<Actor*>())
+        : m_actorObservable(std::make_unique<Observable<Actor*>>()),
+        m_meshObservable(std::make_unique<Observable<MeshComponent*>>())
     {}
 
     Level::~Level()
@@ -26,47 +29,73 @@ namespace Chicane
         return m_actors;
     }
 
-    std::vector<Actor*> Level::getDrawableActors() const
-    {
-        std::vector<Actor*> result {};
-
-        for (Actor* actor : m_actors)
-        {
-            if (!actor->hasMesh())
-            {
-                continue;
-            }
-
-            result.push_back(actor);
-        }
-
-        return result;
-    }
-
-    std::uint32_t Level::getActorCount() const
-    {
-        return static_cast<std::uint32_t>(m_actors.size());
-    }
-
     void Level::addActor(Actor* inActor)
     {
-        if (inActor == nullptr)
+        if (!inActor)
+        {
+            return;
+        }
+
+        if (std::find(m_actors.begin(), m_actors.end(), inActor) != m_actors.end())
         {
             return;
         }
 
         m_actors.push_back(inActor);
 
-        m_observable->next(inActor);
+        m_actorObservable->next(inActor);
     }
 
-    Subscription<Actor*>* Level::watchActors(
+    void Level::watchActors(
         std::function<void (Actor*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     )
     {
-        return m_observable->subscribe(
+        m_actorObservable->subscribe(
+            inNextCallback,
+            inErrorCallback,
+            inCompleteCallback
+        );
+    }
+
+    bool Level::hasMeshes() const
+    {
+        return m_meshes.size() > 0;
+    }
+
+    const std::vector<MeshComponent*>& Level::getMeshes() const
+    {
+        return m_meshes;
+    }
+
+    void Level::addMesh(MeshComponent* inMesh)
+    {
+        if (!inMesh)
+        {
+            return;
+        }
+
+        bool isDuplicate   = std::find(m_meshes.begin(), m_meshes.end(), inMesh) != m_meshes.end();
+        bool isDeactivated = !inMesh->isActive();
+
+        if (isDuplicate || isDeactivated)
+        {
+            return;
+        }
+
+        m_meshes.push_back(inMesh);
+
+        m_meshObservable->next(inMesh);
+    }
+
+    void Level::watchMeshes(
+        std::function<void (MeshComponent*)> inNextCallback,
+        std::function<void (const std::string&)> inErrorCallback,
+        std::function<void ()> inCompleteCallback
+    )
+    {
+        m_meshObservable->subscribe(
             inNextCallback,
             inErrorCallback,
             inCompleteCallback

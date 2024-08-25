@@ -112,7 +112,7 @@ namespace Chicane
         SDL_Event event;
 
         bool shouldClose = false;
-        while (shouldClose == false)
+        while (!shouldClose)
         {
             while (SDL_PollEvent(&event))
             {
@@ -147,7 +147,7 @@ namespace Chicane
             break;
         }
 
-        if (hasActiveController() == false)
+        if (!hasActiveController())
         {
             return;
         }

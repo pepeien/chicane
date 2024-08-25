@@ -8,6 +8,8 @@
 
 namespace Chicane
 {
+    class MeshComponent;
+
     namespace Allocator
     {
         CubeMap::Manager* getCubemapManager();
@@ -15,6 +17,8 @@ namespace Chicane
         Texture::Manager* getTextureManager();
 
         Box::Instance load(const std::string& inFilePath);
+
+        void loadMesh(MeshComponent* inComponent);
 
         void reset();
     }

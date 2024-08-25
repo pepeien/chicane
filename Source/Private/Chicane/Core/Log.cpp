@@ -26,7 +26,7 @@ namespace Chicane
 
         void emmit(MessageType inType, const std::string& inMessage)
         {
-            if (IS_DEBUGGING == false)
+            if (!IS_DEBUGGING)
             {
                 return;
             }

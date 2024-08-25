@@ -24,7 +24,7 @@ namespace Chicane
                     }
                 }
 
-                if (isSupported == false)
+                if (!isSupported)
                 {
                     return false;
                 }
@@ -53,7 +53,7 @@ namespace Chicane
                     }
                 }
 
-                if (isSupported == false)
+                if (!isSupported)
                 {
                     return false;
                 }
@@ -104,12 +104,12 @@ namespace Chicane
                 extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
             }
 
-            if (areExtensionsSupported(extensions) == false)
+            if (!areExtensionsSupported(extensions))
             {
                 throw std::runtime_error("SDL layers are not fully supported");
             }
 
-            if (areValidationLayersSupported(LAYERS) == false)
+            if (!areValidationLayersSupported(LAYERS))
             {
                 throw std::runtime_error("Validation Layers are not fully supported");
             }

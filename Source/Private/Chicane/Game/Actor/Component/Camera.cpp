@@ -1,4 +1,4 @@
-#include "Chicane/Game/Components/Camera.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 
 #include "Chicane/Core.hpp"
 

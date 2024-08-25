@@ -1,5 +1,7 @@
 #include "Chicane/Core/Allocator.hpp"
 
+#include "Chicane/Game/Actor/Component/Mesh.hpp"
+
 namespace Chicane
 {
     namespace Allocator

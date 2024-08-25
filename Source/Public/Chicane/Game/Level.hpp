@@ -3,6 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/Actor/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -15,17 +16,27 @@ namespace Chicane
     public:
         bool hasActors() const;
         const std::vector<Actor*>& getActors() const;
-        std::vector<Actor*> getDrawableActors() const;
-        std::uint32_t getActorCount() const;
         void addActor(Actor* inActor);
-        Subscription<Actor*>* watchActors(
+        void watchActors(
             std::function<void (Actor*)> inNextCallback,
+            std::function<void (const std::string&)> inErrorCallback = nullptr,
+            std::function<void ()> inCompleteCallback = nullptr
+        );
+
+        bool hasMeshes() const;
+        const std::vector<MeshComponent*>& getMeshes() const;
+        void addMesh(MeshComponent* inMesh);
+        void watchMeshes(
+            std::function<void (MeshComponent*)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
             std::function<void ()> inCompleteCallback = nullptr
         );
 
     private:
         std::vector<Actor*> m_actors;
-        Observable<Actor*>* m_observable;
+        std::unique_ptr<Observable<Actor*>> m_actorObservable;
+
+        std::vector<MeshComponent*> m_meshes;
+        std::unique_ptr<Observable<MeshComponent*>> m_meshObservable;
     };
 }
