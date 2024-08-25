@@ -14,7 +14,6 @@ Apple::Apple()
     m_mesh->setOwner(this);
     m_mesh->setCanTick(true);
     m_mesh->setMesh("Content/Sample/Meshes/Apple.box");
-    m_mesh->setAttachmentRule(Chicane::AttachmentRule::FollowAll);
     m_mesh->activate();
 }
 

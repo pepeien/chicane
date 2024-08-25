@@ -7,7 +7,7 @@ namespace Chicane
     ActorComponent::ActorComponent()
         : m_canTick(false),
         m_isActive(false),
-        m_attachmentRule(AttachmentRule::Idependent),
+        m_attachmentRule(AttachmentRule::FollowAll),
         m_owner(nullptr)
     {
         addComponent(this);
