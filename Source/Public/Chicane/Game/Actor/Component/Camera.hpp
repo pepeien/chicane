@@ -18,13 +18,7 @@ namespace Chicane
         void onAttachment() override;
         void onTick(float inDeltaTime) override;
 
-    public:
-        bool willFollowOwner() const;
-        void setWillFollowOwner(bool inWillFollowOwner);
-
     protected:
-        bool m_willFollowOwner;
-
         std::unique_ptr<Camera> m_camera;
     }; 
 }

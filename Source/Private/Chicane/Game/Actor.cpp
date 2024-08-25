@@ -101,9 +101,9 @@ namespace Chicane
 
     void Actor::updateRotation(const Vec<3, float>& inRotation)
     {
-        bool isIdentical = std::fabs(inRotation.x != m_transform.rotation.x) < FLT_EPSILON &&
-                           std::fabs(inRotation.y != m_transform.rotation.y) < FLT_EPSILON &&
-                           std::fabs(inRotation.z != m_transform.rotation.z) < FLT_EPSILON;
+        bool isIdentical = std::fabs(m_transform.rotation.x - inRotation.x) < FLT_EPSILON &&
+                           std::fabs(m_transform.rotation.y - inRotation.y) < FLT_EPSILON &&
+                           std::fabs(m_transform.rotation.z - inRotation.z) < FLT_EPSILON;
 
         if (isIdentical)
         {

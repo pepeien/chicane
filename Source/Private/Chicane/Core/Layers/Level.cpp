@@ -458,7 +458,7 @@ namespace Chicane
                 continue;
             }
 
-            component->onTick(inDeltaTime);
+            component->tick(inDeltaTime);
         }
     }
 

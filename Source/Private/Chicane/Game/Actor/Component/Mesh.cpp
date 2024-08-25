@@ -20,11 +20,6 @@ namespace Chicane
         getActiveLevel()->addMesh(this);
     }
 
-    void MeshComponent::onTick(float inDeltaTime)
-    {
-        m_combinedTranslation = m_transform.translation + m_owner->getTranslation();
-    }
-
     bool MeshComponent::hasMesh() const
     {
         return !m_mesh.filepath.empty();

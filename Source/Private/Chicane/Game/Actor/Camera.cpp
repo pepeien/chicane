@@ -12,9 +12,9 @@ namespace Chicane
         : Pawn(),
         m_camera(std::make_unique<CameraComponent>())
     {
-        m_camera->setCanTick(true);
-        m_camera->setWillFollowOwner(true);
         m_camera->setOwner(this);
+        m_camera->setCanTick(true);
+        m_camera->setAttachmentRule(AttachmentRule::FollowAll);
     }
 
     void CameraActor::onControlAttachment()

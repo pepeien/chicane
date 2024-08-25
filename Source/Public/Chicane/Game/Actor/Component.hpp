@@ -4,12 +4,26 @@
 #include "Chicane/Game/Actor.hpp"
 
 namespace Chicane
-{
+{   
+    enum class AttachmentRule : std::uint8_t
+    {
+        Idependent,
+        FollowRotation,
+        FollowTranslation,
+        FollowAll
+    };
+
     class ActorComponent
     {
     public:
         ActorComponent();
         virtual ~ActorComponent() = default;
+
+    protected:
+        virtual void onActivation() { return; }
+        virtual void onDeactivation() { return; }
+        virtual void onAttachment() { return; }
+        virtual void onTick(float inDeltaTime) { return; }
 
     public:
         bool isActive() const;
@@ -18,6 +32,10 @@ namespace Chicane
 
         bool canTick() const;
         void setCanTick(bool inCanTick);
+        void tick(float inDeltaTime);
+
+        AttachmentRule getAttachmentRule() const;
+        void setAttachmentRule(AttachmentRule inRule);
 
         bool hasOwner() const;
         template<class T = Actor>
@@ -26,23 +44,35 @@ namespace Chicane
         }
         void setOwner(Actor* inActor);
 
-    public:
-        virtual const Vec<3, float>& getTranslation() const { return m_transform.translation; }
-        virtual const Vec<3, float>& getRotation() const { return m_transform.rotation; }
-        virtual const Vec<3, float>& getScale() const { return m_transform.scale; }
-        virtual void setTranslation(const Vec<3, float>& inTranslation) { m_transform.translation = inTranslation; }
-        virtual void setRotation(const Vec<3, float>& inRotation) { m_transform.rotation = inRotation; }
-        virtual void setScale(const Vec<3, float>& inScale) { m_transform.scale = inScale; }
+        const Vec<3, float>& getOriginTranslation() const;
+        void setOriginTranslation(const Vec<3, float>& inTranslation);
 
-        virtual void onActivation() { return; }
-        virtual void onDeactivation() { return; }
-        virtual void onAttachment() { return; }
-        virtual void onTick(float inDeltaTime) { return; }
+        const Vec<3, float>& getOriginRotation() const;
+        void setOriginRotation(const Vec<3, float>& inRotation);
+
+        const Vec<3, float>& getOriginScale() const;
+        void setOriginScale(const Vec<3, float>& inScale);
+
+        const Vec<3, float>& getTranslation() const;
+        void setTranslation(const Vec<3, float>& inTranslation);
+
+        const Vec<3, float>& getRotation() const;
+        void setRotation(const Vec<3, float>& inRotation);
+
+        const Vec<3, float>& getScale() const;
+        void setScale(const Vec<3, float>& inScale);
+
+    private:
+        void updateTranslation();
+        void updateRotation();
 
     protected:
-        bool m_isActive;
         bool m_canTick;
+        bool m_isActive;
 
+        AttachmentRule m_attachmentRule;
+
+        Transform m_origin;
         Transform m_transform;
 
         Actor* m_owner;

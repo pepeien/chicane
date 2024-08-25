@@ -13,7 +13,6 @@ namespace Chicane
 
     public:
         void onActivation() override;
-        void onTick(float inDeltaTime) override;
 
     public:
         bool hasMesh() const;

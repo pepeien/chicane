@@ -6,7 +6,6 @@ namespace Chicane
 {
     CameraComponent::CameraComponent()
         : ActorComponent(),
-        m_willFollowOwner(false),
         m_camera(std::make_unique<Camera>())
     {}
 
@@ -32,27 +31,7 @@ namespace Chicane
 
     void CameraComponent::onTick(float inDeltaTime)
     {
+        m_camera->setTranslation(m_transform.translation);
         m_camera->setRotation(m_transform.rotation);
-
-        if (!willFollowOwner() || !hasOwner())
-        {
-            m_camera->setTranslation(m_transform.translation);
-
-            return;
-        }
-
-        Vec<3, float> translation = m_owner->getTranslation() + m_transform.translation;
-
-        m_camera->setTranslation(translation);
-    }
-
-    bool CameraComponent::willFollowOwner() const
-    {
-        return m_willFollowOwner;
-    }
-
-    void CameraComponent::setWillFollowOwner(bool inWillFollowOwner)
-    {
-        m_willFollowOwner = inWillFollowOwner;
     }
 }
