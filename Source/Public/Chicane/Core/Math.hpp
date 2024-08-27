@@ -38,4 +38,11 @@ namespace Chicane
         Vec<3, float> rotation    = Vec<3, float>(0.0f);
         Vec<3, float> scale       = Vec<3, float>(1.0f);
     };
+
+    struct Direction
+    {
+        Vec<3, float> forward = FORWARD_DIRECTION;
+        Vec<3, float> up      = UP_DIRECTION;
+        Vec<3, float> right  = RIGHT_DIRECTION;
+    };
 }

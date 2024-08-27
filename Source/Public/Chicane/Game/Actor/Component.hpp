@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/Transformable.hpp"
 
 namespace Chicane
 {   
@@ -13,7 +14,7 @@ namespace Chicane
         FollowAll
     };
 
-    class ActorComponent
+    class ActorComponent : public Transformable
     {
     public:
         ActorComponent();
@@ -53,18 +54,10 @@ namespace Chicane
         const Vec<3, float>& getOriginScale() const;
         void setOriginScale(const Vec<3, float>& inScale);
 
-        const Vec<3, float>& getTranslation() const;
-        void setTranslation(const Vec<3, float>& inTranslation);
-
-        const Vec<3, float>& getRotation() const;
-        void setRotation(const Vec<3, float>& inRotation);
-
-        const Vec<3, float>& getScale() const;
-        void setScale(const Vec<3, float>& inScale);
-
     private:
-        void updateTranslation();
-        void updateRotation();
+        void refreshTranslation();
+        void refreshRotation();
+        void refreshScale();
 
     protected:
         bool m_canTick;
@@ -73,7 +66,6 @@ namespace Chicane
         AttachmentRule m_attachmentRule;
 
         Transform m_origin;
-        Transform m_transform;
 
         Actor* m_owner;
     };

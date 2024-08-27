@@ -10,10 +10,16 @@ namespace Chicane
 {
     CameraActor::CameraActor()
         : Pawn(),
-        m_camera(std::make_unique<CameraComponent>())
+        m_camera(std::make_unique<CameraComponent>()),
+        m_mesh(std::make_unique<MeshComponent>())
     {
         m_camera->setOwner(this);
-        m_camera->setCanTick(true);
+
+        m_mesh->setOwner(this);
+        m_mesh->setMesh("Content/Meshes/Apple.box");
+        m_mesh->setOriginTranslation(Vec<3, float>(0.0f, 100.0f, -10.0f));
+        m_mesh->setOriginScale(Vec<3, float>(0.05f));
+        m_mesh->activate();
     }
 
     void CameraActor::onControlAttachment()

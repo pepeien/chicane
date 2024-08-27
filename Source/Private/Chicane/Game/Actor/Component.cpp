@@ -5,12 +5,21 @@
 namespace Chicane
 {
     ActorComponent::ActorComponent()
-        : m_canTick(false),
+        : m_canTick(true),
         m_isActive(false),
         m_attachmentRule(AttachmentRule::FollowAll),
         m_owner(nullptr)
     {
         addComponent(this);
+
+        watchTransform(
+            [this](const Transform& inTransform)
+            {
+                refreshTranslation();
+                refreshRotation();
+                refreshScale();
+            }
+        );
     }
 
     bool ActorComponent::isActive() const
@@ -49,9 +58,6 @@ namespace Chicane
             return;
         }
 
-        updateTranslation();
-        updateRotation();
-
         onTick(inDeltaTime);
     }
 
@@ -73,6 +79,18 @@ namespace Chicane
     void ActorComponent::setOwner(Actor* inActor)
     {
         m_owner = inActor;
+
+        if (inActor)
+        {
+            m_owner->watchTransform(
+                [this](const Transform& inTransform)
+                {
+                    refreshTranslation();
+                    refreshRotation();
+                    refreshScale();
+                }
+            );
+        }
 
         onAttachment();
     }
@@ -134,67 +152,12 @@ namespace Chicane
         m_origin.scale = inScale;
     }
 
-    const Vec<3, float>& ActorComponent::getTranslation() const
-    {
-        return m_transform.translation;
-    }
-
-    void ActorComponent::setTranslation(const Vec<3, float>& inTranslation)
-    {
-        bool isIdentical = std::fabs(m_transform.translation.x - inTranslation.x) < FLT_EPSILON &&
-                           std::fabs(m_transform.translation.y - inTranslation.y) < FLT_EPSILON &&
-                           std::fabs(m_transform.translation.z - inTranslation.z) < FLT_EPSILON;
-
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_transform.translation = inTranslation;
-    }
-
-    const Vec<3, float>& ActorComponent::getRotation() const
-    {
-        return m_transform.rotation;
-    }
-
-    void ActorComponent::setRotation(const Vec<3, float>& inRotation)
-    {
-        bool isIdentical = std::fabs(m_transform.rotation.x - inRotation.x) < FLT_EPSILON &&
-                           std::fabs(m_transform.rotation.y - inRotation.y) < FLT_EPSILON &&
-                           std::fabs(m_transform.rotation.z - inRotation.z) < FLT_EPSILON;
-
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_transform.rotation = inRotation;
-    }
-
-    const Vec<3, float>& ActorComponent::getScale() const
-    {
-        return m_transform.scale;
-    }
-
-    void ActorComponent::setScale(const Vec<3, float>& inScale)
-    {
-        bool isIdentical = std::fabs(m_transform.rotation.x - inScale.x) < FLT_EPSILON &&
-                           std::fabs(m_transform.rotation.y - inScale.y) < FLT_EPSILON &&
-                           std::fabs(m_transform.rotation.z - inScale.z) < FLT_EPSILON;
-
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_transform.scale = inScale;
-    }
-
-    void ActorComponent::updateTranslation()
+    void ActorComponent::refreshTranslation()
     {
         if (m_attachmentRule != AttachmentRule::FollowAll && m_attachmentRule != AttachmentRule::FollowTranslation)
         {
+            setAbsoluteTranslation(m_origin.translation);
+
             return;
         }
 
@@ -203,13 +166,15 @@ namespace Chicane
             return;
         }
 
-        setTranslation(m_owner->getTranslation() + m_origin.translation);
+        setAbsoluteTranslation(m_owner->getTranslation() + m_origin.translation);
     }
 
-    void ActorComponent::updateRotation()
+    void ActorComponent::refreshRotation()
     {
         if (m_attachmentRule != AttachmentRule::FollowAll && m_attachmentRule != AttachmentRule::FollowRotation)
         {
+            setAbsoluteRotation(m_origin.rotation);
+
             return;
         }
 
@@ -218,6 +183,23 @@ namespace Chicane
             return;
         }
 
-        setRotation(m_owner->getRotation() + m_origin.rotation);
+        setAbsoluteRotation(m_owner->getRotation() + m_origin.rotation);
+    }
+
+    void ActorComponent::refreshScale()
+    {
+        if (m_attachmentRule != AttachmentRule::FollowAll)
+        {
+            setAbsoluteRotation(m_origin.scale);
+
+            return;
+        }
+
+        if (!hasOwner())
+        {
+            return;
+        }
+
+        setAbsoluteScale(m_owner->getScale() * m_origin.scale);
     }
 }

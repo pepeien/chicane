@@ -73,7 +73,7 @@ namespace Chicane
     
             for (const MeshComponent* mesh : meshes)
             {
-                modelData.transforms.push_back(mesh->getOwner()->getPosition());
+                modelData.transforms.push_back(mesh->getPosition());
             }
 
             modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
@@ -87,7 +87,7 @@ namespace Chicane
 
             for (uint32_t i = 0; i < meshes.size(); i++)
             {
-                modelData.transforms[i] = meshes.at(i)->getOwner()->getPosition();
+                modelData.transforms[i] = meshes.at(i)->getPosition();
             }
         }
 

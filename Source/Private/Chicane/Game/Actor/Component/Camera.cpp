@@ -7,7 +7,15 @@ namespace Chicane
     CameraComponent::CameraComponent()
         : ActorComponent(),
         m_camera(std::make_unique<Camera>())
-    {}
+    {
+        watchTransform(
+            [this](const Transform& inTransform)
+            {
+                m_camera->setAbsoluteTranslation(inTransform.translation);
+                m_camera->setAbsoluteRotation(inTransform.rotation);
+            }
+        );
+    }
 
     void CameraComponent::onActivation()
     {
@@ -22,11 +30,5 @@ namespace Chicane
         }
 
         setActiveCamera(nullptr);
-    }
-
-    void CameraComponent::onTick(float inDeltaTime)
-    {
-        m_camera->setTranslation(m_transform.translation);
-        m_camera->setRotation(m_transform.rotation);
     }
 }

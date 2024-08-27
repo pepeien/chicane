@@ -2,12 +2,12 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/Transformable.hpp"
 #include "Chicane/Renderer/Buffer.hpp"
 
 namespace Chicane
 {
-    class Camera
+    class Camera : public Transformable
     {
     public:
         struct UBO
@@ -53,47 +53,16 @@ namespace Chicane
         void setFarClip(float inFarClip);
         void setClip(float inNearClip, float inFarClip);
 
-        // Transform
-        const Vec<3, float>& getTranslation() const;
-        void setTranslation(const Vec<3, float>& inTranslation);
-        void addTranslation(const Vec<3, float>& inTranslation);
-        void addTranslation(float inX, float inY, float inZ);
-
-        const Vec<3, float>& getRotation() const;
-        void setRotation(const Vec<3, float>& inRotation);
-        void addRotation(const Vec<3, float>& inRotation);
-        void addRotation(float inRoll, float inYaw, float inPitch);
-
-        // State
-        const Vec<3, float>& getForward() const;
-        const Vec<3, float>& getRight() const;
-        const Vec<3, float>& getUp() const;
-
         // Render
         const UBO& getUBO() const;
 
     protected:
-        // Transform
-        void updateTranslation(const Vec<3, float>& inTranslation);
-        void updateRotation(const Vec<3, float>& inRotation);
-        void updateOrientation();
-
         // Render
         void updateProjection();
         void updateView();
         void updateViewProjection();
 
     protected:
-        // Transform
-        Transform m_transform;
-
-        // State
-        Quat<float> m_orientation;
-
-        Vec<3, float> m_forward;
-        Vec<3, float> m_up;
-        Vec<3, float> m_right;
-
         // Settings
         Vec<2, std::uint32_t> m_viewport;
         float m_aspectRatio;

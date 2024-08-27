@@ -21,7 +21,5 @@ namespace Chicane
 
     protected:
         Box::Instance m_mesh;
-
-        Vec<3, float> m_combinedTranslation;
     };
 }
