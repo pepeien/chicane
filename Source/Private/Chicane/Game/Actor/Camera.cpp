@@ -2,24 +2,16 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Controller.hpp"
-#include "Chicane/Game/Actor/Component/Camera.hpp"
 
-constexpr float MOVEMENT_COEFFICIENT = 5.0f;
+constexpr float MOVEMENT_COEFFICIENT = 1.0f;
 
 namespace Chicane
 {
     CameraActor::CameraActor()
         : Pawn(),
-        m_camera(std::make_unique<CameraComponent>()),
-        m_mesh(std::make_unique<MeshComponent>())
+        m_camera(std::make_unique<CameraComponent>())
     {
-        m_camera->setOwner(this);
-
-        m_mesh->setOwner(this);
-        m_mesh->setMesh("Content/Meshes/Apple.box");
-        m_mesh->setOriginTranslation(Vec<3, float>(0.0f, 100.0f, -10.0f));
-        m_mesh->setOriginScale(Vec<3, float>(0.05f));
-        m_mesh->activate();
+        m_camera->attachTo(this);
     }
 
     void CameraActor::onControlAttachment()

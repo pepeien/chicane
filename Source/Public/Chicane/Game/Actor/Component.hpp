@@ -6,14 +6,6 @@
 
 namespace Chicane
 {   
-    enum class AttachmentRule : std::uint8_t
-    {
-        Idependent,
-        FollowRotation,
-        FollowTranslation,
-        FollowAll
-    };
-
     class ActorComponent : public Transformable
     {
     public:
@@ -35,38 +27,35 @@ namespace Chicane
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
 
-        AttachmentRule getAttachmentRule() const;
-        void setAttachmentRule(AttachmentRule inRule);
-
-        bool hasOwner() const;
+        bool isAttached() const;
         template<class T = Actor>
-        T* getOwner() const {
-            return dynamic_cast<T*>(m_owner);
+        T* getAttachment() const {
+            return dynamic_cast<T*>(m_attachment);
         }
-        void setOwner(Actor* inActor);
+        void attachTo(Actor* inAttachment);
 
-        const Vec<3, float>& getOriginTranslation() const;
-        void setOriginTranslation(const Vec<3, float>& inTranslation);
+        const Transform& getBase() const;
+        void setBase(const Transform& inOrigin);
 
-        const Vec<3, float>& getOriginRotation() const;
-        void setOriginRotation(const Vec<3, float>& inRotation);
+        const Vec<3, float>& getBaseScale() const;
+        void setBaseScale(const Vec<3, float>& inScale);
 
-        const Vec<3, float>& getOriginScale() const;
-        void setOriginScale(const Vec<3, float>& inScale);
+        const Vec<3, float>& getBaseRotation() const;
+        void setBaseRotation(const Vec<3, float>& inRotation);
+
+        const Vec<3, float>& getBaseTranslation() const;
+        void setBaseTranslation(const Vec<3, float>& inTranslation);
 
     private:
-        void refreshTranslation();
-        void refreshRotation();
-        void refreshScale();
+        void refreshTransform();
 
     protected:
         bool m_canTick;
         bool m_isActive;
 
-        AttachmentRule m_attachmentRule;
+        Transform m_base;
 
-        Transform m_origin;
-
-        Actor* m_owner;
+        Actor* m_attachment;
+        Subscription<const Transform&>* m_attachmentTransformSubscription;
     };
 }

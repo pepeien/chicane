@@ -11,14 +11,17 @@ namespace Chicane
         watchTransform(
             [this](const Transform& inTransform)
             {
-                m_camera->setAbsoluteTranslation(inTransform.translation);
-                m_camera->setAbsoluteRotation(inTransform.rotation);
+                refreshCamera();
             }
         );
+
+        refreshCamera();
     }
 
     void CameraComponent::onActivation()
     {
+        refreshCamera();
+
         setActiveCamera(m_camera.get());
     }
 
@@ -30,5 +33,11 @@ namespace Chicane
         }
 
         setActiveCamera(nullptr);
+    }
+
+    void CameraComponent::refreshCamera()
+    {
+        m_camera->setAbsoluteTranslation(m_transform.translation);
+        m_camera->setAbsoluteRotation(m_transform.rotation);
     }
 }

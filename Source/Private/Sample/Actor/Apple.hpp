@@ -13,8 +13,5 @@ public:
     void onTick(float inDeltaTime) override;
 
 private:
-    bool m_willGoUp;
-    float m_upTarget;
-
     std::unique_ptr<Chicane::MeshComponent> m_mesh;
 };

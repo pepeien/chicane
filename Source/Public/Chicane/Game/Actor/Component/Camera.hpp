@@ -17,6 +17,9 @@ namespace Chicane
         void onDeactivation() override;
 
     protected:
+        void refreshCamera();
+
+    protected:
         std::unique_ptr<Camera> m_camera;
     }; 
 }

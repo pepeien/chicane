@@ -10,7 +10,7 @@ namespace Chicane
 
     void MeshComponent::onActivation()
     {
-        if (!hasMesh() || !hasOwner() || !hasActiveLevel())
+        if (!hasMesh() || !isAttached() || !hasActiveLevel())
         {
             return;
         }

@@ -3,7 +3,8 @@
 namespace Chicane
 {
     Actor::Actor()
-        : m_canTick(false)
+        : Transformable(),
+        m_canTick(false)
     {}
 
     bool Actor::canTick() const

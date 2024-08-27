@@ -5,21 +5,14 @@
 namespace Chicane
 {
     ActorComponent::ActorComponent()
-        : m_canTick(true),
+        : Transformable(),
+        m_canTick(true),
         m_isActive(false),
-        m_attachmentRule(AttachmentRule::FollowAll),
-        m_owner(nullptr)
+        m_base({}),
+        m_attachment(nullptr)
+        
     {
         addComponent(this);
-
-        watchTransform(
-            [this](const Transform& inTransform)
-            {
-                refreshTranslation();
-                refreshRotation();
-                refreshScale();
-            }
-        );
     }
 
     bool ActorComponent::isActive() const
@@ -61,145 +54,97 @@ namespace Chicane
         onTick(inDeltaTime);
     }
 
-    AttachmentRule ActorComponent::getAttachmentRule() const
+    bool ActorComponent::isAttached() const
     {
-        return m_attachmentRule;
+        return m_attachment != nullptr;
     }
 
-    void ActorComponent::setAttachmentRule(AttachmentRule inRule)
+    void ActorComponent::attachTo(Actor* inAttachment)
     {
-        m_attachmentRule = inRule;
-    }
+        m_attachment = inAttachment;
 
-    bool ActorComponent::hasOwner() const
-    {
-        return m_owner != nullptr;
-    }
-
-    void ActorComponent::setOwner(Actor* inActor)
-    {
-        m_owner = inActor;
-
-        if (inActor)
+        if (!isAttached())
         {
-            m_owner->watchTransform(
-                [this](const Transform& inTransform)
-                {
-                    refreshTranslation();
-                    refreshRotation();
-                    refreshScale();
-                }
-            );
+            onAttachment();
+
+            return;
         }
+
+        m_attachmentTransformSubscription = m_attachment->watchTransform(
+            [&](const Transform& inTransform)
+            {
+                refreshTransform();
+            }
+        );
+
+        refreshTransform();
 
         onAttachment();
     }
 
-    const Vec<3, float>& ActorComponent::getOriginTranslation() const
+    const Transform& ActorComponent::getBase() const
     {
-        return m_origin.translation;
+        return m_base;
     }
 
-    void ActorComponent::setOriginTranslation(const Vec<3, float>& inTranslation)
+    void ActorComponent::setBase(const Transform& inOrigin)
     {
-        bool isIdentical = std::fabs(m_origin.translation.x - inTranslation.x) < FLT_EPSILON &&
-                           std::fabs(m_origin.translation.y - inTranslation.y) < FLT_EPSILON &&
-                           std::fabs(m_origin.translation.z - inTranslation.z) < FLT_EPSILON;
+        m_base = inOrigin;
 
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_origin.translation = inTranslation;
+        refreshTransform();
     }
 
-    const Vec<3, float>& ActorComponent::getOriginRotation() const
+    const Vec<3, float>& ActorComponent::getBaseScale() const
     {
-        return m_origin.rotation;
+        return m_base.scale;
     }
 
-    void ActorComponent::setOriginRotation(const Vec<3, float>& inRotation)
+    void ActorComponent::setBaseScale(const Vec<3, float>& inScale)
     {
-        bool isIdentical = std::fabs(m_origin.rotation.x - inRotation.x) < FLT_EPSILON &&
-                           std::fabs(m_origin.rotation.y - inRotation.y) < FLT_EPSILON &&
-                           std::fabs(m_origin.rotation.z - inRotation.z) < FLT_EPSILON;
+        m_base.scale = inScale;
 
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_origin.rotation = inRotation;
+        refreshTransform();
     }
 
-    const Vec<3, float>& ActorComponent::getOriginScale() const
+    const Vec<3, float>& ActorComponent::getBaseRotation() const
     {
-        return m_origin.scale;
+        return m_base.rotation;
     }
 
-    void ActorComponent::setOriginScale(const Vec<3, float>& inScale)
+    void ActorComponent::setBaseRotation(const Vec<3, float>& inRotation)
     {
-        bool isIdentical = std::fabs(m_origin.rotation.x - inScale.x) < FLT_EPSILON &&
-                           std::fabs(m_origin.rotation.y - inScale.y) < FLT_EPSILON &&
-                           std::fabs(m_origin.rotation.z - inScale.z) < FLT_EPSILON;
+        m_base.rotation = inRotation;
 
-        if (isIdentical)
-        {
-            return;
-        }
-
-        m_origin.scale = inScale;
+        refreshTransform();
     }
 
-    void ActorComponent::refreshTranslation()
+    const Vec<3, float>& ActorComponent::getBaseTranslation() const
     {
-        if (m_attachmentRule != AttachmentRule::FollowAll && m_attachmentRule != AttachmentRule::FollowTranslation)
-        {
-            setAbsoluteTranslation(m_origin.translation);
-
-            return;
-        }
-
-        if (!hasOwner())
-        {
-            return;
-        }
-
-        setAbsoluteTranslation(m_owner->getTranslation() + m_origin.translation);
+        return m_base.translation;
     }
 
-    void ActorComponent::refreshRotation()
+    void ActorComponent::setBaseTranslation(const Vec<3, float>& inTranslation)
     {
-        if (m_attachmentRule != AttachmentRule::FollowAll && m_attachmentRule != AttachmentRule::FollowRotation)
-        {
-            setAbsoluteRotation(m_origin.rotation);
+        m_base.translation = inTranslation;
 
-            return;
-        }
-
-        if (!hasOwner())
-        {
-            return;
-        }
-
-        setAbsoluteRotation(m_owner->getRotation() + m_origin.rotation);
+        refreshTransform();
     }
 
-    void ActorComponent::refreshScale()
+    void ActorComponent::refreshTransform()
     {
-        if (m_attachmentRule != AttachmentRule::FollowAll)
+        if (!isAttached())
         {
-            setAbsoluteRotation(m_origin.scale);
+            setAbsoluteScale(m_base.scale);
+            setAbsoluteRotation(m_base.rotation);
+            setAbsoluteTranslation(m_base.translation);
 
             return;
         }
 
-        if (!hasOwner())
-        {
-            return;
-        }
+        const Transform& attachmentTransform = m_attachment->getTransform();
 
-        setAbsoluteScale(m_owner->getScale() * m_origin.scale);
+        setAbsoluteScale(attachmentTransform.scale * m_base.scale);
+        setAbsoluteRotation(attachmentTransform.rotation + m_base.rotation);
+        setAbsoluteTranslation(attachmentTransform.translation + m_base.translation);
     }
 }

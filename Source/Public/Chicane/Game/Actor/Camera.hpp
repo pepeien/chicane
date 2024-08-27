@@ -3,7 +3,6 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Actor/Pawn.hpp"
 #include "Chicane/Game/Actor/Component/Camera.hpp"
-#include "Chicane/Game/Actor/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -29,6 +28,5 @@ namespace Chicane
 
     protected:
         std::unique_ptr<CameraComponent> m_camera;
-        std::unique_ptr<MeshComponent> m_mesh;
     };
 }

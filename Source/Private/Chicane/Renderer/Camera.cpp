@@ -8,7 +8,7 @@ namespace Chicane
         m_fieldOfView(45.0f),
         m_UBO({})
     {
-        setClip(0.1f, 1000.0f);
+        setClip(0.1f, 10000.0f);
 
         watchTransform(
             [this](const Transform& inTransform)
@@ -76,7 +76,7 @@ namespace Chicane
 
     void Camera::setNearClip(float inNearClip)
     {
-        if (fabs(inNearClip - m_UBO.clip.x) > FLT_EPSILON)
+        if (std::fabs(inNearClip - m_UBO.clip.x) < FLT_EPSILON)
         {
             return;
         }
@@ -93,7 +93,7 @@ namespace Chicane
 
     void Camera::setFarClip(float inFarClip)
     {
-        if (fabs(inFarClip - m_UBO.clip.y) > FLT_EPSILON)
+        if (std::fabs(inFarClip - m_UBO.clip.y) < FLT_EPSILON)
         {
             return;
         }
