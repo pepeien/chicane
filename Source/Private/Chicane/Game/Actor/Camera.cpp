@@ -25,6 +25,24 @@ namespace Chicane
 
     void CameraActor::setupMouseInputs()
     {
+        m_controller->bindMouseMotionEvent(
+            [&](const SDL_MouseMotionEvent& inEvent)
+            {
+                if (!isWindowFocused())
+                {
+                    return;
+                }
+
+                setRelativeRotation(
+                    Vec<3, float>(
+                        0.0f,
+                        -inEvent.xrel * 0.5f,
+                        -inEvent.yrel * 0.5f
+                    )
+                );
+            }
+        );
+
         m_controller->bindMouseButtonEvent(
             SDL_BUTTON_RIGHT,
             [](bool isButtonPressed)
@@ -37,7 +55,6 @@ namespace Chicane
                 setWindowFocus(!isWindowFocused());
             }
         );
-
     }
 
     void CameraActor::setupKeyboardInputs()
@@ -102,7 +119,6 @@ namespace Chicane
 
     void CameraActor::setupControllerInputs()
     {
-        // Button
         m_controller->bindControllerButtonEvent(
             SDL_CONTROLLER_BUTTON_A,
             [](bool isKeyDown)

@@ -130,9 +130,11 @@ namespace Chicane
 
     void Camera::updateView()
     {
+        const Vec<3, float>& translation = m_transform.translation;
+
         m_UBO.view = glm::lookAt(
-            m_transform.translation,
-            m_transform.translation + getForward(),
+            translation,
+            translation + getForward(),
             getUp()
         );
 
