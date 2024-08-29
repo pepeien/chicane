@@ -1,6 +1,7 @@
 #include "Chicane/Renderer.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 
 namespace Chicane
 {
@@ -10,7 +11,8 @@ namespace Chicane
         m_currentImageIndex(0),
         m_window(inWindow),
         m_viewportSize(Vec<2, std::uint32_t>(0)),
-        m_viewportPosition(Vec<2, std::uint32_t>(0))
+        m_viewportPosition(Vec<2, std::uint32_t>(0)),
+        m_defaultCamera(std::make_unique<CameraComponent>())
     {
         buildInstance();
         buildDebugMessenger();
@@ -552,10 +554,10 @@ namespace Chicane
     void Renderer::buildDefaultCamera()
     {
         watchActiveCamera(
-            [this](Camera* inCamera) {
+            [this](CameraComponent* inCamera) {
                 if (inCamera == nullptr)
                 {
-                    setActiveCamera(m_defaultCamera.get());
+                    m_defaultCamera->activate();
 
                     return;
                 }
@@ -564,11 +566,13 @@ namespace Chicane
             }
         );
 
+        m_defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
+
         if (hasActiveCamera())
         {
             return;
         }
 
-        m_defaultCamera = std::make_unique<Camera>();
+        m_defaultCamera->activate();
     }
 }

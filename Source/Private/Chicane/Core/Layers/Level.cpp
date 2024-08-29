@@ -34,27 +34,9 @@ namespace Chicane
         // Graphics Pipeline
         m_graphicsPipeline.reset();
 
-        // Descriptors
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
-            m_frameDescriptor.setLayout
-        );
-
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
-            m_materialDescriptor.setLayout
-        );
-        m_internals.logicalDevice.destroyDescriptorPool(
-            m_materialDescriptor.pool
-        );
-
-        // Buffers
-        Buffer::destroy(
-            m_internals.logicalDevice,
-            m_modelVertexBuffer
-        );
-        Buffer::destroy(
-            m_internals.logicalDevice,
-            m_modelIndexBuffer
-        );
+        destroyFrameResources();
+        destroyMaterialResources();
+        destroyAssets();
     }
 
     void LevelLayer::build()
@@ -179,9 +161,7 @@ namespace Chicane
             m_graphicsPipeline->layout
         );
 
-        Allocator::getModelManager()->drawAll(
-            inCommandBuffer
-        );
+        Allocator::getModelManager()->drawAll(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
@@ -191,26 +171,34 @@ namespace Chicane
     void LevelLayer::loadEvents()
     {
         m_level->watchMeshes(
-            std::bind(
-                &LevelLayer::loadMesh,
-                this,
-                std::placeholders::_1
-            )
+            [this](MeshComponent* inMesh)
+            {
+                if (!m_level->hasMeshes())
+                {
+                    m_isInitialized = false;
+
+                    return;
+                }
+
+                if (!m_isInitialized)
+                {
+                    m_isInitialized = true;
+
+                    build();
+
+                    return;
+                }
+
+                loadMeshes();
+            }
         );
     }
 
-    void LevelLayer::loadMesh(MeshComponent* inMesh)
+    void LevelLayer::loadMeshes()
     {
-        if (!m_level->hasMeshes())
-        {
-            return;
-        }
-
         if (!m_isInitialized)
         {
-            m_isInitialized = true;
-
-            build();
+            return;
         }
 
         for (Frame::Instance& frame : m_internals.swapchain->images)
@@ -226,10 +214,7 @@ namespace Chicane
             return;
         }
 
-        for (MeshComponent* mesh : m_level->getMeshes())
-        {
-            loadMesh(mesh);
-        }
+        loadMeshes();
     }
 
     void LevelLayer::initFrameDescriptorSetLayout()
@@ -352,7 +337,6 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_internals.swapchain->images)
         {
-            // Scene
             vk::DescriptorSet sceneDescriptorSet;
             Descriptor::initSet(
                 sceneDescriptorSet,
@@ -382,6 +366,13 @@ namespace Chicane
         }
     }
 
+    void LevelLayer::destroyFrameResources()
+    {
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
+            m_frameDescriptor.setLayout
+        );
+    }
+
     void LevelLayer::initMaterialResources()
     {
         if (!m_isInitialized)
@@ -397,6 +388,16 @@ namespace Chicane
             m_materialDescriptor.pool,
             m_internals.logicalDevice,
             descriptorPoolCreateInfo
+        );
+    }
+
+    void LevelLayer::destroyMaterialResources()
+    {
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
+            m_materialDescriptor.setLayout
+        );
+        m_internals.logicalDevice.destroyDescriptorPool(
+            m_materialDescriptor.pool
         );
     }
 
@@ -423,6 +424,18 @@ namespace Chicane
             m_internals.graphicsQueue,
             m_materialDescriptor.setLayout,
             m_materialDescriptor.pool
+        );
+    }
+
+    void LevelLayer::destroyAssets()
+    {
+        Buffer::destroy(
+            m_internals.logicalDevice,
+            m_modelVertexBuffer
+        );
+        Buffer::destroy(
+            m_internals.logicalDevice,
+            m_modelIndexBuffer
         );
     }
 

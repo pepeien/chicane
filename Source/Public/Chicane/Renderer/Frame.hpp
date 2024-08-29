@@ -44,7 +44,7 @@ namespace Chicane
             void updateDescriptorSets();
 
             void destroyCameraMemory();
-            void destroyModelMemory();
+            void deleteModelData();
             void destroy();
 
         public:

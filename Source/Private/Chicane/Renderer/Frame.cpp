@@ -49,7 +49,7 @@ namespace Chicane
     
         void Instance::setupModelData(Level* inLevel)
         {
-            destroyModelMemory();
+            deleteModelData();
 
             const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
 
@@ -181,7 +181,7 @@ namespace Chicane
             );
         }
     
-        void Instance::destroyModelMemory()
+        void Instance::deleteModelData()
         {
             if (!modelData.buffer.memory)
             {
@@ -213,7 +213,7 @@ namespace Chicane
             logicalDevice.destroySemaphore(renderSemaphore);
 
             destroyCameraMemory();
-            destroyModelMemory();
+            deleteModelData();
         }
     }
 }

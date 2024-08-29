@@ -16,10 +16,29 @@ namespace Chicane
         void onActivation() override;
         void onDeactivation() override;
 
-    protected:
-        void refreshCamera();
+    public:
+        const Vec<2, std::uint32_t>& getViewport() const;
+        void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
+        void setViewport(const Vec<2, std::uint32_t>& inViewportResolution);
+
+        float getFieldOfView() const;
+        void setFieldOfView(float inFov);
+
+        float getNearClip() const;
+        void setNearClip(float inNearClip);
+        float getFarClip() const;
+        void setFarClip(float inFarClip);
+        void setClip(float inNearClip, float inFarClip);
+
+        const Camera::UBO& getUBO() const;
 
     protected:
-        std::unique_ptr<Camera> m_camera;
+        void updateProjection();
+        void updateView();
+        void updateViewProjection();
+
+    protected:
+        Camera::Settings m_settings;
+        Camera::UBO m_UBO;
     }; 
 }

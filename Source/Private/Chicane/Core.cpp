@@ -2,8 +2,10 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 #include "Chicane/Grid.hpp"
 #include "Chicane/Renderer.hpp"
+
 
 namespace Chicane
 {
@@ -12,8 +14,8 @@ namespace Chicane
     Level* m_level = nullptr;
     std::unique_ptr<Observable<Level*>> m_levelObservable = std::make_unique<Observable<Level*>>();
 
-    Camera* m_camera = nullptr;
-    std::unique_ptr<Observable<Camera*>> m_cameraObservable = std::make_unique<Observable<Camera*>>();
+    CameraComponent* m_camera = nullptr;
+    std::unique_ptr<Observable<CameraComponent*>> m_cameraObservable = std::make_unique<Observable<CameraComponent*>>();
 
     std::vector<ActorComponent*> m_components {};
 
@@ -24,20 +26,25 @@ namespace Chicane
         return m_camera != nullptr;
     }
 
-    Camera* getActiveCamera()
+    CameraComponent* getActiveCamera()
     {
         return m_camera;
     }
 
-    void setActiveCamera(Camera* inCamera)
+    void setActiveCamera(CameraComponent* inCamera)
     {
+        if (inCamera == getActiveCamera())
+        {
+            return;
+        }
+
         m_camera = inCamera;
 
         m_cameraObservable->next(inCamera);
     }
 
     void watchActiveCamera(
-        std::function<void (Camera*)> inNextCallback,
+        std::function<void (CameraComponent*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     )
@@ -131,21 +138,11 @@ namespace Chicane
 
     bool isWindowFocused()
     {
-        if (!m_window)
-        {
-            return false;
-        }
-
         return m_window->isFocused();
     }
 
     void setWindowFocus(bool inIsFocused)
     {
-        if (!m_window)
-        {
-            return;
-        }
-
         if (inIsFocused)
         {
             m_window->focus();
@@ -168,23 +165,13 @@ namespace Chicane
         return position;
     }
 
-    Vec<2, int> getResolution()
+    const Vec<2, int>& getResolution()
     {
-        if (m_window == nullptr)
-        {
-            return {};
-        }
-
         return m_window->getDrawableSize();
     }
 
     void setResolution(const Vec<2, int>& inResolution)
     {
-        if (m_window == nullptr)
-        {
-            return;
-        }
-
         m_window->setSize(inResolution);
     }
 
@@ -193,21 +180,11 @@ namespace Chicane
         const Vec<2, float>& inPosition
     )
     {
-        if (m_window == nullptr)
-        {
-            return;
-        }
-
         m_window->setViewport(inSize, inPosition);
     }
 
-    Telemetry getTelemetry()
+    const Telemetry& getTelemetry()
     {
-        if (m_window == nullptr)
-        {
-            return {};
-        }
-
         return m_window->getTelemetry();
     }
 }

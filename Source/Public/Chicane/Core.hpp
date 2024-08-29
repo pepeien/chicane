@@ -18,7 +18,7 @@ namespace Chicane
 {
     class Actor;
     class ActorComponent;
-    class Camera;
+    class CameraComponent;
     class Controller;
     class Level;
 
@@ -41,10 +41,10 @@ namespace Chicane
     void addActor(Actor* inActor);
 
     bool hasActiveCamera();
-    Camera* getActiveCamera();
-    void setActiveCamera(Camera* inCamera);
+    CameraComponent* getActiveCamera();
+    void setActiveCamera(CameraComponent* inCamera);
     void watchActiveCamera(
-        std::function<void (Camera*)> inNextCallback,
+        std::function<void (CameraComponent*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback = nullptr,
         std::function<void ()> inCompleteCallback = nullptr
     );
@@ -61,7 +61,7 @@ namespace Chicane
 
     Vec<2, int> getCursorPosition();
 
-    Vec<2, int> getResolution();
+    const Vec<2, int>& getResolution();
     void setResolution(const Vec<2, int>& inResolution);
 
     void setViewport(
@@ -69,5 +69,5 @@ namespace Chicane
         const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
     );
 
-    Telemetry getTelemetry();
+    const Telemetry& getTelemetry();
 }

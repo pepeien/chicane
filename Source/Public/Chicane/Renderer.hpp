@@ -33,10 +33,8 @@ namespace Chicane
     class Layer;
     class Window;
 
-    namespace Thread
-    {
-        class Pool;
-    }
+    // Game
+    class CameraComponent;
 
     class Renderer
     {
@@ -154,6 +152,6 @@ namespace Chicane
         std::vector<Layer*> m_layers;
 
         // Essentials
-        std::unique_ptr<Camera> m_defaultCamera;
+        std::unique_ptr<CameraComponent> m_defaultCamera;
     };
 }

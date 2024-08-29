@@ -95,12 +95,12 @@ namespace Chicane
         FrameTelemetry frame {};
 
     public:
-        float deltaToMs()
+        float deltaToMs() const
         {
             return (delta / (float)CLOCKS_PER_SEC) * 1000.0f;
         }
 
-        float deltaToTick()
+        float deltaToTick() const
         {
             return delta / 1000.0f;
         }
