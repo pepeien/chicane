@@ -49,8 +49,6 @@ namespace Chicane
     
         void Instance::setupModelData(Level* inLevel)
         {
-            deleteModelData();
-
             const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
 
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
@@ -89,6 +87,20 @@ namespace Chicane
             {
                 modelData.transforms[i] = meshes.at(i)->getPosition();
             }
+        }
+    
+        void Instance::deleteModelData()
+        {
+            if (!modelData.buffer.memory)
+            {
+                return;
+            }
+
+            logicalDevice.unmapMemory(modelData.buffer.memory);
+            Buffer::destroy(
+                logicalDevice,
+                modelData.buffer
+            );
         }
 
         void Instance::setupDepthBuffering(const vk::Format& inFormat)
@@ -178,20 +190,6 @@ namespace Chicane
             Buffer::destroy(
                 logicalDevice,
                 cameraUBO.buffer
-            );
-        }
-    
-        void Instance::deleteModelData()
-        {
-            if (!modelData.buffer.memory)
-            {
-                return;
-            }
-
-            logicalDevice.unmapMemory(modelData.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                modelData.buffer
             );
         }
 

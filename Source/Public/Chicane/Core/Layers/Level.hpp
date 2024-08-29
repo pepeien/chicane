@@ -29,18 +29,20 @@ namespace Chicane
 
     private:
         void loadEvents();
-        void loadMeshes();
-        void loadAssets();
         void initFrameDescriptorSetLayout();
+        void deleteFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();
+        void destroyMaterialDescriptorSetLayout();
         void initGraphicsPipeline();
         void initFramebuffers();
         void initFrameResources();
         void destroyFrameResources();
-        void initMaterialResources();
-        void destroyMaterialResources();
-        void buildAssets();
-        void destroyAssets();
+        void initTextures();
+        void buildTextures();
+        void destroyTextures();
+        void initMeshes();
+        void buildMeshes();
+        void destroyMeshes();
 
         void tickComponents(float inDeltaTime);
         void tickActors(float inDeltaTime);

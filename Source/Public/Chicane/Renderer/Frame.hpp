@@ -31,6 +31,7 @@ namespace Chicane
 
             void setupModelData(Level* inLevel);
             void updateModelData(Level* inLevel);
+            void deleteModelData();
     
             void setupDepthBuffering(const vk::Format& inFormat);
 
@@ -44,7 +45,6 @@ namespace Chicane
             void updateDescriptorSets();
 
             void destroyCameraMemory();
-            void deleteModelData();
             void destroy();
 
         public:
