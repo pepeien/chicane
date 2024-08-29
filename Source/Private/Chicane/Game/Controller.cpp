@@ -19,7 +19,7 @@ namespace Chicane
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
-        );
+        )->next(m_pawn);
     }
 
     bool Controller::isAttached() const

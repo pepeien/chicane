@@ -107,11 +107,14 @@ namespace Chicane
         std::function<void ()> inCompleteCallback
     )
     {
-        return m_transformObservable->subscribe(
+        Subscription<const Transform&>* result = m_transformObservable->subscribe(
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
         );
+        result->next(m_transform);
+
+        return result;
     }
 
     void Transformable::setTranslation(const Mat<4, float>& inBase, const Vec<3, float>& inTranslation)

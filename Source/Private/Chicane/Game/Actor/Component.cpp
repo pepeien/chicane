@@ -77,8 +77,6 @@ namespace Chicane
             }
         );
 
-        refreshTransform();
-
         onAttachment();
     }
 

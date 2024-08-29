@@ -98,7 +98,7 @@ namespace Chicane
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
-        );
+        )->next(m_level);
     }
 
     void addActor(Actor* inActor)
@@ -111,9 +111,41 @@ namespace Chicane
         m_level->addActor(inActor);
     }
 
-    std::vector<ActorComponent*> getComponents()
+    std::vector<Actor*> getActors()
+    {
+        if (!hasActiveLevel())
+        {
+            return {};
+        }
+
+        return m_level->getActors();
+    }
+
+    const std::vector<ActorComponent*>& getComponents()
     {
         return m_components;
+    }
+
+    std::vector<ActorComponent*> getComponents(Actor* inActor)
+    {
+        if (inActor == nullptr)
+        {
+            return {};
+        }
+
+        std::vector<ActorComponent*> result {};
+
+        for (ActorComponent* component : getComponents())
+        {
+            if (!component->isAttached() || component->getAttachment() != inActor)
+            {
+                continue;
+            }
+
+            result.push_back(component);
+        }
+
+        return result;
     }
 
     void addComponent(ActorComponent* inComponent)

@@ -34,11 +34,12 @@ namespace Chicane
     void setActiveLevel(Level* inLevel);
     void watchActiveLevel(
         std::function<void (Level*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+        std::function<void (const std::string&)> inErrorCallback = nullptr,
+        std::function<void ()> inCompleteCallback = nullptr
     );
 
     void addActor(Actor* inActor);
+    std::vector<Actor*> getActors();
 
     bool hasActiveCamera();
     CameraComponent* getActiveCamera();
@@ -49,7 +50,8 @@ namespace Chicane
         std::function<void ()> inCompleteCallback = nullptr
     );
 
-    std::vector<ActorComponent*> getComponents();
+    const std::vector<ActorComponent*>& getComponents();
+    std::vector<ActorComponent*> getComponents(Actor* inActor);
     void addComponent(ActorComponent* inComponent);
 
     // Window
