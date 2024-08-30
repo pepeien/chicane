@@ -15,5 +15,5 @@ void main() {
     float angle = clamp(dot(inNormalPosition, -lightDirection.xyz), 0.0f, 1.0f);
     vec3 color  = lightColor.xyz * angle;
 
-    outColor = vec4(color, 0.5f) * texture(material, inTexturePosition);
+    outColor = vec4(color, 1.0f) * texture(material, inTexturePosition);
 }
