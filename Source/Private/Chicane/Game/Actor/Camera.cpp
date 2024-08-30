@@ -172,13 +172,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                0.0f,
-                MOVEMENT_COEFFICIENT,
-                0.0f
-            )
-        );
+        setRelativeTranslation(getForward() * MOVEMENT_COEFFICIENT);
     }
 
     void CameraActor::moveBackward(bool isKeyDown)
@@ -188,13 +182,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                0.0f,
-                -MOVEMENT_COEFFICIENT,
-                0.0f
-            )
-        );
+        setRelativeTranslation(getForward() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraActor::moveLeft(bool isKeyDown)
@@ -204,13 +192,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                -MOVEMENT_COEFFICIENT,
-                0.0f,
-                0.0f
-            )
-        );
+        setRelativeTranslation(getRight() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraActor::moveRight(bool isKeyDown)
@@ -220,12 +202,6 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                MOVEMENT_COEFFICIENT,
-                0.0f,
-                0.0f
-            )
-        );
+        setRelativeTranslation(getRight() * MOVEMENT_COEFFICIENT);
     }
 }

@@ -19,9 +19,9 @@ namespace Chicane
     void Transformable::setRelativeTranslation(const Vec<3, float>& inTranslation)
     {
         Vec<3, float> translation = m_transform.translation;
-        translation += getRight() * inTranslation.x;
-        translation += getForward() * inTranslation.y;
-        translation += getUp() * inTranslation.z;
+        translation.x += inTranslation.x;
+        translation.y += inTranslation.y;
+        translation.z += inTranslation.z;
 
         setTranslation(m_position, translation);
     }
