@@ -186,9 +186,12 @@ namespace Chicane
             int& outWidth,
             int& outHeight,
             int& outChannel,
+            int& outFormat,
             const std::string& inFilepath
         )
         {
+            outFormat = STBI_rgb_alpha;
+
             ImageData* result = stbi_load(
                 inFilepath.c_str(),
                 &outWidth,

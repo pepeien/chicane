@@ -59,6 +59,7 @@ namespace Chicane
             int& outWidth,
             int& outHeight,
             int& outChannel,
+            int& outFormat,
             const std::string& inFilepath
         );
         ImageData* readImageFromMemory(

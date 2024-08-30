@@ -340,7 +340,7 @@ namespace Chicane
     }
 
     void Window::setIcon(const std::string& inIconPath)
-    {/*
+    {
         std::string iconPath = Utils::trim(inIconPath);
 
         if (iconPath.empty())
@@ -353,18 +353,34 @@ namespace Chicane
             throw std::runtime_error("The file [ " + iconPath + " ] doesn't exist");
         }
 
-        SDL_Surface* icon = STBIMG_Load(inIconPath.c_str());
+        int width   = 0;
+        int height  = 0;
+        int channel = 0;
+        int format  = 0;
+
+        ImageData* data = FileSystem::readImageFromFile(
+            width,
+            height,
+            channel,
+            format,
+            inIconPath
+        );
+
+        SDL_Surface* icon = SDL_CreateSurfaceFrom(
+            width,
+            height,
+            SDL_PIXELFORMAT_ARGB8888,
+            data,
+            format * width
+        );
 
         if (!icon)
         {
             throw std::runtime_error(SDL_GetError());
         }
 
-        SDL_SetWindowIcon(
-            instance,
-            icon
-        );
-        SDL_FreeSurface(icon);*/
+        SDL_SetWindowIcon(instance, icon);
+        SDL_DestroySurface(icon);
     }
 
     void Window::setDisplay(int inMonitorIndex)
