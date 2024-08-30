@@ -18,24 +18,38 @@ namespace Chicane
         m_isMinimized(false),
         m_renderer(nullptr)
     {
-        setWindow(this);
-
         if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             throw std::runtime_error(SDL_GetError());
         }
 
-        if (inCreateInfo.resolution.x < 0 || inCreateInfo.resolution.y < 0)
+        SDL_DisplayMode displaySettings;
+        SDL_GetCurrentDisplayMode(
+            inCreateInfo.displayIndex,
+            &displaySettings
+        );
+    
+        int width = std::min(
+            inCreateInfo.resolution.x,
+            displaySettings.w
+        );
+        int height = std::min(
+            inCreateInfo.resolution.y,
+            displaySettings.h
+        );
+
+        if (width <= 0 || height <= 0)
         {
-            throw std::runtime_error("Invalid resolution");
+            width  = displaySettings.w;
+            height = displaySettings.h;
         }
 
         instance = SDL_CreateWindow(
             inCreateInfo.title.c_str(),
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
-            inCreateInfo.resolution.x,
-            inCreateInfo.resolution.y,
+            width,
+            height,
             SDL_WINDOW_VULKAN
         );
 
@@ -47,12 +61,14 @@ namespace Chicane
         setDisplay(inCreateInfo.displayIndex);
         setType(inCreateInfo.type);
         setIcon(inCreateInfo.icon);
+        setWindow(this);
 
         refreshSize();
         refreshPosition();
 
         initRenderer();
         initCoreLayers();
+        
     }
 
     Window::~Window()

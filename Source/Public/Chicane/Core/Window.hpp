@@ -23,7 +23,7 @@ namespace Chicane
     {
         std::string title        = "";
         std::string icon         = ""; // Optional [file path]
-        Vec<2, int> resolution = Vec<2, int>(0);
+        Vec<2, int> resolution   = Vec<2, int>(0);
         int displayIndex         = 0;
         WindowType type          = WindowType::Windowed;
         bool isFocused           = false;
