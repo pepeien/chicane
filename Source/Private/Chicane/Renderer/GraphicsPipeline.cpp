@@ -408,17 +408,22 @@ namespace Chicane
 
             // Color Blending
             vk::PipelineColorBlendAttachmentState colorBlendAttachmentState {};
-            colorBlendAttachmentState.colorWriteMask = vk::ColorComponentFlagBits::eR |
-                                                       vk::ColorComponentFlagBits::eG |
-                                                       vk::ColorComponentFlagBits::eB |
-                                                       vk::ColorComponentFlagBits::eA;
-            colorBlendAttachmentState.blendEnable = VK_FALSE;
+            colorBlendAttachmentState.colorWriteMask      = vk::ColorComponentFlagBits::eR |
+                                                            vk::ColorComponentFlagBits::eG |
+                                                            vk::ColorComponentFlagBits::eB |
+                                                            vk::ColorComponentFlagBits::eA;
+            colorBlendAttachmentState.blendEnable         = VK_TRUE;
+            colorBlendAttachmentState.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
+            colorBlendAttachmentState.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+            colorBlendAttachmentState.colorBlendOp        = vk::BlendOp::eAdd;
+            colorBlendAttachmentState.srcAlphaBlendFactor = vk::BlendFactor::eSrcAlpha;
+            colorBlendAttachmentState.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+            colorBlendAttachmentState.alphaBlendOp        = vk::BlendOp::eSubtract;
 
             vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState(colorBlendAttachmentState);
             pipelineInfo.pColorBlendState = &colorBlendState;
 
             // Depthning
-
             vk::PipelineDepthStencilStateCreateInfo depthStencilState;
 
             if (m_hasDepth)
