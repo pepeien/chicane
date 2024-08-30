@@ -1,9 +1,5 @@
 #include "Chicane/Core/Window.hpp"
 
-#define SDL_STBIMG_DEF static
-#define SDL_STBIMAGE_IMPLEMENTATION
-#include "stb/sdl_stb_image.h"
-
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer.hpp"
 
@@ -18,47 +14,54 @@ namespace Chicane
         m_isMinimized(false),
         m_renderer(nullptr)
     {
-        if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+        if (!SDL_InitSubSystem(SDL_INIT_VIDEO) || !SDL_InitSubSystem(SDL_INIT_GAMEPAD))
         {
             throw std::runtime_error(SDL_GetError());
         }
 
-        SDL_DisplayMode displaySettings;
-        SDL_GetCurrentDisplayMode(
+        int displayCount;
+        SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
+
+        int displayIndex = std::min(
             inCreateInfo.displayIndex,
-            &displaySettings
+            displayCount
         );
-    
+
+        const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(displays[displayIndex]);
+
+        if (!displaySettings)
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
+
         int width = std::min(
             inCreateInfo.resolution.x,
-            displaySettings.w
+            displaySettings->w
         );
         int height = std::min(
             inCreateInfo.resolution.y,
-            displaySettings.h
+            displaySettings->h
         );
 
         if (width <= 0 || height <= 0)
         {
-            width  = displaySettings.w;
-            height = displaySettings.h;
+            width  = displaySettings->w;
+            height = displaySettings->h;
         }
 
         instance = SDL_CreateWindow(
             inCreateInfo.title.c_str(),
-            SDL_WINDOWPOS_CENTERED,
-            SDL_WINDOWPOS_CENTERED,
             width,
             height,
             SDL_WINDOW_VULKAN
         );
 
-        if (instance == nullptr)
+        if (!instance)
         {
             throw std::runtime_error(SDL_GetError());
         }
 
-        setDisplay(inCreateInfo.displayIndex);
+        setDisplay(displayIndex);
         setType(inCreateInfo.type);
         setIcon(inCreateInfo.icon);
         setWindow(this);
@@ -134,7 +137,7 @@ namespace Chicane
             {
                 switch (event.type)
                 {
-                case SDL_QUIT:
+                case SDL_EVENT_QUIT:
                     shouldClose = true;
 
                     break;
@@ -157,8 +160,32 @@ namespace Chicane
     {
         switch (inEvent.type)
         {
-        case SDL_WINDOWEVENT:
-            onWindowEvent(inEvent.window);
+        case SDL_EVENT_WINDOW_SHOWN:
+            refreshSize();
+            refreshPosition();
+
+            break;
+
+        case SDL_EVENT_WINDOW_EXPOSED:
+            m_isMinimized = false;
+
+            refreshSize();
+
+            break;
+
+        case SDL_EVENT_WINDOW_MINIMIZED:
+            m_isMinimized = true;
+
+            break;
+
+        case SDL_EVENT_WINDOW_RESIZED:
+            refreshSize();
+
+            break;
+        
+        case SDL_EVENT_WINDOW_DISPLAY_CHANGED:
+        case SDL_EVENT_WINDOW_MOVED:
+            refreshPosition();
 
             break;
         }
@@ -180,14 +207,14 @@ namespace Chicane
     {
         m_isFocused = true;
 
-        SDL_SetRelativeMouseMode(SDL_TRUE);
+        SDL_SetWindowRelativeMouseMode(instance, SDL_TRUE);
     }
 
     void Window::blur()
     {
         m_isFocused = false;
 
-        SDL_SetRelativeMouseMode(SDL_FALSE);
+        SDL_SetWindowRelativeMouseMode(instance, SDL_FALSE);
     }
 
     const Vec<2, int>& Window::getSize() const
@@ -313,7 +340,7 @@ namespace Chicane
     }
 
     void Window::setIcon(const std::string& inIconPath)
-    {
+    {/*
         std::string iconPath = Utils::trim(inIconPath);
 
         if (iconPath.empty())
@@ -337,7 +364,7 @@ namespace Chicane
             instance,
             icon
         );
-        SDL_FreeSurface(icon);
+        SDL_FreeSurface(icon);*/
     }
 
     void Window::setDisplay(int inMonitorIndex)
@@ -454,7 +481,7 @@ namespace Chicane
         int width  = 0;
         int height = 0;
 
-        SDL_Vulkan_GetDrawableSize(
+        SDL_GetWindowSize(
             instance,
             &width,
             &height
@@ -497,40 +524,5 @@ namespace Chicane
         m_telemetry.frame.count = 0;
         m_telemetry.frame.time  = 1000.0f / float(m_telemetry.frame.rate ==0 ? 0.001 : m_telemetry.frame.rate);
         m_telemetry.delta       = 0;
-    }
-
-    void Window::onWindowEvent(const SDL_WindowEvent& inEvent)
-    {
-        switch (inEvent.event)
-        {
-        case SDL_WINDOWEVENT_SHOWN:
-            refreshSize();
-            refreshPosition();
-
-            break;
-
-        case SDL_WINDOWEVENT_EXPOSED:
-            m_isMinimized = false;
-
-            refreshSize();
-
-            break;
-
-        case SDL_WINDOWEVENT_MINIMIZED:
-            m_isMinimized = true;
-
-            break;
-
-        case SDL_WINDOWEVENT_SIZE_CHANGED:
-            refreshSize();
-
-            break;
-        
-        case SDL_WINDOWEVENT_DISPLAY_CHANGED:
-        case SDL_WINDOWEVENT_MOVED:
-            refreshPosition();
-
-            break;
-        }
     }
 }

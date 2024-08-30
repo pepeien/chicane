@@ -61,7 +61,7 @@ namespace Chicane
     bool isWindowFocused();
     void setWindowFocus(bool inIsFocused);
 
-    Vec<2, int> getCursorPosition();
+    Vec<2, float> getCursorPosition();
 
     const Vec<2, int>& getResolution();
     void setResolution(const Vec<2, int>& inResolution);

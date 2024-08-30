@@ -120,7 +120,7 @@ namespace Chicane
     void CameraActor::setupControllerInputs()
     {
         m_controller->bindControllerButtonEvent(
-            SDL_CONTROLLER_BUTTON_A,
+            SDL_GAMEPAD_BUTTON_SOUTH,
             [](bool isKeyDown)
             {
                 if (!isKeyDown || !isWindowFocused())

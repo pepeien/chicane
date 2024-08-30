@@ -185,9 +185,9 @@ namespace Chicane
         m_window->blur();
     }   
 
-    Vec<2, int> getCursorPosition()
+    Vec<2, float> getCursorPosition()
     {
-        Vec<2, int> position(0, 0);
+        Vec<2, float> position(0, 0);
 
         SDL_GetMouseState(
             &position.x,

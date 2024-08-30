@@ -1,10 +1,10 @@
 [submodule "Vendors/glm"]
 	path = Vendors/glm
 	url = https://github.com/pepeien/glm.git
-[submodule "Vendors/SDL2"]
-	path = Vendors/SDL2
+[submodule "Vendors/SDL3"]
+	path = Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
-	branch = SDL2
+	branch = main
 [submodule "Sources/Vendor/imgui"]
 	path = Vendors/imgui
 	url = https://github.com/pepeien/imgui.git

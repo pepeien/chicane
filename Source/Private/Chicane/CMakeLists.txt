@@ -10,7 +10,7 @@ file(
     ${VENDORS_DIR}/imgui/imgui_widgets.cpp
     ${VENDORS_DIR}/imgui/imgui.cpp
     ${VENDORS_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
-    ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl2.cpp
+    ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl3.cpp
     ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
 )
 
@@ -41,7 +41,7 @@ target_include_directories(
         ${VENDORS_DIR}/glm
         ${VENDORS_DIR}/imgui
         ${VENDORS_DIR}/pugixml
-        ${VENDORS_DIR}/SDL2
+        ${VENDORS_DIR}/SDL3/include
     PRIVATE
         ${PRIVATE_DIR}
 )
@@ -51,7 +51,7 @@ target_link_libraries(
 
     PUBLIC
         pugixml-static
-        SDL2-static
+        SDL3-static
     PRIVATE
         ${Vulkan_LIBRARIES}
 )

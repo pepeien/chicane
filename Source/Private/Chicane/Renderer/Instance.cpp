@@ -70,26 +70,9 @@ namespace Chicane
         {
             uint32_t sdlExtensionCount = 0;
 
-            if (
-                SDL_Vulkan_GetInstanceExtensions(
-                    inWindow,
-                    &sdlExtensionCount,
-                    nullptr
-                ) == SDL_FALSE
-            )
-            {
-                throw std::runtime_error(SDL_GetError());
-            }
+            const char* const* sdlRawExtensions = SDL_Vulkan_GetInstanceExtensions(&sdlExtensionCount);
 
-            const char** sdlRawExtensions = new const char*[sdlExtensionCount];
-
-            if (
-                SDL_Vulkan_GetInstanceExtensions(
-                    inWindow,
-                    &sdlExtensionCount,
-                    sdlRawExtensions
-                ) == SDL_FALSE
-            )
+            if (!sdlRawExtensions)
             {
                 throw std::runtime_error(SDL_GetError());
             }

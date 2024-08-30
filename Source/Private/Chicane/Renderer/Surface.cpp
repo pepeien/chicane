@@ -13,11 +13,12 @@ namespace Chicane
             VkSurfaceKHR c_style_surface;
     
             if (
-                SDL_Vulkan_CreateSurface(
+                !SDL_Vulkan_CreateSurface(
                     inWindow,
                     inInstance,
+                    nullptr,
                     &c_style_surface
-                ) == SDL_FALSE
+                )
             )
             {
                 throw std::runtime_error(SDL_GetError());

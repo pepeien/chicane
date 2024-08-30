@@ -99,6 +99,6 @@ namespace Chicane
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
-        )->next(m_meshes.empty() ? nullptr : m_meshes.back());
+        );
     }
 }

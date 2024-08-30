@@ -101,8 +101,6 @@ namespace Chicane
 
         void updateTelemetry();
 
-        void onWindowEvent(const SDL_WindowEvent& inEvent);
-
     private:
         // Telemetry
         std::clock_t m_beginFrame;

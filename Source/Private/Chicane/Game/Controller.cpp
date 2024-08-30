@@ -84,7 +84,7 @@ namespace Chicane
         m_keyboardButtonEvents[inButtonCode] = inEvent;
     }
 
-    void Controller::bindControllerMotionEvent(std::function<void(const SDL_ControllerAxisEvent&)> inEvent)
+    void Controller::bindControllerMotionEvent(std::function<void(const SDL_GamepadAxisEvent&)> inEvent)
     {
         m_controllerMotionEvent = inEvent;
     }
@@ -99,7 +99,7 @@ namespace Chicane
         switch (inEvent.type)
         {
         // Mouse
-        case SDL_MOUSEMOTION:
+        case SDL_EVENT_MOUSE_MOTION:
             if (m_mouseMotionEvent)
             {
                 m_mouseMotionEvent(inEvent.motion);
@@ -107,31 +107,31 @@ namespace Chicane
 
             break;
 
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
             onMouseButtonEvent(inEvent.button);
 
             break;
 
         // Keyboard
-        case SDL_KEYDOWN:
-        case SDL_KEYUP:
+        case SDL_EVENT_KEY_DOWN:
+        case SDL_EVENT_KEY_UP:
             onKeyboardButtonEvent(inEvent.key);
 
             break;
 
         // Controller
-        case SDL_CONTROLLERAXISMOTION:
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
             if (m_controllerMotionEvent)
             {
-                m_controllerMotionEvent(inEvent.caxis);
+                m_controllerMotionEvent(inEvent.gaxis);
             }
 
             break;
 
-        case SDL_CONTROLLERBUTTONDOWN:
-        case SDL_CONTROLLERBUTTONUP:
-            onControllerButtonEvent(inEvent.cbutton);
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+        case SDL_EVENT_GAMEPAD_BUTTON_UP:
+            onControllerButtonEvent(inEvent.gbutton);
 
             break;
 
@@ -154,7 +154,7 @@ namespace Chicane
 
     void Controller::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
     {
-        SDL_Scancode key = inEvent.keysym.scancode;
+        SDL_Scancode key = inEvent.scancode;
 
         if (m_keyboardButtonEvents.find(key) == m_keyboardButtonEvents.end())
         {
@@ -164,7 +164,7 @@ namespace Chicane
         m_keyboardButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
     }
 
-    void Controller::onControllerButtonEvent(const SDL_ControllerButtonEvent& inEvent)
+    void Controller::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
     {
         std::uint8_t key = inEvent.button;
 

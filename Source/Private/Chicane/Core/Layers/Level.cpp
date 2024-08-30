@@ -376,7 +376,7 @@ namespace Chicane
         }
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size = 1000;
+        descriptorPoolCreateInfo.size = 10000;
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(

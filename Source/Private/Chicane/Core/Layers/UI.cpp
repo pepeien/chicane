@@ -58,7 +58,7 @@ namespace Chicane
         style.ItemInnerSpacing = padding;
         style.ItemSpacing      = padding;
 
-        ImGui_ImplSDL2_InitForVulkan(m_window->instance);
+        ImGui_ImplSDL3_InitForVulkan(m_window->instance);
     }
 
     UILayer::~UILayer()
@@ -71,7 +71,7 @@ namespace Chicane
         m_internals.logicalDevice.waitIdle();
 
         ImGui_ImplVulkan_Shutdown();
-        ImGui_ImplSDL2_Shutdown();
+        ImGui_ImplSDL3_Shutdown();
         ImGui::DestroyContext();
 
         m_internals.logicalDevice.destroyRenderPass(m_renderPass);
@@ -110,7 +110,7 @@ namespace Chicane
             return;
         }
 
-        ImGui_ImplSDL2_ProcessEvent(&inEvent);
+        ImGui_ImplSDL3_ProcessEvent(&inEvent);
     }
 
     void UILayer::setup(Chicane::Frame::Instance& outFrame)
@@ -121,7 +121,7 @@ namespace Chicane
         }
 
         ImGui_ImplVulkan_NewFrame();
-        ImGui_ImplSDL2_NewFrame();
+        ImGui_ImplSDL3_NewFrame();
         ImGui::NewFrame();
 
         Grid::getActiveView()->show(

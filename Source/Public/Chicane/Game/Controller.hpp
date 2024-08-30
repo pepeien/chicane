@@ -37,7 +37,7 @@ namespace Chicane
         void bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent);
 
         // Controller Events
-        void bindControllerMotionEvent(std::function<void(const SDL_ControllerAxisEvent&)> inEvent);
+        void bindControllerMotionEvent(std::function<void(const SDL_GamepadAxisEvent&)> inEvent);
         void bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent);
 
         void onEvent(const SDL_Event& inEvent);
@@ -46,7 +46,7 @@ namespace Chicane
         // Events
         void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
         void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
-        void onControllerButtonEvent(const SDL_ControllerButtonEvent& inEvent);
+        void onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent);
 
         void clearEvents();
 
@@ -63,7 +63,7 @@ namespace Chicane
         std::unordered_map<SDL_Scancode, std::function<void(bool)>> m_keyboardButtonEvents;
 
         // Controller Events
-        std::function<void(const SDL_ControllerAxisEvent&)> m_controllerMotionEvent;
+        std::function<void(const SDL_GamepadAxisEvent&)> m_controllerMotionEvent;
         std::unordered_map<std::uint8_t, std::function<void(bool)>> m_controllerButtonEvents;
     };
 }
