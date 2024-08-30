@@ -130,17 +130,13 @@ namespace Chicane
     {
         SDL_Event event;
 
-        bool shouldClose = false;
-        while (!shouldClose)
+        while (true)
         {
             while (SDL_PollEvent(&event))
             {
-                switch (event.type)
+                if (event.type == SDL_EVENT_QUIT)
                 {
-                case SDL_EVENT_QUIT:
-                    shouldClose = true;
-
-                    break;
+                    return;
                 }
 
                 onEvent(event);
@@ -160,6 +156,7 @@ namespace Chicane
     {
         switch (inEvent.type)
         {
+        // Window
         case SDL_EVENT_WINDOW_SHOWN:
             refreshSize();
             refreshPosition();
@@ -189,14 +186,21 @@ namespace Chicane
 
             break;
 
+        // Controller
         case SDL_EVENT_MOUSE_MOTION:
         case SDL_EVENT_MOUSE_BUTTON_DOWN:
         case SDL_EVENT_MOUSE_BUTTON_UP:
+        case SDL_EVENT_MOUSE_WHEEL:
+
         case SDL_EVENT_KEY_DOWN:
         case SDL_EVENT_KEY_UP:
-        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+
         case SDL_EVENT_GAMEPAD_BUTTON_UP:
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+        case SDL_EVENT_GAMEPAD_TOUCHPAD_UP:
+        case SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN:
+        case SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION:
             if (!hasActiveController())
             {
                 break;
