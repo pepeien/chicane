@@ -224,7 +224,7 @@ namespace Chicane
                 STBI_rgb_alpha
             );
 
-            if (!result)
+            if (result == nullptr)
             {
                 throw std::runtime_error(stbi_failure_reason());
             }
