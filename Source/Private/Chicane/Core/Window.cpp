@@ -19,15 +19,16 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
-        int displayCount;
+        int displayCount        = 0;
         SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
+        int display             = displays[
+            std::min(
+                inCreateInfo.displayIndex,
+                displayCount
+            )
+        ];
 
-        int displayIndex = std::min(
-            inCreateInfo.displayIndex,
-            displayCount
-        );
-
-        const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(displays[displayIndex]);
+        const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(display);
 
         if (!displaySettings)
         {
@@ -61,7 +62,7 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
-        setDisplay(displayIndex);
+        setDisplay(display);
         setType(inCreateInfo.type);
         setIcon(inCreateInfo.icon);
         setWindow(this);
@@ -71,7 +72,6 @@ namespace Chicane
 
         initRenderer();
         initCoreLayers();
-        
     }
 
     Window::~Window()
@@ -188,14 +188,24 @@ namespace Chicane
             refreshPosition();
 
             break;
-        }
 
-        if (!hasActiveController())
-        {
-            return;
-        }
+        case SDL_EVENT_MOUSE_MOTION:
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+        case SDL_EVENT_KEY_DOWN:
+        case SDL_EVENT_KEY_UP:
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+        case SDL_EVENT_GAMEPAD_BUTTON_UP:
+            if (!hasActiveController())
+            {
+                break;
+            }
 
-        getActiveController()->onEvent(inEvent);
+            getActiveController()->onEvent(inEvent);
+    
+            break;
+        }
     }
 
     bool Window::isFocused() const
