@@ -9,7 +9,8 @@ namespace Chicane
         m_canTick(true),
         m_isActive(false),
         m_base({}),
-        m_attachment(nullptr)
+        m_attachment(nullptr),
+        m_attachmentTransformSubscription(nullptr)
         
     {
         addComponent(this);
@@ -63,19 +64,20 @@ namespace Chicane
     {
         m_attachment = inAttachment;
 
-        if (!isAttached())
-        {
-            onAttachment();
-
-            return;
-        }
-
-        m_attachmentTransformSubscription = m_attachment->watchTransform(
-            [&](const Transform& inTransform)
+        if (isAttached())
+        {  
+            if (m_attachmentTransformSubscription)
             {
-                refreshTransform();
+                m_attachmentTransformSubscription->complete();
             }
-        );
+
+            m_attachmentTransformSubscription = m_attachment->watchTransform(
+                [&](const Transform& inTransform)
+                {
+                    refreshTransform();
+                }
+            );
+        }
 
         onAttachment();
     }

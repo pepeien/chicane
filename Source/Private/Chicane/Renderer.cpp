@@ -553,6 +553,8 @@ namespace Chicane
 
     void Renderer::buildDefaultCamera()
     {
+        m_defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
+
         watchActiveCamera(
             [this](CameraComponent* inCamera) {
                 if (inCamera == nullptr)
@@ -565,14 +567,5 @@ namespace Chicane
                 refreshCameraViewport();
             }
         );
-
-        m_defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
-
-        if (hasActiveCamera())
-        {
-            return;
-        }
-
-        m_defaultCamera->activate();
     }
 }

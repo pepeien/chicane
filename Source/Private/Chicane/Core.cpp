@@ -53,7 +53,7 @@ namespace Chicane
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
-        );
+        )->next(m_camera);
     }
 
     bool hasActiveController()
