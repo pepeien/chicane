@@ -32,9 +32,8 @@ namespace Chicane
         vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates);
         vk::PipelineRasterizationStateCreateInfo createRasterizationState();
         vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-        vk::PipelineColorBlendStateCreateInfo createColorBlendState(
-            const vk::PipelineColorBlendAttachmentState& inColorBlendAttachmentState
-        );
+        vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
+        vk::PipelineColorBlendStateCreateInfo createColorBlendState();
         vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
 
         vk::PipelineLayout createLayout(

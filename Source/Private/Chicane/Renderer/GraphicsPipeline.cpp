@@ -121,9 +121,12 @@ namespace Chicane
             rasterizationState.depthBiasEnable         = VK_FALSE;
             rasterizationState.rasterizerDiscardEnable = VK_FALSE;
             rasterizationState.polygonMode             = vk::PolygonMode::eFill;
-            rasterizationState.cullMode                = vk::CullModeFlagBits::eBack;
-            rasterizationState.frontFace               = vk::FrontFace::eCounterClockwise;
+            rasterizationState.cullMode                = vk::CullModeFlagBits::eNone;
+            rasterizationState.frontFace               = vk::FrontFace::eClockwise;
             rasterizationState.lineWidth               = 1.0f;
+            rasterizationState.depthBiasConstantFactor = 0.0f;
+            rasterizationState.depthBiasClamp          = 0.0f;
+            rasterizationState.depthBiasSlopeFactor    = 0.0f;
 
             return rasterizationState;
         }
@@ -131,27 +134,44 @@ namespace Chicane
         vk::PipelineMultisampleStateCreateInfo createMulitsampleState()
         {
             vk::PipelineMultisampleStateCreateInfo multisampleState {};
-            multisampleState.flags                = vk::PipelineMultisampleStateCreateFlags();
-            multisampleState.sampleShadingEnable  = VK_FALSE;
-            multisampleState.rasterizationSamples = vk::SampleCountFlagBits::e1;
+            multisampleState.flags                 = vk::PipelineMultisampleStateCreateFlags();
+            multisampleState.sampleShadingEnable   = VK_FALSE;
+            multisampleState.alphaToCoverageEnable = VK_FALSE;
+            multisampleState.alphaToOneEnable      = VK_FALSE;
+            multisampleState.rasterizationSamples  = vk::SampleCountFlagBits::e1;
+            multisampleState.minSampleShading      = 1.0;
 
             return multisampleState;
         }
 
-        vk::PipelineColorBlendStateCreateInfo createColorBlendState(
-            const vk::PipelineColorBlendAttachmentState& colorBlendAttachmentState
-        )
+        vk::PipelineColorBlendAttachmentState createBlendAttachmentState()
+        {
+            vk::PipelineColorBlendAttachmentState attachmentState {};
+            attachmentState.colorWriteMask      = vk::ColorComponentFlagBits::eR |
+                                                  vk::ColorComponentFlagBits::eG |
+                                                  vk::ColorComponentFlagBits::eB |
+                                                  vk::ColorComponentFlagBits::eA;
+            attachmentState.blendEnable         = VK_TRUE;
+            attachmentState.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
+            attachmentState.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+            attachmentState.colorBlendOp        = vk::BlendOp::eAdd;
+            attachmentState.srcAlphaBlendFactor = vk::BlendFactor::eSrcAlpha;
+            attachmentState.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+            attachmentState.alphaBlendOp        = vk::BlendOp::eAdd;
+
+            return attachmentState;
+        }
+
+        vk::PipelineColorBlendStateCreateInfo createColorBlendState()
         {
             vk::PipelineColorBlendStateCreateInfo colorBlendState {};
             colorBlendState.flags             = vk::PipelineColorBlendStateCreateFlags();
             colorBlendState.logicOpEnable     = VK_FALSE;
             colorBlendState.logicOp           = vk::LogicOp::eCopy;
-            colorBlendState.attachmentCount   = 1;
-            colorBlendState.pAttachments      = &colorBlendAttachmentState;
-            colorBlendState.blendConstants[0] = 0.0f;
-            colorBlendState.blendConstants[1] = 0.0f;
-            colorBlendState.blendConstants[2] = 0.0f;
-            colorBlendState.blendConstants[3] = 0.0f;
+            colorBlendState.blendConstants[0] = 1.0f;
+            colorBlendState.blendConstants[1] = 1.0f;
+            colorBlendState.blendConstants[2] = 1.0f;
+            colorBlendState.blendConstants[3] = 1.0f;
 
             return colorBlendState;
         }
@@ -164,7 +184,7 @@ namespace Chicane
             depthStencilCreateInfo.depthWriteEnable      = VK_TRUE;
             depthStencilCreateInfo.depthBoundsTestEnable = VK_FALSE;
             depthStencilCreateInfo.stencilTestEnable     = VK_FALSE;
-            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
+            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLessOrEqual;
             depthStencilCreateInfo.minDepthBounds        = 0.0f;
             depthStencilCreateInfo.maxDepthBounds        = 1.0f;
 
@@ -234,8 +254,8 @@ namespace Chicane
             attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
             attachmentDescription.loadOp         = vk::AttachmentLoadOp::eClear;
             attachmentDescription.storeOp        = vk::AttachmentStoreOp::eDontCare;
-            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
-            attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
+            attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eLoad;
+            attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eStore;
             attachmentDescription.initialLayout  = vk::ImageLayout::eUndefined;
             attachmentDescription.finalLayout    = vk::ImageLayout::eDepthStencilAttachmentOptimal;
     
@@ -407,30 +427,15 @@ namespace Chicane
             pipelineInfo.pMultisampleState = &multisampleState;
 
             // Color Blending
-            vk::PipelineColorBlendAttachmentState colorBlendAttachmentState {};
-            colorBlendAttachmentState.colorWriteMask      = vk::ColorComponentFlagBits::eR |
-                                                            vk::ColorComponentFlagBits::eG |
-                                                            vk::ColorComponentFlagBits::eB |
-                                                            vk::ColorComponentFlagBits::eA;
-            colorBlendAttachmentState.blendEnable         = VK_TRUE;
-            colorBlendAttachmentState.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
-            colorBlendAttachmentState.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
-            colorBlendAttachmentState.colorBlendOp        = vk::BlendOp::eAdd;
-            colorBlendAttachmentState.srcAlphaBlendFactor = vk::BlendFactor::eSrcAlpha;
-            colorBlendAttachmentState.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
-            colorBlendAttachmentState.alphaBlendOp        = vk::BlendOp::eSubtract;
+            vk::PipelineColorBlendAttachmentState colorBlendAttachmentState = createBlendAttachmentState();
+            vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState();
+            colorBlendState.attachmentCount = 1;
+            colorBlendState.pAttachments    = &colorBlendAttachmentState;
 
-            vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState(colorBlendAttachmentState);
             pipelineInfo.pColorBlendState = &colorBlendState;
 
             // Depthning
-            vk::PipelineDepthStencilStateCreateInfo depthStencilState;
-
-            if (m_hasDepth)
-            {
-                depthStencilState = createDepthStencilState();
-            }
-
+            vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
             pipelineInfo.pDepthStencilState = &depthStencilState;
 
             layout = createLayout(

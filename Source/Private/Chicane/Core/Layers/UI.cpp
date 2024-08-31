@@ -152,7 +152,7 @@ namespace Chicane
 
         // Renderpass
         std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
         vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_renderPass;
