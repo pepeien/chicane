@@ -4,6 +4,9 @@
 
 #define SDL_MAIN_HANDLED
 
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+
 #define APPLICATION_NAME "Chicane Engine"
 #define ENGINE_NAME      "Chicane"
 
@@ -59,6 +62,8 @@
 
 #include "SDL3/SDL.h"
 #include "SDL3/SDL_vulkan.h"
+
+#include "stb/stb_image.h"
 
 #include "vulkan/vulkan.hpp"
 

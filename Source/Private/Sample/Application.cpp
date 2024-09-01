@@ -34,7 +34,7 @@ void Application::initChacater()
 
 void Application::initLevel()
 {
-    Chicane::Allocator::load("Content/Sample/Texture/Skybox/Sunset.box");
+    Chicane::Loader::loadCubemap("Content/Sample/Texture/Skybox/Sunset.box");
 
     m_level = std::make_unique<Chicane::Level>();
 

@@ -67,10 +67,14 @@ namespace Chicane
                 0,
                 modelData.allocationSize
             );
-            modelData.transforms.reserve(meshes.size());
-    
+
             for (const MeshComponent* mesh : meshes)
             {
+                if (!mesh->isDrawable())
+                {
+                    continue;
+                }
+
                 modelData.transforms.push_back(mesh->getPosition());
             }
 

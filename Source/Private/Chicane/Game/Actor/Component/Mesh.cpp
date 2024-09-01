@@ -10,14 +10,41 @@ namespace Chicane
 
     void MeshComponent::onActivation()
     {
-        if (!hasMesh() || !isAttached() || !hasActiveLevel())
+        if (!isDrawable())
         {
             return;
         }
 
-        Allocator::load(m_mesh.filepath);
+        for (const Box::Entry& entry : m_mesh.entries)
+        {
+            if (entry.type == Box::EntryType::Model)
+            {
+                Loader::getModelManager()->use(entry.reference);
+            }
+        }
 
         getActiveLevel()->addMesh(this);
+    }
+
+    void MeshComponent::onDeactivation()
+    {
+        if (!hasMesh() || !hasActiveLevel())
+        {
+            return;
+        }
+
+        for (const Box::Entry& entry : m_mesh.entries)
+        {
+            if (entry.type == Box::EntryType::Model)
+            {
+                Loader::getModelManager()->unUse(entry.reference);
+            }
+        }
+    }
+
+    bool MeshComponent::isDrawable() const
+    {
+        return hasMesh() && hasActiveLevel() && isActive();
     }
 
     bool MeshComponent::hasMesh() const
@@ -32,15 +59,6 @@ namespace Chicane
 
     void MeshComponent::setMesh(const std::string& inMesh)
     {
-        Box::Instance mesh = Box::readHeader(inMesh);
-
-        if (mesh.type != Box::Type::Mesh)
-        {
-            LOG_WARNING("The asset [" + inMesh + "] is not a mesh");
-
-            return;
-        }
-
-        m_mesh = mesh;
+        m_mesh = Loader::loadMesh(inMesh);
     }
 }

@@ -7,7 +7,7 @@ namespace Chicane
     SkyboxLayer::SkyboxLayer(Window* inWindow)
         : Layer("Skybox")
     {
-        m_isInitialized = Allocator::getCubemapManager()->getCount() > 0;
+        m_isInitialized = Loader::getCubemapManager()->getCount() > 0;
         m_internals = inWindow->getRendererInternals();
     }
 
@@ -113,14 +113,14 @@ namespace Chicane
             nullptr
         );
 
-        Allocator::getCubemapManager()->bind(
+        Loader::getCubemapManager()->bind(
             "Skybox",
             inCommandBuffer,
             m_graphicsPipeline->layout
         );
 
         // Drawing
-        Allocator::getCubemapManager()->draw(
+        Loader::getCubemapManager()->draw(
             "Skybox",
             inCommandBuffer
         );
@@ -244,7 +244,7 @@ namespace Chicane
 
     void SkyboxLayer::buildAssets()
     {
-        Allocator::getCubemapManager()->build(
+        Loader::getCubemapManager()->build(
             m_internals.logicalDevice,
             m_internals.physicalDevice,
             m_internals.mainCommandBuffer,

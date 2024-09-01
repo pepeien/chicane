@@ -44,13 +44,6 @@ namespace Chicane
             std::uint32_t childCount = 0;
         };
 
-        DirectoryResult openDirectoryDialog();
-
-        FileResult openFileDialog(
-            const std::string& inTitle,
-            const std::vector<FileFormat>& inFileFormats
-        );
-
         bool exists(const std::string& inPath);
         std::vector<ListItem> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
 

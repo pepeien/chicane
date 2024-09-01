@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Core/Allocator.hpp"
 #include "Chicane/Core/Box.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Helper.hpp"
@@ -8,6 +7,7 @@
 #include "Chicane/Core/Layers/Skybox.hpp"
 #include "Chicane/Core/Layers/Level.hpp"
 #include "Chicane/Core/Layers/UI.hpp"
+#include "Chicane/Core/Loader.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Thread.hpp"

@@ -13,8 +13,11 @@ namespace Chicane
 
     public:
         void onActivation() override;
+        void onDeactivation() override;
 
     public:
+        bool isDrawable() const;
+
         bool hasMesh() const;
         const Box::Instance& getMesh() const;
         void setMesh(const std::string& inMesh);

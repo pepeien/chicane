@@ -24,9 +24,10 @@ namespace Chicane
         class Manager
         {
             public:
-                bool contains(const std::string& inId) const;
+                bool isLoaded(const std::string& inId) const;
+                void load(const std::string& inId, const Box::Entry& inEntry);
                 void use(const std::string& inId);
-                void add(const std::string& inId, const Box::Entry& inEntry);
+                void unUse(const std::string& inId);
                 void build(
                     Buffer::Instance& outVertexBuffer,
                     Buffer::Instance& outIndexBuffer,
@@ -61,13 +62,12 @@ namespace Chicane
                 );
 
             private:
-                std::vector<Vertex::Instance> m_combinedVertices;
-                std::vector<uint32_t> m_indexedVertices;
-
-                std::vector<std::string> m_entries;
-
                 std::unordered_map<std::string, Model::AllocationInfo> m_allocationMap;
                 std::unordered_map<std::string, Model::Instance> m_instanceMap;
+                std::vector<std::string> m_usedIds;
+
+                std::vector<Vertex::Instance> m_combinedVertices;
+                std::vector<uint32_t> m_indexedVertices;
         };
     }
 }

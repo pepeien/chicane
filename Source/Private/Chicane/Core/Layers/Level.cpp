@@ -19,8 +19,8 @@ namespace Chicane
 
         m_isInitialized = m_level->hasMeshes();
 
-        m_textureManager = Allocator::getTextureManager();
-        m_modelManager   = Allocator::getModelManager();
+        m_textureManager = Loader::getTextureManager();
+        m_modelManager   = Loader::getModelManager();
 
         loadEvents();
     }
@@ -154,12 +154,12 @@ namespace Chicane
             vk::IndexType::eUint32
         );
 
-        Allocator::getTextureManager()->bindAll(
+        m_textureManager->bindAll(
             inCommandBuffer,
             m_graphicsPipeline->layout
         );
 
-        Allocator::getModelManager()->drawAll(inCommandBuffer);
+        m_modelManager->drawAll(inCommandBuffer);
 
         inCommandBuffer.endRenderPass();
 
@@ -186,8 +186,6 @@ namespace Chicane
 
                     return;
                 }
-
-                m_internals.logicalDevice.waitIdle();
 
                 buildTextures();
 
@@ -416,7 +414,6 @@ namespace Chicane
         {
             return;
         }
-
 
         for (Frame::Instance& frame : m_internals.swapchain->images)
         {

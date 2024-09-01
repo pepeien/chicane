@@ -11,12 +11,12 @@ namespace Chicane
     {
         struct AllocationInfo
         {
-            uint32_t vertexCount   = 0;
-            uint32_t firstVertex   = 0;
-            uint32_t firstInstance = 0;
-            uint32_t indexCount    = 0;
-            uint16_t instanceCount = 1;
-            uint32_t firstIndex    = 0;
+            std::uint32_t vertexCount   = 0;
+            std::uint32_t firstVertex   = 0;
+            std::uint32_t firstInstance = 0;
+            std::uint32_t indexCount    = 0;
+            std::uint32_t instanceCount = 1;
+            std::uint32_t firstIndex    = 0;
         };
 
         struct Bundle

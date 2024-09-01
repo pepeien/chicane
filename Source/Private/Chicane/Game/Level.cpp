@@ -61,7 +61,11 @@ namespace Chicane
 
     bool Level::hasMeshes() const
     {
-        return m_meshes.size() > 0;
+        return std::find_if(
+            m_meshes.begin(),
+            m_meshes.end(),
+            [](MeshComponent* inMesh) { return inMesh->isDrawable(); }
+        ) != m_meshes.end();
     }
 
     const std::vector<MeshComponent*>& Level::getMeshes() const

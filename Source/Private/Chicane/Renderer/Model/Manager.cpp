@@ -4,24 +4,14 @@ namespace Chicane
 {
     namespace Model
     {
-        bool Manager::contains(const std::string& inId) const
+        bool Manager::isLoaded(const std::string& inId) const
         {
             return m_instanceMap.find(inId) != m_instanceMap.end();
         }
 
-        void Manager::use(const std::string& inId)
+        void Manager::load(const std::string& inId, const Box::Entry& inEntry)
         {
-            if (!contains(inId))
-            {
-                return;
-            }
-
-            m_allocationMap.at(inId).instanceCount += 1;
-        }
-
-        void Manager::add(const std::string& inId, const Box::Entry& inEntry)
-        {
-            if (contains(inId))
+            if (isLoaded(inId))
             {
                 return;
             }
@@ -43,12 +33,63 @@ namespace Chicane
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
 
-            m_entries.push_back(inId);
-
             m_instanceMap.insert(std::make_pair(inId, newModel));
+        }
 
-            process(inId);
-            use(inId);
+        void Manager::use(const std::string& inId)
+        {
+            if (!isLoaded(inId))
+            {
+                return;
+            }
+
+            if (std::find(m_usedIds.begin(), m_usedIds.end(), inId) == m_usedIds.end())
+            {
+                process(inId);
+
+                m_usedIds.push_back(inId);
+            }
+
+            m_allocationMap.at(inId).instanceCount += 1;
+        }
+
+        void Manager::unUse(const std::string& inId)
+        {
+            if (!isLoaded(inId))
+            {
+                return;
+            }
+
+            std::vector<std::string>::iterator firstInstance = std::find(m_usedIds.begin(), m_usedIds.end(), inId);
+
+            if (firstInstance == m_usedIds.end())
+            {
+                return;
+            }
+
+            m_allocationMap.at(inId).instanceCount -= 1;
+
+            if (m_allocationMap.at(inId).instanceCount > 0)
+            {
+                return;
+            }
+
+            m_allocationMap.at(inId).instanceCount = 0;
+
+            m_usedIds.erase(firstInstance);
+
+            m_combinedVertices.clear();
+            m_indexedVertices.clear();
+
+            if (m_usedIds.empty())
+            {
+                return;
+            }
+
+            for (const std::string& id : m_usedIds)
+            {
+                process(id);
+            }
         }
 
         void Manager::build(
@@ -78,17 +119,17 @@ namespace Chicane
 
         std::uint32_t Manager::getFirstInstance(const std::string& inId) const
         {
-            if (!contains(inId))
+            if (!isLoaded(inId))
             {
                 throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
             std::uint32_t result = static_cast<std::uint32_t>(
                 std::find(
-                    m_entries.begin(),
-                    m_entries.end(),
+                    m_usedIds.begin(),
+                    m_usedIds.end(),
                     inId
-                ) - m_entries.begin()
+                ) - m_usedIds.begin()
             );
 
             return result;
@@ -124,7 +165,7 @@ namespace Chicane
 
         void Manager::drawAll(const vk::CommandBuffer& inCommandBuffer)
         {
-            for (std::string& id : m_entries)
+            for (std::string& id : m_usedIds)
             {
                 draw(id, inCommandBuffer);
             }

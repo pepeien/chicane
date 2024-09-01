@@ -35,7 +35,7 @@ namespace Chicane
         destroySwapChain();
         deleteLayers();
 
-        Allocator::reset();
+        Loader::reset();
 
         destroyDevices();
         destroySurface();
