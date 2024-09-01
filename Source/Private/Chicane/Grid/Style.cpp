@@ -17,7 +17,8 @@ namespace Chicane
         constexpr auto POSITION_TYPE_ABSOLUTE  = "absolute";
         constexpr auto POSITION_TYPE_RELATIVE  = "relative";
 
-        constexpr char MARGIN_SEPARATOR = ' ';
+        constexpr char ONELINE_SEPARATOR = ' ';
+
         /*
         * Template 1: "`SINGLE_MARGIN`"
         * Template 2: "`VERTICAL_MARGIN` `HORIZONTAL_MARGIN`"
@@ -29,6 +30,18 @@ namespace Chicane
         constexpr auto MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
         constexpr auto MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
         constexpr auto MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
+
+        /*
+        * Template 1: "`SINGLE_GAP`"
+        * Template 2: "`VERTICAL_GAP` `HORIZONTAL_GAP`"
+        * Template 3: "`TOP_GAP` `BOTTOM_GAP` `HORIZONTAL_GAP`"
+        * Template 4: "`TOP_GAP` `RIGHT_GAP` `BOTTOM_GAP` `LEFT_GAP`"
+        */
+        constexpr auto GAP_ATTRIBUTE_NAME        = "gap";
+        constexpr auto GAP_TOP_ATTRIBUTE_NAME    = "gap-top";
+        constexpr auto GAP_BOTTOM_ATTRIBUTE_NAME = "gap-bottom";
+        constexpr auto GAP_LEFT_ATTRIBUTE_NAME   = "gap-left";
+        constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
 
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
@@ -79,7 +92,7 @@ namespace Chicane
             }
         }
 
-        float calculateMargin(
+        float calculateDirectionSize(
             const Style& inStyle,
             const std::string& rawValue,
             Direction inDirection
@@ -95,9 +108,15 @@ namespace Chicane
             return result;
         }
 
-        void setMargin(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
+        void setDirectionalSize(
+            DirectionalSize& outValue,
+            const Style& inStyle,
+            const std::unordered_map<std::string, std::string>& inData,
+            const std::string& inOnelineAttributeName,
+            const std::string& inTopAttributeName,
+            const std::string& inBottomAttributeName,
+            const std::string& inLeftAttributeName,
+            const std::string& inRightAttributeName
         )
         {
             if (inData.empty())
@@ -106,42 +125,42 @@ namespace Chicane
             }
 
             if (
-                inData.find(MARGIN_ATTRIBUTE_NAME) == inData.end() ||
-                inData.at(MARGIN_ATTRIBUTE_NAME).empty()
+                inData.find(inOnelineAttributeName) == inData.end() ||
+                inData.at(inOnelineAttributeName).empty()
             )
             {
-                if (inData.find(MARGIN_TOP_ATTRIBUTE_NAME) != inData.end())
+                if (inData.find(inTopAttributeName) != inData.end())
                 {
-                    outStyle.margin.top = calculateMargin(
-                        outStyle,
-                        inData.at(MARGIN_TOP_ATTRIBUTE_NAME),
+                    outValue.top = calculateDirectionSize(
+                        inStyle,
+                        inData.at(inTopAttributeName),
                         Direction::Vertical
                     );
                 }
 
-                if (inData.find(MARGIN_BOTTOM_ATTRIBUTE_NAME) != inData.end())
+                if (inData.find(inBottomAttributeName) != inData.end())
                 {
-                    outStyle.margin.bottom = calculateMargin(
-                        outStyle,
-                        inData.at(MARGIN_BOTTOM_ATTRIBUTE_NAME),
+                    outValue.bottom = calculateDirectionSize(
+                        inStyle,
+                        inData.at(inBottomAttributeName),
                         Direction::Vertical
                     );
                 }
 
-                if (inData.find(MARGIN_LEFT_ATTRIBUTE_NAME) != inData.end())
+                if (inData.find(inLeftAttributeName) != inData.end())
                 {
-                    outStyle.margin.left = calculateMargin(
-                        outStyle,
-                        inData.at(MARGIN_LEFT_ATTRIBUTE_NAME),
+                    outValue.left = calculateDirectionSize(
+                        inStyle,
+                        inData.at(inLeftAttributeName),
                         Direction::Horizontal
                     );
                 }
 
-                if (inData.find(MARGIN_RIGHT_ATTRIBUTE_NAME) != inData.end())
+                if (inData.find(inRightAttributeName) != inData.end())
                 {
-                    outStyle.margin.right = calculateMargin(
-                        outStyle,
-                        inData.at(MARGIN_RIGHT_ATTRIBUTE_NAME),
+                    outValue.right = calculateDirectionSize(
+                        inStyle,
+                        inData.at(inRightAttributeName),
                         Direction::Horizontal
                     );
                 }
@@ -149,100 +168,134 @@ namespace Chicane
                 return;
             }
 
-            std::string oneline = inData.at(MARGIN_ATTRIBUTE_NAME);
+            std::string oneline = inData.at(inOnelineAttributeName);
 
             std::vector<std::string> splittedOneline = Utils::split(
                 Utils::trim(oneline),
-                MARGIN_SEPARATOR
+                ONELINE_SEPARATOR
             );
 
-            if (splittedOneline.size() == 1) // SINGLE_MARGIN
+            if (splittedOneline.size() == 1) // SINGLE
             {
                 std::string margin = splittedOneline.at(0);
 
-                float verticalMargin = calculateMargin(
-                    outStyle,
+                float vertical = calculateDirectionSize(
+                    inStyle,
                     margin,
                     Direction::Vertical
                 );
-                float horizontalMargin = calculateMargin(
-                    outStyle,
+                float horizontal = calculateDirectionSize(
+                    inStyle,
                     margin,
                     Direction::Horizontal
                 );
 
-                outStyle.margin.top    = verticalMargin;
-                outStyle.margin.right  = horizontalMargin;
-                outStyle.margin.bottom = verticalMargin;
-                outStyle.margin.left   = horizontalMargin;
+                outValue.top    = vertical;
+                outValue.right  = horizontal;
+                outValue.bottom = vertical;
+                outValue.left   = horizontal;
             }
 
-            if (splittedOneline.size() == 2) // VERTICAL_MARGIN HORIZONTAL_MARGIN
+            if (splittedOneline.size() == 2) // VERTICAL HORIZONTAL
             {
-                float verticalMargin = calculateMargin(
-                    outStyle,
+                float verticalMargin = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(0),
                     Direction::Vertical
                 );
-                float horizontalMargin = calculateMargin(
-                    outStyle,
+                float horizontalMargin = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(1),
                     Direction::Horizontal
                 );
 
-                outStyle.margin.top    = verticalMargin;
-                outStyle.margin.bottom = verticalMargin;
-                outStyle.margin.right  = horizontalMargin;
-                outStyle.margin.left   = horizontalMargin;
+                outValue.top    = verticalMargin;
+                outValue.bottom = verticalMargin;
+                outValue.right  = horizontalMargin;
+                outValue.left   = horizontalMargin;
             }
 
-            if (splittedOneline.size() == 3) // TOP_MARGIN BOTTOM_MARGIN HORIZONTAL_MARGIN
+            if (splittedOneline.size() == 3) // TOP BOTTOM HORIZONTAL
             {
-                float topMargin = calculateMargin(
-                    outStyle,
+                float top = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(0),
                     Direction::Vertical
                 );
-                float bottomMargin = calculateMargin(
-                    outStyle,
+                float bottom = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(1),
                     Direction::Vertical
                 );
-                float horizontalMargin = calculateMargin(
-                    outStyle,
+                float horizontal = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(2),
                     Direction::Horizontal
                 );
 
-                outStyle.margin.top    = topMargin;
-                outStyle.margin.bottom = bottomMargin;
-                outStyle.margin.right  = horizontalMargin;
-                outStyle.margin.left   = horizontalMargin;
+                outValue.top    = top;
+                outValue.bottom = bottom;
+                outValue.right  = horizontal;
+                outValue.left   = horizontal;
             }
 
-            if (splittedOneline.size() >= 4) // TOP_MARGIN RIGHT_MARGIN BOTTOM_MARGIN LEFT_MARGIN
+            if (splittedOneline.size() >= 4) // TOP RIGHT BOTTOM LEFT
             {
-                outStyle.margin.top = calculateMargin(
-                    outStyle,
+                outValue.top = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(0),
                     Direction::Vertical
                 );
-                outStyle.margin.right = calculateMargin(
-                    outStyle,
+                outValue.right = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(1),
                     Direction::Horizontal
                 );
-                outStyle.margin.bottom = calculateMargin(
-                    outStyle,
+                outValue.bottom = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(2),
                     Direction::Vertical
                 );
-                outStyle.margin.left = calculateMargin(
-                    outStyle,
+                outValue.left = calculateDirectionSize(
+                    inStyle,
                     splittedOneline.at(3),
                     Direction::Horizontal
                 );
             }
+        }
+
+        void setMargin(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            setDirectionalSize(
+                outStyle.margin,
+                outStyle,
+                inData,
+                MARGIN_ATTRIBUTE_NAME,
+                MARGIN_TOP_ATTRIBUTE_NAME,
+                MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                MARGIN_LEFT_ATTRIBUTE_NAME,
+                MARGIN_RIGHT_ATTRIBUTE_NAME
+            );
+        }
+
+        void setGap(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            setDirectionalSize(
+                outStyle.gap,
+                outStyle,
+                inData,
+                GAP_ATTRIBUTE_NAME,
+                GAP_TOP_ATTRIBUTE_NAME,
+                GAP_BOTTOM_ATTRIBUTE_NAME,
+                GAP_LEFT_ATTRIBUTE_NAME,
+                GAP_RIGHT_ATTRIBUTE_NAME
+            );
         }
 
         void setBackgroundColor(
@@ -272,6 +325,7 @@ namespace Chicane
             setSize(result, inSource);
             setPosition(result, inSource);
             setMargin(result, inSource);
+            setGap(result, inSource);
             setBackgroundColor(result, inSource);
 
             return result;
@@ -453,6 +507,7 @@ namespace Chicane
             setSize(style, source);
             setPosition(style, source);
             setMargin(style, source);
+            setGap(style, source);
 
             return style;
         }

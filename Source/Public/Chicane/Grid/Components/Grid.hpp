@@ -23,7 +23,7 @@ namespace Chicane
                 std::string id = ""; // Required
 
                 Vec<2, float> itemSize = {}; // Optional
-                
+
                 Style style = {}; // Optional
 
                 std::vector<std::any> items = {}; // Optional

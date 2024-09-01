@@ -66,9 +66,12 @@ namespace Chicane
                     itemSize.y
                 );
 
+                float verticalGap   = inProps.style.gap.top / 2 + inProps.style.gap.bottom / 2;
+                float horizontalGap = inProps.style.gap.left / 2 + inProps.style.gap.right / 2;
+
                 std::uint32_t columnCount = std::min(
                     inItemCount,
-                    static_cast<std::uint32_t>(inProps.style.width / itemSize.x)
+                    static_cast<std::uint32_t>(inProps.style.width / (itemSize.x + horizontalGap))
                 );
                 std::uint32_t rowCount = static_cast<std::uint32_t>(
                     std::ceil((float)inItemCount / (float)columnCount)
@@ -82,14 +85,21 @@ namespace Chicane
                 );
                 ImGui::BeginChild(
                     inProps.id.c_str(),
-                    wrapperSize,
-                    ImGuiChildFlags_AlwaysUseWindowPadding
+                    wrapperSize
                 );
                     for (std::uint32_t row = 0; row < rowCount; row++)
                     {
                         ImGui::NewLine();
 
-                        ImGui::SetCursorPosY(ImGui::GetCursorPosY() -13);
+                        float nextVerticalPosition = ImGui::GetCursorPosY() - 13;
+
+                        if (row > 0)
+                        {
+                            nextVerticalPosition -= 29;
+                            nextVerticalPosition += verticalGap;
+                        }
+
+                        ImGui::SetCursorPosY(nextVerticalPosition);
 
                         std::string rowId = inProps.id + "Row-" + std::to_string(row);
 
@@ -101,6 +111,15 @@ namespace Chicane
                             for (std::uint32_t column = 0; column < columnCount && chidrenVisited < inItemCount; column++, chidrenVisited++)
                             {
                                 ImGui::SameLine();
+
+                                float nextHorizontalPosition = ImGui::GetCursorPosX();
+
+                                if (column > 0)
+                                {
+                                    nextHorizontalPosition += horizontalGap;
+                                }
+
+                                ImGui::SetCursorPosX(nextHorizontalPosition);
 
                                 std::string itemId = inProps.id + "Item-" + std::to_string(chidrenVisited);
 

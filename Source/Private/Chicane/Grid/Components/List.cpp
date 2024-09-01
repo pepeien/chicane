@@ -46,6 +46,30 @@ namespace Chicane
                 }
             }
 
+            void handlePositioning(const Props& inProps, std::uint32_t inIndex)
+            {
+                if (inProps.direction == Direction::Row)
+                {
+                    ImGui::SameLine();
+
+                    if (inIndex > 0)
+                    {
+                        ImGui::SetCursorPosX(
+                            ImGui::GetCursorPosX() + ((inProps.style.gap.left / 2) + (inProps.style.gap.right / 2))
+                        );
+                    }
+
+                    return;
+                }
+
+                if (inIndex > 0)
+                {
+                    ImGui::SetCursorPosY(
+                        ImGui::GetCursorPosY() + ((inProps.style.gap.top / 2) + (inProps.style.gap.bottom / 2))
+                    );
+                }
+            }
+
             void compileRaw(const Props& inProps)
             {
                 validate(inProps);
@@ -60,26 +84,29 @@ namespace Chicane
                     ImVec2(inProps.style.width, inProps.style.height),
                     ImGuiChildFlags_AlwaysUseWindowPadding
                 );
+                    std::uint32_t i = 0;
+
                     for (std::any item : inProps.items)
                     {
                         ComponentEvent event {};
                         event.values.push_back(item);
 
+                        handlePositioning(inProps, i);
+
                         inProps.itemGetter(event);
+
+                        i++;
                     }
 
-                    if (!inProps.children.empty())
+                    for (const pugi::xml_node& child : inProps.children)
                     {
-                        for (const pugi::xml_node& child : inProps.children)
-                        {
-                            if (inProps.direction == Direction::Row)
-                            {
-                                ImGui::SameLine();
-                            }
+                        handlePositioning(inProps, i);
 
-                            compileChild(child);
-                        }
+                        compileChild(child);
+
+                        i++;
                     }
+
                 ImGui::EndChild();
 
                 ImGui::PopStyleColor();

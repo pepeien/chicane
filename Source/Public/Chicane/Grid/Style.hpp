@@ -12,7 +12,7 @@ namespace Chicane
             Relative
         };
 
-        struct Margin
+        struct DirectionalSize
         {
         public:
             float top    = 0.0f;
@@ -29,8 +29,9 @@ namespace Chicane
             float width  = 0.0f;
 
             // Positioning
-            Position position = Position::Relative;
-            Margin margin     = {};
+            Position position      = Position::Relative;
+            DirectionalSize gap    = {};
+            DirectionalSize margin = {};
 
             // Looks
             std::string backgroundColor = "";
