@@ -71,7 +71,7 @@ namespace Chicane
                     static_cast<std::uint32_t>(inProps.style.width / itemSize.x)
                 );
                 std::uint32_t rowCount = static_cast<std::uint32_t>(
-                    std::ceil(inItemCount / columnCount)
+                    std::ceil((float)inItemCount / (float)columnCount)
                 );
 
                 std::uint32_t chidrenVisited = 0;
@@ -159,13 +159,7 @@ namespace Chicane
             {
                 validate(inProps);
 
-                if (!inProps.items.empty())
-                {
-                    showItems(inProps);
-
-                    return;
-                }
-
+                showItems(inProps);
                 showChildren(inProps);
             }
 
