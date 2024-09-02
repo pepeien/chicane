@@ -12,7 +12,7 @@ namespace Chicane
             const std::string TAG_ID = "List";
 
             // Attributes
-            const std::string DIRECTION_ATTRIBUTE_NAME   = "direction";
+            const std::string DIRECTION_ATTRIBUTE_NAME = "direction";
 
             // Direction
             const std::string DIRECTION_ROW    = "ROW";

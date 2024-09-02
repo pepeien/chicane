@@ -459,7 +459,7 @@ namespace Chicane
         {
             if (Utils::trim(inText).empty())
             {
-                return " ";
+                return "";
             }
 
             if (!textContainsRefValue(inText))

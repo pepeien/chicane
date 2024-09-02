@@ -4,6 +4,7 @@
 #include "Chicane/Grid/Components/Button.hpp"
 #include "Chicane/Grid/Components/Grid.hpp"
 #include "Chicane/Grid/Components/List.hpp"
+#include "Chicane/Grid/Components/Popup.hpp"
 #include "Chicane/Grid/Components/ProgressBar.hpp"
 #include "Chicane/Grid/Components/Text.hpp"
 #include "Chicane/Grid/Components/TextInput.hpp"
@@ -17,6 +18,7 @@ namespace Chicane
             { ButtonComponent::TAG_ID, &ButtonComponent::compile },
             { GridComponent::TAG_ID, &GridComponent::compile },
             { ListComponent::TAG_ID, &ListComponent::compile },
+            { PopupComponent::TAG_ID, &PopupComponent::compile },
             { ProgressBarComponent::TAG_ID, &ProgressBarComponent::compile },
             { TextComponent::TAG_ID, &TextComponent::compile },
             { TextInputComponent::TAG_ID, &TextInputComponent::compile }
