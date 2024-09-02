@@ -18,20 +18,29 @@ namespace Chicane
 
             ParseResult result {};
 
-            switch (static_cast<Vendor>(inEntry.vendor))
-            {
-            case Vendor::Wavefront:
-                Wavefront::parse(result, inEntry.data);
+            std::clock_t start = std::clock();
+                switch (static_cast<Vendor>(inEntry.vendor))
+                {
+                case Vendor::Wavefront:
+                    Wavefront::parse(result, inEntry.data);
 
-                break;
+                    break;
 
-            default:
-                throw std::runtime_error("Failed to import Model due to invalid type");
-            }
+                default:
+                    throw std::runtime_error("Failed to import Model due to invalid type");
+                }
+            std::clock_t end = std::clock();
 
             Model::Instance newModel;
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
+
+            LOG_EMMIT(Log::Color::Green, "=================== MODEL LOAD =====================");
+            LOG_EMMIT(Log::Color::Green, "Name:            " + inId);
+            LOG_EMMIT(Log::Color::Green, "Type:            " + std::to_string(inEntry.vendor));
+            LOG_EMMIT(Log::Color::Green, "Triangle Count:  " + std::to_string(result.vertices.size()));
+            LOG_EMMIT(Log::Color::Green, "Processing Time: " + std::to_string(Telemetry::deltaToMs(end - start)) + "ms");
+            LOG_EMMIT(Log::Color::Green, "====================================================");
 
             m_instanceMap.insert(std::make_pair(inId, newModel));
         }

@@ -100,14 +100,25 @@ namespace Chicane
         FrameTelemetry frame {};
 
     public:
+        static float deltaToMs(std::clock_t inDelta)
+        {
+            return (inDelta / (float)CLOCKS_PER_SEC) * 1000.0f;
+        }
+
+        static float deltaToTick(std::clock_t inDelta)
+        {
+            return inDelta / 1000.0f;
+        }
+
+    public:
         float deltaToMs() const
         {
-            return (delta / (float)CLOCKS_PER_SEC) * 1000.0f;
+            return Telemetry::deltaToMs(delta);
         }
 
         float deltaToTick() const
         {
-            return delta / 1000.0f;
+            return Telemetry::deltaToTick(delta);
         }
     };
 }

@@ -77,7 +77,7 @@ namespace Chicane
         public:
             EntryType type = EntryType::Undefined;
 
-            uint8_t vendor = 0; // Only pertinent if type is `EntryType::Mesh`
+            uint8_t vendor = 0; // Only pertinent if type is `EntryType::Model`
 
             std::vector<unsigned char> data {}; // Only pertinent if type is `EntryType::Model` or `Entry::Texture`
             std::string reference           = ""; // Only pertinent if type is `EntryType::Mesh`

@@ -1,60 +1,98 @@
 #include "Chicane/Core/Log.hpp"
 
+#define LOG_COLOR_RED    "\033[1;31m"
+#define LOG_COLOR_GREEN  "\033[1;32m"
+#define LOG_COLOR_BLUE   "\033[1;34m"
+#define LOG_COLOR_YELLOW "\033[1;33m"
+#define LOG_COLOR_CYAN   "\033[1;36m"
+#define LOG_COLOR_ORANGE "\033[38;2;255;165;0m"
+#define LOG_COLOR_WHITE  "\033[1;37m"
+
 namespace Chicane
 {
     namespace Log
     {
         void info(const std::string& inMessage)
         {
-            emmit(MessageType::INFO, inMessage);
+            emmit(
+                Color::White,
+                inMessage
+            );
         }
 
         void warning(const std::string& inMessage)
         {
-            emmit(MessageType::WARNING, inMessage);
+            emmit(
+                Color::Yellow,
+                inMessage
+            );
         }
 
         void error(const std::string& inMessage)
         {
-            emmit(MessageType::ERROR, inMessage);
+            emmit(
+                Color::Orange,
+                inMessage
+            );
         }
 
         void critical(const std::string& inMessage)
         {
-            emmit(MessageType::CRITICAL, inMessage);
+            emmit(
+                Color::Red,
+                inMessage
+            );
         }
 
-        void emmit(MessageType inType, const std::string& inMessage)
+        void emmit(
+            Color inColor,
+            const std::string& inMessage
+        )
         {
             if (!IS_DEBUGGING)
             {
                 return;
             }
 
-            std::time_t timestamp = std::time(0);
+            switch (inColor)
+            {
+            case Color::Red:
+                std::cout << LOG_COLOR_RED;
+    
+                break;
+            
+            case Color::Blue:
+                std::cout << LOG_COLOR_BLUE;
+    
+                break;
 
-            if (inType == MessageType::CRITICAL)
-            {
-                std::cout << timestamp  << " [CRITICAL] " << inMessage << '\n';
-        
-                return;
+            case Color::Green:
+                std::cout << LOG_COLOR_GREEN;
+    
+                break;
+
+            case Color::Yellow:
+                std::cout << LOG_COLOR_YELLOW;
+    
+                break;
+
+            case Color::Orange:
+                std::cout << LOG_COLOR_ORANGE;
+    
+                break;
+
+            case Color::Cyan:
+                std::cout << LOG_COLOR_CYAN;
+    
+                break;
+
+            default:
+                std::cout << LOG_COLOR_WHITE;
+
+                break;
             }
-        
-            if (inType == MessageType::WARNING)
-            {
-                std::cout << timestamp  << " [WARNING] " << inMessage << '\n';
-        
-                return;
-            }
-        
-            if (inType == MessageType::ERROR)
-            {
-                std::cerr << timestamp  << " [ERROR] " << inMessage << '\n';
-        
-                return;
-            }
-        
-            std::cerr << timestamp  << " [LOG] " << inMessage << '\n';
+
+            std::cout << inMessage << "\033[0m\n";
         }
     }
 }
