@@ -46,14 +46,19 @@ namespace Chicane
                     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
                 }
 
-                ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
-                    ImGui::GetCurrentWindow()->IsConstrained = inProps.isConstrained;
+                ImGui::PushStyleColor(
+                    ImGuiCol_WindowBg,
+                    hexToColor(inProps.style.backgroundColor)
+                );
+                    ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
+                        ImGui::GetCurrentWindow()->IsConstrained = inProps.isConstrained;
 
-                    for (const pugi::xml_node& child : inProps.children)
-                    {
-                        compileChild(child);
-                    }
-                ImGui::End();
+                        for (const pugi::xml_node& child : inProps.children)
+                        {
+                            compileChild(child);
+                        }
+                    ImGui::End();
+                ImGui::PopStyleColor();
             }
 
             void compile(const pugi::xml_node& inNode)
