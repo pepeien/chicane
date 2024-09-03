@@ -40,12 +40,9 @@ namespace Chicane
                     ),
                     ImGuiCond_Appearing
                 );
+                ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 
-                ImGui::Begin(id);
-                    ImGui::GetCurrentWindow()->ConstraintWindow = ImGui::FindWindowByName(
-                        getActiveViewId().c_str()
-                    );
-
+                ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
                     for (const pugi::xml_node& child : inProps.children)
                     {
                         compileChild(child);
