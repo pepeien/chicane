@@ -17,6 +17,26 @@ namespace Chicane
             White
         };
 
+        struct Instance
+        {
+            std::string text  = "";
+            std::string color = "";
+
+        public:
+            bool isEmpty() const
+            {
+                return text.empty();
+            }
+        };
+
+        typedef std::vector<Instance> List;
+
+        void watchLogs(
+            std::function<void (const List&)> inNextCallback,
+            std::function<void (const std::string&)> inErrorCallback = nullptr,
+            std::function<void ()> inCompleteCallback = nullptr
+        );
+
         void info(const std::string& inMessage);
         void warning(const std::string& inMessage);
         void error(const std::string& inMessage);
@@ -28,17 +48,9 @@ namespace Chicane
     }
 }
 
-#ifdef IS_DEBUGGING
-    #define LOG_INFO(    message) Chicane::Log::info(    message)
-    #define LOG_WARNING( message) Chicane::Log::warning( message)
-    #define LOG_ERROR(   message) Chicane::Log::error(   message)
-    #define LOG_CRITICAL(message) Chicane::Log::critical(message)
+#define LOG_INFO(    message) Chicane::Log::info(    message)
+#define LOG_WARNING( message) Chicane::Log::warning( message)
+#define LOG_ERROR(   message) Chicane::Log::error(   message)
+#define LOG_CRITICAL(message) Chicane::Log::critical(message)
 
-    #define LOG_EMMIT(color, message) Chicane::Log::emmit(color, message)
-#else
-    #define LOG_INFO(message)
-    #define LOG_WARNING(message)
-    #define LOG_ERROR(message)
-    #define LOG_CRITICAL(message)
-    #define LOG_EMMIT(color, message)
-#endif
+#define LOG_EMMIT(color, message) Chicane::Log::emmit(color, message)
