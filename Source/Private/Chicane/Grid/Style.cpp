@@ -45,7 +45,10 @@ namespace Chicane
         constexpr auto GAP_LEFT_ATTRIBUTE_NAME   = "gap-left";
         constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
 
+        constexpr auto FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
+
+        constexpr auto DEFAULT_FOREGROUND_COLOR = "#FFFFFF";
 
         const Style EMPTY_STYLE = {};
 
@@ -331,6 +334,21 @@ namespace Chicane
             );
         }
 
+        void setForegroundColor(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            if (inData.empty() || inData.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
+            {
+                outStyle.backgroundColor = DEFAULT_FOREGROUND_COLOR;
+
+                return;
+            }
+
+            outStyle.foregroundColor = Utils::trim(inData.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
+        }
+
         void setBackgroundColor(
             Style& outStyle,
             const std::unordered_map<std::string, std::string>& inData
@@ -359,6 +377,7 @@ namespace Chicane
             setPosition(result, inSource);
             setMargin(result, inSource);
             setGap(result, inSource);
+            setForegroundColor(result, inSource);
             setBackgroundColor(result, inSource);
 
             return result;

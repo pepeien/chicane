@@ -43,7 +43,8 @@ namespace Chicane
             DirectionalSize margin = {};
 
             // Looks
-            std::string backgroundColor = "";
+            std::string foregroundColor = "#FFFFFF";
+            std::string backgroundColor = "transparent";
         };
 
         constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";

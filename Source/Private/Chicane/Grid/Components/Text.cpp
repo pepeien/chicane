@@ -9,11 +9,14 @@ namespace Chicane
     {
         namespace TextComponent
         {
-            void compileRaw(const std::string& inText)
+            void compileRaw(const std::string& inText, const Style& inStyle)
             {
-                ImGui::Text(
-                    processText(inText).c_str()
+                ImGui::PushStyleColor(
+                    ImGuiCol_Text,
+                    hexToColor(inStyle.foregroundColor)
                 );
+                    ImGui::TextWrapped(processText(inText).c_str());
+                ImGui::PopStyleColor();
             }
 
             void compile(const pugi::xml_node& inNode)
@@ -25,7 +28,7 @@ namespace Chicane
 
                 std::string rawText = inNode.child_value();
 
-                compileRaw(rawText);
+                compileRaw(rawText, getStyle(inNode));
             }
         }
     }
