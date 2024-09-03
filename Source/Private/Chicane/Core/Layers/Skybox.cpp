@@ -8,25 +8,25 @@ namespace Chicane
         : Layer("Skybox")
     {
         m_isInitialized = Loader::getCubemapManager()->getCount() > 0;
-        m_internals = inWindow->getRendererInternals();
+        m_rendererInternals = inWindow->getRendererInternals();
     }
 
     SkyboxLayer::~SkyboxLayer()
     {
-        m_internals.logicalDevice.waitIdle();
+        m_rendererInternals.logicalDevice.waitIdle();
 
         // Graphics Pipeline
         m_graphicsPipeline.reset();
 
         // Descriptors
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
+        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptor.setLayout
         );
 
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
+        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
             m_materialDescriptor.setLayout
         );
-        m_internals.logicalDevice.destroyDescriptorPool(
+        m_rendererInternals.logicalDevice.destroyDescriptorPool(
             m_materialDescriptor.pool
         );
     }
@@ -54,7 +54,7 @@ namespace Chicane
             return;
         }
 
-        m_internals.logicalDevice.destroyDescriptorPool(
+        m_rendererInternals.logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
     }
@@ -143,7 +143,7 @@ namespace Chicane
 
         Descriptor::initSetLayout(
             m_frameDescriptor.setLayout,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             frameLayoutBidings
         );
     }
@@ -159,7 +159,7 @@ namespace Chicane
 
         Descriptor::initSetLayout(
             m_materialDescriptor.setLayout,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             materialLayoutBidings
         );
     }
@@ -170,11 +170,11 @@ namespace Chicane
         graphicsPipelineCreateInfo.canOverwrite         = false;
         graphicsPipelineCreateInfo.hasVertices          = false;
         graphicsPipelineCreateInfo.hasDepth             = false;
-        graphicsPipelineCreateInfo.logicalDevice        = m_internals.logicalDevice;
+        graphicsPipelineCreateInfo.logicalDevice        = m_rendererInternals.logicalDevice;
         graphicsPipelineCreateInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
         graphicsPipelineCreateInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
-        graphicsPipelineCreateInfo.swapChainExtent      = m_internals.swapchain->extent;
-        graphicsPipelineCreateInfo.swapChainImageFormat = m_internals.swapchain->format;
+        graphicsPipelineCreateInfo.swapChainExtent      = m_rendererInternals.swapchain->extent;
+        graphicsPipelineCreateInfo.swapChainImageFormat = m_rendererInternals.swapchain->format;
         graphicsPipelineCreateInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
 
         m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(graphicsPipelineCreateInfo);
@@ -182,13 +182,13 @@ namespace Chicane
 
     void SkyboxLayer::initFramebuffers()
     {
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->images)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
-            framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
+            framebufferCreateInfo.logicalDevice   = m_rendererInternals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
-            framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
+            framebufferCreateInfo.swapChainExtent = m_rendererInternals.swapchain->extent;
             framebufferCreateInfo.attachments.push_back(frame.imageView);
 
             Frame::Buffer::init(frame, framebufferCreateInfo);
@@ -198,21 +198,21 @@ namespace Chicane
     void SkyboxLayer::initFrameResources()
     {
         Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
-        frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_internals.swapchain->images.size());
+        frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_rendererInternals.swapchain->images.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
 
         Descriptor::initPool(
             m_frameDescriptor.pool,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             frameDescriptorPoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->images)
         {
             vk::DescriptorSet descriptorSet;
             Descriptor::initSet(
                 descriptorSet,
-                m_internals.logicalDevice,
+                m_rendererInternals.logicalDevice,
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
@@ -237,7 +237,7 @@ namespace Chicane
 
         Descriptor::initPool(
             m_materialDescriptor.pool,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             materialDescriptorPoolCreateInfo
         );
     }
@@ -245,10 +245,10 @@ namespace Chicane
     void SkyboxLayer::buildAssets()
     {
         Loader::getCubemapManager()->build(
-            m_internals.logicalDevice,
-            m_internals.physicalDevice,
-            m_internals.mainCommandBuffer,
-            m_internals.graphicsQueue,
+            m_rendererInternals.logicalDevice,
+            m_rendererInternals.physicalDevice,
+            m_rendererInternals.mainCommandBuffer,
+            m_rendererInternals.graphicsQueue,
             m_materialDescriptor.setLayout,
             m_materialDescriptor.pool
         );

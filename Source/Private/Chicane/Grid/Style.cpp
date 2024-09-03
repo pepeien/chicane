@@ -10,6 +10,8 @@ namespace Chicane
 
         constexpr auto STYLE_ATTRIBUTE_NAME = "style";
 
+        constexpr auto DISPLAY_ATTRIBUTE_NAME = "display";
+
         constexpr auto WIDTH_ATTRIBUTE_NAME  = "width";
         constexpr auto HEIGHT_ATTRIBUTE_NAME = "height";
 
@@ -49,6 +51,37 @@ namespace Chicane
 
         StyleSourceMap m_sources = {};
         StyleDataMap m_styles    = {};
+
+        void setVisiblity(
+            Style& outStyle,
+            const StyleSource& inData
+        )
+        {
+            if (inData.find(DISPLAY_ATTRIBUTE_NAME) == inData.end())
+            {
+                outStyle.display = Display::Visible;
+
+                return;
+            }
+
+            std::string display = inData.at(DISPLAY_ATTRIBUTE_NAME);
+
+            if (display.compare("none") == 0)
+            {
+                outStyle.display = Display::None;
+
+                return;
+            }
+
+            if (display.compare("hidden") == 0)
+            {
+                outStyle.display = Display::Hidden;
+
+                return;
+            }
+
+            outStyle.display = Display::Visible;
+        }
 
         void setSize(
             Style& outStyle,
@@ -347,8 +380,14 @@ namespace Chicane
                     ':'
                 );
 
-                const std::string& key   = Utils::trim(splittedBlock.at(0));
-                const std::string& value = Utils::trim(splittedBlock.at(1));
+                std::string key   = Utils::trim(splittedBlock.at(0));
+                std::string value = Utils::trim(splittedBlock.at(1));
+                std::transform(
+                    value.begin(),
+                    value.end(),
+                    value.begin(),
+                    ::tolower
+                );
 
                 if (result.find(key) != result.end())
                 {
@@ -503,6 +542,13 @@ namespace Chicane
 
             Style& style              = m_styles.at(id);
             const StyleSource& source = m_sources.at(id);
+
+            setVisiblity(style, source);
+
+            if (style.display != Display::Visible)
+            {
+                return style;
+            }
 
             setSize(style, source);
             setPosition(style, source);

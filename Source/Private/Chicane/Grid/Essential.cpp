@@ -22,11 +22,6 @@ namespace Chicane
 
             return std::string(inTarget.end() - inEnding.size(), inTarget.end()).compare(inEnding) == 0;
         }
-
-        std::string getTag(const pugi::xml_node& inNode)
-        {
-            return inNode.name();
-        }
  
         ImVec4 hexToColor(const std::string& inColor)
         {
@@ -271,6 +266,16 @@ namespace Chicane
             return m_activeView;
         }
 
+        std::string getActiveViewId()
+        {
+            if (!m_activeView)
+            {
+                return "";
+            }
+
+            return m_activeView->getId();
+        }
+
         void setActiveView(const std::string& inViewID)
         {
             m_activeView = m_views.at(inViewID);
@@ -310,9 +315,12 @@ namespace Chicane
                 return;
             }
 
-            execOnTick(inNode);
+            const Style& style = getStyle(inNode);
 
-            Style style = getStyle(inNode);
+            if (style.display == Display::None)
+            {
+                return;
+            }
 
             ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
 
@@ -335,6 +343,13 @@ namespace Chicane
             }
 
             ImGui::SetCursorPos(position);
+
+            if (style.display == Display::Hidden)
+            {
+                return;
+            }
+
+            execOnTick(inNode);
 
             getComponent(tagName)(inNode);
         }
@@ -378,10 +393,9 @@ namespace Chicane
                 return {};
             }
 
-            std::size_t paramsStart  = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
-            std::size_t paramsEnd    = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
-
-            std::string name   = trimmedValue.substr(0, paramsStart);
+            std::size_t paramsStart = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
+            std::size_t paramsEnd   = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
+            std::string name        = trimmedValue.substr(0, paramsStart);
 
             paramsStart += 1;
             paramsEnd   -= paramsStart;

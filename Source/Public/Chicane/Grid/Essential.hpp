@@ -62,8 +62,6 @@ namespace Chicane
         // Methods
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
-        std::string getTag(const pugi::xml_node& inNode);
-
         ImVec4 hexToColor(const std::string& inColor);
 
         std::uint32_t getChildrenCount(const ComponentChildren& inChildren);
@@ -95,6 +93,7 @@ namespace Chicane
         void addView(View* inView);
         void addView(const std::vector<View*>& inViews);
         View* getActiveView();
+        std::string getActiveViewId();
         void setActiveView(const std::string& inViewID);
 
         void execOnTick(const pugi::xml_node& inNode);

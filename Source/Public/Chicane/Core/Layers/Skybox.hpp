@@ -38,7 +38,7 @@ namespace Chicane
         void buildAssets();
 
     private:
-        Renderer::Internals m_internals;
+        Renderer::Internals m_rendererInternals;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

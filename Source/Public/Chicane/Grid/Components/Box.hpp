@@ -11,15 +11,16 @@ namespace Chicane
     {
         namespace BoxComponent
         {
+            const std::string TAG_ID = "Box";
+
             // Types
             struct Props
             {
                 std::string id = ""; // Optional
                 Style style    = {}; // Optional
             };
-
-            const std::string TAG_ID = "Box";
     
+            void compileRaw(const Props& inProps);
             void compile(const pugi::xml_node& inNode);
         }
     }

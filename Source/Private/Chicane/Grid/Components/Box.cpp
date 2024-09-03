@@ -17,27 +17,13 @@ namespace Chicane
                 return result;
             }
 
-            void compile(const pugi::xml_node& inNode)
+            void compileRaw(const Props& inProps)
             {
-                ImGuiContext& context = *GImGui;
-                ImGuiWindow* window   = ImGui::GetCurrentWindow();
-    
-                if (window->SkipItems)
-                {
-                    return;
-                }
+                Style style = inProps.style;
 
-                Props props = getProps(inNode);
-                Style style = props.style;
-    
-                ImVec2 size = ImGui::CalcItemSize(
-                    ImVec2(style.width, style.height),
-                    ImGui::CalcItemWidth(),
-                    context.FontSize + context.Style.FramePadding.y * 2.0f
-                );
-                ImVec2 position = window->DC.CursorPos;
-
-                ImRect borderBox = ImRect(
+                ImVec2 size      = ImVec2(style.width, style.height);
+                ImVec2 position  = ImGui::GetCursorPos();
+                ImRect rect      = ImRect(
                     position.x,
                     position.y,
                     position.x + size.x,
@@ -46,7 +32,7 @@ namespace Chicane
     
                 ImGui::ItemSize(size);
     
-                if (!ImGui::ItemAdd(borderBox, 0))
+                if (!ImGui::ItemAdd(rect, 0))
                 {
                     return;
                 }
@@ -56,13 +42,22 @@ namespace Chicane
                     hexToColor(style.backgroundColor)
                 );
                 ImGui::RenderFrame(
-                    borderBox.Min,
-                    borderBox.Max,
+                    rect.Min,
+                    rect.Max,
                     ImGui::GetColorU32(ImGuiCol_FrameBg),
-                    false,
-                    context.Style.FrameRounding
+                    false
                 );
                 ImGui::PopStyleColor();
+            }
+
+            void compile(const pugi::xml_node& inNode)
+            {
+                if (TAG_ID.compare(inNode.name()) != 0)
+                {
+                    throw std::runtime_error("Component is not a " + TAG_ID);
+                }
+
+                compileRaw(getProps(inNode));
             }
         }
     }

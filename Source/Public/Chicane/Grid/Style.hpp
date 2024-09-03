@@ -6,10 +6,17 @@ namespace Chicane
 {
     namespace Grid
     {
+        enum class Display : std::uint8_t
+        {
+            Visible, // Visible and occupies space on the overall layout
+            Hidden, // Visibly hidden but still occupies space on the overall layout
+            None // Visibly hidden and doens't occupiy space on the overall layout
+        };
+
         enum class Position : std::uint8_t
         {
-            Absolute,
-            Relative
+            Absolute, // Start from (0, 0) a.k.a Top Left corner
+            Relative // Continue from the current ImGui's cursor position
         };
 
         struct DirectionalSize
@@ -23,7 +30,9 @@ namespace Chicane
 
         struct Style
         {
-        public:
+            // Visiblity
+            Display display = Display::Visible;
+
             // Size
             float height = 0.0f;
             float width  = 0.0f;

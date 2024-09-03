@@ -185,7 +185,8 @@ namespace Chicane
             ImGuiWindowFlags viewFlags = ImGuiWindowFlags_NoNav |
                                          ImGuiWindowFlags_NoDecoration |
                                          ImGuiWindowFlags_NoMove |
-                                         ImGuiWindowFlags_NoBackground;
+                                         ImGuiWindowFlags_NoBackground |
+                                         ImGuiWindowFlags_NoBringToFrontOnFocus;
 
             ImVec2 uiResolution = ImVec2(
                 static_cast<float>(inResolution.x),

@@ -8,6 +8,7 @@ file(
     ${VENDORS_DIR}/imgui/imgui_draw.cpp
     ${VENDORS_DIR}/imgui/imgui_tables.cpp
     ${VENDORS_DIR}/imgui/imgui_widgets.cpp
+    ${VENDORS_DIR}/imgui/imgui_chicane.cpp
     ${VENDORS_DIR}/imgui/imgui.cpp
     ${VENDORS_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
     ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl3.cpp
