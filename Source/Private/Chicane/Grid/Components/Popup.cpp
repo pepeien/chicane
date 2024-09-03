@@ -8,13 +8,13 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isResizeable = processText(getAttribute(IS_RESIZEABLE_ATTRIBUTE_NAME, inNode).as_string());
 
                 Props result {};
-                result.id        = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.isVisible = isVisible.empty() || isVisible.compare("true") == 0;
-                result.style     = getStyle(inNode);
-                result.children  = inNode.children();
+                result.id           = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.isResizeable = isResizeable.empty() || isResizeable.compare("true") == 0;
+                result.style        = getStyle(inNode);
+                result.children     = inNode.children();
 
                 return result;
             }
@@ -31,33 +31,26 @@ namespace Chicane
             {
                 validate(inProps);
 
-                if (!inProps.isVisible)
-                {
-                    return;
-                }
+                const char* id = inProps.id.c_str();
 
                 ImGui::SetNextWindowSize(
                     ImVec2(
                         inProps.style.width,
                         inProps.style.height
-                    )
-                );
-                ImGui::PushStyleColor(
-                    ImGuiCol_ChildBg,
-                    hexToColor(inProps.style.backgroundColor)
+                    ),
+                    ImGuiCond_Appearing
                 );
 
-                const char* id = inProps.id.c_str();
+                ImGui::Begin(id);
+                    ImGui::GetCurrentWindow()->ConstraintWindow = ImGui::FindWindowByName(
+                        getActiveViewId().c_str()
+                    );
 
-                ImGui::OpenPopup(id);
-                ImGui::BeginPopup(id, ImGuiWindowFlags_AlwaysAutoResize);
                     for (const pugi::xml_node& child : inProps.children)
                     {
                         compileChild(child);
                     }
-                ImGui::EndPopup();
-
-                ImGui::PopStyleColor();
+                ImGui::End();
             }
 
             void compile(const pugi::xml_node& inNode)
