@@ -12,13 +12,13 @@ namespace Chicane
             const std::string TAG_ID = "Popup";
 
             // Attributes
-            const std::string IS_RESIZEABLE_ATTRIBUTE_NAME = "is-resizeable";
+            const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "is-constrained";
 
             // Props
             struct Props
             {
                 std::string id             = ""; // Required
-                bool isResizeable          = true; // Optional
+                bool isConstrained         = true; // Optional
                 Style style                = {}; // Optional
                 ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
             };

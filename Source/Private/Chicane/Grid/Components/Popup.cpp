@@ -8,13 +8,13 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isResizeable = processText(getAttribute(IS_RESIZEABLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isConstrained = processText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
 
                 Props result {};
-                result.id           = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.isResizeable = isResizeable.empty() || isResizeable.compare("true") == 0;
-                result.style        = getStyle(inNode);
-                result.children     = inNode.children();
+                result.id            = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.isConstrained = isConstrained.empty() || isConstrained.compare("true") == 0;
+                result.style         = getStyle(inNode);
+                result.children      = inNode.children();
 
                 return result;
             }
@@ -40,9 +40,15 @@ namespace Chicane
                     ),
                     ImGuiCond_Appearing
                 );
-                ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+
+                if (inProps.isConstrained)
+                {
+                    ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+                }
 
                 ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
+                    ImGui::GetCurrentWindow()->IsConstrained = inProps.isConstrained;
+
                     for (const pugi::xml_node& child : inProps.children)
                     {
                         compileChild(child);
