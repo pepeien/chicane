@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Core/Box.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Helper.hpp"
 #include "Chicane/Core/Layer.hpp"
