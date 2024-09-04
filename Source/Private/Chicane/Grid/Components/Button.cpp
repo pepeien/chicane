@@ -20,6 +20,10 @@ namespace Chicane
 
                 const Style& style = getStyle(inNode);
 
+                ImGui::PushStyleColor(
+                    ImGuiCol_Button,
+                    hexToColor(style.backgroundColor)
+                );
                 if (
                     ImGui::Button(
                         processText(text).c_str(),
@@ -65,6 +69,7 @@ namespace Chicane
 
                     onClickFunction(onClickEvent);
                 }
+                ImGui::PopStyleColor();
             }
         }
     }
