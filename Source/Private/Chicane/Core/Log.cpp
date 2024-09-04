@@ -1,31 +1,12 @@
 #include "Chicane/Core/Log.hpp"
 
 #include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Utils.hpp"
+#include "Chicane/Grid.hpp"
 
-#define LOG_COLOR_START "\e["
-#define LOG_COLOR_END   "\e[0m\n"
-
-#define LOG_ANSI_COLOR_RED "38;2;212;25;25m"
-#define LOG_HEX_COLOR_RED  "#F73B3B"
-
-#define LOG_ANSI_COLOR_GREEN "38;2;31;237;79m"
-#define LOG_HEX_COLOR_GREEN  "#1FED4F"
-
-#define LOG_ANSI_COLOR_BLUE "38;2;78;141;222m"
-#define LOG_HEX_COLOR_BLUE  "#4E8DDE"
-
-#define LOG_ANSI_COLOR_YELLOW "38;2;232;232;5m"
-#define LOG_HEX_COLOR_YELLOW  "#E8E805"
-
-#define LOG_ANSI_COLOR_ORANGE "38;2;255;166;0m"
-#define LOG_HEX_COLOR_ORANGE  "#FFA600"
-
-#define LOG_ANSI_COLOR_CYAN "38;2;5;174;176m"
-#define LOG_HEX_COLOR_CYAN  "#05AEB0"
-
-#define LOG_ANSI_COLOR_WHITE "38;2;255;255;255m"
-#define LOG_HEX_COLOR_WHITE  "#FFFFFF"
+constexpr auto LOG_COLOR_START = "\e[";
+constexpr auto LOG_COLOR_END   = "\e[0m\n";
 
 constexpr std::uint32_t MAX_LOG_COUNT = 500;
 
@@ -33,6 +14,8 @@ namespace Chicane
 {
     namespace Log
     {
+        std::unordered_map<std::string, std::string> m_colors = {};
+
         List m_logs = {};
         std::unique_ptr<Observable<List>> m_logsObservable = std::make_unique<Observable<List>>();
 
@@ -54,7 +37,7 @@ namespace Chicane
             emmit(
                 "INFO",
                 inMessage,
-                Color::White
+                COLOR_WHITE
             );
         }
 
@@ -63,7 +46,7 @@ namespace Chicane
             emmit(
                 "WARNING",
                 inMessage,
-                Color::Yellow
+                COLOR_YELLOW
             );
         }
 
@@ -72,7 +55,7 @@ namespace Chicane
             emmit(
                 "ERROR",
                 inMessage,
-                Color::Orange
+                COLOR_ORANGE
             );
         }
 
@@ -81,14 +64,14 @@ namespace Chicane
             emmit(
                 "CRITICAL",
                 inMessage,
-                Color::Red
+                COLOR_RED
             );
         }
 
         void emmit(
             const std::string& inIdentifier,
             const std::string& inMessage,
-            Color inColor
+            const std::string& inHexColor
         )
         {
             std::string message = "[" + inIdentifier + "] " + inMessage;
@@ -100,47 +83,28 @@ namespace Chicane
 
             message = Utils::trim(message);
 
-            std::string terminalColor = LOG_ANSI_COLOR_WHITE;
-            std::string hexColor      = LOG_HEX_COLOR_WHITE;
 
-            switch (inColor)
+            std::string hexColor = inHexColor;
+            std::transform(
+                hexColor.begin(),
+                hexColor.end(),
+                hexColor.begin(),
+                ::toupper
+            );
+
+            if (m_colors.find(hexColor) == m_colors.end())
             {
-            case Color::Red:
-                terminalColor = LOG_ANSI_COLOR_RED;
-                hexColor      = LOG_HEX_COLOR_RED;
+                Vec<3, std::uint32_t> rgbColor = Grid::hexToRgb(inHexColor);
 
-                break;
-
-            case Color::Green:
-                terminalColor = LOG_ANSI_COLOR_GREEN;
-                hexColor      = LOG_HEX_COLOR_GREEN;
-
-                break;
-
-            case Color::Blue:
-                terminalColor = LOG_ANSI_COLOR_BLUE;
-                hexColor      = LOG_HEX_COLOR_BLUE;
-
-                break;
-
-            case Color::Yellow:
-                terminalColor = LOG_ANSI_COLOR_YELLOW;
-                hexColor      = LOG_HEX_COLOR_YELLOW;
-
-                break;
-
-            case Color::Orange:
-                terminalColor = LOG_ANSI_COLOR_ORANGE;
-                hexColor      = LOG_HEX_COLOR_ORANGE;
-
-                break;
-
-            case Color::Cyan:
-                terminalColor = LOG_ANSI_COLOR_CYAN;
-                hexColor      = LOG_HEX_COLOR_CYAN;
-
-                break;
+                m_colors.insert(
+                    std::make_pair(
+                        hexColor,
+                        "38;2;" + std::to_string(rgbColor.x) + ";" + std::to_string(rgbColor.y) + ";" + std::to_string(rgbColor.z) + "m"
+                    )
+                );
             }
+
+            std::string terminalColor = m_colors.at(hexColor);
 
             if (IS_DEBUGGING)
             {

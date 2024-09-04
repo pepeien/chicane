@@ -6,16 +6,14 @@ namespace Chicane
 {
     namespace Log
     {
-        enum class Color : std::uint8_t
-        {
-            Red,
-            Blue,
-            Green,
-            Yellow,
-            Orange,
-            Cyan,
-            White
-        };
+        constexpr auto COLOR_RED          = "#F73B3B";
+        constexpr auto COLOR_GREEN        = "#1FED4F";
+        constexpr auto COLOR_LIGHT_GREEN  = "#07e8b7";
+        constexpr auto COLOR_BLUE         = "#4E8DDE";
+        constexpr auto COLOR_YELLOW       = "#E8E805";
+        constexpr auto COLOR_ORANGE       = "#fc850d";
+        constexpr auto COLOR_CYAN         = "#05AEB0";
+        constexpr auto COLOR_WHITE        = "#FFFFFF";
 
         struct Instance
         {
@@ -44,7 +42,7 @@ namespace Chicane
         void emmit(
             const std::string& inIdentifier,
             const std::string& inMessage,
-            Color inColor
+            const std::string& inHexColor
         );
     }
 }

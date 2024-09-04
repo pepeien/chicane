@@ -51,6 +51,20 @@ namespace Chicane
             return ImVec4(reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x);
         }
 
+        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor)
+        {
+            ImVec4 color = hexToColor(inColor);
+
+            return Vec<3, std::uint32_t>(color.x * 255, color.y * 255, color.z * 255);
+        }
+
+        Vec<4, std::uint32_t> hexToRgba(const std::string& inColor)
+        {
+            ImVec4 color = hexToColor(inColor);
+
+            return Vec<4, std::uint32_t>(color.x * 255, color.y * 255, color.z * 255, color.w * 255);
+        }
+
         std::uint32_t getChildrenCount(const ComponentChildren& inChildren)
         {
             std::uint32_t result = 0;
