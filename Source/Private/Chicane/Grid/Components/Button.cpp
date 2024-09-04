@@ -9,67 +9,103 @@ namespace Chicane
     {
         namespace ButtonComponent
         {
-            void compile(const pugi::xml_node& inNode)
+            void setOnClickData(Props& outProps, const pugi::xml_node& inNode)
             {
-                if (std::string(inNode.name()).compare(TAG_ID) != 0)
+                View* view = getActiveView();
+
+                if (!view)
                 {
                     return;
                 }
 
-                std::string text = inNode.child_value();
-
-                const Style& style = getStyle(inNode);
-
-                ImGui::PushStyleColor(
-                    ImGuiCol_Button,
-                    hexToColor(style.backgroundColor)
+                ComponentFunctionData onClickFunctionData = parseFunction(
+                    getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string()
                 );
+
+                if (!view->hasFunction(onClickFunctionData.name))
+                {
+                    return;
+                }
+
+                outProps.onClick = view->getFunction(
+                    onClickFunctionData.name
+                );
+
+                ComponentEvent onClickEvent {};
+                onClickEvent.values = onClickFunctionData.params;
+
+                if (onClickFunctionData.params.size() == 1)
+                {
+                    std::any param = onClickFunctionData.params[0];
+
+                    if (param.type() == typeid(std::string))
+                    {
+                        if (Utils::trim(std::any_cast<std::string>(param)) == "$event")
+                        {
+                            onClickEvent.values[0] = inNode;
+                        }
+                    }
+                }
+
+                outProps.onClickEvent = onClickEvent;
+            }
+
+            Props getProps(const pugi::xml_node& inNode)
+            {
+                Props result {};
+                result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.style      = getStyle(inNode);
+                result.children   = inNode.children();
+
+                setOnClickData(result, inNode);
+
+                return result;
+            }
+
+            void compileRaw(const Props& inProps)
+            {
+                ImVec2 initialPosition = ImGui::GetCursorPos();
+
                 if (
-                    ImGui::Button(
-                        processText(text).c_str(),
-                        ImVec2(style.width, style.height)
+                    ImGui::InvisibleButton(
+                        inProps.id.c_str(),
+                        ImVec2(
+                            inProps.style.width,
+                            inProps.style.height
+                        ),
+                        ImGuiButtonFlags_FlattenChildren
                     )
                 )
                 {
-                    View* view = getActiveView();
-
-                    if (!view)
-                    {
-                        return;
-                    }
-
-                    ComponentFunctionData onClickFunctionData = parseFunction(
-                        getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string()
-                    );
-
-                    if (!view->hasFunction(onClickFunctionData.name))
-                    {
-                        return;
-                    }
-
-                    ComponentFunction onClickFunction = view->getFunction(
-                        onClickFunctionData.name
-                    );
-
-                    ComponentEvent onClickEvent {};
-                    onClickEvent.values = onClickFunctionData.params;
-
-                    if (onClickFunctionData.params.size() == 1)
-                    {
-                        std::any param = onClickFunctionData.params[0];
-
-                        if (param.type() == typeid(std::string))
-                        {
-                            if (Utils::trim(std::any_cast<std::string>(param)) == "$event")
-                            {
-                                onClickEvent.values[0] = inNode;
-                            }
-                        }
-                    }
-
-                    onClickFunction(onClickEvent);
+                    inProps.onClick(inProps.onClickEvent);
                 }
-                ImGui::PopStyleColor();
+
+                ImGui::SetCursorPos(initialPosition);
+
+                ListComponent::Props listProps {};
+                listProps.id       = inProps.id + "_content";
+                listProps.style    = inProps.style;
+                listProps.children = inProps.children;
+
+                ListComponent::compileRaw(listProps);
+            }
+
+            void validate(const Props& inProps)
+            {
+                if (inProps.id.empty())
+                {
+                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                }
+            }
+
+            void compile(const pugi::xml_node& inNode)
+            {
+                if (TAG_ID.compare(inNode.name()) != 0)
+                {
+                    throw std::runtime_error("Component is not a " + TAG_ID);
+                }
+
+                compileRaw(getProps(inNode));
             }
         }
     }
