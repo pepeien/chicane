@@ -6,30 +6,10 @@ namespace Chicane
     {
         namespace ListComponent
         {
-            Direction getDirection(const pugi::xml_node& inNode)
-            {
-                std::string rawDirection = getAttribute(DIRECTION_ATTRIBUTE_NAME, inNode).as_string();
-
-                std::transform(
-                    rawDirection.begin(),
-                    rawDirection.end(),
-                    rawDirection.begin(),
-                    ::toupper
-                );
-
-                if (rawDirection.compare(DIRECTION_ROW) == 0)
-                {
-                    return Direction::Row;
-                }
-
-                return Direction::Column;
-            }
-
             Props getProps(const pugi::xml_node& inNode)
             {
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.direction  = getDirection(inNode);
                 result.style      = getStyle(inNode);
                 result.items      = getItems(inNode);
                 result.itemGetter = getItemGetter(inNode);
@@ -38,17 +18,9 @@ namespace Chicane
                 return result;
             }
 
-            void validate(const Props& inProps)
-            {
-                if (inProps.id.empty())
-                {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
-                }
-            }
-
             void handlePositioning(const Props& inProps, std::uint32_t inIndex)
             {
-                if (inProps.direction == Direction::Row)
+                if (inProps.style.listDirection == ListDirection::Row)
                 {
                     ImGui::SameLine();
 
@@ -70,6 +42,14 @@ namespace Chicane
                 }
             }
 
+            void validate(const Props& inProps)
+            {
+                if (inProps.id.empty())
+                {
+                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                }
+            }
+
             void compileRaw(const Props& inProps)
             {
                 validate(inProps);
@@ -78,37 +58,35 @@ namespace Chicane
                     ImGuiCol_ChildBg,
                     hexToColor(inProps.style.backgroundColor)
                 );
+                    ImGui::BeginChild(
+                        inProps.id.c_str(),
+                        ImVec2(inProps.style.width, inProps.style.height),
+                        0,
+                        ImGuiWindowFlags_NoInputs
+                    );
+                        std::uint32_t i = 0;
 
-                ImGui::BeginChild(
-                    inProps.id.c_str(),
-                    ImVec2(inProps.style.width, inProps.style.height),
-                    ImGuiChildFlags_AlwaysUseWindowPadding
-                );
-                    std::uint32_t i = 0;
+                        for (std::any item : inProps.items)
+                        {
+                            ComponentEvent event {};
+                            event.values.push_back(item);
 
-                    for (std::any item : inProps.items)
-                    {
-                        ComponentEvent event {};
-                        event.values.push_back(item);
+                            handlePositioning(inProps, i);
 
-                        handlePositioning(inProps, i);
+                            inProps.itemGetter(event);
 
-                        inProps.itemGetter(event);
+                            i++;
+                        }
 
-                        i++;
-                    }
+                        for (const pugi::xml_node& child : inProps.children)
+                        {
+                            handlePositioning(inProps, i);
 
-                    for (const pugi::xml_node& child : inProps.children)
-                    {
-                        handlePositioning(inProps, i);
+                            compileChild(child);
 
-                        compileChild(child);
-
-                        i++;
-                    }
-
-                ImGui::EndChild();
-
+                            i++;
+                        }
+                    ImGui::EndChild();
                 ImGui::PopStyleColor();
             }
 

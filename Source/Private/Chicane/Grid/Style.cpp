@@ -45,6 +45,11 @@ namespace Chicane
         constexpr auto GAP_LEFT_ATTRIBUTE_NAME   = "gap-left";
         constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
 
+        constexpr auto LIST_DIRECTION_ATTRIBUTE_NAME = "list-direction";
+
+        constexpr auto LIST_DIRECTION_COLUMN = "COLUMN";
+        constexpr auto LIST_DIRECTION_ROW    = "ROW";
+
         constexpr auto FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
@@ -334,6 +339,36 @@ namespace Chicane
             );
         }
 
+        void setListDirection(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            if (inData.empty() || inData.find(LIST_DIRECTION_ATTRIBUTE_NAME) == inData.end())
+            {
+                outStyle.listDirection = ListDirection::Row;
+
+                return;
+            }
+
+            std::string listDirection = Utils::trim(inData.at(LIST_DIRECTION_ATTRIBUTE_NAME));
+            std::transform(
+                listDirection.begin(),
+                listDirection.end(),
+                listDirection.begin(),
+                ::toupper
+            );
+
+            if (listDirection.compare(LIST_DIRECTION_COLUMN) == 0)
+            {
+                outStyle.listDirection = ListDirection::Column;
+
+                return;
+            }
+
+            outStyle.listDirection = ListDirection::Row;
+        }
+
         void setForegroundColor(
             Style& outStyle,
             const std::unordered_map<std::string, std::string>& inData
@@ -377,6 +412,7 @@ namespace Chicane
             setPosition(result, inSource);
             setMargin(result, inSource);
             setGap(result, inSource);
+            setListDirection(result, inSource);
             setForegroundColor(result, inSource);
             setBackgroundColor(result, inSource);
 

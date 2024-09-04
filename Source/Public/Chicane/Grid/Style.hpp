@@ -19,6 +19,12 @@ namespace Chicane
             Relative // Continue from the current ImGui's cursor position
         };
 
+        enum class ListDirection : std::uint8_t
+        {
+            Column,
+            Row
+        };
+
         struct DirectionalSize
         {
         public:
@@ -42,7 +48,10 @@ namespace Chicane
             DirectionalSize gap    = {};
             DirectionalSize margin = {};
 
-            // Looks
+            // Layout
+            ListDirection listDirection = ListDirection::Column;
+
+            // Color
             std::string foregroundColor = "#FFFFFF";
             std::string backgroundColor = "transparent";
         };
