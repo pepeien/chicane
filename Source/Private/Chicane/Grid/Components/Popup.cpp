@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Components/Popup.hpp"
 
+#include "Chicane/Core.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -8,10 +10,12 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
+                const std::string& isOpen        = processText(getAttribute(IS_OPEN_ATTRIBUTE_NAME, inNode).as_string());
                 const std::string& isConstrained = processText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
 
                 Props result {};
                 result.id            = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.isOpen        = isOpen.empty() || isOpen.compare("true") == 0;
                 result.isConstrained = isConstrained.empty() || isConstrained.compare("true") == 0;
                 result.style         = getStyle(inNode);
                 result.children      = inNode.children();
@@ -30,6 +34,11 @@ namespace Chicane
             void compileRaw(const Props& inProps)
             {
                 validate(inProps);
+
+                if (!inProps.isOpen)
+                {
+                    return;
+                }
 
                 const char* id = inProps.id.c_str();
 

@@ -12,12 +12,14 @@ namespace Chicane
             const std::string TAG_ID = "Popup";
 
             // Attributes
-            const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "is-constrained";
+            const std::string IS_OPEN_ATTRIBUTE_NAME        = "isOpen";
+            const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
 
             // Props
             struct Props
             {
                 std::string id             = ""; // Required
+                bool isOpen                = true; // Optional
                 bool isConstrained         = true; // Optional
                 Style style                = {}; // Optional
                 ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
