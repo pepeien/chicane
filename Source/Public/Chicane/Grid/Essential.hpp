@@ -51,7 +51,7 @@ namespace Chicane
 
         // List
         constexpr auto ITEMS_ATTRIBUTE_NAME       = "items";
-        constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "item-getter";
+        constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
 
         // Size units
         constexpr auto AUTO_SIZE_UNIT            = "auto";
