@@ -1,14 +1,31 @@
 #include "Chicane/Core/Log.hpp"
 
 #include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Utils.hpp"
 
-#define LOG_COLOR_RED    "\033[1;31m"
-#define LOG_COLOR_GREEN  "\033[1;32m"
-#define LOG_COLOR_BLUE   "\033[1;34m"
-#define LOG_COLOR_YELLOW "\033[1;33m"
-#define LOG_COLOR_CYAN   "\033[1;36m"
-#define LOG_COLOR_ORANGE "\033[38;2;255;165;0m"
-#define LOG_COLOR_WHITE  "\033[1;37m"
+#define LOG_COLOR_START "\e["
+#define LOG_COLOR_END   "\e[0m\n"
+
+#define LOG_ANSI_COLOR_RED "38;2;212;25;25m"
+#define LOG_HEX_COLOR_RED  "#F73B3B"
+
+#define LOG_ANSI_COLOR_GREEN "38;2;31;237;79m"
+#define LOG_HEX_COLOR_GREEN  "#1FED4F"
+
+#define LOG_ANSI_COLOR_BLUE "38;2;78;141;222m"
+#define LOG_HEX_COLOR_BLUE  "#4E8DDE"
+
+#define LOG_ANSI_COLOR_YELLOW "38;2;232;232;5m"
+#define LOG_HEX_COLOR_YELLOW  "#F7F700"
+
+#define LOG_ANSI_COLOR_ORANGE "38;2;255;166;0m"
+#define LOG_HEX_COLOR_ORANGE  "#FFA600"
+
+#define LOG_ANSI_COLOR_CYAN "38;2;5;174;176m"
+#define LOG_HEX_COLOR_CYAN  "#E8E805"
+
+#define LOG_ANSI_COLOR_WHITE "38;2;255;255;255m"
+#define LOG_HEX_COLOR_WHITE  "#FFFFFF"
 
 constexpr std::uint32_t MAX_LOG_COUNT = 500;
 
@@ -35,85 +52,99 @@ namespace Chicane
         void info(const std::string& inMessage)
         {
             emmit(
-                Color::White,
-                inMessage
+                "INFO",
+                inMessage,
+                Color::White
             );
         }
 
         void warning(const std::string& inMessage)
         {
             emmit(
-                Color::Yellow,
-                inMessage
+                "WARNING",
+                inMessage,
+                Color::Yellow
             );
         }
 
         void error(const std::string& inMessage)
         {
             emmit(
-                Color::Orange,
-                inMessage
+                "ERROR",
+                inMessage,
+                Color::Orange
             );
         }
 
         void critical(const std::string& inMessage)
         {
             emmit(
-                Color::Red,
-                inMessage
+                "CRITICAL",
+                inMessage,
+                Color::Red
             );
         }
 
         void emmit(
-            Color inColor,
-            const std::string& inMessage
+            const std::string& inIdentifier,
+            const std::string& inMessage,
+            Color inColor
         )
         {
-            std::string terminalColor = LOG_COLOR_WHITE;
-            std::string hexColor      = "#FFFFFF";
+            std::string message = "[" + inIdentifier + "] " + inMessage;
+
+            if (inIdentifier.empty())
+            {
+                message = inMessage;
+            }
+
+            message = Utils::trim(message);
+
+            std::string terminalColor = LOG_ANSI_COLOR_WHITE;
+            std::string hexColor      = LOG_HEX_COLOR_WHITE;
 
             switch (inColor)
             {
             case Color::Red:
-                terminalColor = LOG_COLOR_RED;
-                hexColor      = "#CC0000";
-    
-                break;
-            
-            case Color::Blue:
-                terminalColor = LOG_COLOR_BLUE;
-                hexColor      = "#3465A4";
-    
+                terminalColor = LOG_ANSI_COLOR_RED;
+                hexColor      = LOG_HEX_COLOR_RED;
+
                 break;
 
             case Color::Green:
-                terminalColor = LOG_COLOR_GREEN;
-                hexColor      = "#1FED4F";
-    
+                terminalColor = LOG_ANSI_COLOR_GREEN;
+                hexColor      = LOG_HEX_COLOR_GREEN;
+
+                break;
+
+            case Color::Blue:
+                terminalColor = LOG_ANSI_COLOR_BLUE;
+                hexColor      = LOG_HEX_COLOR_BLUE;
+
                 break;
 
             case Color::Yellow:
-                terminalColor = LOG_COLOR_YELLOW;
-                hexColor      = "#C4A000";
-    
+                terminalColor = LOG_ANSI_COLOR_YELLOW;
+                hexColor      = LOG_HEX_COLOR_YELLOW;
+
                 break;
 
             case Color::Orange:
-                terminalColor = LOG_COLOR_ORANGE;
-                hexColor      = "#FFA600";
-    
+                terminalColor = LOG_ANSI_COLOR_ORANGE;
+                hexColor      = LOG_HEX_COLOR_ORANGE;
+
                 break;
 
             case Color::Cyan:
-                terminalColor = LOG_COLOR_CYAN;
-                hexColor      = "#06989A";
-    
+                terminalColor = LOG_ANSI_COLOR_CYAN;
+                hexColor      = LOG_HEX_COLOR_CYAN;
+
                 break;
             }
 
             if (IS_DEBUGGING)
             {
-                std::cout << terminalColor << inMessage + "\033[0m\n";
+                std::cout << LOG_COLOR_START << terminalColor << message << LOG_COLOR_END;
             }
 
             // History
@@ -133,7 +164,7 @@ namespace Chicane
 
                     if (i == end)
                     {
-                        m_logs[i].text  = inMessage;
+                        m_logs[i].text  = message;
                         m_logs[i].color = hexColor;
                     }
                 }
@@ -141,7 +172,7 @@ namespace Chicane
             else
             {
                 Instance instance {};
-                instance.text  = inMessage;
+                instance.text  = message;
                 instance.color = hexColor;
 
                 m_logs.push_back(instance);

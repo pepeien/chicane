@@ -56,12 +56,8 @@ namespace Chicane
                 break;
 
             case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
-                LOG_WARNING(pCallbackData->pMessage);
-
-                break;
-
             case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
-                LOG_ERROR(pCallbackData->pMessage);
+                LOG_WARNING(pCallbackData->pMessage);
 
                 break;
 

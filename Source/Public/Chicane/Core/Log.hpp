@@ -42,8 +42,9 @@ namespace Chicane
         void error(const std::string& inMessage);
         void critical(const std::string& inMessage);
         void emmit(
-            Color inColor,
-            const std::string& inMessage
+            const std::string& inIdentifier,
+            const std::string& inMessage,
+            Color inColor
         );
     }
 }
@@ -53,4 +54,4 @@ namespace Chicane
 #define LOG_ERROR(   message) Chicane::Log::error(   message)
 #define LOG_CRITICAL(message) Chicane::Log::critical(message)
 
-#define LOG_EMMIT(color, message) Chicane::Log::emmit(color, message)
+#define LOG_EMMIT(identifier, message, color) Chicane::Log::emmit(identifier, message, color)

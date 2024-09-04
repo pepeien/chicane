@@ -35,12 +35,12 @@ namespace Chicane
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
 
-            LOG_EMMIT(Log::Color::Green, "=================== MODEL LOAD =====================");
-            LOG_EMMIT(Log::Color::Green, "Name:            " + inId);
-            LOG_EMMIT(Log::Color::Green, "Type:            " + std::to_string(inEntry.vendor));
-            LOG_EMMIT(Log::Color::Green, "Triangle Count:  " + std::to_string(result.vertices.size()));
-            LOG_EMMIT(Log::Color::Green, "Processing Time: " + std::to_string(Telemetry::deltaToMs(end - start)) + "ms");
-            LOG_EMMIT(Log::Color::Green, "====================================================");
+            LOG_EMMIT("MODEL LOAD", "============================================================================", Log::Color::Cyan);
+            LOG_EMMIT("MODEL LOAD", "Name:            " + inId,                                                     Log::Color::Cyan);
+            LOG_EMMIT("MODEL LOAD", "Type:            " + std::to_string(inEntry.vendor),                           Log::Color::Cyan);
+            LOG_EMMIT("MODEL LOAD", "Triangle Count:  " + std::to_string(result.vertices.size()),                   Log::Color::Cyan);
+            LOG_EMMIT("MODEL LOAD", "Processing Time: " + std::to_string(Telemetry::deltaToMs(end - start)) + "ms", Log::Color::Cyan);
+            LOG_EMMIT("MODEL LOAD", "============================================================================", Log::Color::Cyan);
 
             m_instanceMap.insert(std::make_pair(inId, newModel));
         }
