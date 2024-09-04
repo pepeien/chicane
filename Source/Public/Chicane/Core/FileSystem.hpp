@@ -44,7 +44,7 @@ namespace Chicane
             std::uint32_t childCount = 0;
         };
 
-        constexpr char SEPARATOR = std::filesystem::__cxx11::path::preferred_separator;
+        constexpr auto SEPARATOR = std::filesystem::path::preferred_separator;
 
         bool exists(const std::string& inPath);
         std::vector<ListItem> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
