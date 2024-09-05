@@ -12,17 +12,10 @@ namespace Chicane
             const std::string TAG_ID = "List";
 
             // Props
-            struct Props
+            struct Props : BaseProps
             {
-            public:
-                std::string id = ""; // Required
-
-                Style style = {}; // Optional
-
                 std::vector<std::any> items = {}; // Optional
                 ComponentFunction itemGetter; // Optional
-
-                ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
             };
 
             void validate(const Props& inProps);

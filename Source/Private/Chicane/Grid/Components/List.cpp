@@ -66,12 +66,21 @@ namespace Chicane
                     );
                         std::uint32_t i = 0;
 
+                        for (const ComponentFunction& renderer : inProps._renderers)
+                        {
+                            handlePositioning(inProps, i);
+
+                            renderer({});
+
+                            i++;
+                        }
+
                         for (std::any item : inProps.items)
                         {
+                            handlePositioning(inProps, i);
+
                             ComponentEvent event {};
                             event.values.push_back(item);
-
-                            handlePositioning(inProps, i);
 
                             inProps.itemGetter(event);
 

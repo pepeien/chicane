@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
@@ -30,16 +31,12 @@ namespace Chicane
         typedef pugi::xml_node_iterator ComponentChild;
         typedef pugi::xml_object_range<ComponentChild> ComponentChildren;
 
-        enum class Direction : std::uint8_t
+        struct BaseProps
         {
-            Vertical,
-            Horizontal
-        };
-
-        enum class Position : std::uint8_t
-        {
-            Absolute, // Start from (0, 0) a.k.a Top Left corner
-            Relative // Continue from the current ImGui's cursor position
+            std::string id                            = ""; // Required
+            Style style                               = {}; // Optional
+            ComponentChildren children                = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
+            std::vector<ComponentFunction> _renderers = {}; // [Internal Use]
         };
 
         // Ref Value

@@ -17,19 +17,12 @@ namespace Chicane
             constexpr auto ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
 
             // Types
-            struct Props
+            struct Props : BaseProps
             {
             public:
-                std::string id = ""; // Required
-
-                Vec<2, float> itemSize = {}; // Optional
-
-                Style style = {}; // Optional
-
+                Vec<2, float> itemSize      = {}; // Optional
                 std::vector<std::any> items = {}; // Optional
                 ComponentFunction itemGetter; // Optional
-
-                ComponentChildren children = ComponentChildren(ComponentChild(), ComponentChild()); // Optional
             };
 
             void validate(const Props& inProps);

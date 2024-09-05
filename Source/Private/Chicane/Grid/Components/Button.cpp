@@ -96,9 +96,10 @@ namespace Chicane
                 ImGui::SetCursorPos(initialPosition);
 
                 ListComponent::Props listProps {};
-                listProps.id       = inProps.id + "_content";
-                listProps.style    = inProps.style;
-                listProps.children = inProps.children;
+                listProps.id              = inProps.id + "_content";
+                listProps.style           = inProps.style;
+                listProps.children        = inProps.children;
+                listProps._renderers = inProps._renderers;
 
                 ListComponent::compileRaw(listProps);
             }

@@ -83,49 +83,65 @@ namespace Chicane
                     ImGuiCol_ChildBg,
                     hexToImGuiColor(inProps.style.backgroundColor)
                 );
-                ImGui::BeginChild(
-                    inProps.id.c_str(),
-                    wrapperSize
-                );
-                    for (std::uint32_t row = 0; row < rowCount; row++)
-                    {
-                        ImGui::NewLine();
-
-                        float nextVerticalPosition = ImGui::GetCursorPosY() - 13;
-
-                        if (row > 0)
+                    ImGui::BeginChild(
+                        inProps.id.c_str(),
+                        wrapperSize
+                    );
+                        for (std::uint32_t row = 0; row < rowCount; row++)
                         {
-                            nextVerticalPosition += verticalGap;
-                        }
+                            ImGui::NewLine();
 
-                        ImGui::SetCursorPosY(nextVerticalPosition);
+                            float nextVerticalPosition = ImGui::GetCursorPosY() - 13;
 
-                        std::string rowId = inProps.id + "Row-" + std::to_string(row);
-
-                        ImGui::BeginChild(rowId.c_str(), rowSize);
-                            for (std::uint32_t column = 0; column < columnCount && chidrenVisited < inItemCount; column++, chidrenVisited++)
+                            if (row > 0)
                             {
-                                ImGui::SameLine();
-
-                                float nextHorizontalPosition = ImGui::GetCursorPosX();
-
-                                if (column > 0)
-                                {
-                                    nextHorizontalPosition += horizontalGap;
-                                }
-
-                                ImGui::SetCursorPosX(nextHorizontalPosition);
-
-                                std::string itemId = inProps.id + "Item-" + std::to_string(chidrenVisited);
-
-                                ImGui::BeginChild(itemId.c_str(), itemSize);
-                                    inItemShowCallback(chidrenVisited);
-                                ImGui::EndChild();
+                                nextVerticalPosition += verticalGap;
                             }
-                        ImGui::EndChild();
-                    }
-                ImGui::EndChild();
+
+                            ImGui::SetCursorPosY(nextVerticalPosition);
+
+                            std::string rowId = inProps.id + "Row-" + std::to_string(row);
+
+                            ImGui::BeginChild(rowId.c_str(), rowSize);
+                                for (std::uint32_t column = 0; column < columnCount && chidrenVisited < inItemCount; column++, chidrenVisited++)
+                                {
+                                    ImGui::SameLine();
+
+                                    float nextHorizontalPosition = ImGui::GetCursorPosX();
+
+                                    if (column > 0)
+                                    {
+                                        nextHorizontalPosition += horizontalGap;
+                                    }
+
+                                    ImGui::SetCursorPosX(nextHorizontalPosition);
+
+                                    std::string itemId = inProps.id + "Item-" + std::to_string(chidrenVisited);
+
+                                    ImGui::BeginChild(itemId.c_str(), itemSize);
+                                        inItemShowCallback(chidrenVisited);
+                                    ImGui::EndChild();
+                                }
+                            ImGui::EndChild();
+                        }
+                    ImGui::EndChild();
                 ImGui::PopStyleColor();
+            }
+
+            void showRenderers(const Props& inProps)
+            {
+                if (inProps._renderers.empty())
+                {
+                    return;
+                }
+
+                showGrid(
+                    inProps,
+                    static_cast<std::uint32_t>(inProps._renderers.size()),
+                    [inProps](std::uint32_t currentItemIndex) {
+                        inProps._renderers.at(currentItemIndex)({});
+                    }
+                );
             }
 
             void showItems(const Props& inProps)
@@ -169,6 +185,7 @@ namespace Chicane
             {
                 validate(inProps);
 
+                showRenderers(inProps);
                 showItems(inProps);
                 showChildren(inProps);
             }

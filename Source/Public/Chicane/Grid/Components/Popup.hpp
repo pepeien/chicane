@@ -16,13 +16,10 @@ namespace Chicane
             const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
 
             // Props
-            struct Props
+            struct Props : BaseProps
             {
-                std::string id             = ""; // Required
-                bool isOpen                = true; // Optional
-                bool isConstrained         = true; // Optional
-                Style style                = {}; // Optional
-                ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
+                bool isOpen        = true; // Optional
+                bool isConstrained = true; // Optional
             };
 
             void compileRaw(const Props& inProps);

@@ -12,11 +12,10 @@ namespace Chicane
             const std::string TAG_ID = "ProgressBar";
 
             // Types
-            struct Props
+            struct Props : BaseProps
             {
                 float percentage = 0.0f; // Optional
                 std::string text = ""; // Optional
-                Style style      = {}; // Optional
             };
     
             // Attributes

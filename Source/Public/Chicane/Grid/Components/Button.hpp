@@ -16,12 +16,8 @@ namespace Chicane
             const std::string ON_CLICK_EVENT_KEYWORD  = "$event";
 
             // Props
-            struct Props
+            struct Props : BaseProps
             {
-                std::string id = ""; // Required
-                Style style = {}; // Optional
-                ComponentChildren children = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
-
                 // onClick
                 ComponentEvent onClickEvent = {}; // Optional
                 ComponentFunction onClick; // Optional
