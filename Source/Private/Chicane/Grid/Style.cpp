@@ -74,14 +74,14 @@ namespace Chicane
 
             std::string display = inData.at(DISPLAY_ATTRIBUTE_NAME);
 
-            if (display.compare("none") == 0)
+            if (Utils::areEquals(display, "none"))
             {
                 outStyle.display = Display::None;
 
                 return;
             }
 
-            if (display.compare("hidden") == 0)
+            if (Utils::areEquals(display, "hidden"))
             {
                 outStyle.display = Display::Hidden;
 
@@ -127,7 +127,7 @@ namespace Chicane
 
             std::string position = Utils::trim(inData.at(POSITION_ATTRIBUTE_NAME));
 
-            if (position.compare(POSITION_TYPE_ABSOLUTE) == 0)
+            if (Utils::areEquals(position, POSITION_TYPE_ABSOLUTE))
             {
                 outStyle.position = Position::Absolute;
             }
@@ -135,13 +135,13 @@ namespace Chicane
 
         float calculateDirectionSize(
             const Style& inStyle,
-            const std::string& rawValue,
+            const std::string& inRawValue,
             Direction inDirection
         )
         {
-            float result = getSize(rawValue, inDirection);
+            float result = getSize(inRawValue, inDirection);
 
-            if (rawValue.compare(AUTO_SIZE_UNIT) == 0)
+            if (Utils::areEquals(inRawValue, AUTO_SIZE_UNIT))
             {
                 result -= inDirection == Direction::Horizontal ? inStyle.width : inStyle.height;
             }
@@ -359,7 +359,7 @@ namespace Chicane
                 ::toupper
             );
 
-            if (listDirection.compare(LIST_DIRECTION_COLUMN) == 0)
+            if (Utils::areEquals(listDirection, LIST_DIRECTION_COLUMN))
             {
                 outStyle.listDirection = ListDirection::Column;
 
@@ -532,7 +532,7 @@ namespace Chicane
             );
             std::string fileExtension = splittedFilename.back();
 
-            if (fileExtension.compare(FILE_EXTENSION_NAME) != 0)
+            if (!Utils::areEquals(fileExtension, FILE_EXTENSION_NAME))
             {
                 return {};
             }

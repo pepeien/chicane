@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Components/TextInput.hpp"
 
+#include "Chicane/Core.hpp"
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
@@ -10,7 +11,7 @@ namespace Chicane
         {
             void validate(const pugi::xml_node& inNode)
             {
-                if (TAG_ID.compare(inNode.name()) != 0)
+                if (!Utils::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }
@@ -44,8 +45,8 @@ namespace Chicane
             {
                 validate(inNode);
 
-                std::string label          = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
-                std::string value          = getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string();
+                std::string label = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
+                std::string value = getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string();
 
                 ImGui::InputText(
                     label.empty() ? " " : label.c_str(),

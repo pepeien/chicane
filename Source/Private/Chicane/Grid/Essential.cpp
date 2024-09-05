@@ -20,21 +20,21 @@ namespace Chicane
                 return false;
             }
 
-            return std::string(inTarget.end() - inEnding.size(), inTarget.end()).compare(inEnding) == 0;
+            return Utils::areEquals(std::string(inTarget.end() - inEnding.size(), inTarget.end()), inEnding);
         }
  
         ImVec4 hexToColor(const std::string& inColor)
         {
             std::string backgroundColor = Utils::trim(inColor);
 
-            bool isTransparent = backgroundColor.empty() || backgroundColor.compare(BACKGROUND_COLOR_TRANSPARENT) == 0;
+            bool isTransparent = backgroundColor.empty() || Utils::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
             bool isHex         = backgroundColor.size() < 7 || backgroundColor.size() > 9;
 
             if (isTransparent || isHex)
             {
                 return ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
             }
-    
+
             backgroundColor = backgroundColor.substr(
                 1,
                 backgroundColor.size() - 1
@@ -197,7 +197,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            if (inValue.compare(AUTO_SIZE_UNIT) == 0)
+            if (Utils::areEquals(inValue, AUTO_SIZE_UNIT))
             {
                 return getSizeFromPercentage("100%", inDirection);
             }

@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Instance.hpp"
-        
+
+#include "Chicane/Core.hpp"
+
 namespace Chicane
 {
     namespace Instance
@@ -16,7 +18,7 @@ namespace Chicane
 
                 for (const auto& extensionProperties : supportedExtensions)
                 {
-                    if (strcmp(extensionName, extensionProperties.extensionName) != 0)
+                    if (!Utils::areEquals(extensionName, extensionProperties.extensionName))
                     {
                         isSupported = true;
 

@@ -6,6 +6,11 @@ namespace Chicane
 {
     namespace Utils
     {
+        bool areEquals(const std::string& inA, const std::string& inB)
+        {
+            return strcmp(inA.c_str(), inB.c_str()) == 0;
+        }
+
         std::string trim(const std::string& inTarget)
         {
             std::string result = inTarget;
@@ -17,11 +22,18 @@ namespace Chicane
 
         std::vector<std::string> split(const std::string& inTarget, char inDelimeter)
         {
+            std::vector<std::string> result = {};
+
+            if (inTarget.empty())
+            {
+                return result;
+            }
+
+            result.reserve(inTarget.size() / 2);
+
+            std::string item = "";
+
             std::stringstream stream(inTarget);
-
-            std::vector<std::string> result {};
-            std::string item                = "";
-
             while (getline(stream, item, inDelimeter))
             {
                 result.push_back(item);

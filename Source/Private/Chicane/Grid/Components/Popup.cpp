@@ -15,8 +15,8 @@ namespace Chicane
 
                 Props result {};
                 result.id            = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.isOpen        = isOpen.empty() || isOpen.compare("true") == 0;
-                result.isConstrained = isConstrained.empty() || isConstrained.compare("true") == 0;
+                result.isOpen        = isOpen.empty() || Utils::areEquals(isOpen, "true");
+                result.isConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
                 result.style         = getStyle(inNode);
                 result.children      = inNode.children();
 
@@ -72,7 +72,7 @@ namespace Chicane
 
             void compile(const pugi::xml_node& inNode)
             {
-                if (TAG_ID.compare(inNode.name()) != 0)
+                if (!Utils::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }

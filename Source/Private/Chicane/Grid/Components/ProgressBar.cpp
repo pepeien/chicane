@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Components/ProgressBar.hpp"
 
+#include "Chicane/Core.hpp"
 #include "Chicane/Grid.hpp"
 
 constexpr float MIN_PERCENTAGE = 0.0f;
@@ -37,7 +38,7 @@ namespace Chicane
 
             void compile(const pugi::xml_node& inNode)
             {
-                if (TAG_ID.compare(inNode.name()) != 0)
+                if (!Utils::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }
