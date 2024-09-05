@@ -66,8 +66,8 @@ namespace Chicane
                     itemSize.y
                 );
 
-                float verticalGap   = inProps.style.gap.top / 2 + inProps.style.gap.bottom / 2;
-                float horizontalGap = inProps.style.gap.left / 2 + inProps.style.gap.right / 2;
+                float verticalGap   = inProps.style.gap.top / 2.0f + inProps.style.gap.bottom / 2.0f;
+                float horizontalGap = inProps.style.gap.left / 2.0f + inProps.style.gap.right / 2.0f;
 
                 std::uint32_t columnCount = std::min(
                     inItemCount,
@@ -81,7 +81,7 @@ namespace Chicane
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
-                    hexToColor(inProps.style.backgroundColor)
+                    hexToImGuiColor(inProps.style.backgroundColor)
                 );
                 ImGui::BeginChild(
                     inProps.id.c_str(),
@@ -95,7 +95,6 @@ namespace Chicane
 
                         if (row > 0)
                         {
-                            nextVerticalPosition -= 29;
                             nextVerticalPosition += verticalGap;
                         }
 
@@ -103,11 +102,7 @@ namespace Chicane
 
                         std::string rowId = inProps.id + "Row-" + std::to_string(row);
 
-                        ImGui::BeginChild(
-                            rowId.c_str(),
-                            rowSize,
-                            ImGuiChildFlags_AlwaysUseWindowPadding
-                        );
+                        ImGui::BeginChild(rowId.c_str(), rowSize);
                             for (std::uint32_t column = 0; column < columnCount && chidrenVisited < inItemCount; column++, chidrenVisited++)
                             {
                                 ImGui::SameLine();
@@ -123,11 +118,7 @@ namespace Chicane
 
                                 std::string itemId = inProps.id + "Item-" + std::to_string(chidrenVisited);
 
-                                ImGui::BeginChild(
-                                    itemId.c_str(),
-                                    itemSize,
-                                    ImGuiChildFlags_AlwaysUseWindowPadding
-                                );
+                                ImGui::BeginChild(itemId.c_str(), itemSize);
                                     inItemShowCallback(chidrenVisited);
                                 ImGui::EndChild();
                             }

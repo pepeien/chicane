@@ -62,8 +62,18 @@ namespace Chicane
                 return result;
             }
 
+            void validate(const Props& inProps)
+            {
+                if (inProps.id.empty())
+                {
+                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                }
+            }
+
             void compileRaw(const Props& inProps)
             {
+                validate(inProps);
+
                 ImVec2 initialPosition = ImGui::GetCursorPos();
 
                 if (
@@ -77,7 +87,10 @@ namespace Chicane
                     )
                 )
                 {
-                    inProps.onClick(inProps.onClickEvent);
+                    if (inProps.onClick)
+                    {
+                        inProps.onClick(inProps.onClickEvent);
+                    }
                 }
 
                 ImGui::SetCursorPos(initialPosition);
@@ -88,14 +101,6 @@ namespace Chicane
                 listProps.children = inProps.children;
 
                 ListComponent::compileRaw(listProps);
-            }
-
-            void validate(const Props& inProps)
-            {
-                if (inProps.id.empty())
-                {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
-                }
             }
 
             void compile(const pugi::xml_node& inNode)

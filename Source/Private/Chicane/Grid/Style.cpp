@@ -220,16 +220,16 @@ namespace Chicane
 
             if (splittedOneline.size() == 1) // SINGLE
             {
-                std::string margin = splittedOneline.at(0);
+                std::string value = splittedOneline.at(0);
 
                 float vertical = calculateDirectionSize(
                     inStyle,
-                    margin,
+                    value,
                     Direction::Vertical
                 );
                 float horizontal = calculateDirectionSize(
                     inStyle,
-                    margin,
+                    value,
                     Direction::Horizontal
                 );
 
@@ -241,21 +241,21 @@ namespace Chicane
 
             if (splittedOneline.size() == 2) // VERTICAL HORIZONTAL
             {
-                float verticalMargin = calculateDirectionSize(
+                float vertical = calculateDirectionSize(
                     inStyle,
                     splittedOneline.at(0),
                     Direction::Vertical
                 );
-                float horizontalMargin = calculateDirectionSize(
+                float horizontal = calculateDirectionSize(
                     inStyle,
                     splittedOneline.at(1),
                     Direction::Horizontal
                 );
 
-                outValue.top    = verticalMargin;
-                outValue.bottom = verticalMargin;
-                outValue.right  = horizontalMargin;
-                outValue.left   = horizontalMargin;
+                outValue.top    = vertical;
+                outValue.bottom = vertical;
+                outValue.right  = horizontal;
+                outValue.left   = horizontal;
             }
 
             if (splittedOneline.size() == 3) // TOP BOTTOM HORIZONTAL

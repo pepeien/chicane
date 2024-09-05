@@ -57,7 +57,7 @@ namespace Chicane
 
                 ImGui::PushStyleColor(
                     ImGuiCol_WindowBg,
-                    hexToColor(inProps.style.backgroundColor)
+                    hexToImGuiColor(inProps.style.backgroundColor)
                 );
                     ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
                         ImGui::GetCurrentWindow()->IsConstrained = inProps.isConstrained;

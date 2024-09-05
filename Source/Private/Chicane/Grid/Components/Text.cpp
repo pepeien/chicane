@@ -13,7 +13,7 @@ namespace Chicane
             {
                 ImGui::PushStyleColor(
                     ImGuiCol_Text,
-                    hexToColor(inStyle.foregroundColor)
+                    hexToImGuiColor(inStyle.foregroundColor)
                 );
                     ImGui::TextWrapped(processText(inText).c_str());
                 ImGui::PopStyleColor();

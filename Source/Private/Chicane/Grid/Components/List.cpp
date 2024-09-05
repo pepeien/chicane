@@ -58,7 +58,7 @@ namespace Chicane
 
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
-                    hexToColor(inProps.style.backgroundColor)
+                    hexToImGuiColor(inProps.style.backgroundColor)
                 );
                     ImGui::BeginChild(
                         inProps.id.c_str(),

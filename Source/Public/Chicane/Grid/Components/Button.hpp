@@ -29,6 +29,7 @@ namespace Chicane
 
             void validate(const Props& inProps);
 
+            void compileRaw(const Props& inProps);
             void compile(const pugi::xml_node& inNode);
         }
     }

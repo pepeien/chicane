@@ -69,9 +69,9 @@ namespace Chicane
         // Methods
         bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
-        ImVec4 hexToColor(const std::string& inColor);
-        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
+        ImVec4 hexToImGuiColor(const std::string& inColor);
         Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
+        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
 
         std::uint32_t getChildrenCount(const ComponentChildren& inChildren);
         std::vector<pugi::xml_node> extractChildren(const ComponentChildren& inChildren);

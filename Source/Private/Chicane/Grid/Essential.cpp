@@ -6,12 +6,24 @@
 #include "Chicane/Grid/View.hpp"
 #include "Chicane/Grid/Style.hpp"
 
+const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
+
 namespace Chicane
 {
     namespace Grid
     {
         std::unordered_map<std::string, View*> m_views;
         View* m_activeView = nullptr;
+
+        std::unordered_map<std::string, ImVec4> m_imguiColors {
+            { HEX_COLOR_TRANSPARENT, ImVec4(0.0f, 0.0f, 0.0f, 0.0f) }
+        };
+        std::unordered_map<std::string, Vec<4, std::uint32_t>> m_rgbaColors {
+            { HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
+        };
+        std::unordered_map<std::string, Vec<3, std::uint32_t>> m_rgbColors {
+            { HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
+        };
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
@@ -23,46 +35,101 @@ namespace Chicane
             return Utils::areEquals(std::string(inTarget.end() - inEnding.size(), inTarget.end()), inEnding);
         }
  
-        ImVec4 hexToColor(const std::string& inColor)
+        ImVec4 hexToImGuiColor(const std::string& inColor)
         {
             std::string backgroundColor = Utils::trim(inColor);
+            std::transform(
+                backgroundColor.begin(),
+                backgroundColor.end(),
+                backgroundColor.begin(),
+                ::tolower
+            );
 
             bool isTransparent = backgroundColor.empty() || Utils::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
-            bool isHex         = backgroundColor.size() < 7 || backgroundColor.size() > 9;
+            bool isNotHex = backgroundColor.size() < 7 || backgroundColor.size() > 9;
 
-            if (isTransparent || isHex)
+            if (isTransparent || isNotHex)
             {
-                return ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+                backgroundColor = HEX_COLOR_TRANSPARENT;
             }
 
-            backgroundColor = backgroundColor.substr(
-                1,
-                backgroundColor.size() - 1
-            );
-            backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
-            std::uint32_t color = std::stoul(
-                backgroundColor,
-                nullptr,
-                16
-            );
+            if (m_imguiColors.find(backgroundColor) == m_imguiColors.end())
+            {
+                std::string hexColor = backgroundColor;
 
-            // IDK why the result is #AABBGGRR A.K.A reversed
-            ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
-            return ImVec4(reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x);
-        }
+                backgroundColor = backgroundColor.substr(
+                    1,
+                    backgroundColor.size() - 1
+                );
+                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
+                std::uint32_t color = std::stoul(
+                    backgroundColor,
+                    nullptr,
+                    16
+                );
 
-        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor)
-        {
-            ImVec4 color = hexToColor(inColor);
+                // IDK why the result is #AABBGGRR A.K.A reversed
+                ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
+                ImVec4 result         = ImVec4(reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x);
 
-            return Vec<3, std::uint32_t>(color.x * 255, color.y * 255, color.z * 255);
+                m_imguiColors.insert(
+                    std::make_pair(
+                        hexColor,
+                        result
+                    )
+                );
+
+                return result;
+            }
+
+            return m_imguiColors.at(backgroundColor);
         }
 
         Vec<4, std::uint32_t> hexToRgba(const std::string& inColor)
         {
-            ImVec4 color = hexToColor(inColor);
+            ImVec4 color = hexToImGuiColor(inColor);
 
-            return Vec<4, std::uint32_t>(color.x * 255, color.y * 255, color.z * 255, color.w * 255);
+            if (m_rgbaColors.find(inColor) == m_rgbaColors.end())
+            {
+                Vec<4, std::uint32_t> result(
+                    color.x * 255,
+                    color.y * 255,
+                    color.z * 255,
+                    color.w * 255
+                );
+
+                m_rgbaColors.insert(
+                    std::make_pair(
+                        inColor,
+                        result
+                    )
+                );
+
+                return result;
+            }
+
+            return m_rgbaColors.at(inColor);
+        }
+
+        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor)
+        {
+            Vec<4, std::uint32_t> color = hexToRgba(inColor);
+
+            if (m_rgbColors.find(inColor) == m_rgbColors.end())
+            {
+                Vec<3, std::uint32_t> result(color.x, color.y,  color.z);
+
+                m_rgbColors.insert(
+                    std::make_pair(
+                        inColor,
+                        result
+                    )
+                );
+
+                return result;
+            }
+
+            return m_rgbColors.at(inColor);
         }
 
         std::uint32_t getChildrenCount(const ComponentChildren& inChildren)
@@ -297,14 +364,14 @@ namespace Chicane
 
         void execOnTick(const pugi::xml_node& inNode)
         {
-            std::string onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode).as_string();
+            pugi::xml_attribute onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode);
 
             if (onTickFunction.empty())
             {
                 return;
             }
 
-            processRefValue(onTickFunction);
+            processRefValue(onTickFunction.as_string());
         }
 
         void compileChildren(const pugi::xml_node& inNode)
@@ -317,14 +384,7 @@ namespace Chicane
 
         void compileChild(const pugi::xml_node& inNode)
         {
-            if (inNode.name() == nullptr)
-            {
-                return;
-            }
-
-            std::string tagName = std::string(inNode.name());
-
-            if (!hasComponent(tagName))
+            if (!hasComponent(inNode.name()))
             {
                 return;
             }
@@ -336,24 +396,30 @@ namespace Chicane
                 return;
             }
 
-            ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : ImVec2(0, 0);
+            ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
 
-            if (style.margin.left == style.margin.right)
+            if (style.margin.left > 0.0f || style.margin.right > 0.0f)
             {
-                position.x += (style.margin.left / 2.0f);
-            }
-            else
-            {
-                position.x += style.margin.left - style.margin.right;
+                if (style.margin.left == style.margin.right)
+                {
+                    position.x += style.margin.left * 0.5f;
+                }
+                else
+                {
+                    position.x += style.margin.left - style.margin.right;
+                }
             }
 
-            if (style.margin.top == style.margin.bottom)
+            if (style.margin.top > 0.0f || style.margin.bottom > 0.0f)
             {
-                position.y += style.margin.top / 2.0f;
-            }
-            else
-            {
-                position.y += style.margin.top - style.margin.bottom;
+                if (style.margin.top == style.margin.bottom)
+                {
+                    position.y += style.margin.top * 0.5f;
+                }
+                else
+                {
+                    position.y += style.margin.top - style.margin.bottom;
+                }
             }
 
             ImGui::SetCursorPos(position);
@@ -365,7 +431,7 @@ namespace Chicane
 
             execOnTick(inNode);
 
-            getComponent(tagName)(inNode);
+            getComponent(inNode.name())(inNode);
         }
 
         std::string anyToString(const std::any& inValue)
