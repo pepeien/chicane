@@ -109,7 +109,7 @@ namespace Chicane
             return getSizeFromPixel(inAttribute.as_string());
         }
 
-        float getSizeFromPercentage(const std::string& inValue, Direction inDirection)
+        float getSizeFromPercentage(const std::string& inValue, Direction inDirection, Position inPosition)
         {
             if (!endsWith(inValue, PERCENTAGE_SIZE_UNIT))
             {
@@ -118,7 +118,7 @@ namespace Chicane
 
             float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
 
-            ImVec2 regionSize = ImGui::GetContentRegionAvail();
+            ImVec2 regionSize  = inPosition == Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
 
             if (inDirection == Direction::Horizontal)
             {
@@ -190,7 +190,7 @@ namespace Chicane
             return inNode.attribute(inName.c_str());
         }
 
-        float getSize(const std::string& inValue, Direction inDirection)
+        float getSize(const std::string& inValue, Direction inDirection, Position inPosition)
         {
             if (inValue.empty())
             {
@@ -199,7 +199,7 @@ namespace Chicane
 
             if (Utils::areEquals(inValue, AUTO_SIZE_UNIT))
             {
-                return getSizeFromPercentage("100%", inDirection);
+                return getSizeFromPercentage("100%", inDirection, inPosition);
             }
 
             if (endsWith(inValue, PIXEL_SIZE_UNIT))
@@ -209,7 +209,7 @@ namespace Chicane
 
             if (endsWith(inValue, PERCENTAGE_SIZE_UNIT))
             {
-                return getSizeFromPercentage(inValue, inDirection);
+                return getSizeFromPercentage(inValue, inDirection, inPosition);
             }
 
             if (endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
@@ -340,7 +340,7 @@ namespace Chicane
 
             if (style.margin.left == style.margin.right)
             {
-                position.x += style.margin.left / 2;
+                position.x += (style.margin.left / 2.0f);
             }
             else
             {
@@ -349,7 +349,7 @@ namespace Chicane
 
             if (style.margin.top == style.margin.bottom)
             {
-                position.y += style.margin.top / 2;
+                position.y += style.margin.top / 2.0f;
             }
             else
             {

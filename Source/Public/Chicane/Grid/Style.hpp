@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -11,12 +12,6 @@ namespace Chicane
             Visible, // Visible and occupies space on the overall layout
             Hidden, // Visibly hidden but still occupies space on the overall layout
             None // Visibly hidden and doens't occupiy space on the overall layout
-        };
-
-        enum class Position : std::uint8_t
-        {
-            Absolute, // Start from (0, 0) a.k.a Top Left corner
-            Relative // Continue from the current ImGui's cursor position
         };
 
         enum class ListDirection : std::uint8_t

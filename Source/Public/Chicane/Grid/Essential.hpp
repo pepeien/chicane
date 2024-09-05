@@ -36,6 +36,12 @@ namespace Chicane
             Horizontal
         };
 
+        enum class Position : std::uint8_t
+        {
+            Absolute, // Start from (0, 0) a.k.a Top Left corner
+            Relative // Continue from the current ImGui's cursor position
+        };
+
         // Ref Value
         constexpr auto REF_VALUE_OPENING = "{{";
         constexpr auto REF_VALUE_CLOSING = "}}";
@@ -85,7 +91,8 @@ namespace Chicane
 
         float getSize(
             const std::string& inValue,
-            Direction inDirection = Direction::Horizontal
+            Direction inDirection = Direction::Horizontal,
+            Position inPosition = Position::Absolute
         );
         float getSize(
             const std::string& inAttributeName,

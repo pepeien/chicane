@@ -100,7 +100,8 @@ namespace Chicane
             {
                 outStyle.height = getSize(
                     inData.at(HEIGHT_ATTRIBUTE_NAME),
-                    Direction::Vertical
+                    Direction::Vertical,
+                    outStyle.position
                 );
             }
 
@@ -108,7 +109,8 @@ namespace Chicane
             {
                 outStyle.width = getSize(
                     inData.at(WIDTH_ATTRIBUTE_NAME),
-                    Direction::Horizontal
+                    Direction::Horizontal,
+                    outStyle.position
                 );
             }
         }
@@ -139,7 +141,7 @@ namespace Chicane
             Direction inDirection
         )
         {
-            float result = getSize(inRawValue, inDirection);
+            float result = getSize(inRawValue, inDirection, inStyle.position);
 
             if (Utils::areEquals(inRawValue, AUTO_SIZE_UNIT))
             {
@@ -524,7 +526,7 @@ namespace Chicane
 
             std::vector<std::string> splittedFilePath = Utils::split(
                 inFilePath,
-                '\\'
+                FileSystem::SEPARATOR
             );
             std::vector<std::string> splittedFilename = Utils::split(
                 splittedFilePath.back(),
