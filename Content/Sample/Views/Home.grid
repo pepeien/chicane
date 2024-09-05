@@ -1,6 +1,6 @@
 <View id="home" style="Content/Sample/Views/Home.decal">
-    <List id="frameTelemetry" direction="row">
+    <Container id="frameTelemetry" direction="row">
         <Text id="framePerSecond">{{ getFPS() }} FPS</Text>
         <Text id="frameTimeText">{{ getFrametime() }} ms</Text>
-    </List>
+    </Container>
 </View>

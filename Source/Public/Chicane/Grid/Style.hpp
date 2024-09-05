@@ -19,6 +19,13 @@ namespace Chicane
             Relative // Continue from the current ImGui's cursor position
         };
 
+        enum class Alignment : std::uint8_t
+        {
+            Start,
+            Center,
+            End
+        };
+
         enum class Direction : std::uint8_t
         {
             Vertical,
@@ -50,20 +57,24 @@ namespace Chicane
             float width  = 0.0f;
 
             // Positioning
-            Position position      = Position::Relative;
-            DirectionalSize gap    = {};
-            DirectionalSize margin = {};
+            Position position             = Position::Relative;
+            Alignment horizontalAlignment = Alignment::Start;
+            Alignment verticalAlignment   = Alignment::Start;
+            DirectionalSize gap           = {};
+            DirectionalSize margin        = {};
 
             // Layout
             ListDirection listDirection = ListDirection::Column;
 
             // Color
-            std::string foregroundColor = "#FFFFFF";
             std::string backgroundColor = "transparent";
+            std::string foregroundColor = "#FFFFFF";
         };
 
         constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";
         constexpr auto HEX_COLOR_TRANSPARENT        = "#00000000";
+
+        const Style EMPTY_STYLE = {};
 
         typedef std::unordered_map<std::string, std::string> StyleSource;
 

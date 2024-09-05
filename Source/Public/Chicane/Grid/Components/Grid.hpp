@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid/Components/List.hpp"
+#include "Chicane/Grid/Components/Container.hpp"
 #include "Chicane/Grid/View.hpp"
 #include "Chicane/Grid/Style.hpp"
 

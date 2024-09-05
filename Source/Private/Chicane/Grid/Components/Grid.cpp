@@ -1,8 +1,6 @@
 #include "Chicane/Grid/Components/Grid.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Grid/Components/List.hpp"
-#include "Chicane/Grid/Components/Text.hpp"
 
 namespace Chicane
 {

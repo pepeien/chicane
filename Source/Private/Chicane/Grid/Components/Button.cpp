@@ -1,7 +1,7 @@
 #include "Chicane/Grid/Components/Button.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Components/Container.hpp"
 
 namespace Chicane
 {
@@ -95,13 +95,13 @@ namespace Chicane
 
                 ImGui::SetCursorPos(initialPosition);
 
-                ListComponent::Props listProps {};
+                ContainerComponent::Props listProps {};
                 listProps.id              = inProps.id + "_content";
                 listProps.style           = inProps.style;
                 listProps.children        = inProps.children;
                 listProps._renderers = inProps._renderers;
 
-                ListComponent::compileRaw(listProps);
+                ContainerComponent::compileRaw(listProps);
             }
 
             void compile(const pugi::xml_node& inNode)

@@ -7,9 +7,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace ListComponent
+        namespace ContainerComponent
         {
-            const std::string TAG_ID = "List";
+            const std::string TAG_ID = "Container";
 
             // Props
             struct Props : BaseProps

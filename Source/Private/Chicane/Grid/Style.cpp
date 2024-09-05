@@ -46,16 +46,22 @@ namespace Chicane
         constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
 
         constexpr auto LIST_DIRECTION_ATTRIBUTE_NAME = "list-direction";
-
-        constexpr auto LIST_DIRECTION_COLUMN = "COLUMN";
-        constexpr auto LIST_DIRECTION_ROW    = "ROW";
+        constexpr auto LIST_DIRECTION_COLUMN         = "COLUMN";
+        constexpr auto LIST_DIRECTION_ROW            = "ROW";
 
         constexpr auto FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
+        constexpr auto FOREGROUND_DEFAULT_COLOR        = "#FFFFFF";
+
         constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
-        constexpr auto DEFAULT_FOREGROUND_COLOR = "#FFFFFF";
-
-        const Style EMPTY_STYLE = {};
+        /*
+        * Template 1: "`SINGLE_ALIGNMENT`"
+        * Template 2: "`VERTICAL_ALIGNMENT` `HORIZONTAL_ALIGNMENT`"
+        */
+        constexpr auto ALIGNMENT_ATTRIBUTE_NAME = "alignment";
+        constexpr auto ALIGNMENT_START          = "START";
+        constexpr auto ALIGNMENT_CENTER         = "CENTER";
+        constexpr auto ALIGNMENT_END            = "END";
 
         StyleSourceMap m_sources = {};
         StyleDataMap m_styles    = {};
@@ -378,7 +384,7 @@ namespace Chicane
         {
             if (inData.empty() || inData.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
             {
-                outStyle.backgroundColor = DEFAULT_FOREGROUND_COLOR;
+                outStyle.backgroundColor = FOREGROUND_DEFAULT_COLOR;
 
                 return;
             }
@@ -401,6 +407,64 @@ namespace Chicane
             outStyle.backgroundColor = Utils::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
         }
 
+        Alignment getAlignment(const std::string& inValue)
+        {
+            if (inValue.empty())
+            {
+                return Alignment::Start;
+            }
+
+            std::string value = Utils::trim(inValue);
+            std::transform(
+                value.begin(),
+                value.end(),
+                value.begin(),
+                ::toupper
+            );
+
+            if (Utils::areEquals(value, ALIGNMENT_CENTER))
+            {
+                return Alignment::Center;
+            }
+
+            if (Utils::areEquals(value, ALIGNMENT_END))
+            {
+                return Alignment::End;
+            }
+
+            return Alignment::Start;
+        }
+
+        void setAlignment(
+            Style& outStyle,
+            const std::unordered_map<std::string, std::string>& inData
+        )
+        {
+            if (inData.empty() || inData.find(ALIGNMENT_ATTRIBUTE_NAME) == inData.end())
+            {
+                outStyle.horizontalAlignment = Alignment::Start;
+                outStyle.verticalAlignment   = Alignment::Start;
+
+                return;
+            }
+
+            std::vector<std::string> splittedOneline = Utils::split(
+                Utils::trim(inData.at(ALIGNMENT_ATTRIBUTE_NAME)),
+                ONELINE_SEPARATOR
+            );
+
+            if (splittedOneline.size() == 1)
+            {
+                outStyle.horizontalAlignment = getAlignment(splittedOneline.at(0));
+                outStyle.verticalAlignment   = outStyle.horizontalAlignment;
+
+                return;
+            }
+
+            outStyle.horizontalAlignment = getAlignment(splittedOneline.at(0));
+            outStyle.verticalAlignment   = getAlignment(splittedOneline.at(1));
+        }
+
         Style parseStyle(const StyleSource& inSource)
         {
             Style result {};
@@ -417,6 +481,7 @@ namespace Chicane
             setListDirection(result, inSource);
             setForegroundColor(result, inSource);
             setBackgroundColor(result, inSource);
+            setAlignment(result, inSource);
 
             return result;
         }

@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Components/List.hpp"
+#include "Chicane/Grid/Components/Container.hpp"
 
 #include "Chicane/Core.hpp"
 
@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace ListComponent
+        namespace ContainerComponent
         {
             Props getProps(const pugi::xml_node& inNode)
             {
