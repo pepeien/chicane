@@ -62,9 +62,7 @@ namespace Chicane
                 );
                     ImGui::BeginChild(
                         inProps.id.c_str(),
-                        ImVec2(inProps.style.width, inProps.style.height),
-                        0,
-                        ImGuiWindowFlags_NoInputs
+                        ImVec2(inProps.style.width, inProps.style.height)
                     );
                         std::uint32_t i = 0;
 
