@@ -80,8 +80,8 @@ namespace Chicane
                     ImGui::InvisibleButton(
                         inProps.id.c_str(),
                         ImVec2(
-                            inProps.style.width,
-                            inProps.style.height
+                            std::max(1.0f, inProps.style.width),
+                            std::max(1.0f, inProps.style.height)
                         ),
                         ImGuiButtonFlags_FlattenChildren
                     )
