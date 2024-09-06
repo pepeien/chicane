@@ -9,6 +9,7 @@ namespace Chicane
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
+        m_wasWindowResized(false),
         m_window(inWindow),
         m_viewportSize(Vec<2, std::uint32_t>(0)),
         m_viewportPosition(Vec<2, std::uint32_t>(0)),
@@ -156,6 +157,11 @@ namespace Chicane
 
     void Renderer::onEvent(const SDL_Event& inEvent)
     {
+        if (inEvent.type == SDL_EVENT_WINDOW_RESIZED)
+        {
+            m_wasWindowResized = true;
+        }
+
         for (Layer* layer : m_layers)
         {
             layer->onEvent(inEvent);
@@ -164,120 +170,81 @@ namespace Chicane
 
     void Renderer::render()
     {
-        Frame::Instance& currentImage = m_swapChain.images[m_currentImageIndex];
+        Frame::Instance& currentImage           = m_swapChain.frames.at(m_currentImageIndex);
+        vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
 
-        vk::Result fenceWait = m_logicalDevice.waitForFences(
-            1,
-            &currentImage.renderFence,
-            VK_TRUE,
-            0
-        );
+        currentImage.wait(m_logicalDevice);
 
-        if (fenceWait != vk::Result::eSuccess && fenceWait != vk::Result::eTimeout)
-        {
-            throw std::runtime_error("Error while waiting the fences");
-        }
-
-        if (
-            m_logicalDevice.resetFences(
-                1,
-                &currentImage.renderFence
-            ) != vk::Result::eSuccess
-        )
-        {
-            throw std::runtime_error("Error while resetting the fences");
-        }
-
-        vk::ResultValue<uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
+        vk::ResultValue<std::uint32_t> acquireResult = currentImage.getNextIndex(
             m_swapChain.instance,
-            UINT64_MAX,
-            currentImage.presentSemaphore,
-            nullptr
+            m_logicalDevice
         );
 
         if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
         {
             rebuildSwapChain();
-    
+
             return;
-        }
-    
-        if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
+        } else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
         {
-            throw std::runtime_error("Failed to acquire swap chain image");
-        }
-        
-        uint32_t imageIndex = acquireResult.value;
-
-        std::vector<vk::CommandBuffer> commandBuffers;
-
-        vk::CommandBuffer& commandBuffer = currentImage.commandBuffer;
-        commandBuffers.push_back(commandBuffer);
-
-        commandBuffer.reset();
-
-        Frame::Instance& nextImage = m_swapChain.images[imageIndex];
-
-        prepareCamera(nextImage);
-
-        for (Layer* layer : m_layers)
-        {
-            layer->setup(nextImage);
+            throw std::runtime_error("Error while acquiring the next image");
         }
 
-        nextImage.updateDescriptorSets();
+        currentImage.reset(m_logicalDevice);
 
-        CommandBuffer::Worker::startJob(commandBuffer);
+        std::uint32_t nextImageIndex = acquireResult.value;
+        Frame::Instance& nextImage   = m_swapChain.frames.at(nextImageIndex);
 
-        prepareViewport(commandBuffer);
+        prepareCamera(currentImage);
+        prepareLayers(currentImage);
 
-        for (Layer* layer : m_layers)
-        {
-            layer->render(
-                nextImage,
-                commandBuffer,
-                m_swapChain.extent
-            );
-        }
+        vk::CommandBufferBeginInfo commandBufferBegin {};
+        commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
 
-        vk::Semaphore waitSemaphores[]      = { currentImage.presentSemaphore };
-        vk::Semaphore signalSemaphores[]    = { currentImage.renderSemaphore };
+        currentCommandBuffer.reset();
+        currentCommandBuffer.begin(commandBufferBegin);
+            prepareFrame(nextImage);
+            renderViewport(currentCommandBuffer);
+            renderLayers(nextImage, currentCommandBuffer);
+        currentCommandBuffer.end();
+
         vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
     
         vk::SubmitInfo submitInfo {};
         submitInfo.waitSemaphoreCount   = 1;
-        submitInfo.pWaitSemaphores      = waitSemaphores;
-        submitInfo.commandBufferCount   = static_cast<uint32_t>(commandBuffers.size());
-        submitInfo.pCommandBuffers      = commandBuffers.data();
+        submitInfo.pWaitSemaphores      = &currentImage.presentSemaphore;
+        submitInfo.commandBufferCount   = 1;
+        submitInfo.pCommandBuffers      = &currentCommandBuffer;
         submitInfo.signalSemaphoreCount = 1;
-        submitInfo.pSignalSemaphores    = signalSemaphores;
+        submitInfo.pSignalSemaphores    = &currentImage.renderSemaphore;
         submitInfo.pWaitDstStageMask    = waitStages;
 
-        CommandBuffer::Worker::endJob(
-            m_graphicsQueue,
-            submitInfo,
-            "Render submtion"
+        vk::Result submitResult = m_graphicsQueue.submit(
+            1,
+            &submitInfo,
+            currentImage.renderFence
         );
 
-        vk::SwapchainKHR swapChains[] = { m_swapChain.instance };
+        if (submitResult != vk::Result::eSuccess)
+        {
+            throw std::runtime_error("Error while submiting the next image");
+        }
 
         vk::PresentInfoKHR presentInfo {};
         presentInfo.waitSemaphoreCount = 1;
-        presentInfo.pWaitSemaphores    = signalSemaphores;
+        presentInfo.pWaitSemaphores    = &currentImage.renderSemaphore;
         presentInfo.swapchainCount     = 1;
-        presentInfo.pSwapchains        = swapChains;
-        presentInfo.pImageIndices      = &imageIndex;
+        presentInfo.pSwapchains        = &m_swapChain.instance;
+        presentInfo.pImageIndices      = &nextImageIndex;
 
         vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-        if (
-            presentResult == vk::Result::eErrorOutOfDateKHR ||
-            presentResult == vk::Result::eSuboptimalKHR
-        )
+        if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
         {
             rebuildSwapChain();
-
-            return;
+        } else if (presentResult != vk::Result::eSuccess)
+        {
+            throw std::runtime_error("Error while presenting the image");
         }
 
         m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
@@ -398,9 +365,9 @@ namespace Chicane
             m_window->getDrawableSize()
         );
 
-        m_imageCount = static_cast<int>(m_swapChain.images.size());
+        m_imageCount = static_cast<int>(m_swapChain.frames.size());
 
-        for (Frame::Instance& frame : m_swapChain.images)
+        for (Frame::Instance& frame : m_swapChain.frames)
         {
             frame.setupSync();
         }
@@ -420,6 +387,8 @@ namespace Chicane
             return;
         }
 
+        m_wasWindowResized = false;
+
         m_logicalDevice.waitIdle();
 
         destroySwapChain();
@@ -432,12 +401,12 @@ namespace Chicane
 
     void Renderer::destroySwapChain()
     {
-        for (Frame::Instance& frame : m_swapChain.images)
+        for (Frame::Instance& frame : m_swapChain.frames)
         {
             frame.destroy();
         }
 
-        m_swapChain.images.clear();
+        m_swapChain.frames.clear();
 
         m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
 
@@ -506,12 +475,27 @@ namespace Chicane
         };
 
         Frame::Buffer::initCommand(
-            m_swapChain.images,
+            m_swapChain.frames,
             createInfo
         );
     }
 
-    void Renderer::prepareViewport(const vk::CommandBuffer& inCommandBuffer)
+    void Renderer::prepareCamera(Frame::Instance& outImage)
+    {
+        if (!hasActiveCamera())
+        {
+            return;
+        }
+
+        outImage.cameraUBO.instance = getActiveCamera()->getUBO();
+        memcpy(
+            outImage.cameraUBO.writeLocation,
+            &outImage.cameraUBO.instance,
+            outImage.cameraUBO.allocationSize
+        );
+    }
+
+    void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)
     {
         vk::Viewport viewport = GraphicsPipeline::createViewport(
             m_viewportSize,
@@ -521,21 +505,6 @@ namespace Chicane
 
         vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewportSize);
         inCommandBuffer.setScissor(0, 1, &scissor);
-    }
-
-    void Renderer::prepareCamera(Frame::Instance& outFrame)
-    {
-        if (!hasActiveCamera())
-        {
-            return;
-        }
-
-        outFrame.cameraUBO.instance = getActiveCamera()->getUBO();
-        memcpy(
-            outFrame.cameraUBO.writeLocation,
-            &outFrame.cameraUBO.instance,
-            outFrame.cameraUBO.allocationSize
-        );
     }
 
     void Renderer::refreshCameraViewport()
@@ -549,6 +518,31 @@ namespace Chicane
             m_viewportSize.x,
             m_viewportSize.y
         );
+    }
+
+    void Renderer::prepareLayers(Frame::Instance& outImage)
+    {
+        for (Layer* layer : m_layers)
+        {
+            layer->setup(outImage);
+        }
+    }
+
+    void Renderer::renderLayers(Frame::Instance& outImage, const vk::CommandBuffer& inCommandBuffer)
+    {
+        for (Layer* layer : m_layers)
+        {
+            layer->render(
+                outImage,
+                inCommandBuffer,
+                m_swapChain.extent
+            );
+        }
+    }
+
+    void Renderer::prepareFrame(Frame::Instance& outImage)
+    {
+        outImage.updateDescriptorSets();
     }
 
     void Renderer::buildDefaultCamera()

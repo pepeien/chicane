@@ -19,7 +19,57 @@ namespace Chicane
                 logicalDevice
             );
         }
-            
+
+        void Instance::wait(const vk::Device& inLogicalDevice)
+        {
+            vk::Result result = inLogicalDevice.waitForFences(
+                1,
+                &renderFence,
+                VK_TRUE,
+                UINT64_MAX
+            );
+
+            if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
+            {
+                throw std::runtime_error("Error while waiting the fences");
+            }
+        }
+
+        void Instance::reset(const vk::Device& inLogicalDevice)
+        {
+            vk::Result result = inLogicalDevice.resetFences(
+                1,
+                &renderFence
+            );
+
+            if (result != vk::Result::eSuccess)
+            {
+                throw std::runtime_error("Error while resetting the fences");
+            } 
+        }
+
+        vk::ResultValue<std::uint32_t> Instance::getNextIndex(
+            const vk::SwapchainKHR& inSwapchain,
+            const vk::Device& inLogicalDevice
+        )
+        {
+            vk::ResultValue<std::uint32_t> result = inLogicalDevice.acquireNextImageKHR(
+                inSwapchain,
+                UINT64_MAX,
+                presentSemaphore,
+                nullptr
+            );
+
+            return result;
+        }
+
+        void Instance::destroySync()
+        {
+            logicalDevice.destroyFence(renderFence);
+            logicalDevice.destroySemaphore(presentSemaphore);
+            logicalDevice.destroySemaphore(renderSemaphore);
+        }
+
         void Instance::setupCameraUBO()
         {
             Chicane::Buffer::CreateInfo bufferCreateInfo;
@@ -46,7 +96,21 @@ namespace Chicane
             cameraDescriptorBufferInfo.offset = 0;
             cameraDescriptorBufferInfo.range  = cameraUBO.allocationSize;
         }
-    
+
+        void Instance::destroyCameraUBO()
+        {
+            if (!cameraUBO.buffer.memory)
+            { 
+                return;
+            }
+
+            logicalDevice.unmapMemory(cameraUBO.buffer.memory);
+            Buffer::destroy(
+                logicalDevice,
+                cameraUBO.buffer
+            );
+        }
+
         void Instance::setupModelData(Level* inLevel)
         {
             const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
@@ -93,7 +157,7 @@ namespace Chicane
             }
         }
     
-        void Instance::deleteModelData()
+        void Instance::destroyModelData()
         {
             if (!modelData.buffer.memory)
             {
@@ -139,6 +203,13 @@ namespace Chicane
             );
         }
 
+        void Instance::destroyDepthBuffering()
+        {
+            logicalDevice.freeMemory(depth.memory);
+            logicalDevice.destroyImage(depth.image);
+            logicalDevice.destroyImageView(depth.imageView);
+        }
+
         void Instance::addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer)
         {
             if (framebuffers.find(inId) != framebuffers.end())
@@ -182,21 +253,6 @@ namespace Chicane
             );
         }
 
-
-        void Instance::destroyCameraMemory()
-        {
-            if (!cameraUBO.buffer.memory)
-            { 
-                return;
-            }
-
-            logicalDevice.unmapMemory(cameraUBO.buffer.memory);
-            Buffer::destroy(
-                logicalDevice,
-                cameraUBO.buffer
-            );
-        }
-
         void Instance::destroy()
         {
             for (auto& [id, frambuffer] : framebuffers)
@@ -204,18 +260,12 @@ namespace Chicane
                 logicalDevice.destroyFramebuffer(frambuffer);
             }
 
+            destroyDepthBuffering();
+            destroySync();
+            destroyCameraUBO();
+            destroyModelData();
+
             logicalDevice.destroyImageView(imageView);
-
-            logicalDevice.freeMemory(depth.memory);
-            logicalDevice.destroyImage(depth.image);
-            logicalDevice.destroyImageView(depth.imageView);
-
-            logicalDevice.destroyFence(renderFence);
-            logicalDevice.destroySemaphore(presentSemaphore);
-            logicalDevice.destroySemaphore(renderSemaphore);
-
-            destroyCameraMemory();
-            deleteModelData();
         }
     }
 }

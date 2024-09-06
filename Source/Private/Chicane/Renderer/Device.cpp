@@ -68,6 +68,7 @@ namespace Chicane
             std::vector<const char*> extensions = DEVICE_EXTENSIONS;
 
             vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
+            logicalDeviceFeatures.fillModeNonSolid = true;
 
             vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
                 vk::DeviceCreateFlags(),

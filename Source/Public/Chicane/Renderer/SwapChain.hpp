@@ -19,7 +19,7 @@ namespace Chicane
         struct Bundle
         {
             vk::SwapchainKHR instance;
-            std::vector<Frame::Instance> images;
+            std::vector<Frame::Instance> frames;
             vk::Format format;
             vk::Format depthFormat;
             vk::Extent2D extent;

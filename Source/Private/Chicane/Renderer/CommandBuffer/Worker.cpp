@@ -39,19 +39,18 @@ namespace Chicane
                 const std::string& inDescription
             )
             {
-
                 for (uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
                 {
                     inSubmitInfo.pCommandBuffers[i * sizeof(vk::CommandBuffer)].end();
                 }
 
-                if (
-                    inQueue.submit(
-                        1,
-                        &inSubmitInfo,
-                        nullptr
-                    ) != vk::Result::eSuccess
-                )
+                vk::Result submitResult = inQueue.submit(
+                    1,
+                    &inSubmitInfo,
+                    nullptr
+                );
+
+                if (submitResult != vk::Result::eSuccess)
                 {
                     throw std::runtime_error("Error while ending [" + inDescription + "]");
                 }

@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/SwapChain.hpp"
 
-constexpr uint32_t MAX_BUFFER_MULTIPLIER = 3;
+constexpr uint32_t MAX_IMAGE_COUNT = 3;
 
 namespace Chicane
 {
@@ -167,7 +167,7 @@ namespace Chicane
                 {
                     imageCount = std::min(
                         supportDetails.capabilities.maxImageCount,
-                        MAX_BUFFER_MULTIPLIER
+                        MAX_IMAGE_COUNT
                     );
                 }
             }
@@ -175,7 +175,7 @@ namespace Chicane
             {
                 imageCount = std::max(
                     supportDetails.capabilities.minImageCount,
-                    MAX_BUFFER_MULTIPLIER
+                    MAX_IMAGE_COUNT
                 );
             }
 
@@ -227,11 +227,11 @@ namespace Chicane
             std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(
                 outSwapChain.instance
             );
-            outSwapChain.images.resize(images.size());
+            outSwapChain.frames.resize(images.size());
     
             for (int i = 0; i < images.size(); i++)
             {
-                Frame::Instance& frame = outSwapChain.images[i];
+                Frame::Instance& frame = outSwapChain.frames[i];
                 frame.image            = images[i];
                 frame.width            = extent.width;
                 frame.height           = extent.height;

@@ -26,14 +26,24 @@ namespace Chicane
         {
         public:
             void setupSync();
+            void wait(const vk::Device& inLogicalDevice);
+            void reset(const vk::Device& inLogicalDevice);
+            void destroySync();
+
+            vk::ResultValue<std::uint32_t> getNextIndex(
+                const vk::SwapchainKHR& inSwapchain,
+                const vk::Device& inLogicalDevice
+            );
 
             void setupCameraUBO();
+            void destroyCameraUBO();
 
             void setupModelData(Level* inLevel);
             void updateModelData(Level* inLevel);
-            void deleteModelData();
+            void destroyModelData();
     
             void setupDepthBuffering(const vk::Format& inFormat);
+            void destroyDepthBuffering();
 
             void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
             vk::Framebuffer getFramebuffer(const std::string& inId) const;
@@ -44,7 +54,6 @@ namespace Chicane
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();
 
-            void destroyCameraMemory();
             void destroy();
 
         public:

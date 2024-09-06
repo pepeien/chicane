@@ -108,9 +108,15 @@ namespace Chicane
         void buildMainCommandBuffer();
         void buildFramesCommandBuffers();
 
-        void prepareViewport(const vk::CommandBuffer& inCommandBuffer);
+        void prepareCamera(Frame::Instance& outImage);
 
-        void prepareCamera(Frame::Instance& outFrame);
+        void renderViewport(const vk::CommandBuffer& inCommandBuffer);
+
+        void prepareLayers(Frame::Instance& outImage);
+        void renderLayers(Frame::Instance& outImage, const vk::CommandBuffer& inCommandBuffer);
+
+        void prepareFrame(Frame::Instance& outImage);
+
         void refreshCameraViewport();
 
         void buildDefaultCamera();
@@ -144,6 +150,8 @@ namespace Chicane
         int m_currentImageIndex;
 
         // Window
+        bool m_wasWindowResized;
+
         Window* m_window;
         Vec<2, std::uint32_t> m_viewportSize;
         Vec<2, float> m_viewportPosition;
