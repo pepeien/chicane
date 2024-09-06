@@ -122,7 +122,7 @@ namespace Chicane
         {
             if (!hasFunction(inId))
             {
-                return {};
+                return nullptr;
             }
 
             return m_functions.at(inId);

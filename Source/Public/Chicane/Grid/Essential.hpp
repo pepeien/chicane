@@ -13,8 +13,12 @@ namespace Chicane
         // Types
         struct ComponentFunctionData
         {
+        public:
             std::string name             = "";
             std::vector<std::any> params {};
+        
+        public:
+            static const ComponentFunctionData& empty();
         };
 
         struct ComponentEvent

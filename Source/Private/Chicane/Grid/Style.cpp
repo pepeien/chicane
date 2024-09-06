@@ -2,6 +2,8 @@
 
 #include "Chicane/Core.hpp"
 
+const Chicane::Grid::Style EMPTY_STYLE = {};
+
 namespace Chicane
 {
     namespace Grid
@@ -65,6 +67,13 @@ namespace Chicane
 
         StyleSourceMap m_sources = {};
         StyleDataMap m_styles    = {};
+
+        const StyleSourceMap EMPTY_SOURCE_MAP = {};
+
+        const Style& Style::empty()
+        {
+            return EMPTY_STYLE;
+        }
 
         void setVisiblity(
             Style& outStyle,
@@ -586,7 +595,7 @@ namespace Chicane
         {
             if (inFilePath.empty())
             {
-                return {};
+                return EMPTY_SOURCE_MAP;
             }
 
             std::vector<std::string> splittedFilePath = Utils::split(
@@ -601,7 +610,7 @@ namespace Chicane
 
             if (!Utils::areEquals(fileExtension, FILE_EXTENSION_NAME))
             {
-                return {};
+                return EMPTY_SOURCE_MAP;
             }
 
             std::vector<char> data = FileSystem::readFile(inFilePath);
@@ -652,14 +661,14 @@ namespace Chicane
 
             if (id.empty())
             {
-                return EMPTY_STYLE;
+                return Style::empty();
             }
 
             id = "#" + id;
 
             if (m_styles.empty() || m_styles.find(id) == m_styles.end())
             {
-                return EMPTY_STYLE;
+                return Style::empty();
             }
 
             Style& style              = m_styles.at(id);

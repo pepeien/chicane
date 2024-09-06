@@ -69,12 +69,13 @@ namespace Chicane
             // Color
             std::string backgroundColor = "transparent";
             std::string foregroundColor = "#FFFFFF";
+
+        public:
+            static const Style& empty();
         };
 
         constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";
         constexpr auto HEX_COLOR_TRANSPARENT        = "#00000000";
-
-        const Style EMPTY_STYLE = {};
 
         typedef std::unordered_map<std::string, std::string> StyleSource;
 

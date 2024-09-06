@@ -75,7 +75,7 @@ namespace Chicane
         {
             if (!isLoaded(inIdentifier))
             {
-                return {};
+                return Box::Instance::empty();
             }
 
             return m_cache.at(inIdentifier);

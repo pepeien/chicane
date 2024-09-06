@@ -8,6 +8,10 @@
 
 const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
 
+const Chicane::Grid::ComponentFunctionData EMPTY_FUNCTION_DATA {};
+
+const std::vector<std::any> EMPTY_ITEMS = {};
+
 namespace Chicane
 {
     namespace Grid
@@ -24,6 +28,11 @@ namespace Chicane
         std::unordered_map<std::string, Vec<3, std::uint32_t>> m_rgbColors {
             { HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
         };
+
+        const ComponentFunctionData& ComponentFunctionData::empty()
+        {
+            return EMPTY_FUNCTION_DATA;
+        }
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
@@ -470,7 +479,7 @@ namespace Chicane
 
             if (trimmedValue.empty())
             {
-                return {};
+                return ComponentFunctionData::empty();
             }
 
             std::size_t paramsStart = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
@@ -600,21 +609,21 @@ namespace Chicane
 
             if (view == nullptr)
             {
-                return {};
+                return EMPTY_ITEMS;
             }
 
             std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
 
             if (itemsVariableRef.empty() || !view->hasVariable(itemsVariableRef))
             {
-                return {};
+                return EMPTY_ITEMS;
             }
 
             std::any items = *view->getVariable(itemsVariableRef);
 
             if (items.type() != typeid(std::vector<std::any>))
             {
-                return {};
+                return EMPTY_ITEMS;
             }
 
             return std::any_cast<std::vector<std::any>>(items);
@@ -626,14 +635,14 @@ namespace Chicane
 
             if (view == nullptr)
             {
-                return {};
+                return nullptr;
             }
 
             std::string itemGetterFunctionRef = getAttribute(ITEM_GETTER_ATTRIBUTE_NAME, inNode).as_string();
 
             if (itemGetterFunctionRef.empty() || !view->hasFunction(itemGetterFunctionRef))
             {
-                return {};
+                return nullptr;
             }
 
             return view->getFunction(itemGetterFunctionRef);
