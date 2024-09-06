@@ -239,7 +239,7 @@ namespace Chicane
 
         vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-        if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
+        if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR || m_wasWindowResized)
         {
             rebuildSwapChain();
         } else if (presentResult != vk::Result::eSuccess)
