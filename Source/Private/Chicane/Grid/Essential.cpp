@@ -402,7 +402,7 @@ namespace Chicane
             {
                 if (style.margin.left == style.margin.right)
                 {
-                    position.x += style.margin.left * 0.5f;
+                    position.x += style.margin.left * 1.25f;
                 }
                 else
                 {
@@ -414,7 +414,7 @@ namespace Chicane
             {
                 if (style.margin.top == style.margin.bottom)
                 {
-                    position.y += style.margin.top * 0.5f;
+                    position.y += style.margin.top;
                 }
                 else
                 {
