@@ -113,14 +113,14 @@ namespace Chicane
             return dynamicState;
         }
 
-        vk::PipelineRasterizationStateCreateInfo createRasterizationState()
+        vk::PipelineRasterizationStateCreateInfo createRasterizationState(vk::PolygonMode inPolygonMode)
         {
             vk::PipelineRasterizationStateCreateInfo rasterizationState {};
             rasterizationState.flags                   = vk::PipelineRasterizationStateCreateFlags();
             rasterizationState.depthClampEnable        = VK_FALSE;
             rasterizationState.depthBiasEnable         = VK_FALSE;
             rasterizationState.rasterizerDiscardEnable = VK_FALSE;
-            rasterizationState.polygonMode             = vk::PolygonMode::eFill;
+            rasterizationState.polygonMode             = inPolygonMode;
             rasterizationState.cullMode                = vk::CullModeFlagBits::eNone;
             rasterizationState.frontFace               = vk::FrontFace::eClockwise;
             rasterizationState.lineWidth               = 1.0f;
@@ -339,7 +339,8 @@ namespace Chicane
             m_swapChainExtent(inCreateInfo.swapChainExtent),
             m_swapChainImageFormat(inCreateInfo.swapChainImageFormat),
             m_depthFormat(inCreateInfo.depthFormat),
-            m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts)
+            m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts),
+            m_polygonMode(inCreateInfo.polygonMode)
         {
             init();
         }
@@ -419,7 +420,7 @@ namespace Chicane
             pipelineInfo.pStages    = shaderStages.data();
 
             // Rasterization
-            vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState();
+            vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState(m_polygonMode);
             pipelineInfo.pRasterizationState = &rasterizaterizationState;
 
             // Sampling

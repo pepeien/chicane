@@ -30,7 +30,7 @@ namespace Chicane
             const vk::Rect2D& inScissor
         );
         vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates);
-        vk::PipelineRasterizationStateCreateInfo createRasterizationState();
+        vk::PipelineRasterizationStateCreateInfo createRasterizationState(vk::PolygonMode inPolygonMode);
         vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
         vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
         vk::PipelineColorBlendStateCreateInfo createColorBlendState();
@@ -84,6 +84,8 @@ namespace Chicane
             // Depth
 
             std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == `false`
+
+            vk::PolygonMode polygonMode;
         };
 
         class Instance
@@ -124,6 +126,8 @@ namespace Chicane
 
             // Layout
             std::vector<vk::DescriptorSetLayout> m_descriptorSetLayouts;
+
+            vk::PolygonMode m_polygonMode;
         };
     }
 }

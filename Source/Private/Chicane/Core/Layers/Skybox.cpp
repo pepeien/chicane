@@ -166,23 +166,24 @@ namespace Chicane
 
     void SkyboxLayer::initGraphicsPipeline()
     {
-        GraphicsPipeline::CreateInfo graphicsPipelineCreateInfo {};
-        graphicsPipelineCreateInfo.canOverwrite         = false;
-        graphicsPipelineCreateInfo.hasVertices          = false;
-        graphicsPipelineCreateInfo.hasDepth             = false;
-        graphicsPipelineCreateInfo.logicalDevice        = m_rendererInternals.logicalDevice;
-        graphicsPipelineCreateInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
-        graphicsPipelineCreateInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
-        graphicsPipelineCreateInfo.swapChainExtent      = m_rendererInternals.swapchain->extent;
-        graphicsPipelineCreateInfo.swapChainImageFormat = m_rendererInternals.swapchain->format;
-        graphicsPipelineCreateInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
+        GraphicsPipeline::CreateInfo createInfo {};
+        createInfo.canOverwrite         = false;
+        createInfo.hasVertices          = false;
+        createInfo.hasDepth             = false;
+        createInfo.logicalDevice        = m_rendererInternals.logicalDevice;
+        createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
+        createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
+        createInfo.swapChainExtent      = m_rendererInternals.swapchain->extent;
+        createInfo.swapChainImageFormat = m_rendererInternals.swapchain->format;
+        createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
+        createInfo.polygonMode          = vk::PolygonMode::eFill;
 
-        m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(graphicsPipelineCreateInfo);
+        m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
     }
 
     void SkyboxLayer::initFramebuffers()
     {
-        for (Frame::Instance& frame : m_rendererInternals.swapchain->images)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
@@ -198,7 +199,7 @@ namespace Chicane
     void SkyboxLayer::initFrameResources()
     {
         Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
-        frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_rendererInternals.swapchain->images.size());
+        frameDescriptorPoolCreateInfo.size = static_cast<uint32_t>(m_rendererInternals.swapchain->frames.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
 
         Descriptor::initPool(
@@ -207,7 +208,7 @@ namespace Chicane
             frameDescriptorPoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_rendererInternals.swapchain->images)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             vk::DescriptorSet descriptorSet;
             Descriptor::initSet(

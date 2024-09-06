@@ -281,10 +281,8 @@ namespace Chicane
         createInfo.swapChainExtent       = m_internals.swapchain->extent;
         createInfo.swapChainImageFormat  = m_internals.swapchain->format;
         createInfo.depthFormat           = m_internals.swapchain->depthFormat;
-        createInfo.descriptorSetLayouts  = {
-            m_frameDescriptor.setLayout,
-            m_materialDescriptor.setLayout
-        };
+        createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout};
+        createInfo.polygonMode           = vk::PolygonMode::eFill;
 
         m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
     }
@@ -296,7 +294,7 @@ namespace Chicane
             return;
         }
 
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
@@ -318,7 +316,7 @@ namespace Chicane
         }
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_internals.swapchain->images.size());
+        descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_internals.swapchain->frames.size());
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
@@ -328,7 +326,7 @@ namespace Chicane
             descriptorPoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
             vk::DescriptorSet sceneDescriptorSet;
             Descriptor::initSet(
@@ -415,9 +413,9 @@ namespace Chicane
             return;
         }
 
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
-            frame.deleteModelData();
+            frame.destroyModelData();
             frame.setupModelData(m_level);
         }
     }

@@ -222,7 +222,7 @@ namespace Chicane
         framebufferCreateInfo.renderPass      = m_renderPass;
         framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
 
-        for (Frame::Instance& frame : m_internals.swapchain->images)
+        for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
             framebufferCreateInfo.attachments.clear();
             framebufferCreateInfo.attachments.push_back(frame.imageView);
@@ -249,7 +249,7 @@ namespace Chicane
         imguiInitInfo.PipelineCache   = VK_NULL_HANDLE;
         imguiInitInfo.DescriptorPool  = m_descriptorPool;
         imguiInitInfo.Allocator       = nullptr;
-        imguiInitInfo.MinImageCount   = 3;
+        imguiInitInfo.MinImageCount   = m_internals.imageCount;
         imguiInitInfo.ImageCount      = m_internals.imageCount;
         imguiInitInfo.RenderPass      = m_renderPass;
 
