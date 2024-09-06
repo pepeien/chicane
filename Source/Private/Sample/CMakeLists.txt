@@ -50,6 +50,10 @@ target_link_libraries(
         Chicane::Runtime
 )
 
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_options(${SAMPLE_TARGET_NAME} PRIVATE -mwindows)
+endif()
+
 ##############  Set compiler  #######################
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 

@@ -19,9 +19,9 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
-        int displayCount        = 0;
+        int displayCount = 0;
         SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
-        int display             = displays[
+        int display = displays[
             std::min(
                 inCreateInfo.displayIndex,
                 displayCount
@@ -248,11 +248,6 @@ namespace Chicane
 
     void Window::setSize(int inWidth, int inHeight)
     {
-        if (!m_isResizable)
-        {
-            return;
-        }
-
         if (m_size.x == inWidth && m_size.y == inWidth)
         {
             return;
@@ -312,11 +307,6 @@ namespace Chicane
 
     void Window::setPosition(int inX, int inY)
     {
-        if (!m_isResizable)
-        {
-            return;
-        }
-
         if (m_position.x == inX && m_position.y == inX)
         {
             return;
@@ -421,22 +411,22 @@ namespace Chicane
 
                 break;
             }
-            
+
             disableResizing();
 
             break;
-        
-        case WindowType::WindowedBorderless:
-            disableResizing();
 
+        case WindowType::WindowedBorderless:
             SDL_SetWindowBordered(instance, SDL_FALSE);
 
-            break;
-        
-        case WindowType::Fullscreen:
             disableResizing();
 
-            SDL_SetWindowFullscreen(instance, SDL_WINDOW_FULLSCREEN);
+            break;
+
+        case WindowType::Fullscreen:
+            SDL_SetWindowFullscreen(instance, SDL_TRUE);
+
+            disableResizing();
 
             break;
         }
