@@ -34,7 +34,6 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
-#include <iostream>
 #include <math.h>
 #include <memory>
 #include <mutex>
@@ -68,11 +67,11 @@
 #include "vulkan/vulkan.hpp"
 
 // Consts
-static const std::vector<const char*> LAYERS = {
+constexpr std::array<const char*, 1> LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
 
-static const std::vector<const char*> DEVICE_EXTENSIONS = {
+constexpr std::array<const char*, 1> DEVICE_EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 

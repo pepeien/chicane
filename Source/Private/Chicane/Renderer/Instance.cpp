@@ -94,7 +94,9 @@ namespace Chicane
                 throw std::runtime_error("SDL layers are not fully supported");
             }
 
-            if (!areValidationLayersSupported(LAYERS))
+            std::vector<const char*> layers = { LAYERS.begin(), LAYERS.end() };
+
+            if (!areValidationLayersSupported(layers))
             {
                 throw std::runtime_error("Validation Layers are not fully supported");
             }
@@ -117,8 +119,8 @@ namespace Chicane
                 vk::InstanceCreateFlags(),
                 &applicationInfo,
 
-                static_cast<uint32_t>(LAYERS.size()),
-                LAYERS.data(),
+                static_cast<uint32_t>(layers.size()),
+                layers.data(),
 
                 static_cast<uint32_t>(extensions.size()),
                 extensions.data()

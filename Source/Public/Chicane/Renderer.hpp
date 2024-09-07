@@ -150,8 +150,6 @@ namespace Chicane
         int m_currentImageIndex;
 
         // Window
-        bool m_wasWindowResized;
-
         Window* m_window;
         Vec<2, std::uint32_t> m_viewportSize;
         Vec<2, float> m_viewportPosition;

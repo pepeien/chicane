@@ -1,5 +1,7 @@
 #include "Chicane/Core/Log.hpp"
 
+#include <iostream>
+
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Utils.hpp"

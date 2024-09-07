@@ -64,8 +64,8 @@ namespace Chicane
                 );
             }
 
-            std::vector<const char*> layers     = LAYERS;
-            std::vector<const char*> extensions = DEVICE_EXTENSIONS;
+            std::vector<const char*> layers     = { LAYERS.begin(), LAYERS.end() };
+            std::vector<const char*> extensions = { DEVICE_EXTENSIONS.begin(), DEVICE_EXTENSIONS.end() };
 
             vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
             logicalDeviceFeatures.fillModeNonSolid = true;

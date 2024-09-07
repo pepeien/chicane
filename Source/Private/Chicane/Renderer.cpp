@@ -9,7 +9,6 @@ namespace Chicane
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),
-        m_wasWindowResized(false),
         m_window(inWindow),
         m_viewportSize(Vec<2, std::uint32_t>(0)),
         m_viewportPosition(Vec<2, std::uint32_t>(0)),
@@ -159,7 +158,7 @@ namespace Chicane
     {
         if (inEvent.type == SDL_EVENT_WINDOW_RESIZED)
         {
-            m_wasWindowResized = true;
+            rebuildSwapChain();
         }
 
         for (Layer* layer : m_layers)
@@ -239,7 +238,7 @@ namespace Chicane
 
         vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-        if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR || m_wasWindowResized)
+        if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
         {
             rebuildSwapChain();
         } else if (presentResult != vk::Result::eSuccess)
@@ -386,8 +385,6 @@ namespace Chicane
         {
             return;
         }
-
-        m_wasWindowResized = false;
 
         m_logicalDevice.waitIdle();
 
