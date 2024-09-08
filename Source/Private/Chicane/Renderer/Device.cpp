@@ -6,7 +6,7 @@ namespace Chicane
     {
         bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice)
         {
-            std::set<std::string> requiredExtensions(DEVICE_EXTENSIONS.begin(), DEVICE_EXTENSIONS.end());
+            std::set<std::string> requiredExtensions(EXTENSIONS.begin(), EXTENSIONS.end());
 
             for (vk::ExtensionProperties& extension : inPhysicalDevice.enumerateDeviceExtensionProperties())
             {
@@ -50,7 +50,7 @@ namespace Chicane
 
             float queuePriority = 1.0f;
 
-            std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos;
+            std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos {};
             
             for (uint32_t uniqueIndice : uniqueIndices)
             {
@@ -65,7 +65,7 @@ namespace Chicane
             }
 
             std::vector<const char*> layers     = { LAYERS.begin(), LAYERS.end() };
-            std::vector<const char*> extensions = { DEVICE_EXTENSIONS.begin(), DEVICE_EXTENSIONS.end() };
+            std::vector<const char*> extensions = { EXTENSIONS.begin(), EXTENSIONS.end() };
 
             vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
             logicalDeviceFeatures.fillModeNonSolid = true;

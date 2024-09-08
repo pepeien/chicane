@@ -71,8 +71,8 @@ constexpr std::array<const char*, 1> LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
 
-constexpr std::array<const char*, 1> DEVICE_EXTENSIONS = {
-    VK_KHR_SWAPCHAIN_EXTENSION_NAME
+constexpr std::array<const char*, 1> EXTENSIONS = {
+    "VK_KHR_swapchain"
 };
 
 // Z-Up Right Handed
