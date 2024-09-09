@@ -33,6 +33,8 @@ namespace Chicane
         const Vec<3, float>& getRight() const;
         const Vec<3, float>& getUp() const;
 
+        const Vec<3, float>& getCenter() const;
+
         Subscription<const Transform&>* watchTransform(
             std::function<void (const Transform&)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
@@ -53,6 +55,8 @@ namespace Chicane
 
         Direction m_direction;
         Quat<float> m_orientation;
+
+        Vec<3, float> m_center;
 
         std::unique_ptr<Observable<const Transform&>> m_transformObservable;
     };

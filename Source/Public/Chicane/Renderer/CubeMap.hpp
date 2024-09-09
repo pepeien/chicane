@@ -15,13 +15,13 @@ namespace Chicane
 
         struct CreateInfo
         {
-            Data data;
-            vk::Device logicalDevice;
-            vk::PhysicalDevice physicalDevice;
-            vk::CommandBuffer commandBuffer;
-            vk::Queue queue;
+            Data                    data;
+            vk::Device              logicalDevice;
+            vk::PhysicalDevice      physicalDevice;
+            vk::CommandBuffer       commandBuffer;
+            vk::Queue               queue;
             vk::DescriptorSetLayout descriptorSetLayout;
-            vk::DescriptorPool descriptorPool;
+            vk::DescriptorPool      descriptorPool;
         };
 
         class Instance
@@ -45,20 +45,20 @@ namespace Chicane
             void initDescriptorSet();
 
         private:
-            int m_width;
-            int m_height;
-            int m_channels;
-            Data m_data;
-            unsigned char* m_pixels[CUBEMAP_IMAGE_COUNT];
-            vk::Device m_logicalDevice;
-            vk::PhysicalDevice m_physicalDevice;
+            int                m_width;
+            int                m_height;
+            int                m_channel;
+            Data               m_data;
+            unsigned char*     m_pixels[CUBEMAP_IMAGE_COUNT];
 
-            Image::Bundle m_image;
+            Image::Bundle      m_image;
 
             Descriptor::Bundle m_descriptor;
 
-            vk::CommandBuffer m_commandBuffer;
-            vk::Queue m_queue;
+            vk::Device         m_logicalDevice;
+            vk::PhysicalDevice m_physicalDevice;
+            vk::CommandBuffer  m_commandBuffer;
+            vk::Queue          m_queue;
         };
     }
 }

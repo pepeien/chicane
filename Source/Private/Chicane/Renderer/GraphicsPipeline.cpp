@@ -331,7 +331,6 @@ namespace Chicane
             : m_canOverwrite(inCreateInfo.canOverwrite),
             m_hasVertices(inCreateInfo.hasVertices),
             m_hasDepth(inCreateInfo.hasDepth),
-            m_logicalDevice(inCreateInfo.logicalDevice),
             m_vertexShaderPath(inCreateInfo.vertexShaderPath),
             m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
             m_bindingDescription(inCreateInfo.bindingDescription),
@@ -340,6 +339,7 @@ namespace Chicane
             m_swapChainImageFormat(inCreateInfo.swapChainImageFormat),
             m_depthFormat(inCreateInfo.depthFormat),
             m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts),
+            m_logicalDevice(inCreateInfo.logicalDevice),
             m_polygonMode(inCreateInfo.polygonMode)
         {
             init();

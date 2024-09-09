@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Game/Transformable.hpp"
 #include "Chicane/Game/Actor/Component.hpp"
 #include "Chicane/Renderer/Camera.hpp"
+#include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
 
 namespace Chicane
 {
@@ -17,9 +19,13 @@ namespace Chicane
         void onDeactivation() override;
 
     public:
+        bool isWithinFrustum(const Transformable* inSubject) const;
+
         const Vec<2, std::uint32_t>& getViewport() const;
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
         void setViewport(const Vec<2, std::uint32_t>& inViewportResolution);
+
+        float getAspectRatio() const;
 
         float getFieldOfView() const;
         void setFieldOfView(float inFov);
@@ -38,7 +44,8 @@ namespace Chicane
         void updateViewProjection();
 
     protected:
-        Camera::Settings m_settings;
-        Camera::UBO m_UBO;
+        Camera::Settings      m_settings;
+        Camera::SphereFrustum m_frustum;
+        Camera::UBO           m_UBO;
     }; 
 }

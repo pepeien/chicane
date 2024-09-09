@@ -11,19 +11,19 @@ namespace Chicane
     {
         struct SupportDetails
         {
-            vk::SurfaceCapabilitiesKHR capabilities;
+            vk::SurfaceCapabilitiesKHR        capabilities;
             std::vector<vk::SurfaceFormatKHR> formats;
-            std::vector<vk::PresentModeKHR> presentModes;
+            std::vector<vk::PresentModeKHR>   presentModes;
         };
 
         struct Bundle
         {
-            vk::SwapchainKHR instance;
+            vk::SwapchainKHR             instance;
             std::vector<Frame::Instance> frames;
-            vk::Format format;
-            vk::Format depthFormat;
-            vk::Extent2D extent;
-            vk::Extent2D midPoints;
+            vk::Format                   format;
+            vk::Format                   depthFormat;
+            vk::Extent2D                 extent;
+            vk::Extent2D                 midPoints;
         };
 
         void querySupport(

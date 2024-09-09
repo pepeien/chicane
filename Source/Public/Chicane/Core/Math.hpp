@@ -11,6 +11,11 @@ namespace Chicane
         Vec(A ...args)
             : glm::vec<O, T, Q>(args...)
         {}
+
+        T dot(const Vec<O, T, Q>& inTarget) const
+        {
+            return glm::dot<O, T, Q>(*this, inTarget);
+        }
     };
 
     

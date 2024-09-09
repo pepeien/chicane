@@ -13,8 +13,8 @@ namespace Chicane
             // Types
             struct Props : BaseProps
             {
-                float percentage = 0.0f; // Optional
-                std::string text = ""; // Optional
+                float       percentage = 0.0f; // Optional
+                std::string text       = ""; // Optional
             };
     
             // Attributes

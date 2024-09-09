@@ -88,13 +88,13 @@ namespace Chicane
     {
         uint32_t count = 0;
         uint32_t rate  = 0;
-        float time     = 0.0f;
+        float    time  = 0.0f;
     };
 
     struct Telemetry
     {
     public:
-        std::clock_t delta = 0;
+        std::clock_t   delta = 0;
 
         FrameTelemetry frame {};
 

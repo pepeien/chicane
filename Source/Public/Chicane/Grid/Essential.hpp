@@ -37,9 +37,9 @@ namespace Chicane
 
         struct BaseProps
         {
-            std::string id                            = ""; // Required
-            Style style                               = {}; // Optional
-            ComponentChildren children                = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
+            std::string                    id         = ""; // Required
+            Style                          style      = {}; // Optional
+            ComponentChildren              children   = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
             std::vector<ComponentFunction> _renderers = {}; // [Internal Use]
         };
 

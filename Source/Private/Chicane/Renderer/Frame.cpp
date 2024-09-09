@@ -153,6 +153,13 @@ namespace Chicane
 
             for (uint32_t i = 0; i < meshes.size(); i++)
             {
+                const MeshComponent* mesh = meshes.at(i);
+
+                if (!mesh->isDrawable())
+                {
+                    continue;
+                }
+
                 modelData.transforms[i] = meshes.at(i)->getPosition();
             }
         }

@@ -1,6 +1,7 @@
 #include "Chicane/Game/Actor/Component/Mesh.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Game/Actor/Component/Camera.hpp"
 
 namespace Chicane
 {
@@ -44,7 +45,14 @@ namespace Chicane
 
     bool MeshComponent::isDrawable() const
     {
-        return hasMesh() && hasActiveLevel() && isActive();
+        if (!hasActiveCamera())
+        {
+            return false;
+        }
+
+        bool isWithinFrustum = getActiveCamera()->isWithinFrustum(this);
+
+        return hasMesh() && hasActiveLevel() && isActive() && isWithinFrustum;
     }
 
     bool MeshComponent::hasMesh() const

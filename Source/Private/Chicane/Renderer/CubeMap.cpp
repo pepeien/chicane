@@ -83,7 +83,7 @@ namespace Chicane
                 m_pixels[i] = FileSystem::readImageFromMemory(
                     m_width,
                     m_height,
-                    m_channels,
+                    m_channel,
                     m_data[i]
                 );
             }

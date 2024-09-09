@@ -19,14 +19,14 @@ namespace Chicane
         struct Instance
         {
         public:
-            Type type                  = Type::Undefined;
-            std::string name           = "";
-            std::string filepath       = "";
-            uint32_t entryCount        = 0;
-            std::vector<Entry> entries {};
-        
-        public:
             static const Instance& empty();
+
+        public:
+            Type               type       = Type::Undefined;
+            std::string        name       = "";
+            std::string        filepath   = "";
+            uint32_t           entryCount = 0;
+            std::vector<Entry> entries {};
         };
     }
 }

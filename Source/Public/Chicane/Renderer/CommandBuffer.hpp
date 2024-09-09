@@ -9,7 +9,7 @@ namespace Chicane
     {
         struct CreateInfo
         {
-            vk::Device logicalDevice;
+            vk::Device      logicalDevice;
             vk::CommandPool commandPool;
         };
 

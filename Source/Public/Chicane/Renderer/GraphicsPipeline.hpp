@@ -59,33 +59,27 @@ namespace Chicane
         struct CreateInfo
         {
             // Modifiers
-
-            bool canOverwrite;
-            bool hasVertices;
-            bool hasDepth;
-
-            // Devices
-
-            vk::Device logicalDevice;
+            bool                                             canOverwrite;
+            bool                                             hasVertices;
+            bool                                             hasDepth;
 
             // Vertex
-
-            std::string vertexShaderPath;
-            std::string fragmentShaderPath;
-            vk::VertexInputBindingDescription bindingDescription;
+            std::string                                      vertexShaderPath;
+            std::string                                      fragmentShaderPath;
+            vk::VertexInputBindingDescription                bindingDescription;
             std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
 
             // Viewport
-
-            vk::Extent2D swapChainExtent;
-            vk::Format swapChainImageFormat;
-            vk::Format depthFormat; // Optional if `hasDepth` == `false`
+            vk::Extent2D                                     swapChainExtent;
+            vk::Format                                       swapChainImageFormat;
+            vk::Format                                       depthFormat; // Optional if `hasDepth` == `false`
 
             // Depth
+            std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
 
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts; // Optional if `hasDepth` == `false`
-
-            vk::PolygonMode polygonMode;
+            // Vulkan
+            vk::Device                                       logicalDevice;
+            vk::PolygonMode                                  polygonMode;
         };
 
         class Instance
@@ -104,30 +98,29 @@ namespace Chicane
 
         private:
             // Modifiers
-            bool m_canOverwrite;
-            bool m_hasVertices;
-            bool m_hasDepth;
-
-            // Devices
-            vk::Device m_logicalDevice;
+            bool                                             m_canOverwrite;
+            bool                                             m_hasVertices;
+            bool                                             m_hasDepth;
 
             // Vertex
-            std::string m_vertexShaderPath;
-            std::string m_fragmentShaderPath;
-            vk::VertexInputBindingDescription m_bindingDescription;
+            std::string                                      m_vertexShaderPath;
+            std::string                                      m_fragmentShaderPath;
+            vk::VertexInputBindingDescription                m_bindingDescription;
             std::vector<vk::VertexInputAttributeDescription> m_attributeDescriptions;
 
             // Viewport
-            vk::Extent2D m_swapChainExtent;
-            vk::Format m_swapChainImageFormat;
+            vk::Extent2D                                     m_swapChainExtent;
+            vk::Format                                       m_swapChainImageFormat;
 
             // Depth
-            vk::Format m_depthFormat;
+            vk::Format                                       m_depthFormat;
 
             // Layout
-            std::vector<vk::DescriptorSetLayout> m_descriptorSetLayouts;
+            std::vector<vk::DescriptorSetLayout>             m_descriptorSetLayouts;
 
-            vk::PolygonMode m_polygonMode;
+            // Vulkan
+            vk::Device                                       m_logicalDevice;
+            vk::PolygonMode                                  m_polygonMode;
         };
     }
 }

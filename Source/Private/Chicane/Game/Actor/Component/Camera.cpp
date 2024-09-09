@@ -1,12 +1,14 @@
 #include "Chicane/Game/Actor/Component/Camera.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
 
 namespace Chicane
 {
     CameraComponent::CameraComponent()
         : ActorComponent(),
         m_settings({}),
+        m_frustum({}),
         m_UBO({})
     {
         watchTransform(
@@ -44,6 +46,11 @@ namespace Chicane
         setActiveCamera(nullptr);
     }
 
+    bool CameraComponent::isWithinFrustum(const Transformable* inSubject) const
+    {
+        return m_frustum.contains(inSubject);
+    }
+
     const Vec<2, std::uint32_t>& CameraComponent::getViewport() const
     {
         return m_settings.viewport;
@@ -69,6 +76,11 @@ namespace Chicane
             inViewportResolution.x,
             inViewportResolution.y
         );
+    }
+
+    float CameraComponent::getAspectRatio() const
+    {
+        return m_settings.aspectRatio;
     }
 
     float CameraComponent::getFieldOfView() const
@@ -143,19 +155,21 @@ namespace Chicane
         m_UBO.projection[1][1] *= -1;
 
         updateViewProjection();
+
+        m_frustum.use(this);
     }
 
     void CameraComponent::updateView()
     {
-        const Vec<3, float>& translation = m_transform.translation;
-
         m_UBO.view = glm::lookAt(
-            translation,
-            translation + getForward(),
+            getTranslation(),
+            getCenter(),
             getUp()
         );
 
         updateViewProjection();
+
+        m_frustum.use(this);
     }
 
     void CameraComponent::updateViewProjection()

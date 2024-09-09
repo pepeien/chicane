@@ -101,6 +101,11 @@ namespace Chicane
         return m_direction.up;
     }
 
+    const Vec<3, float>& Transformable::getCenter() const
+    {
+        return m_center;
+    }
+
     Subscription<const Transform&>* Transformable::watchTransform(
         std::function<void (const Transform&)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
@@ -197,5 +202,7 @@ namespace Chicane
         m_direction.forward  = glm::rotate(m_orientation, FORWARD_DIRECTION);
         m_direction.right    = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_direction.up       = glm::rotate(m_orientation, UP_DIRECTION);
+
+        m_center = getTranslation() + getForward();
     }
 }

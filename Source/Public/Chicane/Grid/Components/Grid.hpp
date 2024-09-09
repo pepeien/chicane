@@ -20,9 +20,9 @@ namespace Chicane
             struct Props : BaseProps
             {
             public:
-                Vec<2, float> itemSize      = {}; // Optional
-                std::vector<std::any> items = {}; // Optional
-                ComponentFunction itemGetter; // Optional
+                Vec<2, float>         itemSize = {}; // Optional
+                std::vector<std::any> items    = {}; // Optional
+                ComponentFunction     itemGetter; // Optional
             };
 
             void validate(const Props& inProps);

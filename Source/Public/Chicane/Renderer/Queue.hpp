@@ -8,8 +8,10 @@ namespace Chicane
     {
         struct FamilyIndices
         {
+        public:
             bool isComplete();
-    
+
+        public:
             std::optional<uint32_t> graphicsFamily;
             std::optional<uint32_t> presentFamily;
         };

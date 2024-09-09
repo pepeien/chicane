@@ -42,16 +42,14 @@ namespace Chicane
         struct Internals
         {
         public:
-            // Vulkan
             vk::PhysicalDevice physicalDevice;
-            vk::Device logicalDevice;
-            vk::SurfaceKHR sufrace;
-            vk::Instance instance;
-            vk::Queue graphicsQueue;
-            vk::CommandBuffer mainCommandBuffer;
-
+            vk::Device         logicalDevice;
+            vk::SurfaceKHR     sufrace;
+            vk::Instance       instance;
+            vk::Queue          graphicsQueue;
+            vk::CommandBuffer  mainCommandBuffer;
             SwapChain::Bundle* swapchain;
-            int imageCount;
+            int                imageCount;
         };
 
     public:
@@ -123,39 +121,39 @@ namespace Chicane
 
     private:
         // Instance
-        vk::Instance m_instance;
-        vk::DispatchLoaderDynamic m_dldi;
-        vk::DebugUtilsMessengerEXT m_debugMessenger;
+        vk::Instance                     m_instance;
+        vk::DispatchLoaderDynamic        m_dldi;
+        vk::DebugUtilsMessengerEXT       m_debugMessenger;
 
         // Surface
-        vk::SurfaceKHR m_surface;
+        vk::SurfaceKHR                   m_surface;
 
         // Devices
-        vk::PhysicalDevice m_physicalDevice;
-        vk::Device m_logicalDevice;
+        vk::PhysicalDevice               m_physicalDevice;
+        vk::Device                       m_logicalDevice;
 
         // Queues
-        vk::Queue m_graphicsQueue;
-        vk::Queue m_presentQueue;
+        vk::Queue                        m_graphicsQueue;
+        vk::Queue                        m_presentQueue;
 
         // Swap Chain
-        SwapChain::Bundle m_swapChain;
+        SwapChain::Bundle                m_swapChain;
 
         // Command
-        vk::CommandPool m_mainCommandPool;
-        vk::CommandBuffer m_mainCommandBuffer;
+        vk::CommandPool                  m_mainCommandPool;
+        vk::CommandBuffer                m_mainCommandBuffer;
 
         // Frame
-        int m_imageCount;
-        int m_currentImageIndex;
+        int                              m_imageCount;
+        int                              m_currentImageIndex;
 
         // Window
-        Window* m_window;
-        Vec<2, std::uint32_t> m_viewportSize;
-        Vec<2, float> m_viewportPosition;
+        Window*                          m_window;
+        Vec<2, std::uint32_t>            m_viewportSize;
+        Vec<2, float>                    m_viewportPosition;
 
         // Layers
-        std::vector<Layer*> m_layers;
+        std::vector<Layer*>              m_layers;
 
         // Essentials
         std::unique_ptr<CameraComponent> m_defaultCamera;

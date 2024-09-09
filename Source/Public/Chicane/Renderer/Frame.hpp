@@ -16,10 +16,10 @@ namespace Chicane
     {
         struct Depth
         {
-            vk::Image image;
-            vk::ImageView imageView;
+            vk::Image        image;
+            vk::ImageView    imageView;
             vk::DeviceMemory memory;
-            vk::Format format;
+            vk::Format       format;
         };
 
         class Instance

@@ -10,38 +10,41 @@ namespace Chicane
     {
         struct WriteRootHeader
         {
+        public:
+            std::string toString();
+
+        public:
             std::string version   = "1.1";
-            Type type             = Type::Undefined;
+            Type        type      = Type::Undefined;
             std::string name      = "";
             std::string filePath  = "";
-            uint32_t entryCount   = 0;
-
-            std::string toString();
+            uint32_t   entryCount = 0;
         };
 
         struct WriteEntryHeader
         {
+        public:
+            std::string toString();
+
+        public:
             EntryType type       = EntryType::Undefined;
             std::uint8_t vendor  = 0;
-
-            std::string toString();
         };
 
         struct WriteEntry
         {
-            EntryType type = EntryType::Undefined;
-            uint8_t vendor = 0;
-
+            EntryType   type = EntryType::Undefined;
+            uint8_t     vendor = 0;
             std::string dataFilePath = "";
             std::string reference    = "";
         };
 
         struct WriteInfo
         {
-            Type type                       = Type::Undefined;
-            std::string name                = "";
+            Type                    type       = Type::Undefined;
+            std::string             name       = "";
             std::vector<WriteEntry> entries {};
-            std::string outputPath          = "";
+            std::string             outputPath = "";
         };
 
         void write(const WriteInfo& inWriteInfo);

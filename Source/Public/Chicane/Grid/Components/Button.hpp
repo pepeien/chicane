@@ -19,7 +19,7 @@ namespace Chicane
             struct Props : BaseProps
             {
                 // onClick
-                ComponentEvent onClickEvent = {}; // Optional
+                ComponentEvent    onClickEvent = {}; // Optional
                 ComponentFunction onClick; // Optional
             };
 

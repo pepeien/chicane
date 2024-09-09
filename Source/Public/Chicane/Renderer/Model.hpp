@@ -22,9 +22,9 @@ namespace Chicane
         struct Bundle
         {
             std::vector<Mat<4, float>> transforms;
-            size_t allocationSize;
-            void* writeLocation;
-            Buffer::Instance buffer;
+            size_t                     allocationSize;
+            void*                      writeLocation;
+            Buffer::Instance           buffer;
         };
 
         struct ParseBundle
@@ -36,15 +36,15 @@ namespace Chicane
 
         struct ParseResult
         {
-            std::vector<Vertex::Instance> vertices;
-            std::vector<uint32_t> indexes;
+            std::vector<Vertex::Instance>             vertices;
+            std::vector<uint32_t>                     indexes;
             std::unordered_map<std::string, uint32_t> indexesMap;
         };
         
         struct Instance
         {
             std::vector<Vertex::Instance> vertexInstances;
-            std::vector<uint32_t> vertexIndices;
+            std::vector<uint32_t>         vertexIndices;
         };
     }
 }
