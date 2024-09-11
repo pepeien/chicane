@@ -15,8 +15,7 @@ namespace Chicane
         protected:
             bool isWithinPlane(
                 const Plane& inPlane,
-                const Vec<3, float> inCenter,
-                float inRadius
+                const Vec<3, float> inPoint
             ) const override;
 
         public:

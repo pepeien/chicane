@@ -38,6 +38,7 @@ namespace Chicane
 
         vk::PipelineLayout createLayout(
             const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
+            const std::vector<vk::PushConstantRange>& inPushConstantRanges,
             const vk::Device& inLogicalDevice
         );
         vk::AttachmentDescription createColorAttachment(
@@ -74,8 +75,9 @@ namespace Chicane
             vk::Format                                       swapChainImageFormat;
             vk::Format                                       depthFormat; // Optional if `hasDepth` == `false`
 
-            // Depth
+            // Pipeline Layout
             std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
+            std::vector<vk::PushConstantRange>               pushConstantRanges;
 
             // Vulkan
             vk::Device                                       logicalDevice;
@@ -117,6 +119,7 @@ namespace Chicane
 
             // Layout
             std::vector<vk::DescriptorSetLayout>             m_descriptorSetLayouts;
+            std::vector<vk::PushConstantRange>               m_pushConstantRanges;
 
             // Vulkan
             vk::Device                                       m_logicalDevice;

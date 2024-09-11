@@ -1,7 +1,5 @@
 #include "Chicane/Game/Actor/Component.hpp"
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     ActorComponent::ActorComponent()
@@ -10,11 +8,8 @@ namespace Chicane
         m_isActive(false),
         m_base({}),
         m_attachment(nullptr),
-        m_attachmentTransformSubscription(nullptr)
-        
-    {
-        addComponent(this);
-    }
+        m_attachmentTransformSubscription(nullptr)  
+    {}
 
     bool ActorComponent::isActive() const
     {

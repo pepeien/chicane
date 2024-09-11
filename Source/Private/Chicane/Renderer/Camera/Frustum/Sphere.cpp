@@ -9,26 +9,15 @@ namespace Chicane
     {
         bool SphereFrustum::contains(const Transformable* inSubject) const
         {
-            const Vec<3, float>& scale = inSubject->getScale();
-
-            float maxScale = std::max(
-                std::max(
-                    scale.x,
-                    scale.y
-                ),
-                scale.z
-            );
-
-            const Vec<3, float>& globalCenter = inSubject->getPosition() * Vec<4, float>(center, 1.0f);
-            float globalRadius                = radius * (maxScale * 0.5f);
+            const Vec<3, float>& subjectCenter = inSubject->getCenter();
 
         	return (
-        		isWithinPlane(m_top,    globalCenter, globalRadius) &&
-        		isWithinPlane(m_bottom, globalCenter, globalRadius) &&
-                isWithinPlane(m_left,   globalCenter, globalRadius) &&
-        		isWithinPlane(m_right,  globalCenter, globalRadius) &&
-        		isWithinPlane(m_near,   globalCenter, globalRadius) &&
-        		isWithinPlane(m_far,    globalCenter, globalRadius)
+        		isWithinPlane(m_top,    subjectCenter) &&
+        		isWithinPlane(m_bottom, subjectCenter) &&
+                isWithinPlane(m_left,   subjectCenter) &&
+        		isWithinPlane(m_right,  subjectCenter) &&
+        		isWithinPlane(m_near,   subjectCenter) &&
+        		isWithinPlane(m_far,    subjectCenter)
             );
         };
 
@@ -79,11 +68,10 @@ namespace Chicane
 
         bool SphereFrustum::isWithinPlane(
             const Plane& inPlane,
-            const Vec<3, float> inCenter,
-            float inRadius
+            const Vec<3, float> inPoint
         ) const
         {
-        	return inPlane.getSignedDistanceToPlan(inCenter) > -inRadius;
+        	return inPlane.getDistance(inPoint) > -radius;
         }
     }
 }

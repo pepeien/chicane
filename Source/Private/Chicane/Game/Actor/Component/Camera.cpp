@@ -29,6 +29,8 @@ namespace Chicane
                 updateView();
             }
         );
+
+        addComponent(this);
     }
 
     void CameraComponent::onActivation()
@@ -46,7 +48,7 @@ namespace Chicane
         setActiveCamera(nullptr);
     }
 
-    bool CameraComponent::isWithinFrustum(const Transformable* inSubject) const
+    bool CameraComponent::canSee(const Transformable* inSubject) const
     {
         return m_frustum.contains(inSubject);
     }

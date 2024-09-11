@@ -13,13 +13,9 @@ namespace Chicane
         struct Plane
         {
         public:
-            float getSignedDistanceToPlan(const Vec<3, float>& inPoint) const;
+            float getDistance(const Vec<3, float>& inPoint) const;
 
             void update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint);
-
-        private:
-            void setDistance(const Vec<3, float>& inPoint);
-            void setNormal(const Vec<3, float>& inNormal);
 
         public:
             float         distance = 0.0f;
@@ -35,8 +31,7 @@ namespace Chicane
         protected:
         	virtual bool isWithinPlane(
                 const Plane& inPlane,
-                const Vec<3, float> inCenter,
-                float inRadius
+                const Vec<3, float> inCenter
             ) const { return false; }
 
         public:

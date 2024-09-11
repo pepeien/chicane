@@ -19,7 +19,7 @@ namespace Chicane
         void onDeactivation() override;
 
     public:
-        bool isWithinFrustum(const Transformable* inSubject) const;
+        bool canSee(const Transformable* inSubject) const;
 
         const Vec<2, std::uint32_t>& getViewport() const;
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);

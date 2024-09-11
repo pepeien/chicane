@@ -24,6 +24,15 @@ namespace Chicane
     struct Telemetry;
 
     // Game
+    bool hasActiveCamera();
+    CameraComponent* getActiveCamera();
+    void setActiveCamera(CameraComponent* inCamera);
+    void watchActiveCamera(
+        std::function<void (CameraComponent*)> inNextCallback,
+        std::function<void (const std::string&)> inErrorCallback = nullptr,
+        std::function<void ()> inCompleteCallback = nullptr
+    );
+
     bool hasActiveController();
     Controller* getActiveController();
     void setActiveController(Controller* inController);
@@ -40,18 +49,8 @@ namespace Chicane
     void addActor(Actor* inActor);
     std::vector<Actor*> getActors();
 
-    bool hasActiveCamera();
-    CameraComponent* getActiveCamera();
-    void setActiveCamera(CameraComponent* inCamera);
-    void watchActiveCamera(
-        std::function<void (CameraComponent*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback = nullptr,
-        std::function<void ()> inCompleteCallback = nullptr
-    );
-
-    const std::vector<ActorComponent*>& getComponents();
-    std::vector<ActorComponent*> getComponents(Actor* inActor);
     void addComponent(ActorComponent* inComponent);
+    std::vector<ActorComponent*> getComponents();
 
     // Window
     Window* getWindow();

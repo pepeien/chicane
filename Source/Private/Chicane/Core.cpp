@@ -1,11 +1,11 @@
 #include "Chicane/Core.hpp"
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Log.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Game/Actor/Component/Camera.hpp"
 #include "Chicane/Grid.hpp"
 #include "Chicane/Renderer.hpp"
-
 
 namespace Chicane
 {
@@ -16,8 +16,6 @@ namespace Chicane
 
     CameraComponent* m_camera = nullptr;
     std::unique_ptr<Observable<CameraComponent*>> m_cameraObservable = std::make_unique<Observable<CameraComponent*>>();
-
-    std::vector<ActorComponent*> m_components {};
 
     Window* m_window = nullptr;
 
@@ -121,41 +119,24 @@ namespace Chicane
         return m_level->getActors();
     }
 
-    const std::vector<ActorComponent*>& getComponents()
-    {
-        return m_components;
-    }
-
-    std::vector<ActorComponent*> getComponents(Actor* inActor)
-    {
-        if (inActor == nullptr)
-        {
-            return {};
-        }
-
-        std::vector<ActorComponent*> result {};
-
-        for (ActorComponent* component : getComponents())
-        {
-            if (!component->isAttached() || component->getAttachment() != inActor)
-            {
-                continue;
-            }
-
-            result.push_back(component);
-        }
-
-        return result;
-    }
-
     void addComponent(ActorComponent* inComponent)
     {
-        if (!inComponent)
+        if (!hasActiveLevel())
         {
             return;
         }
 
-        m_components.push_back(inComponent);
+        m_level->addComponent(inComponent);
+    }
+
+    std::vector<ActorComponent*> getComponents()
+    {
+        if (!hasActiveLevel())
+        {
+            return {};
+        }
+
+        return m_level->getComponents();
     }
 
     Window* getWindow()

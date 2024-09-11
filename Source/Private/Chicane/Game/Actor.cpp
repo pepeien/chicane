@@ -16,4 +16,14 @@ namespace Chicane
     {
         m_canTick = inCanTick;
     }
+
+    void Actor::tick(float inDeltaTime)
+    {
+        if (!canTick())
+        {
+            return;
+        }
+
+        onTick(inDeltaTime);
+    }
 }

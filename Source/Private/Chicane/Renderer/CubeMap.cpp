@@ -188,7 +188,7 @@ namespace Chicane
 
         void Instance::initDescriptorSet()
         {
-            Descriptor::initSet(
+            Descriptor::allocalteSetLayout(
                 m_descriptor.set,
                 m_logicalDevice,
                 m_descriptor.setLayout,

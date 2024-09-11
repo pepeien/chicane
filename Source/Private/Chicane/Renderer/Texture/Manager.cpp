@@ -4,14 +4,18 @@ namespace Chicane
 {
     namespace Texture
     {
-        Manager::~Manager()
+        Manager::Manager()
+            : m_observable(std::make_unique<Observable<void*>>())
+        {}
+
+        bool Manager::isEmpty() const
         {
-            m_instanceMap.clear();
+            return m_registeredIds.empty();
         }
 
-        uint32_t Manager::getCount() const
+        bool Manager::canBind() const
         {
-            return static_cast<uint32_t>(m_dataMap.size());
+            return !isEmpty() && !m_instanceMap.empty();
         }
 
         bool Manager::contains(const std::string& inId) const
@@ -32,7 +36,10 @@ namespace Chicane
                     inEntry.data
                 )
             );
+
             m_registeredIds.push_back(inId);
+
+            m_observable->next(nullptr);
         }
 
         void Manager::bindAll(
@@ -52,25 +59,30 @@ namespace Chicane
             const vk::PipelineLayout& inPipelineLayout
         )
         {
-            std::string standarizedId = inId.size() > 0 ? inId : "missing";
+            if (!canBind())
+            {
+                return;
+            }
 
-            auto foundPair = m_instanceMap.find(standarizedId);
+            auto foundPair = m_instanceMap.find(inId);
 
-            if (foundPair == m_instanceMap.end())
+            if (m_instanceMap.find(inId) == m_instanceMap.end())
             {
                 throw std::runtime_error(
-                    "The Texture [" + standarizedId + "] does not exists"
+                    "The Texture [" + inId + "] does not exists"
                 );
             }
 
-            if (foundPair->second == nullptr)
+            Texture::Instance* texture = m_instanceMap.at(inId).get();
+
+            if (texture == nullptr)
             {
                 throw std::runtime_error(
-                    "The Texture [" + standarizedId + "] has not been initialized"
+                    "The Texture [" + inId + "] has not been initialized"
                 );
             }
 
-            foundPair->second->bind(inCommandBuffer, inPipelineLayout);
+            texture->bind(inCommandBuffer, inPipelineLayout);
         }
 
         void Manager::build(
@@ -82,6 +94,11 @@ namespace Chicane
             const vk::DescriptorPool& inDescriptorPool
         )
         {
+            if (isEmpty())
+            {
+                return;
+            }
+
             Texture::CreateInfo textureCreateInfo;
             textureCreateInfo.logicalDevice       = inLogicalDevice;
             textureCreateInfo.physicalDevice      = inPhysicalDevice;
@@ -108,6 +125,19 @@ namespace Chicane
                     )
                 );
             }
+        }
+
+        void Manager::watchChanges(
+            std::function<void (void*)> inNextCallback,
+            std::function<void (const std::string&)> inErrorCallback,
+            std::function<void ()> inCompleteCallback
+        )
+        {
+            m_observable->subscribe(
+                inNextCallback,
+                inErrorCallback,
+                inCompleteCallback
+            );
         }
     }
 }

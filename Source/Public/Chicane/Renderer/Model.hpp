@@ -15,7 +15,6 @@ namespace Chicane
             std::uint32_t firstVertex   = 0;
             std::uint32_t firstInstance = 0;
             std::uint32_t indexCount    = 0;
-            std::uint32_t instanceCount = 1;
             std::uint32_t firstIndex    = 0;
         };
 

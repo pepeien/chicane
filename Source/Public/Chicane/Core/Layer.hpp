@@ -27,6 +27,9 @@ namespace Chicane
         virtual ~Layer() = default;
 
     public:
+        // Lock
+        virtual bool canRender() const { return false; }
+
         // Initialization
         virtual void build() { return; }
         virtual void destroy() { return; }

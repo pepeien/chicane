@@ -4,9 +4,37 @@ namespace Chicane
 {
     namespace Model
     {
+        Manager::Manager()
+            : m_observable(std::make_unique<Observable<EventSubject>>())
+        {}
+
+        bool Manager::isEmpty() const
+        {
+            return m_vertices.empty();
+        }
+
+        bool Manager::canDraw() const
+        {
+            return !isEmpty() && !m_usedIds.empty();
+        }
+
         bool Manager::isLoaded(const std::string& inId) const
         {
             return m_instanceMap.find(inId) != m_instanceMap.end();
+        }
+
+        bool Manager::isAllocated(const std::string& inId) const
+        {
+            return m_allocationMap.find(inId) != m_allocationMap.end();
+        }
+
+        bool Manager::isUsing(const std::string& inId) const
+        {
+            return std::find(
+                m_usedIds.begin(),
+                m_usedIds.end(),
+                inId
+            ) != m_usedIds.end();
         }
 
         void Manager::load(const std::string& inId, const Box::Entry& inEntry)
@@ -31,7 +59,7 @@ namespace Chicane
                 }
             std::clock_t end = std::clock();
 
-            Model::Instance newModel;
+            Model::Instance newModel {};
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
 
@@ -43,62 +71,56 @@ namespace Chicane
             LOG_EMMIT("MODEL LOAD", "============================================================================", Log::COLOR_BLUE);
 
             m_instanceMap.insert(std::make_pair(inId, newModel));
+
+            m_observable->next(EventSubject::Load);
         }
 
-        void Manager::use(const std::string& inId)
+        void Manager::activate(const std::string& inId)
         {
             if (!isLoaded(inId))
             {
                 return;
             }
 
-            if (std::find(m_usedIds.begin(), m_usedIds.end(), inId) == m_usedIds.end())
-            {
-                process(inId);
+            m_usedIds.push_back(inId);
 
-                m_usedIds.push_back(inId);
+            if (isAllocated(inId))
+            {
+                m_observable->next(EventSubject::Use);
+
+                return;
             }
 
-            m_allocationMap.at(inId).instanceCount += 1;
+            allocate(inId);
+
+            m_observable->next(EventSubject::Allocation);
         }
 
-        void Manager::unUse(const std::string& inId)
+        void Manager::deactivate(const std::string& inId)
         {
-            if (!isLoaded(inId))
+            if (!isLoaded(inId) || !isAllocated(inId) || !isUsing(inId))
             {
                 return;
             }
 
-            std::vector<std::string>::iterator firstInstance = std::find(m_usedIds.begin(), m_usedIds.end(), inId);
+            m_usedIds.erase(
+                std::find(
+                    m_usedIds.begin(),
+                    m_usedIds.end(),
+                    inId
+                )
+            );
 
-            if (firstInstance == m_usedIds.end())
+            if (isUsing(inId))
             {
+                m_observable->next(EventSubject::Use);
+
                 return;
             }
 
-            m_allocationMap.at(inId).instanceCount -= 1;
+            deallocate(inId);
 
-            if (m_allocationMap.at(inId).instanceCount > 0)
-            {
-                return;
-            }
-
-            m_allocationMap.at(inId).instanceCount = 0;
-
-            m_usedIds.erase(firstInstance);
-
-            m_combinedVertices.clear();
-            m_indexedVertices.clear();
-
-            if (m_usedIds.empty())
-            {
-                return;
-            }
-
-            for (const std::string& id : m_usedIds)
-            {
-                process(id);
-            }
+            m_observable->next(EventSubject::Allocation);
         }
 
         void Manager::build(
@@ -110,6 +132,11 @@ namespace Chicane
             const vk::CommandBuffer& inCommandBuffer
         )
         {
+            if (isEmpty())
+            {
+                return;
+            }
+
             initVertexBuffer(
                 outVertexBuffer,
                 inLogicalDevice,
@@ -123,6 +150,20 @@ namespace Chicane
                 inPhysicalDevice,
                 inQueue,
                 inCommandBuffer
+            );
+        }
+
+        std::uint32_t Manager::getUseCount(const std::string& inId) const
+        {
+            if (!isUsing(inId))
+            {
+                return 0;
+            }
+
+            return std::count(
+                m_usedIds.begin(),
+                m_usedIds.end(),
+                inId
             );
         }
 
@@ -149,23 +190,21 @@ namespace Chicane
             const vk::CommandBuffer& inCommandBuffer
         )
         {
-            auto foundModel = m_allocationMap.find(inId);
-
-            if (foundModel == m_allocationMap.end())
-            {
-                throw std::runtime_error("The Model [" + inId + "] does not exist");
-            }
-
-            Model::AllocationInfo& allocationInfo = foundModel->second;
-
-            if (allocationInfo.instanceCount == 0)
+            if (!canDraw() || !isUsing(inId))
             {
                 return;
             }
 
+            if (!isLoaded(inId) || !isAllocated(inId))
+            {
+                throw std::runtime_error("The Model [" + inId + "] does not exist");
+            }
+
+            const Model::AllocationInfo& allocationInfo = m_allocationMap.at(inId);
+
             inCommandBuffer.drawIndexed(
                 allocationInfo.indexCount,
-                allocationInfo.instanceCount,
+                getUseCount(inId),
                 allocationInfo.firstIndex,
                 0,
                 getFirstInstance(inId)
@@ -174,49 +213,92 @@ namespace Chicane
 
         void Manager::drawAll(const vk::CommandBuffer& inCommandBuffer)
         {
-            for (std::string& id : m_usedIds)
+            for (auto& [id, data] : m_allocationMap)
             {
                 draw(id, inCommandBuffer);
             }
         }
 
-        void Manager::process(const std::string& inId)
+        void Manager::watchChanges(
+            std::function<void (EventSubject)> inNextCallback,
+            std::function<void (const std::string&)> inErrorCallback,
+            std::function<void ()> inCompleteCallback
+        )
         {
-            auto foundModel = m_instanceMap.find(inId);
+            m_observable->subscribe(
+                inNextCallback,
+                inErrorCallback,
+                inCompleteCallback
+            );
+        }
 
-            if (foundModel == m_instanceMap.end())
-            {
-                throw std::runtime_error("The Model [" + inId + "] does not exist");
-            }
-
-            if (m_allocationMap.find(inId) != m_allocationMap.end())
+        void Manager::allocate(const std::string& inId)
+        {
+            if (!isLoaded(inId) || isAllocated(inId))
             {
                 return;
             }
 
-            Model::Instance& instance = foundModel->second;
+            const Model::Instance& instance = m_instanceMap.at(inId);
 
-            AllocationInfo allocationInfo;
-            allocationInfo.vertexCount   = static_cast<uint32_t>(instance.vertexInstances.size());
-            allocationInfo.firstVertex   = static_cast<uint32_t>(m_combinedVertices.size());
-            allocationInfo.indexCount    = static_cast<uint32_t>(instance.vertexIndices.size());
-            allocationInfo.instanceCount = 0;
-            allocationInfo.firstIndex    = static_cast<uint32_t>(m_indexedVertices.size());
+            AllocationInfo allocationInfo {};
+            allocationInfo.vertexCount = static_cast<uint32_t>(instance.vertexInstances.size());
+            allocationInfo.firstVertex = static_cast<uint32_t>(m_vertices.size());
+            allocationInfo.indexCount  = static_cast<uint32_t>(instance.vertexIndices.size());
+            allocationInfo.firstIndex  = static_cast<uint32_t>(m_indices.size());
 
             m_allocationMap.insert(std::make_pair(inId, allocationInfo));
 
-            m_combinedVertices.insert(
-                m_combinedVertices.end(),
+            m_vertices.insert(
+                m_vertices.end(),
                 instance.vertexInstances.begin(),
                 instance.vertexInstances.end()
             );
 
             for (uint32_t vertexIndex : instance.vertexIndices)
             {
-                m_indexedVertices.push_back(vertexIndex + allocationInfo.firstVertex);
+                m_indices.push_back(vertexIndex + allocationInfo.firstVertex);
             }
         }
-        
+
+        void Manager::deallocate(const std::string& inId)
+        {
+            if (!isLoaded(inId) || !isAllocated(inId))
+            {
+                return;
+            }
+
+            const AllocationInfo& instance = m_allocationMap.at(inId);
+
+            auto verticesStart = m_vertices.begin() + instance.firstVertex;
+            auto verticesEnd   = verticesStart + instance.vertexCount;
+            m_vertices.erase(verticesStart, verticesEnd);
+
+            auto indicesStart = m_indices.begin() + instance.firstIndex;
+            auto indicesEnd   = indicesStart + instance.indexCount;
+            m_indices.erase(indicesStart, indicesEnd);
+
+            m_allocationMap.erase(inId);
+
+            rebaseAllocation();
+        }
+
+        void Manager::rebaseAllocation()
+        {
+            std::uint32_t firstVertex = 0;
+            std::uint32_t firstIndex  = 0;
+
+            for (const std::string& id : m_usedIds)
+            {
+                AllocationInfo& instance = m_allocationMap.at(id);
+                instance.firstVertex = firstVertex;
+                instance.firstIndex  = firstIndex;
+
+                firstVertex += instance.vertexCount;
+                firstIndex  += instance.indexCount;
+            }
+        }
+
         void Manager::initVertexBuffer(
             Buffer::Instance& outVertexBuffer,
             const vk::Device& inLogicalDevice,
@@ -228,7 +310,7 @@ namespace Chicane
             Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
             stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-            stagingBufferCreateInfo.size             = sizeof(Vertex::Instance) * m_combinedVertices.size();
+            stagingBufferCreateInfo.size             = sizeof(Vertex::Instance) * m_vertices.size();
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                        vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -243,7 +325,7 @@ namespace Chicane
             );
             memcpy(
                 writeLocation,
-                m_combinedVertices.data(),
+                m_vertices.data(),
                 stagingBufferCreateInfo.size
             );
             inLogicalDevice.unmapMemory(stagingBuffer.memory);
@@ -280,7 +362,7 @@ namespace Chicane
             Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
             stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-            stagingBufferCreateInfo.size             = sizeof(uint32_t) * m_indexedVertices.size();
+            stagingBufferCreateInfo.size             = sizeof(uint32_t) * m_indices.size();
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                        vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -295,7 +377,7 @@ namespace Chicane
             );
             memcpy(
                 writeLocation,
-                m_indexedVertices.data(),
+                m_indices.data(),
                 stagingBufferCreateInfo.size
             );
             inLogicalDevice.unmapMemory(stagingBuffer.memory);

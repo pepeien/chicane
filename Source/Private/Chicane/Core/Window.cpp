@@ -126,6 +126,28 @@ namespace Chicane
         }
     }
 
+    void Window::tick()
+    {
+        if (!hasActiveLevel())
+        {
+            return;
+        }
+
+        Level* level = getActiveLevel();
+
+        float deltaTime = m_telemetry.deltaToTick();
+
+        for (Actor* actor : level->getActors())
+        {
+            actor->tick(deltaTime);
+        }
+
+        for (ActorComponent* component : level->getComponents())
+        {
+            component->tick(deltaTime);
+        }
+    }
+
     void Window::run()
     {
         SDL_Event event;
@@ -147,6 +169,8 @@ namespace Chicane
             m_beginFrame = std::clock();
                 m_renderer->render();
             m_endFrame   = std::clock();
+
+            tick();
 
             updateTelemetry();
         }

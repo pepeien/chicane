@@ -18,6 +18,7 @@ namespace Chicane
     public:
         bool canTick() const;
         void setCanTick(bool inCanTick);
+        void tick(float inDeltaTime);
 
     protected:
         bool m_canTick;

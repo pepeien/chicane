@@ -4,6 +4,16 @@ namespace Chicane
 {
     namespace Frame
     {
+        bool Instance::isDirty()
+        {
+            return m_isDirty;
+        }
+
+        void Instance::setAsDirty()
+        {
+            m_isDirty = true;
+        }
+
         void Instance::setupSync()
         {
             Sync::initSempahore(
@@ -113,7 +123,12 @@ namespace Chicane
 
         void Instance::setupModelData(Level* inLevel)
         {
-            const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
+            std::vector<MeshComponent*> meshes = inLevel->getComponents<MeshComponent>();
+
+            if (meshes.empty())
+            {
+                return;
+            }
 
             Chicane::Buffer::CreateInfo modelBufferCreateInfo;
             modelBufferCreateInfo.logicalDevice    = logicalDevice;
@@ -122,7 +137,7 @@ namespace Chicane
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
             modelBufferCreateInfo.size             = sizeof(Mat<4, float>) * meshes.size();
             modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
-    
+
             Buffer::init(modelData.buffer, modelBufferCreateInfo);
         
             modelData.allocationSize = modelBufferCreateInfo.size;
@@ -134,11 +149,6 @@ namespace Chicane
 
             for (const MeshComponent* mesh : meshes)
             {
-                if (!mesh->isDrawable())
-                {
-                    continue;
-                }
-
                 modelData.transforms.push_back(mesh->getPosition());
             }
 
@@ -149,19 +159,33 @@ namespace Chicane
 
         void Instance::updateModelData(Level* inLevel)
         {
-            const std::vector<MeshComponent*> meshes = inLevel->getMeshes();
+            if (isDirty())
+            {
+                destroyModelData();
+                setupModelData(inLevel);
+
+                m_isDirty = false;
+
+                return;
+            }
+
+            std::vector<MeshComponent*> meshes = getDrawableModels(inLevel);
+
+            if (meshes.empty())
+            {
+                return;
+            }
 
             for (uint32_t i = 0; i < meshes.size(); i++)
             {
-                const MeshComponent* mesh = meshes.at(i);
-
-                if (!mesh->isDrawable())
-                {
-                    continue;
-                }
-
                 modelData.transforms[i] = meshes.at(i)->getPosition();
             }
+
+            memcpy(
+                modelData.writeLocation,
+                modelData.transforms.data(),
+                modelData.allocationSize
+            );
         }
     
         void Instance::destroyModelData()
@@ -273,6 +297,23 @@ namespace Chicane
             destroyModelData();
 
             logicalDevice.destroyImageView(imageView);
+        }
+
+        std::vector<MeshComponent*> Instance::getDrawableModels(Level* inLevel)
+        {
+            std::vector<MeshComponent*> result = {};
+
+            for (MeshComponent* mesh : inLevel->getComponents<MeshComponent>())
+            {
+                if (!mesh->isDrawable())
+                {
+                    continue;
+                }
+    
+                result.push_back(mesh);
+            }
+
+            return result;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Chicane
         ~LevelLayer();
 
     public:
+        bool canRender() const override;
+
         void build() override;
         void destroy() override;
         void rebuild() override;
@@ -29,24 +31,19 @@ namespace Chicane
 
     private:
         void loadEvents();
-        void initFrameDescriptorSetLayout();
-        void deleteFrameDescriptorSetLayout();
-        void initMaterialDescriptorSetLayout();
-        void destroyMaterialDescriptorSetLayout();
-        void initGraphicsPipeline();
-        void initFramebuffers();
+
         void initFrameResources();
         void destroyFrameResources();
-        void initTextures();
+        void initTextureResources();
+        void destroyTextureResources();
+        void initGraphicsPipeline();
+        void initFramebuffers();
         void buildTextures();
-        void destroyTextures();
-        void initMeshes();
-        void buildMeshes();
-        void destroyMeshes();
+        void buildModelVertexData();
+        void destroyMeshVertexData();
 
-        void tickComponents(float inDeltaTime);
-        void tickActors(float inDeltaTime);
-        void tickAll();
+        void setupFrames();
+        void setFramesAsDirty();
 
     private:
         Renderer::Internals m_internals;
@@ -57,7 +54,7 @@ namespace Chicane
         vk::DescriptorSet m_descriptorSet;
 
         Descriptor::Bundle m_frameDescriptor;
-        Descriptor::Bundle m_materialDescriptor;
+        Descriptor::Bundle m_texturelDescriptor;
 
         Buffer::Instance m_modelVertexBuffer;
         Buffer::Instance m_modelIndexBuffer;

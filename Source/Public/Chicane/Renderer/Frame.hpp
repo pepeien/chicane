@@ -25,6 +25,9 @@ namespace Chicane
         class Instance
         {
         public:
+            bool isDirty();
+            void setAsDirty();
+
             void setupSync();
             void wait(const vk::Device& inLogicalDevice);
             void reset(const vk::Device& inLogicalDevice);
@@ -55,6 +58,9 @@ namespace Chicane
             void updateDescriptorSets();
 
             void destroy();
+
+        private:
+            std::vector<MeshComponent*> getDrawableModels(Level* inLevel);
 
         public:
             vk::Device logicalDevice;
@@ -87,6 +93,9 @@ namespace Chicane
 
             std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
+
+        private:
+            bool m_isDirty;
         };
     }
 }

@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Log.hpp"
 #include "Chicane/Game/Actor.hpp"
 #include "Chicane/Game/Actor/Component/Mesh.hpp"
 
@@ -23,20 +24,56 @@ namespace Chicane
             std::function<void ()> inCompleteCallback = nullptr
         );
 
-        bool hasMeshes() const;
-        const std::vector<MeshComponent*>& getMeshes() const;
-        void addMesh(MeshComponent* inMesh);
-        void watchMeshes(
-            std::function<void (MeshComponent*)> inNextCallback,
+        template<class T>
+        std::vector<T*> getActors() const
+        {
+            std::vector<T*> result {};
+
+            for (Actor* actor : getActors())
+            {
+                if (typeid(*actor) != typeid(T))
+                {
+                    continue;
+                }
+
+                result.push_back(static_cast<T*>(actor));
+            }
+
+            return result;
+        }
+
+        bool hasComponents() const;
+        const std::vector<ActorComponent*>& getComponents() const;
+        void addComponent(ActorComponent* inComponent);
+        void watchComponents(
+            std::function<void (ActorComponent*)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
             std::function<void ()> inCompleteCallback = nullptr
         );
+
+        template<class T>
+        std::vector<T*> getComponents() const
+        {
+            std::vector<T*> result {};
+
+            for (ActorComponent* component : getComponents())
+            {
+                if (typeid(*component) != typeid(T))
+                {
+                    continue;
+                }
+
+                result.push_back(static_cast<T*>(component));
+            }
+
+            return result;
+        }
 
     private:
         std::vector<Actor*> m_actors;
         std::unique_ptr<Observable<Actor*>> m_actorObservable;
 
-        std::vector<MeshComponent*> m_meshes;
-        std::unique_ptr<Observable<MeshComponent*>> m_meshObservable;
+        std::vector<ActorComponent*> m_components;
+        std::unique_ptr<Observable<ActorComponent*>> m_componentObservable;
     };
 }

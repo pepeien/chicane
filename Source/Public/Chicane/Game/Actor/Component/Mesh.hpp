@@ -10,6 +10,7 @@ namespace Chicane
     {
     public:
         MeshComponent();
+        virtual ~MeshComponent() = default;
 
     public:
         void onActivation() override;
@@ -23,6 +24,13 @@ namespace Chicane
         void setMesh(const std::string& inMesh);
 
     protected:
+        void handleDrawability();
+        void activateMesh();
+        void deactivateMesh();
+
+    protected:
+        bool m_isMeshActive;
+
         Box::Instance m_mesh;
     };
 }

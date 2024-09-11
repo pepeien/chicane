@@ -6,53 +6,40 @@
 namespace Chicane
 {
     MeshComponent::MeshComponent()
-        : ActorComponent()
-    {}
+        : ActorComponent(),
+        m_isMeshActive(false)
+    {
+        addComponent(this);
+    }
 
     void MeshComponent::onActivation()
     {
-        if (!isDrawable())
+        if (!hasActiveLevel())
         {
             return;
         }
 
-        for (const Box::Entry& entry : m_mesh.entries)
-        {
-            if (entry.type == Box::EntryType::Model)
-            {
-                Loader::getModelManager()->use(entry.reference);
-            }
-        }
-
-        getActiveLevel()->addMesh(this);
+        activateMesh();
     }
 
     void MeshComponent::onDeactivation()
     {
-        if (!hasMesh() || !hasActiveLevel())
+        if (!hasActiveLevel())
         {
             return;
         }
 
-        for (const Box::Entry& entry : m_mesh.entries)
-        {
-            if (entry.type == Box::EntryType::Model)
-            {
-                Loader::getModelManager()->unUse(entry.reference);
-            }
-        }
+        deactivateMesh();
     }
 
     bool MeshComponent::isDrawable() const
     {
-        if (!hasActiveCamera())
+        if (!hasActiveCamera() || !hasActiveLevel())
         {
             return false;
         }
 
-        bool isWithinFrustum = getActiveCamera()->isWithinFrustum(this);
-
-        return hasMesh() && hasActiveLevel() && isActive() && isWithinFrustum;
+        return hasMesh() && isActive() && m_isMeshActive;
     }
 
     bool MeshComponent::hasMesh() const
@@ -68,5 +55,58 @@ namespace Chicane
     void MeshComponent::setMesh(const std::string& inMesh)
     {
         m_mesh = Loader::loadMesh(inMesh);
+    }
+
+    void MeshComponent::handleDrawability()
+    {
+        if (!hasActiveCamera())
+        {
+            return;
+        }
+
+        if (getActiveCamera()->canSee(this))
+        {
+            activateMesh();
+        }
+        else
+        {
+            deactivateMesh();
+        }
+    }
+
+    void MeshComponent::activateMesh()
+    {
+        if (m_isMeshActive)
+        {
+            return;
+        }
+
+        for (const Box::Entry& entry : m_mesh.entries)
+        {
+            if (entry.type == Box::EntryType::Model)
+            {
+                Loader::getModelManager()->activate(entry.reference);
+            }
+        }
+
+        m_isMeshActive = true;
+    }
+
+    void MeshComponent::deactivateMesh()
+    {
+        if (!m_isMeshActive)
+        {
+            return;
+        }
+
+        for (const Box::Entry& entry : m_mesh.entries)
+        {
+            if (entry.type == Box::EntryType::Model)
+            {
+                Loader::getModelManager()->deactivate(entry.reference);
+            }
+        }
+
+        m_isMeshActive = false;
     }
 }

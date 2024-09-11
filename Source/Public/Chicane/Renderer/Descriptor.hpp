@@ -41,7 +41,7 @@ namespace Chicane
             const SetLayoutBidingsCreateInfo& inBidingsCreateInfo
         );
 
-        void initSet(
+        void allocalteSetLayout(
             vk::DescriptorSet& outDescriptorSet,
             const vk::Device& inLogicalDevice,
             const vk::DescriptorSetLayout& inLayout,

@@ -6,7 +6,7 @@ namespace Chicane
 {
     Level::Level()
         : m_actorObservable(std::make_unique<Observable<Actor*>>()),
-        m_meshObservable(std::make_unique<Observable<MeshComponent*>>())
+        m_componentObservable(std::make_unique<Observable<ActorComponent*>>())
     {}
 
     Level::~Level()
@@ -59,47 +59,40 @@ namespace Chicane
         )->next(m_actors.empty() ? nullptr : m_actors.back());
     }
 
-    bool Level::hasMeshes() const
+    bool Level::hasComponents() const
     {
-        return std::find_if(
-            m_meshes.begin(),
-            m_meshes.end(),
-            [](MeshComponent* inMesh) { return inMesh->isDrawable(); }
-        ) != m_meshes.end();
+        return m_components.size() > 0;
     }
 
-    const std::vector<MeshComponent*>& Level::getMeshes() const
+    const std::vector<ActorComponent*>& Level::getComponents() const
     {
-        return m_meshes;
+        return m_components;
     }
 
-    void Level::addMesh(MeshComponent* inMesh)
+    void Level::addComponent(ActorComponent* inComponent)
     {
-        if (!inMesh)
+        if (!inComponent)
         {
             return;
         }
 
-        bool isDuplicate   = std::find(m_meshes.begin(), m_meshes.end(), inMesh) != m_meshes.end();
-        bool isDeactivated = !inMesh->isActive();
-
-        if (isDuplicate || isDeactivated)
+        if (std::find(m_components.begin(), m_components.end(), inComponent) != m_components.end())
         {
             return;
         }
 
-        m_meshes.push_back(inMesh);
+        m_components.push_back(inComponent);
 
-        m_meshObservable->next(inMesh);
+        m_componentObservable->next(inComponent);
     }
 
-    void Level::watchMeshes(
-        std::function<void (MeshComponent*)> inNextCallback,
+    void Level::watchComponents(
+        std::function<void (ActorComponent*)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     )
     {
-        m_meshObservable->subscribe(
+        m_componentObservable->subscribe(
             inNextCallback,
             inErrorCallback,
             inCompleteCallback

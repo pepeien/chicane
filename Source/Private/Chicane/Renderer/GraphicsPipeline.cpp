@@ -193,13 +193,16 @@ namespace Chicane
 
         vk::PipelineLayout createLayout(
             const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
+            const std::vector<vk::PushConstantRange>& inPushConstantRanges,
             const vk::Device& inLogicalDevice
         )
         {
             vk::PipelineLayoutCreateInfo layoutCreateInfo {};
-            layoutCreateInfo.flags          = vk::PipelineLayoutCreateFlags();
-            layoutCreateInfo.setLayoutCount = static_cast<uint32_t>(inDescriptorSetLayouts.size());
-            layoutCreateInfo.pSetLayouts    = inDescriptorSetLayouts.data();
+            layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
+            layoutCreateInfo.setLayoutCount         = static_cast<uint32_t>(inDescriptorSetLayouts.size());
+            layoutCreateInfo.pSetLayouts            = inDescriptorSetLayouts.data();
+            layoutCreateInfo.pushConstantRangeCount = static_cast<uint32_t>(inPushConstantRanges.size());
+            layoutCreateInfo.pPushConstantRanges    = inPushConstantRanges.data();
 
             return inLogicalDevice.createPipelineLayout(layoutCreateInfo);
         }
@@ -339,6 +342,7 @@ namespace Chicane
             m_swapChainImageFormat(inCreateInfo.swapChainImageFormat),
             m_depthFormat(inCreateInfo.depthFormat),
             m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts),
+            m_pushConstantRanges(inCreateInfo.pushConstantRanges),
             m_logicalDevice(inCreateInfo.logicalDevice),
             m_polygonMode(inCreateInfo.polygonMode)
         {
@@ -441,6 +445,7 @@ namespace Chicane
 
             layout = createLayout(
                 m_descriptorSetLayouts,
+                m_pushConstantRanges,
                 m_logicalDevice
             );
 

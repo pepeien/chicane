@@ -47,6 +47,7 @@ namespace Chicane
             const std::string& inId = ""
         );
 
+        void tick();
         void run();
 
         void onEvent(const SDL_Event& inEvent);

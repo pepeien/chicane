@@ -211,7 +211,7 @@ namespace Chicane
         for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             vk::DescriptorSet descriptorSet;
-            Descriptor::initSet(
+            Descriptor::allocalteSetLayout(
                 descriptorSet,
                 m_rendererInternals.logicalDevice,
                 m_frameDescriptor.setLayout,

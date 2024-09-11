@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Box.hpp"
+#include "Chicane/Core/Event.hpp"
 #include "Chicane/Renderer/Texture.hpp"
 
 namespace Chicane
@@ -19,10 +20,11 @@ namespace Chicane
         class Manager
         {
         public:
-            ~Manager();
+            Manager();
 
         public:
-            uint32_t getCount() const;
+            bool isEmpty() const;
+            bool canBind() const;
 
             bool contains(const std::string& inId) const;
             void add(const std::string& inId, const Box::Entry& inEntry);
@@ -44,11 +46,19 @@ namespace Chicane
                 const vk::DescriptorPool& inDescriptorPool
             );
 
+            void watchChanges(
+                std::function<void (void*)> inNextCallback,
+                std::function<void (const std::string&)> inErrorCallback = nullptr,
+                std::function<void ()> inCompleteCallback = nullptr
+            );
+
         private:
             std::vector<std::string> m_registeredIds;
 
             std::unordered_map<std::string, std::vector<unsigned char>> m_dataMap;
             std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instanceMap;
+
+            std::unique_ptr<Observable<void*>> m_observable;
         };
     }
 }

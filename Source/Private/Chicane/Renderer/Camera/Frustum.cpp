@@ -6,21 +6,11 @@ namespace Chicane
     {
         void Plane::update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint)
         {
-            setNormal(inNormal);
-            setDistance(inPoint);
-        }
-
-        void Plane::setDistance(const Vec<3, float>& inPoint)
-        {
+            normal   = glm::normalize(inNormal);
             distance = normal.dot(inPoint);
         }
 
-        void Plane::setNormal(const Vec<3, float>& inNormal)
-        {
-            normal = glm::normalize(inNormal);
-        }
-
-        float Plane::getSignedDistanceToPlan(const Vec<3, float>& inPoint) const
+        float Plane::getDistance(const Vec<3, float>& inPoint) const
         {
         	return normal.dot(inPoint) - distance;
         }
