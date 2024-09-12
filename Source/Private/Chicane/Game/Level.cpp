@@ -11,11 +11,16 @@ namespace Chicane
 
     Level::~Level()
     {
+        for (ActorComponent* component : m_components)
+        {
+            delete component;
+        }
+        m_components.clear();
+
         for (Actor* actor : m_actors)
         {
             delete actor;
         }
-
         m_actors.clear();
     }
 

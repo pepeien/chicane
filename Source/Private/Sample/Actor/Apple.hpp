@@ -13,5 +13,5 @@ public:
     void onTick(float inDeltaTime) override;
 
 private:
-    std::unique_ptr<Chicane::MeshComponent> m_mesh;
+    Chicane::MeshComponent* m_mesh;
 };

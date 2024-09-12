@@ -4,7 +4,7 @@
 
 Apple::Apple()
     : Chicane::Actor(),
-    m_mesh(std::make_unique<Chicane::MeshComponent>())
+    m_mesh(new Chicane::MeshComponent())
 {
     setCanTick(true);
     setAbsoluteScale(Chicane::Vec<3, float>(0.05f));

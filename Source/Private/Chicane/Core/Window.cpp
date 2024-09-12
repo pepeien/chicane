@@ -409,6 +409,8 @@ namespace Chicane
 
         SDL_SetWindowIcon(instance, icon);
         SDL_DestroySurface(icon);
+
+        delete data;
     }
 
     void Window::setDisplay(int inMonitorIndex)

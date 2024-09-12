@@ -9,7 +9,7 @@ namespace Chicane
 {
     CameraActor::CameraActor()
         : Pawn(),
-        m_camera(std::make_unique<CameraComponent>())
+        m_camera(new CameraComponent())
     {
         m_camera->attachTo(this);
     }

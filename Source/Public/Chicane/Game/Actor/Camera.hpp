@@ -27,6 +27,6 @@ namespace Chicane
         void moveRight(bool isKeyDown);
 
     protected:
-        std::unique_ptr<CameraComponent> m_camera;
+        CameraComponent* m_camera;
     };
 }
