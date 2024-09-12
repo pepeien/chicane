@@ -8,6 +8,8 @@ namespace Chicane
         : m_transform({}),
         m_position(Mat<4, float>(1.0f)),
         m_direction({}),
+        m_baseBounds({}),
+        m_bounds({}),
         m_transformObservable(std::make_unique<Observable<const Transform&>>())
     {}
 
@@ -101,9 +103,50 @@ namespace Chicane
         return m_direction.up;
     }
 
+    const Vec<3, float>& Transformable::getTop() const
+    {
+        return m_top;
+    }
+
     const Vec<3, float>& Transformable::getCenter() const
     {
         return m_center;
+    }
+
+    const Vec<3, float>& Transformable::getOrigin() const
+    {
+        return m_bounds.origin;
+    }
+
+    const Vec<3, float>& Transformable::getExtent() const
+    {
+        return m_bounds.extent;
+    }
+
+    const Bounds& Transformable::getBounds() const
+    {
+        return m_bounds;
+    }
+
+    void Transformable::refreshBounds()
+    {
+        m_bounds.extent  = m_baseBounds.extent * m_transform.scale;
+
+        m_bounds.origin  = m_baseBounds.origin;
+        m_bounds.origin += m_transform.translation;
+
+        m_top    = m_bounds.origin;
+        m_top.z += m_bounds.extent.z;
+
+        m_center    = m_top;
+        m_center.z *= 0.5f;
+    }
+
+    void Transformable::setBounds(const Bounds& inBounds)
+    {
+        m_baseBounds = inBounds;
+
+        refreshBounds();
     }
 
     Subscription<const Transform&>* Transformable::watchTransform(
@@ -180,6 +223,7 @@ namespace Chicane
             m_transform.scale
         );
 
+        refreshBounds();
         refreshOrientation();
     }
 
@@ -202,7 +246,5 @@ namespace Chicane
         m_direction.forward  = glm::rotate(m_orientation, FORWARD_DIRECTION);
         m_direction.right    = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_direction.up       = glm::rotate(m_orientation, UP_DIRECTION);
-
-        m_center = getTranslation() + getForward();
     }
 }

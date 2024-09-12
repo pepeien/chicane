@@ -12,6 +12,8 @@
 
 namespace Chicane
 {
+    class MeshComponent;
+
     namespace Frame
     {
         struct Depth
@@ -41,8 +43,8 @@ namespace Chicane
             void setupCameraUBO();
             void destroyCameraUBO();
 
-            void setupModelData(Level* inLevel);
-            void updateModelData(Level* inLevel);
+            void setupModelData(const std::vector<MeshComponent*>& inMeshes);
+            void updateModelData(const std::vector<MeshComponent*>& inMeshes);
             void destroyModelData();
     
             void setupDepthBuffering(const vk::Format& inFormat);
@@ -58,9 +60,6 @@ namespace Chicane
             void updateDescriptorSets();
 
             void destroy();
-
-        private:
-            std::vector<MeshComponent*> getDrawableModels(Level* inLevel);
 
         public:
             vk::Device logicalDevice;

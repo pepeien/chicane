@@ -10,7 +10,7 @@ namespace Chicane
     {
         vk::Viewport createViewport(
             const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0),
-            const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
+            const Vec<2, float>& inPosition = Vec2Zero
         );
         vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
         vk::PipelineShaderStageCreateInfo createVertexShader(

@@ -15,6 +15,8 @@ namespace Chicane
     public:
         void onActivation() override;
         void onDeactivation() override;
+        void onAttachment(Actor* inActor) override;
+        void onTick(float inDeltaTime) override;
 
     public:
         bool isDrawable() const;

@@ -8,9 +8,7 @@ namespace Chicane
     MeshComponent::MeshComponent()
         : ActorComponent(),
         m_isMeshActive(false)
-    {
-        addComponent(this);
-    }
+    {}
 
     void MeshComponent::onActivation()
     {
@@ -20,6 +18,8 @@ namespace Chicane
         }
 
         activateMesh();
+
+        addComponent(this);
     }
 
     void MeshComponent::onDeactivation()
@@ -30,6 +30,21 @@ namespace Chicane
         }
 
         deactivateMesh();
+    }
+
+    void MeshComponent::onAttachment(Actor* inActor)
+    {
+        if (!inActor)
+        {
+            return;
+        }
+
+        inActor->setBounds(getBounds());
+    }
+
+    void MeshComponent::onTick(float inDeltaTime)
+    {
+        //handleDrawability();
     }
 
     bool MeshComponent::isDrawable() const
@@ -55,6 +70,42 @@ namespace Chicane
     void MeshComponent::setMesh(const std::string& inMesh)
     {
         m_mesh = Loader::loadMesh(inMesh);
+
+        Bounds bounds {};
+
+        for (const Box::Entry& entry : m_mesh.entries)
+        {
+            if (entry.type != Box::EntryType::Model)
+            {
+                continue;
+            }
+
+            const Vec<3, float>& currentExtent = Loader::getModelManager()->getBounds(entry.reference);
+
+            if (currentExtent.x > bounds.extent.x)
+            {
+                bounds.extent.x += currentExtent.x;
+            }
+
+            if (currentExtent.y > bounds.extent.y)
+            {
+                bounds.extent.y += currentExtent.y;
+            }
+
+            if (currentExtent.z > bounds.extent.z)
+            {
+                bounds.extent.z += currentExtent.z;
+            }
+        }
+
+        setBounds(bounds);
+
+        if (!isAttached())
+        {
+            return;
+        }
+
+        getAttachment()->setBounds(bounds);
     }
 
     void MeshComponent::handleDrawability()

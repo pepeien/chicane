@@ -35,17 +35,17 @@ namespace Chicane
                 Vertex::Instance vertex;
                 vertex.color = Vec<3, float>(1.0f, 0.0f, 0.0f);
 
-                vertex.position   = Vec<3, float>(0.0f);
+                vertex.position   = Vec3Zero;
                 vertex.position.x = inMesh->positions[inIndices.p * 3 + 0];
                 vertex.position.y = inMesh->positions[inIndices.p * 3 + 1];
                 vertex.position.z = inMesh->positions[inIndices.p * 3 + 2];
 
-                vertex.normal   = Vec<3, float>(0.0f);
+                vertex.normal   = Vec3Zero;
                 vertex.normal.x = inMesh->normals[inIndices.n * 3 + 0];
                 vertex.normal.y = inMesh->normals[inIndices.n * 3 + 1];
                 vertex.normal.z = inMesh->normals[inIndices.n * 3 + 2];
 
-                vertex.texturePosition   = Vec<2, float>(0.0f);
+                vertex.texturePosition   = Vec2Zero;
                 vertex.texturePosition.x = inMesh->texcoords[inIndices.t * 2 + 0];
                 vertex.texturePosition.y = inMesh->texcoords[inIndices.t * 2 + 1];
 

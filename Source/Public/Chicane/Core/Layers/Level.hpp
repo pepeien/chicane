@@ -39,16 +39,20 @@ namespace Chicane
         void initGraphicsPipeline();
         void initFramebuffers();
         void buildTextures();
-        void buildModelVertexData();
-        void destroyMeshVertexData();
+        void buildModelData();
+        void destroyModelData();
+        void rebuildModelData();
 
         void setupFrames();
         void setFramesAsDirty();
+
+        void updateMeshes();
 
     private:
         Renderer::Internals m_internals;
 
         Level* m_level;
+        std::vector<MeshComponent*> m_meshes;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
         vk::DescriptorSet m_descriptorSet;

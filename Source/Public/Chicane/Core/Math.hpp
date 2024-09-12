@@ -37,10 +37,13 @@ namespace Chicane
         {}
     };
 
+    const Vec<2, float> Vec2Zero = Vec<2, float>(0.0f);
+    const Vec<3, float> Vec3Zero = Vec<3, float>(0.0f);
+
     struct Transform
     {
-        Vec<3, float> translation = Vec<3, float>(0.0f);
-        Vec<3, float> rotation    = Vec<3, float>(0.0f);
+        Vec<3, float> translation = Vec3Zero;
+        Vec<3, float> rotation    = Vec3Zero;
         Vec<3, float> scale       = Vec<3, float>(1.0f);
     };
 
@@ -48,6 +51,12 @@ namespace Chicane
     {
         Vec<3, float> forward = FORWARD_DIRECTION;
         Vec<3, float> up      = UP_DIRECTION;
-        Vec<3, float> right  = RIGHT_DIRECTION;
+        Vec<3, float> right   = RIGHT_DIRECTION;
+    };
+
+    struct Bounds
+    {
+        Vec<3, float> extent = Vec3Zero;
+        Vec<3, float> origin = Vec3Zero;
     };
 }

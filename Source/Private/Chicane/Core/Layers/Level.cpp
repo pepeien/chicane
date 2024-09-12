@@ -2,7 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Actor/Component.hpp"
+#include "Chicane/Game/Actor/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -29,7 +29,7 @@ namespace Chicane
         m_internals.logicalDevice.waitIdle();
 
         destroyTextureResources();
-        destroyMeshVertexData();
+        destroyModelData();
 
         m_graphicsPipeline.reset();
     }
@@ -54,9 +54,9 @@ namespace Chicane
         m_isInitialized = true;
 
         buildTextures();
-        buildModelVertexData();
+        buildModelData();
 
-        setupFrames();
+        updateMeshes();
     }
 
     void LevelLayer::destroy()
@@ -89,7 +89,7 @@ namespace Chicane
             return;
         }
 
-        outFrame.updateModelData(m_level);
+        outFrame.updateModelData(m_meshes);
     }
 
     void LevelLayer::render(
@@ -167,20 +167,8 @@ namespace Chicane
 
         m_level->watchComponents(
             [&](ActorComponent* inComponent)
-            {                
-                if (typeid(*inComponent) != typeid(MeshComponent))
-                {
-                    return;
-                }
-
-                if (!m_isInitialized)
-                {
-                    build();
-
-                    return;
-                }
-
-                setFramesAsDirty();
+            {
+                updateMeshes();
             }
         );
 
@@ -189,13 +177,6 @@ namespace Chicane
             {
                 if (m_textureManager->isEmpty())
                 {
-                    return;
-                }
-
-                if (!m_isInitialized)
-                {
-                    build();
-
                     return;
                 }
 
@@ -215,19 +196,10 @@ namespace Chicane
 
                 if (inSubject == Model::Manager::EventSubject::Allocation)
                 {
-                    if (!m_modelManager->isEmpty())
-                    {
-                        destroyMeshVertexData();
-                        buildModelVertexData();
-                    }
-
-                    setFramesAsDirty();
+                    rebuildModelData();
                 }
 
-                if (inSubject == Model::Manager::EventSubject::Use)
-                {
-                    setFramesAsDirty();
-                }
+                updateMeshes();
             }
         );
     }
@@ -418,7 +390,7 @@ namespace Chicane
         );
     }
 
-    void LevelLayer::buildModelVertexData()
+    void LevelLayer::buildModelData()
     {
         if (!m_isInitialized)
         {
@@ -435,7 +407,7 @@ namespace Chicane
         );
     }
 
-    void LevelLayer::destroyMeshVertexData()
+    void LevelLayer::destroyModelData()
     {
         if (!m_isInitialized)
         {
@@ -454,6 +426,23 @@ namespace Chicane
         );
     }
 
+    void LevelLayer::rebuildModelData()
+    {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
+        destroyModelData();
+
+        if (m_modelManager->isEmpty())
+        {
+            return;
+        }
+
+        buildModelData();
+    }
+
     void LevelLayer::setupFrames()
     {
         if (!m_isInitialized)
@@ -463,8 +452,7 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
-            frame.destroyModelData();
-            frame.setupModelData(m_level);
+            frame.setupModelData(m_meshes);
         }
     }
 
@@ -478,6 +466,36 @@ namespace Chicane
         for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
             frame.setAsDirty();
+        }
+    }
+
+    void LevelLayer::updateMeshes()
+    {
+        if (!m_isInitialized)
+        {
+            return;
+        }
+
+        std::vector<MeshComponent*> latestMeshes = m_level->getComponents<MeshComponent>();
+
+        std::uint32_t currentMeshCount = m_meshes.size();
+        m_meshes.clear();
+
+        m_meshes.reserve(latestMeshes.size());
+
+        for (MeshComponent* mesh : latestMeshes)
+        {
+            if (!mesh->isDrawable())
+            {
+                continue;
+            }
+
+            m_meshes.push_back(mesh);
+        }
+
+        if (m_meshes.size() != currentMeshCount)
+        {
+            setFramesAsDirty();
         }
     }
 }

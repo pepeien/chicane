@@ -42,6 +42,8 @@ namespace Chicane
             bool isAllocated(const std::string& inId) const;
             bool isUsing(const std::string& inId) const;
 
+            const Vec<3, float>& getBounds(const std::string& inId);
+
             void load(const std::string& inId, const Box::Entry& inEntry);
             void activate(const std::string& inId);
             void deactivate(const std::string& inId);
@@ -87,6 +89,8 @@ namespace Chicane
                 const vk::Queue& inQueue,
                 const vk::CommandBuffer& inCommandBuffer
             );
+
+            Vec<3, float> getExtent(const std::vector<Vertex::Instance>& inVertices);
 
         private:
             std::unordered_map<std::string, Model::Instance> m_instanceMap;

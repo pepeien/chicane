@@ -15,7 +15,7 @@ namespace Chicane
     protected:
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
-        virtual void onAttachment() { return; }
+        virtual void onAttachment(Actor* inActor) { return; }
         virtual void onTick(float inDeltaTime) { return; }
 
     public:

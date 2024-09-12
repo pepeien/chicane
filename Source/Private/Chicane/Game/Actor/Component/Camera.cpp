@@ -29,13 +29,13 @@ namespace Chicane
                 updateView();
             }
         );
-
-        addComponent(this);
     }
 
     void CameraComponent::onActivation()
     {
         setActiveCamera(this);
+
+        addComponent(this);
     }
 
     void CameraComponent::onDeactivation()
@@ -163,9 +163,11 @@ namespace Chicane
 
     void CameraComponent::updateView()
     {
+        const Vec<3, float>& translation = getTranslation();
+
         m_UBO.view = glm::lookAt(
-            getTranslation(),
-            getCenter(),
+            translation,
+            translation + getForward(),
             getUp()
         );
 

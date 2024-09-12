@@ -4,7 +4,7 @@
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Game/Actor.hpp"
-#include "Chicane/Game/Actor/Component/Mesh.hpp"
+#include "Chicane/Game/Actor/Component.hpp"
 
 namespace Chicane
 {

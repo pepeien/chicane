@@ -37,6 +37,16 @@ namespace Chicane
             ) != m_usedIds.end();
         }
 
+        const Vec<3, float>& Manager::getBounds(const std::string& inId)
+        {
+            if (!isLoaded(inId))
+            {
+                return Vec3Zero;
+            }
+
+            return m_instanceMap.at(inId).extent;
+        }
+
         void Manager::load(const std::string& inId, const Box::Entry& inEntry)
         {
             if (isLoaded(inId))
@@ -46,29 +56,21 @@ namespace Chicane
 
             ParseResult result {};
 
-            std::clock_t start = std::clock();
-                switch (static_cast<Vendor>(inEntry.vendor))
-                {
-                case Vendor::Wavefront:
-                    Wavefront::parse(result, inEntry.data);
+            switch (static_cast<Vendor>(inEntry.vendor))
+            {
+            case Vendor::Wavefront:
+                Wavefront::parse(result, inEntry.data);
 
-                    break;
+                break;
 
-                default:
-                    throw std::runtime_error("Failed to import Model due to invalid type");
-                }
-            std::clock_t end = std::clock();
+            default:
+                throw std::runtime_error("Failed to import Model due to invalid type");
+            }
 
             Model::Instance newModel {};
             newModel.vertexInstances = result.vertices;
             newModel.vertexIndices   = result.indexes;
-
-            LOG_EMMIT("MODEL LOAD", "============================================================================", Log::COLOR_BLUE);
-            LOG_EMMIT("MODEL LOAD", "Name:            " + inId,                                                     Log::COLOR_BLUE);
-            LOG_EMMIT("MODEL LOAD", "Type:            " + std::to_string(inEntry.vendor),                           Log::COLOR_BLUE);
-            LOG_EMMIT("MODEL LOAD", "Triangle Count:  " + std::to_string(result.vertices.size()),                   Log::COLOR_BLUE);
-            LOG_EMMIT("MODEL LOAD", "Processing Time: " + std::to_string(Telemetry::deltaToMs(end - start)) + "ms", Log::COLOR_BLUE);
-            LOG_EMMIT("MODEL LOAD", "============================================================================", Log::COLOR_BLUE);
+            newModel.extent          = getExtent(result.vertices);
 
             m_instanceMap.insert(std::make_pair(inId, newModel));
 
@@ -401,6 +403,60 @@ namespace Chicane
             );
 
             Buffer::destroy(inLogicalDevice, stagingBuffer);
+        }
+
+        Vec<3, float> Manager::getExtent(const std::vector<Vertex::Instance>& inVertices)
+        {
+            float xMin = FLT_MAX;
+            float xMax = -FLT_MAX;
+
+            float yMin = FLT_MAX;
+            float yMax = -FLT_MAX;
+
+            float zMin = FLT_MAX;
+            float zMax = -FLT_MAX;
+
+            for (const Vertex::Instance& vertex : inVertices)
+            {
+                const Vec<3, float>& position = vertex.position;
+
+                if (position.x < xMin)
+                {
+                    xMin = position.x;
+                }
+
+                if (position.x > xMax)
+                {
+                    xMax = position.x;
+                }
+
+                if (position.y < yMin)
+                {
+                    yMin = position.y;
+                }
+
+                if (position.y > yMax)
+                {
+                    yMax = position.y;
+                }
+
+                if (position.z < zMin)
+                {
+                    zMin = position.z;
+                }
+
+                if (position.z > zMax)
+                {
+                    zMax = position.z;
+                }
+            }
+
+            Vec<3, float> result {};
+            result.x = xMax - xMin;
+            result.y = yMax - yMin;
+            result.z = zMax - zMin;
+
+            return result;
         }
     }
 }

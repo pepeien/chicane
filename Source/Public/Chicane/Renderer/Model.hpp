@@ -39,11 +39,12 @@ namespace Chicane
             std::vector<uint32_t>                     indexes;
             std::unordered_map<std::string, uint32_t> indexesMap;
         };
-        
+
         struct Instance
         {
             std::vector<Vertex::Instance> vertexInstances;
             std::vector<uint32_t>         vertexIndices;
+            Vec<3, float>                 extent;
         };
     }
 }

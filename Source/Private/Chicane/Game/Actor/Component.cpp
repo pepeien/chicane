@@ -74,7 +74,7 @@ namespace Chicane
             );
         }
 
-        onAttachment();
+        onAttachment(inAttachment);
     }
 
     const Transform& ActorComponent::getBase() const

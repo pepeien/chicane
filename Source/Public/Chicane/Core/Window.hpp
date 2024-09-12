@@ -73,7 +73,7 @@ namespace Chicane
 
         void setViewport(
             const Vec<2, std::uint32_t>& inSize,
-            const Vec<2, float>& inPosition = Vec<2, float>(0.0f)
+            const Vec<2, float>& inPosition = Vec2Zero
         );
 
         void setDisplay(int inMonitorIndex);
