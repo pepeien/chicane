@@ -37,10 +37,12 @@ namespace Chicane
         void initImgui();
 
     private:
-        Window* m_window;
-        Renderer::Internals m_internals;
+        Window*                     m_window;
+        Renderer::Internals         m_internals;
 
-        vk::RenderPass m_renderPass;
-        vk::DescriptorPool m_descriptorPool;
+        vk::RenderPass              m_renderPass;
+        vk::DescriptorPool          m_descriptorPool;
+
+        std::vector<vk::ClearValue> m_clearValues;
     };
 }

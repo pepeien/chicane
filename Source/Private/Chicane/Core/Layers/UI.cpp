@@ -7,10 +7,13 @@ namespace Chicane
 {
     UILayer::UILayer(Window* inWindow)
         : Layer("UI"),
-        m_window(inWindow)
+        m_window(inWindow),
+        m_clearValues({})
     {
         m_isInitialized = Grid::hasViews();
-        m_internals = inWindow->getRendererInternals();
+        m_internals     = inWindow->getRendererInternals();
+
+        m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
         if (!m_isInitialized)
         {
@@ -150,26 +153,20 @@ namespace Chicane
             return;
         }
 
-        // Renderpass
-        std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
-
         vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_renderPass;
         renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(m_clearValues.size());
+        renderPassBeginInfo.pClearValues        = m_clearValues.data();
 
         inCommandBuffer.beginRenderPass(
             &renderPassBeginInfo,
             vk::SubpassContents::eInline
         );
-
-        ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), inCommandBuffer);
-
+            ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), inCommandBuffer);
         inCommandBuffer.endRenderPass();
 
         ImGui::EndFrame();

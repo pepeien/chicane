@@ -49,21 +49,23 @@ namespace Chicane
         void updateMeshes();
 
     private:
-        Renderer::Internals m_internals;
+        Renderer::Internals                         m_internals;
 
-        Level* m_level;
-        std::vector<MeshComponent*> m_meshes;
+        Level*                                      m_level;
+        std::vector<MeshComponent*>                 m_meshes;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
-        vk::DescriptorSet m_descriptorSet;
+        vk::DescriptorSet                           m_descriptorSet;
 
-        Descriptor::Bundle m_frameDescriptor;
-        Descriptor::Bundle m_texturelDescriptor;
+        Descriptor::Bundle                          m_frameDescriptor;
+        Descriptor::Bundle                          m_texturelDescriptor;
 
-        Buffer::Instance m_modelVertexBuffer;
-        Buffer::Instance m_modelIndexBuffer;
+        Buffer::Instance                            m_modelVertexBuffer;
+        Buffer::Instance                            m_modelIndexBuffer;
 
-        Texture::Manager* m_textureManager;
-        Model::Manager* m_modelManager;
+        Texture::Manager*                           m_textureManager;
+        Model::Manager*                             m_modelManager;
+
+        std::vector<vk::ClearValue>                 m_clearValues;
     };
 }

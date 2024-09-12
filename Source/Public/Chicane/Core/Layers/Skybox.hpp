@@ -38,12 +38,14 @@ namespace Chicane
         void buildAssets();
 
     private:
-        Renderer::Internals m_rendererInternals;
+        Renderer::Internals                         m_rendererInternals;
 
         std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
-        vk::DescriptorSet m_descriptorSet;
-        Descriptor::Bundle m_frameDescriptor;
-        Descriptor::Bundle m_materialDescriptor;
+        vk::DescriptorSet                           m_descriptorSet;
+        Descriptor::Bundle                          m_frameDescriptor;
+        Descriptor::Bundle                          m_materialDescriptor;
+
+        std::vector<vk::ClearValue>                 m_clearValues;
     };
 }

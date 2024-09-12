@@ -7,9 +7,13 @@
 namespace Chicane
 {
     LevelLayer::LevelLayer(Window* inWindow)
-        : Layer("Level")
+        : Layer("Level"),
+        m_clearValues({})
     {
         m_internals = inWindow->getRendererInternals();
+
+        m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+        m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
         if (!hasActiveLevel())
         {
@@ -36,7 +40,7 @@ namespace Chicane
 
     bool LevelLayer::canRender() const
     {
-        return m_textureManager->canBind() && m_modelManager->canDraw();
+        return m_textureManager->canBind() && m_modelManager->canDraw() && !m_meshes.empty();
     }
 
     void LevelLayer::build()
@@ -79,7 +83,7 @@ namespace Chicane
         initFramebuffers();
         initFrameResources();
 
-        setupFrames();
+        updateMeshes();
     }
 
     void LevelLayer::setup(Frame::Instance& outFrame)
@@ -103,18 +107,14 @@ namespace Chicane
             return;
         }
 
-        std::vector<vk::ClearValue> clearValues;
-        clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
-        clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
-
         vk::RenderPassBeginInfo renderPassBeginInfo {};
         renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
         renderPassBeginInfo.framebuffer         = outFrame.getFramebuffer(m_id);
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(clearValues.size());
-        renderPassBeginInfo.pClearValues        = clearValues.data();
+        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(m_clearValues.size());
+        renderPassBeginInfo.pClearValues        = m_clearValues.data();
 
         inCommandBuffer.beginRenderPass(
             &renderPassBeginInfo,

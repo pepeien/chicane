@@ -170,9 +170,9 @@ namespace Chicane
                 m_renderer->render();
             m_endFrame   = std::clock();
 
-            tick();
-
             updateTelemetry();
+
+            tick();
         }
     }
 

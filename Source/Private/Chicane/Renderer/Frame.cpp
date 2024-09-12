@@ -157,11 +157,17 @@ namespace Chicane
             {
                 modelData.transforms.push_back(mesh->getPosition());
             }
+
+            memcpy(
+                modelData.writeLocation,
+                modelData.transforms.data(),
+                modelData.allocationSize
+            );
         }
 
         void Instance::updateModelData(const std::vector<MeshComponent*>& inMeshes)
         {
-            if (isDirty())
+            if (isDirty() || modelData.transforms.size() != inMeshes.size())
             {
                 setupModelData(inMeshes);
 
