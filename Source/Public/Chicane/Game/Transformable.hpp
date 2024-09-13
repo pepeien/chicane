@@ -10,6 +10,7 @@ namespace Chicane
     {
     public:
         Transformable();
+        ~Transformable() = default;
 
     public:
         // Transform

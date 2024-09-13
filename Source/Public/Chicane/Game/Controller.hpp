@@ -11,6 +11,7 @@ namespace Chicane
     {
     public:
         Controller();
+        virtual ~Controller() = default;
 
     public:
         template<class T = Pawn>

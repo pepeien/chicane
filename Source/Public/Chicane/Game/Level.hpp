@@ -12,7 +12,7 @@ namespace Chicane
     {
     public:
         Level();
-        ~Level();
+        virtual ~Level();
 
     public:
         bool hasActors() const;

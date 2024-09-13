@@ -10,6 +10,7 @@ namespace Chicane
     {
     public:
         CameraActor();
+        virtual ~CameraActor() = default;
 
     protected:
         void onControlAttachment() override;

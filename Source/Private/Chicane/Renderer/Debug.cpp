@@ -48,34 +48,33 @@ namespace Chicane
             void* outUserData
         )
         {
-            std::string message = "Vk::";
+            std::string prefix = "Vk::";
             std::string color  = Chicane::Log::COLOR_WHITE;
 
             switch (inMessageType)
             {
             case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
-                message += "Performance";
+                prefix += "Performance";
 
                 break;
 
             case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
-                message += "Validation";
+                prefix += "Validation";
 
                 break;
 
             case VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT:
-                message += "Device";
+                prefix += "Device";
 
                 break;
 
             default:
-                message += "General";
+                prefix += "General";
 
                 break;
             }
 
-            message += " ";
-            message += ' ' + inData->pMessage;
+            prefix += " ";
 
             switch (inSeverity)
             {
@@ -92,7 +91,7 @@ namespace Chicane
 
             Chicane::Log::emmit(
                 "Vulkan",
-                message,
+                prefix + inData->pMessage,
                 color
             );
 

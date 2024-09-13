@@ -80,4 +80,6 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
                 ${MINGW_PATH}/lib
         )
     endif()
+
+    add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
