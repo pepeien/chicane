@@ -32,7 +32,7 @@ namespace Chicane
         }
 
         void initLogicalDevice(
-            vk::Device& outPhysicalDevice,
+            vk::Device& outLogicalDevice,
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::SurfaceKHR& inSurface
         )
@@ -64,8 +64,8 @@ namespace Chicane
                 );
             }
 
-            std::vector<const char*> layers     = { LAYERS.begin(), LAYERS.end() };
-            std::vector<const char*> extensions = { EXTENSIONS.begin(), EXTENSIONS.end() };
+            std::vector<const char*> layers     = LAYERS;
+            std::vector<const char*> extensions = EXTENSIONS;
 
             vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
             logicalDeviceFeatures.fillModeNonSolid = true;
@@ -85,7 +85,7 @@ namespace Chicane
                 &logicalDeviceFeatures
             );
 
-            outPhysicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
+            outLogicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
         }
 
         uint32_t findMemoryTypeIndex(

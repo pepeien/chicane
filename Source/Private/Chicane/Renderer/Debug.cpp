@@ -48,6 +48,11 @@ namespace Chicane
             void* outUserData
         )
         {
+            if (!inData->pMessage)
+            {
+                return VK_FALSE;
+            }
+
             std::string prefix = "Vk::";
             std::string color  = Chicane::Log::COLOR_WHITE;
 

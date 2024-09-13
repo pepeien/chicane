@@ -67,12 +67,12 @@
 #include "vulkan/vulkan.hpp"
 
 // Consts
-constexpr std::array<const char*, 1> LAYERS = {
+static const std::vector<const char*> LAYERS = {
     "VK_LAYER_KHRONOS_validation"
 };
 
-constexpr std::array<const char*, 1> EXTENSIONS = {
-    "VK_KHR_swapchain"
+static const std::vector<const char*> EXTENSIONS = {
+    VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
 constexpr std::uint32_t MAX_TEXTURE_COUNT = 100000;

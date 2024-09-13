@@ -407,10 +407,15 @@ namespace Chicane
             throw std::runtime_error(SDL_GetError());
         }
 
-        SDL_SetWindowIcon(instance, icon);
+        bool iconResult = SDL_SetWindowIcon(instance, icon);
+        
         SDL_DestroySurface(icon);
+        stbi_image_free(data);
 
-        delete data;
+        if (!iconResult)
+        {
+            throw std::runtime_error(SDL_GetError());
+        }
     }
 
     void Window::setDisplay(int inMonitorIndex)
