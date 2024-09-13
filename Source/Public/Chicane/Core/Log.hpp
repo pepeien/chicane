@@ -46,10 +46,3 @@ namespace Chicane
         );
     }
 }
-
-#define LOG_INFO(    message) Chicane::Log::info(    message)
-#define LOG_WARNING( message) Chicane::Log::warning( message)
-#define LOG_ERROR(   message) Chicane::Log::error(   message)
-#define LOG_CRITICAL(message) Chicane::Log::critical(message)
-
-#define LOG_EMMIT(identifier, message, color) Chicane::Log::emmit(identifier, message, color)

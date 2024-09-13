@@ -45,7 +45,7 @@ namespace Chicane
 
     void LevelLayer::build()
     {
-        if (m_isInitialized || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
+        if (m_bIsInitialized || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
         {
             return;
         }
@@ -55,7 +55,7 @@ namespace Chicane
         initGraphicsPipeline();
         initFramebuffers();
 
-        m_isInitialized = true;
+        m_bIsInitialized = true;
 
         buildTextures();
         buildModelData();
@@ -64,7 +64,7 @@ namespace Chicane
 
     void LevelLayer::destroy()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -74,7 +74,7 @@ namespace Chicane
 
     void LevelLayer::rebuild()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -158,7 +158,7 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        if (m_isInitialized)
+        if (m_bIsInitialized)
         {
             return;
         }
@@ -261,7 +261,7 @@ namespace Chicane
 
     void LevelLayer::destroyFrameResources()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -276,7 +276,7 @@ namespace Chicane
 
     void LevelLayer::initTextureResources()
     {
-        if (m_isInitialized)
+        if (m_bIsInitialized)
         {
             return;
         }
@@ -308,7 +308,7 @@ namespace Chicane
 
     void LevelLayer::destroyTextureResources()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -324,15 +324,15 @@ namespace Chicane
 
     void LevelLayer::initGraphicsPipeline()
     {
-        if (m_isInitialized)
+        if (m_bIsInitialized)
         {
             return;
         }
 
         GraphicsPipeline::CreateInfo createInfo {};
-        createInfo.canOverwrite          = true;
-        createInfo.hasVertices           = true;
-        createInfo.hasDepth              = true;
+        createInfo.bCanOverwrite          = true;
+        createInfo.bHasVertices           = true;
+        createInfo.bHasDepth              = true;
         createInfo.logicalDevice         = m_internals.logicalDevice;
         createInfo.vertexShaderPath      = "Content/Engine/Shaders/level.vert.spv";
         createInfo.fragmentShaderPath    = "Content/Engine/Shaders/level.frag.spv";
@@ -365,7 +365,7 @@ namespace Chicane
 
     void LevelLayer::buildTextures()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -382,7 +382,7 @@ namespace Chicane
 
     void LevelLayer::buildModelData()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -399,7 +399,7 @@ namespace Chicane
 
     void LevelLayer::destroyModelData()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -418,7 +418,7 @@ namespace Chicane
 
     void LevelLayer::rebuildModelData()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -435,7 +435,7 @@ namespace Chicane
 
     void LevelLayer::setupFrames()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -448,7 +448,7 @@ namespace Chicane
 
     void LevelLayer::setFramesAsDirty()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -487,7 +487,7 @@ namespace Chicane
 
         m_meshes = nextMeshes;
 
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             build();
 

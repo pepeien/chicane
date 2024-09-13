@@ -8,25 +8,25 @@ namespace Chicane
     {
         bool areExtensionsSupported(const std::vector<const char*>& inExtensions)
         {
-            bool isSupported = false;
+            bool bIsSupported = false;
 
             auto supportedExtensions = vk::enumerateInstanceExtensionProperties();
 
             for (const char* extensionName : inExtensions)
             {
-                isSupported = false;
+                bIsSupported = false;
 
                 for (const auto& extensionProperties : supportedExtensions)
                 {
                     if (!Utils::areEquals(extensionName, extensionProperties.extensionName))
                     {
-                        isSupported = true;
+                        bIsSupported = true;
 
                         break;
                     }
                 }
 
-                if (!isSupported)
+                if (!bIsSupported)
                 {
                     return false;
                 }
@@ -37,25 +37,25 @@ namespace Chicane
 
         bool areValidationLayersSupported(const std::vector<const char*>& inValidationLayers)
         {
-            bool isSupported = false;
+            bool bIsSupported = false;
 
             auto supportedLayers = vk::enumerateInstanceLayerProperties();
 
             for (const char* layerName : inValidationLayers)
             {
-                isSupported = false;
+                bIsSupported = false;
 
                 for (const auto& supportedLayer : supportedLayers)
                 {
                     if (strcmp(layerName, supportedLayer.layerName) == 0)
                     {
-                        isSupported = true;
+                        bIsSupported = true;
 
                         break;
                     }
                 }
 
-                if (!isSupported)
+                if (!bIsSupported)
                 {
                     return false;
                 }

@@ -9,9 +9,9 @@ namespace Chicane
 {
     Window::Window(const WindowCreateInfo& inCreateInfo)
         : instance(nullptr),
-        m_isFocused(inCreateInfo.isFocused),
-        m_isResizable(inCreateInfo.isResizable),
-        m_isMinimized(false),
+        m_bIsFocused(inCreateInfo.bIsFocused),
+        m_bIsResizable(inCreateInfo.bIsResizable),
+        m_bIsMinimized(false),
         m_renderer(nullptr)
     {
         if (!SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
@@ -188,14 +188,14 @@ namespace Chicane
             break;
 
         case SDL_EVENT_WINDOW_EXPOSED:
-            m_isMinimized = false;
+            m_bIsMinimized = false;
 
             refreshSize();
 
             break;
 
         case SDL_EVENT_WINDOW_MINIMIZED:
-            m_isMinimized = true;
+            m_bIsMinimized = true;
 
             break;
 
@@ -238,26 +238,26 @@ namespace Chicane
 
     bool Window::isFocused() const
     {
-        return m_isFocused;
+        return m_bIsFocused;
     }
 
     void Window::focus()
     {
-        m_isFocused = true;
+        m_bIsFocused = true;
 
         SDL_SetWindowRelativeMouseMode(instance, SDL_TRUE);
     }
 
     void Window::blur()
     {
-        m_isFocused = false;
+        m_bIsFocused = false;
 
         SDL_SetWindowRelativeMouseMode(instance, SDL_FALSE);
     }
 
     const Vec<2, int>& Window::getSize() const
     {
-        if (m_isMinimized)
+        if (m_bIsMinimized)
         {
             return VEC2_ZERO;
         }
@@ -289,7 +289,7 @@ namespace Chicane
 
     const Vec<2, int>& Window::getDrawableSize() const
     {
-        if (m_isMinimized)
+        if (m_bIsMinimized)
         {
             return VEC2_ZERO;
         }
@@ -431,7 +431,7 @@ namespace Chicane
         case WindowType::Windowed:
             SDL_SetWindowBordered(instance, SDL_TRUE);
 
-            if (m_isResizable)
+            if (m_bIsResizable)
             {
                 enableResizing();
 
@@ -465,7 +465,7 @@ namespace Chicane
 
     bool Window::isResizable()
     {
-        return m_isResizable;
+        return m_bIsResizable;
     }
 
     void Window::enableResizing()
@@ -480,7 +480,7 @@ namespace Chicane
             SDL_TRUE
         );
 
-        m_isResizable = true;
+        m_bIsResizable = true;
     }
 
     void Window::disableResizing()
@@ -490,14 +490,14 @@ namespace Chicane
             SDL_FALSE
         );
 
-        m_isResizable = false;
+        m_bIsResizable = false;
     }
 
     bool Window::isMinimized()
     {
         Vec<2, int> currentSize = getSize();
 
-        return m_isMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
+        return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }
 
     void Window::initRenderer()

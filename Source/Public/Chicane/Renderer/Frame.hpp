@@ -94,7 +94,7 @@ namespace Chicane
             std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
 
         private:
-            bool m_isDirty;
+            bool m_bIsDirty;
         };
     }
 }

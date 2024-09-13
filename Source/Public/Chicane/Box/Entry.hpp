@@ -16,7 +16,7 @@ namespace Chicane
         struct Entry
         {
         public:
-            void parse(const std::string& inRawData, bool isReference = false);
+            void parse(const std::string& inRawData, bool bInIsReference = false);
 
         public:
             EntryType                  type   = EntryType::Undefined;

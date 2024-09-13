@@ -10,12 +10,12 @@ namespace Chicane
         m_window(inWindow),
         m_clearValues({})
     {
-        m_isInitialized = Grid::hasViews();
-        m_internals     = inWindow->getRendererInternals();
+        m_bIsInitialized = Grid::hasViews();
+        m_internals      = inWindow->getRendererInternals();
 
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -66,7 +66,7 @@ namespace Chicane
 
     UILayer::~UILayer()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -83,7 +83,7 @@ namespace Chicane
 
     void UILayer::build()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -96,7 +96,7 @@ namespace Chicane
 
     void UILayer::rebuild()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -108,7 +108,7 @@ namespace Chicane
 
     void UILayer::onEvent(const SDL_Event& inEvent)
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -118,7 +118,7 @@ namespace Chicane
 
     void UILayer::setup(Chicane::Frame::Instance& outFrame)
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -148,7 +148,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }

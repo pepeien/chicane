@@ -8,12 +8,12 @@ namespace Chicane
     {
         bool Instance::isDirty()
         {
-            return m_isDirty;
+            return m_bIsDirty;
         }
 
         void Instance::setAsDirty()
         {
-            m_isDirty = true;
+            m_bIsDirty = true;
         }
 
         void Instance::setupSync()
@@ -171,7 +171,7 @@ namespace Chicane
             {
                 setupModelData(inMeshes);
 
-                m_isDirty = false;
+                m_bIsDirty = false;
 
                 return;
             }

@@ -57,7 +57,7 @@ namespace Chicane
     void setWindow(Window* inWindow);
 
     bool isWindowFocused();
-    void setWindowFocus(bool inIsFocused);
+    void setWindowFocus(bool bInIsFocused);
 
     Vec<2, float> getCursorPosition();
 

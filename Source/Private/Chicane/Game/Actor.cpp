@@ -4,17 +4,17 @@ namespace Chicane
 {
     Actor::Actor()
         : Transformable(),
-        m_canTick(false)
+        m_bCanTick(false)
     {}
 
     bool Actor::canCollide() const
     {
-        return m_canCollide;
+        return m_bCanCollide;
     }
 
     void Actor::setCanCollide(bool inCanCollide)
     {
-        m_canCollide = inCanCollide;
+        m_bCanCollide = inCanCollide;
     }
 
     void Actor::collide(Actor* inSubject)
@@ -29,12 +29,12 @@ namespace Chicane
 
     bool Actor::canTick() const
     {
-        return m_canTick;
+        return m_bCanTick;
     }
 
     void Actor::setCanTick(bool inCanTick)
     {
-        m_canTick = inCanTick;
+        m_bCanTick = inCanTick;
     }
 
     void Actor::tick(float inDeltaTime)

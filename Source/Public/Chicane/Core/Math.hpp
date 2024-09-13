@@ -115,11 +115,11 @@ namespace Chicane
 
         bool contains(const Vec<3, float>& inPoint) const
         {
-            bool isWithinX = inPoint.x >= origin.x && inPoint.x <= (origin.x + extent.x);
-            bool isWithinY = inPoint.y >= origin.y && inPoint.y <= (origin.y + extent.y);
-            bool isWithinZ = inPoint.z >= origin.z && inPoint.z <= (origin.y + extent.z);
+            bool bIsWithinX = inPoint.x >= origin.x && inPoint.x <= (origin.x + extent.x);
+            bool bIsWithinY = inPoint.y >= origin.y && inPoint.y <= (origin.y + extent.y);
+            bool bIsWithinZ = inPoint.z >= origin.z && inPoint.z <= (origin.y + extent.z);
 
-            return isWithinX && isWithinY && isWithinZ;
+            return bIsWithinX && bIsWithinY && bIsWithinZ;
         }
 
     public:

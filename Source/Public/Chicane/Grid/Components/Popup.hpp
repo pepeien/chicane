@@ -18,8 +18,8 @@ namespace Chicane
             // Props
             struct Props : BaseProps
             {
-                bool isOpen        = true; // Optional
-                bool isConstrained = true; // Optional
+                bool bIsOpen        = true; // Optional
+                bool bIsConstrained = true; // Optional
             };
 
             void compileRaw(const Props& inProps);

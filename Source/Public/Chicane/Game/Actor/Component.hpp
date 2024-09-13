@@ -50,8 +50,8 @@ namespace Chicane
         void refreshTransform();
 
     protected:
-        bool m_canTick;
-        bool m_isActive;
+        bool m_bCanTick;
+        bool m_bIsActive;
 
         Transform m_base;
 

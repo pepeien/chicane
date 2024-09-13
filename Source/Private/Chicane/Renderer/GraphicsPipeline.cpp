@@ -54,7 +54,7 @@ namespace Chicane
         }
 
         vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-            bool isHasVertices,
+            bool bInHasVertices,
             const vk::VertexInputBindingDescription& inBindingDescription,
             const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
         )
@@ -62,7 +62,7 @@ namespace Chicane
             vk::PipelineVertexInputStateCreateInfo vertexInputInfo {};
             vertexInputInfo.flags = vk::PipelineVertexInputStateCreateFlags();
 
-            if (isHasVertices)
+            if (bInHasVertices)
             {
                 vertexInputInfo.vertexBindingDescriptionCount   = 1;
                 vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
@@ -331,9 +331,9 @@ namespace Chicane
         }
 
         Instance::Instance(const CreateInfo& inCreateInfo)
-            : m_canOverwrite(inCreateInfo.canOverwrite),
-            m_hasVertices(inCreateInfo.hasVertices),
-            m_hasDepth(inCreateInfo.hasDepth),
+            : m_bCanOverwrite(inCreateInfo.bCanOverwrite),
+            m_bHasVertices(inCreateInfo.bHasVertices),
+            m_bHasDepth(inCreateInfo.bHasDepth),
             m_vertexShaderPath(inCreateInfo.vertexShaderPath),
             m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
             m_bindingDescription(inCreateInfo.bindingDescription),
@@ -379,7 +379,7 @@ namespace Chicane
 
             // Vertex Input
             vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState(
-                m_hasVertices,
+                m_bHasVertices,
                 m_bindingDescription,
                 m_attributeDescriptions
             );
@@ -454,12 +454,12 @@ namespace Chicane
             attachments.push_back(
                 createColorAttachment(
                     m_swapChainImageFormat,
-                    m_canOverwrite ? vk::AttachmentLoadOp::eLoad : vk::AttachmentLoadOp::eDontCare,
-                    m_canOverwrite ? vk::ImageLayout::ePresentSrcKHR : vk::ImageLayout::eUndefined
+                    m_bCanOverwrite ? vk::AttachmentLoadOp::eLoad : vk::AttachmentLoadOp::eDontCare,
+                    m_bCanOverwrite ? vk::ImageLayout::ePresentSrcKHR : vk::ImageLayout::eUndefined
                 )
             );
 
-            if (m_hasDepth)
+            if (m_bHasDepth)
             {
                 attachments.push_back(
                     createDepthAttachment(m_depthFormat)
@@ -467,7 +467,7 @@ namespace Chicane
             }
 
             renderPass = createRendepass(
-                m_hasDepth,
+                m_bHasDepth,
                 attachments,
                 m_logicalDevice
             ); 

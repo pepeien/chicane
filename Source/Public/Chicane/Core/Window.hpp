@@ -24,10 +24,10 @@ namespace Chicane
         std::string title        = "";
         std::string icon         = ""; // Optional [file path]
         Vec<2, int> resolution   = Vec<2, int>(0);
-        int displayIndex         = 0;
-        WindowType type          = WindowType::Windowed;
-        bool isFocused           = false;
-        bool isResizable         = true; // Only takes effect when the type is `WindowType::Windowed`
+        int         displayIndex = 0;
+        WindowType  type         = WindowType::Windowed;
+        bool        bIsFocused   = false;
+        bool        bIsResizable = true; // Only takes effect when the type is `WindowType::Windowed`
     };
 
     class Window
@@ -115,9 +115,9 @@ namespace Chicane
         Vec<2, int> m_drawableSize;
         Vec<2, int> m_position;
 
-        bool m_isFocused;
-        bool m_isResizable;
-        bool m_isMinimized; // Only takes effect when the type is `WindowType::Windowed`
+        bool m_bIsFocused;
+        bool m_bIsResizable;
+        bool m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         // Render
         std::unique_ptr<Renderer> m_renderer;

@@ -19,12 +19,12 @@ namespace Chicane
         void setupKeyboardInputs();
         void setupControllerInputs();
 
-        void moveUp(bool isKeyDown);
-        void moveDown(bool isKeyDown);
-        void moveForward(bool isKeyDown);
-        void moveBackward(bool isKeyDown);
-        void moveLeft(bool isKeyDown);
-        void moveRight(bool isKeyDown);
+        void moveUp(bool bInIsKeyDown);
+        void moveDown(bool bInIsKeyDown);
+        void moveForward(bool bInIsKeyDown);
+        void moveBackward(bool bInIsKeyDown);
+        void moveLeft(bool bInIsKeyDown);
+        void moveRight(bool bInIsKeyDown);
 
     protected:
         CameraComponent* m_camera;

@@ -154,9 +154,9 @@ namespace Chicane
         return m_window->isFocused();
     }
 
-    void setWindowFocus(bool inIsFocused)
+    void setWindowFocus(bool bInIsFocused)
     {
-        if (inIsFocused)
+        if (bInIsFocused)
         {
             m_window->focus();
 

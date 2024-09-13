@@ -42,30 +42,59 @@ namespace Chicane
         }
 
         VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
-            VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-            VkDebugUtilsMessageTypeFlagsEXT messageType,
-            const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-            void* pUserData
+            VkDebugUtilsMessageSeverityFlagBitsEXT inSeverity,
+            VkDebugUtilsMessageTypeFlagsEXT inMessageType,
+            const VkDebugUtilsMessengerCallbackDataEXT* inData,
+            void* outUserData
         )
         {
-            switch (messageType)
+            std::string message = "Vk::";
+            std::string color  = Chicane::Log::COLOR_WHITE;
+
+            switch (inMessageType)
             {
-            case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:
-                LOG_INFO(pCallbackData->pMessage);
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
+                message += "Performance";
 
                 break;
 
-            case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:
             case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:
-                LOG_WARNING(pCallbackData->pMessage);
+                message += "Validation";
+
+                break;
+
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_DEVICE_ADDRESS_BINDING_BIT_EXT:
+                message += "Device";
 
                 break;
 
             default:
-                LOG_CRITICAL(pCallbackData->pMessage);
+                message += "General";
 
                 break;
             }
+
+            message += " ";
+            message += ' ' + inData->pMessage;
+
+            switch (inSeverity)
+            {
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+                color = Chicane::Log::COLOR_YELLOW;
+
+                break;
+
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+                color = Chicane::Log::COLOR_ORANGE;
+
+                break;
+            }
+
+            Chicane::Log::emmit(
+                "Vulkan",
+                message,
+                color
+            );
 
             return VK_FALSE;
         }

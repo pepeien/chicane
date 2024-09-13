@@ -14,7 +14,7 @@ namespace Chicane
 
     public:
         virtual void onTick(float inDeltaTime) { return; };
-        virtual void onCollision(Actor* inActor) { return; };
+        virtual void onCollision(const Actor* inActor) { return; };
 
     public:
         bool canCollide() const;
@@ -26,7 +26,7 @@ namespace Chicane
         void tick(float inDeltaTime);
 
     protected:
-        bool m_canCollide;
-        bool m_canTick;
+        bool m_bCanCollide;
+        bool m_bCanTick;
     };
 } 

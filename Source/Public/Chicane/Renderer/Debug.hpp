@@ -14,10 +14,10 @@ namespace Chicane
         );
     
         VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
-            VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-            VkDebugUtilsMessageTypeFlagsEXT messageType,
-            const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-            void* pUserData
+            VkDebugUtilsMessageSeverityFlagBitsEXT inMessageSeverity,
+            VkDebugUtilsMessageTypeFlagsEXT inMessageType,
+            const VkDebugUtilsMessengerCallbackDataEXT* inData,
+            void* outUserData
         );
     }
 }

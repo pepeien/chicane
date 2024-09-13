@@ -4,8 +4,8 @@ namespace Chicane
 {
     ActorComponent::ActorComponent()
         : Transformable(),
-        m_canTick(true),
-        m_isActive(false),
+        m_bCanTick(true),
+        m_bIsActive(false),
         m_base({}),
         m_attachment(nullptr),
         m_attachmentTransformSubscription(nullptr)  
@@ -13,31 +13,31 @@ namespace Chicane
 
     bool ActorComponent::isActive() const
     {
-        return m_isActive;
+        return m_bIsActive;
     }
 
     void ActorComponent::activate()
     {
-        m_isActive = true;
+        m_bIsActive = true;
 
         onActivation();
     }
 
     void ActorComponent::deactivate()
     {
-        m_isActive = false;
+        m_bIsActive = false;
 
         onDeactivation();
     }
 
     bool ActorComponent::canTick() const
     {
-        return m_isActive && m_canTick;
+        return m_bIsActive && m_bCanTick;
     }
 
     void ActorComponent::setCanTick(bool inCanTick)
     {
-        m_canTick = inCanTick;
+        m_bCanTick = inCanTick;
     }
 
     void ActorComponent::tick(float inDeltaTime)

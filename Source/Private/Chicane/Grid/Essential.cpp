@@ -54,10 +54,10 @@ namespace Chicane
                 ::tolower
             );
 
-            bool isTransparent = backgroundColor.empty() || Utils::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
-            bool isNotHex = backgroundColor.size() < 7 || backgroundColor.size() > 9;
+            bool bIsTransparent = backgroundColor.empty() || Utils::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
+            bool bIsNotHex      = backgroundColor.size() < 7 || backgroundColor.size() > 9;
 
-            if (isTransparent || isNotHex)
+            if (bIsTransparent || bIsNotHex)
             {
                 backgroundColor = HEX_COLOR_TRANSPARENT;
             }

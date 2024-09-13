@@ -32,14 +32,14 @@ namespace Chicane
         {
             if (m_threads.size() >= MAX_THREAD_COUNT)
             {
-                LOG_WARNING("There is no space to add the [" + inId + "] thread.");
+                Chicane::Log::warning("There is no space to add the [" + inId + "] thread.");
 
                 return nullptr;
             }
 
             if (has(inId))
             {
-                LOG_WARNING("An thread [" + inId + "] already exists.");
+                Chicane::Log::warning("An thread [" + inId + "] already exists.");
 
                 return nullptr;
             }
@@ -60,7 +60,7 @@ namespace Chicane
         {
             if (!has(inId))
             {
-                LOG_WARNING("There is no [" + inId + "] thread.");
+                Chicane::Log::warning("There is no [" + inId + "] thread.");
 
                 return nullptr;
             }
@@ -79,7 +79,7 @@ namespace Chicane
         {
             if (!has(inId))
             {
-                LOG_WARNING("There is no [" + inId + "] thread.");
+                Chicane::Log::warning("There is no [" + inId + "] thread.");
 
                 return;
             }

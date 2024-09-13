@@ -15,22 +15,22 @@ namespace Chicane
             {
                 vk::FormatProperties properties = inPhysicalDevice.getFormatProperties(format);
 
-                bool isTilingLinear                 = inTiling == vk::ImageTiling::eLinear;
-                bool doesFeatureSupportLinearTiling = (
+                bool bIsTilingLinear                 = inTiling == vk::ImageTiling::eLinear;
+                bool bDoesFeatureSupportLinearTiling = (
                     properties.linearTilingFeatures & inFeatures
                 ) == inFeatures;
 
-                if (isTilingLinear && doesFeatureSupportLinearTiling)
+                if (bIsTilingLinear && bDoesFeatureSupportLinearTiling)
                 {
                     return format;
                 }
 
-                bool isTilingOptimal                 = inTiling == vk::ImageTiling::eOptimal;
-                bool doesFeatureSupportOptimapTiling = (
+                bool bIsTilingOptimal                 = inTiling == vk::ImageTiling::eOptimal;
+                bool bDoesFeatureSupportOptimapTiling = (
                     properties.optimalTilingFeatures & inFeatures
                 ) == inFeatures;
 
-                if (isTilingOptimal && doesFeatureSupportOptimapTiling)
+                if (bIsTilingOptimal && bDoesFeatureSupportOptimapTiling)
                 {
                     return format;
                 }

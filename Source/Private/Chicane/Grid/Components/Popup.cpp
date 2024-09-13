@@ -15,8 +15,8 @@ namespace Chicane
 
                 Props result {};
                 result.id            = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.isOpen        = isOpen.empty() || Utils::areEquals(isOpen, "true");
-                result.isConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
+                result.bIsOpen        = isOpen.empty() || Utils::areEquals(isOpen, "true");
+                result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
                 result.style         = getStyle(inNode);
                 result.children      = inNode.children();
 
@@ -35,7 +35,7 @@ namespace Chicane
             {
                 validate(inProps);
 
-                if (!inProps.isOpen)
+                if (!inProps.bIsOpen)
                 {
                     return;
                 }
@@ -50,7 +50,7 @@ namespace Chicane
                     ImGuiCond_Appearing
                 );
 
-                if (inProps.isConstrained)
+                if (inProps.bIsConstrained)
                 {
                     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
                 }
@@ -60,7 +60,7 @@ namespace Chicane
                     hexToImGuiColor(inProps.style.backgroundColor)
                 );
                     ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
-                        ImGui::GetCurrentWindow()->IsConstrained = inProps.isConstrained;
+                        ImGui::GetCurrentWindow()->IsConstrained = inProps.bIsConstrained;
 
                         for (const pugi::xml_node& child : inProps.children)
                         {

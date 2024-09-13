@@ -7,7 +7,7 @@ namespace Chicane
 {
     MeshComponent::MeshComponent()
         : ActorComponent(),
-        m_isMeshActive(false)
+        m_bIsMeshActive(false)
     {}
 
     void MeshComponent::onActivation()
@@ -54,7 +54,7 @@ namespace Chicane
             return false;
         }
 
-        return hasMesh() && isActive() && m_isMeshActive;
+        return hasMesh() && isActive() && m_bIsMeshActive;
     }
 
     bool MeshComponent::hasMesh() const
@@ -127,7 +127,7 @@ namespace Chicane
 
     void MeshComponent::activateMesh()
     {
-        if (m_isMeshActive)
+        if (m_bIsMeshActive)
         {
             return;
         }
@@ -140,12 +140,12 @@ namespace Chicane
             }
         }
 
-        m_isMeshActive = true;
+        m_bIsMeshActive = true;
     }
 
     void MeshComponent::deactivateMesh()
     {
-        if (!m_isMeshActive)
+        if (!m_bIsMeshActive)
         {
             return;
         }
@@ -158,6 +158,6 @@ namespace Chicane
             }
         }
 
-        m_isMeshActive = false;
+        m_bIsMeshActive = false;
     }
 }

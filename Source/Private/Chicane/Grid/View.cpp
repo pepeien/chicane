@@ -16,7 +16,7 @@ namespace Chicane
             : m_id(inId),
             m_variables(inVariables),
             m_functions(inFunctions),
-            m_wasStyleAdded(false)
+            m_bWasStyleAdded(false)
         {
             if (inSource.empty())
             {
@@ -40,7 +40,7 @@ namespace Chicane
             : m_id(inId),
             m_variables({}),
             m_functions({}),
-            m_wasStyleAdded(false)
+            m_bWasStyleAdded(false)
         {}
 
         const std::string& View::getId() const
@@ -50,7 +50,7 @@ namespace Chicane
 
         void View::rebuild()
         {
-            m_wasStyleAdded = false;
+            m_bWasStyleAdded = false;
         }
 
         void View::show(
@@ -163,10 +163,10 @@ namespace Chicane
 
         void View::validate(const pugi::xml_node& inNode)
         {
-            bool isRoot  = inNode.parent() == inNode.root();
-            bool isAlone = isRoot && inNode.next_sibling() == nullptr;
+            bool bIsRoot  = inNode.parent() == inNode.root();
+            bool bIsAlone = bIsRoot && inNode.next_sibling() == nullptr;
 
-            if (!isRoot || !isAlone)
+            if (!bIsRoot || !bIsAlone)
             {
                 throw std::runtime_error("UI document root element must not have any siblings");
             }
@@ -202,11 +202,11 @@ namespace Chicane
             ImGui::SetNextWindowSize(uiResolution);
             ImGui::SetNextWindowPos(uiPosition);
 
-            if (!m_wasStyleAdded)
+            if (!m_bWasStyleAdded)
             {
                 addStyle(inNode);
 
-                m_wasStyleAdded = true;
+                m_bWasStyleAdded = true;
             }
 
             execOnTick(inNode);

@@ -8,7 +8,7 @@ namespace Chicane
         : Layer("Skybox"),
         m_clearValues({})
     {
-        m_isInitialized     = Loader::getCubemapManager()->getCount() > 0;
+        m_bIsInitialized     = Loader::getCubemapManager()->getCount() > 0;
         m_rendererInternals = inWindow->getRendererInternals();
 
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
@@ -36,7 +36,7 @@ namespace Chicane
 
     void SkyboxLayer::build()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -52,7 +52,7 @@ namespace Chicane
 
     void SkyboxLayer::destroy()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -64,7 +64,7 @@ namespace Chicane
 
     void SkyboxLayer::rebuild()
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -79,7 +79,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_isInitialized)
+        if (!m_bIsInitialized)
         {
             return;
         }
@@ -157,9 +157,9 @@ namespace Chicane
     void SkyboxLayer::initGraphicsPipeline()
     {
         GraphicsPipeline::CreateInfo createInfo {};
-        createInfo.canOverwrite         = false;
-        createInfo.hasVertices          = false;
-        createInfo.hasDepth             = false;
+        createInfo.bCanOverwrite         = false;
+        createInfo.bHasVertices          = false;
+        createInfo.bHasDepth             = false;
         createInfo.logicalDevice        = m_rendererInternals.logicalDevice;
         createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
         createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";

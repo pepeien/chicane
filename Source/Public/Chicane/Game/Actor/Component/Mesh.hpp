@@ -31,7 +31,7 @@ namespace Chicane
         void deactivateMesh();
 
     protected:
-        bool m_isMeshActive;
+        bool m_bIsMeshActive;
 
         Box::Instance m_mesh;
     };

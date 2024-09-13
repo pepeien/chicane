@@ -12,7 +12,7 @@ namespace Chicane
             std::function<void (T)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback,
             std::function<void ()> inCompleteCallback
-        ) : m_isCompleted(false),
+        ) : m_bIsCompleted(false),
             m_nextCallback(inNextCallback),
             m_errorCallback(inErrorCallback),
             m_completeCallback(inCompleteCallback)
@@ -51,7 +51,7 @@ namespace Chicane
 
         bool isCompleted() const
         {
-            return m_isCompleted;
+            return m_bIsCompleted;
         }
 
         void complete()
@@ -61,7 +61,7 @@ namespace Chicane
                 return;
             }
 
-            m_isCompleted = true;
+            m_bIsCompleted = true;
 
             if (m_completeCallback == nullptr)
             {
@@ -72,7 +72,7 @@ namespace Chicane
         }
 
     protected:
-        bool m_isCompleted;
+        bool m_bIsCompleted;
 
         std::function<void (T)> m_nextCallback;
         std::function<void (const std::string&)> m_errorCallback;

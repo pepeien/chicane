@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Box
     {
-        void Entry::parse(const std::string& inRawData, bool isReference)
+        void Entry::parse(const std::string& inRawData, bool bInIsReference)
         {
             std::vector<std::string> splittedEntry = Helper::splitString(
                 inRawData,
@@ -22,7 +22,7 @@ namespace Chicane
             type   = static_cast<EntryType>(std::stoi(splittedEntryHeader[0]));
             vendor = static_cast<uint8_t>(std::stoi(splittedEntryHeader[1]));
 
-            if (isReference)
+            if (bInIsReference)
             {
                 reference = entryData;
 

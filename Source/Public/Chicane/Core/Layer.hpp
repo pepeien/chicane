@@ -22,7 +22,7 @@ namespace Chicane
         {}
         Layer(const std::string& inId)
             : m_id(inId),
-            m_isInitialized(false)
+            m_bIsInitialized(false)
         {}
         virtual ~Layer() = default;
 
@@ -50,7 +50,7 @@ namespace Chicane
         const std::string& getId() const { return m_id; }
 
     protected:
-        bool m_isInitialized;
+        bool m_bIsInitialized;
 
         std::string m_id;
     };

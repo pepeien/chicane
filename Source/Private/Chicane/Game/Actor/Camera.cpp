@@ -45,9 +45,9 @@ namespace Chicane
 
         m_controller->bindMouseButtonEvent(
             SDL_BUTTON_RIGHT,
-            [](bool isButtonPressed)
+            [](bool bInIsButtonPressed)
             {
-                if (!isButtonPressed)
+                if (!bInIsButtonPressed)
                 {
                     return;
                 }
@@ -121,9 +121,9 @@ namespace Chicane
     {
         m_controller->bindControllerButtonEvent(
             SDL_GAMEPAD_BUTTON_SOUTH,
-            [](bool isKeyDown)
+            [](bool bInIsKeyDown)
             {
-                if (!isKeyDown || !isWindowFocused())
+                if (!bInIsKeyDown || !isWindowFocused())
                 {
                     return;
                 }
@@ -133,9 +133,9 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveUp(bool isKeyDown)
+    void CameraActor::moveUp(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }
@@ -149,9 +149,9 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveDown(bool isKeyDown)
+    void CameraActor::moveDown(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }
@@ -165,9 +165,9 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveForward(bool isKeyDown)
+    void CameraActor::moveForward(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }
@@ -175,9 +175,9 @@ namespace Chicane
         setRelativeTranslation(getForward() * MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveBackward(bool isKeyDown)
+    void CameraActor::moveBackward(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }
@@ -185,9 +185,9 @@ namespace Chicane
         setRelativeTranslation(getForward() * -MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveLeft(bool isKeyDown)
+    void CameraActor::moveLeft(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }
@@ -195,9 +195,9 @@ namespace Chicane
         setRelativeTranslation(getRight() * -MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveRight(bool isKeyDown)
+    void CameraActor::moveRight(bool bInIsKeyDown)
     {
-        if (!isKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !isWindowFocused())
         {
             return;
         }

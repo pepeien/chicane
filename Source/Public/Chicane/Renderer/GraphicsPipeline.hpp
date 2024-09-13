@@ -20,7 +20,7 @@ namespace Chicane
             const vk::ShaderModule& inShaderModule
         );
         vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-            bool isHasVertices,
+            bool bInHasVertices,
             const vk::VertexInputBindingDescription& inBindingDescription,
             const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
         );
@@ -52,7 +52,7 @@ namespace Chicane
         vk::AttachmentReference createDepthAttachmentRef();
         vk::SubpassDependency createDepthSubpassDepedency();
         vk::RenderPass createRendepass(
-            bool inHasDepth,
+            bool bInHasDepth,
             const std::vector<vk::AttachmentDescription>& inAttachments,
             const vk::Device& inLogicalDevice
         );
@@ -60,9 +60,9 @@ namespace Chicane
         struct CreateInfo
         {
             // Modifiers
-            bool                                             canOverwrite;
-            bool                                             hasVertices;
-            bool                                             hasDepth;
+            bool                                             bCanOverwrite;
+            bool                                             bHasVertices;
+            bool                                             bHasDepth;
 
             // Vertex
             std::string                                      vertexShaderPath;
@@ -100,9 +100,9 @@ namespace Chicane
 
         private:
             // Modifiers
-            bool                                             m_canOverwrite;
-            bool                                             m_hasVertices;
-            bool                                             m_hasDepth;
+            bool                                             m_bCanOverwrite;
+            bool                                             m_bHasVertices;
+            bool                                             m_bHasDepth;
 
             // Vertex
             std::string                                      m_vertexShaderPath;
