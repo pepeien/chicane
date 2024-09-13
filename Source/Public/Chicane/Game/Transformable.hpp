@@ -72,9 +72,7 @@ namespace Chicane
 
         // Bounds
         Bounds                                        m_baseBounds;
-        Bounds                                        m_bounds;
-        Vec<3, float>                                 m_top;
-        Vec<3, float>                                 m_center;
+        Bounds                                        m_currentBounds;
 
         // Events
         std::unique_ptr<Observable<const Transform&>> m_transformObservable;

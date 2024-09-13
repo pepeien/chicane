@@ -9,7 +9,7 @@ namespace Chicane
         m_position(Mat<4, float>(1.0f)),
         m_direction({}),
         m_baseBounds({}),
-        m_bounds({}),
+        m_currentBounds({}),
         m_transformObservable(std::make_unique<Observable<const Transform&>>())
     {}
 
@@ -105,41 +105,41 @@ namespace Chicane
 
     const Vec<3, float>& Transformable::getTop() const
     {
-        return m_top;
+        return m_currentBounds.top;
     }
 
     const Vec<3, float>& Transformable::getCenter() const
     {
-        return m_center;
+        return m_currentBounds.center;
     }
 
     const Vec<3, float>& Transformable::getOrigin() const
     {
-        return m_bounds.origin;
+        return m_currentBounds.origin;
     }
 
     const Vec<3, float>& Transformable::getExtent() const
     {
-        return m_bounds.extent;
+        return m_currentBounds.extent;
     }
 
     const Bounds& Transformable::getBounds() const
     {
-        return m_bounds;
+        return m_currentBounds;
     }
 
     void Transformable::refreshBounds()
     {
-        m_bounds.extent  = m_baseBounds.extent * m_transform.scale;
+        m_currentBounds.extent  = m_baseBounds.extent * m_transform.scale;
 
-        m_bounds.origin  = m_baseBounds.origin;
-        m_bounds.origin += m_transform.translation;
+        m_currentBounds.origin  = m_baseBounds.origin;
+        m_currentBounds.origin += m_transform.translation;
 
-        m_top    = m_bounds.origin;
-        m_top.z += m_bounds.extent.z;
+        m_currentBounds.top    = m_currentBounds.origin;
+        m_currentBounds.top.z += m_currentBounds.extent.z;
 
-        m_center    = m_top;
-        m_center.z *= 0.5f;
+        m_currentBounds.center    = m_currentBounds.top;
+        m_currentBounds.center.z *= 0.5f;
     }
 
     void Transformable::setBounds(const Bounds& inBounds)

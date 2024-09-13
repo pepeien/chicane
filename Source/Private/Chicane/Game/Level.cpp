@@ -6,7 +6,7 @@ namespace Chicane
 {
     Level::Level()
         : m_actorObservable(std::make_unique<Observable<Actor*>>()),
-        m_componentObservable(std::make_unique<Observable<ActorComponent*>>())
+        m_componentObservable(std::make_unique<Observable<const std::vector<ActorComponent*>&>>())
     {}
 
     Level::~Level()
@@ -88,11 +88,11 @@ namespace Chicane
 
         m_components.push_back(inComponent);
 
-        m_componentObservable->next(inComponent);
+        m_componentObservable->next(m_components);
     }
 
     void Level::watchComponents(
-        std::function<void (ActorComponent*)> inNextCallback,
+        std::function<void (const std::vector<ActorComponent*>&)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     )
@@ -101,6 +101,6 @@ namespace Chicane
             inNextCallback,
             inErrorCallback,
             inCompleteCallback
-        );
+        )->next(m_components);
     }
 }

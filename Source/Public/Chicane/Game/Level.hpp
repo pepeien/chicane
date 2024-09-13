@@ -46,7 +46,7 @@ namespace Chicane
         const std::vector<ActorComponent*>& getComponents() const;
         void addComponent(ActorComponent* inComponent);
         void watchComponents(
-            std::function<void (ActorComponent*)> inNextCallback,
+            std::function<void (const std::vector<ActorComponent*>&)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
             std::function<void ()> inCompleteCallback = nullptr
         );
@@ -74,6 +74,6 @@ namespace Chicane
         std::unique_ptr<Observable<Actor*>> m_actorObservable;
 
         std::vector<ActorComponent*> m_components;
-        std::unique_ptr<Observable<ActorComponent*>> m_componentObservable;
+        std::unique_ptr<Observable<const std::vector<ActorComponent*>&>> m_componentObservable;
     };
 }

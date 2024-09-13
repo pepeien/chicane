@@ -46,7 +46,7 @@ namespace Chicane
         void setupFrames();
         void setFramesAsDirty();
 
-        void updateMeshes();
+        void updateMeshes(const std::vector<ActorComponent*>& inComponents);
 
     private:
         Renderer::Internals                         m_internals;

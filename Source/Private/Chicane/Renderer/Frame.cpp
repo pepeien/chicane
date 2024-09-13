@@ -167,7 +167,7 @@ namespace Chicane
 
         void Instance::updateModelData(const std::vector<MeshComponent*>& inMeshes)
         {
-            if (isDirty() || modelData.transforms.size() != inMeshes.size())
+            if (isDirty())
             {
                 setupModelData(inMeshes);
 

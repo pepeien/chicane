@@ -56,7 +56,77 @@ namespace Chicane
 
     struct Bounds
     {
+    public:
+        bool contains(const Bounds& inBounds) const
+        {
+            Vec<3, float> leftPoint  = inBounds.origin;
+            Vec<3, float> rightPoint = inBounds.origin;
+            rightPoint.x += inBounds.extent.x;
+
+            for (float zLeft = leftPoint.z, zRight = rightPoint.z; zLeft <= zRight; zLeft += 0.1f, zRight -= 0.1f)
+            {
+                leftPoint.x = inBounds.origin.x;
+                leftPoint.y = inBounds.origin.y;
+                leftPoint.z = zLeft;
+
+                rightPoint.x = leftPoint.x + inBounds.extent.x;
+                rightPoint.y = leftPoint.y + inBounds.extent.y;
+                rightPoint.z = zRight;
+
+                for (float yLeft = leftPoint.y, yRight = rightPoint.y; yLeft <= yRight; yLeft += 0.1f, yRight -= 0.1f)
+                {
+                    leftPoint.x = inBounds.origin.x;
+                    leftPoint.y = yLeft;
+
+                    leftPoint.x = leftPoint.x + inBounds.extent.x;
+                    leftPoint.y = yRight;
+
+                    for (float xLeft = leftPoint.x, xRight = rightPoint.x; xLeft <= xRight; xLeft += 0.1f, xRight -= 0.1f)
+                    {
+                        leftPoint.x = xLeft;
+
+                        rightPoint.x = xRight;
+
+                        if (contains(leftPoint) || contains(rightPoint))
+                        {
+                            return true;
+                        }
+
+                        if (xLeft <= xRight)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (yLeft <= yRight)
+                    {
+                        break;
+                    }
+                }
+
+                if (zLeft <= zRight)
+                {
+                    break;
+                }
+            }
+
+            return false;
+        }
+
+        bool contains(const Vec<3, float>& inPoint) const
+        {
+            bool isWithinX = inPoint.x >= origin.x && inPoint.x <= (origin.x + extent.x);
+            bool isWithinY = inPoint.y >= origin.y && inPoint.y <= (origin.y + extent.y);
+            bool isWithinZ = inPoint.z >= origin.z && inPoint.z <= (origin.y + extent.z);
+
+            return isWithinX && isWithinY && isWithinZ;
+        }
+
+    public:
         Vec<3, float> extent = Vec3Zero;
+
+        Vec<3, float> top    = Vec3Zero;
         Vec<3, float> origin = Vec3Zero;
+        Vec<3, float> center = Vec3Zero;
     };
 }

@@ -45,7 +45,7 @@ namespace Chicane
 
     void LevelLayer::build()
     {
-        if (m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_isInitialized)
+        if (m_isInitialized || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
         {
             return;
         }
@@ -59,8 +59,7 @@ namespace Chicane
 
         buildTextures();
         buildModelData();
-
-        updateMeshes();
+        setupFrames();
     }
 
     void LevelLayer::destroy()
@@ -80,10 +79,9 @@ namespace Chicane
             return;
         }
 
-        initFramebuffers();
         initFrameResources();
-
-        updateMeshes();
+        initFramebuffers();
+        setupFrames();
     }
 
     void LevelLayer::setup(Frame::Instance& outFrame)
@@ -166,10 +164,11 @@ namespace Chicane
         }
 
         m_level->watchComponents(
-            [&](ActorComponent* inComponent)
-            {
-                updateMeshes();
-            }
+            std::bind(
+                &LevelLayer::updateMeshes,
+                this,
+                std::placeholders::_1
+            )
         );
 
         m_textureManager->watchChanges(
@@ -187,19 +186,10 @@ namespace Chicane
         m_modelManager->watchChanges(
             [&](Model::Manager::EventSubject inSubject)
             {
-                if (!m_isInitialized)
-                {
-                    build();
-
-                    return;
-                }
-
                 if (inSubject == Model::Manager::EventSubject::Allocation)
                 {
                     rebuildModelData();
                 }
-
-                updateMeshes();
             }
         );
     }
@@ -469,33 +459,41 @@ namespace Chicane
         }
     }
 
-    void LevelLayer::updateMeshes()
+    void LevelLayer::updateMeshes(const std::vector<ActorComponent*>& inComponents)
     {
-        if (!m_isInitialized)
+        std::vector<MeshComponent*> nextMeshes {};
+
+        for (ActorComponent* component : inComponents)
         {
-            return;
-        }
+            if (typeid(*component) != typeid(MeshComponent))
+            {
+                continue;
+            }
 
-        std::vector<MeshComponent*> latestMeshes = m_level->getComponents<MeshComponent>();
+            MeshComponent* mesh = static_cast<MeshComponent*>(component);
 
-        std::uint32_t currentMeshCount = m_meshes.size();
-        m_meshes.clear();
-
-        m_meshes.reserve(latestMeshes.size());
-
-        for (MeshComponent* mesh : latestMeshes)
-        {
             if (!mesh->isDrawable())
             {
                 continue;
             }
 
-            m_meshes.push_back(mesh);
+            nextMeshes.push_back(mesh);
         }
 
-        if (m_meshes.size() != currentMeshCount)
+        if (m_meshes.size() == nextMeshes.size())
         {
-            setFramesAsDirty();
+            return;
         }
+
+        m_meshes = nextMeshes;
+
+        if (!m_isInitialized)
+        {
+            build();
+
+            return;
+        }
+
+        setFramesAsDirty();
     }
 }

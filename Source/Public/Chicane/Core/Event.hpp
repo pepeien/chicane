@@ -83,6 +83,17 @@ namespace Chicane
     class Observable
     {
     public:
+        ~Observable()
+        {
+            for (Subscription<A>* subscription : m_subscriptions)
+            {
+                delete subscription;
+            }
+
+            m_subscriptions.clear();
+        }
+
+    public:
         Subscription<A>* subscribe(
             std::function<void (A)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,
@@ -102,25 +113,25 @@ namespace Chicane
 
         void next(const A& inData)
         {
-            for (Subscription<A>* subcription : m_subscriptions)
+            for (Subscription<A>* subscription : m_subscriptions)
             {
-                subcription->next(inData);
+                subscription->next(inData);
             }
         }
 
         void error(const std::string& inMessage)
         {
-            for (Subscription<A>* subcription : m_subscriptions)
+            for (Subscription<A>* subscription : m_subscriptions)
             {
-                subcription->error(inMessage);
+                subscription->error(inMessage);
             }
         }
 
         void complete()
         {
-            for (Subscription<A>* subcription : m_subscriptions)
+            for (Subscription<A>* subscription : m_subscriptions)
             {
-                subcription->complete();
+                subscription->complete();
             }
         }
 
