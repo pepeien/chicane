@@ -17,9 +17,29 @@ namespace Chicane
         m_bCanCollide = inCanCollide;
     }
 
-    void Actor::collide(Actor* inSubject)
+    bool Actor::isCollidingWith(const Actor* inSubject) const
     {
-        if (!canCollide())
+        if (!inSubject)
+        {
+            return false;
+        }
+
+        return isCollidingWith(inSubject->getBounds());
+    }
+
+    bool Actor::isCollidingWith(const Bounds& inBounds) const
+    {
+        return m_currentBounds.contains(inBounds);
+    }
+
+    bool Actor::isCollidingWith(const Vec<3, float>& inPoint) const
+    {
+        return m_currentBounds.contains(inPoint);
+    }
+
+    void Actor::collideWith(const Actor* inSubject)
+    {
+        if (!canCollide() || !isCollidingWith(inSubject))
         {
             return;
         }

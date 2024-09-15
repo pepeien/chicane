@@ -149,7 +149,7 @@ namespace Chicane
             return;
         }
 
-        m_mouseButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+        m_mouseButtonEvents.at(key)(inEvent.down);
     }
 
     void Controller::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
@@ -161,7 +161,7 @@ namespace Chicane
             return;
         }
 
-        m_keyboardButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+        m_keyboardButtonEvents.at(key)(inEvent.down);
     }
 
     void Controller::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
@@ -173,7 +173,7 @@ namespace Chicane
             return;
         }
 
-        m_controllerButtonEvents.at(key)(inEvent.state == SDL_PRESSED);
+        m_controllerButtonEvents.at(key)(inEvent.down);
     }
 
     void Controller::clearEvents()

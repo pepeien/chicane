@@ -156,6 +156,6 @@ namespace Chicane
         std::vector<Layer*>              m_layers;
 
         // Essentials
-        std::unique_ptr<CameraComponent> m_defaultCamera;
+        CameraComponent* m_defaultCamera;
     };
 }

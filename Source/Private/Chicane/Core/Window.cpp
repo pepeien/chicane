@@ -14,14 +14,14 @@ namespace Chicane
         m_bIsMinimized(false),
         m_renderer(nullptr)
     {
-        if (!SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD))
+        if (!SDL_InitSubSystem(SDL_INIT_VIDEO) || !SDL_InitSubSystem(SDL_INIT_AUDIO) || !SDL_InitSubSystem(SDL_INIT_GAMEPAD))
         {
             throw std::runtime_error(SDL_GetError());
         }
 
         int displayCount = 0;
         SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
-        int display = displays[
+        int display = SDL_GetDisplays(&displayCount)[
             std::min(
                 inCreateInfo.displayIndex,
                 displayCount
@@ -29,6 +29,8 @@ namespace Chicane
         ];
 
         const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(display);
+
+        SDL_free(displays);
 
         if (!displaySettings)
         {

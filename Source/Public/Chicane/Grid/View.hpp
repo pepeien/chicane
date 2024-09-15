@@ -58,7 +58,8 @@ namespace Chicane
         private:
             bool m_bWasStyleAdded;
 
-            const std::string TAG_ID = "View";
+            ImVec2 m_resolution;
+            ImVec2 m_position;
         };
     }
 }

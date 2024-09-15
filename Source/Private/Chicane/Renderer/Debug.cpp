@@ -95,9 +95,9 @@ namespace Chicane
             }
 
             Chicane::Log::emmit(
+                color,
                 "Vulkan",
-                prefix + inData->pMessage,
-                color
+                prefix + inData->pMessage
             );
 
             return VK_FALSE;

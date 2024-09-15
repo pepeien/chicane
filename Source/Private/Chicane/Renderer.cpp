@@ -12,7 +12,7 @@ namespace Chicane
         m_window(inWindow),
         m_viewportSize(Vec<2, std::uint32_t>(0)),
         m_viewportPosition(Vec<2, std::uint32_t>(0)),
-        m_defaultCamera(std::make_unique<CameraComponent>())
+        m_defaultCamera(new CameraComponent())
     {
         buildInstance();
         buildDebugMessenger();

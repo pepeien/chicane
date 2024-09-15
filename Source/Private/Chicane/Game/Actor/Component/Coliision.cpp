@@ -1,7 +1,5 @@
 #include "Chicane/Game/Actor/Component/Collision.hpp"
 
-#include <iostream>
-
 #include "Chicane/Core.hpp"
 
 namespace Chicane
@@ -31,8 +29,6 @@ namespace Chicane
 
         Actor* attachment = getAttachment();
 
-        const Bounds& bounds = attachment->getBounds();
-
         for (Actor* actor : getActiveLevel()->getActors())
         {
             if (actor == attachment || !actor->canCollide())
@@ -40,13 +36,13 @@ namespace Chicane
                 continue;
             }
 
-            if (!bounds.contains(actor->getBounds()))
+            if (!attachment->isCollidingWith(actor))
             {
                 continue;
             }
 
-            attachment->collide(actor);
-            actor->collide(attachment);
+            attachment->collideWith(actor);
+            actor->collideWith(attachment);
         }
     }
 

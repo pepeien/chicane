@@ -1,12 +1,12 @@
 #include "Chicane/Game/Transformable.hpp"
 
-const Chicane::Mat<4, float> BASE_MAT(1.0f);
+static Chicane::Mat<4, float> BASE_MAT(1.0f);
 
 namespace Chicane
 {
     Transformable::Transformable()
         : m_transform({}),
-        m_position(Mat<4, float>(1.0f)),
+        m_position(BASE_MAT),
         m_direction({}),
         m_baseBounds({}),
         m_currentBounds({}),

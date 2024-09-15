@@ -6,11 +6,11 @@
 #include "Chicane/Grid/View.hpp"
 #include "Chicane/Grid/Style.hpp"
 
-const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
+static const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
 
-const Chicane::Grid::ComponentFunctionData EMPTY_FUNCTION_DATA {};
+static const Chicane::Grid::ComponentFunctionData EMPTY_FUNCTION_DATA {};
 
-const std::vector<std::any> EMPTY_ITEMS = {};
+static const std::vector<std::any> EMPTY_ITEMS = {};
 
 namespace Chicane
 {

@@ -34,46 +34,10 @@ namespace Chicane
             )->next(m_logs);
         }
 
-        void info(const std::string& inMessage)
-        {
-            emmit(
-                "INFO",
-                inMessage,
-                COLOR_WHITE
-            );
-        }
-
-        void warning(const std::string& inMessage)
-        {
-            emmit(
-                "WARNING",
-                inMessage,
-                COLOR_YELLOW
-            );
-        }
-
-        void error(const std::string& inMessage)
-        {
-            emmit(
-                "ERROR",
-                inMessage,
-                COLOR_ORANGE
-            );
-        }
-
-        void critical(const std::string& inMessage)
-        {
-            emmit(
-                "CRITICAL",
-                inMessage,
-                COLOR_RED
-            );
-        }
-
         void emmit(
+            const std::string& inHexColor,
             const std::string& inIdentifier,
-            const std::string& inMessage,
-            const std::string& inHexColor
+            const std::string& inMessage
         )
         {
             std::string message = "[" + inIdentifier + "] " + inMessage;
@@ -84,7 +48,6 @@ namespace Chicane
             }
 
             message = Utils::trim(message);
-
 
             std::string hexColor = inHexColor;
             std::transform(
@@ -145,6 +108,42 @@ namespace Chicane
             }
 
             m_logsObservable->next(m_logs);
+        }
+
+        void info(const std::string& inMessage)
+        {
+            emmit(
+                COLOR_WHITE,
+                "INFO",
+                inMessage
+            );
+        }
+
+        void warning(const std::string& inMessage)
+        {
+            emmit(
+                COLOR_YELLOW,
+                "WARNING",
+                inMessage
+            );
+        }
+
+        void error(const std::string& inMessage)
+        {
+            emmit(
+                COLOR_ORANGE,
+                "ERROR",
+                inMessage
+            );
+        }
+
+        void critical(const std::string& inMessage)
+        {
+            emmit(
+                COLOR_RED,
+                "CRITICAL",
+                inMessage
+            );
         }
     }
 }

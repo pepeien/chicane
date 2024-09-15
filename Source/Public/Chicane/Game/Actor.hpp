@@ -14,12 +14,16 @@ namespace Chicane
 
     public:
         virtual void onTick(float inDeltaTime) { return; };
-        virtual void onCollision(const Actor* inActor) { return; };
+        virtual void onCollision(const Actor* inSubject) { return; };
 
     public:
         bool canCollide() const;
         void setCanCollide(bool inCanCollide);
-        void collide(Actor* inSubject);
+
+        bool isCollidingWith(const Actor* inSubject) const;
+        bool isCollidingWith(const Bounds& inBounds) const;
+        bool isCollidingWith(const Vec<3, float>& inPoint) const;
+        void collideWith(const Actor* inSubject);
 
         bool canTick() const;
         void setCanTick(bool inCanTick);

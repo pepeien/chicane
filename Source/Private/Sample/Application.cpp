@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include "Actor/Apple.hpp"
+#include "Actor/Character.hpp"
 
 constexpr std::uint32_t APPLE_COLUMN_COUNT = 5;
 constexpr std::uint32_t APPLE_ROW_COUNT    = 5;
@@ -24,7 +25,7 @@ void Application::initChacater()
     m_controller = std::make_unique<Chicane::Controller>();
     Chicane::setActiveController(m_controller.get());
 
-    Chicane::CameraActor* character = new Chicane::CameraActor();
+    Character* character = new Character();
     character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -110.0f, 40.0f));
 
     m_controller->attachTo(character);

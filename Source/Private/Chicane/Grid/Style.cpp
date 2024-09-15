@@ -68,7 +68,7 @@ namespace Chicane
         StyleSourceMap m_sources = {};
         StyleDataMap m_styles    = {};
 
-        const StyleSourceMap EMPTY_SOURCE_MAP = {};
+        static const StyleSourceMap EMPTY_SOURCE_MAP = {};
 
         const Style& Style::empty()
         {
@@ -408,7 +408,7 @@ namespace Chicane
         {
             if (inData.empty() || inData.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
             {
-                outStyle.backgroundColor = "transparent";
+                outStyle.backgroundColor = BACKGROUND_COLOR_TRANSPARENT;
 
                 return;
             }

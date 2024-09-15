@@ -4,8 +4,10 @@
 
 Apple::Apple()
     : Chicane::Actor(),
-    m_mesh(new Chicane::MeshComponent())
+    m_mesh(new Chicane::MeshComponent()),
+    m_bIsDead(false)
 {
+    setCanCollide(true);
     setCanTick(true);
     setAbsoluteScale(Chicane::Vec<3, float>(0.05f));
 
@@ -24,3 +26,30 @@ void Apple::onTick(float inDeltaTime)
         )
     );
 } 
+
+void Apple::onCollision(const Chicane::Actor* inActor) 
+{
+    die();
+}
+
+void Apple::respawn()
+{
+    if (!m_bIsDead)
+    {
+        return;
+    }
+
+    setCanCollide(true);
+    setCanTick(true);
+}
+
+void Apple::die()
+{
+    if (m_bIsDead)
+    {
+        return;
+    }
+
+    setCanCollide(false);
+    setCanTick(false);
+}

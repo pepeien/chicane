@@ -3,6 +3,8 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Style.hpp"
 
+static const std::string TAG_ID = "View";
+
 namespace Chicane
 {
     namespace Grid
@@ -189,18 +191,14 @@ namespace Chicane
                                          ImGuiWindowFlags_NoBackground |
                                          ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-            ImVec2 uiResolution = ImVec2(
-                static_cast<float>(inResolution.x),
-                static_cast<float>(inResolution.y)
-            );
-            ImVec2 uiPosition = ImVec2(
-                static_cast<float>(inPosition.x),
-                static_cast<float>(inPosition.y)
-            );
+            m_resolution.x = inResolution.x;
+            m_resolution.y = inResolution.y;
+            ImGui::SetNextWindowContentSize(m_resolution);
+            ImGui::SetNextWindowSize(       m_resolution);
 
-            ImGui::SetNextWindowContentSize(uiResolution);
-            ImGui::SetNextWindowSize(uiResolution);
-            ImGui::SetNextWindowPos(uiPosition);
+            m_position.x = inPosition.x;
+            m_position.y = inPosition.y;
+            ImGui::SetNextWindowPos(m_position);
 
             if (!m_bWasStyleAdded)
             {
