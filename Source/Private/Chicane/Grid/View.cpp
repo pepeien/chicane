@@ -36,6 +36,12 @@ namespace Chicane
             }
 
             validate(m_document.first_child());
+
+            m_flags = ImGuiWindowFlags_NoNav |
+                      ImGuiWindowFlags_NoDecoration |
+                      ImGuiWindowFlags_NoMove |
+                      ImGuiWindowFlags_NoBackground |
+                      ImGuiWindowFlags_NoBringToFrontOnFocus;
         }
 
         View::View(const std::string& inId)
@@ -185,12 +191,6 @@ namespace Chicane
             const Vec<2, int>& inPosition
         )
         {
-            ImGuiWindowFlags viewFlags = ImGuiWindowFlags_NoNav |
-                                         ImGuiWindowFlags_NoDecoration |
-                                         ImGuiWindowFlags_NoMove |
-                                         ImGuiWindowFlags_NoBackground |
-                                         ImGuiWindowFlags_NoBringToFrontOnFocus;
-
             m_resolution.x = inResolution.x;
             m_resolution.y = inResolution.y;
             ImGui::SetNextWindowContentSize(m_resolution);
@@ -212,7 +212,7 @@ namespace Chicane
             ImGui::Begin(
                 m_id.c_str(),
                 nullptr,
-                viewFlags
+                m_flags
             );
                 compileChildren(inNode);
             ImGui::End();

@@ -1,5 +1,7 @@
 #include "Chicane/Game/Transformable.hpp"
 
+#include "Chicane/Core.hpp"
+
 static Chicane::Mat<4, float> BASE_MAT(1.0f);
 
 namespace Chicane
@@ -130,16 +132,17 @@ namespace Chicane
 
     void Transformable::refreshBounds()
     {
-        m_currentBounds.extent  = m_baseBounds.extent * m_transform.scale;
+        m_currentBounds.extent  = m_baseBounds.extent;
 
         m_currentBounds.origin  = m_baseBounds.origin;
-        m_currentBounds.origin += m_transform.translation;
+        m_currentBounds.origin -= m_currentBounds.extent;
+        m_currentBounds.origin += getTranslation();
+
+        m_currentBounds.center    = m_currentBounds.origin;
+        m_currentBounds.center.z += m_currentBounds.extent.z * 0.5f;
 
         m_currentBounds.top    = m_currentBounds.origin;
         m_currentBounds.top.z += m_currentBounds.extent.z;
-
-        m_currentBounds.center    = m_currentBounds.top;
-        m_currentBounds.center.z *= 0.5f;
     }
 
     void Transformable::setBounds(const Bounds& inBounds)
@@ -194,9 +197,15 @@ namespace Chicane
 
     void Transformable::refreshPosition(const Mat<4, float>& inBase)
     {
-        // Transaate
-        m_position = glm::translate(
+        // Scale
+        m_position = glm::scale(
             inBase,
+            m_transform.scale
+        );
+
+        // Transalate
+        m_position = glm::translate(
+            m_position,
             m_transform.translation
         );
 
@@ -215,12 +224,6 @@ namespace Chicane
             m_position,
             glm::radians(m_transform.rotation.z),
             UP_DIRECTION
-        );
-
-        // Scale
-        m_position = glm::scale(
-            m_position,
-            m_transform.scale
         );
 
         refreshBounds();

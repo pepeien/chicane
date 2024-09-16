@@ -4,6 +4,7 @@ namespace Chicane
 {
     Actor::Actor()
         : Transformable(),
+        m_bCanCollide(false),
         m_bCanTick(false)
     {}
 

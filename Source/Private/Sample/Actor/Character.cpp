@@ -1,8 +1,7 @@
 #include "Actor/Character.hpp"
 
 #include "Chicane/Core.hpp"
-
-#include <iostream>
+#include "Apple.hpp"
 
 Character::Character()
     : Chicane::CameraActor()
@@ -21,20 +20,23 @@ void Character::onControlAttachment()
                 return;
             }
 
-            const Chicane::Vec<3, float>& forward    = getForward();
+            const Chicane::Vec<3, float>& direction  = getForward();
             const Chicane::Vec<3, float>& origin     = getTranslation();
-            const Chicane::Vec<3, float> destination = origin + (forward * m_camera->getFarClip());
+            const Chicane::Vec<3, float> destination = origin + (direction * m_camera->getFarClip());
 
             std::vector<Chicane::Actor*> hitActors = Chicane::traceLine(
                 origin,
                 destination,
-                forward,
+                direction,
                 { this }
             );
-
+ 
             for (Chicane::Actor* actor : hitActors)
             {
-                std::cout << "HIT => " << actor << "\n";
+                Chicane::Log::info(
+                    "%p hit by %p",
+                    actor, this
+                );
             }
         }
     );

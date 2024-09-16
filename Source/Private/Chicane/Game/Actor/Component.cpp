@@ -1,5 +1,7 @@
 #include "Chicane/Game/Actor/Component.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     ActorComponent::ActorComponent()
@@ -74,6 +76,8 @@ namespace Chicane
             );
         }
 
+        refreshTransform();
+
         onAttachment(inAttachment);
     }
 
@@ -127,19 +131,21 @@ namespace Chicane
 
     void ActorComponent::refreshTransform()
     {
-        if (!isAttached())
-        {
-            setAbsoluteScale(m_base.scale);
-            setAbsoluteRotation(m_base.rotation);
-            setAbsoluteTranslation(m_base.translation);
+        Vec<3, float> scale       = m_base.scale;
+        Vec<3, float> rotation    = m_base.rotation;
+        Vec<3, float> translation = m_base.translation;
 
-            return;
+        if (isAttached())
+        {
+            const Transform& attachmentTransform = m_attachment->getTransform();
+
+            scale       = scale * attachmentTransform.scale;
+            rotation    = rotation + attachmentTransform.rotation;
+            translation = translation + attachmentTransform.translation;
         }
 
-        const Transform& attachmentTransform = m_attachment->getTransform();
-
-        setAbsoluteScale(attachmentTransform.scale * m_base.scale);
-        setAbsoluteRotation(attachmentTransform.rotation + m_base.rotation);
-        setAbsoluteTranslation(attachmentTransform.translation + m_base.translation);
+        setAbsoluteScale(      scale);
+        setAbsoluteRotation(   rotation);
+        setAbsoluteTranslation(translation);
     }
 }

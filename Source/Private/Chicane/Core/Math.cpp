@@ -3,51 +3,49 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 
-#include <iostream>
-
-constexpr float BOUND_SCAN_STEP_SIZE = 0.1f;
+constexpr float BOUND_SCAN_STEP_SIZE = 1.0f;
 constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {
     bool Bounds::contains(const Bounds& inBounds) const
     {
-        const Vec<3, float> backOrigin = inBounds.origin;
-        Vec<3, float> backPoint        = backOrigin;
-
-        const Vec<3, float> frontOrigin = inBounds.origin + inBounds.extent;
+        const Vec<3, float> frontOrigin = inBounds.origin - inBounds.extent;
         Vec<3, float> frontPoint        = frontOrigin;
 
-        while (backPoint.z < frontPoint.z)
-        {
-            backPoint.x = backOrigin.x;
-            backPoint.y = backOrigin.y;
+        const Vec<3, float> backOrigin = inBounds.origin + inBounds.extent;
+        Vec<3, float> backPoint        = backOrigin;
 
+        while (frontPoint.z < backPoint.z)
+        {
             frontPoint.x = frontOrigin.x;
             frontPoint.y = frontOrigin.y;
 
-            while (backPoint.y < frontPoint.y)
-            {
-                backPoint.x  = backOrigin.x;
-                frontPoint.x = frontOrigin.x;
+            backPoint.x = backOrigin.x;
+            backPoint.y = backOrigin.y;
 
-                while (backPoint.x < frontPoint.x)
+            while (frontPoint.y < backPoint.y)
+            {
+                frontPoint.x = frontOrigin.x;
+                backPoint.x  = backOrigin.x;
+
+                while (frontPoint.x < backPoint.x)
                 {
                     if (contains(backPoint) || contains(frontPoint))
                     {
                         return true;
                     }
 
-                    backPoint.x  += BOUND_SCAN_STEP_SIZE;
-                    frontPoint.x -= BOUND_SCAN_STEP_SIZE;
+                    frontPoint.x += BOUND_SCAN_STEP_SIZE;
+                    backPoint.x  -= BOUND_SCAN_STEP_SIZE;
                 }
 
-                backPoint.y  += BOUND_SCAN_STEP_SIZE;
-                frontPoint.y -= BOUND_SCAN_STEP_SIZE;
+                frontPoint.y += BOUND_SCAN_STEP_SIZE;
+                backPoint.y  -= BOUND_SCAN_STEP_SIZE;
             }
 
-            backPoint.z  += BOUND_SCAN_STEP_SIZE;
-            frontPoint.z -= BOUND_SCAN_STEP_SIZE;
+            frontPoint.z += BOUND_SCAN_STEP_SIZE;
+            backPoint.z  -= BOUND_SCAN_STEP_SIZE;
         }
 
         return false;
@@ -55,9 +53,11 @@ namespace Chicane
 
     bool Bounds::contains(const Vec<3, float>& inPoint) const
     {
-        bool bIsWithinX = inPoint.x >= origin.x && inPoint.x <= (origin.x + extent.x);
-        bool bIsWithinY = inPoint.y >= origin.y && inPoint.y <= (origin.y + extent.y);
-        bool bIsWithinZ = inPoint.z >= origin.z && inPoint.z <= (origin.z + extent.z);
+        const Vec<3, float> end = origin + extent;
+
+        const bool bIsWithinX = inPoint.x >= origin.x && inPoint.x <= end.x;
+        const bool bIsWithinY = inPoint.y >= origin.y && inPoint.y <= end.y;
+        const bool bIsWithinZ = inPoint.z >= origin.z && inPoint.z <= end.z;
 
         return bIsWithinX && bIsWithinY && bIsWithinZ;
     }
@@ -122,13 +122,30 @@ namespace Chicane
                 result.push_back(actor);
             }
 
+            point.x += inDirection.x * 0.1f;
+            point.x  = std::clamp(
+                point.x,
+                inOrigin.x,
+                inDestination.x
+            );
+
+            point.y += inDirection.y * 0.1f;
+            point.y  = std::clamp(
+                point.y,
+                inOrigin.y,
+                inDestination.y
+            );
+
+            point.z += inDirection.z * 0.1f;
+            point.z  = std::clamp(
+                point.z,
+                inOrigin.z,
+                inDestination.z
+            );
+
             bHasXReachedDestination = bIsXPositive ? (point.x >= inDestination.x) : (point.x <= inDestination.x);
             bHasYReachedDestination = bIsYPositive ? (point.y >= inDestination.y) : (point.y <= inDestination.y);
             bHasZReachedDestination = bIsZPositive ? (point.z >= inDestination.z) : (point.z <= inDestination.z);
-
-            point.x += bHasXReachedDestination ? 0.0f : (inDirection.x * LINE_TRACE_STEP_SIZE);
-            point.y += bHasYReachedDestination ? 0.0f : (inDirection.y * LINE_TRACE_STEP_SIZE);
-            point.z += bHasZReachedDestination ? 0.0f : (inDirection.z * LINE_TRACE_STEP_SIZE);
         }
 
         return result;

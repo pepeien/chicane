@@ -3,8 +3,8 @@
 #include "Actor/Apple.hpp"
 #include "Actor/Character.hpp"
 
-constexpr std::uint32_t APPLE_COLUMN_COUNT = 5;
-constexpr std::uint32_t APPLE_ROW_COUNT    = 5;
+constexpr std::uint32_t APPLE_COLUMN_COUNT = 1;
+constexpr std::uint32_t APPLE_ROW_COUNT    = 1;
 
 Application::Application()
 {
@@ -26,7 +26,7 @@ void Application::initChacater()
     Chicane::setActiveController(m_controller.get());
 
     Character* character = new Character();
-    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -110.0f, 40.0f));
+    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -55.0f, 20.0f));
 
     m_controller->attachTo(character);
 
@@ -47,22 +47,21 @@ void Application::addApples()
     float step = 20.0f;
 
     Chicane::Vec<3, float> position(0.0f);
-    position.x -= (step / 2) * APPLE_COLUMN_COUNT;
 
     for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
     {
-        position.x += step;
-        position.y += step;
+        position.x += column * step;
+        position.y += column * step;
         position.z = 0.0f;
 
         for (std::uint32_t row = 0; row < APPLE_ROW_COUNT; row++)
         {
+            position.z += row * step;
+
             Apple* apple = new Apple();
             apple->setAbsoluteTranslation(position);
 
             m_level->addActor(apple);
-
-            position.z += step;
         }
     }
 }

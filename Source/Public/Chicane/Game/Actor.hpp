@@ -12,7 +12,7 @@ namespace Chicane
         Actor();
         virtual ~Actor() = default;
 
-    public:
+    protected:
         virtual void onTick(float inDeltaTime) { return; };
         virtual void onCollision(const Actor* inSubject) { return; };
 

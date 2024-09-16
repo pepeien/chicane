@@ -80,22 +80,20 @@ namespace Chicane
                 continue;
             }
 
-            const Vec<3, float>& currentExtent = Loader::getModelManager()->getBounds(entry.reference);
+            const Vec<3, float>& extent = Loader::getModelManager()->getBounds(entry.reference);
 
-            if (currentExtent.x > bounds.extent.x)
-            {
-                bounds.extent.x += currentExtent.x;
-            }
-
-            if (currentExtent.y > bounds.extent.y)
-            {
-                bounds.extent.y += currentExtent.y;
-            }
-
-            if (currentExtent.z > bounds.extent.z)
-            {
-                bounds.extent.z += currentExtent.z;
-            }
+            bounds.extent.x = std::max(
+                bounds.extent.x,
+                extent.x
+            );
+            bounds.extent.y = std::max(
+                bounds.extent.y,
+                extent.y
+            );
+            bounds.extent.z = std::max(
+                bounds.extent.z,
+                extent.z
+            );
         }
 
         setBounds(bounds);
@@ -105,7 +103,7 @@ namespace Chicane
             return;
         }
 
-        getAttachment()->setBounds(bounds);
+        m_attachment->setBounds(bounds);
     }
 
     void MeshComponent::handleDrawability()

@@ -21,7 +21,7 @@ set_target_properties(
     PROPERTIES
 
     OUTPUT_NAME
-    "ChicaneSample"
+    "Chicane-Sample"
 
     VS_DEBUGGER_WORKING_DIRECTORY
     "${BUILD_DIR}"

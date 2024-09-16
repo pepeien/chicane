@@ -58,6 +58,8 @@ namespace Chicane
         private:
             bool m_bWasStyleAdded;
 
+            ImGuiWindowFlags m_flags;
+
             ImVec2 m_resolution;
             ImVec2 m_position;
         };

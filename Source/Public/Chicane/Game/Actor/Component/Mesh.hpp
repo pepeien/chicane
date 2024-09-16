@@ -12,7 +12,7 @@ namespace Chicane
         MeshComponent();
         virtual ~MeshComponent() = default;
 
-    public:
+    protected:
         void onActivation() override;
         void onDeactivation() override;
         void onAttachment(Actor* inActor) override;
