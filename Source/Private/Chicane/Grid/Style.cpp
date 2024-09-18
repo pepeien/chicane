@@ -572,20 +572,25 @@ namespace Chicane
                     '{'
                 );
 
-                std::string identifier = Utils::trim(splittedStyle.at(0));
-                std::string source     = Utils::trim(splittedStyle.at(1));
+                std::string identifiers = Utils::trim(splittedStyle.at(0));
+                std::string source      = Utils::trim(splittedStyle.at(1));
 
-                if (result.find(identifier) != result.end())
+                for (std::string rawIdentifier : Utils::split(identifiers, ','))
                 {
-                    continue;
-                }
+                    std::string identifier = Utils::trim(rawIdentifier);
 
-                result.insert(
-                    std::make_pair(
-                        identifier,
-                        extractStyleSource(source)
-                    )
-                );
+                    if (result.find(identifier) != result.end())
+                    {
+                        continue;
+                    }
+
+                    result.insert(
+                        std::make_pair(
+                            identifier,
+                            extractStyleSource(source)
+                        )
+                    );
+                }
             }
 
             return result;
