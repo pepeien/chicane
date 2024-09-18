@@ -37,7 +37,7 @@ namespace Chicane
                     Vec<3, float>(
                         0.0f,
                         -inEvent.xrel * 0.5f,
-                        -inEvent.yrel * 0.5f
+                        inEvent.yrel * 0.5f
                     )
                 );
             }
@@ -192,7 +192,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getRight() * -MOVEMENT_COEFFICIENT);
+        setRelativeTranslation(getLeft() * MOVEMENT_COEFFICIENT);
     }
 
     void CameraActor::moveRight(bool bInIsKeyDown)
@@ -202,6 +202,6 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getRight() * MOVEMENT_COEFFICIENT);
+        setRelativeTranslation(getLeft() * -MOVEMENT_COEFFICIENT);
     }
 }

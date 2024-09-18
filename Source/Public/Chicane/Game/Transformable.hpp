@@ -33,7 +33,7 @@ namespace Chicane
         const Quat<float>& getOrientation() const;
 
         const Vec<3, float>& getForward() const;
-        const Vec<3, float>& getRight() const;
+        const Vec<3, float>& getLeft() const;
         const Vec<3, float>& getUp() const;
 
         // Bounds

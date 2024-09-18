@@ -53,7 +53,7 @@ namespace Chicane
     {
         Vec<3, float> forward = FORWARD_DIRECTION;
         Vec<3, float> up      = UP_DIRECTION;
-        Vec<3, float> right   = RIGHT_DIRECTION;
+        Vec<3, float> left    = LEFT_DIRECTION;
     };
 
     struct Bounds

@@ -17,7 +17,7 @@ namespace Chicane
             Mat<4, float> viewProjection = Mat<4, float>();
 
             Vec<4, float> forward        = Vec<4, float>(FORWARD_DIRECTION, 0.0f);
-            Vec<4, float> right          = Vec<4, float>(RIGHT_DIRECTION,   0.0f);
+            Vec<4, float> right          = Vec<4, float>(LEFT_DIRECTION,   0.0f);
             Vec<4, float> up             = Vec<4, float>(UP_DIRECTION,      0.0f);
         };
 
