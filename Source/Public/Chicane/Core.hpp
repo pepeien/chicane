@@ -9,7 +9,6 @@
 #include "Chicane/Core/Loader.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Core/Thread.hpp"
 #include "Chicane/Core/Utils.hpp"
 #include "Chicane/Core/Window.hpp"
 

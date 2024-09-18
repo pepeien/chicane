@@ -39,7 +39,7 @@
 #include <mutex>
 #include <ostream>
 #include <optional>
-#include <queue>
+#include <deque>
 #include <set>
 #include <string>
 #include <thread>

@@ -28,7 +28,7 @@ namespace Chicane
             }
         };
 
-        typedef std::vector<Instance> List;
+        typedef std::deque<Instance> List;
 
         void watchLogs(
             std::function<void (const List&)> inNextCallback,

@@ -79,33 +79,14 @@ namespace Chicane
             // History
             if (m_logs.size() > MAX_LOG_COUNT)
             {
-                std::uint32_t start = 0;
-                std::uint32_t end   = m_logs.size() - 1;
-
-                for (std::uint32_t i = end; i > 0; i--)
-                {
-                    if (i == start)
-                    {
-                        continue;
-                    }
-
-                    m_logs[i - 1] = m_logs[i];
-
-                    if (i == end)
-                    {
-                        m_logs[i].text  = message;
-                        m_logs[i].color = hexColor;
-                    }
-                }
+                m_logs.pop_front();
             }
-            else
-            {
-                Instance instance {};
-                instance.text  = message;
-                instance.color = hexColor;
 
-                m_logs.push_back(instance);
-            }
+            Instance instance {};
+            instance.text  = message;
+            instance.color = hexColor;
+
+            m_logs.push_back(instance);
 
             m_logsObservable->next(m_logs);
         }
