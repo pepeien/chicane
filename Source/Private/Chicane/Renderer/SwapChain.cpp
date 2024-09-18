@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/SwapChain.hpp"
 
-constexpr uint32_t MAX_IMAGE_COUNT = 3;
+constexpr uint32_t MAX_IMAGE_COUNT = 2;
 
 namespace Chicane
 {
