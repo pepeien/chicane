@@ -197,15 +197,9 @@ namespace Chicane
 
     void Transformable::refreshPosition(const Mat<4, float>& inBase)
     {
-        // Scale
-        m_position = glm::scale(
-            inBase,
-            m_transform.scale
-        );
-
         // Transalate
         m_position = glm::translate(
-            m_position,
+            inBase,
             m_transform.translation
         );
 
@@ -224,6 +218,12 @@ namespace Chicane
             m_position,
             glm::radians(m_transform.rotation.z),
             UP_DIRECTION
+        );
+
+        // Scale
+        m_position = glm::scale(
+            m_position,
+            m_transform.scale
         );
 
         refreshBounds();
