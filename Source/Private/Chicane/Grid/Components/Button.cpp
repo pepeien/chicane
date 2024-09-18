@@ -40,7 +40,7 @@ namespace Chicane
 
                     if (param.type() == typeid(std::string))
                     {
-                        if (Utils::trim(std::any_cast<std::string>(param)) == "$event")
+                        if (Utils::trim(std::any_cast<std::string>(param)) == ON_CLICK_EVENT_KEYWORD)
                         {
                             onClickEvent.values[0] = inNode;
                         }
@@ -95,13 +95,13 @@ namespace Chicane
 
                 ImGui::SetCursorPos(initialPosition);
 
-                ContainerComponent::Props listProps {};
-                listProps.id              = inProps.id + "_content";
-                listProps.style           = inProps.style;
-                listProps.children        = inProps.children;
-                listProps._renderers = inProps._renderers;
+                ContainerComponent::Props containerProps {};
+                containerProps.id         = inProps.id + "_content";
+                containerProps.style      = inProps.style;
+                containerProps.children   = inProps.children;
+                containerProps._renderers = inProps._renderers;
 
-                ContainerComponent::compileRaw(listProps);
+                ContainerComponent::compileRaw(containerProps);
             }
 
             void compile(const pugi::xml_node& inNode)

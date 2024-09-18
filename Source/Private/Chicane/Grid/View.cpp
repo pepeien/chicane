@@ -78,7 +78,7 @@ namespace Chicane
             return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) != nullptr;
         }
 
-        const ComponentVariable View::getVariable(const std::string& inId) const
+        ComponentVariable View::getVariable(const std::string& inId) const
         {
             if (!hasVariable(inId))
             {

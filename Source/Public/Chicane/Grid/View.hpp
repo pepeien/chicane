@@ -30,7 +30,7 @@ namespace Chicane
             );
 
             bool hasVariable(const std::string& inId) const;
-            const ComponentVariable getVariable(const std::string& inId) const;
+            ComponentVariable getVariable(const std::string& inId) const;
             void addVariable(const ComponentVariables& inVariables);
             void addVariable(const std::string& inId, ComponentVariable inVariable);
             void removeVariable(const std::string& inId);
