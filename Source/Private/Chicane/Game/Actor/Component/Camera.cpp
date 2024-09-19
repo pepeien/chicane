@@ -18,9 +18,9 @@ namespace Chicane
                 m_UBO.forward.y = m_direction.forward.y;
                 m_UBO.forward.z = m_direction.forward.z;
 
-                m_UBO.right.x = m_direction.left.x;
-                m_UBO.right.y = m_direction.left.y;
-                m_UBO.right.z = m_direction.left.z;
+                m_UBO.right.x = m_direction.right.x;
+                m_UBO.right.y = m_direction.right.y;
+                m_UBO.right.z = m_direction.right.z;
 
                 m_UBO.up.x = m_direction.up.x;
                 m_UBO.up.y = m_direction.up.y;

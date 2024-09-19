@@ -95,9 +95,9 @@ namespace Chicane
         return m_direction.forward;
     }
 
-    const Vec<3, float>& Transformable::getLeft() const
+    const Vec<3, float>& Transformable::getRight() const
     {
-        return m_direction.left;
+        return m_direction.right;
     }
 
     const Vec<3, float>& Transformable::getUp() const
@@ -207,12 +207,12 @@ namespace Chicane
         m_position = glm::rotate(
             m_position,
             glm::radians(m_transform.rotation.x),
-            FORWARD_DIRECTION
+            RIGHT_DIRECTION
         );
         m_position = glm::rotate(
             m_position,
             glm::radians(m_transform.rotation.y),
-            LEFT_DIRECTION
+            FORWARD_DIRECTION
         );
         m_position = glm::rotate(
             m_position,
@@ -242,12 +242,12 @@ namespace Chicane
         );
         m_orientation *= glm::angleAxis(
             glm::radians(m_transform.rotation.z),
-            LEFT_DIRECTION
+            RIGHT_DIRECTION
         );
         m_orientation = glm::normalize(m_orientation);
 
         m_direction.forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
-        m_direction.left    = glm::rotate(m_orientation, LEFT_DIRECTION);
+        m_direction.right    = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_direction.up      = glm::rotate(m_orientation, UP_DIRECTION);
     }
 }

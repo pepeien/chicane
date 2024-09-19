@@ -24,7 +24,7 @@ namespace Chicane
         void SphereFrustum::use(const CameraComponent* inCamera)
         {
             const Vec<3, float>& up          = inCamera->getUp();
-            const Vec<3, float>& left        = inCamera->getLeft();
+            const Vec<3, float>& right       = inCamera->getRight();
             const Vec<3, float>& forward     = inCamera->getForward();
             const Vec<3, float>& translation = inCamera->getTranslation();
 
@@ -41,19 +41,19 @@ namespace Chicane
             center = inCamera->getCenter();
 
             m_top.update(
-                glm::cross(left, forwardFar - up * halfVertical),
+                glm::cross(right, forwardFar - up * halfVertical),
                 translation
             );
             m_bottom.update(
-                glm::cross(forwardFar + up * halfVertical, left),
+                glm::cross(forwardFar + up * halfVertical, right),
                 translation
             );
             m_left.update(
-                glm::cross(up, forwardFar + left * halfHorizontal),
+                glm::cross(up, forwardFar + right * halfHorizontal),
                 translation
             );
             m_right.update(
-                glm::cross(forwardFar - left * halfHorizontal, up),
+                glm::cross(forwardFar - right * halfHorizontal, up),
                 translation
             );
             m_near.update(

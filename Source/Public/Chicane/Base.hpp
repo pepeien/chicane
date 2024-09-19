@@ -79,7 +79,7 @@ constexpr std::uint32_t MAX_TEXTURE_COUNT = 100000;
 
 // Z-Up Right Handed
 constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
-constexpr glm::vec3 LEFT_DIRECTION    = glm::vec3(-1.0f, 0.0f, 0.0f);
+constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);
 constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
 
 namespace Chicane
