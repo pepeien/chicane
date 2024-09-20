@@ -60,7 +60,6 @@ void Application::addApples()
 
             Apple* apple = new Apple();
             apple->setAbsoluteTranslation(position);
-
             m_level->addActor(apple);
         }
     }

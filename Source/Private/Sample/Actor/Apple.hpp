@@ -9,9 +9,6 @@ class Apple : public Chicane::Actor
 public:
     Apple();
 
-protected:
-    void onTick(float inDeltaTime) override;
-
 private:
     Chicane::MeshComponent* m_mesh;
 };

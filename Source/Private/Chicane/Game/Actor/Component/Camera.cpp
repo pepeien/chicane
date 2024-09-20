@@ -1,7 +1,6 @@
 #include "Chicane/Game/Actor/Component/Camera.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
 
 namespace Chicane
 {

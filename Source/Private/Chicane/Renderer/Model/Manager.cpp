@@ -452,9 +452,9 @@ namespace Chicane
             }
 
             Vec<3, float> result {};
-            result.x = xMax - xMin;
-            result.y = yMax - yMin;
-            result.z = zMax - zMin;
+            result.x = std::abs(xMax) + std::abs(xMin);
+            result.y = std::abs(yMax) + std::abs(yMin);
+            result.z = std::abs(zMax) + std::abs(zMin);
 
             return result;
         }

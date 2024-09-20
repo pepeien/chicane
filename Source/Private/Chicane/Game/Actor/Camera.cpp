@@ -3,7 +3,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Controller.hpp"
 
-constexpr float MOVEMENT_COEFFICIENT = 1.0f;
+constexpr float MOVEMENT_COEFFICIENT = 0.5f;
 
 namespace Chicane
 {

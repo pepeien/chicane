@@ -36,7 +36,7 @@ namespace Chicane
                 continue;
             }
 
-            if (!attachment->isCollidingWith(actor))
+            if (!actor->isCollidingWith(attachment))
             {
                 continue;
             }

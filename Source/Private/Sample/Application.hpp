@@ -18,7 +18,6 @@ public:
 private:
     void initChacater();
     void initLevel();
-    void addFloor();
     void addApples();
     void addView();
     void initWindow();
