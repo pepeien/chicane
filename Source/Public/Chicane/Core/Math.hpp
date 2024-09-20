@@ -73,7 +73,6 @@ namespace Chicane
     std::vector<Actor*> traceLine(
         const Vec<3, float>& inOrigin,
         const Vec<3, float>& inDestination,
-        const Vec<3, float>& inDirection,
         const std::vector<Actor*>& inIgnoredActors
     );
 }

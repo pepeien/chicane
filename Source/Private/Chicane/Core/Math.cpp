@@ -3,7 +3,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 
-constexpr float BOUND_SCAN_STEP_SIZE = 1.0f;
+constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
@@ -65,7 +65,6 @@ namespace Chicane
     std::vector<Actor*> traceLine(
         const Vec<3, float>& inOrigin,
         const Vec<3, float>& inDestination,
-        const Vec<3, float>& inDirection,
         const std::vector<Actor*>& inIgnoredActors
     )
     {
@@ -81,18 +80,21 @@ namespace Chicane
             return {};
         }
 
-        std::vector<Actor*> result {};
+        Vec<3, float> point = inOrigin;
+
+        const Vec<3, float> direction = glm::normalize(
+            inDestination - inOrigin
+        );
 
         const bool bIsXPositive = inDestination.x >= inOrigin.x;
         const bool bIsYPositive = inDestination.y >= inOrigin.y;
         const bool bIsZPositive = inDestination.z >= inOrigin.z;
 
-        Vec<3, float> point = inOrigin;
+        bool bHasXReachedDestination = false;
+        bool bHasYReachedDestination = false;
+        bool bHasZReachedDestination = false;
 
-        bool bHasXReachedDestination = bIsXPositive ? (point.x >= inDestination.x) : (point.x <= inDestination.x);
-        bool bHasYReachedDestination = bIsYPositive ? (point.y >= inDestination.y) : (point.y <= inDestination.y);
-        bool bHasZReachedDestination = bIsZPositive ? (point.z >= inDestination.z) : (point.z <= inDestination.z);
-
+        std::vector<Actor*> result {};
         while (!bHasXReachedDestination || !bHasYReachedDestination || !bHasZReachedDestination)
         {
             for (Actor* actor : actors)
@@ -122,26 +124,9 @@ namespace Chicane
                 result.push_back(actor);
             }
 
-            point.x += inDirection.x * 0.1f;
-            point.x  = std::clamp(
-                point.x,
-                inOrigin.x,
-                inDestination.x
-            );
-
-            point.y += inDirection.y * 0.1f;
-            point.y  = std::clamp(
-                point.y,
-                inOrigin.y,
-                inDestination.y
-            );
-
-            point.z += inDirection.z * 0.1f;
-            point.z  = std::clamp(
-                point.z,
-                inOrigin.z,
-                inDestination.z
-            );
+            point.x += bHasXReachedDestination ? 0.0f : direction.x * LINE_TRACE_STEP_SIZE;
+            point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
+            point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
 
             bHasXReachedDestination = bIsXPositive ? (point.x >= inDestination.x) : (point.x <= inDestination.x);
             bHasYReachedDestination = bIsYPositive ? (point.y >= inDestination.y) : (point.y <= inDestination.y);

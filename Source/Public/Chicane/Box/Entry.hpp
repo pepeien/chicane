@@ -10,7 +10,8 @@ namespace Chicane
         {
             Undefined,
             Model,
-            Texture
+            Texture,
+            Audio
         };
 
         struct Entry
