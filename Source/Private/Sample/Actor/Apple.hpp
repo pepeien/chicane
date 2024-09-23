@@ -9,6 +9,10 @@ class Apple : public Chicane::Actor
 public:
     Apple();
 
+protected:
+    void onTick(float inDeltaTime);
+    void onCollision(const Chicane::Actor* inSubject);
+
 private:
     Chicane::MeshComponent* m_mesh;
 };

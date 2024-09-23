@@ -31,10 +31,7 @@ void Character::onControlAttachment()
  
             for (Chicane::Actor* actor : hitActors)
             {
-                Chicane::Log::info(
-                    "%p hit by %p",
-                    actor, this
-                );
+                actor->collideWith(this);
             }
         }
     );
