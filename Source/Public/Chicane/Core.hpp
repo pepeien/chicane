@@ -50,6 +50,7 @@ namespace Chicane
     std::vector<Actor*> getActors();
 
     void addComponent(ActorComponent* inComponent);
+    void removeComponent(ActorComponent* inComponent);
     std::vector<ActorComponent*> getComponents();
 
     // Window

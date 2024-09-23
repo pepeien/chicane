@@ -3,8 +3,10 @@
 #include "Actor/Apple.hpp"
 #include "Actor/Character.hpp"
 
-constexpr std::uint32_t APPLE_COLUMN_COUNT = 1;
-constexpr std::uint32_t APPLE_ROW_COUNT    = 1;
+constexpr std::uint32_t APPLE_DEPTH_COUNT  = 1;
+constexpr std::uint32_t APPLE_COLUMN_COUNT = 10;
+constexpr std::uint32_t APPLE_ROW_COUNT    = 5;
+constexpr float         APPLE_STEP         = 20.0f;
 
 Application::Application()
 {
@@ -26,7 +28,7 @@ void Application::initChacater()
     Chicane::setActiveController(m_controller.get());
 
     Character* character = new Character();
-    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -55.0f, 20.0f));
+    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -150.0f, 20.0f));
 
     m_controller->attachTo(character);
 
@@ -44,24 +46,32 @@ void Application::initLevel()
 
 void Application::addApples()
 {
-    float step = 20.0f;
+    const Chicane::Vec<3, float> startPosition(
+        -(APPLE_ROW_COUNT * APPLE_STEP),
+        -((APPLE_DEPTH_COUNT * APPLE_STEP) * 0.25f),
+        -((APPLE_COLUMN_COUNT * APPLE_STEP) * 0.25f)
+    );
+    Chicane::Vec<3, float> position = startPosition;
 
-    Chicane::Vec<3, float> position(0.0f);
-
-    for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
+    for (std::uint32_t depth = 0; depth < APPLE_DEPTH_COUNT; depth++)
     {
-        position.x += column * step;
-        position.y += column * step;
-        position.z = 0.0f;
-
         for (std::uint32_t row = 0; row < APPLE_ROW_COUNT; row++)
         {
-            position.z += row * step;
+            for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
+            {
+                Apple* apple = new Apple();
+                apple->setAbsoluteTranslation(position);
+                m_level->addActor(apple);
 
-            Apple* apple = new Apple();
-            apple->setAbsoluteTranslation(position);
-            m_level->addActor(apple);
+                position.x += APPLE_STEP;
+            }
+
+            position.x  = startPosition.x;
+            position.z += APPLE_STEP;
         }
+
+        position.y += APPLE_STEP;
+        position.z  = startPosition.z;
     }
 }
 

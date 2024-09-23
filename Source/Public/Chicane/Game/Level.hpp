@@ -45,6 +45,7 @@ namespace Chicane
         bool hasComponents() const;
         const std::vector<ActorComponent*>& getComponents() const;
         void addComponent(ActorComponent* inComponent);
+        void removeComponent(ActorComponent* inComponent);
         void watchComponents(
             std::function<void (const std::vector<ActorComponent*>&)> inNextCallback,
             std::function<void (const std::string&)> inErrorCallback = nullptr,

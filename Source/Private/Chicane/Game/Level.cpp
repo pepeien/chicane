@@ -91,6 +91,25 @@ namespace Chicane
         m_componentObservable->next(m_components);
     }
 
+    void Level::removeComponent(ActorComponent* inComponent)
+    {
+        if (!inComponent)
+        {
+            return;
+        }
+
+        auto foundComponent = std::find(m_components.begin(), m_components.end(), inComponent);
+
+        if (foundComponent == m_components.end())
+        {
+            return;
+        }
+
+        m_components.erase(foundComponent);
+
+        m_componentObservable->next(m_components);
+    }
+
     void Level::watchComponents(
         std::function<void (const std::vector<ActorComponent*>&)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,

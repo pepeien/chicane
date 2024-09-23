@@ -28,5 +28,7 @@ void Apple::onTick(float inDeltaTime)
 
 void Apple::onCollision(const Chicane::Actor* inSubject)
 {
-    setCanTick(!canTick());
+    setCanTick(false);
+
+    m_mesh->deactivate();
 }

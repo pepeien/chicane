@@ -152,6 +152,7 @@ namespace Chicane
             modelDescriptorBufferInfo.offset = 0;
             modelDescriptorBufferInfo.range  = modelData.allocationSize;
 
+            modelData.transforms.clear();
             modelData.transforms.reserve(inMeshes.size());
             for (const MeshComponent* mesh : inMeshes)
             {
@@ -167,17 +168,19 @@ namespace Chicane
 
         void Instance::updateModelData(const std::vector<MeshComponent*>& inMeshes)
         {
+            if (inMeshes.empty())
+            {
+                destroyModelData();
+
+                return;
+            }
+
             if (isDirty())
             {
                 setupModelData(inMeshes);
 
                 m_bIsDirty = false;
 
-                return;
-            }
-
-            if (inMeshes.empty())
-            {
                 return;
             }
 

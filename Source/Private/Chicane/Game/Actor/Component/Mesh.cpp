@@ -30,6 +30,8 @@ namespace Chicane
         }
 
         deactivateMesh();
+
+        removeComponent(this);
     }
 
     void MeshComponent::onAttachment(Actor* inActor)

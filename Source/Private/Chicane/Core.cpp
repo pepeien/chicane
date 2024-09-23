@@ -129,6 +129,16 @@ namespace Chicane
         m_level->addComponent(inComponent);
     }
 
+    void removeComponent(ActorComponent* inComponent)
+    {
+        if (!hasActiveLevel())
+        {
+            return;
+        }
+
+        m_level->removeComponent(inComponent);
+    }
+
     std::vector<ActorComponent*> getComponents()
     {
         if (!hasActiveLevel())
