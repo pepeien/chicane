@@ -94,7 +94,7 @@ namespace Chicane
         void info(const std::string& inMessage)
         {
             emmit(
-                COLOR_WHITE,
+                Color::White,
                 "INFO",
                 inMessage
             );
@@ -103,7 +103,7 @@ namespace Chicane
         void warning(const std::string& inMessage)
         {
             emmit(
-                COLOR_YELLOW,
+                Color::Yellow,
                 "WARNING",
                 inMessage
             );
@@ -112,7 +112,7 @@ namespace Chicane
         void error(const std::string& inMessage)
         {
             emmit(
-                COLOR_ORANGE,
+                Color::Orange,
                 "ERROR",
                 inMessage
             );
@@ -121,7 +121,7 @@ namespace Chicane
         void critical(const std::string& inMessage)
         {
             emmit(
-                COLOR_RED,
+                Color::Red,
                 "CRITICAL",
                 inMessage
             );
