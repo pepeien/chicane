@@ -40,7 +40,7 @@ namespace Chicane
 
     void Actor::collideWith(const Actor* inSubject)
     {
-        if (!canCollide() || !isCollidingWith(inSubject))
+        if (!canCollide())
         {
             return;
         }

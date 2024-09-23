@@ -194,7 +194,7 @@ namespace Chicane
 
             float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
 
-            ImVec2 regionSize  = inPosition == Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
+            ImVec2 regionSize  = ImGui::GetCurrentWindowRead()->Size;
 
             if (inDirection == Direction::Horizontal)
             {

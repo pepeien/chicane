@@ -132,10 +132,11 @@ namespace Chicane
 
     void Transformable::refreshBounds()
     {
-        m_currentBounds.extent  = m_baseBounds.extent;
+        m_currentBounds.extent = m_baseBounds.extent * getScale();
+
+        Vec<3, float> extent = m_currentBounds.extent * 0.5f;
 
         m_currentBounds.origin  = m_baseBounds.origin;
-        m_currentBounds.origin -= m_currentBounds.extent * 0.5f;
         m_currentBounds.origin += getTranslation();
 
         m_currentBounds.center    = m_currentBounds.origin;

@@ -1,12 +1,35 @@
 #include "Chicane/Core/FileSystem.hpp"
 
-#include "Chicane/Core/Helper.hpp"
-#include "Chicane/Core/Log.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
+        std::vector<DialogResult> DialogResult::fromRaw(const char* const* inData)
+        {
+            std::vector<DialogResult> result {};
+
+            const char* const* currentData = inData;
+
+            while (true)
+            {
+                if (!currentData || !*currentData)
+                {
+                    break;
+                }
+
+                DialogResult block {};
+                block.path = *currentData;
+
+                result.push_back(block);
+
+                currentData++;
+            }
+
+            return result;
+        }
+
         bool exists(const std::string& inPath)
         {
             if (inPath.empty())
@@ -45,6 +68,49 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        void openFolderDialog(const Dialog& inProps, DialogCallback inCallback)
+        {
+            Window* window = getWindow();
+
+            if (!window)
+            {
+                throw std::runtime_error("Unable to open a folder dialog without a active window");
+            }
+
+            std::string location = Utils::trim(inProps.location);
+
+
+            SDL_ShowOpenFolderDialog(
+                inCallback,
+                nullptr,
+                window->instance,
+                location.empty() ? nullptr : location.c_str(),
+                inProps.canSelectMany
+            );
+        }
+
+        void openFileDialog(const FileDialog& inProps, DialogCallback inCallback)
+        {
+            Window* window = getWindow();
+
+            if (!window)
+            {
+                throw std::runtime_error("Unable to open a file dialog without a active window");
+            }
+
+            std::string location = Utils::trim(inProps.location);
+
+            SDL_ShowOpenFileDialog(
+                inCallback,
+                nullptr,
+                window->instance,
+                inProps.filters,
+                inProps.filterCount,
+                location.empty() ? nullptr : location.c_str(),
+                inProps.canSelectMany
+            );
         }
 
         std::vector<char> readFile(const std::string& inFilepath)

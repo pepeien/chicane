@@ -14,7 +14,7 @@ namespace Chicane
         m_bIsMinimized(false),
         m_renderer(nullptr)
     {
-        if (!SDL_InitSubSystem(SDL_INIT_VIDEO) || !SDL_InitSubSystem(SDL_INIT_AUDIO) || !SDL_InitSubSystem(SDL_INIT_GAMEPAD))
+        if (!SDL_InitSubSystem(SDL_INIT_AUDIO | SDL_INIT_GAMEPAD | SDL_INIT_VIDEO))
         {
             throw std::runtime_error(SDL_GetError());
         }
