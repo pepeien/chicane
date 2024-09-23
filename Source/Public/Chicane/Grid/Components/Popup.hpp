@@ -14,12 +14,14 @@ namespace Chicane
             // Attributes
             const std::string IS_OPEN_ATTRIBUTE_NAME        = "isOpen";
             const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
+            const std::string IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
 
             // Props
             struct Props : BaseProps
             {
                 bool bIsOpen        = true; // Optional
                 bool bIsConstrained = true; // Optional
+                bool bIsResizable   = true; // Optional
             };
 
             void compileRaw(const Props& inProps);

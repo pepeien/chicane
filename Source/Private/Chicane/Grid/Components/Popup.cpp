@@ -12,13 +12,15 @@ namespace Chicane
             {
                 const std::string& isOpen        = processText(getAttribute(IS_OPEN_ATTRIBUTE_NAME, inNode).as_string());
                 const std::string& isConstrained = processText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isResizable   = processText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
 
                 Props result {};
-                result.id            = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsOpen        = isOpen.empty() || Utils::areEquals(isOpen, "true");
                 result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
-                result.style         = getStyle(inNode);
-                result.children      = inNode.children();
+                result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "true");
+                result.style          = getStyle(inNode);
+                result.children       = inNode.children();
 
                 return result;
             }
@@ -42,6 +44,13 @@ namespace Chicane
 
                 const char* id = inProps.id.c_str();
 
+                ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
+
+                if (!inProps.bIsResizable)
+                {
+                    flags |= ImGuiWindowFlags_NoResize;
+                }
+
                 ImGui::SetNextWindowSize(
                     ImVec2(
                         inProps.style.width,
@@ -59,7 +68,7 @@ namespace Chicane
                     ImGuiCol_WindowBg,
                     hexToImGuiColor(inProps.style.backgroundColor)
                 );
-                    ImGui::Begin(id, nullptr, ImGuiWindowFlags_NoTitleBar);
+                    ImGui::Begin(id, nullptr, flags);
                         ImGui::GetCurrentWindow()->IsConstrained = inProps.bIsConstrained;
 
                         for (const pugi::xml_node& child : inProps.children)
