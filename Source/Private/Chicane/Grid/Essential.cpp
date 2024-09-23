@@ -185,7 +185,11 @@ namespace Chicane
             return getSizeFromPixel(inAttribute.as_string());
         }
 
-        float getSizeFromPercentage(const std::string& inValue, Direction inDirection, Position inPosition)
+        float getSizeFromPercentage(
+            const std::string& inValue,
+            Direction inDirection,
+            Position inPosition
+        )
         {
             if (!endsWith(inValue, PERCENTAGE_SIZE_UNIT))
             {
@@ -194,7 +198,7 @@ namespace Chicane
 
             float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
 
-            ImVec2 regionSize  = ImGui::GetCurrentWindowRead()->Size;
+            ImVec2 regionSize = inPosition == Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
 
             if (inDirection == Direction::Horizontal)
             {
