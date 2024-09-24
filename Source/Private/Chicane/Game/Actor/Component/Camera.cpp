@@ -45,6 +45,8 @@ namespace Chicane
         }
 
         setActiveCamera(nullptr);
+
+        removeComponent(this);
     }
 
     bool CameraComponent::canSee(const Transformable* inSubject) const

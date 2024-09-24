@@ -20,6 +20,16 @@ namespace Chicane
         addComponent(this);
     }
 
+    void CollisionComponent::onDeactivation()
+    {
+        if (!hasActiveLevel())
+        {
+            return;
+        }
+
+        removeComponent(this);
+    }
+
     void CollisionComponent::onTick(float inDeltaTime)
     {
         if (!canCollide())
