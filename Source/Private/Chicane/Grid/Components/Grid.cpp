@@ -21,8 +21,11 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
+                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+    
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.itemSize   = getItemSize(inNode);
                 result.style      = getStyle(inNode);
                 result.items      = getItems(inNode);
@@ -182,6 +185,11 @@ namespace Chicane
             void compileRaw(const Props& inProps)
             {
                 validate(inProps);
+
+                if (!inProps.bIsVisible)
+                {
+                    return;
+                }
 
                 showRenderers(inProps);
                 showItems(inProps);

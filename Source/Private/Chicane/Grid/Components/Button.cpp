@@ -52,8 +52,11 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
+                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+    
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.style      = getStyle(inNode);
                 result.children   = inNode.children();
 
@@ -73,6 +76,11 @@ namespace Chicane
             void compileRaw(const Props& inProps)
             {
                 validate(inProps);
+
+                if (!inProps.bIsVisible)
+                {
+                    return;
+                }
 
                 ImVec2 initialPosition = ImGui::GetCursorPos();
 

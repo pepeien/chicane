@@ -19,7 +19,6 @@ namespace Chicane
             // Props
             struct Props : BaseProps
             {
-                bool bIsOpen        = true; // Optional
                 bool bIsConstrained = true; // Optional
                 bool bIsResizable   = true; // Optional
             };

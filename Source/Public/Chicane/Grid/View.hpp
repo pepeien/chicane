@@ -54,7 +54,7 @@ namespace Chicane
             pugi::xml_document m_document;
             ComponentVariables m_variables;
             ComponentFunctions m_functions;
-        
+
         private:
             bool m_bWasStyleAdded;
 

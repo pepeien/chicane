@@ -37,6 +37,7 @@ namespace Chicane
 
         struct BaseProps
         {
+            bool                           bIsVisible = true; // Optional
             std::string                    id         = ""; // Required
             Style                          style      = {}; // Optional
             ComponentChildren              children   = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
@@ -51,7 +52,8 @@ namespace Chicane
         constexpr char FUNCTION_PARAMS_CLOSING = ')';
 
         // Value attributes
-        constexpr auto ID_ATTRIBUTE_NAME = "id";
+        constexpr auto IS_VISIBLE_ATTRIBUTE_NAME = "isVisible";
+        constexpr auto ID_ATTRIBUTE_NAME         = "id";
 
         // Lifecycle attributes
         constexpr auto ON_TICK_ATTRIBUTE = "onTick";

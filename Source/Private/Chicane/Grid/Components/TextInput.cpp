@@ -51,8 +51,11 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
+                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+    
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
                 result.value      = getActiveView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
                 result.style      = getStyle(inNode);
@@ -99,7 +102,13 @@ namespace Chicane
             {
                 validate(inNode);
 
-                Props props        = getProps(inNode);
+                Props props = getProps(inNode);
+
+                if (!props.bIsVisible)
+                {
+                    return;
+                }
+    
                 const Style& style = props.style;
 
                 ImGui::PushItemWidth(style.width);

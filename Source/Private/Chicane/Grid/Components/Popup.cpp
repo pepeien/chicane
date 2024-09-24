@@ -10,13 +10,13 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isOpen        = processText(getAttribute(IS_OPEN_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
                 const std::string& isConstrained = processText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
                 const std::string& isResizable   = processText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
-
+    
                 Props result {};
                 result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsOpen        = isOpen.empty() || Utils::areEquals(isOpen, "true");
+                result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
                 result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "true");
                 result.style          = getStyle(inNode);
@@ -37,7 +37,7 @@ namespace Chicane
             {
                 validate(inProps);
 
-                if (!inProps.bIsOpen)
+                if (!inProps.bIsVisible)
                 {
                     return;
                 }
