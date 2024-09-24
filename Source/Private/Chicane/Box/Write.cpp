@@ -47,7 +47,7 @@ namespace Chicane
             WriteRootHeader rootHeader {};
             rootHeader.type       = inWriteInfo.type;
             rootHeader.name       = inWriteInfo.name;
-            rootHeader.filePath   = inWriteInfo.outputPath + inWriteInfo.name + FILE_EXTENSTION;
+            rootHeader.filePath   = inWriteInfo.outputFolder + inWriteInfo.name + FILE_EXTENSTION;
             rootHeader.entryCount = static_cast<uint32_t>(inWriteInfo.entries.size());
 
             std::ofstream file(rootHeader.filePath, std::ios::out | std::ios::binary);

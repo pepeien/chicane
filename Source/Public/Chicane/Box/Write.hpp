@@ -33,18 +33,18 @@ namespace Chicane
 
         struct WriteEntry
         {
-            EntryType   type = EntryType::Undefined;
-            uint8_t     vendor = 0;
+            EntryType   type         = EntryType::Undefined;
+            uint8_t     vendor       = 0;
             std::string dataFilePath = "";
             std::string reference    = "";
         };
 
         struct WriteInfo
         {
-            Type                    type       = Type::Undefined;
-            std::string             name       = "";
-            std::vector<WriteEntry> entries {};
-            std::string             outputPath = "";
+            Type                    type         = Type::Undefined;
+            std::string             name         = "";
+            std::vector<WriteEntry> entries      = {};
+            std::string             outputFolder = "";
         };
 
         void write(const WriteInfo& inWriteInfo);

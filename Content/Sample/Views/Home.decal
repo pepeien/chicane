@@ -1,3 +1,15 @@
+#victory {
+    position: absolute;
+    height: 30vh;
+    width: 100%;
+    margin-top: 10vh;
+    background-color: #333333;
+}
+
+#victoryText {
+    alignment: center;
+}
+
 #frameTelemetry {
     position: absolute;
     width: 12vw;
@@ -13,4 +25,41 @@
 
 #frameTimeText {
     alignment: end center;
+}
+
+#crosshair {
+    position: absolute;
+    margin-top: 50vh;
+}
+
+#crosshairTop {
+    position: absolute;
+    height: 1.75vh;
+    width: 0.25vw;
+    background-color: #FFFFFF;
+    margin-left: 50%;
+}
+
+#crosshairBottom {
+    position: absolute;
+    height: 1.75vh;
+    width: 0.25vw;
+    background-color: #FFFFFF;
+    margin: 3vh 0 0 50%;
+}
+
+#crosshairLeft {
+    position: absolute;
+    height: 0.25vw;
+    width: 1vw;
+    background-color: #FFFFFF;
+    margin: 2.15vh 0 0 48.75vw;
+}
+
+#crosshairRight {
+    position: absolute;
+    height: 0.25vw;
+    width: 1vw;
+    background-color: #FFFFFF;
+    margin: 2.15vh 0 0 50.5vw;
 }

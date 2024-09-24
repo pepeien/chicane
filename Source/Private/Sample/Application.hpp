@@ -18,6 +18,7 @@ public:
 private:
     void initChacater();
     void initLevel();
+    void addStructures();
     void addApples();
     void addView();
     void initWindow();

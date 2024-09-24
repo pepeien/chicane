@@ -1,5 +1,6 @@
 #include "Actor/Apple.hpp"
 
+#include "Game.hpp"
 #include "Chicane/Core.hpp"
 
 Apple::Apple()
@@ -28,7 +29,14 @@ void Apple::onTick(float inDeltaTime)
 
 void Apple::onCollision(const Chicane::Actor* inSubject)
 {
+    if (!canTick())
+    {
+        return;
+    }
+
     setCanTick(false);
 
     m_mesh->deactivate();
+
+    Game::incrementScore(1);
 }
