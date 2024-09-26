@@ -290,14 +290,13 @@ namespace Chicane
             std::uint32_t firstVertex = 0;
             std::uint32_t firstIndex  = 0;
 
-            for (const std::string& id : m_usedIds)
+            for (auto& [id, data] : m_allocationMap)
             {
-                AllocationInfo& instance = m_allocationMap.at(id);
-                instance.firstVertex = firstVertex;
-                instance.firstIndex  = firstIndex;
+                data.firstVertex = firstVertex;
+                data.firstIndex  = firstIndex;
 
-                firstVertex += instance.vertexCount;
-                firstIndex  += instance.indexCount;
+                firstVertex += data.vertexCount;
+                firstIndex  += data.indexCount;
             }
         }
 
