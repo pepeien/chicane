@@ -18,14 +18,6 @@ namespace Chicane
             std::uint32_t firstIndex    = 0;
         };
 
-        struct Bundle
-        {
-            std::vector<Mat<4, float>> transforms;
-            size_t                     allocationSize;
-            void*                      writeLocation;
-            Buffer::Instance           buffer;
-        };
-
         struct ParseBundle
         {
             std::vector<Vec<3, float>> geometryVertices;

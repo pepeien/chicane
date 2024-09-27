@@ -15,11 +15,12 @@ namespace Chicane
 
         struct SetLayoutBidingsCreateInfo
         {
-            uint32_t                          count;
-            std::vector<uint32_t>             indices;
-            std::vector<vk::DescriptorType>   types;
-            std::vector<uint32_t>             counts;
-            std::vector<vk::ShaderStageFlags> stages;
+            uint32_t                              count          = 0;
+            std::vector<uint32_t>                 indices        = {};
+            std::vector<vk::DescriptorType>       types          = {};
+            std::vector<uint32_t>                 counts         = {};
+            std::vector<vk::ShaderStageFlags>     stages         = {};
+            std::vector<vk::DescriptorBindingFlags> bindingFlags = {};
         };
 
         struct Bundle
@@ -41,7 +42,7 @@ namespace Chicane
             const SetLayoutBidingsCreateInfo& inBidingsCreateInfo
         );
 
-        void allocalteSetLayout(
+        void allocalteSet(
             vk::DescriptorSet& outDescriptorSet,
             const vk::Device& inLogicalDevice,
             const vk::DescriptorSetLayout& inLayout,

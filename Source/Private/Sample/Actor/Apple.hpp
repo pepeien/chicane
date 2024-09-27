@@ -7,7 +7,7 @@
 class Apple : public Chicane::Actor
 {
 public:
-    Apple();
+    Apple(const std::string& inId);
 
 protected:
     void onTick(float inDeltaTime);

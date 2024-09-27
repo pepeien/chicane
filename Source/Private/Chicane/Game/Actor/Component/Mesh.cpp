@@ -108,6 +108,26 @@ namespace Chicane
         m_attachment->setBounds(bounds);
     }
 
+    const std::string& MeshComponent::getModel() const
+    {
+        if (!hasMesh())
+        {
+            return "";
+        }
+
+        return m_mesh.entries.at(0).reference;
+    }
+
+    const std::string& MeshComponent::getTexture() const
+    {
+        if (!hasMesh())
+        {
+            return "";
+        }
+
+        return m_mesh.entries.at(1).reference;
+    }
+
     void MeshComponent::handleDrawability()
     {
         if (!hasActiveCamera())

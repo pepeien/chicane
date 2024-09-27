@@ -91,7 +91,7 @@ namespace Chicane
             return;
         }
 
-        outFrame.updateModelData(m_meshes);
+        outFrame.updateMeshData(m_meshes);
     }
 
     void LevelLayer::render(
@@ -149,7 +149,8 @@ namespace Chicane
 
             m_textureManager->bindAll(
                 inCommandBuffer,
-                m_graphicsPipeline->layout
+                m_graphicsPipeline->layout,
+                m_texturelDescriptor
             );
 
             m_modelManager->drawAll(inCommandBuffer);
@@ -231,7 +232,7 @@ namespace Chicane
         for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
             vk::DescriptorSet levelDescriptorSet;
-            Descriptor::allocalteSetLayout(
+            Descriptor::allocalteSet(
                 levelDescriptorSet,
                 m_internals.logicalDevice,
                 m_frameDescriptor.setLayout,
@@ -286,7 +287,7 @@ namespace Chicane
 
         materialLayoutBidings.indices.push_back(0);
         materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-        materialLayoutBidings.counts.push_back(1);
+        materialLayoutBidings.counts.push_back(m_textureManager->getCount());
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
@@ -375,8 +376,7 @@ namespace Chicane
             m_internals.physicalDevice,
             m_internals.mainCommandBuffer,
             m_internals.graphicsQueue,
-            m_texturelDescriptor.setLayout,
-            m_texturelDescriptor.pool
+            m_texturelDescriptor
         );
     }
 
@@ -442,7 +442,7 @@ namespace Chicane
 
         for (Frame::Instance& frame : m_internals.swapchain->frames)
         {
-            frame.setupModelData(m_meshes);
+            frame.setupMeshData(m_meshes);
         }
     }
 

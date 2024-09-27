@@ -67,8 +67,11 @@ namespace Chicane
             std::vector<const char*> layers     = LAYERS;
             std::vector<const char*> extensions = EXTENSIONS;
 
-            vk::PhysicalDeviceFeatures logicalDeviceFeatures = vk::PhysicalDeviceFeatures();
-            logicalDeviceFeatures.fillModeNonSolid = true;
+            vk::PhysicalDeviceFeatures features = vk::PhysicalDeviceFeatures();
+            features.fillModeNonSolid = true;
+
+            vk::PhysicalDeviceDescriptorIndexingFeatures descriptorFeatures = vk::PhysicalDeviceDescriptorIndexingFeatures();
+            descriptorFeatures.runtimeDescriptorArray = true;
 
             vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
                 vk::DeviceCreateFlags(),
@@ -82,8 +85,9 @@ namespace Chicane
                 static_cast<uint32_t>(extensions.size()),
                 extensions.data(),
 
-                &logicalDeviceFeatures
+                &features
             );
+            logicalDeviceInfo.pNext = &descriptorFeatures;
 
             outLogicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
         }

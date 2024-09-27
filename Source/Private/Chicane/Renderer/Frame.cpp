@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Frame.hpp"
 
+#include "Chicane/Core/Loader.hpp"
 #include "Chicane/Game/Actor/Component/Mesh.hpp"
 
 namespace Chicane
@@ -123,61 +124,67 @@ namespace Chicane
             );
         }
 
-        void Instance::setupModelData(const std::vector<MeshComponent*>& inMeshes)
+        void Instance::setupMeshData(const std::vector<MeshComponent*>& inMeshes)
         {
-            destroyModelData();
+            destroyMeshData();
 
             if (inMeshes.empty())
             {
                 return;
             }
 
-            Chicane::Buffer::CreateInfo modelBufferCreateInfo;
-            modelBufferCreateInfo.logicalDevice    = logicalDevice;
-            modelBufferCreateInfo.physicalDevice   = physicalDevice;
-            modelBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+            Chicane::Buffer::CreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice    = logicalDevice;
+            bufferCreateInfo.physicalDevice   = physicalDevice;
+            bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                      vk::MemoryPropertyFlagBits::eHostCoherent;
-            modelBufferCreateInfo.size             = sizeof(Mat<4, float>) * inMeshes.size();
-            modelBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
+            bufferCreateInfo.size             = sizeof(Mesh::Data) * inMeshes.size();
+            bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
-            Buffer::init(modelData.buffer, modelBufferCreateInfo);
+            Buffer::init(meshBundle.buffer, bufferCreateInfo);
         
-            modelData.allocationSize = modelBufferCreateInfo.size;
-            modelData.writeLocation  = logicalDevice.mapMemory(
-                modelData.buffer.memory,
+            meshBundle.allocationSize = bufferCreateInfo.size;
+            meshBundle.writeLocation  = logicalDevice.mapMemory(
+                meshBundle.buffer.memory,
                 0,
-                modelData.allocationSize
+                meshBundle.allocationSize
             );
-            modelDescriptorBufferInfo.buffer = modelData.buffer.instance;
+            modelDescriptorBufferInfo.buffer = meshBundle.buffer.instance;
             modelDescriptorBufferInfo.offset = 0;
-            modelDescriptorBufferInfo.range  = modelData.allocationSize;
+            modelDescriptorBufferInfo.range  = meshBundle.allocationSize;
 
-            modelData.transforms.clear();
-            modelData.transforms.reserve(inMeshes.size());
+            meshBundle.data.clear();
+            meshBundle.data.reserve(inMeshes.size());
             for (const MeshComponent* mesh : inMeshes)
             {
-                modelData.transforms.push_back(mesh->getPosition());
+                Mesh::Data data {};
+                data.transform    = mesh->getPosition();
+                data.textureIndex = Vec<4, float>(
+                    Loader::getTextureManager()->getIndex(mesh->getTexture())
+                );
+
+                meshBundle.data.push_back(data);
             }
 
             memcpy(
-                modelData.writeLocation,
-                modelData.transforms.data(),
-                modelData.allocationSize
+                meshBundle.writeLocation,
+                meshBundle.data.data(),
+                meshBundle.allocationSize
             );
         }
 
-        void Instance::updateModelData(const std::vector<MeshComponent*>& inMeshes)
+        void Instance::updateMeshData(const std::vector<MeshComponent*>& inMeshes)
         {
             if (inMeshes.empty())
             {
-                destroyModelData();
+                destroyMeshData();
 
                 return;
             }
 
             if (isDirty())
             {
-                setupModelData(inMeshes);
+                setupMeshData(inMeshes);
 
                 m_bIsDirty = false;
 
@@ -186,27 +193,27 @@ namespace Chicane
 
             for (std::uint32_t i = 0; i < inMeshes.size(); i++)
             {
-                modelData.transforms[i] = inMeshes.at(i)->getPosition();
+                meshBundle.data.at(i).transform = inMeshes.at(i)->getPosition();
             }
 
             memcpy(
-                modelData.writeLocation,
-                modelData.transforms.data(),
-                modelData.allocationSize
+                meshBundle.writeLocation,
+                meshBundle.data.data(),
+                meshBundle.allocationSize
             );
         }
     
-        void Instance::destroyModelData()
+        void Instance::destroyMeshData()
         {
-            if (!modelData.buffer.memory)
+            if (!meshBundle.buffer.memory)
             {
                 return;
             }
 
-            logicalDevice.unmapMemory(modelData.buffer.memory);
+            logicalDevice.unmapMemory(meshBundle.buffer.memory);
             Buffer::destroy(
                 logicalDevice,
-                modelData.buffer
+                meshBundle.buffer
             );
         }
 
@@ -302,7 +309,7 @@ namespace Chicane
             destroyDepthBuffering();
             destroySync();
             destroyCameraUBO();
-            destroyModelData();
+            destroyMeshData();
 
             logicalDevice.destroyImageView(imageView);
         }

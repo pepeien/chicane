@@ -8,13 +8,12 @@ namespace Chicane
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
             : m_width(0),
-              m_height(0),
-              m_data(inCreateInfo.data),
-              m_logicalDevice(inCreateInfo.logicalDevice),
-              m_physicalDevice(inCreateInfo.physicalDevice),
-              m_commandBuffer(inCreateInfo.commandBuffer),
-              m_queue(inCreateInfo.queue),
-              m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
+            m_height(0),
+            m_data(inCreateInfo.data),
+            m_logicalDevice(inCreateInfo.logicalDevice),
+            m_physicalDevice(inCreateInfo.physicalDevice),
+            m_commandBuffer(inCreateInfo.commandBuffer),
+            m_queue(inCreateInfo.queue)
         {
             load();
 
@@ -43,7 +42,6 @@ namespace Chicane
 
             initView();
             initSampler();
-            initDescriptorSet();
         }
 
         Instance::~Instance()
@@ -54,18 +52,9 @@ namespace Chicane
             m_logicalDevice.destroySampler(m_image.sampler);
         }
 
-        void Instance::bind(
-            const vk::CommandBuffer& inCommandBuffer,
-            const vk::PipelineLayout& inPipelineLayout
-        )
+        Image::Bundle Instance::getImage() const
         {
-            inCommandBuffer.bindDescriptorSets(
-                vk::PipelineBindPoint::eGraphics,
-                inPipelineLayout,
-                1,
-                m_descriptor.set,
-                nullptr
-            );
+            return m_image;
         }
 
         void Instance::load()
@@ -164,34 +153,6 @@ namespace Chicane
             createInfo.maxLod                  = 0.0f;
 
             m_image.sampler = m_logicalDevice.createSampler(createInfo);
-        }
-
-        void Instance::initDescriptorSet()
-        {
-            Descriptor::allocalteSetLayout(
-                m_descriptor.set,
-                m_logicalDevice,
-                m_descriptor.setLayout,
-                m_descriptor.pool
-            );
-
-            vk::DescriptorImageInfo imageDescriptorInfo;
-            imageDescriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-            imageDescriptorInfo.imageView   = m_image.view;
-            imageDescriptorInfo.sampler     = m_image.sampler;
-
-            vk::WriteDescriptorSet imageWriteDescriptorSet;
-            imageWriteDescriptorSet.dstSet          = m_descriptor.set;
-            imageWriteDescriptorSet.dstBinding      = 0;
-            imageWriteDescriptorSet.dstArrayElement = 0;
-            imageWriteDescriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-            imageWriteDescriptorSet.descriptorCount = 1;
-            imageWriteDescriptorSet.pImageInfo      = &imageDescriptorInfo;
-
-            m_logicalDevice.updateDescriptorSets(
-                imageWriteDescriptorSet,
-                nullptr
-            );
         }
     }
 }

@@ -25,25 +25,29 @@ namespace Chicane
         public:
             bool isEmpty() const;
             bool canBind() const;
-
             bool contains(const std::string& inId) const;
+
+            std::uint32_t getCount() const;
+            std::uint32_t getIndex(const std::string& inId) const;
+
             void add(const std::string& inId, const Box::Entry& inEntry);
             void bindAll(
                 const vk::CommandBuffer& inCommandBuffer,
-                const vk::PipelineLayout& inPipelineLayout
+                const vk::PipelineLayout& inPipelineLayout,
+                Descriptor::Bundle& inDescriptor
             );
             void bind(
                 const std::string& inId,
                 const vk::CommandBuffer& inCommandBuffer,
-                const vk::PipelineLayout& inPipelineLayout
+                const vk::PipelineLayout& inPipelineLayout,
+                Descriptor::Bundle& inDescriptor
             );
             void build(
                 const vk::Device& inLogicalDevice,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::Queue& inQueue,
-                const vk::DescriptorSetLayout& inDescriptorSetLayout,
-                const vk::DescriptorPool& inDescriptorPool
+                Descriptor::Bundle& inDescriptor
             );
 
             void watchChanges(

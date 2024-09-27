@@ -18,8 +18,6 @@ namespace Chicane
             vk::PhysicalDevice         physicalDevice;
             vk::CommandBuffer          commandBuffer;
             vk::Queue                  queue;
-            vk::DescriptorSetLayout    descriptorSetLayout;
-            vk::DescriptorPool         descriptorPool;
         };
 
         class Instance
@@ -29,18 +27,14 @@ namespace Chicane
             ~Instance();
 
         public:
-            void bind(
-                const vk::CommandBuffer& inCommandBuffer,
-                const vk::PipelineLayout& inPipelineLayout
-            );
+            Image::Bundle getImage() const;
 
         private:
             void load();
             void populate();
-    
+
             void initView();
             void initSampler();
-            void initDescriptorSet();
 
         private:
             int                        m_width;
@@ -50,8 +44,6 @@ namespace Chicane
             unsigned char*             m_pixels;
 
             Image::Bundle              m_image;
-
-            Descriptor::Bundle         m_descriptor;
 
             vk::Device                 m_logicalDevice;
             vk::PhysicalDevice         m_physicalDevice;

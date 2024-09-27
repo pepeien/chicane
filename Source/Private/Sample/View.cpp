@@ -61,7 +61,6 @@ View::~View()
     for (auto& [id, audio] : m_audios)
     {
         SDL_free(audio.bufferData);
-        SDL_DestroyAudioStream(audio.stream);
     }
 }
 

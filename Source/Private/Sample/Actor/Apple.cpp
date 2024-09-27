@@ -3,7 +3,7 @@
 #include "Game.hpp"
 #include "Chicane/Core.hpp"
 
-Apple::Apple()
+Apple::Apple(const std::string& inId)
     : Chicane::Actor(),
     m_mesh(new Chicane::MeshComponent())
 {
@@ -12,7 +12,7 @@ Apple::Apple()
     setAbsoluteScale(Chicane::Vec<3, float>(0.05f));
 
     m_mesh->attachTo(this);
-    m_mesh->setMesh("Content/Sample/Meshes/Apple.box");
+    m_mesh->setMesh(inId);
     m_mesh->activate();
 }
 

@@ -6,7 +6,7 @@
 #include "Chicane/Renderer/Camera.hpp"
 #include "Chicane/Renderer/Descriptor.hpp"
 #include "Chicane/Renderer/GraphicsPipeline.hpp"
-#include "Chicane/Renderer/Model.hpp"
+#include "Chicane/Renderer/Mesh.hpp"
 #include "Chicane/Renderer/Image.hpp"
 #include "Chicane/Renderer/Sync.hpp"
 
@@ -43,9 +43,9 @@ namespace Chicane
             void setupCameraUBO();
             void destroyCameraUBO();
 
-            void setupModelData(const std::vector<MeshComponent*>& inMeshes);
-            void updateModelData(const std::vector<MeshComponent*>& inMeshes);
-            void destroyModelData();
+            void setupMeshData(const std::vector<MeshComponent*>& inMeshes);
+            void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
+            void destroyMeshData();
     
             void setupDepthBuffering(const vk::Format& inFormat);
             void destroyDepthBuffering();
@@ -87,7 +87,7 @@ namespace Chicane
             Camera::UBOBundle cameraUBO;
             vk::DescriptorBufferInfo cameraDescriptorBufferInfo;
 
-            Model::Bundle modelData;
+            Mesh::Bundle meshBundle;
             vk::DescriptorBufferInfo modelDescriptorBufferInfo;
 
             std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;

@@ -23,6 +23,27 @@ namespace Chicane
             return m_dataMap.find(inId) != m_dataMap.end();
         }
 
+        std::uint32_t Manager::getCount() const
+        {
+            return m_registeredIds.size();
+        }
+
+        std::uint32_t Manager::getIndex(const std::string& inId) const
+        {
+            auto interator = std::find(
+                m_registeredIds.begin(),
+                m_registeredIds.end(),
+                inId
+            );
+
+            if (interator == m_registeredIds.end())
+            {
+                return 0;
+            }
+
+            return static_cast<std::uint32_t>(interator - m_registeredIds.begin());
+        }
+
         void Manager::add(const std::string& inId, const Box::Entry& inEntry)
         {
             if (contains(inId))
@@ -44,19 +65,26 @@ namespace Chicane
 
         void Manager::bindAll(
             const vk::CommandBuffer& inCommandBuffer,
-            const vk::PipelineLayout& inPipelineLayout
+            const vk::PipelineLayout& inPipelineLayout,
+            Descriptor::Bundle& inDescriptor
         )
         {
             for (std::string& id : m_registeredIds)
             {
-                bind(id, inCommandBuffer, inPipelineLayout);
+                bind(
+                    id,
+                    inCommandBuffer,
+                    inPipelineLayout,
+                    inDescriptor
+                );
             }
         }
 
         void Manager::bind(
             const std::string& inId,
             const vk::CommandBuffer& inCommandBuffer,
-            const vk::PipelineLayout& inPipelineLayout
+            const vk::PipelineLayout& inPipelineLayout,
+            Descriptor::Bundle& inDescriptor
         )
         {
             if (!canBind())
@@ -82,7 +110,13 @@ namespace Chicane
                 );
             }
 
-            texture->bind(inCommandBuffer, inPipelineLayout);
+            inCommandBuffer.bindDescriptorSets(
+                vk::PipelineBindPoint::eGraphics,
+                inPipelineLayout,
+                1,
+                inDescriptor.set,
+                nullptr
+            );
         }
 
         void Manager::build(
@@ -90,8 +124,7 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
-            const vk::DescriptorSetLayout& inDescriptorSetLayout,
-            const vk::DescriptorPool& inDescriptorPool
+            Descriptor::Bundle& inDescriptor
         )
         {
             if (isEmpty())
@@ -100,23 +133,21 @@ namespace Chicane
             }
 
             Texture::CreateInfo textureCreateInfo;
-            textureCreateInfo.logicalDevice       = inLogicalDevice;
-            textureCreateInfo.physicalDevice      = inPhysicalDevice;
-            textureCreateInfo.commandBuffer       = inCommandBuffer;
-            textureCreateInfo.queue               = inQueue;
-            textureCreateInfo.descriptorSetLayout = inDescriptorSetLayout;
-            textureCreateInfo.descriptorPool      = inDescriptorPool;
+            textureCreateInfo.logicalDevice  = inLogicalDevice;
+            textureCreateInfo.physicalDevice = inPhysicalDevice;
+            textureCreateInfo.commandBuffer  = inCommandBuffer;
+            textureCreateInfo.queue          = inQueue;
+
+            std::vector<vk::DescriptorImageInfo> imageInfos {};
 
             for (std::string& id : m_registeredIds)
             {
-                auto foundPair = m_dataMap.find(id);
-
-                if (foundPair == m_dataMap.end())
+                if (m_dataMap.find(id) == m_dataMap.end())
                 {
                     throw std::runtime_error("The Texture [" + id + "] does not exist");
                 }
 
-                textureCreateInfo.data = foundPair->second;
+                textureCreateInfo.data = m_dataMap.at(id);
 
                 m_instanceMap.insert(
                     std::make_pair(
@@ -124,7 +155,36 @@ namespace Chicane
                         std::make_unique<Texture::Instance>(textureCreateInfo)
                     )
                 );
+
+                Image::Bundle image = m_instanceMap.at(id)->getImage();
+
+                vk::DescriptorImageInfo imageDescriptorInfo;
+                imageDescriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+                imageDescriptorInfo.imageView   = image.view;
+                imageDescriptorInfo.sampler     = image.sampler;
+
+                imageInfos.push_back(imageDescriptorInfo);
             }
+
+            Descriptor::allocalteSet(
+                inDescriptor.set,
+                inLogicalDevice,
+                inDescriptor.setLayout,
+                inDescriptor.pool
+            );
+
+            vk::WriteDescriptorSet imageWriteDescriptorSet;
+            imageWriteDescriptorSet.dstSet          = inDescriptor.set;
+            imageWriteDescriptorSet.dstBinding      = 0;
+            imageWriteDescriptorSet.dstArrayElement = 0;
+            imageWriteDescriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            imageWriteDescriptorSet.descriptorCount = imageInfos.size();
+            imageWriteDescriptorSet.pImageInfo      = imageInfos.data();
+
+            inLogicalDevice.updateDescriptorSets(
+                imageWriteDescriptorSet,
+                nullptr
+            );
         }
 
         void Manager::watchChanges(

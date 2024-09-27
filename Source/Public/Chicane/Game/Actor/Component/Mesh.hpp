@@ -25,6 +25,9 @@ namespace Chicane
         const Box::Instance& getMesh() const;
         void setMesh(const std::string& inMesh);
 
+        const std::string& getModel() const;
+        const std::string& getTexture() const;
+
     protected:
         void handleDrawability();
         void activateMesh();
