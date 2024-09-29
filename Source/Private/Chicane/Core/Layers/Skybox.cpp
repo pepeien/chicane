@@ -156,16 +156,20 @@ namespace Chicane
 
     void SkyboxLayer::initGraphicsPipeline()
     {
+        GraphicsPipeline::Attachment colorAttachment {};
+        colorAttachment.format        = m_rendererInternals.swapchain->format;
+        colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+        colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+
         GraphicsPipeline::CreateInfo createInfo {};
-        createInfo.bCanOverwrite         = false;
-        createInfo.bHasVertices          = false;
-        createInfo.bHasDepth             = false;
+        createInfo.bHasVertices         = false;
+        createInfo.bHasDepth            = false;
         createInfo.logicalDevice        = m_rendererInternals.logicalDevice;
         createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
         createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
-        createInfo.swapChainExtent      = m_rendererInternals.swapchain->extent;
-        createInfo.swapChainImageFormat = m_rendererInternals.swapchain->format;
+        createInfo.extent      = m_rendererInternals.swapchain->extent;
         createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
+        createInfo.colorAttachment      = colorAttachment;
         createInfo.polygonMode          = vk::PolygonMode::eFill;
 
         m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);

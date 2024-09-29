@@ -198,11 +198,12 @@ namespace Chicane
 
     void UILayer::initRenderpass()
     {
-        vk::AttachmentDescription attachment = GraphicsPipeline::createColorAttachment(
-            m_internals.swapchain->format,
-            vk::AttachmentLoadOp::eLoad,
-            vk::ImageLayout::ePresentSrcKHR
-        );
+        GraphicsPipeline::Attachment colorAttachment {};
+        colorAttachment.format        = m_internals.swapchain->format;
+        colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+        colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+
+        vk::AttachmentDescription attachment = GraphicsPipeline::createColorAttachment(colorAttachment);
 
         m_renderPass = GraphicsPipeline::createRendepass(
             false,

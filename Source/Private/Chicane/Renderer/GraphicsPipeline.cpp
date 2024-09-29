@@ -151,12 +151,11 @@ namespace Chicane
                                                   vk::ColorComponentFlagBits::eG |
                                                   vk::ColorComponentFlagBits::eB |
                                                   vk::ColorComponentFlagBits::eA;
-            attachmentState.blendEnable         = VK_TRUE;
             attachmentState.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
             attachmentState.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
             attachmentState.colorBlendOp        = vk::BlendOp::eAdd;
-            attachmentState.srcAlphaBlendFactor = vk::BlendFactor::eSrcAlpha;
-            attachmentState.dstAlphaBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+            attachmentState.srcAlphaBlendFactor = vk::BlendFactor::eOne;
+            attachmentState.dstAlphaBlendFactor = vk::BlendFactor::eZero;
             attachmentState.alphaBlendOp        = vk::BlendOp::eAdd;
 
             return attachmentState;
@@ -168,10 +167,10 @@ namespace Chicane
             colorBlendState.flags             = vk::PipelineColorBlendStateCreateFlags();
             colorBlendState.logicOpEnable     = VK_FALSE;
             colorBlendState.logicOp           = vk::LogicOp::eCopy;
-            colorBlendState.blendConstants[0] = 1.0f;
-            colorBlendState.blendConstants[1] = 1.0f;
-            colorBlendState.blendConstants[2] = 1.0f;
-            colorBlendState.blendConstants[3] = 1.0f;
+            colorBlendState.blendConstants[0] = 0.0f;
+            colorBlendState.blendConstants[1] = 0.0f;
+            colorBlendState.blendConstants[2] = 0.0f;
+            colorBlendState.blendConstants[3] = 0.0f;
 
             return colorBlendState;
         }
@@ -180,11 +179,9 @@ namespace Chicane
         {
             vk::PipelineDepthStencilStateCreateInfo depthStencilCreateInfo {};
             depthStencilCreateInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-            depthStencilCreateInfo.depthTestEnable       = VK_TRUE;
-            depthStencilCreateInfo.depthWriteEnable      = VK_TRUE;
             depthStencilCreateInfo.depthBoundsTestEnable = VK_FALSE;
             depthStencilCreateInfo.stencilTestEnable     = VK_FALSE;
-            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
             depthStencilCreateInfo.minDepthBounds        = 0.0f;
             depthStencilCreateInfo.maxDepthBounds        = 1.0f;
 
@@ -207,21 +204,17 @@ namespace Chicane
             return inLogicalDevice.createPipelineLayout(layoutCreateInfo);
         }
 
-        vk::AttachmentDescription createColorAttachment(
-            vk::Format inFormat,
-            vk::AttachmentLoadOp inLoadOp,
-            vk::ImageLayout inInitialLayout
-        )
+        vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment)
         {
             vk::AttachmentDescription attachmentDescription {};
             attachmentDescription.flags          = vk::AttachmentDescriptionFlags();
-            attachmentDescription.format         = inFormat;
+            attachmentDescription.format         = inAttachment.format;
             attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
-            attachmentDescription.loadOp         = inLoadOp;
+            attachmentDescription.loadOp         = inAttachment.loadOp;
             attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
             attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eDontCare;
             attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eDontCare;
-            attachmentDescription.initialLayout  = inInitialLayout;
+            attachmentDescription.initialLayout  = inAttachment.initialLayout;
             attachmentDescription.finalLayout    = vk::ImageLayout::ePresentSrcKHR;
 
             return attachmentDescription;
@@ -249,17 +242,17 @@ namespace Chicane
             return subpassDepedency;
         }
 
-        vk::AttachmentDescription createDepthAttachment(const vk::Format& inFormat)
+        vk::AttachmentDescription createDepthAttachment(const Attachment& inAttachment)
         {
             vk::AttachmentDescription attachmentDescription {};
             attachmentDescription.flags          = vk::AttachmentDescriptionFlags();
-            attachmentDescription.format         = inFormat;
+            attachmentDescription.format         = inAttachment.format;
             attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
-            attachmentDescription.loadOp         = vk::AttachmentLoadOp::eClear;
-            attachmentDescription.storeOp        = vk::AttachmentStoreOp::eDontCare;
+            attachmentDescription.loadOp         = inAttachment.loadOp;
+            attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
             attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eLoad;
             attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eStore;
-            attachmentDescription.initialLayout  = vk::ImageLayout::eUndefined;
+            attachmentDescription.initialLayout  = inAttachment.initialLayout;
             attachmentDescription.finalLayout    = vk::ImageLayout::eDepthStencilAttachmentOptimal;
     
             return attachmentDescription;
@@ -331,34 +324,16 @@ namespace Chicane
         }
 
         Instance::Instance(const CreateInfo& inCreateInfo)
-            : m_bCanOverwrite(inCreateInfo.bCanOverwrite),
-            m_bHasVertices(inCreateInfo.bHasVertices),
+            : m_bHasVertices(inCreateInfo.bHasVertices),
             m_bHasDepth(inCreateInfo.bHasDepth),
             m_vertexShaderPath(inCreateInfo.vertexShaderPath),
             m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
             m_bindingDescription(inCreateInfo.bindingDescription),
             m_attributeDescriptions(inCreateInfo.attributeDescriptions),
-            m_swapChainExtent(inCreateInfo.swapChainExtent),
-            m_swapChainImageFormat(inCreateInfo.swapChainImageFormat),
-            m_depthFormat(inCreateInfo.depthFormat),
+            m_extent(inCreateInfo.extent),
             m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts),
             m_pushConstantRanges(inCreateInfo.pushConstantRanges),
-            m_logicalDevice(inCreateInfo.logicalDevice),
-            m_polygonMode(inCreateInfo.polygonMode)
-        {
-            init();
-        }
-
-        Instance::~Instance()
-        {
-            m_logicalDevice.waitIdle();
-
-            m_logicalDevice.destroyPipeline(instance);
-            m_logicalDevice.destroyPipelineLayout(layout);
-            m_logicalDevice.destroyRenderPass(renderPass);
-        }
-
-        void Instance::init()
+            m_logicalDevice(inCreateInfo.logicalDevice)
         {
             vk::ShaderModule vertexShaderModule;
             Shader::initModule(
@@ -390,10 +365,10 @@ namespace Chicane
             pipelineInfo.pInputAssemblyState = &inputAsstembyState;
 
             // Viewport
-            Vec<2, std::uint32_t> size(m_swapChainExtent.width, m_swapChainExtent.height);
+            Vec<2, std::uint32_t> size(m_extent.width, m_extent.height);
 
             vk::Viewport viewport = createViewport(size);
-            vk::Rect2D scissor = createScissor(size);
+            vk::Rect2D scissor    = createScissor(size);
 
             vk::PipelineViewportStateCreateInfo viewportState = createViewportState(
                 viewport,
@@ -413,18 +388,16 @@ namespace Chicane
 
             // Shader Stage
             std::vector<vk::PipelineShaderStageCreateInfo> shaderStages = {
-                createVertexShader(
-                    vertexShaderModule
-                ),
-                createFragmentShader(
-                    fragmentShaderModule
-                )
+                createVertexShader(vertexShaderModule),
+                createFragmentShader(fragmentShaderModule)
             };
             pipelineInfo.stageCount = static_cast<uint32_t>(shaderStages.size());
             pipelineInfo.pStages    = shaderStages.data();
 
             // Rasterization
-            vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState(m_polygonMode);
+            vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState(
+                inCreateInfo.polygonMode
+            );
             pipelineInfo.pRasterizationState = &rasterizaterizationState;
 
             // Sampling
@@ -433,14 +406,17 @@ namespace Chicane
 
             // Color Blending
             vk::PipelineColorBlendAttachmentState colorBlendAttachmentState = createBlendAttachmentState();
+            colorBlendAttachmentState.blendEnable = inCreateInfo.bHasBlending ? VK_TRUE : VK_FALSE;
+
             vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState();
             colorBlendState.attachmentCount = 1;
             colorBlendState.pAttachments    = &colorBlendAttachmentState;
-
             pipelineInfo.pColorBlendState = &colorBlendState;
 
             // Depthning
             vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
+            depthStencilState.depthTestEnable  = inCreateInfo.bHasDepth ? VK_TRUE : VK_FALSE;
+            depthStencilState.depthWriteEnable = inCreateInfo.bHasDepth ? VK_TRUE : VK_FALSE;
             pipelineInfo.pDepthStencilState = &depthStencilState;
 
             layout = createLayout(
@@ -452,17 +428,13 @@ namespace Chicane
             std::vector<vk::AttachmentDescription> attachments;
 
             attachments.push_back(
-                createColorAttachment(
-                    m_swapChainImageFormat,
-                    m_bCanOverwrite ? vk::AttachmentLoadOp::eLoad : vk::AttachmentLoadOp::eDontCare,
-                    m_bCanOverwrite ? vk::ImageLayout::ePresentSrcKHR : vk::ImageLayout::eUndefined
-                )
+                createColorAttachment(inCreateInfo.colorAttachment)
             );
 
             if (m_bHasDepth)
             {
                 attachments.push_back(
-                    createDepthAttachment(m_depthFormat)
+                    createDepthAttachment(inCreateInfo.depthAttachment)
                 );
             }
 
@@ -484,6 +456,15 @@ namespace Chicane
 
             m_logicalDevice.destroyShaderModule(vertexShaderModule);
             m_logicalDevice.destroyShaderModule(fragmentShaderModule);
+        }
+
+        Instance::~Instance()
+        {
+            m_logicalDevice.waitIdle();
+
+            m_logicalDevice.destroyPipeline(instance);
+            m_logicalDevice.destroyPipelineLayout(layout);
+            m_logicalDevice.destroyRenderPass(renderPass);
         }
     }
 }

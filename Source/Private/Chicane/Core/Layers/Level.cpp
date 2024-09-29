@@ -10,9 +10,9 @@ namespace Chicane
         : Layer("Level"),
         m_clearValues({})
     {
-        m_internals = inWindow->getRendererInternals();
+        m_rendererInternals = inWindow->getRendererInternals();
 
-        m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+        m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
         m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
         if (!hasActiveLevel())
@@ -30,7 +30,7 @@ namespace Chicane
 
     LevelLayer::~LevelLayer()
     {
-        m_internals.logicalDevice.waitIdle();
+        m_rendererInternals.logicalDevice.waitIdle();
 
         destroyTextureResources();
         destroyModelData();
@@ -150,7 +150,7 @@ namespace Chicane
             m_textureManager->bindAll(
                 inCommandBuffer,
                 m_graphicsPipeline->layout,
-                m_texturelDescriptor
+                m_textureDescriptor
             );
 
             m_modelManager->drawAll(inCommandBuffer);
@@ -214,27 +214,27 @@ namespace Chicane
 
         Descriptor::initSetLayout(
             m_frameDescriptor.setLayout,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             frameLayoutBidings
         );
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_internals.swapchain->frames.size());
+        descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_rendererInternals.swapchain->frames.size());
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Descriptor::initPool(
             m_frameDescriptor.pool,
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             descriptorPoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_internals.swapchain->frames)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             vk::DescriptorSet levelDescriptorSet;
             Descriptor::allocalteSet(
                 levelDescriptorSet,
-                m_internals.logicalDevice,
+                m_rendererInternals.logicalDevice,
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
@@ -267,10 +267,10 @@ namespace Chicane
             return;
         }
 
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
+        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptor.setLayout
         );
-        m_internals.logicalDevice.destroyDescriptorPool(
+        m_rendererInternals.logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
     }
@@ -291,8 +291,8 @@ namespace Chicane
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
         Descriptor::initSetLayout(
-            m_texturelDescriptor.setLayout,
-            m_internals.logicalDevice,
+            m_textureDescriptor.setLayout,
+            m_rendererInternals.logicalDevice,
             materialLayoutBidings
         );
 
@@ -301,8 +301,8 @@ namespace Chicane
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
-            m_texturelDescriptor.pool,
-            m_internals.logicalDevice,
+            m_textureDescriptor.pool,
+            m_rendererInternals.logicalDevice,
             descriptorPoolCreateInfo
         );
     }
@@ -314,12 +314,12 @@ namespace Chicane
             return;
         }
 
-        m_internals.logicalDevice.destroyDescriptorSetLayout(
-            m_texturelDescriptor.setLayout
+        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
+            m_textureDescriptor.setLayout
         );
 
-        m_internals.logicalDevice.destroyDescriptorPool(
-            m_texturelDescriptor.pool
+        m_rendererInternals.logicalDevice.destroyDescriptorPool(
+            m_textureDescriptor.pool
         );
     }
 
@@ -330,19 +330,28 @@ namespace Chicane
             return;
         }
 
+        GraphicsPipeline::Attachment colorAttachment {};
+        colorAttachment.format        = m_rendererInternals.swapchain->format;
+        colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+        colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+
+        GraphicsPipeline::Attachment depthAttachment {};
+        depthAttachment.format        = m_rendererInternals.swapchain->depthFormat;
+        depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+        depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+
         GraphicsPipeline::CreateInfo createInfo {};
-        createInfo.bCanOverwrite          = true;
-        createInfo.bHasVertices           = true;
-        createInfo.bHasDepth              = true;
-        createInfo.logicalDevice         = m_internals.logicalDevice;
+        createInfo.bHasVertices          = true;
+        createInfo.bHasDepth             = true;
+        createInfo.logicalDevice         = m_rendererInternals.logicalDevice;
         createInfo.vertexShaderPath      = "Content/Engine/Shaders/level.vert.spv";
         createInfo.fragmentShaderPath    = "Content/Engine/Shaders/level.frag.spv";
         createInfo.bindingDescription    = Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vertex::getAttributeDescriptions();
-        createInfo.swapChainExtent       = m_internals.swapchain->extent;
-        createInfo.swapChainImageFormat  = m_internals.swapchain->format;
-        createInfo.depthFormat           = m_internals.swapchain->depthFormat;
-        createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_texturelDescriptor.setLayout };
+        createInfo.extent                = m_rendererInternals.swapchain->extent;
+        createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_textureDescriptor.setLayout };
+        createInfo.colorAttachment       = colorAttachment;
+        createInfo.depthAttachment       = depthAttachment;
         createInfo.polygonMode           = vk::PolygonMode::eFill;
 
         m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
@@ -350,13 +359,13 @@ namespace Chicane
 
     void LevelLayer::initFramebuffers()
     {
-        for (Frame::Instance& frame : m_internals.swapchain->frames)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
-            framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
+            framebufferCreateInfo.logicalDevice   = m_rendererInternals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
-            framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
+            framebufferCreateInfo.swapChainExtent = m_rendererInternals.swapchain->extent;
             framebufferCreateInfo.attachments.push_back(frame.imageView);
             framebufferCreateInfo.attachments.push_back(frame.depth.imageView);
 
@@ -372,11 +381,11 @@ namespace Chicane
         }
 
         m_textureManager->build(
-            m_internals.logicalDevice,
-            m_internals.physicalDevice,
-            m_internals.mainCommandBuffer,
-            m_internals.graphicsQueue,
-            m_texturelDescriptor
+            m_rendererInternals.logicalDevice,
+            m_rendererInternals.physicalDevice,
+            m_rendererInternals.mainCommandBuffer,
+            m_rendererInternals.graphicsQueue,
+            m_textureDescriptor
         );
     }
 
@@ -390,10 +399,10 @@ namespace Chicane
         m_modelManager->build(
             m_modelVertexBuffer,
             m_modelIndexBuffer,
-            m_internals.logicalDevice,
-            m_internals.physicalDevice,
-            m_internals.graphicsQueue,
-            m_internals.mainCommandBuffer
+            m_rendererInternals.logicalDevice,
+            m_rendererInternals.physicalDevice,
+            m_rendererInternals.graphicsQueue,
+            m_rendererInternals.mainCommandBuffer
         );
     }
 
@@ -404,14 +413,14 @@ namespace Chicane
             return;
         }
 
-        m_internals.logicalDevice.waitIdle();
+        m_rendererInternals.logicalDevice.waitIdle();
 
         Buffer::destroy(
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             m_modelVertexBuffer
         );
         Buffer::destroy(
-            m_internals.logicalDevice,
+            m_rendererInternals.logicalDevice,
             m_modelIndexBuffer
         );
     }
@@ -440,7 +449,7 @@ namespace Chicane
             return;
         }
 
-        for (Frame::Instance& frame : m_internals.swapchain->frames)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             frame.setupMeshData(m_meshes);
         }
@@ -453,7 +462,7 @@ namespace Chicane
             return;
         }
 
-        for (Frame::Instance& frame : m_internals.swapchain->frames)
+        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             frame.setAsDirty();
         }

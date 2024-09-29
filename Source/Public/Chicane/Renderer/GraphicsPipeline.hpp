@@ -8,6 +8,42 @@ namespace Chicane
 {
     namespace GraphicsPipeline
     {
+        struct Attachment
+        {
+            vk::Format           format;
+            vk::AttachmentLoadOp loadOp;
+            vk::ImageLayout      initialLayout;
+        };
+
+        struct CreateInfo
+        {
+            // Modifiers
+            bool                                             bHasVertices;
+            bool                                             bHasDepth;
+            bool                                             bHasBlending;
+
+            // Vertex
+            std::string                                      vertexShaderPath;
+            std::string                                      fragmentShaderPath;
+            vk::VertexInputBindingDescription                bindingDescription;
+            std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
+
+            // Viewport
+            vk::Extent2D                                     extent;
+
+            // Atacchment
+            Attachment                                       colorAttachment;
+            Attachment                                       depthAttachment; // Optional if `hasDepth` == `false`
+
+            // Pipeline Layout
+            std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
+            std::vector<vk::PushConstantRange>               pushConstantRanges;
+
+            // Vulkan
+            vk::Device                                       logicalDevice;
+            vk::PolygonMode                                  polygonMode;
+        };
+
         vk::Viewport createViewport(
             const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0),
             const Vec<2, float>& inPosition = Vec2Zero
@@ -41,14 +77,10 @@ namespace Chicane
             const std::vector<vk::PushConstantRange>& inPushConstantRanges,
             const vk::Device& inLogicalDevice
         );
-        vk::AttachmentDescription createColorAttachment(
-            vk::Format inFormat,
-            vk::AttachmentLoadOp inLoadOp,
-            vk::ImageLayout inInitialLayout
-        );
+        vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment);
         vk::AttachmentReference createColorAttachmentRef();
         vk::SubpassDependency createColorSubpassDepedency();
-        vk::AttachmentDescription createDepthAttachment(const vk::Format& inFormat);
+        vk::AttachmentDescription createDepthAttachment(const Attachment& inAttachment);
         vk::AttachmentReference createDepthAttachmentRef();
         vk::SubpassDependency createDepthSubpassDepedency();
         vk::RenderPass createRendepass(
@@ -56,33 +88,6 @@ namespace Chicane
             const std::vector<vk::AttachmentDescription>& inAttachments,
             const vk::Device& inLogicalDevice
         );
-
-        struct CreateInfo
-        {
-            // Modifiers
-            bool                                             bCanOverwrite;
-            bool                                             bHasVertices;
-            bool                                             bHasDepth;
-
-            // Vertex
-            std::string                                      vertexShaderPath;
-            std::string                                      fragmentShaderPath;
-            vk::VertexInputBindingDescription                bindingDescription;
-            std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
-
-            // Viewport
-            vk::Extent2D                                     swapChainExtent;
-            vk::Format                                       swapChainImageFormat;
-            vk::Format                                       depthFormat; // Optional if `hasDepth` == `false`
-
-            // Pipeline Layout
-            std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
-            std::vector<vk::PushConstantRange>               pushConstantRanges;
-
-            // Vulkan
-            vk::Device                                       logicalDevice;
-            vk::PolygonMode                                  polygonMode;
-        };
 
         class Instance
         {
@@ -96,11 +101,7 @@ namespace Chicane
             vk::Pipeline instance;
 
         private:
-            void init();
-
-        private:
             // Modifiers
-            bool                                             m_bCanOverwrite;
             bool                                             m_bHasVertices;
             bool                                             m_bHasDepth;
 
@@ -111,11 +112,7 @@ namespace Chicane
             std::vector<vk::VertexInputAttributeDescription> m_attributeDescriptions;
 
             // Viewport
-            vk::Extent2D                                     m_swapChainExtent;
-            vk::Format                                       m_swapChainImageFormat;
-
-            // Depth
-            vk::Format                                       m_depthFormat;
+            vk::Extent2D                                     m_extent;
 
             // Layout
             std::vector<vk::DescriptorSetLayout>             m_descriptorSetLayouts;
@@ -123,7 +120,6 @@ namespace Chicane
 
             // Vulkan
             vk::Device                                       m_logicalDevice;
-            vk::PolygonMode                                  m_polygonMode;
         };
     }
 }

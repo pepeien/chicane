@@ -49,7 +49,7 @@ namespace Chicane
         void updateMeshes(const std::vector<ActorComponent*>& inComponents);
 
     private:
-        Renderer::Internals                         m_internals;
+        Renderer::Internals                         m_rendererInternals;
 
         Level*                                      m_level;
         std::vector<MeshComponent*>                 m_meshes;
@@ -58,7 +58,7 @@ namespace Chicane
         vk::DescriptorSet                           m_descriptorSet;
 
         Descriptor::Bundle                          m_frameDescriptor;
-        Descriptor::Bundle                          m_texturelDescriptor;
+        Descriptor::Bundle                          m_textureDescriptor;
 
         Buffer::Instance                            m_modelVertexBuffer;
         Buffer::Instance                            m_modelIndexBuffer;
