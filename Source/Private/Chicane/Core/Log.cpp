@@ -86,7 +86,7 @@ namespace Chicane
             instance.text  = message;
             instance.color = hexColor;
 
-            m_logs.push_back(instance);
+            m_logs.emplace_back(instance);
 
             m_logsObservable->next(m_logs);
         }

@@ -471,6 +471,7 @@ namespace Chicane
     void LevelLayer::updateMeshes(const std::vector<ActorComponent*>& inComponents)
     {
         std::vector<MeshComponent*> nextMeshes {};
+        nextMeshes.reserve(inComponents.size());
 
         for (ActorComponent* component : inComponents)
         {
@@ -486,7 +487,7 @@ namespace Chicane
                 continue;
             }
 
-            nextMeshes.push_back(mesh);
+            nextMeshes.emplace_back(mesh);
         }
 
         if (m_meshes.size() == nextMeshes.size())
