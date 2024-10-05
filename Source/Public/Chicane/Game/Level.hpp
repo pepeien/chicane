@@ -15,6 +15,9 @@ namespace Chicane
         virtual ~Level();
 
     public:
+        virtual void onActivation() { return; }
+
+    public:
         bool hasActors() const;
         const std::vector<Actor*>& getActors() const;
         void addActor(Actor* inActor);

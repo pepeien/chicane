@@ -83,7 +83,12 @@ namespace Chicane
     {
         m_level = inLevel;
 
-        m_levelObservable->next(inLevel);
+        m_levelObservable->next(m_level);
+
+        if (m_level)
+        {
+            m_level->onActivation();
+        }
     }
 
     void watchActiveLevel(
