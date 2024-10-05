@@ -14,5 +14,7 @@ protected:
     void onCollision(const Chicane::Actor* inSubject);
 
 private:
+    float m_fallingRate;
+
     Chicane::MeshComponent* m_mesh;
 };
