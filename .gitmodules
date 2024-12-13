@@ -4,10 +4,10 @@
 [submodule "Vendors/SDL3"]
 	path = Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
-[submodule "Vendor/imgui"]
+[submodule "Vendors/imgui"]
 	path = Vendors/imgui
 	url = https://github.com/pepeien/imgui.git
 	branch = docking
-[submodule "Vendor/pugixml"]
+[submodule "Vendors/pugixml"]
 	path = Vendors/pugixml
 	url = https://github.com/pepeien/pugixml.git
