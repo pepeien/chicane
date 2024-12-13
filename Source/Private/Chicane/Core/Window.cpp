@@ -247,14 +247,14 @@ namespace Chicane
     {
         m_bIsFocused = true;
 
-        SDL_SetWindowRelativeMouseMode(instance, SDL_TRUE);
+        SDL_SetWindowRelativeMouseMode(instance, true);
     }
 
     void Window::blur()
     {
         m_bIsFocused = false;
 
-        SDL_SetWindowRelativeMouseMode(instance, SDL_FALSE);
+        SDL_SetWindowRelativeMouseMode(instance, false);
     }
 
     const Vec<2, int>& Window::getSize() const
@@ -436,7 +436,7 @@ namespace Chicane
         switch (inType)
         {
         case WindowType::Windowed:
-            SDL_SetWindowBordered(instance, SDL_TRUE);
+            SDL_SetWindowBordered(instance, true);
 
             if (m_bIsResizable)
             {
@@ -450,14 +450,14 @@ namespace Chicane
             break;
 
         case WindowType::WindowedBorderless:
-            SDL_SetWindowBordered(instance, SDL_FALSE);
+            SDL_SetWindowBordered(instance, false);
 
             disableResizing();
 
             break;
 
         case WindowType::Fullscreen:
-            SDL_SetWindowFullscreen(instance, SDL_TRUE);
+            SDL_SetWindowFullscreen(instance, true);
 
             disableResizing();
 
@@ -484,7 +484,7 @@ namespace Chicane
 
         SDL_SetWindowResizable(
             instance,
-            SDL_TRUE
+            true
         );
 
         m_bIsResizable = true;
@@ -494,7 +494,7 @@ namespace Chicane
     {
         SDL_SetWindowResizable(
             instance,
-            SDL_FALSE
+            false
         );
 
         m_bIsResizable = false;
