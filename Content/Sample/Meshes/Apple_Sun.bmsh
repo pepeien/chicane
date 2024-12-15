@@ -1,6 +1,6 @@
-<Asset version="1.0" id="Apple">
+<Asset version="1.0" id="Apple_Sun">
     <Group id="Body">
-        <Model>Content/Sample/Model/Apple.bmdl</Model>
-        <Texture>Content/Sample/Texture/Material/Sunset/Sunset_Up.btex</Texture>
+        <Model>Content/Sample/Models/Apple.bmdl</Model>
+        <Texture>Content/Sample/Textures/Forest/Up.btex</Texture>
     </Group>
 </Asset>

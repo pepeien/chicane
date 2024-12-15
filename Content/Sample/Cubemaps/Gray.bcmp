@@ -1,0 +1,8 @@
+<Asset version="1.0" id="Gray">
+    <Texture side="Left">Content/Sample/Textures/Gray.btex</Texture>
+    <Texture side="Right">Content/Sample/Textures/Gray.btex</Texture>
+    <Texture side="Front">Content/Sample/Textures/Gray.btex</Texture>
+    <Texture side="Back">Content/Sample/Textures/Gray.btex</Texture>
+    <Texture side="Up">Content/Sample/Textures/Gray.btex</Texture>
+    <Texture side="Down">Content/Sample/Textures/Gray.btex</Texture>
+</Asset>
