@@ -7,7 +7,10 @@
 class Apple : public Chicane::Actor
 {
 public:
-    Apple(const std::string& inId);
+    Apple(
+        const std::string& inId,
+        const Chicane::Vec<3, float>& inStartPosition
+    );
 
 protected:
     void onTick(float inDeltaTime);
@@ -15,6 +18,8 @@ protected:
 
 private:
     float m_fallingRate;
+
+    Chicane::Vec<3, float> m_startPosition;
 
     Chicane::MeshComponent* m_mesh;
 };

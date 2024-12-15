@@ -11,6 +11,14 @@ namespace Chicane
 {
     namespace Texture
     {
+        enum class Vendor : uint8_t
+        {
+            // N/A
+            Undefined,
+            // .png
+            Png
+        };
+
         struct CreateInfo
         {
             std::vector<unsigned char> data;

@@ -129,8 +129,10 @@ void Level::spawnApples()
         {
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
-                Apple* apple = new Apple(row % 2 == 0 ? "Content/Sample/Meshes/Apple.box" : "Content/Sample/Meshes/Apple_Sun.box");
-                apple->setAbsoluteTranslation(position);
+                Apple* apple = new Apple(
+                    row % 2 == 0 ? "Content/Sample/Meshes/Apple.box" : "Content/Sample/Meshes/Apple_Sun.box",
+                    position
+                );
                 addActor(apple);
 
                 position.x += APPLE_STEP;

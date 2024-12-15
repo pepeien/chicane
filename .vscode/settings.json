@@ -101,6 +101,7 @@
         "valarray": "cpp",
         "future": "cpp",
         "cfenv": "cpp",
-        "*.def": "cpp"
+        "*.def": "cpp",
+        "text_encoding": "cpp"
     }
 }

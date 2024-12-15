@@ -2,8 +2,12 @@
 
 #include "Actor/Character.hpp"
 
+#include "Chicane/Box.hpp"
+
 Application::Application()
 {
+    std::unique_ptr<Chicane::Box::Cubemap> cubemap = std::make_unique<Chicane::Box::Cubemap>("Content/Sample/Texture/Skybox/Sunset.bcmp");
+
     initLevel();
     initChacater();
     initView();

@@ -1,1 +1,6 @@
-CHAK;1.1;1;Apple;2;ENTRY1;1;DATAContent/Sample/Model/Apple.boxENTRY2;1;DATAContent/Sample/Texture/Material/Sunset/Sunset_Up.box
+<Asset version="1.0" id="Apple">
+    <Group id="Body">
+        <Model>Content/Sample/Model/Apple.bmdl</Model>
+        <Texture>Content/Sample/Texture/Material/Sunset/Sunset_Up.btex</Texture>
+    </Group>
+</Asset>

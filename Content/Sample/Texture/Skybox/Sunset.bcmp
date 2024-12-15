@@ -1,0 +1,8 @@
+<Asset version="1.0" id="Sunset">
+    <Texture side="0">Content/Sample/Texture/Material/Sunset/Sunset_Front.btex</Texture>
+    <Texture side="1">Content/Sample/Texture/Material/Sunset/Sunset_Back.btex</Texture>
+    <Texture side="2">Content/Sample/Texture/Material/Sunset/Sunset_Left.btex</Texture>
+    <Texture side="3">Content/Sample/Texture/Material/Sunset/Sunset_Right.btex</Texture>
+    <Texture side="4">Content/Sample/Texture/Material/Sunset/Sunset_Up.btex</Texture>
+    <Texture side="5">Content/Sample/Texture/Material/Sunset/Sunset_Down.btex</Texture>
+</Asset>

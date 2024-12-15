@@ -22,7 +22,7 @@ namespace Chicane
         bool isDrawable() const;
 
         bool hasMesh() const;
-        const Box::Instance& getMesh() const;
+        const Box::Mesh* getMesh() const;
         void setMesh(const std::string& inMesh);
 
         const std::string& getModel() const;
@@ -36,6 +36,6 @@ namespace Chicane
     protected:
         bool m_bIsMeshActive;
 
-        Box::Instance m_mesh;
+        const Box::Mesh* m_mesh;
     };
 }

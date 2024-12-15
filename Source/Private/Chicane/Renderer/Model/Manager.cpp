@@ -47,7 +47,7 @@ namespace Chicane
             return m_instanceMap.at(inId).extent;
         }
 
-        void Manager::load(const std::string& inId, const Box::Entry& inEntry)
+        void Manager::load(const std::string& inId, const Box::Model* inAsset)
         {
             if (isLoaded(inId))
             {
@@ -56,10 +56,10 @@ namespace Chicane
 
             ParseResult result {};
 
-            switch (static_cast<Vendor>(inEntry.vendor))
+            switch (inAsset->getVendor())
             {
             case Vendor::Wavefront:
-                Wavefront::parse(result, inEntry.data);
+                Wavefront::parse(result, inAsset->getData());
 
                 break;
 

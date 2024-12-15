@@ -61,10 +61,10 @@ namespace Chicane
 
     bool MeshComponent::hasMesh() const
     {
-        return !m_mesh.filepath.empty();
+        return !m_mesh->getHeader().filepath.empty();
     }
 
-    const Box::Instance& MeshComponent::getMesh() const
+    const Box::Mesh* MeshComponent::getMesh() const
     {
         return m_mesh;
     }
@@ -75,14 +75,11 @@ namespace Chicane
 
         Bounds bounds {};
 
-        for (const Box::Entry& entry : m_mesh.entries)
+        for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {
-            if (entry.type != Box::EntryType::Model)
-            {
-                continue;
-            }
-
-            const Vec<3, float>& extent = Loader::getModelManager()->getBounds(entry.reference);
+            const Vec<3, float>& extent = Loader::getModelManager()->getBounds(
+                group.getModel()
+            );
 
             bounds.extent.x = std::max(
                 bounds.extent.x,
@@ -115,7 +112,7 @@ namespace Chicane
             return "";
         }
 
-        return m_mesh.entries.at(0).reference;
+        return m_mesh->getGroups().at(0).getModel();
     }
 
     const std::string& MeshComponent::getTexture() const
@@ -125,7 +122,7 @@ namespace Chicane
             return "";
         }
 
-        return m_mesh.entries.at(1).reference;
+        return m_mesh->getGroups().at(0).getTexture();
     }
 
     void MeshComponent::handleDrawability()
@@ -152,13 +149,9 @@ namespace Chicane
             return;
         }
 
-        for (const Box::Entry& entry : m_mesh.entries)
-        {
-            if (entry.type == Box::EntryType::Model)
-            {
-                Loader::getModelManager()->activate(entry.reference);
-            }
-        }
+        Loader::getModelManager()->activate(
+            m_mesh->getGroups().at(0).getModel()
+        );
 
         m_bIsMeshActive = true;
     }
@@ -170,13 +163,9 @@ namespace Chicane
             return;
         }
 
-        for (const Box::Entry& entry : m_mesh.entries)
-        {
-            if (entry.type == Box::EntryType::Model)
-            {
-                Loader::getModelManager()->deactivate(entry.reference);
-            }
-        }
+        Loader::getModelManager()->deactivate(
+            m_mesh->getGroups().at(0).getModel()
+        );
 
         m_bIsMeshActive = false;
     }

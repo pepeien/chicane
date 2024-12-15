@@ -9,14 +9,6 @@ namespace Chicane
 {
     namespace Texture
     {
-        enum class Vendor : uint8_t
-        {
-            // N/A
-            Undefined,
-            // .png
-            Png
-        };
-
         class Manager
         {
         public:
@@ -30,7 +22,7 @@ namespace Chicane
             std::uint32_t getCount() const;
             std::uint32_t getIndex(const std::string& inId) const;
 
-            void add(const std::string& inId, const Box::Entry& inEntry);
+            void add(const std::string& inId, const Box::Texture* inAsset);
             void bindAll(
                 const vk::CommandBuffer& inCommandBuffer,
                 const vk::PipelineLayout& inPipelineLayout,

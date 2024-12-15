@@ -1,0 +1,6 @@
+<Asset version="1.0" id="Cube">
+    <Group id="Body">
+        <Model>Content/Sample/Model/Cube.bmdl</Model>
+        <Texture>Content/Sample/Texture/Material/Gray.btex</Texture>
+    </Group>
+</Asset>

@@ -44,7 +44,7 @@ namespace Chicane
             return static_cast<std::uint32_t>(interator - m_registeredIds.begin());
         }
 
-        void Manager::add(const std::string& inId, const Box::Entry& inEntry)
+        void Manager::add(const std::string& inId, const Box::Texture* inAsset)
         {
             if (contains(inId))
             {
@@ -54,7 +54,7 @@ namespace Chicane
             m_dataMap.insert(
                 std::make_pair(
                     inId,
-                    inEntry.data
+                    inAsset->getData()
                 )
             );
 

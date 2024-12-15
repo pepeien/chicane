@@ -14,14 +14,6 @@ namespace Chicane
 
     namespace Model
     {
-        enum class Vendor : std::uint8_t
-        {
-            // N/A
-            Undefined,
-            // .obj
-            Wavefront
-        };
-
         class Manager
         {
         public:
@@ -44,7 +36,7 @@ namespace Chicane
 
             const Vec<3, float>& getBounds(const std::string& inId);
 
-            void load(const std::string& inId, const Box::Entry& inEntry);
+            void load(const std::string& inId, const Box::Model* inAsset);
             void activate(const std::string& inId);
             void deactivate(const std::string& inId);
             void build(

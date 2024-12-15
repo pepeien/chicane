@@ -9,6 +9,14 @@ namespace Chicane
 {
     namespace Model
     {
+        enum class Vendor : std::uint8_t
+        {
+            // N/A
+            Undefined,
+            // .obj
+            Wavefront
+        };
+
         struct AllocationInfo
         {
             std::uint32_t vertexCount   = 0;
