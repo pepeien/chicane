@@ -33,8 +33,8 @@ namespace Chicane
 
         Cubemap::Side Cubemap::getSideFromString(const std::string& inValue) const
         {
-            std::string value = "";
-            std::transform(inValue.begin(), inValue.end(), value.begin(), ::toupper);
+            std::string value = inValue;
+            std::transform(value.begin(), value.end(), value.begin(), ::toupper);
 
             if (Utils::areEquals(value, "UP"))
             {
