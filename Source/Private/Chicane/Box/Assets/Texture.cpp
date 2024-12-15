@@ -48,19 +48,25 @@ namespace Chicane
                 return;
             }
 
-            auto current = m_xml.first_child().child_value();
+            auto currentChar = m_xml.first_child().child_value();
 
-            if (!current)
+            if (!currentChar)
             {
                 return;
             }
 
-            while (*current != '\0')
-            {
-                m_data.push_back(*current);
+            std::string encodedBase64 = "";
 
-                current++;
+            while (*currentChar != '\0')
+            {
+                encodedBase64.push_back(*currentChar);
+
+                currentChar++;
             }
+
+            std::string decodedBase64 = base64_decode(encodedBase64, true);
+
+            m_data.insert(m_data.begin(), decodedBase64.begin(), decodedBase64.end());
         }
     }
 }

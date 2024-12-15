@@ -15,7 +15,7 @@ Level::Level()
 
 void Level::onActivation()
 {
-    Chicane::Loader::loadCubemap("Content/Sample/Texture/Skybox/Sunset.box");
+    Chicane::Loader::loadCubemap("Content/Sample/Texture/Skybox/Sunset.bcmp");
 
     spawnStructures();
     spawnApples();
@@ -38,78 +38,6 @@ void Level::spawnStructures()
         50.0f,
         0.25f
     );
-
-    Strcuture* frontWall = new Strcuture();
-    frontWall->setAbsoluteScale(scale);
-    frontWall->setAbsoluteRotation(
-        Chicane::Vec<3, float>(
-            90.0f,
-            0.0f,
-            0.0f
-        )
-    );
-    frontWall->setAbsoluteTranslation(
-        Chicane::Vec<3, float>(
-            0.0f,
-            floorScale.y,
-            scale.y * 0.5f
-        )
-    );
-    addActor(frontWall);
-
-    Strcuture* backWall = new Strcuture();
-    backWall->setAbsoluteScale(scale);
-    backWall->setAbsoluteRotation(
-        Chicane::Vec<3, float>(
-            90.0f,
-            0.0f,
-            0.0f
-        )
-    );
-    backWall->setAbsoluteTranslation(
-        Chicane::Vec<3, float>(
-            0.0f,
-            -floorScale.y,
-            scale.y * 0.5f
-        )
-    );
-    addActor(backWall);
-
-    Strcuture* leftWall = new Strcuture();
-    leftWall->setAbsoluteScale(scale);
-    leftWall->setAbsoluteRotation(
-        Chicane::Vec<3, float>(
-            90.0f,
-            90.0f,
-            0.0f
-        )
-    );
-    leftWall->setAbsoluteTranslation(
-        Chicane::Vec<3, float>(
-            -floorScale.x,
-            0.0f,
-            scale.y * 0.5f
-        )
-    );
-    addActor(leftWall);
-
-    Strcuture* rightWall = new Strcuture();
-    rightWall->setAbsoluteScale(scale);
-    rightWall->setAbsoluteRotation(
-        Chicane::Vec<3, float>(
-            90.0f,
-            90.0f,
-            0.0f
-        )
-    );
-    rightWall->setAbsoluteTranslation(
-        Chicane::Vec<3, float>(
-            floorScale.x,
-            0.0f,
-            scale.y * 0.5f
-        )
-    );
-    addActor(rightWall);
 }
 
 void Level::spawnApples()
@@ -130,7 +58,7 @@ void Level::spawnApples()
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
                 Apple* apple = new Apple(
-                    row % 2 == 0 ? "Content/Sample/Meshes/Apple.box" : "Content/Sample/Meshes/Apple_Sun.box",
+                    row % 2 == 0 ? "Content/Sample/Meshes/Apple.bmsh" : "Content/Sample/Meshes/Apple_Sun.bmsh",
                     position
                 );
                 addActor(apple);

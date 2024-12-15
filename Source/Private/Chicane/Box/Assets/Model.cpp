@@ -47,18 +47,18 @@ namespace Chicane
                 return;
             }
 
-            auto current = m_xml.first_child().child_value();
+            auto currentChar = m_xml.first_child().child_value();
 
-            if (!current)
+            if (!currentChar)
             {
                 return;
             }
 
-            while (*current != '\0')
+            while (*currentChar != '\0')
             {
-                m_data.push_back(*current);
+                m_data.push_back(*currentChar);
 
-                current++;
+                currentChar++;
             }
         }
     }

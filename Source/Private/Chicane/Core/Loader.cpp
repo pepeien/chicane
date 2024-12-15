@@ -32,6 +32,11 @@ namespace Chicane
 
         bool isLoaded(const Box::Asset* inInstance)
         {
+            if (!inInstance)
+            {
+                return false;
+            }
+
             return isLoaded(inInstance->getHeader().filepath.string());
         }
 
@@ -71,65 +76,210 @@ namespace Chicane
             );
         }
 
-        const Box::Asset* getAsset(const std::string& inIdentifier)
+        template<class T = Box::Asset>
+        const T* getAsset(const std::string& inIdentifier)
         {
             if (!isLoaded(inIdentifier))
             {
                 return nullptr;
             }
 
-            return m_cache.at(inIdentifier);
+            return static_cast<const T*>(m_cache.at(inIdentifier));
         }
 
         void loadModel(const Box::Asset* inAsset)
         {
+            if (!inAsset)
+            {
+                return;
+            }
+
             if (isLoaded(inAsset))
             {
                 return;
             }
 
+            Box::Asset::Header header = inAsset->getHeader();
+
+            if (header.type != Box::Asset::Type::Model)
+            {
+                return;
+            }
+
+            const std::string filepath = header.filepath.string();
+
+            cacheAsset(filepath, inAsset);
+
+            m_modelManager->load(
+                filepath,
+                static_cast<const Box::Model*>(inAsset)
+            );
         }
 
         void loadTexture(const Box::Asset* inAsset)
         {
+            if (!inAsset)
+            {
+                return;
+            }
+
             if (isLoaded(inAsset))
             {
                 return;
             }
 
+            Box::Asset::Header header = inAsset->getHeader();
+
+            if (header.type != Box::Asset::Type::Texture)
+            {
+                return;
+            }
+
+            const std::string filepath = header.filepath.string();
+
+            cacheAsset(filepath, inAsset);
+
+            m_textureManager->add(
+                filepath,
+                static_cast<const Box::Texture*>(inAsset)
+            );
         }
 
         void loadMesh(const Box::Asset* inAsset)
         {
+            if (!inAsset)
+            {
+                return;
+            }
+
             if (isLoaded(inAsset))
             {
                 return;
             }
 
+            Box::Asset::Header header = inAsset->getHeader();
+
+            if (header.type != Box::Asset::Type::Mesh)
+            {
+                return;
+            }
+
+            const std::string filepath = header.filepath.string();
+
+            cacheAsset(filepath, inAsset);
+
+            const Box::Mesh* mesh = static_cast<const Box::Mesh*>(inAsset);
+
+            for (const Box::Mesh::Group& group : mesh->getGroups())
+            {
+                const std::string& model = group.getModel();
+
+                if (!model.empty() && !isLoaded(model))
+                {
+                    loadModel(new Box::Model(model));
+                }
+
+                const std::string& texture = group.getTexture();
+
+                if (!texture.empty() && !isLoaded(texture))
+                {
+                    loadTexture(new Box::Texture(texture));
+                }
+            }
+
+            cacheAsset(
+                filepath,
+                inAsset
+            );
         }
 
         void loadCubemap(const Box::Asset* inAsset)
         {
+            if (!inAsset)
+            {
+                return;
+            }
+
             if (isLoaded(inAsset))
             {
                 return;
             }
 
+            Box::Asset::Header header = inAsset->getHeader();
+
+            if (header.type != Box::Asset::Type::Cubemap)
+            {
+                return;
+            }
+
+            const std::string filepath = header.filepath.string();
+
+            cacheAsset(filepath, inAsset);
+
+            const Box::Cubemap* cubemap = static_cast<const Box::Cubemap*>(inAsset);
+
+            m_cubemapManager->add(
+                "Skybox",
+                {
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Left))->getData(),  // Positive X
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Right))->getData(), // Negative X
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Front))->getData(), // Positive Y
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Back))->getData(),  // Negative Y
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Up))->getData(),    // Positive Z
+                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Down))->getData()   // Negative Z
+                }
+            );
         }
 
-        const Box::Cubemap* loadCubemap(const std::string& inFilePath)
+        const Box::Cubemap* loadCubemap(const std::string& inFilepath)
         {
-            return nullptr;
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+
+            if (header.type != Box::Asset::Type::Cubemap)
+            {
+                throw std::runtime_error(inFilepath + " is not a cubemap");
+            }
+
+            if (!isLoaded(inFilepath))
+            {
+                loadCubemap(new Box::Cubemap(inFilepath));
+            }
+
+            return getAsset<Box::Cubemap>(inFilepath);
         }
 
-        const Box::Texture* loadTexture(const std::string& inFilePath)
+        const Box::Texture* loadTexture(const std::string& inFilepath)
         {
-            return nullptr;
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+
+            if (header.type != Box::Asset::Type::Texture)
+            {
+                throw std::runtime_error(inFilepath + "is not a texture");
+            }
+
+            if (!isLoaded(inFilepath))
+            {
+                loadTexture(new Box::Texture(inFilepath));
+            }
+
+            return getAsset<Box::Texture>(inFilepath);
         }
 
-        const Box::Mesh* loadMesh(const std::string& inFilePath)
+        const Box::Mesh* loadMesh(const std::string& inFilepath)
         {
-            return nullptr;
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+
+            if (header.type != Box::Asset::Type::Mesh)
+            {
+                throw std::runtime_error(inFilepath + "is not a mesh");
+            }
+
+            if (!isLoaded(inFilepath))
+            {
+                loadMesh(new Box::Mesh(inFilepath));
+            }
+
+            return getAsset<Box::Mesh>(inFilepath);
         }
 
         void reset()

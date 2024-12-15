@@ -12,16 +12,16 @@ namespace Chicane
         public:
             enum class Side
             {
-                Front,
-                Back,
                 Left,
                 Right,
+                Front,
+                Back,
                 Up,
                 Down
             };
 
         public:
-            static inline std::string EXTENSION = ".bcbm";
+            static inline std::string EXTENSION = ".bcmp";
             static inline std::string TAG       = "Cubemap";
 
         public:
@@ -32,6 +32,7 @@ namespace Chicane
             const std::string& getTexture(Side inSide) const;
 
         private:
+            Side getSideFromString(const std::string& inValue) const;
             void fetchTextures();
 
         private:

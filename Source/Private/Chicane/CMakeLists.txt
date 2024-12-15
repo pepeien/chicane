@@ -5,6 +5,7 @@ file(
 
     ${CHICANE_SOURCE_DIR}/*.cpp
 
+    ${VENDORS_DIR}/base64/base64.cpp
     ${VENDORS_DIR}/imgui/imgui_draw.cpp
     ${VENDORS_DIR}/imgui/imgui_tables.cpp
     ${VENDORS_DIR}/imgui/imgui_widgets.cpp
@@ -38,6 +39,7 @@ target_include_directories(
 
         ${Vulkan_INCLUDE_DIRS}
         ${VENDORS_DIR}
+        ${VENDORS_DIR}/base64
         ${VENDORS_DIR}/fast_obj
         ${VENDORS_DIR}/glm
         ${VENDORS_DIR}/imgui

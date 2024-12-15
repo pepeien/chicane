@@ -31,6 +31,39 @@ namespace Chicane
             return m_textures.at(inSide);
         }
 
+        Cubemap::Side Cubemap::getSideFromString(const std::string& inValue) const
+        {
+            std::string value = "";
+            std::transform(inValue.begin(), inValue.end(), value.begin(), ::toupper);
+
+            if (Utils::areEquals(value, "UP"))
+            {
+                return Side::Up;
+            }
+
+            if (Utils::areEquals(value, "DOWN"))
+            {
+                return Side::Down;
+            }
+
+            if (Utils::areEquals(value, "LEFT"))
+            {
+                return Side::Left;
+            }
+
+            if (Utils::areEquals(value, "RIGHT"))
+            {
+                return Side::Right;
+            }
+
+            if (Utils::areEquals(value, "FRONT"))
+            {
+                return Side::Front;
+            }
+
+            return Side::Back;
+        }
+
         void Cubemap::fetchTextures()
         {
             if (m_header.filepath.empty() || m_xml.empty())
@@ -47,10 +80,12 @@ namespace Chicane
                     continue;
                 }
 
-                Side side = (Side) XML::getAttribute(
-                    SIDE_ATTRIBUTE_NAME,
-                    texture
-                ).as_uint();
+                Side side = getSideFromString(
+                    XML::getAttribute(
+                        SIDE_ATTRIBUTE_NAME,
+                        texture
+                    ).as_string()
+                );
 
                 if (m_textures.find(side) != m_textures.end())
                 {
