@@ -61,7 +61,7 @@ namespace Chicane
 
     bool MeshComponent::hasMesh() const
     {
-        return !m_mesh->getHeader().filepath.empty();
+        return !m_mesh->getFilepath().empty();
     }
 
     const Box::Mesh* MeshComponent::getMesh() const
@@ -109,7 +109,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return "";
+            return std::string();
         }
 
         return m_mesh->getGroups().at(0).getModel();
@@ -119,7 +119,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return "";
+            return std::string();
         }
 
         return m_mesh->getGroups().at(0).getTexture();

@@ -23,7 +23,7 @@ namespace Chicane
             {
             public:
                 static Header fromFilepath(const std::string& inFilepath);
-                static Header fromXml(const std::string& inFilepath, const pugi::xml_document& inDocument);
+                static Header fromXML(const std::string& inFilepath, const pugi::xml_document& inDocument);
 
             private:
                 void fetchVersion(const pugi::xml_node& inRoot);
@@ -31,25 +31,47 @@ namespace Chicane
                 void fetchType();
 
             public:
-                std::filesystem::path filepath;
-                std::string           version;
-                std::string           id;
-                Type                  type;
+                std::filesystem::path filepath = "";
+                std::uint32_t         version  = CURRENT_VERSION;
+                std::string           id       = "";
+                Type                  type     = Type::Undefined;
             };
 
         public:
-            static std::string TAG;
-            static std::string CURRENT_VERSION;
+            static std::string   TAG;
+            static std::uint32_t CURRENT_VERSION;
 
         public:
             Asset(const std::string& inFilepath);
 
         public:
+            bool isType(Type inType) const;
+
             const Header& getHeader() const;
+            void setHeader(const Header& inHeader);
+
+            const std::filesystem::path& getFilepath() const;
+            void setFilepath(const std::filesystem::path& inFilepath);
+
+            std::uint32_t getVersion() const;
+            void setVersion(std::uint32_t inVersion);
+
+            const std::string& getId() const;
+            void setId(const std::string& inId);
+
+            const Type getType() const;
+            void setType(Type inType);
+
+            void saveXML() const;
+
+        protected:
+            bool isXMLEmpty();
+            pugi::xml_node getXMLRoot();
 
         private:
-            void fetchHeader(const std::string& inFilepath);
+            void createXML(const std::string& inFilepath);
             void fetchXML(const std::string& inFilepath);
+            void fetchHeader(const std::string& inFilepath);
 
         protected:
             Header             m_header;

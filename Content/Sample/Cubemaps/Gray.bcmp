@@ -1,4 +1,4 @@
-<Asset version="1.0" id="Gray">
+<Asset version="1" id="Gray">
     <Texture side="Left">Content/Sample/Textures/Gray.btex</Texture>
     <Texture side="Right">Content/Sample/Textures/Gray.btex</Texture>
     <Texture side="Front">Content/Sample/Textures/Gray.btex</Texture>

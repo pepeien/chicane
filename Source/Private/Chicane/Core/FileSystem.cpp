@@ -132,6 +132,42 @@ namespace Chicane
             return buffer;
         }
 
+        std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath)
+        {
+            std::basic_ifstream<unsigned char> file(inFilepath, std::ios::ate | std::ios::binary);
+
+            if (!file.is_open())
+            {
+                throw std::runtime_error("Failed to open file -> " + inFilepath);
+            }
+    
+            size_t fileSize = (size_t)file.tellg();
+            std::vector<unsigned char> buffer(fileSize);
+    
+            file.seekg(0);
+            file.read(buffer.data(), fileSize);
+            file.close();
+    
+            return buffer;
+        }
+
+        
+        ImageData* readImageFromFile(const std::string& inFilepath)
+        {
+            int width   = 0;
+            int height  = 0;
+            int channel = 0;
+            int format  = 0;
+
+            return readImageFromFile(
+                width,
+                height,
+                channel,
+                format,
+                inFilepath
+            );
+        }
+
         ImageData* readImageFromFile(
             int& outWidth,
             int& outHeight,

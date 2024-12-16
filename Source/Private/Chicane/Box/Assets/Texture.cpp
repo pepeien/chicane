@@ -1,5 +1,6 @@
 #include "Chicane/Box/Assets/Texture.hpp"
 
+#include "Chicane/Core.hpp"
 #include "Chicane/Xml.hpp"
 
 namespace Chicane
@@ -7,6 +8,10 @@ namespace Chicane
     namespace Box
     {
         constexpr auto VENDOR_ATTRIBUTE_NAME = "vendor";
+
+        const std::unordered_map<std::string, Chicane::Texture::Vendor> VENDOR_MAP {
+            { "PNG", Chicane::Texture::Vendor::Png }
+        };
 
         Texture::Texture(const std::string& inFilepath)
             : Asset(inFilepath),
@@ -21,52 +26,92 @@ namespace Chicane
             return m_vendor;
         }
 
+        void Texture::setVendor(Chicane::Texture::Vendor inVendor)
+        {
+            m_vendor = inVendor;
+
+            auto vendor = std::find_if(
+                VENDOR_MAP.begin(),
+                VENDOR_MAP.end(),
+                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
+            );
+
+            if (vendor == VENDOR_MAP.end())
+            {
+                return;
+            }
+
+            std::string vendorID = vendor->first;
+
+            pugi::xml_node root = getXMLRoot();
+
+            if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
+            {
+                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+
+                return;
+            }
+
+            root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+        }
+
         const std::vector<unsigned char>& Texture::getData() const
         {
             return m_data;
         }
 
-        void Texture::fetchVendor()
+        void Texture::setData(const std::vector<unsigned char>& inData)
         {
-            if (m_header.filepath.empty() || m_xml.empty())
+            if (inData.empty())
             {
                 return;
             }
 
-            std::uint8_t vendor = XML::getAttribute(
-                VENDOR_ATTRIBUTE_NAME,
-                m_xml.first_child()
-            ).as_uint();
+            m_data = inData;
 
-            m_vendor = (Chicane::Texture::Vendor) vendor;
+            getXMLRoot().text().set(base64::encode(inData));
+        }
+
+        void Texture::setData(const std::string& inFilepath)
+        {
+            if (!FileSystem::exists(inFilepath))
+            {
+                return;
+            }
+
+            setData(base64::read_file(inFilepath));
+        }
+
+        void Texture::fetchVendor()
+        {
+            if (getFilepath().empty() || isXMLEmpty())
+            {
+                return;
+            }
+
+            std::string vendor = XML::getAttribute(
+                VENDOR_ATTRIBUTE_NAME,
+                getXMLRoot()
+            ).as_string();
+
+            if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
+            {
+                m_vendor = Chicane::Texture::Vendor::Undefined;
+
+                return;
+            }
+
+            m_vendor = VENDOR_MAP.at(vendor);
         }
 
         void Texture::fetchData()
         {
-            if (m_header.filepath.empty() || m_xml.empty())
+            if (getFilepath().empty() || isXMLEmpty())
             {
                 return;
             }
 
-            auto currentChar = m_xml.first_child().child_value();
-
-            if (!currentChar)
-            {
-                return;
-            }
-
-            std::string encodedBase64 = "";
-
-            while (*currentChar != '\0')
-            {
-                encodedBase64.push_back(*currentChar);
-
-                currentChar++;
-            }
-
-            std::string decodedBase64 = base64_decode(encodedBase64, true);
-
-            m_data.insert(m_data.begin(), decodedBase64.begin(), decodedBase64.end());
+            m_data = base64::decode(getXMLRoot().text().as_string());
         }
     }
 }

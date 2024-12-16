@@ -30,6 +30,7 @@ namespace Chicane
         public:
             const std::unordered_map<Side, std::string>& getTextures() const;
             const std::string& getTexture(Side inSide) const;
+            void setTexture(Side inSide, const std::string& inFilepath);
 
         private:
             Side getSideFromString(const std::string& inValue) const;

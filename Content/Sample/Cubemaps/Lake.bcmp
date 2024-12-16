@@ -1,4 +1,4 @@
-<Asset version="1.0" id="Lake">
+<Asset version="1" id="Lake">
     <Texture side="Left">Content/Sample/Textures/Lake/Left.btex</Texture>
     <Texture side="Right">Content/Sample/Textures/Lake/Right.btex</Texture>
     <Texture side="Front">Content/Sample/Textures/Lake/Front.btex</Texture>

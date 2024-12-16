@@ -60,6 +60,8 @@ namespace Chicane
         void openFileDialog(const FileDialog& inProps, DialogCallback inCallback);
 
         std::vector<char> readFile(const std::string& inFilepath);
+        std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath);
+        ImageData* readImageFromFile(const std::string& inFilepath);
         ImageData* readImageFromFile(
             int& outWidth,
             int& outHeight,

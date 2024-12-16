@@ -4,6 +4,7 @@
 #include "Chicane/Box/Assets/Mesh.hpp"
 #include "Chicane/Box/Assets/Model.hpp"
 #include "Chicane/Box/Assets/Texture.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Xml.hpp"
 
 const std::unordered_map<std::string, Chicane::Box::Asset::Type> TYPES {
@@ -17,8 +18,8 @@ namespace Chicane
 {
     namespace Box
     {
-        std::string Asset::TAG             = "Asset";
-        std::string Asset::CURRENT_VERSION = "1.0";
+        std::string   Asset::TAG             = "Asset";
+        std::uint32_t Asset::CURRENT_VERSION = 1;
 
         constexpr auto VERSION_ATTRIBUTE_NAME = "version";
         constexpr auto ID_ATTRIBUTE_NAME      = "id";
@@ -32,20 +33,12 @@ namespace Chicane
 
             pugi::xml_document xml;
 
-            if (!xml.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
-            {
-                throw std::runtime_error("Failed to read " + inFilepath);
-            }
+            XML::load(xml, inFilepath);
 
-            if (xml.empty() || xml.children().empty())
-            {
-                throw std::runtime_error("The asset " + inFilepath + " is invalid");
-            }
-
-            return Header::fromXml(inFilepath, xml);
+            return Header::fromXML(inFilepath, xml);
         }
 
-        Asset::Header Asset::Header::fromXml(const std::string& inFilepath, const pugi::xml_document& inDocument)
+        Asset::Header Asset::Header::fromXML(const std::string& inFilepath, const pugi::xml_document& inDocument)
         {
             const pugi::xml_node root = inDocument.first_child();
 
@@ -67,9 +60,9 @@ namespace Chicane
                 return;
             }
 
-            version = XML::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_string();
+            version = XML::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
 
-            if (!version.empty())
+            if (!version > 0)
             {
                 return;
             }
@@ -126,8 +119,22 @@ namespace Chicane
                 return;
             }
 
-            fetchXML(filepath);
+            if (FileSystem::exists(filepath))
+            {
+                fetchXML(filepath);
+                fetchHeader(filepath);
+
+                return;
+            }
+
+            createXML(filepath);
             fetchHeader(filepath);
+            saveXML();
+        }
+
+        bool Asset::isType(Asset::Type inType) const
+        {
+            return m_header.type == inType;
         }
 
         const Asset::Header& Asset::getHeader() const
@@ -135,29 +142,110 @@ namespace Chicane
             return m_header;
         }
 
-        void Asset::fetchXML(const std::string& inFilepath)
+        void Asset::setHeader(const Asset::Header& inHeader)
         {
-            if (inFilepath.empty())
+            setFilepath(inHeader.filepath);
+            setVersion(inHeader.version);
+            setId(inHeader.id);
+            setType(inHeader.type);
+        }
+
+        const std::filesystem::path& Asset::getFilepath() const
+        {
+            return m_header.filepath;
+        }
+
+        void Asset::setFilepath(const std::filesystem::path& inFilepath)
+        {
+            m_header.filepath = Utils::trim(inFilepath.string());
+        }
+
+        std::uint32_t Asset::getVersion() const
+        {
+            return m_header.version;
+        }
+
+        void Asset::setVersion(std::uint32_t inVersion)
+        {
+            if (inVersion <= 0)
             {
                 return;
             }
 
-            if (!m_xml.load_file(inFilepath.c_str()))
+            m_header.version = inVersion;
+
+            m_xml
+            .first_child()
+            .attribute(VERSION_ATTRIBUTE_NAME)
+            .set_value(inVersion);
+        }
+
+        const std::string& Asset::getId() const
+        {
+            return m_header.id;
+        }
+
+        void Asset::setId(const std::string& inId)
+        {
+            if (inId.empty())
             {
-                throw std::runtime_error("Failed to read " + inFilepath);
+                return;
             }
 
-            if (m_xml.empty() || m_xml.children().empty())
+            m_header.id = inId;
+
+            m_xml
+            .first_child()
+            .attribute(ID_ATTRIBUTE_NAME)
+            .set_value(inId);
+        }
+
+        const Asset::Type Asset::getType() const
+        {
+            return m_header.type;
+        }
+
+        void Asset::setType(Asset::Type inType)
+        {
+            m_header.type = inType;
+        }
+
+        bool Asset::isXMLEmpty()
+        {
+            pugi::xml_node root = getXMLRoot();
+
+            if (XML::isEmpty(root))
             {
-                throw std::runtime_error("The asset " + inFilepath + " is invalid");
+                return true;
             }
 
-            if (m_xml.empty())
+            return root.first_child() == root.last_child() && XML::isEmpty(root.first_child());
+        }
+
+        pugi::xml_node Asset::getXMLRoot()
+        {
+            return m_xml.first_child();
+        }
+
+        void Asset::createXML(const std::string& inFilepath)
+        {
+            if (inFilepath.empty() || !m_xml.children().empty())
             {
-                throw std::runtime_error("Document not found");
+                return;
             }
 
-            pugi::xml_node root = m_xml.first_child();
+            pugi::xml_node root = m_xml.append_child(TAG);
+
+            root
+            .append_attribute(VERSION_ATTRIBUTE_NAME)
+            .set_value(CURRENT_VERSION);
+        }
+
+        void Asset::fetchXML(const std::string& inFilepath)
+        {
+            XML::load(m_xml, inFilepath);
+
+            pugi::xml_node root = getXMLRoot();
 
             bool bIsRoot  = root.parent() == root.root();
             bool bIsAlone = bIsRoot && root.next_sibling() == nullptr;
@@ -173,6 +261,11 @@ namespace Chicane
             }
         }
 
+        void Asset::saveXML() const
+        {
+            XML::save(m_xml, getFilepath().string());
+        }
+
         void Asset::fetchHeader(const std::string& inFilepath)
         {
             if (inFilepath.empty())
@@ -180,7 +273,7 @@ namespace Chicane
                 return;
             }
 
-            m_header = Header::fromXml(inFilepath, m_xml);
+            m_header = Header::fromXML(inFilepath, m_xml);
         }
     }
 }

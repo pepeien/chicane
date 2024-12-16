@@ -37,7 +37,7 @@ namespace Chicane
                 return false;
             }
 
-            return isLoaded(inInstance->getHeader().filepath.string());
+            return isLoaded(inInstance->getFilepath().string());
         }
 
         void cacheEntry(const std::string& inIdentifier, const Box::Asset* inEntry)
@@ -99,14 +99,12 @@ namespace Chicane
                 return;
             }
 
-            Box::Asset::Header header = inAsset->getHeader();
-
-            if (header.type != Box::Asset::Type::Model)
+            if (!inAsset->isType(Box::Asset::Type::Model))
             {
                 return;
             }
 
-            const std::string filepath = header.filepath.string();
+            const std::string filepath = inAsset->getFilepath().string();
 
             cacheAsset(filepath, inAsset);
 
@@ -128,14 +126,12 @@ namespace Chicane
                 return;
             }
 
-            Box::Asset::Header header = inAsset->getHeader();
-
-            if (header.type != Box::Asset::Type::Texture)
+            if (!inAsset->isType(Box::Asset::Type::Texture))
             {
                 return;
             }
 
-            const std::string filepath = header.filepath.string();
+            const std::string filepath = inAsset->getFilepath().string();
 
             cacheAsset(filepath, inAsset);
 
@@ -157,14 +153,12 @@ namespace Chicane
                 return;
             }
 
-            Box::Asset::Header header = inAsset->getHeader();
-
-            if (header.type != Box::Asset::Type::Mesh)
+            if (!inAsset->isType(Box::Asset::Type::Mesh))
             {
                 return;
             }
 
-            const std::string filepath = header.filepath.string();
+            const std::string filepath = inAsset->getFilepath().string();
 
             cacheAsset(filepath, inAsset);
 
@@ -205,14 +199,12 @@ namespace Chicane
                 return;
             }
 
-            Box::Asset::Header header = inAsset->getHeader();
-
-            if (header.type != Box::Asset::Type::Cubemap)
+            if (!inAsset->isType(Box::Asset::Type::Cubemap))
             {
                 return;
             }
 
-            const std::string filepath = header.filepath.string();
+            const std::string filepath = inAsset->getFilepath().string();
 
             cacheAsset(filepath, inAsset);
 

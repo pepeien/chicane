@@ -47,7 +47,7 @@
 #include <unordered_map>
 
 // Vendor
-#include "base64.h"
+#include "base64.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"

@@ -1,7 +1,7 @@
 #include "Chicane/Box/Assets/Cubemap.hpp"
 
 #include "Chicane/Box/Assets/Texture.hpp"
-#include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Xml.hpp"
 
 namespace Chicane
@@ -9,6 +9,15 @@ namespace Chicane
     namespace Box
     {
         constexpr auto SIDE_ATTRIBUTE_NAME = "side";
+
+        const std::unordered_map<std::string, Cubemap::Side> SIDE_MAP {
+            { "UP",    Cubemap::Side::Up },
+            { "DOWN",  Cubemap::Side::Down },
+            { "LEFT",  Cubemap::Side::Left },
+            { "RIGHT", Cubemap::Side::Right },
+            { "FRONT", Cubemap::Side::Front },
+            { "BACK",  Cubemap::Side::Back }
+        };
 
         Cubemap::Cubemap(const std::string& inFilepath)
             : Asset(inFilepath)
@@ -31,49 +40,72 @@ namespace Chicane
             return m_textures.at(inSide);
         }
 
+        void Cubemap::setTexture(Cubemap::Side inSide, const std::string& inFilepath)
+        {
+            if (inFilepath.empty())
+            {
+                return;
+            }
+
+            std::string filepath = Utils::trim(inFilepath);
+
+            if (!FileSystem::exists(filepath))
+            {
+                throw std::runtime_error("The texture " + filepath + " doesn't exist");
+            }
+
+            m_textures[inSide] = filepath;
+
+            auto side = std::find_if(
+                SIDE_MAP.begin(),
+                SIDE_MAP.end(),
+                [inSide](const auto& inPair) { return inPair.second == inSide; }
+            );
+
+            if (side == SIDE_MAP.end())
+            {
+                return;
+            }
+
+            std::string sideID = side->first;
+
+            pugi::xml_node sideNode = getXMLRoot().find_child_by_attribute(
+                SIDE_ATTRIBUTE_NAME,
+                sideID.c_str()
+            );
+
+            if (XML::isEmpty(sideNode))
+            {
+                sideNode = getXMLRoot().append_child(Texture::TAG);
+                sideNode.append_attribute(SIDE_ATTRIBUTE_NAME).set_value(sideID.c_str());
+            }
+
+            sideNode.text().set(filepath);
+        }
+
         Cubemap::Side Cubemap::getSideFromString(const std::string& inValue) const
         {
             std::string value = inValue;
             std::transform(value.begin(), value.end(), value.begin(), ::toupper);
 
-            if (Utils::areEquals(value, "UP"))
+            if (SIDE_MAP.find(value) == SIDE_MAP.end())
             {
-                return Side::Up;
+                return Side::Back;
             }
 
-            if (Utils::areEquals(value, "DOWN"))
-            {
-                return Side::Down;
-            }
-
-            if (Utils::areEquals(value, "LEFT"))
-            {
-                return Side::Left;
-            }
-
-            if (Utils::areEquals(value, "RIGHT"))
-            {
-                return Side::Right;
-            }
-
-            if (Utils::areEquals(value, "FRONT"))
-            {
-                return Side::Front;
-            }
-
-            return Side::Back;
+            return SIDE_MAP.at(value);
         }
 
         void Cubemap::fetchTextures()
         {
-            if (m_header.filepath.empty() || m_xml.empty())
+            if (getFilepath().empty() || isXMLEmpty())
             {
                 m_textures.clear();
 
                 return;
             }
 
-            for (const auto& texture : m_xml.first_child().children())
+            for (const auto& texture : getXMLRoot().children())
             {
                 if (!Utils::areEquals(texture.name(), Texture::TAG))
                 {

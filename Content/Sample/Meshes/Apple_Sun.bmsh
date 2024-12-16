@@ -1,4 +1,4 @@
-<Asset version="1.0" id="Apple_Sun">
+<Asset version="1" id="Apple_Sun">
     <Group id="Body">
         <Model>Content/Sample/Models/Apple.bmdl</Model>
         <Texture>Content/Sample/Textures/Forest/Up.btex</Texture>

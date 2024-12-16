@@ -13,6 +13,11 @@ namespace Chicane
             struct Group
             {
             public:
+                bool isValid() const;
+
+                const std::string& getId() const;
+                void setId(const std::string& inId);
+
                 const std::string& getModel() const;
                 void setModel(const std::string& inFilepath);
 
@@ -20,8 +25,9 @@ namespace Chicane
                 void setTexture(const std::string& inFilepath);
 
             private:
-                std::string m_model;
-                std::string m_texture;
+                std::string m_id      = "";
+                std::string m_model   = "";
+                std::string m_texture = "";
             };
 
         public:
@@ -33,6 +39,9 @@ namespace Chicane
 
         public:
             const std::vector<Group>& getGroups() const;
+            void setGroups(const std::vector<Group>& inGroups);
+            void appendGroup(const Group& inGroup);
+            void updateGroup(const Group& inGroup);
 
         private:
             void fetchGroups();

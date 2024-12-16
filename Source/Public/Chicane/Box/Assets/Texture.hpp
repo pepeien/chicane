@@ -19,7 +19,11 @@ namespace Chicane
 
         public:
             Chicane::Texture::Vendor getVendor() const;
+            void setVendor(Chicane::Texture::Vendor inVendor);
+
             const std::vector<unsigned char>& getData() const;
+            void setData(const std::vector<unsigned char>& inData);
+            void setData(const std::string& inFilepath);
 
         private:
             void fetchVendor();
