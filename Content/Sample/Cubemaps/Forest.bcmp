@@ -1,8 +1,0 @@
-<Asset version="1.0" id="Forest">
-    <Texture side="Left">Content/Sample/Textures/Forest/Left.btex</Texture>
-    <Texture side="Right">Content/Sample/Textures/Forest/Right.btex</Texture>
-    <Texture side="Front">Content/Sample/Textures/Forest/Front.btex</Texture>
-    <Texture side="Back">Content/Sample/Textures/Forest/Back.btex</Texture>
-    <Texture side="Up">Content/Sample/Textures/Forest/Up.btex</Texture>
-    <Texture side="Down">Content/Sample/Textures/Forest/Down.btex</Texture>
-</Asset>
