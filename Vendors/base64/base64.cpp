@@ -1,58 +1,75 @@
-/*
-   base64.cpp and base64.h
+#include "base64.hpp"
 
-   base64 encoding and decoding with C++.
-   More information at
-     https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp
+#include <fstream>
+#include <iostream>
+#include <vector>
 
-   Version: 2.rc.09 (release candidate)
+using namespace std;
 
-   Copyright (C) 2004-2017, 2020-2022 René Nyffenegger
+// BASE64 Schema table
+static const uint8_t BASE64_TABLE[] = {
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 
-   This source code is provided 'as-is', without any express or implied
-   warranty. In no event will the author be held liable for any damages
-   arising from the use of this software.
+string base64::encode(const vector<uint8_t> &__arr) {
+    string __res;
+    size_t padding;
 
-   Permission is granted to anyone to use this software for any purpose,
-   including commercial applications, and to alter it and redistribute it
-   freely, subject to the following restrictions:
+    // Loop takes 3 characters at a time from
+    // input_str and stores it in val
+    for (size_t i = 0; i < __arr.size(); i += 3) {
+        size_t val = 0, count = 0, no_of_bits = 0;
 
-   1. The origin of this source code must not be misrepresented; you must not
-      claim that you wrote the original source code. If you use this source code
-      in a product, an acknowledgment in the product documentation would be
-      appreciated but is not required.
+        for (size_t j = i; j < __arr.size() && j <= i + 2; j++) {
+            // binary data of input_str is stored in val
+            val = val << 8;
 
-   2. Altered source versions must be plainly marked as such, and must not be
-      misrepresented as being the original source code.
+            // (A + 0 = A) stores character in val
+            val = val | __arr[j];
 
-   3. This notice may not be removed or altered from any source distribution.
+            // calculates how many time loop
+            // ran if "MEN" -> 3 otherwise "ON" -> 2
+            count++;
+        }
 
-   René Nyffenegger rene.nyffenegger@adp-gmbh.ch
+        no_of_bits = count * 8;
 
-*/
+        // calculates how many "=" to append after res_str.
+        padding = no_of_bits % 3;
 
-#include "base64.h"
+        // extracts all bits from val (6 at a time)
+        // and find the value of each block
+        while (no_of_bits != 0) {
+            size_t temp, index;
+            // retrieve the value of each block
+            if (no_of_bits >= 6) {
+                temp = no_of_bits - 6;
 
-#include <algorithm>
-#include <stdexcept>
+                // binary of 63 is (111111) f
+                index = (val >> temp) & 63;
+                no_of_bits -= 6;
+            } else {
+                temp = 6 - no_of_bits;
 
-#include "Chicane/Core/Utils.hpp"
+                // append zeros to right if bits are less than 6
+                index = (val << temp) & 63;
+                no_of_bits = 0;
+            }
 
- //
- // Depending on the url parameter in base64_chars, one of
- // two sets of base64 characters needs to be chosen.
- // They differ in their last two characters.
- //
-static const char* base64_chars[2] = {
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz"
-             "0123456789"
-             "+/",
+            __res.push_back(BASE64_TABLE[index]);
+        }
+    }
 
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz"
-             "0123456789"
-             "-_"};
+    // padding is done here
+    for (size_t i = 1; i <= padding; i++) {
+        __res.push_back('=');
+    }
+
+    return __res;
+}
 
 static unsigned int pos_of_char(const unsigned char chr) {
  //
@@ -72,124 +89,18 @@ static unsigned int pos_of_char(const unsigned char chr) {
     throw std::runtime_error("Input is not valid base64-encoded data.");
 }
 
-static std::string insert_linebreaks(std::string str, size_t distance) {
- //
- // Provided by https://github.com/JomaCorpFX, adapted by me.
- //
-    if (!str.length()) {
-        return "";
-    }
-
-    size_t pos = distance;
-
-    while (pos < str.size()) {
-        str.insert(pos, "\n");
-        pos += distance + 1;
-    }
-
-    return str;
-}
-
-template <typename String, unsigned int line_length>
-static std::string encode_with_line_breaks(String s) {
-  return insert_linebreaks(base64_encode(s, false), line_length);
-}
-
-template <typename String>
-static std::string encode_pem(String s) {
-  return encode_with_line_breaks<String, 64>(s);
-}
-
-template <typename String>
-static std::string encode_mime(String s) {
-  return encode_with_line_breaks<String, 76>(s);
-}
-
-template <typename String>
-static std::string encode(String s, bool url) {
-  return base64_encode(reinterpret_cast<const unsigned char*>(s.data()), s.length(), url);
-}
-
-std::string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, bool url) {
-
-    size_t len_encoded = (in_len +2) / 3 * 4;
-
-    unsigned char trailing_char = url ? '.' : '=';
-
- //
- // Choose set of base64 characters. They differ
- // for the last two positions, depending on the url
- // parameter.
- // A bool (as is the parameter url) is guaranteed
- // to evaluate to either 0 or 1 in C++ therefore,
- // the correct character set is chosen by subscripting
- // base64_chars with url.
- //
-    const char* base64_chars_ = base64_chars[url];
-
-    std::string ret;
-    ret.reserve(len_encoded);
-
-    unsigned int pos = 0;
-
-    while (pos < in_len) {
-        ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0xfc) >> 2]);
-
-        if (pos+1 < in_len) {
-           ret.push_back(base64_chars_[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
-
-           if (pos+2 < in_len) {
-              ret.push_back(base64_chars_[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
-              ret.push_back(base64_chars_[  bytes_to_encode[pos + 2] & 0x3f]);
-           }
-           else {
-              ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
-              ret.push_back(trailing_char);
-           }
-        }
-        else {
-
-            ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0x03) << 4]);
-            ret.push_back(trailing_char);
-            ret.push_back(trailing_char);
-        }
-
-        pos += 3;
-    }
-
-
-    return ret;
-}
-
-template <typename String>
-static std::string decode(String const& encoded_string, bool remove_linebreaks) {
- //
- // decode(…) is templated so that it can be used with String = const std::string&
- // or std::string_view (requires at least C++17)
- //
-
-    if (encoded_string.empty()) return std::string();
-
-    if (remove_linebreaks) {
-
-       std::string copy(encoded_string);
-
-       copy.erase(std::remove(copy.begin(), copy.end(), '\n'), copy.end());
-
-       copy = Chicane::Utils::trim(copy);
-
-       return base64_decode(copy, false);
-    }
+vector<uint8_t> base64::decode(const string &encoded_string) {
+    if (encoded_string.empty()) return {};
 
     size_t length_of_string = encoded_string.length();
     size_t pos = 0;
 
- //
- // The approximate length (bytes) of the decoded string might be one or
- // two bytes smaller, depending on the amount of trailing equal signs
- // in the encoded string. This approximation is needed to reserve
- // enough space in the string to be returned.
- //
+    //
+    // The approximate length (bytes) of the decoded string might be one or
+    // two bytes smaller, depending on the amount of trailing equal signs
+    // in the encoded string. This approximation is needed to reserve
+    // enough space in the string to be returned.
+    //
     size_t approx_length_of_decoded_string = length_of_string / 4 * 3;
     std::string ret;
     ret.reserve(approx_length_of_decoded_string);
@@ -208,79 +119,154 @@ static std::string decode(String const& encoded_string, bool remove_linebreaks) 
     // The last chunk produces at least one and up to three bytes.
     //
 
-       size_t pos_of_char_1 = pos_of_char(encoded_string.at(pos+1) );
+    size_t pos_of_char_1 = pos_of_char(encoded_string.at(pos+1) );
 
     //
     // Emit the first output byte that is produced in each chunk:
     //
-       ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string.at(pos+0)) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
+    ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char(encoded_string.at(pos+0)) ) << 2 ) + ( (pos_of_char_1 & 0x30 ) >> 4)));
 
-       if ( ( pos + 2 < length_of_string  )       &&  // Check for data that is not padded with equal signs (which is allowed by RFC 2045)
-              encoded_string.at(pos+2) != '='     &&
-              encoded_string.at(pos+2) != '.'         // accept URL-safe base 64 strings, too, so check for '.' also.
-          )
-       {
-       //
-       // Emit a chunk's second byte (which might not be produced in the last chunk).
-       //
-          unsigned int pos_of_char_2 = pos_of_char(encoded_string.at(pos+2) );
-          ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
+        if ( ( pos + 2 < length_of_string  )       &&  // Check for data that is not padded with equal signs (which is allowed by RFC 2045)
+                  encoded_string.at(pos+2) != '='     &&
+                  encoded_string.at(pos+2) != '.'         // accept URL-safe base 64 strings, too, so check for '.' also.
+            )
+        {
+           //
+           // Emit a chunk's second byte (which might not be produced in the last chunk).
+           //
+              unsigned int pos_of_char_2 = pos_of_char(encoded_string.at(pos+2) );
+              ret.push_back(static_cast<std::string::value_type>( (( pos_of_char_1 & 0x0f) << 4) + (( pos_of_char_2 & 0x3c) >> 2)));
 
-          if ( ( pos + 3 < length_of_string )     &&
-                 encoded_string.at(pos+3) != '='  &&
-                 encoded_string.at(pos+3) != '.'
-             )
-          {
-          //
-          // Emit a chunk's third byte (which might not be produced in the last chunk).
-          //
-             ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string.at(pos+3))   ));
-          }
-       }
+            if ( ( pos + 3 < length_of_string )     &&
+                     encoded_string.at(pos+3) != '='  &&
+                     encoded_string.at(pos+3) != '.'
+                )
+            {
+                //
+                // Emit a chunk's third byte (which might not be produced in the last chunk).
+                //
+                ret.push_back(static_cast<std::string::value_type>( ( (pos_of_char_2 & 0x03 ) << 6 ) + pos_of_char(encoded_string.at(pos+3))   ));
+            }
+        }
 
-       pos += 4;
+        pos += 4;
     }
 
-    return ret;
+    return vector<uint8_t>(ret.begin(), ret.end());
 }
 
-std::string base64_decode(std::string const& s, bool remove_linebreaks) {
-   return decode(s, remove_linebreaks);
+vector<uint8_t> base64::read_file(const string &__str) {
+    vector<uint8_t> __arr;
+    ifstream __file;
+    __file.open(__str, ios::binary);
+
+    if (!__file.is_open()) {
+        cerr << "File: " << __str << " did not found!" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    char temp;
+    while (__file.read(&temp, sizeof(char))) {
+        __arr.push_back(temp);
+    }
+
+    __file.close();
+
+    return __arr;
 }
 
-std::string base64_encode(std::string const& s, bool url) {
-   return encode(s, url);
+void base64::write_file(const vector<uint8_t> &__arr, const string &__str) {
+    ofstream __file;
+    __file.open(__str, ios::binary);
+
+    for (const auto &el : __arr) __file.write((char *)&el, sizeof(uint8_t));
+
+    __file.close();
 }
 
-std::string base64_encode_pem (std::string const& s) {
-   return encode_pem(s);
+#ifdef COMPILE_CLI
+#include <algorithm>
+
+static void print_help(int exit_code = EXIT_FAILURE) {
+    cout << "Usage: base64 [Options]...\n\n";
+    cout << "Options:-\n";
+    cout << "  -h, --help     Display help\n";
+    cout << "  -f, --file     Path to file\n";
+    cout << "  -t, --text     Text to encode\n";
+    cout << "  -o, --output   Output to given file name\n";
+    exit(exit_code);
 }
 
-std::string base64_encode_mime(std::string const& s) {
-   return encode_mime(s);
+// C++ Command parsing
+// https://stackoverflow.com/a/868894/13057978
+static char *cmdOption(char **begin, int argc, const string &option) {
+    char **end = begin + argc;
+    char **itr = find(begin, end, option);
+    if (itr != end && ++itr != end) {
+        return *itr;
+    }
+    return 0;
 }
 
-#if __cplusplus >= 201703L
-//
-// Interface with std::string_view rather than const std::string&
-// Requires C++17
-// Provided by Yannic Bonenberger (https://github.com/Yannic)
-//
-
-std::string base64_encode(std::string_view s, bool url) {
-   return encode(s, url);
+static bool cmdExists(char **begin, int argc, const string &option) {
+    char **end = begin + argc;
+    return find(begin, end, option) != end;
 }
 
-std::string base64_encode_pem(std::string_view s) {
-   return encode_pem(s);
+static vector<uint8_t> bytesarray(char *__str) {
+    int i = 0;
+    vector<uint8_t> __res;
+    while (__str[i] != '\0') {
+        __res.push_back((uint8_t)__str[i++]);
+    }
+
+    return __res;
 }
 
-std::string base64_encode_mime(std::string_view s) {
-   return encode_mime(s);
-}
+int main(int argc, char **argv) {
+    // cout << getCmdOption(argv, argv + argc, "-h") << "\n";
+    // cout << getCmdOption(argv, argv + argc, "-o") << "\n";
 
-std::string base64_decode(std::string_view s, bool remove_linebreaks) {
-   return decode(s, remove_linebreaks);
-}
+    if (argc >= 2) {
+        if (cmdExists(argv, argc, "-h") || cmdExists(argv, argc, "--help"))
+            print_help(EXIT_SUCCESS);
 
-#endif  // __cplusplus >= 201703L
+        string __base64_ans;
+        vector<uint8_t> __bytes_array;
+
+        if (cmdExists(argv, argc, "-t") || cmdExists(argv, argc, "--text")) {
+            if (cmdExists(argv, argc, "-t"))
+                __bytes_array = bytesarray(cmdOption(argv, argc, "-t"));
+            else
+                __bytes_array = bytesarray(cmdOption(argv, argc, "-text"));
+        }
+
+        else if (cmdExists(argv, argc, "-f") || cmdExists(argv, argc, "--file")) {
+            if (cmdExists(argv, argc, "-f"))
+                __bytes_array = base64::read_file(cmdOption(argv, argc, "-f"));
+            else
+                __bytes_array = base64::read_file(cmdOption(argv, argc, "-file"));
+        }
+
+        if (__bytes_array.size()) {
+            __base64_ans = base64::encode(__bytes_array);
+        }
+
+        if (cmdExists(argv, argc, "-o") || cmdExists(argv, argc, "--output")) {
+            char *outfile;
+            if (cmdExists(argv, argc, "-o"))
+                outfile = cmdOption(argv, argc, "-o");
+            else
+                outfile = cmdOption(argv, argc, "-output");
+
+            ofstream __file;
+            __file.open(outfile);
+            __file.write(__base64_ans.c_str(), __base64_ans.size());
+        } else {
+            cout << __base64_ans << "\n";
+        }
+    } else {
+        print_help();
+    }
+}
+#endif  // COMPILE_CLI
