@@ -200,7 +200,7 @@ namespace Chicane
             .set_value(inId);
         }
 
-        const Asset::Type Asset::getType() const
+        Asset::Type Asset::getType() const
         {
             return m_header.type;
         }
@@ -261,7 +261,7 @@ namespace Chicane
             }
         }
 
-        void Asset::saveXML() const
+        void Asset::saveXML()
         {
             XML::save(m_xml, getFilepath().string());
         }

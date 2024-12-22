@@ -6,7 +6,7 @@
 #include "Chicane/Renderer/Buffer.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
-#include "Chicane/Renderer/Model/Vendors/Wavefront.hpp"
+#include "Chicane/Renderer/Model/Vendor/Wavefront.hpp"
 
 namespace Chicane
 {

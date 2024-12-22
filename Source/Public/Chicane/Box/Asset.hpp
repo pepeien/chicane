@@ -59,10 +59,10 @@ namespace Chicane
             const std::string& getId() const;
             void setId(const std::string& inId);
 
-            const Type getType() const;
+            Type getType() const;
             void setType(Type inType);
 
-            void saveXML() const;
+            void saveXML();
 
         protected:
             bool isXMLEmpty();

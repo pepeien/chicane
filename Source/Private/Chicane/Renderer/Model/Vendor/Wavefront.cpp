@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Model/Vendors/Wavefront.hpp"
+#include "Chicane/Renderer/Model/Vendor/Wavefront.hpp"
 
 #define FAST_OBJ_IMPLEMENTATION
 #include "fast_obj.h"
