@@ -7,7 +7,7 @@ const Chicane::Vec<2, int> VEC2_ZERO(0);
 
 namespace Chicane
 {
-    Window::Window(const WindowCreateInfo& inCreateInfo)
+    Window::Window(const CreateInfo& inCreateInfo)
         : instance(nullptr),
         m_bIsFocused(inCreateInfo.bIsFocused),
         m_bIsResizable(inCreateInfo.bIsResizable),
@@ -429,13 +429,13 @@ namespace Chicane
         );
     }
 
-    void Window::setType(WindowType inType)
+    void Window::setType(Type inType)
     {
         m_type = inType;
 
         switch (inType)
         {
-        case WindowType::Windowed:
+        case Type::Windowed:
             SDL_SetWindowBordered(instance, true);
 
             if (m_bIsResizable)
@@ -449,14 +449,14 @@ namespace Chicane
 
             break;
 
-        case WindowType::WindowedBorderless:
+        case Type::WindowedBorderless:
             SDL_SetWindowBordered(instance, false);
 
             disableResizing();
 
             break;
 
-        case WindowType::Fullscreen:
+        case Type::Fullscreen:
             SDL_SetWindowFullscreen(instance, true);
 
             disableResizing();
@@ -465,7 +465,7 @@ namespace Chicane
         }
     }
 
-    WindowType Window::getType() const
+    Window::Type Window::getType() const
     {
         return m_type;
     }
@@ -477,7 +477,7 @@ namespace Chicane
 
     void Window::enableResizing()
     {
-        if (m_type != WindowType::Windowed)
+        if (m_type != Type::Windowed)
         {
             return;
         }

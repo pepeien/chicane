@@ -45,11 +45,11 @@ void Application::initView()
 
 void Application::initWindow()
 {
-    Chicane::WindowCreateInfo windowCreateInfo {};
+    Chicane::Window::CreateInfo windowCreateInfo {};
     windowCreateInfo.title         = "Chicane Sample";
     windowCreateInfo.resolution.x  = 1600;
     windowCreateInfo.resolution.y  = 900;
-    windowCreateInfo.type          = Chicane::WindowType::Windowed;
+    windowCreateInfo.type          = Chicane::Window::Type::Windowed;
     windowCreateInfo.displayIndex  = 1;
 
     m_window = std::make_unique<Chicane::Window>(windowCreateInfo);

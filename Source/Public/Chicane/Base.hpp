@@ -91,6 +91,7 @@ namespace Chicane
 
     struct FrameTelemetry
     {
+    public:
         uint32_t count = 0;
         uint32_t rate  = 0;
         float    time  = 0.0f;

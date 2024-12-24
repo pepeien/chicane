@@ -12,28 +12,30 @@ namespace Chicane
     class LevelLayer;
     class SkyboxLayer;
 
-    enum class WindowType : uint8_t
-    {
-        Windowed,
-        WindowedBorderless,
-        Fullscreen,
-    };
-
-    struct WindowCreateInfo
-    {
-        std::string title        = "";
-        std::string icon         = ""; // Optional [file path]
-        Vec<2, int> resolution   = Vec<2, int>(0);
-        int         displayIndex = 0;
-        WindowType  type         = WindowType::Windowed;
-        bool        bIsFocused   = false;
-        bool        bIsResizable = true; // Only takes effect when the type is `WindowType::Windowed`
-    };
-
     class Window
     {
     public:
-        Window(const WindowCreateInfo& inCreateInfo);
+        enum class Type : uint8_t
+        {
+            Windowed,
+            WindowedBorderless,
+            Fullscreen,
+        };
+
+        struct CreateInfo
+        {
+        public:
+            std::string title        = "";
+            std::string icon         = ""; // Optional [file path]
+            Vec<2, int> resolution   = Vec<2, int>(0);
+            int         displayIndex = 0;
+            Type        type         = Type::Windowed;
+            bool        bIsFocused   = false;
+            bool        bIsResizable = true; // Only takes effect when the type is `Type::Windowed`
+        };
+
+    public:
+        Window(const CreateInfo& inCreateInfo);
         ~Window();
 
     public:
@@ -78,12 +80,12 @@ namespace Chicane
 
         void setDisplay(int inMonitorIndex);
 
-        void setType(WindowType inType);
-        WindowType getType() const;
+        void setType(Type inType);
+        Type getType() const;
 
         bool isResizable();
-        void enableResizing();  // Only takes effect when the type is `WindowType::Windowed`
-        void disableResizing(); // Only takes effect when the type is `WindowType::Windowed`
+        void enableResizing();  // Only takes effect when the type is `Type::Windowed`
+        void disableResizing(); // Only takes effect when the type is `Type::Windowed`
 
         bool isMinimized();
 
@@ -110,7 +112,7 @@ namespace Chicane
         Telemetry m_telemetry;
 
         // Settings
-        WindowType m_type;
+        Type        m_type;
         Vec<2, int> m_size;
         Vec<2, int> m_drawableSize;
         Vec<2, int> m_position;
