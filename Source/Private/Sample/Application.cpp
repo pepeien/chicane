@@ -50,7 +50,7 @@ void Application::initWindow()
     windowCreateInfo.resolution.x  = 1600;
     windowCreateInfo.resolution.y  = 900;
     windowCreateInfo.type          = Chicane::WindowType::Windowed;
-    windowCreateInfo.displayIndex  = 0;
+    windowCreateInfo.displayIndex  = 1;
 
     m_window = std::make_unique<Chicane::Window>(windowCreateInfo);
 }

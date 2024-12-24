@@ -41,5 +41,13 @@ namespace Chicane
 
             return result;
         }
+
+        std::vector<std::string> split(const std::vector<unsigned char>& inTarget, char inDelimiter)
+        {
+            return split(
+                std::string(inTarget.begin(), inTarget.end()),
+                inDelimiter
+            );
+        }
     }
 }
