@@ -6,30 +6,6 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        std::vector<DialogResult> DialogResult::fromRaw(const char* const* inData)
-        {
-            std::vector<DialogResult> result {};
-
-            const char* const* currentData = inData;
-
-            while (true)
-            {
-                if (!currentData || !*currentData)
-                {
-                    break;
-                }
-
-                DialogResult block {};
-                block.path = *currentData;
-
-                result.push_back(block);
-
-                currentData++;
-            }
-
-            return result;
-        }
-
         bool exists(const std::string& inPath)
         {
             if (inPath.empty())
@@ -40,9 +16,9 @@ namespace Chicane
             return std::filesystem::exists(inPath);
         }
 
-        std::vector<ListItem> ls(const std::string& inDir, std::uint32_t inDepth)
+        std::vector<Item> ls(const std::string& inDir, std::uint32_t inDepth)
         {
-            std::vector<ListItem> result {};
+            std::vector<Item> result {};
 
             if (inDepth > 1)
             {
@@ -53,13 +29,13 @@ namespace Chicane
             {
                 const auto& path = entry.path();
 
-                ListItem item {};
-                item.type      = entry.is_directory() ? ListType::Folder : ListType::File;
+                Item item {};
+                item.type      = entry.is_directory() ? Item::Type::Folder : Item::Type::File;
                 item.name      = path.filename().string();
                 item.extension = path.extension().string();
                 item.path      = path.string();
 
-                if (item.type == ListType::Folder)
+                if (item.type == Item::Type::Folder)
                 {
                     item.childCount = ls(item.path, 1).size();
                 }
@@ -70,7 +46,7 @@ namespace Chicane
             return result;
         }
 
-        void openFolderDialog(const Dialog& inProps, DialogCallback inCallback)
+        void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback)
         {
             Window* window = getWindow();
 
@@ -91,7 +67,7 @@ namespace Chicane
             );
         }
 
-        void openFileDialog(const FileDialog& inProps, DialogCallback inCallback)
+        void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback)
         {
             Window* window = getWindow();
 
