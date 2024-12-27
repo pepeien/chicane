@@ -2,17 +2,16 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Layer.hpp"
+#include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
-    class Window;
-
     class LevelLayer : public Layer
     {
     public:
-        LevelLayer(Window* inWindow);
+        LevelLayer(Window::Instance* inWindow);
         ~LevelLayer();
 
     public:
@@ -46,7 +45,7 @@ namespace Chicane
         void setupFrames();
         void setFramesAsDirty();
 
-        void updateMeshes(const std::vector<ActorComponent*>& inComponents);
+        void updateMeshes(const std::vector<Component*>& inComponents);
 
     private:
         Renderer::Internals                         m_rendererInternals;

@@ -1,12 +1,12 @@
-#include "Chicane/Core/Layers/Level.hpp"
+#include "Chicane/Core/Layer/LevelLayer.hpp"
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Actor/Component/Mesh.hpp"
+#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
 namespace Chicane
 {
-    LevelLayer::LevelLayer(Window* inWindow)
+    LevelLayer::LevelLayer(Window::Instance* inWindow)
         : Layer("Level"),
         m_clearValues({})
     {
@@ -468,12 +468,12 @@ namespace Chicane
         }
     }
 
-    void LevelLayer::updateMeshes(const std::vector<ActorComponent*>& inComponents)
+    void LevelLayer::updateMeshes(const std::vector<Component*>& inComponents)
     {
         std::vector<MeshComponent*> nextMeshes {};
         nextMeshes.reserve(inComponents.size());
 
-        for (ActorComponent* component : inComponents)
+        for (Component* component : inComponents)
         {
             if (typeid(*component) != typeid(MeshComponent))
             {

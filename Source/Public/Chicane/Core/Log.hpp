@@ -3,24 +3,13 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core/Log/Entry.hpp"
 
 namespace Chicane
 {
     namespace Log
     {
-        struct Instance
-        {
-            std::string text  = "";
-            std::string color = "";
-
-        public:
-            bool isEmpty() const
-            {
-                return text.empty();
-            }
-        };
-
-        typedef std::deque<Instance> List;
+        typedef std::deque<Entry> List;
 
         void watchLogs(
             std::function<void (const List&)> inNextCallback,

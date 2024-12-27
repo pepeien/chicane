@@ -3,18 +3,16 @@
 #include "Chicane/Base.hpp"
 
 #include "Chicane/Core/Layer.hpp"
+#include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
-
 #include "Chicane/Renderer.hpp"
 
 namespace Chicane
 {
-    class Window;
-
     class SkyboxLayer : public Layer
     {
     public:
-        SkyboxLayer(Window* inWindow);
+        SkyboxLayer(Window::Instance* inWindow);
         ~SkyboxLayer();
 
     public:

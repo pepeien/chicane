@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/FileSystem/Dialog.hpp"
+#include "Chicane/Core/FileSystem/Dialog/FileDialog.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
 
 namespace Chicane

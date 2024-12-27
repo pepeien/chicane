@@ -1,10 +1,10 @@
-#include "Chicane/Core/Layers/Skybox.hpp"
+#include "Chicane/Core/Layer/SkyboxLayer.hpp"
 
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
-    SkyboxLayer::SkyboxLayer(Window* inWindow)
+    SkyboxLayer::SkyboxLayer(Window::Instance* inWindow)
         : Layer("Skybox"),
         m_clearValues({})
     {

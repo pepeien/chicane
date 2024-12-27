@@ -8,7 +8,7 @@ namespace Chicane
     class Layer
     {
     public:
-        enum class Push
+        enum class PushStrategy
         {
             Front,
             Back,

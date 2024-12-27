@@ -1,11 +1,11 @@
-#include "Chicane/Core/Layers/UI.hpp"
+#include "Chicane/Core/Layer/UILayer.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
-    UILayer::UILayer(Window* inWindow)
+    UILayer::UILayer(Window::Instance* inWindow)
         : Layer("UI"),
         m_window(inWindow),
         m_clearValues({})

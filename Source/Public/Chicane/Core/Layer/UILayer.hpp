@@ -4,17 +4,16 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Core/Layer.hpp"
+#include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Grid/View.hpp"
 
 namespace Chicane
 {
-    class Window;
-
     class UILayer : public Layer
     {
     public:
-        UILayer(Window* inWindow);
+        UILayer(Window::Instance* inWindow);
         ~UILayer();
 
     public:
@@ -37,7 +36,7 @@ namespace Chicane
         void initImgui();
 
     private:
-        Window*                     m_window;
+        Window::Instance*                     m_window;
         Renderer::Internals         m_internals;
 
         vk::RenderPass              m_renderPass;

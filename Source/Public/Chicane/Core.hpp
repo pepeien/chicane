@@ -3,9 +3,9 @@
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Layer.hpp"
-#include "Chicane/Core/Layers/Skybox.hpp"
-#include "Chicane/Core/Layers/Level.hpp"
-#include "Chicane/Core/Layers/UI.hpp"
+#include "Chicane/Core/Layer/SkyboxLayer.hpp"
+#include "Chicane/Core/Layer/LevelLayer.hpp"
+#include "Chicane/Core/Layer/UILayer.hpp"
 #include "Chicane/Core/Loader.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
@@ -15,7 +15,7 @@
 namespace Chicane
 {
     class Actor;
-    class ActorComponent;
+    class Component;
     class CameraComponent;
     class Controller;
     class Level;
@@ -48,13 +48,13 @@ namespace Chicane
     void addActor(Actor* inActor);
     std::vector<Actor*> getActors();
 
-    void addComponent(ActorComponent* inComponent);
-    void removeComponent(ActorComponent* inComponent);
-    std::vector<ActorComponent*> getComponents();
+    void addComponent(Component* inComponent);
+    void removeComponent(Component* inComponent);
+    std::vector<Component*> getComponents();
 
     // Window
-    Window* getWindow();
-    void setWindow(Window* inWindow);
+    Window::Instance* getWindow();
+    void setWindow(Window::Instance* inWindow);
 
     bool isWindowFocused();
     void setWindowFocus(bool bInIsFocused);

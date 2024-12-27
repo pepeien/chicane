@@ -18,7 +18,7 @@ namespace Chicane
     {
         std::unordered_map<std::string, std::string> m_colors = {};
 
-        List m_logs = {};
+        std::deque<Entry> m_logs = {};
         std::unique_ptr<Observable<List>> m_logsObservable = std::make_unique<Observable<List>>();
 
         void watchLogs(
@@ -82,7 +82,7 @@ namespace Chicane
                 m_logs.pop_front();
             }
 
-            Instance instance {};
+            Entry instance {};
             instance.text  = message;
             instance.color = hexColor;
 

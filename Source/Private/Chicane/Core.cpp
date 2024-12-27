@@ -3,7 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Game/Actor/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 #include "Chicane/Grid.hpp"
 #include "Chicane/Renderer.hpp"
 
@@ -17,7 +17,7 @@ namespace Chicane
     CameraComponent* m_camera = nullptr;
     std::unique_ptr<Observable<CameraComponent*>> m_cameraObservable = std::make_unique<Observable<CameraComponent*>>();
 
-    Window* m_window = nullptr;
+    Window::Instance* m_window = nullptr;
 
     bool hasActiveCamera()
     {
@@ -124,7 +124,7 @@ namespace Chicane
         return m_level->getActors();
     }
 
-    void addComponent(ActorComponent* inComponent)
+    void addComponent(Component* inComponent)
     {
         if (!hasActiveLevel())
         {
@@ -134,7 +134,7 @@ namespace Chicane
         m_level->addComponent(inComponent);
     }
 
-    void removeComponent(ActorComponent* inComponent)
+    void removeComponent(Component* inComponent)
     {
         if (!hasActiveLevel())
         {
@@ -144,7 +144,7 @@ namespace Chicane
         m_level->removeComponent(inComponent);
     }
 
-    std::vector<ActorComponent*> getComponents()
+    std::vector<Component*> getComponents()
     {
         if (!hasActiveLevel())
         {
@@ -154,12 +154,12 @@ namespace Chicane
         return m_level->getComponents();
     }
 
-    Window* getWindow()
+    Window::Instance* getWindow()
     {
         return m_window;
     }
 
-    void setWindow(Window* inWindow)
+    void setWindow(Window::Instance* inWindow)
     {
         m_window = inWindow;
     }

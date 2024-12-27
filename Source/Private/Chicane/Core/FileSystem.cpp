@@ -48,7 +48,7 @@ namespace Chicane
 
         void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback)
         {
-            Window* window = getWindow();
+            Window::Instance* window = getWindow();
 
             if (!window)
             {
@@ -69,7 +69,7 @@ namespace Chicane
 
         void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback)
         {
-            Window* window = getWindow();
+            Window::Instance* window = getWindow();
 
             if (!window)
             {
