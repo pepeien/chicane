@@ -1,6 +1,7 @@
-#include "Chicane/Grid/Components/Grid.hpp"
+#include "Chicane/Grid/Component/GridComponent.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -27,7 +28,7 @@ namespace Chicane
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.itemSize   = getItemSize(inNode);
-                result.style      = getStyle(inNode);
+                result.style      = Style::getStyle(inNode);
                 result.items      = getItems(inNode);
                 result.itemGetter = getItemGetter(inNode);
                 result.children   = inNode.children();
@@ -156,7 +157,7 @@ namespace Chicane
                     inProps,
                     static_cast<std::uint32_t>(inProps.items.size()),
                     [inProps](std::uint32_t currentItemIndex) {
-                        ComponentEvent event {};
+                        Component::Event event {};
                         event.values.push_back(inProps.items.at(currentItemIndex));
 
                         inProps.itemGetter(event);

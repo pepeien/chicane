@@ -1,6 +1,7 @@
-#include "Chicane/Grid/Components/Popup.hpp"
+#include "Chicane/Grid/Component/PopupComponent.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -19,7 +20,7 @@ namespace Chicane
                 result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
                 result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "true");
-                result.style          = getStyle(inNode);
+                result.style          = Style::getStyle(inNode);
                 result.children       = inNode.children();
 
                 return result;

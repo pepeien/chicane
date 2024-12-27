@@ -2,13 +2,9 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Grid/Components.hpp"
 #include "Chicane/Grid/View.hpp"
-#include "Chicane/Grid/Style.hpp"
 
 static const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
-
-static const Chicane::Grid::ComponentFunctionData EMPTY_FUNCTION_DATA {};
 
 static const std::vector<std::any> EMPTY_ITEMS = {};
 
@@ -28,11 +24,6 @@ namespace Chicane
         std::unordered_map<std::string, Vec<3, std::uint32_t>> m_rgbColors {
             { HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
         };
-
-        const ComponentFunctionData& ComponentFunctionData::empty()
-        {
-            return EMPTY_FUNCTION_DATA;
-        }
 
         bool endsWith(const std::string& inTarget, const std::string& inEnding)
         {
@@ -141,11 +132,11 @@ namespace Chicane
             return m_rgbColors.at(inColor);
         }
 
-        std::uint32_t getChildrenCount(const ComponentChildren& inChildren)
+        std::uint32_t getChildrenCount(const Component::Children& inChildren)
         {
             std::uint32_t result = 0;
 
-            for (const ComponentChild& child : inChildren)
+            for (const Component::Child& child : inChildren)
             {
                 result++;
             }
@@ -153,11 +144,11 @@ namespace Chicane
             return result;
         }
 
-        std::vector<pugi::xml_node> extractChildren(const ComponentChildren& inChildren)
+        std::vector<pugi::xml_node> extractChildren(const Component::Children& inChildren)
         {
             std::vector<pugi::xml_node> result {};
 
-            for (const ComponentChild& child : inChildren)
+            for (const Component::Child& child : inChildren)
             {
                 result.push_back(*child);
             }
@@ -187,8 +178,8 @@ namespace Chicane
 
         float getSizeFromPercentage(
             const std::string& inValue,
-            Direction inDirection,
-            Position inPosition
+            Style::Direction inDirection,
+            Style::Position inPosition
         )
         {
             if (!endsWith(inValue, PERCENTAGE_SIZE_UNIT))
@@ -198,9 +189,9 @@ namespace Chicane
 
             float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
 
-            ImVec2 regionSize = inPosition == Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
+            ImVec2 regionSize = inPosition == Style::Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
 
-            if (inDirection == Direction::Horizontal)
+            if (inDirection == Style::Direction::Horizontal)
             {
                 return percentage * regionSize.x;
             }
@@ -270,7 +261,7 @@ namespace Chicane
             return inNode.attribute(inName.c_str());
         }
 
-        float getSize(const std::string& inValue, Direction inDirection, Position inPosition)
+        float getSize(const std::string& inValue, Style::Direction inDirection, Style::Position inPosition)
         {
             if (inValue.empty())
             {
@@ -402,14 +393,14 @@ namespace Chicane
                 return;
             }
 
-            const Style& style = getStyle(inNode);
+            const Style& style = Style::getStyle(inNode);
 
-            if (style.display == Display::None)
+            if (style.display == Style::Display::None)
             {
                 return;
             }
 
-            ImVec2 position = style.position == Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
+            ImVec2 position = style.position == Style::Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
 
             if (style.margin.left > 0.0f || style.margin.right > 0.0f)
             {
@@ -437,7 +428,7 @@ namespace Chicane
 
             ImGui::SetCursorPos(position);
 
-            if (style.display == Display::Hidden)
+            if (style.display == Style::Display::Hidden)
             {
                 return;
             }
@@ -477,13 +468,13 @@ namespace Chicane
             return "";
         }
 
-        ComponentFunctionData parseFunction(const std::string& inRefValue)
+        Component::FunctionData parseFunction(const std::string& inRefValue)
         {
             std::string trimmedValue = Utils::trim(inRefValue);
 
             if (trimmedValue.empty())
             {
-                return ComponentFunctionData::empty();
+                return Component::FunctionData::empty();
             }
 
             std::size_t paramsStart = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
@@ -500,7 +491,7 @@ namespace Chicane
                 )
             );
 
-            ComponentFunctionData data {};
+            Component::FunctionData data {};
             data.name = name;
 
             for (std::string& value : Utils::split(params, ','))
@@ -548,15 +539,15 @@ namespace Chicane
                 return *view->getVariable(inRefValue);
             }
 
-            ComponentFunctionData functionData = parseFunction(inRefValue);
-            ComponentFunction functionRef      = view->getFunction(functionData.name);
+            Component::FunctionData functionData = parseFunction(inRefValue);
+            Component::Function functionRef      = view->getFunction(functionData.name);
 
             if (!functionRef)
             {
                 return inRefValue;
             }
 
-            ComponentEvent event {};
+            Component::Event event {};
             event.values = functionData.params;
 
             return functionRef(event);
@@ -633,7 +624,7 @@ namespace Chicane
             return std::any_cast<std::vector<std::any>>(items);
         }
 
-        ComponentFunction getItemGetter(const pugi::xml_node& inNode)
+        Component::Function getItemGetter(const pugi::xml_node& inNode)
         {
             View* view = getActiveView();
 

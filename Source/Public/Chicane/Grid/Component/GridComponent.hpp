@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid/Components/Container.hpp"
+#include "Chicane/Grid/Component/ContainerComponent.hpp"
 #include "Chicane/Grid/View.hpp"
 #include "Chicane/Grid/Style.hpp"
 
@@ -17,12 +17,12 @@ namespace Chicane
             constexpr auto ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
 
             // Types
-            struct Props : BaseProps
+            struct Props : Component::BaseProps
             {
             public:
-                Vec<2, float>         itemSize = {}; // Optional
-                std::vector<std::any> items    = {}; // Optional
-                ComponentFunction     itemGetter; // Optional
+                Vec<2, float>           itemSize = {}; // Optional
+                std::vector<std::any>   items    = {}; // Optional
+                Component::Function     itemGetter; // Optional
             };
 
             void validate(const Props& inProps);

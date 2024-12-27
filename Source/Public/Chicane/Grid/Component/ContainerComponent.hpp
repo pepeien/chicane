@@ -12,10 +12,10 @@ namespace Chicane
             const std::string TAG_ID = "Container";
 
             // Props
-            struct Props : BaseProps
+            struct Props : Component::BaseProps
             {
                 std::vector<std::any> items = {}; // Optional
-                ComponentFunction     itemGetter; // Optional
+                Component::Function   itemGetter; // Optional
             };
 
             void validate(const Props& inProps);

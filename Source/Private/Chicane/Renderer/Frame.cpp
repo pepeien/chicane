@@ -1,7 +1,7 @@
 #include "Chicane/Renderer/Frame.hpp"
 
 #include "Chicane/Core/Loader.hpp"
-#include "Chicane/Game/Actor/Component/Mesh.hpp"
+#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
 namespace Chicane
 {

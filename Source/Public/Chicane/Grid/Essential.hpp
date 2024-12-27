@@ -2,48 +2,14 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Grid/Component.hpp"
 #include "Chicane/Grid/Style.hpp"
+#include "Chicane/Grid/View.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class View;
-
-        // Types
-        struct ComponentFunctionData
-        {
-        public:
-            std::string name             = "";
-            std::vector<std::any> params {};
-        
-        public:
-            static const ComponentFunctionData& empty();
-        };
-
-        struct ComponentEvent
-        {
-            std::vector<std::any> values {};
-        };
-
-        typedef std::function<std::any (const ComponentEvent&)> ComponentFunction;
-        typedef std::unordered_map<std::string, ComponentFunction> ComponentFunctions;
-
-        typedef std::any* ComponentVariable;
-        typedef std::unordered_map<std::string, ComponentVariable> ComponentVariables;
-
-        typedef pugi::xml_node_iterator ComponentChild;
-        typedef pugi::xml_object_range<ComponentChild> ComponentChildren;
-
-        struct BaseProps
-        {
-            bool                           bIsVisible = true; // Optional
-            std::string                    id         = ""; // Required
-            Style                          style      = {}; // Optional
-            ComponentChildren              children   = ComponentChildren(pugi::xml_node_iterator(), pugi::xml_node_iterator()); // Optional
-            std::vector<ComponentFunction> _renderers = {}; // [Internal Use]
-        };
-
         // Ref Value
         constexpr auto REF_VALUE_OPENING = "{{";
         constexpr auto REF_VALUE_CLOSING = "}}";
@@ -76,8 +42,8 @@ namespace Chicane
         Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
         Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
 
-        std::uint32_t getChildrenCount(const ComponentChildren& inChildren);
-        std::vector<pugi::xml_node> extractChildren(const ComponentChildren& inChildren);
+        std::uint32_t getChildrenCount(const Component::Children& inChildren);
+        std::vector<pugi::xml_node> extractChildren(const Component::Children& inChildren);
 
         float getSizeFromPixel(const pugi::xml_attribute& inAttribute);
 
@@ -94,8 +60,8 @@ namespace Chicane
 
         float getSize(
             const std::string& inValue,
-            Direction inDirection = Direction::Horizontal,
-            Position inPosition = Position::Absolute
+            Style::Direction inDirection = Style::Direction::Horizontal,
+            Style::Position inPosition = Style::Position::Absolute
         );
         float getSize(
             const std::string& inAttributeName,
@@ -116,7 +82,7 @@ namespace Chicane
 
         std::string anyToString(const std::any& inValue);
 
-        ComponentFunctionData parseFunction(const std::string& inRefValue);
+        Component::FunctionData parseFunction(const std::string& inRefValue);
 
         bool textContainsRefValue(const std::string& inText);
         bool refValueContainsFunction(const std::string& inRefValue);
@@ -125,6 +91,6 @@ namespace Chicane
 
         // List
         std::vector<std::any> getItems(const pugi::xml_node& inNode);
-        ComponentFunction getItemGetter(const pugi::xml_node& inNode);
+        Component::Function getItemGetter(const pugi::xml_node& inNode);
     }
 }

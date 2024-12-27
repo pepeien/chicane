@@ -18,8 +18,8 @@ public:
     ~View();
 
 private:
-    std::uint64_t getFPS(const Chicane::Grid::ComponentEvent& inEvent);
-    float getFrametime(const Chicane::Grid::ComponentEvent& inEvent);
+    std::uint64_t getFPS(const Chicane::Grid::Component::Event& inEvent);
+    float getFrametime(const Chicane::Grid::Component::Event& inEvent);
 
 private:
     void loadAudio(const std::string& inId, const std::string& inFilepath);

@@ -31,7 +31,11 @@ namespace Chicane
 {
     // Core
     class Layer;
-    class Window;
+
+    namespace Window
+    {
+        class Instance;
+    }
 
     // Game
     class CameraComponent;
@@ -53,7 +57,7 @@ namespace Chicane
         };
 
     public:
-        Renderer(Window* inWindow);
+        Renderer(Window::Instance* inWindow);
         ~Renderer();
 
     public:
@@ -148,7 +152,7 @@ namespace Chicane
         int                              m_currentImageIndex;
 
         // Window
-        Window*                          m_window;
+        Window::Instance*                          m_window;
         Vec<2, std::uint32_t>            m_viewportSize;
         Vec<2, float>                    m_viewportPosition;
 

@@ -4,12 +4,12 @@
 #include "Apple.hpp"
 
 Character::Character()
-    : Chicane::CameraActor()
+    : Chicane::CameraPawn()
 {}
 
 void Character::onControlAttachment()
 {
-    Chicane::CameraActor::onControlAttachment();
+    Chicane::CameraPawn::onControlAttachment();
 
     m_controller->bindMouseButtonEvent(
         SDL_BUTTON_LEFT,

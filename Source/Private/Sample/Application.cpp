@@ -52,5 +52,5 @@ void Application::initWindow()
     windowCreateInfo.type          = Chicane::Window::Type::Windowed;
     windowCreateInfo.displayIndex  = 1;
 
-    m_window = std::make_unique<Chicane::Window>(windowCreateInfo);
+    m_window = std::make_unique<Chicane::Window::Instance>(windowCreateInfo);
 }

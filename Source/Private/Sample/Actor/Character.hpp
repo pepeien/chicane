@@ -3,7 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Game.hpp"
 
-class Character : public Chicane::CameraActor
+class Character : public Chicane::CameraPawn
 {
 public:
     Character();

@@ -16,11 +16,11 @@ namespace Chicane
             const std::string ON_CLICK_EVENT_KEYWORD  = "$event";
 
             // Props
-            struct Props : BaseProps
+            struct Props : Component::BaseProps
             {
                 // onClick
-                ComponentEvent    onClickEvent = {}; // Optional
-                ComponentFunction onClick; // Optional
+                Component::Event    onClickEvent = {}; // Optional
+                Component::Function onClick; // Optional
             };
 
             void validate(const Props& inProps);

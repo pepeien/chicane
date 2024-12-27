@@ -1,6 +1,7 @@
-#include "Chicane/Grid/Components/ProgressBar.hpp"
+#include "Chicane/Grid/Component/ProgressBarComponent.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 constexpr float MIN_PERCENTAGE = 0.0f;
 constexpr float MAX_PERCENTAGE = 100.0f;
@@ -19,7 +20,7 @@ namespace Chicane
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.percentage = getAttribute(PERCENTAGE_ATTRIBUTE_NAME, inNode).as_float();
-                result.style      = getStyle(inNode);
+                result.style      = Style::getStyle(inNode);
 
                 return result;
             }

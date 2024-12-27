@@ -1,6 +1,7 @@
-#include "Chicane/Grid/Components/TextInput.hpp"
+#include "Chicane/Grid/Component/TextInputComponent.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -17,7 +18,7 @@ namespace Chicane
                     return;
                 }
 
-                ComponentFunctionData functionData = parseFunction(
+                Component::FunctionData functionData = parseFunction(
                     getAttribute(ON_INPUT_ATTRIBUTE_NAME, inNode).as_string()
                 );
 
@@ -30,7 +31,7 @@ namespace Chicane
                     functionData.name
                 );
 
-                ComponentEvent event {};
+                Component::Event event {};
                 event.values = functionData.params;
 
                 if (functionData.params.size() == 1)
@@ -58,7 +59,7 @@ namespace Chicane
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
                 result.value      = getActiveView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
-                result.style      = getStyle(inNode);
+                result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
                 setOnInputData(result, inNode);

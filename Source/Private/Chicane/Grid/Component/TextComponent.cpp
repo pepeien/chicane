@@ -1,6 +1,7 @@
-#include "Chicane/Grid/Components/Text.hpp"
+#include "Chicane/Grid/Component/TextComponent.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,32 +11,32 @@ namespace Chicane
         {
             void handlePositioning(const std::string& inText, const Style& inStyle)
             {
-                if (inStyle.horizontalAlignment == Alignment::Start && inStyle.verticalAlignment == Alignment::Start)
+                if (inStyle.horizontalAlignment == Style::Alignment::Start && inStyle.verticalAlignment == Style::Alignment::Start)
                 {
                     return;
                 }
 
                 ImVec2 textSize = ImGui::CalcTextSize(inText.c_str());
 
-                if (inStyle.horizontalAlignment == Alignment::Center || inStyle.horizontalAlignment == Alignment::End)
+                if (inStyle.horizontalAlignment == Style::Alignment::Center || inStyle.horizontalAlignment == Style::Alignment::End)
                 {
-                    float diff = ImGui::GetCursorPosX() + getSize("100%", Direction::Horizontal) - textSize.x;
+                    float diff = ImGui::GetCursorPosX() + getSize("100%", Style::Direction::Horizontal) - textSize.x;
 
                     ImGui::SetCursorPosX(diff);
 
-                    if (inStyle.horizontalAlignment == Alignment::Center)
+                    if (inStyle.horizontalAlignment == Style::Alignment::Center)
                     {
                         ImGui::SetCursorPosX(diff * 0.5f);
                     }
                 }
 
-                if (inStyle.verticalAlignment == Alignment::Center || inStyle.verticalAlignment == Alignment::End)
+                if (inStyle.verticalAlignment == Style::Alignment::Center || inStyle.verticalAlignment == Style::Alignment::End)
                 {
-                    float diff = ImGui::GetCursorPosY() + getSize("100%", Direction::Vertical) - textSize.y;
+                    float diff = ImGui::GetCursorPosY() + getSize("100%", Style::Direction::Vertical) - textSize.y;
 
                     ImGui::SetCursorPosY(diff);
 
-                    if (inStyle.verticalAlignment == Alignment::Center)
+                    if (inStyle.verticalAlignment == Style::Alignment::Center)
                     {
                         ImGui::SetCursorPosY(diff * 0.5f);
                     }
@@ -61,7 +62,7 @@ namespace Chicane
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }
 
-                compileRaw(inNode.child_value(), getStyle(inNode));
+                compileRaw(inNode.child_value(), Style::getStyle(inNode));
             }
         }
     }

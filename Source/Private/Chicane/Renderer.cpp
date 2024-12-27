@@ -1,11 +1,11 @@
 #include "Chicane/Renderer.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Actor/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 namespace Chicane
 {
-    Renderer::Renderer(Window* inWindow)
+    Renderer::Renderer(Window::Instance* inWindow)
         : m_swapChain({}),
         m_imageCount(0),
         m_currentImageIndex(0),

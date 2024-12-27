@@ -17,7 +17,7 @@ namespace Chicane
             const std::string IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
 
             // Props
-            struct Props : BaseProps
+            struct Props : Component::BaseProps
             {
                 bool bIsConstrained = true; // Optional
                 bool bIsResizable   = true; // Optional

@@ -17,15 +17,15 @@ namespace Chicane
             const std::string ON_INPUT_EVENT_KEYWORD  = "$event";
 
             // Props
-            struct Props : BaseProps
+            struct Props : Component::BaseProps
             {
                 // Attributes
-                ComponentVariable value; // Required
-                std::string       label = ""; // Optional
+                Component::Variable value;      // Required
+                std::string         label = ""; // Optional
 
                 // Events
-                ComponentEvent    onInputEvent = {}; // Optional
-                ComponentFunction onInput; // Optional
+                Component::Event    onInputEvent = {}; // Optional
+                Component::Function onInput;           // Optional
             };
 
             void validate(const pugi::xml_node& inNode);

@@ -64,12 +64,12 @@ View::~View()
     }
 }
 
-std::uint64_t View::getFPS(const Chicane::Grid::ComponentEvent& inEvent)
+std::uint64_t View::getFPS(const Chicane::Grid::Component::Event& inEvent)
 {
     return Chicane::getTelemetry().frame.rate;
 }
 
-float View::getFrametime(const Chicane::Grid::ComponentEvent& inEvent)
+float View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
 {
     return Chicane::getTelemetry().frame.time;
 }

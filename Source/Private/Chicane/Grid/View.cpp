@@ -1,6 +1,7 @@
 #include "Chicane/Grid/View.hpp"
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style.hpp"
 
 static const std::string TAG_ID = "View";
@@ -12,8 +13,8 @@ namespace Chicane
         View::View(
             const std::string& inId,
             const std::string& inSource,
-            const ComponentVariables& inVariables,
-            const ComponentFunctions& inFunctions
+            const Component::Variables& inVariables,
+            const Component::Functions& inFunctions
         )
             : m_id(inId),
             m_variables(inVariables),
@@ -78,7 +79,7 @@ namespace Chicane
             return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) != nullptr;
         }
 
-        ComponentVariable View::getVariable(const std::string& inId) const
+        Component::Variable View::getVariable(const std::string& inId) const
         {
             if (!hasVariable(inId))
             {
@@ -88,7 +89,7 @@ namespace Chicane
             return m_variables.at(inId);
         }
 
-        void View::addVariable(const ComponentVariables& inVariables)
+        void View::addVariable(const Component::Variables& inVariables)
         {
             for (auto [id, variable] : inVariables)
             {
@@ -96,7 +97,7 @@ namespace Chicane
             }
         }
 
-        void View::addVariable(const std::string& inId, ComponentVariable inVariable)
+        void View::addVariable(const std::string& inId, Component::Variable inVariable)
         {
             if (hasVariable(inId))
             {
@@ -126,7 +127,7 @@ namespace Chicane
             return m_functions.find(inId) != m_functions.end();
         }
 
-        const ComponentFunction View::getFunction(const std::string& inId) const
+        const Component::Function View::getFunction(const std::string& inId) const
         {
             if (!hasFunction(inId))
             {
@@ -136,7 +137,7 @@ namespace Chicane
             return m_functions.at(inId);
         }
 
-        void View::addFunction(const ComponentFunctions& inFunctions)
+        void View::addFunction(const Component::Functions& inFunctions)
         {
             for (auto [id, function] : inFunctions)
             {
@@ -144,7 +145,7 @@ namespace Chicane
             }
         }
 
-        void View::addFunction(const std::string& inId, ComponentFunction inFunction)
+        void View::addFunction(const std::string& inId, Component::Function inFunction)
         {
             if (hasFunction(inId))
             {
@@ -202,7 +203,7 @@ namespace Chicane
 
             if (!m_bWasStyleAdded)
             {
-                addStyle(inNode);
+                Style::addStyle(inNode);
 
                 m_bWasStyleAdded = true;
             }

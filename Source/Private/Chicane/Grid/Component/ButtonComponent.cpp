@@ -1,7 +1,8 @@
-#include "Chicane/Grid/Components/Button.hpp"
+#include "Chicane/Grid/Component/ButtonComponent.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Grid/Components/Container.hpp"
+#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/Component/ContainerComponent.hpp"
 
 namespace Chicane
 {
@@ -18,7 +19,7 @@ namespace Chicane
                     return;
                 }
 
-                ComponentFunctionData onClickFunctionData = parseFunction(
+                Component::FunctionData onClickFunctionData = parseFunction(
                     getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string()
                 );
 
@@ -31,7 +32,7 @@ namespace Chicane
                     onClickFunctionData.name
                 );
 
-                ComponentEvent onClickEvent {};
+                Component::Event onClickEvent {};
                 onClickEvent.values = onClickFunctionData.params;
 
                 if (onClickFunctionData.params.size() == 1)
@@ -57,7 +58,7 @@ namespace Chicane
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
-                result.style      = getStyle(inNode);
+                result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
                 setOnClickData(result, inNode);
