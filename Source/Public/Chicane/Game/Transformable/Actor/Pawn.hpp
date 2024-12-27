@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Actor.hpp"
+#include "Chicane/Game/Transformable/Actor.hpp"
 
 namespace Chicane
 {
@@ -13,6 +13,10 @@ namespace Chicane
         Pawn();
         virtual ~Pawn() = default;
 
+    protected:
+        virtual void onControlAttachment() {};
+        virtual void onControleDeattachment() {};
+
     public:
         template<class T = Controller>
         T* getController() const
@@ -23,10 +27,6 @@ namespace Chicane
         bool isControlled() const;
         void attachController(Controller* inController);
         void deattachController();
-
-    protected:
-        virtual void onControlAttachment() {};
-        virtual void onControleDeattachment() {};
 
     protected:
         Controller* m_controller;

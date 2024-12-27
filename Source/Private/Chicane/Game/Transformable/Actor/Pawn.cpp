@@ -1,4 +1,4 @@
-#include "Chicane/Game/Actor/Pawn.hpp"
+#include "Chicane/Game/Transformable/Actor/Pawn.hpp"
 
 #include "Chicane/Game/Controller.hpp"
 

@@ -1,12 +1,12 @@
-#include "Chicane/Game/Actor/Component/Mesh.hpp"
+#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Actor/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 namespace Chicane
 {
     MeshComponent::MeshComponent()
-        : ActorComponent(),
+        : Component(),
         m_bIsMeshActive(false)
     {}
 
@@ -17,7 +17,7 @@ namespace Chicane
             return;
         }
 
-        activateMesh();
+        show();
 
         addComponent(this);
     }
@@ -29,7 +29,7 @@ namespace Chicane
             return;
         }
 
-        deactivateMesh();
+        hide();
 
         removeComponent(this);
     }
@@ -125,7 +125,7 @@ namespace Chicane
         return m_mesh->getGroups().at(0).getTexture();
     }
 
-    void MeshComponent::handleDrawability()
+    void MeshComponent::updateVisibility()
     {
         if (!hasActiveCamera())
         {
@@ -134,15 +134,15 @@ namespace Chicane
 
         if (getActiveCamera()->canSee(this))
         {
-            activateMesh();
+            show();
         }
         else
         {
-            deactivateMesh();
+            hide();
         }
     }
 
-    void MeshComponent::activateMesh()
+    void MeshComponent::show()
     {
         if (m_bIsMeshActive)
         {
@@ -156,7 +156,7 @@ namespace Chicane
         m_bIsMeshActive = true;
     }
 
-    void MeshComponent::deactivateMesh()
+    void MeshComponent::hide()
     {
         if (!m_bIsMeshActive)
         {

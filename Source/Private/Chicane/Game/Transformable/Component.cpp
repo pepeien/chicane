@@ -1,10 +1,11 @@
-#include "Chicane/Game/Actor/Component.hpp"
+#include "Chicane/Game/Transformable/Component.hpp"
 
 #include "Chicane/Core/Log.hpp"
+#include "Chicane/Game/Transformable/Actor.hpp"
 
 namespace Chicane
 {
-    ActorComponent::ActorComponent()
+    Component::Component()
         : Transformable(),
         m_bCanTick(true),
         m_bIsActive(false),
@@ -13,36 +14,36 @@ namespace Chicane
         m_attachmentTransformSubscription(nullptr)  
     {}
 
-    bool ActorComponent::isActive() const
+    bool Component::isActive() const
     {
         return m_bIsActive;
     }
 
-    void ActorComponent::activate()
+    void Component::activate()
     {
         m_bIsActive = true;
 
         onActivation();
     }
 
-    void ActorComponent::deactivate()
+    void Component::deactivate()
     {
         m_bIsActive = false;
 
         onDeactivation();
     }
 
-    bool ActorComponent::canTick() const
+    bool Component::canTick() const
     {
         return m_bIsActive && m_bCanTick;
     }
 
-    void ActorComponent::setCanTick(bool inCanTick)
+    void Component::setCanTick(bool inCanTick)
     {
         m_bCanTick = inCanTick;
     }
 
-    void ActorComponent::tick(float inDeltaTime)
+    void Component::tick(float inDeltaTime)
     {
         if (!canTick())
         {
@@ -52,12 +53,12 @@ namespace Chicane
         onTick(inDeltaTime);
     }
 
-    bool ActorComponent::isAttached() const
+    bool Component::isAttached() const
     {
         return m_attachment != nullptr;
     }
 
-    void ActorComponent::attachTo(Actor* inAttachment)
+    void Component::attachTo(Actor* inAttachment)
     {
         m_attachment = inAttachment;
 
@@ -71,65 +72,65 @@ namespace Chicane
             m_attachmentTransformSubscription = m_attachment->watchTransform(
                 [&](const Transform& inTransform)
                 {
-                    refreshTransform();
+                    updateTransform();
                 }
             );
         }
 
-        refreshTransform();
+        updateTransform();
 
         onAttachment(inAttachment);
     }
 
-    const Transform& ActorComponent::getBase() const
+    const Transform& Component::getBase() const
     {
         return m_base;
     }
 
-    void ActorComponent::setBase(const Transform& inOrigin)
+    void Component::setBase(const Transform& inOrigin)
     {
         m_base = inOrigin;
 
-        refreshTransform();
+        updateTransform();
     }
 
-    const Vec<3, float>& ActorComponent::getBaseScale() const
+    const Vec<3, float>& Component::getBaseScale() const
     {
         return m_base.scale;
     }
 
-    void ActorComponent::setBaseScale(const Vec<3, float>& inScale)
+    void Component::setBaseScale(const Vec<3, float>& inScale)
     {
         m_base.scale = inScale;
 
-        refreshTransform();
+        updateTransform();
     }
 
-    const Vec<3, float>& ActorComponent::getBaseRotation() const
+    const Vec<3, float>& Component::getBaseRotation() const
     {
         return m_base.rotation;
     }
 
-    void ActorComponent::setBaseRotation(const Vec<3, float>& inRotation)
+    void Component::setBaseRotation(const Vec<3, float>& inRotation)
     {
         m_base.rotation = inRotation;
 
-        refreshTransform();
+        updateTransform();
     }
 
-    const Vec<3, float>& ActorComponent::getBaseTranslation() const
+    const Vec<3, float>& Component::getBaseTranslation() const
     {
         return m_base.translation;
     }
 
-    void ActorComponent::setBaseTranslation(const Vec<3, float>& inTranslation)
+    void Component::setBaseTranslation(const Vec<3, float>& inTranslation)
     {
         m_base.translation = inTranslation;
 
-        refreshTransform();
+        updateTransform();
     }
 
-    void ActorComponent::refreshTransform()
+    void Component::updateTransform()
     {
         Vec<3, float> scale       = m_base.scale;
         Vec<3, float> rotation    = m_base.rotation;

@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Actor/Pawn.hpp"
-#include "Chicane/Game/Actor/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Actor/Pawn.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 namespace Chicane
 {
-    class CameraActor : public Pawn
+    class CameraPawn : public Pawn
     {
     public:
-        CameraActor();
-        virtual ~CameraActor() = default;
+        CameraPawn();
+        virtual ~CameraPawn() = default;
 
     protected:
         void onControlAttachment() override;

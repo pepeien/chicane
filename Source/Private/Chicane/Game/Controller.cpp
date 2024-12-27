@@ -1,6 +1,6 @@
 #include "Chicane/Game/Controller.hpp"
 
-#include "Chicane/Game/Actor/Pawn.hpp"
+#include "Chicane/Game/Transformable/Actor/Pawn.hpp"
 
 namespace Chicane
 {

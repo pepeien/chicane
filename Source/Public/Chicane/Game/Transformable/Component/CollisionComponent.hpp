@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Actor/Component.hpp"
+#include "Chicane/Game/Transformable/Component.hpp"
 
 namespace Chicane
 {
-    class CollisionComponent : public ActorComponent
+    class CollisionComponent : public Component
     {
     public:
         CollisionComponent();

@@ -2,13 +2,13 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Transformable.hpp"
-#include "Chicane/Game/Actor/Component.hpp"
+#include "Chicane/Game/Transformable/Component.hpp"
 #include "Chicane/Renderer/Camera.hpp"
 #include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
 
 namespace Chicane
 {
-    class CameraComponent : public ActorComponent
+    class CameraComponent : public Component
     {
     public:
         CameraComponent();

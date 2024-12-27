@@ -1,4 +1,4 @@
-#include "Chicane/Game/Actor/Camera.hpp"
+#include "Chicane/Game/Transformable/Actor/Pawn/CameraPawn.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Controller.hpp"
@@ -7,14 +7,14 @@ constexpr float MOVEMENT_COEFFICIENT = 1.5f;
 
 namespace Chicane
 {
-    CameraActor::CameraActor()
+    CameraPawn::CameraPawn()
         : Pawn(),
         m_camera(new CameraComponent())
     {
         m_camera->attachTo(this);
     }
 
-    void CameraActor::onControlAttachment()
+    void CameraPawn::onControlAttachment()
     {
         setupMouseInputs();
         setupKeyboardInputs();
@@ -23,7 +23,7 @@ namespace Chicane
         m_camera->activate();
     }
 
-    void CameraActor::setupMouseInputs()
+    void CameraPawn::setupMouseInputs()
     {
         m_controller->bindMouseMotionEvent(
             [&](const SDL_MouseMotionEvent& inEvent)
@@ -57,12 +57,12 @@ namespace Chicane
         );
     }
 
-    void CameraActor::setupKeyboardInputs()
+    void CameraPawn::setupKeyboardInputs()
     {
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_SPACE,
             std::bind(
-                &CameraActor::moveUp,
+                &CameraPawn::moveUp,
                 this,
                 std::placeholders::_1
             )
@@ -70,7 +70,7 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_LCTRL,
             std::bind(
-                &CameraActor::moveDown,
+                &CameraPawn::moveDown,
                 this,
                 std::placeholders::_1
             )
@@ -78,7 +78,7 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_RCTRL,
             std::bind(
-                &CameraActor::moveDown,
+                &CameraPawn::moveDown,
                 this,
                 std::placeholders::_1
             )
@@ -86,7 +86,7 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_W,
             std::bind(
-                &CameraActor::moveForward,
+                &CameraPawn::moveForward,
                 this,
                 std::placeholders::_1
             )
@@ -94,7 +94,7 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_S,
             std::bind(
-                &CameraActor::moveBackward,
+                &CameraPawn::moveBackward,
                 this,
                 std::placeholders::_1
             )
@@ -102,7 +102,7 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_A,
             std::bind(
-                &CameraActor::moveLeft,
+                &CameraPawn::moveLeft,
                 this,
                 std::placeholders::_1
             )
@@ -110,14 +110,14 @@ namespace Chicane
         m_controller->bindKeyboardButtonEvent(
             SDL_SCANCODE_D,
             std::bind(
-                &CameraActor::moveRight,
+                &CameraPawn::moveRight,
                 this,
                 std::placeholders::_1
             )
         );
     }
 
-    void CameraActor::setupControllerInputs()
+    void CameraPawn::setupControllerInputs()
     {
         m_controller->bindControllerButtonEvent(
             SDL_GAMEPAD_BUTTON_SOUTH,
@@ -133,7 +133,7 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveUp(bool bInIsKeyDown)
+    void CameraPawn::moveUp(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {
@@ -149,7 +149,7 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveDown(bool bInIsKeyDown)
+    void CameraPawn::moveDown(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {
@@ -165,7 +165,7 @@ namespace Chicane
         );
     }
 
-    void CameraActor::moveForward(bool bInIsKeyDown)
+    void CameraPawn::moveForward(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {
@@ -175,7 +175,7 @@ namespace Chicane
         setRelativeTranslation(getForward() * MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveBackward(bool bInIsKeyDown)
+    void CameraPawn::moveBackward(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {
@@ -185,7 +185,7 @@ namespace Chicane
         setRelativeTranslation(getForward() * -MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveLeft(bool bInIsKeyDown)
+    void CameraPawn::moveLeft(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {
@@ -195,7 +195,7 @@ namespace Chicane
         setRelativeTranslation(getRight() * -MOVEMENT_COEFFICIENT);
     }
 
-    void CameraActor::moveRight(bool bInIsKeyDown)
+    void CameraPawn::moveRight(bool bInIsKeyDown)
     {
         if (!bInIsKeyDown || !isWindowFocused())
         {

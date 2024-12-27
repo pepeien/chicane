@@ -1,11 +1,11 @@
-#include "Chicane/Game/Actor/Component/Collision.hpp"
+#include "Chicane/Game/Transformable/Component/CollisionComponent.hpp"
 
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
     CollisionComponent::CollisionComponent()
-        : ActorComponent()
+        : Component()
     {
         setCanTick(true);
     }

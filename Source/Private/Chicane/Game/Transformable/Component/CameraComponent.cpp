@@ -1,11 +1,11 @@
-#include "Chicane/Game/Actor/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
     CameraComponent::CameraComponent()
-        : ActorComponent(),
+        : Component(),
         m_settings({}),
         m_frustum({}),
         m_UBO({})

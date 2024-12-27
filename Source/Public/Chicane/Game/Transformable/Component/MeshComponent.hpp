@@ -2,11 +2,11 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Box.hpp"
-#include "Chicane/Game/Actor/Component.hpp"
+#include "Chicane/Game/Transformable/Component.hpp"
 
 namespace Chicane
 {
-    class MeshComponent : public ActorComponent
+    class MeshComponent : public Component
     {
     public:
         MeshComponent();
@@ -29,9 +29,9 @@ namespace Chicane
         const std::string& getTexture() const;
 
     protected:
-        void handleDrawability();
-        void activateMesh();
-        void deactivateMesh();
+        void updateVisibility();
+        void show();
+        void hide();
 
     protected:
         bool m_bIsMeshActive;

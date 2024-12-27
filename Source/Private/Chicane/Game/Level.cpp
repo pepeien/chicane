@@ -6,12 +6,12 @@ namespace Chicane
 {
     Level::Level()
         : m_actorObservable(std::make_unique<Observable<Actor*>>()),
-        m_componentObservable(std::make_unique<Observable<const std::vector<ActorComponent*>&>>())
+        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>())
     {}
 
     Level::~Level()
     {
-        for (ActorComponent* component : m_components)
+        for (Component* component : m_components)
         {
             delete component;
         }
@@ -69,12 +69,12 @@ namespace Chicane
         return m_components.size() > 0;
     }
 
-    const std::vector<ActorComponent*>& Level::getComponents() const
+    const std::vector<Component*>& Level::getComponents() const
     {
         return m_components;
     }
 
-    void Level::addComponent(ActorComponent* inComponent)
+    void Level::addComponent(Component* inComponent)
     {
         if (!inComponent)
         {
@@ -91,7 +91,7 @@ namespace Chicane
         m_componentObservable->next(m_components);
     }
 
-    void Level::removeComponent(ActorComponent* inComponent)
+    void Level::removeComponent(Component* inComponent)
     {
         if (!inComponent)
         {
@@ -111,7 +111,7 @@ namespace Chicane
     }
 
     void Level::watchComponents(
-        std::function<void (const std::vector<ActorComponent*>&)> inNextCallback,
+        std::function<void (const std::vector<Component*>&)> inNextCallback,
         std::function<void (const std::string&)> inErrorCallback,
         std::function<void ()> inCompleteCallback
     )

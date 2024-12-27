@@ -1,16 +1,17 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Actor.hpp"
 #include "Chicane/Game/Transformable.hpp"
 
 namespace Chicane
 {   
-    class ActorComponent : public Transformable
+    class Actor;
+
+    class Component : public Transformable
     {
     public:
-        ActorComponent();
-        virtual ~ActorComponent() = default;
+        Component();
+        virtual ~Component() = default;
 
     protected:
         virtual void onActivation() { return; }
@@ -47,7 +48,7 @@ namespace Chicane
         void setBaseTranslation(const Vec<3, float>& inTranslation);
 
     private:
-        void refreshTransform();
+        void updateTransform();
 
     protected:
         bool m_bCanTick;
