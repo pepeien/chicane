@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/CommandBuffer.hpp"
 
+#include "Chicane/Renderer/Frame.hpp"
+
 namespace Chicane
 {
     namespace CommandBuffer

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-
-#include "Chicane/Renderer/CubeMap.hpp"
+#include "Chicane/Renderer/CubeMap/Instance.hpp"
 
 namespace Chicane
 {

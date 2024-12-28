@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Renderer/Camera/Plane.hpp"
 
 namespace Chicane
 {
@@ -10,18 +11,6 @@ namespace Chicane
 
     namespace Camera
     {
-        struct Plane
-        {
-        public:
-            float getDistance(const Vec<3, float>& inPoint) const;
-
-            void update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint);
-
-        public:
-            float         distance = 0.0f;
-            Vec<3, float> normal   = {};
-        };
-
         struct Frustum
         {
         public:

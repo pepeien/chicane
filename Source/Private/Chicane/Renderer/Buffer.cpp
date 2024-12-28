@@ -1,5 +1,8 @@
 #include "Chicane/Renderer/Buffer.hpp"
 
+#include "Chicane/Renderer/Device.hpp"
+#include "Chicane/Renderer/CommandBuffer/Worker.hpp"
+
 namespace Chicane
 {
     namespace Buffer
@@ -20,10 +23,8 @@ namespace Chicane
         void allocate(Instance& outBuffer, const CreateInfo& inCreateInfo)
         {
             vk::MemoryRequirements memoryRequirements = inCreateInfo
-                                                        .logicalDevice
-                                                        .getBufferMemoryRequirements(
-                                                            outBuffer.instance
-                                                        );
+                .logicalDevice
+                .getBufferMemoryRequirements(outBuffer.instance);
 
             vk::MemoryAllocateInfo memoryAlocateInfo;
             memoryAlocateInfo.allocationSize  = memoryRequirements.size;

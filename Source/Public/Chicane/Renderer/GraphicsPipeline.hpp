@@ -1,49 +1,13 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Renderer/Shader.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
+#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Renderer/GraphicsPipeline/Attachment.hpp"
 
 namespace Chicane
 {
     namespace GraphicsPipeline
     {
-        struct Attachment
-        {
-            vk::Format           format;
-            vk::AttachmentLoadOp loadOp;
-            vk::ImageLayout      initialLayout;
-        };
-
-        struct CreateInfo
-        {
-            // Modifiers
-            bool                                             bHasVertices;
-            bool                                             bHasDepth;
-            bool                                             bHasBlending;
-
-            // Vertex
-            std::string                                      vertexShaderPath;
-            std::string                                      fragmentShaderPath;
-            vk::VertexInputBindingDescription                bindingDescription;
-            std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
-
-            // Viewport
-            vk::Extent2D                                     extent;
-
-            // Atacchment
-            Attachment                                       colorAttachment;
-            Attachment                                       depthAttachment; // Optional if `hasDepth` == `false`
-
-            // Pipeline Layout
-            std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
-            std::vector<vk::PushConstantRange>               pushConstantRanges;
-
-            // Vulkan
-            vk::Device                                       logicalDevice;
-            vk::PolygonMode                                  polygonMode;
-        };
-
         vk::Viewport createViewport(
             const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0),
             const Vec<2, float>& inPosition = Vec2Zero
@@ -88,38 +52,5 @@ namespace Chicane
             const std::vector<vk::AttachmentDescription>& inAttachments,
             const vk::Device& inLogicalDevice
         );
-
-        class Instance
-        {
-        public:
-            Instance(const CreateInfo& inCreateInfo);
-            ~Instance();
-
-        public:
-            vk::PipelineLayout layout;
-            vk::RenderPass renderPass;
-            vk::Pipeline instance;
-
-        private:
-            // Modifiers
-            bool                                             m_bHasVertices;
-            bool                                             m_bHasDepth;
-
-            // Vertex
-            std::string                                      m_vertexShaderPath;
-            std::string                                      m_fragmentShaderPath;
-            vk::VertexInputBindingDescription                m_bindingDescription;
-            std::vector<vk::VertexInputAttributeDescription> m_attributeDescriptions;
-
-            // Viewport
-            vk::Extent2D                                     m_extent;
-
-            // Layout
-            std::vector<vk::DescriptorSetLayout>             m_descriptorSetLayouts;
-            std::vector<vk::PushConstantRange>               m_pushConstantRanges;
-
-            // Vulkan
-            vk::Device                                       m_logicalDevice;
-        };
     }
 }

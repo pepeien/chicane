@@ -1,28 +1,13 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Renderer/Device.hpp"
-#include "Chicane/Renderer/CommandBuffer/Worker.hpp"
+#include "Chicane/Renderer/Buffer/CreateInfo.hpp"
+#include "Chicane/Renderer/Buffer/Instance.hpp"
 
 namespace Chicane
 {
     namespace Buffer
-    { 
-        struct Instance
-        {
-            vk::Buffer instance;
-            vk::DeviceMemory memory;
-        };
-
-        struct CreateInfo
-        {
-            vk::DeviceSize size;
-            vk::BufferUsageFlags usage;
-            vk::Device logicalDevice;
-            vk::PhysicalDevice physicalDevice;
-            vk::MemoryPropertyFlags memoryProperties;
-        };
-         
+    {
         void init(
             Instance& outBuffer,
             const CreateInfo& inCreateInfo

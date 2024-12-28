@@ -4,28 +4,13 @@
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Queue.hpp"
 #include "Chicane/Renderer/Image.hpp"
+#include "Chicane/Renderer/SwapChain/Bundle.hpp"
+#include "Chicane/Renderer/SwapChain/SupporteDetails.hpp"
 
 namespace Chicane
 {
     namespace SwapChain
     {
-        struct SupportDetails
-        {
-            vk::SurfaceCapabilitiesKHR        capabilities;
-            std::vector<vk::SurfaceFormatKHR> formats;
-            std::vector<vk::PresentModeKHR>   presentModes;
-        };
-
-        struct Bundle
-        {
-            vk::SwapchainKHR             instance;
-            std::vector<Frame::Instance> frames;
-            vk::Format                   format;
-            vk::Format                   depthFormat;
-            vk::Extent2D                 extent;
-            vk::Extent2D                 midPoints;
-        };
-
         void querySupport(
             SupportDetails& outSupportDetails,
             const vk::PhysicalDevice& inPhysicalDevice,

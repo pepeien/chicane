@@ -13,7 +13,7 @@ namespace Chicane
         namespace Wavefront
         {
             void parseDataset(
-                ParseResult& outResult,
+                Parse::Result& outResult,
                 fastObjMesh* inMesh,
                 const fastObjIndex& inIndices
             )
@@ -57,7 +57,7 @@ namespace Chicane
             }
 
             void parse(
-                ParseResult& outResult,
+                Parse::Result& outResult,
                 const std::vector<unsigned char>& inData
             )
             {

@@ -1,7 +1,14 @@
-#include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Frame/Instance.hpp"
 
 #include "Chicane/Core/Loader.hpp"
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
+#include "Chicane/Game/Level.hpp"
+#include "Chicane/Renderer/Buffer.hpp"
+#include "Chicane/Renderer/Camera.hpp"
+#include "Chicane/Renderer/Descriptor.hpp"
+#include "Chicane/Renderer/GraphicsPipeline.hpp"
+#include "Chicane/Renderer/Image.hpp"
+#include "Chicane/Renderer/Sync.hpp"
 
 namespace Chicane
 {

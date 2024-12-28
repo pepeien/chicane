@@ -54,7 +54,7 @@ namespace Chicane
                 return;
             }
 
-            ParseResult result {};
+            Parse::Result result {};
 
             switch (inAsset->getVendor())
             {

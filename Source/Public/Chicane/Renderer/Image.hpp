@@ -3,36 +3,12 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Renderer/Device.hpp"
 #include "Chicane/Renderer/CommandBuffer/Worker.hpp"
+#include "Chicane/Renderer/Image/CreateInfo.hpp"
 
 namespace Chicane
 {
     namespace Image
     {
-        struct CreateInfo
-        {
-            // Settings
-            uint32_t                width;
-			uint32_t                height;
-            uint32_t                count;
-
-            // Vulkan
-			vk::Device              logicalDevice;
-			vk::PhysicalDevice      physicalDevice;
-            vk::ImageTiling         tiling;
-            vk::ImageUsageFlags     usage;
-            vk::ImageCreateFlags    create;
-            vk::MemoryPropertyFlags memoryProperties;
-            vk::Format              format;
-        }; 
-
-		struct Bundle
-		{
-			vk::Image        instance;
-			vk::DeviceMemory memory;
-			vk::ImageView    view;
-			vk::Sampler      sampler;
-		};
-
         vk::Format findSupportedFormat(
             const vk::PhysicalDevice& inPhysicalDevice,
             const std::vector<vk::Format>& inCandidates,

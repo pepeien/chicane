@@ -78,7 +78,11 @@ static const std::vector<const char*> EXTENSIONS = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-constexpr std::uint32_t MAX_TEXTURE_COUNT = 100000;
+// Assets
+constexpr std::uint32_t TEXTURE_MAX_COUNT   = 100000;
+constexpr std::uint32_t TEXTURE_IMAGE_COUNT = 1;
+
+constexpr std::uint32_t CUBEMAP_IMAGE_COUNT = 6;
 
 // Z-Up Right Handed
 constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);

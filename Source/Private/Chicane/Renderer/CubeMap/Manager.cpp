@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/CubeMap/Manager.hpp"
 
+#include "Chicane/Renderer/CubeMap/CreateInfo.hpp"
+
 namespace Chicane
 {
     namespace CubeMap

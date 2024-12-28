@@ -10,7 +10,7 @@ namespace Chicane
         namespace Wavefront
         {
             void parse(
-                ParseResult& outResult,
+                Parse::Result& outResult,
                 const std::vector<unsigned char>& inData
             );
         }

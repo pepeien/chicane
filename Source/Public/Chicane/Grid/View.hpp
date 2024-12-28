@@ -24,7 +24,7 @@ namespace Chicane
             virtual void show(
                 const Vec<2, int>& inResolution,
                 const Vec<2, int>& inPosition
-            ) { return; };
+            );
 
         public:
             const std::string& getId() const;

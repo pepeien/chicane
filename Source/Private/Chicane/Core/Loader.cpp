@@ -1,5 +1,7 @@
 #include "Chicane/Core/Loader.hpp"
 
+#include "Chicane/Renderer/CubeMap.hpp"
+
 namespace Chicane
 {
     namespace Loader
@@ -210,17 +212,15 @@ namespace Chicane
 
             const Box::Cubemap* cubemap = static_cast<const Box::Cubemap*>(inAsset);
 
-            m_cubemapManager->add(
-                "Skybox",
-                {
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Left))->getData(),  // Positive X
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Right))->getData(), // Negative X
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Front))->getData(), // Positive Y
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Back))->getData(),  // Negative Y
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Up))->getData(),    // Positive Z
-                    loadTexture(cubemap->getTexture(Box::Cubemap::Side::Down))->getData()   // Negative Z
-                }
-            );
+            CubeMap::Data images {};
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Left))->getData());  // Positive X
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Right))->getData()); // Negative X
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Front))->getData()); // Positive Y
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Back))->getData());  // Negative Y
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Up))->getData());    // Positive Z
+            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Down))->getData());  // Negative Z
+
+            m_cubemapManager->add("Skybox", images);
         }
 
         const Box::Cubemap* loadCubemap(const std::string& inFilepath)

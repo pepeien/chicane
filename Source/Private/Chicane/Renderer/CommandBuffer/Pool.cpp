@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/CommandBuffer/Pool.hpp"
 
+#include "Chicane/Renderer/Queue.hpp"
+
 namespace Chicane
 {
     namespace CommandBuffer

@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Debug.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Debug

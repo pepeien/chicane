@@ -1,5 +1,8 @@
 #include "Chicane/Renderer/Frame/Buffer.hpp"
 
+#include "Chicane/Renderer/CommandBuffer.hpp"
+#include "Chicane/Renderer/GraphicsPipeline.hpp"
+
 namespace Chicane
 {
     namespace Frame

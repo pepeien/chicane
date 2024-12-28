@@ -2,8 +2,6 @@
 
 #include "Chicane/Base.hpp"
 
-#include "Chicane/Renderer/Queue.hpp"
-
 namespace Chicane
 {
     namespace CommandBuffer

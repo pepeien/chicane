@@ -297,7 +297,7 @@ namespace Chicane
         );
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size = MAX_TEXTURE_COUNT;
+        descriptorPoolCreateInfo.size = TEXTURE_MAX_COUNT;
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
         Descriptor::initPool(
