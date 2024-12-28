@@ -11,29 +11,29 @@ namespace Chicane
     namespace Grid
     {
         // Ref Value
-        constexpr auto REF_VALUE_OPENING = "{{";
-        constexpr auto REF_VALUE_CLOSING = "}}";
+        static constexpr auto REF_VALUE_OPENING = "{{";
+        static constexpr auto REF_VALUE_CLOSING = "}}";
 
         constexpr char FUNCTION_PARAMS_OPENING = '(';
         constexpr char FUNCTION_PARAMS_CLOSING = ')';
 
         // Value attributes
-        constexpr auto IS_VISIBLE_ATTRIBUTE_NAME = "isVisible";
-        constexpr auto ID_ATTRIBUTE_NAME         = "id";
+        static constexpr auto IS_VISIBLE_ATTRIBUTE_NAME = "isVisible";
+        static constexpr auto ID_ATTRIBUTE_NAME         = "id";
 
         // Lifecycle attributes
-        constexpr auto ON_TICK_ATTRIBUTE = "onTick";
+        static constexpr auto ON_TICK_ATTRIBUTE = "onTick";
 
         // List
-        constexpr auto ITEMS_ATTRIBUTE_NAME       = "items";
-        constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
+        static constexpr auto ITEMS_ATTRIBUTE_NAME       = "items";
+        static constexpr auto ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
 
         // Size units
-        constexpr auto AUTO_SIZE_UNIT            = "auto";
-        constexpr auto PIXEL_SIZE_UNIT           = "px";
-        constexpr auto PERCENTAGE_SIZE_UNIT      = "%";
-        constexpr auto VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
-        constexpr auto VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
+        static constexpr auto AUTO_SIZE_UNIT            = "auto";
+        static constexpr auto PIXEL_SIZE_UNIT           = "px";
+        static constexpr auto PERCENTAGE_SIZE_UNIT      = "%";
+        static constexpr auto VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
+        static constexpr auto VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
 
         // Methods
         bool endsWith(const std::string& inTarget, const std::string& inEnding);

@@ -21,8 +21,8 @@ namespace Chicane
         std::string   Asset::TAG             = "Asset";
         std::uint32_t Asset::CURRENT_VERSION = 1;
 
-        constexpr auto VERSION_ATTRIBUTE_NAME = "version";
-        constexpr auto ID_ATTRIBUTE_NAME      = "id";
+        static constexpr auto VERSION_ATTRIBUTE_NAME = "version";
+        static constexpr auto ID_ATTRIBUTE_NAME      = "id";
 
         Asset::Header Asset::Header::fromFilepath(const std::string& inFilepath)
         {

@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Box
     {
-        constexpr auto SIDE_ATTRIBUTE_NAME = "side";
+        static constexpr auto SIDE_ATTRIBUTE_NAME = "side";
 
         const std::unordered_map<std::string, Cubemap::Side> SIDE_MAP {
             { "UP",    Cubemap::Side::Up },

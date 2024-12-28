@@ -18,6 +18,8 @@ namespace Chicane
               m_queue(inCreateInfo.queue),
               m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
         {
+
+            m_data.resize(CUBEMAP_IMAGE_COUNT);
             for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
                 m_data[i] = inCreateInfo.data[i];

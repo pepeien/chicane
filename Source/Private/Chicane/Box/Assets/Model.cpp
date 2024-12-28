@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Box
     {
-        constexpr auto VENDOR_ATTRIBUTE_NAME = "vendor";
+        static constexpr auto VENDOR_ATTRIBUTE_NAME = "vendor";
 
         const std::unordered_map<std::string, Chicane::Model::Vendor> VENDOR_MAP {
             { "OBJ", Chicane::Model::Vendor::Wavefront }

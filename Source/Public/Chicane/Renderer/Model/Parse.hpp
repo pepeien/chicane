@@ -10,13 +10,6 @@ namespace Chicane
     {
         namespace Parse
         {
-            struct Bundle
-            {
-                std::vector<Vec<3, float>> geometryVertices;
-                std::vector<Vec<2, float>> textureVertices;
-                std::vector<Vec<3, float>> normalVertices;
-            };
-
             struct Result
             {
                 std::vector<Vertex::Instance>             vertices;

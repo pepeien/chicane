@@ -3,6 +3,8 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
+const std::string EMPTY_STRING = "";
+
 namespace Chicane
 {
     MeshComponent::MeshComponent()
@@ -109,7 +111,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return std::string();
+            return EMPTY_STRING;
         }
 
         return m_mesh->getGroups().at(0).getModel();
@@ -119,7 +121,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return std::string();
+            return EMPTY_STRING;
         }
 
         return m_mesh->getGroups().at(0).getTexture();

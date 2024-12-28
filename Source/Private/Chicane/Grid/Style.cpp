@@ -9,18 +9,18 @@ namespace Chicane
 {
     namespace Grid
     {
-        constexpr auto FILE_EXTENSION_NAME = "decal";
+        static constexpr auto FILE_EXTENSION_NAME = "decal";
 
-        constexpr auto STYLE_ATTRIBUTE_NAME = "style";
+        static constexpr auto STYLE_ATTRIBUTE_NAME = "style";
 
-        constexpr auto DISPLAY_ATTRIBUTE_NAME = "display";
+        static constexpr auto DISPLAY_ATTRIBUTE_NAME = "display";
 
-        constexpr auto WIDTH_ATTRIBUTE_NAME  = "width";
-        constexpr auto HEIGHT_ATTRIBUTE_NAME = "height";
+        static constexpr auto WIDTH_ATTRIBUTE_NAME  = "width";
+        static constexpr auto HEIGHT_ATTRIBUTE_NAME = "height";
 
-        constexpr auto POSITION_ATTRIBUTE_NAME = "position";
-        constexpr auto POSITION_TYPE_ABSOLUTE  = "absolute";
-        constexpr auto POSITION_TYPE_RELATIVE  = "relative";
+        static constexpr auto POSITION_ATTRIBUTE_NAME = "position";
+        static constexpr auto POSITION_TYPE_ABSOLUTE  = "absolute";
+        static constexpr auto POSITION_TYPE_RELATIVE  = "relative";
 
         constexpr char ONELINE_SEPARATOR = ' ';
 
@@ -30,11 +30,11 @@ namespace Chicane
         * Template 3: "`TOP_MARGIN` `BOTTOM_MARGIN` `HORIZONTAL_MARGIN`"
         * Template 4: "`TOP_MARGIN` `RIGHT_MARGIN` `BOTTOM_MARGIN` `LEFT_MARGIN`"
         */
-        constexpr auto MARGIN_ATTRIBUTE_NAME        = "margin";
-        constexpr auto MARGIN_TOP_ATTRIBUTE_NAME    = "margin-top";
-        constexpr auto MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
-        constexpr auto MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
-        constexpr auto MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
+        static constexpr auto MARGIN_ATTRIBUTE_NAME        = "margin";
+        static constexpr auto MARGIN_TOP_ATTRIBUTE_NAME    = "margin-top";
+        static constexpr auto MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
+        static constexpr auto MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
+        static constexpr auto MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
 
         /*
         * Template 1: "`SINGLE_GAP`"
@@ -42,29 +42,29 @@ namespace Chicane
         * Template 3: "`TOP_GAP` `BOTTOM_GAP` `HORIZONTAL_GAP`"
         * Template 4: "`TOP_GAP` `RIGHT_GAP` `BOTTOM_GAP` `LEFT_GAP`"
         */
-        constexpr auto GAP_ATTRIBUTE_NAME        = "gap";
-        constexpr auto GAP_TOP_ATTRIBUTE_NAME    = "gap-top";
-        constexpr auto GAP_BOTTOM_ATTRIBUTE_NAME = "gap-bottom";
-        constexpr auto GAP_LEFT_ATTRIBUTE_NAME   = "gap-left";
-        constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
+        static constexpr auto GAP_ATTRIBUTE_NAME        = "gap";
+        static constexpr auto GAP_TOP_ATTRIBUTE_NAME    = "gap-top";
+        static constexpr auto GAP_BOTTOM_ATTRIBUTE_NAME = "gap-bottom";
+        static constexpr auto GAP_LEFT_ATTRIBUTE_NAME   = "gap-left";
+        static constexpr auto GAP_RIGHT_ATTRIBUTE_NAME  = "gap-right";
 
-        constexpr auto LIST_DIRECTION_ATTRIBUTE_NAME = "list-direction";
-        constexpr auto LIST_DIRECTION_COLUMN         = "COLUMN";
-        constexpr auto LIST_DIRECTION_ROW            = "ROW";
+        static constexpr auto LIST_DIRECTION_ATTRIBUTE_NAME = "list-direction";
+        static constexpr auto LIST_DIRECTION_COLUMN         = "COLUMN";
+        static constexpr auto LIST_DIRECTION_ROW            = "ROW";
 
-        constexpr auto FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
-        constexpr auto FOREGROUND_DEFAULT_COLOR        = "#FFFFFF";
+        static constexpr auto FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
+        static constexpr auto FOREGROUND_DEFAULT_COLOR        = "#FFFFFF";
 
-        constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
+        static constexpr auto BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
 
         /*
         * Template 1: "`SINGLE_ALIGNMENT`"
         * Template 2: "`VERTICAL_ALIGNMENT` `HORIZONTAL_ALIGNMENT`"
         */
-        constexpr auto ALIGNMENT_ATTRIBUTE_NAME = "alignment";
-        constexpr auto ALIGNMENT_START          = "START";
-        constexpr auto ALIGNMENT_CENTER         = "CENTER";
-        constexpr auto ALIGNMENT_END            = "END";
+        static constexpr auto ALIGNMENT_ATTRIBUTE_NAME = "alignment";
+        static constexpr auto ALIGNMENT_START          = "START";
+        static constexpr auto ALIGNMENT_CENTER         = "CENTER";
+        static constexpr auto ALIGNMENT_END            = "END";
 
         Style::Sources m_sources = {};
         Style::Styles m_styles    = {};

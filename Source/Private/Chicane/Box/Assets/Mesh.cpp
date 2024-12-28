@@ -9,8 +9,8 @@ namespace Chicane
 {
     namespace Box
     {
-        constexpr auto GROUP_TAG               = "Group";
-        constexpr auto GROUP_ID_ATTRIBUTE_NAME = "id";
+        static constexpr auto GROUP_TAG               = "Group";
+        static constexpr auto GROUP_ID_ATTRIBUTE_NAME = "id";
 
         bool Mesh::Group::isValid() const
         {

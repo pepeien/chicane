@@ -13,8 +13,8 @@ namespace Chicane
             const std::string TAG_ID = "Grid";
 
             // Attributes
-            constexpr auto ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";
-            constexpr auto ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
+            static constexpr auto ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";
+            static constexpr auto ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
 
             // Types
             struct Props : Component::BaseProps

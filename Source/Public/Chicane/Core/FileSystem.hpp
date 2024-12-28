@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        constexpr auto SEPARATOR = std::filesystem::path::preferred_separator;
+        static constexpr auto SEPARATOR = std::filesystem::path::preferred_separator;
 
         bool exists(const std::string& inPath);
         std::vector<Item> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);

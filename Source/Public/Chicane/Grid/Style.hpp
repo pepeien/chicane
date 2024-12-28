@@ -6,8 +6,8 @@ namespace Chicane
 {
     namespace Grid
     {
-        constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";
-        constexpr auto HEX_COLOR_TRANSPARENT        = "#00000000";
+        static constexpr auto BACKGROUND_COLOR_TRANSPARENT = "transparent";
+        static constexpr auto HEX_COLOR_TRANSPARENT        = "#00000000";
 
         struct Style
         {
