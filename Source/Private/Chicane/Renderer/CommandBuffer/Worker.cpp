@@ -41,7 +41,7 @@ namespace Chicane
                 const std::string& inDescription
             )
             {
-                for (uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
+                for (std::uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
                 {
                     inSubmitInfo.pCommandBuffers[i * sizeof(vk::CommandBuffer)].end();
                 }

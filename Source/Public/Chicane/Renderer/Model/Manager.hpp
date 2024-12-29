@@ -85,14 +85,14 @@ namespace Chicane
             Vec<3, float> getExtent(const std::vector<Vertex::Instance>& inVertices);
 
         private:
-            std::unordered_map<std::string, Model::Instance> m_instanceMap;
-            std::unordered_map<std::string, Model::AllocationInfo> m_allocationMap;
-            std::vector<std::string> m_usedIds;
+            std::unordered_map<std::string, Model::Instance>         m_instanceMap;
+            std::unordered_map<std::string, Model::AllocationInfo>   m_allocationMap;
+            std::vector<std::string>                                 m_usedIds;
 
-            std::vector<Vertex::Instance> m_vertices;
-            std::vector<uint32_t> m_indices;
+            std::vector<Vertex::Instance>                            m_vertices;
+            std::vector<std::uint32_t>                               m_indices;
 
-            std::unique_ptr<Observable<EventSubject>> m_observable;
+            std::unique_ptr<Observable<EventSubject>>                m_observable;
         };
     }
 }

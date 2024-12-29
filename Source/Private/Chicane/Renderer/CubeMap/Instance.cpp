@@ -20,7 +20,7 @@ namespace Chicane
         {
 
             m_data.resize(CUBEMAP_IMAGE_COUNT);
-            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
                 m_data[i] = inCreateInfo.data[i];
             }
@@ -49,7 +49,7 @@ namespace Chicane
 
             populate();
 
-            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
                 free(m_pixels[i]);
             }
@@ -96,7 +96,7 @@ namespace Chicane
 
         void Instance::populate()
         {
-            uint32_t imageSize = sizeof(float) * (m_width * m_height);
+            std::uint32_t imageSize = sizeof(float) * (m_width * m_height);
 
             Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.logicalDevice    = m_logicalDevice;
@@ -109,7 +109,7 @@ namespace Chicane
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, stagingBufferCreateInfo);
 
-            for (uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+            for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
             {
                 void* statingWriteLocation = m_logicalDevice.mapMemory(
                     stagingBuffer.memory,

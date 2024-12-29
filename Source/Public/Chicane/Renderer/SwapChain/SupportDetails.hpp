@@ -8,6 +8,7 @@ namespace Chicane
     {
         struct SupportDetails
         {
+        public:
             vk::SurfaceCapabilitiesKHR        capabilities;
             std::vector<vk::SurfaceFormatKHR> formats;
             std::vector<vk::PresentModeKHR>   presentModes;

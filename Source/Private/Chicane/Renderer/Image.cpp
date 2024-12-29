@@ -1,5 +1,8 @@
 #include "Chicane/Renderer/Image.hpp"
 
+#include "Chicane/Renderer/Device.hpp"
+#include "Chicane/Renderer/CommandBuffer/Worker.hpp"
+
 namespace Chicane
 {
     namespace Image
@@ -90,7 +93,7 @@ namespace Chicane
             const vk::Format& inFormat,
             const vk::ImageAspectFlags& inAspect,
             vk::ImageViewType inViewType,
-            uint32_t inCount
+            std::uint32_t inCount
         )
         {
             vk::ImageViewCreateInfo createInfo {};
@@ -116,7 +119,7 @@ namespace Chicane
             const vk::Image& inImage,
             const vk::ImageLayout& inOldLayout,
             const vk::ImageLayout& inNewLayout,
-            uint32_t inCount
+            std::uint32_t inCount
         )
         {
             CommandBuffer::Worker::startJob(inCommandBuffer);
@@ -167,9 +170,9 @@ namespace Chicane
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
-            uint32_t inWidth,
-            uint32_t inHeight,
-            uint32_t inCount
+            std::uint32_t inWidth,
+            std::uint32_t inHeight,
+            std::uint32_t inCount
         )
         {
             CommandBuffer::Worker::startJob(inCommandBuffer);

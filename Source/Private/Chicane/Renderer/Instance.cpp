@@ -70,7 +70,7 @@ namespace Chicane
             SDL_Window* inWindow
         )
         {
-            uint32_t sdlExtensionCount = 0;
+            std::uint32_t sdlExtensionCount = 0;
 
             const char* const* sdlRawExtensions = SDL_Vulkan_GetInstanceExtensions(&sdlExtensionCount);
 
@@ -101,7 +101,7 @@ namespace Chicane
                 throw std::runtime_error("Validation Layers are not fully supported");
             }
 
-            uint32_t version { 0 };
+            std::uint32_t version { 0 };
             vkEnumerateInstanceVersion(&version);
 
             // Picked MAJOR version to ensure compability
@@ -119,10 +119,10 @@ namespace Chicane
                 vk::InstanceCreateFlags(),
                 &applicationInfo,
 
-                static_cast<uint32_t>(layers.size()),
+                static_cast<std::uint32_t>(layers.size()),
                 layers.data(),
 
-                static_cast<uint32_t>(extensions.size()),
+                static_cast<std::uint32_t>(extensions.size()),
                 extensions.data()
             );
 

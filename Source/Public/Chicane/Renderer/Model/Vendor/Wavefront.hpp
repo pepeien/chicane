@@ -7,12 +7,15 @@ namespace Chicane
 {
     namespace Model
     {
-        namespace Wavefront
+        namespace Vendor
         {
-            void parse(
-                Parse::Result& outResult,
-                const std::vector<unsigned char>& inData
-            );
+            namespace Wavefront
+            {
+                void parse(
+                    Parse::Result& outResult,
+                    const std::vector<unsigned char>& inData
+                );
+            }
         }
     }
 }

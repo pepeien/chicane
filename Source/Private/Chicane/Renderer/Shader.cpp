@@ -17,7 +17,7 @@ namespace Chicane
             vk::ShaderModuleCreateInfo moduleInfo {};
             moduleInfo.flags    = vk::ShaderModuleCreateFlags();
             moduleInfo.codeSize = shaderCode.size();
-            moduleInfo.pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data());
+            moduleInfo.pCode    = reinterpret_cast<const std::uint32_t *>(shaderCode.data());
 
             outShaderModule = inLogicalDevice.createShaderModule(moduleInfo);
         }

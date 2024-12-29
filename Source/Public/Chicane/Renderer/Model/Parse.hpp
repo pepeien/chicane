@@ -12,9 +12,9 @@ namespace Chicane
         {
             struct Result
             {
-                std::vector<Vertex::Instance>             vertices;
-                std::vector<uint32_t>                     indexes;
-                std::unordered_map<std::string, uint32_t> indexesMap;
+                std::vector<Vertex::Instance>                  vertices;
+                std::vector<std::uint32_t>                     indexes;
+                std::unordered_map<std::string, std::uint32_t> indexesMap;
             };
         }
     }

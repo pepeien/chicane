@@ -8,6 +8,7 @@ namespace Chicane
     {
         struct Attachment
         {
+        public:
             vk::Format           format;
             vk::AttachmentLoadOp loadOp;
             vk::ImageLayout      initialLayout;

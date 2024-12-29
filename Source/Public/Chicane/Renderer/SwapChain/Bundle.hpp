@@ -9,6 +9,7 @@ namespace Chicane
     {
         struct Bundle
         {
+        public:
             vk::SwapchainKHR             instance;
             std::vector<Frame::Instance> frames;
             vk::Format                   format;

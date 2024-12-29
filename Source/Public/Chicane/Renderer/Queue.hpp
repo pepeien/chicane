@@ -1,21 +1,12 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Renderer/Queue/FamilyIndices.hpp"
 
 namespace Chicane
 {
     namespace Queue
     {
-        struct FamilyIndices
-        {
-        public:
-            bool isComplete();
-
-        public:
-            std::optional<uint32_t> graphicsFamily;
-            std::optional<uint32_t> presentFamily;
-        };
-    
         void findFamilyInidices(
             FamilyIndices& outFamilyIndices,
             const vk::PhysicalDevice& inPhysicalDevice,

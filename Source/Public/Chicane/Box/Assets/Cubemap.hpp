@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Box
     {
-        class Cubemap : public Asset
+        class CubeMap : public Asset
         {
         public:
             enum class Side
@@ -25,7 +25,7 @@ namespace Chicane
             static inline std::string TAG       = "Cubemap";
 
         public:
-            Cubemap(const std::string& inFilepath);
+            CubeMap(const std::string& inFilepath);
 
         public:
             const std::unordered_map<Side, std::string>& getTextures() const;

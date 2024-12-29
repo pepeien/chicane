@@ -40,7 +40,7 @@ namespace Chicane
             Queue::FamilyIndices familyIndices;
             Queue::findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
-            std::vector<uint32_t> uniqueIndices;
+            std::vector<std::uint32_t> uniqueIndices;
             uniqueIndices.push_back(familyIndices.graphicsFamily.value());
 
             if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
@@ -52,7 +52,7 @@ namespace Chicane
 
             std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos {};
             
-            for (uint32_t uniqueIndice : uniqueIndices)
+            for (std::uint32_t uniqueIndice : uniqueIndices)
             {
                 queueCreateInfos.push_back(
                     vk::DeviceQueueCreateInfo(
@@ -76,13 +76,13 @@ namespace Chicane
             vk::DeviceCreateInfo logicalDeviceInfo = vk::DeviceCreateInfo(
                 vk::DeviceCreateFlags(),
 
-                static_cast<uint32_t>(queueCreateInfos.size()),
+                static_cast<std::uint32_t>(queueCreateInfos.size()),
                 queueCreateInfos.data(),
 
-                static_cast<uint32_t>(layers.size()),
+                static_cast<std::uint32_t>(layers.size()),
                 layers.data(),
 
-                static_cast<uint32_t>(extensions.size()),
+                static_cast<std::uint32_t>(extensions.size()),
                 extensions.data(),
 
                 &features
@@ -92,15 +92,15 @@ namespace Chicane
             outLogicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
         }
 
-        uint32_t findMemoryTypeIndex(
+        std::uint32_t findMemoryTypeIndex(
             const vk::PhysicalDevice& inPhysicalDevice,
-            uint32_t inSupportedMemoryIndices,
+            std::uint32_t inSupportedMemoryIndices,
             vk::MemoryPropertyFlags inRequestMemoryProperties
         )
         {
             vk::PhysicalDeviceMemoryProperties memoryProperties = inPhysicalDevice.getMemoryProperties();
 
-            for (uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
+            for (std::uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
             {
                 bool isSupported{ static_cast<bool>(inSupportedMemoryIndices & (1 << i)) };
                 bool isSufficient{

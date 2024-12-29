@@ -20,9 +20,9 @@ namespace Chicane
             const vk::SurfaceKHR& inSurface
         );
         
-        uint32_t findMemoryTypeIndex(
+        std::uint32_t findMemoryTypeIndex(
             const vk::PhysicalDevice& inPhysicalDevice,
-            uint32_t inSupportedMemoryIndices,
+            std::uint32_t inSupportedMemoryIndices,
             vk::MemoryPropertyFlags inRequestMemoryProperties
         );
     }

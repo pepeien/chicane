@@ -11,7 +11,7 @@ namespace Chicane
             vk::CommandBufferAllocateInfo allocateInfo {};
             allocateInfo.commandPool        = inCreateInfo.commandPool;
             allocateInfo.level              = vk::CommandBufferLevel::ePrimary;
-            allocateInfo.commandBufferCount = static_cast<uint32_t>(outCommandBuffers.size());
+            allocateInfo.commandBufferCount = static_cast<std::uint32_t>(outCommandBuffers.size());
 
             outCommandBuffers = inCreateInfo.logicalDevice.allocateCommandBuffers(allocateInfo);
         }

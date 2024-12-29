@@ -18,8 +18,8 @@ namespace Chicane
             Model(const std::string& inFilepath);
 
         public:
-            Chicane::Model::Vendor getVendor() const;
-            void setVendor(Chicane::Model::Vendor inVendor);
+            Chicane::Model::Vendor::Type getVendor() const;
+            void setVendor(Chicane::Model::Vendor::Type inVendor);
 
             const std::vector<unsigned char>& getData() const;
             void setData(const std::vector<unsigned char>& inData);
@@ -30,7 +30,7 @@ namespace Chicane
             void fetchData();
 
         private:
-            Chicane::Model::Vendor m_vendor;
+            Chicane::Model::Vendor::Type m_vendor;
             std::vector<unsigned char> m_data;
         };
     }

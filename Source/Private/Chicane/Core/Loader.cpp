@@ -210,20 +210,20 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            const Box::Cubemap* cubemap = static_cast<const Box::Cubemap*>(inAsset);
+            const Box::CubeMap* cubemap = static_cast<const Box::CubeMap*>(inAsset);
 
             CubeMap::Data images {};
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Left))->getData());  // Positive X
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Right))->getData()); // Negative X
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Front))->getData()); // Positive Y
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Back))->getData());  // Negative Y
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Up))->getData());    // Positive Z
-            images.push_back(loadTexture(cubemap->getTexture(Box::Cubemap::Side::Down))->getData());  // Negative Z
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Left))->getData());  // Positive X
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Right))->getData()); // Negative X
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Front))->getData()); // Positive Y
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Back))->getData());  // Negative Y
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData());    // Positive Z
+            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Down))->getData());  // Negative Z
 
             m_cubemapManager->add("Skybox", images);
         }
 
-        const Box::Cubemap* loadCubemap(const std::string& inFilepath)
+        const Box::CubeMap* loadCubemap(const std::string& inFilepath)
         {
             Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
 
@@ -234,10 +234,10 @@ namespace Chicane
 
             if (!isLoaded(inFilepath))
             {
-                loadCubemap(new Box::Cubemap(inFilepath));
+                loadCubemap(new Box::CubeMap(inFilepath));
             }
 
-            return getAsset<Box::Cubemap>(inFilepath);
+            return getAsset<Box::CubeMap>(inFilepath);
         }
 
         const Box::Texture* loadTexture(const std::string& inFilepath)

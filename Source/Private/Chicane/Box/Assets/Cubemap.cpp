@@ -1,4 +1,4 @@
-#include "Chicane/Box/Assets/Cubemap.hpp"
+#include "Chicane/Box/Assets/CubeMap.hpp"
 
 #include "Chicane/Box/Assets/Texture.hpp"
 #include "Chicane/Core.hpp"
@@ -10,27 +10,27 @@ namespace Chicane
     {
         static constexpr auto SIDE_ATTRIBUTE_NAME = "side";
 
-        const std::unordered_map<std::string, Cubemap::Side> SIDE_MAP {
-            { "UP",    Cubemap::Side::Up },
-            { "DOWN",  Cubemap::Side::Down },
-            { "LEFT",  Cubemap::Side::Left },
-            { "RIGHT", Cubemap::Side::Right },
-            { "FRONT", Cubemap::Side::Front },
-            { "BACK",  Cubemap::Side::Back }
+        const std::unordered_map<std::string, CubeMap::Side> SIDE_MAP {
+            { "UP",    CubeMap::Side::Up },
+            { "DOWN",  CubeMap::Side::Down },
+            { "LEFT",  CubeMap::Side::Left },
+            { "RIGHT", CubeMap::Side::Right },
+            { "FRONT", CubeMap::Side::Front },
+            { "BACK",  CubeMap::Side::Back }
         };
 
-        Cubemap::Cubemap(const std::string& inFilepath)
+        CubeMap::CubeMap(const std::string& inFilepath)
             : Asset(inFilepath)
         {
             fetchTextures();
         }
 
-        const std::unordered_map<Cubemap::Side, std::string>& Cubemap::getTextures() const
+        const std::unordered_map<CubeMap::Side, std::string>& CubeMap::getTextures() const
         {
             return m_textures;
         }
 
-        const std::string& Cubemap::getTexture(Cubemap::Side inSide) const
+        const std::string& CubeMap::getTexture(CubeMap::Side inSide) const
         {
             if (m_textures.find(inSide) == m_textures.end())
             {
@@ -40,7 +40,7 @@ namespace Chicane
             return m_textures.at(inSide);
         }
 
-        void Cubemap::setTexture(Cubemap::Side inSide, const std::string& inFilepath)
+        void CubeMap::setTexture(CubeMap::Side inSide, const std::string& inFilepath)
         {
             if (inFilepath.empty())
             {
@@ -83,7 +83,7 @@ namespace Chicane
             sideNode.text().set(filepath);
         }
 
-        Cubemap::Side Cubemap::getSideFromString(const std::string& inValue) const
+        CubeMap::Side CubeMap::getSideFromString(const std::string& inValue) const
         {
             std::string value = inValue;
             std::transform(value.begin(), value.end(), value.begin(), ::toupper);
@@ -96,7 +96,7 @@ namespace Chicane
             return SIDE_MAP.at(value);
         }
 
-        void Cubemap::fetchTextures()
+        void CubeMap::fetchTextures()
         {
             if (getFilepath().empty() || isXMLEmpty())
             {

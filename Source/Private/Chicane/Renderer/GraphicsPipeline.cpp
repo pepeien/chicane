@@ -66,7 +66,7 @@ namespace Chicane
             {
                 vertexInputInfo.vertexBindingDescriptionCount   = 1;
                 vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
-                vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(inAttributeDescriptions.size());
+                vertexInputInfo.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(inAttributeDescriptions.size());
                 vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescriptions.data();
 
                 return vertexInputInfo;
@@ -107,7 +107,7 @@ namespace Chicane
         vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates)
         {
             vk::PipelineDynamicStateCreateInfo dynamicState {};
-            dynamicState.dynamicStateCount = static_cast<uint32_t>(inDynamicStates.size());
+            dynamicState.dynamicStateCount = static_cast<std::uint32_t>(inDynamicStates.size());
             dynamicState.pDynamicStates    = inDynamicStates.data();
 
             return dynamicState;
@@ -196,9 +196,9 @@ namespace Chicane
         {
             vk::PipelineLayoutCreateInfo layoutCreateInfo {};
             layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
-            layoutCreateInfo.setLayoutCount         = static_cast<uint32_t>(inDescriptorSetLayouts.size());
+            layoutCreateInfo.setLayoutCount         = static_cast<std::uint32_t>(inDescriptorSetLayouts.size());
             layoutCreateInfo.pSetLayouts            = inDescriptorSetLayouts.data();
-            layoutCreateInfo.pushConstantRangeCount = static_cast<uint32_t>(inPushConstantRanges.size());
+            layoutCreateInfo.pushConstantRangeCount = static_cast<std::uint32_t>(inPushConstantRanges.size());
             layoutCreateInfo.pPushConstantRanges    = inPushConstantRanges.data();
 
             return inLogicalDevice.createPipelineLayout(layoutCreateInfo);
@@ -297,7 +297,7 @@ namespace Chicane
             vk::SubpassDescription subpass {};
             subpass.flags                   = vk::SubpassDescriptionFlags();
             subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
-            subpass.colorAttachmentCount    = static_cast<uint32_t>(colorAttachmentRefs.size());
+            subpass.colorAttachmentCount    = static_cast<std::uint32_t>(colorAttachmentRefs.size());
             subpass.pColorAttachments       = colorAttachmentRefs.data();
 
             vk::AttachmentReference depthAttachmentRef;
@@ -313,9 +313,9 @@ namespace Chicane
     
             vk::RenderPassCreateInfo renderPassInfo {};
             renderPassInfo.flags           = vk::RenderPassCreateFlags();
-            renderPassInfo.attachmentCount = static_cast<uint32_t>(inAttachments.size());
+            renderPassInfo.attachmentCount = static_cast<std::uint32_t>(inAttachments.size());
             renderPassInfo.pAttachments    = inAttachments.data();
-            renderPassInfo.dependencyCount = static_cast<uint32_t>(subpassDependecies.size());
+            renderPassInfo.dependencyCount = static_cast<std::uint32_t>(subpassDependecies.size());
             renderPassInfo.pDependencies   = subpassDependecies.data();
             renderPassInfo.subpassCount    = 1;
             renderPassInfo.pSubpasses      = &subpass;

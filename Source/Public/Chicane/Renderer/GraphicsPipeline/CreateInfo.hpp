@@ -9,6 +9,7 @@ namespace Chicane
     {
         struct CreateInfo
         {
+        public:
             // Modifiers
             bool                                             bHasVertices;
             bool                                             bHasDepth;

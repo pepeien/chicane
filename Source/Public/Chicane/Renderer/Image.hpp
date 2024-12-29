@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Renderer/Device.hpp"
-#include "Chicane/Renderer/CommandBuffer/Worker.hpp"
 #include "Chicane/Renderer/Image/CreateInfo.hpp"
 
 namespace Chicane
@@ -29,7 +27,7 @@ namespace Chicane
             const vk::Format& inFormat,
             const vk::ImageAspectFlags& inAspect,
             vk::ImageViewType inViewType,
-            uint32_t inCount
+            std::uint32_t inCount
         );
 
         void transitionLayout(
@@ -38,16 +36,16 @@ namespace Chicane
             const vk::Image& inImage,
             const vk::ImageLayout& inOldLayout,
             const vk::ImageLayout& inNewLayout,
-            uint32_t inCount
+            std::uint32_t inCount
         );
         void copyBufferToImage(
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Queue& inQueue,
             const vk::Buffer& inSourceBuffer,
             const vk::Image& inDestinationImage,
-            uint32_t inWidth,
-            uint32_t inHeight,
-            uint32_t inCount
+            std::uint32_t inWidth,
+            std::uint32_t inHeight,
+            std::uint32_t inCount
         );
 	}
 }

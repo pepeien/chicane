@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/SwapChain.hpp"
 
-constexpr uint32_t MAX_IMAGE_COUNT = 2;
+constexpr std::uint32_t MAX_IMAGE_COUNT = 2;
 
 namespace Chicane
 {
@@ -86,8 +86,8 @@ namespace Chicane
 
         void pickExtent(
             vk::Extent2D& outExtent,
-            uint32_t inWidth,
-            uint32_t inHeight,
+            std::uint32_t inWidth,
+            std::uint32_t inHeight,
             const vk::SurfaceCapabilitiesKHR& inCapabilities
         )
         {
@@ -155,7 +155,7 @@ namespace Chicane
                 supportDetails.capabilities
             );
 
-            uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
+            std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
 
             if (supportDetails.capabilities.maxImageCount > 0)
             {
@@ -201,7 +201,7 @@ namespace Chicane
     
             if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
             {
-                uint32_t queueFamilyIndices[] = {
+                std::uint32_t queueFamilyIndices[] = {
                     familyIndices.graphicsFamily.value(),
                     familyIndices.presentFamily.value()
                 };

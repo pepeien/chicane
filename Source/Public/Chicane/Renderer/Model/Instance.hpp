@@ -10,8 +10,9 @@ namespace Chicane
     {
         struct Instance
         {
+        public:
             std::vector<Vertex::Instance> vertexInstances;
-            std::vector<uint32_t>         vertexIndices;
+            std::vector<std::uint32_t>    vertexIndices;
             Vec<3, float>                 extent;
         };
     }

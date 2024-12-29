@@ -5,7 +5,7 @@
 #include "Chicane/Renderer/Queue.hpp"
 #include "Chicane/Renderer/Image.hpp"
 #include "Chicane/Renderer/SwapChain/Bundle.hpp"
-#include "Chicane/Renderer/SwapChain/SupporteDetails.hpp"
+#include "Chicane/Renderer/SwapChain/SupportDetails.hpp"
 
 namespace Chicane
 {
@@ -27,8 +27,8 @@ namespace Chicane
         );
         void pickExtent(
             vk::Extent2D& outExtent,
-            uint32_t inWidth,
-            uint32_t inHeight,
+            std::uint32_t inWidth,
+            std::uint32_t inHeight,
             const vk::SurfaceCapabilitiesKHR& inCapabilities
         );
 

@@ -13,12 +13,8 @@ namespace Chicane
             const Vec<2, float>& inPosition = Vec2Zero
         );
         vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
-        vk::PipelineShaderStageCreateInfo createVertexShader(
-            const vk::ShaderModule& inShaderModule
-        );
-        vk::PipelineShaderStageCreateInfo createFragmentShader(
-            const vk::ShaderModule& inShaderModule
-        );
+        vk::PipelineShaderStageCreateInfo createVertexShader(const vk::ShaderModule& inShaderModule);
+        vk::PipelineShaderStageCreateInfo createFragmentShader(const vk::ShaderModule& inShaderModule);
         vk::PipelineVertexInputStateCreateInfo createVertexInputState(
             bool bInHasVertices,
             const vk::VertexInputBindingDescription& inBindingDescription,

@@ -111,7 +111,7 @@ namespace Chicane
         renderPassBeginInfo.renderArea.offset.x = 0;
         renderPassBeginInfo.renderArea.offset.y = 0;
         renderPassBeginInfo.renderArea.extent   = inSwapChainExtent;
-        renderPassBeginInfo.clearValueCount     = static_cast<uint32_t>(m_clearValues.size());
+        renderPassBeginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
         renderPassBeginInfo.pClearValues        = m_clearValues.data();
 
         inCommandBuffer.beginRenderPass(
@@ -219,7 +219,7 @@ namespace Chicane
         );
 
         Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size  = static_cast<uint32_t>(m_rendererInternals.swapchain->frames.size());
+        descriptorPoolCreateInfo.size  = static_cast<std::uint32_t>(m_rendererInternals.swapchain->frames.size());
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 

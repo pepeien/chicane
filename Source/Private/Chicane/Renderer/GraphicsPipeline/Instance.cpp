@@ -76,7 +76,7 @@ namespace Chicane
                 createVertexShader(vertexShaderModule),
                 createFragmentShader(fragmentShaderModule)
             };
-            pipelineInfo.stageCount = static_cast<uint32_t>(shaderStages.size());
+            pipelineInfo.stageCount = static_cast<std::uint32_t>(shaderStages.size());
             pipelineInfo.pStages    = shaderStages.data();
 
             // Rasterization

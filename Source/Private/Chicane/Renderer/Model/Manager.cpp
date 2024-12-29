@@ -58,8 +58,8 @@ namespace Chicane
 
             switch (inAsset->getVendor())
             {
-            case Vendor::Wavefront:
-                Wavefront::parse(result, inAsset->getData());
+            case Vendor::Type::Wavefront:
+                Vendor::Wavefront::parse(result, inAsset->getData());
 
                 break;
 
@@ -244,10 +244,10 @@ namespace Chicane
             const Model::Instance& instance = m_instanceMap.at(inId);
 
             AllocationInfo allocationInfo {};
-            allocationInfo.vertexCount = static_cast<uint32_t>(instance.vertexInstances.size());
-            allocationInfo.firstVertex = static_cast<uint32_t>(m_vertices.size());
-            allocationInfo.indexCount  = static_cast<uint32_t>(instance.vertexIndices.size());
-            allocationInfo.firstIndex  = static_cast<uint32_t>(m_indices.size());
+            allocationInfo.vertexCount = static_cast<std::uint32_t>(instance.vertexInstances.size());
+            allocationInfo.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
+            allocationInfo.indexCount  = static_cast<std::uint32_t>(instance.vertexIndices.size());
+            allocationInfo.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
 
             m_allocationMap.insert(std::make_pair(inId, allocationInfo));
 
@@ -257,7 +257,7 @@ namespace Chicane
                 instance.vertexInstances.end()
             );
 
-            for (uint32_t vertexIndex : instance.vertexIndices)
+            for (std::uint32_t vertexIndex : instance.vertexIndices)
             {
                 m_indices.push_back(vertexIndex + allocationInfo.firstVertex);
             }
@@ -363,7 +363,7 @@ namespace Chicane
             Buffer::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.physicalDevice   = inPhysicalDevice;
             stagingBufferCreateInfo.logicalDevice    = inLogicalDevice;
-            stagingBufferCreateInfo.size             = sizeof(uint32_t) * m_indices.size();
+            stagingBufferCreateInfo.size             = sizeof(std::uint32_t) * m_indices.size();
             stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                        vk::MemoryPropertyFlagBits::eHostCoherent;

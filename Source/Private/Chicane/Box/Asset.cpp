@@ -8,7 +8,7 @@
 #include "Chicane/Xml.hpp"
 
 const std::unordered_map<std::string, Chicane::Box::Asset::Type> TYPES {
-    { Chicane::Box::Cubemap::EXTENSION, Chicane::Box::Asset::Type::Cubemap },
+    { Chicane::Box::CubeMap::EXTENSION, Chicane::Box::Asset::Type::Cubemap },
     { Chicane::Box::Mesh::EXTENSION, Chicane::Box::Asset::Type::Mesh },
     { Chicane::Box::Model::EXTENSION, Chicane::Box::Asset::Type::Model },
     { Chicane::Box::Texture::EXTENSION, Chicane::Box::Asset::Type::Texture }

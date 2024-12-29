@@ -14,7 +14,7 @@ namespace Chicane
         Model::Manager* getModelManager();
         Texture::Manager* getTextureManager();
 
-        const Box::Cubemap* loadCubemap(const std::string& inFilePath);
+        const Box::CubeMap* loadCubemap(const std::string& inFilePath);
         const Box::Texture* loadTexture(const std::string& inFilePath);
         const Box::Mesh* loadMesh(const std::string& inFilePath);
 

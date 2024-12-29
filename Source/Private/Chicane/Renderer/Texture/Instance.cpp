@@ -57,7 +57,7 @@ namespace Chicane
             m_logicalDevice.destroySampler(m_image.sampler);
         }
 
-        Image::Bundle Instance::getImage() const
+        const Image::Bundle& Instance::getImage() const
         {
             return m_image;
         }

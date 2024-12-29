@@ -12,7 +12,7 @@ namespace Chicane
         {
             std::vector<vk::DescriptorPoolSize> poolSizes;
             
-            for (uint32_t i = 0; i < inCreateInfo.types.size(); i++)
+            for (std::uint32_t i = 0; i < inCreateInfo.types.size(); i++)
             {
                 vk::DescriptorPoolSize poolSize;
                 poolSize.type            = inCreateInfo.types[i];
@@ -24,7 +24,7 @@ namespace Chicane
             vk::DescriptorPoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.flags         = inCreateInfo.flags;
             descriptorPoolCreateInfo.maxSets       = inCreateInfo.size;
-            descriptorPoolCreateInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
+            descriptorPoolCreateInfo.poolSizeCount = static_cast<std::uint32_t>(poolSizes.size());
             descriptorPoolCreateInfo.pPoolSizes    = poolSizes.data();
 
             outDescriptorPool = inLogicalDevice.createDescriptorPool(
@@ -41,7 +41,7 @@ namespace Chicane
             std::vector<vk::DescriptorSetLayoutBinding> setLayoutBidings;
             setLayoutBidings.reserve(inBidingsCreateInfo.count);
 
-            for (uint32_t i = 0; i < inBidingsCreateInfo.count; i++)
+            for (std::uint32_t i = 0; i < inBidingsCreateInfo.count; i++)
             {
                 vk::DescriptorSetLayoutBinding setLayoutBiding;
                 setLayoutBiding.binding         = inBidingsCreateInfo.indices[i];

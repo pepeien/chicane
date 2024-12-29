@@ -15,7 +15,7 @@ namespace Chicane
             ~Instance();
 
         public:
-            Image::Bundle getImage() const;
+            const Image::Bundle& getImage() const;
 
         private:
             void load();
