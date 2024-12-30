@@ -10,6 +10,7 @@ namespace Chicane
 
         struct CreateInfo
         {
+        public:
             Data                    data;
             vk::Device              logicalDevice;
             vk::PhysicalDevice      physicalDevice;

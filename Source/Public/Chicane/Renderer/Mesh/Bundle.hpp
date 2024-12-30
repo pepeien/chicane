@@ -11,6 +11,7 @@ namespace Chicane
     {
         struct Bundle
         {
+        public:
             size_t            allocationSize;
             void*             writeLocation;
             Buffer::Instance  buffer;

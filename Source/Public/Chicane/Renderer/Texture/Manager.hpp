@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Box/Assets/Texture.hpp"
+#include "Chicane/Box/Asset/Texture.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Renderer/Descriptor.hpp"
 #include "Chicane/Renderer/Texture/Instance.hpp"

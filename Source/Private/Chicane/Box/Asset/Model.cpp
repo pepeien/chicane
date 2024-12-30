@@ -1,4 +1,4 @@
-#include "Chicane/Box/Assets/Model.hpp"
+#include "Chicane/Box/Asset/Model.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Xml.hpp"

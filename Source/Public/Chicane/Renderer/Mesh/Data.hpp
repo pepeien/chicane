@@ -9,6 +9,7 @@ namespace Chicane
     {
         struct Data
         {
+        public:
             Mat<4, float> transform;
             Vec<4, float> textureIndex;
         };

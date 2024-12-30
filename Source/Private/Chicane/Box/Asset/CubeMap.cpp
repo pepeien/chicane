@@ -1,6 +1,6 @@
-#include "Chicane/Box/Assets/CubeMap.hpp"
+#include "Chicane/Box/Asset/CubeMap.hpp"
 
-#include "Chicane/Box/Assets/Texture.hpp"
+#include "Chicane/Box/Asset/Texture.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Xml.hpp"
 

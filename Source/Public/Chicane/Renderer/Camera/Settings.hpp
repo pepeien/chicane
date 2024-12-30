@@ -9,6 +9,7 @@ namespace Chicane
     {
         struct Settings
         {
+        public:
             Vec<2, std::uint32_t> viewport    = Vec<2, std::uint32_t>(0);
             float                 aspectRatio = 0.0f;
             float                 fieldOfView = 45.0f;
