@@ -1,28 +1,28 @@
 #include "Chicane/Core/Loader.hpp"
 
-#include "Chicane/Renderer/CubeMap.hpp"
+#include "Chicane/Renderer/Vulkan/CubeMap.hpp"
 
 namespace Chicane
 {
     namespace Loader
     {
-        std::unique_ptr<CubeMap::Manager> m_cubemapManager = std::make_unique<CubeMap::Manager>();
-        std::unique_ptr<Model::Manager> m_modelManager     = std::make_unique<Model::Manager>();
-        std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
+        std::unique_ptr<Vulkan::CubeMap::Manager> m_cubemapManager = std::make_unique<Vulkan::CubeMap::Manager>();
+        std::unique_ptr<Vulkan::Model::Manager> m_modelManager     = std::make_unique<Vulkan::Model::Manager>();
+        std::unique_ptr<Vulkan::Texture::Manager> m_textureManager = std::make_unique<Vulkan::Texture::Manager>();
 
         std::unordered_map<std::string, const Box::Asset*> m_cache {};
 
-        CubeMap::Manager* getCubemapManager()
+        Vulkan::CubeMap::Manager* getCubemapManager()
         {
             return m_cubemapManager.get();
         }
 
-        Model::Manager* getModelManager()
+        Vulkan::Model::Manager* getModelManager()
         {
             return m_modelManager.get();
         }
 
-        Texture::Manager* getTextureManager()
+        Vulkan::Texture::Manager* getTextureManager()
         {
             return m_textureManager.get();
         }
@@ -40,27 +40,6 @@ namespace Chicane
             }
 
             return isLoaded(inInstance->getFilepath().string());
-        }
-
-        void cacheEntry(const std::string& inIdentifier, const Box::Asset* inEntry)
-        {
-            if (!isLoaded(inIdentifier))
-            {
-                return;
-            }
-
-            
-        }
-
-        void cacheEntry(const std::string& inIdentifier, const std::vector<Box::Asset*>& inEntries)
-        {
-            for (const Box::Asset* entry : inEntries)
-            {
-                cacheEntry(
-                    inIdentifier,
-                    entry
-                );
-            }
         }
 
         void cacheAsset(const std::string& inIdentifier, const Box::Asset* inInstance)
@@ -212,7 +191,7 @@ namespace Chicane
 
             const Box::CubeMap* cubemap = static_cast<const Box::CubeMap*>(inAsset);
 
-            CubeMap::Data images {};
+            Vulkan::CubeMap::Data images {};
             images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Left))->getData());  // Positive X
             images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Right))->getData()); // Negative X
             images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Front))->getData()); // Positive Y

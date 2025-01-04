@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Base.hpp"
+#include "Chicane/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
 {

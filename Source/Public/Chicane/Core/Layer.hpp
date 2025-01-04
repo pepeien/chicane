@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Vulkan/Frame.hpp"
 
 namespace Chicane
 {
@@ -39,9 +39,9 @@ namespace Chicane
         virtual void onEvent(const SDL_Event& inEvent) { return; }
 
         // Rendering
-        virtual void setup(Frame::Instance& outFrame) { return; }
+        virtual void setup(Vulkan::Frame::Instance& outFrame) { return; }
         virtual void render(
-            Frame::Instance& outFrame,
+            Vulkan::Frame::Instance& outFrame,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Extent2D& inSwapChainExtent
         ) { return; }

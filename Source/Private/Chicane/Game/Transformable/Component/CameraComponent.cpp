@@ -138,7 +138,7 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
-    const Camera::UBO& CameraComponent::getUBO() const
+    const Vulkan::Camera::UBO& CameraComponent::getUBO() const
     {
         return m_UBO;
     }

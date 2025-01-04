@@ -22,9 +22,9 @@ namespace Chicane
 
         void onEvent(const SDL_Event& inEvent) override;
 
-        void setup(Frame::Instance& outFrame) override;
+        void setup(Vulkan::Frame::Instance& outFrame) override;
         void render(
-            Frame::Instance& outFrame,
+            Vulkan::Frame::Instance& outFrame,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Extent2D& inSwapChainExtent
         ) override;
@@ -36,8 +36,8 @@ namespace Chicane
         void initImgui();
 
     private:
-        Window::Instance*                     m_window;
-        Renderer::Internals         m_internals;
+        Window::Instance*           m_window;
+        Vulkan::Renderer::Internals m_internals;
 
         vk::RenderPass              m_renderPass;
         vk::DescriptorPool          m_descriptorPool;

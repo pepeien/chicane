@@ -1,7 +1,7 @@
 #include "Chicane/Box/Asset/Model.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Xml.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {

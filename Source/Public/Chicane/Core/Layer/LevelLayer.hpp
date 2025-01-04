@@ -21,9 +21,9 @@ namespace Chicane
         void destroy() override;
         void rebuild() override;
 
-        void setup(Frame::Instance& outFrame) override;
+        void setup(Vulkan::Frame::Instance& outFrame) override;
         void render(
-            Frame::Instance& outFrame,
+            Vulkan::Frame::Instance& outFrame,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Extent2D& inSwapChainExtent
         ) override;
@@ -48,23 +48,23 @@ namespace Chicane
         void updateMeshes(const std::vector<Component*>& inComponents);
 
     private:
-        Renderer::Internals                         m_rendererInternals;
+        Vulkan::Renderer::Internals                         m_rendererInternals;
 
-        Level*                                      m_level;
-        std::vector<MeshComponent*>                 m_meshes;
+        Level*                                              m_level;
+        std::vector<MeshComponent*>                         m_meshes;
 
-        std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
-        vk::DescriptorSet                           m_descriptorSet;
+        std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
+        vk::DescriptorSet                                   m_descriptorSet;
 
-        Descriptor::Bundle                          m_frameDescriptor;
-        Descriptor::Bundle                          m_textureDescriptor;
+        Vulkan::Descriptor::Bundle                          m_frameDescriptor;
+        Vulkan::Descriptor::Bundle                          m_textureDescriptor;
 
-        Buffer::Instance                            m_modelVertexBuffer;
-        Buffer::Instance                            m_modelIndexBuffer;
+        Vulkan::Buffer::Instance                            m_modelVertexBuffer;
+        Vulkan::Buffer::Instance                            m_modelIndexBuffer;
 
-        Texture::Manager*                           m_textureManager;
-        Model::Manager*                             m_modelManager;
+        Vulkan::Texture::Manager*                           m_textureManager;
+        Vulkan::Model::Manager*                             m_modelManager;
 
-        std::vector<vk::ClearValue>                 m_clearValues;
+        std::vector<vk::ClearValue>                         m_clearValues;
     };
 }

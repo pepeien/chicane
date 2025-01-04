@@ -22,7 +22,7 @@ namespace Chicane
             ~Instance();
 
         public:
-            const Renderer::Internals& getRendererInternals();
+            const Vulkan::Renderer::Internals& getRendererInternals();
 
             const Telemetry& getTelemetry() const;
 
@@ -89,24 +89,24 @@ namespace Chicane
 
         private:
             // Telemetry
-            std::clock_t m_beginFrame;
-            std::clock_t m_endFrame;
+            std::clock_t                      m_beginFrame;
+            std::clock_t                      m_endFrame;
 
-            Telemetry m_telemetry;
+            Telemetry                         m_telemetry;
 
             // Settings
-            Type        m_type;
-            Vec<2, int> m_size;
-            Vec<2, int> m_drawableSize;
-            Vec<2, int> m_position;
+            Type                              m_type;
+            Vec<2, int>                       m_size;
+            Vec<2, int>                       m_drawableSize;
+            Vec<2, int>                       m_position;
 
-            bool m_bIsFocused;
-            bool m_bIsResizable;
-            bool m_bIsMinimized; // Only takes effect when the type is `Window::Type::Windowed`
+            bool                              m_bIsFocused;
+            bool                              m_bIsResizable;
+            bool                              m_bIsMinimized; // Only takes effect when the type is `Window::Type::Windowed`
 
             // Render
-            std::unique_ptr<Renderer> m_renderer;
-            Renderer::Internals m_rendererInternals;
+            std::unique_ptr<Vulkan::Renderer> m_renderer;
+            Vulkan::Renderer::Internals       m_rendererInternals;
         };
     }
 }

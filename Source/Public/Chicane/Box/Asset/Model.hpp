@@ -2,7 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Box/Asset.hpp"
-#include "Chicane/Renderer/Model.hpp"
+#include "Chicane/Renderer/Model/Vendor.hpp"
 
 namespace Chicane
 {

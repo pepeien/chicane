@@ -66,18 +66,6 @@
 #include "SDL3/SDL_vulkan.h"
 
 #include "stb/stb_image.h"
-
-#include "vulkan/vulkan.hpp"
-
-// Consts
-static const std::vector<const char*> LAYERS = {
-    "VK_LAYER_KHRONOS_validation"
-};
-
-static const std::vector<const char*> EXTENSIONS = {
-    VK_KHR_SWAPCHAIN_EXTENSION_NAME
-};
-
 // Assets
 constexpr std::uint32_t TEXTURE_MAX_COUNT   = 100000;
 constexpr std::uint32_t TEXTURE_IMAGE_COUNT = 1;

@@ -1,7 +1,7 @@
-#include "Chicane/Box/Assets/Texture.hpp"
+#include "Chicane/Box/Asset/Texture.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Xml.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {

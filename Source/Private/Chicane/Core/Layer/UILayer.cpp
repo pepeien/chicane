@@ -116,7 +116,7 @@ namespace Chicane
         ImGui_ImplSDL3_ProcessEvent(&inEvent);
     }
 
-    void UILayer::setup(Chicane::Frame::Instance& outFrame)
+    void UILayer::setup(Vulkan::Frame::Instance& outFrame)
     {
         if (!m_bIsInitialized)
         {
@@ -143,7 +143,7 @@ namespace Chicane
     }
 
     void UILayer::render(
-        Frame::Instance& outFrame,
+        Vulkan::Frame::Instance& outFrame,
         const vk::CommandBuffer& inCommandBuffer,
         const vk::Extent2D& inSwapChainExtent
     )
@@ -174,7 +174,7 @@ namespace Chicane
 
     void UILayer::initDescriptorPool()
     {
-        Descriptor::PoolCreateInfo createInfo;
+        Vulkan::Descriptor::PoolCreateInfo createInfo;
         createInfo.flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
         createInfo.size  = 1000;
         createInfo.types.push_back(vk::DescriptorType::eSampler);
@@ -189,7 +189,7 @@ namespace Chicane
         createInfo.types.push_back(vk::DescriptorType::eStorageBufferDynamic);
         createInfo.types.push_back(vk::DescriptorType::eInputAttachment);
 
-        Descriptor::initPool(
+        Vulkan::Descriptor::initPool(
             m_descriptorPool,
             m_internals.logicalDevice,
             createInfo
@@ -198,14 +198,14 @@ namespace Chicane
 
     void UILayer::initRenderpass()
     {
-        GraphicsPipeline::Attachment colorAttachment {};
+        Vulkan::GraphicsPipeline::Attachment colorAttachment {};
         colorAttachment.format        = m_internals.swapchain->format;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
 
-        vk::AttachmentDescription attachment = GraphicsPipeline::createColorAttachment(colorAttachment);
+        vk::AttachmentDescription attachment = Vulkan::GraphicsPipeline::createColorAttachment(colorAttachment);
 
-        m_renderPass = GraphicsPipeline::createRendepass(
+        m_renderPass = Vulkan::GraphicsPipeline::createRendepass(
             false,
             { attachment },
             m_internals.logicalDevice
@@ -214,25 +214,25 @@ namespace Chicane
 
     void UILayer::initFramebuffers()
     {
-        Frame::Buffer::CreateInfo framebufferCreateInfo {};
+        Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
         framebufferCreateInfo.id              = m_id;
         framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
         framebufferCreateInfo.renderPass      = m_renderPass;
         framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
 
-        for (Frame::Instance& frame : m_internals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             framebufferCreateInfo.attachments.clear();
             framebufferCreateInfo.attachments.push_back(frame.imageView);
 
-            Frame::Buffer::init(frame, framebufferCreateInfo);
+            Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
         }
     }
 
     void UILayer::initImgui()
     {
-        Queue::FamilyIndices familyIndices;
-        Queue::findFamilyInidices(
+        Vulkan::Queue::FamilyIndices familyIndices;
+        Vulkan::Queue::findFamilyInidices(
             familyIndices,
             m_internals.physicalDevice,
             m_internals.sufrace

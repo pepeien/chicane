@@ -4,7 +4,6 @@
 # Build results
 [Bb]in/
 [Bb]uild/
-vulkan/
 __pycache__/
 
 # Microsoft Fakes

@@ -21,7 +21,7 @@ namespace Chicane
         void rebuild() override;
 
         void render(
-            Frame::Instance& outFrame,
+            Vulkan::Frame::Instance& outFrame,
             const vk::CommandBuffer& inCommandBuffer,
             const vk::Extent2D& inSwapChainExtent
         ) override;
@@ -36,14 +36,14 @@ namespace Chicane
         void buildAssets();
 
     private:
-        Renderer::Internals                         m_rendererInternals;
+        Vulkan::Renderer::Internals                         m_rendererInternals;
 
-        std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
+        std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
 
-        vk::DescriptorSet                           m_descriptorSet;
-        Descriptor::Bundle                          m_frameDescriptor;
-        Descriptor::Bundle                          m_materialDescriptor;
+        vk::DescriptorSet                                   m_descriptorSet;
+        Vulkan::Descriptor::Bundle                          m_frameDescriptor;
+        Vulkan::Descriptor::Bundle                          m_materialDescriptor;
 
-        std::vector<vk::ClearValue>                 m_clearValues;
+        std::vector<vk::ClearValue>                         m_clearValues;
     };
 }

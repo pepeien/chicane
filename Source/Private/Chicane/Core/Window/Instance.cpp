@@ -84,7 +84,7 @@ namespace Chicane
             SDL_Quit();
         }
 
-        const Renderer::Internals& Instance::getRendererInternals()
+        const Vulkan::Renderer::Internals& Instance::getRendererInternals()
         {
             return m_rendererInternals;
         }
@@ -511,7 +511,7 @@ namespace Chicane
 
         void Instance::initRenderer()
         {
-            m_renderer = std::make_unique<Renderer>(this);
+            m_renderer = std::make_unique<Vulkan::Renderer>(this);
             m_rendererInternals = m_renderer->getInternals();
         }
 

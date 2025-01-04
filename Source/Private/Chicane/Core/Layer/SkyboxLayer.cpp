@@ -74,7 +74,7 @@ namespace Chicane
     }
 
     void SkyboxLayer::render(
-        Frame::Instance& outFrame,
+        Vulkan::Frame::Instance& outFrame,
         const vk::CommandBuffer& inCommandBuffer,
         const vk::Extent2D& inSwapChainExtent
     )
@@ -122,7 +122,7 @@ namespace Chicane
 
     void SkyboxLayer::initFrameDescriptorSetLayout()
     {
-        Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
+        Vulkan::Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 1;
 
         /// Camera
@@ -131,7 +131,7 @@ namespace Chicane
         frameLayoutBidings.counts.push_back(1);
         frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-        Descriptor::initSetLayout(
+        Vulkan::Descriptor::initSetLayout(
             m_frameDescriptor.setLayout,
             m_rendererInternals.logicalDevice,
             frameLayoutBidings
@@ -140,14 +140,14 @@ namespace Chicane
 
     void SkyboxLayer::initMaterialDescriptorSetLayout()
     {
-        Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
+        Vulkan::Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
         materialLayoutBidings.count = 1;
         materialLayoutBidings.indices.push_back(0);
         materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
         materialLayoutBidings.counts.push_back(1);
         materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
-        Descriptor::initSetLayout(
+        Vulkan::Descriptor::initSetLayout(
             m_materialDescriptor.setLayout,
             m_rendererInternals.logicalDevice,
             materialLayoutBidings
@@ -156,12 +156,12 @@ namespace Chicane
 
     void SkyboxLayer::initGraphicsPipeline()
     {
-        GraphicsPipeline::Attachment colorAttachment {};
+        Vulkan::GraphicsPipeline::Attachment colorAttachment {};
         colorAttachment.format        = m_rendererInternals.swapchain->format;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
         colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
 
-        GraphicsPipeline::CreateInfo createInfo {};
+        Vulkan::GraphicsPipeline::CreateInfo createInfo {};
         createInfo.bHasVertices         = false;
         createInfo.bHasDepth            = false;
         createInfo.logicalDevice        = m_rendererInternals.logicalDevice;
@@ -172,40 +172,40 @@ namespace Chicane
         createInfo.colorAttachment      = colorAttachment;
         createInfo.polygonMode          = vk::PolygonMode::eFill;
 
-        m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
+        m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);
     }
 
     void SkyboxLayer::initFramebuffers()
     {
-        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
-            Frame::Buffer::CreateInfo framebufferCreateInfo {};
+            Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_rendererInternals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
             framebufferCreateInfo.swapChainExtent = m_rendererInternals.swapchain->extent;
             framebufferCreateInfo.attachments.push_back(frame.imageView);
 
-            Frame::Buffer::init(frame, framebufferCreateInfo);
+            Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
         }
     }
 
     void SkyboxLayer::initFrameResources()
     {
-        Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
+        Vulkan::Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
         frameDescriptorPoolCreateInfo.size = static_cast<std::uint32_t>(m_rendererInternals.swapchain->frames.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
 
-        Descriptor::initPool(
+        Vulkan::Descriptor::initPool(
             m_frameDescriptor.pool,
             m_rendererInternals.logicalDevice,
             frameDescriptorPoolCreateInfo
         );
 
-        for (Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
         {
             vk::DescriptorSet descriptorSet;
-            Descriptor::allocalteSet(
+            Vulkan::Descriptor::allocalteSet(
                 descriptorSet,
                 m_rendererInternals.logicalDevice,
                 m_frameDescriptor.setLayout,
@@ -226,11 +226,11 @@ namespace Chicane
 
     void SkyboxLayer::initMaterialResources()
     {
-        Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
+        Vulkan::Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
         materialDescriptorPoolCreateInfo.size  = 1;
         materialDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
-        Descriptor::initPool(
+        Vulkan::Descriptor::initPool(
             m_materialDescriptor.pool,
             m_rendererInternals.logicalDevice,
             materialDescriptorPoolCreateInfo
