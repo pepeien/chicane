@@ -8,12 +8,18 @@ namespace Chicane
     class Layer
     {
     public:
-        enum class PushStrategy
+        enum class Status : std::uint8_t
+        {
+            Idle,
+            Initialized
+        };
+
+        enum class PushStrategy : std::uint8_t
         {
             Front,
             Back,
             BeforeLayer, // Require to have the ref layer `ID`
-            AfterLayer // Require to have the ref layer `ID`
+            AfterLayer   // Require to have the ref layer `ID`
         };
 
     public:
@@ -22,7 +28,7 @@ namespace Chicane
         {}
         Layer(const std::string& inId)
             : m_id(inId),
-            m_bIsInitialized(false)
+              m_status(Status::Idle)
         {}
         virtual ~Layer() = default;
 
@@ -47,11 +53,12 @@ namespace Chicane
         ) { return; }
 
     public:
+        bool isStatus(Status inStatus) const { return m_status == inStatus; };
+
         const std::string& getId() const { return m_id; }
 
     protected:
-        bool m_bIsInitialized;
-
         std::string m_id;
+        Status      m_status;
     };
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Texture.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
@@ -32,20 +33,9 @@
 
 namespace Chicane
 {
-    // Core
-    class Layer;
-
-    namespace Window
-    {
-        class Instance;
-    }
-
-    // Game
-    class CameraComponent;
-
     namespace Vulkan
     {
-        class Renderer
+        class Renderer : public Chicane::Renderer
         {
         public:
             struct Internals
@@ -62,31 +52,23 @@ namespace Chicane
             };
 
         public:
-            Renderer(Window::Instance* inWindow);
+            Renderer(Window* inWindow);
             ~Renderer();
 
         public:
-            Internals getInternals();
+            void onEvent(const SDL_Event& inEvent) override;
 
-            void pushLayerStart(Layer* inLayer);
-            void pushLayerBack(Layer* inLayer);
-            void pushLayerBefore(const std::string& inId, Layer* inLayer);
-            void pushLayerAfter(const std::string& inId, Layer* inLayer);
+            void render() override;
+
+        public:
+            Internals getInternals();
 
             void setViewport(
                 const Vec<2, std::uint32_t>& inSize,
                 const Vec<2, float>& inPosition = Vec2Zero
             );
 
-            // Event
-            void onEvent(const SDL_Event& inEvent);
-
-            void render();
-
         private:
-            bool hasLayer(Layer* inLayer);
-            bool hasLayer(const std::string& inId);
-
             void buildInstance();
             void destroyInstance();
 
@@ -105,10 +87,6 @@ namespace Chicane
             void rebuildSwapChain();
             void destroySwapChain();
 
-            void destroyLayers();
-            void rebuildLayers();
-            void deleteLayers();
-
             void buildCommandPool();
             void destroyCommandPool();
 
@@ -126,46 +104,39 @@ namespace Chicane
 
             void refreshCameraViewport();
 
-            void buildDefaultCamera();
+            void setupCamera();
 
         private:
             // Instance
-            vk::Instance                     m_instance;
-            vk::DispatchLoaderDynamic        m_dldi;
-            vk::DebugUtilsMessengerEXT       m_debugMessenger;
+            vk::Instance               m_instance;
+            vk::DispatchLoaderDynamic  m_dldi;
+            vk::DebugUtilsMessengerEXT m_debugMessenger;
 
             // Surface
-            vk::SurfaceKHR                   m_surface;
+            vk::SurfaceKHR             m_surface;
 
             // Devices
-            vk::PhysicalDevice               m_physicalDevice;
-            vk::Device                       m_logicalDevice;
+            vk::PhysicalDevice         m_physicalDevice;
+            vk::Device                 m_logicalDevice;
 
             // Queues
-            vk::Queue                        m_graphicsQueue;
-            vk::Queue                        m_presentQueue;
+            vk::Queue                  m_graphicsQueue;
+            vk::Queue                  m_presentQueue;
 
             // Swap Chain
-            SwapChain::Bundle                m_swapChain;
+            SwapChain::Bundle          m_swapChain;
 
             // Command
-            vk::CommandPool                  m_mainCommandPool;
-            vk::CommandBuffer                m_mainCommandBuffer;
+            vk::CommandPool            m_mainCommandPool;
+            vk::CommandBuffer          m_mainCommandBuffer;
 
             // Frame
-            int                              m_imageCount;
-            int                              m_currentImageIndex;
+            int                        m_imageCount;
+            int                        m_currentImageIndex;
 
             // Window
-            Window::Instance*                          m_window;
-            Vec<2, std::uint32_t>            m_viewportSize;
-            Vec<2, float>                    m_viewportPosition;
-
-            // Layers
-            std::vector<Layer*>              m_layers;
-
-            // Essentials
-            CameraComponent* m_defaultCamera;
+            Vec<2, std::uint32_t>      m_viewportSize;
+            Vec<2, float>              m_viewportPosition;
         };
     }
 }

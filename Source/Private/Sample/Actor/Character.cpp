@@ -1,5 +1,6 @@
 #include "Actor/Character.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Apple.hpp"
 
@@ -15,7 +16,7 @@ void Character::onControlAttachment()
         SDL_BUTTON_LEFT,
         [this](bool bInIsButtonPressed)
         {
-            if (!bInIsButtonPressed || !Chicane::isWindowFocused())
+            if (!bInIsButtonPressed || !Chicane::Application::getWindow()->isFocused())
             {
                 return;
             }

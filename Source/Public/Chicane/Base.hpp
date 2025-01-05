@@ -7,9 +7,6 @@
 #define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
 
-#define APPLICATION_NAME "Chicane Engine"
-#define ENGINE_NAME      "Chicane"
-
 #ifdef NDEBUG
     #define IS_DEBUGGING false
 #else
@@ -66,16 +63,21 @@
 #include "SDL3/SDL_vulkan.h"
 
 #include "stb/stb_image.h"
-// Assets
-constexpr std::uint32_t TEXTURE_MAX_COUNT   = 100000;
-constexpr std::uint32_t TEXTURE_IMAGE_COUNT = 1;
 
-constexpr std::uint32_t CUBEMAP_IMAGE_COUNT = 6;
+// Settings
+static constexpr auto APPLICATION_NAME = "Chicane Engine";
+static constexpr auto ENGINE_NAME      = "Chicane";
+
+// Assets
+static constexpr std::uint32_t TEXTURE_MAX_COUNT   = 100000;
+static constexpr std::uint32_t TEXTURE_IMAGE_COUNT = 1;
+
+static constexpr std::uint32_t CUBEMAP_IMAGE_COUNT = 6;
 
 // Z-Up Right Handed
-constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
-constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);
-constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
+static constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
+static constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);
+static constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
 
 namespace Chicane
 {
@@ -83,19 +85,6 @@ namespace Chicane
 
     struct FrameTelemetry
     {
-    public:
-        std::uint32_t count = 0;
-        std::uint32_t rate  = 0;
-        float    time  = 0.0f;
-    };
-
-    struct Telemetry
-    {
-    public:
-        std::clock_t   delta = 0;
-
-        FrameTelemetry frame {};
-
     public:
         static float deltaToMs(std::clock_t inDelta)
         {
@@ -110,12 +99,64 @@ namespace Chicane
     public:
         float deltaToMs() const
         {
-            return Telemetry::deltaToMs(delta);
+            return FrameTelemetry::deltaToMs(delta);
         }
 
         float deltaToTick() const
         {
-            return Telemetry::deltaToTick(delta);
+            return FrameTelemetry::deltaToTick(delta);
+        }
+
+        void startCapture()
+        {
+            m_beginFrame = std::clock();
+        }
+
+        void endCapture()
+        {
+            m_endFrame = std::clock();
+
+            delta += m_endFrame - m_beginFrame;
+            count += 1;
+
+            if (delta < CLOCKS_PER_SEC)
+            {
+                return;
+            }
+
+            rate  = std::uint32_t((count * 0.5) + (rate * 0.5));
+            count = 0;
+            time  = 1000.0f / float(rate ==0 ? 0.001 : rate);
+            delta = 0;
+        }
+
+    public:
+        std::clock_t  delta = 0;
+        std::uint32_t count = 0;
+        std::uint32_t rate  = 0;
+        float         time  = 0.0f;
+
+    private:
+        std::clock_t  m_beginFrame;
+        std::clock_t  m_endFrame;
+    };
+
+    struct Telemetry
+    {
+    public:
+        FrameTelemetry frame {};
+
+    public:
+
+    public:
+        void startCapture()
+        {
+            frame.startCapture();
+        }
+
+        void endCapture()
+        {
+            frame.endCapture();
         }
     };
 }

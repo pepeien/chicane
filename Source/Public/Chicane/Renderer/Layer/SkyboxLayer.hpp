@@ -1,18 +1,17 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-
-#include "Chicane/Core/Layer.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
-#include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
     class SkyboxLayer : public Layer
     {
     public:
-        SkyboxLayer(Window::Instance* inWindow);
+        SkyboxLayer();
         ~SkyboxLayer();
 
     public:
@@ -36,7 +35,7 @@ namespace Chicane
         void buildAssets();
 
     private:
-        Vulkan::Renderer::Internals                         m_rendererInternals;
+        Vulkan::Renderer::Internals                         m_internals;
 
         std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
 

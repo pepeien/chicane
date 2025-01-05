@@ -14,8 +14,8 @@ namespace Chicane
         virtual ~Pawn() = default;
 
     protected:
-        virtual void onControlAttachment() {};
-        virtual void onControleDeattachment() {};
+        virtual void onControlAttachment() { return; };
+        virtual void onControleDeattachment() { return; };
 
     public:
         template<class T = Controller>

@@ -1,7 +1,8 @@
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
+#include "Chicane/Game.hpp"
 
 const std::string EMPTY_STRING = "";
 
@@ -14,26 +15,26 @@ namespace Chicane
 
     void MeshComponent::onActivation()
     {
-        if (!hasActiveLevel())
+        if (!Application::hasLevel())
         {
             return;
         }
 
         show();
 
-        addComponent(this);
+        Application::getLevel()->addComponent(this);
     }
 
     void MeshComponent::onDeactivation()
     {
-        if (!hasActiveLevel())
+        if (!Application::hasLevel())
         {
             return;
         }
 
         hide();
 
-        removeComponent(this);
+        Application::getLevel()->removeComponent(this);
     }
 
     void MeshComponent::onAttachment(Actor* inActor)
@@ -53,7 +54,7 @@ namespace Chicane
 
     bool MeshComponent::isDrawable() const
     {
-        if (!hasActiveCamera() || !hasActiveLevel())
+        if (!Application::hasCamera() || !Application::hasLevel())
         {
             return false;
         }
@@ -129,12 +130,12 @@ namespace Chicane
 
     void MeshComponent::updateVisibility()
     {
-        if (!hasActiveCamera())
+        if (!Application::hasCamera())
         {
             return;
         }
 
-        if (getActiveCamera()->canSee(this))
+        if (Application::getCamera()->canSee(this))
         {
             show();
         }

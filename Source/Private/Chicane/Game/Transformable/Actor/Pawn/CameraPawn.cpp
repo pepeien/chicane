@@ -1,5 +1,6 @@
 #include "Chicane/Game/Transformable/Actor/Pawn/CameraPawn.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Controller.hpp"
 
@@ -28,7 +29,7 @@ namespace Chicane
         m_controller->bindMouseMotionEvent(
             [&](const SDL_MouseMotionEvent& inEvent)
             {
-                if (!isWindowFocused())
+                if (!Application::getWindow()->isFocused())
                 {
                     return;
                 }
@@ -52,7 +53,7 @@ namespace Chicane
                     return;
                 }
 
-                setWindowFocus(!isWindowFocused());
+                Application::getWindow()->switchFocus();
             }
         );
     }
@@ -123,19 +124,19 @@ namespace Chicane
             SDL_GAMEPAD_BUTTON_SOUTH,
             [](bool bInIsKeyDown)
             {
-                if (!bInIsKeyDown || !isWindowFocused())
+                if (!bInIsKeyDown || !Application::getWindow()->isFocused())
                 {
                     return;
                 }
 
-                setWindowFocus(!isWindowFocused());
+                Application::getWindow()->switchFocus();
             }
         );
     }
 
     void CameraPawn::moveUp(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }
@@ -151,7 +152,7 @@ namespace Chicane
 
     void CameraPawn::moveDown(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }
@@ -167,7 +168,7 @@ namespace Chicane
 
     void CameraPawn::moveForward(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }
@@ -177,7 +178,7 @@ namespace Chicane
 
     void CameraPawn::moveBackward(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }
@@ -187,7 +188,7 @@ namespace Chicane
 
     void CameraPawn::moveLeft(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }
@@ -197,7 +198,7 @@ namespace Chicane
 
     void CameraPawn::moveRight(bool bInIsKeyDown)
     {
-        if (!bInIsKeyDown || !isWindowFocused())
+        if (!bInIsKeyDown || !Application::getWindow()->isFocused())
         {
             return;
         }

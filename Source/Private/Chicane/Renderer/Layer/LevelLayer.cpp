@@ -1,26 +1,32 @@
-#include "Chicane/Core/Layer/LevelLayer.hpp"
+#include "Chicane/Renderer/Layer/LevelLayer.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
 namespace Chicane
 {
-    LevelLayer::LevelLayer(Window::Instance* inWindow)
+    LevelLayer::LevelLayer()
         : Layer("Level"),
         m_clearValues({})
     {
-        m_rendererInternals = inWindow->getRendererInternals();
+        if (!Application::hasLevel())
+        {
+            m_status = Status::Initialized;
+        }
+
+        m_internals = Application::getRenderer<Vulkan::Renderer>()->getInternals();
 
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
         m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
-        if (!hasActiveLevel())
+        if (isStatus(Status::Idle))
         {
             return;
         }
 
-        m_level = getActiveLevel();
+        m_level = Application::getLevel();
 
         m_textureManager = Loader::getTextureManager();
         m_modelManager   = Loader::getModelManager();
@@ -30,7 +36,7 @@ namespace Chicane
 
     LevelLayer::~LevelLayer()
     {
-        m_rendererInternals.logicalDevice.waitIdle();
+        m_internals.logicalDevice.waitIdle();
 
         destroyTextureResources();
         destroyModelData();
@@ -45,7 +51,7 @@ namespace Chicane
 
     void LevelLayer::build()
     {
-        if (m_bIsInitialized || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
+        if (isStatus(Status::Initialized) || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
         {
             return;
         }
@@ -55,7 +61,7 @@ namespace Chicane
         initGraphicsPipeline();
         initFramebuffers();
 
-        m_bIsInitialized = true;
+        m_status = Status::Initialized;
 
         buildTextures();
         buildModelData();
@@ -64,7 +70,7 @@ namespace Chicane
 
     void LevelLayer::destroy()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -74,7 +80,7 @@ namespace Chicane
 
     void LevelLayer::rebuild()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -159,7 +165,7 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        if (m_bIsInitialized)
+        if (isStatus(Status::Initialized))
         {
             return;
         }
@@ -214,27 +220,27 @@ namespace Chicane
 
         Vulkan::Descriptor::initSetLayout(
             m_frameDescriptor.setLayout,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             frameLayoutBidings
         );
 
         Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-        descriptorPoolCreateInfo.size  = static_cast<std::uint32_t>(m_rendererInternals.swapchain->frames.size());
+        descriptorPoolCreateInfo.size  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
         descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
 
         Vulkan::Descriptor::initPool(
             m_frameDescriptor.pool,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             descriptorPoolCreateInfo
         );
 
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             vk::DescriptorSet levelDescriptorSet;
             Vulkan::Descriptor::allocalteSet(
                 levelDescriptorSet,
-                m_rendererInternals.logicalDevice,
+                m_internals.logicalDevice,
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
@@ -262,22 +268,22 @@ namespace Chicane
 
     void LevelLayer::destroyFrameResources()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptor.setLayout
         );
-        m_rendererInternals.logicalDevice.destroyDescriptorPool(
+        m_internals.logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
     }
 
     void LevelLayer::initTextureResources()
     {
-        if (m_bIsInitialized)
+        if (isStatus(Status::Initialized))
         {
             return;
         }
@@ -292,7 +298,7 @@ namespace Chicane
 
         Vulkan::Descriptor::initSetLayout(
             m_textureDescriptor.setLayout,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             materialLayoutBidings
         );
 
@@ -302,53 +308,53 @@ namespace Chicane
 
         Vulkan::Descriptor::initPool(
             m_textureDescriptor.pool,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             descriptorPoolCreateInfo
         );
     }
 
     void LevelLayer::destroyTextureResources()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_textureDescriptor.setLayout
         );
 
-        m_rendererInternals.logicalDevice.destroyDescriptorPool(
+        m_internals.logicalDevice.destroyDescriptorPool(
             m_textureDescriptor.pool
         );
     }
 
     void LevelLayer::initGraphicsPipeline()
     {
-        if (m_bIsInitialized)
+        if (isStatus(Status::Initialized))
         {
             return;
         }
 
         Vulkan::GraphicsPipeline::Attachment colorAttachment {};
-        colorAttachment.format        = m_rendererInternals.swapchain->format;
+        colorAttachment.format        = m_internals.swapchain->format;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
         colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
 
         Vulkan::GraphicsPipeline::Attachment depthAttachment {};
-        depthAttachment.format        = m_rendererInternals.swapchain->depthFormat;
+        depthAttachment.format        = m_internals.swapchain->depthFormat;
         depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
         depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
 
         Vulkan::GraphicsPipeline::CreateInfo createInfo {};
         createInfo.bHasVertices          = true;
         createInfo.bHasDepth             = true;
-        createInfo.logicalDevice         = m_rendererInternals.logicalDevice;
+        createInfo.logicalDevice         = m_internals.logicalDevice;
         createInfo.vertexShaderPath      = "Content/Engine/Shaders/level.vert.spv";
         createInfo.fragmentShaderPath    = "Content/Engine/Shaders/level.frag.spv";
         createInfo.bindingDescription    = Vulkan::Vertex::getBindingDescription();
         createInfo.attributeDescriptions = Vulkan::Vertex::getAttributeDescriptions();
-        createInfo.extent                = m_rendererInternals.swapchain->extent;
+        createInfo.extent                = m_internals.swapchain->extent;
         createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_textureDescriptor.setLayout };
         createInfo.colorAttachment       = colorAttachment;
         createInfo.depthAttachment       = depthAttachment;
@@ -359,13 +365,13 @@ namespace Chicane
 
     void LevelLayer::initFramebuffers()
     {
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
-            framebufferCreateInfo.logicalDevice   = m_rendererInternals.logicalDevice;
+            framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
-            framebufferCreateInfo.swapChainExtent = m_rendererInternals.swapchain->extent;
+            framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
             framebufferCreateInfo.attachments.push_back(frame.imageView);
             framebufferCreateInfo.attachments.push_back(frame.depth.imageView);
 
@@ -375,23 +381,23 @@ namespace Chicane
 
     void LevelLayer::buildTextures()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
         m_textureManager->build(
-            m_rendererInternals.logicalDevice,
-            m_rendererInternals.physicalDevice,
-            m_rendererInternals.mainCommandBuffer,
-            m_rendererInternals.graphicsQueue,
+            m_internals.logicalDevice,
+            m_internals.physicalDevice,
+            m_internals.mainCommandBuffer,
+            m_internals.graphicsQueue,
             m_textureDescriptor
         );
     }
 
     void LevelLayer::buildModelData()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -399,35 +405,35 @@ namespace Chicane
         m_modelManager->build(
             m_modelVertexBuffer,
             m_modelIndexBuffer,
-            m_rendererInternals.logicalDevice,
-            m_rendererInternals.physicalDevice,
-            m_rendererInternals.graphicsQueue,
-            m_rendererInternals.mainCommandBuffer
+            m_internals.logicalDevice,
+            m_internals.physicalDevice,
+            m_internals.graphicsQueue,
+            m_internals.mainCommandBuffer
         );
     }
 
     void LevelLayer::destroyModelData()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        m_rendererInternals.logicalDevice.waitIdle();
+        m_internals.logicalDevice.waitIdle();
 
         Vulkan::Buffer::destroy(
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             m_modelVertexBuffer
         );
         Vulkan::Buffer::destroy(
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             m_modelIndexBuffer
         );
     }
 
     void LevelLayer::rebuildModelData()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -444,12 +450,12 @@ namespace Chicane
 
     void LevelLayer::setupFrames()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             frame.setupMeshData(m_meshes);
         }
@@ -457,12 +463,12 @@ namespace Chicane
 
     void LevelLayer::setFramesAsDirty()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             frame.setAsDirty();
         }
@@ -497,7 +503,7 @@ namespace Chicane
 
         m_meshes = nextMeshes;
 
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             build();
 

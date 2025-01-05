@@ -1,5 +1,6 @@
 #include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 
 namespace Chicane
@@ -32,21 +33,21 @@ namespace Chicane
 
     void CameraComponent::onActivation()
     {
-        setActiveCamera(this);
+        Application::setCamera(this);
 
-        addComponent(this);
+        Application::getLevel()->addComponent(this);
     }
 
     void CameraComponent::onDeactivation()
     {
-        if (getActiveCamera() != this)
+        if (Application::getCamera() != this)
         {
             return;
         }
 
-        setActiveCamera(nullptr);
+        Application::setCamera(nullptr);
 
-        removeComponent(this);
+        Application::getLevel()->removeComponent(this);
     }
 
     bool CameraComponent::canSee(const Transformable* inSubject) const

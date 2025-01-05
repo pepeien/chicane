@@ -7,17 +7,17 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Xml.hpp"
 
-const std::unordered_map<std::string, Chicane::Box::Asset::Type> TYPES {
-    { Chicane::Box::CubeMap::EXTENSION, Chicane::Box::Asset::Type::Cubemap },
-    { Chicane::Box::Mesh::EXTENSION, Chicane::Box::Asset::Type::Mesh },
-    { Chicane::Box::Model::EXTENSION, Chicane::Box::Asset::Type::Model },
-    { Chicane::Box::Texture::EXTENSION, Chicane::Box::Asset::Type::Texture }
-};
-
 namespace Chicane
 {
     namespace Box
     {
+        static const std::unordered_map<std::string, Asset::Type> TYPES {
+            { CubeMap::EXTENSION, Asset::Type::Cubemap },
+            { Mesh::EXTENSION,    Asset::Type::Mesh    },
+            { Model::EXTENSION,   Asset::Type::Model   },
+            { Texture::EXTENSION, Asset::Type::Texture }
+        };
+
         std::string   Asset::TAG             = "Asset";
         std::uint32_t Asset::CURRENT_VERSION = 1;
 

@@ -1,6 +1,8 @@
 #include "Chicane/Game/Transformable/Component/CollisionComponent.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
+#include "Chicane/Game.hpp"
 
 namespace Chicane
 {
@@ -12,22 +14,22 @@ namespace Chicane
 
     void CollisionComponent::onActivation()
     {
-        if (!hasActiveLevel())
+        if (!Application::hasLevel())
         {
             return;
         }
 
-        addComponent(this);
+        Application::getLevel()->addComponent(this);
     }
 
     void CollisionComponent::onDeactivation()
     {
-        if (!hasActiveLevel())
+        if (!Application::hasLevel())
         {
             return;
         }
 
-        removeComponent(this);
+        Application::getLevel()->removeComponent(this);
     }
 
     void CollisionComponent::onTick(float inDeltaTime)
@@ -39,7 +41,7 @@ namespace Chicane
 
         Actor* attachment = getAttachment();
 
-        for (Actor* actor : getActiveLevel()->getActors())
+        for (Actor* actor : Application::getLevel()->getActors())
         {
             if (actor == attachment || !actor->canCollide())
             {
@@ -58,6 +60,6 @@ namespace Chicane
 
     bool CollisionComponent::canCollide() const
     {
-        return isAttached() && hasActiveLevel();
+        return isAttached() && Application::hasLevel();
     }
 }

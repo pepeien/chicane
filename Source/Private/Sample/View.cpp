@@ -3,6 +3,7 @@
 #include "Actor/Apple.hpp"
 #include "Game.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 
@@ -66,12 +67,12 @@ View::~View()
 
 std::uint64_t View::getFPS(const Chicane::Grid::Component::Event& inEvent)
 {
-    return Chicane::getTelemetry().frame.rate;
+    return Chicane::Application::getTelemetry().frame.rate;
 }
 
 float View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
 {
-    return Chicane::getTelemetry().frame.time;
+    return Chicane::Application::getTelemetry().frame.time;
 }
 
 void View::loadAudio(const std::string& inId, const std::string& inFilepath)

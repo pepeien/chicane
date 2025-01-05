@@ -9,7 +9,7 @@ namespace Chicane
         class Asset
         {
         public:
-            enum class Type
+            enum class Type : std::uint8_t
             {
                 Undefined,
                 Mesh,    // Two entries [Model, Texture] both being refNames

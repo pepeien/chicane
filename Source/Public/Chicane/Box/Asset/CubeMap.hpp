@@ -10,7 +10,7 @@ namespace Chicane
         class CubeMap : public Asset
         {
         public:
-            enum class Side
+            enum class Side : std::uint8_t
             {
                 Left,
                 Right,

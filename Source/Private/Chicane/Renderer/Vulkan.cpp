@@ -1,20 +1,20 @@
 #include "Chicane/Renderer/Vulkan.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
+#include "Chicane/Game.hpp"
 
 namespace Chicane
 {
     namespace Vulkan
     {
-        Renderer::Renderer(Window::Instance* inWindow)
-            : m_swapChain({}),
+        Renderer::Renderer(Window* inWindow)
+            : Chicane::Renderer(inWindow),
+            m_swapChain({}),
             m_imageCount(0),
             m_currentImageIndex(0),
-            m_window(inWindow),
             m_viewportSize(Vec<2, std::uint32_t>(0)),
-            m_viewportPosition(Vec<2, std::uint32_t>(0)),
-            m_defaultCamera(new CameraComponent())
+            m_viewportPosition(Vec<2, std::uint32_t>(0))
         {
             buildInstance();
             buildDebugMessenger();
@@ -25,7 +25,7 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-            buildDefaultCamera();
+            setupCamera();
         }
 
         Renderer::~Renderer()
@@ -53,96 +53,16 @@ namespace Chicane
         Renderer::Internals Renderer::getInternals()
         {
             Internals internals {};
-            internals.physicalDevice = m_physicalDevice;
-            internals.logicalDevice  = m_logicalDevice;
-            internals.sufrace        = m_surface;
-            internals.instance       = m_instance;
-            internals.graphicsQueue  = m_graphicsQueue;
-            internals.swapchain      = &m_swapChain;
-
+            internals.physicalDevice    = m_physicalDevice;
+            internals.logicalDevice     = m_logicalDevice;
+            internals.sufrace           = m_surface;
+            internals.instance          = m_instance;
+            internals.graphicsQueue     = m_graphicsQueue;
+            internals.swapchain         = &m_swapChain;
             internals.mainCommandBuffer = m_mainCommandBuffer;
             internals.imageCount        = m_imageCount;
 
             return internals;
-        }
-
-        void Renderer::pushLayerStart(Layer* inLayer)
-        {
-            if (hasLayer(inLayer))
-            {
-                return;
-            }
-
-            m_layers.insert(
-                m_layers.begin(),
-                inLayer
-            );
-
-            inLayer->build();
-        }
-
-        void Renderer::pushLayerBack(Layer* inLayer)
-        {
-            if (hasLayer(inLayer))
-            {
-                return;
-            }
-
-            m_layers.push_back(inLayer);
-
-            inLayer->build();
-        }
-
-        void Renderer::pushLayerBefore(const std::string& inId, Layer* inLayer)
-        {
-            if (hasLayer(inLayer))
-            {
-                return;
-            }
-
-            auto foundLayer = std::find_if(
-                m_layers.begin(),
-                m_layers.end(),
-                [inId](Layer* _) { return _->getId() == inId; }
-            );
-
-            if (foundLayer == m_layers.end())
-            {
-                return;
-            }
-
-            m_layers.insert(
-                foundLayer,
-                inLayer
-            );
-
-            inLayer->build();
-        }
-
-        void Renderer::pushLayerAfter(const std::string& inId, Layer* inLayer)
-        {
-            if (hasLayer(inLayer))
-            {
-                return;
-            }
-
-            auto foundLayer = std::find_if(
-                m_layers.begin(),
-                m_layers.end(),
-                [inId](Layer* _) { return _->getId() == inId; }
-            );
-
-            if (foundLayer == m_layers.end())
-            {
-                return;
-            }
-
-            m_layers.insert(
-                foundLayer + 1,
-                inLayer
-            );
-
-            inLayer->build();
         }
 
         void Renderer::setViewport(
@@ -158,14 +78,11 @@ namespace Chicane
 
         void Renderer::onEvent(const SDL_Event& inEvent)
         {
+            Chicane::Renderer::onEvent(inEvent);
+
             if (inEvent.type == SDL_EVENT_WINDOW_RESIZED)
             {
                 rebuildSwapChain();
-            }
-
-            for (Layer* layer : m_layers)
-            {
-                layer->onEvent(inEvent);
             }
         }
 
@@ -249,25 +166,6 @@ namespace Chicane
             }
 
             m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
-        }
-
-        bool Renderer::hasLayer(Layer* inLayer)
-        {
-            if (inLayer == nullptr)
-            {
-                return false;
-            }
-
-            return hasLayer(inLayer->getId());
-        }
-
-        bool Renderer::hasLayer(const std::string& inId)
-        {
-            return std::find_if(
-                m_layers.begin(),
-                m_layers.end(),
-                [inId](Layer* _) { return _->getId() == inId; }
-            ) != m_layers.end();
         }
 
         void Renderer::buildInstance()
@@ -412,32 +310,6 @@ namespace Chicane
             destroyLayers();
         }
 
-        void Renderer::destroyLayers()
-        {
-            for (Layer* layer : m_layers)
-            {
-                layer->destroy();
-            }
-        }
-
-        void Renderer::rebuildLayers()
-        {
-            for (Layer* layer : m_layers)
-            {
-                layer->rebuild();
-            }
-        }
-
-        void Renderer::deleteLayers()
-        {
-            for (Layer* layer : m_layers)
-            {
-                delete layer;
-            }
-
-            m_layers.clear();
-        }
-
         void Renderer::buildCommandPool()
         {
             CommandBuffer::Pool::init(
@@ -481,12 +353,12 @@ namespace Chicane
 
         void Renderer::prepareCamera(Frame::Instance& outImage)
         {
-            if (!hasActiveCamera())
+            if (!Application::hasCamera())
             {
                 return;
             }
 
-            outImage.cameraUBO.instance = getActiveCamera()->getUBO();
+            outImage.cameraUBO.instance = Application::getCamera()->getUBO();
             memcpy(
                 outImage.cameraUBO.writeLocation,
                 &outImage.cameraUBO.instance,
@@ -508,12 +380,12 @@ namespace Chicane
 
         void Renderer::refreshCameraViewport()
         {
-            if (!hasActiveCamera())
+            if (!Application::hasCamera())
             {
                 return;
             }
 
-            getActiveCamera()->setViewport(
+            Application::getCamera()->setViewport(
                 m_viewportSize.x,
                 m_viewportSize.y
             );
@@ -544,16 +416,12 @@ namespace Chicane
             outImage.updateDescriptorSets();
         }
 
-        void Renderer::buildDefaultCamera()
+        void Renderer::setupCamera()
         {
-            m_defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
-
-            watchActiveCamera(
+            Application::watchCamera(
                 [this](CameraComponent* inCamera) {
                     if (inCamera == nullptr)
                     {
-                        m_defaultCamera->activate();
-
                         return;
                     }
 

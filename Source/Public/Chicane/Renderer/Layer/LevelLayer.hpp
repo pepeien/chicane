@@ -1,17 +1,17 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Core/Layer.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
-#include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
     class LevelLayer : public Layer
     {
     public:
-        LevelLayer(Window::Instance* inWindow);
+        LevelLayer();
         ~LevelLayer();
 
     public:
@@ -48,7 +48,7 @@ namespace Chicane
         void updateMeshes(const std::vector<Component*>& inComponents);
 
     private:
-        Vulkan::Renderer::Internals                         m_rendererInternals;
+        Vulkan::Renderer::Internals                         m_internals;
 
         Level*                                              m_level;
         std::vector<MeshComponent*>                         m_meshes;

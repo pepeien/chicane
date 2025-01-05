@@ -10,7 +10,7 @@ namespace Chicane
     {
         static constexpr auto SIDE_ATTRIBUTE_NAME = "side";
 
-        const std::unordered_map<std::string, CubeMap::Side> SIDE_MAP {
+        static const std::unordered_map<std::string, CubeMap::Side> SIDE_MAP {
             { "UP",    CubeMap::Side::Up },
             { "DOWN",  CubeMap::Side::Down },
             { "LEFT",  CubeMap::Side::Left },

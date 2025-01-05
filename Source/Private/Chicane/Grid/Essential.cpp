@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Essential.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Grid/View.hpp"
@@ -201,7 +202,7 @@ namespace Chicane
 
         float calculateSizeFromViewportHeight(float inVhValue)
         {
-            return getResolution().y * (inVhValue / 100);
+            return Application::getWindow()->getSize().y * (inVhValue / 100);
         }
 
         float getSizeFromViewportHeight(const std::string& inValue)
@@ -228,7 +229,7 @@ namespace Chicane
 
         float calculateSizeFromViewportWidth(float inVwValue)
         {
-            return getResolution().x * (inVwValue / 100);
+            return Application::getWindow()->getSize().x * (inVwValue / 100);
         }
 
         float getSizeFromViewportWidth(const std::string& inValue)

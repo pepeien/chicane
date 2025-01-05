@@ -1,5 +1,7 @@
 #include "Chicane/Game.hpp"
 
+#include "Chicane/Application.hpp"
+
 constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
@@ -10,12 +12,12 @@ namespace Chicane
         const std::vector<Actor*>& inIgnoredActors
     )
     {
-        if (!hasActiveLevel())
+        if (!Application::hasLevel())
         {
             return {};
         }
 
-        const std::vector<Actor*>& actors = getActiveLevel()->getActors();
+        const std::vector<Actor*>& actors = Application::getLevel()->getActors();
 
         if (actors.empty())
         {

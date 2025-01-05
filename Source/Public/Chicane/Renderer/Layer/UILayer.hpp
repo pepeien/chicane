@@ -1,19 +1,18 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-
-#include "Chicane/Renderer.hpp"
-#include "Chicane/Core/Layer.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Grid/View.hpp"
+#include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
     class UILayer : public Layer
     {
     public:
-        UILayer(Window::Instance* inWindow);
+        UILayer();
         ~UILayer();
 
     public:
@@ -36,7 +35,7 @@ namespace Chicane
         void initImgui();
 
     private:
-        Window::Instance*           m_window;
+        Window*                     m_window;
         Vulkan::Renderer::Internals m_internals;
 
         vk::RenderPass              m_renderPass;

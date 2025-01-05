@@ -24,6 +24,19 @@ namespace Chicane
         m_actors.clear();
     }
 
+    void Level::onTick(float inDeltaTime)
+    {
+        for (Actor* actor : m_actors)
+        {
+            actor->tick(inDeltaTime);
+        }
+
+        for (Component* component : m_components)
+        {
+            component->tick(inDeltaTime);
+        }
+    }
+
     bool Level::hasActors() const
     {
         return m_actors.size() > 0;

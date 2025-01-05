@@ -1,21 +1,25 @@
-#include "Chicane/Core/Layer/UILayer.hpp"
+#include "Chicane/Renderer/Layer/UILayer.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
-    UILayer::UILayer(Window::Instance* inWindow)
+    UILayer::UILayer()
         : Layer("UI"),
-        m_window(inWindow),
         m_clearValues({})
     {
-        m_bIsInitialized = Grid::hasViews();
-        m_internals      = inWindow->getRendererInternals();
+        if (Grid::hasViews())
+        {
+            m_status = Status::Initialized;
+        }
+
+        m_internals = Application::getRenderer<Vulkan::Renderer>()->getInternals();
 
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
-        if (!m_bIsInitialized)
+        if (isStatus(Status::Idle))
         {
             return;
         }
@@ -66,7 +70,7 @@ namespace Chicane
 
     UILayer::~UILayer()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -83,7 +87,7 @@ namespace Chicane
 
     void UILayer::build()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -96,7 +100,7 @@ namespace Chicane
 
     void UILayer::rebuild()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -108,7 +112,7 @@ namespace Chicane
 
     void UILayer::onEvent(const SDL_Event& inEvent)
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -118,7 +122,7 @@ namespace Chicane
 
     void UILayer::setup(Vulkan::Frame::Instance& outFrame)
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -148,7 +152,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }

@@ -1,5 +1,6 @@
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 
 namespace Chicane
@@ -48,9 +49,7 @@ namespace Chicane
 
         void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback)
         {
-            Window::Instance* window = getWindow();
-
-            if (!window)
+            if (!Application::hasWindow())
             {
                 throw std::runtime_error("Unable to open a folder dialog without a active window");
             }
@@ -61,7 +60,7 @@ namespace Chicane
             SDL_ShowOpenFolderDialog(
                 inCallback,
                 nullptr,
-                window->instance,
+                Application::getWindow()->instance,
                 location.empty() ? nullptr : location.c_str(),
                 inProps.canSelectMany
             );
@@ -69,9 +68,7 @@ namespace Chicane
 
         void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback)
         {
-            Window::Instance* window = getWindow();
-
-            if (!window)
+            if (!Application::hasWindow())
             {
                 throw std::runtime_error("Unable to open a file dialog without a active window");
             }
@@ -81,7 +78,7 @@ namespace Chicane
             SDL_ShowOpenFileDialog(
                 inCallback,
                 nullptr,
-                window->instance,
+                Application::getWindow()->instance,
                 inProps.filters,
                 inProps.filterCount,
                 location.empty() ? nullptr : location.c_str(),

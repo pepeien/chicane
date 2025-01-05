@@ -1,42 +1,46 @@
-#include "Chicane/Core/Layer/SkyboxLayer.hpp"
+#include "Chicane/Renderer/Layer/SkyboxLayer.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
-    SkyboxLayer::SkyboxLayer(Window::Instance* inWindow)
+    SkyboxLayer::SkyboxLayer()
         : Layer("Skybox"),
         m_clearValues({})
     {
-        m_bIsInitialized     = Loader::getCubemapManager()->getCount() > 0;
-        m_rendererInternals = inWindow->getRendererInternals();
+        if (Loader::getCubemapManager()->getCount() > 0) {
+            m_status = Status::Initialized;
+        }
+    
+        m_internals = Application::getRenderer<Vulkan::Renderer>()->getInternals();
 
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
     }
 
     SkyboxLayer::~SkyboxLayer()
     {
-        m_rendererInternals.logicalDevice.waitIdle();
+        m_internals.logicalDevice.waitIdle();
 
         // Graphics Pipeline
         m_graphicsPipeline.reset();
 
         // Descriptors
-        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptor.setLayout
         );
 
-        m_rendererInternals.logicalDevice.destroyDescriptorSetLayout(
+        m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_materialDescriptor.setLayout
         );
-        m_rendererInternals.logicalDevice.destroyDescriptorPool(
+        m_internals.logicalDevice.destroyDescriptorPool(
             m_materialDescriptor.pool
         );
     }
 
     void SkyboxLayer::build()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -52,19 +56,19 @@ namespace Chicane
 
     void SkyboxLayer::destroy()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
 
-        m_rendererInternals.logicalDevice.destroyDescriptorPool(
+        m_internals.logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
     }
 
     void SkyboxLayer::rebuild()
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -79,7 +83,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!m_bIsInitialized)
+        if (!isStatus(Status::Initialized))
         {
             return;
         }
@@ -133,7 +137,7 @@ namespace Chicane
 
         Vulkan::Descriptor::initSetLayout(
             m_frameDescriptor.setLayout,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             frameLayoutBidings
         );
     }
@@ -149,7 +153,7 @@ namespace Chicane
 
         Vulkan::Descriptor::initSetLayout(
             m_materialDescriptor.setLayout,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             materialLayoutBidings
         );
     }
@@ -157,17 +161,17 @@ namespace Chicane
     void SkyboxLayer::initGraphicsPipeline()
     {
         Vulkan::GraphicsPipeline::Attachment colorAttachment {};
-        colorAttachment.format        = m_rendererInternals.swapchain->format;
+        colorAttachment.format        = m_internals.swapchain->format;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
         colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
 
         Vulkan::GraphicsPipeline::CreateInfo createInfo {};
         createInfo.bHasVertices         = false;
         createInfo.bHasDepth            = false;
-        createInfo.logicalDevice        = m_rendererInternals.logicalDevice;
+        createInfo.logicalDevice        = m_internals.logicalDevice;
         createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
         createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
-        createInfo.extent      = m_rendererInternals.swapchain->extent;
+        createInfo.extent      = m_internals.swapchain->extent;
         createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
         createInfo.colorAttachment      = colorAttachment;
         createInfo.polygonMode          = vk::PolygonMode::eFill;
@@ -177,13 +181,13 @@ namespace Chicane
 
     void SkyboxLayer::initFramebuffers()
     {
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
             framebufferCreateInfo.id              = m_id;
-            framebufferCreateInfo.logicalDevice   = m_rendererInternals.logicalDevice;
+            framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
-            framebufferCreateInfo.swapChainExtent = m_rendererInternals.swapchain->extent;
+            framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
             framebufferCreateInfo.attachments.push_back(frame.imageView);
 
             Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
@@ -193,21 +197,21 @@ namespace Chicane
     void SkyboxLayer::initFrameResources()
     {
         Vulkan::Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
-        frameDescriptorPoolCreateInfo.size = static_cast<std::uint32_t>(m_rendererInternals.swapchain->frames.size());
+        frameDescriptorPoolCreateInfo.size = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
 
         Vulkan::Descriptor::initPool(
             m_frameDescriptor.pool,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             frameDescriptorPoolCreateInfo
         );
 
-        for (Vulkan::Frame::Instance& frame : m_rendererInternals.swapchain->frames)
+        for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             vk::DescriptorSet descriptorSet;
             Vulkan::Descriptor::allocalteSet(
                 descriptorSet,
-                m_rendererInternals.logicalDevice,
+                m_internals.logicalDevice,
                 m_frameDescriptor.setLayout,
                 m_frameDescriptor.pool
             );
@@ -232,7 +236,7 @@ namespace Chicane
 
         Vulkan::Descriptor::initPool(
             m_materialDescriptor.pool,
-            m_rendererInternals.logicalDevice,
+            m_internals.logicalDevice,
             materialDescriptorPoolCreateInfo
         );
     }
@@ -240,10 +244,10 @@ namespace Chicane
     void SkyboxLayer::buildAssets()
     {
         Loader::getCubemapManager()->build(
-            m_rendererInternals.logicalDevice,
-            m_rendererInternals.physicalDevice,
-            m_rendererInternals.mainCommandBuffer,
-            m_rendererInternals.graphicsQueue,
+            m_internals.logicalDevice,
+            m_internals.physicalDevice,
+            m_internals.mainCommandBuffer,
+            m_internals.graphicsQueue,
             m_materialDescriptor.setLayout,
             m_materialDescriptor.pool
         );
