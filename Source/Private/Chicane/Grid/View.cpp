@@ -1,5 +1,6 @@
 #include "Chicane/Grid/View.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style.hpp"
@@ -43,6 +44,8 @@ namespace Chicane
                       ImGuiWindowFlags_NoMove |
                       ImGuiWindowFlags_NoBackground |
                       ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+            Application::addView(this);
         }
 
         View::View(const std::string& inId)
@@ -60,6 +63,11 @@ namespace Chicane
         void View::rebuild()
         {
             m_bWasStyleAdded = false;
+        }
+
+        void View::activate()
+        {
+            Application::setView(m_id);
         }
 
         void View::show(
@@ -173,7 +181,7 @@ namespace Chicane
         void View::validate(const pugi::xml_node& inNode)
         {
             bool bIsRoot  = inNode.parent() == inNode.root();
-            bool bIsAlone = bIsRoot && inNode.next_sibling() == nullptr;
+            bool bIsAlone = bIsRoot && !inNode.next_sibling();
 
             if (!bIsRoot || !bIsAlone)
             {

@@ -1,5 +1,6 @@
 #include "Chicane/Game/Level.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 
 namespace Chicane
@@ -35,6 +36,13 @@ namespace Chicane
         {
             component->tick(inDeltaTime);
         }
+    }
+
+    void Level::activate()
+    {
+        Application::setLevel(this);
+
+        onActivation();
     }
 
     bool Level::hasActors() const

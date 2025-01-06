@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Component/TextInputComponent.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
 
@@ -11,12 +12,12 @@ namespace Chicane
         {
             void setOnInputData(Props& outProps, const pugi::xml_node& inNode)
             {
-                View* view = getActiveView();
-
-                if (!view)
+                if (!Application::hasView())
                 {
                     return;
                 }
+
+                View* view = Application::getView();
 
                 Component::FunctionData functionData = parseFunction(
                     getAttribute(ON_INPUT_ATTRIBUTE_NAME, inNode).as_string()
@@ -58,7 +59,7 @@ namespace Chicane
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
-                result.value      = getActiveView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
+                result.value      = Application::getView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
                 result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
@@ -81,12 +82,12 @@ namespace Chicane
                     throw std::runtime_error(TAG_ID + " components must have a " + VALUE_ATTRIBUTE_NAME + " attribute");
                 }
 
-                View* view = Grid::getActiveView();
-
-                if (view == nullptr)
+                if (!Application::hasView())
                 {
                     throw std::runtime_error("There is no active view");
                 }
+
+                View* view = Application::getView();
 
                 if (!view->hasVariable(variable))
                 {

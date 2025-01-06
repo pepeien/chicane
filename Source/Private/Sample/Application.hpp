@@ -13,13 +13,12 @@ class Application
 {
 public:
     Application();
-
-public:
-    void run();
+    ~Application();
 
 private:
-    void initChacater();
+    void initCubeMap();
     void initLevel();
+    void initChacater();
     void initView();
 
 private:

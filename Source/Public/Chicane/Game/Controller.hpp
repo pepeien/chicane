@@ -14,6 +14,11 @@ namespace Chicane
         virtual ~Controller() = default;
 
     public:
+        virtual void onActivation() { return; };
+
+    public:
+        void activate();
+
         template<class T = Pawn>
         const T* getPawn() const
         {

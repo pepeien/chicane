@@ -1,5 +1,6 @@
 #include "Chicane/Game/Controller.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Game/Transformable/Actor/Pawn.hpp"
 
 namespace Chicane
@@ -8,6 +9,13 @@ namespace Chicane
         : m_pawn(nullptr),
         m_pawnObservable(std::make_unique<Observable<Pawn*>>())
     {}
+
+    void Controller::activate()
+    {
+        Application::setController(this);
+
+        onActivation();
+    }
 
     void Controller::watchAttachment(
         std::function<void (Pawn*)> inNextCallback,

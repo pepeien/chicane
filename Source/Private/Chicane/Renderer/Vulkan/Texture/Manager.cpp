@@ -7,7 +7,7 @@ namespace Chicane
         namespace Texture
         {
             Manager::Manager()
-                : m_observable(std::make_unique<Observable<void*>>())
+                : Chicane::Manager()
             {}
 
             bool Manager::isEmpty() const
@@ -62,7 +62,7 @@ namespace Chicane
 
                 m_registeredIds.push_back(inId);
 
-                m_observable->next(nullptr);
+                m_observable->next(Chicane::Manager::EventType::Load);
             }
 
             void Manager::bindAll(
@@ -105,7 +105,7 @@ namespace Chicane
 
                 Texture::Instance* texture = m_instanceMap.at(inId).get();
 
-                if (texture == nullptr)
+                if (!texture)
                 {
                     throw std::runtime_error(
                         "The Texture [" + inId + "] has not been initialized"
@@ -186,19 +186,6 @@ namespace Chicane
                 inLogicalDevice.updateDescriptorSets(
                     imageWriteDescriptorSet,
                     nullptr
-                );
-            }
-
-            void Manager::watchChanges(
-                std::function<void (void*)> inNextCallback,
-                std::function<void (const std::string&)> inErrorCallback,
-                std::function<void ()> inCompleteCallback
-            )
-            {
-                m_observable->subscribe(
-                    inNextCallback,
-                    inErrorCallback,
-                    inCompleteCallback
                 );
             }
         }

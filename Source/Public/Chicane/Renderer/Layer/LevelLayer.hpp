@@ -15,8 +15,6 @@ namespace Chicane
         ~LevelLayer();
 
     public:
-        bool canRender() const override;
-
         void build() override;
         void destroy() override;
         void rebuild() override;
@@ -54,7 +52,6 @@ namespace Chicane
         std::vector<MeshComponent*>                         m_meshes;
 
         std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
-        vk::DescriptorSet                                   m_descriptorSet;
 
         Vulkan::Descriptor::Bundle                          m_frameDescriptor;
         Vulkan::Descriptor::Bundle                          m_textureDescriptor;

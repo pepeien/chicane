@@ -16,9 +16,10 @@ namespace Chicane
 
     public:
         virtual void onActivation() { return; }
+        virtual void onTick(float inDeltaTime);
 
     public:
-        void onTick(float inDeltaTime);
+        void activate();
 
         bool hasActors() const;
         const std::vector<Actor*>& getActors() const;

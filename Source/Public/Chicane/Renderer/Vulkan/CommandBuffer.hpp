@@ -2,6 +2,8 @@
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/CommandBuffer/CreateInfo.hpp"
+#include "Chicane/Renderer/Vulkan/CommandBuffer/Pool.hpp"
+#include "Chicane/Renderer/Vulkan/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {

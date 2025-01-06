@@ -9,27 +9,13 @@ namespace Chicane
 {
     LevelLayer::LevelLayer()
         : Layer("Level"),
-        m_clearValues({})
+        m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
+        m_clearValues({}),
+        m_textureManager(Loader::getTextureManager()),
+        m_modelManager(Loader::getModelManager())
     {
-        if (!Application::hasLevel())
-        {
-            m_status = Status::Initialized;
-        }
-
-        m_internals = Application::getRenderer<Vulkan::Renderer>()->getInternals();
-
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
         m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
-
-        if (isStatus(Status::Idle))
-        {
-            return;
-        }
-
-        m_level = Application::getLevel();
-
-        m_textureManager = Loader::getTextureManager();
-        m_modelManager   = Loader::getModelManager();
 
         loadEvents();
     }
@@ -44,14 +30,9 @@ namespace Chicane
         m_graphicsPipeline.reset();
     }
 
-    bool LevelLayer::canRender() const
-    {
-        return m_textureManager->canBind() && m_modelManager->canDraw() && !m_meshes.empty();
-    }
-
     void LevelLayer::build()
     {
-        if (isStatus(Status::Initialized) || m_textureManager->isEmpty() || m_modelManager->isEmpty() || m_meshes.empty())
+        if (!is(Status::Initialized))
         {
             return;
         }
@@ -61,26 +42,28 @@ namespace Chicane
         initGraphicsPipeline();
         initFramebuffers();
 
-        m_status = Status::Initialized;
-
         buildTextures();
         buildModelData();
         setupFrames();
+
+        setStatus(Status::Running);
     }
 
     void LevelLayer::destroy()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Running))
         {
             return;
         }
 
         destroyFrameResources();
+
+        setStatus(Status::Idle);
     }
 
     void LevelLayer::rebuild()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Idle))
         {
             return;
         }
@@ -88,11 +71,13 @@ namespace Chicane
         initFrameResources();
         initFramebuffers();
         setupFrames();
+
+        setStatus(Status::Running);
     }
 
     void LevelLayer::setup(Vulkan::Frame::Instance& outFrame)
     {
-        if (!canRender())
+        if (!is(Status::Running))
         {
             return;
         }
@@ -106,7 +91,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!canRender())
+        if (!is(Status::Running))
         {
             return;
         }
@@ -165,37 +150,69 @@ namespace Chicane
 
     void LevelLayer::loadEvents()
     {
-        if (isStatus(Status::Initialized))
+        if (!is(Status::Idle))
         {
             return;
         }
 
-        m_level->watchComponents(
-            std::bind(
-                &LevelLayer::updateMeshes,
-                this,
-                std::placeholders::_1
-            )
-        );
+        Application::watchLevel(
+            [this](Level* inLevel) {
+                m_level = inLevel;
 
-        m_textureManager->watchChanges(
-            [&](void* inParam)
-            {
-                if (m_textureManager->isEmpty())
+                if (!inLevel)
                 {
                     return;
                 }
 
-                buildTextures();
+                m_level->watchComponents(
+                    [this](const std::vector<Component*>& inComponents) {
+                        updateMeshes(inComponents);
+                    }
+                );
+            }
+        );
+
+        m_textureManager->watchChanges(
+            [&](Manager::EventType inEvent)
+            {
+                if (is(Status::Idle) && !m_modelManager->isEmpty())
+                {
+                    setStatus(Status::Initialized);
+
+                    build();
+
+                    return;
+                }
+
+                if (is(Status::Running))
+                {
+                    buildTextures();
+                }
             }
         );
 
         m_modelManager->watchChanges(
-            [&](Vulkan::Model::Manager::EventSubject inSubject)
+            [&](Manager::EventType inEvent)
             {
-                if (inSubject == Vulkan::Model::Manager::EventSubject::Allocation)
+                if (inEvent != Manager::EventType::Allocation)
+                {
+                    return;
+                }
+
+                if (is(Status::Idle) && !m_textureManager->isEmpty())
+                {
+                    setStatus(Status::Initialized);
+
+                    build();
+
+                    return;
+                }
+
+                if (is(Status::Running))
                 {
                     rebuildModelData();
+
+                    return;
                 }
             }
         );
@@ -203,6 +220,11 @@ namespace Chicane
 
     void LevelLayer::initFrameResources()
     {
+        if (is(Status::Running))
+        {
+            return;
+        }
+
         Vulkan::Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 2;
 
@@ -268,11 +290,6 @@ namespace Chicane
 
     void LevelLayer::destroyFrameResources()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_frameDescriptor.setLayout
         );
@@ -283,7 +300,7 @@ namespace Chicane
 
     void LevelLayer::initTextureResources()
     {
-        if (isStatus(Status::Initialized))
+        if (!is(Status::Initialized))
         {
             return;
         }
@@ -315,11 +332,6 @@ namespace Chicane
 
     void LevelLayer::destroyTextureResources()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         m_internals.logicalDevice.destroyDescriptorSetLayout(
             m_textureDescriptor.setLayout
         );
@@ -331,7 +343,7 @@ namespace Chicane
 
     void LevelLayer::initGraphicsPipeline()
     {
-        if (isStatus(Status::Initialized))
+        if (!is(Status::Initialized))
         {
             return;
         }
@@ -365,6 +377,11 @@ namespace Chicane
 
     void LevelLayer::initFramebuffers()
     {
+        if (is(Status::Running))
+        {
+            return;
+        }
+
         for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
@@ -381,11 +398,6 @@ namespace Chicane
 
     void LevelLayer::buildTextures()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         m_textureManager->build(
             m_internals.logicalDevice,
             m_internals.physicalDevice,
@@ -397,11 +409,6 @@ namespace Chicane
 
     void LevelLayer::buildModelData()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         m_modelManager->build(
             m_modelVertexBuffer,
             m_modelIndexBuffer,
@@ -414,11 +421,6 @@ namespace Chicane
 
     void LevelLayer::destroyModelData()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         m_internals.logicalDevice.waitIdle();
 
         Vulkan::Buffer::destroy(
@@ -433,11 +435,6 @@ namespace Chicane
 
     void LevelLayer::rebuildModelData()
     {
-        if (!isStatus(Status::Initialized))
-        {
-            return;
-        }
-
         destroyModelData();
 
         if (m_modelManager->isEmpty())
@@ -450,7 +447,7 @@ namespace Chicane
 
     void LevelLayer::setupFrames()
     {
-        if (!isStatus(Status::Initialized))
+        if (is(Status::Running))
         {
             return;
         }
@@ -463,7 +460,7 @@ namespace Chicane
 
     void LevelLayer::setFramesAsDirty()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Running))
         {
             return;
         }
@@ -502,13 +499,6 @@ namespace Chicane
         }
 
         m_meshes = nextMeshes;
-
-        if (!isStatus(Status::Initialized))
-        {
-            build();
-
-            return;
-        }
 
         setFramesAsDirty();
     }

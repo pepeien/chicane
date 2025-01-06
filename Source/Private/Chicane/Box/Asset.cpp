@@ -248,7 +248,7 @@ namespace Chicane
             pugi::xml_node root = getXMLRoot();
 
             bool bIsRoot  = root.parent() == root.root();
-            bool bIsAlone = bIsRoot && root.next_sibling() == nullptr;
+            bool bIsAlone = bIsRoot && !root.next_sibling();
 
             if (!bIsRoot || !bIsAlone)
             {

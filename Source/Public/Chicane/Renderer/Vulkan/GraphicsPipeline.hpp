@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
+#include "Chicane/Renderer/Vulkan/GraphicsPipeline/CreateInfo.hpp"
+#include "Chicane/Renderer/Vulkan/GraphicsPipeline/Instance.hpp"
 
 namespace Chicane
 {

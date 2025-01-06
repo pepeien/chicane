@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Renderer/Manager.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap/Instance.hpp"
 
@@ -9,9 +10,10 @@ namespace Chicane
     {
         namespace CubeMap
         {
-            class Manager
+            class Manager : public Chicane::Manager
             {
             public:
+                Manager();
                 ~Manager();
 
             public:

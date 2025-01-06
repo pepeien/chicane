@@ -25,7 +25,8 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-            setupCamera();
+
+            prepareEvents();
         }
 
         Renderer::~Renderer()
@@ -78,12 +79,12 @@ namespace Chicane
 
         void Renderer::onEvent(const SDL_Event& inEvent)
         {
-            Chicane::Renderer::onEvent(inEvent);
-
             if (inEvent.type == SDL_EVENT_WINDOW_RESIZED)
             {
                 rebuildSwapChain();
             }
+
+            emmitEventToLayers(inEvent);
         }
 
         void Renderer::render()
@@ -416,11 +417,11 @@ namespace Chicane
             outImage.updateDescriptorSets();
         }
 
-        void Renderer::setupCamera()
+        void Renderer::prepareEvents()
         {
             Application::watchCamera(
                 [this](CameraComponent* inCamera) {
-                    if (inCamera == nullptr)
+                    if (!inCamera)
                     {
                         return;
                     }

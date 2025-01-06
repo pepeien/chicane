@@ -29,6 +29,7 @@ namespace Chicane
         public:
             const std::string& getId() const;
 
+            void activate();
             void rebuild();
 
             bool hasVariable(const std::string& inId) const;

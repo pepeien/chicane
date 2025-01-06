@@ -13,9 +13,6 @@ namespace Chicane
 {
     namespace Grid
     {
-        std::unordered_map<std::string, View*> m_views;
-        View* m_activeView = nullptr;
-
         std::unordered_map<std::string, ImVec4> m_imguiColors {
             { HEX_COLOR_TRANSPARENT, ImVec4(0.0f, 0.0f, 0.0f, 0.0f) }
         };
@@ -319,54 +316,6 @@ namespace Chicane
             return getSize(attributeValue.as_string());
         }
 
-        bool hasViews()
-        {
-            return m_views.size() > 0;
-        }
-
-        void addView(View* inView)
-        {
-            if (m_views.find(inView->getId()) != m_views.end())
-            {
-                return;
-            }
-
-            m_views.insert(
-                std::make_pair(
-                    inView->getId(),
-                    inView
-                )
-            );
-        }
-
-        void addView(const std::vector<View*>& inViews)
-        {
-            for (View* view : inViews)
-            {
-                addView(view);
-            }
-        }
-
-        View* getActiveView()
-        {
-            return m_activeView;
-        }
-
-        std::string getActiveViewId()
-        {
-            if (!m_activeView)
-            {
-                return "";
-            }
-
-            return m_activeView->getId();
-        }
-
-        void setActiveView(const std::string& inViewID)
-        {
-            m_activeView = m_views.at(inViewID);
-        }
-
         void execOnTick(const pugi::xml_node& inNode)
         {
             pugi::xml_attribute onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode);
@@ -523,12 +472,12 @@ namespace Chicane
 
         std::any processRefValue(const std::string& inRefValue)
         {
-            View* view = m_activeView;
-
-            if (!view)
+            if (!Application::hasView())
             {
                 return inRefValue;
             }
+
+            View* view = Application::getView();
 
             if (!refValueContainsFunction(inRefValue))
             {
@@ -601,12 +550,12 @@ namespace Chicane
 
         std::vector<std::any> getItems(const pugi::xml_node& inNode)
         {
-            View* view = getActiveView();
-
-            if (view == nullptr)
+            if (!Application::hasView())
             {
                 return EMPTY_ITEMS;
             }
+
+            View* view = Application::getView();
 
             std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
 
@@ -627,12 +576,12 @@ namespace Chicane
 
         Component::Function getItemGetter(const pugi::xml_node& inNode)
         {
-            View* view = getActiveView();
-
-            if (view == nullptr)
+            if (!Application::hasView())
             {
                 return nullptr;
             }
+
+            View* view = Application::getView();
 
             std::string itemGetterFunctionRef = getAttribute(ITEM_GETTER_ATTRIBUTE_NAME, inNode).as_string();
 

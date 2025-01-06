@@ -68,13 +68,6 @@ namespace Chicane
             const pugi::xml_node& inNode
         );
 
-        bool hasViews();
-        void addView(View* inView);
-        void addView(const std::vector<View*>& inViews);
-        View* getActiveView();
-        std::string getActiveViewId();
-        void setActiveView(const std::string& inViewID);
-
         void execOnTick(const pugi::xml_node& inNode);
 
         void compileChildren(const pugi::xml_node& inNode);

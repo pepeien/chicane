@@ -8,6 +8,10 @@ namespace Chicane
     {
         namespace CubeMap
         {
+            Manager::Manager()
+                : Chicane::Manager()
+            {}
+
             Manager::~Manager()
             {
                 m_instanceMap.clear();
@@ -32,6 +36,8 @@ namespace Chicane
 
                 m_dataMap.insert(std::make_pair(inId, inData));
                 m_registeredIds.push_back(inId);
+
+                m_observable->next(EventType::Load);
             }
 
             void Manager::bind(
@@ -51,7 +57,7 @@ namespace Chicane
                     );
                 }
 
-                if (foundPair->second == nullptr)
+                if (!foundPair->second)
                 {
                     throw std::runtime_error(
                         "The Cube Map [" + standarizedId + "] has not been initialized"

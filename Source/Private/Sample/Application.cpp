@@ -11,18 +11,33 @@ Application::Application()
     windowCreateInfo.type         = Chicane::Window::Type::Windowed;
     windowCreateInfo.display      = 0;
 
-    Chicane::Application::CreateInfo applicationCreateInfo {};
-    applicationCreateInfo.windowCreateInfo = windowCreateInfo;
-    applicationCreateInfo.renderer         = Chicane::Renderer::Type::Vulkan;
+    Chicane::Application::CreateInfo createInfo {};
+    createInfo.window   = windowCreateInfo;
+    createInfo.renderer = Chicane::Renderer::Type::Vulkan;
+    createInfo.onSetup   = [this]() {
+        initCubeMap();
+        initLevel();
+        initChacater();
+        initView();
+    };
 
-    Chicane::Application::start(applicationCreateInfo);
+    Chicane::Application::run(createInfo);
 }
 
-void Application::run()
+Application::~Application()
 {
-    initLevel();
-    initChacater();
-    initView();
+    Chicane::Application::stop();
+}
+
+void Application::initCubeMap()
+{
+    Chicane::Loader::loadCubemap("Content/Sample/Cubemaps/Gray.bcmp");
+}
+
+void Application::initLevel()
+{
+    m_level = std::make_unique<Level>();
+    m_level->activate();
 }
 
 void Application::initChacater()
@@ -38,17 +53,8 @@ void Application::initChacater()
     m_level->addActor(character);
 }
 
-void Application::initLevel()
-{
-    m_level = std::make_unique<Level>();
-
-    Chicane::Application::setLevel(m_level.get());
-}
-
 void Application::initView()
 {
     m_view = std::make_unique<View>();
-
-    Chicane::Grid::addView(m_view.get());
-    Chicane::Grid::setActiveView(m_view->getId());
+    m_view->activate();
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Texture.hpp"
-#include "Chicane/Core/Event.hpp"
+#include "Chicane/Renderer/Manager.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Texture/Instance.hpp"
@@ -12,7 +12,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            class Manager
+            class Manager : public Chicane::Manager
             {
             public:
                 Manager();
@@ -45,19 +45,11 @@ namespace Chicane
                     Descriptor::Bundle& inDescriptor
                 );
 
-                void watchChanges(
-                    std::function<void (void*)> inNextCallback,
-                    std::function<void (const std::string&)> inErrorCallback = nullptr,
-                    std::function<void ()> inCompleteCallback = nullptr
-                );
-
             private:
                 std::vector<std::string> m_registeredIds;
 
                 std::unordered_map<std::string, std::vector<unsigned char>> m_dataMap;
                 std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_instanceMap;
-
-                std::unique_ptr<Observable<void*>> m_observable;
             };
         }
     }

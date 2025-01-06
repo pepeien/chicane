@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Instance.hpp"
+#include "Chicane/Renderer.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
@@ -10,17 +10,9 @@ namespace Chicane
         m_layers({})
     {}
 
-    void Renderer::onEvent(const SDL_Event& inEvent)
-    {
-        for (Layer* layer : m_layers)
-        {
-            layer->onEvent(inEvent);
-        }
-    }
-
     bool Renderer::hasLayer(Layer* inLayer)
     {
-        if (inLayer == nullptr)
+        if (!inLayer)
         {
             return false;
         }
@@ -157,10 +149,28 @@ namespace Chicane
         inLayer->build();
     }
 
+    void Renderer::emmitEventToLayers(const SDL_Event& inEvent)
+    {
+        for (Layer* layer : m_layers)
+        {
+            if (!layer)
+            {
+                continue;
+            }
+
+            layer->onEvent(inEvent);
+        }
+    }
+
     void Renderer::destroyLayers()
     {
         for (Layer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             layer->destroy();
         }
     }
@@ -169,6 +179,11 @@ namespace Chicane
     {
         for (Layer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             layer->rebuild();
         }
     }

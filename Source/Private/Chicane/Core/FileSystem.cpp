@@ -159,7 +159,7 @@ namespace Chicane
                 STBI_rgb_alpha
             );
 
-            if (result == nullptr)
+            if (!result)
             {
                 throw std::runtime_error(stbi_failure_reason());
             }
@@ -183,7 +183,7 @@ namespace Chicane
                 STBI_rgb_alpha
             );
 
-            if (result == nullptr)
+            if (!result)
             {
                 throw std::runtime_error(stbi_failure_reason());
             }

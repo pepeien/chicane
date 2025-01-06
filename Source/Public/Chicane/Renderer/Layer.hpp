@@ -11,7 +11,8 @@ namespace Chicane
         enum class Status : std::uint8_t
         {
             Idle,
-            Initialized
+            Initialized,
+            Running
         };
 
         enum class PushStrategy : std::uint8_t
@@ -33,9 +34,6 @@ namespace Chicane
         virtual ~Layer() = default;
 
     public:
-        // Lock
-        virtual bool canRender() const { return false; }
-
         // Initialization
         virtual void build() { return; }
         virtual void destroy() { return; }
@@ -53,9 +51,12 @@ namespace Chicane
         ) { return; }
 
     public:
-        bool isStatus(Status inStatus) const { return m_status == inStatus; };
+        bool is(Status inStatus) const { return m_status == inStatus; };
 
         const std::string& getId() const { return m_id; }
+    
+    protected:
+        void setStatus(Status inStatus) { m_status = inStatus; };
 
     protected:
         std::string m_id;

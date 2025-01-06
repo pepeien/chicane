@@ -15,8 +15,6 @@ Level::Level()
 
 void Level::onActivation()
 {
-    Chicane::Loader::loadCubemap("Content/Sample/Cubemaps/Gray.bcmp");
-
     spawnStructures();
     spawnApples();
 }

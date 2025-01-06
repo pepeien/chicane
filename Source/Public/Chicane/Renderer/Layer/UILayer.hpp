@@ -17,6 +17,7 @@ namespace Chicane
 
     public:
         void build() override;
+        void destroy() override;
         void rebuild() override;
 
         void onEvent(const SDL_Event& inEvent) override;
@@ -29,18 +30,17 @@ namespace Chicane
         ) override;
 
     private:
+        void loadEvents();
+
         void initDescriptorPool();
         void initRenderpass();
         void initFramebuffers();
         void initImgui();
 
     private:
-        Window*                     m_window;
         Vulkan::Renderer::Internals m_internals;
-
         vk::RenderPass              m_renderPass;
         vk::DescriptorPool          m_descriptorPool;
-
         std::vector<vk::ClearValue> m_clearValues;
     };
 }

@@ -2,6 +2,9 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
+#include "Chicane/Renderer/Layer/LevelLayer.hpp"
+#include "Chicane/Renderer/Layer/SkyboxLayer.hpp"
+#include "Chicane/Renderer/Layer/UILayer.hpp"
 
 namespace Chicane
 {
@@ -9,18 +12,7 @@ namespace Chicane
 
     std::unique_ptr<Application> m_application = nullptr;
 
-    Application::Application()
-        : telemetry({}),
-        controller(nullptr),
-        controllerObservable(std::make_unique<Observable<Controller*>>()),
-        level(nullptr),
-        levelObservable(std::make_unique<Observable<Level*>>()),
-        defaultCamera(nullptr),
-        camera(nullptr),
-        cameraObservable(std::make_unique<Observable<CameraComponent*>>())
-    {}
-
-    void Application::start(const CreateInfo& inCreateInfo)
+    void Application::run(const CreateInfo& inCreateInfo)
     {
         if (m_application)
         {
@@ -28,8 +20,18 @@ namespace Chicane
         }
 
         m_application = std::make_unique<Application>();
-        m_application->init(inCreateInfo);
+        m_application->setup(inCreateInfo);
         m_application->run();
+    }
+
+    void Application::stop()
+    {
+        if (!m_application)
+        {
+            return;
+        }
+
+        m_application.reset();
     }
 
     const Telemetry& Application::getTelemetry()
@@ -75,9 +77,9 @@ namespace Chicane
     }
 
     void Application::watchController(
-        std::function<void (Controller*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+        std::function<void (Controller*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
         if (!m_application)
@@ -86,9 +88,9 @@ namespace Chicane
         }
 
         m_application->controllerObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
+            inNext,
+            inError,
+            inComplete
         )->next(m_application->controller);
     }
 
@@ -121,20 +123,13 @@ namespace Chicane
 
         m_application->level = inLevel;
 
-        m_application->levelObservable->next(m_application->level);
-
-        if (!m_application->hasLevel())
-        {
-            return;
-        }
-
-        m_application->level->onActivation();
+        m_application->levelObservable->next(inLevel);
     }
 
     void Application::watchLevel(
-        std::function<void (Level*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback 
+        std::function<void (Level*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete 
     )
     {
         if (!m_application)
@@ -143,9 +138,9 @@ namespace Chicane
         }
 
         m_application->levelObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
+            inNext,
+            inError,
+            inComplete
         )->next(m_application->level);
     }
 
@@ -182,9 +177,9 @@ namespace Chicane
     }
 
     void Application::watchCamera(
-        std::function<void (CameraComponent*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+        std::function<void (CameraComponent*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
         if (!m_application)
@@ -193,10 +188,97 @@ namespace Chicane
         }
 
         m_application->cameraObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
+            inNext,
+            inError,
+            inComplete
         )->next(m_application->camera);
+    }
+
+    bool Application::hasView()
+    {
+        if (!m_application)
+        {
+            return false;
+        }
+
+        return m_application->view != nullptr;
+    }
+
+    Grid::View* Application::getView(const std::string& inId)
+    {
+        if (!m_application)
+        {
+            return nullptr;
+        }
+
+        if (inId.empty())
+        {
+            return m_application->view;
+        }
+
+        if (m_application->views.find(inId) == m_application->views.end())
+        {
+            return nullptr;
+        }
+
+        return m_application->views.at(inId);
+    }
+
+    void Application::addView(Grid::View* inView)
+    {
+        if (!inView)
+        {
+            return;
+        }
+
+        if (!m_application || m_application->views.find(inView->getId()) != m_application->views.end())
+        {
+            return;
+        }
+
+        m_application->views.insert(
+            std::make_pair(
+                inView->getId(),
+                inView
+            )
+        );
+    }
+
+    void Application::setView(const std::string& inId)
+    {
+        if (!m_application || inId.empty())
+        {
+            return;
+        }
+
+        Grid::View* view = Application::getView(inId);
+
+        if (m_application->view == view)
+        {
+            return;
+        }
+
+        m_application->view = view;
+
+        m_application->viewObservable->next(view);
+    }
+
+    void Application::watchView(
+        std::function<void (Grid::View*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
+    )
+    {
+        if (!m_application)
+        {
+            return;
+        }
+
+        m_application->viewObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
+        )->next(m_application->view);
     }
 
     bool Application::hasWindow()
@@ -206,7 +288,7 @@ namespace Chicane
             return false;
         }
 
-        return m_application->window != nullptr;
+        return m_application->window.get() != nullptr;
     }
 
     Window* Application::getWindow()
@@ -226,7 +308,7 @@ namespace Chicane
             return false;
         }
 
-        return m_application->renderer != nullptr;
+        return m_application->renderer.get() != nullptr;
     }
 
     Renderer* Application::getRenderer()
@@ -239,12 +321,34 @@ namespace Chicane
         return m_application->renderer.get();
     }
 
-    void Application::init(const CreateInfo& inCreateInfo)
+    Application::Application()
+        : telemetry({}),
+        controller(nullptr),
+        controllerObservable(std::make_unique<Observable<Controller*>>()),
+        level(nullptr),
+        levelObservable(std::make_unique<Observable<Level*>>()),
+        defaultCamera(nullptr),
+        camera(nullptr),
+        cameraObservable(std::make_unique<Observable<CameraComponent*>>()),
+        views({}),
+        view(nullptr),
+        viewObservable(std::make_unique<Observable<Grid::View*>>())
+    {}
+
+    void Application::setup(const CreateInfo& inCreateInfo)
     {
-        initWindow(inCreateInfo.windowCreateInfo);
-        initCamera();
+        initWindow(inCreateInfo.window);
         initRenderer(inCreateInfo.renderer);
-        initLayers();
+        initDefaultController();
+        initDefaultLevel();
+        initDefaultCamera();
+        initDefaultLayers();
+        initEvents();
+
+        if (inCreateInfo.onSetup)
+        {
+            inCreateInfo.onSetup();
+        }
     }
 
     void Application::run()
@@ -277,28 +381,6 @@ namespace Chicane
         window = std::make_unique<Window>(inWindowCreateInfo);
     }
 
-    void Application::initCamera()
-    {
-        if (!Application::hasWindow())
-        {
-            return;
-        }
-
-        defaultCamera = new CameraComponent();
-
-        cameraObservable->subscribe(
-            [this](CameraComponent* inCamera) {
-                if (!inCamera)
-                { 
-                    defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
-                    defaultCamera->activate();
-
-                    return;
-                }
-            }
-        );
-    }
-
     void Application::initRenderer(Renderer::Type inRendererType)
     {
         if (!Application::hasWindow() || Application::hasRenderer())
@@ -320,7 +402,37 @@ namespace Chicane
         }
     }
 
-    void Application::initLayers()
+    void Application::initDefaultController()
+    {
+        if (!Application::hasWindow())
+        {
+            return;
+        }
+
+        defaultController = std::make_unique<Controller>();
+    }
+
+    void Application::initDefaultLevel()
+    {
+        if (!Application::hasWindow())
+        {
+            return;
+        }
+
+        defaultLevel = std::make_unique<Level>();
+    }
+
+    void Application::initDefaultCamera()
+    {
+        if (!Application::hasWindow())
+        {
+            return;
+        }
+
+        defaultCamera = new CameraComponent();
+    }
+
+    void Application::initDefaultLayers()
     {
         if (!Application::hasWindow() || !Application::hasRenderer())
         {
@@ -332,27 +444,72 @@ namespace Chicane
         renderer->pushLayer(new UILayer());
     }
 
-    void Application::onEvent(const SDL_Event& inEvent) {
-        window->onEvent(inEvent);
-        renderer->onEvent(inEvent);
+    void Application::initEvents()
+    {
+        Application::watchController(
+            [this](Controller* inController) {
+                if (!inController)
+                {
+                    defaultController->activate();
 
-        if (Application::hasController())
+                    return;
+                }
+            }
+        );
+
+        Application::watchLevel(
+            [this](Level* inLevel) {
+                if (!inLevel)
+                {
+                    defaultLevel->activate();
+
+                    return;
+                }
+            }
+        );
+
+        Application::watchCamera(
+            [this](CameraComponent* inCamera) {
+                if (!inCamera)
+                { 
+                    defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
+                    defaultCamera->activate();
+
+                    return;
+                }
+            }
+        );
+    }
+
+    void Application::onEvent(const SDL_Event& inEvent) {
+        if (window)
         {
-            getController()->onEvent(inEvent);
+            window->onEvent(inEvent);
+        }
+
+        if (renderer)
+        {
+            renderer->onEvent(inEvent);
+        }
+
+        if (controller)
+        {
+            controller->onEvent(inEvent);
         }
     }
 
     void Application::onRender()
     {
         telemetry.startCapture();
-            renderer->render();
+            if (renderer)
+            {
+                renderer->render();
+            }
         telemetry.endCapture();
 
-        float delta = telemetry.frame.deltaToTick();
-
-        if (Application::hasLevel())
+        if (level)
         {
-            getLevel()->onTick(delta);
+            level->onTick(telemetry.frame.deltaToTick());
         }
     }
 }

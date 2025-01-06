@@ -1,13 +1,64 @@
 #pragma once
 
 #include "Chicane/Renderer/Camera.hpp"
-#include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Layer.hpp"
-#include "Chicane/Renderer/Layer/SkyboxLayer.hpp"
-#include "Chicane/Renderer/Layer/LevelLayer.hpp"
-#include "Chicane/Renderer/Layer/UILayer.hpp"
+#include "Chicane/Renderer/Manager.hpp"
 #include "Chicane/Renderer/Mesh.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Texture.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
-#include "Chicane/Renderer/Vulkan.hpp"
+
+namespace Chicane
+{
+    class Window;
+
+    class Renderer
+    {
+    public:
+        enum class Type : std::uint8_t
+        {
+            Undefined,
+            Vulkan
+        };
+
+    public:
+        Renderer(Window* inWindow);
+        virtual ~Renderer() = default;
+
+    public:
+        // Event
+        virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
+
+        // Render
+        virtual void render() { return; };
+
+    public:
+        // Layer
+        bool hasLayer(Layer* inLayer);
+        bool hasLayer(const std::string& inId);
+
+        void pushLayer(
+            Layer* inLayer,
+            Layer::PushStrategy inPushStrategy = Layer::PushStrategy::Back,
+            const std::string& inId = ""
+        );
+
+    protected:
+        void pushLayerStart(Layer* inLayer);
+        void pushLayerBack(Layer* inLayer);
+        void pushLayerBefore(const std::string& inId, Layer* inLayer);
+        void pushLayerAfter(const std::string& inId, Layer* inLayer);
+
+        void emmitEventToLayers(const SDL_Event& inEvent);
+        void destroyLayers();
+        void rebuildLayers();
+        void deleteLayers();
+
+    protected:
+        // Window
+        Window*             m_window;
+
+        // Layer
+        std::vector<Layer*> m_layers;
+    };
+}

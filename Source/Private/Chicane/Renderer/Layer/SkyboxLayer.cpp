@@ -7,15 +7,12 @@ namespace Chicane
 {
     SkyboxLayer::SkyboxLayer()
         : Layer("Skybox"),
+        m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
         m_clearValues({})
     {
-        if (Loader::getCubemapManager()->getCount() > 0) {
-            m_status = Status::Initialized;
-        }
-    
-        m_internals = Application::getRenderer<Vulkan::Renderer>()->getInternals();
-
         m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+
+        loadEvents();
     }
 
     SkyboxLayer::~SkyboxLayer()
@@ -40,7 +37,7 @@ namespace Chicane
 
     void SkyboxLayer::build()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Initialized))
         {
             return;
         }
@@ -51,12 +48,15 @@ namespace Chicane
         initFramebuffers();
         initFrameResources();
         initMaterialResources();
+
         buildAssets();
+
+        setStatus(Status::Running);
     }
 
     void SkyboxLayer::destroy()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Running))
         {
             return;
         }
@@ -64,17 +64,21 @@ namespace Chicane
         m_internals.logicalDevice.destroyDescriptorPool(
             m_frameDescriptor.pool
         );
+
+        setStatus(Status::Idle);
     }
 
     void SkyboxLayer::rebuild()
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Idle))
         {
             return;
         }
 
         initFramebuffers();
         initFrameResources();
+
+        setStatus(Status::Running);
     }
 
     void SkyboxLayer::render(
@@ -83,7 +87,7 @@ namespace Chicane
         const vk::Extent2D& inSwapChainExtent
     )
     {
-        if (!isStatus(Status::Initialized))
+        if (!is(Status::Running))
         {
             return;
         }
@@ -124,8 +128,39 @@ namespace Chicane
         inCommandBuffer.endRenderPass();
     }
 
+    void SkyboxLayer::loadEvents()
+    {
+        if (!is(Status::Idle))
+        {
+            return;
+        }
+
+        Loader::getCubemapManager()->watchChanges(
+            [this](Manager::EventType inEvent) {
+                if (inEvent != Manager::EventType::Load)
+                {
+                    return;
+                }
+
+                if (!is(Status::Idle))
+                {
+                    return;
+                }
+
+                setStatus(Status::Initialized);
+
+                build();
+            }
+        );
+    }
+
     void SkyboxLayer::initFrameDescriptorSetLayout()
     {
+        if (!is(Status::Initialized))
+        {
+            return;
+        }
+
         Vulkan::Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
         frameLayoutBidings.count = 1;
 
@@ -144,6 +179,11 @@ namespace Chicane
 
     void SkyboxLayer::initMaterialDescriptorSetLayout()
     {
+        if (!is(Status::Initialized))
+        {
+            return;
+        }
+
         Vulkan::Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
         materialLayoutBidings.count = 1;
         materialLayoutBidings.indices.push_back(0);
@@ -160,6 +200,11 @@ namespace Chicane
 
     void SkyboxLayer::initGraphicsPipeline()
     {
+        if (!is(Status::Initialized))
+        {
+            return;
+        }
+
         Vulkan::GraphicsPipeline::Attachment colorAttachment {};
         colorAttachment.format        = m_internals.swapchain->format;
         colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
@@ -181,6 +226,11 @@ namespace Chicane
 
     void SkyboxLayer::initFramebuffers()
     {
+        if (is(Status::Running))
+        {
+            return;
+        }
+
         for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
         {
             Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
@@ -196,6 +246,11 @@ namespace Chicane
 
     void SkyboxLayer::initFrameResources()
     {
+        if (is(Status::Running))
+        {
+            return;
+        }
+
         Vulkan::Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
         frameDescriptorPoolCreateInfo.size = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
         frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
@@ -230,6 +285,11 @@ namespace Chicane
 
     void SkyboxLayer::initMaterialResources()
     {
+        if (!is(Status::Initialized))
+        {
+            return;
+        }
+
         Vulkan::Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
         materialDescriptorPoolCreateInfo.size  = 1;
         materialDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
@@ -243,6 +303,11 @@ namespace Chicane
 
     void SkyboxLayer::buildAssets()
     {
+        if (!is(Status::Initialized))
+        {
+            return;
+        }
+
         Loader::getCubemapManager()->build(
             m_internals.logicalDevice,
             m_internals.physicalDevice,

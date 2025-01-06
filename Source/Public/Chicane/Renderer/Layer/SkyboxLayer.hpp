@@ -26,12 +26,15 @@ namespace Chicane
         ) override;
 
     private:
+        void loadEvents();
+
         void initFrameDescriptorSetLayout();
         void initMaterialDescriptorSetLayout();
         void initGraphicsPipeline();
         void initFramebuffers();
         void initFrameResources();
         void initMaterialResources();
+
         void buildAssets();
 
     private:

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Box.hpp"
-#include "Chicane/Core/Event.hpp"
+#include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Renderer/Manager.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Model/Vendor/Wavefront.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
@@ -16,16 +16,8 @@ namespace Chicane
     {
         namespace Model
         {
-            class Manager
+            class Manager : public Chicane::Manager
             {
-            public:
-                enum class EventSubject : std::uint8_t
-                {
-                    Load,
-                    Allocation,
-                    Use
-                };
-
             public:
                 Manager();
 
@@ -58,12 +50,6 @@ namespace Chicane
                 );
                 void drawAll(const vk::CommandBuffer& inCommandBuffer);
 
-                void watchChanges(
-                    std::function<void (EventSubject)> inNextCallback,
-                    std::function<void (const std::string&)> inErrorCallback = nullptr,
-                    std::function<void ()> inCompleteCallback = nullptr
-                );
-
             private:
                 void allocate(const std::string& inId);
                 void deallocate(const std::string& inId);
@@ -93,8 +79,6 @@ namespace Chicane
 
                 std::vector<Chicane::Vertex::Instance>                          m_vertices;
                 std::vector<std::uint32_t>                                      m_indices;
-
-                std::unique_ptr<Observable<EventSubject>>                       m_observable;
             };
         }
     }

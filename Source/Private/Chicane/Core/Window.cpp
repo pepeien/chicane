@@ -2,7 +2,6 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Renderer.hpp"
 
 const Chicane::Vec<2, int> VEC2_ZERO(0);
 

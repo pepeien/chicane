@@ -7,7 +7,7 @@ namespace Chicane
         namespace Model
         {
             Manager::Manager()
-                : m_observable(std::make_unique<Observable<EventSubject>>())
+                : Chicane::Manager()
             {}
 
             bool Manager::isEmpty() const
@@ -76,7 +76,7 @@ namespace Chicane
 
                 m_instanceMap.insert(std::make_pair(inId, newModel));
 
-                m_observable->next(EventSubject::Load);
+                m_observable->next(EventType::Load);
             }
 
             void Manager::activate(const std::string& inId)
@@ -90,14 +90,14 @@ namespace Chicane
 
                 if (isAllocated(inId))
                 {
-                    m_observable->next(EventSubject::Use);
+                    m_observable->next(EventType::Use);
 
                     return;
                 }
 
                 allocate(inId);
 
-                m_observable->next(EventSubject::Allocation);
+                m_observable->next(EventType::Allocation);
             }
 
             void Manager::deactivate(const std::string& inId)
@@ -117,14 +117,14 @@ namespace Chicane
 
                 if (isUsing(inId))
                 {
-                    m_observable->next(EventSubject::Use);
+                    m_observable->next(EventType::Use);
 
                     return;
                 }
 
                 deallocate(inId);
 
-                m_observable->next(EventSubject::Allocation);
+                m_observable->next(EventType::Allocation);
             }
 
             void Manager::build(
@@ -221,19 +221,6 @@ namespace Chicane
                 {
                     draw(id, inCommandBuffer);
                 }
-            }
-
-            void Manager::watchChanges(
-                std::function<void (EventSubject)> inNextCallback,
-                std::function<void (const std::string&)> inErrorCallback,
-                std::function<void ()> inCompleteCallback
-            )
-            {
-                m_observable->subscribe(
-                    inNextCallback,
-                    inErrorCallback,
-                    inCompleteCallback
-                );
             }
 
             void Manager::allocate(const std::string& inId)

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Chicane/Renderer/Instance.hpp"
-#include "Chicane/Renderer/Model.hpp"
-#include "Chicane/Renderer/Texture.hpp"
+#include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Camera.hpp"
@@ -10,9 +8,6 @@
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
-#include "Chicane/Renderer/Vulkan/GraphicsPipeline/CreateInfo.hpp"
-#include "Chicane/Renderer/Vulkan/GraphicsPipeline/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Vulkan/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Queue.hpp"
@@ -22,12 +17,8 @@
 #include "Chicane/Renderer/Vulkan/Sync.hpp"
 #include "Chicane/Renderer/Vulkan/Vertex.hpp"
 #include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Renderer/Vulkan/CommandBuffer/Pool.hpp"
-#include "Chicane/Renderer/Vulkan/CommandBuffer/Worker.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap.hpp"
-#include "Chicane/Renderer/Vulkan/CubeMap/Manager.hpp"
 #include "Chicane/Renderer/Vulkan/Frame.hpp"
-#include "Chicane/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Model/Manager.hpp"
 #include "Chicane/Renderer/Vulkan/Texture/Manager.hpp"
 
@@ -104,7 +95,7 @@ namespace Chicane
 
             void refreshCameraViewport();
 
-            void setupCamera();
+            void prepareEvents();
 
         private:
             // Instance

@@ -26,7 +26,7 @@ namespace Chicane
                 return;
             }
 
-            if (m_nextCallback == nullptr)
+            if (!m_nextCallback)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Chicane
                 return;
             }
 
-            if (m_errorCallback == nullptr)
+            if (!m_errorCallback)
             {
                 return;
             }
@@ -63,7 +63,7 @@ namespace Chicane
 
             m_bIsCompleted = true;
 
-            if (m_completeCallback == nullptr)
+            if (!m_completeCallback)
             {
                 return;
             }

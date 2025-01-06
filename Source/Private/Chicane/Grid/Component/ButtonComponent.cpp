@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Component/ButtonComponent.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Component/ContainerComponent.hpp"
@@ -12,12 +13,12 @@ namespace Chicane
         {
             void setOnClickData(Props& outProps, const pugi::xml_node& inNode)
             {
-                View* view = getActiveView();
-
-                if (!view)
+                if (!Application::hasView())
                 {
                     return;
                 }
+
+                View* view = Application::getView();
 
                 Component::FunctionData onClickFunctionData = parseFunction(
                     getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string()
