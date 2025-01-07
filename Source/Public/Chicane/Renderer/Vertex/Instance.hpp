@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Base.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Math/Vec.hpp"
 
 namespace Chicane
 {
@@ -9,6 +8,7 @@ namespace Chicane
     {
         struct Instance
         {
+        public:
             Vec<3, float> position;
             Vec<3, float> color;
             Vec<2, float> texturePosition;

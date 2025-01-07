@@ -2,9 +2,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Renderer/Layer/LevelLayer.hpp"
-#include "Chicane/Renderer/Layer/SkyboxLayer.hpp"
-#include "Chicane/Renderer/Layer/UILayer.hpp"
+#include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
@@ -390,7 +388,7 @@ namespace Chicane
 
         switch (inRendererType)
         {
-        case Renderer::Type::Vulkan :
+        case Renderer::Type::Vulkan:
             renderer = std::make_unique<Vulkan::Renderer>(window.get());
 
             break;
@@ -439,9 +437,7 @@ namespace Chicane
             return;
         }
 
-        renderer->pushLayer(new SkyboxLayer());
-        renderer->pushLayer(new LevelLayer());
-        renderer->pushLayer(new UILayer());
+        renderer->initLayers();
     }
 
     void Application::initEvents()

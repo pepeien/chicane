@@ -6,20 +6,21 @@ namespace Chicane
 {
     namespace Loader
     {
+        std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
+
         std::unique_ptr<Vulkan::CubeMap::Manager> m_cubemapManager = std::make_unique<Vulkan::CubeMap::Manager>();
-        std::unique_ptr<Vulkan::Model::Manager> m_modelManager     = std::make_unique<Vulkan::Model::Manager>();
         std::unique_ptr<Vulkan::Texture::Manager> m_textureManager = std::make_unique<Vulkan::Texture::Manager>();
 
         std::unordered_map<std::string, const Box::Asset*> m_cache {};
 
+        Model::Manager* getModelManager()
+        {
+            return m_modelManager.get();
+        }
+
         Vulkan::CubeMap::Manager* getCubemapManager()
         {
             return m_cubemapManager.get();
-        }
-
-        Vulkan::Model::Manager* getModelManager()
-        {
-            return m_modelManager.get();
         }
 
         Vulkan::Texture::Manager* getTextureManager()

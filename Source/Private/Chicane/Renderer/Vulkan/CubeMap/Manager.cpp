@@ -9,7 +9,7 @@ namespace Chicane
         namespace CubeMap
         {
             Manager::Manager()
-                : Chicane::Manager()
+                : Chicane::Manager<>()
             {}
 
             Manager::~Manager()
@@ -37,7 +37,7 @@ namespace Chicane
                 m_dataMap.insert(std::make_pair(inId, inData));
                 m_registeredIds.push_back(inId);
 
-                m_observable->next(EventType::Load);
+                m_observable->next(ManagerEventType::Load);
             }
 
             void Manager::bind(

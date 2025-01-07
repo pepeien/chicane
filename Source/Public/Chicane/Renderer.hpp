@@ -26,6 +26,9 @@ namespace Chicane
         virtual ~Renderer() = default;
 
     public:
+        // Setup
+        virtual void initLayers() { return; };
+
         // Event
         virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
 

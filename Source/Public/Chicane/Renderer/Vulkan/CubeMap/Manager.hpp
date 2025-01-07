@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace CubeMap
         {
-            class Manager : public Chicane::Manager
+            class Manager : public Chicane::Manager<>
             {
             public:
                 Manager();

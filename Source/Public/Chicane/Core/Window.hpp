@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 
 namespace Chicane

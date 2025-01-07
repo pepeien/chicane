@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Model
     {
-        struct AllocationInfo
+        struct Data
         {
         public:
             std::uint32_t vertexCount   = 0;

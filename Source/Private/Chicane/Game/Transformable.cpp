@@ -10,8 +10,8 @@ namespace Chicane
         : m_transform({}),
         m_position(BASE_MAT),
         m_direction({}),
-        m_baseBounds({}),
-        m_currentBounds({}),
+        m_baseBounds(),
+        m_currentBounds(),
         m_transformObservable(std::make_unique<Observable<const Transform&>>())
     {}
 
@@ -248,7 +248,7 @@ namespace Chicane
         m_orientation = glm::normalize(m_orientation);
 
         m_direction.forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
-        m_direction.right    = glm::rotate(m_orientation, RIGHT_DIRECTION);
+        m_direction.right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_direction.up      = glm::rotate(m_orientation, UP_DIRECTION);
     }
 }

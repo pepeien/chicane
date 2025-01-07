@@ -29,6 +29,8 @@ namespace Chicane
         const std::string& getTexture() const;
 
     protected:
+        void generateBounds();
+
         void updateVisibility();
         void show();
         void hide();

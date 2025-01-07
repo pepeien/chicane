@@ -14,7 +14,7 @@ Application::Application()
     Chicane::Application::CreateInfo createInfo {};
     createInfo.window   = windowCreateInfo;
     createInfo.renderer = Chicane::Renderer::Type::Vulkan;
-    createInfo.onSetup   = [this]() {
+    createInfo.onSetup  = [this]() {
         initCubeMap();
         initLevel();
         initChacater();

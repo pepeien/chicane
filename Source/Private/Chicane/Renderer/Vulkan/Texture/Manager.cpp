@@ -7,17 +7,17 @@ namespace Chicane
         namespace Texture
         {
             Manager::Manager()
-                : Chicane::Manager()
+                : Chicane::Manager<>()
             {}
 
-            bool Manager::isEmpty() const
+            bool Manager::canDraw() const
             {
                 return m_registeredIds.empty();
             }
 
             bool Manager::canBind() const
             {
-                return !isEmpty() && !m_instanceMap.empty();
+                return !canDraw() && !m_instanceMap.empty();
             }
 
             bool Manager::contains(const std::string& inId) const
@@ -62,7 +62,7 @@ namespace Chicane
 
                 m_registeredIds.push_back(inId);
 
-                m_observable->next(Chicane::Manager::EventType::Load);
+                m_observable->next(Chicane::ManagerEventType::Load);
             }
 
             void Manager::bindAll(
@@ -129,7 +129,7 @@ namespace Chicane
                 Descriptor::Bundle& inDescriptor
             )
             {
-                if (isEmpty())
+                if (canDraw())
                 {
                     return;
                 }

@@ -1,0 +1,40 @@
+#pragma once
+
+#include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Renderer/Manager.hpp"
+#include "Chicane/Renderer/Model.hpp"
+#include "Chicane/Renderer/Vertex.hpp"
+
+namespace Chicane
+{
+    namespace Model
+    {
+        class Manager : public Chicane::Manager<Instance, Data>
+        {
+        public:
+            Manager();
+
+        public:
+            void onAllocation(const std::string& inId, const Data& inData) override;
+            void onDeallocation(const std::string& inId) override;
+            void onActivation(const std::string& inId) override;
+            void onDeactivation(const std::string& inId) override;
+
+        public:
+            // Setup
+            void load(const std::string& inId, const Box::Model* inModel);
+
+            // Data
+            const Instance& getInstance(const std::string& inId) const;
+            const Data& getData(const std::string& inId) const;
+            const std::vector<Vertex::Instance>& getVertices() const;
+            const std::vector<std::uint32_t>& getIndices() const;
+            std::uint32_t getFirstInstance(const std::string& inId) const;
+            std::uint32_t getUseCount(const std::string& inId) const;
+
+        private:
+            std::vector<Vertex::Instance> m_vertices;
+            std::vector<std::uint32_t>    m_indices;
+        };
+    }
+}

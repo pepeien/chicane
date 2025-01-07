@@ -49,7 +49,7 @@ namespace Chicane
 
     void MeshComponent::onTick(float inDeltaTime)
     {
-        //handleDrawability();
+        //updateVisibility();
     }
 
     bool MeshComponent::isDrawable() const
@@ -76,36 +76,7 @@ namespace Chicane
     {
         m_mesh = Loader::loadMesh(inMesh);
 
-        Bounds bounds {};
-
-        for (const Box::Mesh::Group& group : m_mesh->getGroups())
-        {
-            const Vec<3, float>& extent = Loader::getModelManager()->getBounds(
-                group.getModel()
-            );
-
-            bounds.extent.x = std::max(
-                bounds.extent.x,
-                extent.x
-            );
-            bounds.extent.y = std::max(
-                bounds.extent.y,
-                extent.y
-            );
-            bounds.extent.z = std::max(
-                bounds.extent.z,
-                extent.z
-            );
-        }
-
-        setBounds(bounds);
-
-        if (!isAttached())
-        {
-            return;
-        }
-
-        m_attachment->setBounds(bounds);
+        generateBounds();
     }
 
     const std::string& MeshComponent::getModel() const
@@ -126,6 +97,40 @@ namespace Chicane
         }
 
         return m_mesh->getGroups().at(0).getTexture();
+    }
+
+    void MeshComponent::generateBounds()
+    {
+        const Model::Manager* manager = Loader::getModelManager();
+
+        Bounds result {};
+
+        for (const Box::Mesh::Group& group : m_mesh->getGroups())
+        {
+            const Model::Instance& model = manager->getInstance(group.getModel());
+
+            const Vec<3, float>& extent = model.bounds.extent;
+
+            result.extent.x = std::max(
+                result.extent.x,
+                extent.x
+            );
+            result.extent.y = std::max(
+                result.extent.y,
+                extent.y
+            );
+            result.extent.z = std::max(
+                result.extent.z,
+                extent.z
+            );
+        }
+
+        setBounds(result);
+
+        if (isAttached())
+        {
+            m_attachment->setBounds(result);
+        }
     }
 
     void MeshComponent::updateVisibility()
@@ -152,9 +157,12 @@ namespace Chicane
             return;
         }
 
-        Loader::getModelManager()->activate(
-            m_mesh->getGroups().at(0).getModel()
-        );
+        Model::Manager* manager = Loader::getModelManager();
+
+        for (const auto& group : m_mesh->getGroups())
+        {
+            manager->activate(group.getModel());
+        }
 
         m_bIsMeshActive = true;
     }

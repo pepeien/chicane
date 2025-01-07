@@ -12,13 +12,13 @@ namespace Chicane
     {
         namespace Texture
         {
-            class Manager : public Chicane::Manager
+            class Manager : public Chicane::Manager<>
             {
             public:
                 Manager();
 
             public:
-                bool isEmpty() const;
+                bool canDraw() const;
                 bool canBind() const;
                 bool contains(const std::string& inId) const;
 

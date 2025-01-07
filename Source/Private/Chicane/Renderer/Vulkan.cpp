@@ -3,6 +3,9 @@
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/LevelLayer.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/UILayer.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/SkyboxLayer.hpp"
 
 namespace Chicane
 {
@@ -75,6 +78,13 @@ namespace Chicane
             m_viewportPosition = inPosition;
 
             refreshCameraViewport();
+        }
+
+        void Renderer::initLayers()
+        {
+            pushLayer(new SkyboxLayer());
+            pushLayer(new LevelLayer());
+            pushLayer(new UILayer());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)
@@ -396,19 +406,20 @@ namespace Chicane
         {
             for (Layer* layer : m_layers)
             {
-                layer->setup(outImage);
+                layer->setup(&outImage);
             }
         }
 
         void Renderer::renderLayers(Frame::Instance& outImage, const vk::CommandBuffer& inCommandBuffer)
         {
+            Data data = {};
+            data.commandBuffer   = inCommandBuffer;
+            data.frame           = outImage;
+            data.swapChainExtent = m_swapChain.extent;
+
             for (Layer* layer : m_layers)
             {
-                layer->render(
-                    outImage,
-                    inCommandBuffer,
-                    m_swapChain.extent
-                );
+                layer->render(&data);
             }
         }
 

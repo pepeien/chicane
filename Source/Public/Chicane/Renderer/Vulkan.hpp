@@ -19,7 +19,6 @@
 #include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap.hpp"
 #include "Chicane/Renderer/Vulkan/Frame.hpp"
-#include "Chicane/Renderer/Vulkan/Model/Manager.hpp"
 #include "Chicane/Renderer/Vulkan/Texture/Manager.hpp"
 
 namespace Chicane
@@ -42,11 +41,21 @@ namespace Chicane
                 int                imageCount;
             };
 
+            struct Data
+            {
+            public:
+                Vulkan::Frame::Instance frame;
+                vk::CommandBuffer       commandBuffer;
+                vk::Extent2D            swapChainExtent;
+            };
+
         public:
             Renderer(Window* inWindow);
             ~Renderer();
 
         public:
+            void initLayers() override;
+
             void onEvent(const SDL_Event& inEvent) override;
 
             void render() override;
