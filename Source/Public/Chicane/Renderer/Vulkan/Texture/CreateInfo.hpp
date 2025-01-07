@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
@@ -11,11 +12,12 @@ namespace Chicane
             struct CreateInfo
             {
             public:
-                std::vector<unsigned char> data;
-                vk::Device                 logicalDevice;
-                vk::PhysicalDevice         physicalDevice;
-                vk::CommandBuffer          commandBuffer;
-                vk::Queue                  queue;
+                Chicane::Image::Data image;
+
+                vk::Device           logicalDevice;
+                vk::PhysicalDevice   physicalDevice;
+                vk::CommandBuffer    commandBuffer;
+                vk::Queue            queue;
             };
         }
     }

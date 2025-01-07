@@ -1,6 +1,6 @@
 #include "Chicane/Box/Asset/Texture.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
@@ -55,12 +55,12 @@ namespace Chicane
             root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
         }
 
-        const std::vector<unsigned char>& Texture::getData() const
+        const Image::Instance& Texture::getData() const
         {
             return m_data;
         }
 
-        void Texture::setData(const std::vector<unsigned char>& inData)
+        void Texture::setData(const Image::Instance& inData)
         {
             if (inData.empty())
             {

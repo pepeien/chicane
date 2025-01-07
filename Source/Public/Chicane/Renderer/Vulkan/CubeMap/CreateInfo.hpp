@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Chicane/Base.hpp"
+#include "Chicane/Core/Image.hpp"
+#include "Chicane/Box/Asset/CubeMap.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
@@ -8,12 +11,13 @@ namespace Chicane
     {
         namespace CubeMap
         {
-            typedef std::vector<std::vector<unsigned char>> Data;
+            typedef std::unordered_map<Box::CubeMap::Side, Chicane::Image::Data> Images;
 
             struct CreateInfo
             {
             public:
-                Data                    data;
+                Images                  images;
+
                 vk::Device              logicalDevice;
                 vk::PhysicalDevice      physicalDevice;
                 vk::CommandBuffer       commandBuffer;

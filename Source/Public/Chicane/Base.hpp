@@ -81,8 +81,6 @@ static constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
 
 namespace Chicane
 {
-    typedef unsigned char ImageData;
-
     struct FrameTelemetry
     {
     public:

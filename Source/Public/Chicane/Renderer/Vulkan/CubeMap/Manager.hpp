@@ -19,7 +19,7 @@ namespace Chicane
             public:
                 std::uint32_t getCount() const;
 
-                void add(const std::string& inId, const CubeMap::Data& inData);
+                void add(const std::string& inId, const CubeMap::Images& inData);
                 void bind(
                     const std::string& inId,
                     const vk::CommandBuffer& inCommandBuffer,
@@ -41,7 +41,7 @@ namespace Chicane
             private:
                 std::vector<std::string> m_registeredIds;
 
-                std::unordered_map<std::string, CubeMap::Data> m_dataMap;
+                std::unordered_map<std::string, CubeMap::Images> m_dataMap;
                 std::unordered_map<std::string, std::unique_ptr<CubeMap::Instance>> m_instanceMap;
             };
         }

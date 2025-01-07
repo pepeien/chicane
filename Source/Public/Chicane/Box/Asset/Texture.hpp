@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Renderer/Texture/Vendor.hpp"
 
@@ -21,8 +22,8 @@ namespace Chicane
             Chicane::Texture::Vendor getVendor() const;
             void setVendor(Chicane::Texture::Vendor inVendor);
 
-            const std::vector<unsigned char>& getData() const;
-            void setData(const std::vector<unsigned char>& inData);
+            const Image::Instance& getData() const;
+            void setData(const Image::Instance& inData);
             void setData(const std::string& inFilepath);
 
         private:
@@ -31,7 +32,7 @@ namespace Chicane
 
         private:
             Chicane::Texture::Vendor m_vendor;
-            std::vector<unsigned char> m_data;
+            Image::Instance          m_data;
         };
     }
 }

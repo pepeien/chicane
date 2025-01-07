@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Core/Image.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
@@ -8,7 +9,7 @@ namespace Chicane
     {
         namespace Image
         {
-	    	struct Bundle
+	    	struct Data : public Chicane::Image::Data
 	    	{
             public:
 	    		vk::Image        instance;

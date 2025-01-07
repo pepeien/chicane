@@ -5,6 +5,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
+#include "Chicane/Renderer/Vulkan/Texture.hpp"
 
 namespace Chicane
 {
@@ -45,8 +46,9 @@ namespace Chicane
             initGraphicsPipeline();
             initFramebuffers();
 
-            buildTextures();
+            buildTextureData();
             buildModelData();
+
             setupFrames();
 
             setStatus(Status::Running);
@@ -98,56 +100,39 @@ namespace Chicane
 
             Vulkan::Renderer::Data* data = (Vulkan::Renderer::Data*) outData;
 
+            vk::CommandBuffer& commandBuffer = data->commandBuffer;
+            Frame::Instance& frame = data->frame;
+
             vk::RenderPassBeginInfo renderPassBeginInfo {};
             renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-            renderPassBeginInfo.framebuffer         = data->frame.getFramebuffer(m_id);
+            renderPassBeginInfo.framebuffer         = frame.getFramebuffer(m_id);
             renderPassBeginInfo.renderArea.offset.x = 0;
             renderPassBeginInfo.renderArea.offset.y = 0;
             renderPassBeginInfo.renderArea.extent   = data->swapChainExtent;
             renderPassBeginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
             renderPassBeginInfo.pClearValues        = m_clearValues.data();
 
-            data->commandBuffer.beginRenderPass(
+
+            commandBuffer.beginRenderPass(
                 &renderPassBeginInfo,
                 vk::SubpassContents::eInline
             );
-                data->commandBuffer.bindPipeline(
+                commandBuffer.bindPipeline(
                     vk::PipelineBindPoint::eGraphics,
                     m_graphicsPipeline->instance
                 );
 
-                data->commandBuffer.bindDescriptorSets(
+                commandBuffer.bindDescriptorSets(
                     vk::PipelineBindPoint::eGraphics,
                     m_graphicsPipeline->layout,
                     0,
-                    data->frame.getDescriptorSet(m_id),
+                    frame.getDescriptorSet(m_id),
                     nullptr
                 );
 
-                vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
-                vk::DeviceSize offsets[]   = { 0 };
-
-                data->commandBuffer.bindVertexBuffers(
-                    0,
-                    1,
-                    vertexBuffers,
-                    offsets
-                );
-
-                data->commandBuffer.bindIndexBuffer(
-                    m_modelIndexBuffer.instance,
-                    0,
-                    vk::IndexType::eUint32
-                );
-
-                m_textureManager->bindAll(
-                    data->commandBuffer,
-                    m_graphicsPipeline->layout,
-                    m_textureDescriptor
-                );
-
-                renderModels(data->commandBuffer);
-            data->commandBuffer.endRenderPass();
+                renderTextures(commandBuffer);
+                renderModels(commandBuffer);
+            commandBuffer.endRenderPass();
         }
 
         void LevelLayer::loadEvents()
@@ -188,7 +173,7 @@ namespace Chicane
 
                     if (is(Status::Running))
                     {
-                        buildTextures();
+                        buildTextureData();
                     }
                 }
             );
@@ -201,7 +186,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Status::Idle) && !m_textureManager->canDraw())
+                    if (is(Status::Idle) && !m_textureManager->isEmpty())
                     {
                         setStatus(Status::Initialized);
 
@@ -312,7 +297,7 @@ namespace Chicane
 
             materialLayoutBidings.indices.push_back(0);
             materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            materialLayoutBidings.counts.push_back(m_textureManager->getCount());
+            materialLayoutBidings.counts.push_back(m_textureManager->getActiveCount());
             materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             Vulkan::Descriptor::initSetLayout(
@@ -352,8 +337,8 @@ namespace Chicane
 
             Vulkan::GraphicsPipeline::Attachment colorAttachment {};
             colorAttachment.format        = m_internals.swapchain->format;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
 
             Vulkan::GraphicsPipeline::Attachment depthAttachment {};
             depthAttachment.format        = m_internals.swapchain->depthFormat;
@@ -398,15 +383,70 @@ namespace Chicane
             }
         }
 
-        void LevelLayer::buildTextures()
+        void LevelLayer::buildTextureData()
         {
-            m_textureManager->build(
-                m_internals.logicalDevice,
-                m_internals.physicalDevice,
-                m_internals.mainCommandBuffer,
-                m_internals.graphicsQueue,
-                m_textureDescriptor
+            Texture::CreateInfo createInfo {};
+            createInfo.logicalDevice  = m_internals.logicalDevice;
+            createInfo.physicalDevice = m_internals.physicalDevice;
+            createInfo.commandBuffer  = m_internals.mainCommandBuffer;
+            createInfo.queue          = m_internals.graphicsQueue;
+
+            std::vector<vk::DescriptorImageInfo> imageInfos {};
+
+            for (const std::string& id : m_textureManager->getActiveIds())
+            {
+                createInfo.image = m_textureManager->getData(id);
+
+                m_textures.insert(
+                    std::make_pair(
+                        id,
+                        std::make_unique<Texture::Instance>(createInfo)
+                    )
+                );
+
+                Image::Data image = m_textures.at(id)->getImage();
+
+                vk::DescriptorImageInfo info {};
+                info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+                info.imageView   = image.view;
+                info.sampler     = image.sampler;
+
+                imageInfos.push_back(info);
+            }
+
+            Descriptor::allocalteSet(
+                m_textureDescriptor.set,
+                createInfo.logicalDevice,
+                m_textureDescriptor.setLayout,
+                m_textureDescriptor.pool
             );
+
+            vk::WriteDescriptorSet descriptorSet {};
+            descriptorSet.dstSet          = m_textureDescriptor.set;
+            descriptorSet.dstBinding      = 0;
+            descriptorSet.dstArrayElement = 0;
+            descriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            descriptorSet.descriptorCount = imageInfos.size();
+            descriptorSet.pImageInfo      = imageInfos.data();
+
+            createInfo.logicalDevice.updateDescriptorSets(
+                descriptorSet,
+                nullptr
+            );
+        }
+
+        void LevelLayer::renderTextures(const vk::CommandBuffer& inCommandBuffer)
+        {
+            for (const std::string& id : m_textureManager->getActiveIds())
+            {
+                inCommandBuffer.bindDescriptorSets(
+                    vk::PipelineBindPoint::eGraphics,
+                    m_graphicsPipeline->layout,
+                    1,
+                    m_textureDescriptor.set,
+                    nullptr
+                );
+            }
         }
 
         void LevelLayer::buildModelVertexBuffer()
@@ -521,6 +561,22 @@ namespace Chicane
 
         void LevelLayer::renderModels(const vk::CommandBuffer& inCommandBuffer)
         {
+            vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
+            vk::DeviceSize offsets[]   = { 0 };
+
+            inCommandBuffer.bindVertexBuffers(
+                0,
+                1,
+                vertexBuffers,
+                offsets
+            );
+
+            inCommandBuffer.bindIndexBuffer(
+                m_modelIndexBuffer.instance,
+                0,
+                vk::IndexType::eUint32
+            );
+
             for (const std::string& id : m_modelManager->getActiveIds())
             {
                 const Model::Data& data = m_modelManager->getData(id);

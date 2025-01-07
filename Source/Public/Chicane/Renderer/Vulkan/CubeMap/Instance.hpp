@@ -4,7 +4,7 @@
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap/CreateInfo.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
-#include "Chicane/Renderer/Vulkan/Image/Bundle.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Data.hpp"
 
 namespace Chicane
 {
@@ -25,21 +25,15 @@ namespace Chicane
                 );
 
             private:
-                void load();
-                void populate();
-
+                void initImage();
+                void copyPixels();
                 void initView();
                 void initSampler();
                 void initDescriptorSet();
 
             private:
-                int                m_width;
-                int                m_height;
-                int                m_channel;
-                CubeMap::Data      m_data;
-                unsigned char*     m_pixels[CUBEMAP_IMAGE_COUNT];
-
-                Image::Bundle      m_image;
+                Image::Data        m_image;
+                Images             m_images;
 
                 Descriptor::Bundle m_descriptor;
 

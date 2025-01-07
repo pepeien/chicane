@@ -4,7 +4,8 @@
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
 #include "Chicane/Renderer/Layer.hpp"
-#include "Chicane/Renderer/Model/Manager.hpp"
+#include "Chicane/Renderer/Model.hpp"
+#include "Chicane/Renderer/Texture.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
 
@@ -35,7 +36,10 @@ namespace Chicane
             void destroyTextureResources();
             void initGraphicsPipeline();
             void initFramebuffers();
-            void buildTextures();
+
+            // Texture
+            void buildTextureData();
+            void renderTextures(const vk::CommandBuffer& inCommandBuffer);
 
             // Model
             void buildModelVertexBuffer();
@@ -51,23 +55,24 @@ namespace Chicane
             void updateMeshes(const std::vector<Component*>& inComponents);
 
         private:
-            Vulkan::Renderer::Internals                         m_internals;
+            Vulkan::Renderer::Internals                                         m_internals;
 
-            Level*                                              m_level;
-            std::vector<MeshComponent*>                         m_meshes;
+            Level*                                                              m_level;
+            std::vector<MeshComponent*>                                         m_meshes;
 
-            std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
+            std::unique_ptr<Vulkan::GraphicsPipeline::Instance>                 m_graphicsPipeline;
 
-            Vulkan::Descriptor::Bundle                          m_frameDescriptor;
+            Vulkan::Descriptor::Bundle                                          m_frameDescriptor;
 
-            Vulkan::Descriptor::Bundle                          m_textureDescriptor;
-            Vulkan::Texture::Manager*                           m_textureManager;
+            Vulkan::Descriptor::Bundle                                          m_textureDescriptor;
+            std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_textures;
+            Chicane::Texture::Manager*                                          m_textureManager;
 
-            Vulkan::Buffer::Instance                            m_modelVertexBuffer;
-            Vulkan::Buffer::Instance                            m_modelIndexBuffer;
-            Model::Manager*                                     m_modelManager;
+            Vulkan::Buffer::Instance                                            m_modelVertexBuffer;
+            Vulkan::Buffer::Instance                                            m_modelIndexBuffer;
+            Chicane::Model::Manager*                                            m_modelManager;
 
-            std::vector<vk::ClearValue>                         m_clearValues;
+            std::vector<vk::ClearValue>                                         m_clearValues;
         };
     }
 }

@@ -274,7 +274,7 @@ namespace Chicane
         int channel = 0;
         int format  = 0;
 
-        ImageData* data = FileSystem::readImageFromFile(
+        Image::Pixels pixels = FileSystem::readImageFromFile(
             width,
             height,
             channel,
@@ -286,7 +286,7 @@ namespace Chicane
             width,
             height,
             SDL_PIXELFORMAT_ARGB8888,
-            data,
+            pixels,
             format * width
         );
 
@@ -298,7 +298,7 @@ namespace Chicane
         bool iconResult = SDL_SetWindowIcon(instance, icon);
 
         SDL_DestroySurface(icon);
-        stbi_image_free(data);
+        stbi_image_free(pixels);
 
         if (!iconResult)
         {

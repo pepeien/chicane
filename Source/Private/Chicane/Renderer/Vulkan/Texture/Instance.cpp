@@ -3,8 +3,6 @@
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
-#include "Chicane/Renderer/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Vulkan/Image/CreateInfo.hpp"
 #include "Chicane/Renderer/Vulkan/Texture/CreateInfo.hpp"
 
 namespace Chicane
@@ -14,38 +12,36 @@ namespace Chicane
         namespace Texture
         {
             Instance::Instance(const CreateInfo& inCreateInfo)
-                : m_width(0),
-                m_height(0),
-                m_data(inCreateInfo.data),
+                : m_image({}),
                 m_logicalDevice(inCreateInfo.logicalDevice),
                 m_physicalDevice(inCreateInfo.physicalDevice),
                 m_commandBuffer(inCreateInfo.commandBuffer),
                 m_queue(inCreateInfo.queue)
             {
-                load();
+                m_image.width    = inCreateInfo.image.width;
+                m_image.height   = inCreateInfo.image.height;
+                m_image.channels = inCreateInfo.image.channels;
+                m_image.pixels   = inCreateInfo.image.pixels;
 
-                Image::CreateInfo imageCreateInfo;
-                imageCreateInfo.width            = m_width;
-                imageCreateInfo.height           = m_height;
-                imageCreateInfo.count            = TEXTURE_IMAGE_COUNT;
-                imageCreateInfo.logicalDevice    = m_logicalDevice;
-                imageCreateInfo.physicalDevice   = m_physicalDevice;
-                imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
-                imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
-                                                   vk::ImageUsageFlagBits::eSampled;
-                imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                imageCreateInfo.format           = vk::Format::eR8G8B8A8Unorm;
+                Image::CreateInfo createInfo {};
+                createInfo.width            = m_image.width;
+                createInfo.height           = m_image.height;
+                createInfo.count            = TEXTURE_IMAGE_COUNT;
+                createInfo.logicalDevice    = m_logicalDevice;
+                createInfo.physicalDevice   = m_physicalDevice;
+                createInfo.tiling           = vk::ImageTiling::eOptimal;
+                createInfo.usage            = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                createInfo.format           = vk::Format::eR8G8B8A8Unorm;
 
-                Image::init(m_image.instance, imageCreateInfo);
+                Image::init(m_image.instance, createInfo);
                 Image::initMemory(
                     m_image.memory,
-                    imageCreateInfo,
+                    createInfo,
                     m_image.instance
                 );
 
                 populate();
-
-                free(m_pixels);
 
                 initView();
                 initSampler();
@@ -59,19 +55,9 @@ namespace Chicane
                 m_logicalDevice.destroySampler(m_image.sampler);
             }
 
-            const Image::Bundle& Instance::getImage() const
+            const Image::Data& Instance::getImage() const
             {
                 return m_image;
-            }
-
-            void Instance::load()
-            {
-                m_pixels = FileSystem::readImageFromMemory(
-                    m_width,
-                    m_height,
-                    m_channels,
-                    m_data
-                );
             }
 
             void Instance::populate()
@@ -82,7 +68,7 @@ namespace Chicane
                 stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
                                                            vk::MemoryPropertyFlagBits::eHostVisible;
                 stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-                stagingBufferCreateInfo.size             = sizeof(float) * (m_width * m_height);
+                stagingBufferCreateInfo.size             = sizeof(float) * (m_image.width * m_image.height);
 
                 Buffer::Instance stagingBuffer;
                 Buffer::init(stagingBuffer, stagingBufferCreateInfo);
@@ -92,7 +78,7 @@ namespace Chicane
                     0,
                     stagingBufferCreateInfo.size
                 );
-                memcpy(statingWriteLocation, m_pixels, stagingBufferCreateInfo.size);
+                memcpy(statingWriteLocation, m_image.pixels, stagingBufferCreateInfo.size);
                 m_logicalDevice.unmapMemory(stagingBuffer.memory);
 
                 Image::transitionLayout(
@@ -109,8 +95,8 @@ namespace Chicane
                     m_queue,
                     stagingBuffer.instance,
                     m_image.instance,
-                    m_width,
-                    m_height,
+                    m_image.width,
+                    m_image.height,
                     TEXTURE_IMAGE_COUNT
                 );
 

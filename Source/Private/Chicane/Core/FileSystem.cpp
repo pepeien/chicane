@@ -125,7 +125,7 @@ namespace Chicane
         }
 
         
-        ImageData* readImageFromFile(const std::string& inFilepath)
+        Image::Pixels readImageFromFile(const std::string& inFilepath)
         {
             int width   = 0;
             int height  = 0;
@@ -141,7 +141,7 @@ namespace Chicane
             );
         }
 
-        ImageData* readImageFromFile(
+        Image::Pixels readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
@@ -151,7 +151,7 @@ namespace Chicane
         {
             outFormat = STBI_rgb_alpha;
 
-            ImageData* result = stbi_load(
+            Image::Pixels result = stbi_load(
                 inFilepath.c_str(),
                 &outWidth,
                 &outHeight,
@@ -167,14 +167,14 @@ namespace Chicane
             return result;
         }
 
-        ImageData* readImageFromMemory(
+        Image::Pixels readImageFromMemory(
             int& outWidth,
             int& outHeight,
             int& outChannel,
-            const std::vector<unsigned char>& inData
+            const Image::Instance& inData
         )
         {
-            ImageData* result = stbi_load_from_memory(
+            Image::Pixels result = stbi_load_from_memory(
                 &inData[0],
                 static_cast<int>(inData.size()),
                 &outWidth,

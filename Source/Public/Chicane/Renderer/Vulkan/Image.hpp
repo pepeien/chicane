@@ -2,6 +2,7 @@
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Image/CreateInfo.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Data.hpp"
 
 namespace Chicane
 {

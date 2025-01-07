@@ -157,11 +157,13 @@ namespace Chicane
             return;
         }
 
-        Model::Manager* manager = Loader::getModelManager();
+        Texture::Manager* textureManager = Loader::getTextureManager();
+        Model::Manager* modelManager = Loader::getModelManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
-            manager->activate(group.getModel());
+            textureManager->activate(group.getTexture());
+            modelManager->activate(group.getModel());
         }
 
         m_bIsMeshActive = true;
@@ -174,9 +176,14 @@ namespace Chicane
             return;
         }
 
-        Loader::getModelManager()->deactivate(
-            m_mesh->getGroups().at(0).getModel()
-        );
+        Texture::Manager* textureManager = Loader::getTextureManager();
+        Model::Manager* modelManager = Loader::getModelManager();
+
+        for (const auto& group : m_mesh->getGroups())
+        {
+            textureManager->deactivate(group.getTexture());
+            modelManager->deactivate(group.getModel());
+        }
 
         m_bIsMeshActive = false;
     }

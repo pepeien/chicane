@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -19,8 +20,20 @@ namespace Chicane
         Manager()
             : m_observable(std::make_unique<Observable<ManagerEventType>>())
         {}
+        virtual ~Manager()
+        {
+            std::vector<std::string> ids = m_activeIds;
 
-    public:
+            for (const std::string& id : ids)
+            {
+                for (int i = 0; i < getUseCount(id); i++)
+                {
+                    deactivate(id);
+                }
+            }
+        }
+
+    protected:
         // Event
         virtual void onLoad(const std::string& inId, const I& inInstance) { return; };
         virtual void onAllocation(const std::string& inId, const D& inData) { return; };
@@ -72,6 +85,30 @@ namespace Chicane
         const std::vector<std::string>& getUsedIds() const
         {
             return m_usedIds;
+        }
+
+        std::uint32_t getActiveCount() const
+        {
+            return m_activeIds.size();
+        }
+
+        std::uint32_t getUsedCount() const
+        {
+            return m_usedIds.size();
+        }
+
+        std::uint32_t getUseCount(const std::string& inId) const
+        {
+            if (!isUsing(inId))
+            {
+                return 0;
+            }
+
+            return std::count(
+                m_usedIds.begin(),
+                m_usedIds.end(),
+                inId
+            );
         }
 
         // Lifecycle
@@ -150,6 +187,7 @@ namespace Chicane
                     inId
                 )
             );
+            m_usedIds.shrink_to_fit();
 
             if (!isUsing(inId))
             {
@@ -160,6 +198,7 @@ namespace Chicane
                         inId
                     )
                 );
+                m_activeIds.shrink_to_fit();
 
                 onDeactivation(inId);
             }

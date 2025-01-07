@@ -44,11 +44,6 @@ namespace Chicane
 
         void Manager::onActivation(const std::string& inId)
         {
-            if (!isLoaded(inId) || isAllocated(inId))
-            {
-                return;
-            }
-
             const Instance& instance = getInstance(inId);
 
             Data data {};
@@ -62,11 +57,6 @@ namespace Chicane
 
         void Manager::onDeactivation(const std::string& inId)
         {
-            if (!isLoaded(inId) || !isAllocated(inId))
-            {
-                return;
-            }
-
             const Data& data = m_datum.at(inId);
 
             auto verticesStart = m_vertices.begin() + data.firstVertex;
@@ -154,20 +144,6 @@ namespace Chicane
             );
 
             return result;
-        }
-
-        std::uint32_t Manager::getUseCount(const std::string& inId) const
-        {
-            if (!isUsing(inId))
-            {
-                return 0;
-            }
-
-            return std::count(
-                m_usedIds.begin(),
-                m_usedIds.end(),
-                inId
-            );
         }
     }
 }

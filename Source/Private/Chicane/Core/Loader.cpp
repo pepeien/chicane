@@ -7,9 +7,9 @@ namespace Chicane
     namespace Loader
     {
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
+        std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
         std::unique_ptr<Vulkan::CubeMap::Manager> m_cubemapManager = std::make_unique<Vulkan::CubeMap::Manager>();
-        std::unique_ptr<Vulkan::Texture::Manager> m_textureManager = std::make_unique<Vulkan::Texture::Manager>();
 
         std::unordered_map<std::string, const Box::Asset*> m_cache {};
 
@@ -18,14 +18,14 @@ namespace Chicane
             return m_modelManager.get();
         }
 
+        Texture::Manager* getTextureManager()
+        {
+            return m_textureManager.get();
+        }
+
         Vulkan::CubeMap::Manager* getCubemapManager()
         {
             return m_cubemapManager.get();
-        }
-
-        Vulkan::Texture::Manager* getTextureManager()
-        {
-            return m_textureManager.get();
         }
 
         bool isLoaded(const std::string& inIdentifier)
@@ -117,7 +117,7 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_textureManager->add(
+            m_textureManager->load(
                 filepath,
                 static_cast<const Box::Texture*>(inAsset)
             );
@@ -192,15 +192,16 @@ namespace Chicane
 
             const Box::CubeMap* cubemap = static_cast<const Box::CubeMap*>(inAsset);
 
-            Vulkan::CubeMap::Data images {};
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Left))->getData());  // Positive X
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Right))->getData()); // Negative X
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Front))->getData()); // Positive Y
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Back))->getData());  // Negative Y
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData());    // Positive Z
-            images.push_back(loadTexture(cubemap->getTexture(Box::CubeMap::Side::Down))->getData());  // Negative Z
+            //Vulkan::CubeMap::Images images = {
+            //    { Box::CubeMap::Side::Left,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Left))->getData() },
+            //    { Box::CubeMap::Side::Right, loadTexture(cubemap->getTexture(Box::CubeMap::Side::Right))->getData() },
+            //    { Box::CubeMap::Side::Front, loadTexture(cubemap->getTexture(Box::CubeMap::Side::Front))->getData() },
+            //    { Box::CubeMap::Side::Back,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Back))->getData() },
+            //    { Box::CubeMap::Side::Up,    loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData() },
+            //    { Box::CubeMap::Side::Down,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData() },
+            //};
 
-            m_cubemapManager->add("Skybox", images);
+            //m_cubemapManager->add("Skybox", images);
         }
 
         const Box::CubeMap* loadCubemap(const std::string& inFilepath)

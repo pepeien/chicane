@@ -4,9 +4,12 @@
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Camera.hpp"
+#include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
+#include "Chicane/Renderer/Vulkan/CubeMap.hpp"
 #include "Chicane/Renderer/Vulkan/Debug.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Device.hpp"
+#include "Chicane/Renderer/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Renderer/Vulkan/Instance.hpp"
@@ -15,11 +18,8 @@
 #include "Chicane/Renderer/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Vulkan/SwapChain.hpp"
 #include "Chicane/Renderer/Vulkan/Sync.hpp"
+#include "Chicane/Renderer/Vulkan/Texture.hpp"
 #include "Chicane/Renderer/Vulkan/Vertex.hpp"
-#include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Renderer/Vulkan/CubeMap.hpp"
-#include "Chicane/Renderer/Vulkan/Frame.hpp"
-#include "Chicane/Renderer/Vulkan/Texture/Manager.hpp"
 
 namespace Chicane
 {

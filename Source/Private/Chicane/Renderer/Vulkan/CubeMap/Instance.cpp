@@ -12,50 +12,30 @@ namespace Chicane
         namespace CubeMap
         {
             Instance::Instance(const CreateInfo& inCreateInfo)
-                : m_width(0),
-                  m_height(0),
-                  m_logicalDevice(inCreateInfo.logicalDevice),
-                  m_physicalDevice(inCreateInfo.physicalDevice),
-                  m_commandBuffer(inCreateInfo.commandBuffer),
-                  m_queue(inCreateInfo.queue),
-                  m_descriptor({ inCreateInfo.descriptorSetLayout, nullptr, inCreateInfo.descriptorPool })
+                : m_image({}),
+                m_images(inCreateInfo.images),
+                m_logicalDevice(inCreateInfo.logicalDevice),
+                m_physicalDevice(inCreateInfo.physicalDevice),
+                m_commandBuffer(inCreateInfo.commandBuffer),
+                m_queue(inCreateInfo.queue),
+                m_descriptor({})
             {
-
-                m_data.resize(CUBEMAP_IMAGE_COUNT);
-                for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+                if (m_images.size() < CUBEMAP_IMAGE_COUNT)
                 {
-                    m_data[i] = inCreateInfo.data[i];
+                    throw new std::runtime_error("Every cube map must have " + std::to_string(CUBEMAP_IMAGE_COUNT) + " images.");
                 }
 
-                load();
+                m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
+                m_descriptor.set       = nullptr;
+                m_descriptor.pool      = inCreateInfo.descriptorPool;
 
-                Image::CreateInfo imageCreateInfo;
-                imageCreateInfo.width            = m_width;
-                imageCreateInfo.height           = m_height;
-                imageCreateInfo.count            = CUBEMAP_IMAGE_COUNT;
-                imageCreateInfo.logicalDevice    = m_logicalDevice;
-                imageCreateInfo.physicalDevice   = m_physicalDevice;
-                imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
-                imageCreateInfo.usage            = vk::ImageUsageFlagBits::eTransferDst |
-                                                   vk::ImageUsageFlagBits::eSampled;
-                imageCreateInfo.create           = vk::ImageCreateFlagBits::eCubeCompatible;
-                imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                imageCreateInfo.format           = vk::Format::eR8G8B8A8Unorm;
+                const Chicane::Image::Data& baseImage = m_images.at(Box::CubeMap::Side::Up);
+                m_image.width    = baseImage.width;
+                m_image.height   = baseImage.height;
+                m_image.channels = baseImage.channels;
 
-                Image::init(m_image.instance, imageCreateInfo);
-                Image::initMemory(
-                    m_image.memory,
-                    imageCreateInfo,
-                    m_image.instance
-                );
-
-                populate();
-
-                for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
-                {
-                    free(m_pixels[i]);
-                }
-
+                initImage();
+                copyPixels();
                 initView();
                 initSampler();
                 initDescriptorSet();
@@ -83,47 +63,58 @@ namespace Chicane
                 );
             }
 
-            void Instance::load()
+            void Instance::initImage()
             {
-                for (int i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
-                {
-                    m_pixels[i] = FileSystem::readImageFromMemory(
-                        m_width,
-                        m_height,
-                        m_channel,
-                        m_data[i]
-                    );
-                }
+                Image::CreateInfo createInfo {};
+                createInfo.width            = m_image.width;
+                createInfo.height           = m_image.height;
+                createInfo.count            = CUBEMAP_IMAGE_COUNT;
+                createInfo.logicalDevice    = m_logicalDevice;
+                createInfo.physicalDevice   = m_physicalDevice;
+                createInfo.tiling           = vk::ImageTiling::eOptimal;
+                createInfo.usage            = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                createInfo.create           = vk::ImageCreateFlagBits::eCubeCompatible;
+                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                createInfo.format           = vk::Format::eR8G8B8A8Unorm;
+
+                Image::init(m_image.instance, createInfo);
+                Image::initMemory(
+                    m_image.memory,
+                    createInfo,
+                    m_image.instance
+                );
             }
 
-            void Instance::populate()
+            void Instance::copyPixels()
             {
-                std::uint32_t imageSize = sizeof(float) * (m_width * m_height);
+                std::uint32_t imageSize = sizeof(float) * (m_image.width * m_image.height);
 
-                Buffer::CreateInfo stagingBufferCreateInfo;
-                stagingBufferCreateInfo.logicalDevice    = m_logicalDevice;
-                stagingBufferCreateInfo.physicalDevice   = m_physicalDevice;
-                stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
-                                                           vk::MemoryPropertyFlagBits::eHostVisible;
-                stagingBufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-                stagingBufferCreateInfo.size             = imageSize * CUBEMAP_IMAGE_COUNT;
+                Buffer::CreateInfo bufferCreateInfo {};
+                bufferCreateInfo.logicalDevice    = m_logicalDevice;
+                bufferCreateInfo.physicalDevice   = m_physicalDevice;
+                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
+                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+                bufferCreateInfo.size             = imageSize * CUBEMAP_IMAGE_COUNT;
 
                 Buffer::Instance stagingBuffer;
-                Buffer::init(stagingBuffer, stagingBufferCreateInfo);
+                Buffer::init(stagingBuffer, bufferCreateInfo);
 
-                for (std::uint32_t i = 0; i < CUBEMAP_IMAGE_COUNT; i++)
+                std::uint32_t i = 0;
+                for (const auto& [side, image] : m_images)
                 {
-                    void* statingWriteLocation = m_logicalDevice.mapMemory(
+                    void* writeLocation = m_logicalDevice.mapMemory(
                         stagingBuffer.memory,
                         imageSize * i,
                         imageSize
                     );
                     memcpy(
-                        statingWriteLocation,
-                        m_pixels[i],
+                        writeLocation,
+                        image.pixels,
                         imageSize
                     );
                     m_logicalDevice.unmapMemory(stagingBuffer.memory);
+
+                    i++;
                 }
 
                 Image::transitionLayout(
@@ -140,8 +131,8 @@ namespace Chicane
                     m_queue,
                     stagingBuffer.instance,
                     m_image.instance,
-                    m_width,
-                    m_height,
+                    m_image.width,
+                    m_image.height,
                     CUBEMAP_IMAGE_COUNT
                 );
 
@@ -172,7 +163,7 @@ namespace Chicane
 
             void Instance::initSampler()
             {
-                vk::SamplerCreateInfo createInfo;
+                vk::SamplerCreateInfo createInfo {};
                 createInfo.flags                   = vk::SamplerCreateFlags();
                 createInfo.minFilter               = vk::Filter::eNearest;
                 createInfo.magFilter               = vk::Filter::eLinear;
@@ -202,21 +193,21 @@ namespace Chicane
                     m_descriptor.pool
                 );
 
-                vk::DescriptorImageInfo imageDescriptorInfo;
-                imageDescriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                imageDescriptorInfo.imageView   = m_image.view;
-                imageDescriptorInfo.sampler     = m_image.sampler;
+                vk::DescriptorImageInfo descriptorInfo {};
+                descriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+                descriptorInfo.imageView   = m_image.view;
+                descriptorInfo.sampler     = m_image.sampler;
 
-                vk::WriteDescriptorSet imageWriteDescriptorSet;
-                imageWriteDescriptorSet.dstSet          = m_descriptor.set;
-                imageWriteDescriptorSet.dstBinding      = 0;
-                imageWriteDescriptorSet.dstArrayElement = 0;
-                imageWriteDescriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                imageWriteDescriptorSet.descriptorCount = 1;
-                imageWriteDescriptorSet.pImageInfo      = &imageDescriptorInfo;
+                vk::WriteDescriptorSet descriptorSetInfo {};
+                descriptorSetInfo.dstSet          = m_descriptor.set;
+                descriptorSetInfo.dstBinding      = 0;
+                descriptorSetInfo.dstArrayElement = 0;
+                descriptorSetInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                descriptorSetInfo.descriptorCount = 1;
+                descriptorSetInfo.pImageInfo      = &descriptorInfo;
 
                 m_logicalDevice.updateDescriptorSets(
-                    imageWriteDescriptorSet,
+                    descriptorSetInfo,
                     nullptr
                 );
             }

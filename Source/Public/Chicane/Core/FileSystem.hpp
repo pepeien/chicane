@@ -4,6 +4,7 @@
 #include "Chicane/Core/FileSystem/Dialog.hpp"
 #include "Chicane/Core/FileSystem/Dialog/FileDialog.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
+#include "Chicane/Core/Image.hpp"
 
 namespace Chicane
 {
@@ -19,19 +20,19 @@ namespace Chicane
 
         std::vector<char> readFile(const std::string& inFilepath);
         std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath);
-        ImageData* readImageFromFile(const std::string& inFilepath);
-        ImageData* readImageFromFile(
+        Image::Pixels readImageFromFile(const std::string& inFilepath);
+        Image::Pixels readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             int& outFormat,
             const std::string& inFilepath
         );
-        ImageData* readImageFromMemory(
+        Image::Pixels readImageFromMemory(
             int& outWidth,
             int& outHeight,
             int& outChannel,
-            const std::vector<unsigned char>& inData
+            const Image::Instance& inData
         );
     }
 }

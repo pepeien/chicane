@@ -22,7 +22,7 @@ namespace Chicane
                 return static_cast<std::uint32_t>(m_dataMap.size());
             }
 
-            void Manager::add(const std::string& inId, const CubeMap::Data& inData)
+            void Manager::add(const std::string& inId, const CubeMap::Images& inData)
             {
                 if (
                     m_dataMap.find(inId) != m_dataMap.end() ||
@@ -95,7 +95,7 @@ namespace Chicane
                         );
                     }
 
-                    createInfo.data = foundPair->second;
+                    //createInfo.data = foundPair->second;
 
                     m_instanceMap.insert(
                         std::make_pair(
