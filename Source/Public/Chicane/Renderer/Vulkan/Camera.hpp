@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Chicane/Renderer/Vulkan/Camera/UBO.hpp"
+#include "Chicane/Renderer/Vulkan/Camera/Instance.hpp"

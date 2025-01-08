@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Renderer/Vulkan/Camera/UBO.hpp"
+#include "Chicane/Renderer/Vulkan/Camera.hpp"
 #include "Chicane/Renderer/Vulkan/Frame/Depth.hpp"
 #include "Chicane/Renderer/Vulkan/Mesh.hpp"
 
@@ -51,39 +51,39 @@ namespace Chicane
                 void destroy();
 
             public:
-                vk::Device logicalDevice;
-                vk::PhysicalDevice physicalDevice;
+                vk::Device                                        logicalDevice;
+                vk::PhysicalDevice                                physicalDevice;
 
                 // Swapchain
-                std::uint32_t width;
-                std::uint32_t height;
+                std::uint32_t                                     width;
+                std::uint32_t                                     height;
 
                 // Image
-                vk::Image image;
-                vk::ImageView imageView;
-                std::unordered_map<std::string, vk::Framebuffer> framebuffers;
+                vk::Image                                         image;
+                vk::ImageView                                     imageView;
+                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
 
                 // Depth
-                Depth depth;
+                Depth                                             depth;
 
                 // Sychronization
-                vk::CommandBuffer commandBuffer;
-                vk::Fence renderFence;
-                vk::Semaphore presentSemaphore;
-                vk::Semaphore renderSemaphore;
+                vk::CommandBuffer                                 commandBuffer;
+                vk::Fence                                         renderFence;
+                vk::Semaphore                                     presentSemaphore;
+                vk::Semaphore                                     renderSemaphore;
         
                 // Resources
-                Camera::UBOBundle cameraUBO;
-                vk::DescriptorBufferInfo cameraDescriptorBufferInfo;
+                Camera::Instance                                  cameraUBO;
+                vk::DescriptorBufferInfo                          cameraDescriptorBufferInfo;
 
-                Mesh::Bundle meshBundle;
-                vk::DescriptorBufferInfo modelDescriptorBufferInfo;
+                Mesh::Bundle                                      meshBundle;
+                vk::DescriptorBufferInfo                          modelDescriptorBufferInfo;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
-                std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
+                std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
 
             private:
-                bool m_bIsDirty;
+                bool                                              m_bIsDirty;
             };
         }
     }

@@ -84,7 +84,7 @@ namespace Chicane
         {
             pushLayer(new SkyboxLayer());
             pushLayer(new LevelLayer());
-            pushLayer(new UILayer());
+            //pushLayer(new UILayer());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)
@@ -369,7 +369,7 @@ namespace Chicane
                 return;
             }
 
-            outImage.cameraUBO.instance = Application::getCamera()->getUBO();
+            outImage.cameraUBO.instance = Application::getCamera()->getData();
             memcpy(
                 outImage.cameraUBO.writeLocation,
                 &outImage.cameraUBO.instance,

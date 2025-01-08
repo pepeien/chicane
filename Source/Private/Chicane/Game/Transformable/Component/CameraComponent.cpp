@@ -9,22 +9,22 @@ namespace Chicane
         : Component(),
         m_settings({}),
         m_frustum({}),
-        m_UBO({})
+        m_data({})
     {
         watchTransform(
             [this](const Transform& inTransform)
             {
-                m_UBO.forward.x = m_direction.forward.x;
-                m_UBO.forward.y = m_direction.forward.y;
-                m_UBO.forward.z = m_direction.forward.z;
+                m_data.forward.x = m_direction.forward.x;
+                m_data.forward.y = m_direction.forward.y;
+                m_data.forward.z = m_direction.forward.z;
 
-                m_UBO.right.x = m_direction.right.x;
-                m_UBO.right.y = m_direction.right.y;
-                m_UBO.right.z = m_direction.right.z;
+                m_data.right.x = m_direction.right.x;
+                m_data.right.y = m_direction.right.y;
+                m_data.right.z = m_direction.right.z;
 
-                m_UBO.up.x = m_direction.up.x;
-                m_UBO.up.y = m_direction.up.y;
-                m_UBO.up.z = m_direction.up.z;
+                m_data.up.x = m_direction.up.x;
+                m_data.up.y = m_direction.up.y;
+                m_data.up.z = m_direction.up.z;
 
                 updateView();
             }
@@ -139,24 +139,24 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
-    const Vulkan::Camera::UBO& CameraComponent::getUBO() const
+    const Camera::Data& CameraComponent::getData() const
     {
-        return m_UBO;
+        return m_data;
     }
 
     void CameraComponent::updateProjection()
     {
-        m_UBO.clip.x = getNearClip();
-        m_UBO.clip.y = getFarClip();
+        m_data.clip.x = getNearClip();
+        m_data.clip.y = getFarClip();
 
-        m_UBO.projection = glm::perspective(
+        m_data.projection = glm::perspective(
             glm::radians(getFieldOfView()),
             m_settings.aspectRatio,
-            m_UBO.clip.x,
-            m_UBO.clip.y
+            m_data.clip.x,
+            m_data.clip.y
         );
         // Normalize OpenGL's to Vulkan's coordinate system
-        m_UBO.projection[1][1] *= -1;
+        m_data.projection[1][1] *= -1;
 
         updateViewProjection();
 
@@ -167,7 +167,7 @@ namespace Chicane
     {
         const Vec<3, float>& translation = getTranslation();
 
-        m_UBO.view = glm::lookAt(
+        m_data.view = glm::lookAt(
             translation,
             translation + getForward(),
             getUp()
@@ -180,6 +180,6 @@ namespace Chicane
 
     void CameraComponent::updateViewProjection()
     {
-        m_UBO.viewProjection = m_UBO.projection * m_UBO.view;
+        m_data.viewProjection = m_data.projection * m_data.view;
     }
 }

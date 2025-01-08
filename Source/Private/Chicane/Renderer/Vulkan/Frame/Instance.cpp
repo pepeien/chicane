@@ -99,7 +99,7 @@ namespace Chicane
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Camera::UBO);
+                bufferCreateInfo.size             = sizeof(Chicane::Camera::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 Buffer::init(

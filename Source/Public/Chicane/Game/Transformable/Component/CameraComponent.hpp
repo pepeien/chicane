@@ -1,10 +1,8 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Transformable.hpp"
 #include "Chicane/Game/Transformable/Component.hpp"
 #include "Chicane/Renderer/Camera.hpp"
-#include "Chicane/Renderer/Vulkan/Camera.hpp"
 
 namespace Chicane
 {
@@ -36,7 +34,7 @@ namespace Chicane
         void setFarClip(float inFarClip);
         void setClip(float inNearClip, float inFarClip);
 
-        const Vulkan::Camera::UBO& getUBO() const;
+        const Camera::Data& getData() const;
 
     protected:
         void updateProjection();
@@ -46,6 +44,6 @@ namespace Chicane
     protected:
         Camera::Settings      m_settings;
         Camera::SphereFrustum m_frustum;
-        Vulkan::Camera::UBO   m_UBO;
+        Camera::Data          m_data;
     }; 
 }
