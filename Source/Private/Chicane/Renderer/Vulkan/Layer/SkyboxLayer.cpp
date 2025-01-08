@@ -328,7 +328,7 @@ namespace Chicane
                 m_graphicsPipeline->layout
             );
 
-            inCommandBuffer.draw(CUBEMAP_IMAGE_COUNT, 1, 0, 0);
+            inCommandBuffer.draw(Chicane::CubeMap::IMAGE_COUNT, 1, 0, 0);
         }
     }
 }

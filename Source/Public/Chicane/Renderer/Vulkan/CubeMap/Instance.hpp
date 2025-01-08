@@ -26,6 +26,7 @@ namespace Chicane
 
             private:
                 void initImage();
+                std::vector<std::uint32_t> getImagePixelCounts();
                 void copyPixels();
                 void initView();
                 void initSampler();
