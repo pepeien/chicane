@@ -11,12 +11,9 @@ namespace Chicane
     class Application
     {
     public:
-        struct CreateInfo
+        struct CreateInfo : public Window::CreateInfo
         {
         public:
-            Window::CreateInfo     window   = {};
-            Renderer::Type         renderer = Renderer::Type::Undefined;
-
             // Callbacks
             std::function<void ()> onSetup  = nullptr;
         };
@@ -96,7 +93,7 @@ namespace Chicane
     private:
         // Setup
         void initWindow(const Window::CreateInfo& inWindowCreateInfo);
-        void initRenderer(Renderer::Type inRendererType);
+        void initRenderer(RendererType inRendererType);
         void initDefaultController();
         void initDefaultLevel();
         void initDefaultCamera();

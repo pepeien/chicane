@@ -4,17 +4,14 @@
 
 Application::Application()
 {
-    Chicane::Window::CreateInfo windowCreateInfo {};
-    windowCreateInfo.title        = "Chicane Sample";
-    windowCreateInfo.resolution.x = 1600;
-    windowCreateInfo.resolution.y = 900;
-    windowCreateInfo.type         = Chicane::Window::Type::Windowed;
-    windowCreateInfo.display      = 0;
-
     Chicane::Application::CreateInfo createInfo {};
-    createInfo.window   = windowCreateInfo;
-    createInfo.renderer = Chicane::Renderer::Type::Vulkan;
-    createInfo.onSetup  = [this]() {
+    createInfo.title        = "Chicane Sample";
+    createInfo.resolution.x = 1600;
+    createInfo.resolution.y = 900;
+    createInfo.type         = Chicane::WindowType::Windowed;
+    createInfo.renderer     = Chicane::RendererType::Vulkan;
+    createInfo.display      = 0;
+    createInfo.onSetup      = [this]() {
         initCubeMap();
         initLevel();
         initChacater();

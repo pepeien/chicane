@@ -2,30 +2,26 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Window/Type.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Type.hpp"
 
 namespace Chicane
 {
     class Window
     {
     public:
-        enum class Type : uint8_t
-        {
-            Windowed,
-            WindowedBorderless,
-            Fullscreen,
-        };
-
         struct CreateInfo
         {
         public:
-            std::string title        = "";
-            std::string icon         = ""; // Optional `file path`
-            Vec<2, int> resolution   = Vec<2, int>(0);
-            int         display      = 0;
-            Type        type         = Type::Windowed;
-            bool        bIsFocused   = false;
-            bool        bIsResizable = true; // Only takes effect when the type is `Type::Windowed`
+            std::string    title        = "";
+            std::string    icon         = ""; // Optional `file path`
+            Vec<2, int>    resolution   = Vec<2, int>(0);
+            int            display      = 0;
+            WindowType     type         = WindowType::Windowed;
+            RendererType   renderer     = RendererType::Undefined;
+            bool           bIsFocused   = false;
+            bool           bIsResizable = true; // Only takes effect when the type is `Type::Windowed`
         };
 
     public:
@@ -64,8 +60,8 @@ namespace Chicane
 
         void setDisplay(int inMonitorIndex);
 
-        void setType(Type inType);
-        Type getType() const;
+        void setType(WindowType inType);
+        WindowType getType() const;
 
         bool isResizable();
         void enableResizing();  // Only takes effect when the type is `Type::Windowed`
@@ -84,7 +80,7 @@ namespace Chicane
 
     private:
         // Settings
-        Type         m_type;
+        WindowType   m_type;
         Vec<2, int>  m_size;
         Vec<2, int>  m_drawableSize;
         Vec<2, int>  m_position;

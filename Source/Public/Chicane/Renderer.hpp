@@ -6,6 +6,7 @@
 #include "Chicane/Renderer/Mesh.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Texture.hpp"
+#include "Chicane/Renderer/Type.hpp"
 #include "Chicane/Renderer/Vertex.hpp"
 
 namespace Chicane
@@ -14,13 +15,6 @@ namespace Chicane
 
     class Renderer
     {
-    public:
-        enum class Type : std::uint8_t
-        {
-            Undefined,
-            Vulkan
-        };
-
     public:
         Renderer(Window* inWindow);
         virtual ~Renderer() = default;

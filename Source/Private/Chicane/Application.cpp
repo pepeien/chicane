@@ -335,7 +335,7 @@ namespace Chicane
 
     void Application::setup(const CreateInfo& inCreateInfo)
     {
-        initWindow(inCreateInfo.window);
+        initWindow(inCreateInfo);
         initRenderer(inCreateInfo.renderer);
         initDefaultController();
         initDefaultLevel();
@@ -379,7 +379,7 @@ namespace Chicane
         window = std::make_unique<Window>(inWindowCreateInfo);
     }
 
-    void Application::initRenderer(Renderer::Type inRendererType)
+    void Application::initRenderer(RendererType inRendererType)
     {
         if (!Application::hasWindow() || Application::hasRenderer())
         {
@@ -388,7 +388,7 @@ namespace Chicane
 
         switch (inRendererType)
         {
-        case Renderer::Type::Vulkan:
+        case RendererType::Vulkan:
             renderer = std::make_unique<Vulkan::Renderer>(window.get());
 
             break;

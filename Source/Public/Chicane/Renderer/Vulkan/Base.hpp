@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SDL3/SDL_vulkan.h"
+
 #include "vulkan/vulkan.hpp"
 
 #include "Chicane/Base.hpp"

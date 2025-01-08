@@ -13,7 +13,11 @@ namespace Chicane
         m_bIsResizable(inCreateInfo.bIsResizable),
         m_bIsMinimized(false)
     {
-        if (!SDL_InitSubSystem(SDL_INIT_AUDIO | SDL_INIT_GAMEPAD | SDL_INIT_VIDEO))
+        SDL_InitFlags initFlags = SDL_INIT_GAMEPAD;
+        initFlags              |= SDL_INIT_VIDEO;
+        initFlags              |= SDL_INIT_AUDIO;
+
+        if (!SDL_InitSubSystem(initFlags))
         {
             throw std::runtime_error(SDL_GetError());
         }
@@ -51,11 +55,18 @@ namespace Chicane
             height = displaySettings->h;
         }
 
+        SDL_WindowFlags windowFlags = SDL_WINDOW_HIDDEN;
+
+        if (inCreateInfo.renderer == RendererType::Vulkan)
+        {
+            windowFlags = SDL_WINDOW_VULKAN;
+        }
+
         instance = SDL_CreateWindow(
             inCreateInfo.title.c_str(),
             width,
             height,
-            SDL_WINDOW_VULKAN
+            windowFlags
         );
 
         if (!instance)
@@ -315,13 +326,13 @@ namespace Chicane
         );
     }
 
-    void Window::setType(Type inType)
+    void Window::setType(WindowType inType)
     {
         m_type = inType;
 
         switch (inType)
         {
-        case Type::Windowed:
+        case WindowType::Windowed:
             SDL_SetWindowBordered(instance, true);
 
             if (m_bIsResizable)
@@ -335,14 +346,14 @@ namespace Chicane
 
             break;
 
-        case Type::WindowedBorderless:
+        case WindowType::WindowedBorderless:
             SDL_SetWindowBordered(instance, false);
 
             disableResizing();
 
             break;
 
-        case Type::Fullscreen:
+        case WindowType::Fullscreen:
             SDL_SetWindowFullscreen(instance, true);
 
             disableResizing();
@@ -351,7 +362,7 @@ namespace Chicane
         }
     }
 
-    Window::Type Window::getType() const
+    WindowType Window::getType() const
     {
         return m_type;
     }
@@ -363,7 +374,7 @@ namespace Chicane
 
     void Window::enableResizing()
     {
-        if (m_type != Type::Windowed)
+        if (m_type != WindowType::Windowed)
         {
             return;
         }
