@@ -13,6 +13,7 @@ namespace Chicane
         {
         public:
             Manager();
+            ~Manager();
 
         protected:
             void onActivation(const std::string& inId) override;

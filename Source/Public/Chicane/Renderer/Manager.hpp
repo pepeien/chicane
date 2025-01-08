@@ -24,18 +24,7 @@ namespace Chicane
             : m_observable(std::make_unique<Observable<ManagerEventType>>())
         {}
 
-        virtual ~Manager()
-        {
-            std::vector<std::string> ids = m_activeIds;
-
-            for (const std::string& id : ids)
-            {
-                for (int i = 0; i < getUseCount(id); i++)
-                {
-                    deactivate(id);
-                }
-            }
-        }
+        virtual ~Manager() = default;
 
     protected:
         // Event

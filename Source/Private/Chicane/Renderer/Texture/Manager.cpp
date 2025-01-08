@@ -13,6 +13,17 @@ namespace Chicane
             : Super()
         {}
 
+        Manager::~Manager()
+        {
+            for (auto& [id, image] : m_datum)
+            {
+                if (image.pixels)
+                {
+                    free(image.pixels);
+                }
+            }
+        }
+
         void Manager::onActivation(const std::string& inId)
         {
             Image::Data data {};

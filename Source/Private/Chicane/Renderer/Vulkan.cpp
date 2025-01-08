@@ -84,7 +84,7 @@ namespace Chicane
         {
             pushLayer(new SkyboxLayer());
             pushLayer(new LevelLayer());
-            //pushLayer(new UILayer());
+            pushLayer(new UILayer());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)
