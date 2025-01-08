@@ -337,8 +337,8 @@ namespace Chicane
 
             Vulkan::GraphicsPipeline::Attachment colorAttachment {};
             colorAttachment.format        = m_internals.swapchain->format;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
-            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
 
             Vulkan::GraphicsPipeline::Attachment depthAttachment {};
             depthAttachment.format        = m_internals.swapchain->depthFormat;

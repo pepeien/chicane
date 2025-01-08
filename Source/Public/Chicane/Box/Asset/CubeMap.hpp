@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/CubeMap.hpp"
 #include "Chicane/Box/Asset.hpp"
 
 namespace Chicane
@@ -10,15 +11,7 @@ namespace Chicane
         class CubeMap : public Asset
         {
         public:
-            enum class Side : std::uint8_t
-            {
-                Left,
-                Right,
-                Front,
-                Back,
-                Up,
-                Down
-            };
+            typedef Chicane::CubeMap::Side Side;
 
         public:
             static inline std::string EXTENSION = ".bcmp";

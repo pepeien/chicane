@@ -10,7 +10,7 @@ namespace Chicane
         static const Image::Data     EMPTY_DATA     = {};
 
         Manager::Manager()
-            : Chicane::Manager<Image::Instance, Image::Data>()
+            : Super()
         {}
 
         void Manager::onActivation(const std::string& inId)
@@ -23,14 +23,14 @@ namespace Chicane
                 getInstance(inId)
             );
 
-            Chicane::Manager<Image::Instance, Image::Data>::allocate(inId, data);
+            Super::allocate(inId, data);
         }
 
         void Manager::onDeactivation(const std::string& inId)
         {
             free(m_datum.at(inId).pixels);
 
-            Chicane::Manager<Image::Instance, Image::Data>::deallocate(inId);
+            Super::deallocate(inId);
         }
 
         void Manager::load(const std::string& inId, const Box::Texture* inAsset)
@@ -40,7 +40,7 @@ namespace Chicane
                 return;
             }
 
-            Chicane::Manager<Image::Instance, Image::Data>::load(inId, inAsset->getData());
+            Super::load(inId, inAsset->getData());
         }
 
         const Image::Instance& Manager::getInstance(const std::string& inId) const

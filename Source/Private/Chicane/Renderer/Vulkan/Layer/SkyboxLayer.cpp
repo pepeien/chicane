@@ -10,6 +10,7 @@ namespace Chicane
         SkyboxLayer::SkyboxLayer()
             : Layer("Skybox"),
             m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
+            m_cubeMapManager(Loader::getCubeMapManager()),
             m_clearValues({})
         {
             m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
@@ -51,7 +52,7 @@ namespace Chicane
             initFrameResources();
             initMaterialResources();
 
-            buildAssets();
+            buildCubeMap();
 
             setStatus(Status::Running);
         }
@@ -92,40 +93,35 @@ namespace Chicane
 
             Vulkan::Renderer::Data* data = (Vulkan::Renderer::Data*) outData;
 
+            vk::CommandBuffer& commandBuffer = data->commandBuffer;
+            Frame::Instance& frame = data->frame;
+
             vk::RenderPassBeginInfo renderPassBeginInfo {};
             renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-            renderPassBeginInfo.framebuffer         = data->frame.getFramebuffer(m_id);
+            renderPassBeginInfo.framebuffer         = frame.getFramebuffer(m_id);
             renderPassBeginInfo.renderArea.offset.x = 0;
             renderPassBeginInfo.renderArea.offset.y = 0;
             renderPassBeginInfo.renderArea.extent   = data->swapChainExtent;
             renderPassBeginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
             renderPassBeginInfo.pClearValues        = m_clearValues.data();
 
-            data->commandBuffer.beginRenderPass(
+            commandBuffer.beginRenderPass(
                 &renderPassBeginInfo,
                 vk::SubpassContents::eInline
             );
-                data->commandBuffer.bindPipeline(
+                commandBuffer.bindPipeline(
                     vk::PipelineBindPoint::eGraphics,
                     m_graphicsPipeline->instance
                 );
-                data->commandBuffer.bindDescriptorSets(
+                commandBuffer.bindDescriptorSets(
                     vk::PipelineBindPoint::eGraphics,
                     m_graphicsPipeline->layout,
                     0,
-                    data->frame.getDescriptorSet(m_id),
+                    frame.getDescriptorSet(m_id),
                     nullptr
                 );
-                Loader::getCubemapManager()->bind(
-                    "Skybox",
-                    data->commandBuffer,
-                    m_graphicsPipeline->layout
-                );
-                Loader::getCubemapManager()->draw(
-                    "Skybox",
-                    data->commandBuffer
-                );
-            data->commandBuffer.endRenderPass();
+                renderCubeMap(commandBuffer);
+            commandBuffer.endRenderPass();
         }
 
         void SkyboxLayer::loadEvents()
@@ -135,21 +131,19 @@ namespace Chicane
                 return;
             }
 
-            Loader::getCubemapManager()->watchChanges(
+            m_cubeMapManager->watchChanges(
                 [this](ManagerEventType inEvent) {
-                    if (inEvent != ManagerEventType::Load)
+                    if (inEvent != ManagerEventType::Activation)
                     {
                         return;
                     }
 
-                    if (!is(Status::Idle))
+                    if (is(Status::Idle))
                     {
-                        return;
+                        setStatus(Status::Initialized);
+
+                        build();
                     }
-
-                    setStatus(Status::Initialized);
-
-                    build();
                 }
             );
         }
@@ -216,7 +210,7 @@ namespace Chicane
             createInfo.logicalDevice        = m_internals.logicalDevice;
             createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
             createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
-            createInfo.extent      = m_internals.swapchain->extent;
+            createInfo.extent               = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
             createInfo.colorAttachment      = colorAttachment;
             createInfo.polygonMode          = vk::PolygonMode::eFill;
@@ -301,21 +295,40 @@ namespace Chicane
             );
         }
 
-        void SkyboxLayer::buildAssets()
+        void SkyboxLayer::buildCubeMap()
         {
             if (!is(Status::Initialized))
             {
                 return;
             }
 
-            Loader::getCubemapManager()->build(
-                m_internals.logicalDevice,
-                m_internals.physicalDevice,
-                m_internals.mainCommandBuffer,
-                m_internals.graphicsQueue,
-                m_materialDescriptor.setLayout,
-                m_materialDescriptor.pool
+            if (m_cubeMap.get() != nullptr)
+            {
+                m_cubeMap.reset();
+            }
+
+            CubeMap::CreateInfo createInfo {};
+            createInfo.images = m_cubeMapManager->getData(
+                m_cubeMapManager->getActiveIds().back()
             );
+            createInfo.logicalDevice       = m_internals.logicalDevice;
+            createInfo.physicalDevice      = m_internals.physicalDevice;
+            createInfo.commandBuffer       = m_internals.mainCommandBuffer;
+            createInfo.queue               = m_internals.graphicsQueue;
+            createInfo.descriptorPool      = m_materialDescriptor.pool;
+            createInfo.descriptorSetLayout = m_materialDescriptor.setLayout;
+
+            m_cubeMap = std::make_unique<CubeMap::Instance>(createInfo);
+        }
+
+        void SkyboxLayer::renderCubeMap(const vk::CommandBuffer& inCommandBuffer)
+        {
+            m_cubeMap->bind(
+                inCommandBuffer,
+                m_graphicsPipeline->layout
+            );
+
+            inCommandBuffer.draw(CUBEMAP_IMAGE_COUNT, 1, 0, 0);
         }
     }
 }

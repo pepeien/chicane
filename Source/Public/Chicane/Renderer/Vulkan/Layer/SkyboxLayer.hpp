@@ -3,6 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level.hpp"
+#include "Chicane/Renderer/CubeMap/Manager.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
 
@@ -33,16 +34,19 @@ namespace Chicane
             void initFrameResources();
             void initMaterialResources();
 
-            void buildAssets();
+            void buildCubeMap();
+            void renderCubeMap(const vk::CommandBuffer& inCommandBuffer);
 
         private:
             Vulkan::Renderer::Internals                         m_internals;
 
             std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
 
-            vk::DescriptorSet                                   m_descriptorSet;
             Vulkan::Descriptor::Bundle                          m_frameDescriptor;
             Vulkan::Descriptor::Bundle                          m_materialDescriptor;
+
+            std::unique_ptr<CubeMap::Instance>                  m_cubeMap;
+            Chicane::CubeMap::Manager*                          m_cubeMapManager;
 
             std::vector<vk::ClearValue>                         m_clearValues;
         };

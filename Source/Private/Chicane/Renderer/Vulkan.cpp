@@ -82,7 +82,7 @@ namespace Chicane
 
         void Renderer::initLayers()
         {
-            //pushLayer(new SkyboxLayer());
+            pushLayer(new SkyboxLayer());
             pushLayer(new LevelLayer());
             pushLayer(new UILayer());
         }

@@ -8,7 +8,7 @@ namespace Chicane
     namespace Model
     {
         Manager::Manager()
-            : Chicane::Manager<Instance, Data>()
+            : Super()
         {}
 
         void Manager::onAllocation(const std::string& inId, const Data& inData)
@@ -52,7 +52,7 @@ namespace Chicane
             data.indexCount  = static_cast<std::uint32_t>(instance.vertexIndices.size());
             data.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
 
-            Chicane::Manager<Instance, Data>::allocate(inId, data);
+            Super::allocate(inId, data);
         }
 
         void Manager::onDeactivation(const std::string& inId)
@@ -67,7 +67,7 @@ namespace Chicane
             auto indicesEnd   = indicesStart + data.indexCount;
             m_indices.erase(indicesStart, indicesEnd);
 
-            Chicane::Manager<Instance, Data>::deallocate(inId);
+            Super::deallocate(inId);
         }
 
         void Manager::load(const std::string& inId, const Box::Model* inModel)
@@ -95,7 +95,7 @@ namespace Chicane
             instance.vertexInstances = result.vertices;
             instance.vertexIndices   = result.indexes;
 
-            Chicane::Manager<Instance, Data>::load(inId, instance);
+            Super::load(inId, instance);
         }
 
         const Model::Instance& Manager::getInstance(const std::string& inId) const

@@ -121,7 +121,7 @@ namespace Chicane
 
                 if (m_textures.find(side) != m_textures.end())
                 {
-                    throw std::runtime_error("There are duplicated sides inside the " + m_header.id + " cubemap");
+                    throw std::runtime_error("There are duplicated sides inside the " + m_header.id + " cube map");
                 }
 
                 m_textures.insert(
@@ -134,7 +134,7 @@ namespace Chicane
 
             if (m_textures.size() < 6)
             {
-                throw std::runtime_error("There cubemap " + m_header.id + " have insuficient sides");
+                throw std::runtime_error("There cube map " + m_header.id + " have insuficient sides");
             }
         }
     }

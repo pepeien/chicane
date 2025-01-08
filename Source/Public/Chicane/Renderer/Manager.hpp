@@ -13,13 +13,17 @@ namespace Chicane
         Activation
     };
 
-    template<typename I = int, typename D = int>
+    template<typename I, typename D>
     class Manager
     {
+    protected:
+        typedef Manager Super;
+
     public:
         Manager()
             : m_observable(std::make_unique<Observable<ManagerEventType>>())
         {}
+
         virtual ~Manager()
         {
             std::vector<std::string> ids = m_activeIds;

@@ -1,17 +1,19 @@
 #include "Chicane/Core/Loader.hpp"
 
-#include "Chicane/Renderer/Vulkan/CubeMap.hpp"
-
 namespace Chicane
 {
     namespace Loader
     {
+        std::unique_ptr<CubeMap::Manager> m_cubeMapManager = std::make_unique<CubeMap::Manager>();
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
-        std::unique_ptr<Vulkan::CubeMap::Manager> m_cubemapManager = std::make_unique<Vulkan::CubeMap::Manager>();
-
         std::unordered_map<std::string, const Box::Asset*> m_cache {};
+
+        CubeMap::Manager* getCubeMapManager()
+        {
+            return m_cubeMapManager.get();
+        }
 
         Model::Manager* getModelManager()
         {
@@ -21,11 +23,6 @@ namespace Chicane
         Texture::Manager* getTextureManager()
         {
             return m_textureManager.get();
-        }
-
-        Vulkan::CubeMap::Manager* getCubemapManager()
-        {
-            return m_cubemapManager.get();
         }
 
         bool isLoaded(const std::string& inIdentifier)
@@ -162,11 +159,6 @@ namespace Chicane
                     loadTexture(new Box::Texture(texture));
                 }
             }
-
-            cacheAsset(
-                filepath,
-                inAsset
-            );
         }
 
         void loadCubemap(const Box::Asset* inAsset)
@@ -190,18 +182,10 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            const Box::CubeMap* cubemap = static_cast<const Box::CubeMap*>(inAsset);
-
-            //Vulkan::CubeMap::Images images = {
-            //    { Box::CubeMap::Side::Left,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Left))->getData() },
-            //    { Box::CubeMap::Side::Right, loadTexture(cubemap->getTexture(Box::CubeMap::Side::Right))->getData() },
-            //    { Box::CubeMap::Side::Front, loadTexture(cubemap->getTexture(Box::CubeMap::Side::Front))->getData() },
-            //    { Box::CubeMap::Side::Back,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Back))->getData() },
-            //    { Box::CubeMap::Side::Up,    loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData() },
-            //    { Box::CubeMap::Side::Down,  loadTexture(cubemap->getTexture(Box::CubeMap::Side::Up))->getData() },
-            //};
-
-            //m_cubemapManager->add("Skybox", images);
+            m_cubeMapManager->load(
+                filepath,
+                static_cast<const Box::CubeMap*>(inAsset)
+            );
         }
 
         const Box::CubeMap* loadCubemap(const std::string& inFilepath)
@@ -210,7 +194,7 @@ namespace Chicane
 
             if (header.type != Box::Asset::Type::Cubemap)
             {
-                throw std::runtime_error(inFilepath + " is not a cubemap");
+                throw std::runtime_error(inFilepath + " is not a cube map");
             }
 
             if (!isLoaded(inFilepath))
@@ -257,7 +241,6 @@ namespace Chicane
 
         void reset()
         {
-            m_cubemapManager.reset();
             m_textureManager.reset();
             m_modelManager.reset();
         }
