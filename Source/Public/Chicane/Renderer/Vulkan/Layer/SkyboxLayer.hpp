@@ -2,7 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/Level.hpp"
+#include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/CubeMap/Manager.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class SkyboxLayer : public Layer
+        class SkyboxLayer : public Layer::Instance
         {
         public:
             SkyboxLayer();

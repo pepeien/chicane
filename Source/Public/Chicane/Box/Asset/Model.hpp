@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Instance.hpp"
 #include "Chicane/Renderer/Model/Vendor.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class Model : public Asset
+        class Model : public Asset::Instance
         {
         public:
             static inline std::string EXTENSION = ".bmdl";

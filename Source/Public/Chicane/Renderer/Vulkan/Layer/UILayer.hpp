@@ -2,7 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/Level.hpp"
+#include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Grid/View.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class UILayer : public Layer
+        class UILayer : public Layer::Instance
         {
         public:
             UILayer();
@@ -38,7 +38,7 @@ namespace Chicane
 
         private:
             // Window
-            Window*                     m_window;
+            Window::Instance*           m_window;
 
             // UI
             Grid::View*                 m_view;

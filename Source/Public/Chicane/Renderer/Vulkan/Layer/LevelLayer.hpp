@@ -2,7 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/Level.hpp"
+#include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Model.hpp"
 #include "Chicane/Renderer/Texture.hpp"
@@ -13,7 +13,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class LevelLayer : public Layer
+        class LevelLayer : public Layer::Instance
         {
         public:
             LevelLayer();

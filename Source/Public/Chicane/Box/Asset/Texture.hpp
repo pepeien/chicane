@@ -2,14 +2,14 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Image.hpp"
-#include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Instance.hpp"
 #include "Chicane/Renderer/Texture/Vendor.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class Texture : public Asset
+        class Texture : public Asset::Instance
         {
         public:
             static inline std::string EXTENSION = ".btex";

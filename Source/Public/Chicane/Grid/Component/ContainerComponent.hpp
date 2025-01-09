@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Chicane/Grid/View.hpp"
-#include "Chicane/Grid/Style.hpp"
+#include "Chicane/Base.hpp"
+#include "Chicane/Grid/Component/BaseProps.hpp"
+#include "Chicane/Grid/Component/Function.hpp"
 
 namespace Chicane
 {
@@ -14,6 +15,7 @@ namespace Chicane
             // Props
             struct Props : Component::BaseProps
             {
+            public:
                 std::vector<std::any> items = {}; // Optional
                 Component::Function   itemGetter; // Optional
             };

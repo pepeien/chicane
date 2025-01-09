@@ -4,10 +4,13 @@
 
 namespace Chicane
 {
-    enum class WindowType : std::uint8_t
+    namespace Window
     {
-        Windowed,
-        WindowedBorderless,
-        Fullscreen,
-    };
+        enum class Type : std::uint8_t
+        {
+            Windowed,
+            WindowedBorderless,
+            Fullscreen,
+        };
+    }
 }

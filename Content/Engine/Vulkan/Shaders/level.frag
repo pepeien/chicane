@@ -15,8 +15,8 @@ const vec4 lightColor     = vec4(0.7, 0.7, 0.7, 1.0);
 const vec3 lightDirection = normalize(vec3(1.0, 1.0, -1.0));
 
 void main() {
-    float angle       = clamp(dot(inNormalPosition, -lightDirection.xyz), 0.0f, 1.0f);
-    vec3 color        = lightColor.xyz * angle;
+    float angle = clamp(dot(inNormalPosition, -lightDirection.xyz), 0.0f, 1.0f);
+    vec3 color  = lightColor.xyz * angle;
 
     outColor = vec4(color, 1.0f) * texture(material[inTextureIndex], inTexturePosition);
 }

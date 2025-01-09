@@ -2,7 +2,7 @@
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Controller.hpp"
+#include "Chicane/Game/Controller/Instance.hpp"
 
 constexpr float MOVEMENT_COEFFICIENT = 1.5f;
 

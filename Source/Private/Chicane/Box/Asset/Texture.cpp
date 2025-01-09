@@ -7,14 +7,14 @@ namespace Chicane
 {
     namespace Box
     {
-        static constexpr auto VENDOR_ATTRIBUTE_NAME = "vendor";
+        static constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
         static const std::unordered_map<std::string, Chicane::Texture::Vendor> VENDOR_MAP {
             { "PNG", Chicane::Texture::Vendor::Png }
         };
 
         Texture::Texture(const std::string& inFilepath)
-            : Asset(inFilepath),
+            : Instance(inFilepath),
             m_vendor(Chicane::Texture::Vendor::Undefined)
         {
             fetchVendor();

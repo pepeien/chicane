@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Transformable/Component.hpp"
+#include "Chicane/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
 {

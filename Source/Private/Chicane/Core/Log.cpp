@@ -7,8 +7,8 @@
 #include "Chicane/Core/Utils.hpp"
 #include "Chicane/Grid.hpp"
 
-static constexpr auto LOG_COLOR_START = "\33[";
-static constexpr auto LOG_COLOR_END   = "\33[0m\n";
+static constexpr const char* LOG_COLOR_START = "\33[";
+static constexpr const char* LOG_COLOR_END   = "\33[0m\n";
 
 constexpr std::uint32_t MAX_LOG_COUNT = 500;
 

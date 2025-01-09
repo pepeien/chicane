@@ -12,7 +12,7 @@ namespace Chicane
     namespace Vulkan
     {
         LevelLayer::LevelLayer()
-            : Layer("Level"),
+            : Layer::Instance("Level"),
             m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
             m_clearValues({}),
             m_textureManager(Loader::getTextureManager()),
@@ -36,7 +36,7 @@ namespace Chicane
 
         void LevelLayer::build()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -51,24 +51,24 @@ namespace Chicane
 
             setupFrames();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void LevelLayer::destroy()
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
 
             destroyFrameResources();
 
-            setStatus(Status::Idle);
+            setStatus(Layer::Status::Idle);
         }
 
         void LevelLayer::rebuild()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
@@ -77,12 +77,12 @@ namespace Chicane
             initFramebuffers();
             setupFrames();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void LevelLayer::setup(void* outData)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace Chicane
 
         void LevelLayer::render(void* outData)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -137,7 +137,7 @@ namespace Chicane
 
         void LevelLayer::loadEvents()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
@@ -160,18 +160,18 @@ namespace Chicane
             );
 
             m_textureManager->watchChanges(
-                [&](ManagerEventType inEvent)
+                [&](Manager::EventType inEvent)
                 {
-                    if (is(Status::Idle) && !m_modelManager->isEmpty())
+                    if (is(Layer::Status::Idle) && !m_modelManager->isEmpty())
                     {
-                        setStatus(Status::Initialized);
+                        setStatus(Layer::Status::Initialized);
 
                         build();
 
                         return;
                     }
 
-                    if (is(Status::Running))
+                    if (is(Layer::Status::Running))
                     {
                         buildTextureData();
                     }
@@ -179,23 +179,23 @@ namespace Chicane
             );
 
             m_modelManager->watchChanges(
-                [&](ManagerEventType inEvent)
+                [&](Manager::EventType inEvent)
                 {
-                    if (inEvent != ManagerEventType::Activation)
+                    if (inEvent != Manager::EventType::Activation)
                     {
                         return;
                     }
 
-                    if (is(Status::Idle) && !m_textureManager->isEmpty())
+                    if (is(Layer::Status::Idle) && !m_textureManager->isEmpty())
                     {
-                        setStatus(Status::Initialized);
+                        setStatus(Layer::Status::Initialized);
 
                         build();
 
                         return;
                     }
 
-                    if (is(Status::Running))
+                    if (is(Layer::Status::Running))
                     {
                         rebuildModelData();
 
@@ -207,7 +207,7 @@ namespace Chicane
 
         void LevelLayer::initFrameResources()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -287,7 +287,7 @@ namespace Chicane
 
         void LevelLayer::initTextureResources()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -330,7 +330,7 @@ namespace Chicane
 
         void LevelLayer::initGraphicsPipeline()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -349,8 +349,8 @@ namespace Chicane
             createInfo.bHasVertices          = true;
             createInfo.bHasDepth             = true;
             createInfo.logicalDevice         = m_internals.logicalDevice;
-            createInfo.vertexShaderPath      = "Content/Engine/Shaders/level.vert.spv";
-            createInfo.fragmentShaderPath    = "Content/Engine/Shaders/level.frag.spv";
+            createInfo.vertexShaderPath      = "Content/Engine/Vulkan/Shaders/level.vert.spv";
+            createInfo.fragmentShaderPath    = "Content/Engine/Vulkan/Shaders/level.frag.spv";
             createInfo.bindingDescription    = Vulkan::Vertex::getBindingDescription();
             createInfo.attributeDescriptions = Vulkan::Vertex::getAttributeDescriptions();
             createInfo.extent                = m_internals.swapchain->extent;
@@ -364,7 +364,7 @@ namespace Chicane
 
         void LevelLayer::initFramebuffers()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -593,7 +593,7 @@ namespace Chicane
 
         void LevelLayer::setupFrames()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -606,7 +606,7 @@ namespace Chicane
 
         void LevelLayer::setFramesAsDirty()
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }

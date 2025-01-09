@@ -9,7 +9,7 @@ namespace Chicane
     namespace Vulkan
     {
         UILayer::UILayer()
-            : Layer("UI"),
+            : Layer::Instance("UI"),
             m_window(Application::getWindow()),
             m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
             m_clearValues({})
@@ -33,7 +33,7 @@ namespace Chicane
 
         void UILayer::build()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -43,17 +43,17 @@ namespace Chicane
             initFramebuffers();
             initImgui();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void UILayer::destroy()
         {
-            setStatus(Status::Idle);
+            setStatus(Layer::Status::Idle);
         }
 
         void UILayer::rebuild()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
@@ -62,12 +62,12 @@ namespace Chicane
 
             m_view->rebuild();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void UILayer::onEvent(const SDL_Event& inEvent)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -77,7 +77,7 @@ namespace Chicane
 
         void UILayer::setup(void* outData)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -99,7 +99,7 @@ namespace Chicane
 
         void UILayer::render(void* outData)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -127,7 +127,7 @@ namespace Chicane
 
         void UILayer::loadEvents()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
@@ -142,12 +142,12 @@ namespace Chicane
                         return;
                     }
 
-                    if (!is(Status::Idle))
+                    if (!is(Layer::Status::Idle))
                     {
                         return;
                     }
 
-                    setStatus(Status::Initialized);
+                    setStatus(Layer::Status::Initialized);
 
                     build();
                 }
@@ -156,7 +156,7 @@ namespace Chicane
 
         void UILayer::initDescriptorPool()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -185,7 +185,7 @@ namespace Chicane
 
         void UILayer::initRenderpass()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -206,7 +206,7 @@ namespace Chicane
 
         void UILayer::initFramebuffers()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -228,7 +228,7 @@ namespace Chicane
 
         void UILayer::setupImgui()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -279,7 +279,7 @@ namespace Chicane
 
         void UILayer::initImgui()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }

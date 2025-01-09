@@ -9,8 +9,8 @@ namespace Chicane
 {
     namespace Box
     {
-        static constexpr auto GROUP_TAG               = "Group";
-        static constexpr auto GROUP_ID_ATTRIBUTE_NAME = "id";
+        static constexpr const char* GROUP_TAG               = "Group";
+        static constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";
 
         bool Mesh::Group::isValid() const
         {
@@ -58,7 +58,7 @@ namespace Chicane
         }
 
         Mesh::Mesh(const std::string& inFilepath)
-            : Asset(inFilepath)
+            : Instance(inFilepath)
         {
             fetchGroups();
         }

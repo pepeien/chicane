@@ -4,9 +4,12 @@
 
 namespace Chicane
 {
-    enum class RendererType : std::uint8_t
+    namespace Renderer
     {
-        Undefined,
-        Vulkan
-    };
+        enum class Type : std::uint8_t
+        {
+            Undefined,
+            Vulkan
+        };
+    }
 }

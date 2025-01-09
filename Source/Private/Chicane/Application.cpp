@@ -289,7 +289,7 @@ namespace Chicane
         return m_application->window.get() != nullptr;
     }
 
-    Window* Application::getWindow()
+    Window::Instance* Application::getWindow()
     {
         if (!m_application)
         {
@@ -309,7 +309,7 @@ namespace Chicane
         return m_application->renderer.get() != nullptr;
     }
 
-    Renderer* Application::getRenderer()
+    Renderer::Instance* Application::getRenderer()
     {
         if (!m_application)
         {
@@ -376,25 +376,25 @@ namespace Chicane
             return;
         }
 
-        window = std::make_unique<Window>(inWindowCreateInfo);
+        window = std::make_unique<Window::Instance>(inWindowCreateInfo);
     }
 
-    void Application::initRenderer(RendererType inRendererType)
+    void Application::initRenderer(Renderer::Type inRenderer)
     {
         if (!Application::hasWindow() || Application::hasRenderer())
         {
             return;
         }
 
-        switch (inRendererType)
+        switch (inRenderer)
         {
-        case RendererType::Vulkan:
+        case Renderer::Type::Vulkan:
             renderer = std::make_unique<Vulkan::Renderer>(window.get());
 
             break;
 
         default:
-            renderer = std::make_unique<Renderer>(window.get());
+            renderer = std::make_unique<Renderer::Instance>(window.get());
 
             break;
         }

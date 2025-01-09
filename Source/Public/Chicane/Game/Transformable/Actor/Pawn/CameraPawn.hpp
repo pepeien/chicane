@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Game/Transformable/Actor/Pawn.hpp"
+#include "Chicane/Game/Transformable/Actor/Pawn/Instance.hpp"
 #include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 namespace Chicane

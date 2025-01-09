@@ -67,10 +67,10 @@ namespace Chicane
 
         // Render
         static bool hasWindow();
-        static Window* getWindow();
+        static Window::Instance* getWindow();
 
         static bool hasRenderer();
-        static Renderer* getRenderer();
+        static Renderer::Instance* getRenderer();
         template<class T>
         static T* getRenderer()
         {
@@ -93,7 +93,7 @@ namespace Chicane
     private:
         // Setup
         void initWindow(const Window::CreateInfo& inWindowCreateInfo);
-        void initRenderer(RendererType inRendererType);
+        void initRenderer(Renderer::Type inRenderer);
         void initDefaultController();
         void initDefaultLevel();
         void initDefaultCamera();
@@ -127,7 +127,7 @@ namespace Chicane
         std::unique_ptr<Observable<Grid::View*>>      viewObservable;
 
         // Render
-        std::unique_ptr<Window>                       window;
-        std::unique_ptr<Renderer>                     renderer;
+        std::unique_ptr<Window::Instance>             window;
+        std::unique_ptr<Renderer::Instance>           renderer;
     };
 }

@@ -13,7 +13,7 @@ namespace Chicane
 
         void Manager::onAllocation(const std::string& inId, const Data& inData)
         {
-            const Instance& instance = getInstance(inId);
+            const Model::Instance& instance = getInstance(inId);
 
             m_vertices.insert(
                 m_vertices.end(),
@@ -44,9 +44,9 @@ namespace Chicane
 
         void Manager::onActivation(const std::string& inId)
         {
-            const Instance& instance = getInstance(inId);
+            const Model::Instance& instance = getInstance(inId);
 
-            Data data {};
+            Model::Data data {};
             data.vertexCount = static_cast<std::uint32_t>(instance.vertexInstances.size());
             data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
             data.indexCount  = static_cast<std::uint32_t>(instance.vertexIndices.size());
@@ -90,7 +90,7 @@ namespace Chicane
                 throw std::runtime_error("Failed to import Model due to invalid type");
             }
 
-            Instance instance {};
+            Model::Instance instance {};
             instance.bounds          = Bounds(result.vertices);
             instance.vertexInstances = result.vertices;
             instance.vertexIndices   = result.indexes;

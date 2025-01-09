@@ -2,13 +2,13 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/CubeMap.hpp"
-#include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Instance.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class CubeMap : public Asset
+        class CubeMap : public Asset::Instance
         {
         public:
             typedef Chicane::CubeMap::Side Side;

@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Texture
     {
-        class Manager : public Chicane::Manager<Image::Instance, Image::Data>
+        class Manager : public Chicane::Manager::Instance<Image::Instance, Image::Data>
         {
         public:
             Manager();

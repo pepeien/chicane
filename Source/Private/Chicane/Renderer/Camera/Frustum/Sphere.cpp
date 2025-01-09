@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
 
-#include "Chicane/Game/Transformable.hpp"
+#include "Chicane/Game/Transformable/Instance.hpp"
 #include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 
 namespace Chicane

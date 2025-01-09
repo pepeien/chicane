@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace CubeMap
     {
-        class Manager : public Chicane::Manager<Instance, Data>
+        class Manager : public Chicane::Manager::Instance<CubeMap::Instance, CubeMap::Data>
         {
         public:
             Manager();
@@ -19,8 +19,8 @@ namespace Chicane
             void load(const std::string& inId, const Box::CubeMap* inAsset);
 
             // Data
-            const Instance& getInstance(const std::string& inId) const;
-            const Data& getData(const std::string& inId) const;
+            const CubeMap::Instance& getInstance(const std::string& inId) const;
+            const CubeMap::Data& getData(const std::string& inId) const;
         };
     }
 }

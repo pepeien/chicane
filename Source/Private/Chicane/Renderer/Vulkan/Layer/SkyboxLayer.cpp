@@ -8,7 +8,7 @@ namespace Chicane
     namespace Vulkan
     {
         SkyboxLayer::SkyboxLayer()
-            : Layer("Skybox"),
+            : Layer::Instance("Skybox"),
             m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
             m_cubeMapManager(Loader::getCubeMapManager()),
             m_clearValues({})
@@ -40,7 +40,7 @@ namespace Chicane
 
         void SkyboxLayer::build()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -54,12 +54,12 @@ namespace Chicane
 
             buildCubeMap();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void SkyboxLayer::destroy()
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -68,12 +68,12 @@ namespace Chicane
                 m_frameDescriptor.pool
             );
 
-            setStatus(Status::Idle);
+            setStatus(Layer::Status::Idle);
         }
 
         void SkyboxLayer::rebuild()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
@@ -81,12 +81,12 @@ namespace Chicane
             initFramebuffers();
             initFrameResources();
 
-            setStatus(Status::Running);
+            setStatus(Layer::Status::Running);
         }
 
         void SkyboxLayer::render(void* outData)
         {
-            if (!is(Status::Running))
+            if (!is(Layer::Status::Running))
             {
                 return;
             }
@@ -126,21 +126,21 @@ namespace Chicane
 
         void SkyboxLayer::loadEvents()
         {
-            if (!is(Status::Idle))
+            if (!is(Layer::Status::Idle))
             {
                 return;
             }
 
             m_cubeMapManager->watchChanges(
-                [this](ManagerEventType inEvent) {
-                    if (inEvent != ManagerEventType::Activation)
+                [this](Manager::EventType inEvent) {
+                    if (inEvent != Manager::EventType::Activation)
                     {
                         return;
                     }
 
-                    if (is(Status::Idle))
+                    if (is(Layer::Status::Idle))
                     {
-                        setStatus(Status::Initialized);
+                        setStatus(Layer::Status::Initialized);
 
                         build();
                     }
@@ -150,7 +150,7 @@ namespace Chicane
 
         void SkyboxLayer::initFrameDescriptorSetLayout()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -173,7 +173,7 @@ namespace Chicane
 
         void SkyboxLayer::initMaterialDescriptorSetLayout()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -194,7 +194,7 @@ namespace Chicane
 
         void SkyboxLayer::initGraphicsPipeline()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -208,8 +208,8 @@ namespace Chicane
             createInfo.bHasVertices         = false;
             createInfo.bHasDepth            = false;
             createInfo.logicalDevice        = m_internals.logicalDevice;
-            createInfo.vertexShaderPath     = "Content/Engine/Shaders/sky.vert.spv";
-            createInfo.fragmentShaderPath   = "Content/Engine/Shaders/sky.frag.spv";
+            createInfo.vertexShaderPath     = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
+            createInfo.fragmentShaderPath   = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
             createInfo.extent               = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
             createInfo.colorAttachment      = colorAttachment;
@@ -220,7 +220,7 @@ namespace Chicane
 
         void SkyboxLayer::initFramebuffers()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -240,7 +240,7 @@ namespace Chicane
 
         void SkyboxLayer::initFrameResources()
         {
-            if (is(Status::Running))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
@@ -279,7 +279,7 @@ namespace Chicane
 
         void SkyboxLayer::initMaterialResources()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -297,7 +297,7 @@ namespace Chicane
 
         void SkyboxLayer::buildCubeMap()
         {
-            if (!is(Status::Initialized))
+            if (!is(Layer::Status::Initialized))
             {
                 return;
             }

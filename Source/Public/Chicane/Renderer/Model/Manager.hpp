@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Model
     {
-        class Manager : public Chicane::Manager<Instance, Data>
+        class Manager : public Chicane::Manager::Instance<Model::Instance, Model::Data>
         {
         public:
             Manager();
@@ -27,8 +27,8 @@ namespace Chicane
             void load(const std::string& inId, const Box::Model* inModel);
 
             // Data
-            const Instance& getInstance(const std::string& inId) const;
-            const Data& getData(const std::string& inId) const;
+            const Model::Instance& getInstance(const std::string& inId) const;
+            const Model::Data& getData(const std::string& inId) const;
             const std::vector<Vertex::Instance>& getVertices() const;
             const std::vector<std::uint32_t>& getIndices() const;
             std::uint32_t getFirstInstance(const std::string& inId) const;

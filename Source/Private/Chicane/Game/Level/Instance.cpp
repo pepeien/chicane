@@ -1,4 +1,4 @@
-#include "Chicane/Game/Level.hpp"
+#include "Chicane/Game/Level/Instance.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"

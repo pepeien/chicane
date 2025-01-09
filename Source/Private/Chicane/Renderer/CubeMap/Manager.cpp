@@ -7,8 +7,8 @@ namespace Chicane
 {
     namespace CubeMap
     {
-        static const Instance EMPTY_INSTANCE = {};
-        static const Data     EMPTY_DATA     = {};
+        static const CubeMap::Instance EMPTY_INSTANCE = {};
+        static const CubeMap::Data     EMPTY_DATA     = {};
 
         Manager::Manager()
             : Super()
@@ -21,7 +21,7 @@ namespace Chicane
                 return;
             }
 
-            Instance instance {};
+            CubeMap::Instance instance {};
 
             for (const auto& [side, texture] : inAsset->getTextures())
             {
@@ -37,7 +37,7 @@ namespace Chicane
 
     	    Texture::Manager* manager = Loader::getTextureManager();
 
-            Data data {};
+            CubeMap::Data data {};
 
             for (const auto& [side, texture] : inAsset->getTextures())
             {
@@ -66,7 +66,7 @@ namespace Chicane
             Super::activate(inId);
         }
 
-        const Instance& Manager::getInstance(const std::string& inId) const
+        const CubeMap::Instance& Manager::getInstance(const std::string& inId) const
         {
             if (!isLoaded(inId))
             {
@@ -76,7 +76,7 @@ namespace Chicane
             return m_instances.at(inId);
         }
 
-        const Data& Manager::getData(const std::string& inId) const
+        const CubeMap::Data& Manager::getData(const std::string& inId) const
         {
             if (!isLoaded(inId) || !isAllocated(inId))
             {

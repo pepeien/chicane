@@ -2,7 +2,7 @@
 
 #include "Chicane/Core/Loader.hpp"
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
-#include "Chicane/Game/Level.hpp"
+#include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Camera.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"

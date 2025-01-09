@@ -11,8 +11,8 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        Renderer::Renderer(Window* inWindow)
-            : Chicane::Renderer(inWindow),
+        Renderer::Renderer(Window::Instance* inWindow)
+            : Chicane::Renderer::Instance(inWindow),
             m_swapChain({}),
             m_imageCount(0),
             m_currentImageIndex(0),
@@ -181,7 +181,7 @@ namespace Chicane
 
         void Renderer::buildInstance()
         {
-            Instance::init(
+            Vulkan::Instance::init(
                 m_instance,
                 m_dldi,
                 m_window->instance
@@ -404,7 +404,7 @@ namespace Chicane
 
         void Renderer::prepareLayers(Frame::Instance& outImage)
         {
-            for (Layer* layer : m_layers)
+            for (Layer::Instance* layer : m_layers)
             {
                 layer->setup(&outImage);
             }
@@ -417,7 +417,7 @@ namespace Chicane
             data.frame           = outImage;
             data.swapChainExtent = m_swapChain.extent;
 
-            for (Layer* layer : m_layers)
+            for (Layer::Instance* layer : m_layers)
             {
                 layer->render(&data);
             }

@@ -2,13 +2,12 @@
 
 #include "Chicane/Box/Asset/Texture.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        static constexpr auto SIDE_ATTRIBUTE_NAME = "side";
+        static constexpr const char* SIDE_ATTRIBUTE_NAME = "side";
 
         static const std::unordered_map<std::string, CubeMap::Side> SIDE_MAP {
             { "UP",    CubeMap::Side::Up },
@@ -20,7 +19,7 @@ namespace Chicane
         };
 
         CubeMap::CubeMap(const std::string& inFilepath)
-            : Asset(inFilepath)
+            : Instance(inFilepath)
         {
             fetchTextures();
         }

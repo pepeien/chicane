@@ -25,7 +25,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class Renderer : public Chicane::Renderer
+        class Renderer : public Chicane::Renderer::Instance
         {
         public:
             struct Internals
@@ -50,7 +50,7 @@ namespace Chicane
             };
 
         public:
-            Renderer(Window* inWindow);
+            Renderer(Window::Instance* inWindow);
             ~Renderer();
 
         public:

@@ -1,4 +1,4 @@
-#include "Chicane/Game/Transformable/Actor.hpp"
+#include "Chicane/Game/Transformable/Actor/Instance.hpp"
 
 namespace Chicane
 {

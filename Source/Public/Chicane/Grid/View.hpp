@@ -2,7 +2,8 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Component/Function.hpp"
+#include "Chicane/Grid/Component/Variable.hpp"
 
 namespace Chicane
 {

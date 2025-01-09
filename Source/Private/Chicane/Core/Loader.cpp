@@ -8,7 +8,7 @@ namespace Chicane
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
-        std::unordered_map<std::string, const Box::Asset*> m_cache {};
+        std::unordered_map<std::string, const Box::Asset::Instance*> m_cache {};
 
         CubeMap::Manager* getCubeMapManager()
         {
@@ -30,7 +30,7 @@ namespace Chicane
             return m_cache.find(inIdentifier) != m_cache.end();
         }
 
-        bool isLoaded(const Box::Asset* inInstance)
+        bool isLoaded(const Box::Asset::Instance* inInstance)
         {
             if (!inInstance)
             {
@@ -40,7 +40,7 @@ namespace Chicane
             return isLoaded(inInstance->getFilepath().string());
         }
 
-        void cacheAsset(const std::string& inIdentifier, const Box::Asset* inInstance)
+        void cacheAsset(const std::string& inIdentifier, const Box::Asset::Instance* inInstance)
         {
             if (isLoaded(inIdentifier))
             {
@@ -55,7 +55,7 @@ namespace Chicane
             );
         }
 
-        template<class T = Box::Asset>
+        template<class T = Box::Asset::Instance>
         const T* getAsset(const std::string& inIdentifier)
         {
             if (!isLoaded(inIdentifier))
@@ -66,7 +66,7 @@ namespace Chicane
             return static_cast<const T*>(m_cache.at(inIdentifier));
         }
 
-        void loadModel(const Box::Asset* inAsset)
+        void loadModel(const Box::Asset::Instance* inAsset)
         {
             if (!inAsset)
             {
@@ -93,7 +93,7 @@ namespace Chicane
             );
         }
 
-        void loadTexture(const Box::Asset* inAsset)
+        void loadTexture(const Box::Asset::Instance* inAsset)
         {
             if (!inAsset)
             {
@@ -120,7 +120,7 @@ namespace Chicane
             );
         }
 
-        void loadMesh(const Box::Asset* inAsset)
+        void loadMesh(const Box::Asset::Instance* inAsset)
         {
             if (!inAsset)
             {
@@ -161,7 +161,7 @@ namespace Chicane
             }
         }
 
-        void loadCubemap(const Box::Asset* inAsset)
+        void loadCubemap(const Box::Asset::Instance* inAsset)
         {
             if (!inAsset)
             {
@@ -173,7 +173,7 @@ namespace Chicane
                 return;
             }
 
-            if (!inAsset->isType(Box::Asset::Type::Cubemap))
+            if (!inAsset->isType(Box::Asset::Type::CubeMap))
             {
                 return;
             }
@@ -192,7 +192,7 @@ namespace Chicane
         {
             Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
 
-            if (header.type != Box::Asset::Type::Cubemap)
+            if (header.type != Box::Asset::Type::CubeMap)
             {
                 throw std::runtime_error(inFilepath + " is not a cube map");
             }
