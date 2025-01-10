@@ -8,14 +8,13 @@ namespace Chicane
     {
         namespace Component
         {
-
             typedef std::function<void (const pugi::xml_node&)> Compiler;
 
             struct FunctionData
             {
             public:
-                std::string name             = "";
-                std::vector<std::any> params {};
+                std::string           name   = "";
+                std::vector<std::any> params = {};
 
             public:
                 static const FunctionData& empty();
@@ -23,7 +22,8 @@ namespace Chicane
 
             struct Event
             {
-                std::vector<std::any> values {};
+            public:
+                std::vector<std::any> values = {};
             };
 
             typedef std::function<std::any (const Event&)> Function;

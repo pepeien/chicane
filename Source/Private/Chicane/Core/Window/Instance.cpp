@@ -11,8 +11,8 @@ namespace Chicane
     {
         Instance::Instance(const CreateInfo& inCreateInfo)
             : instance(nullptr),
-            m_bIsFocused(inCreateInfo.bIsFocused),
-            m_bIsResizable(inCreateInfo.bIsResizable),
+            m_bIsFocused(false),
+            m_bIsResizable(true),
             m_bIsMinimized(false)
         {
             SDL_InitFlags initFlags = SDL_INIT_GAMEPAD;
@@ -77,7 +77,7 @@ namespace Chicane
             }
 
             setDisplay(display);
-            setType(inCreateInfo.type);
+            setType(inCreateInfo.window);
             setIcon(inCreateInfo.icon);
 
             refreshSize();

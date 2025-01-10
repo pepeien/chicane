@@ -17,17 +17,20 @@ namespace Chicane
         onActivation();
     }
 
-    void Controller::watchAttachment(
-        std::function<void (Pawn*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+    Subscription<Pawn*>* Controller::watchAttachment(
+        std::function<void (Pawn*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
-        m_pawnObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
-        )->next(m_pawn);
+        Subscription<Pawn*>* subscription = m_pawnObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
+        );
+        subscription->next(m_pawn);
+
+        return subscription;
     }
 
     bool Controller::isAttached() const

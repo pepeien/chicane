@@ -43,8 +43,8 @@ namespace Chicane
             // UI
             Grid::View*                 m_view;
 
-            // Render
-            Vulkan::Renderer::Internals m_internals;
+            // Vulkan
+            Renderer::Internals         m_internals;
             vk::RenderPass              m_renderPass;
             vk::DescriptorPool          m_descriptorPool;
             std::vector<vk::ClearValue> m_clearValues;

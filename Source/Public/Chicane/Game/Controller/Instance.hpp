@@ -25,10 +25,10 @@ namespace Chicane
             return dynamic_cast<T*>(m_pawn);
         }
 
-        void watchAttachment(
-            std::function<void (Pawn*)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback = nullptr,
-            std::function<void ()> inCompleteCallback = nullptr
+        Subscription<Pawn*>* watchAttachment(
+            std::function<void (Pawn*)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
         );
 
         bool isAttached() const;

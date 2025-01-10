@@ -154,19 +154,19 @@ namespace Chicane
     }
 
     Subscription<const Transform&>* Transformable::watchTransform(
-        std::function<void (const Transform&)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+        std::function<void (const Transform&)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
-        Subscription<const Transform&>* result = m_transformObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
+        Subscription<const Transform&>* subscription = m_transformObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
         );
-        result->next(m_transform);
+        subscription->next(m_transform);
 
-        return result;
+        return subscription;
     }
 
     void Transformable::setTranslation(const Mat<4, float>& inBase, const Vec<3, float>& inTranslation)

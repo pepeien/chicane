@@ -38,17 +38,17 @@ namespace Chicane
             void renderCubeMap(const vk::CommandBuffer& inCommandBuffer);
 
         private:
-            Vulkan::Renderer::Internals                         m_internals;
+            Renderer::Internals                         m_internals;
 
-            std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
+            std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
-            Vulkan::Descriptor::Bundle                          m_frameDescriptor;
-            Vulkan::Descriptor::Bundle                          m_materialDescriptor;
+            Descriptor::Bundle                          m_frameDescriptor;
+            Descriptor::Bundle                          m_materialDescriptor;
 
-            std::unique_ptr<CubeMap::Instance>                  m_cubeMap;
-            Chicane::CubeMap::Manager*                          m_cubeMapManager;
+            std::unique_ptr<CubeMap::Instance>          m_cubeMap;
+            Chicane::CubeMap::Manager*                  m_cubeMapManager;
 
-            std::vector<vk::ClearValue>                         m_clearValues;
+            std::vector<vk::ClearValue>                 m_clearValues;
         };
     }
 }

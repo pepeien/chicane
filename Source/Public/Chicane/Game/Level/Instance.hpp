@@ -41,10 +41,10 @@ namespace Chicane
             return result;
         }
         void addActor(Actor* inActor);
-        void watchActors(
-            std::function<void (Actor*)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback = nullptr,
-            std::function<void ()> inCompleteCallback = nullptr
+        Subscription<Actor*>* watchActors(
+            std::function<void (Actor*)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
         );
 
         bool hasComponents() const;
@@ -68,10 +68,10 @@ namespace Chicane
         }
         void addComponent(Component* inComponent);
         void removeComponent(Component* inComponent);
-        void watchComponents(
-            std::function<void (const std::vector<Component*>&)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback = nullptr,
-            std::function<void ()> inCompleteCallback = nullptr
+        Subscription<const std::vector<Component*>&>* watchComponents(
+            std::function<void (const std::vector<Component*>&)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
         );
 
     private:

@@ -362,18 +362,18 @@ namespace Chicane
             );
         }
 
-        void Renderer::prepareCamera(Frame::Instance& outImage)
+        void Renderer::prepareCamera(Frame::Instance& outFrame)
         {
             if (!Application::hasCamera())
             {
                 return;
             }
 
-            outImage.cameraUBO.instance = Application::getCamera()->getData();
+            outFrame.cameraUBO.instance = Application::getCamera()->getData();
             memcpy(
-                outImage.cameraUBO.writeLocation,
-                &outImage.cameraUBO.instance,
-                outImage.cameraUBO.allocationSize
+                outFrame.cameraUBO.writeLocation,
+                &outFrame.cameraUBO.instance,
+                outFrame.cameraUBO.allocationSize
             );
         }
 
@@ -402,19 +402,19 @@ namespace Chicane
             );
         }
 
-        void Renderer::prepareLayers(Frame::Instance& outImage)
+        void Renderer::prepareLayers(Frame::Instance& outFrame)
         {
             for (Layer::Instance* layer : m_layers)
             {
-                layer->setup(&outImage);
+                layer->setup(&outFrame);
             }
         }
 
-        void Renderer::renderLayers(Frame::Instance& outImage, const vk::CommandBuffer& inCommandBuffer)
+        void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)
         {
             Data data = {};
             data.commandBuffer   = inCommandBuffer;
-            data.frame           = outImage;
+            data.frame           = outFrame;
             data.swapChainExtent = m_swapChain.extent;
 
             for (Layer::Instance* layer : m_layers)
@@ -423,9 +423,9 @@ namespace Chicane
             }
         }
 
-        void Renderer::prepareFrame(Frame::Instance& outImage)
+        void Renderer::prepareFrame(Frame::Instance& outFrame)
         {
-            outImage.updateDescriptorSets();
+            outFrame.updateDescriptorSets();
         }
 
         void Renderer::prepareEvents()

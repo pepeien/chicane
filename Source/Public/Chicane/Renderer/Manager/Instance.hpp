@@ -196,13 +196,13 @@ namespace Chicane
             }
 
             // Events
-            void watchChanges(
+            Subscription<EventType>* watchChanges(
                 std::function<void (EventType)> inNext,
                 std::function<void (const std::string&)> inError = nullptr,
                 std::function<void ()> inComplete = nullptr
             )
             {
-                m_observable->subscribe(
+                return m_observable->subscribe(
                     inNext,
                     inError,
                     inComplete

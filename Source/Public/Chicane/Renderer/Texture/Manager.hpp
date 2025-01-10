@@ -21,7 +21,7 @@ namespace Chicane
 
         public:
             // Setup
-            void load(const std::string& inId, const Box::Texture* inAsset);
+            void load(const std::string& inId, const Box::Texture* inTexture);
 
             // Data
             const Image::Instance& getInstance(const std::string& inId) const;

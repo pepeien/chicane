@@ -307,7 +307,7 @@ namespace Chicane
             );
 
             Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.size = TEXTURE_MAX_COUNT;
+            descriptorPoolCreateInfo.size = Chicane::Texture::MAX_COUNT;
             descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
 
             Vulkan::Descriptor::initPool(

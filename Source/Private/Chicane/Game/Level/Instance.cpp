@@ -72,17 +72,20 @@ namespace Chicane
         m_actorObservable->next(inActor);
     }
 
-    void Level::watchActors(
-        std::function<void (Actor*)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+    Subscription<Actor*>* Level::watchActors(
+        std::function<void (Actor*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
-        m_actorObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
-        )->next(m_actors.empty() ? nullptr : m_actors.back());
+        Subscription<Actor*>* subscription = m_actorObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
+        );
+        subscription->next(m_actors.empty() ? nullptr : m_actors.back());
+
+        return subscription;
     }
 
     bool Level::hasComponents() const
@@ -131,16 +134,19 @@ namespace Chicane
         m_componentObservable->next(m_components);
     }
 
-    void Level::watchComponents(
-        std::function<void (const std::vector<Component*>&)> inNextCallback,
-        std::function<void (const std::string&)> inErrorCallback,
-        std::function<void ()> inCompleteCallback
+    Subscription<const std::vector<Component*>&>* Level::watchComponents(
+        std::function<void (const std::vector<Component*>&)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
     )
     {
-        m_componentObservable->subscribe(
-            inNextCallback,
-            inErrorCallback,
-            inCompleteCallback
-        )->next(m_components);
+        Subscription<const std::vector<Component*>&>* subscription = m_componentObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
+        );
+        subscription->next(m_components);
+
+        return subscription;
     }
 }

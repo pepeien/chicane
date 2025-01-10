@@ -9,13 +9,13 @@ namespace Chicane
     {
     public:
         Subscription(
-            std::function<void (T)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback,
-            std::function<void ()> inCompleteCallback
+            std::function<void (T)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
         ) : m_bIsCompleted(false),
-            m_nextCallback(inNextCallback),
-            m_errorCallback(inErrorCallback),
-            m_completeCallback(inCompleteCallback)
+            m_next(inNext),
+            m_error(inError),
+            m_complete(inComplete)
         {}
 
     public:
@@ -26,12 +26,12 @@ namespace Chicane
                 return;
             }
 
-            if (!m_nextCallback)
+            if (!m_next)
             {
                 return;
             }
 
-            m_nextCallback(inData);
+            m_next(inData);
         }
 
         void error(const std::string& inMessage)
@@ -41,12 +41,12 @@ namespace Chicane
                 return;
             }
 
-            if (!m_errorCallback)
+            if (!m_error)
             {
                 return;
             }
 
-            m_errorCallback(inMessage);
+            m_error(inMessage);
         }
 
         bool isCompleted() const
@@ -63,19 +63,19 @@ namespace Chicane
 
             m_bIsCompleted = true;
 
-            if (!m_completeCallback)
+            if (!m_complete)
             {
                 return;
             }
 
-            m_completeCallback();
+            m_complete();
         }
 
     protected:
         bool m_bIsCompleted;
 
-        std::function<void (T)> m_nextCallback;
-        std::function<void (const std::string&)> m_errorCallback;
-        std::function<void ()> m_completeCallback;
+        std::function<void (T)> m_next;
+        std::function<void (const std::string&)> m_error;
+        std::function<void ()> m_complete;
     };
 }

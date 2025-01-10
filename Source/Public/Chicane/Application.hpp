@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Application/CreateInfo.hpp"
+#include "Chicane/Application/Instance.hpp"
 #include "Chicane/Base.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
@@ -8,71 +10,72 @@
 
 namespace Chicane
 {
-    class Application
+    namespace Application
     {
-    public:
-        struct CreateInfo : public Window::CreateInfo
-        {
-        public:
-            // Callbacks
-            std::function<void ()> onSetup  = nullptr;
-        };
-
-    public:
         // Setup
-        static void run(const CreateInfo& inCreateInfo);
-        static void stop();
+        void run(const CreateInfo& inCreateInfo);
+        void stop();
 
         // Telemetry
-        static const Telemetry& getTelemetry();
+        const Telemetry& getTelemetry();
 
         // Game
-        static bool hasController();
-        static Controller* getController();
-        static void setController(Controller* inController);
-        static void watchController(
+        bool hasController();
+        Controller* getController();
+        void setController(Controller* inController);
+        Subscription<Controller*>* watchController(
             std::function<void (Controller*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
-        static bool hasLevel();
-        static Level* getLevel();
-        static void setLevel(Level* inLevel);
-        static void watchLevel(
+        bool hasLevel();
+        Level* getLevel();
+        void setLevel(Level* inLevel);
+        Subscription<Level*>* watchLevel(
             std::function<void (Level*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
-        static bool hasCamera();
-        static CameraComponent* getCamera();
-        static void setCamera(CameraComponent* inCamera);
-        static void watchCamera(
+        bool hasCamera();
+        CameraComponent* getCamera();
+        void setCamera(CameraComponent* inCamera);
+        Subscription<CameraComponent*>* watchCamera(
             std::function<void (CameraComponent*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
         // UI
-        static bool hasView();
-        static void addView(Grid::View* inView);
-        static void setView(const std::string& inId);
-        static Grid::View* getView(const std::string& inId = "");
-        static void watchView(
+        bool hasView();
+        void addView(Grid::View* inView);
+        void setView(const std::string& inId);
+        Grid::View* getView(const std::string& inId = "");
+        Subscription<Grid::View*>* watchView(
             std::function<void (Grid::View*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
         // Render
-        static bool hasWindow();
-        static Window::Instance* getWindow();
-
-        static bool hasRenderer();
-        static Renderer::Instance* getRenderer();
+        bool hasWindow();
+        Window::Instance* getWindow();
         template<class T>
-        static T* getRenderer()
+        T* getWindow()
+        {
+            if (!hasWindow())
+            {
+                return nullptr;
+            }
+
+            return static_cast<T*>(getWindow());
+        }
+
+        bool hasRenderer();
+        Renderer::Instance* getRenderer();
+        template<class T>
+        T* getRenderer()
         {
             if (!hasRenderer())
             {
@@ -81,53 +84,5 @@ namespace Chicane
 
             return static_cast<T*>(getRenderer());
         }
-
-    public:
-        Application();
-
-    public:
-        // Lifecycle
-        void setup(const CreateInfo& inCreateInfo);
-        void run();
-
-    private:
-        // Setup
-        void initWindow(const Window::CreateInfo& inWindowCreateInfo);
-        void initRenderer(Renderer::Type inRenderer);
-        void initDefaultController();
-        void initDefaultLevel();
-        void initDefaultCamera();
-        void initDefaultLayers();
-        void initEvents();
-
-        // Lifecycle
-        void onEvent(const SDL_Event& inEvent);
-        void onRender();
-
-    public:
-        // Telemetry
-        Telemetry                                     telemetry;
-
-        // Game
-        std::unique_ptr<Controller>                   defaultController;
-        Controller*                                   controller;
-        std::unique_ptr<Observable<Controller*>>      controllerObservable;
-
-        std::unique_ptr<Level>                        defaultLevel;
-        Level*                                        level;
-        std::unique_ptr<Observable<Level*>>           levelObservable;
-
-        CameraComponent*                              defaultCamera;
-        CameraComponent*                              camera;
-        std::unique_ptr<Observable<CameraComponent*>> cameraObservable;
-
-        // UI
-        std::unordered_map<std::string, Grid::View*>  views;
-        Grid::View*                                   view;
-        std::unique_ptr<Observable<Grid::View*>>      viewObservable;
-
-        // Render
-        std::unique_ptr<Window::Instance>             window;
-        std::unique_ptr<Renderer::Instance>           renderer;
-    };
+    }
 }

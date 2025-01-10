@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Utils.hpp"
 #include "Chicane/Core/Log/Entry.hpp"
 
@@ -11,10 +12,10 @@ namespace Chicane
     {
         typedef std::deque<Entry> List;
 
-        void watchLogs(
-            std::function<void (const List&)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback = nullptr,
-            std::function<void ()> inCompleteCallback = nullptr
+        Subscription<List>* watchLogs(
+            std::function<void (const List&)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
         );
 
         void emmit(

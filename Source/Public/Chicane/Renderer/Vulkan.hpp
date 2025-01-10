@@ -93,14 +93,14 @@ namespace Chicane
             void buildMainCommandBuffer();
             void buildFramesCommandBuffers();
 
-            void prepareCamera(Frame::Instance& outImage);
+            void prepareCamera(Frame::Instance& outFrame);
 
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
-            void prepareLayers(Frame::Instance& outImage);
-            void renderLayers(Frame::Instance& outImage, const vk::CommandBuffer& inCommandBuffer);
+            void prepareLayers(Frame::Instance& outFrame);
+            void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
-            void prepareFrame(Frame::Instance& outImage);
+            void prepareFrame(Frame::Instance& outFrame);
 
             void refreshCameraViewport();
 

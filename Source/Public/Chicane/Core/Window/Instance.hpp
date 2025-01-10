@@ -58,14 +58,14 @@ namespace Chicane
 
             bool isMinimized();
 
-        public:
-            SDL_Window* instance;
-
         private:
             // Settings
             void refreshSize();
             void refreshDrawableSize();
             void refreshPosition();
+
+        public:
+            SDL_Window* instance;
 
         private:
             // Settings

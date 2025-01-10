@@ -8,7 +8,7 @@ Application::Application()
     createInfo.title        = "Chicane Sample";
     createInfo.resolution.x = 1600;
     createInfo.resolution.y = 900;
-    createInfo.type         = Chicane::Window::Type::Windowed;
+    createInfo.window       = Chicane::Window::Type::Windowed;
     createInfo.renderer     = Chicane::Renderer::Type::Vulkan;
     createInfo.display      = 0;
     createInfo.onSetup      = [this]() {

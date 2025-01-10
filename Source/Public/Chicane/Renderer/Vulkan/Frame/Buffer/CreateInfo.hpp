@@ -12,6 +12,7 @@ namespace Chicane
             {
                 struct CreateInfo
                 {
+                public:
                     std::string                id;
                     vk::Device                 logicalDevice;
                     vk::RenderPass             renderPass;

@@ -12,14 +12,12 @@ namespace Chicane
         struct CreateInfo
         {
         public:
-            std::string    title        = "";
-            std::string    icon         = ""; // Optional `file path`
-            Vec<2, int>    resolution   = Vec<2, int>(0);
-            int            display      = 0;
-            Type           type         = Type::Windowed;
-            Renderer::Type   renderer     = Renderer::Type::Undefined;
-            bool           bIsFocused   = false;
-            bool           bIsResizable = true; // Only takes effect when the type is `Type::Windowed`
+            std::string    title      = "";
+            std::string    icon       = ""; // Optional `file path`
+            Vec<2, int>    resolution = Vec<2, int>(0);
+            int            display    = 0;
+            Type           window     = Type::Windowed;
+            Renderer::Type renderer   = Renderer::Type::Undefined;
         };
     }
 }

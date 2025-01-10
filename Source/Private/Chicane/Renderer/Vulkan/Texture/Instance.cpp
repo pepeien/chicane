@@ -1,6 +1,7 @@
 #include "Chicane/Renderer/Vulkan/Texture/Instance.hpp"
 
 #include "Chicane/Core/FileSystem.hpp"
+#include "Chicane/Core/Texture.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Texture/CreateInfo.hpp"
@@ -26,7 +27,7 @@ namespace Chicane
                 Image::CreateInfo createInfo {};
                 createInfo.width            = m_image.width;
                 createInfo.height           = m_image.height;
-                createInfo.count            = TEXTURE_IMAGE_COUNT;
+                createInfo.count            = Chicane::Texture::IMAGE_COUNT;
                 createInfo.logicalDevice    = m_logicalDevice;
                 createInfo.physicalDevice   = m_physicalDevice;
                 createInfo.tiling           = vk::ImageTiling::eOptimal;
@@ -87,7 +88,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eUndefined,
                     vk::ImageLayout::eTransferDstOptimal,
-                    TEXTURE_IMAGE_COUNT
+                    Chicane::Texture::IMAGE_COUNT
                 );
 
                 Image::copyBufferToImage(
@@ -97,7 +98,7 @@ namespace Chicane
                     m_image.instance,
                     m_image.width,
                     m_image.height,
-                    TEXTURE_IMAGE_COUNT
+                    Chicane::Texture::IMAGE_COUNT
                 );
 
                 Image::transitionLayout(
@@ -106,7 +107,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eTransferDstOptimal,
                     vk::ImageLayout::eShaderReadOnlyOptimal,
-                    TEXTURE_IMAGE_COUNT
+                    Chicane::Texture::IMAGE_COUNT
                 );
 
                 Buffer::destroy(m_logicalDevice, stagingBuffer);
@@ -121,7 +122,7 @@ namespace Chicane
                     vk::Format::eR8G8B8A8Unorm,
                     vk::ImageAspectFlagBits::eColor,
                     vk::ImageViewType::e2D,
-                    TEXTURE_IMAGE_COUNT
+                    Chicane::Texture::IMAGE_COUNT
                 );
             }
 

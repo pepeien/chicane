@@ -67,10 +67,6 @@
 static constexpr const char* APPLICATION_NAME = "Chicane Engine";
 static constexpr const char* ENGINE_NAME      = "Chicane";
 
-// Assets
-static constexpr std::uint32_t TEXTURE_MAX_COUNT   = 100000;
-static constexpr std::uint32_t TEXTURE_IMAGE_COUNT = 1;
-
 // Z-Up Right Handed
 static constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);
 static constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);

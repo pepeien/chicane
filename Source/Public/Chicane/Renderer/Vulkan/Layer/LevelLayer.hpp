@@ -55,21 +55,21 @@ namespace Chicane
             void updateMeshes(const std::vector<Component*>& inComponents);
 
         private:
-            Vulkan::Renderer::Internals                                         m_internals;
+            Renderer::Internals                                                 m_internals;
 
-            Level*                                                              m_level;
-            std::vector<MeshComponent*>                                         m_meshes;
+            Chicane::Level*                                                     m_level;
+            std::vector<Chicane::MeshComponent*>                                m_meshes;
 
-            std::unique_ptr<Vulkan::GraphicsPipeline::Instance>                 m_graphicsPipeline;
+            std::unique_ptr<GraphicsPipeline::Instance>                         m_graphicsPipeline;
 
-            Vulkan::Descriptor::Bundle                                          m_frameDescriptor;
+            Descriptor::Bundle                                                  m_frameDescriptor;
 
-            Vulkan::Descriptor::Bundle                                          m_textureDescriptor;
+            Descriptor::Bundle                                                  m_textureDescriptor;
             std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_textures;
             Chicane::Texture::Manager*                                          m_textureManager;
 
-            Vulkan::Buffer::Instance                                            m_modelVertexBuffer;
-            Vulkan::Buffer::Instance                                            m_modelIndexBuffer;
+            Buffer::Instance                                                    m_modelVertexBuffer;
+            Buffer::Instance                                                    m_modelIndexBuffer;
             Chicane::Model::Manager*                                            m_modelManager;
 
             std::vector<vk::ClearValue>                                         m_clearValues;

@@ -17,7 +17,7 @@ namespace Chicane
             Manager();
 
         protected:
-            void onAllocation(const std::string& inId, const Data& inData) override;
+            void onAllocation(const std::string& inId, const Model::Data& inData) override;
             void onDeallocation(const std::string& inId) override;
             void onActivation(const std::string& inId) override;
             void onDeactivation(const std::string& inId) override;

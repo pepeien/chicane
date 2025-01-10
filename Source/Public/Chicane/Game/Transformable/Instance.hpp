@@ -48,9 +48,9 @@ namespace Chicane
 
         // Events
         Subscription<const Transform&>* watchTransform(
-            std::function<void (const Transform&)> inNextCallback,
-            std::function<void (const std::string&)> inErrorCallback = nullptr,
-            std::function<void ()> inCompleteCallback = nullptr
+            std::function<void (const Transform&)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
         );
 
     protected:
