@@ -26,6 +26,11 @@ namespace Chicane
 
         LevelLayer::~LevelLayer()
         {
+            if (is(Layer::Status::Offline))
+            {
+                return;
+            }
+
             m_internals.logicalDevice.waitIdle();
 
             destroyTextureResources();
@@ -137,10 +142,12 @@ namespace Chicane
 
         void LevelLayer::loadEvents()
         {
-            if (!is(Layer::Status::Idle))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
+
+            setStatus(Layer::Status::Idle);
 
             Application::watchLevel(
                 [this](Level* inLevel) {

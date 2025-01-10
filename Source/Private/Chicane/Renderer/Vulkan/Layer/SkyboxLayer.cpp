@@ -20,6 +20,11 @@ namespace Chicane
 
         SkyboxLayer::~SkyboxLayer()
         {
+            if (is(Layer::Status::Offline))
+            {
+                return;
+            }
+
             m_internals.logicalDevice.waitIdle();
 
             // Graphics Pipeline
@@ -126,10 +131,12 @@ namespace Chicane
 
         void SkyboxLayer::loadEvents()
         {
-            if (!is(Layer::Status::Idle))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
+
+            setStatus(Layer::Status::Idle);
 
             m_cubeMapManager->watchChanges(
                 [this](Manager::EventType inEvent) {

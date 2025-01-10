@@ -16,7 +16,7 @@ namespace Chicane
 
             Instance(const std::string& inId)
                 : m_id(inId),
-                  m_status(Status::Idle)
+                  m_status(Status::Offline)
             {}
 
             virtual ~Instance() = default;

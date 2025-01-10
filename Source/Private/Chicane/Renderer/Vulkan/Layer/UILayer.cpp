@@ -21,6 +21,11 @@ namespace Chicane
 
         UILayer::~UILayer()
         {
+            if (is(Layer::Status::Offline))
+            {
+                return;
+            }
+
             m_internals.logicalDevice.waitIdle();
 
             ImGui_ImplVulkan_Shutdown();
@@ -127,10 +132,12 @@ namespace Chicane
 
         void UILayer::loadEvents()
         {
-            if (!is(Layer::Status::Idle))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
+
+            setStatus(Layer::Status::Idle);
 
             Application::watchView(
                 [this](Grid::View* inView)
