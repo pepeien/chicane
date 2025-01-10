@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
 {
@@ -19,11 +21,21 @@ namespace Chicane
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
+            virtual void onViewportEvent() { return; };
 
             // Render
             virtual void render() { return; };
 
         public:
+            // Settings
+            const Viewport& getViewport() const;
+            void setViewport(const Viewport& inViewport);
+            Subscription<const Viewport&>* watchViewport(
+                std::function<void (const Viewport&)> inNext,
+                std::function<void (const std::string&)> inError = nullptr,
+                std::function<void ()> inComplete = nullptr
+            );
+
             // Layer
             bool hasLayer(Layer::Instance* inLayer);
             bool hasLayer(const std::string& inId);
@@ -47,10 +59,14 @@ namespace Chicane
 
         protected:
             // Window
-            Window::Instance*   m_window;
+            Window::Instance*                            m_window;
+
+            // Settings
+            Viewport                                     m_viewport;
+            std::unique_ptr<Observable<const Viewport&>> m_viewportObservable;            
 
             // Layer
-            std::vector<Layer::Instance*> m_layers;
+            std::vector<Layer::Instance*>                m_layers;
         };
     }
 }

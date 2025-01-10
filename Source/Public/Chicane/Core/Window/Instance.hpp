@@ -42,11 +42,6 @@ namespace Chicane
             void setPosition(const Vec<2, int>& inPosition);
             void setPosition(int inX, int inY);
 
-            void setViewport(
-                const Vec<2, std::uint32_t>& inSize,
-                const Vec<2, float>& inPosition = Vec2Zero
-            );
-
             void setDisplay(int inMonitorIndex);
 
             void setType(Type inType);

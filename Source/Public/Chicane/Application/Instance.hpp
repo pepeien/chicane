@@ -14,10 +14,11 @@ namespace Chicane
         class Instance
         {
         public:
-            Instance(const CreateInfo& inCreateInfo);
+            Instance();
 
         public:
             // Lifecycle
+            void setup(const CreateInfo& inCreateInfo);
             void run();
 
             // Telemetry

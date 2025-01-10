@@ -17,7 +17,8 @@ namespace Chicane
                 return;
             }
 
-            m_application = std::make_unique<Instance>(inCreateInfo);
+            m_application = std::make_unique<Instance>();
+            m_application->setup(inCreateInfo);
             m_application->run();
         }
 

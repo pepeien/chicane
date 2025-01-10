@@ -9,8 +9,40 @@ namespace Chicane
     {
         Instance::Instance(Window::Instance* inWindow)
             : m_window(inWindow),
+            m_viewport({}),
+            m_viewportObservable(std::make_unique<Observable<const Viewport&>>()),
             m_layers({})
-        {}
+        {
+            m_viewport.size = inWindow->getDrawableSize();
+        }
+
+        const Viewport& Instance::getViewport() const
+        {
+            return m_viewport;
+        }
+
+        void Instance::setViewport(const Viewport& inViewport)
+        {
+            m_viewport = inViewport;
+
+            m_viewportObservable->next(m_viewport);
+        }
+
+        Subscription<const Viewport&>* Instance::watchViewport(
+            std::function<void (const Viewport&)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        )
+        {
+            Subscription<const Viewport&>* subscription = m_viewportObservable->subscribe(
+                inNext,
+                inError,
+                inComplete
+            );
+            subscription->next(m_viewport);
+
+            return subscription;
+        }
 
         bool Instance::hasLayer(Layer::Instance* inLayer)
         {

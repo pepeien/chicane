@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Application
     {
-        Instance::Instance(const CreateInfo& inCreateInfo)
+        Instance::Instance()
             : m_telemetry({}),
             m_controller(nullptr),
             m_controllerObservable(std::make_unique<Observable<Controller*>>()),
@@ -18,6 +18,9 @@ namespace Chicane
             m_views({}),
             m_view(nullptr),
             m_viewObservable(std::make_unique<Observable<Grid::View*>>())
+        {}
+
+        void Instance::setup(const CreateInfo& inCreateInfo)
         {
             initWindow(inCreateInfo);
             initRenderer(inCreateInfo.renderer);
@@ -201,12 +204,12 @@ namespace Chicane
         {
             Grid::View* view = Instance::getView(inId);
 
-            if (view == view)
+            if (view == m_view)
             {
                 return;
             }
 
-            view = view;
+            m_view = view;
 
             m_viewObservable->next(view);
         }

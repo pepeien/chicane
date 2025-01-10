@@ -57,16 +57,12 @@ namespace Chicane
             void initLayers() override;
 
             void onEvent(const SDL_Event& inEvent) override;
+            void onViewportEvent() override;
 
             void render() override;
 
         public:
             Internals getInternals();
-
-            void setViewport(
-                const Vec<2, std::uint32_t>& inSize,
-                const Vec<2, float>& inPosition = Vec2Zero
-            );
 
         private:
             void buildInstance();
@@ -102,8 +98,6 @@ namespace Chicane
 
             void prepareFrame(Frame::Instance& outFrame);
 
-            void refreshCameraViewport();
-
             void prepareEvents();
 
         private:
@@ -133,10 +127,6 @@ namespace Chicane
             // Frame
             int                        m_imageCount;
             int                        m_currentImageIndex;
-
-            // Window
-            Vec<2, std::uint32_t>      m_viewportSize;
-            Vec<2, float>              m_viewportPosition;
         };
     }
 }

@@ -15,9 +15,7 @@ namespace Chicane
             : Chicane::Renderer::Instance(inWindow),
             m_swapChain({}),
             m_imageCount(0),
-            m_currentImageIndex(0),
-            m_viewportSize(Vec<2, std::uint32_t>(0)),
-            m_viewportPosition(Vec<2, std::uint32_t>(0))
+            m_currentImageIndex(0)
         {
             buildInstance();
             buildDebugMessenger();
@@ -69,17 +67,6 @@ namespace Chicane
             return internals;
         }
 
-        void Renderer::setViewport(
-            const Vec<2, std::uint32_t>& inSize,
-            const Vec<2, float>& inPosition
-        )
-        {
-            m_viewportSize     = inSize;
-            m_viewportPosition = inPosition;
-
-            refreshCameraViewport();
-        }
-
         void Renderer::initLayers()
         {
             pushLayer(new SkyboxLayer());
@@ -95,6 +82,17 @@ namespace Chicane
             }
 
             emmitEventToLayers(inEvent);
+        }
+
+        void Renderer::onViewportEvent()
+        {
+            if (Application::hasCamera())
+            {
+                Application::getCamera()->setViewport(
+                    m_viewport.size.x,
+                    m_viewport.size.y
+                );
+            }
         }
 
         void Renderer::render()
@@ -282,12 +280,10 @@ namespace Chicane
                 frame.setupSync();
             }
 
-            setViewport(
-                Vec<2, std::uint32_t>(
-                    m_swapChain.extent.width,
-                    m_swapChain.extent.height
-                )
-            );
+            m_viewport.size.x = m_swapChain.extent.width;
+            m_viewport.size.y = m_swapChain.extent.height;
+
+            onViewportEvent();
         }
 
         void Renderer::rebuildSwapChain()
@@ -380,26 +376,13 @@ namespace Chicane
         void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)
         {
             vk::Viewport viewport = GraphicsPipeline::createViewport(
-                m_viewportSize,
-                m_viewportPosition
+                m_viewport.size,
+                m_viewport.position
             );
             inCommandBuffer.setViewport(0, 1, &viewport);
 
-            vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewportSize);
+            vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewport.size);
             inCommandBuffer.setScissor(0, 1, &scissor);
-        }
-
-        void Renderer::refreshCameraViewport()
-        {
-            if (!Application::hasCamera())
-            {
-                return;
-            }
-
-            Application::getCamera()->setViewport(
-                m_viewportSize.x,
-                m_viewportSize.y
-            );
         }
 
         void Renderer::prepareLayers(Frame::Instance& outFrame)
@@ -437,7 +420,7 @@ namespace Chicane
                         return;
                     }
 
-                    refreshCameraViewport();
+                    onViewportEvent();
                 }
             );
         }

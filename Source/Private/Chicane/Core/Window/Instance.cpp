@@ -247,19 +247,6 @@ namespace Chicane
             m_position.y = inY;
         }
 
-        void Instance::setViewport(
-            const Vec<2, std::uint32_t>& inSize,
-            const Vec<2, float>& inPosition
-        )
-        {
-            //if (!Application::hasRenderer())
-            //{
-            //    return;
-            //}
-
-            //m_renderer->setViewport(inSize, inPosition);
-        }
-
         void Instance::setTitle(const std::string& inTitle)
         {
             SDL_SetWindowTitle(
