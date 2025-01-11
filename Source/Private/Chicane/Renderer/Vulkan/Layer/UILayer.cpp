@@ -95,11 +95,6 @@ namespace Chicane
                 m_window->getDrawableSize(),
                 m_window->getPosition()
             );
-
-            ImGui::Render();
-
-        	ImGui::UpdatePlatformWindows();
-	    	ImGui::RenderPlatformWindowsDefault();
         }
 
         void UILayer::render(void* outData)
@@ -111,17 +106,21 @@ namespace Chicane
 
             Vulkan::Renderer::Data* data = (Vulkan::Renderer::Data*) outData;
 
-            vk::RenderPassBeginInfo renderPassBeginInfo {};
-            renderPassBeginInfo.renderPass          = m_renderPass;
-            renderPassBeginInfo.framebuffer         = data->frame.getFramebuffer(m_id);
-            renderPassBeginInfo.renderArea.offset.x = 0;
-            renderPassBeginInfo.renderArea.offset.y = 0;
-            renderPassBeginInfo.renderArea.extent   = data->swapChainExtent;
-            renderPassBeginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
-            renderPassBeginInfo.pClearValues        = m_clearValues.data();
+            vk::RenderPassBeginInfo beginInfo {};
+            beginInfo.renderPass          = m_renderPass;
+            beginInfo.framebuffer         = data->frame.getFramebuffer(m_id);
+            beginInfo.renderArea.offset.x = 0;
+            beginInfo.renderArea.offset.y = 0;
+            beginInfo.renderArea.extent   = data->swapChainExtent;
+            beginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
+            beginInfo.pClearValues        = m_clearValues.data();
 
+            ImGui::Render();
+        	ImGui::UpdatePlatformWindows();
+	    	ImGui::RenderPlatformWindowsDefault();
+    
             data->commandBuffer.beginRenderPass(
-                &renderPassBeginInfo,
+                &beginInfo,
                 vk::SubpassContents::eInline
             );
                 ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), data->commandBuffer);
