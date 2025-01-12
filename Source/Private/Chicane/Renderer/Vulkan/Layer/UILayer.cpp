@@ -11,6 +11,7 @@ namespace Chicane
         UILayer::UILayer()
             : Layer::Instance("UI"),
             m_window(Application::getWindow()),
+            m_view(nullptr),
             m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
             m_clearValues({})
         {
@@ -139,7 +140,7 @@ namespace Chicane
             setStatus(Layer::Status::Idle);
 
             Application::watchView(
-                [this](Grid::View* inView)
+                [&](Grid::View* inView)
                 {
                     m_view = inView;
 
