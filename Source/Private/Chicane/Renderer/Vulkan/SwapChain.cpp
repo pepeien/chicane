@@ -248,9 +248,7 @@ namespace Chicane
                         1
                     );
 
-                    frame.setupDepthBuffering(outSwapChain.depthFormat);
-
-                    frame.setupCameraUBO();
+                    frame.setupDepthBuffer(outSwapChain.depthFormat);
                 }
             }
         }

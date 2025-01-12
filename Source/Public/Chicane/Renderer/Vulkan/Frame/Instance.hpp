@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
+#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
+#include "Chicane/Renderer/Mesh/Data.hpp"
+#include "Chicane/Renderer/Camera/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Renderer/Vulkan/Camera.hpp"
 #include "Chicane/Renderer/Vulkan/Frame/Depth.hpp"
-#include "Chicane/Renderer/Vulkan/Mesh.hpp"
+#include "Chicane/Renderer/Vulkan/Frame/Resource.hpp"
 
 namespace Chicane
 {
@@ -16,9 +19,7 @@ namespace Chicane
             class Instance
             {
             public:
-                bool isDirty();
-                void setAsDirty();
-
+                // Sychronization
                 void setupSync();
                 void wait(const vk::Device& inLogicalDevice);
                 void reset(const vk::Device& inLogicalDevice);
@@ -29,15 +30,21 @@ namespace Chicane
                     const vk::Device& inLogicalDevice
                 );
 
-                void setupCameraUBO();
-                void destroyCameraUBO();
+                // Resources
+                bool isCameraDirty();
+                void setCameraAsDirty();
+                void setupCameraData(CameraComponent* inCamera);
+                void updateCameraData(CameraComponent* inCamera);
+                void destroyCameraData();
 
+                bool areMeshesDirty();
+                void setMeshesAsDirty();
                 void setupMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void destroyMeshData();
-        
-                void setupDepthBuffering(const vk::Format& inFormat);
-                void destroyDepthBuffering();
+
+                void setupDepthBuffer(const vk::Format& inFormat);
+                void destroyDepthBuffer();
 
                 void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
                 vk::Framebuffer getFramebuffer(const std::string& inId) const;
@@ -73,17 +80,19 @@ namespace Chicane
                 vk::Semaphore                                     renderSemaphore;
         
                 // Resources
-                Camera::Instance                                  cameraUBO;
                 vk::DescriptorBufferInfo                          cameraDescriptorBufferInfo;
-
-                Mesh::Bundle                                      meshBundle;
                 vk::DescriptorBufferInfo                          modelDescriptorBufferInfo;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
 
             private:
-                bool                                              m_bIsDirty;
+                bool                                              m_bIsCameraDirty;
+                bool                                              m_bAreMeshesDirty;
+
+                // Resources
+                Resource<Chicane::Camera::Data>                   m_cameraResource;
+                Resource<std::vector<Chicane::Mesh::Data>>        m_meshResource;
             };
         }
     }

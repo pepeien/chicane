@@ -33,62 +33,25 @@ namespace Chicane
                 return scissor;
             }
 
-            vk::PipelineShaderStageCreateInfo createVertexShader(const vk::ShaderModule& inShaderModule)
+            vk::PipelineVertexInputStateCreateInfo createVertexInputState()
             {
-                vk::PipelineShaderStageCreateInfo vertexShaderInfo {};
-                vertexShaderInfo.flags  = vk::PipelineShaderStageCreateFlags();
-                vertexShaderInfo.stage  = vk::ShaderStageFlagBits::eVertex;
-                vertexShaderInfo.module = inShaderModule;
-                vertexShaderInfo.pName  = "main";
+                vk::PipelineVertexInputStateCreateInfo createInfo {};
+                createInfo.flags                           = vk::PipelineVertexInputStateCreateFlags();
+                createInfo.vertexBindingDescriptionCount   = 0;
+                createInfo.pVertexBindingDescriptions      = nullptr;
+                createInfo.vertexAttributeDescriptionCount = 0;
+                createInfo.pVertexAttributeDescriptions    = nullptr;
 
-                return vertexShaderInfo;
-            }
-
-            vk::PipelineShaderStageCreateInfo createFragmentShader(const vk::ShaderModule& inShaderModule)
-            {
-                vk::PipelineShaderStageCreateInfo fragmentShaderInfo {};
-                fragmentShaderInfo.flags  = vk::PipelineShaderStageCreateFlags();
-                fragmentShaderInfo.stage  = vk::ShaderStageFlagBits::eFragment;
-                fragmentShaderInfo.module = inShaderModule;
-                fragmentShaderInfo.pName  = "main";
-
-                return fragmentShaderInfo;
-            }
-
-            vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-                bool bInHasVertices,
-                const vk::VertexInputBindingDescription& inBindingDescription,
-                const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
-            )
-            {
-                vk::PipelineVertexInputStateCreateInfo vertexInputInfo {};
-                vertexInputInfo.flags = vk::PipelineVertexInputStateCreateFlags();
-
-                if (bInHasVertices)
-                {
-                    vertexInputInfo.vertexBindingDescriptionCount   = 1;
-                    vertexInputInfo.pVertexBindingDescriptions      = &inBindingDescription;
-                    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(inAttributeDescriptions.size());
-                    vertexInputInfo.pVertexAttributeDescriptions    = inAttributeDescriptions.data();
-
-                    return vertexInputInfo;
-                }
-
-                vertexInputInfo.vertexBindingDescriptionCount   = 0;
-                vertexInputInfo.pVertexBindingDescriptions      = nullptr;
-                vertexInputInfo.vertexAttributeDescriptionCount = 0;
-                vertexInputInfo.pVertexAttributeDescriptions    = nullptr;
-
-                return vertexInputInfo;
+                return createInfo;
             }
 
             vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState()
             {
-                vk::PipelineInputAssemblyStateCreateInfo inputAssemblyInfo {};
-                inputAssemblyInfo.flags    = vk::PipelineInputAssemblyStateCreateFlags();
-                inputAssemblyInfo.topology = vk::PrimitiveTopology::eTriangleList;
+                vk::PipelineInputAssemblyStateCreateInfo createInfo {};
+                createInfo.flags    = vk::PipelineInputAssemblyStateCreateFlags();
+                createInfo.topology = vk::PrimitiveTopology::eTriangleList;
 
-                return inputAssemblyInfo;
+                return createInfo;
             }
 
             vk::PipelineViewportStateCreateInfo createViewportState(
@@ -96,137 +59,133 @@ namespace Chicane
                 const vk::Rect2D& inScissor
             )
             {
-                vk::PipelineViewportStateCreateInfo viewportState {};
-                viewportState.flags         = vk::PipelineViewportStateCreateFlags();
-                viewportState.viewportCount = 1;
-                viewportState.pViewports    = &inViewport;
-                viewportState.scissorCount  = 1;
-                viewportState.pScissors     = &inScissor;
+                vk::PipelineViewportStateCreateInfo createInfo {};
+                createInfo.flags         = vk::PipelineViewportStateCreateFlags();
+                createInfo.viewportCount = 1;
+                createInfo.pViewports    = &inViewport;
+                createInfo.scissorCount  = 1;
+                createInfo.pScissors     = &inScissor;
 
-                return viewportState;
+                return createInfo;
             }
 
             vk::PipelineDynamicStateCreateInfo createDynamicState(const std::vector<vk::DynamicState>& inDynamicStates)
             {
-                vk::PipelineDynamicStateCreateInfo dynamicState {};
-                dynamicState.dynamicStateCount = static_cast<std::uint32_t>(inDynamicStates.size());
-                dynamicState.pDynamicStates    = inDynamicStates.data();
+                vk::PipelineDynamicStateCreateInfo createInfo {};
+                createInfo.dynamicStateCount = static_cast<std::uint32_t>(inDynamicStates.size());
+                createInfo.pDynamicStates    = inDynamicStates.data();
 
-                return dynamicState;
+                return createInfo;
             }
 
             vk::PipelineRasterizationStateCreateInfo createRasterizationState(vk::PolygonMode inPolygonMode)
             {
-                vk::PipelineRasterizationStateCreateInfo rasterizationState {};
-                rasterizationState.flags                   = vk::PipelineRasterizationStateCreateFlags();
-                rasterizationState.depthClampEnable        = VK_FALSE;
-                rasterizationState.depthBiasEnable         = VK_FALSE;
-                rasterizationState.rasterizerDiscardEnable = VK_FALSE;
-                rasterizationState.polygonMode             = inPolygonMode;
-                rasterizationState.cullMode                = vk::CullModeFlagBits::eNone;
-                rasterizationState.frontFace               = vk::FrontFace::eClockwise;
-                rasterizationState.lineWidth               = 1.0f;
-                rasterizationState.depthBiasConstantFactor = 0.0f;
-                rasterizationState.depthBiasClamp          = 0.0f;
-                rasterizationState.depthBiasSlopeFactor    = 0.0f;
+                vk::PipelineRasterizationStateCreateInfo createInfo {};
+                createInfo.flags                   = vk::PipelineRasterizationStateCreateFlags();
+                createInfo.depthClampEnable        = VK_FALSE;
+                createInfo.depthBiasEnable         = VK_FALSE;
+                createInfo.rasterizerDiscardEnable = VK_FALSE;
+                createInfo.polygonMode             = inPolygonMode;
+                createInfo.cullMode                = vk::CullModeFlagBits::eNone;
+                createInfo.frontFace               = vk::FrontFace::eClockwise;
+                createInfo.lineWidth               = 1.0f;
+                createInfo.depthBiasConstantFactor = 0.0f;
+                createInfo.depthBiasClamp          = 0.0f;
+                createInfo.depthBiasSlopeFactor    = 0.0f;
 
-                return rasterizationState;
+                return createInfo;
             }
 
             vk::PipelineMultisampleStateCreateInfo createMulitsampleState()
             {
-                vk::PipelineMultisampleStateCreateInfo multisampleState {};
-                multisampleState.flags                 = vk::PipelineMultisampleStateCreateFlags();
-                multisampleState.sampleShadingEnable   = VK_FALSE;
-                multisampleState.alphaToCoverageEnable = VK_FALSE;
-                multisampleState.alphaToOneEnable      = VK_FALSE;
-                multisampleState.rasterizationSamples  = vk::SampleCountFlagBits::e1;
-                multisampleState.minSampleShading      = 1.0;
+                vk::PipelineMultisampleStateCreateInfo createInfo {};
+                createInfo.flags                 = vk::PipelineMultisampleStateCreateFlags();
+                createInfo.sampleShadingEnable   = VK_FALSE;
+                createInfo.alphaToCoverageEnable = VK_FALSE;
+                createInfo.alphaToOneEnable      = VK_FALSE;
+                createInfo.rasterizationSamples  = vk::SampleCountFlagBits::e1;
+                createInfo.minSampleShading      = 1.0;
 
-                return multisampleState;
+                return createInfo;
             }
 
             vk::PipelineColorBlendAttachmentState createBlendAttachmentState()
             {
-                vk::PipelineColorBlendAttachmentState attachmentState {};
-                attachmentState.colorWriteMask      = vk::ColorComponentFlagBits::eR |
-                                                      vk::ColorComponentFlagBits::eG |
-                                                      vk::ColorComponentFlagBits::eB |
-                                                      vk::ColorComponentFlagBits::eA;
-                attachmentState.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
-                attachmentState.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
-                attachmentState.colorBlendOp        = vk::BlendOp::eAdd;
-                attachmentState.srcAlphaBlendFactor = vk::BlendFactor::eOne;
-                attachmentState.dstAlphaBlendFactor = vk::BlendFactor::eZero;
-                attachmentState.alphaBlendOp        = vk::BlendOp::eAdd;
+                vk::PipelineColorBlendAttachmentState createInfo {};
+                createInfo.colorWriteMask      = vk::ColorComponentFlagBits::eR |
+                                                 vk::ColorComponentFlagBits::eG |
+                                                 vk::ColorComponentFlagBits::eB |
+                                                 vk::ColorComponentFlagBits::eA;
+                createInfo.srcColorBlendFactor = vk::BlendFactor::eSrcAlpha;
+                createInfo.dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha;
+                createInfo.colorBlendOp        = vk::BlendOp::eAdd;
+                createInfo.srcAlphaBlendFactor = vk::BlendFactor::eOne;
+                createInfo.dstAlphaBlendFactor = vk::BlendFactor::eZero;
+                createInfo.alphaBlendOp        = vk::BlendOp::eAdd;
 
-                return attachmentState;
+                return createInfo;
             }
 
             vk::PipelineColorBlendStateCreateInfo createColorBlendState()
             {
-                vk::PipelineColorBlendStateCreateInfo colorBlendState {};
-                colorBlendState.flags             = vk::PipelineColorBlendStateCreateFlags();
-                colorBlendState.logicOpEnable     = VK_FALSE;
-                colorBlendState.logicOp           = vk::LogicOp::eCopy;
-                colorBlendState.blendConstants[0] = 0.0f;
-                colorBlendState.blendConstants[1] = 0.0f;
-                colorBlendState.blendConstants[2] = 0.0f;
-                colorBlendState.blendConstants[3] = 0.0f;
+                vk::PipelineColorBlendStateCreateInfo createInfo {};
+                createInfo.flags             = vk::PipelineColorBlendStateCreateFlags();
+                createInfo.logicOpEnable     = VK_FALSE;
+                createInfo.logicOp           = vk::LogicOp::eCopy;
+                createInfo.blendConstants[0] = 0.0f;
+                createInfo.blendConstants[1] = 0.0f;
+                createInfo.blendConstants[2] = 0.0f;
+                createInfo.blendConstants[3] = 0.0f;
 
-                return colorBlendState;
+                return createInfo;
             }
 
             vk::PipelineDepthStencilStateCreateInfo createDepthStencilState()
             {
-                vk::PipelineDepthStencilStateCreateInfo depthStencilCreateInfo {};
-                depthStencilCreateInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
-                depthStencilCreateInfo.depthBoundsTestEnable = VK_FALSE;
-                depthStencilCreateInfo.stencilTestEnable     = VK_FALSE;
-                depthStencilCreateInfo.depthCompareOp        = vk::CompareOp::eLess;
+                vk::PipelineDepthStencilStateCreateInfo createInfo {};
+                createInfo.flags                 = vk::PipelineDepthStencilStateCreateFlags();
+                createInfo.depthBoundsTestEnable = VK_FALSE;
+                createInfo.stencilTestEnable     = VK_FALSE;
+                createInfo.depthCompareOp        = vk::CompareOp::eLess;
 
-                return depthStencilCreateInfo;
+                return createInfo;
             }
 
-            vk::PipelineLayout createLayout(
-                const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
-                const std::vector<vk::PushConstantRange>& inPushConstantRanges,
-                const vk::Device& inLogicalDevice
-            )
+            vk::PipelineLayout createLayout(const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,const vk::Device& inLogicalDevice)
             {
-                vk::PipelineLayoutCreateInfo layoutCreateInfo {};
-                layoutCreateInfo.flags                  = vk::PipelineLayoutCreateFlags();
-                layoutCreateInfo.setLayoutCount         = static_cast<std::uint32_t>(inDescriptorSetLayouts.size());
-                layoutCreateInfo.pSetLayouts            = inDescriptorSetLayouts.data();
-                layoutCreateInfo.pushConstantRangeCount = static_cast<std::uint32_t>(inPushConstantRanges.size());
-                layoutCreateInfo.pPushConstantRanges    = inPushConstantRanges.data();
+                vk::PipelineLayoutCreateInfo createInfo {};
+                createInfo.flags                  = vk::PipelineLayoutCreateFlags();
+                createInfo.setLayoutCount         = static_cast<std::uint32_t>(inDescriptorSetLayouts.size());
+                createInfo.pSetLayouts            = inDescriptorSetLayouts.data();
+                createInfo.pushConstantRangeCount = 0;
+                createInfo.pPushConstantRanges    = nullptr;
 
-                return inLogicalDevice.createPipelineLayout(layoutCreateInfo);
+                return inLogicalDevice.createPipelineLayout(createInfo);
             }
 
             vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment)
             {
-                vk::AttachmentDescription attachmentDescription {};
-                attachmentDescription.flags          = vk::AttachmentDescriptionFlags();
-                attachmentDescription.format         = inAttachment.format;
-                attachmentDescription.samples        = vk::SampleCountFlagBits::e1;
-                attachmentDescription.loadOp         = inAttachment.loadOp;
-                attachmentDescription.storeOp        = vk::AttachmentStoreOp::eStore;
-                attachmentDescription.stencilLoadOp  = vk::AttachmentLoadOp::eLoad;
-                attachmentDescription.stencilStoreOp = vk::AttachmentStoreOp::eStore;
-                attachmentDescription.initialLayout  = inAttachment.initialLayout;
-                attachmentDescription.finalLayout    = inAttachment.finalLayout;
+                vk::AttachmentDescription createInfo {};
+                createInfo.flags          = vk::AttachmentDescriptionFlags();
+                createInfo.format         = inAttachment.format;
+                createInfo.samples        = vk::SampleCountFlagBits::e1;
+                createInfo.loadOp         = inAttachment.loadOp;
+                createInfo.storeOp        = vk::AttachmentStoreOp::eStore;
+                createInfo.stencilLoadOp  = vk::AttachmentLoadOp::eLoad;
+                createInfo.stencilStoreOp = vk::AttachmentStoreOp::eStore;
+                createInfo.initialLayout  = inAttachment.initialLayout;
+                createInfo.finalLayout    = inAttachment.finalLayout;
 
-                return attachmentDescription;
+                return createInfo;
             }
 
             vk::AttachmentReference createColorAttachmentRef()
             {
-                vk::AttachmentReference attachmentRef {};
-                attachmentRef.attachment = 0;
-                attachmentRef.layout     = vk::ImageLayout::eColorAttachmentOptimal;
+                vk::AttachmentReference reference {};
+                reference.attachment = 0;
+                reference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
 
-                return attachmentRef;
+                return reference;
             }
 
             vk::SubpassDependency createColorSubpassDepedency()
@@ -261,11 +220,11 @@ namespace Chicane
 
             vk::AttachmentReference createDepthAttachmentRef()
             {
-                vk::AttachmentReference attachmentRef {};
-                attachmentRef.attachment = 1;
-                attachmentRef.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+                vk::AttachmentReference reference {};
+                reference.attachment = 1;
+                reference.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
-                return attachmentRef;
+                return reference;
             }
 
             vk::SubpassDependency createDepthSubpassDepedency()
@@ -310,16 +269,16 @@ namespace Chicane
                     subpass.pDepthStencilAttachment = &depthAttachmentRef;
                 }
         
-                vk::RenderPassCreateInfo renderPassInfo {};
-                renderPassInfo.flags           = vk::RenderPassCreateFlags();
-                renderPassInfo.attachmentCount = static_cast<std::uint32_t>(inAttachments.size());
-                renderPassInfo.pAttachments    = inAttachments.data();
-                renderPassInfo.dependencyCount = static_cast<std::uint32_t>(subpassDependecies.size());
-                renderPassInfo.pDependencies   = subpassDependecies.data();
-                renderPassInfo.subpassCount    = 1;
-                renderPassInfo.pSubpasses      = &subpass;
+                vk::RenderPassCreateInfo createInfo {};
+                createInfo.flags           = vk::RenderPassCreateFlags();
+                createInfo.attachmentCount = static_cast<std::uint32_t>(inAttachments.size());
+                createInfo.pAttachments    = inAttachments.data();
+                createInfo.dependencyCount = static_cast<std::uint32_t>(subpassDependecies.size());
+                createInfo.pDependencies   = subpassDependecies.data();
+                createInfo.subpassCount    = 1;
+                createInfo.pSubpasses      = &subpass;
         
-                return inLogicalDevice.createRenderPass(renderPassInfo);
+                return inLogicalDevice.createRenderPass(createInfo);
             }
         }
     }

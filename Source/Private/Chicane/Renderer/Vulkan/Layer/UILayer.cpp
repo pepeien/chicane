@@ -169,19 +169,41 @@ namespace Chicane
             }
 
             Vulkan::Descriptor::PoolCreateInfo createInfo;
-            createInfo.flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
-            createInfo.size  = 1000;
-            createInfo.types.push_back(vk::DescriptorType::eSampler);
-            createInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            createInfo.types.push_back(vk::DescriptorType::eSampledImage);
-            createInfo.types.push_back(vk::DescriptorType::eStorageImage);
-            createInfo.types.push_back(vk::DescriptorType::eUniformTexelBuffer);
-            createInfo.types.push_back(vk::DescriptorType::eStorageTexelBuffer);
-            createInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-            createInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
-            createInfo.types.push_back(vk::DescriptorType::eUniformBufferDynamic);
-            createInfo.types.push_back(vk::DescriptorType::eStorageBufferDynamic);
-            createInfo.types.push_back(vk::DescriptorType::eInputAttachment);
+            createInfo.flags   = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
+            createInfo.maxSets = 1000;
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eSampler, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eSampledImage, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageImage, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformTexelBuffer, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageTexelBuffer, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformBufferDynamic, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageBufferDynamic, .descriptorCount = createInfo.maxSets }
+            );
+            createInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eInputAttachment, .descriptorCount = createInfo.maxSets }
+            );
 
             Vulkan::Descriptor::initPool(
                 m_descriptorPool,

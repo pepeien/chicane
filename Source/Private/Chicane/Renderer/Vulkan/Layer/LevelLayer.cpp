@@ -241,9 +241,13 @@ namespace Chicane
             );
 
             Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.size  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
-            descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
-            descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eStorageBuffer);
+            descriptorPoolCreateInfo.maxSets  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
+            descriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+            );
+            descriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+            );
 
             Vulkan::Descriptor::initPool(
                 m_frameDescriptor.pool,
@@ -253,17 +257,18 @@ namespace Chicane
 
             for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                vk::DescriptorSet levelDescriptorSet;
+                vk::DescriptorSet descriptorSet;
+
                 Vulkan::Descriptor::allocalteSet(
-                    levelDescriptorSet,
+                    descriptorSet,
                     m_internals.logicalDevice,
                     m_frameDescriptor.setLayout,
                     m_frameDescriptor.pool
                 );
-                frame.addDescriptorSet(m_id, levelDescriptorSet);
+                frame.addDescriptorSet(m_id, descriptorSet);
         
                 vk::WriteDescriptorSet cameraWriteInfo;
-                cameraWriteInfo.dstSet          = levelDescriptorSet;
+                cameraWriteInfo.dstSet          = descriptorSet;
                 cameraWriteInfo.dstBinding      = 0;
                 cameraWriteInfo.dstArrayElement = 0;
                 cameraWriteInfo.descriptorCount = 1;
@@ -271,14 +276,14 @@ namespace Chicane
                 cameraWriteInfo.pBufferInfo     = &frame.cameraDescriptorBufferInfo;
                 frame.addWriteDescriptorSet(cameraWriteInfo);
 
-                vk::WriteDescriptorSet modelWriteInfo;
-                modelWriteInfo.dstSet          = levelDescriptorSet;
-                modelWriteInfo.dstBinding      = 1;
-                modelWriteInfo.dstArrayElement = 0;
-                modelWriteInfo.descriptorCount = 1;
-                modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                modelWriteInfo.pBufferInfo     = &frame.modelDescriptorBufferInfo;
-                frame.addWriteDescriptorSet(modelWriteInfo);
+                vk::WriteDescriptorSet meshWriteInfo;
+                meshWriteInfo.dstSet          = descriptorSet;
+                meshWriteInfo.dstBinding      = 1;
+                meshWriteInfo.dstArrayElement = 0;
+                meshWriteInfo.descriptorCount = 1;
+                meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                meshWriteInfo.pBufferInfo     = &frame.modelDescriptorBufferInfo;
+                frame.addWriteDescriptorSet(meshWriteInfo);
             }
         }
 
@@ -292,56 +297,34 @@ namespace Chicane
             );
         }
 
-        void LevelLayer::initTextureResources()
+        std::vector<Shader::StageCreateInfo> LevelLayer::getGraphicsPipelineShaders()
         {
-            if (!is(Layer::Status::Initialized))
-            {
-                return;
-            }
+            Shader::StageCreateInfo vertexShader {};
+            vertexShader.path = "Content/Engine/Vulkan/Shaders/level.vert.spv";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
-            Vulkan::Descriptor::SetLayoutBidingsCreateInfo materialLayoutBidings;
-            materialLayoutBidings.count = 1;
+            Shader::StageCreateInfo fragmentShader {};
+            fragmentShader.path = "Content/Engine/Vulkan/Shaders/level.frag.spv";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            materialLayoutBidings.indices.push_back(0);
-            materialLayoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            materialLayoutBidings.counts.push_back(m_textureManager->getActiveCount());
-            materialLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+            std::vector<Shader::StageCreateInfo> result {};
+            result.push_back(vertexShader);
+            result.push_back(fragmentShader);
 
-            Vulkan::Descriptor::initSetLayout(
-                m_textureDescriptor.setLayout,
-                m_internals.logicalDevice,
-                materialLayoutBidings
-            );
-
-            Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.size = Chicane::Texture::MAX_COUNT;
-            descriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-
-            Vulkan::Descriptor::initPool(
-                m_textureDescriptor.pool,
-                m_internals.logicalDevice,
-                descriptorPoolCreateInfo
-            );
+            return result;    
         }
 
-        void LevelLayer::destroyTextureResources()
+        std::vector<vk::DescriptorSetLayout> LevelLayer::getGraphicsPipelineDescriptorLayouts()
         {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_textureDescriptor.setLayout
-            );
+            std::vector<vk::DescriptorSetLayout> result {};
+            result.push_back(m_frameDescriptor.setLayout);
+            result.push_back(m_textureDescriptor.setLayout);
 
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_textureDescriptor.pool
-            );
+            return result;
         }
 
-        void LevelLayer::initGraphicsPipeline()
+        std::vector<vk::AttachmentDescription> LevelLayer::getGraphicsPipelineAttachments()
         {
-            if (!is(Layer::Status::Initialized))
-            {
-                return;
-            }
-
             GraphicsPipeline::Attachment colorAttachment {};
             colorAttachment.format        = m_internals.swapchain->format;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
@@ -354,21 +337,29 @@ namespace Chicane
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
+            std::vector<vk::AttachmentDescription> result {};
+            result.push_back(GraphicsPipeline::createColorAttachment(colorAttachment));
+            result.push_back(GraphicsPipeline::createDepthAttachment(depthAttachment));
+
+            return result;
+        }
+
+        void LevelLayer::initGraphicsPipeline()
+        {
+            if (!is(Layer::Status::Initialized))
+            {
+                return;
+            }
+
             Vulkan::GraphicsPipeline::CreateInfo createInfo {};
             createInfo.bHasVertices          = true;
             createInfo.bHasDepthWrite        = true;
             createInfo.bHasBlending          = true;
             createInfo.logicalDevice         = m_internals.logicalDevice;
-            createInfo.vertexShaderPath      = "Content/Engine/Vulkan/Shaders/level.vert.spv";
-            createInfo.fragmentShaderPath    = "Content/Engine/Vulkan/Shaders/level.frag.spv";
-            createInfo.bindingDescription    = Vulkan::Vertex::getBindingDescription();
-            createInfo.attributeDescriptions = Vulkan::Vertex::getAttributeDescriptions();
+            createInfo.shaders               = getGraphicsPipelineShaders();
             createInfo.extent                = m_internals.swapchain->extent;
-            createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_textureDescriptor.setLayout };
-            createInfo.attachments           = {
-                GraphicsPipeline::createColorAttachment(colorAttachment),
-                GraphicsPipeline::createDepthAttachment(depthAttachment)
-            };
+            createInfo.descriptorSetLayouts  = getGraphicsPipelineDescriptorLayouts();
+            createInfo.attachments           = getGraphicsPipelineAttachments();
             createInfo.polygonMode           = vk::PolygonMode::eFill;
 
             m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);
@@ -393,6 +384,57 @@ namespace Chicane
 
                 Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
             }
+        }
+
+        void LevelLayer::initTextureResources()
+        {
+            if (!is(Layer::Status::Initialized))
+            {
+                return;
+            }
+
+            Vulkan::Descriptor::SetLayoutBidingsCreateInfo layoutBidings;
+            layoutBidings.count = 1;
+            layoutBidings.indices.push_back(0);
+            layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            layoutBidings.counts.push_back(Chicane::Texture::MAX_COUNT);
+            layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            Vulkan::Descriptor::initSetLayout(
+                m_textureDescriptor.setLayout,
+                m_internals.logicalDevice,
+                layoutBidings
+            );
+
+            Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets = 1;
+            descriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = Chicane::Texture::MAX_COUNT }
+            );
+
+            Vulkan::Descriptor::initPool(
+                m_textureDescriptor.pool,
+                m_internals.logicalDevice,
+                descriptorPoolCreateInfo
+            ); 
+
+            Descriptor::allocalteSet(
+                m_textureDescriptor.set,
+                m_internals.logicalDevice,
+                m_textureDescriptor.setLayout,
+                m_textureDescriptor.pool
+            );
+        }
+
+        void LevelLayer::destroyTextureResources()
+        {
+            m_internals.logicalDevice.destroyDescriptorSetLayout(
+                m_textureDescriptor.setLayout
+            );
+
+            m_internals.logicalDevice.destroyDescriptorPool(
+                m_textureDescriptor.pool
+            );
         }
 
         void LevelLayer::buildTextureData()
@@ -426,25 +468,15 @@ namespace Chicane
                 imageInfos.push_back(info);
             }
 
-            Descriptor::allocalteSet(
-                m_textureDescriptor.set,
-                createInfo.logicalDevice,
-                m_textureDescriptor.setLayout,
-                m_textureDescriptor.pool
-            );
-
             vk::WriteDescriptorSet descriptorSet {};
             descriptorSet.dstSet          = m_textureDescriptor.set;
             descriptorSet.dstBinding      = 0;
             descriptorSet.dstArrayElement = 0;
-            descriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             descriptorSet.descriptorCount = imageInfos.size();
+            descriptorSet.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             descriptorSet.pImageInfo      = imageInfos.data();
 
-            createInfo.logicalDevice.updateDescriptorSets(
-                descriptorSet,
-                nullptr
-            );
+            m_internals.logicalDevice.updateDescriptorSets(descriptorSet, nullptr);
         }
 
         void LevelLayer::renderTextures(const vk::CommandBuffer& inCommandBuffer)
@@ -625,7 +657,7 @@ namespace Chicane
 
             for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                frame.setAsDirty();
+                frame.setMeshesAsDirty();
             }
         }
 

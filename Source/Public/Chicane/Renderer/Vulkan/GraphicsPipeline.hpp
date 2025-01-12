@@ -17,13 +17,7 @@ namespace Chicane
                 const Vec<2, float>& inPosition = Vec2Zero
             );
             vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
-            vk::PipelineShaderStageCreateInfo createVertexShader(const vk::ShaderModule& inShaderModule);
-            vk::PipelineShaderStageCreateInfo createFragmentShader(const vk::ShaderModule& inShaderModule);
-            vk::PipelineVertexInputStateCreateInfo createVertexInputState(
-                bool bInHasVertices,
-                const vk::VertexInputBindingDescription& inBindingDescription,
-                const std::vector<vk::VertexInputAttributeDescription>& inAttributeDescriptions
-            );
+            vk::PipelineVertexInputStateCreateInfo createVertexInputState();
             vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
             vk::PipelineViewportStateCreateInfo createViewportState(
                 const vk::Viewport& inViewport,
@@ -35,12 +29,7 @@ namespace Chicane
             vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
             vk::PipelineColorBlendStateCreateInfo createColorBlendState();
             vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
-
-            vk::PipelineLayout createLayout(
-                const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
-                const std::vector<vk::PushConstantRange>& inPushConstantRanges,
-                const vk::Device& inLogicalDevice
-            );
+            vk::PipelineLayout createLayout(const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts, const vk::Device& inLogicalDevice);
             vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment);
             vk::AttachmentReference createColorAttachmentRef();
             vk::SubpassDependency createColorSubpassDepedency();

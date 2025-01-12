@@ -3,7 +3,6 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Vulkan/Camera.hpp"
 #include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap.hpp"
 #include "Chicane/Renderer/Vulkan/Debug.hpp"
@@ -57,7 +56,7 @@ namespace Chicane
             void initLayers() override;
 
             void onEvent(const SDL_Event& inEvent) override;
-            void onViewportEvent() override;
+            void onCameraEvent() override;
 
             void render() override;
 

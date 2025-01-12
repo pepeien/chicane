@@ -21,7 +21,7 @@ namespace Chicane
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
-            virtual void onViewportEvent() { return; };
+            virtual void onCameraEvent() { return; };
 
             // Render
             virtual void render() { return; };

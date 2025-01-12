@@ -32,12 +32,15 @@ namespace Chicane
 
             void initFrameResources();
             void destroyFrameResources();
-            void initTextureResources();
-            void destroyTextureResources();
+            std::vector<Shader::StageCreateInfo> getGraphicsPipelineShaders();
+            std::vector<vk::DescriptorSetLayout> getGraphicsPipelineDescriptorLayouts();
+            std::vector<vk::AttachmentDescription> getGraphicsPipelineAttachments();
             void initGraphicsPipeline();
             void initFramebuffers();
 
             // Texture
+            void initTextureResources();
+            void destroyTextureResources();
             void buildTextureData();
             void renderTextures(const vk::CommandBuffer& inCommandBuffer);
 

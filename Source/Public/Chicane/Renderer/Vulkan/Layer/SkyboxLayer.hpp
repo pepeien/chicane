@@ -29,6 +29,9 @@ namespace Chicane
 
             void initFrameDescriptorSetLayout();
             void initMaterialDescriptorSetLayout();
+            std::vector<Shader::StageCreateInfo> getGraphicsPipelineShaders();
+            std::vector<vk::DescriptorSetLayout> getGraphicsPipelineDescriptorLayouts();
+            std::vector<vk::AttachmentDescription> getGraphicsPipelineAttachments();
             void initGraphicsPipeline();
             void initFramebuffers();
             void initFrameResources();

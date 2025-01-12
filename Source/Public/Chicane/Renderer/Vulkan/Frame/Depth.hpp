@@ -10,6 +10,7 @@ namespace Chicane
         {
             struct Depth
             {
+            public:
                 vk::Image        image;
                 vk::ImageView    imageView;
                 vk::DeviceMemory memory;

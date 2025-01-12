@@ -2,7 +2,7 @@
 
 #extension GL_EXT_nonuniform_qualifier : enable
 
-layout(set = 1, binding = 0) uniform sampler2D material[];
+layout(set = 1, binding = 0) uniform sampler2D material[1000];
 
 layout(location = 0) out vec4 outColor;
 

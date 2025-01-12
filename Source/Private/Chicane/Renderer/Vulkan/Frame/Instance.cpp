@@ -1,10 +1,8 @@
 #include "Chicane/Renderer/Vulkan/Frame/Instance.hpp"
 
 #include "Chicane/Core/Loader.hpp"
-#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 #include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Vulkan/Camera.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Renderer/Vulkan/Image.hpp"
@@ -16,16 +14,6 @@ namespace Chicane
     {
         namespace Frame
         {
-            bool Instance::isDirty()
-            {
-                return m_bIsDirty;
-            }
-
-            void Instance::setAsDirty()
-            {
-                m_bIsDirty = true;
-            }
-
             void Instance::setupSync()
             {
                 Sync::initSempahore(
@@ -92,7 +80,17 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            void Instance::setupCameraUBO()
+            bool Instance::isCameraDirty()
+            {
+                return m_bIsCameraDirty;
+            }
+
+            void Instance::setCameraAsDirty()
+            {
+                m_bIsCameraDirty = true;
+            }
+
+            void Instance::setupCameraData(CameraComponent* inCamera)
             {
                 Buffer::CreateInfo bufferCreateInfo {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
@@ -102,35 +100,75 @@ namespace Chicane
                 bufferCreateInfo.size             = sizeof(Chicane::Camera::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
-                Buffer::init(
-                    cameraUBO.buffer,
-                    bufferCreateInfo
-                );
+                Buffer::init(m_cameraResource.buffer, bufferCreateInfo);
 
-                cameraUBO.allocationSize = bufferCreateInfo.size;
-                cameraUBO.writeLocation  = logicalDevice.mapMemory(
-                    cameraUBO.buffer.memory,
+                m_cameraResource.allocationSize = bufferCreateInfo.size;
+                m_cameraResource.writeLocation  = logicalDevice.mapMemory(
+                    m_cameraResource.buffer.memory,
                     0,
-                    cameraUBO.allocationSize
+                    m_cameraResource.allocationSize
                 );
 
-                cameraDescriptorBufferInfo.buffer = cameraUBO.buffer.instance;
+                cameraDescriptorBufferInfo.buffer = m_cameraResource.buffer.instance;
                 cameraDescriptorBufferInfo.offset = 0;
-                cameraDescriptorBufferInfo.range  = cameraUBO.allocationSize;
+                cameraDescriptorBufferInfo.range  = m_cameraResource.allocationSize;
+
+                m_cameraResource.data = inCamera->getData();
+
+                memcpy(
+                    m_cameraResource.writeLocation,
+                    &m_cameraResource.data,
+                    m_cameraResource.allocationSize
+                );
             }
 
-            void Instance::destroyCameraUBO()
+            void Instance::updateCameraData(CameraComponent* inCamera)
             {
-                if (!cameraUBO.buffer.memory)
+                if (!inCamera)
+                {
+                    destroyMeshData();
+
+                    return;
+                }
+
+                if (isCameraDirty())
+                {
+                    setupCameraData(inCamera);
+
+                    m_bIsCameraDirty = false;
+
+                    return;
+                }
+
+                m_cameraResource.data = inCamera->getData();
+
+                memcpy(
+                    m_cameraResource.writeLocation,
+                    &m_cameraResource.data,
+                    m_cameraResource.allocationSize
+                );
+            }
+
+            void Instance::destroyCameraData()
+            {
+                if (!m_cameraResource.buffer.memory)
                 { 
                     return;
                 }
 
-                logicalDevice.unmapMemory(cameraUBO.buffer.memory);
-                Buffer::destroy(
-                    logicalDevice,
-                    cameraUBO.buffer
-                );
+                logicalDevice.unmapMemory(m_cameraResource.buffer.memory);
+
+                Buffer::destroy(logicalDevice, m_cameraResource.buffer);
+            }
+
+            bool Instance::areMeshesDirty()
+            {
+                return m_bAreMeshesDirty;
+            }
+
+            void Instance::setMeshesAsDirty()
+            {
+                m_bAreMeshesDirty = true;
             }
 
             void Instance::setupMeshData(const std::vector<MeshComponent*>& inMeshes)
@@ -150,35 +188,37 @@ namespace Chicane
                 bufferCreateInfo.size             = sizeof(Chicane::Mesh::Data) * inMeshes.size();
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
-                Buffer::init(meshBundle.buffer, bufferCreateInfo);
+                Buffer::init(m_meshResource.buffer, bufferCreateInfo);
             
-                meshBundle.allocationSize = bufferCreateInfo.size;
-                meshBundle.writeLocation  = logicalDevice.mapMemory(
-                    meshBundle.buffer.memory,
+                m_meshResource.allocationSize = bufferCreateInfo.size;
+                m_meshResource.writeLocation  = logicalDevice.mapMemory(
+                    m_meshResource.buffer.memory,
                     0,
-                    meshBundle.allocationSize
+                    m_meshResource.allocationSize
                 );
-                modelDescriptorBufferInfo.buffer = meshBundle.buffer.instance;
-                modelDescriptorBufferInfo.offset = 0;
-                modelDescriptorBufferInfo.range  = meshBundle.allocationSize;
 
-                meshBundle.data.clear();
-                meshBundle.data.reserve(inMeshes.size());
+                modelDescriptorBufferInfo.buffer = m_meshResource.buffer.instance;
+                modelDescriptorBufferInfo.offset = 0;
+                modelDescriptorBufferInfo.range  = m_meshResource.allocationSize;
+
+                m_meshResource.data.clear();
+                m_meshResource.data.reserve(inMeshes.size());
+
+                Texture::Manager* textureManager = Loader::getTextureManager();
+
                 for (const MeshComponent* mesh : inMeshes)
                 {
                     Chicane::Mesh::Data data {};
                     data.transform    = mesh->getPosition();
-                    data.textureIndex = Vec<4, float>(
-                        Loader::getTextureManager()->getIndex(mesh->getTexture())
-                    );
+                    data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
 
-                    meshBundle.data.push_back(data);
+                    m_meshResource.data.push_back(data);
                 }
 
                 memcpy(
-                    meshBundle.writeLocation,
-                    meshBundle.data.data(),
-                    meshBundle.allocationSize
+                    m_meshResource.writeLocation,
+                    m_meshResource.data.data(),
+                    m_meshResource.allocationSize
                 );
             }
 
@@ -191,42 +231,40 @@ namespace Chicane
                     return;
                 }
 
-                if (isDirty())
+                if (areMeshesDirty())
                 {
                     setupMeshData(inMeshes);
 
-                    m_bIsDirty = false;
+                    m_bAreMeshesDirty = false;
 
                     return;
                 }
 
                 for (std::uint32_t i = 0; i < inMeshes.size(); i++)
                 {
-                    meshBundle.data.at(i).transform = inMeshes.at(i)->getPosition();
+                    m_meshResource.data.at(i).transform = inMeshes.at(i)->getPosition();
                 }
 
                 memcpy(
-                    meshBundle.writeLocation,
-                    meshBundle.data.data(),
-                    meshBundle.allocationSize
+                    m_meshResource.writeLocation,
+                    m_meshResource.data.data(),
+                    m_meshResource.allocationSize
                 );
             }
         
             void Instance::destroyMeshData()
             {
-                if (!meshBundle.buffer.memory)
+                if (!m_meshResource.buffer.memory)
                 {
                     return;
                 }
 
-                logicalDevice.unmapMemory(meshBundle.buffer.memory);
-                Buffer::destroy(
-                    logicalDevice,
-                    meshBundle.buffer
-                );
+                logicalDevice.unmapMemory(m_meshResource.buffer.memory);
+    
+                Buffer::destroy(logicalDevice, m_meshResource.buffer);
             }
 
-            void Instance::setupDepthBuffering(const vk::Format& inFormat)
+            void Instance::setupDepthBuffer(const vk::Format& inFormat)
             {
                 depth.format = inFormat;
 
@@ -258,7 +296,7 @@ namespace Chicane
                 );
             }
 
-            void Instance::destroyDepthBuffering()
+            void Instance::destroyDepthBuffer()
             {
                 logicalDevice.freeMemory(depth.memory);
                 logicalDevice.destroyImage(depth.image);
@@ -315,9 +353,9 @@ namespace Chicane
                     logicalDevice.destroyFramebuffer(frambuffer);
                 }
 
-                destroyDepthBuffering();
+                destroyDepthBuffer();
                 destroySync();
-                destroyCameraUBO();
+                destroyCameraData();
                 destroyMeshData();
 
                 logicalDevice.destroyImageView(imageView);

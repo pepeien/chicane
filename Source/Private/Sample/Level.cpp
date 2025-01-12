@@ -56,7 +56,7 @@ void Level::spawnApples()
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
                 Apple* apple = new Apple(
-                    row % 2 == 0 ? "Content/Sample/Meshes/Apple.bmsh" : "Content/Sample/Meshes/Apple_Sun.bmsh",
+                    column % 2 == 0 ? "Content/Sample/Meshes/Apple.bmsh" : "Content/Sample/Meshes/Apple_Sun.bmsh",
                     position
                 );
                 addActor(apple);

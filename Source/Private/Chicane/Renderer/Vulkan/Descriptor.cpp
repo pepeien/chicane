@@ -12,20 +12,20 @@ namespace Chicane
                 const PoolCreateInfo& inCreateInfo
             )
             {
-                std::vector<vk::DescriptorPoolSize> poolSizes;
+                std::vector<vk::DescriptorPoolSize> poolSizes = {};
                 
-                for (std::uint32_t i = 0; i < inCreateInfo.types.size(); i++)
+                for (const PoolSizeCreateInfo& size : inCreateInfo.sizes)
                 {
-                    vk::DescriptorPoolSize poolSize;
-                    poolSize.type            = inCreateInfo.types[i];
-                    poolSize.descriptorCount = inCreateInfo.size;
+                    vk::DescriptorPoolSize poolSize  = {};
+                    poolSize.type            = size.type;
+                    poolSize.descriptorCount = size.descriptorCount;
 
                     poolSizes.push_back(poolSize);
                 }
 
                 vk::DescriptorPoolCreateInfo descriptorPoolCreateInfo;
                 descriptorPoolCreateInfo.flags         = inCreateInfo.flags;
-                descriptorPoolCreateInfo.maxSets       = inCreateInfo.size;
+                descriptorPoolCreateInfo.maxSets       = inCreateInfo.maxSets;
                 descriptorPoolCreateInfo.poolSizeCount = static_cast<std::uint32_t>(poolSizes.size());
                 descriptorPoolCreateInfo.pPoolSizes    = poolSizes.data();
 

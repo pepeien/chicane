@@ -199,6 +199,46 @@ namespace Chicane
             );
         }
 
+        std::vector<Shader::StageCreateInfo> SkyboxLayer::getGraphicsPipelineShaders()
+        {
+            Shader::StageCreateInfo vertexShader {};
+            vertexShader.path = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            Shader::StageCreateInfo fragmentShader {};
+            fragmentShader.path = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
+
+            std::vector<Shader::StageCreateInfo> result {};
+            result.push_back(vertexShader);
+            result.push_back(fragmentShader);
+
+            return result;    
+        }
+
+        std::vector<vk::DescriptorSetLayout> SkyboxLayer::getGraphicsPipelineDescriptorLayouts()
+        {
+            std::vector<vk::DescriptorSetLayout> result {};
+            result.push_back(m_frameDescriptor.setLayout);
+            result.push_back(m_materialDescriptor.setLayout);
+
+            return result;
+        }
+
+        std::vector<vk::AttachmentDescription> SkyboxLayer::getGraphicsPipelineAttachments()
+        {
+            GraphicsPipeline::Attachment colorAttachment {};
+            colorAttachment.format        = m_internals.swapchain->format;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+
+            std::vector<vk::AttachmentDescription> result {};
+            result.push_back(GraphicsPipeline::createColorAttachment(colorAttachment));
+
+            return result;
+        }
+
         void SkyboxLayer::initGraphicsPipeline()
         {
             if (!is(Layer::Status::Initialized))
@@ -206,22 +246,15 @@ namespace Chicane
                 return;
             }
 
-            GraphicsPipeline::Attachment colorAttachment {};
-            colorAttachment.format        = m_internals.swapchain->format;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
-            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
-
             Vulkan::GraphicsPipeline::CreateInfo createInfo {};
             createInfo.bHasVertices         = false;
             createInfo.bHasDepthWrite       = false;
             createInfo.bHasBlending         = false;
             createInfo.logicalDevice        = m_internals.logicalDevice;
-            createInfo.vertexShaderPath     = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
-            createInfo.fragmentShaderPath   = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
+            createInfo.shaders              = getGraphicsPipelineShaders();
             createInfo.extent               = m_internals.swapchain->extent;
-            createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
-            createInfo.attachments          = { GraphicsPipeline::createColorAttachment(colorAttachment) };
+            createInfo.descriptorSetLayouts = getGraphicsPipelineDescriptorLayouts();
+            createInfo.attachments          = getGraphicsPipelineAttachments();
             createInfo.polygonMode          = vk::PolygonMode::eFill;
 
             m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);
@@ -255,8 +288,10 @@ namespace Chicane
             }
 
             Vulkan::Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
-            frameDescriptorPoolCreateInfo.size = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
-            frameDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eUniformBuffer);
+            frameDescriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
+            frameDescriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = frameDescriptorPoolCreateInfo.maxSets }
+            );
 
             Vulkan::Descriptor::initPool(
                 m_frameDescriptor.pool,
@@ -294,8 +329,10 @@ namespace Chicane
             }
 
             Vulkan::Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
-            materialDescriptorPoolCreateInfo.size  = 1;
-            materialDescriptorPoolCreateInfo.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            materialDescriptorPoolCreateInfo.maxSets = 1;
+            materialDescriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = 1 }
+            );
 
             Vulkan::Descriptor::initPool(
                 m_materialDescriptor.pool,

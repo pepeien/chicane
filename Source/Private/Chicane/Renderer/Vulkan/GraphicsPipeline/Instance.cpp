@@ -11,85 +11,60 @@ namespace Chicane
         namespace GraphicsPipeline
         {
             Instance::Instance(const CreateInfo& inCreateInfo)
-                : m_bHasVertices(inCreateInfo.bHasVertices),
-                m_bHasDepth(inCreateInfo.bHasDepthWrite),
-                m_vertexShaderPath(inCreateInfo.vertexShaderPath),
-                m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
-                m_bindingDescription(inCreateInfo.bindingDescription),
-                m_attributeDescriptions(inCreateInfo.attributeDescriptions),
-                m_extent(inCreateInfo.extent),
-                m_descriptorSetLayouts(inCreateInfo.descriptorSetLayouts),
-                m_pushConstantRanges(inCreateInfo.pushConstantRanges),
-                m_logicalDevice(inCreateInfo.logicalDevice)
+                : m_logicalDevice(inCreateInfo.logicalDevice)
             {
-                vk::ShaderModule vertexShaderModule;
-                Shader::initModule(
-                    vertexShaderModule,
-                    m_vertexShaderPath,
-                    m_logicalDevice
-                );
-
-                vk::ShaderModule fragmentShaderModule;
-                Shader::initModule(
-                    fragmentShaderModule,
-                    m_fragmentShaderPath,
-                    m_logicalDevice
-                );
-
-                vk::GraphicsPipelineCreateInfo pipelineInfo {};
-                pipelineInfo.flags = vk::PipelineCreateFlags();
-
                 // Vertex Input
-                vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState(
-                    m_bHasVertices,
-                    m_bindingDescription,
-                    m_attributeDescriptions
-                );
-                pipelineInfo.pVertexInputState = &vertexInputState;
+                vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState();
+
+                if (inCreateInfo.bHasVertices)
+                {
+                    vk::VertexInputBindingDescription bindingDescription                   = Vertex::getBindingDescription();
+                    std::vector<vk::VertexInputAttributeDescription> attributeDescriptions = Vertex::getAttributeDescriptions();
+
+                    vertexInputState.vertexBindingDescriptionCount   = 1;
+                    vertexInputState.pVertexBindingDescriptions      = &bindingDescription;
+                    vertexInputState.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(attributeDescriptions.size());
+                    vertexInputState.pVertexAttributeDescriptions    = attributeDescriptions.data();
+                }
 
                 // Input Assembly
                 vk::PipelineInputAssemblyStateCreateInfo inputAsstembyState = createInputAssemblyState();
-                pipelineInfo.pInputAssemblyState = &inputAsstembyState;
 
                 // Viewport
-                Vec<2, std::uint32_t> size(m_extent.width, m_extent.height);
-
-                vk::Viewport viewport = createViewport(size);
-                vk::Rect2D scissor    = createScissor(size);
+                Vec<2, std::uint32_t> size(inCreateInfo.extent.width, inCreateInfo.extent.height);
 
                 vk::PipelineViewportStateCreateInfo viewportState = createViewportState(
-                    viewport,
-                    scissor
+                    createViewport(size),
+                    createScissor(size)
                 );
-                pipelineInfo.pViewportState = &viewportState;
 
                 // Dynamic State
-                std::vector<vk::DynamicState> dynamicStates = {
-                    vk::DynamicState::eViewport,
-                    vk::DynamicState::eScissor
-                };
-
-                vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
-
-                pipelineInfo.pDynamicState = &dynamicState;
+                vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(
+                    {
+                        vk::DynamicState::eViewport,
+                        vk::DynamicState::eScissor
+                    }
+                );
 
                 // Shader Stage
-                std::vector<vk::PipelineShaderStageCreateInfo> shaderStages = {
-                    createVertexShader(vertexShaderModule),
-                    createFragmentShader(fragmentShaderModule)
-                };
-                pipelineInfo.stageCount = static_cast<std::uint32_t>(shaderStages.size());
-                pipelineInfo.pStages    = shaderStages.data();
+                std::vector<vk::PipelineShaderStageCreateInfo> shaders {};
+                for (const Shader::StageCreateInfo& shader : inCreateInfo.shaders)
+                {
+                    shaders.push_back(
+                        Shader::initShaderStage(
+                            m_logicalDevice,
+                            shader
+                        )
+                    );
+                }
 
                 // Rasterization
                 vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState(
                     inCreateInfo.polygonMode
                 );
-                pipelineInfo.pRasterizationState = &rasterizaterizationState;
 
                 // Sampling
                 vk::PipelineMultisampleStateCreateInfo multisampleState = createMulitsampleState();
-                pipelineInfo.pMultisampleState = &multisampleState;
 
                 // Color Blending
                 vk::PipelineColorBlendAttachmentState colorBlendAttachmentState = createBlendAttachmentState();
@@ -98,34 +73,37 @@ namespace Chicane
                 vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState();
                 colorBlendState.attachmentCount = 1;
                 colorBlendState.pAttachments    = &colorBlendAttachmentState;
-                pipelineInfo.pColorBlendState = &colorBlendState;
 
                 // Depthning
                 vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
                 depthStencilState.depthTestEnable  = VK_TRUE;
-                depthStencilState.depthWriteEnable = m_bHasDepth ? VK_TRUE : VK_FALSE;
-                pipelineInfo.pDepthStencilState = &depthStencilState;
+                depthStencilState.depthWriteEnable = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
 
-                layout = createLayout(
-                    m_descriptorSetLayouts,
-                    m_pushConstantRanges,
-                    m_logicalDevice
-                );
-    
-                renderPass = createRendepass(inCreateInfo.attachments, m_logicalDevice); 
+                vk::GraphicsPipelineCreateInfo pipelineInfo {};
+                pipelineInfo.flags               = vk::PipelineCreateFlags();
+                pipelineInfo.pVertexInputState   = &vertexInputState;
+                pipelineInfo.pInputAssemblyState = &inputAsstembyState;
+                pipelineInfo.pViewportState      = &viewportState;
+                pipelineInfo.pDynamicState       = &dynamicState;
+                pipelineInfo.stageCount          = static_cast<std::uint32_t>(shaders.size());
+                pipelineInfo.pStages             = shaders.data();
+                pipelineInfo.pRasterizationState = &rasterizaterizationState;
+                pipelineInfo.pMultisampleState   = &multisampleState;
+                pipelineInfo.pColorBlendState    = &colorBlendState;
+                pipelineInfo.pDepthStencilState  = &depthStencilState;
+                pipelineInfo.layout              = createLayout(inCreateInfo.descriptorSetLayouts, m_logicalDevice);
+                pipelineInfo.renderPass          = createRendepass(inCreateInfo.attachments, m_logicalDevice);
+                pipelineInfo.subpass             = 0;
+                pipelineInfo.basePipelineHandle  = nullptr;
 
-                pipelineInfo.layout             = layout;
-                pipelineInfo.renderPass         = renderPass;
-                pipelineInfo.subpass            = 0;
-                pipelineInfo.basePipelineHandle = nullptr;
+                layout     = pipelineInfo.layout;
+                renderPass = pipelineInfo.renderPass; 
+                instance   = m_logicalDevice.createGraphicsPipeline(nullptr, pipelineInfo).value;
 
-                instance = m_logicalDevice.createGraphicsPipeline(
-                    nullptr,
-                    pipelineInfo
-                ).value;
-
-                m_logicalDevice.destroyShaderModule(vertexShaderModule);
-                m_logicalDevice.destroyShaderModule(fragmentShaderModule);
+                for (vk::PipelineShaderStageCreateInfo& shader : shaders)
+                {
+                    m_logicalDevice.destroyShaderModule(shader.module);
+                }
             }
 
             Instance::~Instance()

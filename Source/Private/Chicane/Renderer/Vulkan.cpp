@@ -84,8 +84,13 @@ namespace Chicane
             emmitEventToLayers(inEvent);
         }
 
-        void Renderer::onViewportEvent()
+        void Renderer::onCameraEvent()
         {
+            for (Vulkan::Frame::Instance& frame : m_swapChain.frames)
+            {
+                frame.setCameraAsDirty();
+            }
+
             if (Application::hasCamera())
             {
                 Application::getCamera()->setViewport(
@@ -283,7 +288,7 @@ namespace Chicane
             m_viewport.size.x = m_swapChain.extent.width;
             m_viewport.size.y = m_swapChain.extent.height;
 
-            onViewportEvent();
+            onCameraEvent();
         }
 
         void Renderer::rebuildSwapChain()
@@ -365,12 +370,7 @@ namespace Chicane
                 return;
             }
 
-            outFrame.cameraUBO.instance = Application::getCamera()->getData();
-            memcpy(
-                outFrame.cameraUBO.writeLocation,
-                &outFrame.cameraUBO.instance,
-                outFrame.cameraUBO.allocationSize
-            );
+            outFrame.updateCameraData(Application::getCamera());
         }
 
         void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)
@@ -420,7 +420,7 @@ namespace Chicane
                         return;
                     }
 
-                    onViewportEvent();
+                    onCameraEvent();
                 }
             );
         }

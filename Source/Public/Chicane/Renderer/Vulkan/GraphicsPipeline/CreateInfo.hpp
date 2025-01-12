@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
+#include "Chicane/Renderer/Vulkan/Shader/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -13,29 +13,25 @@ namespace Chicane
             {
             public:
                 // Modifiers
-                bool                                             bHasVertices;
-                bool                                             bHasDepthWrite;
-                bool                                             bHasBlending;
+                bool                                   bHasVertices;
+                bool                                   bHasDepthWrite;
+                bool                                   bHasBlending;
 
-                // Vertex
-                std::string                                      vertexShaderPath;
-                std::string                                      fragmentShaderPath;
-                vk::VertexInputBindingDescription                bindingDescription;
-                std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
+                // Shader
+                std::vector<Shader::StageCreateInfo>   shaders;
 
                 // Viewport
-                vk::Extent2D                                     extent;
+                vk::Extent2D                           extent;
 
-                // Atacchment
-                std::vector<vk::AttachmentDescription>           attachments;
+                // Attachment
+                std::vector<vk::AttachmentDescription> attachments;
 
                 // Pipeline Layout
-                std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`
-                std::vector<vk::PushConstantRange>               pushConstantRanges;
+                std::vector<vk::DescriptorSetLayout>   descriptorSetLayouts;
 
                 // Vulkan
-                vk::Device                                       logicalDevice;
-                vk::PolygonMode                                  polygonMode;
+                vk::Device                             logicalDevice;
+                vk::PolygonMode                        polygonMode;
             };
         }
     }
