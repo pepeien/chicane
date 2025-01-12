@@ -26,6 +26,10 @@ namespace Chicane
                 m_data.up.y = m_direction.up.y;
                 m_data.up.z = m_direction.up.z;
 
+                m_data.translation.x = m_transform.translation.x;
+                m_data.translation.y = m_transform.translation.y;
+                m_data.translation.z = m_transform.translation.z;
+
                 updateView();
             }
         );

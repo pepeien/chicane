@@ -201,11 +201,11 @@ namespace Chicane
             colorAttachment.format        = m_internals.swapchain->format;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             vk::AttachmentDescription attachment = Vulkan::GraphicsPipeline::createColorAttachment(colorAttachment);
 
             m_renderPass = Vulkan::GraphicsPipeline::createRendepass(
-                false,
                 { attachment },
                 m_internals.logicalDevice
             );

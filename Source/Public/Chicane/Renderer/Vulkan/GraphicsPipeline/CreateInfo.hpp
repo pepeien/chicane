@@ -14,7 +14,7 @@ namespace Chicane
             public:
                 // Modifiers
                 bool                                             bHasVertices;
-                bool                                             bHasDepth;
+                bool                                             bHasDepthWrite;
                 bool                                             bHasBlending;
 
                 // Vertex
@@ -27,8 +27,7 @@ namespace Chicane
                 vk::Extent2D                                     extent;
 
                 // Atacchment
-                Attachment                                       colorAttachment;
-                Attachment                                       depthAttachment; // Optional if `hasDepth` == `false`
+                std::vector<vk::AttachmentDescription>           attachments;
 
                 // Pipeline Layout
                 std::vector<vk::DescriptorSetLayout>             descriptorSetLayouts; // Optional if `hasDepth` == `false`

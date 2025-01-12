@@ -14,6 +14,7 @@ namespace Chicane
                 vk::Format           format;
                 vk::AttachmentLoadOp loadOp;
                 vk::ImageLayout      initialLayout;
+                vk::ImageLayout      finalLayout;
             };
         }
     }

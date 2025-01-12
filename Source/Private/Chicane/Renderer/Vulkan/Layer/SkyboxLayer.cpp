@@ -206,20 +206,22 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::GraphicsPipeline::Attachment colorAttachment {};
+            GraphicsPipeline::Attachment colorAttachment {};
             colorAttachment.format        = m_internals.swapchain->format;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             Vulkan::GraphicsPipeline::CreateInfo createInfo {};
             createInfo.bHasVertices         = false;
-            createInfo.bHasDepth            = false;
+            createInfo.bHasDepthWrite       = false;
+            createInfo.bHasBlending         = false;
             createInfo.logicalDevice        = m_internals.logicalDevice;
             createInfo.vertexShaderPath     = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
             createInfo.fragmentShaderPath   = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
             createInfo.extent               = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts = { m_frameDescriptor.setLayout, m_materialDescriptor.setLayout };
-            createInfo.colorAttachment      = colorAttachment;
+            createInfo.attachments          = { GraphicsPipeline::createColorAttachment(colorAttachment) };
             createInfo.polygonMode          = vk::PolygonMode::eFill;
 
             m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);

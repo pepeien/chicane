@@ -342,19 +342,22 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::GraphicsPipeline::Attachment colorAttachment {};
+            GraphicsPipeline::Attachment colorAttachment {};
             colorAttachment.format        = m_internals.swapchain->format;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            Vulkan::GraphicsPipeline::Attachment depthAttachment {};
+            GraphicsPipeline::Attachment depthAttachment {};
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             Vulkan::GraphicsPipeline::CreateInfo createInfo {};
             createInfo.bHasVertices          = true;
-            createInfo.bHasDepth             = true;
+            createInfo.bHasDepthWrite        = true;
+            createInfo.bHasBlending          = true;
             createInfo.logicalDevice         = m_internals.logicalDevice;
             createInfo.vertexShaderPath      = "Content/Engine/Vulkan/Shaders/level.vert.spv";
             createInfo.fragmentShaderPath    = "Content/Engine/Vulkan/Shaders/level.frag.spv";
@@ -362,8 +365,10 @@ namespace Chicane
             createInfo.attributeDescriptions = Vulkan::Vertex::getAttributeDescriptions();
             createInfo.extent                = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts  = { m_frameDescriptor.setLayout, m_textureDescriptor.setLayout };
-            createInfo.colorAttachment       = colorAttachment;
-            createInfo.depthAttachment       = depthAttachment;
+            createInfo.attachments           = {
+                GraphicsPipeline::createColorAttachment(colorAttachment),
+                GraphicsPipeline::createDepthAttachment(depthAttachment)
+            };
             createInfo.polygonMode           = vk::PolygonMode::eFill;
 
             m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);

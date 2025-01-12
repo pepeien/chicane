@@ -12,7 +12,7 @@ namespace Chicane
         {
             Instance::Instance(const CreateInfo& inCreateInfo)
                 : m_bHasVertices(inCreateInfo.bHasVertices),
-                m_bHasDepth(inCreateInfo.bHasDepth),
+                m_bHasDepth(inCreateInfo.bHasDepthWrite),
                 m_vertexShaderPath(inCreateInfo.vertexShaderPath),
                 m_fragmentShaderPath(inCreateInfo.fragmentShaderPath),
                 m_bindingDescription(inCreateInfo.bindingDescription),
@@ -102,8 +102,8 @@ namespace Chicane
 
                 // Depthning
                 vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
-                depthStencilState.depthTestEnable  = inCreateInfo.bHasDepth ? VK_TRUE : VK_FALSE;
-                depthStencilState.depthWriteEnable = inCreateInfo.bHasDepth ? VK_TRUE : VK_FALSE;
+                depthStencilState.depthTestEnable  = VK_TRUE;
+                depthStencilState.depthWriteEnable = m_bHasDepth ? VK_TRUE : VK_FALSE;
                 pipelineInfo.pDepthStencilState = &depthStencilState;
 
                 layout = createLayout(
@@ -111,25 +111,8 @@ namespace Chicane
                     m_pushConstantRanges,
                     m_logicalDevice
                 );
-
-                std::vector<vk::AttachmentDescription> attachments;
-
-                attachments.push_back(
-                    createColorAttachment(inCreateInfo.colorAttachment)
-                );
-
-                if (m_bHasDepth)
-                {
-                    attachments.push_back(
-                        createDepthAttachment(inCreateInfo.depthAttachment)
-                    );
-                }
-
-                renderPass = createRendepass(
-                    m_bHasDepth,
-                    attachments,
-                    m_logicalDevice
-                ); 
+    
+                renderPass = createRendepass(inCreateInfo.attachments, m_logicalDevice); 
 
                 pipelineInfo.layout             = layout;
                 pipelineInfo.renderPass         = renderPass;

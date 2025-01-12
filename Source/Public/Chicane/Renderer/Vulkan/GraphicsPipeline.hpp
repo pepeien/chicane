@@ -48,7 +48,6 @@ namespace Chicane
             vk::AttachmentReference createDepthAttachmentRef();
             vk::SubpassDependency createDepthSubpassDepedency();
             vk::RenderPass createRendepass(
-                bool bInHasDepth,
                 const std::vector<vk::AttachmentDescription>& inAttachments,
                 const vk::Device& inLogicalDevice
             );

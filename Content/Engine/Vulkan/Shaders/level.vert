@@ -10,6 +10,8 @@ layout(set = 0, binding = 0) uniform CameraUBO {
     vec4 forward;
     vec4 right;
     vec4 up;
+
+    vec4 translation;
 } camera;
 
 struct MeshData {
