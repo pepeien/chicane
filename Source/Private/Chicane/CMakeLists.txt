@@ -3,7 +3,7 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    ${CHICANE_SOURCE_DIR}/*.cpp
+    ${RUNTIME_SOURCE_DIR}/*.cpp
 
     ${VENDORS_DIR}/base64/base64.cpp
     ${VENDORS_DIR}/imgui/imgui_draw.cpp
@@ -18,20 +18,21 @@ file(
 
 ############## Setup Static #######################
 add_library(
-    ${CHICANE_TARGET_NAME}
+    ${RUNTIME_TARGET_NAME}
+
     STATIC
-    ${SOURCES}
+        ${SOURCES}
 )
 
 add_library(
     "${NAME}::Runtime"
 
     ALIAS
-        ${CHICANE_TARGET_NAME}
+        ${RUNTIME_TARGET_NAME}
 )
 
 target_include_directories(
-    ${CHICANE_TARGET_NAME}
+    ${RUNTIME_TARGET_NAME}
 
     PUBLIC
         $<BUILD_INTERFACE:${PUBLIC_DIR}>
@@ -50,7 +51,7 @@ target_include_directories(
 )
 
 target_link_libraries(
-    ${CHICANE_TARGET_NAME}
+    ${RUNTIME_TARGET_NAME}
 
     PUBLIC
         pugixml-static
@@ -59,7 +60,7 @@ target_link_libraries(
         ${Vulkan_LIBRARIES}
 )
 
-add_dependencies(${CHICANE_TARGET_NAME} ${CONTENT_TARGET_NAME})
+add_dependencies(${RUNTIME_TARGET_NAME} ${RUNTIME_CONTENT_TARGET_NAME})
 
 ##############  Set compiler  #######################
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
@@ -72,14 +73,14 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
 
     if (WIN32)
         target_include_directories(
-            ${CHICANE_TARGET_NAME}
+            ${RUNTIME_TARGET_NAME}
 
             PRIVATE
                 ${MINGW_PATH}/include
         )
 
         target_link_directories(
-            ${CHICANE_TARGET_NAME}
+            ${RUNTIME_TARGET_NAME}
 
             PRIVATE
                 ${MINGW_PATH}/lib

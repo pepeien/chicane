@@ -1,12 +1,12 @@
-add_custom_target(${VULKAN_SHADERS_TARGET_NAME})
+add_custom_target(${RUNTIME_CONTENT_VULKAN_SHADERS_TARGET_NAME})
 
 ##############  Set source files  #######################
 file(
     GLOB_RECURSE
 
     SOURCES
-        "${VULKAN_SHADERS_SOURCE_DIR}/*.frag"
-        "${VULKAN_SHADERS_SOURCE_DIR}/*.vert"
+        "${RUNTIME_CONTENT_VULKAN_SHADERS_SOURCE_DIR}/*.frag"
+        "${RUNTIME_CONTENT_VULKAN_SHADERS_SOURCE_DIR}/*.vert"
 )
 
 ##############  Copy files  #######################
@@ -17,7 +17,7 @@ foreach(GLSL ${SOURCES})
     get_filename_component(FILE_NAME ${GLSL} NAME)
 
     set(SPIRV_DIR "${FILE_DIR}")
-    string(REPLACE "${CONTENT_SOURCE_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
+    string(REPLACE "${CONTENT_DIR}" "" SPIRV_DIR ${SPIRV_DIR})
 
     set(SPIRV_DIR "${BUILD_DIR}/Content/${SPIRV_DIR}")
     string(REPLACE "//" "/" SPIRV_DIR ${SPIRV_DIR})
@@ -29,7 +29,7 @@ foreach(GLSL ${SOURCES})
 
     add_custom_command(
         TARGET
-            ${VULKAN_SHADERS_TARGET_NAME}
+            ${RUNTIME_CONTENT_VULKAN_SHADERS_TARGET_NAME}
         POST_BUILD
         COMMAND
             ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}

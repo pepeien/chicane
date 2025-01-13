@@ -56,6 +56,8 @@ if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
+add_dependencies(${SAMPLE_TARGET_NAME} ${SAMPLE_CONTENT_TARGET_NAME})
+
 ##############  Set compiler  #######################
 if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     if (NOT MINGW_PATH) 
