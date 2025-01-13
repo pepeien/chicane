@@ -80,16 +80,6 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            bool Instance::isCameraDirty()
-            {
-                return m_bIsCameraDirty;
-            }
-
-            void Instance::setCameraAsDirty()
-            {
-                m_bIsCameraDirty = true;
-            }
-
             void Instance::setupCameraData(CameraComponent* inCamera)
             {
                 Buffer::CreateInfo bufferCreateInfo {};
@@ -100,26 +90,8 @@ namespace Chicane
                 bufferCreateInfo.size             = sizeof(Chicane::Camera::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
-                Buffer::init(m_cameraResource.buffer, bufferCreateInfo);
-
-                m_cameraResource.allocationSize = bufferCreateInfo.size;
-                m_cameraResource.writeLocation  = logicalDevice.mapMemory(
-                    m_cameraResource.buffer.memory,
-                    0,
-                    m_cameraResource.allocationSize
-                );
-
-                cameraDescriptorBufferInfo.buffer = m_cameraResource.buffer.instance;
-                cameraDescriptorBufferInfo.offset = 0;
-                cameraDescriptorBufferInfo.range  = m_cameraResource.allocationSize;
-
-                m_cameraResource.data = inCamera->getData();
-
-                memcpy(
-                    m_cameraResource.writeLocation,
-                    &m_cameraResource.data,
-                    m_cameraResource.allocationSize
-                );
+                cameraResource.setup(bufferCreateInfo);
+                cameraResource.copyToBuffer(&inCamera->getData());
             }
 
             void Instance::updateCameraData(CameraComponent* inCamera)
@@ -131,44 +103,19 @@ namespace Chicane
                     return;
                 }
 
-                if (isCameraDirty())
+                if (cameraResource.isDirty())
                 {
                     setupCameraData(inCamera);
-
-                    m_bIsCameraDirty = false;
 
                     return;
                 }
 
-                m_cameraResource.data = inCamera->getData();
-
-                memcpy(
-                    m_cameraResource.writeLocation,
-                    &m_cameraResource.data,
-                    m_cameraResource.allocationSize
-                );
+                cameraResource.copyToBuffer(&inCamera->getData());
             }
 
             void Instance::destroyCameraData()
             {
-                if (!m_cameraResource.buffer.memory)
-                { 
-                    return;
-                }
-
-                logicalDevice.unmapMemory(m_cameraResource.buffer.memory);
-
-                Buffer::destroy(logicalDevice, m_cameraResource.buffer);
-            }
-
-            bool Instance::areMeshesDirty()
-            {
-                return m_bAreMeshesDirty;
-            }
-
-            void Instance::setMeshesAsDirty()
-            {
-                m_bAreMeshesDirty = true;
+                cameraResource.destroy(logicalDevice);
             }
 
             void Instance::setupMeshData(const std::vector<MeshComponent*>& inMeshes)
@@ -188,38 +135,9 @@ namespace Chicane
                 bufferCreateInfo.size             = sizeof(Chicane::Mesh::Data) * inMeshes.size();
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
-                Buffer::init(m_meshResource.buffer, bufferCreateInfo);
-            
-                m_meshResource.allocationSize = bufferCreateInfo.size;
-                m_meshResource.writeLocation  = logicalDevice.mapMemory(
-                    m_meshResource.buffer.memory,
-                    0,
-                    m_meshResource.allocationSize
-                );
+                meshResource.setup(bufferCreateInfo);
 
-                modelDescriptorBufferInfo.buffer = m_meshResource.buffer.instance;
-                modelDescriptorBufferInfo.offset = 0;
-                modelDescriptorBufferInfo.range  = m_meshResource.allocationSize;
-
-                m_meshResource.data.clear();
-                m_meshResource.data.reserve(inMeshes.size());
-
-                Texture::Manager* textureManager = Loader::getTextureManager();
-
-                for (const MeshComponent* mesh : inMeshes)
-                {
-                    Chicane::Mesh::Data data {};
-                    data.transform    = mesh->getPosition();
-                    data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
-
-                    m_meshResource.data.push_back(data);
-                }
-
-                memcpy(
-                    m_meshResource.writeLocation,
-                    m_meshResource.data.data(),
-                    m_meshResource.allocationSize
-                );
+                refreshMeshData(inMeshes);
             }
 
             void Instance::updateMeshData(const std::vector<MeshComponent*>& inMeshes)
@@ -231,37 +149,19 @@ namespace Chicane
                     return;
                 }
 
-                if (areMeshesDirty())
+                if (meshResource.isDirty())
                 {
                     setupMeshData(inMeshes);
-
-                    m_bAreMeshesDirty = false;
 
                     return;
                 }
 
-                for (std::uint32_t i = 0; i < inMeshes.size(); i++)
-                {
-                    m_meshResource.data.at(i).transform = inMeshes.at(i)->getPosition();
-                }
-
-                memcpy(
-                    m_meshResource.writeLocation,
-                    m_meshResource.data.data(),
-                    m_meshResource.allocationSize
-                );
+                refreshMeshData(inMeshes);
             }
         
             void Instance::destroyMeshData()
             {
-                if (!m_meshResource.buffer.memory)
-                {
-                    return;
-                }
-
-                logicalDevice.unmapMemory(m_meshResource.buffer.memory);
-    
-                Buffer::destroy(logicalDevice, m_meshResource.buffer);
+                meshResource.destroy(logicalDevice);
             }
 
             void Instance::setupDepthBuffer(const vk::Format& inFormat)
@@ -280,11 +180,7 @@ namespace Chicane
                 imageCreateInfo.format           = depth.format;
 
                 Image::init(depth.image, imageCreateInfo);
-                Image::initMemory(
-                    depth.memory,
-                    imageCreateInfo,
-                    depth.image
-                );
+                Image::initMemory(depth.memory, imageCreateInfo, depth.image);
                 Image::initView(
                     depth.imageView,
                     logicalDevice,
@@ -359,6 +255,30 @@ namespace Chicane
                 destroyMeshData();
 
                 logicalDevice.destroyImageView(imageView);
+            }
+
+            void Instance::refreshMeshData(const std::vector<MeshComponent*>& inMeshes)
+            {
+                if (inMeshes.empty())
+                {
+                    return;
+                }
+
+                Texture::Manager* textureManager = Loader::getTextureManager();
+
+                std::vector<Chicane::Mesh::Data> meshes = {};
+                meshes.reserve(inMeshes.size());
+
+                for (const MeshComponent* mesh : inMeshes)
+                {
+                    Chicane::Mesh::Data data {};
+                    data.transform    = mesh->getPosition();
+                    data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
+
+                    meshes.push_back(data);
+                }
+
+                meshResource.copyToBuffer(meshes.data());
             }
         }
     }

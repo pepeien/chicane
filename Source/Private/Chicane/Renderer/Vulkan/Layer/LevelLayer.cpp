@@ -273,7 +273,7 @@ namespace Chicane
                 cameraWriteInfo.dstArrayElement = 0;
                 cameraWriteInfo.descriptorCount = 1;
                 cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                cameraWriteInfo.pBufferInfo     = &frame.cameraDescriptorBufferInfo;
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
                 frame.addWriteDescriptorSet(cameraWriteInfo);
 
                 vk::WriteDescriptorSet meshWriteInfo;
@@ -282,7 +282,7 @@ namespace Chicane
                 meshWriteInfo.dstArrayElement = 0;
                 meshWriteInfo.descriptorCount = 1;
                 meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                meshWriteInfo.pBufferInfo     = &frame.modelDescriptorBufferInfo;
+                meshWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
                 frame.addWriteDescriptorSet(meshWriteInfo);
             }
         }
@@ -657,7 +657,7 @@ namespace Chicane
 
             for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                frame.setMeshesAsDirty();
+                frame.meshResource.setAsDirty();
             }
         }
 

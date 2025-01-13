@@ -31,14 +31,10 @@ namespace Chicane
                 );
 
                 // Resources
-                bool isCameraDirty();
-                void setCameraAsDirty();
                 void setupCameraData(CameraComponent* inCamera);
                 void updateCameraData(CameraComponent* inCamera);
                 void destroyCameraData();
 
-                bool areMeshesDirty();
-                void setMeshesAsDirty();
                 void setupMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void destroyMeshData();
@@ -57,42 +53,37 @@ namespace Chicane
 
                 void destroy();
 
+            private:
+                void refreshMeshData(const std::vector<MeshComponent*>& inMeshes);
+
             public:
-                vk::Device                                        logicalDevice;
-                vk::PhysicalDevice                                physicalDevice;
+                vk::Device                                                      logicalDevice;
+                vk::PhysicalDevice                                              physicalDevice;
 
                 // Swapchain
-                std::uint32_t                                     width;
-                std::uint32_t                                     height;
+                std::uint32_t                                                   width;
+                std::uint32_t                                                   height;
 
                 // Image
-                vk::Image                                         image;
-                vk::ImageView                                     imageView;
-                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
+                vk::Image                                                       image;
+                vk::ImageView                                                   imageView;
+                std::unordered_map<std::string, vk::Framebuffer>                framebuffers;
 
                 // Depth
-                Depth                                             depth;
+                Depth                                                           depth;
 
                 // Sychronization
-                vk::CommandBuffer                                 commandBuffer;
-                vk::Fence                                         renderFence;
-                vk::Semaphore                                     presentSemaphore;
-                vk::Semaphore                                     renderSemaphore;
+                vk::CommandBuffer                                               commandBuffer;
+                vk::Fence                                                       renderFence;
+                vk::Semaphore                                                   presentSemaphore;
+                vk::Semaphore                                                   renderSemaphore;
         
                 // Resources
-                vk::DescriptorBufferInfo                          cameraDescriptorBufferInfo;
-                vk::DescriptorBufferInfo                          modelDescriptorBufferInfo;
+                Resource<Chicane::Camera::Data>                                 cameraResource;
+                Resource<Chicane::Mesh::Data>                                   meshResource;
 
-                std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
-                std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
-
-            private:
-                bool                                              m_bIsCameraDirty;
-                bool                                              m_bAreMeshesDirty;
-
-                // Resources
-                Resource<Chicane::Camera::Data>                   m_cameraResource;
-                Resource<std::vector<Chicane::Mesh::Data>>        m_meshResource;
+                std::unordered_map<std::string,vk::DescriptorSet>               descriptorSets;
+                std::vector<vk::WriteDescriptorSet>                             descriptorSetWrites;
             };
         }
     }

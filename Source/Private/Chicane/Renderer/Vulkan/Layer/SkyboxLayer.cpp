@@ -316,7 +316,7 @@ namespace Chicane
                 writeDescriptorSet.dstArrayElement = 0;
                 writeDescriptorSet.descriptorCount = 1;
                 writeDescriptorSet.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                writeDescriptorSet.pBufferInfo     = &frame.cameraDescriptorBufferInfo;
+                writeDescriptorSet.pBufferInfo     = &frame.cameraResource.bufferInfo;
                 frame.addWriteDescriptorSet(writeDescriptorSet);
             }
         }

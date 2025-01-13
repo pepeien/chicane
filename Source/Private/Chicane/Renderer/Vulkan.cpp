@@ -88,7 +88,7 @@ namespace Chicane
         {
             for (Vulkan::Frame::Instance& frame : m_swapChain.frames)
             {
-                frame.setCameraAsDirty();
+                frame.cameraResource.setAsDirty();
             }
 
             if (Application::hasCamera())
