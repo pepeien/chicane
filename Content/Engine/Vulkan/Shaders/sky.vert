@@ -6,6 +6,7 @@ layout(set = 0, binding = 0) uniform CameraUBO {
     mat4 view;
     mat4 projection;
     mat4 viewProjection;
+    mat4 inversedViewProjection;
 
     vec4 forward;
     vec4 right;

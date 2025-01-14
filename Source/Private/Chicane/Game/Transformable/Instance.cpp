@@ -27,12 +27,12 @@ namespace Chicane
         translation.y += inTranslation.y;
         translation.z += inTranslation.z;
 
-        setTranslation(m_position, translation);
+        setTranslation(translation);
     }
 
     void Transformable::setAbsoluteTranslation(const Vec<3, float>& inTranslation)
     {
-        setTranslation(BASE_MAT, inTranslation);
+        setTranslation(inTranslation);
     }
 
     const Vec<3, float>& Transformable::getRotation() const
@@ -47,12 +47,12 @@ namespace Chicane
         rotation.y += inRotation.y;
         rotation.z += inRotation.z;
 
-        setRotation(m_position, rotation);
+        setRotation(rotation);
     }
 
     void Transformable::setAbsoluteRotation(const Vec<3, float>& inRotation)
     {
-        setRotation(BASE_MAT, inRotation);
+        setRotation(inRotation);
     }
 
     const Vec<3, float>& Transformable::getScale() const
@@ -67,12 +67,12 @@ namespace Chicane
         scale.y += inScale.y;
         scale.z += inScale.z;
 
-        setScale(m_position, scale);
+        setScale(scale);
     }
 
     void Transformable::setAbsoluteScale(const Vec<3, float>& inScale)
     {
-        setScale(BASE_MAT, inScale);
+        setScale(inScale);
     }
 
     const Transform& Transformable::getTransform() const
@@ -169,42 +169,47 @@ namespace Chicane
         return subscription;
     }
 
-    void Transformable::setTranslation(const Mat<4, float>& inBase, const Vec<3, float>& inTranslation)
+    void Transformable::setTranslation(const Vec<3, float>& inTranslation)
     {
         m_transform.translation = inTranslation;
 
-        refreshPosition(inBase);
+        refreshPosition();
 
         m_transformObservable->next(m_transform);
     }
 
-    void Transformable::setRotation(const Mat<4, float>& inBase, const Vec<3, float>& inRotation)
+    void Transformable::setRotation(const Vec<3, float>& inRotation)
     {
         m_transform.rotation = inRotation;
 
-        refreshPosition(inBase);
+        refreshPosition();
 
         m_transformObservable->next(m_transform);
     }
 
-    void Transformable::setScale(const Mat<4, float>& inBase, const Vec<3, float>& inScale)
+    void Transformable::setScale(const Vec<3, float>& inScale)
     {
         m_transform.scale = inScale;
 
-        refreshPosition(inBase);
+        refreshPosition();
 
         m_transformObservable->next(m_transform);
     }
 
-    void Transformable::refreshPosition(const Mat<4, float>& inBase)
+    void Transformable::refreshPosition()
     {
         // Transalate
         m_position = glm::translate(
-            inBase,
+            BASE_MAT,
             m_transform.translation
         );
 
         // Rotate
+        m_position = glm::rotate(
+            m_position,
+            glm::radians(m_transform.rotation.z),
+            UP_DIRECTION
+        );
         m_position = glm::rotate(
             m_position,
             glm::radians(m_transform.rotation.x),
@@ -214,11 +219,6 @@ namespace Chicane
             m_position,
             glm::radians(m_transform.rotation.y),
             FORWARD_DIRECTION
-        );
-        m_position = glm::rotate(
-            m_position,
-            glm::radians(m_transform.rotation.z),
-            UP_DIRECTION
         );
 
         // Scale

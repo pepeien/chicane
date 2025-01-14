@@ -54,11 +54,11 @@ namespace Chicane
         );
 
     protected:
-        void setTranslation(const Mat<4, float>& inBase, const Vec<3, float>& inTranslation);
-        void setRotation(const Mat<4, float>& inBase, const Vec<3, float>& inRotation);
-        void setScale(const Mat<4, float>& inBase, const Vec<3, float>& inScale);
+        void setTranslation(const Vec<3, float>& inTranslation);
+        void setRotation(const Vec<3, float>& inRotation);
+        void setScale(const Vec<3, float>& inScale);
 
-        void refreshPosition(const Mat<4, float>& inBase);
+        void refreshPosition();
         void refreshOrientation();
 
     protected:

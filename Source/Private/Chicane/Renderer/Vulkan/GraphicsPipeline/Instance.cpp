@@ -16,11 +16,11 @@ namespace Chicane
                 // Vertex Input
                 vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState();
 
+                vk::VertexInputBindingDescription bindingDescription                   = Vertex::getBindingDescription();
+                std::vector<vk::VertexInputAttributeDescription> attributeDescriptions = Vertex::getAttributeDescriptions();
+
                 if (inCreateInfo.bHasVertices)
                 {
-                    vk::VertexInputBindingDescription bindingDescription                   = Vertex::getBindingDescription();
-                    std::vector<vk::VertexInputAttributeDescription> attributeDescriptions = Vertex::getAttributeDescriptions();
-
                     vertexInputState.vertexBindingDescriptionCount   = 1;
                     vertexInputState.pVertexBindingDescriptions      = &bindingDescription;
                     vertexInputState.vertexAttributeDescriptionCount = static_cast<std::uint32_t>(attributeDescriptions.size());
@@ -39,12 +39,12 @@ namespace Chicane
                 );
 
                 // Dynamic State
-                vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(
-                    {
-                        vk::DynamicState::eViewport,
-                        vk::DynamicState::eScissor
-                    }
-                );
+                std::vector<vk::DynamicState> dynamicStates = {
+                    vk::DynamicState::eViewport,
+                    vk::DynamicState::eScissor
+                };
+
+                vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
 
                 // Shader Stage
                 std::vector<vk::PipelineShaderStageCreateInfo> shaders {};

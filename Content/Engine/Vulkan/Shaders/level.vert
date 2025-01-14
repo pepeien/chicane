@@ -6,6 +6,7 @@ layout(set = 0, binding = 0) uniform CameraUBO {
     mat4 view;
     mat4 projection;
     mat4 viewProjection;
+    mat4 inversedViewProjection;
 
     vec4 forward;
     vec4 right;
@@ -35,14 +36,13 @@ layout(location = 3) in vec3 inVertexNormalPosition;
 
 void main() {
     MeshData data  = model.data[gl_InstanceIndex];
-    vec4 position  = vec4(inVertexPosition.xyz, 1.0);
 
-    mat4 pvm = camera.viewProjection * data.transform;
-
-    gl_Position = pvm * position;
+    gl_Position = camera.viewProjection * data.transform * vec4(inVertexPosition, 1.0);
 
     outTextureIndex    = int(data.textureIndex.x);
     outColor           = inVertexColor;
     outTexturePosition = inVertexTexturePosition;
-    outNormalPosition  = normalize((data.transform * vec4(inVertexNormalPosition, 0.0)).xyz);
+
+    mat3 normalMatrix  = transpose(inverse(mat3(data.transform)));
+    outNormalPosition  = normalize(normalMatrix * inVertexNormalPosition);
 }

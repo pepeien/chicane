@@ -13,7 +13,7 @@ namespace Chicane
     {
         LevelLayer::LevelLayer()
             : Layer::Instance("Level"),
-            m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
+            m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_clearValues({}),
             m_textureManager(Loader::getTextureManager()),
             m_modelManager(Loader::getModelManager())
@@ -92,7 +92,7 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Frame::Instance* outFrame = (Vulkan::Frame::Instance*) outData;
+            Frame::Instance* outFrame = (Frame::Instance*) outData;
             outFrame->updateMeshData(m_meshes);
         }
 
@@ -103,7 +103,7 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Renderer::Data* data = (Vulkan::Renderer::Data*) outData;
+            Renderer::Data* data = (Renderer::Data*) outData;
 
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame = data->frame;
@@ -219,7 +219,7 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
+            Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
             frameLayoutBidings.count = 2;
 
             /// Camera
@@ -234,13 +234,13 @@ namespace Chicane
             frameLayoutBidings.counts.push_back(1);
             frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            Vulkan::Descriptor::initSetLayout(
+            Descriptor::initSetLayout(
                 m_frameDescriptor.setLayout,
                 m_internals.logicalDevice,
                 frameLayoutBidings
             );
 
-            Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
+            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
@@ -249,17 +249,17 @@ namespace Chicane
                 { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
             );
 
-            Vulkan::Descriptor::initPool(
+            Descriptor::initPool(
                 m_frameDescriptor.pool,
                 m_internals.logicalDevice,
                 descriptorPoolCreateInfo
             );
 
-            for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 vk::DescriptorSet descriptorSet;
 
-                Vulkan::Descriptor::allocalteSet(
+                Descriptor::allocalteSet(
                     descriptorSet,
                     m_internals.logicalDevice,
                     m_frameDescriptor.setLayout,
@@ -351,18 +351,18 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::GraphicsPipeline::CreateInfo createInfo {};
-            createInfo.bHasVertices          = true;
-            createInfo.bHasDepthWrite        = true;
-            createInfo.bHasBlending          = true;
-            createInfo.logicalDevice         = m_internals.logicalDevice;
-            createInfo.shaders               = getGraphicsPipelineShaders();
-            createInfo.extent                = m_internals.swapchain->extent;
-            createInfo.descriptorSetLayouts  = getGraphicsPipelineDescriptorLayouts();
-            createInfo.attachments           = getGraphicsPipelineAttachments();
-            createInfo.polygonMode           = vk::PolygonMode::eFill;
+            GraphicsPipeline::CreateInfo createInfo {};
+            createInfo.bHasVertices         = true;
+            createInfo.bHasDepthWrite       = true;
+            createInfo.bHasBlending         = true;
+            createInfo.logicalDevice        = m_internals.logicalDevice;
+            createInfo.shaders              = getGraphicsPipelineShaders();
+            createInfo.extent               = m_internals.swapchain->extent;
+            createInfo.descriptorSetLayouts = getGraphicsPipelineDescriptorLayouts();
+            createInfo.attachments          = getGraphicsPipelineAttachments();
+            createInfo.polygonMode          = vk::PolygonMode::eFill;
 
-            m_graphicsPipeline = std::make_unique<Vulkan::GraphicsPipeline::Instance>(createInfo);
+            m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
         void LevelLayer::initFramebuffers()
@@ -372,9 +372,9 @@ namespace Chicane
                 return;
             }
 
-            for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
+                Frame::Buffer::CreateInfo framebufferCreateInfo {};
                 framebufferCreateInfo.id              = m_id;
                 framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
                 framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
@@ -382,7 +382,7 @@ namespace Chicane
                 framebufferCreateInfo.attachments.push_back(frame.imageView);
                 framebufferCreateInfo.attachments.push_back(frame.depth.imageView);
 
-                Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
+                Frame::Buffer::init(frame, framebufferCreateInfo);
             }
         }
 
@@ -393,26 +393,26 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Descriptor::SetLayoutBidingsCreateInfo layoutBidings;
+            Descriptor::SetLayoutBidingsCreateInfo layoutBidings;
             layoutBidings.count = 1;
             layoutBidings.indices.push_back(0);
             layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
             layoutBidings.counts.push_back(Chicane::Texture::MAX_COUNT);
             layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
-            Vulkan::Descriptor::initSetLayout(
+            Descriptor::initSetLayout(
                 m_textureDescriptor.setLayout,
                 m_internals.logicalDevice,
                 layoutBidings
             );
 
-            Vulkan::Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
+            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
             descriptorPoolCreateInfo.sizes.push_back(
                 { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = Chicane::Texture::MAX_COUNT }
             );
 
-            Vulkan::Descriptor::initPool(
+            Descriptor::initPool(
                 m_textureDescriptor.pool,
                 m_internals.logicalDevice,
                 descriptorPoolCreateInfo
@@ -581,11 +581,11 @@ namespace Chicane
         {
             m_internals.logicalDevice.waitIdle();
 
-            Vulkan::Buffer::destroy(
+            Buffer::destroy(
                 m_internals.logicalDevice,
                 m_modelVertexBuffer
             );
-            Vulkan::Buffer::destroy(
+            Buffer::destroy(
                 m_internals.logicalDevice,
                 m_modelIndexBuffer
             );
@@ -642,7 +642,7 @@ namespace Chicane
                 return;
             }
 
-            for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 frame.setupMeshData(m_meshes);
             }
@@ -655,7 +655,7 @@ namespace Chicane
                 return;
             }
 
-            for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 frame.meshResource.setAsDirty();
             }
