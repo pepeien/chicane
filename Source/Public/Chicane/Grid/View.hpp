@@ -34,9 +34,9 @@ namespace Chicane
             void rebuild();
 
             bool hasVariable(const std::string& inId) const;
-            Component::Variable getVariable(const std::string& inId) const;
+            Reference* getVariable(const std::string& inId) const;
             void addVariable(const Component::Variables& inVariables);
-            void addVariable(const std::string& inId, Component::Variable inVariable);
+            void addVariable(const std::string& inId, Reference* inVariable);
             void removeVariable(const std::string& inId);
 
             bool hasFunction(const std::string& inId) const;
@@ -54,18 +54,18 @@ namespace Chicane
             );
 
         protected:
-            std::string m_id;
-            pugi::xml_document m_document;
+            std::string          m_id;
+            pugi::xml_document   m_document;
             Component::Variables m_variables;
             Component::Functions m_functions;
 
         private:
-            bool m_bWasStyleAdded;
+            bool                 m_bWasStyleAdded;
 
-            ImGuiWindowFlags m_flags;
+            ImGuiWindowFlags     m_flags;
 
-            ImVec2 m_resolution;
-            ImVec2 m_position;
+            ImVec2               m_resolution;
+            ImVec2               m_position;
         };
     }
 }

@@ -37,7 +37,7 @@ namespace Chicane
             return m_subscriptions.back().get();
         }
 
-        void next(const T& inData)
+        void next(T inData)
         {
             for (std::uint32_t i = 0; i < m_subscriptions.size(); i++)
             {

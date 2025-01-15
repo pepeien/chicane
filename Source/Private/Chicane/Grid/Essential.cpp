@@ -7,12 +7,12 @@
 
 static const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
 
-static const std::vector<std::any> EMPTY_ITEMS = {};
-
 namespace Chicane
 {
     namespace Grid
     {
+        static const std::vector<Reference> EMPTY_ITEMS = {};
+
         std::unordered_map<std::string, ImVec4> m_imguiColors {
             { HEX_COLOR_TRANSPARENT, ImVec4(0.0f, 0.0f, 0.0f, 0.0f) }
         };
@@ -291,14 +291,14 @@ namespace Chicane
                 return getSizeFromViewportWidth(inValue);
             }
 
-            std::string rawValue = anyToString(processRefValue(inValue));
+            std::string parsedValue = anyToString(parseReference(inValue));
 
-            if (rawValue.empty())
+            if (parsedValue.empty())
             {
                 return 0.0f;
             }
 
-            return std::stof(rawValue);
+            return std::stof(parsedValue);
         }
 
         float getSize(
@@ -325,7 +325,7 @@ namespace Chicane
                 return;
             }
 
-            processRefValue(onTickFunction.as_string());
+            parseReference(onTickFunction.as_string());
         }
 
         void compileChildren(const pugi::xml_node& inNode)
@@ -388,31 +388,36 @@ namespace Chicane
             getComponent(inNode.name())(inNode);
         }
 
-        std::string anyToString(const std::any& inValue)
+        std::string anyToString(const Reference& inValue)
         {
-            if (inValue.type() == typeid(std::string))
+            if (inValue.isType<std::string>())
             {
-                return std::any_cast<std::string>(inValue);
+                return *inValue.getValue<std::string>();
             }
 
-            if (inValue.type() == typeid(int))
+            if (inValue.isType<bool>())
             {
-                return std::to_string(std::any_cast<int>(inValue));
+                return std::to_string(*inValue.getValue<bool>());
             }
 
-            if (inValue.type() == typeid(std::uint64_t))
+            if (inValue.isType<int>())
             {
-                return std::to_string(std::any_cast<std::uint64_t>(inValue));
+                return std::to_string(*inValue.getValue<int>());
             }
 
-            if (inValue.type() == typeid(std::uint32_t))
+            if (inValue.isType<std::uint64_t>())
             {
-                return std::to_string(std::any_cast<std::uint32_t>(inValue));
+                return std::to_string(*inValue.getValue<std::uint64_t>());
             }
 
-            if (inValue.type() == typeid(float))
+            if (inValue.isType<std::uint32_t>())
             {
-                return std::to_string(std::any_cast<float>(inValue));
+                return std::to_string(*inValue.getValue<std::uint32_t>());
+            }
+
+            if (inValue.isType<float>())
+            {
+                return std::to_string(*inValue.getValue<float>());
             }
 
             return "";
@@ -447,14 +452,14 @@ namespace Chicane
             for (std::string& value : Utils::split(params, ','))
             {
                 data.params.push_back(
-                    processRefValue(Utils::trim(value))
+                    parseReference(Utils::trim(value))
                 );
             }
 
             return data;
         }
 
-        bool textContainsRefValue(const std::string& inText)
+        bool doesTextContainsReference(const std::string& inText)
         {
             bool hasOpening = inText.find_first_of(REF_VALUE_OPENING) != std::string::npos;
             bool hasClosing = inText.find_first_of(REF_VALUE_CLOSING) != std::string::npos;
@@ -462,39 +467,39 @@ namespace Chicane
             return hasOpening && hasClosing;
         }
 
-        bool refValueContainsFunction(const std::string& inRefValue)
+        bool doesTextContainsFunction(const std::string& inValue)
         {
-            bool hasOpening = inRefValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
-            bool hasClosing = inRefValue.find_first_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
+            bool hasOpening = inValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
+            bool hasClosing = inValue.find_first_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
 
             return hasOpening && hasClosing;
         }
 
-        std::any processRefValue(const std::string& inRefValue)
+        Reference parseReference(const std::string& inValue)
         {
             if (!Application::hasView())
             {
-                return inRefValue;
+                return Reference::fromValue<const std::string>(&inValue);
             }
 
             View* view = Application::getView();
 
-            if (!refValueContainsFunction(inRefValue))
+            if (!doesTextContainsFunction(inValue))
             {
-                if (!view->hasVariable(inRefValue))
+                if (!view->hasVariable(inValue))
                 {
-                    return inRefValue;
+                    return Reference::fromValue<const std::string>(&inValue);
                 }
 
-                return *view->getVariable(inRefValue);
+                return *view->getVariable(inValue);
             }
 
-            Component::FunctionData functionData = parseFunction(inRefValue);
+            Component::FunctionData functionData = parseFunction(inValue);
             Component::Function functionRef      = view->getFunction(functionData.name);
 
             if (!functionRef)
             {
-                return inRefValue;
+                return Reference::fromValue<const std::string>(&inValue);
             }
 
             Component::Event event {};
@@ -503,24 +508,21 @@ namespace Chicane
             return functionRef(event);
         }
 
-        std::string processText(const std::string& inText)
+        std::string parseText(const std::string& inText)
         {
             if (Utils::trim(inText).empty())
             {
                 return "";
             }
 
-            if (!textContainsRefValue(inText))
+            if (!doesTextContainsReference(inText))
             {
                 return inText;
             }
 
             std::size_t foundOpening = inText.find_first_of(REF_VALUE_OPENING);
             std::size_t foundClosing = inText.find_first_of(REF_VALUE_CLOSING);
-            std::string resultText = inText.substr(
-                0,
-                foundOpening
-            );
+            std::string resultText = inText.substr(0,  foundOpening);
             std::string remainderText = inText.substr(
                 foundClosing + 2,
                 inText.size() - foundClosing
@@ -529,26 +531,23 @@ namespace Chicane
             foundOpening += 2;
             foundClosing -= foundOpening;
 
-            std::string refValue = inText.substr(
-                foundOpening,
-                foundClosing
-            );
-            refValue = Utils::trim(refValue);
+            std::string value = inText.substr(foundOpening, foundClosing);
+            value = Utils::trim(value);
 
-            if (!refValue.empty())
+            if (!value.empty())
             {
-                resultText += anyToString(processRefValue(refValue));
+                resultText += anyToString(parseReference(value));
             }
 
             if (!remainderText.empty())
             {
-                resultText += processText(remainderText);
+                resultText += parseText(remainderText);
             }
 
             return resultText;
         }
 
-        std::vector<std::any> getItems(const pugi::xml_node& inNode)
+        std::vector<Reference> getItems(const pugi::xml_node& inNode)
         {
             if (!Application::hasView())
             {
@@ -557,21 +556,21 @@ namespace Chicane
 
             View* view = Application::getView();
 
-            std::string itemsVariableRef = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
+            std::string value = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
 
-            if (itemsVariableRef.empty() || !view->hasVariable(itemsVariableRef))
+            if (value.empty() || !view->hasVariable(value))
             {
                 return EMPTY_ITEMS;
             }
 
-            std::any items = *view->getVariable(itemsVariableRef);
+            Reference items = *view->getVariable(value);
 
-            if (items.type() != typeid(std::vector<std::any>))
+            if (!items.isType<std::vector<Reference>>())
             {
                 return EMPTY_ITEMS;
             }
 
-            return std::any_cast<std::vector<std::any>>(items);
+            return *items.getValue<std::vector<Reference>>();
         }
 
         Component::Function getItemGetter(const pugi::xml_node& inNode)

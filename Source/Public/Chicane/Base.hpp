@@ -23,7 +23,6 @@
 
 // System
 #include <algorithm>
-#include <any>
 #include <array>
 #include <condition_variable>
 #include <cstdlib>

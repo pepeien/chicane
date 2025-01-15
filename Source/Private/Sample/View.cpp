@@ -12,7 +12,8 @@ View::View()
         "home",
         "Content/Sample/Views/Home.grid"
     ),
-    m_didPlayerWin(std::make_any<std::string>("false"))
+    m_didPlayerWin(false),
+    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(m_didPlayerWin))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)
@@ -33,7 +34,7 @@ View::View()
             {
                 playAudio("Victory");
 
-                m_didPlayerWin = std::make_any<std::string>("true");
+                m_didPlayerWin = true;
             }
             else
             {
@@ -44,7 +45,7 @@ View::View()
 
     addVariable(
         "didPlayerWin",
-        &m_didPlayerWin
+        &m_uiDidPlayerWin
     );
 
     addFunction(
@@ -65,14 +66,18 @@ View::~View()
     }
 }
 
-std::uint64_t View::getFPS(const Chicane::Grid::Component::Event& inEvent)
+Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Component::Event& inEvent)
 {
-    return Chicane::Application::getTelemetry().frame.rate;
+    std::uint32_t frameRate = Chicane::Application::getTelemetry().frame.rate;
+
+    return Chicane::Grid::Reference::fromValue<std::uint32_t>(frameRate);
 }
 
-float View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
+Chicane::Grid::Reference View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
 {
-    return Chicane::Application::getTelemetry().frame.time;
+    float frameTime = Chicane::Application::getTelemetry().frame.time;
+
+    return Chicane::Grid::Reference::fromValue<float>(frameTime);
 }
 
 void View::loadAudio(const std::string& inId, const std::string& inFilepath)

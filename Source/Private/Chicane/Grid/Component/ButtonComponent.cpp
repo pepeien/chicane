@@ -38,13 +38,13 @@ namespace Chicane
 
                 if (onClickFunctionData.params.size() == 1)
                 {
-                    std::any param = onClickFunctionData.params[0];
+                    Reference param = onClickFunctionData.params[0];
 
-                    if (param.type() == typeid(std::string))
+                    if (param.isType<std::string>())
                     {
-                        if (Utils::trim(std::any_cast<std::string>(param)) == ON_CLICK_EVENT_KEYWORD)
+                        if (Utils::trim(*param.getValue<std::string>()) == ON_CLICK_EVENT_KEYWORD)
                         {
-                            onClickEvent.values[0] = inNode;
+                            onClickEvent.values[0] = Reference::fromValue<const pugi::xml_node>(&inNode);
                         }
                     }
                 }
@@ -54,11 +54,11 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
     
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 

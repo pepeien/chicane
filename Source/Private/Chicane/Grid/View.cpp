@@ -84,10 +84,10 @@ namespace Chicane
 
         bool View::hasVariable(const std::string& inId) const
         {
-            return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) != nullptr;
+            return m_variables.find(inId) != m_variables.end() && m_variables.at(inId) && !m_variables.at(inId)->isEmpty();
         }
 
-        Component::Variable View::getVariable(const std::string& inId) const
+        Reference* View::getVariable(const std::string& inId) const
         {
             if (!hasVariable(inId))
             {
@@ -105,7 +105,7 @@ namespace Chicane
             }
         }
 
-        void View::addVariable(const std::string& inId, Component::Variable inVariable)
+        void View::addVariable(const std::string& inId, Reference* inVariable)
         {
             if (hasVariable(inId))
             {

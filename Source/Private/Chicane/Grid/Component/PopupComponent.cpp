@@ -11,15 +11,15 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
-                const std::string& isConstrained = processText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
-                const std::string& isResizable   = processText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
-    
+                const std::string& isVisible     = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isConstrained = parseText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isResizable   = parseText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
+
                 Props result {};
                 result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "true");
-                result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "true");
-                result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "true");
+                result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
+                result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "1") || Utils::areEquals(isConstrained, "true");
+                result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "1") || Utils::areEquals(isResizable, "true");
                 result.style          = Style::getStyle(inNode);
                 result.children       = inNode.children();
 

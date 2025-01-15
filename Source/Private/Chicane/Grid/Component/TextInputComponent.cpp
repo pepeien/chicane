@@ -37,13 +37,13 @@ namespace Chicane
 
                 if (functionData.params.size() == 1)
                 {
-                    std::any param = functionData.params[0];
+                    const Reference& param = functionData.params[0];
 
-                    if (param.type() == typeid(std::string))
+                    if (param.isType<std::string>())
                     {
-                        if (Utils::trim(std::any_cast<std::string>(param)) == ON_INPUT_EVENT_KEYWORD)
+                        if (Utils::trim(*param.getValue<std::string>()) == ON_INPUT_EVENT_KEYWORD)
                         {
-                            event.values[0] = inNode;
+                            event.values[0] = Reference::fromValue<const pugi::xml_node>(&inNode);
                         }
                     }
                 }
@@ -53,13 +53,13 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
     
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
-                result.value      = Application::getView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
+                result.value      = *Application::getView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
                 result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
@@ -94,7 +94,7 @@ namespace Chicane
                     throw std::runtime_error("The view " + view->getId() + " doesn't have the variable " + variable + " exposed");
                 }
 
-                if (view->getVariable(variable)->type() != typeid(std::string))
+                if (view->getVariable(variable)->isType<std::string>())
                 {
                     throw std::runtime_error(TAG_ID + " values must be strings");
                 }
@@ -114,12 +114,9 @@ namespace Chicane
                 const Style& style = props.style;
 
                 ImGui::PushItemWidth(style.width);
-                    if (
-                        ImGui::InputText(
-                            props.label.empty() ? " " : props.label.c_str(),
-                            std::any_cast<std::string>(props.value)
-                        )
-                    )
+                    const char* label = props.label.empty() ? " " : props.label.c_str();
+
+                    if (ImGui::InputText(label, nullptr))
                     {
                         if (props.onInput) {
                             props.onInput(props.onInputEvent);

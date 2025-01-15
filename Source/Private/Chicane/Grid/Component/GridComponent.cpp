@@ -22,11 +22,13 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+
+                std::string huh = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
     
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.itemSize   = getItemSize(inNode);
                 result.style      = Style::getStyle(inNode);
                 result.items      = getItems(inNode);

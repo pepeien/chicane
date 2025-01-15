@@ -20,6 +20,7 @@ namespace Chicane
                 if (image.pixels)
                 {
                     free(image.pixels);
+                    image.pixels = nullptr;
                 }
             }
         }
@@ -40,6 +41,8 @@ namespace Chicane
         void Manager::onDeactivation(const std::string& inId)
         {
             free(m_datum.at(inId).pixels);
+
+            m_datum.at(inId).pixels = nullptr;
 
             Super::deallocate(inId);
         }

@@ -23,7 +23,7 @@ namespace Chicane
             struct Props : Component::BaseProps
             {
                 // Attributes
-                Component::Variable value;      // Required
+                Reference           value = {};      // Required
                 std::string         label = ""; // Optional
 
                 // Events

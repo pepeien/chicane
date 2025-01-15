@@ -11,11 +11,11 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = processText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
 
                 Props result {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true") || Utils::areEquals(isVisible, "1");
                 result.style      = Style::getStyle(inNode);
                 result.items      = getItems(inNode);
                 result.itemGetter = getItemGetter(inNode);
@@ -75,7 +75,7 @@ namespace Chicane
                     );
                         std::uint32_t i = 0;
 
-                        for (const Component::Function& renderer : inProps._renderers)
+                        for (const Component::EventFunction& renderer : inProps._renderers)
                         {
                             handlePositioning(inProps, i);
 
@@ -84,7 +84,7 @@ namespace Chicane
                             i++;
                         }
 
-                        for (std::any item : inProps.items)
+                        for (const Reference& item : inProps.items)
                         {
                             handlePositioning(inProps, i);
 

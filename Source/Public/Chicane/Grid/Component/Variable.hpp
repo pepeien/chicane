@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Grid/Reference.hpp"
 
 namespace Chicane
 {
@@ -8,8 +9,7 @@ namespace Chicane
     {
         namespace Component
         {
-            typedef std::any* Variable;
-            typedef std::unordered_map<std::string, Variable> Variables;
+            typedef std::unordered_map<std::string, Reference*> Variables;
         }
     }
 }

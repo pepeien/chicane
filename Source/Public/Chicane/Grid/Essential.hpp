@@ -3,6 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Reference.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/View.hpp"
 
@@ -73,17 +74,17 @@ namespace Chicane
         void compileChildren(const pugi::xml_node& inNode);
         void compileChild(const pugi::xml_node& inNode);
 
-        std::string anyToString(const std::any& inValue);
+        std::string anyToString(const Reference& inValue);
 
         Component::FunctionData parseFunction(const std::string& inRefValue);
 
-        bool textContainsRefValue(const std::string& inText);
-        bool refValueContainsFunction(const std::string& inRefValue);
-        std::any processRefValue(const std::string& inRefValue);
-        std::string processText(const std::string& inText);
+        bool doesTextContainsReference(const std::string& inText);
+        bool doesTextContainsFunction(const std::string& inValue);
+        Reference parseReference(const std::string& inValue);
+        std::string parseText(const std::string& inText);
 
         // List
-        std::vector<std::any> getItems(const pugi::xml_node& inNode);
+        std::vector<Reference> getItems(const pugi::xml_node& inNode);
         Component::Function getItemGetter(const pugi::xml_node& inNode);
     }
 }

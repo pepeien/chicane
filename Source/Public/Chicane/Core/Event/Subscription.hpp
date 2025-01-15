@@ -19,7 +19,7 @@ namespace Chicane
         {}
 
     public:
-        void next(const T& inData)
+        void next(T inData)
         {
             if (isCompleted())
             {

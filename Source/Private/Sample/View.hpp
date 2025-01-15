@@ -18,15 +18,16 @@ public:
     ~View();
 
 private:
-    std::uint64_t getFPS(const Chicane::Grid::Component::Event& inEvent);
-    float getFrametime(const Chicane::Grid::Component::Event& inEvent);
+    Chicane::Grid::Reference getFPS(const Chicane::Grid::Component::Event& inEvent);
+    Chicane::Grid::Reference getFrametime(const Chicane::Grid::Component::Event& inEvent);
 
 private:
     void loadAudio(const std::string& inId, const std::string& inFilepath);
     void playAudio(const std::string& inId);
 
 private:
-    std::any m_didPlayerWin;
+    bool                                   m_didPlayerWin;
+    Chicane::Grid::Reference               m_uiDidPlayerWin;
 
     std::unordered_map<std::string, Audio> m_audios;
 };

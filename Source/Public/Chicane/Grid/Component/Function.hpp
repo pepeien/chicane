@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Grid/Reference.hpp"
 
 namespace Chicane
 {
@@ -13,8 +14,8 @@ namespace Chicane
             struct FunctionData
             {
             public:
-                std::string           name   = "";
-                std::vector<std::any> params = {};
+                std::string            name   = "";
+                std::vector<Reference> params = {};
 
             public:
                 static const FunctionData& empty();
@@ -23,10 +24,11 @@ namespace Chicane
             struct Event
             {
             public:
-                std::vector<std::any> values = {};
+                std::vector<Reference> values = {};
             };
 
-            typedef std::function<std::any (const Event&)> Function;
+            typedef std::function<Reference (const Event&)> Function;
+            typedef std::function<void (const Event&)> EventFunction;
             typedef std::unordered_map<std::string, Function> Functions;
         }
     }

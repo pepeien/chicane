@@ -16,8 +16,8 @@ namespace Chicane
             struct Props : Component::BaseProps
             {
             public:
-                std::vector<std::any> items = {}; // Optional
-                Component::Function   itemGetter; // Optional
+                std::vector<Reference> items = {}; // Optional
+                Component::Function    itemGetter; // Optional
             };
 
             void validate(const Props& inProps);

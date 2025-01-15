@@ -12,8 +12,8 @@ namespace Chicane
     {
         typedef std::deque<Entry> List;
 
-        Subscription<List>* watchLogs(
-            std::function<void (const List&)> inNext,
+        Subscription<const List*>* watchLogs(
+            std::function<void (const List*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

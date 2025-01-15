@@ -51,7 +51,7 @@ namespace Chicane
                     ImGuiCol_Text,
                     hexToImGuiColor(inStyle.foregroundColor)
                 );
-                    ImGui::TextWrapped(processText(inText).c_str());
+                    ImGui::TextWrapped(parseText(inText).c_str());
                 ImGui::PopStyleColor();
             }
 

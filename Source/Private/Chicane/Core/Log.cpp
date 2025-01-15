@@ -18,21 +18,21 @@ namespace Chicane
     {
         std::unordered_map<std::string, std::string> m_colors = {};
 
-        std::deque<Entry>                 m_logs           = {};
-        std::unique_ptr<Observable<List>> m_logsObservable = std::make_unique<Observable<List>>();
+        std::deque<Entry>                        m_logs           = {};
+        std::unique_ptr<Observable<const List*>> m_logsObservable = std::make_unique<Observable<const List*>>();
 
-        Subscription<List>* watchLogs(
-            std::function<void (const List&)> inNext,
+        Subscription<const List*>* watchLogs(
+            std::function<void (const List*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )
         {
-            Subscription<List>* subscription = m_logsObservable->subscribe(
+            Subscription<const List*>* subscription = m_logsObservable->subscribe(
                 inNext,
                 inError,
                 inComplete
             );
-            subscription->next(m_logs);
+            subscription->next(&m_logs);
 
             return subscription;
         }
@@ -91,7 +91,7 @@ namespace Chicane
 
             m_logs.emplace_back(instance);
 
-            m_logsObservable->next(m_logs);
+            m_logsObservable->next(&m_logs);
         }
 
         void info(const std::string& inMessage)
