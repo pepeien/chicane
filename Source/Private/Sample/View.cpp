@@ -13,7 +13,7 @@ View::View()
         "Content/Sample/Views/Home.grid"
     ),
     m_didPlayerWin(false),
-    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(m_didPlayerWin))
+    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)
@@ -68,16 +68,16 @@ View::~View()
 
 Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Component::Event& inEvent)
 {
-    std::uint32_t frameRate = Chicane::Application::getTelemetry().frame.rate;
-
-    return Chicane::Grid::Reference::fromValue<std::uint32_t>(frameRate);
+    return Chicane::Grid::Reference::fromValue<const std::uint32_t>(
+        &Chicane::Application::getTelemetry().frame.rate
+    );
 }
 
 Chicane::Grid::Reference View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
 {
-    float frameTime = Chicane::Application::getTelemetry().frame.time;
-
-    return Chicane::Grid::Reference::fromValue<float>(frameTime);
+    return Chicane::Grid::Reference::fromValue<const float>(
+        &Chicane::Application::getTelemetry().frame.time
+    );
 }
 
 void View::loadAudio(const std::string& inId, const std::string& inFilepath)
