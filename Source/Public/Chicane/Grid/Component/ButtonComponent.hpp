@@ -20,8 +20,8 @@ namespace Chicane
             struct Props : Component::BaseProps
             {
                 // onClick
-                Component::Event         onClickEvent = {}; // Optional
-                Component::EventFunction onClick; // Optional
+                Component::Event           onClickEvent = {}; // Optional
+                Component::Event::Function onClick; // Optional
             };
 
             void validate(const Props& inProps);

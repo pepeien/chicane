@@ -15,7 +15,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        std::unordered_map<std::string, Component::Compiler> m_components = {
+        std::unordered_map<std::string, Component::Compiler::Function> m_components = {
             { ButtonComponent::TAG_ID, &ButtonComponent::compile },
             { GridComponent::TAG_ID, &GridComponent::compile },
             { ContainerComponent::TAG_ID, &ContainerComponent::compile },
@@ -35,7 +35,7 @@ namespace Chicane
             return m_components.find(inId) != m_components.end();
         }
 
-        void addComponent(const std::string& inId, Component::Compiler inCompiler)
+        void addComponent(const std::string& inId, Component::Compiler::Function inCompiler)
         {
             if (hasComponent(inId))
             {
@@ -50,7 +50,7 @@ namespace Chicane
             );
         }
 
-        Component::Compiler getComponent(const std::string& inId)
+        Component::Compiler::Function getComponent(const std::string& inId)
         {
             if (!hasComponent(inId))
             {

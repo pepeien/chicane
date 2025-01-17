@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Grid/Component/Event.hpp"
 #include "Chicane/Grid/Reference.hpp"
 
 namespace Chicane
@@ -9,8 +10,6 @@ namespace Chicane
     {
         namespace Component
         {
-            typedef std::function<void (const pugi::xml_node&)> Compiler;
-
             struct FunctionData
             {
             public:
@@ -21,14 +20,7 @@ namespace Chicane
                 static const FunctionData& empty();
             };
 
-            struct Event
-            {
-            public:
-                std::vector<Reference> values = {};
-            };
-
             typedef std::function<Reference (const Event&)> Function;
-            typedef std::function<void (const Event&)> EventFunction;
             typedef std::unordered_map<std::string, Function> Functions;
         }
     }
