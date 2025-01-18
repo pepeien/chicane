@@ -40,7 +40,6 @@ namespace Chicane
 
         bool hasCamera();
         CameraComponent* getCamera();
-        void setCamera(CameraComponent* inCamera);
         Subscription<CameraComponent*>* watchCamera(
             std::function<void (CameraComponent*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,

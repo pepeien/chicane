@@ -3,8 +3,7 @@
 #include "Chicane/Application.hpp"
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
+#include "Chicane/Renderer/Viewport.hpp"
 #include "Chicane/Renderer/Vulkan/Texture.hpp"
 
 namespace Chicane
@@ -54,7 +53,7 @@ namespace Chicane
             buildTextureData();
             buildModelData();
 
-            setupFrames();
+            setupFrameResources();
 
             setStatus(Layer::Status::Running);
         }
@@ -80,7 +79,7 @@ namespace Chicane
 
             initFrameResources();
             initFramebuffers();
-            setupFrames();
+            setupFrameResources();
 
             setStatus(Layer::Status::Running);
         }
@@ -93,6 +92,8 @@ namespace Chicane
             }
 
             Frame::Instance* outFrame = (Frame::Instance*) outData;
+            outFrame->updateCameraData(m_cameras);
+            outFrame->updateLightData(m_lights);
             outFrame->updateMeshData(m_meshes);
         }
 
@@ -160,7 +161,7 @@ namespace Chicane
 
                     m_level->watchComponents(
                         [this](const std::vector<Component*>& inComponents) {
-                            updateMeshes(inComponents);
+                            updateFrameResources();
                         }
                     );
                 }
@@ -220,7 +221,7 @@ namespace Chicane
             }
 
             Descriptor::SetLayoutBidingsCreateInfo frameLayoutBidings;
-            frameLayoutBidings.count = 2;
+            frameLayoutBidings.count = 3;
 
             /// Camera
             frameLayoutBidings.indices.push_back(0);
@@ -228,8 +229,14 @@ namespace Chicane
             frameLayoutBidings.counts.push_back(1);
             frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            /// Model
+            /// Light
             frameLayoutBidings.indices.push_back(1);
+            frameLayoutBidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+            frameLayoutBidings.counts.push_back(1);
+            frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            /// Model
+            frameLayoutBidings.indices.push_back(2);
             frameLayoutBidings.types.push_back(vk::DescriptorType::eStorageBuffer);
             frameLayoutBidings.counts.push_back(1);
             frameLayoutBidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
@@ -242,6 +249,9 @@ namespace Chicane
 
             Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
+            descriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+            );
             descriptorPoolCreateInfo.sizes.push_back(
                 { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
             );
@@ -267,7 +277,7 @@ namespace Chicane
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
         
-                vk::WriteDescriptorSet cameraWriteInfo;
+                vk::WriteDescriptorSet cameraWriteInfo {};
                 cameraWriteInfo.dstSet          = descriptorSet;
                 cameraWriteInfo.dstBinding      = 0;
                 cameraWriteInfo.dstArrayElement = 0;
@@ -275,10 +285,19 @@ namespace Chicane
                 cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
                 cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
                 frame.addWriteDescriptorSet(cameraWriteInfo);
+        
+                vk::WriteDescriptorSet lightWriteInfo {};
+                lightWriteInfo.dstSet          = descriptorSet;
+                lightWriteInfo.dstBinding      = 1;
+                lightWriteInfo.dstArrayElement = 0;
+                lightWriteInfo.descriptorCount = 1;
+                lightWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
+                frame.addWriteDescriptorSet(lightWriteInfo);
 
-                vk::WriteDescriptorSet meshWriteInfo;
+                vk::WriteDescriptorSet meshWriteInfo {};
                 meshWriteInfo.dstSet          = descriptorSet;
-                meshWriteInfo.dstBinding      = 1;
+                meshWriteInfo.dstBinding      = 2;
                 meshWriteInfo.dstArrayElement = 0;
                 meshWriteInfo.descriptorCount = 1;
                 meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
@@ -635,7 +654,7 @@ namespace Chicane
             }
         }
 
-        void LevelLayer::setupFrames()
+        void LevelLayer::setupFrameResources()
         {
             if (is(Layer::Status::Running))
             {
@@ -644,53 +663,45 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
+                frame.setupCameraData(m_cameras);
+                frame.setupLightData(m_lights);
                 frame.setupMeshData(m_meshes);
             }
         }
 
-        void LevelLayer::setFramesAsDirty()
+        void LevelLayer::updateFrameResources()
         {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
+            std::vector<CameraComponent*> cameras = {};
+            std::vector<LightComponent*>  lights  = {};
+            std::vector<MeshComponent*>   meshes  = {};
 
-            for (Frame::Instance& frame : m_internals.swapchain->frames)
-            {
-                frame.meshResource.setAsDirty();
-            }
-        }
+            const Chicane::Renderer::Viewport& viewport = Application::getRenderer()->getViewport();
 
-        void LevelLayer::updateMeshes(const std::vector<Component*>& inComponents)
-        {
-            std::vector<MeshComponent*> nextMeshes {};
-            nextMeshes.reserve(inComponents.size());
-
-            for (Component* component : inComponents)
+            for (Component* component : m_level->getComponents())
             {
-                if (typeid(*component) != typeid(MeshComponent))
+                if (component->isType<CameraComponent>())
                 {
-                    continue;
+                    cameras.push_back(static_cast<CameraComponent*>(component));
+
+                    cameras.back()->setViewport(viewport.size);
                 }
 
-                MeshComponent* mesh = static_cast<MeshComponent*>(component);
-
-                if (!mesh->isDrawable())
+                if (component->isType<LightComponent>())
                 {
-                    continue;
+                    lights.push_back(static_cast<LightComponent*>(component));
+
+                    lights.back()->setViewport(viewport.size);
                 }
 
-                nextMeshes.emplace_back(mesh);
+                if (component->isType<MeshComponent>())
+                {
+                    meshes.push_back(static_cast<MeshComponent*>(component));
+                }
             }
 
-            if (m_meshes.size() == nextMeshes.size())
-            {
-                return;
-            }
-
-            m_meshes = nextMeshes;
-
-            setFramesAsDirty();
+            m_cameras = cameras;
+            m_lights  = lights;
+            m_meshes  = meshes;
         }
     }
 }

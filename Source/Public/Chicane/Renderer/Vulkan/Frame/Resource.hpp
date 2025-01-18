@@ -29,12 +29,12 @@ namespace Chicane
 
                 void destroy(const vk::Device& inLogicalDevice)
                 {
+                    m_isDirty = true;
+
                     if (!m_buffer.memory)
                     {
                         return;
                     }
-
-                    m_isDirty = true;
 
                     inLogicalDevice.unmapMemory(m_buffer.memory);
 

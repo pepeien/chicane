@@ -26,8 +26,6 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-
-            prepareEvents();
         }
 
         Renderer::~Renderer()
@@ -84,22 +82,6 @@ namespace Chicane
             emmitEventToLayers(inEvent);
         }
 
-        void Renderer::onCameraEvent()
-        {
-            for (Vulkan::Frame::Instance& frame : m_swapChain.frames)
-            {
-                frame.cameraResource.setAsDirty();
-            }
-
-            if (Application::hasCamera())
-            {
-                Application::getCamera()->setViewport(
-                    m_viewport.size.x,
-                    m_viewport.size.y
-                );
-            }
-        }
-
         void Renderer::render()
         {
             Frame::Instance& currentImage           = m_swapChain.frames.at(m_currentImageIndex);
@@ -127,7 +109,6 @@ namespace Chicane
             std::uint32_t nextImageIndex = acquireResult.value;
             Frame::Instance& nextImage   = m_swapChain.frames.at(nextImageIndex);
 
-            prepareCamera(currentImage);
             prepareLayers(currentImage);
 
             vk::CommandBufferBeginInfo commandBufferBegin {};
@@ -287,8 +268,6 @@ namespace Chicane
 
             m_viewport.size.x = m_swapChain.extent.width;
             m_viewport.size.y = m_swapChain.extent.height;
-
-            onCameraEvent();
         }
 
         void Renderer::rebuildSwapChain()
@@ -363,16 +342,6 @@ namespace Chicane
             );
         }
 
-        void Renderer::prepareCamera(Frame::Instance& outFrame)
-        {
-            if (!Application::hasCamera())
-            {
-                return;
-            }
-
-            outFrame.updateCameraData(Application::getCamera());
-        }
-
         void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)
         {
             vk::Viewport viewport = GraphicsPipeline::createViewport(
@@ -409,20 +378,6 @@ namespace Chicane
         void Renderer::prepareFrame(Frame::Instance& outFrame)
         {
             outFrame.updateDescriptorSets();
-        }
-
-        void Renderer::prepareEvents()
-        {
-            Application::watchCamera(
-                [this](CameraComponent* inCamera) {
-                    if (!inCamera)
-                    {
-                        return;
-                    }
-
-                    onCameraEvent();
-                }
-            );
         }
     }
 }

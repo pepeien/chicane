@@ -12,9 +12,6 @@ namespace Chicane
             m_controllerObservable(std::make_unique<Observable<Controller*>>()),
             m_level(nullptr),
             m_levelObservable(std::make_unique<Observable<Level*>>()),
-            m_defaultCamera(nullptr),
-            m_camera(nullptr),
-            m_cameraObservable(std::make_unique<Observable<CameraComponent*>>()),
             m_views({}),
             m_view(nullptr),
             m_viewObservable(std::make_unique<Observable<Grid::View*>>())
@@ -24,11 +21,7 @@ namespace Chicane
         {
             initWindow(inCreateInfo);
             initRenderer(inCreateInfo.renderer);
-            initDefaultController();
-            initDefaultLevel();
-            initDefaultCamera();
-            initDefaultLayers();
-            initEvents();
+            initLayers();
 
             if (inCreateInfo.onSetup)
             {
@@ -133,44 +126,6 @@ namespace Chicane
                 inComplete
             );
             subscription->next(m_level);
-
-            return subscription;
-        }
-
-        bool Instance::hasCamera()
-        {
-            return m_camera != nullptr;
-        }
-
-        CameraComponent* Instance::getCamera()
-        {
-            return m_camera;
-        }
-
-        void Instance::setCamera(CameraComponent* inCamera)
-        {
-            if (inCamera == m_camera)
-            {
-                return;
-            }
-
-            m_camera = inCamera;
-
-            m_cameraObservable->next(inCamera);
-        }
-
-        Subscription<CameraComponent*>* Instance::watchCamera(
-            std::function<void (CameraComponent*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
-        {
-            Subscription<CameraComponent*>* subscription = m_cameraObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_camera);
 
             return subscription;
         }
@@ -286,37 +241,7 @@ namespace Chicane
             }
         }
 
-        void Instance::initDefaultController()
-        {
-            if (!hasWindow())
-            {
-                return;
-            }
-
-            m_defaultController = std::make_unique<Controller>();
-        }
-
-        void Instance::initDefaultLevel()
-        {
-            if (!hasWindow())
-            {
-                return;
-            }
-
-            m_defaultLevel = std::make_unique<Level>();
-        }
-
-        void Instance::initDefaultCamera()
-        {
-            if (!hasWindow())
-            {
-                return;
-            }
-
-            m_defaultCamera = new CameraComponent();
-        }
-
-        void Instance::initDefaultLayers()
+        void Instance::initLayers()
         {
             if (!hasWindow() || !hasRenderer())
             {
@@ -324,43 +249,6 @@ namespace Chicane
             }
 
             m_renderer->initLayers();
-        }
-
-        void Instance::initEvents()
-        {
-            watchController(
-                [this](Controller* inController) {
-                    if (!inController)
-                    {
-                        m_defaultController->activate();
-
-                        return;
-                    }
-                }
-            );
-
-            watchLevel(
-                [this](Level* inLevel) {
-                    if (!inLevel)
-                    {
-                        m_defaultLevel->activate();
-
-                        return;
-                    }
-                }
-            );
-
-            watchCamera(
-                [this](CameraComponent* inCamera) {
-                    if (!inCamera)
-                    { 
-                        m_defaultCamera->setAbsoluteTranslation(Vec<3, float>(0.0f, 0.0f, 100.0f));
-                        m_defaultCamera->activate();
-
-                        return;
-                    }
-                }
-            );
         }
 
         void Instance::onEvent(const SDL_Event& inEvent) {

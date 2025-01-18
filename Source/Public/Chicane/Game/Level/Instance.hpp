@@ -4,6 +4,7 @@
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
+#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 #include "Chicane/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
@@ -74,11 +75,21 @@ namespace Chicane
             std::function<void ()> inComplete = nullptr
         );
 
+        bool hasCamera();
+        CameraComponent* getCamera();
+        Subscription<CameraComponent*>* watchCamera(
+            std::function<void (CameraComponent*)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
+        );
+
     private:
         std::vector<Actor*>                                         m_actors;
         std::unique_ptr<Observable<Actor*>>                         m_actorObservable;
 
         std::vector<Component*>                                     m_components;
         std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;
+
+        std::unique_ptr<Observable<CameraComponent*>>               m_cameraObservable;
     };
 }

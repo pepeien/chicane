@@ -80,42 +80,94 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            void Instance::setupCameraData(CameraComponent* inCamera)
+            void Instance::setupCameraData(const std::vector<CameraComponent*>& inCameras)
             {
+                destroyCameraData();
+
+                if (inCameras.empty())
+                {
+                    return;
+                }
+
                 Buffer::CreateInfo bufferCreateInfo {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Chicane::Camera::Data);
+                bufferCreateInfo.size             = sizeof(Chicane::View::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 cameraResource.setup(bufferCreateInfo);
-                cameraResource.copyToBuffer(&inCamera->getData());
+                cameraResource.copyToBuffer(&inCameras.at(0)->getData());
             }
 
-            void Instance::updateCameraData(CameraComponent* inCamera)
+            void Instance::updateCameraData(const std::vector<CameraComponent*>& inCameras)
             {
-                if (!inCamera)
+                if (inCameras.empty())
                 {
-                    destroyMeshData();
+                    destroyCameraData();
 
                     return;
                 }
 
                 if (cameraResource.isDirty())
                 {
-                    setupCameraData(inCamera);
+                    setupCameraData(inCameras);
 
                     return;
                 }
 
-                cameraResource.copyToBuffer(&inCamera->getData());
+                cameraResource.copyToBuffer(&inCameras.at(0)->getData());
             }
 
             void Instance::destroyCameraData()
             {
                 cameraResource.destroy(logicalDevice);
+            }
+
+            void Instance::setupLightData(const std::vector<LightComponent*>& inLights)
+            {
+                destroyLightData();
+
+                if (inLights.empty())
+                {
+                    return;
+                }
+
+                Buffer::CreateInfo bufferCreateInfo {};
+                bufferCreateInfo.logicalDevice    = logicalDevice;
+                bufferCreateInfo.physicalDevice   = physicalDevice;
+                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                                    vk::MemoryPropertyFlagBits::eHostCoherent;
+                bufferCreateInfo.size             = sizeof(Chicane::View::Data);
+                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
+
+                lightResource.setup(bufferCreateInfo);
+                lightResource.copyToBuffer(&inLights.at(0)->getData());
+            }
+
+            void Instance::updateLightData(const std::vector<LightComponent*>& inLights)
+            {
+                if (inLights.empty())
+                {
+                    destroyLightData();
+
+                    return;
+                }
+
+                if (lightResource.isDirty())
+                {
+                    setupLightData(inLights);
+
+                    return;
+                }
+
+                lightResource.copyToBuffer(&inLights.at(0)->getData());
+            }
+
+            void Instance::destroyLightData()
+            {
+                lightResource.destroy(logicalDevice);
             }
 
             void Instance::setupMeshData(const std::vector<MeshComponent*>& inMeshes)
@@ -252,6 +304,7 @@ namespace Chicane
                 destroyDepthBuffer();
                 destroySync();
                 destroyCameraData();
+                destroyLightData();
                 destroyMeshData();
 
                 logicalDevice.destroyImageView(imageView);

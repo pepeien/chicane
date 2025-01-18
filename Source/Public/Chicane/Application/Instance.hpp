@@ -43,15 +43,6 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             );
 
-            bool hasCamera();
-            CameraComponent* getCamera();
-            void setCamera(CameraComponent* inCamera);
-            Subscription<CameraComponent*>* watchCamera(
-                std::function<void (CameraComponent*)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            );
-
             // UI
             bool hasView();
             void addView(Grid::View* inView);
@@ -102,11 +93,7 @@ namespace Chicane
             // Setup
             void initWindow(const Window::CreateInfo& inCreateInfo);
             void initRenderer(Renderer::Type inRenderer);
-            void initDefaultController();
-            void initDefaultLevel();
-            void initDefaultCamera();
-            void initDefaultLayers();
-            void initEvents();
+            void initLayers();
 
             // Lifecycle
             void onEvent(const SDL_Event& inEvent);
@@ -117,17 +104,11 @@ namespace Chicane
             Telemetry                                     m_telemetry;
 
             // Game
-            std::unique_ptr<Controller>                   m_defaultController;
             Controller*                                   m_controller;
             std::unique_ptr<Observable<Controller*>>      m_controllerObservable;
 
-            std::unique_ptr<Level>                        m_defaultLevel;
             Level*                                        m_level;
             std::unique_ptr<Observable<Level*>>           m_levelObservable;
-
-            CameraComponent*                              m_defaultCamera;
-            CameraComponent*                              m_camera;
-            std::unique_ptr<Observable<CameraComponent*>> m_cameraObservable;
 
             // UI
             std::unordered_map<std::string, Grid::View*>  m_views;

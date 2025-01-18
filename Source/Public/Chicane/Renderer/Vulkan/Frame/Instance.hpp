@@ -2,8 +2,9 @@
 
 #include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
 #include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
+#include "Chicane/Game/Transformable/Component/LightComponent.hpp"
 #include "Chicane/Renderer/Mesh/Data.hpp"
-#include "Chicane/Renderer/Camera/Data.hpp"
+#include "Chicane/Renderer/View/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Frame/Depth.hpp"
 #include "Chicane/Renderer/Vulkan/Frame/Resource.hpp"
@@ -31,9 +32,13 @@ namespace Chicane
                 );
 
                 // Resources
-                void setupCameraData(CameraComponent* inCamera);
-                void updateCameraData(CameraComponent* inCamera);
+                void setupCameraData(const std::vector<CameraComponent*>& inCameras);
+                void updateCameraData(const std::vector<CameraComponent*>& inCameras);
                 void destroyCameraData();
+
+                void setupLightData(const std::vector<LightComponent*>& inLights);
+                void updateLightData(const std::vector<LightComponent*>& inLights);
+                void destroyLightData();
 
                 void setupMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
@@ -57,33 +62,34 @@ namespace Chicane
                 void refreshMeshData(const std::vector<MeshComponent*>& inMeshes);
 
             public:
-                vk::Device                                                      logicalDevice;
-                vk::PhysicalDevice                                              physicalDevice;
+                vk::Device                                        logicalDevice;
+                vk::PhysicalDevice                                physicalDevice;
 
                 // Swapchain
-                std::uint32_t                                                   width;
-                std::uint32_t                                                   height;
+                std::uint32_t                                     width;
+                std::uint32_t                                     height;
 
                 // Image
-                vk::Image                                                       image;
-                vk::ImageView                                                   imageView;
-                std::unordered_map<std::string, vk::Framebuffer>                framebuffers;
+                vk::Image                                         image;
+                vk::ImageView                                     imageView;
+                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
 
                 // Depth
-                Depth                                                           depth;
+                Depth                                             depth;
 
                 // Sychronization
-                vk::CommandBuffer                                               commandBuffer;
-                vk::Fence                                                       renderFence;
-                vk::Semaphore                                                   presentSemaphore;
-                vk::Semaphore                                                   renderSemaphore;
-        
-                // Resources
-                Resource<Chicane::Camera::Data>                                 cameraResource;
-                Resource<Chicane::Mesh::Data>                                   meshResource;
+                vk::CommandBuffer                                 commandBuffer;
+                vk::Fence                                         renderFence;
+                vk::Semaphore                                     presentSemaphore;
+                vk::Semaphore                                     renderSemaphore;
 
-                std::unordered_map<std::string,vk::DescriptorSet>               descriptorSets;
-                std::vector<vk::WriteDescriptorSet>                             descriptorSetWrites;
+                // Resources
+                Resource<Chicane::View::Data>                     cameraResource;
+                Resource<Chicane::View::Data>                     lightResource;
+                Resource<Chicane::Mesh::Data>                     meshResource;
+
+                std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
+                std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
             };
         }
     }

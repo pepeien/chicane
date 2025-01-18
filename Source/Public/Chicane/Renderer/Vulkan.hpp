@@ -56,7 +56,6 @@ namespace Chicane
             void initLayers() override;
 
             void onEvent(const SDL_Event& inEvent) override;
-            void onCameraEvent() override;
 
             void render() override;
 
@@ -88,16 +87,12 @@ namespace Chicane
             void buildMainCommandBuffer();
             void buildFramesCommandBuffers();
 
-            void prepareCamera(Frame::Instance& outFrame);
-
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
             void prepareLayers(Frame::Instance& outFrame);
             void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
             void prepareFrame(Frame::Instance& outFrame);
-
-            void prepareEvents();
 
         private:
             // Instance

@@ -52,15 +52,15 @@ namespace Chicane
             void rebuildModelData();
             void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
-            void setupFrames();
-            void setFramesAsDirty();
-
-            void updateMeshes(const std::vector<Component*>& inComponents);
+            void setupFrameResources();
+            void updateFrameResources();
 
         private:
             Renderer::Internals                                                 m_internals;
 
             Chicane::Level*                                                     m_level;
+            std::vector<Chicane::CameraComponent*>                              m_cameras;
+            std::vector<Chicane::LightComponent*>                               m_lights;
             std::vector<Chicane::MeshComponent*>                                m_meshes;
 
             std::unique_ptr<GraphicsPipeline::Instance>                         m_graphicsPipeline;

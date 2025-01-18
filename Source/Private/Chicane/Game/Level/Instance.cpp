@@ -7,7 +7,8 @@ namespace Chicane
 {
     Level::Level()
         : m_actorObservable(std::make_unique<Observable<Actor*>>()),
-        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>())
+        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>()),
+        m_cameraObservable(std::make_unique<Observable<CameraComponent*>>())
     {}
 
     Level::~Level()
@@ -146,6 +147,40 @@ namespace Chicane
             inComplete
         );
         subscription->next(m_components);
+
+        return subscription;
+    }
+
+    bool Level::hasCamera()
+    {
+        return getCamera() != nullptr;
+    }
+
+    CameraComponent* Level::getCamera()
+    {
+        for (CameraComponent* camera : getComponents<CameraComponent>())
+        {
+            if (camera->isActive())
+            {
+                return camera;
+            }
+        }
+
+        return nullptr;
+    }
+
+    Subscription<CameraComponent*>* Level::watchCamera(
+        std::function<void (CameraComponent*)> inNext,
+        std::function<void (const std::string&)> inError,
+        std::function<void ()> inComplete
+    )
+    {
+        Subscription<CameraComponent*>* subscription = m_cameraObservable->subscribe(
+            inNext,
+            inError,
+            inComplete
+        );
+        subscription->next(getCamera());
 
         return subscription;
     }
