@@ -68,11 +68,11 @@ namespace Chicane
 
         public:
             // Visiblity
-            Display         display = Display::Visible;
+            Display         display              = Display::Visible;
 
             // Size
-            float           height = 0.0f;
-            float           width  = 0.0f;
+            float           height               = 0.0f;
+            float           width                = 0.0f;
 
             // Positioning
             Position        position             = Position::Relative;
@@ -82,11 +82,11 @@ namespace Chicane
             DirectionalSize margin               = {};
 
             // Layout
-            ListDirection   listDirection = ListDirection::Column;
+            ListDirection   listDirection        = ListDirection::Column;
 
             // Color
-            std::string     backgroundColor = BACKGROUND_COLOR_TRANSPARENT;
-            std::string     foregroundColor = "#FFFFFF";
+            std::string     backgroundColor      = BACKGROUND_COLOR_TRANSPARENT;
+            std::string     foregroundColor      = "#FFFFFF";
         };
     }
 }

@@ -191,10 +191,10 @@ namespace Chicane
 
             if (inDirection == Style::Direction::Horizontal)
             {
-                return percentage * regionSize.x;
+                return regionSize.x * percentage;
             }
 
-            return percentage * regionSize.y;
+            return regionSize.y * percentage;
         }
 
         float calculateSizeFromViewportHeight(float inVhValue)
@@ -352,11 +352,11 @@ namespace Chicane
 
             ImVec2 position = style.position == Style::Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
 
-            if (style.margin.left > 0.0f || style.margin.right > 0.0f)
+            if (style.margin.left != 0.0f || style.margin.right != 0.0f)
             {
                 if (style.margin.left == style.margin.right)
                 {
-                    position.x += style.margin.left * 1.25f;
+                    position.x += style.margin.left;
                 }
                 else
                 {
@@ -364,7 +364,7 @@ namespace Chicane
                 }
             }
 
-            if (style.margin.top > 0.0f || style.margin.bottom > 0.0f)
+            if (style.margin.top != 0.0f || style.margin.bottom != 0.0f)
             {
                 if (style.margin.top == style.margin.bottom)
                 {
