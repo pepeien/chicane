@@ -182,6 +182,21 @@ namespace Chicane
     {
         m_transform.rotation = inRotation;
 
+        if (std::abs(m_transform.rotation.x) > 360.0f)
+        {
+            m_transform.rotation.x = 0.0f;
+        }
+
+        if (std::abs(m_transform.rotation.y) > 360.0f)
+        {
+            m_transform.rotation.y = 0.0f;
+        }
+
+        if (std::abs(m_transform.rotation.z) > 360.0f)
+        {
+            m_transform.rotation.z = 0.0f;
+        }
+
         refreshPosition();
 
         m_transformObservable->next(m_transform);
