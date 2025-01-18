@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Chicane/Renderer/Camera/Frustum.hpp"
+#include "Chicane/Renderer/View/Frustum.hpp"
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         struct SphereFrustum : public Frustum
         {
         public:
             bool contains(const Transformable* inSubject) const override;
-            void use(const CameraComponent* inCamera) override;
+            void use(const ViewComponent* inView) override;
 
         protected:
             bool isWithinPlane(

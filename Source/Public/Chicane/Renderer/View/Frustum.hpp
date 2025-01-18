@@ -2,20 +2,20 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Renderer/Camera/Plane.hpp"
+#include "Chicane/Renderer/View/Plane.hpp"
 
 namespace Chicane
 {
-    class CameraComponent;
+    class ViewComponent;
     class Transformable;
 
-    namespace Camera
+    namespace View
     {
         struct Frustum
         {
         public:
         	virtual bool contains(const Transformable* inSubject) const { return false; }
-            virtual void use(const CameraComponent* inCamera) { return; }
+            virtual void use(const ViewComponent* inView) { return; }
 
         protected:
         	virtual bool isWithinPlane(

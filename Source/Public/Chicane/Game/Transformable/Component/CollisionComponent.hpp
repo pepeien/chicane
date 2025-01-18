@@ -12,8 +12,6 @@ namespace Chicane
         virtual ~CollisionComponent() = default;
 
     protected:
-        void onActivation() override;
-        void onDeactivation() override;
         void onTick(float inDeltaTime) override;
 
     public:

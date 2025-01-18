@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         struct Settings
         {
@@ -14,7 +14,7 @@ namespace Chicane
             float                 aspectRatio = 0.0f;
             float                 fieldOfView = 45.0f;
             float                 nearClip    = 0.1f;
-            float                 farClip     = 5000.0f;
+            float                 farClip     = 1000.0f;
         };
     }
 }

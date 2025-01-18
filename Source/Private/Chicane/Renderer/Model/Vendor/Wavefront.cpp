@@ -35,7 +35,7 @@ namespace Chicane
                     }
 
                     Vertex::Instance vertex;
-                    vertex.color = Vec<3, float>(1.0f, 0.0f, 0.0f);
+                    vertex.color = Vec<3, float>(1.0f, 1.0f, 1.0f);
 
                     vertex.position   = Vec3Zero;
                     vertex.position.x = inMesh->positions[inIndices.p * 3 + 0];

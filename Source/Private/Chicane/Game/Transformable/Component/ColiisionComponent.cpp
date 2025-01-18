@@ -12,26 +12,6 @@ namespace Chicane
         setCanTick(true);
     }
 
-    void CollisionComponent::onActivation()
-    {
-        if (!Application::hasLevel())
-        {
-            return;
-        }
-
-        Application::getLevel()->addComponent(this);
-    }
-
-    void CollisionComponent::onDeactivation()
-    {
-        if (!Application::hasLevel())
-        {
-            return;
-        }
-
-        Application::getLevel()->removeComponent(this);
-    }
-
     void CollisionComponent::onTick(float inDeltaTime)
     {
         if (!canCollide())

@@ -5,10 +5,10 @@
 
 namespace Chicane
 {
-    class CameraComponent : public ViewComponent
+    class LightComponent : public ViewComponent
     {
     public:
-        CameraComponent();
-        virtual ~CameraComponent() = default;
+        LightComponent();
+        virtual ~LightComponent() = default;
     }; 
 }

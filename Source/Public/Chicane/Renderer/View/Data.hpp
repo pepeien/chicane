@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         struct Data
         {
@@ -14,10 +14,10 @@ namespace Chicane
             Vec<4, float> clip                   = Vec<4, float>(0.1f, 1000.0f, 0.0f, 0.0f);
 
             // Matrices
-            Mat<4, float> projection             = Mat<4, float>();
-            Mat<4, float> view                   = Mat<4, float>();
-            Mat<4, float> viewProjection         = Mat<4, float>();
-            Mat<4, float> inversedViewProjection = Mat<4, float>();
+            Mat<4, float> projection             = Mat<4, float>(1.0f);
+            Mat<4, float> view                   = Mat<4, float>(1.0f);
+            Mat<4, float> viewProjection         = Mat<4, float>(1.0f);
+            Mat<4, float> inversedViewProjection = Mat<4, float>(1.0f);
 
             // Orientantion
             Vec<4, float> forward                = Vec<4, float>(FORWARD_DIRECTION, 0.0f);

@@ -20,6 +20,12 @@ namespace Chicane
         virtual void onTick(float inDeltaTime) { return; }
 
     public:
+        template<class T>
+        bool isType() const
+        {
+            return typeid(*this) == typeid(T);
+        }
+
         bool isActive() const;
         void activate();
         void deactivate();

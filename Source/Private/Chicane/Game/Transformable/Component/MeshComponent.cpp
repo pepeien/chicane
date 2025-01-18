@@ -21,8 +21,6 @@ namespace Chicane
         }
 
         show();
-
-        Application::getLevel()->addComponent(this);
     }
 
     void MeshComponent::onDeactivation()
@@ -33,8 +31,6 @@ namespace Chicane
         }
 
         hide();
-
-        Application::getLevel()->removeComponent(this);
     }
 
     void MeshComponent::onAttachment(Actor* inActor)

@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         struct Plane
         {

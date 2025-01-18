@@ -1,11 +1,11 @@
-#include "Chicane/Renderer/Camera/Frustum/Sphere.hpp"
+#include "Chicane/Renderer/View/Frustum/Sphere.hpp"
 
 #include "Chicane/Game/Transformable/Instance.hpp"
-#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
+#include "Chicane/Game/Transformable/Component/ViewComponent.hpp"
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         bool SphereFrustum::contains(const Transformable* inSubject) const
         {
@@ -21,24 +21,24 @@ namespace Chicane
             );
         };
 
-        void SphereFrustum::use(const CameraComponent* inCamera)
+        void SphereFrustum::use(const ViewComponent* inView)
         {
-            const Vec<3, float>& up          = inCamera->getUp();
-            const Vec<3, float>& right       = inCamera->getRight();
-            const Vec<3, float>& forward     = inCamera->getForward();
-            const Vec<3, float>& translation = inCamera->getTranslation();
+            const Vec<3, float>& up          = inView->getUp();
+            const Vec<3, float>& right       = inView->getRight();
+            const Vec<3, float>& forward     = inView->getForward();
+            const Vec<3, float>& translation = inView->getTranslation();
 
-            float aspectRatio = inCamera->getAspectRatio();
-            float fieldOfView = inCamera->getFieldOfView();
-            float farClip     = inCamera->getFarClip();
-            float nearClip    = inCamera->getNearClip();
+            float aspectRatio = inView->getAspectRatio();
+            float fieldOfView = inView->getFieldOfView();
+            float farClip     = inView->getFarClip();
+            float nearClip    = inView->getNearClip();
 
             const float halfVertical   = farClip * tanf(fieldOfView * 0.5f);
             const float halfHorizontal = halfVertical * aspectRatio;
 
             const Vec<3, float> forwardFar = farClip * forward;
 
-            center = inCamera->getCenter();
+            center = inView->getCenter();
 
             m_top.update(
                 glm::cross(right, forwardFar - up * halfVertical),

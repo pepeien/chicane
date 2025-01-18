@@ -1,5 +1,6 @@
 #include "Chicane/Game/Transformable/Component/Instance.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
 
@@ -21,16 +22,30 @@ namespace Chicane
 
     void Component::activate()
     {
+        if (!Application::hasLevel())
+        {
+            return;
+        }
+
         m_bIsActive = true;
 
         onActivation();
+
+        Application::getLevel()->addComponent(this);
     }
 
     void Component::deactivate()
     {
+        if (!Application::hasLevel())
+        {
+            return;
+        }
+
         m_bIsActive = false;
 
         onDeactivation();
+
+        Application::getLevel()->removeComponent(this);
     }
 
     bool Component::canTick() const

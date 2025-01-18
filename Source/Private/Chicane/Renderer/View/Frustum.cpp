@@ -1,8 +1,8 @@
-#include "Chicane/Renderer/Camera/Frustum.hpp"
+#include "Chicane/Renderer/View/Frustum.hpp"
 
 namespace Chicane
 {
-    namespace Camera
+    namespace View
     {
         void Plane::update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint)
         {
