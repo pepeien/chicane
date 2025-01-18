@@ -3,11 +3,12 @@
 #include "Game.hpp"
 #include "Actor/Apple.hpp"
 #include "Actor/Structure.hpp"
+#include "Actor/Sun.hpp"
 
-constexpr std::uint32_t APPLE_DEPTH_COUNT  = 1;
-constexpr std::uint32_t APPLE_COLUMN_COUNT = 10;
-constexpr std::uint32_t APPLE_ROW_COUNT    = 1;
-constexpr float         APPLE_STEP         = 20.0f;
+static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 1;
+static constexpr std::uint32_t APPLE_COLUMN_COUNT = 10;
+static constexpr std::uint32_t APPLE_ROW_COUNT    = 1;
+static constexpr float         APPLE_STEP         = 20.0f;
 
 Level::Level()
     : Chicane::Level()
@@ -15,27 +16,27 @@ Level::Level()
 
 void Level::onActivation()
 {
+    spawnLights();
     spawnStructures();
     spawnApples();
 }
 
+void Level::spawnLights()
+{
+    addActor(new Sun());
+}
+
 void Level::spawnStructures()
 {
-    const Chicane::Vec<3, float> floorScale(
-        200.0f,
-        200.0f,
-        0.25f
-    );
-
     Strcuture* floor = new Strcuture();
-    floor->setAbsoluteScale(floorScale);
-    addActor(floor);
-
-    const Chicane::Vec<3, float> scale(
-        200.0f,
-        50.0f,
-        0.25f
+    floor->setAbsoluteScale(
+        Chicane::Vec<3, float>(
+            200.0f,
+            200.0f,
+            0.25f
+        )
     );
+    addActor(floor);
 }
 
 void Level::spawnApples()

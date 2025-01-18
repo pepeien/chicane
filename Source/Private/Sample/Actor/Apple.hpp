@@ -2,7 +2,6 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
 
 class Apple : public Chicane::Actor
 {

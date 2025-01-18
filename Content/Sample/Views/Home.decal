@@ -12,54 +12,50 @@
 
 #frameTelemetry {
     position: absolute;
-    width: 12vw;
-    height: 3vh;
+    width: 175px;
+    height: 25px;
     margin-left: auto;
-    background-color: #2b2b2b;
 }
 
 #framePerSecond {
     margin-left: 1vw;
     alignment: start center;
+    color: #24f51d;
 }
 
 #frameTimeText {
     alignment: end center;
-}
-
-#crosshair {
-    position: absolute;
-    margin-top: 50vh;
+    color: #24f51d;
 }
 
 #crosshairTop {
     position: absolute;
-    height: 1.75vh;
-    width: 0.25vw;
+    height: 10px;
+    width: 2px;
     background-color: #FFFFFF;
-    margin-left: 50%;
+    margin: 50% 2px 28px 50%;
 }
 
 #crosshairBottom {
     position: absolute;
-    height: 1.75vh;
-    width: 0.25vw;
+    height: 10px;
+    width: 2px;
     background-color: #FFFFFF;
-    margin: 3vh 0 0 50%;
+    margin: 50% 2px 8px 50%;
 }
 
 #crosshairLeft {
     position: absolute;
-    height: 0.25vw;
-    width: 1vw;
+    height: 2px;
+    width: 10px;
     background-color: #FFFFFF;
-    margin: 2.15vh 0 0 48.75vw;
+    margin: 50% 15px 15px 50%;
 }
 
 #crosshairRight {
     position: absolute;
-    height: 0.25vw;
-    width: 1vw;
+    height: 2px;
+    width: 10px;
     background-color: #FFFFFF;
-    margin: 2.15vh 0 0 50.5vw;
+    margin: 50% -5px 15px 50%;
 }

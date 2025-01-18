@@ -12,6 +12,7 @@ public:
     void onActivation() override;
 
 private:
+    void spawnLights();
     void spawnStructures();
     void spawnApples();
 };
