@@ -59,16 +59,16 @@ namespace Chicane
                 }
 
             public: 
-                vk::DescriptorBufferInfo bufferInfo;
+                vk::DescriptorBufferInfo bufferInfo       = {};
 
             private:
                 // Status
-                bool                     m_isDirty;
+                bool                     m_isDirty        = true;
 
                 // Memory
-                size_t                   m_allocationSize;
-                void*                    m_writeLocation;
-                Vulkan::Buffer::Instance m_buffer;
+                size_t                   m_allocationSize = 0;
+                void*                    m_writeLocation  = nullptr;
+                Vulkan::Buffer::Instance m_buffer         = {};
             };
         }
     }

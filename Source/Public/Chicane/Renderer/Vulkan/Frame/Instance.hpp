@@ -6,7 +6,7 @@
 #include "Chicane/Renderer/Mesh/Data.hpp"
 #include "Chicane/Renderer/View/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Renderer/Vulkan/Frame/Depth.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Frame/Resource.hpp"
 
 namespace Chicane
@@ -44,8 +44,14 @@ namespace Chicane
                 void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
                 void destroyMeshData();
 
-                void setupDepthBuffer(const vk::Format& inFormat);
-                void destroyDepthBuffer();
+                void setupColorImage(vk::Format inFormat);
+                void destroyColorImage();
+
+                void setupDepthImage(vk::Format inFormat);
+                void destroyDepthImage();
+
+                void setupShadowImage(vk::Format inFormat);
+                void destroyShadowImage();
 
                 void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
                 vk::Framebuffer getFramebuffer(const std::string& inId) const;
@@ -70,12 +76,13 @@ namespace Chicane
                 std::uint32_t                                     height;
 
                 // Image
-                vk::Image                                         image;
-                vk::ImageView                                     imageView;
-                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
+                Image::Data                                       colorImage;
+                Image::Data                                       depthImage;
+                Image::Data                                       shadowImage;
+                vk::DescriptorImageInfo                           shadowImageInfo;
 
-                // Depth
-                Depth                                             depth;
+                // Buffer
+                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
 
                 // Sychronization
                 vk::CommandBuffer                                 commandBuffer;

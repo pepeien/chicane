@@ -71,6 +71,7 @@ namespace Chicane
 
                 vk::PhysicalDeviceFeatures features = vk::PhysicalDeviceFeatures();
                 features.fillModeNonSolid = true;
+                features.depthClamp       = true;
 
                 vk::PhysicalDeviceDescriptorIndexingFeatures descriptorFeatures = vk::PhysicalDeviceDescriptorIndexingFeatures();
                 descriptorFeatures.runtimeDescriptorArray = true;

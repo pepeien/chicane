@@ -39,11 +39,7 @@ namespace Chicane
                 );
 
                 // Dynamic State
-                std::vector<vk::DynamicState> dynamicStates = {
-                    vk::DynamicState::eViewport,
-                    vk::DynamicState::eScissor
-                };
-
+                std::vector<vk::DynamicState> dynamicStates     = { vk::DynamicState::eViewport, vk::DynamicState::eScissor };
                 vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
 
                 // Shader Stage
@@ -57,11 +53,6 @@ namespace Chicane
                         )
                     );
                 }
-
-                // Rasterization
-                vk::PipelineRasterizationStateCreateInfo rasterizaterizationState = createRasterizationState(
-                    inCreateInfo.polygonMode
-                );
 
                 // Sampling
                 vk::PipelineMultisampleStateCreateInfo multisampleState = createMulitsampleState();
@@ -79,6 +70,21 @@ namespace Chicane
                 depthStencilState.depthTestEnable  = VK_TRUE;
                 depthStencilState.depthWriteEnable = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
 
+                // Attachment
+                std::vector<vk::AttachmentDescription> attachments = {};
+                for (const Attachment& attachment : inCreateInfo.attachments)
+                {
+                    if (attachment.type == Attachment::Type::Color)
+                    {
+                        attachments.push_back(createColorAttachment(attachment));
+                    }
+
+                    if (attachment.type == Attachment::Type::Depth)
+                    {
+                        attachments.push_back(createDepthAttachment(attachment));
+                    }
+                }
+
                 vk::GraphicsPipelineCreateInfo pipelineInfo {};
                 pipelineInfo.flags               = vk::PipelineCreateFlags();
                 pipelineInfo.pVertexInputState   = &vertexInputState;
@@ -87,12 +93,31 @@ namespace Chicane
                 pipelineInfo.pDynamicState       = &dynamicState;
                 pipelineInfo.stageCount          = static_cast<std::uint32_t>(shaders.size());
                 pipelineInfo.pStages             = shaders.data();
-                pipelineInfo.pRasterizationState = &rasterizaterizationState;
+                pipelineInfo.pRasterizationState = &inCreateInfo.rasterizaterizationState;
                 pipelineInfo.pMultisampleState   = &multisampleState;
                 pipelineInfo.pColorBlendState    = &colorBlendState;
                 pipelineInfo.pDepthStencilState  = &depthStencilState;
                 pipelineInfo.layout              = createLayout(inCreateInfo.descriptorSetLayouts, m_logicalDevice);
-                pipelineInfo.renderPass          = createRendepass(inCreateInfo.attachments, m_logicalDevice);
+                pipelineInfo.renderPass          = createRendepass(
+                    attachments,
+                    m_logicalDevice,
+                    std::find_if(
+                        inCreateInfo.attachments.begin(),
+                        inCreateInfo.attachments.end(),
+                        [](const auto& inAttachment)
+                        {
+                            return inAttachment.type == Attachment::Type::Color;
+                        }
+                    ) != inCreateInfo.attachments.end(),
+                    std::find_if(
+                        inCreateInfo.attachments.begin(),
+                        inCreateInfo.attachments.end(),
+                        [](const auto& inAttachment)
+                        {
+                            return inAttachment.type == Attachment::Type::Depth;
+                        }
+                    ) != inCreateInfo.attachments.end()
+                );
                 pipelineInfo.subpass             = 0;
                 pipelineInfo.basePipelineHandle  = nullptr;
 
@@ -113,6 +138,26 @@ namespace Chicane
                 m_logicalDevice.destroyPipeline(instance);
                 m_logicalDevice.destroyPipelineLayout(layout);
                 m_logicalDevice.destroyRenderPass(renderPass);
+            }
+
+            void Instance::bind(vk::CommandBuffer& inCommandBuffer)
+            {
+                inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, instance);
+            }
+
+            void Instance::bindDescriptorSet(
+                vk::CommandBuffer& inCommandBuffer,
+                std::uint32_t inIndex,
+                vk::DescriptorSet inDescriptorSet
+            )
+            {
+                inCommandBuffer.bindDescriptorSets(
+                    vk::PipelineBindPoint::eGraphics,
+                    layout,
+                    inIndex,
+                    inDescriptorSet,
+                    nullptr
+                );
             }
         }
     }

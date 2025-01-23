@@ -5,6 +5,7 @@
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/LevelLayer.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/UILayer.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/ShadowLayer.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/SkyboxLayer.hpp"
 
 namespace Chicane
@@ -26,6 +27,8 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
+
+            loadEvents();
         }
 
         Renderer::~Renderer()
@@ -68,6 +71,7 @@ namespace Chicane
         void Renderer::initLayers()
         {
             pushLayer(new SkyboxLayer());
+            pushLayer(new ShadowLayer());
             pushLayer(new LevelLayer());
             pushLayer(new UILayer());
         }
@@ -106,17 +110,19 @@ namespace Chicane
 
             currentImage.reset(m_logicalDevice);
 
+            setupFrame(currentImage);
+            setupLayers(currentImage);
+
             std::uint32_t nextImageIndex = acquireResult.value;
             Frame::Instance& nextImage   = m_swapChain.frames.at(nextImageIndex);
 
-            prepareLayers(currentImage);
-
             vk::CommandBufferBeginInfo commandBufferBegin {};
             commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
-
             currentCommandBuffer.reset();
+
+            nextImage.updateDescriptorSets();
+
             currentCommandBuffer.begin(commandBufferBegin);
-                prepareFrame(nextImage);
                 renderViewport(currentCommandBuffer);
                 renderLayers(nextImage, currentCommandBuffer);
             currentCommandBuffer.end();
@@ -161,6 +167,48 @@ namespace Chicane
             }
 
             m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
+        }
+
+        void Renderer::loadEvents()
+        {
+            Application::watchLevel(
+                [this](Level* inLevel) {
+                    if (!inLevel)
+                    {
+                        return;
+                    }
+
+                    inLevel->watchComponents(
+                        [this](const std::vector<Component*>& inComponents) {
+                            m_cameras.clear();
+                            m_lights.clear();
+                            m_meshes.clear();
+
+                            const Chicane::Renderer::Viewport& viewport = getViewport();
+
+                            for (Component* component : inComponents)
+                            {
+                                if (component->isType<CameraComponent>())
+                                {
+                                    m_cameras.push_back(static_cast<CameraComponent*>(component));
+                                    m_cameras.back()->setViewport(viewport.size);
+                                }
+
+                                if (component->isType<LightComponent>())
+                                {
+                                    m_lights.push_back(static_cast<LightComponent*>(component));
+                                    m_lights.back()->setViewport(viewport.size);
+                                }
+
+                                if (component->isType<MeshComponent>())
+                                {
+                                    m_meshes.push_back(static_cast<MeshComponent*>(component));
+                                }
+                            }
+                        }
+                    );
+                }
+            );
         }
 
         void Renderer::buildInstance()
@@ -354,7 +402,14 @@ namespace Chicane
             inCommandBuffer.setScissor(0, 1, &scissor);
         }
 
-        void Renderer::prepareLayers(Frame::Instance& outFrame)
+        void Renderer::setupFrame(Frame::Instance& outFrame)
+        {
+            outFrame.updateCameraData(m_cameras);
+            outFrame.updateLightData(m_lights);
+            outFrame.updateMeshData(m_meshes);
+        }
+
+        void Renderer::setupLayers(Frame::Instance& outFrame)
         {
             for (Layer::Instance* layer : m_layers)
             {
@@ -373,11 +428,6 @@ namespace Chicane
             {
                 layer->render(&data);
             }
-        }
-
-        void Renderer::prepareFrame(Frame::Instance& outFrame)
-        {
-            outFrame.updateDescriptorSets();
         }
     }
 }

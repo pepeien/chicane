@@ -218,7 +218,7 @@ namespace Chicane
                 createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
 
                 outSwapChain.instance         = inLogicalDevice.createSwapchainKHR(createInfo);
-                outSwapChain.format           = surfaceFormat.format;
+                outSwapChain.colorFormat      = surfaceFormat.format;
                 outSwapChain.depthFormat      = depthFormat;
                 outSwapChain.extent           = extent;
                 outSwapChain.midPoints.width  = extent.width / 2;
@@ -232,23 +232,15 @@ namespace Chicane
                 for (int i = 0; i < images.size(); i++)
                 {
                     Frame::Instance& frame = outSwapChain.frames[i];
-                    frame.image            = images[i];
-                    frame.width            = extent.width;
-                    frame.height           = extent.height;
-                    frame.physicalDevice   = inPhysicalDevice;
-                    frame.logicalDevice    = inLogicalDevice;
+                    frame.width               = extent.width;
+                    frame.height              = extent.height;
+                    frame.physicalDevice      = inPhysicalDevice;
+                    frame.logicalDevice       = inLogicalDevice;
+                    frame.colorImage.instance = images[i];
 
-                    Image::initView(
-                        frame.imageView,
-                        inLogicalDevice,
-                        frame.image,
-                        surfaceFormat.format,
-                        vk::ImageAspectFlagBits::eColor,
-                        vk::ImageViewType::e2D,
-                        1
-                    );
-
-                    frame.setupDepthBuffer(outSwapChain.depthFormat);
+                    frame.setupColorImage(outSwapChain.colorFormat);
+                    frame.setupDepthImage(outSwapChain.depthFormat);
+                    frame.setupShadowImage(outSwapChain.depthFormat);
                 }
             }
         }

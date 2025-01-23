@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Model/Manager.hpp"
 
+#include "Chicane/Core/FrameTelemetry.hpp"
+
 static const Chicane::Model::Instance EMPTY_INSTANCE = {};
 static const Chicane::Model::Data     EMPTY_DATA     = {};
 
@@ -79,21 +81,63 @@ namespace Chicane
 
             Parse::Result result {};
 
-            switch (inModel->getVendor())
-            {
-            case Vendor::Type::Wavefront:
-                Vendor::Wavefront::parse(result, inModel->getData());
+            FrameTelemetry telemetry {};
 
-                break;
+            telemetry.startCapture();
+                switch (inModel->getVendor())
+                {
+                case Vendor::Type::Wavefront:
+                    Vendor::Wavefront::parse(result, inModel->getData());
 
-            default:
-                throw std::runtime_error("Failed to import Model due to invalid type");
-            }
+                    break;
+
+                default:
+                    throw std::runtime_error("Failed to import Model due to invalid type");
+                }
+            telemetry.endCapture();
 
             Model::Instance instance {};
             instance.bounds          = Bounds(result.vertices);
             instance.vertexInstances = result.vertices;
             instance.vertexIndices   = result.indexes;
+
+            if (IS_DEBUGGING)
+            {
+                Log::emmit(
+                    Color::Green,
+                    "Model Manager",
+                    "=====Loaded Model====="
+                );
+                    Log::emmit(
+                        Color::Green,
+                        "Model Manager",
+                        "ID               => %s",
+                        inId.c_str()
+                    );
+                    Log::emmit(
+                        Color::Green,
+                        "Model Manager",
+                        "Load Time        => %.2fms",
+                        telemetry.time
+                    );
+                    Log::emmit(
+                        Color::Green,
+                        "Model Manager",
+                        "Vertex Instances => %d",
+                        instance.vertexInstances.size()
+                    );
+                    Log::emmit(
+                        Color::Green,
+                        "Model Manager",
+                        "Vertex Indices   => %d",
+                        instance.vertexIndices.size()
+                    );
+                Log::emmit(
+                    Color::Green,
+                    "Model Manager",
+                    "======================"
+                );
+            }
 
             Super::load(inId, instance);
         }

@@ -31,14 +31,14 @@ namespace Chicane
             vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
             vk::PipelineLayout createLayout(const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts, const vk::Device& inLogicalDevice);
             vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment);
-            vk::AttachmentReference createColorAttachmentRef();
             vk::SubpassDependency createColorSubpassDepedency();
             vk::AttachmentDescription createDepthAttachment(const Attachment& inAttachment);
-            vk::AttachmentReference createDepthAttachmentRef();
             vk::SubpassDependency createDepthSubpassDepedency();
             vk::RenderPass createRendepass(
                 const std::vector<vk::AttachmentDescription>& inAttachments,
-                const vk::Device& inLogicalDevice
+                const vk::Device& inLogicalDevice,
+                bool bInHasColor,
+                bool bInHasDepth
             );
         }
     }

@@ -3,7 +3,6 @@
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Renderer/Vulkan/CubeMap/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Image.hpp"
-#include "Chicane/Renderer/Vulkan/Image/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -36,8 +35,6 @@ namespace Chicane
 
                 initImage();
                 copyPixels();
-                initView();
-                initSampler();
                 initDescriptorSet();
             }
 
@@ -65,24 +62,36 @@ namespace Chicane
 
             void Instance::initImage()
             {
-                Image::CreateInfo createInfo {};
-                createInfo.width            = m_image.width;
-                createInfo.height           = m_image.height;
-                createInfo.count            = Chicane::CubeMap::IMAGE_COUNT;
-                createInfo.logicalDevice    = m_logicalDevice;
-                createInfo.physicalDevice   = m_physicalDevice;
-                createInfo.tiling           = vk::ImageTiling::eOptimal;
-                createInfo.usage            = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
-                createInfo.create           = vk::ImageCreateFlagBits::eCubeCompatible;
-                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                createInfo.format           = vk::Format::eR8G8B8A8Unorm;
+                Image::Instance::CreateInfo instanceCreateInfo {};
+                instanceCreateInfo.width         = m_image.width;
+                instanceCreateInfo.height        = m_image.height;
+                instanceCreateInfo.count         = Chicane::CubeMap::IMAGE_COUNT;
+                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
+                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format        = vk::Format::eR8G8B8A8Unorm;
+                instanceCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initInstance(m_image.instance, instanceCreateInfo);
 
-                Image::init(m_image.instance, createInfo);
-                Image::initMemory(
-                    m_image.memory,
-                    createInfo,
-                    m_image.instance
-                );
+                Image::Sampler::CreateInfo samplerCreateInfo {};
+                samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eRepeat;
+                samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
+                samplerCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initSampler(m_image.sampler, samplerCreateInfo);
+
+                Image::Memory::CreateInfo memoryCreateInfo {};
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = m_logicalDevice;
+                memoryCreateInfo.physicalDevice = m_physicalDevice;
+                Image::initMemory(m_image.memory, m_image.instance, memoryCreateInfo);
+
+                Image::View::CreateInfo viewCreateInfo {};
+                viewCreateInfo.count         = instanceCreateInfo.count;
+                viewCreateInfo.type          = vk::ImageViewType::eCube;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+                viewCreateInfo.format        = instanceCreateInfo.format;
+                viewCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initView(m_image.view, m_image.instance, viewCreateInfo);
             }
 
             void Instance::copyPixels()
@@ -143,42 +152,6 @@ namespace Chicane
                 );
 
                 Buffer::destroy(m_logicalDevice, stagingBuffer);
-            }
-
-            void Instance::initView()
-            {
-                Image::initView(
-                    m_image.view,
-                    m_logicalDevice,
-                    m_image.instance,
-                    vk::Format::eR8G8B8A8Unorm,
-                    vk::ImageAspectFlagBits::eColor,
-                    vk::ImageViewType::eCube,
-                    Chicane::CubeMap::IMAGE_COUNT
-                );
-            }
-
-            void Instance::initSampler()
-            {
-                vk::SamplerCreateInfo createInfo {};
-                createInfo.flags                   = vk::SamplerCreateFlags();
-                createInfo.minFilter               = vk::Filter::eNearest;
-                createInfo.magFilter               = vk::Filter::eLinear;
-                createInfo.addressModeU            = vk::SamplerAddressMode::eRepeat;
-                createInfo.addressModeV            = vk::SamplerAddressMode::eRepeat;
-                createInfo.addressModeW            = vk::SamplerAddressMode::eRepeat;
-                createInfo.anisotropyEnable        = false;
-                createInfo.maxAnisotropy           = 1.0f;
-                createInfo.borderColor             = vk::BorderColor::eIntTransparentBlack;
-                createInfo.unnormalizedCoordinates = false;
-                createInfo.compareEnable           = false;
-                createInfo.compareOp               = vk::CompareOp::eAlways;
-                createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-                createInfo.mipLodBias              = 0.0f;
-                createInfo.minLod                  = 0.0f;
-                createInfo.maxLod                  = 0.0f;
-
-                m_image.sampler = m_logicalDevice.createSampler(createInfo);
             }
 
             void Instance::initDescriptorSet()

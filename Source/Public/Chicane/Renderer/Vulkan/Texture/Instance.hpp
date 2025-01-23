@@ -22,9 +22,6 @@ namespace Chicane
             private:
                 void populate();
 
-                void initView();
-                void initSampler();
-
             private:
                 Image::Data        m_image;
 

@@ -27,8 +27,6 @@ namespace Chicane
             private:
                 void initImage();
                 void copyPixels();
-                void initView();
-                void initSampler();
                 void initDescriptorSet();
 
             private:

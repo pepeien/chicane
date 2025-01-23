@@ -63,6 +63,8 @@ namespace Chicane
             Internals getInternals();
 
         private:
+            void loadEvents();
+
             void buildInstance();
             void destroyInstance();
 
@@ -89,38 +91,43 @@ namespace Chicane
 
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
-            void prepareLayers(Frame::Instance& outFrame);
-            void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
+            void setupFrame(Frame::Instance& outFrame);
 
-            void prepareFrame(Frame::Instance& outFrame);
+            void setupLayers(Frame::Instance& outFrame);
+            void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
         private:
             // Instance
-            vk::Instance               m_instance;
-            vk::DispatchLoaderDynamic  m_dldi;
-            vk::DebugUtilsMessengerEXT m_debugMessenger;
+            vk::Instance                           m_instance;
+            vk::DispatchLoaderDynamic              m_dldi;
+            vk::DebugUtilsMessengerEXT             m_debugMessenger;
 
             // Surface
-            vk::SurfaceKHR             m_surface;
+            vk::SurfaceKHR                         m_surface;
 
             // Devices
-            vk::PhysicalDevice         m_physicalDevice;
-            vk::Device                 m_logicalDevice;
+            vk::PhysicalDevice                     m_physicalDevice;
+            vk::Device                             m_logicalDevice;
 
             // Queues
-            vk::Queue                  m_graphicsQueue;
-            vk::Queue                  m_presentQueue;
+            vk::Queue                              m_graphicsQueue;
+            vk::Queue                              m_presentQueue;
 
             // Swap Chain
-            SwapChain::Bundle          m_swapChain;
+            SwapChain::Bundle                      m_swapChain;
 
             // Command
-            vk::CommandPool            m_mainCommandPool;
-            vk::CommandBuffer          m_mainCommandBuffer;
+            vk::CommandPool                        m_mainCommandPool;
+            vk::CommandBuffer                      m_mainCommandBuffer;
 
             // Frame
-            int                        m_imageCount;
-            int                        m_currentImageIndex;
+            int                                    m_imageCount;
+            int                                    m_currentImageIndex;
+
+            // Game
+            std::vector<Chicane::CameraComponent*> m_cameras;
+            std::vector<Chicane::LightComponent*>  m_lights;
+            std::vector<Chicane::MeshComponent*>   m_meshes;
         };
     }
 }

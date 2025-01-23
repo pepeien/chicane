@@ -216,39 +216,143 @@ namespace Chicane
                 meshResource.destroy(logicalDevice);
             }
 
-            void Instance::setupDepthBuffer(const vk::Format& inFormat)
+            void Instance::setupColorImage(vk::Format inFormat)
             {
-                depth.format = inFormat;
+                colorImage.format = inFormat;
 
-                Image::CreateInfo imageCreateInfo;
-                imageCreateInfo.width            = width;
-                imageCreateInfo.height           = height;
-                imageCreateInfo.count            = 1;
-                imageCreateInfo.physicalDevice   = physicalDevice;
-                imageCreateInfo.logicalDevice    = logicalDevice;
-                imageCreateInfo.tiling           = vk::ImageTiling::eOptimal;
-                imageCreateInfo.usage            = vk::ImageUsageFlagBits::eDepthStencilAttachment;
-                imageCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                imageCreateInfo.format           = depth.format;
-
-                Image::init(depth.image, imageCreateInfo);
-                Image::initMemory(depth.memory, imageCreateInfo, depth.image);
-                Image::initView(
-                    depth.imageView,
-                    logicalDevice,
-                    depth.image,
-                    depth.format,
-                    vk::ImageAspectFlagBits::eDepth,
-                    vk::ImageViewType::e2D,
-                    1
-                );
+                Image::View::CreateInfo viewCreateInfo {};
+                viewCreateInfo.count         = 1;
+                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+                viewCreateInfo.format        = inFormat;
+                viewCreateInfo.logicalDevice = logicalDevice;
+                Image::initView(colorImage.view, colorImage.instance, viewCreateInfo);
             }
 
-            void Instance::destroyDepthBuffer()
+            void Instance::destroyColorImage()
             {
-                logicalDevice.freeMemory(depth.memory);
-                logicalDevice.destroyImage(depth.image);
-                logicalDevice.destroyImageView(depth.imageView);
+                logicalDevice.destroyImageView(colorImage.view);
+            }
+
+            void Instance::setupDepthImage(vk::Format inFormat)
+            {
+                depthImage.format = inFormat;
+
+                Image::Instance::CreateInfo instanceCreateInfo {};
+                instanceCreateInfo.width         = width;
+                instanceCreateInfo.height        = height;
+                instanceCreateInfo.count         = 1;
+                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
+                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format        = inFormat;
+                instanceCreateInfo.logicalDevice = logicalDevice;
+                Image::initInstance(depthImage.instance, instanceCreateInfo);
+
+                vk::SamplerCreateInfo createInfo {};
+                createInfo.flags                   = vk::SamplerCreateFlags();
+                createInfo.minFilter               = vk::Filter::eLinear;
+                createInfo.magFilter               = vk::Filter::eLinear;
+                createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+                createInfo.mipLodBias              = 0.0f;
+                createInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.anisotropyEnable        = false;
+                createInfo.maxAnisotropy           = 1.0f;
+                createInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
+                createInfo.unnormalizedCoordinates = false;
+                createInfo.compareEnable           = true;
+                createInfo.compareOp               = vk::CompareOp::eLess;
+                createInfo.minLod                  = 0.0f;
+                createInfo.maxLod                  = 1.0f;
+                createInfo.unnormalizedCoordinates = false;
+
+                depthImage.sampler = logicalDevice.createSampler(createInfo);
+
+                Image::Memory::CreateInfo memoryCreateInfo {};
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = logicalDevice;
+                memoryCreateInfo.physicalDevice = physicalDevice;
+                Image::initMemory(depthImage.memory, depthImage.instance, memoryCreateInfo);
+
+                Image::View::CreateInfo viewCreateInfo {};
+                viewCreateInfo.count         = instanceCreateInfo.count;
+                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+                viewCreateInfo.format        = instanceCreateInfo.format;
+                viewCreateInfo.logicalDevice = logicalDevice;
+                Image::initView(depthImage.view, depthImage.instance, viewCreateInfo);
+            }
+
+            void Instance::destroyDepthImage()
+            {
+                logicalDevice.freeMemory(depthImage.memory);
+                logicalDevice.destroyImage(depthImage.instance);
+                logicalDevice.destroyImageView(depthImage.view);
+                logicalDevice.destroySampler(depthImage.sampler);
+            }
+
+            void Instance::setupShadowImage(vk::Format inFormat)
+            {
+                shadowImage.format = inFormat;
+
+                Image::Instance::CreateInfo instanceCreateInfo {};
+                instanceCreateInfo.width         = width;
+                instanceCreateInfo.height        = height;
+                instanceCreateInfo.count         = 1;
+                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
+                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format        = inFormat;
+                instanceCreateInfo.logicalDevice = logicalDevice;
+                Image::initInstance(shadowImage.instance, instanceCreateInfo);
+
+                vk::SamplerCreateInfo createInfo {};
+                createInfo.flags                   = vk::SamplerCreateFlags();
+                createInfo.minFilter               = vk::Filter::eLinear;
+                createInfo.magFilter               = vk::Filter::eLinear;
+                createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+                createInfo.mipLodBias              = 0.0f;
+                createInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+                createInfo.anisotropyEnable        = false;
+                createInfo.maxAnisotropy           = 1.0f;
+                createInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
+                createInfo.unnormalizedCoordinates = false;
+                createInfo.compareEnable           = true;
+                createInfo.compareOp               = vk::CompareOp::eLessOrEqual;
+                createInfo.minLod                  = 0.0f;
+                createInfo.maxLod                  = 1.0f;
+                createInfo.unnormalizedCoordinates = false;
+                shadowImage.sampler = logicalDevice.createSampler(createInfo);
+
+                Image::Memory::CreateInfo memoryCreateInfo {};
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = logicalDevice;
+                memoryCreateInfo.physicalDevice = physicalDevice;
+                Image::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
+
+                Image::View::CreateInfo viewCreateInfo {};
+                viewCreateInfo.count         = instanceCreateInfo.count;
+                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
+                viewCreateInfo.format        = instanceCreateInfo.format;
+                viewCreateInfo.logicalDevice = logicalDevice;
+                Image::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
+
+                shadowImageInfo.imageLayout = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+                shadowImageInfo.imageView   = shadowImage.view;
+                shadowImageInfo.sampler     = shadowImage.sampler;
+            }
+
+            void Instance::destroyShadowImage()
+            {
+                logicalDevice.freeMemory(shadowImage.memory);
+                logicalDevice.destroyImage(shadowImage.instance);
+                logicalDevice.destroyImageView(shadowImage.view);
+                logicalDevice.destroySampler(shadowImage.sampler);
             }
 
             void Instance::addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer)
@@ -301,13 +405,13 @@ namespace Chicane
                     logicalDevice.destroyFramebuffer(frambuffer);
                 }
 
-                destroyDepthBuffer();
+                destroyColorImage();
+                destroyDepthImage();
+                destroyShadowImage();
                 destroySync();
                 destroyCameraData();
                 destroyLightData();
                 destroyMeshData();
-
-                logicalDevice.destroyImageView(imageView);
             }
 
             void Instance::refreshMeshData(const std::vector<MeshComponent*>& inMeshes)

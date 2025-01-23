@@ -24,28 +24,37 @@ namespace Chicane
                 m_image.channels = inCreateInfo.image.channels;
                 m_image.pixels   = inCreateInfo.image.pixels;
 
-                Image::CreateInfo createInfo {};
-                createInfo.width            = m_image.width;
-                createInfo.height           = m_image.height;
-                createInfo.count            = Chicane::Texture::IMAGE_COUNT;
-                createInfo.logicalDevice    = m_logicalDevice;
-                createInfo.physicalDevice   = m_physicalDevice;
-                createInfo.tiling           = vk::ImageTiling::eOptimal;
-                createInfo.usage            = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
-                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-                createInfo.format           = vk::Format::eR8G8B8A8Unorm;
+                Image::Instance::CreateInfo instanceCreateInfo {};
+                instanceCreateInfo.width         = m_image.width;
+                instanceCreateInfo.height        = m_image.height;
+                instanceCreateInfo.count         = 1;
+                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.format        = vk::Format::eR8G8B8A8Unorm;
+                instanceCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initInstance(m_image.instance, instanceCreateInfo);
 
-                Image::init(m_image.instance, createInfo);
-                Image::initMemory(
-                    m_image.memory,
-                    createInfo,
-                    m_image.instance
-                );
+                Image::Sampler::CreateInfo samplerCreateInfo {};
+                samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eRepeat;
+                samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
+                samplerCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initSampler(m_image.sampler, samplerCreateInfo);
+
+                Image::Memory::CreateInfo memoryCreateInfo {};
+                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.logicalDevice  = m_logicalDevice;
+                memoryCreateInfo.physicalDevice = m_physicalDevice;
+                Image::initMemory(m_image.memory, m_image.instance, memoryCreateInfo);
+
+                Image::View::CreateInfo viewCreateInfo {};
+                viewCreateInfo.count         = instanceCreateInfo.count;
+                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
+                viewCreateInfo.format        = instanceCreateInfo.format;
+                viewCreateInfo.logicalDevice = m_logicalDevice;
+                Image::initView(m_image.view, m_image.instance, viewCreateInfo);
 
                 populate();
-
-                initView();
-                initSampler();
             }
 
             Instance::~Instance()
@@ -88,7 +97,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eUndefined,
                     vk::ImageLayout::eTransferDstOptimal,
-                    Chicane::Texture::IMAGE_COUNT
+                    1
                 );
 
                 Image::copyBufferToImage(
@@ -98,7 +107,7 @@ namespace Chicane
                     m_image.instance,
                     m_image.width,
                     m_image.height,
-                    Chicane::Texture::IMAGE_COUNT
+                    1
                 );
 
                 Image::transitionLayout(
@@ -107,46 +116,10 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eTransferDstOptimal,
                     vk::ImageLayout::eShaderReadOnlyOptimal,
-                    Chicane::Texture::IMAGE_COUNT
+                    1
                 );
 
                 Buffer::destroy(m_logicalDevice, stagingBuffer);
-            }
-
-            void Instance::initView()
-            {
-                Image::initView(
-                    m_image.view,
-                    m_logicalDevice,
-                    m_image.instance,
-                    vk::Format::eR8G8B8A8Unorm,
-                    vk::ImageAspectFlagBits::eColor,
-                    vk::ImageViewType::e2D,
-                    Chicane::Texture::IMAGE_COUNT
-                );
-            }
-
-            void Instance::initSampler()
-            {
-                vk::SamplerCreateInfo createInfo;
-                createInfo.flags                   = vk::SamplerCreateFlags();
-                createInfo.minFilter               = vk::Filter::eNearest;
-                createInfo.magFilter               = vk::Filter::eLinear;
-                createInfo.addressModeU            = vk::SamplerAddressMode::eRepeat;
-                createInfo.addressModeV            = vk::SamplerAddressMode::eRepeat;
-                createInfo.addressModeW            = vk::SamplerAddressMode::eRepeat;
-                createInfo.anisotropyEnable        = false;
-                createInfo.maxAnisotropy           = 1.0f;
-                createInfo.borderColor             = vk::BorderColor::eIntTransparentBlack;
-                createInfo.unnormalizedCoordinates = false;
-                createInfo.compareEnable           = false;
-                createInfo.compareOp               = vk::CompareOp::eAlways;
-                createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-                createInfo.mipLodBias              = 0.0f;
-                createInfo.minLod                  = 0.0f;
-                createInfo.maxLod                  = 0.0f;
-
-                m_image.sampler = m_logicalDevice.createSampler(createInfo);
             }
         }
     }

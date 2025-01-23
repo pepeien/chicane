@@ -3,19 +3,20 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level/Instance.hpp"
-#include "Chicane/Renderer/CubeMap/Manager.hpp"
 #include "Chicane/Renderer/Layer.hpp"
+#include "Chicane/Renderer/Model.hpp"
+#include "Chicane/Renderer/Vertex.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
     namespace Vulkan
     {
-        class SkyboxLayer : public Layer::Instance
+        class ShadowLayer : public Layer::Instance
         {
         public:
-            SkyboxLayer();
-            ~SkyboxLayer();
+            ShadowLayer();
+            ~ShadowLayer();
 
         public:
             void build() override;
@@ -27,15 +28,23 @@ namespace Chicane
         private:
             void loadEvents();
 
-            void initFrameDescriptorSetLayout();
-            void initMaterialDescriptorSetLayout();
+            // Resource
+            void initFrameResources();
+            void destroyFrameResources();
+
+            // Level
             void initGraphicsPipeline();
             void initFramebuffers();
-            void initFrameResources();
-            void initMaterialResources();
 
-            void buildCubeMap();
-            void renderCubeMap(const vk::CommandBuffer& inCommandBuffer);
+            // Model
+            void buildModelVertexBuffer();
+            void buildModelIndexBuffer();
+            void buildModelData();
+            void destroyModelData();
+            void rebuildModelData();
+
+            // Render Pass
+            void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
         private:
             Renderer::Internals                         m_internals;
@@ -43,10 +52,10 @@ namespace Chicane
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
             Descriptor::Bundle                          m_frameDescriptor;
-            Descriptor::Bundle                          m_materialDescriptor;
 
-            std::unique_ptr<CubeMap::Instance>          m_cubeMap;
-            Chicane::CubeMap::Manager*                  m_cubeMapManager;
+            Buffer::Instance                            m_modelVertexBuffer;
+            Buffer::Instance                            m_modelIndexBuffer;
+            Chicane::Model::Manager*                    m_modelManager;
 
             std::vector<vk::ClearValue>                 m_clearValues;
         };

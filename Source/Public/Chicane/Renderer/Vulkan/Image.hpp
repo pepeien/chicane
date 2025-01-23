@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Renderer/Vulkan/Image/CreateInfo.hpp"
 #include "Chicane/Renderer/Vulkan/Image/Data.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Instance.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Memory.hpp"
+#include "Chicane/Renderer/Vulkan/Image/Sampler.hpp"
+#include "Chicane/Renderer/Vulkan/Image/View.hpp"
 
 namespace Chicane
 {
@@ -17,21 +20,10 @@ namespace Chicane
                 const vk::FormatFeatureFlags& inFeatures
             );
 
-	    	void init(vk::Image& outImage, const CreateInfo& inCreateInfo);
-            void initMemory(
-                vk::DeviceMemory& outDeviceMemory,
-                const CreateInfo& inCreateInfo,
-                const vk::Image& inImage
-            );
-            void initView(
-                vk::ImageView& outImageView,
-                const vk::Device& inLogicalDevice,
-                const vk::Image& inImage,
-                const vk::Format& inFormat,
-                const vk::ImageAspectFlags& inAspect,
-                vk::ImageViewType inViewType,
-                std::uint32_t inCount
-            );
+	    	void initInstance(vk::Image& outInstance, const Instance::CreateInfo& inCreateInfo);
+            void initSampler(vk::Sampler& outSampler, const Sampler::CreateInfo& inCreateInfo);
+            void initMemory(vk::DeviceMemory& outMemory, const vk::Image& inInstance, const Memory::CreateInfo& inCreateInfo);
+            void initView(vk::ImageView& outImageView, const vk::Image& inInstance, const View::CreateInfo& inCreateInfo);
 
             void transitionLayout(
                 const vk::CommandBuffer& inCommandBuffer,

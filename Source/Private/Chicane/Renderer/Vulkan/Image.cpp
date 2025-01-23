@@ -44,10 +44,10 @@ namespace Chicane
                 throw std::runtime_error("Unable to select suitable format");
             }
 
-    		void init(vk::Image& outImage, const CreateInfo& inCreateInfo)
+    		void initInstance(vk::Image& outInstance, const Instance::CreateInfo& inCreateInfo)
             {
-                vk::ImageCreateInfo createInfo;
-                createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.create;
+                vk::ImageCreateInfo createInfo {};
+                createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
                 createInfo.imageType     = vk::ImageType::e2D;
                 createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
                 createInfo.mipLevels     = 1;
@@ -59,60 +59,72 @@ namespace Chicane
                 createInfo.usage         = inCreateInfo.usage;
                 createInfo.sharingMode   = vk::SharingMode::eExclusive;
 
-                outImage = inCreateInfo.logicalDevice.createImage(createInfo);
+                outInstance = inCreateInfo.logicalDevice.createImage(createInfo);
+            }
+
+            void initSampler(vk::Sampler& outSampler, const Sampler::CreateInfo& inCreateInfo)
+            {
+                vk::SamplerCreateInfo createInfo {};
+                createInfo.flags                   = vk::SamplerCreateFlags();
+                createInfo.minFilter               = vk::Filter::eNearest;
+                createInfo.magFilter               = vk::Filter::eLinear;
+                createInfo.addressModeU            = inCreateInfo.addressMode;
+                createInfo.addressModeV            = inCreateInfo.addressMode;
+                createInfo.addressModeW            = inCreateInfo.addressMode;
+                createInfo.anisotropyEnable        = false;
+                createInfo.maxAnisotropy           = 1.0f;
+                createInfo.borderColor             = inCreateInfo.borderColor;
+                createInfo.unnormalizedCoordinates = false;
+                createInfo.compareEnable           = false;
+                createInfo.compareOp               = vk::CompareOp::eAlways;
+                createInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+                createInfo.mipLodBias              = 0.0f;
+                createInfo.minLod                  = 0.0f;
+                createInfo.maxLod                  = 1.0f;
+
+                outSampler = inCreateInfo.logicalDevice.createSampler(createInfo);
             }
 
             void initMemory(
-                vk::DeviceMemory& outDeviceMemory,
-                const CreateInfo& inCreateInfo,
-                const vk::Image& inImage
+                vk::DeviceMemory& outMemory,
+                const vk::Image& inInstance,
+                const Memory::CreateInfo& inCreateInfo
             )
             {
                 vk::MemoryRequirements requirements = inCreateInfo
                     .logicalDevice
-                    .getImageMemoryRequirements(inImage);
+                    .getImageMemoryRequirements(inInstance);
 
                 vk::MemoryAllocateInfo allocationInfo;
                 allocationInfo.allocationSize  = requirements.size;
                 allocationInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
                     inCreateInfo.physicalDevice,
                     requirements.memoryTypeBits,
-                    inCreateInfo.memoryProperties
+                    inCreateInfo.properties
                 );
 
-                outDeviceMemory = inCreateInfo.logicalDevice.allocateMemory(allocationInfo);
-                inCreateInfo.logicalDevice.bindImageMemory(
-                    inImage,
-                    outDeviceMemory,
-                    0
-                );
+                outMemory = inCreateInfo.logicalDevice.allocateMemory(allocationInfo);
+
+                inCreateInfo.logicalDevice.bindImageMemory(inInstance, outMemory, 0);
             }
 
-            void initView(
-                vk::ImageView& outImageView,
-                const vk::Device& inLogicalDevice,
-                const vk::Image& inImage,
-                const vk::Format& inFormat,
-                const vk::ImageAspectFlags& inAspect,
-                vk::ImageViewType inViewType,
-                std::uint32_t inCount
-            )
+            void initView(vk::ImageView& outView, const vk::Image& inInstance, const View::CreateInfo& inCreateInfo)
             {
                 vk::ImageViewCreateInfo createInfo {};
-                createInfo.image                           = inImage;
-                createInfo.viewType                        = inViewType;
-                createInfo.format                          = inFormat;
-                createInfo.components.r                    = vk::ComponentSwizzle::eIdentity;
-                createInfo.components.g                    = vk::ComponentSwizzle::eIdentity;
-                createInfo.components.b                    = vk::ComponentSwizzle::eIdentity;
-                createInfo.components.a                    = vk::ComponentSwizzle::eIdentity;
-                createInfo.subresourceRange.aspectMask     = inAspect;
+                createInfo.image                           = inInstance;
+                createInfo.viewType                        = inCreateInfo.type;
+                createInfo.format                          = inCreateInfo.format;
+                createInfo.components.r                    = vk::ComponentSwizzle::eR;
+                createInfo.components.g                    = vk::ComponentSwizzle::eG;
+                createInfo.components.b                    = vk::ComponentSwizzle::eB;
+                createInfo.components.a                    = vk::ComponentSwizzle::eA;
+                createInfo.subresourceRange.aspectMask     = inCreateInfo.aspect;
                 createInfo.subresourceRange.baseMipLevel   = 0;
                 createInfo.subresourceRange.levelCount     = 1;
                 createInfo.subresourceRange.baseArrayLayer = 0;
-                createInfo.subresourceRange.layerCount     = inCount;
+                createInfo.subresourceRange.layerCount     = inCreateInfo.count;
 
-                outImageView = inLogicalDevice.createImageView(createInfo);
+                outView = inCreateInfo.logicalDevice.createImageView(createInfo);
             }
 
             void transitionLayout(
@@ -126,19 +138,19 @@ namespace Chicane
             {
                 CommandBuffer::Worker::startJob(inCommandBuffer);
 
-                vk::ImageMemoryBarrier imageMemoryBarrier;
-                imageMemoryBarrier.oldLayout                       = inOldLayout;
-                imageMemoryBarrier.newLayout                       = inNewLayout;
-                imageMemoryBarrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-                imageMemoryBarrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
-                imageMemoryBarrier.image                           = inImage;
-                imageMemoryBarrier.srcAccessMask                   = vk::AccessFlagBits::eTransferWrite;
-                imageMemoryBarrier.dstAccessMask                   = vk::AccessFlagBits::eShaderRead;
-                imageMemoryBarrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
-                imageMemoryBarrier.subresourceRange.baseMipLevel   = 0;
-                imageMemoryBarrier.subresourceRange.levelCount     = 1;
-                imageMemoryBarrier.subresourceRange.baseArrayLayer = 0;
-                imageMemoryBarrier.subresourceRange.layerCount     = inCount;
+                vk::ImageMemoryBarrier barrier {};
+                barrier.oldLayout                       = inOldLayout;
+                barrier.newLayout                       = inNewLayout;
+                barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+                barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+                barrier.image                           = inImage;
+                barrier.srcAccessMask                   = vk::AccessFlagBits::eTransferWrite;
+                barrier.dstAccessMask                   = vk::AccessFlagBits::eShaderRead;
+                barrier.subresourceRange.aspectMask     = vk::ImageAspectFlagBits::eColor;
+                barrier.subresourceRange.baseMipLevel   = 0;
+                barrier.subresourceRange.levelCount     = 1;
+                barrier.subresourceRange.baseArrayLayer = 0;
+                barrier.subresourceRange.layerCount     = inCount;
 
                 vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
                 vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
@@ -148,8 +160,8 @@ namespace Chicane
                     inNewLayout == vk::ImageLayout::eTransferDstOptimal
                 )
                 {
-                    imageMemoryBarrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
-                    imageMemoryBarrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
+                    barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
+                    barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
 
                     sourceStage      = vk::PipelineStageFlagBits::eTopOfPipe;
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
@@ -161,7 +173,7 @@ namespace Chicane
                     vk::DependencyFlags(),
                     nullptr,
                     nullptr,
-                    imageMemoryBarrier
+                    barrier
                 );
 
                 CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");

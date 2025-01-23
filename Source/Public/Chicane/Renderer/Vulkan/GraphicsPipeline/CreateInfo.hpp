@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
 #include "Chicane/Renderer/Vulkan/Shader/CreateInfo.hpp"
 
 namespace Chicane
@@ -13,25 +14,27 @@ namespace Chicane
             {
             public:
                 // Modifiers
-                bool                                   bHasVertices;
-                bool                                   bHasDepthWrite;
-                bool                                   bHasBlending;
+                bool                                     bHasVertices;
+                bool                                     bHasDepthWrite;
+                bool                                     bHasBlending;
 
                 // Shader
-                std::vector<Shader::StageCreateInfo>   shaders;
+                std::vector<Shader::StageCreateInfo>     shaders;
 
                 // Viewport
-                vk::Extent2D                           extent;
+                vk::Extent2D                             extent;
 
                 // Attachment
-                std::vector<vk::AttachmentDescription> attachments;
+                std::vector<Attachment>                  attachments;
+
+                // Rasterize
+                vk::PipelineRasterizationStateCreateInfo rasterizaterizationState;
 
                 // Pipeline Layout
-                std::vector<vk::DescriptorSetLayout>   descriptorSetLayouts;
+                std::vector<vk::DescriptorSetLayout>     descriptorSetLayouts;
 
                 // Vulkan
-                vk::Device                             logicalDevice;
-                vk::PolygonMode                        polygonMode;
+                vk::Device                               logicalDevice;
             };
         }
     }

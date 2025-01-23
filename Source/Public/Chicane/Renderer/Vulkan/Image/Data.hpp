@@ -13,9 +13,10 @@ namespace Chicane
 	    	{
             public:
 	    		vk::Image        instance;
-	    		vk::DeviceMemory memory;
 	    		vk::ImageView    view;
+	    		vk::DeviceMemory memory;
 	    		vk::Sampler      sampler;
+                vk::Format       format;
 	    	};
         }
     }

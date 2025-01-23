@@ -96,35 +96,27 @@ namespace Chicane
                 return;
             }
 
-            Renderer::Data* data = (Renderer::Data*) outData;
-
+            Renderer::Data* data             = (Renderer::Data*) outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
-            Frame::Instance& frame = data->frame;
+            Frame::Instance& frame           = data->frame;
 
-            vk::RenderPassBeginInfo renderPassBeginInfo {};
-            renderPassBeginInfo.renderPass          = m_graphicsPipeline->renderPass;
-            renderPassBeginInfo.framebuffer         = frame.getFramebuffer(m_id);
-            renderPassBeginInfo.renderArea.offset.x = 0;
-            renderPassBeginInfo.renderArea.offset.y = 0;
-            renderPassBeginInfo.renderArea.extent   = data->swapChainExtent;
-            renderPassBeginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
-            renderPassBeginInfo.pClearValues        = m_clearValues.data();
+            vk::RenderPassBeginInfo beginInfo {};
+            beginInfo.renderPass          = m_graphicsPipeline->renderPass;
+            beginInfo.framebuffer         = frame.getFramebuffer(m_id);
+            beginInfo.renderArea.offset.x = 0;
+            beginInfo.renderArea.offset.y = 0;
+            beginInfo.renderArea.extent   = data->swapChainExtent;
+            beginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
+            beginInfo.pClearValues        = m_clearValues.data();
 
-            commandBuffer.beginRenderPass(
-                &renderPassBeginInfo,
-                vk::SubpassContents::eInline
-            );
-                commandBuffer.bindPipeline(
-                    vk::PipelineBindPoint::eGraphics,
-                    m_graphicsPipeline->instance
-                );
-                commandBuffer.bindDescriptorSets(
-                    vk::PipelineBindPoint::eGraphics,
-                    m_graphicsPipeline->layout,
-                    0,
-                    frame.getDescriptorSet(m_id),
-                    nullptr
-                );
+            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+                // Pipeline
+                m_graphicsPipeline->bind(commandBuffer);
+
+                // Frame
+                m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+
+                // Cube Map
                 renderCubeMap(commandBuffer);
             commandBuffer.endRenderPass();
         }
@@ -199,8 +191,13 @@ namespace Chicane
             );
         }
 
-        std::vector<Shader::StageCreateInfo> SkyboxLayer::getGraphicsPipelineShaders()
+        void SkyboxLayer::initGraphicsPipeline()
         {
+            if (!is(Layer::Status::Initialized))
+            {
+                return;
+            }
+
             Shader::StageCreateInfo vertexShader {};
             vertexShader.path = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
@@ -209,53 +206,34 @@ namespace Chicane
             fragmentShader.path = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            std::vector<Shader::StageCreateInfo> result {};
-            result.push_back(vertexShader);
-            result.push_back(fragmentShader);
+            std::vector<Shader::StageCreateInfo> shaders {};
+            shaders.push_back(vertexShader);
+            shaders.push_back(fragmentShader);
 
-            return result;    
-        }
+            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts {};
+            descriptorSetLayouts.push_back(m_frameDescriptor.setLayout);
+            descriptorSetLayouts.push_back(m_materialDescriptor.setLayout);
 
-        std::vector<vk::DescriptorSetLayout> SkyboxLayer::getGraphicsPipelineDescriptorLayouts()
-        {
-            std::vector<vk::DescriptorSetLayout> result {};
-            result.push_back(m_frameDescriptor.setLayout);
-            result.push_back(m_materialDescriptor.setLayout);
-
-            return result;
-        }
-
-        std::vector<vk::AttachmentDescription> SkyboxLayer::getGraphicsPipelineAttachments()
-        {
             GraphicsPipeline::Attachment colorAttachment {};
-            colorAttachment.format        = m_internals.swapchain->format;
+            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
+            colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            std::vector<vk::AttachmentDescription> result {};
-            result.push_back(GraphicsPipeline::createColorAttachment(colorAttachment));
-
-            return result;
-        }
-
-        void SkyboxLayer::initGraphicsPipeline()
-        {
-            if (!is(Layer::Status::Initialized))
-            {
-                return;
-            }
+            std::vector<GraphicsPipeline::Attachment> attachments {};
+            attachments.push_back(colorAttachment);
 
             GraphicsPipeline::CreateInfo createInfo {};
-            createInfo.bHasVertices         = false;
-            createInfo.bHasDepthWrite       = false;
-            createInfo.bHasBlending         = false;
-            createInfo.logicalDevice        = m_internals.logicalDevice;
-            createInfo.shaders              = getGraphicsPipelineShaders();
-            createInfo.extent               = m_internals.swapchain->extent;
-            createInfo.descriptorSetLayouts = getGraphicsPipelineDescriptorLayouts();
-            createInfo.attachments          = getGraphicsPipelineAttachments();
-            createInfo.polygonMode          = vk::PolygonMode::eFill;
+            createInfo.bHasVertices             = false;
+            createInfo.bHasDepthWrite           = false;
+            createInfo.bHasBlending             = false;
+            createInfo.logicalDevice            = m_internals.logicalDevice;
+            createInfo.shaders                  = shaders;
+            createInfo.extent                   = m_internals.swapchain->extent;
+            createInfo.descriptorSetLayouts     = descriptorSetLayouts;
+            createInfo.attachments              = attachments;
+            createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
 
             m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
@@ -274,7 +252,7 @@ namespace Chicane
                 framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
                 framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
                 framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
-                framebufferCreateInfo.attachments.push_back(frame.imageView);
+                framebufferCreateInfo.attachments.push_back(frame.colorImage.view);
 
                 Frame::Buffer::init(frame, framebufferCreateInfo);
             }

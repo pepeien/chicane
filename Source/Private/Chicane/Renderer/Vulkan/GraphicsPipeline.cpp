@@ -179,15 +179,6 @@ namespace Chicane
                 return createInfo;
             }
 
-            vk::AttachmentReference createColorAttachmentRef()
-            {
-                vk::AttachmentReference reference {};
-                reference.attachment = 0;
-                reference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
-
-                return reference;
-            }
-
             vk::SubpassDependency createColorSubpassDepedency()
             {
                 vk::SubpassDependency subpassDepedency {};
@@ -218,15 +209,6 @@ namespace Chicane
                 return attachmentDescription;
             }
 
-            vk::AttachmentReference createDepthAttachmentRef()
-            {
-                vk::AttachmentReference reference {};
-                reference.attachment = 1;
-                reference.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
-
-                return reference;
-            }
-
             vk::SubpassDependency createDepthSubpassDepedency()
             {
                 vk::SubpassDependency subpassDepedency {};
@@ -243,30 +225,38 @@ namespace Chicane
 
             vk::RenderPass createRendepass(
                 const std::vector<vk::AttachmentDescription>& inAttachments,
-                const vk::Device& inLogicalDevice
+                const vk::Device& inLogicalDevice,
+                bool bInHasColor,
+                bool bInHasDepth
             )
             {
-                std::vector<vk::AttachmentReference> colorAttachmentRefs;
-                colorAttachmentRefs.push_back(createColorAttachmentRef());
-
-                std::vector<vk::SubpassDependency> subpassDependecies;   
-                subpassDependecies.push_back(createColorSubpassDepedency());
+                std::vector<vk::SubpassDependency> subpassDependecies = {};
 
                 vk::SubpassDescription subpass {};
-                subpass.flags                   = vk::SubpassDescriptionFlags();
-                subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
-                subpass.colorAttachmentCount    = static_cast<std::uint32_t>(colorAttachmentRefs.size());
-                subpass.pColorAttachments       = colorAttachmentRefs.data();
+                subpass.flags             = vk::SubpassDescriptionFlags();
+                subpass.pipelineBindPoint = vk::PipelineBindPoint::eGraphics;
 
-                vk::AttachmentReference depthAttachmentRef;
-
-                if (inAttachments.size() > 1)
+                vk::AttachmentReference colorAttachmentRef {};
+                if (bInHasColor)
                 {
-                    subpassDependecies.push_back(createDepthSubpassDepedency());
+                    colorAttachmentRef.attachment = 0;
+                    colorAttachmentRef.layout     = vk::ImageLayout::eColorAttachmentOptimal;
 
-                    depthAttachmentRef = createDepthAttachmentRef();
+                    subpass.colorAttachmentCount = 1;
+                    subpass.pColorAttachments    = &colorAttachmentRef;
+
+                    subpassDependecies.push_back(createColorSubpassDepedency());
+                }
+
+                vk::AttachmentReference depthAttachmentRef {};
+                if (bInHasDepth)
+                {
+                    depthAttachmentRef.attachment = bInHasColor ? 1 : 0;
+                    depthAttachmentRef.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
                     subpass.pDepthStencilAttachment = &depthAttachmentRef;
+
+                    subpassDependecies.push_back(createDepthSubpassDepedency());
                 }
         
                 vk::RenderPassCreateInfo createInfo {};

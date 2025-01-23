@@ -1,29 +1,26 @@
-#include "Chicane/Renderer/Vulkan/Layer/LevelLayer.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/ShadowLayer.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
-#include "Chicane/Renderer/Vulkan/Texture.hpp"
 
 namespace Chicane
 {
     namespace Vulkan
     {
-        LevelLayer::LevelLayer()
-            : Layer::Instance("Level"),
+        ShadowLayer::ShadowLayer()
+            : Layer::Instance("Shadow"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_clearValues({}),
-            m_textureManager(Loader::getTextureManager()),
             m_modelManager(Loader::getModelManager())
         {
-            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
             m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
             loadEvents();
         }
 
-        LevelLayer::~LevelLayer()
+        ShadowLayer::~ShadowLayer()
         {
             if (is(Layer::Status::Offline))
             {
@@ -32,13 +29,12 @@ namespace Chicane
 
             m_internals.logicalDevice.waitIdle();
 
-            destroyTextureResources();
             destroyModelData();
 
             m_graphicsPipeline.reset();
         }
 
-        void LevelLayer::build()
+        void ShadowLayer::build()
         {
             if (!is(Layer::Status::Initialized))
             {
@@ -46,18 +42,16 @@ namespace Chicane
             }
 
             initFrameResources();
-            initTextureResources();
 
             initGraphicsPipeline();
             initFramebuffers();
 
-            buildTextureData();
             buildModelData();
 
             setStatus(Layer::Status::Running);
         }
 
-        void LevelLayer::destroy()
+        void ShadowLayer::destroy()
         {
             if (!is(Layer::Status::Running))
             {
@@ -69,7 +63,7 @@ namespace Chicane
             setStatus(Layer::Status::Idle);
         }
 
-        void LevelLayer::rebuild()
+        void ShadowLayer::rebuild()
         {
             if (!is(Layer::Status::Idle))
             {
@@ -82,7 +76,7 @@ namespace Chicane
             setStatus(Layer::Status::Running);
         }
 
-        void LevelLayer::render(void* outData)
+        void ShadowLayer::render(void* outData)
         {
             if (!is(Layer::Status::Running))
             {
@@ -109,15 +103,12 @@ namespace Chicane
                 // Frame
                 m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
-                // Texture
-                m_graphicsPipeline->bindDescriptorSet(commandBuffer, 1, m_textureDescriptor.set);
-
                 // Model
                 renderModels(commandBuffer);
             commandBuffer.endRenderPass();
         }
 
-        void LevelLayer::loadEvents()
+        void ShadowLayer::loadEvents()
         {
             if (!is(Layer::Status::Offline))
             {
@@ -125,30 +116,6 @@ namespace Chicane
             }
 
             setStatus(Layer::Status::Idle);
-
-            m_textureManager->watchChanges(
-                [&](Manager::EventType inEvent)
-                {
-                    if (inEvent != Manager::EventType::Activation)
-                    {
-                        return;
-                    }
-
-                    if (is(Layer::Status::Idle) && m_modelManager->getActiveCount() > 0)
-                    {
-                        setStatus(Layer::Status::Initialized);
-
-                        build();
-
-                        return;
-                    }
-
-                    if (is(Layer::Status::Running))
-                    {
-                        buildTextureData();
-                    }
-                }
-            );
 
             m_modelManager->watchChanges(
                 [&](Manager::EventType inEvent)
@@ -158,7 +125,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Idle) && m_textureManager->getActiveCount() > 0)
+                    if (is(Layer::Status::Idle))
                     {
                         setStatus(Layer::Status::Initialized);
 
@@ -175,7 +142,7 @@ namespace Chicane
             );
         }
 
-        void LevelLayer::initFrameResources()
+        void ShadowLayer::initFrameResources()
         {
             if (is(Layer::Status::Running))
             {
@@ -183,31 +150,19 @@ namespace Chicane
             }
 
             Descriptor::SetLayoutBidingsCreateInfo bidings {};
-            bidings.count = 4;
+            bidings.count = 2;
 
-            /// Camera
+            /// Light
             bidings.indices.push_back(0);
             bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            /// Light
-            bidings.indices.push_back(1);
-            bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
-            bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
             /// Model
-            bidings.indices.push_back(2);
+            bidings.indices.push_back(1);
             bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-            // Shadow
-            bidings.indices.push_back(3);
-            bidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             Descriptor::initSetLayout(
                 m_frameDescriptor.setLayout,
@@ -221,13 +176,7 @@ namespace Chicane
                 { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
             );
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
-            );
-            descriptorPoolCreateInfo.sizes.push_back(
                 { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
-            );
-            descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = descriptorPoolCreateInfo.maxSets }
             );
 
             Descriptor::initPool(
@@ -247,46 +196,28 @@ namespace Chicane
                     m_frameDescriptor.pool
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
-        
-                vk::WriteDescriptorSet cameraWriteInfo {};
-                cameraWriteInfo.dstSet          = descriptorSet;
-                cameraWriteInfo.dstBinding      = 0;
-                cameraWriteInfo.dstArrayElement = 0;
-                cameraWriteInfo.descriptorCount = 1;
-                cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
-                frame.addWriteDescriptorSet(cameraWriteInfo);
-        
+
                 vk::WriteDescriptorSet lightWriteInfo {};
                 lightWriteInfo.dstSet          = descriptorSet;
-                lightWriteInfo.dstBinding      = 1;
+                lightWriteInfo.dstBinding      = 0;
                 lightWriteInfo.dstArrayElement = 0;
                 lightWriteInfo.descriptorCount = 1;
                 lightWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
                 lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
                 frame.addWriteDescriptorSet(lightWriteInfo);
 
-                vk::WriteDescriptorSet meshWriteInfo {};
-                meshWriteInfo.dstSet          = descriptorSet;
-                meshWriteInfo.dstBinding      = 2;
-                meshWriteInfo.dstArrayElement = 0;
-                meshWriteInfo.descriptorCount = 1;
-                meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                meshWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
-                frame.addWriteDescriptorSet(meshWriteInfo);
-
-                vk::WriteDescriptorSet shadowWriteInfo {};
-                shadowWriteInfo.dstSet          = descriptorSet;
-                shadowWriteInfo.dstBinding      = 3;
-                shadowWriteInfo.dstArrayElement = 0;
-                shadowWriteInfo.descriptorCount = 1;
-                shadowWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-                shadowWriteInfo.pImageInfo      = &frame.shadowImageInfo;
-                frame.addWriteDescriptorSet(shadowWriteInfo);
+                vk::WriteDescriptorSet modelWriteInfo {};
+                modelWriteInfo.dstSet          = descriptorSet;
+                modelWriteInfo.dstBinding      = 1;
+                modelWriteInfo.dstArrayElement = 0;
+                modelWriteInfo.descriptorCount = 1;
+                modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                modelWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
+                frame.addWriteDescriptorSet(modelWriteInfo);
             }
         }
 
-        void LevelLayer::destroyFrameResources()
+        void ShadowLayer::destroyFrameResources()
         {
             m_internals.logicalDevice.destroyDescriptorSetLayout(
                 m_frameDescriptor.setLayout
@@ -296,39 +227,40 @@ namespace Chicane
             );
         }
 
-        void LevelLayer::initGraphicsPipeline()
+        void ShadowLayer::initGraphicsPipeline()
         {
             if (!is(Layer::Status::Initialized))
             {
                 return;
             }
 
+            // Rasterizer
+            vk::PipelineRasterizationStateCreateInfo rasterizeCreateInfo {};
+            rasterizeCreateInfo.flags                   = vk::PipelineRasterizationStateCreateFlags();
+            rasterizeCreateInfo.depthClampEnable        = VK_FALSE;
+            rasterizeCreateInfo.rasterizerDiscardEnable = VK_FALSE;
+            rasterizeCreateInfo.depthBiasEnable         = VK_TRUE;
+            rasterizeCreateInfo.depthBiasClamp          = 0.0f;
+            rasterizeCreateInfo.polygonMode             = vk::PolygonMode::eFill;
+            rasterizeCreateInfo.cullMode                = vk::CullModeFlagBits::eBack;
+            rasterizeCreateInfo.frontFace               = vk::FrontFace::eClockwise;
+            rasterizeCreateInfo.lineWidth               = 1.0f;
+            rasterizeCreateInfo.depthBiasConstantFactor = 1.25f;
+            rasterizeCreateInfo.depthBiasSlopeFactor    = 1.75f;
+
             // Shader
             Shader::StageCreateInfo vertexShader {};
-            vertexShader.path = "Content/Engine/Vulkan/Shaders/level.vert.spv";
+            vertexShader.path = "Content/Engine/Vulkan/Shaders/shadow.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
-
-            Shader::StageCreateInfo fragmentShader {};
-            fragmentShader.path = "Content/Engine/Vulkan/Shaders/level.frag.spv";
-            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders {};
             shaders.push_back(vertexShader);
-            shaders.push_back(fragmentShader);
 
             // Set Layouts
             std::vector<vk::DescriptorSetLayout> setLayouts {};
             setLayouts.push_back(m_frameDescriptor.setLayout);
-            setLayouts.push_back(m_textureDescriptor.setLayout);
 
             // Attachments
-            GraphicsPipeline::Attachment colorAttachment {};
-            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
-            colorAttachment.format        = m_internals.swapchain->colorFormat;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
-
             GraphicsPipeline::Attachment depthAttachment {};
             depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
@@ -337,7 +269,6 @@ namespace Chicane
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
 
             std::vector<GraphicsPipeline::Attachment> attachments {};
-            attachments.push_back(colorAttachment);
             attachments.push_back(depthAttachment);
 
             GraphicsPipeline::CreateInfo createInfo {};
@@ -349,12 +280,12 @@ namespace Chicane
             createInfo.extent                   = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts     = setLayouts;
             createInfo.attachments              = attachments;
-            createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+            createInfo.rasterizaterizationState = rasterizeCreateInfo;
 
             m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
-        void LevelLayer::initFramebuffers()
+        void ShadowLayer::initFramebuffers()
         {
             if (is(Layer::Status::Running))
             {
@@ -368,108 +299,12 @@ namespace Chicane
                 createInfo.logicalDevice   = m_internals.logicalDevice;
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
                 createInfo.swapChainExtent = m_internals.swapchain->extent;
-                createInfo.attachments.push_back(frame.colorImage.view);
-                createInfo.attachments.push_back(frame.depthImage.view);
+                createInfo.attachments.push_back(frame.shadowImage.view);
                 Frame::Buffer::init(frame, createInfo);
             }
         }
 
-        void LevelLayer::initTextureResources()
-        {
-            if (!is(Layer::Status::Initialized))
-            {
-                return;
-            }
-
-            Descriptor::SetLayoutBidingsCreateInfo layoutBidings;
-            layoutBidings.count = 1;
-
-            layoutBidings.indices.push_back(0);
-            layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
-            layoutBidings.counts.push_back(Chicane::Texture::MAX_COUNT);
-            layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
-
-            Descriptor::initSetLayout(
-                m_textureDescriptor.setLayout,
-                m_internals.logicalDevice,
-                layoutBidings
-            );
-
-            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = 1;
-            descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = Chicane::Texture::MAX_COUNT }
-            );
-
-            Descriptor::initPool(
-                m_textureDescriptor.pool,
-                m_internals.logicalDevice,
-                descriptorPoolCreateInfo
-            ); 
-
-            Descriptor::allocalteSet(
-                m_textureDescriptor.set,
-                m_internals.logicalDevice,
-                m_textureDescriptor.setLayout,
-                m_textureDescriptor.pool
-            );
-        }
-
-        void LevelLayer::destroyTextureResources()
-        {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_textureDescriptor.setLayout
-            );
-
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_textureDescriptor.pool
-            );
-        }
-
-        void LevelLayer::buildTextureData()
-        {
-            // Textures
-            Texture::CreateInfo createInfo {};
-            createInfo.logicalDevice  = m_internals.logicalDevice;
-            createInfo.physicalDevice = m_internals.physicalDevice;
-            createInfo.commandBuffer  = m_internals.mainCommandBuffer;
-            createInfo.queue          = m_internals.graphicsQueue;
-
-            std::vector<vk::DescriptorImageInfo> imageInfos {};
-
-            for (const std::string& id : m_textureManager->getActiveIds())
-            {
-                createInfo.image = m_textureManager->getData(id);
-
-                m_textures.insert(
-                    std::make_pair(
-                        id,
-                        std::make_unique<Texture::Instance>(createInfo)
-                    )
-                );
-
-                Image::Data image = m_textures.at(id)->getImage();
-
-                vk::DescriptorImageInfo info {};
-                info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
-                info.imageView   = image.view;
-                info.sampler     = image.sampler;
-
-                imageInfos.push_back(info);
-            }
-
-            vk::WriteDescriptorSet set {};
-            set.dstSet          = m_textureDescriptor.set;
-            set.dstBinding      = 0;
-            set.dstArrayElement = 0;
-            set.descriptorCount = imageInfos.size();
-            set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
-            set.pImageInfo      = imageInfos.data();
-
-            m_internals.logicalDevice.updateDescriptorSets(set, nullptr);
-        }
-
-        void LevelLayer::buildModelVertexBuffer()
+        void ShadowLayer::buildModelVertexBuffer()
         {
             const auto& vertices = m_modelManager->getVertices();
 
@@ -506,7 +341,7 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
-        void LevelLayer::buildModelIndexBuffer()
+        void ShadowLayer::buildModelIndexBuffer()
         {
             const auto& indices = m_modelManager->getIndices();
 
@@ -543,13 +378,13 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
-        void LevelLayer::buildModelData()
+        void ShadowLayer::buildModelData()
         {
             buildModelVertexBuffer();
             buildModelIndexBuffer();
         }
 
-        void LevelLayer::destroyModelData()
+        void ShadowLayer::destroyModelData()
         {
             m_internals.logicalDevice.waitIdle();
 
@@ -563,7 +398,7 @@ namespace Chicane
             );
         }
 
-        void LevelLayer::rebuildModelData()
+        void ShadowLayer::rebuildModelData()
         {
             destroyModelData();
 
@@ -575,7 +410,7 @@ namespace Chicane
             buildModelData();
         }
 
-        void LevelLayer::renderModels(const vk::CommandBuffer& inCommandBuffer)
+        void ShadowLayer::renderModels(const vk::CommandBuffer& inCommandBuffer)
         {
             vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
             vk::DeviceSize offsets[]   = { 0 };

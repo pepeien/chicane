@@ -105,11 +105,13 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Renderer::Data* data = (Vulkan::Renderer::Data*) outData;
+            Renderer::Data* data             = (Renderer::Data*) outData;
+            vk::CommandBuffer& commandBuffer = data->commandBuffer;
+            Frame::Instance& frame           = data->frame;
 
             vk::RenderPassBeginInfo beginInfo {};
             beginInfo.renderPass          = m_renderPass;
-            beginInfo.framebuffer         = data->frame.getFramebuffer(m_id);
+            beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
             beginInfo.renderArea.offset.y = 0;
             beginInfo.renderArea.extent   = data->swapChainExtent;
@@ -120,12 +122,9 @@ namespace Chicane
         	ImGui::UpdatePlatformWindows();
 	    	ImGui::RenderPlatformWindowsDefault();
     
-            data->commandBuffer.beginRenderPass(
-                &beginInfo,
-                vk::SubpassContents::eInline
-            );
-                ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), data->commandBuffer);
-            data->commandBuffer.endRenderPass();
+            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+                ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
+            commandBuffer.endRenderPass();
 
             ImGui::EndFrame();
         }
@@ -220,7 +219,8 @@ namespace Chicane
             }
 
             Vulkan::GraphicsPipeline::Attachment colorAttachment {};
-            colorAttachment.format        = m_internals.swapchain->format;
+            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
+            colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
@@ -229,7 +229,9 @@ namespace Chicane
 
             m_renderPass = Vulkan::GraphicsPipeline::createRendepass(
                 { attachment },
-                m_internals.logicalDevice
+                m_internals.logicalDevice,
+                true,
+                false
             );
         }
 
@@ -249,7 +251,7 @@ namespace Chicane
             for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 framebufferCreateInfo.attachments.clear();
-                framebufferCreateInfo.attachments.push_back(frame.imageView);
+                framebufferCreateInfo.attachments.push_back(frame.colorImage.view);
 
                 Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
             }

@@ -24,25 +24,24 @@ namespace Chicane
             void destroy() override;
             void rebuild() override;
 
-            void setup(void* outData) override;
             void render(void* outData) override;
 
         private:
             void loadEvents();
 
+            // Resource
             void initFrameResources();
             void destroyFrameResources();
-            std::vector<Shader::StageCreateInfo> getGraphicsPipelineShaders();
-            std::vector<vk::DescriptorSetLayout> getGraphicsPipelineDescriptorLayouts();
-            std::vector<vk::AttachmentDescription> getGraphicsPipelineAttachments();
+
+            void initTextureResources();
+            void destroyTextureResources();
+
+            // Level
             void initGraphicsPipeline();
             void initFramebuffers();
 
             // Texture
-            void initTextureResources();
-            void destroyTextureResources();
             void buildTextureData();
-            void renderTextures(const vk::CommandBuffer& inCommandBuffer);
 
             // Model
             void buildModelVertexBuffer();
@@ -50,18 +49,12 @@ namespace Chicane
             void buildModelData();
             void destroyModelData();
             void rebuildModelData();
-            void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
-            void setupFrameResources();
-            void updateFrameResources();
+            // Render Pass
+            void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
         private:
             Renderer::Internals                                                 m_internals;
-
-            Chicane::Level*                                                     m_level;
-            std::vector<Chicane::CameraComponent*>                              m_cameras;
-            std::vector<Chicane::LightComponent*>                               m_lights;
-            std::vector<Chicane::MeshComponent*>                                m_meshes;
 
             std::unique_ptr<GraphicsPipeline::Instance>                         m_graphicsPipeline;
 

@@ -14,7 +14,7 @@ namespace Chicane
             public:
                 vk::SwapchainKHR             instance;
                 std::vector<Frame::Instance> frames;
-                vk::Format                   format;
+                vk::Format                   colorFormat;
                 vk::Format                   depthFormat;
                 vk::Extent2D                 extent;
                 vk::Extent2D                 midPoints;
