@@ -12,19 +12,49 @@ namespace Chicane
         Transformable();
 
     public:
-        // Transform
+        // Translation
         const Vec<3, float>& getTranslation() const;
-        void setRelativeTranslation(const Vec<3, float>& inTranslation);
-        void setAbsoluteTranslation(const Vec<3, float>& inTranslation);
 
+        void addTranslation(float inTranslation);
+        void addTranslation(float inX, float inY, float inZ);
+        void addTranslation(const Vec<3, float>& inTranslation);
+
+        void setTranslation(float inTranslation);
+        void setTranslation(float inX, float inY, float inZ);
+        void setTranslation(const Vec<3, float>& inTranslation);
+
+        // Rotation
         const Vec<3, float>& getRotation() const;
-        void setRelativeRotation(const Vec<3, float>& inRotation);
-        void setAbsoluteRotation(const Vec<3, float>& inRotation);
 
+        void addYaw(float inDegrees);
+        void setYaw(float inDegrees);
+
+        void addRoll(float inDegrees);
+        void setRoll(float inDegrees);
+
+        void addPitch(float inDegrees);
+        void setPitch(float inDegrees);
+
+        void addRotation(float inRotation);
+        void addRotation(float inYaw, float inRoll, float inPitch);
+        void addRotation(const Vec<3, float>& inRotation);
+
+        void setRotation(float inRotation);
+        void setRotation(float inYaw, float inRoll, float inPitch);
+        void setRotation(const Vec<3, float>& inRotation);
+
+        // Scaling
         const Vec<3, float>& getScale() const;
-        void setRelativeScale(const Vec<3, float>& inScale);
-        void setAbsoluteScale(const Vec<3, float>& inScale);
 
+        void addScale(float inScale);
+        void addScale(float inX, float inY, float inZ);
+        void addScale(const Vec<3, float>& inScale);
+
+        void setScale(float inScale);
+        void setScale(float inX, float inY, float inZ);
+        void setScale(const Vec<3, float>& inScale);
+
+        // Transform
         const Transform& getTransform() const;
         const Mat<4, float>& getPosition() const;
 
@@ -54,12 +84,10 @@ namespace Chicane
         );
 
     protected:
-        void setTranslation(const Vec<3, float>& inTranslation);
-        void setRotation(const Vec<3, float>& inRotation);
-        void setScale(const Vec<3, float>& inScale);
-
-        void refreshPosition();
+        void refreshCoordinates();
         void refreshOrientation();
+        void refreshDirections();
+        void refreshPosition();
 
     protected:
         // Transform

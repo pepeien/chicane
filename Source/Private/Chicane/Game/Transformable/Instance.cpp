@@ -20,7 +20,17 @@ namespace Chicane
         return m_transform.translation;
     }
 
-    void Transformable::setRelativeTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::addTranslation(float inTranslation)
+    {
+        addTranslation(Vec<3, float>(inTranslation));
+    }
+
+    void Transformable::addTranslation(float inX, float inY, float inZ)
+    {
+        addTranslation(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::addTranslation(const Vec<3, float>& inTranslation)
     {
         Vec<3, float> translation = m_transform.translation;
         translation.x += inTranslation.x;
@@ -30,9 +40,23 @@ namespace Chicane
         setTranslation(translation);
     }
 
-    void Transformable::setAbsoluteTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::setTranslation(float inTranslation)
     {
-        setTranslation(inTranslation);
+        setTranslation(Vec<3, float>(inTranslation));
+    }
+
+    void Transformable::setTranslation(float inX, float inY, float inZ)
+    {
+        setTranslation(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::setTranslation(const Vec<3, float>& inTranslation)
+    {
+        m_transform.translation = inTranslation;
+
+        refreshCoordinates();
+
+        m_transformObservable->next(m_transform);
     }
 
     const Vec<3, float>& Transformable::getRotation() const
@@ -40,7 +64,47 @@ namespace Chicane
         return m_transform.rotation;
     }
 
-    void Transformable::setRelativeRotation(const Vec<3, float>& inRotation)
+    void Transformable::addYaw(float inDegrees)
+    {
+        addRotation(inDegrees, 0.0f, 0.0f);
+    }
+
+    void Transformable::setYaw(float inDegrees)
+    {
+        setRotation(inDegrees, 0.0f, 0.0f);
+    }
+
+    void Transformable::addRoll(float inDegrees)
+    {
+        addRotation(0.0f, inDegrees, 0.0f);
+    }
+
+    void Transformable::setRoll(float inDegrees)
+    {
+        setRotation(0.0f, inDegrees, 0.0f);
+    }
+
+    void Transformable::addPitch(float inDegrees)
+    {
+        addRotation(0.0f, 0.0f, inDegrees);
+    }
+
+    void Transformable::setPitch(float inDegrees)
+    {
+        setRotation(0.0f, 0.0f, inDegrees);
+    }
+
+    void Transformable::addRotation(float inRotation)
+    {
+        addRotation(Vec<3, float>(inRotation));
+    }
+
+    void Transformable::addRotation(float inYaw, float inRoll, float inPitch)
+    {
+        addRotation(Vec<3, float>(inYaw, inRoll, inPitch));
+    }
+
+    void Transformable::addRotation(const Vec<3, float>& inRotation)
     {
         Vec<3, float> rotation = m_transform.rotation;
         rotation.x += inRotation.x;
@@ -50,9 +114,38 @@ namespace Chicane
         setRotation(rotation);
     }
 
-    void Transformable::setAbsoluteRotation(const Vec<3, float>& inRotation)
+    void Transformable::setRotation(float inRotation)
     {
-        setRotation(inRotation);
+        setRotation(Vec<3, float>(inRotation));
+    }
+
+    void Transformable::setRotation(float inYaw, float inRoll, float inPitch)
+    {
+        setRotation(Vec<3, float>(inYaw, inRoll, inPitch));
+    }
+
+    void Transformable::setRotation(const Vec<3, float>& inRotation)
+    {
+        m_transform.rotation = inRotation;
+
+        if (std::abs(m_transform.rotation.x) > 360.0f)
+        {
+            m_transform.rotation.x = 0.0f;
+        }
+
+        if (std::abs(m_transform.rotation.y) > 360.0f)
+        {
+            m_transform.rotation.y = 0.0f;
+        }
+
+        if (std::abs(m_transform.rotation.z) > 360.0f)
+        {
+            m_transform.rotation.z = 0.0f;
+        }
+
+        refreshCoordinates();
+
+        m_transformObservable->next(m_transform);
     }
 
     const Vec<3, float>& Transformable::getScale() const
@@ -60,7 +153,17 @@ namespace Chicane
         return m_transform.scale;
     }
 
-    void Transformable::setRelativeScale(const Vec<3, float>& inScale)
+    void Transformable::addScale(float inScale)
+    {
+        addScale(Vec<3, float>(inScale));
+    }
+
+    void Transformable::addScale(float inX, float inY, float inZ)
+    {
+        addScale(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::addScale(const Vec<3, float>& inScale)
     {
         Vec<3, float> scale = m_transform.scale;
         scale.x += inScale.x;
@@ -70,9 +173,23 @@ namespace Chicane
         setScale(scale);
     }
 
-    void Transformable::setAbsoluteScale(const Vec<3, float>& inScale)
+    void Transformable::setScale(float inScale)
     {
-        setScale(inScale);
+        setScale(Vec<3, float>(inScale));
+    }
+
+    void Transformable::setScale(float inX, float inY, float inZ)
+    {
+        setScale(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::setScale(const Vec<3, float>& inScale)
+    {
+        m_transform.scale = inScale;
+
+        refreshCoordinates();
+
+        m_transformObservable->next(m_transform);
     }
 
     const Transform& Transformable::getTransform() const
@@ -169,101 +286,35 @@ namespace Chicane
         return subscription;
     }
 
-    void Transformable::setTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::refreshCoordinates()
     {
-        m_transform.translation = inTranslation;
-
-        refreshPosition();
-
-        m_transformObservable->next(m_transform);
-    }
-
-    void Transformable::setRotation(const Vec<3, float>& inRotation)
-    {
-        m_transform.rotation = inRotation;
-
-        if (std::abs(m_transform.rotation.x) > 360.0f)
-        {
-            m_transform.rotation.x = 0.0f;
-        }
-
-        if (std::abs(m_transform.rotation.y) > 360.0f)
-        {
-            m_transform.rotation.y = 0.0f;
-        }
-
-        if (std::abs(m_transform.rotation.z) > 360.0f)
-        {
-            m_transform.rotation.z = 0.0f;
-        }
-
-        refreshPosition();
-
-        m_transformObservable->next(m_transform);
-    }
-
-    void Transformable::setScale(const Vec<3, float>& inScale)
-    {
-        m_transform.scale = inScale;
-
-        refreshPosition();
-
-        m_transformObservable->next(m_transform);
-    }
-
-    void Transformable::refreshPosition()
-    {
-        // Transalate
-        m_position = glm::translate(
-            BASE_MAT,
-            m_transform.translation
-        );
-
-        // Rotate
-        m_position = glm::rotate(
-            m_position,
-            glm::radians(m_transform.rotation.z),
-            UP_DIRECTION
-        );
-        m_position = glm::rotate(
-            m_position,
-            glm::radians(m_transform.rotation.x),
-            RIGHT_DIRECTION
-        );
-        m_position = glm::rotate(
-            m_position,
-            glm::radians(m_transform.rotation.y),
-            FORWARD_DIRECTION
-        );
-
-        // Scale
-        m_position = glm::scale(
-            m_position,
-            m_transform.scale
-        );
-
-        refreshBounds();
         refreshOrientation();
+        refreshDirections();
+        refreshPosition();
+        refreshBounds();
     }
 
     void Transformable::refreshOrientation()
     {
-        m_orientation = glm::angleAxis(
-            glm::radians(m_transform.rotation.x),
-            FORWARD_DIRECTION
-        );
-        m_orientation *= glm::angleAxis(
-            glm::radians(m_transform.rotation.y),
-            UP_DIRECTION
-        );
-        m_orientation *= glm::angleAxis(
-            glm::radians(m_transform.rotation.z),
-            RIGHT_DIRECTION
-        );
-        m_orientation = glm::normalize(m_orientation);
+        Quat<float> pitch = glm::angleAxis(glm::radians(m_transform.rotation.z), RIGHT_DIRECTION);
+        Quat<float> roll  = glm::angleAxis(glm::radians(m_transform.rotation.y), FORWARD_DIRECTION);
+        Quat<float> yaw   = glm::angleAxis(glm::radians(m_transform.rotation.x), UP_DIRECTION);
 
+        m_orientation = roll * yaw * pitch;
+        m_orientation = glm::normalize(m_orientation);
+    }
+
+    void Transformable::refreshDirections()
+    {
         m_direction.forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
         m_direction.right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
         m_direction.up      = glm::rotate(m_orientation, UP_DIRECTION);
+    }
+
+    void Transformable::refreshPosition()
+    {
+        m_position  = glm::translate(BASE_MAT, m_transform.translation); // Transalate
+        m_position *= glm::toMat4(m_orientation);                        // Rotate
+        m_position  = glm::scale(m_position, m_transform.scale);         // Scale
     }
 }

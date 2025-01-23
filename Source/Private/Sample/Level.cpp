@@ -29,7 +29,7 @@ void Level::spawnLights()
 void Level::spawnStructures()
 {
     Strcuture* floor = new Strcuture();
-    floor->setAbsoluteScale(
+    floor->setScale(
         Chicane::Vec<3, float>(
             200.0f,
             200.0f,

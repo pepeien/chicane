@@ -3,10 +3,7 @@
 #include "Game.hpp"
 #include "Chicane/Core.hpp"
 
-Apple::Apple(
-    const std::string& inId,
-    const Chicane::Vec<3, float>& inStartPosition
-)
+Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosition)
     : Chicane::Actor(),
     m_fallingRate(
         std::max(
@@ -19,8 +16,8 @@ Apple::Apple(
 {
     setCanTick(true);
     setCanCollide(true);
-    setAbsoluteTranslation(inStartPosition);
-    setAbsoluteScale(Chicane::Vec<3, float>(0.05f));
+    setTranslation(inStartPosition.x, 0.0f, 0.0f);
+    setScale(0.05f);
 
     m_mesh->attachTo(this);
     m_mesh->setMesh(inId);
@@ -31,25 +28,14 @@ void Apple::onTick(float inDeltaTime)
 {
     if (m_transform.translation.z <= 0.0f)
     {
-        setAbsoluteTranslation(m_startPosition);
+        setTranslation(m_startPosition);
 
         return;
     }
 
-    setRelativeRotation(
-        Chicane::Vec<3, float>(
-            0.0f,
-            0.0f,
-            0.1f
-        )
-    );
-    setRelativeTranslation(
-        Chicane::Vec<3, float>(
-            0.0f,
-            0.0f,
-            -m_fallingRate
-        )
-    );
+    addYaw(0.1f);
+
+    addTranslation(0.0f, 0.0f, -m_fallingRate);
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)

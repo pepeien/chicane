@@ -5,8 +5,6 @@ struct MeshData {
     vec4 textureIndex;
 };
 
-layout(location = 0) out vec4 outOne;
-
 layout(set = 0, binding = 0) uniform LightData {
     vec4 clip;
 
@@ -33,7 +31,5 @@ layout(location = 3) in vec3 inNormal;
 void main() {
     MeshData mesh = meshes.data[gl_InstanceIndex];
 
-    outOne = light.viewProjection * mesh.model * vec4(inPosition, 1.0);
-
-    gl_Position = outOne;
+    gl_Position = light.viewProjection * mesh.model * vec4(inPosition, 1.0);
 }

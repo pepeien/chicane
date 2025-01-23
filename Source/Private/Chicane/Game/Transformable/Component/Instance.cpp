@@ -160,8 +160,8 @@ namespace Chicane
             translation = translation + attachmentTransform.translation;
         }
 
-        setAbsoluteScale(      scale);
-        setAbsoluteRotation(   rotation);
-        setAbsoluteTranslation(translation);
+        setScale(      scale);
+        setRotation(   rotation);
+        setTranslation(translation);
     }
 }

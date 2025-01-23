@@ -34,13 +34,8 @@ namespace Chicane
                     return;
                 }
 
-                setRelativeRotation(
-                    Vec<3, float>(
-                        0.0f,
-                        -inEvent.xrel * 0.5f,
-                        -inEvent.yrel * 0.5f
-                    )
-                );
+                addYaw(-inEvent.xrel * 0.5f);
+                addPitch(-inEvent.yrel * 0.5f);
             }
         );
 
@@ -141,12 +136,10 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                0.0f,
-                0.0f,
-                MOVEMENT_COEFFICIENT
-            )
+        addTranslation(
+            0.0f,
+            0.0f,
+            MOVEMENT_COEFFICIENT
         );
     }
 
@@ -157,12 +150,10 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(
-            Vec<3, float>(
-                0.0f,
-                0.0f,
-                -MOVEMENT_COEFFICIENT
-            )
+        addTranslation(
+            0.0f,
+            0.0f,
+            -MOVEMENT_COEFFICIENT
         );
     }
 
@@ -173,7 +164,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getForward() * MOVEMENT_COEFFICIENT);
+        addTranslation(getForward() * MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveBackward(bool bInIsKeyDown)
@@ -183,7 +174,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getForward() * -MOVEMENT_COEFFICIENT);
+        addTranslation(getForward() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveLeft(bool bInIsKeyDown)
@@ -193,7 +184,7 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getRight() * -MOVEMENT_COEFFICIENT);
+        addTranslation(getRight() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveRight(bool bInIsKeyDown)
@@ -203,6 +194,6 @@ namespace Chicane
             return;
         }
 
-        setRelativeTranslation(getRight() * MOVEMENT_COEFFICIENT);
+        addTranslation(getRight() * MOVEMENT_COEFFICIENT);
     }
 }
