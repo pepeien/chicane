@@ -10,5 +10,8 @@ namespace Chicane
     public:
         LightComponent();
         virtual ~LightComponent() = default;
+    
+    protected:
+        virtual void onTransform();
     }; 
 }

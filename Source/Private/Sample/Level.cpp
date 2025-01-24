@@ -29,20 +29,15 @@ void Level::spawnLights()
 void Level::spawnStructures()
 {
     Strcuture* floor = new Strcuture();
-    floor->setScale(
-        Chicane::Vec<3, float>(
-            200.0f,
-            200.0f,
-            0.25f
-        )
-    );
+    floor->setWorldScale(200.0f, 200.0f, 0.25f);
+
     addActor(floor);
 }
 
 void Level::spawnApples()
 {
     const Chicane::Vec<3, float> startPosition(
-        -(APPLE_ROW_COUNT * APPLE_STEP),
+        -100.0f,
         -((APPLE_DEPTH_COUNT * APPLE_STEP) * 0.25f),
         100.0f
     );

@@ -8,30 +8,29 @@ namespace Chicane
         : Component(),
         m_settings({}),
         m_frustum({}),
-        m_data({})
+        m_data({}),
+        m_focusPoint(Vec3Zero)
+    {}
+
+    void ViewComponent::onTransform()
     {
-        watchTransform(
-            [this](const Transform& inTransform)
-            {
-                m_data.forward.x = m_direction.forward.x;
-                m_data.forward.y = m_direction.forward.y;
-                m_data.forward.z = m_direction.forward.z;
+        m_data.forward.x = m_direction.forward.x;
+        m_data.forward.y = m_direction.forward.y;
+        m_data.forward.z = m_direction.forward.z;
 
-                m_data.right.x = m_direction.right.x;
-                m_data.right.y = m_direction.right.y;
-                m_data.right.z = m_direction.right.z;
+        m_data.right.x = m_direction.right.x;
+        m_data.right.y = m_direction.right.y;
+        m_data.right.z = m_direction.right.z;
 
-                m_data.up.x = m_direction.up.x;
-                m_data.up.y = m_direction.up.y;
-                m_data.up.z = m_direction.up.z;
+        m_data.up.x = m_direction.up.x;
+        m_data.up.y = m_direction.up.y;
+        m_data.up.z = m_direction.up.z;
 
-                m_data.translation.x = m_transform.translation.x;
-                m_data.translation.y = m_transform.translation.y;
-                m_data.translation.z = m_transform.translation.z;
+        m_data.translation.x = m_transform.translation.x;
+        m_data.translation.y = m_transform.translation.y;
+        m_data.translation.z = m_transform.translation.z;
 
-                updateView();
-            }
-        );
+        updateView();
     }
 
     bool ViewComponent::canSee(const Transformable* inSubject) const
@@ -120,6 +119,18 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
+    const Vec<3, float>& ViewComponent::getFocusPoint() const
+    {
+        return m_focusPoint;
+    }
+
+    void ViewComponent::setFocusPoint(const Vec<3, float>& inPoint)
+    {
+        m_focusPoint = inPoint;
+
+        updateView();
+    }
+
     const View::Data& ViewComponent::getData() const
     {
         return m_data;
@@ -144,11 +155,9 @@ namespace Chicane
 
     void ViewComponent::updateView()
     {
-        const Vec<3, float>& translation = getTranslation();
-
         m_data.view = glm::lookAt(
-            translation,
-            translation + getForward(),
+            getTranslation(),
+            m_focusPoint,
             getUp()
         );
 

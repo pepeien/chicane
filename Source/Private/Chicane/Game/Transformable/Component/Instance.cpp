@@ -10,7 +10,6 @@ namespace Chicane
         : Transformable(),
         m_bCanTick(true),
         m_bIsActive(false),
-        m_base({}),
         m_attachment(nullptr),
         m_attachmentTransformSubscription(nullptr)  
     {}
@@ -85,7 +84,7 @@ namespace Chicane
             }
 
             m_attachmentTransformSubscription = m_attachment->watchTransform(
-                [&](const Transform& inTransform)
+                [&](void* inData)
                 {
                     updateTransform();
                 }
@@ -97,71 +96,15 @@ namespace Chicane
         onAttachment(inAttachment);
     }
 
-    const Transform& Component::getBase() const
-    {
-        return m_base;
-    }
-
-    void Component::setBase(const Transform& inOrigin)
-    {
-        m_base = inOrigin;
-
-        updateTransform();
-    }
-
-    const Vec<3, float>& Component::getBaseScale() const
-    {
-        return m_base.scale;
-    }
-
-    void Component::setBaseScale(const Vec<3, float>& inScale)
-    {
-        m_base.scale = inScale;
-
-        updateTransform();
-    }
-
-    const Vec<3, float>& Component::getBaseRotation() const
-    {
-        return m_base.rotation;
-    }
-
-    void Component::setBaseRotation(const Vec<3, float>& inRotation)
-    {
-        m_base.rotation = inRotation;
-
-        updateTransform();
-    }
-
-    const Vec<3, float>& Component::getBaseTranslation() const
-    {
-        return m_base.translation;
-    }
-
-    void Component::setBaseTranslation(const Vec<3, float>& inTranslation)
-    {
-        m_base.translation = inTranslation;
-
-        updateTransform();
-    }
-
     void Component::updateTransform()
     {
-        Vec<3, float> scale       = m_base.scale;
-        Vec<3, float> rotation    = m_base.rotation;
-        Vec<3, float> translation = m_base.translation;
-
-        if (isAttached())
+        if (!isAttached())
         {
-            const Transform& attachmentTransform = m_attachment->getTransform();
-
-            scale       = scale * attachmentTransform.scale;
-            rotation    = rotation + attachmentTransform.rotation;
-            translation = translation + attachmentTransform.translation;
+            return;
         }
 
-        setScale(      scale);
-        setRotation(   rotation);
-        setTranslation(translation);
+        setWorldTransform(m_attachment->getWorldTransform());
+
+        onTransform();
     }
 }

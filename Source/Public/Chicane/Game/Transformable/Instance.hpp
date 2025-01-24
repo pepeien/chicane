@@ -15,47 +15,70 @@ namespace Chicane
         // Translation
         const Vec<3, float>& getTranslation() const;
 
-        void addTranslation(float inTranslation);
-        void addTranslation(float inX, float inY, float inZ);
-        void addTranslation(const Vec<3, float>& inTranslation);
+        const Vec<3, float>& getRelativeTranslation() const;
+        void addRelativeTranslation(float inTranslation);
+        void addRelativeTranslation(float inX, float inY, float inZ);
+        void addRelativeTranslation(const Vec<3, float>& inTranslation);
+        void setRelativeTranslation(float inTranslation);
+        void setRelativeTranslation(float inX, float inY, float inZ);
+        void setRelativeTranslation(const Vec<3, float>& inTranslation);
 
-        void setTranslation(float inTranslation);
-        void setTranslation(float inX, float inY, float inZ);
-        void setTranslation(const Vec<3, float>& inTranslation);
+        const Vec<3, float>& getWorldTranslation() const;
+        void addWorldTranslation(float inTranslation);
+        void addWorldTranslation(float inX, float inY, float inZ);
+        void addWorldTranslation(const Vec<3, float>& inTranslation);
+        void setWorldTranslation(float inTranslation);
+        void setWorldTranslation(float inX, float inY, float inZ);
+        void setWorldTranslation(const Vec<3, float>& inTranslation);
 
         // Rotation
         const Vec<3, float>& getRotation() const;
 
-        void addYaw(float inDegrees);
-        void setYaw(float inDegrees);
+        const Vec<3, float>& getRelativeRotation() const;
+        void addRelativeRotation(float inRotation);
+        void addRelativeRotation(float inPitch, float inRoll, float inYaw);
+        void addRelativeRotation(const Vec<3, float>& inRotation);
+        void setRelativeRotation(float inRotation);
+        void setRelativeRotation(float inPitch, float inRoll, float inYaw);
+        void setRelativeRotation(const Vec<3, float>& inRotation);
 
-        void addRoll(float inDegrees);
-        void setRoll(float inDegrees);
-
-        void addPitch(float inDegrees);
-        void setPitch(float inDegrees);
-
-        void addRotation(float inRotation);
-        void addRotation(float inYaw, float inRoll, float inPitch);
-        void addRotation(const Vec<3, float>& inRotation);
-
-        void setRotation(float inRotation);
-        void setRotation(float inYaw, float inRoll, float inPitch);
-        void setRotation(const Vec<3, float>& inRotation);
+        const Vec<3, float>& getWorldRotation() const;
+        void addWorldRotation(float inRotation);
+        void addWorldRotation(float inPitch, float inRoll, float inYaw);
+        void addWorldRotation(const Vec<3, float>& inRotation);
+        void setWorldRotation(float inRotation);
+        void setWorldRotation(float inPitch, float inRoll, float inYaw);
+        void setWorldRotation(const Vec<3, float>& inRotation);
 
         // Scaling
         const Vec<3, float>& getScale() const;
 
-        void addScale(float inScale);
-        void addScale(float inX, float inY, float inZ);
-        void addScale(const Vec<3, float>& inScale);
+        const Vec<3, float>& getRelativeScale() const;
+        void addRelativeScale(float inScale);
+        void addRelativeScale(float inX, float inY, float inZ);
+        void addRelativeScale(const Vec<3, float>& inScale);
+        void setRelativeScale(float inScale);
+        void setRelativeScale(float inX, float inY, float inZ);
+        void setRelativeScale(const Vec<3, float>& inScale);
 
-        void setScale(float inScale);
-        void setScale(float inX, float inY, float inZ);
-        void setScale(const Vec<3, float>& inScale);
+        const Vec<3, float>& getWorldScale() const;
+        void addWorldScale(float inScale);
+        void addWorldScale(float inX, float inY, float inZ);
+        void addWorldScale(const Vec<3, float>& inScale);
+        void setWorldScale(float inScale);
+        void setWorldScale(float inX, float inY, float inZ);
+        void setWorldScale(const Vec<3, float>& inScale);
 
         // Transform
-        const Transform& getTransform() const;
+        const Transform::Combined& getTransform() const;
+
+        const Transform::Instance& getRelativeTransform() const;
+        void setRelativeTransform(const Transform::Instance& inTransform);
+
+        const Transform::Instance& getWorldTransform() const;
+        void setWorldTransform(const Transform::Instance& inTransform);
+
+        // Position
         const Mat<4, float>& getPosition() const;
 
         // Orientation
@@ -77,13 +100,17 @@ namespace Chicane
         void setBounds(const Bounds& inBounds);
 
         // Events
-        Subscription<const Transform&>* watchTransform(
-            std::function<void (const Transform&)> inNext,
+        Subscription<void*>* watchTransform(
+            std::function<void (void*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
     protected:
+        void setTranslation(const Vec<3, float>& inTranslation, Vec<3, float>& outTranslation);
+        void setRotation(const Vec<3, float>& inRotation, Vec<3, float>& ouRotation);
+        void setScale(const Vec<3, float>& inScale, Vec<3, float>& outScale);
+
         void refreshCoordinates();
         void refreshOrientation();
         void refreshDirections();
@@ -91,18 +118,18 @@ namespace Chicane
 
     protected:
         // Transform
-        Transform                                     m_transform;
-        Mat<4, float>                                 m_position;
+        Transform::Combined                m_transform;
+        Mat<4, float>                      m_position;
 
         // Direction
-        Direction                                     m_direction;
-        Quat<float>                                   m_orientation;
+        Direction                          m_direction;
+        Quat<float>                        m_orientation;
 
         // Bounds
-        Bounds                                        m_baseBounds;
-        Bounds                                        m_currentBounds;
+        Bounds                             m_baseBounds;
+        Bounds                             m_currentBounds;
 
         // Events
-        std::unique_ptr<Observable<const Transform&>> m_transformObservable;
+        std::unique_ptr<Observable<void*>> m_transformObservable;
     };
 }

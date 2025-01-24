@@ -16,8 +16,9 @@ Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosit
 {
     setCanTick(true);
     setCanCollide(true);
-    setTranslation(inStartPosition.x, 0.0f, 0.0f);
-    setScale(0.05f);
+
+    setWorldTranslation(inStartPosition);
+    setWorldScale(0.05f);
 
     m_mesh->attachTo(this);
     m_mesh->setMesh(inId);
@@ -26,21 +27,20 @@ Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosit
 
 void Apple::onTick(float inDeltaTime)
 {
-    if (m_transform.translation.z <= 0.0f)
+    if (getWorldTranslation().z <= 0.0f)
     {
-        setTranslation(m_startPosition);
+        setWorldTranslation(m_startPosition);
 
         return;
     }
 
-    addYaw(0.1f);
-
-    addTranslation(0.0f, 0.0f, -m_fallingRate);
+    addWorldRotation(0.0f, 0.0f, 0.1f);
+    addWorldTranslation(0.0f, 0.0f, -m_fallingRate);
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)
 {
-    if (!canTick() || m_transform.translation.z < 0.0f)
+    if (!canTick() || getWorldTranslation().z < 0.0f)
     {
         return;
     }

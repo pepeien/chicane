@@ -5,4 +5,11 @@ namespace Chicane
     CameraComponent::CameraComponent()
         : ViewComponent()
     {}
+
+    void CameraComponent::onTransform()
+    {
+        ViewComponent::onTransform();
+
+        setFocusPoint(getTranslation() + getForward());
+    }
 }

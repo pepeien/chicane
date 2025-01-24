@@ -34,8 +34,7 @@ namespace Chicane
                     return;
                 }
 
-                addYaw(-inEvent.xrel * 0.5f);
-                addPitch(-inEvent.yrel * 0.5f);
+                addWorldRotation(-inEvent.yrel * 0.5f, 0.0f, -inEvent.xrel * 0.5f);
             }
         );
 
@@ -136,11 +135,7 @@ namespace Chicane
             return;
         }
 
-        addTranslation(
-            0.0f,
-            0.0f,
-            MOVEMENT_COEFFICIENT
-        );
+        addWorldTranslation(0.0f, 0.0f, MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveDown(bool bInIsKeyDown)
@@ -150,11 +145,7 @@ namespace Chicane
             return;
         }
 
-        addTranslation(
-            0.0f,
-            0.0f,
-            -MOVEMENT_COEFFICIENT
-        );
+        addWorldTranslation(0.0f,  0.0f, -MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveForward(bool bInIsKeyDown)
@@ -164,7 +155,7 @@ namespace Chicane
             return;
         }
 
-        addTranslation(getForward() * MOVEMENT_COEFFICIENT);
+        addWorldTranslation(getForward() * MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveBackward(bool bInIsKeyDown)
@@ -174,7 +165,7 @@ namespace Chicane
             return;
         }
 
-        addTranslation(getForward() * -MOVEMENT_COEFFICIENT);
+        addWorldTranslation(getForward() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveLeft(bool bInIsKeyDown)
@@ -184,7 +175,7 @@ namespace Chicane
             return;
         }
 
-        addTranslation(getRight() * -MOVEMENT_COEFFICIENT);
+        addWorldTranslation(getRight() * -MOVEMENT_COEFFICIENT);
     }
 
     void CameraPawn::moveRight(bool bInIsKeyDown)
@@ -194,6 +185,6 @@ namespace Chicane
             return;
         }
 
-        addTranslation(getRight() * MOVEMENT_COEFFICIENT);
+        addWorldTranslation(getRight() * MOVEMENT_COEFFICIENT);
     }
 }

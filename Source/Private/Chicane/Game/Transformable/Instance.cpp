@@ -12,7 +12,7 @@ namespace Chicane
         m_direction({}),
         m_baseBounds(),
         m_currentBounds(),
-        m_transformObservable(std::make_unique<Observable<const Transform&>>())
+        m_transformObservable(std::make_unique<Observable<void*>>())
     {}
 
     const Vec<3, float>& Transformable::getTranslation() const
@@ -20,43 +20,74 @@ namespace Chicane
         return m_transform.translation;
     }
 
-    void Transformable::addTranslation(float inTranslation)
+    const Vec<3, float>& Transformable::getRelativeTranslation() const
     {
-        addTranslation(Vec<3, float>(inTranslation));
+        return m_transform.relative.translation;
     }
 
-    void Transformable::addTranslation(float inX, float inY, float inZ)
+    void Transformable::addRelativeTranslation(float inTranslation)
     {
-        addTranslation(Vec<3, float>(inX, inY, inZ));
+        addRelativeTranslation(Vec<3, float>(inTranslation));
     }
 
-    void Transformable::addTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::addRelativeTranslation(float inX, float inY, float inZ)
     {
-        Vec<3, float> translation = m_transform.translation;
-        translation.x += inTranslation.x;
-        translation.y += inTranslation.y;
-        translation.z += inTranslation.z;
-
-        setTranslation(translation);
+        addRelativeTranslation(Vec<3, float>(inX, inY, inZ));
     }
 
-    void Transformable::setTranslation(float inTranslation)
+    void Transformable::addRelativeTranslation(const Vec<3, float>& inTranslation)
     {
-        setTranslation(Vec<3, float>(inTranslation));
+        setRelativeTranslation(m_transform.relative.translation + inTranslation);
     }
 
-    void Transformable::setTranslation(float inX, float inY, float inZ)
+    void Transformable::setRelativeTranslation(float inTranslation)
     {
-        setTranslation(Vec<3, float>(inX, inY, inZ));
+        setRelativeTranslation(Vec<3, float>(inTranslation));
     }
 
-    void Transformable::setTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::setRelativeTranslation(float inX, float inY, float inZ)
     {
-        m_transform.translation = inTranslation;
+        setRelativeTranslation(Vec<3, float>(inX, inY, inZ));
+    }
 
-        refreshCoordinates();
+    void Transformable::setRelativeTranslation(const Vec<3, float>& inTranslation)
+    {
+        setTranslation(inTranslation, m_transform.relative.translation);
+    }
 
-        m_transformObservable->next(m_transform);
+    const Vec<3, float>& Transformable::getWorldTranslation() const
+    {
+        return m_transform.world.translation;
+    }
+
+    void Transformable::addWorldTranslation(float inTranslation)
+    {
+        addWorldTranslation(Vec<3, float>(inTranslation));
+    }
+
+    void Transformable::addWorldTranslation(float inX, float inY, float inZ)
+    {
+        addWorldTranslation(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::addWorldTranslation(const Vec<3, float>& inTranslation)
+    {
+        setWorldTranslation(m_transform.world.translation + inTranslation);
+    }
+
+    void Transformable::setWorldTranslation(float inTranslation)
+    {
+        setWorldTranslation(Vec<3, float>(inTranslation));
+    }
+
+    void Transformable::setWorldTranslation(float inX, float inY, float inZ)
+    {
+        setWorldTranslation(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::setWorldTranslation(const Vec<3, float>& inTranslation)
+    {
+        setTranslation(inTranslation, m_transform.world.translation);
     }
 
     const Vec<3, float>& Transformable::getRotation() const
@@ -64,88 +95,74 @@ namespace Chicane
         return m_transform.rotation;
     }
 
-    void Transformable::addYaw(float inDegrees)
+    const Vec<3, float>& Transformable::getRelativeRotation() const
     {
-        addRotation(inDegrees, 0.0f, 0.0f);
+        return m_transform.relative.rotation;
     }
 
-    void Transformable::setYaw(float inDegrees)
+    void Transformable::addRelativeRotation(float inRotation)
     {
-        setRotation(inDegrees, 0.0f, 0.0f);
+        addRelativeRotation(Vec<3, float>(inRotation));
     }
 
-    void Transformable::addRoll(float inDegrees)
+    void Transformable::addRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        addRotation(0.0f, inDegrees, 0.0f);
+        addRelativeRotation(Vec<3, float>(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setRoll(float inDegrees)
+    void Transformable::addRelativeRotation(const Vec<3, float>& inRotation)
     {
-        setRotation(0.0f, inDegrees, 0.0f);
+        setRelativeRotation(m_transform.relative.rotation + inRotation);
     }
 
-    void Transformable::addPitch(float inDegrees)
+    void Transformable::setRelativeRotation(float inRotation)
     {
-        addRotation(0.0f, 0.0f, inDegrees);
+        setRelativeRotation(Vec<3, float>(inRotation));
     }
 
-    void Transformable::setPitch(float inDegrees)
+    void Transformable::setRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        setRotation(0.0f, 0.0f, inDegrees);
+        setRelativeRotation(Vec<3, float>(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::addRotation(float inRotation)
+    void Transformable::setRelativeRotation(const Vec<3, float>& inRotation)
     {
-        addRotation(Vec<3, float>(inRotation));
+        setRotation(inRotation, m_transform.relative.rotation);
     }
 
-    void Transformable::addRotation(float inYaw, float inRoll, float inPitch)
+    const Vec<3, float>& Transformable::getWorldRotation() const
     {
-        addRotation(Vec<3, float>(inYaw, inRoll, inPitch));
+        return m_transform.world.rotation;
     }
 
-    void Transformable::addRotation(const Vec<3, float>& inRotation)
+    void Transformable::addWorldRotation(float inRotation)
     {
-        Vec<3, float> rotation = m_transform.rotation;
-        rotation.x += inRotation.x;
-        rotation.y += inRotation.y;
-        rotation.z += inRotation.z;
-
-        setRotation(rotation);
+        addWorldRotation(Vec<3, float>(inRotation));
     }
 
-    void Transformable::setRotation(float inRotation)
+    void Transformable::addWorldRotation(float inPitch, float inRoll, float inYaw)
     {
-        setRotation(Vec<3, float>(inRotation));
+        addWorldRotation(Vec<3, float>(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setRotation(float inYaw, float inRoll, float inPitch)
+    void Transformable::addWorldRotation(const Vec<3, float>& inRotation)
     {
-        setRotation(Vec<3, float>(inYaw, inRoll, inPitch));
+        setWorldRotation(m_transform.world.rotation + inRotation);
     }
 
-    void Transformable::setRotation(const Vec<3, float>& inRotation)
+    void Transformable::setWorldRotation(float inRotation)
     {
-        m_transform.rotation = inRotation;
+        setWorldRotation(Vec<3, float>(inRotation));
+    }
 
-        if (std::abs(m_transform.rotation.x) > 360.0f)
-        {
-            m_transform.rotation.x = 0.0f;
-        }
+    void Transformable::setWorldRotation(float inPitch, float inRoll, float inYaw)
+    {
+        setWorldRotation(Vec<3, float>(inPitch, inRoll, inYaw));
+    }
 
-        if (std::abs(m_transform.rotation.y) > 360.0f)
-        {
-            m_transform.rotation.y = 0.0f;
-        }
-
-        if (std::abs(m_transform.rotation.z) > 360.0f)
-        {
-            m_transform.rotation.z = 0.0f;
-        }
-
-        refreshCoordinates();
-
-        m_transformObservable->next(m_transform);
+    void Transformable::setWorldRotation(const Vec<3, float>& inRotation)
+    {
+        setRotation(inRotation, m_transform.world.rotation);
     }
 
     const Vec<3, float>& Transformable::getScale() const
@@ -153,48 +170,103 @@ namespace Chicane
         return m_transform.scale;
     }
 
-    void Transformable::addScale(float inScale)
+    const Vec<3, float>& Transformable::getRelativeScale() const
     {
-        addScale(Vec<3, float>(inScale));
+        return m_transform.relative.scale;
     }
 
-    void Transformable::addScale(float inX, float inY, float inZ)
+    void Transformable::addRelativeScale(float inScale)
     {
-        addScale(Vec<3, float>(inX, inY, inZ));
+        addRelativeScale(Vec<3, float>(inScale));
     }
 
-    void Transformable::addScale(const Vec<3, float>& inScale)
+    void Transformable::addRelativeScale(float inX, float inY, float inZ)
     {
-        Vec<3, float> scale = m_transform.scale;
-        scale.x += inScale.x;
-        scale.y += inScale.y;
-        scale.z += inScale.z;
-
-        setScale(scale);
+        addRelativeScale(Vec<3, float>(inX, inY, inZ));
     }
 
-    void Transformable::setScale(float inScale)
+    void Transformable::addRelativeScale(const Vec<3, float>& inScale)
     {
-        setScale(Vec<3, float>(inScale));
+        setRelativeScale(m_transform.relative.scale + inScale);
     }
 
-    void Transformable::setScale(float inX, float inY, float inZ)
+    void Transformable::setRelativeScale(float inScale)
     {
-        setScale(Vec<3, float>(inX, inY, inZ));
+        setRelativeScale(Vec<3, float>(inScale));
     }
 
-    void Transformable::setScale(const Vec<3, float>& inScale)
+    void Transformable::setRelativeScale(float inX, float inY, float inZ)
     {
-        m_transform.scale = inScale;
-
-        refreshCoordinates();
-
-        m_transformObservable->next(m_transform);
+        setRelativeScale(Vec<3, float>(inX, inY, inZ));
     }
 
-    const Transform& Transformable::getTransform() const
+    void Transformable::setRelativeScale(const Vec<3, float>& inScale)
+    {
+        setScale(inScale, m_transform.relative.scale);
+    }
+
+    const Vec<3, float>& Transformable::getWorldScale() const
+    {
+        return m_transform.world.scale;
+    }
+
+    void Transformable::addWorldScale(float inScale)
+    {
+        addWorldScale(Vec<3, float>(inScale));
+    }
+
+    void Transformable::addWorldScale(float inX, float inY, float inZ)
+    {
+        addWorldScale(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::addWorldScale(const Vec<3, float>& inScale)
+    {
+        setWorldScale(m_transform.world.scale + inScale);
+    }
+
+    void Transformable::setWorldScale(float inScale)
+    {
+        setWorldScale(Vec<3, float>(inScale));
+    }
+
+    void Transformable::setWorldScale(float inX, float inY, float inZ)
+    {
+        setWorldScale(Vec<3, float>(inX, inY, inZ));
+    }
+
+    void Transformable::setWorldScale(const Vec<3, float>& inScale)
+    {
+        setScale(inScale, m_transform.world.scale);
+    }
+
+    const Transform::Combined& Transformable::getTransform() const
     {
         return m_transform;
+    }
+
+    const Transform::Instance& Transformable::getRelativeTransform() const
+    {
+        return m_transform.relative;
+    }
+
+    void Transformable::setRelativeTransform(const Transform::Instance& inTransform)
+    {
+        setRelativeTranslation(inTransform.translation);
+        setRelativeRotation(inTransform.rotation);
+        setRelativeScale(inTransform.scale);
+    }
+
+    const Transform::Instance& Transformable::getWorldTransform() const
+    {
+        return m_transform.world;
+    }
+
+    void Transformable::setWorldTransform(const Transform::Instance& inTransform)
+    {
+        setWorldTranslation(inTransform.translation);
+        setWorldRotation(inTransform.rotation);
+        setWorldScale(inTransform.scale);
     }
 
     const Mat<4, float>& Transformable::getPosition() const
@@ -270,24 +342,61 @@ namespace Chicane
         refreshBounds();
     }
 
-    Subscription<const Transform&>* Transformable::watchTransform(
-        std::function<void (const Transform&)> inNext,
+    Subscription<void*>* Transformable::watchTransform(
+        std::function<void (void*)> inNext,
         std::function<void (const std::string&)> inError,
         std::function<void ()> inComplete
     )
     {
-        Subscription<const Transform&>* subscription = m_transformObservable->subscribe(
-            inNext,
-            inError,
-            inComplete
-        );
-        subscription->next(m_transform);
+        return m_transformObservable->subscribe(inNext, inError, inComplete);
+    }
 
-        return subscription;
+    void Transformable::setTranslation(const Vec<3, float>& inTranslation, Vec<3, float>& outTranslation)
+    {
+        outTranslation = inTranslation;
+
+        refreshCoordinates();
+
+        m_transformObservable->next(nullptr);
+    }
+
+    void Transformable::setRotation(const Vec<3, float>& inRotation, Vec<3, float>& outRotation)
+    {
+        outRotation = inRotation;
+
+        if (std::abs(outRotation.x) > 360.0f)
+        {
+            outRotation.x = 0.0f;
+        }
+
+        if (std::abs(outRotation.y) > 360.0f)
+        {
+            outRotation.y = 0.0f;
+        }
+
+        if (std::abs(outRotation.z) > 360.0f)
+        {
+            outRotation.z = 0.0f;
+        }
+
+        refreshCoordinates();
+
+        m_transformObservable->next(nullptr);
+    }
+
+    void Transformable::setScale(const Vec<3, float>& inScale, Vec<3, float>& outScale)
+    {
+        outScale = inScale;
+
+        refreshCoordinates();
+
+        m_transformObservable->next(nullptr);
     }
 
     void Transformable::refreshCoordinates()
     {
+        m_transform.combineTransforms();
+
         refreshOrientation();
         refreshDirections();
         refreshPosition();
@@ -296,9 +405,9 @@ namespace Chicane
 
     void Transformable::refreshOrientation()
     {
-        Quat<float> pitch = glm::angleAxis(glm::radians(m_transform.rotation.z), RIGHT_DIRECTION);
+        Quat<float> pitch = glm::angleAxis(glm::radians(m_transform.rotation.x), RIGHT_DIRECTION);
         Quat<float> roll  = glm::angleAxis(glm::radians(m_transform.rotation.y), FORWARD_DIRECTION);
-        Quat<float> yaw   = glm::angleAxis(glm::radians(m_transform.rotation.x), UP_DIRECTION);
+        Quat<float> yaw   = glm::angleAxis(glm::radians(m_transform.rotation.z), UP_DIRECTION);
 
         m_orientation = roll * yaw * pitch;
         m_orientation = glm::normalize(m_orientation);

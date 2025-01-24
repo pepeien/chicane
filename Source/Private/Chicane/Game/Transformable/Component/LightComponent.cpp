@@ -5,4 +5,11 @@ namespace Chicane
     LightComponent::LightComponent()
         : ViewComponent()
     {}
+
+    void LightComponent::onTransform()
+    {
+        ViewComponent::onTransform();
+
+        setFocusPoint(getTranslation() + getForward());
+    }
 }

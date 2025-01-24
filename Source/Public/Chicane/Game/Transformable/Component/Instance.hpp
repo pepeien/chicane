@@ -17,6 +17,7 @@ namespace Chicane
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
         virtual void onAttachment(Actor* inActor) { return; }
+        virtual void onTransform() { return; }
         virtual void onTick(float inDeltaTime) { return; }
 
     public:
@@ -41,28 +42,14 @@ namespace Chicane
         }
         void attachTo(Actor* inAttachment);
 
-        const Transform& getBase() const;
-        void setBase(const Transform& inOrigin);
-
-        const Vec<3, float>& getBaseScale() const;
-        void setBaseScale(const Vec<3, float>& inScale);
-
-        const Vec<3, float>& getBaseRotation() const;
-        void setBaseRotation(const Vec<3, float>& inRotation);
-
-        const Vec<3, float>& getBaseTranslation() const;
-        void setBaseTranslation(const Vec<3, float>& inTranslation);
-
     private:
         void updateTransform();
 
     protected:
-        bool m_bCanTick;
-        bool m_bIsActive;
+        bool                 m_bCanTick;
+        bool                 m_bIsActive;
 
-        Transform m_base;
-
-        Actor* m_attachment;
-        Subscription<const Transform&>* m_attachmentTransformSubscription;
+        Actor*               m_attachment;
+        Subscription<void*>* m_attachmentTransformSubscription;
     };
 }

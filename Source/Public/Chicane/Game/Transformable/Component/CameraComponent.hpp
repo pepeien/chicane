@@ -10,5 +10,8 @@ namespace Chicane
     public:
         CameraComponent();
         virtual ~CameraComponent() = default;
+    
+    protected:
+        virtual void onTransform();
     }; 
 }
