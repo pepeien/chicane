@@ -86,25 +86,13 @@ namespace Chicane
             m_attachmentTransformSubscription = m_attachment->watchTransform(
                 [&](void* inData)
                 {
-                    updateTransform();
+                    setWorldTransform(m_attachment->getWorldTransform());
+
+                    onTransform();
                 }
             );
         }
 
-        updateTransform();
-
         onAttachment(inAttachment);
-    }
-
-    void Component::updateTransform()
-    {
-        if (!isAttached())
-        {
-            return;
-        }
-
-        setWorldTransform(m_attachment->getWorldTransform());
-
-        onTransform();
     }
 }

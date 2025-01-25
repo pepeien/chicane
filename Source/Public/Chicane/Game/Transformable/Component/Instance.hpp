@@ -42,9 +42,6 @@ namespace Chicane
         }
         void attachTo(Actor* inAttachment);
 
-    private:
-        void updateTransform();
-
     protected:
         bool                 m_bCanTick;
         bool                 m_bIsActive;

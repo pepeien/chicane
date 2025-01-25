@@ -106,7 +106,7 @@ namespace Chicane
             std::function<void ()> inComplete = nullptr
         );
 
-    protected:
+    private:
         void setTranslation(const Vec<3, float>& inTranslation, Vec<3, float>& outTranslation);
         void setRotation(const Vec<3, float>& inRotation, Vec<3, float>& ouRotation);
         void setScale(const Vec<3, float>& inScale, Vec<3, float>& outScale);
@@ -116,7 +116,7 @@ namespace Chicane
         void refreshDirections();
         void refreshPosition();
 
-    protected:
+    private:
         // Transform
         Transform::Combined                m_transform;
         Mat<4, float>                      m_position;

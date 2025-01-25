@@ -14,21 +14,25 @@ namespace Chicane
 
     void ViewComponent::onTransform()
     {
-        m_data.forward.x = m_direction.forward.x;
-        m_data.forward.y = m_direction.forward.y;
-        m_data.forward.z = m_direction.forward.z;
+        const Vec<3, float>& forward = getForward();
+        m_data.forward.x = forward.x;
+        m_data.forward.y = forward.y;
+        m_data.forward.z = forward.z;
 
-        m_data.right.x = m_direction.right.x;
-        m_data.right.y = m_direction.right.y;
-        m_data.right.z = m_direction.right.z;
+        const Vec<3, float>& right = getRight();
+        m_data.right.x = right.x;
+        m_data.right.y = right.y;
+        m_data.right.z = right.z;
 
-        m_data.up.x = m_direction.up.x;
-        m_data.up.y = m_direction.up.y;
-        m_data.up.z = m_direction.up.z;
+        const Vec<3, float>& up = getUp();
+        m_data.up.x = up.x;
+        m_data.up.y = up.y;
+        m_data.up.z = up.z;
 
-        m_data.translation.x = m_transform.translation.x;
-        m_data.translation.y = m_transform.translation.y;
-        m_data.translation.z = m_transform.translation.z;
+        const Vec<3, float>& translation = getTranslation();
+        m_data.translation.x = translation.x;
+        m_data.translation.y = translation.y;
+        m_data.translation.z = translation.z;
 
         updateView();
     }

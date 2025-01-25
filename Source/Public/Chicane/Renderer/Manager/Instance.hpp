@@ -93,11 +93,7 @@ namespace Chicane
                     return 0;
                 }
 
-                return std::count(
-                    m_usedIds.begin(),
-                    m_usedIds.end(),
-                    inId
-                );
+                return std::count(m_usedIds.begin(),  m_usedIds.end(), inId);
             }
 
             // Lifecycle
@@ -151,10 +147,12 @@ namespace Chicane
                 }
 
                 m_usedIds.push_back(inId);
+                std::sort(m_usedIds.begin(), m_usedIds.end());
 
                 if (!isActive(inId))
                 {
                     m_activeIds.push_back(inId);
+                    std::sort(m_activeIds.begin(), m_activeIds.end());
 
                     onActivation(inId);
                 }
@@ -177,6 +175,7 @@ namespace Chicane
                     )
                 );
                 m_usedIds.shrink_to_fit();
+                std::sort(m_usedIds.begin(), m_usedIds.end());
 
                 if (!isUsing(inId))
                 {
@@ -188,6 +187,7 @@ namespace Chicane
                         )
                     );
                     m_activeIds.shrink_to_fit();
+                    std::sort(m_activeIds.begin(), m_activeIds.end());
 
                     onDeactivation(inId);
                 }
@@ -210,8 +210,8 @@ namespace Chicane
             }
 
         protected:
-            std::unordered_map<std::string, I>     m_instances;
-            std::unordered_map<std::string, D>     m_datum;
+            std::map<std::string, I>               m_instances;
+            std::map<std::string, D>               m_datum;
             std::vector<std::string>               m_activeIds;
             std::vector<std::string>               m_usedIds;
             std::unique_ptr<Observable<EventType>> m_observable;

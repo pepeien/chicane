@@ -395,11 +395,26 @@ namespace Chicane
 
     void Transformable::refreshCoordinates()
     {
-        m_transform.combineTransforms();
+        // Translation
+        m_transform.translation = m_transform.world.translation;
+        m_transform.translation = m_transform.translation + (getRight() * m_transform.relative.translation.x);
+        m_transform.translation = m_transform.translation + (getForward() * m_transform.relative.translation.y);
+        m_transform.translation = m_transform.translation + (getUp() * m_transform.relative.translation.z);
 
+        // Rotation
+        m_transform.rotation = m_transform.world.rotation + m_transform.relative.rotation;
+
+        // Scaling
+        m_transform.scale = m_transform.world.scale * m_transform.relative.scale;
+
+        // Orientation
         refreshOrientation();
         refreshDirections();
+
+        // Position
         refreshPosition();
+
+        // Bounds
         refreshBounds();
     }
 
