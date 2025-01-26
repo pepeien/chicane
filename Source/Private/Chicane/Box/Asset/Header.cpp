@@ -47,7 +47,7 @@ namespace Chicane
 
                 version = XML::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
 
-                if (!version > 0)
+                if (version > 0)
                 {
                     return;
                 }
