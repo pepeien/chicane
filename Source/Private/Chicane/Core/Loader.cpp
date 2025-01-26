@@ -4,11 +4,17 @@ namespace Chicane
 {
     namespace Loader
     {
+        std::unique_ptr<Audio::Manager>   m_audioManager   = std::make_unique<Audio::Manager>();
         std::unique_ptr<CubeMap::Manager> m_cubeMapManager = std::make_unique<CubeMap::Manager>();
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
         std::unordered_map<std::string, const Box::Asset::Instance*> m_cache {};
+
+        Audio::Manager* getAudioManager()
+        {
+            return m_audioManager.get();
+        }
 
         CubeMap::Manager* getCubeMapManager()
         {
@@ -161,7 +167,34 @@ namespace Chicane
             }
         }
 
-        void loadCubemap(const Box::Asset::Instance* inAsset)
+        void loadAudio(const Box::Asset::Instance* inAsset)
+        {
+            if (!inAsset)
+            {
+                return;
+            }
+
+            if (isLoaded(inAsset))
+            {
+                return;
+            }
+
+            if (!inAsset->isType(Box::Asset::Type::Audio))
+            {
+                return;
+            }
+
+            const std::string filepath = inAsset->getFilepath().string();
+
+            cacheAsset(filepath, inAsset);
+
+            m_audioManager->load(
+                filepath,
+                static_cast<const Box::Audio*>(inAsset)
+            );
+        }
+
+        void loadCubeMap(const Box::Asset::Instance* inAsset)
         {
             if (!inAsset)
             {
@@ -188,55 +221,72 @@ namespace Chicane
             );
         }
 
-        const Box::CubeMap* loadCubemap(const std::string& inFilepath)
+        const Box::Audio* loadAudio(const std::string& inFilePath)
         {
-            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilePath);
+
+            if (header.type != Box::Asset::Type::Audio)
+            {
+                throw std::runtime_error(inFilePath + " is not a audio");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadAudio(new Box::Audio(inFilePath));
+            }
+
+            return getAsset<Box::Audio>(inFilePath);
+        }
+
+        const Box::CubeMap* loadCubeMap(const std::string& inFilePath)
+        {
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilePath);
 
             if (header.type != Box::Asset::Type::CubeMap)
             {
-                throw std::runtime_error(inFilepath + " is not a cube map");
+                throw std::runtime_error(inFilePath + " is not a cube map");
             }
 
-            if (!isLoaded(inFilepath))
+            if (!isLoaded(inFilePath))
             {
-                loadCubemap(new Box::CubeMap(inFilepath));
+                loadCubeMap(new Box::CubeMap(inFilePath));
             }
 
-            return getAsset<Box::CubeMap>(inFilepath);
+            return getAsset<Box::CubeMap>(inFilePath);
         }
 
-        const Box::Texture* loadTexture(const std::string& inFilepath)
+        const Box::Texture* loadTexture(const std::string& inFilePath)
         {
-            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilePath);
 
             if (header.type != Box::Asset::Type::Texture)
             {
-                throw std::runtime_error(inFilepath + "is not a texture");
+                throw std::runtime_error(inFilePath + "is not a texture");
             }
 
-            if (!isLoaded(inFilepath))
+            if (!isLoaded(inFilePath))
             {
-                loadTexture(new Box::Texture(inFilepath));
+                loadTexture(new Box::Texture(inFilePath));
             }
 
-            return getAsset<Box::Texture>(inFilepath);
+            return getAsset<Box::Texture>(inFilePath);
         }
 
-        const Box::Mesh* loadMesh(const std::string& inFilepath)
+        const Box::Mesh* loadMesh(const std::string& inFilePath)
         {
-            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilepath);
+            Box::Asset::Header header = Box::Asset::Header::fromFilepath(inFilePath);
 
             if (header.type != Box::Asset::Type::Mesh)
             {
-                throw std::runtime_error(inFilepath + "is not a mesh");
+                throw std::runtime_error(inFilePath + "is not a mesh");
             }
 
-            if (!isLoaded(inFilepath))
+            if (!isLoaded(inFilePath))
             {
-                loadMesh(new Box::Mesh(inFilepath));
+                loadMesh(new Box::Mesh(inFilePath));
             }
 
-            return getAsset<Box::Mesh>(inFilepath);
+            return getAsset<Box::Mesh>(inFilePath);
         }
 
         void reset()

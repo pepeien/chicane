@@ -15,7 +15,7 @@ namespace Chicane
 
         public:
             static inline std::string EXTENSION = ".bcmp";
-            static inline std::string TAG       = "Cubemap";
+            static inline std::string TAG       = "CubeMap";
 
         public:
             CubeMap(const std::string& inFilepath);

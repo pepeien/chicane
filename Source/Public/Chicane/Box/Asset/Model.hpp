@@ -31,7 +31,7 @@ namespace Chicane
 
         private:
             Chicane::Model::Vendor::Type m_vendor;
-            std::vector<unsigned char> m_data;
+            std::vector<unsigned char>   m_data;
         };
     }
 }
