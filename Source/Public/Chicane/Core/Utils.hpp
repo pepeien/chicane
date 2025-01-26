@@ -41,7 +41,10 @@ namespace Chicane
         }
 
         std::string trim(const std::string& inTarget);
+
         std::vector<std::string> split(const std::string& inTarget, char inDelimeter);
         std::vector<std::string> split(const std::vector<unsigned char>& inTarget, char inDelimiter);
+
+        void sort(std::vector<std::string>& outValue);
     }
 }

@@ -147,12 +147,12 @@ namespace Chicane
                 }
 
                 m_usedIds.push_back(inId);
-                std::sort(m_usedIds.begin(), m_usedIds.end());
+                Utils::sort(m_usedIds);
 
                 if (!isActive(inId))
                 {
                     m_activeIds.push_back(inId);
-                    std::sort(m_activeIds.begin(), m_activeIds.end());
+                    Utils::sort(m_activeIds);
 
                     onActivation(inId);
                 }
@@ -175,7 +175,7 @@ namespace Chicane
                     )
                 );
                 m_usedIds.shrink_to_fit();
-                std::sort(m_usedIds.begin(), m_usedIds.end());
+                Utils::sort(m_usedIds);
 
                 if (!isUsing(inId))
                 {
@@ -187,7 +187,7 @@ namespace Chicane
                         )
                     );
                     m_activeIds.shrink_to_fit();
-                    std::sort(m_activeIds.begin(), m_activeIds.end());
+                    Utils::sort(m_activeIds);
 
                     onDeactivation(inId);
                 }
