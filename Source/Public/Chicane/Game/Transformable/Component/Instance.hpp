@@ -42,7 +42,7 @@ namespace Chicane
         }
         void attachTo(Actor* inAttachment);
 
-    protected:
+    public:
         bool                 m_bCanTick;
         bool                 m_bIsActive;
 

@@ -7,7 +7,12 @@ namespace Chicane
 {
     Controller::Controller()
         : m_pawn(nullptr),
-        m_pawnObservable(std::make_unique<Observable<Pawn*>>())
+        m_pawnObservable(std::make_unique<Observable<Pawn*>>()),
+        m_mouseMotionEvents({}),
+        m_mouseButtonEvents({}),
+        m_keyboardButtonEvents({}),
+        m_controllerMotionEvents({}),
+        m_controllerButtonEvents({})
     {}
 
     void Controller::activate()
@@ -82,27 +87,42 @@ namespace Chicane
 
     void Controller::bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent)
     {
-        m_mouseMotionEvent = inEvent;
+        m_mouseMotionEvents.push_back(inEvent);
     }
 
     void Controller::bindMouseButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
     {
-        m_mouseButtonEvents[inButtonCode] = inEvent;
+        if (m_mouseButtonEvents.find(inButtonCode) == m_mouseButtonEvents.end())
+        {
+            m_mouseButtonEvents[inButtonCode] = {};
+        }
+
+        m_mouseButtonEvents.at(inButtonCode).push_back(inEvent);
     }
 
     void Controller::bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent)
     {
-        m_keyboardButtonEvents[inButtonCode] = inEvent;
+        if (m_keyboardButtonEvents.find(inButtonCode) == m_keyboardButtonEvents.end())
+        {
+            m_keyboardButtonEvents[inButtonCode] = {};
+        }
+
+        m_keyboardButtonEvents.at(inButtonCode).push_back(inEvent);
     }
 
     void Controller::bindControllerMotionEvent(std::function<void(const SDL_GamepadAxisEvent&)> inEvent)
     {
-        m_controllerMotionEvent = inEvent;
+        m_controllerMotionEvents.push_back(inEvent);
     }
 
     void Controller::bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
     {
-        m_controllerButtonEvents[inButtonCode] = inEvent;
+        if (m_controllerButtonEvents.find(inButtonCode) == m_controllerButtonEvents.end())
+        {
+            m_controllerButtonEvents[inButtonCode] = {};
+        }
+
+        m_controllerButtonEvents.at(inButtonCode).push_back(inEvent);
     }
 
     void Controller::onEvent(const SDL_Event& inEvent)
@@ -111,10 +131,7 @@ namespace Chicane
         {
         // Mouse
         case SDL_EVENT_MOUSE_MOTION:
-            if (m_mouseMotionEvent)
-            {
-                m_mouseMotionEvent(inEvent.motion);
-            }
+            onMouseMotionEvent(inEvent.motion);
 
             break;
 
@@ -133,10 +150,7 @@ namespace Chicane
 
         // Controller
         case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-            if (m_controllerMotionEvent)
-            {
-                m_controllerMotionEvent(inEvent.gaxis);
-            }
+            onControllerMotionEvent(inEvent.gaxis);
 
             break;
 
@@ -151,6 +165,14 @@ namespace Chicane
         }
     }
 
+    void Controller::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
+    {
+        for (auto& function : m_mouseMotionEvents)
+        {
+            function(inEvent);
+        }
+    }
+
     void Controller::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
     {
         std::uint8_t key = inEvent.button;
@@ -160,7 +182,10 @@ namespace Chicane
             return;
         }
 
-        m_mouseButtonEvents.at(key)(inEvent.down);
+        for (auto& function : m_mouseButtonEvents.at(key))
+        {
+            function(inEvent.down);
+        }
     }
 
     void Controller::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
@@ -172,7 +197,18 @@ namespace Chicane
             return;
         }
 
-        m_keyboardButtonEvents.at(key)(inEvent.down);
+        for (auto& function : m_keyboardButtonEvents.at(key))
+        {
+            function(inEvent.down);
+        }
+    }
+
+    void Controller::onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent)
+    {
+        for (auto& function : m_controllerMotionEvents)
+        {
+            function(inEvent);
+        }
     }
 
     void Controller::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
@@ -184,17 +220,20 @@ namespace Chicane
             return;
         }
 
-        m_controllerButtonEvents.at(key)(inEvent.down);
+        for (auto& function : m_controllerButtonEvents.at(key))
+        {
+            function(inEvent.down);
+        }
     }
 
     void Controller::clearEvents()
     {
-        m_mouseMotionEvent = nullptr;
+        m_mouseMotionEvents.clear();
         m_mouseButtonEvents.clear();
 
         m_keyboardButtonEvents.clear();
 
-        m_controllerMotionEvent = nullptr;
         m_controllerButtonEvents.clear();
+        m_controllerMotionEvents.clear();
     }
 }

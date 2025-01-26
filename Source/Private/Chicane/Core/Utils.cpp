@@ -49,5 +49,17 @@ namespace Chicane
                 inDelimiter
             );
         }
+
+        void sort(std::vector<std::string>& outValue)
+        {
+            std::sort(
+                outValue.begin(),
+                outValue.end(),
+                [](const std::string& inA, const std::string& inB)
+                {
+                    return strcmp(inA.c_str(), inB.c_str()) > 0;
+                }
+            );
+        }
     }
 }

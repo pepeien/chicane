@@ -23,13 +23,13 @@ namespace Chicane
         void setRelativeTranslation(float inX, float inY, float inZ);
         void setRelativeTranslation(const Vec<3, float>& inTranslation);
 
-        const Vec<3, float>& getWorldTranslation() const;
-        void addWorldTranslation(float inTranslation);
-        void addWorldTranslation(float inX, float inY, float inZ);
-        void addWorldTranslation(const Vec<3, float>& inTranslation);
-        void setWorldTranslation(float inTranslation);
-        void setWorldTranslation(float inX, float inY, float inZ);
-        void setWorldTranslation(const Vec<3, float>& inTranslation);
+        const Vec<3, float>& getAbsoluteTranslation() const;
+        void addAbsoluteTranslation(float inTranslation);
+        void addAbsoluteTranslation(float inX, float inY, float inZ);
+        void addAbsoluteTranslation(const Vec<3, float>& inTranslation);
+        void setAbsoluteTranslation(float inTranslation);
+        void setAbsoluteTranslation(float inX, float inY, float inZ);
+        void setAbsoluteTranslation(const Vec<3, float>& inTranslation);
 
         // Rotation
         const Vec<3, float>& getRotation() const;
@@ -42,13 +42,13 @@ namespace Chicane
         void setRelativeRotation(float inPitch, float inRoll, float inYaw);
         void setRelativeRotation(const Vec<3, float>& inRotation);
 
-        const Vec<3, float>& getWorldRotation() const;
-        void addWorldRotation(float inRotation);
-        void addWorldRotation(float inPitch, float inRoll, float inYaw);
-        void addWorldRotation(const Vec<3, float>& inRotation);
-        void setWorldRotation(float inRotation);
-        void setWorldRotation(float inPitch, float inRoll, float inYaw);
-        void setWorldRotation(const Vec<3, float>& inRotation);
+        const Vec<3, float>& getAbsoluteRotation() const;
+        void addAbsoluteRotation(float inRotation);
+        void addAbsoluteRotation(float inPitch, float inRoll, float inYaw);
+        void addAbsoluteRotation(const Vec<3, float>& inRotation);
+        void setAbsoluteRotation(float inRotation);
+        void setAbsoluteRotation(float inPitch, float inRoll, float inYaw);
+        void setAbsoluteRotation(const Vec<3, float>& inRotation);
 
         // Scaling
         const Vec<3, float>& getScale() const;
@@ -61,25 +61,25 @@ namespace Chicane
         void setRelativeScale(float inX, float inY, float inZ);
         void setRelativeScale(const Vec<3, float>& inScale);
 
-        const Vec<3, float>& getWorldScale() const;
-        void addWorldScale(float inScale);
-        void addWorldScale(float inX, float inY, float inZ);
-        void addWorldScale(const Vec<3, float>& inScale);
-        void setWorldScale(float inScale);
-        void setWorldScale(float inX, float inY, float inZ);
-        void setWorldScale(const Vec<3, float>& inScale);
+        const Vec<3, float>& getAbsoluteScale() const;
+        void addAbsoluteScale(float inScale);
+        void addAbsoluteScale(float inX, float inY, float inZ);
+        void addAbsoluteScale(const Vec<3, float>& inScale);
+        void setAbsoluteScale(float inScale);
+        void setAbsoluteScale(float inX, float inY, float inZ);
+        void setAbsoluteScale(const Vec<3, float>& inScale);
 
         // Transform
         const Transform::Combined& getTransform() const;
 
-        const Transform::Instance& getRelativeTransform() const;
-        void setRelativeTransform(const Transform::Instance& inTransform);
+        const Transform::Instance& getRelative() const;
+        void setRelative(const Transform::Instance& inTransform);
 
-        const Transform::Instance& getWorldTransform() const;
-        void setWorldTransform(const Transform::Instance& inTransform);
+        const Transform::Instance& getAbsolute() const;
+        void setAbsolute(const Transform::Instance& inTransform);
 
         // Position
-        const Mat<4, float>& getPosition() const;
+        const Mat<4, float>& getTransformation() const;
 
         // Orientation
         const Quat<float>& getOrientation() const;
@@ -96,7 +96,6 @@ namespace Chicane
         const Vec<3, float>& getExtent() const;
 
         const Bounds& getBounds() const;
-        void refreshBounds();
         void setBounds(const Bounds& inBounds);
 
         // Events
@@ -107,23 +106,12 @@ namespace Chicane
         );
 
     private:
-        void setTranslation(const Vec<3, float>& inTranslation, Vec<3, float>& outTranslation);
-        void setRotation(const Vec<3, float>& inRotation, Vec<3, float>& ouRotation);
-        void setScale(const Vec<3, float>& inScale, Vec<3, float>& outScale);
-
-        void refreshCoordinates();
-        void refreshOrientation();
-        void refreshDirections();
-        void refreshPosition();
+        void refresh();
+        void refreshBounds();
 
     private:
         // Transform
         Transform::Combined                m_transform;
-        Mat<4, float>                      m_position;
-
-        // Direction
-        Direction                          m_direction;
-        Quat<float>                        m_orientation;
 
         // Bounds
         Bounds                             m_baseBounds;

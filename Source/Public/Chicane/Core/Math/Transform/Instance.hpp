@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Core/Math/Mat.hpp"
+#include "Chicane/Core/Math/Quat.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 
 namespace Chicane
@@ -10,9 +12,45 @@ namespace Chicane
         struct Instance
         {
         public:
-            Vec<3, float> translation = Vec3Zero;
-            Vec<3, float> rotation    = Vec3Zero;
-            Vec<3, float> scale       = Vec<3, float>(1.0f);
+            // Transformation
+            const Mat<4, float>& getTransformation() const;
+
+            void setTransform(const Instance& inTransform);
+
+            const Vec<3, float>& getTranslation() const;
+            void addTranslation(const Vec<3, float>& inTranslation);
+            void setTranslation(const Vec<3, float>& inTranslation);
+
+            const Vec<3, float>& getRotation() const;
+            void addRotation(const Vec<3, float>& inRotation);
+            void setRotation(const Vec<3, float>& inRotation);
+
+            const Vec<3, float>& getScale() const;
+            void addScale(const Vec<3, float>& inScale);
+            void setScale(const Vec<3, float>& inScale);
+
+            // Orientation
+            const Quat<float>& getOrientation() const;
+
+            const Vec<3, float>& getRight() const;
+            const Vec<3, float>& getForward() const;
+            const Vec<3, float>& getUp() const;
+
+        protected:
+            void refresh();
+
+        protected:
+            // Transformation
+            Mat<4, float> m_transformation = Mat<4, float>(1.0f);
+            Vec<3, float> m_translation    = Vec<3, float>(0.0f);
+            Vec<3, float> m_rotation       = Vec<3, float>(0.0f);
+            Vec<3, float> m_scale          = Vec<3, float>(1.0f);
+
+            // Orientation
+            Quat<float>   m_orientation;
+            Vec<3, float> m_forward        = FORWARD_DIRECTION;
+            Vec<3, float> m_up             = UP_DIRECTION;
+            Vec<3, float> m_right          = RIGHT_DIRECTION;
         };
     }
 }

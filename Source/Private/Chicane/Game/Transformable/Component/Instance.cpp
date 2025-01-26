@@ -86,7 +86,7 @@ namespace Chicane
             m_attachmentTransformSubscription = m_attachment->watchTransform(
                 [&](void* inData)
                 {
-                    setWorldTransform(m_attachment->getWorldTransform());
+                    setAbsolute(m_attachment->getAbsolute());
 
                     onTransform();
                 }

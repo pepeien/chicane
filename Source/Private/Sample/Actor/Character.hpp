@@ -10,4 +10,7 @@ public:
 
 protected:
     void onControlAttachment() override;
+
+private:
+    Chicane::MeshComponent* m_wand;
 };

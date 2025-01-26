@@ -50,26 +50,28 @@ namespace Chicane
 
     private:
         // Events
+        void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
         void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
         void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
+        void onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent);
         void onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent);
 
         void clearEvents();
 
     private:
         // Pawn
-        Pawn* m_pawn;
-        std::unique_ptr<Observable<Pawn*>> m_pawnObservable;
+        Pawn*                                                                    m_pawn;
+        std::unique_ptr<Observable<Pawn*>>                                       m_pawnObservable;
 
         // Mouse Events
-        std::function<void(const SDL_MouseMotionEvent&)> m_mouseMotionEvent;
-        std::unordered_map<std::uint8_t, std::function<void(bool)>> m_mouseButtonEvents;
+        std::vector<std::function<void(const SDL_MouseMotionEvent&)>>            m_mouseMotionEvents;
+        std::unordered_map<std::uint8_t, std::vector<std::function<void(bool)>>> m_mouseButtonEvents;
 
         // Keyboard Events
-        std::unordered_map<SDL_Scancode, std::function<void(bool)>> m_keyboardButtonEvents;
+        std::unordered_map<SDL_Scancode, std::vector<std::function<void(bool)>>> m_keyboardButtonEvents;
 
         // Controller Events
-        std::function<void(const SDL_GamepadAxisEvent&)> m_controllerMotionEvent;
-        std::unordered_map<std::uint8_t, std::function<void(bool)>> m_controllerButtonEvents;
+        std::vector<std::function<void(const SDL_GamepadAxisEvent&)>>            m_controllerMotionEvents;
+        std::unordered_map<std::uint8_t, std::vector<std::function<void(bool)>>> m_controllerButtonEvents;
     };
 }
