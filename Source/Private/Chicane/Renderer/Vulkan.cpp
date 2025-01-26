@@ -205,6 +205,15 @@ namespace Chicane
                                     m_meshes.push_back(static_cast<MeshComponent*>(component));
                                 }
                             }
+
+                            std::sort(
+                                m_meshes.begin(),
+                                m_meshes.end(),
+                                [](MeshComponent* inA, MeshComponent* inB)
+                                {
+                                    return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
+                                }
+                            );
                         }
                     );
                 }
@@ -330,9 +339,10 @@ namespace Chicane
             destroySwapChain();
             buildSwapChain();
 
-            rebuildLayers();
-
             buildFramesCommandBuffers();
+
+            rebuildFrames();
+            rebuildLayers();
         }
 
         void Renderer::destroySwapChain()
@@ -400,6 +410,14 @@ namespace Chicane
 
             vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewport.size);
             inCommandBuffer.setScissor(0, 1, &scissor);
+        }
+
+        void Renderer::rebuildFrames()
+        {
+            for (Frame::Instance& frame : m_swapChain.frames)
+            {
+                setupFrame(frame);
+            }
         }
 
         void Renderer::setupFrame(Frame::Instance& outFrame)

@@ -91,6 +91,7 @@ namespace Chicane
 
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
+            void rebuildFrames();
             void setupFrame(Frame::Instance& outFrame);
 
             void setupLayers(Frame::Instance& outFrame);
