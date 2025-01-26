@@ -93,7 +93,6 @@ namespace Chicane
             // Setup
             void initWindow(const Window::CreateInfo& inCreateInfo);
             void initRenderer(Renderer::Type inRenderer);
-            void initLayers();
 
             // Lifecycle
             void onEvent(const SDL_Event& inEvent);

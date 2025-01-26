@@ -102,6 +102,7 @@
         "future": "cpp",
         "cfenv": "cpp",
         "*.def": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "*.rh": "cpp"
     }
 }

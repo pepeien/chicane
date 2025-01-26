@@ -13,7 +13,7 @@ namespace Chicane
         {
         public:
             // Transformation
-            const Mat<4, float>& getTransformation() const;
+            const Mat<4, float>& getMatrix() const;
 
             void setTransform(const Instance& inTransform);
 
@@ -30,8 +30,6 @@ namespace Chicane
             void setScale(const Vec<3, float>& inScale);
 
             // Orientation
-            const Quat<float>& getOrientation() const;
-
             const Vec<3, float>& getRight() const;
             const Vec<3, float>& getForward() const;
             const Vec<3, float>& getUp() const;
@@ -41,13 +39,12 @@ namespace Chicane
 
         protected:
             // Transformation
-            Mat<4, float> m_transformation = Mat<4, float>(1.0f);
+            Mat<4, float> m_matrix         = Mat<4, float>(1.0f);
             Vec<3, float> m_translation    = Vec<3, float>(0.0f);
             Vec<3, float> m_rotation       = Vec<3, float>(0.0f);
             Vec<3, float> m_scale          = Vec<3, float>(1.0f);
 
             // Orientation
-            Quat<float>   m_orientation;
             Vec<3, float> m_forward        = FORWARD_DIRECTION;
             Vec<3, float> m_up             = UP_DIRECTION;
             Vec<3, float> m_right          = RIGHT_DIRECTION;

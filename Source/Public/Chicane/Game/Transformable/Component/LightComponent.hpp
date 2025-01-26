@@ -12,6 +12,6 @@ namespace Chicane
         virtual ~LightComponent() = default;
     
     protected:
-        virtual void onTransform();
+        void onTransform() override;
     }; 
 }

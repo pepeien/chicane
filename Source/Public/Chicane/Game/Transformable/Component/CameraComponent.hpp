@@ -12,6 +12,6 @@ namespace Chicane
         virtual ~CameraComponent() = default;
     
     protected:
-        virtual void onTransform();
+        void onTransform() override;
     }; 
 }

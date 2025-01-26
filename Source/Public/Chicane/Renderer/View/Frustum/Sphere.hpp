@@ -13,10 +13,7 @@ namespace Chicane
             void use(const ViewComponent* inView) override;
 
         protected:
-            bool isWithinPlane(
-                const Plane& inPlane,
-                const Vec<3, float> inPoint
-            ) const override;
+            bool isWithinPlane(const Plane& inPlane, const Vec<3, float>& inPoint) const override;
 
         public:
             float radius = 1.0f;

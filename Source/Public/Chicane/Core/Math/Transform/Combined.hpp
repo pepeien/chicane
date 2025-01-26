@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Transformation
-            const Mat<4, float>& getTransformation() const;
+            const Mat<4, float>& getMatrix() const;
 
             const Vec<3, float>& getTranslation() const;
             const Vec<3, float>& getRotation() const;
@@ -48,8 +48,6 @@ namespace Chicane
             void setAbsoluteScale(const Vec<3, float>& inScale);
 
             // Orientation
-            const Quat<float>& getOrientation() const;
-
             const Vec<3, float>& getRight() const;
             const Vec<3, float>& getForward() const;
             const Vec<3, float>& getUp() const;

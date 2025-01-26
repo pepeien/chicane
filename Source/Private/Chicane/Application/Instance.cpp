@@ -21,7 +21,6 @@ namespace Chicane
         {
             initWindow(inCreateInfo);
             initRenderer(inCreateInfo.renderer);
-            initLayers();
 
             if (inCreateInfo.onSetup)
             {
@@ -238,14 +237,6 @@ namespace Chicane
                 m_renderer = std::make_unique<Renderer::Instance>(m_window.get());
 
                 break;
-            }
-        }
-
-        void Instance::initLayers()
-        {
-            if (!hasWindow() || !hasRenderer())
-            {
-                return;
             }
 
             m_renderer->initLayers();

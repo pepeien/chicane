@@ -66,10 +66,7 @@ namespace Chicane
             );
         }
 
-        bool SphereFrustum::isWithinPlane(
-            const Plane& inPlane,
-            const Vec<3, float> inPoint
-        ) const
+        bool SphereFrustum::isWithinPlane(const Plane& inPlane, const Vec<3, float>& inPoint) const
         {
         	return inPlane.getDistance(inPoint) > -radius;
         }

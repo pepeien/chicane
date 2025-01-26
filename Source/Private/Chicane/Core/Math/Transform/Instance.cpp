@@ -6,9 +6,9 @@ namespace Chicane
 {
     namespace Transform
     {
-        const Mat<4, float>& Instance::getTransformation() const
+        const Mat<4, float>& Instance::getMatrix() const
         {
-            return m_transformation;
+            return m_matrix;
         }
 
         void Instance::setTransform(const Instance& inTransform)
@@ -84,11 +84,6 @@ namespace Chicane
             refresh();
         }
 
-        const Quat<float>& Instance::getOrientation() const
-        {
-            return m_orientation;
-        }
-
         const Vec<3, float>& Instance::getRight() const
         {
             return m_right;
@@ -110,16 +105,17 @@ namespace Chicane
             Quat<float> pitch = glm::angleAxis(glm::radians(m_rotation.x), RIGHT_DIRECTION);
             Quat<float> roll  = glm::angleAxis(glm::radians(m_rotation.y), FORWARD_DIRECTION);
             Quat<float> yaw   = glm::angleAxis(glm::radians(m_rotation.z), UP_DIRECTION);
-            m_orientation = glm::normalize(roll * yaw * pitch);
 
-            m_forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
-            m_right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
-            m_up      = glm::rotate(m_orientation, UP_DIRECTION);
+            Quat<float> orientation = glm::normalize(roll * yaw * pitch);
+
+            m_forward = glm::rotate(orientation, FORWARD_DIRECTION);
+            m_right   = glm::rotate(orientation, RIGHT_DIRECTION);
+            m_up      = glm::rotate(orientation, UP_DIRECTION);
 
             // Transform
-            m_transformation  = glm::translate(BASE_MAT, m_translation); // Transalate
-            m_transformation *= glm::toMat4(m_orientation);              // Rotate
-            m_transformation  = glm::scale(m_transformation, m_scale);   // Scale
+            m_matrix  = glm::translate(BASE_MAT, m_translation); // Transalate
+            m_matrix *= glm::toMat4(orientation);                // Rotate
+            m_matrix  = glm::scale(m_matrix, m_scale);           // Scale
         }
     }
 }

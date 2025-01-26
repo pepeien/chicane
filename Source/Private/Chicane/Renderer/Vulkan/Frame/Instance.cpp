@@ -429,7 +429,7 @@ namespace Chicane
                 for (const MeshComponent* mesh : inMeshes)
                 {
                     Chicane::Mesh::Data data {};
-                    data.transform    = mesh->getTransformation();
+                    data.transform    = mesh->getTransform().getMatrix();
                     data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
 
                     meshes.push_back(data);

@@ -4,9 +4,9 @@ namespace Chicane
 {
     namespace Transform
     {
-        const Mat<4, float>& Combined::getTransformation() const
+        const Mat<4, float>& Combined::getMatrix() const
         {
-            return m_transformation;
+            return m_matrix;
         }
 
         const Vec<3, float>& Combined::getTranslation() const
@@ -162,11 +162,6 @@ namespace Chicane
             refresh();
         }
 
-        const Quat<float>& Combined::getOrientation() const
-        {
-            return m_orientation;
-        }
-
         const Vec<3, float>& Combined::getRight() const
         {
             return m_right;
@@ -185,18 +180,18 @@ namespace Chicane
         void Combined::refresh()
         {
             // Transformation
-            m_transformation = m_absolute.getTransformation() * m_relative.getTransformation();
+            m_matrix = m_absolute.getMatrix() * m_relative.getMatrix();
 
             m_translation = m_absolute.getTranslation() + m_relative.getTranslation();
             m_rotation    = m_absolute.getRotation() * m_relative.getRotation();
             m_scale       = m_absolute.getScale() * m_relative.getScale();
 
             // Orientation
-            m_orientation = glm::quat_cast(m_transformation);
+            Quat<float> orientation = glm::quat_cast(m_matrix);
 
-            m_forward = glm::rotate(m_orientation, FORWARD_DIRECTION);
-            m_right   = glm::rotate(m_orientation, RIGHT_DIRECTION);
-            m_up      = glm::rotate(m_orientation, UP_DIRECTION);
+            m_forward = glm::rotate(orientation, FORWARD_DIRECTION);
+            m_right   = glm::rotate(orientation, RIGHT_DIRECTION);
+            m_up      = glm::rotate(orientation, UP_DIRECTION);
         }
     }
 }
