@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace PopupComponent
+        namespace Popup
         {
             const std::string TAG_ID = "Popup";
 

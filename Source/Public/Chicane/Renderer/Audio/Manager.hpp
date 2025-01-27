@@ -26,9 +26,6 @@ namespace Chicane
             // Data
             const Audio::Instance& getInstance(const std::string& inId) const;
             const Audio::Data& getData(const std::string& inId) const;
-
-            // Execution
-            void play(const std::string& inId);
         };
     }
 }

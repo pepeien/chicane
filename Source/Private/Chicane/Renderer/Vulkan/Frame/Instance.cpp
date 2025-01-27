@@ -80,7 +80,7 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            void Instance::setupCameraData(const std::vector<CameraComponent*>& inCameras)
+            void Instance::setupCameraData(const std::vector<CCamera*>& inCameras)
             {
                 destroyCameraData();
 
@@ -101,7 +101,7 @@ namespace Chicane
                 cameraResource.copyToBuffer(&inCameras.at(0)->getData());
             }
 
-            void Instance::updateCameraData(const std::vector<CameraComponent*>& inCameras)
+            void Instance::updateCameraData(const std::vector<CCamera*>& inCameras)
             {
                 if (inCameras.empty())
                 {
@@ -125,7 +125,7 @@ namespace Chicane
                 cameraResource.destroy(logicalDevice);
             }
 
-            void Instance::setupLightData(const std::vector<LightComponent*>& inLights)
+            void Instance::setupLightData(const std::vector<CLight*>& inLights)
             {
                 destroyLightData();
 
@@ -146,7 +146,7 @@ namespace Chicane
                 lightResource.copyToBuffer(&inLights.at(0)->getData());
             }
 
-            void Instance::updateLightData(const std::vector<LightComponent*>& inLights)
+            void Instance::updateLightData(const std::vector<CLight*>& inLights)
             {
                 if (inLights.empty())
                 {
@@ -170,7 +170,7 @@ namespace Chicane
                 lightResource.destroy(logicalDevice);
             }
 
-            void Instance::setupMeshData(const std::vector<MeshComponent*>& inMeshes)
+            void Instance::setupMeshData(const std::vector<CMesh*>& inMeshes)
             {
                 destroyMeshData();
 
@@ -192,7 +192,7 @@ namespace Chicane
                 refreshMeshData(inMeshes);
             }
 
-            void Instance::updateMeshData(const std::vector<MeshComponent*>& inMeshes)
+            void Instance::updateMeshData(const std::vector<CMesh*>& inMeshes)
             {
                 if (inMeshes.empty())
                 {
@@ -414,7 +414,7 @@ namespace Chicane
                 destroyMeshData();
             }
 
-            void Instance::refreshMeshData(const std::vector<MeshComponent*>& inMeshes)
+            void Instance::refreshMeshData(const std::vector<CMesh*>& inMeshes)
             {
                 if (inMeshes.empty())
                 {
@@ -426,7 +426,7 @@ namespace Chicane
                 std::vector<Chicane::Mesh::Data> meshes = {};
                 meshes.reserve(inMeshes.size());
 
-                for (const MeshComponent* mesh : inMeshes)
+                for (const CMesh* mesh : inMeshes)
                 {
                     Chicane::Mesh::Data data {};
                     data.transform    = mesh->getTransform().getMatrix();

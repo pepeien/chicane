@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
-#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
-#include "Chicane/Game/Transformable/Component/LightComponent.hpp"
+#include "Chicane/Game/Transformable/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/Mesh.hpp"
+#include "Chicane/Game/Transformable/Component/Light.hpp"
 #include "Chicane/Renderer/Mesh/Data.hpp"
 #include "Chicane/Renderer/View/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
@@ -11,7 +11,7 @@
 
 namespace Chicane
 {
-    class MeshComponent;
+    class CMesh;
 
     namespace Vulkan
     {
@@ -32,16 +32,16 @@ namespace Chicane
                 );
 
                 // Resources
-                void setupCameraData(const std::vector<CameraComponent*>& inCameras);
-                void updateCameraData(const std::vector<CameraComponent*>& inCameras);
+                void setupCameraData(const std::vector<CCamera*>& inCameras);
+                void updateCameraData(const std::vector<CCamera*>& inCameras);
                 void destroyCameraData();
 
-                void setupLightData(const std::vector<LightComponent*>& inLights);
-                void updateLightData(const std::vector<LightComponent*>& inLights);
+                void setupLightData(const std::vector<CLight*>& inLights);
+                void updateLightData(const std::vector<CLight*>& inLights);
                 void destroyLightData();
 
-                void setupMeshData(const std::vector<MeshComponent*>& inMeshes);
-                void updateMeshData(const std::vector<MeshComponent*>& inMeshes);
+                void setupMeshData(const std::vector<CMesh*>& inMeshes);
+                void updateMeshData(const std::vector<CMesh*>& inMeshes);
                 void destroyMeshData();
 
                 void setupColorImage(vk::Format inFormat);
@@ -65,7 +65,7 @@ namespace Chicane
                 void destroy();
 
             private:
-                void refreshMeshData(const std::vector<MeshComponent*>& inMeshes);
+                void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
             public:
                 vk::Device                                        logicalDevice;

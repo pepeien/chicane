@@ -188,28 +188,28 @@ namespace Chicane
 
                             for (Component* component : inComponents)
                             {
-                                if (component->isType<CameraComponent>())
+                                if (component->isType<CCamera>())
                                 {
-                                    m_cameras.push_back(static_cast<CameraComponent*>(component));
+                                    m_cameras.push_back(static_cast<CCamera*>(component));
                                     m_cameras.back()->setViewport(viewport.size);
                                 }
 
-                                if (component->isType<LightComponent>())
+                                if (component->isType<CLight>())
                                 {
-                                    m_lights.push_back(static_cast<LightComponent*>(component));
+                                    m_lights.push_back(static_cast<CLight*>(component));
                                     m_lights.back()->setViewport(viewport.size);
                                 }
 
-                                if (component->isType<MeshComponent>())
+                                if (component->isType<CMesh>())
                                 {
-                                    m_meshes.push_back(static_cast<MeshComponent*>(component));
+                                    m_meshes.push_back(static_cast<CMesh*>(component));
                                 }
                             }
 
                             std::sort(
                                 m_meshes.begin(),
                                 m_meshes.end(),
-                                [](MeshComponent* inA, MeshComponent* inB)
+                                [](CMesh* inA, CMesh* inB)
                                 {
                                     return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
                                 }

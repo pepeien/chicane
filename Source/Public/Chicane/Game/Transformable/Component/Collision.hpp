@@ -5,11 +5,11 @@
 
 namespace Chicane
 {
-    class CollisionComponent : public Component
+    class CCollision : public Component
     {
     public:
-        CollisionComponent();
-        virtual ~CollisionComponent() = default;
+        CCollision();
+        virtual ~CCollision() = default;
 
     protected:
         void onTick(float inDeltaTime) override;

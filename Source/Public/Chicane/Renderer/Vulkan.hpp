@@ -126,9 +126,9 @@ namespace Chicane
             int                                    m_currentImageIndex;
 
             // Game
-            std::vector<Chicane::CameraComponent*> m_cameras;
-            std::vector<Chicane::LightComponent*>  m_lights;
-            std::vector<Chicane::MeshComponent*>   m_meshes;
+            std::vector<Chicane::CCamera*> m_cameras;
+            std::vector<Chicane::CLight*>  m_lights;
+            std::vector<Chicane::CMesh*>   m_meshes;
         };
     }
 }

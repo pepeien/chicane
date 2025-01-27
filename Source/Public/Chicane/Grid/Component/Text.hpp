@@ -8,7 +8,7 @@ namespace Chicane
     {
         struct Style;
 
-        namespace TextComponent
+        namespace Text
         {
             const std::string TAG_ID = "Text";
 

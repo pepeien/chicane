@@ -6,11 +6,11 @@
 
 namespace Chicane
 {
-    class MeshComponent : public Component
+    class CMesh : public Component
     {
     public:
-        MeshComponent();
-        virtual ~MeshComponent() = default;
+        CMesh(const std::string& inMesh);
+        virtual ~CMesh() = default;
 
     protected:
         void onActivation() override;
@@ -23,8 +23,6 @@ namespace Chicane
 
         bool hasMesh() const;
         const Box::Mesh* getMesh() const;
-        void setMesh(const std::string& inMesh);
-
         const std::string& getModel() const;
         const std::string& getTexture() const;
 

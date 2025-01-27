@@ -13,10 +13,6 @@ private:
     Chicane::Grid::Reference getFrametime(const Chicane::Grid::Component::Event& inEvent);
 
 private:
-    void loadAudio(const std::string& inFilepath);
-    void playAudio(const std::string& inId);
-
-private:
     bool                     m_didPlayerWin;
     Chicane::Grid::Reference m_uiDidPlayerWin;
 };

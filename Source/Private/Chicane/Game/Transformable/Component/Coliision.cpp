@@ -1,4 +1,4 @@
-#include "Chicane/Game/Transformable/Component/CollisionComponent.hpp"
+#include "Chicane/Game/Transformable/Component/Collision.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
@@ -6,13 +6,13 @@
 
 namespace Chicane
 {
-    CollisionComponent::CollisionComponent()
+    CCollision::CCollision()
         : Component()
     {
         setCanTick(true);
     }
 
-    void CollisionComponent::onTick(float inDeltaTime)
+    void CCollision::onTick(float inDeltaTime)
     {
         if (!canCollide())
         {
@@ -38,7 +38,7 @@ namespace Chicane
         }
     }
 
-    bool CollisionComponent::canCollide() const
+    bool CCollision::canCollide() const
     {
         return isAttached() && Application::hasLevel();
     }

@@ -1,4 +1,4 @@
-#include "Chicane/Game/Transformable/Component/MeshComponent.hpp"
+#include "Chicane/Game/Transformable/Component/Mesh.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
@@ -8,12 +8,15 @@ const std::string EMPTY_STRING = "";
 
 namespace Chicane
 {
-    MeshComponent::MeshComponent()
+    CMesh::CMesh(const std::string& inMesh)
         : Component(),
-        m_bIsMeshActive(false)
-    {}
+        m_bIsMeshActive(false),
+        m_mesh(Loader::loadMesh(inMesh))
+    {
+        generateBounds();
+    }
 
-    void MeshComponent::onActivation()
+    void CMesh::onActivation()
     {
         if (!Application::hasLevel())
         {
@@ -23,7 +26,7 @@ namespace Chicane
         show();
     }
 
-    void MeshComponent::onDeactivation()
+    void CMesh::onDeactivation()
     {
         if (!Application::hasLevel())
         {
@@ -33,7 +36,7 @@ namespace Chicane
         hide();
     }
 
-    void MeshComponent::onAttachment(Actor* inActor)
+    void CMesh::onAttachment(Actor* inActor)
     {
         if (!inActor)
         {
@@ -43,12 +46,12 @@ namespace Chicane
         inActor->setBounds(getBounds());
     }
 
-    void MeshComponent::onTick(float inDeltaTime)
+    void CMesh::onTick(float inDeltaTime)
     {
         //updateVisibility();
     }
 
-    bool MeshComponent::isDrawable() const
+    bool CMesh::isDrawable() const
     {
         if (!Application::hasCamera() || !Application::hasLevel())
         {
@@ -58,24 +61,17 @@ namespace Chicane
         return hasMesh() && isActive() && m_bIsMeshActive;
     }
 
-    bool MeshComponent::hasMesh() const
+    bool CMesh::hasMesh() const
     {
         return !m_mesh->getFilepath().empty();
     }
 
-    const Box::Mesh* MeshComponent::getMesh() const
+    const Box::Mesh* CMesh::getMesh() const
     {
         return m_mesh;
     }
 
-    void MeshComponent::setMesh(const std::string& inMesh)
-    {
-        m_mesh = Loader::loadMesh(inMesh);
-
-        generateBounds();
-    }
-
-    const std::string& MeshComponent::getModel() const
+    const std::string& CMesh::getModel() const
     {
         if (!hasMesh())
         {
@@ -85,7 +81,7 @@ namespace Chicane
         return m_mesh->getGroups().at(0).getModel();
     }
 
-    const std::string& MeshComponent::getTexture() const
+    const std::string& CMesh::getTexture() const
     {
         if (!hasMesh())
         {
@@ -95,7 +91,7 @@ namespace Chicane
         return m_mesh->getGroups().at(0).getTexture();
     }
 
-    void MeshComponent::generateBounds()
+    void CMesh::generateBounds()
     {
         const Model::Manager* manager = Loader::getModelManager();
 
@@ -129,7 +125,7 @@ namespace Chicane
         }
     }
 
-    void MeshComponent::updateVisibility()
+    void CMesh::updateVisibility()
     {
         if (!Application::hasCamera())
         {
@@ -146,7 +142,7 @@ namespace Chicane
         }
     }
 
-    void MeshComponent::show()
+    void CMesh::show()
     {
         if (m_bIsMeshActive)
         {
@@ -165,7 +161,7 @@ namespace Chicane
         m_bIsMeshActive = true;
     }
 
-    void MeshComponent::hide()
+    void CMesh::hide()
     {
         if (!m_bIsMeshActive)
         {

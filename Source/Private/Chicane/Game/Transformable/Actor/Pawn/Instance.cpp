@@ -4,24 +4,24 @@
 
 namespace Chicane
 {
-    Pawn::Pawn()
+    APawn::APawn()
         : Actor(),
         m_controller(nullptr)
     {}
 
-    bool Pawn::isControlled() const
+    bool APawn::isControlled() const
     {
         return m_controller != nullptr;
     }
 
-    void Pawn::attachController(Controller* inController)
+    void APawn::attachController(Controller* inController)
     {
         m_controller = inController;
 
         onControlAttachment();
     }
 
-    void Pawn::deattachController()
+    void APawn::deattachController()
     {
         m_controller = nullptr;
 

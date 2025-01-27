@@ -140,7 +140,7 @@ namespace Chicane
             return m_application->getLevel()->hasCamera();
         }
 
-        CameraComponent* getCamera()
+        CCamera* getCamera()
         {
             if (!m_application || !hasLevel())
             {
@@ -150,8 +150,8 @@ namespace Chicane
             return m_application->getLevel()->getCamera();
         }
 
-        Subscription<CameraComponent*>* watchCamera(
-            std::function<void (CameraComponent*)> inNext,
+        Subscription<CCamera*>* watchCamera(
+            std::function<void (CCamera*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )

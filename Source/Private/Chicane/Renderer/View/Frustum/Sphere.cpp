@@ -1,7 +1,7 @@
 #include "Chicane/Renderer/View/Frustum/Sphere.hpp"
 
 #include "Chicane/Game/Transformable/Instance.hpp"
-#include "Chicane/Game/Transformable/Component/ViewComponent.hpp"
+#include "Chicane/Game/Transformable/Component/View.hpp"
 
 namespace Chicane
 {
@@ -21,7 +21,7 @@ namespace Chicane
             );
         };
 
-        void SphereFrustum::use(const ViewComponent* inView)
+        void SphereFrustum::use(const CView* inView)
         {
             const Vec<3, float>& up          = inView->getUp();
             const Vec<3, float>& right       = inView->getRight();

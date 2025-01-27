@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace ProgressBarComponent
+        namespace ProgressBar
         {
             const std::string TAG_ID = "ProgressBar";
     

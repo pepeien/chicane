@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    class Pawn;
+    class APawn;
 
     class Controller
     {
@@ -19,20 +19,20 @@ namespace Chicane
     public:
         void activate();
 
-        template<class T = Pawn>
+        template<class T = APawn>
         const T* getPawn() const
         {
             return dynamic_cast<T*>(m_pawn);
         }
 
-        Subscription<Pawn*>* watchAttachment(
-            std::function<void (Pawn*)> inNext,
+        Subscription<APawn*>* watchAttachment(
+            std::function<void (APawn*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
         bool isAttached() const;
-        void attachTo(Pawn* inPawn);
+        void attachTo(APawn* inPawn);
         void deattach();
 
         // Mouse Events
@@ -60,8 +60,8 @@ namespace Chicane
 
     private:
         // Pawn
-        Pawn*                                                                    m_pawn;
-        std::unique_ptr<Observable<Pawn*>>                                       m_pawnObservable;
+        APawn*                                                                   m_pawn;
+        std::unique_ptr<Observable<APawn*>>                                      m_pawnObservable;
 
         // Mouse Events
         std::vector<std::function<void(const SDL_MouseMotionEvent&)>>            m_mouseMotionEvents;

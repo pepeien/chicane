@@ -39,9 +39,9 @@ namespace Chicane
         );
 
         bool hasCamera();
-        CameraComponent* getCamera();
-        Subscription<CameraComponent*>* watchCamera(
-            std::function<void (CameraComponent*)> inNext,
+        CCamera* getCamera();
+        Subscription<CCamera*>* watchCamera(
+            std::function<void (CCamera*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

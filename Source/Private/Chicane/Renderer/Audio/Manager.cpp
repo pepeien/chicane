@@ -1,7 +1,5 @@
 #include "Chicane/Renderer/Audio/Manager.hpp"
 
-#include "Chicane/Core/FileSystem.hpp"
-
 namespace Chicane
 {
     namespace Audio
@@ -104,24 +102,6 @@ namespace Chicane
             }
 
             return m_datum.at(inId);
-        }
-
-        void Manager::play(const std::string& inId)
-        {
-            if (!isAllocated(inId))
-            {
-                return;
-            }
-
-            const Audio::Data& audio = getData(inId);
-
-            SDL_ClearAudioStream(audio.stream);
-            SDL_ResumeAudioStreamDevice(audio.stream);
-            SDL_PutAudioStreamData(
-                audio.stream,
-                audio.bufferData,
-                audio.bufferLength
-            );
         }
     }
 }

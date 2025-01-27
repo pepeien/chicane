@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/TextInputComponent.hpp"
+#include "Chicane/Grid/Component/TextInput.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace TextInputComponent
+        namespace TextInput
         {
             void setOnInputData(Props& outProps, const pugi::xml_node& inNode)
             {

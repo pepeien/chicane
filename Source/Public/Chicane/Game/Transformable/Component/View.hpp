@@ -6,11 +6,11 @@
 
 namespace Chicane
 {
-    class ViewComponent : public Component
+    class CView : public Component
     {
     public:
-        ViewComponent();
-        virtual ~ViewComponent() = default;
+        CView();
+        virtual ~CView() = default;
 
     protected:
         virtual void onTransform();

@@ -11,7 +11,7 @@ namespace Chicane
         public:
             Vec<3, float> position;
             Vec<3, float> color;
-            Vec<2, float> texturePosition;
+            Vec<2, float> UV;
             Vec<3, float> normal;
         };
     }

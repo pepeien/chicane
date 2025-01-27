@@ -7,7 +7,7 @@ namespace Chicane
 {
     Controller::Controller()
         : m_pawn(nullptr),
-        m_pawnObservable(std::make_unique<Observable<Pawn*>>()),
+        m_pawnObservable(std::make_unique<Observable<APawn*>>()),
         m_mouseMotionEvents({}),
         m_mouseButtonEvents({}),
         m_keyboardButtonEvents({}),
@@ -22,13 +22,13 @@ namespace Chicane
         onActivation();
     }
 
-    Subscription<Pawn*>* Controller::watchAttachment(
-        std::function<void (Pawn*)> inNext,
+    Subscription<APawn*>* Controller::watchAttachment(
+        std::function<void (APawn*)> inNext,
         std::function<void (const std::string&)> inError,
         std::function<void ()> inComplete
     )
     {
-        Subscription<Pawn*>* subscription = m_pawnObservable->subscribe(
+        Subscription<APawn*>* subscription = m_pawnObservable->subscribe(
             inNext,
             inError,
             inComplete
@@ -43,7 +43,7 @@ namespace Chicane
         return m_pawn != nullptr;
     }
 
-    void Controller::attachTo(Pawn* inPawn)
+    void Controller::attachTo(APawn* inPawn)
     {
         if (isAttached())
         {

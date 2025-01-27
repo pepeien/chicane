@@ -2,17 +2,17 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
-#include "Chicane/Game/Transformable/Component/LightComponent.hpp"
+#include "Chicane/Game/Transformable/Component/Light.hpp"
 
 namespace Chicane
 {
-    class Light : public Actor
+    class ALight : public Actor
     {
     public:
-        Light();
-        virtual ~Light() = default;
+        ALight();
+        virtual ~ALight() = default;
 
     protected:
-        LightComponent* m_light;
+        CLight* m_light;
     };
 }

@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/ProgressBarComponent.hpp"
+#include "Chicane/Grid/Component/ProgressBar.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace ProgressBarComponent
+        namespace ProgressBar
         {
             Props getProps(const pugi::xml_node& inNode)
             {

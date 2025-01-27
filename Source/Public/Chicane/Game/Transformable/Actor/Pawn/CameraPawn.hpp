@@ -2,15 +2,15 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Transformable/Actor/Pawn/Instance.hpp"
-#include "Chicane/Game/Transformable/Component/CameraComponent.hpp"
+#include "Chicane/Game/Transformable/Component/Camera.hpp"
 
 namespace Chicane
 {
-    class CameraPawn : public Pawn
+    class ACameraPawn : public APawn
     {
     public:
-        CameraPawn();
-        virtual ~CameraPawn() = default;
+        ACameraPawn();
+        virtual ~ACameraPawn() = default;
 
     protected:
         void onControlAttachment() override;
@@ -28,6 +28,6 @@ namespace Chicane
         void moveRight(bool bInIsKeyDown);
 
     protected:
-        CameraComponent* m_camera;
+        CCamera* m_camera;
     };
 }

@@ -1,13 +1,6 @@
 #include "Chicane/Grid/Component.hpp"
 
 #include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Component/ButtonComponent.hpp"
-#include "Chicane/Grid/Component/GridComponent.hpp"
-#include "Chicane/Grid/Component/ContainerComponent.hpp"
-#include "Chicane/Grid/Component/PopupComponent.hpp"
-#include "Chicane/Grid/Component/ProgressBarComponent.hpp"
-#include "Chicane/Grid/Component/TextComponent.hpp"
-#include "Chicane/Grid/Component/TextInputComponent.hpp"
 
 static const Chicane::Grid::Component::FunctionData EMPTY_FUNCTION_DATA {};
 
@@ -16,13 +9,13 @@ namespace Chicane
     namespace Grid
     {
         std::unordered_map<std::string, Component::Compiler::Function> m_components = {
-            { ButtonComponent::TAG_ID, &ButtonComponent::compile },
-            { GridComponent::TAG_ID, &GridComponent::compile },
-            { ContainerComponent::TAG_ID, &ContainerComponent::compile },
-            { PopupComponent::TAG_ID, &PopupComponent::compile },
-            { ProgressBarComponent::TAG_ID, &ProgressBarComponent::compile },
-            { TextComponent::TAG_ID, &TextComponent::compile },
-            { TextInputComponent::TAG_ID, &TextInputComponent::compile }
+            { Button::TAG_ID, &Button::compile },
+            { List::TAG_ID, &List::compile },
+            { Container::TAG_ID, &Container::compile },
+            { Popup::TAG_ID, &Popup::compile },
+            { ProgressBar::TAG_ID, &ProgressBar::compile },
+            { Text::TAG_ID, &Text::compile },
+            { TextInput::TAG_ID, &TextInput::compile }
         };
 
         const Component::FunctionData& Component::FunctionData::empty()

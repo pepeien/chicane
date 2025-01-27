@@ -10,7 +10,7 @@ namespace Chicane
         {
         public:
             bool contains(const Transformable* inSubject) const override;
-            void use(const ViewComponent* inView) override;
+            void use(const CView* inView) override;
 
         protected:
             bool isWithinPlane(const Plane& inPlane, const Vec<3, float>& inPoint) const override;

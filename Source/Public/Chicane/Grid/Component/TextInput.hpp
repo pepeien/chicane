@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace TextInputComponent
+        namespace TextInput
         {
             const std::string TAG_ID = "TextInput";
 

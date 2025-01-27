@@ -1,10 +1,10 @@
-#include "Chicane/Game/Transformable/Component/ViewComponent.hpp"
+#include "Chicane/Game/Transformable/Component/View.hpp"
 
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
-    ViewComponent::ViewComponent()
+    CView::CView()
         : Component(),
         m_settings({}),
         m_frustum({}),
@@ -12,7 +12,7 @@ namespace Chicane
         m_focusPoint(Vec3Zero)
     {}
 
-    void ViewComponent::onTransform()
+    void CView::onTransform()
     {
         const Vec<3, float>& forward = getForward();
         m_data.forward.x = forward.x;
@@ -37,17 +37,17 @@ namespace Chicane
         updateView();
     }
 
-    bool ViewComponent::canSee(const Transformable* inSubject) const
+    bool CView::canSee(const Transformable* inSubject) const
     {
         return m_frustum.contains(inSubject);
     }
 
-    const Vec<2, std::uint32_t>& ViewComponent::getViewport() const
+    const Vec<2, std::uint32_t>& CView::getViewport() const
     {
         return m_settings.viewport;
     }
 
-    void ViewComponent::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
+    void CView::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
     {
         m_settings.viewport.x  = inWidth;
         m_settings.viewport.y  = inHeight;
@@ -61,34 +61,34 @@ namespace Chicane
         updateProjection();
     }
 
-    void ViewComponent::setViewport(const Vec<2, std::uint32_t>& inResolution)
+    void CView::setViewport(const Vec<2, std::uint32_t>& inResolution)
     {
         setViewport(inResolution.x, inResolution.y);
     }
 
-    float ViewComponent::getAspectRatio() const
+    float CView::getAspectRatio() const
     {
         return m_settings.aspectRatio;
     }
 
-    float ViewComponent::getFieldOfView() const
+    float CView::getFieldOfView() const
     {
         return m_settings.fieldOfView;
     }
 
-    void ViewComponent::setFieldOfView(float inFov)
+    void CView::setFieldOfView(float inFov)
     {
         m_settings.fieldOfView = inFov;
 
         updateProjection();
     }
 
-    float ViewComponent::getNearClip() const
+    float CView::getNearClip() const
     {
         return m_settings.nearClip;
     }
 
-    void ViewComponent::setNearClip(float inNearClip)
+    void CView::setNearClip(float inNearClip)
     {
         if (std::fabs(inNearClip - getNearClip()) < FLT_EPSILON)
         {
@@ -100,12 +100,12 @@ namespace Chicane
         updateProjection();
     }
 
-    float ViewComponent::getFarClip() const
+    float CView::getFarClip() const
     {
         return m_settings.farClip;
     }
 
-    void ViewComponent::setFarClip(float inFarClip)
+    void CView::setFarClip(float inFarClip)
     {
         if (std::fabs(inFarClip - getFarClip()) < FLT_EPSILON)
         {
@@ -117,30 +117,30 @@ namespace Chicane
         updateProjection();
     }
 
-    void ViewComponent::setClip(float inNearClip, float inFarClip)
+    void CView::setClip(float inNearClip, float inFarClip)
     {
         setNearClip(inNearClip);
         setFarClip(inFarClip);
     }
 
-    const Vec<3, float>& ViewComponent::getFocusPoint() const
+    const Vec<3, float>& CView::getFocusPoint() const
     {
         return m_focusPoint;
     }
 
-    void ViewComponent::setFocusPoint(const Vec<3, float>& inPoint)
+    void CView::setFocusPoint(const Vec<3, float>& inPoint)
     {
         m_focusPoint = inPoint;
 
         updateView();
     }
 
-    const View::Data& ViewComponent::getData() const
+    const View::Data& CView::getData() const
     {
         return m_data;
     }
 
-    void ViewComponent::updateProjection()
+    void CView::updateProjection()
     {
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
@@ -157,7 +157,7 @@ namespace Chicane
         updateViewProjection();
     }
 
-    void ViewComponent::updateView()
+    void CView::updateView()
     {
         m_data.view = glm::lookAt(
             getTranslation(),
@@ -168,7 +168,7 @@ namespace Chicane
         updateViewProjection();
     }
 
-    void ViewComponent::updateViewProjection()
+    void CView::updateViewProjection()
     {
         m_data.viewProjection         = m_data.projection * m_data.view;
         m_data.inversedViewProjection = glm::inverse(m_data.viewProjection);

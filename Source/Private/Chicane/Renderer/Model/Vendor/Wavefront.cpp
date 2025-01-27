@@ -47,9 +47,9 @@ namespace Chicane
                     vertex.normal.y = inMesh->normals[inIndices.n * 3 + 1];
                     vertex.normal.z = inMesh->normals[inIndices.n * 3 + 2];
 
-                    vertex.texturePosition   = Vec2Zero;
-                    vertex.texturePosition.x = inMesh->texcoords[inIndices.t * 2 + 0];
-                    vertex.texturePosition.y = inMesh->texcoords[inIndices.t * 2 + 1];
+                    vertex.UV   = Vec2Zero;
+                    vertex.UV.x = inMesh->texcoords[inIndices.t * 2 + 0];
+                    vertex.UV.y = inMesh->texcoords[inIndices.t * 2 + 1];
 
                     std::uint32_t currentIndex = static_cast<std::uint32_t>(outResult.vertices.size());
 

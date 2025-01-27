@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/TextComponent.hpp"
+#include "Chicane/Grid/Component/Text.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace TextComponent
+        namespace Text
         {
             void handlePositioning(const std::string& inText, const Style& inStyle)
             {

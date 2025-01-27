@@ -2,9 +2,9 @@
 
 namespace Chicane
 {
-    Light::Light()
+    ALight::ALight()
         : Actor(),
-        m_light(new LightComponent())
+        m_light(new CLight())
     {
         m_light->attachTo(this);
         m_light->activate();

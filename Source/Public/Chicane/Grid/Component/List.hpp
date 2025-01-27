@@ -10,9 +10,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace GridComponent
+        namespace List
         {
-            const std::string TAG_ID = "Grid";
+            const std::string TAG_ID = "List";
 
             // Attributes
             static constexpr const char* ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";

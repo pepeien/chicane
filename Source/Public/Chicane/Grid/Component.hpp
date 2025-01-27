@@ -2,16 +2,16 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Grid/Component/BaseProps.hpp"
-#include "Chicane/Grid/Component/ButtonComponent.hpp"
+#include "Chicane/Grid/Component/Button.hpp"
 #include "Chicane/Grid/Component/Child.hpp"
 #include "Chicane/Grid/Component/Compiler.hpp"
-#include "Chicane/Grid/Component/ContainerComponent.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 #include "Chicane/Grid/Component/Function.hpp"
-#include "Chicane/Grid/Component/GridComponent.hpp"
-#include "Chicane/Grid/Component/PopupComponent.hpp"
-#include "Chicane/Grid/Component/ProgressBarComponent.hpp"
-#include "Chicane/Grid/Component/TextComponent.hpp"
-#include "Chicane/Grid/Component/TextInputComponent.hpp"
+#include "Chicane/Grid/Component/List.hpp"
+#include "Chicane/Grid/Component/Popup.hpp"
+#include "Chicane/Grid/Component/ProgressBar.hpp"
+#include "Chicane/Grid/Component/Text.hpp"
+#include "Chicane/Grid/Component/TextInput.hpp"
 #include "Chicane/Grid/Component/Variable.hpp"
 
 namespace Chicane

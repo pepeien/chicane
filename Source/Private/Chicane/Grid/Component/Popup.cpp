@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/PopupComponent.hpp"
+#include "Chicane/Grid/Component/Popup.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace PopupComponent
+        namespace Popup
         {
             Props getProps(const pugi::xml_node& inNode)
             {

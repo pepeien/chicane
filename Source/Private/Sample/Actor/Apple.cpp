@@ -3,7 +3,10 @@
 #include "Game.hpp"
 #include "Chicane/Core.hpp"
 
-Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosition)
+Apple::Apple(
+    const std::string& inMesh,
+    const Chicane::Vec<3, float>& inStartPosition
+)
     : Chicane::Actor(),
     m_fallingRate(
         std::max(
@@ -12,7 +15,7 @@ Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosit
         )
     ),
     m_startPosition(inStartPosition),
-    m_mesh(new Chicane::MeshComponent())
+    m_mesh(new Chicane::CMesh(inMesh))
 {
     setCanTick(true);
     setCanCollide(true);
@@ -21,7 +24,6 @@ Apple::Apple(const std::string& inId, const Chicane::Vec<3, float>& inStartPosit
     setAbsoluteScale(0.05f);
 
     m_mesh->attachTo(this);
-    m_mesh->setMesh(inId);
     m_mesh->activate();
 }
 

@@ -1,15 +1,15 @@
-#include "Chicane/Grid/Component/ButtonComponent.hpp"
+#include "Chicane/Grid/Component/Button.hpp"
 
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Component/ContainerComponent.hpp"
+#include "Chicane/Grid/Component/Container.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace ButtonComponent
+        namespace Button
         {
             void setOnClickData(Props& outProps, const pugi::xml_node& inNode)
             {
@@ -105,13 +105,13 @@ namespace Chicane
 
                 ImGui::SetCursorPos(initialPosition);
 
-                ContainerComponent::Props containerProps {};
+                Container::Props containerProps {};
                 containerProps.id         = inProps.id + "_content";
                 containerProps.style      = inProps.style;
                 containerProps.children   = inProps.children;
                 containerProps._renderers = inProps._renderers;
 
-                ContainerComponent::compileRaw(containerProps);
+                Container::compileRaw(containerProps);
             }
 
             void compile(const pugi::xml_node& inNode)

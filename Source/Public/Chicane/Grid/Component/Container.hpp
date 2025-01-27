@@ -8,20 +8,16 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace ButtonComponent
+        namespace Container
         {
-            const std::string TAG_ID = "Button";
-
-            // Attributes
-            const std::string ON_CLICK_ATTRIBUTE_NAME = "onClick";
-            const std::string ON_CLICK_EVENT_KEYWORD  = "$event";
+            const std::string TAG_ID = "Container";
 
             // Props
             struct Props : Component::BaseProps
             {
-                // onClick
-                Component::Event           onClickEvent = {}; // Optional
-                Component::Event::Function onClick; // Optional
+            public:
+                std::vector<Reference> items = {}; // Optional
+                Component::Function    itemGetter; // Optional
             };
 
             void validate(const Props& inProps);

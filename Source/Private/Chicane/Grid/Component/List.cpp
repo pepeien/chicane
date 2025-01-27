@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/GridComponent.hpp"
+#include "Chicane/Grid/Component/List.hpp"
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid/Essential.hpp"
@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace GridComponent
+        namespace List
         {
             Vec<2, float> getItemSize(const pugi::xml_node& inNode)
             {
@@ -46,7 +46,7 @@ namespace Chicane
                 }
             }
 
-            void showGrid(
+            void showList(
                 const Props& inProps,
                 std::uint32_t inItemCount,
                 std::function<void (std::uint32_t)> inItemShowCallback
@@ -139,7 +139,7 @@ namespace Chicane
                     return;
                 }
 
-                showGrid(
+                showList(
                     inProps,
                     static_cast<std::uint32_t>(inProps._renderers.size()),
                     [inProps](std::uint32_t currentItemIndex) {
@@ -155,7 +155,7 @@ namespace Chicane
                     return;
                 }
 
-                showGrid(
+                showList(
                     inProps,
                     static_cast<std::uint32_t>(inProps.items.size()),
                     [inProps](std::uint32_t currentItemIndex) {
@@ -176,7 +176,7 @@ namespace Chicane
 
                 std::vector<pugi::xml_node> items = extractChildren(inProps.children);
                 
-                showGrid(
+                showList(
                     inProps,
                     static_cast<std::uint32_t>(items.size()),
                     [items](std::uint32_t inCurrentItemIndex) {

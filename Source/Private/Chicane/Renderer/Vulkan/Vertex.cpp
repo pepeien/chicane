@@ -40,14 +40,14 @@ namespace Chicane
 
                 attributeDescriptions.push_back(colorDescription);
 
-                // Texture Position
-                vk::VertexInputAttributeDescription texturePositionDescription;
-                texturePositionDescription.binding  = 0;
-                texturePositionDescription.location = 2;
-                texturePositionDescription.format   = vk::Format::eR32G32Sfloat;
-                texturePositionDescription.offset   = offsetof(Chicane::Vertex::Instance, texturePosition);
+                // UV
+                vk::VertexInputAttributeDescription UVDescription;
+                UVDescription.binding  = 0;
+                UVDescription.location = 2;
+                UVDescription.format   = vk::Format::eR32G32Sfloat;
+                UVDescription.offset   = offsetof(Chicane::Vertex::Instance, UV);
 
-                attributeDescriptions.push_back(texturePositionDescription);
+                attributeDescriptions.push_back(UVDescription);
 
                 // Normals
                 vk::VertexInputAttributeDescription normalsDescription;

@@ -3,7 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Game.hpp"
 
-class Sun : public Chicane::Light
+class Sun : public Chicane::ALight
 {
 public:
     Sun();

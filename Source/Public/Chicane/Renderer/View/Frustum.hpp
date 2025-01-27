@@ -6,7 +6,7 @@
 
 namespace Chicane
 {
-    class ViewComponent;
+    class CView;
     class Transformable;
 
     namespace View
@@ -15,7 +15,7 @@ namespace Chicane
         {
         public:
         	virtual bool contains(const Transformable* inSubject) const { return false; }
-            virtual void use(const ViewComponent* inView) { return; }
+            virtual void use(const CView* inView) { return; }
 
         protected:
         	virtual bool isWithinPlane(const Plane& inPlane, const Vec<3, float>& inCenter) const { return false; }

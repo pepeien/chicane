@@ -7,11 +7,11 @@ namespace Chicane
 {
     class Controller;
 
-    class Pawn : public Actor
+    class APawn : public Actor
     {
     public:
-        Pawn();
-        virtual ~Pawn() = default;
+        APawn();
+        virtual ~APawn() = default;
 
     protected:
         virtual void onControlAttachment() { return; };
