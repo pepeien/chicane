@@ -95,33 +95,26 @@ namespace Chicane
     {
         const Model::Manager* manager = Loader::getModelManager();
 
-        Bounds result {};
+        std::vector<Vertex::Instance> vertices = {};
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {
-            const Model::Instance& model = manager->getInstance(group.getModel());
+            const Model::Instance&                       model = manager->getInstance(group.getModel());
+            const std::vector<Vertex::Instance>& modelVertices = model.vertices;
 
-            const Vec<3, float>& extent = model.bounds.extent;
-
-            result.extent.x = std::max(
-                result.extent.x,
-                extent.x
-            );
-            result.extent.y = std::max(
-                result.extent.y,
-                extent.y
-            );
-            result.extent.z = std::max(
-                result.extent.z,
-                extent.z
-            );
+            for (std::uint32_t index : model.indices)
+            {
+                vertices.push_back(modelVertices.at(index));
+            }
         }
 
-        setBounds(result);
+        Bounds bounds = Bounds(vertices);
+
+        setBounds(bounds);
 
         if (isAttached())
         {
-            m_attachment->setBounds(result);
+            m_attachment->setBounds(bounds);
         }
     }
 

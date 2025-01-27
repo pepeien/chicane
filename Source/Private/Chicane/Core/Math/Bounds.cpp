@@ -4,117 +4,102 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Vec<3, float> Bounds::extentFromVertices(const std::vector<Vertex::Instance>& inVertices)
+    Bounds::Bounds(const std::vector<Vertex::Instance>& inVertices)
     {
-        Vec<3, float> result {};
-
-        float xMin = FLT_MAX;
-        float xMax = -FLT_MAX;
-
-        float yMin = FLT_MAX;
-        float yMax = -FLT_MAX;
-
-        float zMin = FLT_MAX;
-        float zMax = -FLT_MAX;
+        m_min = Vec<3, float>(FLT_MAX);
+        m_max = Vec<3, float>(-FLT_MAX);
 
         for (const Vertex::Instance& vertex : inVertices)
         {
             const Vec<3, float>& position = vertex.position;
 
-            if (position.x < xMin)
-            {
-                xMin = position.x;
-            }
+            m_min.x = std::min(m_min.x, position.x);
+            m_min.y = std::min(m_min.y, position.y);
+            m_min.z = std::min(m_min.z, position.z);
 
-            if (position.x > xMax)
-            {
-                xMax = position.x;
-            }
-
-            if (position.y < yMin)
-            {
-                yMin = position.y;
-            }
-
-            if (position.y > yMax)
-            {
-                yMax = position.y;
-            }
-
-            if (position.z < zMin)
-            {
-                zMin = position.z;
-            }
-
-            if (position.z > zMax)
-            {
-                zMax = position.z;
-            }
+            m_max.x = std::max(m_max.x, position.x);
+            m_max.y = std::max(m_max.y, position.y);
+            m_max.z = std::max(m_max.z, position.z);
         }
 
-        result.x = std::abs(xMax) + std::abs(xMin);
-        result.y = std::abs(yMax) + std::abs(yMin);
-        result.z = std::abs(zMax) + std::abs(zMin);
+        float xCenter = (m_min.x + m_max.x) * 0.5f;
+        float yCenter = (m_min.y + m_max.y) * 0.5f;
+        float zCenter = m_max.z * 0.5f;
 
-        return result;
-    }
+        m_top.x = xCenter;
+        m_top.y = yCenter;
+        m_top.z = m_max.z;
 
-    Bounds::Bounds(const std::vector<Vertex::Instance>& inVertices)
-    {
-        extent = Bounds::extentFromVertices(inVertices);
+        m_center.z = zCenter;
+        m_center.x = zCenter;
+        m_center.y = zCenter;
+
+        m_origin.x = xCenter;
+        m_origin.y = yCenter;
+        m_origin.z = m_min.z;
     }
 
     bool Bounds::contains(const Bounds& inBounds) const
     {
-        const Vec<3, float> frontOrigin = inBounds.origin - inBounds.extent;
-        Vec<3, float> frontPoint        = frontOrigin;
+        const Vec<3, float> currentMin = getMin();
+        const Vec<3, float> currentMax = getMax();
 
-        const Vec<3, float> backOrigin = inBounds.origin + inBounds.extent;
-        Vec<3, float> backPoint        = backOrigin;
+        const Vec<3, float> targetMin = inBounds.getMin();
+        const Vec<3, float> targetMax = inBounds.getMax();
 
-        while (frontPoint.z < backPoint.z)
-        {
-            frontPoint.x = frontOrigin.x;
-            frontPoint.y = frontOrigin.y;
+        const bool isWithinX = targetMin.x >= currentMin.x && targetMax.x <= currentMax.x;
+        const bool isWithinY = targetMin.y >= currentMin.y && targetMax.y <= currentMax.y;
+        const bool isWithinZ = targetMin.z >= currentMin.z && targetMax.z <= currentMax.z;
 
-            backPoint.x = backOrigin.x;
-            backPoint.y = backOrigin.y;
-
-            while (frontPoint.y < backPoint.y)
-            {
-                frontPoint.x = frontOrigin.x;
-                backPoint.x  = backOrigin.x;
-
-                while (frontPoint.x < backPoint.x)
-                {
-                    if (contains(backPoint) || contains(frontPoint))
-                    {
-                        return true;
-                    }
-
-                    frontPoint.x += BOUND_SCAN_STEP_SIZE;
-                    backPoint.x  -= BOUND_SCAN_STEP_SIZE;
-                }
-
-                frontPoint.y += BOUND_SCAN_STEP_SIZE;
-                backPoint.y  -= BOUND_SCAN_STEP_SIZE;
-            }
-
-            frontPoint.z += BOUND_SCAN_STEP_SIZE;
-            backPoint.z  -= BOUND_SCAN_STEP_SIZE;
-        }
-
-        return false;
+        return isWithinX && isWithinY && isWithinZ;
     }
 
     bool Bounds::contains(const Vec<3, float>& inPoint) const
     {
-        const Vec<3, float> end = origin + extent;
+        const Vec<3, float> min = getMin();
+        const Vec<3, float> max = getMax();
 
-        const bool bIsWithinX = inPoint.x >= origin.x && inPoint.x <= end.x;
-        const bool bIsWithinY = inPoint.y >= origin.y && inPoint.y <= end.y;
-        const bool bIsWithinZ = inPoint.z >= origin.z && inPoint.z <= end.z;
+        const bool isWithinX = inPoint.x >= min.x && inPoint.x <= max.x;
+        const bool isWithinY = inPoint.y >= min.y && inPoint.y <= max.y;
+        const bool isWithinZ = inPoint.z >= min.z && inPoint.z <= max.z;
 
-        return bIsWithinX && bIsWithinY && bIsWithinZ;
+        return isWithinX && isWithinY && isWithinZ;
+    }
+
+    void Bounds::update(const Transform::Combined& inTransform)
+    {
+        const Vec<3, float>& scale       = inTransform.getScale();
+        const Vec<3, float>& translation = inTransform.getTranslation();
+
+        m_currentMin    = (m_min * scale) + translation;
+        m_currentMax    = (m_max * scale) + translation;
+        m_currentTop    = (m_top * scale) + translation;
+        m_currentCenter = (m_center * scale) + translation;
+        m_currentOrigin = (m_origin * scale) + translation;
+    }
+
+    const Vec<3, float>& Bounds::getMin() const
+    {
+        return m_currentMin;
+    }
+
+    const Vec<3, float>& Bounds::getMax() const
+    {
+        return m_currentMax;
+    }
+
+    const Vec<3, float>& Bounds::getTop() const
+    {
+        return m_currentTop;
+    }
+
+    const Vec<3, float>& Bounds::getCenter() const
+    {
+        return m_currentCenter;
+    }
+
+    const Vec<3, float>& Bounds::getOrigin() const
+    {
+        return m_currentOrigin;
     }
 }

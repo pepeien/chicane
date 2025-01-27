@@ -86,7 +86,6 @@ namespace Chicane
         const Vec<3, float>& getTop() const;
         const Vec<3, float>& getCenter() const;
         const Vec<3, float>& getOrigin() const;
-        const Vec<3, float>& getExtent() const;
 
         // Events
         Subscription<void*>* watchTransform(
@@ -97,15 +96,13 @@ namespace Chicane
 
     private:
         void refresh();
-        void refreshBounds();
 
     private:
         // Transform
         Transform::Combined                m_transform;
 
         // Bounds
-        Bounds                             m_baseBounds;
-        Bounds                             m_currentBounds;
+        Bounds                             m_bounds;
 
         // Events
         std::unique_ptr<Observable<void*>> m_transformObservable;

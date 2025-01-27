@@ -11,10 +11,8 @@ namespace Chicane
         struct Instance
         {
         public:
-            Bounds                        bounds;
-
-            std::vector<Vertex::Instance> vertexInstances;
-            std::vector<std::uint32_t>    vertexIndices;
+            std::vector<Vertex::Instance> vertices;
+            std::vector<std::uint32_t>    indices;
         };
     }
 }

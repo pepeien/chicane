@@ -19,11 +19,11 @@ namespace Chicane
 
             m_vertices.insert(
                 m_vertices.end(),
-                instance.vertexInstances.begin(),
-                instance.vertexInstances.end()
+                instance.vertices.begin(),
+                instance.vertices.end()
             );
 
-            for (std::uint32_t index : instance.vertexIndices)
+            for (std::uint32_t index : instance.indices)
             {
                 m_indices.push_back(index + inData.firstVertex);
             }
@@ -49,9 +49,9 @@ namespace Chicane
             const Model::Instance& instance = getInstance(inId);
 
             Model::Data data {};
-            data.vertexCount = static_cast<std::uint32_t>(instance.vertexInstances.size());
+            data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
             data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
-            data.indexCount  = static_cast<std::uint32_t>(instance.vertexIndices.size());
+            data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
             data.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
 
             Super::allocate(inId, data);
@@ -97,9 +97,8 @@ namespace Chicane
             telemetry.endCapture();
 
             Model::Instance instance {};
-            instance.bounds          = Bounds(result.vertices);
-            instance.vertexInstances = result.vertices;
-            instance.vertexIndices   = result.indexes;
+            instance.vertices = result.vertices;
+            instance.indices  = result.indexes;
 
             if (IS_DEBUGGING)
             {
@@ -124,13 +123,13 @@ namespace Chicane
                         Color::Green,
                         "Model Manager",
                         "Vertex Instances => %d",
-                        instance.vertexInstances.size()
+                        instance.vertices.size()
                     );
                     Log::emmit(
                         Color::Green,
                         "Model Manager",
                         "Vertex Indices   => %d",
-                        instance.vertexIndices.size()
+                        instance.indices.size()
                     );
                 Log::emmit(
                     Color::Green,

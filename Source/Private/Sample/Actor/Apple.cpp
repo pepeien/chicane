@@ -40,7 +40,7 @@ void Apple::onTick(float inDeltaTime)
     addAbsoluteTranslation(0.0f, 0.0f, -m_fallingRate);
 }
 
-void Apple::onCollision(const Chicane::Actor* inSubject)
+void Apple::onHit(const Chicane::Actor* inSubject)
 {
     if (!canTick() || getAbsoluteTranslation().z < 0.0f)
     {

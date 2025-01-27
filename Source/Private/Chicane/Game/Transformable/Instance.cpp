@@ -6,8 +6,7 @@ namespace Chicane
 {
     Transformable::Transformable()
         : m_transform({}),
-        m_baseBounds(),
-        m_currentBounds(),
+        m_bounds(),
         m_transformObservable(std::make_unique<Observable<void*>>())
     {}
 
@@ -306,34 +305,28 @@ namespace Chicane
 
     const Bounds& Transformable::getBounds() const
     {
-        return m_currentBounds;
+        return m_bounds;
     }
 
     void Transformable::setBounds(const Bounds& inBounds)
     {
-        m_baseBounds = inBounds;
-
-        refreshBounds();
+        m_bounds = inBounds;
+        m_bounds.update(m_transform);
     }
 
     const Vec<3, float>& Transformable::getTop() const
     {
-        return m_currentBounds.top;
+        return m_bounds.getTop();
     }
 
     const Vec<3, float>& Transformable::getCenter() const
     {
-        return m_currentBounds.center;
+        return m_bounds.getCenter();
     }
 
     const Vec<3, float>& Transformable::getOrigin() const
     {
-        return m_currentBounds.origin;
-    }
-
-    const Vec<3, float>& Transformable::getExtent() const
-    {
-        return m_currentBounds.extent;
+        return m_bounds.getOrigin();
     }
 
     Subscription<void*>* Transformable::watchTransform(
@@ -347,24 +340,8 @@ namespace Chicane
 
     void Transformable::refresh()
     {
-        refreshBounds();
+        m_bounds.update(m_transform);
 
         m_transformObservable->next(nullptr);
-    }
-
-    void Transformable::refreshBounds()
-    {
-        m_currentBounds.extent = m_baseBounds.extent * getScale();
-
-        Vec<3, float> extent = m_currentBounds.extent * 0.5f;
-
-        m_currentBounds.origin  = m_baseBounds.origin;
-        m_currentBounds.origin += getTranslation();
-
-        m_currentBounds.center    = m_currentBounds.origin;
-        m_currentBounds.center.z += m_currentBounds.extent.z * 0.5f;
-
-        m_currentBounds.top    = m_currentBounds.origin;
-        m_currentBounds.top.z += m_currentBounds.extent.z;
     }
 }

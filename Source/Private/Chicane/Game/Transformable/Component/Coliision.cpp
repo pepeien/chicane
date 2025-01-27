@@ -10,6 +10,8 @@ namespace Chicane
         : Component()
     {
         setCanTick(true);
+
+        activate();
     }
 
     void CCollision::onTick(float inDeltaTime)

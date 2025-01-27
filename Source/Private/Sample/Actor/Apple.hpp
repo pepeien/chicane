@@ -12,8 +12,10 @@ public:
     );
 
 protected:
-    void onTick(float inDeltaTime);
-    void onCollision(const Chicane::Actor* inSubject);
+    void onTick(float inDeltaTime) override;
+
+public:
+    void onHit(const Chicane::Actor* inSubject);
 
 private:
     float                  m_fallingRate;
