@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
+#include "Chicane/Core/Math/Vec.hpp"
 
 namespace Chicane
 {
@@ -9,11 +9,20 @@ namespace Chicane
     {
         namespace Model
         {
+            struct Vertex
+            {
+            public:
+                Vec<3, float> position = Vec3Zero;
+                Vec<3, float> color    = Vec3Zero;
+                Vec<2, float> UV       = Vec2Zero;
+                Vec<3, float> normal   = Vec3Zero;
+            };
+
             struct RawData
             {
             public:
-                std::vector<Vertex::Instance> vertices = {};
-                std::vector<std::uint32_t>    indices  = {};
+                std::vector<Vertex>        vertices = {};
+                std::vector<std::uint32_t> indices  = {};
             };
 
             struct CompiledData

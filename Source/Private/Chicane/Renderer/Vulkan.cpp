@@ -1,6 +1,5 @@
 #include "Chicane/Renderer/Vulkan.hpp"
 
-#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/Grid.hpp"
@@ -27,8 +26,6 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-
-            loadEvents();
         }
 
         Renderer::~Renderer()
@@ -167,57 +164,6 @@ namespace Chicane
             }
 
             m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
-        }
-
-        void Renderer::loadEvents()
-        {
-            Application::watchLevel(
-                [this](Level* inLevel) {
-                    if (!inLevel)
-                    {
-                        return;
-                    }
-
-                    inLevel->watchComponents(
-                        [this](const std::vector<Component*>& inComponents) {
-                            m_cameras.clear();
-                            m_lights.clear();
-                            m_meshes.clear();
-
-                            const Chicane::Renderer::Viewport& viewport = getViewport();
-
-                            for (Component* component : inComponents)
-                            {
-                                if (component->isType<CCamera>())
-                                {
-                                    m_cameras.push_back(static_cast<CCamera*>(component));
-                                    m_cameras.back()->setViewport(viewport.size);
-                                }
-
-                                if (component->isType<CLight>())
-                                {
-                                    m_lights.push_back(static_cast<CLight*>(component));
-                                    m_lights.back()->setViewport(viewport.size);
-                                }
-
-                                if (component->isType<CMesh>())
-                                {
-                                    m_meshes.push_back(static_cast<CMesh*>(component));
-                                }
-                            }
-
-                            std::sort(
-                                m_meshes.begin(),
-                                m_meshes.end(),
-                                [](CMesh* inA, CMesh* inB)
-                                {
-                                    return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
-                                }
-                            );
-                        }
-                    );
-                }
-            );
         }
 
         void Renderer::buildInstance()

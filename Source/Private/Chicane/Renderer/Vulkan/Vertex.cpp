@@ -1,6 +1,6 @@
 #include "Chicane/Renderer/Vulkan/Vertex.hpp"
 
-#include "Chicane/Renderer/Vertex/Instance.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 
 namespace Chicane
 {
@@ -12,7 +12,7 @@ namespace Chicane
             {
                 vk::VertexInputBindingDescription bindingDescription{};
                 bindingDescription.binding   = 0;
-                bindingDescription.stride    = sizeof(Chicane::Vertex::Instance);
+                bindingDescription.stride    = sizeof(Box::Model::Vertex);
                 bindingDescription.inputRate = vk::VertexInputRate::eVertex;
 
                 return bindingDescription;
@@ -27,7 +27,7 @@ namespace Chicane
                 positionDescription.binding  = 0;
                 positionDescription.location = 0;
                 positionDescription.format   = vk::Format::eR32G32B32Sfloat;
-                positionDescription.offset   = offsetof(Chicane::Vertex::Instance, position);
+                positionDescription.offset   = offsetof(Box::Model::Vertex, position);
 
                 attributeDescriptions.push_back(positionDescription);
 
@@ -36,7 +36,7 @@ namespace Chicane
                 colorDescription.binding  = 0;
                 colorDescription.location = 1;
                 colorDescription.format   = vk::Format::eR32G32B32Sfloat;
-                colorDescription.offset   = offsetof(Chicane::Vertex::Instance, color);
+                colorDescription.offset   = offsetof(Box::Model::Vertex, color);
 
                 attributeDescriptions.push_back(colorDescription);
 
@@ -45,7 +45,7 @@ namespace Chicane
                 UVDescription.binding  = 0;
                 UVDescription.location = 2;
                 UVDescription.format   = vk::Format::eR32G32Sfloat;
-                UVDescription.offset   = offsetof(Chicane::Vertex::Instance, UV);
+                UVDescription.offset   = offsetof(Box::Model::Vertex, UV);
 
                 attributeDescriptions.push_back(UVDescription);
 
@@ -54,7 +54,7 @@ namespace Chicane
                 normalsDescription.binding  = 0;
                 normalsDescription.location = 3;
                 normalsDescription.format   = vk::Format::eR32G32B32Sfloat;
-                normalsDescription.offset   = offsetof(Chicane::Vertex::Instance, normal);
+                normalsDescription.offset   = offsetof(Box::Model::Vertex, normal);
 
                 attributeDescriptions.push_back(normalsDescription);
 

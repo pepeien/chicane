@@ -100,23 +100,23 @@ namespace Chicane
 
         private:
             // Telemetry
-            Telemetry                                     m_telemetry;
+            Telemetry                                    m_telemetry;
 
             // Game
-            Controller*                                   m_controller;
-            std::unique_ptr<Observable<Controller*>>      m_controllerObservable;
+            Controller*                                  m_controller;
+            std::unique_ptr<Observable<Controller*>>     m_controllerObservable;
 
-            Level*                                        m_level;
-            std::unique_ptr<Observable<Level*>>           m_levelObservable;
+            Level*                                       m_level;
+            std::unique_ptr<Observable<Level*>>          m_levelObservable;
 
             // UI
-            std::unordered_map<std::string, Grid::View*>  m_views;
-            Grid::View*                                   m_view;
-            std::unique_ptr<Observable<Grid::View*>>      m_viewObservable;
+            std::unordered_map<std::string, Grid::View*> m_views;
+            Grid::View*                                  m_view;
+            std::unique_ptr<Observable<Grid::View*>>     m_viewObservable;
 
             // Render
-            std::unique_ptr<Window::Instance>             m_window;
-            std::unique_ptr<Renderer::Instance>           m_renderer;
+            std::unique_ptr<Window::Instance>            m_window;
+            std::unique_ptr<Renderer::Instance>          m_renderer;
         };
     }
 }

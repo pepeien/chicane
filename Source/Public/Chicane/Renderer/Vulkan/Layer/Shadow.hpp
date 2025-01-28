@@ -5,7 +5,6 @@
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/Layer.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
 
 namespace Chicane

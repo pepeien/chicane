@@ -4,7 +4,7 @@
 #include "fast_obj.h"
 
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 
 namespace Chicane
 {
@@ -36,20 +36,18 @@ namespace Chicane
                             return;
                         }
 
-                        Vertex::Instance vertex;
+                        Vertex vertex {};
+
                         vertex.color = Vec<3, float>(1.0f, 1.0f, 1.0f);
 
-                        vertex.position   = Vec3Zero;
                         vertex.position.x = inMesh->positions[inIndices.p * 3 + 0];
                         vertex.position.y = inMesh->positions[inIndices.p * 3 + 1];
                         vertex.position.z = inMesh->positions[inIndices.p * 3 + 2];
 
-                        vertex.normal   = Vec3Zero;
                         vertex.normal.x = inMesh->normals[inIndices.n * 3 + 0];
                         vertex.normal.y = inMesh->normals[inIndices.n * 3 + 1];
                         vertex.normal.z = inMesh->normals[inIndices.n * 3 + 2];
 
-                        vertex.UV   = Vec2Zero;
                         vertex.UV.x = inMesh->texcoords[inIndices.t * 2 + 0];
                         vertex.UV.y = inMesh->texcoords[inIndices.t * 2 + 1];
 

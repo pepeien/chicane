@@ -120,7 +120,7 @@ namespace Chicane
                 return m_datum.at(inId);
             }
 
-            const std::vector<Vertex::Instance>& Manager::getVertices() const
+            const std::vector<Vertex>& Manager::getVertices() const
             {
                 return m_vertices;
             }

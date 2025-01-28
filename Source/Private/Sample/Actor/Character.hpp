@@ -13,9 +13,9 @@ protected:
 
 private:
     // Mesh
-    Chicane::CMesh*      m_wand;
+    Chicane::CMesh*  m_wand;
 
     // Audio
-    Chicane::CAudio*     m_hitAudio;
-    Chicane::CAudio*     m_victoryAudio;
+    Chicane::CAudio* m_hitAudio;
+    Chicane::CAudio* m_victoryAudio;
 };

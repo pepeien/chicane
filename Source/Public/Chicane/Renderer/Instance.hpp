@@ -7,6 +7,10 @@
 
 namespace Chicane
 {
+    class CCamera;
+    class CLight;
+    class CMesh;
+
     namespace Renderer
     {
         class Instance
@@ -56,6 +60,9 @@ namespace Chicane
             void rebuildLayers();
             void deleteLayers();
 
+        private:
+            void loadEvents();
+
         protected:
             // Window
             Window::Instance*                            m_window;
@@ -66,6 +73,11 @@ namespace Chicane
 
             // Layer
             std::vector<Layer::Instance*>                m_layers;
+
+            // Game
+            std::vector<CCamera*>                        m_cameras;
+            std::vector<CLight*>                         m_lights;
+            std::vector<CMesh*>                          m_meshes;
         };
     }
 }

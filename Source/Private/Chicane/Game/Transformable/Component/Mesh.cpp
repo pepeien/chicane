@@ -95,7 +95,7 @@ namespace Chicane
     {
         const Box::Model::Manager* manager = Box::getModelManager();
 
-        std::vector<Vertex::Instance> vertices = {};
+        std::vector<Box::Model::Vertex> vertices = {};
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {

@@ -310,7 +310,7 @@ namespace Chicane
             Buffer::CreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Chicane::Vertex::Instance) * vertices.size();
+            createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 

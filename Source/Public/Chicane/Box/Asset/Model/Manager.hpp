@@ -5,7 +5,6 @@
 #include "Chicane/Box/Asset/Model/Data.hpp"
 #include "Chicane/Box/Asset/Model/Instance.hpp"
 #include "Chicane/Box/Manager.hpp"
-#include "Chicane/Renderer/Vertex.hpp"
 
 namespace Chicane
 {
@@ -31,13 +30,13 @@ namespace Chicane
                 // Data
                 const RawData& getInstance(const std::string& inId) const;
                 const CompiledData& getData(const std::string& inId) const;
-                const std::vector<Vertex::Instance>& getVertices() const;
+                const std::vector<Vertex>& getVertices() const;
                 const std::vector<std::uint32_t>& getIndices() const;
                 std::uint32_t getFirstUse(const std::string& inId) const;
 
             private:
-                std::vector<Vertex::Instance> m_vertices;
-                std::vector<std::uint32_t>    m_indices;
+                std::vector<Vertex>        m_vertices;
+                std::vector<std::uint32_t> m_indices;
             };
         }
     }

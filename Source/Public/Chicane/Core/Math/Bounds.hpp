@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
-#include "Chicane/Renderer/Vertex/Instance.hpp"
 
 namespace Chicane
 {
     struct Bounds
     {
     public:
-        Bounds(const std::vector<Vertex::Instance>& inVertices);
+        Bounds(const std::vector<Box::Model::Vertex>& inVertices);
         Bounds() = default;
 
     public:
