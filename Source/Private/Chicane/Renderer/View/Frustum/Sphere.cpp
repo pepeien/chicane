@@ -9,15 +9,15 @@ namespace Chicane
     {
         bool SphereFrustum::contains(const Transformable* inSubject) const
         {
-            const Vec<3, float>& subjectCenter = inSubject->getCenter();
+            const Vec<3, float>& center = inSubject->getCenter();
 
         	return (
-        		isWithinPlane(m_top,    subjectCenter) &&
-        		isWithinPlane(m_bottom, subjectCenter) &&
-                isWithinPlane(m_left,   subjectCenter) &&
-        		isWithinPlane(m_right,  subjectCenter) &&
-        		isWithinPlane(m_near,   subjectCenter) &&
-        		isWithinPlane(m_far,    subjectCenter)
+        		isWithinPlane(m_top,    center) &&
+        		isWithinPlane(m_bottom, center) &&
+                isWithinPlane(m_left,   center) &&
+        		isWithinPlane(m_right,  center) &&
+        		isWithinPlane(m_near,   center) &&
+        		isWithinPlane(m_far,    center)
             );
         };
 

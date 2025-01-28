@@ -1,8 +1,8 @@
 #include "Chicane/Game/Transformable/Component/Mesh.hpp"
 
 #include "Chicane/Application.hpp"
+#include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
-#include "Chicane/Game.hpp"
 
 const std::string EMPTY_STRING = "";
 
@@ -10,8 +10,8 @@ namespace Chicane
 {
     CMesh::CMesh(const std::string& inMesh)
         : Component(),
-        m_bIsMeshActive(false),
-        m_mesh(Loader::loadMesh(inMesh))
+        m_bIsVisible(false),
+        m_mesh(Box::loadMesh(inMesh))
     {
         generateBounds();
     }
@@ -48,7 +48,7 @@ namespace Chicane
 
     void CMesh::onTick(float inDeltaTime)
     {
-        //updateVisibility();
+        refresh();
     }
 
     bool CMesh::isDrawable() const
@@ -58,7 +58,7 @@ namespace Chicane
             return false;
         }
 
-        return hasMesh() && isActive() && m_bIsMeshActive;
+        return hasMesh() && isActive() && m_bIsVisible;
     }
 
     bool CMesh::hasMesh() const
@@ -66,7 +66,7 @@ namespace Chicane
         return !m_mesh->getFilepath().empty();
     }
 
-    const Box::Mesh* CMesh::getMesh() const
+    const Box::Mesh::Instance* CMesh::getMesh() const
     {
         return m_mesh;
     }
@@ -93,19 +93,19 @@ namespace Chicane
 
     void CMesh::generateBounds()
     {
-        const Model::Manager* manager = Loader::getModelManager();
+        const Box::Model::Manager* manager = Box::getModelManager();
 
         std::vector<Vertex::Instance> vertices = {};
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {
-            const Model::Instance&                       model = manager->getInstance(group.getModel());
-            const std::vector<Vertex::Instance>& modelVertices = model.vertices;
+            const Box::Model::RawData& model = manager->getInstance(group.getModel());
 
-            for (std::uint32_t index : model.indices)
-            {
-                vertices.push_back(modelVertices.at(index));
-            }
+            vertices.insert(
+                vertices.end(),
+                model.vertices.begin(),
+                model.vertices.end()
+            );
         }
 
         Bounds bounds = Bounds(vertices);
@@ -118,7 +118,7 @@ namespace Chicane
         }
     }
 
-    void CMesh::updateVisibility()
+    void CMesh::refresh()
     {
         if (!Application::hasCamera())
         {
@@ -127,49 +127,49 @@ namespace Chicane
 
         if (Application::getCamera()->canSee(this))
         {
-            show();
+            //show();
         }
         else
         {
-            hide();
+            //hide();
         }
     }
 
     void CMesh::show()
     {
-        if (m_bIsMeshActive)
+        if (m_bIsVisible)
         {
             return;
         }
 
-        Texture::Manager* textureManager = Loader::getTextureManager();
-        Model::Manager* modelManager = Loader::getModelManager();
+        Box::Model::Manager* modelManager     = Box::getModelManager();
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
-            textureManager->activate(group.getTexture());
             modelManager->activate(group.getModel());
+            textureManager->activate(group.getTexture());
         }
 
-        m_bIsMeshActive = true;
+        m_bIsVisible = true;
     }
 
     void CMesh::hide()
     {
-        if (!m_bIsMeshActive)
+        if (!m_bIsVisible)
         {
             return;
         }
 
-        Texture::Manager* textureManager = Loader::getTextureManager();
-        Model::Manager* modelManager = Loader::getModelManager();
+        Box::Model::Manager* modelManager     = Box::getModelManager();
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
-            textureManager->deactivate(group.getTexture());
             modelManager->deactivate(group.getModel());
+            textureManager->deactivate(group.getTexture());
         }
 
-        m_bIsMeshActive = false;
+        m_bIsVisible = false;
     }
 }

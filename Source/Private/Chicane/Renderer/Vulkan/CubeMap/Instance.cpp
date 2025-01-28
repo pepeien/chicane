@@ -1,7 +1,7 @@
 #include "Chicane/Renderer/Vulkan/CubeMap/Instance.hpp"
 
+#include "Chicane/Box/Asset/CubeMap.hpp"
 #include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Renderer/Vulkan/CubeMap/Instance.hpp"
 #include "Chicane/Renderer/Vulkan/Image.hpp"
 
 namespace Chicane
@@ -19,9 +19,9 @@ namespace Chicane
                 m_queue(inCreateInfo.queue),
                 m_descriptor({})
             {
-                if (m_images.size() < Chicane::CubeMap::IMAGE_COUNT)
+                if (m_images.size() < Box::CubeMap::ORDER.size())
                 {
-                    throw new std::runtime_error("Every cube map must have " + std::to_string(Chicane::CubeMap::IMAGE_COUNT) + " images.");
+                    throw std::runtime_error("Every cube map must have " + std::to_string(Box::CubeMap::ORDER.size()) + " images.");
                 }
 
                 m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
@@ -65,7 +65,7 @@ namespace Chicane
                 Image::Instance::CreateInfo instanceCreateInfo {};
                 instanceCreateInfo.width         = m_image.width;
                 instanceCreateInfo.height        = m_image.height;
-                instanceCreateInfo.count         = Chicane::CubeMap::IMAGE_COUNT;
+                instanceCreateInfo.count         = Box::CubeMap::ORDER.size();
                 instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
                 instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
                 instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
@@ -103,14 +103,14 @@ namespace Chicane
                 createInfo.physicalDevice   = m_physicalDevice;
                 createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
                 createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-                createInfo.size             = pixelCount * Chicane::CubeMap::IMAGE_COUNT;
+                createInfo.size             = pixelCount * Box::CubeMap::ORDER.size();
 
                 Buffer::Instance stagingBuffer;
                 Buffer::init(stagingBuffer, createInfo);
 
-                for (std::uint32_t i = 0; i < Chicane::CubeMap::IMAGE_ORDER.size(); i++)
+                for (std::uint32_t i = 0; i < Box::CubeMap::ORDER.size(); i++)
                 {
-                    const Chicane::Image::Data& image = m_images.at(Chicane::CubeMap::IMAGE_ORDER.at(i));
+                    const Chicane::Image::Data& image = m_images.at(Box::CubeMap::ORDER.at(i));
 
                     void* writeLocation = m_logicalDevice.mapMemory(
                         stagingBuffer.memory,
@@ -129,7 +129,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eUndefined,
                     vk::ImageLayout::eTransferDstOptimal,
-                    Chicane::CubeMap::IMAGE_COUNT
+                    Box::CubeMap::ORDER.size()
                 );
 
                 Image::copyBufferToImage(
@@ -139,7 +139,7 @@ namespace Chicane
                     m_image.instance,
                     m_image.width,
                     m_image.height,
-                    Chicane::CubeMap::IMAGE_COUNT
+                    Box::CubeMap::ORDER.size()
                 );
 
                 Image::transitionLayout(
@@ -148,7 +148,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eTransferDstOptimal,
                     vk::ImageLayout::eShaderReadOnlyOptimal,
-                    Chicane::CubeMap::IMAGE_COUNT
+                    Box::CubeMap::ORDER.size()
                 );
 
                 Buffer::destroy(m_logicalDevice, stagingBuffer);

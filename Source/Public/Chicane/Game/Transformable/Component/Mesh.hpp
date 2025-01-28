@@ -22,20 +22,20 @@ namespace Chicane
         bool isDrawable() const;
 
         bool hasMesh() const;
-        const Box::Mesh* getMesh() const;
+        const Box::Mesh::Instance* getMesh() const;
         const std::string& getModel() const;
         const std::string& getTexture() const;
 
     protected:
         void generateBounds();
 
-        void updateVisibility();
+        void refresh();
         void show();
         void hide();
 
     protected:
-        bool m_bIsMeshActive;
+        bool                       m_bIsVisible;
 
-        const Box::Mesh* m_mesh;
+        const Box::Mesh::Instance* m_mesh;
     };
 }

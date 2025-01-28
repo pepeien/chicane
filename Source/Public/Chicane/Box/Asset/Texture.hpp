@@ -1,38 +1,19 @@
 #pragma once
 
-#include "Chicane/Base.hpp"
-#include "Chicane/Core/Image.hpp"
-#include "Chicane/Box/Asset/Instance.hpp"
-#include "Chicane/Renderer/Texture/Vendor.hpp"
+#include "Chicane/Box/Asset/Texture/Data.hpp"
+#include "Chicane/Box/Asset/Texture/Instance.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Box/Asset/Texture/Vendor.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class Texture : public Asset::Instance
+        namespace Texture
         {
-        public:
-            static inline std::string EXTENSION = ".btex";
-            static inline std::string TAG       = "Texture";
-
-        public:
-            Texture(const std::string& inFilepath);
-
-        public:
-            Chicane::Texture::Vendor getVendor() const;
-            void setVendor(Chicane::Texture::Vendor inVendor);
-
-            const Image::Instance& getData() const;
-            void setData(const Image::Instance& inData);
-            void setData(const std::string& inFilepath);
-
-        private:
-            void fetchVendor();
-            void fetchData();
-
-        private:
-            Chicane::Texture::Vendor m_vendor;
-            Image::Instance          m_data;
-        };
+            static constexpr const char*   EXTENSION = ".btex";
+            static constexpr const char*   TAG       = "Texture";
+            static constexpr std::uint32_t MAX_COUNT = 1000;
+        }
     }
 }

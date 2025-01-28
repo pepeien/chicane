@@ -1,37 +1,19 @@
 #pragma once
 
-#include "Chicane/Base.hpp"
-#include "Chicane/Box/Asset/Instance.hpp"
-#include "Chicane/Renderer/Model/Vendor.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
+#include "Chicane/Box/Asset/Model/Instance.hpp"
+#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Box/Asset/Model/Parse.hpp"
+#include "Chicane/Box/Asset/Model/Vendor.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        class Model : public Asset::Instance
+        namespace Model
         {
-        public:
-            static inline std::string EXTENSION = ".bmdl";
-            static inline std::string TAG       = "Model";
-
-        public:
-            Model(const std::string& inFilepath);
-
-        public:
-            Chicane::Model::Vendor::Type getVendor() const;
-            void setVendor(Chicane::Model::Vendor::Type inVendor);
-
-            const std::vector<unsigned char>& getData() const;
-            void setData(const std::vector<unsigned char>& inData);
-            void setData(const std::string& inFilepath);
-
-        private:
-            void fetchVendor();
-            void fetchData();
-
-        private:
-            Chicane::Model::Vendor::Type m_vendor;
-            std::vector<unsigned char>   m_data;
-        };
+            static constexpr const char* EXTENSION = ".bmdl";
+            static constexpr const char* TAG       = "Model";
+        }
     }
 }

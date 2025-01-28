@@ -1,7 +1,7 @@
 #version 450
 
 struct MeshData {
-    mat4 model;
+    mat4 matrix;
     vec4 textureIndex;
 };
 
@@ -31,5 +31,5 @@ layout(location = 3) in vec3 inNormal;
 void main() {
     MeshData mesh = meshes.data[gl_InstanceIndex];
 
-    gl_Position = light.viewProjection * mesh.model * vec4(inPosition, 1.0);
+    gl_Position = light.viewProjection * mesh.matrix * vec4(inPosition, 1.0);
 }

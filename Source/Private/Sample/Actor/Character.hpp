@@ -9,12 +9,13 @@ public:
     Character();
 
 protected:
-    void onCollision(const Chicane::Actor* inSubject) override;
     void onControlAttachment() override;
 
 private:
+    // Mesh
+    Chicane::CMesh*      m_wand;
+
+    // Audio
     Chicane::CAudio*     m_hitAudio;
     Chicane::CAudio*     m_victoryAudio;
-    Chicane::CCollision* m_collision;
-    Chicane::CMesh*      m_wand;
 };

@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Chicane/Game/Transformable/Component/Camera.hpp"
-#include "Chicane/Game/Transformable/Component/Mesh.hpp"
-#include "Chicane/Game/Transformable/Component/Light.hpp"
-#include "Chicane/Renderer/Mesh/Data.hpp"
+#include "Chicane/Box/Asset/Mesh/Data.hpp"
 #include "Chicane/Renderer/View/Data.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Image/Data.hpp"
@@ -11,6 +8,8 @@
 
 namespace Chicane
 {
+    class CCamera;
+    class CLight;
     class CMesh;
 
     namespace Vulkan
@@ -93,7 +92,7 @@ namespace Chicane
                 // Resources
                 Resource<Chicane::View::Data>                     cameraResource;
                 Resource<Chicane::View::Data>                     lightResource;
-                Resource<Chicane::Mesh::Data>                     meshResource;
+                Resource<Box::Mesh::CompiledData>                 meshResource;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;

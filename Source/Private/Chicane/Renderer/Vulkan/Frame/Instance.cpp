@@ -1,7 +1,9 @@
 #include "Chicane/Renderer/Vulkan/Frame/Instance.hpp"
 
-#include "Chicane/Core/Loader.hpp"
 #include "Chicane/Game/Level/Instance.hpp"
+#include "Chicane/Game/Transformable/Component/Camera.hpp"
+#include "Chicane/Game/Transformable/Component/Mesh.hpp"
+#include "Chicane/Game/Transformable/Component/Light.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/GraphicsPipeline.hpp"
@@ -184,7 +186,7 @@ namespace Chicane
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Chicane::Mesh::Data) * inMeshes.size();
+                bufferCreateInfo.size             = sizeof(Box::Mesh::CompiledData) * inMeshes.size();
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
                 meshResource.setup(bufferCreateInfo);
@@ -194,7 +196,19 @@ namespace Chicane
 
             void Instance::updateMeshData(const std::vector<CMesh*>& inMeshes)
             {
-                if (inMeshes.empty())
+                std::vector<CMesh*> meshes = {};
+
+                for (CMesh* mesh : inMeshes)
+                {
+                    if (!mesh->isDrawable())
+                    {
+                        continue;
+                    }
+
+                    meshes.push_back(mesh);
+                }
+
+                if (meshes.empty())
                 {
                     destroyMeshData();
 
@@ -203,12 +217,12 @@ namespace Chicane
 
                 if (meshResource.isDirty())
                 {
-                    setupMeshData(inMeshes);
+                    setupMeshData(meshes);
 
                     return;
                 }
 
-                refreshMeshData(inMeshes);
+                refreshMeshData(meshes);
             }
         
             void Instance::destroyMeshData()
@@ -421,15 +435,15 @@ namespace Chicane
                     return;
                 }
 
-                Texture::Manager* textureManager = Loader::getTextureManager();
+                Box::Texture::Manager* textureManager = Box::getTextureManager();
 
-                std::vector<Chicane::Mesh::Data> meshes = {};
+                std::vector<Box::Mesh::CompiledData> meshes = {};
                 meshes.reserve(inMeshes.size());
 
                 for (const CMesh* mesh : inMeshes)
                 {
-                    Chicane::Mesh::Data data {};
-                    data.transform    = mesh->getTransform().getMatrix();
+                    Box::Mesh::CompiledData data {};
+                    data.matrix       = mesh->getTransform().getMatrix();
                     data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
 
                     meshes.push_back(data);

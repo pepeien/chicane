@@ -1,6 +1,6 @@
 #include "Chicane/Game/Transformable/Component/Audio.hpp"
 
-#include "Chicane/Core/Loader.hpp"
+#include "Chicane/Box.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
         : Component(),
         m_audio(inAudio)
     {
-        Loader::loadAudio(m_audio);
+        Box::loadAudio(m_audio);
 
         activate();
     }
@@ -20,14 +20,14 @@ namespace Chicane
             return;
         }
 
-        Audio::Manager* manager = Loader::getAudioManager();
+        Box::Audio::Manager* manager = Box::getAudioManager();
 
         if (!manager->isActive(m_audio))
         {
             return;
         }
 
-        const Audio::Data& audio = manager->getData(m_audio);
+        const Box::Audio::CompiledData& audio = manager->getData(m_audio);
 
         SDL_ClearAudioStream(audio.stream);
         SDL_ResumeAudioStreamDevice(audio.stream);

@@ -20,26 +20,34 @@ namespace Chicane
         bool contains(const Vec<3, float>& inPoint) const;
 
         const Vec<3, float>& getMin() const;
+        const Vec<3, float>& getBaseMin() const;
+
         const Vec<3, float>& getMax() const;
+        const Vec<3, float>& getBaseMax() const;
+
+        const Vec<3, float>& getBottom() const;
+        const Vec<3, float>& getBaseBottom() const;
+
+        const Vec<3, float>& getCenter() const;
+        const Vec<3, float>& getBaseCenter() const;
 
         const Vec<3, float>& getTop() const;
-        const Vec<3, float>& getCenter() const;
-        const Vec<3, float>& getOrigin() const;
+        const Vec<3, float>& getBaseTop() const;
 
     private:
-        Vec<3, float>       m_min           = Vec3Zero;
-        Vec<3, float>       m_currentMin    = Vec3Zero;
+        Vec<3, float>       m_min        = Vec3Zero;
+        Vec<3, float>       m_baseMin    = Vec3Zero;
 
-        Vec<3, float>       m_max           = Vec3Zero;
-        Vec<3, float>       m_currentMax    = Vec3Zero;
+        Vec<3, float>       m_max        = Vec3Zero;
+        Vec<3, float>       m_baseMax    = Vec3Zero;
 
-        Vec<3, float>       m_top           = Vec3Zero;
-        Vec<3, float>       m_currentTop    = Vec3Zero;
+        Vec<3, float>       m_bottom     = Vec3Zero;
+        Vec<3, float>       m_baseBottom = Vec3Zero;
 
-        Vec<3, float>       m_origin        = Vec3Zero;
-        Vec<3, float>       m_currentOrigin = Vec3Zero;
+        Vec<3, float>       m_center     = Vec3Zero;
+        Vec<3, float>       m_baseCenter = Vec3Zero;
 
-        Vec<3, float>       m_center        = Vec3Zero;
-        Vec<3, float>       m_currentCenter = Vec3Zero;
+        Vec<3, float>       m_top        = Vec3Zero;
+        Vec<3, float>       m_baseTop    = Vec3Zero;
     };
 }

@@ -28,7 +28,7 @@ Application::~Application()
 
 void Application::initCubeMap()
 {
-    Chicane::Loader::loadCubeMap("Content/Sample/CubeMaps/Black.bcmp");
+    Chicane::Box::loadCubeMap("Content/Sample/CubeMaps/Black.bcmp");
 }
 
 void Application::initLevel()

@@ -326,7 +326,7 @@ namespace Chicane
 
     const Vec<3, float>& Transformable::getOrigin() const
     {
-        return m_bounds.getOrigin();
+        return m_bounds.getBottom();
     }
 
     Subscription<void*>* Transformable::watchTransform(

@@ -3,10 +3,10 @@
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
-#include "Chicane/Renderer/Vulkan/Layer/LevelLayer.hpp"
-#include "Chicane/Renderer/Vulkan/Layer/UILayer.hpp"
-#include "Chicane/Renderer/Vulkan/Layer/ShadowLayer.hpp"
-#include "Chicane/Renderer/Vulkan/Layer/SkyboxLayer.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/Level.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/Shadow.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/Skybox.hpp"
 
 namespace Chicane
 {
@@ -40,7 +40,7 @@ namespace Chicane
             destroySwapChain();
             deleteLayers();
 
-            Loader::reset();
+            Box::reset();
 
             destroyDevices();
             destroySurface();
@@ -70,10 +70,10 @@ namespace Chicane
 
         void Renderer::initLayers()
         {
-            pushLayer(new SkyboxLayer());
-            pushLayer(new ShadowLayer());
-            pushLayer(new LevelLayer());
-            pushLayer(new UILayer());
+            pushLayer(new LSkybox());
+            pushLayer(new LShadow());
+            pushLayer(new LLevel());
+            pushLayer(new LGrid());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)
