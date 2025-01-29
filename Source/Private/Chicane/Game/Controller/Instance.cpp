@@ -127,6 +127,19 @@ namespace Chicane
 
     void Controller::onEvent(const SDL_Event& inEvent)
     {
+        if (inEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+        {
+            if (inEvent.button.button == SDL_BUTTON_LEFT)
+            {
+                Chicane::Application::getWindow()->focus();
+            }
+        }
+
+        if (!Application::getWindow()->isFocused())
+        {
+            return;
+        }
+
         switch (inEvent.type)
         {
         // Mouse
