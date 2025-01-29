@@ -19,9 +19,6 @@ namespace Chicane
                 {
                     if (audio.bufferData)
                     {
-                        SDL_ClearAudioStream(audio.stream);
-                        audio.stream = nullptr;
-
                         SDL_free(audio.bufferData);
                         audio.bufferData = nullptr;
                     }

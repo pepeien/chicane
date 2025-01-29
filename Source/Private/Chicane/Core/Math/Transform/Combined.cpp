@@ -186,12 +186,7 @@ namespace Chicane
             m_rotation    = m_absolute.getRotation() * m_relative.getRotation();
             m_scale       = m_absolute.getScale() * m_relative.getScale();
 
-            // Orientation
-            Quat<float> orientation = glm::quat_cast(m_matrix);
-
-            m_forward = glm::rotate(orientation, FORWARD_DIRECTION);
-            m_right   = glm::rotate(orientation, RIGHT_DIRECTION);
-            m_up      = glm::rotate(orientation, UP_DIRECTION);
+            refreshOrientation(glm::quat_cast(m_matrix));
         }
     }
 }

@@ -16,9 +16,17 @@ Level::Level()
 
 void Level::onActivation()
 {
+    spawnSky();
     spawnLights();
     spawnStructures();
     spawnApples();
+}
+
+void Level::spawnSky()
+{
+    Chicane::ASky* sky = new Chicane::ASky();
+    sky->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Lake.bsky"));
+    addActor(sky);
 }
 
 void Level::spawnLights()
@@ -30,7 +38,6 @@ void Level::spawnStructures()
 {
     Strcuture* floor = new Strcuture("Content/Sample/Meshes/Cube.bmsh");
     floor->setAbsoluteScale(200.0f, 200.0f, 0.25f);
-
     addActor(floor);
 }
 
@@ -51,10 +58,7 @@ void Level::spawnApples()
         {
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
-                Apple* apple = new Apple(
-                    column % 2 == 0 ? "Content/Sample/Meshes/Apple.bmsh" : "Content/Sample/Meshes/Apple_Sun.bmsh",
-                    position
-                );
+                Apple* apple = new Apple("Content/Sample/Meshes/Apple.bmsh", position);
                 addActor(apple);
 
                 position.x += APPLE_STEP;

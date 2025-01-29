@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Texture
         {
-            static const Image::Instance EMPTY_INSTANCE = {};
-            static const Image::Data     EMPTY_DATA     = {};
+            static const Image::RawData      EMPTY_RAW_DATA      = {};
+            static const Image::CompiledData EMPTY_COMPILED_DATA = {};
 
             Manager::Manager()
                 : Super()
@@ -29,7 +29,7 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                Image::Data data {};
+                Image::CompiledData data {};
                 data.pixels = FileSystem::readImageFromMemory(
                     data.width,
                     data.height,
@@ -59,21 +59,21 @@ namespace Chicane
                 Super::load(inId, inAsset->getData());
             }
 
-            const Image::Instance& Manager::getInstance(const std::string& inId) const
+            const Image::RawData& Manager::getInstance(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
-                    return EMPTY_INSTANCE;
+                    return EMPTY_RAW_DATA;
                 }
 
                 return m_instances.at(inId);
             }
 
-            const Image::Data& Manager::getData(const std::string& inId) const
+            const Image::CompiledData& Manager::getData(const std::string& inId) const
             {
                 if (!isLoaded(inId) || !isAllocated(inId))
                 {
-                    return EMPTY_DATA;
+                    return EMPTY_COMPILED_DATA;
                 }
 
                 return m_datum.at(inId);

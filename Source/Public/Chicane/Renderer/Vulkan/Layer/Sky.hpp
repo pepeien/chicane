@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core/Window.hpp"
-#include "Chicane/Game/Level/Instance.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Vulkan.hpp"
 
@@ -11,11 +8,11 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class LShadow : public Layer::Instance
+        class LSky : public Layer::Instance
         {
         public:
-            LShadow();
-            ~LShadow();
+            LSky();
+            ~LSky();
 
         public:
             void build() override;
@@ -31,9 +28,15 @@ namespace Chicane
             void initFrameResources();
             void destroyFrameResources();
 
-            // Level
+            void initTextureResources();
+            void destroyTextureResources();
+
+            // Pipeline
             void initGraphicsPipeline();
             void initFramebuffers();
+
+            // Texture
+            void buildTextureData();
 
             // Model
             void buildModelVertexBuffer();
@@ -42,19 +45,19 @@ namespace Chicane
             void destroyModelData();
             void rebuildModelData();
 
-            // Render Pass
-            void renderModels(const vk::CommandBuffer& inCommandBuffer);
-
         private:
             Renderer::Internals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
             Descriptor::Bundle                          m_frameDescriptor;
+            Descriptor::Bundle                          m_textureDescriptor;
+
+            std::unique_ptr<Sky::Instance>              m_sky;
+            const Box::Sky::Instance*                   m_asset;
 
             Buffer::Instance                            m_modelVertexBuffer;
             Buffer::Instance                            m_modelIndexBuffer;
-            Box::Model::Manager*                        m_modelManager;
 
             std::vector<vk::ClearValue>                 m_clearValues;
         };

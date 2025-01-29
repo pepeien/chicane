@@ -5,7 +5,7 @@
 #include "Chicane/Renderer/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/Level.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/Shadow.hpp"
-#include "Chicane/Renderer/Vulkan/Layer/Skybox.hpp"
+#include "Chicane/Renderer/Vulkan/Layer/Sky.hpp"
 
 namespace Chicane
 {
@@ -67,7 +67,7 @@ namespace Chicane
 
         void Renderer::initLayers()
         {
-            pushLayer(new LSkybox());
+            pushLayer(new LSky());
             pushLayer(new LShadow());
             pushLayer(new LLevel());
             pushLayer(new LGrid());

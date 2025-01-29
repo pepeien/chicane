@@ -1,17 +1,16 @@
 #pragma once
 
 #include "Chicane/Base.hpp"
-#include "Chicane/Core/Image.hpp"
-#include "Chicane/Box/Asset/CubeMap.hpp"
+#include "Chicane/Box/Asset/Sky.hpp"
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
 {
     namespace Vulkan
     {
-        namespace CubeMap
+        namespace Sky
         {
-            typedef std::unordered_map<Box::CubeMap::Side, Chicane::Image::Data> Images;
+            typedef Box::Sky::CompiledSides Images;
 
             struct CreateInfo
             {

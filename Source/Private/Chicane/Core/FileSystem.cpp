@@ -171,7 +171,7 @@ namespace Chicane
             int& outWidth,
             int& outHeight,
             int& outChannel,
-            const Image::Instance& inData
+            const Image::RawData& inData
         )
         {
             Image::Pixels result = stbi_load_from_memory(

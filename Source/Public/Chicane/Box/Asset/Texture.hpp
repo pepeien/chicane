@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Texture/Data.hpp"
 #include "Chicane/Box/Asset/Texture/Instance.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Box/Asset/Texture/Vendor.hpp"

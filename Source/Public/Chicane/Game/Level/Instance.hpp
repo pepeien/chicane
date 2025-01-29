@@ -164,6 +164,6 @@ namespace Chicane
         std::vector<Component*>                                     m_components;
         std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;
 
-        std::unique_ptr<Observable<CCamera*>>               m_cameraObservable;
+        std::unique_ptr<Observable<CCamera*>>                       m_cameraObservable;
     };
 }

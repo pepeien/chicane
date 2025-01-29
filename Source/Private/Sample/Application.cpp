@@ -12,7 +12,6 @@ Application::Application()
     createInfo.renderer     = Chicane::Renderer::Type::Vulkan;
     createInfo.display      = 0;
     createInfo.onSetup      = [this]() {
-        initCubeMap();
         initLevel();
         initChacater();
         initView();
@@ -24,11 +23,6 @@ Application::Application()
 Application::~Application()
 {
     Chicane::Application::stop();
-}
-
-void Application::initCubeMap()
-{
-    Chicane::Box::loadCubeMap("Content/Sample/CubeMaps/Black.bcmp");
 }
 
 void Application::initLevel()

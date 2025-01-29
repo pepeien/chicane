@@ -2,7 +2,6 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Image.hpp"
-
 #include "Chicane/Box/Asset/Texture/Instance.hpp"
 #include "Chicane/Box/Manager.hpp"
 
@@ -12,7 +11,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            class Manager : public Box::Manager::Instance<Image::Instance, Image::Data>
+            class Manager : public Box::Manager::Instance<Image::RawData, Image::CompiledData>
             {
             public:
                 Manager();
@@ -27,8 +26,8 @@ namespace Chicane
                 void load(const std::string& inId, const Texture::Instance* inTexture);
 
                 // Data
-                const Image::Instance& getInstance(const std::string& inId) const;
-                const Image::Data& getData(const std::string& inId) const;
+                const Image::RawData& getInstance(const std::string& inId) const;
+                const Image::CompiledData& getData(const std::string& inId) const;
                 std::uint32_t getIndex(const std::string& inId) const;
             };
         }

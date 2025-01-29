@@ -1,0 +1,11 @@
+<Asset version="1" id="Lake">
+    <Sides>
+        <Texture side="Left">Content/Sample/Textures/Lake/Left.btex</Texture>
+        <Texture side="Right">Content/Sample/Textures/Lake/Right.btex</Texture>
+        <Texture side="Front">Content/Sample/Textures/Lake/Front.btex</Texture>
+        <Texture side="Back">Content/Sample/Textures/Lake/Back.btex</Texture>
+        <Texture side="Up">Content/Sample/Textures/Lake/Up.btex</Texture>
+        <Texture side="Down">Content/Sample/Textures/Lake/Down.btex</Texture>
+    </Sides>
+    <Model>Content/Sample/Models/Cube.bmdl</Model>
+</Asset>

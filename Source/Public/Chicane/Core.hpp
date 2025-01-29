@@ -5,7 +5,6 @@
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/FrameTelemetry.hpp"
-#include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Telemetry.hpp"

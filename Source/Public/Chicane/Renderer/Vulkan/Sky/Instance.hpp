@@ -2,7 +2,7 @@
 
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Renderer/Vulkan/CubeMap/CreateInfo.hpp"
+#include "Chicane/Renderer/Vulkan/Sky/CreateInfo.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Image/Data.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        namespace CubeMap
+        namespace Sky
         {
             class Instance
             {

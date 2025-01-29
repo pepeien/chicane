@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace CubeMap
+        namespace Sky
         {
             enum class Side : std::uint8_t
             {

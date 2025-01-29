@@ -16,7 +16,6 @@ public:
     ~Application();
 
 private:
-    void initCubeMap();
     void initLevel();
     void initChacater();
     void initView();

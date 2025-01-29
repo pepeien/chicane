@@ -21,7 +21,8 @@ Apple::Apple(
     setCanCollide(true);
 
     setAbsoluteTranslation(inStartPosition);
-    setAbsoluteScale(0.05f);
+    setAbsoluteRotation(90.0f, 0.0f, 0.0f);
+    setAbsoluteScale(100.0f);
 
     m_mesh->attachTo(this);
     m_mesh->activate();

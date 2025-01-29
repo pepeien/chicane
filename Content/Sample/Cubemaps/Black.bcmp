@@ -1,8 +1,0 @@
-<Asset version="1" id="Black">
-    <Texture side="Left">Content/Sample/Textures/Black.btex</Texture>
-    <Texture side="Right">Content/Sample/Textures/Black.btex</Texture>
-    <Texture side="Front">Content/Sample/Textures/Black.btex</Texture>
-    <Texture side="Back">Content/Sample/Textures/Black.btex</Texture>
-    <Texture side="Up">Content/Sample/Textures/Black.btex</Texture>
-    <Texture side="Down">Content/Sample/Textures/Black.btex</Texture>
-</Asset>

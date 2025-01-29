@@ -5,7 +5,6 @@ namespace Chicane
     namespace Box
     {
         std::unique_ptr<Audio::Manager>   m_audioManager   = std::make_unique<Audio::Manager>();
-        std::unique_ptr<CubeMap::Manager> m_cubeMapManager = std::make_unique<CubeMap::Manager>();
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
@@ -14,11 +13,6 @@ namespace Chicane
         Audio::Manager* getAudioManager()
         {
             return m_audioManager.get();
-        }
-
-        CubeMap::Manager* getCubeMapManager()
-        {
-            return m_cubeMapManager.get();
         }
 
         Model::Manager* getModelManager()
@@ -74,17 +68,7 @@ namespace Chicane
 
         void loadModel(const Asset::Instance* inAsset)
         {
-            if (!inAsset)
-            {
-                return;
-            }
-
-            if (isLoaded(inAsset))
-            {
-                return;
-            }
-
-            if (!inAsset->isType(Asset::Type::Model))
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Model))
             {
                 return;
             }
@@ -101,17 +85,7 @@ namespace Chicane
 
         void loadTexture(const Asset::Instance* inAsset)
         {
-            if (!inAsset)
-            {
-                return;
-            }
-
-            if (isLoaded(inAsset))
-            {
-                return;
-            }
-
-            if (!inAsset->isType(Asset::Type::Texture))
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Texture))
             {
                 return;
             }
@@ -128,17 +102,7 @@ namespace Chicane
 
         void loadMesh(const Asset::Instance* inAsset)
         {
-            if (!inAsset)
-            {
-                return;
-            }
-
-            if (isLoaded(inAsset))
-            {
-                return;
-            }
-
-            if (!inAsset->isType(Asset::Type::Mesh))
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Mesh))
             {
                 return;
             }
@@ -169,17 +133,7 @@ namespace Chicane
 
         void loadAudio(const Asset::Instance* inAsset)
         {
-            if (!inAsset)
-            {
-                return;
-            }
-
-            if (isLoaded(inAsset))
-            {
-                return;
-            }
-
-            if (!inAsset->isType(Asset::Type::Audio))
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Audio))
             {
                 return;
             }
@@ -194,19 +148,9 @@ namespace Chicane
             );
         }
 
-        void loadCubeMap(const Asset::Instance* inAsset)
+        void loadSky(const Asset::Instance* inAsset)
         {
-            if (!inAsset)
-            {
-                return;
-            }
-
-            if (isLoaded(inAsset))
-            {
-                return;
-            }
-
-            if (!inAsset->isType(Asset::Type::CubeMap))
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Sky))
             {
                 return;
             }
@@ -215,10 +159,14 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_cubeMapManager->load(
-                filepath,
-                static_cast<const CubeMap::Instance*>(inAsset)
-            );
+            const Sky::Instance* cubeMap = static_cast<const Sky::Instance*>(inAsset);
+
+            for (const auto& [side, texture] : cubeMap->getSides())
+            {
+                loadTexture(texture);
+            }
+
+            loadModel(new Model::Instance(cubeMap->getModel()));
         }
 
         const Audio::Instance* loadAudio(const std::string& inFilePath)
@@ -238,23 +186,6 @@ namespace Chicane
             return getAsset<Audio::Instance>(inFilePath);
         }
 
-        const CubeMap::Instance* loadCubeMap(const std::string& inFilePath)
-        {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::CubeMap)
-            {
-                throw std::runtime_error(inFilePath + " is not a cube map");
-            }
-
-            if (!isLoaded(inFilePath))
-            {
-                loadCubeMap(new CubeMap::Instance(inFilePath));
-            }
-
-            return getAsset<CubeMap::Instance>(inFilePath);
-        }
-
         const Texture::Instance* loadTexture(const std::string& inFilePath)
         {
             Asset::Header header = Asset::Header::fromFilepath(inFilePath);
@@ -270,6 +201,23 @@ namespace Chicane
             }
 
             return getAsset<Texture::Instance>(inFilePath);
+        }
+
+        const Sky::Instance* loadSky(const std::string& inFilePath)
+        {
+            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
+
+            if (header.type != Asset::Type::Sky)
+            {
+                throw std::runtime_error(inFilePath + " is not a skybox");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadSky(new Sky::Instance(inFilePath));
+            }
+
+            return getAsset<Sky::Instance>(inFilePath);
         }
 
         const Mesh::Instance* loadMesh(const std::string& inFilePath)
@@ -291,6 +239,7 @@ namespace Chicane
 
         void reset()
         {
+            m_audioManager.reset();
             m_textureManager.reset();
             m_modelManager.reset();
         }

@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace Image
         {
-	    	struct Data : public Chicane::Image::Data
+	    	struct Data : public Chicane::Image::CompiledData
 	    	{
             public:
 	    		vk::Image        instance;

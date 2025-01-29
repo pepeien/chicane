@@ -2,7 +2,6 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Image.hpp"
-
 #include "Chicane/Box/Asset/Instance.hpp"
 #include "Chicane/Box/Asset/Texture/Vendor.hpp"
 
@@ -21,8 +20,8 @@ namespace Chicane
                 Vendor getVendor() const;
                 void setVendor(Vendor inVendor);
 
-                const Image::Instance& getData() const;
-                void setData(const Image::Instance& inData);
+                const Image::RawData& getData() const;
+                void setData(const Image::RawData& inData);
                 void setData(const std::string& inFilepath);
 
             private:
@@ -30,8 +29,8 @@ namespace Chicane
                 void fetchData();
 
             private:
-                Vendor          m_vendor;
-                Image::Instance m_data;
+                Vendor         m_vendor;
+                Image::RawData m_data;
             };
         }
     }

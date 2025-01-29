@@ -12,12 +12,12 @@ namespace Chicane
             struct CreateInfo
             {
             public:
-                Chicane::Image::Data image;
+                Chicane::Image::CompiledData image;
 
-                vk::Device           logicalDevice;
-                vk::PhysicalDevice   physicalDevice;
-                vk::CommandBuffer    commandBuffer;
-                vk::Queue            queue;
+                vk::Device                   logicalDevice;
+                vk::PhysicalDevice           physicalDevice;
+                vk::CommandBuffer            commandBuffer;
+                vk::Queue                    queue;
             };
         }
     }

@@ -35,6 +35,8 @@ namespace Chicane
             const Vec<3, float>& getUp() const;
 
         protected:
+            void refreshOrientation(const Quat<float>& inOrientation);
+            void refreshTransform(const Quat<float>& inOrientation);
             void refresh();
 
         protected:

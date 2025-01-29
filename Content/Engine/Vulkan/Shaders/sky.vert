@@ -6,7 +6,6 @@ layout(set = 0, binding = 0) uniform CameraUBO {
     mat4 view;
     mat4 projection;
     mat4 viewProjection;
-    mat4 inversedViewProjection;
 
     vec4 forward;
     vec4 right;
@@ -15,23 +14,16 @@ layout(set = 0, binding = 0) uniform CameraUBO {
     vec4 translation;
 } camera;
 
-layout(location = 0) out vec3 outForward;
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec3 inColor;
+layout(location = 2) in vec2 inUV;
+layout(location = 3) in vec3 inNormal;
 
-const vec3 positions[6] = vec3[](
-	vec3( 1.0,  1.0, 0.0),
-	vec3(-1.0, -1.0, 0.0),
-	vec3(-1.0,  1.0, 0.0),
-	vec3(-1.0, -1.0, 0.0),
-	vec3( 1.0,  1.0, 0.0),
-	vec3( 1.0, -1.0, 0.0)
-);
+layout(location = 0) out vec3 outUV;
 
 void main() {
-    vec3 position = positions[gl_VertexIndex];
+    outUV     = inPosition;
+    outUV.xy *= -1.0;
 
-    gl_Position = vec4(position, 1.0);
-
-    outForward = normalize(
-        camera.forward + (position.x * camera.right) - (position.y * camera.up)
-    ).xyz;
+    gl_Position = (mat4(mat3(camera.viewProjection)) * vec4(inPosition, 1.0)).xyzz;
 }

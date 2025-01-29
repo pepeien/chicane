@@ -4,7 +4,7 @@
 #include "Chicane/Renderer/Vulkan/Base.hpp"
 #include "Chicane/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Renderer/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Renderer/Vulkan/CubeMap.hpp"
+#include "Chicane/Renderer/Vulkan/Sky.hpp"
 #include "Chicane/Renderer/Vulkan/Debug.hpp"
 #include "Chicane/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Renderer/Vulkan/Device.hpp"

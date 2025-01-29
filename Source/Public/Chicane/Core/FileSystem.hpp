@@ -32,7 +32,7 @@ namespace Chicane
             int& outWidth,
             int& outHeight,
             int& outChannel,
-            const Image::Instance& inData
+            const Image::RawData& inData
         );
     }
 }

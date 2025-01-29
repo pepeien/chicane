@@ -57,12 +57,12 @@ namespace Chicane
                 root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
             }
 
-            const Image::Instance& Instance::getData() const
+            const Image::RawData& Instance::getData() const
             {
                 return m_data;
             }
 
-            void Instance::setData(const Image::Instance& inData)
+            void Instance::setData(const Image::RawData& inData)
             {
                 if (inData.empty())
                 {

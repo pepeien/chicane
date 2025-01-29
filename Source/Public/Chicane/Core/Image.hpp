@@ -7,9 +7,9 @@ namespace Chicane
     namespace Image
     {
         typedef unsigned char*             Pixels;
-        typedef std::vector<unsigned char> Instance;
+        typedef std::vector<unsigned char> RawData;
 
-        struct Data
+        struct CompiledData
         {
         public:
             int    width    = 0;

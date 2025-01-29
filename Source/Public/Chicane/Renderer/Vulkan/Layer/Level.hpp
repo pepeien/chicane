@@ -34,7 +34,7 @@ namespace Chicane
             void initTextureResources();
             void destroyTextureResources();
 
-            // Level
+            // Pipeline
             void initGraphicsPipeline();
             void initFramebuffers();
 
