@@ -58,7 +58,6 @@ namespace Chicane
 
             // Events
             void onEvent(const SDL_Event& inEvent) override;
-            void onViewportUpdate() override;
 
             // Render
             void render() override;

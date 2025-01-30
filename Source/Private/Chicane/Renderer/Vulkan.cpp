@@ -18,6 +18,25 @@ namespace Chicane
             m_imageCount(0),
             m_currentImageIndex(0)
         {
+            watchViewport(
+                [this](const auto& inViewport)
+                {
+                    // Viewport
+                    m_vkViewport.x        = inViewport.position.x;
+                    m_vkViewport.y        = inViewport.position.y;
+                    m_vkViewport.width    = static_cast<float>(inViewport.size.x);
+                    m_vkViewport.height   = static_cast<float>(inViewport.size.y);
+                    m_vkViewport.minDepth = 0.0f;
+                    m_vkViewport.maxDepth = 1.0f;
+
+                    // Scissor
+                    m_vkScissor.offset.x      = 0;
+                    m_vkScissor.offset.y      = 0;
+                    m_vkScissor.extent.width  = inViewport.size.x;
+                    m_vkScissor.extent.height = inViewport.size.y;
+                }
+            );
+
             buildInstance();
             buildDebugMessenger();
             buildSurface();
@@ -80,25 +99,6 @@ namespace Chicane
             }
 
             Super::onEvent(inEvent);
-        }
-
-        void Renderer::onViewportUpdate()
-        {
-            Super::onViewportUpdate();
-
-            // Viewport
-            m_vkViewport.x        = m_viewport.position.x;
-            m_vkViewport.y        = m_viewport.position.y;
-            m_vkViewport.width    = static_cast<float>(m_viewport.size.x);
-            m_vkViewport.height   = static_cast<float>(m_viewport.size.y);
-            m_vkViewport.minDepth = 0.0f;
-            m_vkViewport.maxDepth = 1.0f;
-
-            // Scissor
-            m_vkScissor.offset.x      = 0;
-            m_vkScissor.offset.y      = 0;
-            m_vkScissor.extent.width  = m_viewport.size.x;
-            m_vkScissor.extent.height = m_viewport.size.y;
         }
 
         void Renderer::render()

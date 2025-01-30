@@ -28,7 +28,6 @@ namespace Chicane
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
-            virtual void onViewportUpdate() { updateViewComponents(); }
 
             // Render
             virtual void render() { return; };
@@ -41,6 +40,11 @@ namespace Chicane
             void setViewportPosition(float inX, float inY);
             void setViewportPosition(const Vec<2, float>& inPosition);
             void setViewport(const Viewport& inViewport);
+            Subscription<const Viewport&>* watchViewport(
+                std::function<void (const Viewport&)> inNext,
+                std::function<void (const std::string&)> inError = nullptr,
+                std::function<void ()> inComplete = nullptr
+            );
 
             // Layer
             bool hasLayer(Layer::Instance* inLayer);
@@ -70,18 +74,19 @@ namespace Chicane
 
         protected:
             // Window
-            Window::Instance*             m_window;
+            Window::Instance*                            m_window;
 
             // Settings
-            Viewport                      m_viewport;        
+            Viewport                                     m_viewport;  
+            std::unique_ptr<Observable<const Viewport&>> m_viewportObservable;      
 
             // Layer
-            std::vector<Layer::Instance*> m_layers;
+            std::vector<Layer::Instance*>                m_layers;
 
             // Game
-            std::vector<CCamera*>         m_cameras;
-            std::vector<CLight*>          m_lights;
-            std::vector<CMesh*>           m_meshes;
+            std::vector<CCamera*>                        m_cameras;
+            std::vector<CLight*>                         m_lights;
+            std::vector<CMesh*>                          m_meshes;
         };
     }
 }

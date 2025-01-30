@@ -16,14 +16,17 @@ Character::Character()
     m_camera->attachTo(this);
     m_camera->activate();
 
+    m_wand->attachTo(this);
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
     m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
-    m_wand->attachTo(this);
     m_wand->activate();
 
     m_hitAudio->attachTo(this);
+    m_hitAudio->activate();
+
     m_victoryAudio->attachTo(this);
+    m_victoryAudio->activate();
 
     Game::watchScore(
         [this](std::uint32_t inScore)
@@ -46,10 +49,10 @@ void Character::onControlAttachment()
 
     m_controller->bindMouseButtonEvent(SDL_BUTTON_LEFT, std::bind(&Character::onLeftClick, this, std::placeholders::_1));
 
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_W, std::bind(&Character::onMoveForward, this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_W, std::bind(&Character::onMoveForward,  this, std::placeholders::_1));
     m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_S, std::bind(&Character::onMoveBackward, this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_A, std::bind(&Character::onMoveRight, this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_D, std::bind(&Character::onMoveLeft, this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_A, std::bind(&Character::onMoveLeft,     this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_D, std::bind(&Character::onMoveRight,    this, std::placeholders::_1));
 }
 
 void Character::onLook(const SDL_MouseMotionEvent& inEvent)
@@ -87,7 +90,7 @@ void Character::onMoveForward(bool bInIsButtonPressed)
         return;
     }
 
-    move(getForward(), 0.1f);
+    move(getForward(), 1.0f);
 }
 
 void Character::onMoveBackward(bool bInIsButtonPressed)
@@ -97,7 +100,7 @@ void Character::onMoveBackward(bool bInIsButtonPressed)
         return;
     }
 
-    move(getForward(), -0.1f);
+    move(getForward(), -1.0f);
 }
 
 void Character::onMoveLeft(bool bInIsButtonPressed)
@@ -107,7 +110,7 @@ void Character::onMoveLeft(bool bInIsButtonPressed)
         return;
     }
 
-    move(getRight(), -0.1f);
+    move(getRight(), -1.0f);
 }
 
 void Character::onMoveRight(bool bInIsButtonPressed)
@@ -117,5 +120,5 @@ void Character::onMoveRight(bool bInIsButtonPressed)
         return;
     }
 
-    move(getRight(), 0.1f);
+    move(getRight(), 1.0f);
 }
