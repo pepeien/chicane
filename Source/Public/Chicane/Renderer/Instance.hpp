@@ -16,6 +16,9 @@ namespace Chicane
         class Instance
         {
         public:
+            typedef Instance Super;
+
+        public:
             Instance(Window::Instance* inWindow);
             virtual ~Instance() = default;
 
@@ -25,6 +28,7 @@ namespace Chicane
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
+            virtual void onViewportUpdate() { updateViewComponents(); }
 
             // Render
             virtual void render() { return; };
@@ -32,12 +36,11 @@ namespace Chicane
         public:
             // Settings
             const Viewport& getViewport() const;
+            void setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight);
+            void setViewportSize(const Vec<2, std::uint32_t>& inSize);
+            void setViewportPosition(float inX, float inY);
+            void setViewportPosition(const Vec<2, float>& inPosition);
             void setViewport(const Viewport& inViewport);
-            Subscription<const Viewport&>* watchViewport(
-                std::function<void (const Viewport&)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            );
 
             // Layer
             bool hasLayer(Layer::Instance* inLayer);
@@ -61,23 +64,24 @@ namespace Chicane
             void deleteLayers();
 
         private:
+            // Events
             void loadEvents();
+            void updateViewComponents();
 
         protected:
             // Window
-            Window::Instance*                            m_window;
+            Window::Instance*             m_window;
 
             // Settings
-            Viewport                                     m_viewport;
-            std::unique_ptr<Observable<const Viewport&>> m_viewportObservable;            
+            Viewport                      m_viewport;        
 
             // Layer
-            std::vector<Layer::Instance*>                m_layers;
+            std::vector<Layer::Instance*> m_layers;
 
             // Game
-            std::vector<CCamera*>                        m_cameras;
-            std::vector<CLight*>                         m_lights;
-            std::vector<CMesh*>                          m_meshes;
+            std::vector<CCamera*>         m_cameras;
+            std::vector<CLight*>          m_lights;
+            std::vector<CMesh*>           m_meshes;
         };
     }
 }

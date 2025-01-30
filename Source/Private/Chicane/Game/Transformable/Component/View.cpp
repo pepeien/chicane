@@ -49,21 +49,20 @@ namespace Chicane
 
     void CView::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
     {
-        m_settings.viewport.x  = inWidth;
-        m_settings.viewport.y  = inHeight;
+        setViewport(inWidth, inHeight);
+    }
+
+    void CView::setViewport(const Vec<2, std::uint32_t>& inViewport)
+    {
+        m_settings.viewport    = inViewport;
         m_settings.aspectRatio = 0;
 
-        if (inWidth > 0 && inHeight > 0)
+        if (inViewport.x > 0 && inViewport.y > 0)
         {
             m_settings.aspectRatio = (float) m_settings.viewport.x / m_settings.viewport.y;
         }
 
         updateProjection();
-    }
-
-    void CView::setViewport(const Vec<2, std::uint32_t>& inResolution)
-    {
-        setViewport(inResolution.x, inResolution.y);
     }
 
     float CView::getAspectRatio() const

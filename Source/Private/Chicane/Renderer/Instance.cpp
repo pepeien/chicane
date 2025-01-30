@@ -11,11 +11,11 @@ namespace Chicane
         Instance::Instance(Window::Instance* inWindow)
             : m_window(inWindow),
             m_viewport({}),
-            m_viewportObservable(std::make_unique<Observable<const Viewport&>>()),
-            m_layers({})
+            m_layers({}),
+            m_cameras({}),
+            m_lights({}),
+            m_meshes({})
         {
-            m_viewport.size = inWindow->getDrawableSize();
-
             loadEvents();
         }
 
@@ -24,27 +24,35 @@ namespace Chicane
             return m_viewport;
         }
 
+        void Instance::setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight)
+        {
+            setViewportSize(Vec<2, std::uint32_t>(inWidth, inHeight));
+        }
+
+        void Instance::setViewportSize(const Vec<2, std::uint32_t>& inSize)
+        {
+            m_viewport.size = inSize;
+
+            onViewportUpdate();
+        }
+
+        void Instance::setViewportPosition(float inX, float inY)
+        {
+            setViewportPosition(Vec<2, float>(inX, inY));
+        }
+
+        void Instance::setViewportPosition(const Vec<2, float>& inPosition)
+        {
+            m_viewport.position = inPosition;
+
+            onViewportUpdate();
+        }
+
         void Instance::setViewport(const Viewport& inViewport)
         {
             m_viewport = inViewport;
 
-            m_viewportObservable->next(m_viewport);
-        }
-
-        Subscription<const Viewport&>* Instance::watchViewport(
-            std::function<void (const Viewport&)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
-        {
-            Subscription<const Viewport&>* subscription = m_viewportObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_viewport);
-
-            return subscription;
+            onViewportUpdate();
         }
 
         bool Instance::hasLayer(Layer::Instance* inLayer)
@@ -250,20 +258,16 @@ namespace Chicane
                             m_lights.clear();
                             m_meshes.clear();
 
-                            const Chicane::Renderer::Viewport& viewport = getViewport();
-
                             for (Component* component : inComponents)
                             {
                                 if (component->isType<CCamera>())
                                 {
                                     m_cameras.push_back(static_cast<CCamera*>(component));
-                                    m_cameras.back()->setViewport(viewport.size);
                                 }
 
                                 if (component->isType<CLight>())
                                 {
                                     m_lights.push_back(static_cast<CLight*>(component));
-                                    m_lights.back()->setViewport(viewport.size);
                                 }
 
                                 if (component->isType<CMesh>())
@@ -280,10 +284,25 @@ namespace Chicane
                                     return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
                                 }
                             );
+
+                            updateViewComponents();
                         }
                     );
                 }
             );
+        }
+
+        void Instance::updateViewComponents()
+        {
+            for (CCamera* camera : m_cameras)
+            {
+                camera->setViewport(m_viewport.size);
+            }
+
+            for (CLight* light : m_lights)
+            {
+                light->setViewport(m_viewport.size);
+            }
         }
     }
 }

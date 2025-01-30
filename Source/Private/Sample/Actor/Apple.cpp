@@ -3,10 +3,7 @@
 #include "Game.hpp"
 #include "Chicane/Core.hpp"
 
-Apple::Apple(
-    const std::string& inMesh,
-    const Chicane::Vec<3, float>& inStartPosition
-)
+Apple::Apple(const Chicane::Vec<3, float>& inStartPosition)
     : Chicane::Actor(),
     m_fallingRate(
         std::max(
@@ -15,7 +12,7 @@ Apple::Apple(
         )
     ),
     m_startPosition(inStartPosition),
-    m_mesh(new Chicane::CMesh(inMesh))
+    m_mesh(new Chicane::CMesh("Content/Sample/Meshes/Apple.bmsh"))
 {
     setCanTick(true);
     setCanCollide(true);

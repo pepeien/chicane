@@ -21,8 +21,8 @@ namespace Chicane
 
         // Viewport
         const Vec<2, std::uint32_t>& getViewport() const;
+        void setViewport(const Vec<2, std::uint32_t>& inViewport);
         void setViewport(std::uint32_t inWidth, std::uint32_t inHeight);
-        void setViewport(const Vec<2, std::uint32_t>& inResolution);
 
         float getAspectRatio() const;
 

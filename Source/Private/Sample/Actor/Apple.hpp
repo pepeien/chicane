@@ -6,10 +6,7 @@
 class Apple : public Chicane::Actor
 {
 public:
-    Apple(
-        const std::string& inMesh,
-        const Chicane::Vec<3, float>& inStartPosition
-    );
+    Apple(const Chicane::Vec<3, float>& inStartPosition);
 
 protected:
     void onTick(float inDeltaTime) override;

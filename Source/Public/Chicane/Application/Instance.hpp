@@ -2,6 +2,7 @@
 
 #include "Chicane/Application/CreateInfo.hpp"
 #include "Chicane/Base.hpp"
+#include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Grid.hpp"
@@ -15,6 +16,7 @@ namespace Chicane
         {
         public:
             Instance();
+            ~Instance();
 
         public:
             // Lifecycle

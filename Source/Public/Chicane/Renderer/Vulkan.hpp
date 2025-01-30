@@ -53,10 +53,14 @@ namespace Chicane
             ~Renderer();
 
         public:
+            // Setup
             void initLayers() override;
 
+            // Events
             void onEvent(const SDL_Event& inEvent) override;
+            void onViewportUpdate() override;
 
+            // Render
             void render() override;
 
         public:
@@ -122,6 +126,10 @@ namespace Chicane
             // Frame
             int                        m_imageCount;
             int                        m_currentImageIndex;
+
+            // Viewport
+            vk::Viewport               m_vkViewport;
+            vk::Rect2D                 m_vkScissor;
         };
     }
 }

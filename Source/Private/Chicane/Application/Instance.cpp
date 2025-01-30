@@ -17,6 +17,11 @@ namespace Chicane
             m_viewObservable(std::make_unique<Observable<Grid::View*>>())
         {}
 
+        Instance::~Instance()
+        {
+            Box::reset();
+        }
+
         void Instance::setup(const CreateInfo& inCreateInfo)
         {
             initWindow(inCreateInfo);

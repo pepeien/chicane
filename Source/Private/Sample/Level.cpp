@@ -58,8 +58,7 @@ void Level::spawnApples()
         {
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
-                Apple* apple = new Apple("Content/Sample/Meshes/Apple.bmsh", position);
-                addActor(apple);
+                addActor(new Apple(position));
 
                 position.x += APPLE_STEP;
             }

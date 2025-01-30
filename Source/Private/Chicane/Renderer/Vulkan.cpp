@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Vulkan.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 #include "Chicane/Renderer/Vulkan/Layer/Grid.hpp"
@@ -36,8 +37,6 @@ namespace Chicane
             destroyCommandPool();
             destroySwapChain();
             deleteLayers();
-
-            Box::reset();
 
             destroyDevices();
             destroySurface();
@@ -80,7 +79,26 @@ namespace Chicane
                 rebuildSwapChain();
             }
 
-            emmitEventToLayers(inEvent);
+            Super::onEvent(inEvent);
+        }
+
+        void Renderer::onViewportUpdate()
+        {
+            Super::onViewportUpdate();
+
+            // Viewport
+            m_vkViewport.x        = m_viewport.position.x;
+            m_vkViewport.y        = m_viewport.position.y;
+            m_vkViewport.width    = static_cast<float>(m_viewport.size.x);
+            m_vkViewport.height   = static_cast<float>(m_viewport.size.y);
+            m_vkViewport.minDepth = 0.0f;
+            m_vkViewport.maxDepth = 1.0f;
+
+            // Scissor
+            m_vkScissor.offset.x      = 0;
+            m_vkScissor.offset.y      = 0;
+            m_vkScissor.extent.width  = m_viewport.size.x;
+            m_vkScissor.extent.height = m_viewport.size.y;
         }
 
         void Renderer::render()
@@ -269,8 +287,7 @@ namespace Chicane
                 frame.setupSync();
             }
 
-            m_viewport.size.x = m_swapChain.extent.width;
-            m_viewport.size.y = m_swapChain.extent.height;
+            setViewportSize(m_swapChain.extent.width, m_swapChain.extent.height);
         }
 
         void Renderer::rebuildSwapChain()
@@ -348,14 +365,8 @@ namespace Chicane
 
         void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)
         {
-            vk::Viewport viewport = GraphicsPipeline::createViewport(
-                m_viewport.size,
-                m_viewport.position
-            );
-            inCommandBuffer.setViewport(0, 1, &viewport);
-
-            vk::Rect2D scissor = GraphicsPipeline::createScissor(m_viewport.size);
-            inCommandBuffer.setScissor(0, 1, &scissor);
+            inCommandBuffer.setViewport(0, 1, &m_vkViewport);
+            inCommandBuffer.setScissor(0, 1, &m_vkScissor);
         }
 
         void Renderer::rebuildFrames()
