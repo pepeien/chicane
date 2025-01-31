@@ -16,12 +16,12 @@ namespace Chicane
             {
                 std::vector<char> shaderCode = FileSystem::readFile(inCreateInfo.path);
 
-                vk::ShaderModuleCreateInfo moduleInfo {};
+                vk::ShaderModuleCreateInfo moduleInfo = {};
                 moduleInfo.flags    = vk::ShaderModuleCreateFlags();
                 moduleInfo.codeSize = shaderCode.size();
                 moduleInfo.pCode    = reinterpret_cast<const std::uint32_t *>(shaderCode.data());
 
-                vk::PipelineShaderStageCreateInfo stageInfo {};
+                vk::PipelineShaderStageCreateInfo stageInfo = {};
                 stageInfo.flags  = vk::PipelineShaderStageCreateFlags();
                 stageInfo.stage  = inCreateInfo.type;
                 stageInfo.module = inLogicalDevice.createShaderModule(moduleInfo);

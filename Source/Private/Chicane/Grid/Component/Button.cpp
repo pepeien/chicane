@@ -33,7 +33,7 @@ namespace Chicane
                     onClickFunctionData.name
                 );
 
-                Component::Event onClickEvent {};
+                Component::Event onClickEvent = {};
                 onClickEvent.values = onClickFunctionData.params;
 
                 if (onClickFunctionData.params.size() == 1)
@@ -56,7 +56,7 @@ namespace Chicane
             {
                 const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
     
-                Props result {};
+                Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.style      = Style::getStyle(inNode);

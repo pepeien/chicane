@@ -11,8 +11,7 @@ namespace Chicane
         {
             void init(Instance& outBuffer, const CreateInfo& inCreateInfo)
             {
-                vk::BufferCreateInfo bufferInfo;
-                bufferInfo.flags       = vk::BufferCreateFlags();
+                vk::BufferCreateInfo bufferInfo = {};
                 bufferInfo.size        = inCreateInfo.size;
                 bufferInfo.usage       = inCreateInfo.usage;
                 bufferInfo.sharingMode = vk::SharingMode::eExclusive;
@@ -28,7 +27,7 @@ namespace Chicane
                     .logicalDevice
                     .getBufferMemoryRequirements(outBuffer.instance);
 
-                vk::MemoryAllocateInfo memoryAlocateInfo;
+                vk::MemoryAllocateInfo memoryAlocateInfo = {};
                 memoryAlocateInfo.allocationSize  = memoryRequirements.size;
                 memoryAlocateInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
                     inCreateInfo.physicalDevice,
@@ -55,7 +54,7 @@ namespace Chicane
             {
                 CommandBuffer::Worker::startJob(inCommandBuffer);
 
-                vk::BufferCopy copyRegion;
+                vk::BufferCopy copyRegion = {};
                 copyRegion.srcOffset = 0;
                 copyRegion.dstOffset = 0;
                 copyRegion.size      = inAllocationSize;

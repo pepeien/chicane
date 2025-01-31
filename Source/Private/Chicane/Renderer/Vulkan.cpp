@@ -88,7 +88,7 @@ namespace Chicane
             pushLayer(new LSky());
             pushLayer(new LShadow());
             pushLayer(new LLevel());
-            pushLayer(new LGrid());
+            //pushLayer(new LGrid());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)
@@ -131,7 +131,7 @@ namespace Chicane
             std::uint32_t nextImageIndex = acquireResult.value;
             Frame::Instance& nextImage   = m_swapChain.frames.at(nextImageIndex);
 
-            vk::CommandBufferBeginInfo commandBufferBegin {};
+            vk::CommandBufferBeginInfo commandBufferBegin = {};
             commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
             currentCommandBuffer.reset();
 
@@ -144,7 +144,7 @@ namespace Chicane
 
             vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
         
-            vk::SubmitInfo submitInfo {};
+            vk::SubmitInfo submitInfo = {};
             submitInfo.waitSemaphoreCount   = 1;
             submitInfo.pWaitSemaphores      = &currentImage.presentSemaphore;
             submitInfo.commandBufferCount   = 1;
@@ -164,7 +164,7 @@ namespace Chicane
                 throw std::runtime_error("Error while submiting the next image");
             }
 
-            vk::PresentInfoKHR presentInfo {};
+            vk::PresentInfoKHR presentInfo = {};
             presentInfo.waitSemaphoreCount = 1;
             presentInfo.pWaitSemaphores    = &currentImage.renderSemaphore;
             presentInfo.swapchainCount     = 1;

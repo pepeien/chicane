@@ -86,7 +86,7 @@ namespace Chicane
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
 
-            vk::RenderPassBeginInfo beginInfo {};
+            vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass          = m_graphicsPipeline->renderPass;
             beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
@@ -148,7 +148,7 @@ namespace Chicane
                 return;
             }
 
-            Descriptor::SetLayoutBidingsCreateInfo bidings {};
+            Descriptor::SetLayoutBidingsCreateInfo bidings = {};
             bidings.count = 2;
 
             /// Light
@@ -196,7 +196,7 @@ namespace Chicane
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
 
-                vk::WriteDescriptorSet lightWriteInfo {};
+                vk::WriteDescriptorSet lightWriteInfo = {};
                 lightWriteInfo.dstSet          = descriptorSet;
                 lightWriteInfo.dstBinding      = 0;
                 lightWriteInfo.dstArrayElement = 0;
@@ -205,7 +205,7 @@ namespace Chicane
                 lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
                 frame.addWriteDescriptorSet(lightWriteInfo);
 
-                vk::WriteDescriptorSet modelWriteInfo {};
+                vk::WriteDescriptorSet modelWriteInfo = {};
                 modelWriteInfo.dstSet          = descriptorSet;
                 modelWriteInfo.dstBinding      = 1;
                 modelWriteInfo.dstArrayElement = 0;
@@ -234,7 +234,7 @@ namespace Chicane
             }
 
             // Rasterizer
-            vk::PipelineRasterizationStateCreateInfo rasterizeCreateInfo {};
+            vk::PipelineRasterizationStateCreateInfo rasterizeCreateInfo = {};
             rasterizeCreateInfo.flags                   = vk::PipelineRasterizationStateCreateFlags();
             rasterizeCreateInfo.depthClampEnable        = VK_FALSE;
             rasterizeCreateInfo.rasterizerDiscardEnable = VK_FALSE;
@@ -248,29 +248,29 @@ namespace Chicane
             rasterizeCreateInfo.depthBiasSlopeFactor    = 1.75f;
 
             // Shader
-            Shader::StageCreateInfo vertexShader {};
+            Shader::StageCreateInfo vertexShader = {};
             vertexShader.path = "Content/Engine/Vulkan/Shaders/shadow.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
-            std::vector<Shader::StageCreateInfo> shaders {};
+            std::vector<Shader::StageCreateInfo> shaders = {};
             shaders.push_back(vertexShader);
 
             // Set Layouts
-            std::vector<vk::DescriptorSetLayout> setLayouts {};
+            std::vector<vk::DescriptorSetLayout> setLayouts = {};
             setLayouts.push_back(m_frameDescriptor.setLayout);
 
             // Attachments
-            GraphicsPipeline::Attachment depthAttachment {};
+            GraphicsPipeline::Attachment depthAttachment = {};
             depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
 
-            std::vector<GraphicsPipeline::Attachment> attachments {};
+            std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(depthAttachment);
 
-            GraphicsPipeline::CreateInfo createInfo {};
+            GraphicsPipeline::CreateInfo createInfo = {};
             createInfo.bHasVertices             = true;
             createInfo.bHasDepthWrite           = true;
             createInfo.bHasBlending             = false;
@@ -293,7 +293,7 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                Frame::Buffer::CreateInfo createInfo {};
+                Frame::Buffer::CreateInfo createInfo = {};
                 createInfo.id              = m_id;
                 createInfo.logicalDevice   = m_internals.logicalDevice;
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
@@ -307,7 +307,7 @@ namespace Chicane
         {
             const auto& vertices = m_modelManager->getVertices();
 
-            Buffer::CreateInfo createInfo;
+            Buffer::CreateInfo createInfo = {};
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();

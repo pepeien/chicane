@@ -4,7 +4,7 @@
 
 Application::Application()
 {
-    Chicane::Application::CreateInfo createInfo {};
+    Chicane::Application::CreateInfo createInfo = {};
     createInfo.title        = "Chicane Sample";
     createInfo.resolution.x = 1600;
     createInfo.resolution.y = 900;

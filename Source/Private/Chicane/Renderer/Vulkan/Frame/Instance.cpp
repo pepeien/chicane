@@ -91,7 +91,7 @@ namespace Chicane
                     return;
                 }
 
-                Buffer::CreateInfo bufferCreateInfo {};
+                Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -136,7 +136,7 @@ namespace Chicane
                     return;
                 }
 
-                Buffer::CreateInfo bufferCreateInfo {};
+                Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -181,7 +181,7 @@ namespace Chicane
                     return;
                 }
 
-                Buffer::CreateInfo bufferCreateInfo {};
+                Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
@@ -234,7 +234,7 @@ namespace Chicane
             {
                 colorImage.format = inFormat;
 
-                Image::View::CreateInfo viewCreateInfo {};
+                Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = 1;
                 viewCreateInfo.type          = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
@@ -252,18 +252,18 @@ namespace Chicane
             {
                 depthImage.format = inFormat;
 
-                Image::Instance::CreateInfo instanceCreateInfo {};
+                Image::Instance::CreateInfo instanceCreateInfo = {};
+                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
                 instanceCreateInfo.width         = width;
                 instanceCreateInfo.height        = height;
                 instanceCreateInfo.count         = 1;
                 instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
-                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
                 instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
                 instanceCreateInfo.format        = inFormat;
                 instanceCreateInfo.logicalDevice = logicalDevice;
                 Image::initInstance(depthImage.instance, instanceCreateInfo);
 
-                vk::SamplerCreateInfo createInfo {};
+                vk::SamplerCreateInfo createInfo = {};
                 createInfo.flags                   = vk::SamplerCreateFlags();
                 createInfo.minFilter               = vk::Filter::eLinear;
                 createInfo.magFilter               = vk::Filter::eLinear;
@@ -284,13 +284,13 @@ namespace Chicane
 
                 depthImage.sampler = logicalDevice.createSampler(createInfo);
 
-                Image::Memory::CreateInfo memoryCreateInfo {};
+                Image::Memory::CreateInfo memoryCreateInfo = {};
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = logicalDevice;
                 memoryCreateInfo.physicalDevice = physicalDevice;
                 Image::initMemory(depthImage.memory, depthImage.instance, memoryCreateInfo);
 
-                Image::View::CreateInfo viewCreateInfo {};
+                Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
                 viewCreateInfo.type          = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
@@ -311,7 +311,7 @@ namespace Chicane
             {
                 shadowImage.format = inFormat;
 
-                Image::Instance::CreateInfo instanceCreateInfo {};
+                Image::Instance::CreateInfo instanceCreateInfo = {};
                 instanceCreateInfo.width         = width;
                 instanceCreateInfo.height        = height;
                 instanceCreateInfo.count         = 1;
@@ -322,7 +322,7 @@ namespace Chicane
                 instanceCreateInfo.logicalDevice = logicalDevice;
                 Image::initInstance(shadowImage.instance, instanceCreateInfo);
 
-                vk::SamplerCreateInfo createInfo {};
+                vk::SamplerCreateInfo createInfo = {};
                 createInfo.flags                   = vk::SamplerCreateFlags();
                 createInfo.minFilter               = vk::Filter::eLinear;
                 createInfo.magFilter               = vk::Filter::eLinear;
@@ -342,13 +342,13 @@ namespace Chicane
                 createInfo.unnormalizedCoordinates = false;
                 shadowImage.sampler = logicalDevice.createSampler(createInfo);
 
-                Image::Memory::CreateInfo memoryCreateInfo {};
+                Image::Memory::CreateInfo memoryCreateInfo = {};
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = logicalDevice;
                 memoryCreateInfo.physicalDevice = physicalDevice;
                 Image::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
 
-                Image::View::CreateInfo viewCreateInfo {};
+                Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
                 viewCreateInfo.type          = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
@@ -442,7 +442,7 @@ namespace Chicane
 
                 for (const CMesh* mesh : inMeshes)
                 {
-                    Box::Mesh::CompiledData data {};
+                    Box::Mesh::CompiledData data = {};
                     data.matrix       = mesh->getTransform().getMatrix();
                     data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
 

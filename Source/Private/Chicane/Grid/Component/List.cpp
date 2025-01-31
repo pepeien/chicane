@@ -26,7 +26,7 @@ namespace Chicane
 
                 std::string huh = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
     
-                Props result {};
+                Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.itemSize   = getItemSize(inNode);
@@ -159,7 +159,7 @@ namespace Chicane
                     inProps,
                     static_cast<std::uint32_t>(inProps.items.size()),
                     [inProps](std::uint32_t currentItemIndex) {
-                        Component::Event event {};
+                        Component::Event event = {};
                         event.values.push_back(inProps.items.at(currentItemIndex));
 
                         inProps.itemGetter(event);

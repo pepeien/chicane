@@ -124,7 +124,7 @@ namespace Chicane
                         continue;
                     }
 
-                    Group group {};
+                    Group group = {};
 
                     for (const auto& assetNode : groupNode.children())
                     {

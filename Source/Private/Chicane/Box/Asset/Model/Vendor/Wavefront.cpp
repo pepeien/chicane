@@ -36,7 +36,7 @@ namespace Chicane
                             return;
                         }
 
-                        Vertex vertex {};
+                        Vertex vertex = {};
 
                         vertex.color = Vec<3, float>(1.0f, 1.0f, 1.0f);
 

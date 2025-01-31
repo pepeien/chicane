@@ -29,7 +29,7 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                Image::CompiledData data {};
+                Image::CompiledData data = {};
                 data.pixels = FileSystem::readImageFromMemory(
                     data.width,
                     data.height,

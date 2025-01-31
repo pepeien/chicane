@@ -43,7 +43,7 @@ namespace Chicane
                 vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
 
                 // Shader Stage
-                std::vector<vk::PipelineShaderStageCreateInfo> shaders {};
+                std::vector<vk::PipelineShaderStageCreateInfo> shaders = {};
                 for (const Shader::StageCreateInfo& shader : inCreateInfo.shaders)
                 {
                     shaders.push_back(

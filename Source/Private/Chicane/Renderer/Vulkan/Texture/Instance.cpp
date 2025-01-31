@@ -24,7 +24,7 @@ namespace Chicane
                 m_image.channels = inCreateInfo.image.channels;
                 m_image.pixels   = inCreateInfo.image.pixels;
 
-                Image::Instance::CreateInfo instanceCreateInfo {};
+                Image::Instance::CreateInfo instanceCreateInfo = {};
                 instanceCreateInfo.width         = m_image.width;
                 instanceCreateInfo.height        = m_image.height;
                 instanceCreateInfo.count         = 1;
@@ -34,19 +34,19 @@ namespace Chicane
                 instanceCreateInfo.logicalDevice = m_logicalDevice;
                 Image::initInstance(m_image.instance, instanceCreateInfo);
 
-                Image::Sampler::CreateInfo samplerCreateInfo {};
+                Image::Sampler::CreateInfo samplerCreateInfo = {};
                 samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eRepeat;
                 samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
                 samplerCreateInfo.logicalDevice = m_logicalDevice;
                 Image::initSampler(m_image.sampler, samplerCreateInfo);
 
-                Image::Memory::CreateInfo memoryCreateInfo {};
+                Image::Memory::CreateInfo memoryCreateInfo = {};
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = m_logicalDevice;
                 memoryCreateInfo.physicalDevice = m_physicalDevice;
                 Image::initMemory(m_image.memory, m_image.instance, memoryCreateInfo);
 
-                Image::View::CreateInfo viewCreateInfo {};
+                Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
                 viewCreateInfo.type          = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;

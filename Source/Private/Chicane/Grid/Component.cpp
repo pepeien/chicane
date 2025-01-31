@@ -2,7 +2,7 @@
 
 #include "Chicane/Grid/Essential.hpp"
 
-static const Chicane::Grid::Component::FunctionData EMPTY_FUNCTION_DATA {};
+static const Chicane::Grid::Component::FunctionData EMPTY_FUNCTION_DATA = {};
 
 namespace Chicane
 {

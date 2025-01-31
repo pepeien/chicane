@@ -89,7 +89,7 @@ namespace Chicane
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
 
-            vk::RenderPassBeginInfo beginInfo {};
+            vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass          = m_graphicsPipeline->renderPass;
             beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
@@ -293,33 +293,33 @@ namespace Chicane
                 return;
             }
 
-            Shader::StageCreateInfo vertexShader {};
+            Shader::StageCreateInfo vertexShader = {};
             vertexShader.path = "Content/Engine/Vulkan/Shaders/sky.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
-            Shader::StageCreateInfo fragmentShader {};
+            Shader::StageCreateInfo fragmentShader = {};
             fragmentShader.path = "Content/Engine/Vulkan/Shaders/sky.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            std::vector<Shader::StageCreateInfo> shaders {};
+            std::vector<Shader::StageCreateInfo> shaders = {};
             shaders.push_back(vertexShader);
             shaders.push_back(fragmentShader);
 
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts {};
+            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts = {};
             descriptorSetLayouts.push_back(m_frameDescriptor.setLayout);
             descriptorSetLayouts.push_back(m_textureDescriptor.setLayout);
 
-            GraphicsPipeline::Attachment colorAttachment {};
+            GraphicsPipeline::Attachment colorAttachment = {};
             colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            std::vector<GraphicsPipeline::Attachment> attachments {};
+            std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(colorAttachment);
 
-            GraphicsPipeline::CreateInfo createInfo {};
+            GraphicsPipeline::CreateInfo createInfo = {};
             createInfo.bHasVertices             = true;
             createInfo.bHasDepthWrite           = false;
             createInfo.bHasBlending             = false;
@@ -342,7 +342,7 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                Frame::Buffer::CreateInfo framebufferCreateInfo {};
+                Frame::Buffer::CreateInfo framebufferCreateInfo = {};
                 framebufferCreateInfo.id              = m_id;
                 framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
                 framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
@@ -365,7 +365,7 @@ namespace Chicane
                 m_sky.reset();
             }
 
-            Sky::CreateInfo createInfo {};
+            Sky::CreateInfo createInfo = {};
             createInfo.images              = {};
             createInfo.logicalDevice       = m_internals.logicalDevice;
             createInfo.physicalDevice      = m_internals.physicalDevice;

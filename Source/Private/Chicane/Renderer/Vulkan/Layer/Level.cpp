@@ -92,7 +92,7 @@ namespace Chicane
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
 
-            vk::RenderPassBeginInfo beginInfo {};
+            vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass          = m_graphicsPipeline->renderPass;
             beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
@@ -181,7 +181,7 @@ namespace Chicane
                 return;
             }
 
-            Descriptor::SetLayoutBidingsCreateInfo bidings {};
+            Descriptor::SetLayoutBidingsCreateInfo bidings = {};
             bidings.count = 4;
 
             /// Camera
@@ -247,7 +247,7 @@ namespace Chicane
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
         
-                vk::WriteDescriptorSet cameraWriteInfo {};
+                vk::WriteDescriptorSet cameraWriteInfo = {};
                 cameraWriteInfo.dstSet          = descriptorSet;
                 cameraWriteInfo.dstBinding      = 0;
                 cameraWriteInfo.dstArrayElement = 0;
@@ -256,7 +256,7 @@ namespace Chicane
                 cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
                 frame.addWriteDescriptorSet(cameraWriteInfo);
         
-                vk::WriteDescriptorSet lightWriteInfo {};
+                vk::WriteDescriptorSet lightWriteInfo = {};
                 lightWriteInfo.dstSet          = descriptorSet;
                 lightWriteInfo.dstBinding      = 1;
                 lightWriteInfo.dstArrayElement = 0;
@@ -265,7 +265,7 @@ namespace Chicane
                 lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
                 frame.addWriteDescriptorSet(lightWriteInfo);
 
-                vk::WriteDescriptorSet meshWriteInfo {};
+                vk::WriteDescriptorSet meshWriteInfo = {};
                 meshWriteInfo.dstSet          = descriptorSet;
                 meshWriteInfo.dstBinding      = 2;
                 meshWriteInfo.dstArrayElement = 0;
@@ -274,7 +274,7 @@ namespace Chicane
                 meshWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
                 frame.addWriteDescriptorSet(meshWriteInfo);
 
-                vk::WriteDescriptorSet shadowWriteInfo {};
+                vk::WriteDescriptorSet shadowWriteInfo = {};
                 shadowWriteInfo.dstSet          = descriptorSet;
                 shadowWriteInfo.dstBinding      = 3;
                 shadowWriteInfo.dstArrayElement = 0;
@@ -303,43 +303,43 @@ namespace Chicane
             }
 
             // Shader
-            Shader::StageCreateInfo vertexShader {};
+            Shader::StageCreateInfo vertexShader = {};
             vertexShader.path = "Content/Engine/Vulkan/Shaders/level.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
-            Shader::StageCreateInfo fragmentShader {};
+            Shader::StageCreateInfo fragmentShader = {};
             fragmentShader.path = "Content/Engine/Vulkan/Shaders/level.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            std::vector<Shader::StageCreateInfo> shaders {};
+            std::vector<Shader::StageCreateInfo> shaders = {};
             shaders.push_back(vertexShader);
             shaders.push_back(fragmentShader);
 
             // Set Layouts
-            std::vector<vk::DescriptorSetLayout> setLayouts {};
+            std::vector<vk::DescriptorSetLayout> setLayouts = {};
             setLayouts.push_back(m_frameDescriptor.setLayout);
             setLayouts.push_back(m_textureDescriptor.setLayout);
 
             // Attachments
-            GraphicsPipeline::Attachment colorAttachment {};
+            GraphicsPipeline::Attachment colorAttachment = {};
             colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            GraphicsPipeline::Attachment depthAttachment {};
+            GraphicsPipeline::Attachment depthAttachment = {};
             depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
-            std::vector<GraphicsPipeline::Attachment> attachments {};
+            std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(colorAttachment);
             attachments.push_back(depthAttachment);
 
-            GraphicsPipeline::CreateInfo createInfo {};
+            GraphicsPipeline::CreateInfo createInfo = {};
             createInfo.bHasVertices             = true;
             createInfo.bHasDepthWrite           = true;
             createInfo.bHasBlending             = false;
@@ -362,7 +362,7 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                Frame::Buffer::CreateInfo createInfo {};
+                Frame::Buffer::CreateInfo createInfo = {};
                 createInfo.id              = m_id;
                 createInfo.logicalDevice   = m_internals.logicalDevice;
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
@@ -428,13 +428,13 @@ namespace Chicane
         void LLevel::buildTextureData()
         {
             // Textures
-            Texture::CreateInfo createInfo {};
+            Texture::CreateInfo createInfo = {};
             createInfo.logicalDevice  = m_internals.logicalDevice;
             createInfo.physicalDevice = m_internals.physicalDevice;
             createInfo.commandBuffer  = m_internals.mainCommandBuffer;
             createInfo.queue          = m_internals.graphicsQueue;
 
-            std::vector<vk::DescriptorImageInfo> imageInfos {};
+            std::vector<vk::DescriptorImageInfo> imageInfos = {};
 
             for (const std::string& id : m_textureManager->getActiveIds())
             {
@@ -449,7 +449,7 @@ namespace Chicane
 
                 Image::Data image = m_textures.at(id)->getImage();
 
-                vk::DescriptorImageInfo info {};
+                vk::DescriptorImageInfo info = {};
                 info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
                 info.imageView   = image.view;
                 info.sampler     = image.sampler;
@@ -457,7 +457,7 @@ namespace Chicane
                 imageInfos.push_back(info);
             }
 
-            vk::WriteDescriptorSet set {};
+            vk::WriteDescriptorSet set = {};
             set.dstSet          = m_textureDescriptor.set;
             set.dstBinding      = 0;
             set.dstArrayElement = 0;

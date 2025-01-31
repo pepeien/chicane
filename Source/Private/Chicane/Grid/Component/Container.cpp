@@ -13,7 +13,7 @@ namespace Chicane
             {
                 const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
 
-                Props result {};
+                Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "true") || Utils::areEquals(isVisible, "1");
                 result.style      = Style::getStyle(inNode);

@@ -32,7 +32,7 @@ namespace Chicane
                     functionData.name
                 );
 
-                Component::Event event {};
+                Component::Event event = {};
                 event.values = functionData.params;
 
                 if (functionData.params.size() == 1)
@@ -55,7 +55,7 @@ namespace Chicane
             {
                 const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
     
-                Props result {};
+                Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();

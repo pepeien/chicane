@@ -8,7 +8,7 @@ namespace Chicane
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
-        std::unordered_map<std::string, const Asset::Instance*> m_cache {};
+        std::unordered_map<std::string, const Asset::Instance*> m_cache = {};
 
         Audio::Manager* getAudioManager()
         {

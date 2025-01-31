@@ -19,7 +19,7 @@ namespace Chicane
 
         std::vector<Item> ls(const std::string& inDir, std::uint32_t inDepth)
         {
-            std::vector<Item> result {};
+            std::vector<Item> result = {};
 
             if (inDepth > 1)
             {
@@ -30,7 +30,7 @@ namespace Chicane
             {
                 const auto& path = entry.path();
 
-                Item item {};
+                Item item = {};
                 item.type      = entry.is_directory() ? Item::Type::Folder : Item::Type::File;
                 item.name      = path.filename().string();
                 item.extension = path.extension().string();

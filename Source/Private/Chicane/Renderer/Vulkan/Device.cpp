@@ -52,7 +52,7 @@ namespace Chicane
 
                 float queuePriority = 1.0f;
 
-                std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos {};
+                std::vector<vk::DeviceQueueCreateInfo> queueCreateInfos = {};
                 
                 for (std::uint32_t uniqueIndice : uniqueIndices)
                 {

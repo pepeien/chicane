@@ -144,7 +144,7 @@ namespace Chicane
 
         std::vector<pugi::xml_node> extractChildren(const Component::Children& inChildren)
         {
-            std::vector<pugi::xml_node> result {};
+            std::vector<pugi::xml_node> result = {};
 
             for (const Component::Child& child : inChildren)
             {
@@ -446,7 +446,7 @@ namespace Chicane
                 )
             );
 
-            Component::FunctionData data {};
+            Component::FunctionData data = {};
             data.name = name;
 
             for (std::string& value : Utils::split(params, ','))
@@ -502,7 +502,7 @@ namespace Chicane
                 return Reference::fromValue<const std::string>(&inValue);
             }
 
-            Component::Event event {};
+            Component::Event event = {};
             event.values = functionData.params;
 
             return functionRef(event);

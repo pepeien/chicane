@@ -6,7 +6,7 @@ namespace Chicane
     {
         std::vector<Dialog::Result> Dialog::Result::fromRaw(const char* const* inData)
         {
-            std::vector<Result> result {};
+            std::vector<Result> result = {};
 
             const char* const* currentData = inData;
 
@@ -17,7 +17,7 @@ namespace Chicane
                     break;
                 }
 
-                Result block {};
+                Result block = {};
                 block.path = *currentData;
 
                 result.push_back(block);

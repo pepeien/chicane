@@ -62,7 +62,7 @@ namespace Chicane
 
             void Instance::initImage()
             {
-                Image::Instance::CreateInfo instanceCreateInfo {};
+                Image::Instance::CreateInfo instanceCreateInfo = {};
                 instanceCreateInfo.width         = m_image.width;
                 instanceCreateInfo.height        = m_image.height;
                 instanceCreateInfo.count         = Box::Sky::ORDER.size();
@@ -73,19 +73,19 @@ namespace Chicane
                 instanceCreateInfo.logicalDevice = m_logicalDevice;
                 Image::initInstance(m_image.instance, instanceCreateInfo);
 
-                Image::Sampler::CreateInfo samplerCreateInfo {};
+                Image::Sampler::CreateInfo samplerCreateInfo = {};
                 samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eRepeat;
                 samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
                 samplerCreateInfo.logicalDevice = m_logicalDevice;
                 Image::initSampler(m_image.sampler, samplerCreateInfo);
 
-                Image::Memory::CreateInfo memoryCreateInfo {};
+                Image::Memory::CreateInfo memoryCreateInfo = {};
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = m_logicalDevice;
                 memoryCreateInfo.physicalDevice = m_physicalDevice;
                 Image::initMemory(m_image.memory, m_image.instance, memoryCreateInfo);
 
-                Image::View::CreateInfo viewCreateInfo {};
+                Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
                 viewCreateInfo.type          = vk::ImageViewType::eCube;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
@@ -98,7 +98,7 @@ namespace Chicane
             {
                 std::uint32_t pixelCount = sizeof(float) * (m_image.width * m_image.height);
 
-                Buffer::CreateInfo createInfo {};
+                Buffer::CreateInfo createInfo = {};
                 createInfo.logicalDevice    = m_logicalDevice;
                 createInfo.physicalDevice   = m_physicalDevice;
                 createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
@@ -163,12 +163,12 @@ namespace Chicane
                     m_descriptor.pool
                 );
 
-                vk::DescriptorImageInfo descriptorInfo {};
+                vk::DescriptorImageInfo descriptorInfo = {};
                 descriptorInfo.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
                 descriptorInfo.imageView   = m_image.view;
                 descriptorInfo.sampler     = m_image.sampler;
 
-                vk::WriteDescriptorSet descriptorSetInfo {};
+                vk::WriteDescriptorSet descriptorSetInfo = {};
                 descriptorSetInfo.dstSet          = m_descriptor.set;
                 descriptorSetInfo.dstBinding      = 0;
                 descriptorSetInfo.dstArrayElement = 0;

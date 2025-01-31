@@ -27,7 +27,7 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                Audio::CompiledData data {};
+                Audio::CompiledData data = {};
 
                 Audio::RawData instance = getInstance(inId);
 

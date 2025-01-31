@@ -49,7 +49,7 @@ namespace Chicane
             {
                 const RawData& instance = getInstance(inId);
 
-                CompiledData data {};
+                CompiledData data = {};
                 data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
                 data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
                 data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
@@ -80,7 +80,7 @@ namespace Chicane
                     return;
                 }
 
-                Parse::Result result {};
+                Parse::Result result = {};
 
                 switch (inModel->getVendor())
                 {
@@ -93,7 +93,7 @@ namespace Chicane
                     throw std::runtime_error("Failed to import Model due to invalid type");
                 }
 
-                RawData instance {};
+                RawData instance = {};
                 instance.vertices = result.vertices;
                 instance.indices  = result.indexes;
 

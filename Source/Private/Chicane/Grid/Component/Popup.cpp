@@ -15,7 +15,7 @@ namespace Chicane
                 const std::string& isConstrained = parseText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
                 const std::string& isResizable   = parseText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
 
-                Props result {};
+                Props result = {};
                 result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
                 result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
                 result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "1") || Utils::areEquals(isConstrained, "true");

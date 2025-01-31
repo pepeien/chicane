@@ -103,30 +103,19 @@ namespace Chicane
                     throw std::runtime_error("Validation Layers are not fully supported");
                 }
 
-                std::uint32_t version { 0 };
-                vkEnumerateInstanceVersion(&version);
+                vk::ApplicationInfo applicationInfo = {};
+                applicationInfo.pApplicationName    = APPLICATION_NAME;
+                applicationInfo.applicationVersion  = VK_MAKE_API_VERSION(0, 0, 0, 1);
+                applicationInfo.pEngineName         = ENGINE_NAME;
+                applicationInfo.engineVersion       = VK_MAKE_API_VERSION(0, 0, 0, 1);
+                applicationInfo.apiVersion          = VK_MAKE_API_VERSION(0, 1, 3, 0);
 
-                // Picked MAJOR version to ensure compability
-                version = VK_MAKE_API_VERSION(0, 1, 3, 0);
-
-                vk::ApplicationInfo applicationInfo = vk::ApplicationInfo(
-                    APPLICATION_NAME,
-                    version,
-                    ENGINE_NAME,
-                    version,
-                    version
-                );
-
-                vk::InstanceCreateInfo createInfo = vk::InstanceCreateInfo(
-                    vk::InstanceCreateFlags(),
-                    &applicationInfo,
-
-                    static_cast<std::uint32_t>(layers.size()),
-                    layers.data(),
-
-                    static_cast<std::uint32_t>(extensions.size()),
-                    extensions.data()
-                );
+                vk::InstanceCreateInfo createInfo  = {};
+                createInfo.pApplicationInfo        = &applicationInfo;
+                createInfo.enabledLayerCount       = static_cast<std::uint32_t>(layers.size());
+                createInfo.ppEnabledLayerNames     = layers.data();
+                createInfo.enabledExtensionCount   = static_cast<std::uint32_t>(extensions.size());
+                createInfo.ppEnabledExtensionNames = extensions.data();
 
                 outInstance = vk::createInstance(createInfo);
                 outDldi     = vk::DispatchLoaderDynamic(outInstance, vkGetInstanceProcAddr);

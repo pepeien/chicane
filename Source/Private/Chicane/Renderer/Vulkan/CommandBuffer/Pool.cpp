@@ -17,14 +17,14 @@ namespace Chicane
                     const vk::SurfaceKHR& inSurface
                 )
                 {
-                    Queue::FamilyIndices queueFamilyIndices;
+                    Queue::FamilyIndices queueFamilyIndices = {};
                     Queue::findFamilyInidices(
                         queueFamilyIndices,
                         inPhysicalDevice,
                         inSurface
                     );
 
-                    vk::CommandPoolCreateInfo poolInfo {};
+                    vk::CommandPoolCreateInfo poolInfo = {};
                     poolInfo.flags            = vk::CommandPoolCreateFlags() |
                                                 vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
                     poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();

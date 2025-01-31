@@ -109,7 +109,7 @@ namespace Chicane
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
 
-            vk::RenderPassBeginInfo beginInfo {};
+            vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass          = m_renderPass;
             beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
@@ -218,7 +218,7 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::GraphicsPipeline::Attachment colorAttachment {};
+            Vulkan::GraphicsPipeline::Attachment colorAttachment = {};
             colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
@@ -242,7 +242,7 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo {};
+            Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo = {};
             framebufferCreateInfo.id              = m_id;
             framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
             framebufferCreateInfo.renderPass      = m_renderPass;
@@ -324,7 +324,7 @@ namespace Chicane
                 m_internals.sufrace
             );
 
-            ImGui_ImplVulkan_InitInfo imguiInitInfo {};
+            ImGui_ImplVulkan_InitInfo imguiInitInfo = {};
             imguiInitInfo.Instance       = m_internals.instance;
             imguiInitInfo.PhysicalDevice = m_internals.physicalDevice;
             imguiInitInfo.Device         = m_internals.logicalDevice;

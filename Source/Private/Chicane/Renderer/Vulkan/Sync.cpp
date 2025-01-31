@@ -11,7 +11,7 @@ namespace Chicane
                 const vk::Device& inLogicalDevice
             )
             {
-                vk::SemaphoreCreateInfo semaphoreInfo {};
+                vk::SemaphoreCreateInfo semaphoreInfo = {};
                 semaphoreInfo.flags = vk::SemaphoreCreateFlags();
         
                 outSemaphore = inLogicalDevice.createSemaphore(semaphoreInfo);
@@ -22,7 +22,7 @@ namespace Chicane
                 const vk::Device& inLogicalDevice
             )
             {
-                vk::FenceCreateInfo fenceCreateInfo {};
+                vk::FenceCreateInfo fenceCreateInfo = {};
                 fenceCreateInfo.flags = vk::FenceCreateFlags() | vk::FenceCreateFlagBits::eSignaled;
         
                 outFence = inLogicalDevice.createFence(fenceCreateInfo);

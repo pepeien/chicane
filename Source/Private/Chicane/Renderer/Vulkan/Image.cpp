@@ -46,7 +46,7 @@ namespace Chicane
 
     		void initInstance(vk::Image& outInstance, const Instance::CreateInfo& inCreateInfo)
             {
-                vk::ImageCreateInfo createInfo {};
+                vk::ImageCreateInfo createInfo = {};
                 createInfo.flags         = vk::ImageCreateFlagBits() | inCreateInfo.flags;
                 createInfo.imageType     = vk::ImageType::e2D;
                 createInfo.extent        = vk::Extent3D(inCreateInfo.width, inCreateInfo.height, 1);
@@ -64,7 +64,7 @@ namespace Chicane
 
             void initSampler(vk::Sampler& outSampler, const Sampler::CreateInfo& inCreateInfo)
             {
-                vk::SamplerCreateInfo createInfo {};
+                vk::SamplerCreateInfo createInfo = {};
                 createInfo.flags                   = vk::SamplerCreateFlags();
                 createInfo.minFilter               = vk::Filter::eNearest;
                 createInfo.magFilter               = vk::Filter::eLinear;
@@ -110,7 +110,7 @@ namespace Chicane
 
             void initView(vk::ImageView& outView, const vk::Image& inInstance, const View::CreateInfo& inCreateInfo)
             {
-                vk::ImageViewCreateInfo createInfo {};
+                vk::ImageViewCreateInfo createInfo = {};
                 createInfo.image                           = inInstance;
                 createInfo.viewType                        = inCreateInfo.type;
                 createInfo.format                          = inCreateInfo.format;
@@ -138,7 +138,7 @@ namespace Chicane
             {
                 CommandBuffer::Worker::startJob(inCommandBuffer);
 
-                vk::ImageMemoryBarrier barrier {};
+                vk::ImageMemoryBarrier barrier = {};
                 barrier.oldLayout                       = inOldLayout;
                 barrier.newLayout                       = inNewLayout;
                 barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
@@ -191,13 +191,13 @@ namespace Chicane
             {
                 CommandBuffer::Worker::startJob(inCommandBuffer);
 
-                vk::ImageSubresourceLayers imageSubresourceLayers;
+                vk::ImageSubresourceLayers imageSubresourceLayers = {};
                 imageSubresourceLayers.aspectMask     = vk::ImageAspectFlagBits::eColor;
                 imageSubresourceLayers.mipLevel       = 0;
                 imageSubresourceLayers.baseArrayLayer = 0;
                 imageSubresourceLayers.layerCount     = inCount;
 
-                vk::BufferImageCopy bufferImageCopy;
+                vk::BufferImageCopy bufferImageCopy = {};
                 bufferImageCopy.bufferOffset      = 0;
                 bufferImageCopy.bufferRowLength   = 0;
                 bufferImageCopy.bufferImageHeight = 0;

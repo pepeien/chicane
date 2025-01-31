@@ -27,7 +27,7 @@ namespace Chicane
             {
                 const pugi::xml_node root = inDocument.first_child();
 
-                Header header {};
+                Header header = {};
                 header.filepath = inFilepath;
                 header.fetchVersion(root);
                 header.fetchId(root);

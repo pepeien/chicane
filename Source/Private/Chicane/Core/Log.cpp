@@ -85,7 +85,7 @@ namespace Chicane
                 m_logs.pop_front();
             }
 
-            Entry instance {};
+            Entry instance = {};
             instance.text  = message;
             instance.color = hexColor;
 

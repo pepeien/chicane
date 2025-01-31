@@ -472,7 +472,7 @@ namespace Chicane
 
         Style _parseStyle(const Style::Source& inSource)
         {
-            Style result {};
+            Style result = {};
 
             if (inSource.empty())
             {
@@ -528,7 +528,7 @@ namespace Chicane
                 ';'
             );
     
-            Style::Source result {};
+            Style::Source result = {};
 
             for (const std::string& block : blocks)
             {
@@ -566,7 +566,7 @@ namespace Chicane
 
         Style::Sources Style::extractStyleFromString(const std::string& inData)
         {
-            Style::Sources result {};
+            Style::Sources result = {};
 
             std::string data = inData;
             data.erase(
