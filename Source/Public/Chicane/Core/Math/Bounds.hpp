@@ -14,6 +14,9 @@ namespace Chicane
         Bounds() = default;
 
     public:
+        void set(const Bounds& inBounds);
+        void add(const Bounds& inBounds);
+
         void update(const Transform::Combined& inTransform);
 
         bool contains(const Bounds& inBounds) const;
@@ -33,6 +36,9 @@ namespace Chicane
 
         const Vec<3, float>& getTop() const;
         const Vec<3, float>& getBaseTop() const;
+
+    private:
+        void refresh();
 
     private:
         Vec<3, float>       m_min        = Vec3Zero;

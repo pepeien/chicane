@@ -36,14 +36,14 @@ namespace Chicane
         hide();
     }
 
-    void CMesh::onAttachment(Actor* inActor)
+    void CMesh::onAttachment(Transformable* inRoot)
     {
-        if (!inActor)
+        if (!inRoot)
         {
             return;
         }
 
-        inActor->setBounds(getBounds());
+        inRoot->setBounds(getBounds());
     }
 
     void CMesh::onTick(float inDeltaTime)

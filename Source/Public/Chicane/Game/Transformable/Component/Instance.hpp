@@ -5,8 +5,6 @@
 
 namespace Chicane
 {   
-    class Actor;
-
     class Component : public Transformable
     {
     public:
@@ -16,7 +14,7 @@ namespace Chicane
     protected:
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
-        virtual void onAttachment(Actor* inActor) { return; }
+        virtual void onAttachment(Transformable* inRoot) { return; }
         virtual void onTransform() { return; }
         virtual void onTick(float inDeltaTime) { return; }
 
@@ -36,17 +34,17 @@ namespace Chicane
         void tick(float inDeltaTime);
 
         bool isAttached() const;
-        template<class T = Actor>
+        template<class T = Transformable>
         T* getAttachment() const {
             return dynamic_cast<T*>(m_attachment);
         }
-        void attachTo(Actor* inAttachment);
+        void attachTo(Transformable* inRoot);
 
     public:
         bool                 m_bCanTick;
         bool                 m_bIsActive;
 
-        Actor*               m_attachment;
+        Transformable*       m_attachment;
         Subscription<void*>* m_attachmentTransformSubscription;
     };
 }

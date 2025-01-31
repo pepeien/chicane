@@ -183,7 +183,7 @@ namespace Chicane
             m_matrix = m_absolute.getMatrix() * m_relative.getMatrix();
 
             m_translation = m_absolute.getTranslation() + m_relative.getTranslation();
-            m_rotation    = m_absolute.getRotation() * m_relative.getRotation();
+            m_rotation    = m_absolute.getRotation() + m_relative.getRotation();
             m_scale       = m_absolute.getScale() * m_relative.getScale();
 
             refreshOrientation(glm::quat_cast(m_matrix));

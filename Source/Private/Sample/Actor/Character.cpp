@@ -12,17 +12,24 @@ Character::Character()
     : Chicane::ACharacter(),
     m_camera(new Chicane::CCamera()),
     m_wand(new Chicane::CMesh("Content/Sample/Meshes/Cube.bmsh")),
+    m_body(new Chicane::CMesh("Content/Sample/Meshes/Cube.bmsh")),
     m_hitAudio(new Chicane::CAudio("Content/Sample/Sounds/Hit.baud")),
     m_victoryAudio(new Chicane::CAudio("Content/Sample/Sounds/Victory.baud"))
 {
     m_camera->attachTo(this);
+    m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
     m_camera->activate();
 
-    m_wand->attachTo(this);
+    m_wand->attachTo(m_camera);
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
     m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
     m_wand->activate();
+
+    m_body->attachTo(this);
+    m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
+    m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
+    m_body->activate();
 
     m_hitAudio->attachTo(this);
     m_hitAudio->activate();
@@ -60,7 +67,7 @@ void Character::onControlAttachment()
 
 void Character::onLook(const SDL_MouseMotionEvent& inEvent)
 {
-    addPitch(-inEvent.yrel * 0.5f);
+    m_camera->addRelativeRotation(-inEvent.yrel * 0.5f, 0.0f, 0.0f);
     addYaw(-inEvent.xrel * 0.5f);
 }
 
@@ -71,8 +78,8 @@ void Character::onLeftClick(bool bInIsButtonPressed)
         return;
     }
 
-    const Chicane::Vec<3, float>& origin     = getTranslation();
-    const Chicane::Vec<3, float> destination = origin + (getForward() * m_camera->getFarClip());
+    const Chicane::Vec<3, float>& origin     = m_camera->getTranslation();
+    const Chicane::Vec<3, float> destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
     std::vector<Apple*> hitApples = Chicane::Application::getLevel()->traceLine<Apple>(
         origin,

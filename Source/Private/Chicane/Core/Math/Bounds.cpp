@@ -24,23 +24,7 @@ namespace Chicane
             m_baseMax.z = std::max(m_baseMax.z, position.z);
         }
 
-        m_baseCenter.x = (m_baseMin.x + m_baseMax.x) * 0.5f;
-        m_baseCenter.y = (m_baseMin.y + m_baseMax.y) * 0.5f;
-        m_baseCenter.z = (m_baseMin.z + m_baseMax.z) * 0.5f;
-
-        m_baseTop.x = m_baseCenter.x;
-        m_baseTop.y = m_baseCenter.y;
-        m_baseTop.z = m_baseMax.z;
-
-        m_baseBottom.x = m_baseCenter.x;
-        m_baseBottom.y = m_baseCenter.y;
-        m_baseBottom.z = m_baseMin.z;
-
-        m_min    = m_baseMin;
-        m_max    = m_baseMax;
-        m_bottom = m_baseBottom;
-        m_center = m_baseCenter;
-        m_top    = m_baseTop;
+        refresh();
     }
 
     bool Bounds::contains(const Bounds& inBounds) const
@@ -68,6 +52,32 @@ namespace Chicane
         const bool isWithinZ = inPoint.z >= min.z && inPoint.z <= max.z;
 
         return isWithinX && isWithinY && isWithinZ;
+    }
+
+    void Bounds::set(const Bounds& inBounds)
+    {
+        m_baseMin = inBounds.getBaseMin();
+        m_baseMax = inBounds.getBaseMax();
+
+        refresh();
+    }
+
+    void Bounds::add(const Bounds& inBounds)
+    {
+        const Vec<3, float>& boundMin = inBounds.getBaseMin();
+        const Vec<3, float>& boundMax = inBounds.getBaseMax();
+
+        if (m_min.x < boundMin.x || m_min.y < boundMin.y || m_min.z < boundMin.z)
+        {
+            m_baseMin = boundMin;
+        }
+
+        if (m_max.x > boundMax.x || m_max.y > boundMax.y || m_max.z > boundMax.z)
+        {
+            m_baseMax = boundMax;
+        }
+
+        refresh();
     }
 
     void Bounds::update(const Transform::Combined& inTransform)
@@ -130,5 +140,26 @@ namespace Chicane
     const Vec<3, float>& Bounds::getBaseTop() const
     {
         return m_baseCenter;
+    }
+
+    void Bounds::refresh()
+    {
+        m_baseCenter.x = (m_baseMin.x + m_baseMax.x) * 0.5f;
+        m_baseCenter.y = (m_baseMin.y + m_baseMax.y) * 0.5f;
+        m_baseCenter.z = (m_baseMin.z + m_baseMax.z) * 0.5f;
+
+        m_baseTop.x = m_baseCenter.x;
+        m_baseTop.y = m_baseCenter.y;
+        m_baseTop.z = m_baseMax.z;
+
+        m_baseBottom.x = m_baseCenter.x;
+        m_baseBottom.y = m_baseCenter.y;
+        m_baseBottom.z = m_baseMin.z;
+
+        m_min    = m_baseMin;
+        m_max    = m_baseMax;
+        m_bottom = m_baseBottom;
+        m_center = m_baseCenter;
+        m_top    = m_baseTop;
     }
 }

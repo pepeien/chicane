@@ -11,6 +11,11 @@ namespace Chicane
             return m_matrix;
         }
 
+        void Instance::setMatrix(const Mat<4, float>& inMatrix)
+        {
+            m_matrix = inMatrix;
+        }
+
         void Instance::setTransform(const Instance& inTransform)
         {
             setTranslation(inTransform.getTranslation());

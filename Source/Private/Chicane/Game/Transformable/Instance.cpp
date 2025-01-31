@@ -308,9 +308,15 @@ namespace Chicane
         return m_bounds;
     }
 
+    void Transformable::addBounds(const Bounds& inBounds)
+    {
+        m_bounds.add(inBounds);
+        m_bounds.update(m_transform);
+    }
+
     void Transformable::setBounds(const Bounds& inBounds)
     {
-        m_bounds = inBounds;
+        m_bounds.set(inBounds);
         m_bounds.update(m_transform);
     }
 

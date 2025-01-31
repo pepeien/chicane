@@ -20,7 +20,7 @@ namespace Chicane
         {
             return;
         }
-
+/*
         Actor* attachment = getAttachment();
 
         for (Actor* actor : Application::getLevel()->getActors())
@@ -38,6 +38,7 @@ namespace Chicane
             attachment->collideWith(actor);
             actor->collideWith(attachment);
         }
+*/
     }
 
     bool CCollision::canCollide() const

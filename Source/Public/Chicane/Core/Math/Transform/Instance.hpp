@@ -14,6 +14,7 @@ namespace Chicane
         public:
             // Transformation
             const Mat<4, float>& getMatrix() const;
+            void setMatrix(const Mat<4, float>&  inMatrix);
 
             void setTransform(const Instance& inTransform);
 

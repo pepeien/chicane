@@ -81,6 +81,7 @@ namespace Chicane
 
         // Bounds
         const Bounds& getBounds() const;
+        void addBounds(const Bounds& inBounds);
         void setBounds(const Bounds& inBounds);
 
         const Vec<3, float>& getTop() const;

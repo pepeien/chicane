@@ -29,6 +29,7 @@ private:
 
     // Mesh
     Chicane::CMesh*   m_wand;
+    Chicane::CMesh*   m_body;
 
     // Audio
     Chicane::CAudio*  m_hitAudio;

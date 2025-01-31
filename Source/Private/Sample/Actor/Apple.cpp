@@ -15,7 +15,6 @@ Apple::Apple(const Chicane::Vec<3, float>& inStartPosition)
     m_mesh(new Chicane::CMesh("Content/Sample/Meshes/Apple.bmsh"))
 {
     setCanTick(true);
-    setCanCollide(true);
 
     setAbsoluteTranslation(inStartPosition);
     setAbsoluteRotation(90.0f, 0.0f, 0.0f);

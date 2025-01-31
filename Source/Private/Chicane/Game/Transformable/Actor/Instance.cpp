@@ -16,6 +16,29 @@ namespace Chicane
         m_forceVelocity(Vec3Zero)
     {}
 
+    bool Actor::canTick() const
+    {
+        return m_bCanTick;
+    }
+
+    void Actor::setCanTick(bool inCanTick)
+    {
+        m_bCanTick = inCanTick;
+    }
+
+    void Actor::tick(float inDeltaTime)
+    {
+        processCollision();
+        processForce();
+
+        if (!canTick())
+        {
+            return;
+        }
+
+        onTick(inDeltaTime);
+    }
+
     bool Actor::canCollide() const
     {
         return m_bCanCollide;
@@ -56,29 +79,6 @@ namespace Chicane
         onCollision(inSubject);
     }
 
-    bool Actor::canTick() const
-    {
-        return m_bCanTick;
-    }
-
-    void Actor::setCanTick(bool inCanTick)
-    {
-        m_bCanTick = inCanTick;
-    }
-
-    void Actor::tick(float inDeltaTime)
-    {
-        processForce();
-        processCollision();
-
-        if (!canTick())
-        {
-            return;
-        }
-
-        onTick(inDeltaTime);
-    }
-
     void Actor::addForce(const Vec<3, float>& inDirection, float inForce)
     {
         if (m_bIsApplyingForce)
@@ -115,6 +115,24 @@ namespace Chicane
         );
     }
 
+    void Actor::resetForce()
+    {
+        if (!m_bIsApplyingForce)
+        {
+            return;
+        }
+
+        m_bIsApplyingForce = false;
+
+        m_forceDirection.x = 0.0f;
+        m_forceDirection.y = 0.0f;
+        m_forceDirection.z = 0.0f;
+
+        m_forceVelocity.x = 0.0f;
+        m_forceVelocity.y = 0.0f;
+        m_forceVelocity.z = 0.0f;
+    }
+
     void Actor::processCollision()
     {
         if (!canCollide() || !Application::hasLevel())
@@ -129,15 +147,7 @@ namespace Chicane
                 continue;
             }
 
-            m_bIsApplyingForce = false;
-
-            m_forceDirection.x = 0.0f;
-            m_forceDirection.y = 0.0f;
-            m_forceDirection.z = 0.0f;
-
-            m_forceVelocity.x = 0.0f;
-            m_forceVelocity.y = 0.0f;
-            m_forceVelocity.z = 0.0f;
+            resetForce();
 
             setAbsoluteTranslation(getTranslation() + (actor->getTop() * 1.0f));
         }

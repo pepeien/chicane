@@ -72,9 +72,14 @@ namespace Chicane
         return m_attachment != nullptr;
     }
 
-    void Component::attachTo(Actor* inAttachment)
+    void Component::attachTo(Transformable* inRoot)
     {
-        m_attachment = inAttachment;
+        if (inRoot == this)
+        {
+            return;
+        }
+
+        m_attachment = inRoot;
 
         if (isAttached())
         {  
@@ -86,13 +91,18 @@ namespace Chicane
             m_attachmentTransformSubscription = m_attachment->watchTransform(
                 [&](void* inData)
                 {
-                    setAbsolute(m_attachment->getAbsolute());
+                    Transform::Instance transform = {};
+                    transform.setTranslation(m_attachment->getTranslation());
+                    transform.setRotation(m_attachment->getRotation());
+                    transform.setScale(m_attachment->getScale());
+
+                    setAbsolute(transform);
 
                     onTransform();
                 }
             );
         }
 
-        onAttachment(inAttachment);
+        onAttachment(inRoot);
     }
 }

@@ -15,7 +15,7 @@ namespace Chicane
     protected:
         void onActivation() override;
         void onDeactivation() override;
-        void onAttachment(Actor* inActor) override;
+        void onAttachment(Transformable* inRoot) override;
         void onTick(float inDeltaTime) override;
 
     public:
