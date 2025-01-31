@@ -21,6 +21,8 @@ private:
     void onMoveLeft(bool bInIsButtonPressed);
     void onMoveRight(bool bInIsButtonPressed);
 
+    void onJump(bool bInIsButtonPressed);
+
 private:
     // Camera
     Chicane::CCamera* m_camera;

@@ -14,6 +14,7 @@ namespace Chicane
 
     public:
         void move(const Vec<3, float>& inDirection, float inScale);
+        void jump();
 
         void addPitch(float inValue);
         void addRoll(float inValue);

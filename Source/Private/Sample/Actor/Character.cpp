@@ -6,8 +6,10 @@
 #include "Actor/Apple.hpp"
 #include "Game.hpp"
 
+static constexpr float MOVE_COEFFICIENT = 3.0f;
+
 Character::Character()
-    : Chicane::ACharacter(),\
+    : Chicane::ACharacter(),
     m_camera(new Chicane::CCamera()),
     m_wand(new Chicane::CMesh("Content/Sample/Meshes/Cube.bmsh")),
     m_hitAudio(new Chicane::CAudio("Content/Sample/Sounds/Hit.baud")),
@@ -49,10 +51,11 @@ void Character::onControlAttachment()
 
     m_controller->bindMouseButtonEvent(SDL_BUTTON_LEFT, std::bind(&Character::onLeftClick, this, std::placeholders::_1));
 
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_W, std::bind(&Character::onMoveForward,  this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_S, std::bind(&Character::onMoveBackward, this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_A, std::bind(&Character::onMoveLeft,     this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_D, std::bind(&Character::onMoveRight,    this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_W,     std::bind(&Character::onMoveForward,  this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_S,     std::bind(&Character::onMoveBackward, this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_A,     std::bind(&Character::onMoveLeft,     this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_D,     std::bind(&Character::onMoveRight,    this, std::placeholders::_1));
+    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_SPACE, std::bind(&Character::onJump,         this, std::placeholders::_1));
 }
 
 void Character::onLook(const SDL_MouseMotionEvent& inEvent)
@@ -90,7 +93,7 @@ void Character::onMoveForward(bool bInIsButtonPressed)
         return;
     }
 
-    move(getForward(), 1.0f);
+    move(getForward(), MOVE_COEFFICIENT);
 }
 
 void Character::onMoveBackward(bool bInIsButtonPressed)
@@ -100,7 +103,7 @@ void Character::onMoveBackward(bool bInIsButtonPressed)
         return;
     }
 
-    move(getForward(), -1.0f);
+    move(getForward(), -MOVE_COEFFICIENT);
 }
 
 void Character::onMoveLeft(bool bInIsButtonPressed)
@@ -110,7 +113,7 @@ void Character::onMoveLeft(bool bInIsButtonPressed)
         return;
     }
 
-    move(getRight(), -1.0f);
+    move(getRight(), -MOVE_COEFFICIENT);
 }
 
 void Character::onMoveRight(bool bInIsButtonPressed)
@@ -120,5 +123,15 @@ void Character::onMoveRight(bool bInIsButtonPressed)
         return;
     }
 
-    move(getRight(), 1.0f);
+    move(getRight(), MOVE_COEFFICIENT);
+}
+
+void Character::onJump(bool bInIsButtonPressed)
+{
+    if (!bInIsButtonPressed)
+    {
+        return;
+    }
+
+    jump();
 }

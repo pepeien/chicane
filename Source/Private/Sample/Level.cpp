@@ -37,7 +37,7 @@ void Level::spawnLights()
 void Level::spawnStructures()
 {
     Strcuture* floor = new Strcuture("Content/Sample/Meshes/Cube.bmsh");
-    floor->setAbsoluteScale(200.0f, 200.0f, 0.25f);
+    floor->setAbsoluteScale(1000.0f, 1000.0f, 0.25f);
     addActor(floor);
 }
 

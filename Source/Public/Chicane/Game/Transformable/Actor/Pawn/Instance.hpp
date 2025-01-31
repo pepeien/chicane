@@ -29,6 +29,6 @@ namespace Chicane
         void deattachController();
 
     protected:
-        Controller* m_controller;
+        Controller*  m_controller;
     };
 }

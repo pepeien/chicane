@@ -1,11 +1,19 @@
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
 
+#include "Chicane/Application.hpp"
+
+static constexpr float FORCE_MAX_VELOCITY               = 0.3f;
+static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0015f;
+
 namespace Chicane
 {
     Actor::Actor()
         : Transformable(),
         m_bCanCollide(false),
-        m_bCanTick(false)
+        m_bCanTick(false),
+        m_bIsApplyingForce(false),
+        m_forceDirection(Vec3Zero),
+        m_forceVelocity(Vec3Zero)
     {}
 
     bool Actor::canCollide() const
@@ -25,7 +33,7 @@ namespace Chicane
             return false;
         }
 
-        return isCollidingWith(inSubject->getBounds());
+        return isCollidingWith(inSubject->getTranslation());
     }
 
     bool Actor::isCollidingWith(const Bounds& inBounds) const
@@ -60,11 +68,78 @@ namespace Chicane
 
     void Actor::tick(float inDeltaTime)
     {
+        processForce();
+        processCollision();
+
         if (!canTick())
         {
             return;
         }
 
         onTick(inDeltaTime);
+    }
+
+    void Actor::addForce(const Vec<3, float>& inDirection, float inForce)
+    {
+        if (m_bIsApplyingForce)
+        {
+            return;
+        }
+
+        m_bIsApplyingForce = true;
+        m_forceDirection   = inDirection;
+        m_forceVelocity    = m_forceDirection * inForce;
+    }
+
+    void Actor::processForce()
+    {
+        if (!m_bIsApplyingForce)
+        {
+            return;
+        }
+
+        setAbsoluteTranslation(getTranslation() + m_forceVelocity);
+
+        m_forceVelocity -= m_forceDirection * FORCE_DEACCELERATION_COEFFICIENT;
+        m_forceVelocity.x = std::max(
+            m_forceVelocity.x,
+            -FORCE_MAX_VELOCITY
+        );
+        m_forceVelocity.x = std::max(
+            m_forceVelocity.y,
+            -FORCE_MAX_VELOCITY
+        );
+        m_forceVelocity.x = std::max(
+            m_forceVelocity.z,
+            -FORCE_MAX_VELOCITY
+        );
+    }
+
+    void Actor::processCollision()
+    {
+        if (!canCollide() || !Application::hasLevel())
+        {
+            return;
+        }
+
+        for (const Actor* actor : Application::getLevel()->getActors())
+        {
+            if (actor == this || !actor->canCollide() || !actor->isCollidingWith(this))
+            {
+                continue;
+            }
+
+            m_bIsApplyingForce = false;
+
+            m_forceDirection.x = 0.0f;
+            m_forceDirection.y = 0.0f;
+            m_forceDirection.z = 0.0f;
+
+            m_forceVelocity.x = 0.0f;
+            m_forceVelocity.y = 0.0f;
+            m_forceVelocity.z = 0.0f;
+
+            setAbsoluteTranslation(getTranslation() + (actor->getTop() * 1.0f));
+        }
     }
 }

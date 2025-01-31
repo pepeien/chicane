@@ -29,8 +29,18 @@ namespace Chicane
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
 
+        void addForce(const Vec<3, float>& inDirection, float inForce);
+
     protected:
-        bool m_bCanCollide;
-        bool m_bCanTick;
+        void processForce();
+        void processCollision();
+
+    protected:
+        bool          m_bCanCollide;
+        bool          m_bCanTick;
+        bool          m_bIsApplyingForce;
+
+        Vec<3, float> m_forceDirection;
+        Vec<3, float> m_forceVelocity;
     };
 } 

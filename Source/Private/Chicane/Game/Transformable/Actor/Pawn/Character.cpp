@@ -1,16 +1,23 @@
 #include "Chicane/Game/Transformable/Actor/Pawn/Character.hpp"
 
-constexpr float MOVEMENT_COEFFICIENT = 1.5f;
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
     ACharacter::ACharacter()
         : APawn()
-    {}
+    {
+        setCanCollide(true);
+    }
 
     void ACharacter::move(const Vec<3, float>& inDirection, float inScale)
     {
         addAbsoluteTranslation(inDirection * inScale);
+    }
+
+    void ACharacter::jump()
+    {
+        addForce(getUp(), 1.0f);
     }
 
     void ACharacter::addPitch(float inValue)
