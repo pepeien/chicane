@@ -14,7 +14,7 @@ namespace Chicane
         return m_controller != nullptr;
     }
 
-    void APawn::attachController(Controller* inController)
+    void APawn::attachController(Controller::Instance* inController)
     {
         m_controller = inController;
 

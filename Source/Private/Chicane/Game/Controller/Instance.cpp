@@ -5,248 +5,299 @@
 
 namespace Chicane
 {
-    Controller::Controller()
-        : m_pawn(nullptr),
-        m_pawnObservable(std::make_unique<Observable<APawn*>>()),
-        m_mouseMotionEvents({}),
-        m_mouseButtonEvents({}),
-        m_keyboardButtonEvents({}),
-        m_controllerMotionEvents({}),
-        m_controllerButtonEvents({})
-    {}
-
-    void Controller::activate()
+    namespace Controller
     {
-        Application::setController(this);
+        Instance::Instance()
+            : m_pawn(nullptr),
+            m_pawnObservable(std::make_unique<Observable<APawn*>>()),
+            m_mouseMotionEvents({}),
+            m_mouseButtonEvents({}),
+            m_keyboardButtonEvents({}),
+            m_gamepadMotionEvents({}),
+            m_gamepadButtonEvents({})
+        {}
 
-        onActivation();
-    }
-
-    Subscription<APawn*>* Controller::watchAttachment(
-        std::function<void (APawn*)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
-    )
-    {
-        Subscription<APawn*>* subscription = m_pawnObservable->subscribe(
-            inNext,
-            inError,
-            inComplete
-        );
-        subscription->next(m_pawn);
-
-        return subscription;
-    }
-
-    bool Controller::isAttached() const
-    {
-        return m_pawn != nullptr;
-    }
-
-    void Controller::attachTo(APawn* inPawn)
-    {
-        if (isAttached())
+        void Instance::activate()
         {
-            m_pawnObservable->error("Pawn is null");
+            Application::setController(this);
 
-            return;
+            onActivation();
         }
 
-        if (inPawn->isControlled())
+        Subscription<APawn*>* Instance::watchAttachment(
+            std::function<void (APawn*)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        )
         {
-            m_pawnObservable->error("This pawn is currently possesed");
+            Subscription<APawn*>* subscription = m_pawnObservable->subscribe(
+                inNext,
+                inError,
+                inComplete
+            );
+            subscription->next(m_pawn);
 
-            return;
+            return subscription;
         }
 
-        clearEvents();
-
-        inPawn->attachController(this);
-
-        m_pawn = inPawn;
-
-        m_pawnObservable->next(inPawn);
-    }
-
-    void Controller::deattach()
-    {
-        if (!isAttached())
+        bool Instance::isAttached() const
         {
-            m_pawnObservable->error("The controller doesn't possess a Pawn");
-
-            return;
+            return m_pawn != nullptr;
         }
 
-        clearEvents();
-
-        m_pawn->deattachController();
-        m_pawn = nullptr;
-
-        m_pawnObservable->next(nullptr);
-    }
-
-    void Controller::bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent)
-    {
-        m_mouseMotionEvents.push_back(inEvent);
-    }
-
-    void Controller::bindMouseButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
-    {
-        if (m_mouseButtonEvents.find(inButtonCode) == m_mouseButtonEvents.end())
+        void Instance::attachTo(APawn* inPawn)
         {
-            m_mouseButtonEvents[inButtonCode] = {};
-        }
-
-        m_mouseButtonEvents.at(inButtonCode).push_back(inEvent);
-    }
-
-    void Controller::bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent)
-    {
-        if (m_keyboardButtonEvents.find(inButtonCode) == m_keyboardButtonEvents.end())
-        {
-            m_keyboardButtonEvents[inButtonCode] = {};
-        }
-
-        m_keyboardButtonEvents.at(inButtonCode).push_back(inEvent);
-    }
-
-    void Controller::bindControllerMotionEvent(std::function<void(const SDL_GamepadAxisEvent&)> inEvent)
-    {
-        m_controllerMotionEvents.push_back(inEvent);
-    }
-
-    void Controller::bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent)
-    {
-        if (m_controllerButtonEvents.find(inButtonCode) == m_controllerButtonEvents.end())
-        {
-            m_controllerButtonEvents[inButtonCode] = {};
-        }
-
-        m_controllerButtonEvents.at(inButtonCode).push_back(inEvent);
-    }
-
-    void Controller::onEvent(const SDL_Event& inEvent)
-    {
-        if (inEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
-        {
-            if (inEvent.button.button == SDL_BUTTON_LEFT)
+            if (isAttached())
             {
-                Chicane::Application::getWindow()->focus();
+                m_pawnObservable->error("Pawn is null");
+
+                return;
+            }
+
+            if (inPawn->isControlled())
+            {
+                m_pawnObservable->error("This pawn is currently possesed");
+
+                return;
+            }
+
+            clearEvents();
+
+            inPawn->attachController(this);
+
+            m_pawn = inPawn;
+
+            m_pawnObservable->next(inPawn);
+        }
+
+        void Instance::deattach()
+        {
+            if (!isAttached())
+            {
+                m_pawnObservable->error("The controller doesn't possess a Pawn");
+
+                return;
+            }
+
+            clearEvents();
+
+            m_pawn->deattachController();
+            m_pawn = nullptr;
+
+            m_pawnObservable->next(nullptr);
+        }
+
+        void Instance::bindMouseMotionEvent(MouseMotionEventFunction inEvent)
+        {
+            m_mouseMotionEvents.push_back(inEvent);
+        }
+
+        void Instance::bindMouseButtonEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent)
+        {
+            if (m_mouseButtonEvents.find(inButton) == m_mouseButtonEvents.end())
+            {
+                m_mouseButtonEvents[inButton] = {};
+            }
+
+            MouseButtonEventMap& eventMap = m_mouseButtonEvents.at(inButton);
+
+            if (eventMap.find(inStatus) == eventMap.end())
+            {
+                eventMap[inStatus] = {};
+            }
+
+            eventMap.at(inStatus).push_back(inEvent);
+        }
+
+        void Instance::bindKeyboardEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent)
+        {
+            if (m_keyboardButtonEvents.find(inKey) == m_keyboardButtonEvents.end())
+            {
+                m_keyboardButtonEvents[inKey] = {};
+            }
+
+            KeyboardEventMap& eventMap = m_keyboardButtonEvents.at(inKey);
+
+            if (eventMap.find(inStatus) == eventMap.end())
+            {
+                eventMap[inStatus] = {};
+            }
+
+            eventMap.at(inStatus).push_back(inEvent);
+        }
+
+        void Instance::bindGamepadMotionEvent(GamepadMotionEventFunction inEvent)
+        {
+            m_gamepadMotionEvents.push_back(inEvent);
+        }
+
+        void Instance::bindGamepadButtonEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent)
+        {
+            if (m_gamepadButtonEvents.find(inButton) == m_gamepadButtonEvents.end())
+            {
+                m_gamepadButtonEvents[inButton] = {};
+            }
+
+            GamepadButtonEventMap& eventMap = m_gamepadButtonEvents.at(inButton);
+
+            if (eventMap.find(inStatus) == eventMap.end())
+            {
+                eventMap[inStatus] = {};
+            }
+
+            eventMap.at(inStatus).push_back(inEvent);
+        }
+
+        void Instance::onEvent(const SDL_Event& inEvent)
+        {
+            if (inEvent.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
+            {
+                if (inEvent.button.button == SDL_BUTTON_LEFT)
+                {
+                    Chicane::Application::getWindow()->focus();
+                }
+            }
+
+            if (!Application::getWindow()->isFocused())
+            {
+                return;
+            }
+
+            switch (inEvent.type)
+            {
+            // Mouse
+            case SDL_EVENT_MOUSE_MOTION:
+                onMouseMotionEvent(inEvent.motion);
+
+                break;
+
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+                onMouseButtonEvent(inEvent.button);
+
+                break;
+
+            // Keyboard
+            case SDL_EVENT_KEY_DOWN:
+            case SDL_EVENT_KEY_UP:
+                onKeyboardButtonEvent(inEvent.key);
+
+                break;
+
+            // Controller
+            case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+                onControllerMotionEvent(inEvent.gaxis);
+
+                break;
+
+            case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+            case SDL_EVENT_GAMEPAD_BUTTON_UP:
+                onControllerButtonEvent(inEvent.gbutton);
+
+                break;
+
+            default:
+                break;
             }
         }
 
-        if (!Application::getWindow()->isFocused())
+        void Instance::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
         {
-            return;
+            for (auto& function : m_mouseMotionEvents)
+            {
+                function(inEvent);
+            }
         }
 
-        switch (inEvent.type)
+        void Instance::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
         {
-        // Mouse
-        case SDL_EVENT_MOUSE_MOTION:
-            onMouseMotionEvent(inEvent.motion);
+            MouseButton button = (MouseButton) inEvent.button;
 
-            break;
+            if (m_mouseButtonEvents.find(button) == m_mouseButtonEvents.end())
+            {
+                return;
+            }
 
-        case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        case SDL_EVENT_MOUSE_BUTTON_UP:
-            onMouseButtonEvent(inEvent.button);
+            MouseButtonEventMap& eventMap = m_mouseButtonEvents.at(button);
 
-            break;
+            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
-        // Keyboard
-        case SDL_EVENT_KEY_DOWN:
-        case SDL_EVENT_KEY_UP:
-            onKeyboardButtonEvent(inEvent.key);
+            if (eventMap.find(status) == eventMap.end())
+            {
+                return;
+            }
 
-            break;
-
-        // Controller
-        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-            onControllerMotionEvent(inEvent.gaxis);
-
-            break;
-
-        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-        case SDL_EVENT_GAMEPAD_BUTTON_UP:
-            onControllerButtonEvent(inEvent.gbutton);
-
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    void Controller::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
-    {
-        for (auto& function : m_mouseMotionEvents)
-        {
-            function(inEvent);
-        }
-    }
-
-    void Controller::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
-    {
-        std::uint8_t key = inEvent.button;
-
-        if (m_mouseButtonEvents.find(key) == m_mouseButtonEvents.end())
-        {
-            return;
+            for (auto& function : eventMap.at(status))
+            {
+                function();
+            }
         }
 
-        for (auto& function : m_mouseButtonEvents.at(key))
+        void Instance::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
         {
-            function(inEvent.down);
-        }
-    }
+            KeyboardKey key = (KeyboardKey) inEvent.scancode;
 
-    void Controller::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
-    {
-        SDL_Scancode key = inEvent.scancode;
+            if (m_keyboardButtonEvents.find(key) == m_keyboardButtonEvents.end())
+            {
+                return;
+            }
 
-        if (m_keyboardButtonEvents.find(key) == m_keyboardButtonEvents.end())
-        {
-            return;
-        }
+            KeyboardEventMap& eventMap = m_keyboardButtonEvents.at(key);
 
-        for (auto& function : m_keyboardButtonEvents.at(key))
-        {
-            function(inEvent.down);
-        }
-    }
+            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
-    void Controller::onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent)
-    {
-        for (auto& function : m_controllerMotionEvents)
-        {
-            function(inEvent);
-        }
-    }
+            if (eventMap.find(status) == eventMap.end())
+            {
+                return;
+            }
 
-    void Controller::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
-    {
-        std::uint8_t key = inEvent.button;
-
-        if (m_controllerButtonEvents.find(key) == m_controllerButtonEvents.end())
-        {
-            return;
+            for (auto& function : eventMap.at(status))
+            {
+                function();
+            }
         }
 
-        for (auto& function : m_controllerButtonEvents.at(key))
+        void Instance::onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent)
         {
-            function(inEvent.down);
+            for (auto& function : m_gamepadMotionEvents)
+            {
+                function(inEvent);
+            }
         }
-    }
 
-    void Controller::clearEvents()
-    {
-        m_mouseMotionEvents.clear();
-        m_mouseButtonEvents.clear();
+        void Instance::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
+        {
+            GamepadButton button = (GamepadButton) inEvent.button;
 
-        m_keyboardButtonEvents.clear();
+            if (m_gamepadButtonEvents.find(button) == m_gamepadButtonEvents.end())
+            {
+                return;
+            }
 
-        m_controllerButtonEvents.clear();
-        m_controllerMotionEvents.clear();
+            GamepadButtonEventMap& eventMap = m_gamepadButtonEvents.at(button);
+
+            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
+
+            if (eventMap.find(status) == eventMap.end())
+            {
+                return;
+            }
+
+            for (auto& function : eventMap.at(status))
+            {
+                function();
+            }
+        }
+
+        void Instance::clearEvents()
+        {
+            m_mouseMotionEvents.clear();
+            m_mouseButtonEvents.clear();
+
+            m_keyboardButtonEvents.clear();
+
+            m_gamepadButtonEvents.clear();
+            m_gamepadMotionEvents.clear();
+        }
     }
 }

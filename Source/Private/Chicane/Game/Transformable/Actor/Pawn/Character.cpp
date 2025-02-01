@@ -17,7 +17,7 @@ namespace Chicane
 
     void ACharacter::jump()
     {
-        addForce(getUp(), 1.0f);
+        addForce(getUp(), 0.22f);
     }
 
     void ACharacter::addPitch(float inValue)

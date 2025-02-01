@@ -3,7 +3,7 @@
 #include "Chicane/Application.hpp"
 
 static constexpr float FORCE_MAX_VELOCITY               = 0.3f;
-static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0015f;
+static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
 
 namespace Chicane
 {
@@ -105,11 +105,11 @@ namespace Chicane
             m_forceVelocity.x,
             -FORCE_MAX_VELOCITY
         );
-        m_forceVelocity.x = std::max(
+        m_forceVelocity.y = std::max(
             m_forceVelocity.y,
             -FORCE_MAX_VELOCITY
         );
-        m_forceVelocity.x = std::max(
+        m_forceVelocity.z = std::max(
             m_forceVelocity.z,
             -FORCE_MAX_VELOCITY
         );

@@ -2,76 +2,82 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Core.hpp"
+#include "Chicane/Game/Controller/Gamepad.hpp"
+#include "Chicane/Game/Controller/Keyboard.hpp"
+#include "Chicane/Game/Controller/Mouse.hpp"
 
 namespace Chicane
 {
     class APawn;
 
-    class Controller
+    namespace Controller
     {
-    public:
-        Controller();
-        virtual ~Controller() = default;
-
-    public:
-        virtual void onActivation() { return; };
-
-    public:
-        void activate();
-
-        template<class T = APawn>
-        const T* getPawn() const
+        class Instance
         {
-            return dynamic_cast<T*>(m_pawn);
-        }
+        public:
+            Instance();
+            virtual ~Instance() = default;
 
-        Subscription<APawn*>* watchAttachment(
-            std::function<void (APawn*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
-        );
+        public:
+            virtual void onActivation() { return; };
 
-        bool isAttached() const;
-        void attachTo(APawn* inPawn);
-        void deattach();
+        public:
+            void activate();
 
-        // Mouse Events
-        void bindMouseMotionEvent(std::function<void(const SDL_MouseMotionEvent&)> inEvent);
-        void bindMouseButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent);
+            template<class T = APawn>
+            const T* getPawn() const
+            {
+                return dynamic_cast<T*>(m_pawn);
+            }
 
-        // Keyboard Events
-        void bindKeyboardButtonEvent(SDL_Scancode inButtonCode, std::function<void(bool)> inEvent);
+            Subscription<APawn*>* watchAttachment(
+                std::function<void (APawn*)> inNext,
+                std::function<void (const std::string&)> inError = nullptr,
+                std::function<void ()> inComplete = nullptr
+            );
 
-        // Controller Events
-        void bindControllerMotionEvent(std::function<void(const SDL_GamepadAxisEvent&)> inEvent);
-        void bindControllerButtonEvent(std::uint8_t inButtonCode, std::function<void(bool)> inEvent);
+            bool isAttached() const;
+            void attachTo(APawn* inPawn);
+            void deattach();
 
-        void onEvent(const SDL_Event& inEvent);
+            // Mouse Events
+            void bindMouseMotionEvent(MouseMotionEventFunction inEvent);
+            void bindMouseButtonEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent);
 
-    private:
-        // Events
-        void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
-        void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
-        void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
-        void onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent);
-        void onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent);
+            // Keyboard Events
+            void bindKeyboardEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent);
 
-        void clearEvents();
+            // Controller Events
+            void bindGamepadMotionEvent(GamepadMotionEventFunction inEvent);
+            void bindGamepadButtonEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent);
 
-    private:
-        // Pawn
-        APawn*                                                                   m_pawn;
-        std::unique_ptr<Observable<APawn*>>                                      m_pawnObservable;
+            void onEvent(const SDL_Event& inEvent);
 
-        // Mouse Events
-        std::vector<std::function<void(const SDL_MouseMotionEvent&)>>            m_mouseMotionEvents;
-        std::unordered_map<std::uint8_t, std::vector<std::function<void(bool)>>> m_mouseButtonEvents;
+        private:
+            // Events
+            void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
+            void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
+            void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
+            void onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent);
+            void onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent);
 
-        // Keyboard Events
-        std::unordered_map<SDL_Scancode, std::vector<std::function<void(bool)>>> m_keyboardButtonEvents;
+            void clearEvents();
 
-        // Controller Events
-        std::vector<std::function<void(const SDL_GamepadAxisEvent&)>>            m_controllerMotionEvents;
-        std::unordered_map<std::uint8_t, std::vector<std::function<void(bool)>>> m_controllerButtonEvents;
-    };
+        private:
+            // Pawn
+            APawn*                              m_pawn;
+            std::unique_ptr<Observable<APawn*>> m_pawnObservable;
+
+            // Mouse Events
+            MouseMotionEvents                   m_mouseMotionEvents;
+            MouseButtonEvents                   m_mouseButtonEvents;
+
+            // Keyboard Events
+            KeyboardEvents                      m_keyboardButtonEvents;
+
+            // Controller Events
+            GamepadMotionEvents                 m_gamepadMotionEvents;
+            GamepadButtonEvents                 m_gamepadButtonEvents;
+        };
+    }
 }

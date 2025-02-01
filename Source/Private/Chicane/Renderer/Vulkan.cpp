@@ -88,7 +88,7 @@ namespace Chicane
             pushLayer(new LSky());
             pushLayer(new LShadow());
             pushLayer(new LLevel());
-            //pushLayer(new LGrid());
+            pushLayer(new LGrid());
         }
 
         void Renderer::onEvent(const SDL_Event& inEvent)

@@ -9,7 +9,7 @@ namespace Chicane
         Instance::Instance()
             : m_telemetry({}),
             m_controller(nullptr),
-            m_controllerObservable(std::make_unique<Observable<Controller*>>()),
+            m_controllerObservable(std::make_unique<Observable<Controller::Instance*>>()),
             m_level(nullptr),
             m_levelObservable(std::make_unique<Observable<Level*>>()),
             m_views({}),
@@ -63,12 +63,12 @@ namespace Chicane
             return  m_controller != nullptr;
         }
 
-        Controller* Instance::getController()
+        Controller::Instance* Instance::getController()
         {
             return  m_controller;
         }
 
-        void Instance::setController(Controller* inController)
+        void Instance::setController(Controller::Instance* inController)
         {
             if (inController == m_controller)
             {
@@ -80,13 +80,13 @@ namespace Chicane
             m_controllerObservable->next(m_controller);
         }
 
-        Subscription<Controller*>* Instance::watchController(
-            std::function<void (Controller*)> inNext,
+        Subscription<Controller::Instance*>* Instance::watchController(
+            std::function<void (Controller::Instance*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )
         {
-            Subscription<Controller*>* subscription = m_controllerObservable->subscribe(
+            Subscription<Controller::Instance*>* subscription = m_controllerObservable->subscribe(
                 inNext,
                 inError,
                 inComplete

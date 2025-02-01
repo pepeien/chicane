@@ -56,28 +56,47 @@ void Character::onControlAttachment()
 {
     m_controller->bindMouseMotionEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
 
-    m_controller->bindMouseButtonEvent(SDL_BUTTON_LEFT, std::bind(&Character::onLeftClick, this, std::placeholders::_1));
+    m_controller->bindMouseButtonEvent(
+        Chicane::Controller::MouseButton::Left,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onLeftClick, this)
+    );
 
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_W,     std::bind(&Character::onMoveForward,  this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_S,     std::bind(&Character::onMoveBackward, this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_A,     std::bind(&Character::onMoveLeft,     this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_D,     std::bind(&Character::onMoveRight,    this, std::placeholders::_1));
-    m_controller->bindKeyboardButtonEvent(SDL_SCANCODE_SPACE, std::bind(&Character::onJump,         this, std::placeholders::_1));
+    m_controller->bindKeyboardEvent(
+        Chicane::Controller::KeyboardKey::W,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onMoveForward, this)
+    );
+    m_controller->bindKeyboardEvent(
+        Chicane::Controller::KeyboardKey::S,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onMoveBackward, this)
+    );
+    m_controller->bindKeyboardEvent(
+        Chicane::Controller::KeyboardKey::A,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onMoveLeft, this)
+    );
+    m_controller->bindKeyboardEvent(
+        Chicane::Controller::KeyboardKey::D,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onMoveRight, this)
+    );
+    m_controller->bindKeyboardEvent(
+        Chicane::Controller::KeyboardKey::Space,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onJump, this)
+    );
 }
 
-void Character::onLook(const SDL_MouseMotionEvent& inEvent)
+void Character::onLook(const Chicane::Controller::MouseMotionEvent& inEvent)
 {
     m_camera->addRelativeRotation(-inEvent.yrel * 0.5f, 0.0f, 0.0f);
     addYaw(-inEvent.xrel * 0.5f);
 }
 
-void Character::onLeftClick(bool bInIsButtonPressed)
+void Character::onLeftClick()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     const Chicane::Vec<3, float>& origin     = m_camera->getTranslation();
     const Chicane::Vec<3, float> destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
@@ -93,52 +112,27 @@ void Character::onLeftClick(bool bInIsButtonPressed)
     }
 }
 
-void Character::onMoveForward(bool bInIsButtonPressed)
+void Character::onMoveForward()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     move(getForward(), MOVE_COEFFICIENT);
 }
 
-void Character::onMoveBackward(bool bInIsButtonPressed)
+void Character::onMoveBackward()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     move(getForward(), -MOVE_COEFFICIENT);
 }
 
-void Character::onMoveLeft(bool bInIsButtonPressed)
+void Character::onMoveLeft()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     move(getRight(), -MOVE_COEFFICIENT);
 }
 
-void Character::onMoveRight(bool bInIsButtonPressed)
+void Character::onMoveRight()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     move(getRight(), MOVE_COEFFICIENT);
 }
 
-void Character::onJump(bool bInIsButtonPressed)
+void Character::onJump()
 {
-    if (!bInIsButtonPressed)
-    {
-        return;
-    }
-
     jump();
 }

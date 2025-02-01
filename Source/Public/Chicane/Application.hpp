@@ -21,10 +21,10 @@ namespace Chicane
 
         // Game
         bool hasController();
-        Controller* getController();
-        void setController(Controller* inController);
-        Subscription<Controller*>* watchController(
-            std::function<void (Controller*)> inNext,
+        Controller::Instance* getController();
+        void setController(Controller::Instance* inController);
+        Subscription<Controller::Instance*>* watchController(
+            std::function<void (Controller::Instance*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

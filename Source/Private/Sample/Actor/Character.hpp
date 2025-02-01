@@ -12,16 +12,16 @@ protected:
     void onControlAttachment() override;
 
 private:
-    void onLook(const SDL_MouseMotionEvent& inEvent);
+    void onLook(const Chicane::Controller::MouseMotionEvent& inEvent);
 
-    void onLeftClick(bool bInIsButtonPressed);
+    void onLeftClick();
 
-    void onMoveForward(bool bInIsButtonPressed);
-    void onMoveBackward(bool bInIsButtonPressed);
-    void onMoveLeft(bool bInIsButtonPressed);
-    void onMoveRight(bool bInIsButtonPressed);
+    void onMoveForward();
+    void onMoveBackward();
+    void onMoveLeft();
+    void onMoveRight();
 
-    void onJump(bool bInIsButtonPressed);
+    void onJump();
 
 private:
     // Camera

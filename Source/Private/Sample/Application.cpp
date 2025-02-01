@@ -33,7 +33,7 @@ void Application::initLevel()
 
 void Application::initChacater()
 {
-    m_controller = std::make_unique<Chicane::Controller>();
+    m_controller = std::make_unique<Chicane::Controller::Instance>();
     Chicane::Application::setController(m_controller.get());
 
     Character* character = new Character();

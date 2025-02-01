@@ -52,7 +52,7 @@ namespace Chicane
             return  m_application->hasController();
         }
 
-        Controller* getController()
+        Controller::Instance* getController()
         {
             if (!m_application)
             {
@@ -62,7 +62,7 @@ namespace Chicane
             return  m_application->getController();
         }
 
-        void setController(Controller* inController)
+        void setController(Controller::Instance* inController)
         {
             if (!m_application)
             {
@@ -72,8 +72,8 @@ namespace Chicane
             m_application->setController(inController);
         }
 
-        Subscription<Controller*>* watchController(
-            std::function<void (Controller*)> inNext,
+        Subscription<Controller::Instance*>* watchController(
+            std::function<void (Controller::Instance*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )
