@@ -258,7 +258,5 @@ namespace Chicane
         };
 
         typedef std::function<void()> KeyboardEventFunction;
-        typedef std::unordered_map<EventStatus, std::vector<KeyboardEventFunction>> KeyboardEventMap;
-        typedef std::unordered_map<KeyboardKey, KeyboardEventMap> KeyboardEvents;
     }
 }

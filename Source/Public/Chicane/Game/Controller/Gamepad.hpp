@@ -39,10 +39,7 @@ namespace Chicane
 
         typedef SDL_GamepadAxisEvent GamepadMotionEvent;
         typedef std::function<void(const GamepadMotionEvent&)> GamepadMotionEventFunction;
-        typedef std::vector<GamepadMotionEventFunction> GamepadMotionEvents;
 
         typedef std::function<void()> GamepadButtonEventFunction;
-        typedef std::unordered_map<EventStatus, std::vector<GamepadButtonEventFunction>> GamepadButtonEventMap;
-        typedef std::unordered_map<GamepadButton, GamepadButtonEventMap> GamepadButtonEvents;
     }
 }

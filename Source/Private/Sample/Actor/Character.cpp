@@ -54,35 +54,35 @@ Character::Character()
 
 void Character::onControlAttachment()
 {
-    m_controller->bindMouseMotionEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
+    m_controller->bindEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
 
-    m_controller->bindMouseButtonEvent(
+    m_controller->bindEvent(
         Chicane::Controller::MouseButton::Left,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onLeftClick, this)
     );
 
-    m_controller->bindKeyboardEvent(
+    m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::W,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveForward, this)
     );
-    m_controller->bindKeyboardEvent(
+    m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::S,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveBackward, this)
     );
-    m_controller->bindKeyboardEvent(
+    m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::A,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveLeft, this)
     );
-    m_controller->bindKeyboardEvent(
+    m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::D,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveRight, this)
     );
-    m_controller->bindKeyboardEvent(
+    m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::Space,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onJump, this)

@@ -12,7 +12,7 @@ namespace Chicane
             m_pawnObservable(std::make_unique<Observable<APawn*>>()),
             m_mouseMotionEvents({}),
             m_mouseButtonEvents({}),
-            m_keyboardButtonEvents({}),
+            m_keyboardKeyEvents({}),
             m_gamepadMotionEvents({}),
             m_gamepadButtonEvents({})
         {}
@@ -22,6 +22,13 @@ namespace Chicane
             Application::setController(this);
 
             onActivation();
+        }
+
+        void Instance::tick(float inDeltaTime)
+        {
+            m_mouseButtonEvents.repeat();
+            m_keyboardKeyEvents.repeat();
+            m_gamepadButtonEvents.repeat();
         }
 
         Subscription<APawn*>* Instance::watchAttachment(
@@ -87,65 +94,29 @@ namespace Chicane
             m_pawnObservable->next(nullptr);
         }
 
-        void Instance::bindMouseMotionEvent(MouseMotionEventFunction inEvent)
+        void Instance::bindEvent(MouseMotionEventFunction inEvent)
         {
-            m_mouseMotionEvents.push_back(inEvent);
+            m_mouseMotionEvents.bind(inEvent);
         }
 
-        void Instance::bindMouseButtonEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent)
+        void Instance::bindEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent)
         {
-            if (m_mouseButtonEvents.find(inButton) == m_mouseButtonEvents.end())
-            {
-                m_mouseButtonEvents[inButton] = {};
-            }
-
-            MouseButtonEventMap& eventMap = m_mouseButtonEvents.at(inButton);
-
-            if (eventMap.find(inStatus) == eventMap.end())
-            {
-                eventMap[inStatus] = {};
-            }
-
-            eventMap.at(inStatus).push_back(inEvent);
+            m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
         }
 
-        void Instance::bindKeyboardEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent)
+        void Instance::bindEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent)
         {
-            if (m_keyboardButtonEvents.find(inKey) == m_keyboardButtonEvents.end())
-            {
-                m_keyboardButtonEvents[inKey] = {};
-            }
-
-            KeyboardEventMap& eventMap = m_keyboardButtonEvents.at(inKey);
-
-            if (eventMap.find(inStatus) == eventMap.end())
-            {
-                eventMap[inStatus] = {};
-            }
-
-            eventMap.at(inStatus).push_back(inEvent);
+            m_keyboardKeyEvents.bind(inKey, inStatus, inEvent);
         }
 
-        void Instance::bindGamepadMotionEvent(GamepadMotionEventFunction inEvent)
+        void Instance::bindEvent(GamepadMotionEventFunction inEvent)
         {
-            m_gamepadMotionEvents.push_back(inEvent);
+            m_gamepadMotionEvents.bind(inEvent);
         }
 
-        void Instance::bindGamepadButtonEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent)
+        void Instance::bindEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent)
         {
-            if (m_gamepadButtonEvents.find(inButton) == m_gamepadButtonEvents.end())
-            {
-                m_gamepadButtonEvents[inButton] = {};
-            }
-
-            GamepadButtonEventMap& eventMap = m_gamepadButtonEvents.at(inButton);
-
-            if (eventMap.find(inStatus) == eventMap.end())
-            {
-                eventMap[inStatus] = {};
-            }
-
-            eventMap.at(inStatus).push_back(inEvent);
+            m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
         }
 
         void Instance::onEvent(const SDL_Event& inEvent)
@@ -180,19 +151,19 @@ namespace Chicane
             // Keyboard
             case SDL_EVENT_KEY_DOWN:
             case SDL_EVENT_KEY_UP:
-                onKeyboardButtonEvent(inEvent.key);
+                onKeyboardKeyEvent(inEvent.key);
 
                 break;
 
-            // Controller
+            // Gamepad
             case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-                onControllerMotionEvent(inEvent.gaxis);
+                onGamepadMotionEvent(inEvent.gaxis);
 
                 break;
 
             case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
             case SDL_EVENT_GAMEPAD_BUTTON_UP:
-                onControllerButtonEvent(inEvent.gbutton);
+                onGamepadButtonEvent(inEvent.gbutton);
 
                 break;
 
@@ -201,92 +172,38 @@ namespace Chicane
             }
         }
 
-        void Instance::onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent)
+        void Instance::onMouseMotionEvent(const SDL_MouseMotionEvent& inData)
         {
-            for (auto& function : m_mouseMotionEvents)
-            {
-                function(inEvent);
-            }
+            m_mouseMotionEvents.exec(inData);
         }
 
         void Instance::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
         {
             MouseButton button = (MouseButton) inEvent.button;
-
-            if (m_mouseButtonEvents.find(button) == m_mouseButtonEvents.end())
-            {
-                return;
-            }
-
-            MouseButtonEventMap& eventMap = m_mouseButtonEvents.at(button);
-
             EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
-            if (eventMap.find(status) == eventMap.end())
-            {
-                return;
-            }
-
-            for (auto& function : eventMap.at(status))
-            {
-                function();
-            }
+            m_mouseButtonEvents.exec(button, status);
         }
 
-        void Instance::onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent)
+        void Instance::onKeyboardKeyEvent(const SDL_KeyboardEvent& inEvent)
         {
             KeyboardKey key = (KeyboardKey) inEvent.scancode;
-
-            if (m_keyboardButtonEvents.find(key) == m_keyboardButtonEvents.end())
-            {
-                return;
-            }
-
-            KeyboardEventMap& eventMap = m_keyboardButtonEvents.at(key);
-
             EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
-            if (eventMap.find(status) == eventMap.end())
-            {
-                return;
-            }
-
-            for (auto& function : eventMap.at(status))
-            {
-                function();
-            }
+            m_keyboardKeyEvents.exec(key, status);
         }
 
-        void Instance::onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent)
+        void Instance::onGamepadMotionEvent(const SDL_GamepadAxisEvent& inEvent)
         {
-            for (auto& function : m_gamepadMotionEvents)
-            {
-                function(inEvent);
-            }
+            m_gamepadMotionEvents.exec(inEvent);
         }
 
-        void Instance::onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent)
+        void Instance::onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent)
         {
             GamepadButton button = (GamepadButton) inEvent.button;
-
-            if (m_gamepadButtonEvents.find(button) == m_gamepadButtonEvents.end())
-            {
-                return;
-            }
-
-            GamepadButtonEventMap& eventMap = m_gamepadButtonEvents.at(button);
-
             EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
-            if (eventMap.find(status) == eventMap.end())
-            {
-                return;
-            }
-
-            for (auto& function : eventMap.at(status))
-            {
-                function();
-            }
+            m_gamepadButtonEvents.exec(button, status);
         }
 
         void Instance::clearEvents()
@@ -294,7 +211,7 @@ namespace Chicane
             m_mouseMotionEvents.clear();
             m_mouseButtonEvents.clear();
 
-            m_keyboardButtonEvents.clear();
+            m_keyboardKeyEvents.clear();
 
             m_gamepadButtonEvents.clear();
             m_gamepadMotionEvents.clear();

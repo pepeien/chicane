@@ -26,7 +26,14 @@ namespace Chicane
         m_actors.clear();
     }
 
-    void Level::onTick(float inDeltaTime)
+    void Level::activate()
+    {
+        Application::setLevel(this);
+
+        onActivation();
+    }
+
+    void Level::tick(float inDeltaTime)
     {
         for (Actor* actor : m_actors)
         {
@@ -37,13 +44,8 @@ namespace Chicane
         {
             component->tick(inDeltaTime);
         }
-    }
 
-    void Level::activate()
-    {
-        Application::setLevel(this);
-
-        onActivation();
+        onTick(inDeltaTime);
     }
 
     bool Level::hasActors() const

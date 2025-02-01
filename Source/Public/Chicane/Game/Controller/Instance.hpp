@@ -20,9 +20,12 @@ namespace Chicane
 
         public:
             virtual void onActivation() { return; };
+            virtual void onTick(float inDeltaTime) { return; } 
 
         public:
+            // Lifecycle
             void activate();
+            void tick(float inDeltaTime);
 
             template<class T = APawn>
             const T* getPawn() const
@@ -41,25 +44,29 @@ namespace Chicane
             void deattach();
 
             // Mouse Events
-            void bindMouseMotionEvent(MouseMotionEventFunction inEvent);
-            void bindMouseButtonEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent);
+            void bindEvent(MouseMotionEventFunction inEvent);
+            void bindEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent);
 
             // Keyboard Events
-            void bindKeyboardEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent);
+            void bindEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent);
 
             // Controller Events
-            void bindGamepadMotionEvent(GamepadMotionEventFunction inEvent);
-            void bindGamepadButtonEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent);
+            void bindEvent(GamepadMotionEventFunction inEvent);
+            void bindEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent);
 
             void onEvent(const SDL_Event& inEvent);
 
         private:
-            // Events
-            void onMouseMotionEvent(const SDL_MouseMotionEvent& inEvent);
+            // Mouse Events
+            void onMouseMotionEvent(const SDL_MouseMotionEvent& inData);
             void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
-            void onKeyboardButtonEvent(const SDL_KeyboardEvent& inEvent);
-            void onControllerMotionEvent(const SDL_GamepadAxisEvent& inEvent);
-            void onControllerButtonEvent(const SDL_GamepadButtonEvent& inEvent);
+
+            // Keyboard Events
+            void onKeyboardKeyEvent(const SDL_KeyboardEvent& inEvent);
+
+            // Controller Events
+            void onGamepadMotionEvent(const SDL_GamepadAxisEvent& inEvent);
+            void onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent);
 
             void clearEvents();
 
@@ -69,15 +76,15 @@ namespace Chicane
             std::unique_ptr<Observable<APawn*>> m_pawnObservable;
 
             // Mouse Events
-            MouseMotionEvents                   m_mouseMotionEvents;
-            MouseButtonEvents                   m_mouseButtonEvents;
+            Events<MouseMotionEvent>            m_mouseMotionEvents;
+            PressableEvents<MouseButton>        m_mouseButtonEvents;   
 
             // Keyboard Events
-            KeyboardEvents                      m_keyboardButtonEvents;
+            PressableEvents<KeyboardKey>        m_keyboardKeyEvents;
 
-            // Controller Events
-            GamepadMotionEvents                 m_gamepadMotionEvents;
-            GamepadButtonEvents                 m_gamepadButtonEvents;
+            // Gamepad Events
+            Events<GamepadMotionEvent>          m_gamepadMotionEvents;
+            PressableEvents<GamepadButton>      m_gamepadButtonEvents;
         };
     }
 }

@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Manager
         {
-            template<typename I, typename D>
+            template<typename I, typename E>
             class Instance
             {
             protected:
@@ -27,7 +27,7 @@ namespace Chicane
             protected:
                 // Event
                 virtual void onLoad(const std::string& inId, const I& inInstance) { return; };
-                virtual void onAllocation(const std::string& inId, const D& inData) { return; };
+                virtual void onAllocation(const std::string& inId, const E& inData) { return; };
                 virtual void onDeallocation(const std::string& inId) { return; };
                 virtual void onActivation(const std::string& inId) { return; };
                 virtual void onDeactivation(const std::string& inId) { return; };
@@ -113,7 +113,7 @@ namespace Chicane
                     m_observable->next(EventType::Load);
                 }
 
-                void allocate(const std::string& inId, const D& inData)
+                void allocate(const std::string& inId, const E& inData)
                 {
                     if (!isLoaded(inId) || isAllocated(inId))
                     {
@@ -213,7 +213,7 @@ namespace Chicane
 
             protected:
                 std::map<std::string, I>               m_instances;
-                std::map<std::string, D>               m_datum;
+                std::map<std::string, E>               m_datum;
                 std::vector<std::string>               m_activeIds;
                 std::vector<std::string>               m_usedIds;
                 std::unique_ptr<Observable<EventType>> m_observable;
