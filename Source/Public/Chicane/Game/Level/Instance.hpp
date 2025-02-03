@@ -26,8 +26,11 @@ namespace Chicane
         void activate();
         void tick(float inDeltaTime);
 
+        // Actors
         bool hasActors() const;
+
         const std::vector<Actor*>& getActors() const;
+
         template<class T>
         std::vector<T*> getActors() const
         {
@@ -45,15 +48,28 @@ namespace Chicane
 
             return result;
         }
-        void addActor(Actor* inActor);
-        Subscription<Actor*>* watchActors(
-            std::function<void (Actor*)> inNext,
+
+        template<class T = Actor>
+        T* createActor()
+        {
+            m_actors.push_back(new T());
+
+            m_actorObservable->next(m_actors);
+
+            return static_cast<T*>(m_actors.back());
+        }
+
+        Subscription<const std::vector<Actor*>&>* watchActors(
+            std::function<void (const std::vector<Actor*>&)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
+        // Components
         bool hasComponents() const;
+
         const std::vector<Component*>& getComponents() const;
+
         template<class T>
         std::vector<T*> getComponents() const
         {
@@ -71,22 +87,35 @@ namespace Chicane
 
             return result;
         }
-        void addComponent(Component* inComponent);
+
+        template<class T = Component>
+        T* createComponent()
+        {
+            m_components.push_back(new T());
+
+            m_componentObservable->next(m_components);
+
+            return static_cast<T*>(m_components.back());
+        }
+
         void removeComponent(Component* inComponent);
+
         Subscription<const std::vector<Component*>&>* watchComponents(
             std::function<void (const std::vector<Component*>&)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
+        // Camera
         bool hasCamera();
         CCamera* getCamera();
         Subscription<CCamera*>* watchCamera(
             std::function<void (CCamera*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
-        );template<typename T = Actor>
+        );
 
+        template<typename T = Actor>
         std::vector<T*> traceLine(
             const Vec<3, float>& inOrigin,
             const Vec<3, float>& inDestination,
@@ -161,7 +190,7 @@ namespace Chicane
 
     private:
         std::vector<Actor*>                                         m_actors;
-        std::unique_ptr<Observable<Actor*>>                         m_actorObservable;
+        std::unique_ptr<Observable<const std::vector<Actor*>&>>     m_actorObservable;
 
         std::vector<Component*>                                     m_components;
         std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;

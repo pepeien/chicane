@@ -10,31 +10,40 @@ static constexpr float MOVE_COEFFICIENT = 3.0f;
 
 Character::Character()
     : Chicane::ACharacter(),
-    m_camera(new Chicane::CCamera()),
-    m_wand(new Chicane::CMesh("Content/Sample/Meshes/Cube.bmsh")),
-    m_body(new Chicane::CMesh("Content/Sample/Meshes/Cube.bmsh")),
-    m_hitAudio(new Chicane::CAudio("Content/Sample/Sounds/Hit.baud")),
-    m_victoryAudio(new Chicane::CAudio("Content/Sample/Sounds/Victory.baud"))
+    m_camera(nullptr),
+    m_wand(nullptr),
+    m_body(nullptr),
+    m_hitAudio(nullptr),
+    m_victoryAudio(nullptr)
 {
+    m_camera = Chicane::Application::getLevel()->createComponent<Chicane::CCamera>();
     m_camera->attachTo(this);
     m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
     m_camera->activate();
 
+    m_wand = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);
+    m_wand->setMesh("Content/Sample/Meshes/Cube.bmsh");
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
     m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
     m_wand->activate();
 
+    m_body = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
+    m_body->setMesh("Content/Sample/Meshes/Cube.bmsh");
     m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
+    m_hitAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_hitAudio->attachTo(this);
+    m_hitAudio->load("Content/Sample/Sounds/Hit.baud");
     m_hitAudio->activate();
 
+    m_victoryAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_victoryAudio->attachTo(this);
+    m_victoryAudio->load("Content/Sample/Sounds/Victory.baud");
     m_victoryAudio->activate();
 
     Game::watchScore(

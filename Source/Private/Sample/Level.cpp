@@ -5,9 +5,9 @@
 #include "Actor/Structure.hpp"
 #include "Actor/Sun.hpp"
 
-static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 1;
-static constexpr std::uint32_t APPLE_COLUMN_COUNT = 10;
-static constexpr std::uint32_t APPLE_ROW_COUNT    = 1;
+static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 5;
+static constexpr std::uint32_t APPLE_COLUMN_COUNT = 15;
+static constexpr std::uint32_t APPLE_ROW_COUNT    = 2;
 static constexpr float         APPLE_STEP         = 20.0f;
 
 Level::Level()
@@ -24,29 +24,25 @@ void Level::onActivation()
 
 void Level::spawnSky()
 {
-    Chicane::ASky* sky = new Chicane::ASky();
-    sky->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Black.bsky"));
-    addActor(sky);
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Gray.bsky"));
 }
 
 void Level::spawnLights()
 {
-    addActor(new Sun());
+    createActor<Sun>();
 }
 
 void Level::spawnStructures()
 {
-    Strcuture* floor = new Strcuture("Content/Sample/Meshes/Cube.bmsh");
-    floor->setAbsoluteScale(1000.0f, 1000.0f, 0.25f);
-    addActor(floor);
+    createActor<Strcuture>()->setAbsoluteScale(1000.0f, 1000.0f, 0.25f);
 }
 
 void Level::spawnApples()
 {
     const Chicane::Vec<3, float> startPosition(
-        -100.0f,
-        -((APPLE_DEPTH_COUNT * APPLE_STEP) * 0.25f),
-        100.0f
+        -(APPLE_COLUMN_COUNT * APPLE_STEP) * 0.5f,
+        (APPLE_DEPTH_COUNT * APPLE_STEP) * 0.5f,
+        (APPLE_ROW_COUNT * APPLE_STEP) * 0.5f
     );
     Chicane::Vec<3, float> position = startPosition;
 
@@ -58,7 +54,7 @@ void Level::spawnApples()
         {
             for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
-                addActor(new Apple(position));
+                createActor<Apple>()->setInitialPosition(position);
 
                 position.x += APPLE_STEP;
             }

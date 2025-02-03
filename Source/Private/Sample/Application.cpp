@@ -36,12 +36,10 @@ void Application::initChacater()
     m_controller = std::make_unique<Chicane::Controller::Instance>();
     Chicane::Application::setController(m_controller.get());
 
-    Character* character = new Character();
+    Character* character = m_level->createActor<Character>();
     character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -150.0f, 20.0f));
 
     m_controller->attachTo(character);
-
-    m_level->addActor(character);
 }
 
 void Application::initView()

@@ -9,7 +9,7 @@ namespace Chicane
     class CMesh : public Component
     {
     public:
-        CMesh(const std::string& inMesh);
+        CMesh();
         virtual ~CMesh() = default;
 
     protected:
@@ -22,6 +22,7 @@ namespace Chicane
         bool isDrawable() const;
 
         bool hasMesh() const;
+        void setMesh(const std::string& inMesh);
         const Box::Mesh::Instance* getMesh() const;
         const std::string& getModel() const;
         const std::string& getTexture() const;

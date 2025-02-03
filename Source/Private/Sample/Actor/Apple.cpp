@@ -2,8 +2,9 @@
 
 #include "Game.hpp"
 #include "Chicane/Core.hpp"
+#include "Chicane/Application.hpp"
 
-Apple::Apple(const Chicane::Vec<3, float>& inStartPosition)
+Apple::Apple()
     : Chicane::Actor(),
     m_fallingRate(
         std::max(
@@ -11,15 +12,17 @@ Apple::Apple(const Chicane::Vec<3, float>& inStartPosition)
             (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 0.01f
         )
     ),
-    m_startPosition(inStartPosition),
-    m_mesh(new Chicane::CMesh("Content/Sample/Meshes/Apple.bmsh"))
+    m_startPosition(Chicane::Vec3Zero),
+    m_mesh(nullptr)
 {
     setCanTick(true);
 
-    setAbsoluteTranslation(inStartPosition);
+    setAbsoluteTranslation(m_startPosition);
     setAbsoluteRotation(90.0f, 0.0f, 0.0f);
     setAbsoluteScale(100.0f);
 
+    m_mesh = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
+    m_mesh->setMesh("Content/Sample/Meshes/Apple.bmsh");
     m_mesh->attachTo(this);
     m_mesh->activate();
 }
@@ -44,9 +47,14 @@ void Apple::onHit(const Chicane::Actor* inSubject)
         return;
     }
 
-    setCanTick(false);
+    setCanTick(true);
 
     m_mesh->deactivate();
 
     Game::incrementScore(1);
+}
+
+void Apple::setInitialPosition(const Chicane::Vec<3, float>& inPosition)
+{
+    m_startPosition = inPosition;
 }

@@ -8,13 +8,11 @@ const std::string EMPTY_STRING = "";
 
 namespace Chicane
 {
-    CMesh::CMesh(const std::string& inMesh)
+    CMesh::CMesh()
         : Component(),
         m_bIsVisible(false),
-        m_mesh(Box::loadMesh(inMesh))
-    {
-        generateBounds();
-    }
+        m_mesh(nullptr)
+    {}
 
     void CMesh::onActivation()
     {
@@ -63,7 +61,19 @@ namespace Chicane
 
     bool CMesh::hasMesh() const
     {
-        return !m_mesh->getFilepath().empty();
+        return m_mesh && !m_mesh->getFilepath().empty();
+    }
+
+    void CMesh::setMesh(const std::string& inMesh)
+    {
+        if (inMesh.empty() || m_mesh)
+        {
+            return;
+        }
+
+        m_mesh = Box::loadMesh(inMesh);
+
+        generateBounds();
     }
 
     const Box::Mesh::Instance* CMesh::getMesh() const

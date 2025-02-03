@@ -29,8 +29,6 @@ namespace Chicane
         m_bIsActive = true;
 
         onActivation();
-
-        Application::getLevel()->addComponent(this);
     }
 
     void Component::deactivate()

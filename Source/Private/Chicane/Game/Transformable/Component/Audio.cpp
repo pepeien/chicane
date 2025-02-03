@@ -4,10 +4,20 @@
 
 namespace Chicane
 {
-    CAudio::CAudio(const std::string& inAudio)
+    CAudio::CAudio()
         : Component(),
-        m_audio(inAudio)
+        m_audio("")
+    {}
+
+    void CAudio::load(const std::string& inAudio)
     {
+        if (inAudio.empty())
+        {
+            return;
+        }
+
+        m_audio = inAudio;
+
         Box::loadAudio(m_audio);
     }
 

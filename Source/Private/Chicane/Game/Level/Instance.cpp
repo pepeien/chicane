@@ -3,13 +3,21 @@
 #include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 
+static constexpr std::uint32_t MAX_ACTOR_COUNT     = 10000;
+static constexpr std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
+
 namespace Chicane
 {
     Level::Level()
-        : m_actorObservable(std::make_unique<Observable<Actor*>>()),
+        : m_actors({}),
+        m_actorObservable(std::make_unique<Observable<const std::vector<Actor*>&>>()),
+        m_components({}),
         m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>()),
         m_cameraObservable(std::make_unique<Observable<CCamera*>>())
-    {}
+    {
+        m_actors.reserve(MAX_ACTOR_COUNT);
+        m_components.reserve(MAX_COMPONENT_COUNT);
+    }
 
     Level::~Level()
     {
@@ -58,35 +66,18 @@ namespace Chicane
         return m_actors;
     }
 
-    void Level::addActor(Actor* inActor)
-    {
-        if (!inActor)
-        {
-            return;
-        }
-
-        if (std::find(m_actors.begin(), m_actors.end(), inActor) != m_actors.end())
-        {
-            return;
-        }
-
-        m_actors.push_back(inActor);
-
-        m_actorObservable->next(inActor);
-    }
-
-    Subscription<Actor*>* Level::watchActors(
-        std::function<void (Actor*)> inNext,
+    Subscription<const std::vector<Actor*>&>* Level::watchActors(
+        std::function<void (const std::vector<Actor*>&)> inNext,
         std::function<void (const std::string&)> inError,
         std::function<void ()> inComplete
     )
     {
-        Subscription<Actor*>* subscription = m_actorObservable->subscribe(
+        Subscription<const std::vector<Actor*>&>* subscription = m_actorObservable->subscribe(
             inNext,
             inError,
             inComplete
         );
-        subscription->next(m_actors.empty() ? nullptr : m_actors.back());
+        subscription->next(m_actors);
 
         return subscription;
     }
@@ -99,23 +90,6 @@ namespace Chicane
     const std::vector<Component*>& Level::getComponents() const
     {
         return m_components;
-    }
-
-    void Level::addComponent(Component* inComponent)
-    {
-        if (!inComponent)
-        {
-            return;
-        }
-
-        if (std::find(m_components.begin(), m_components.end(), inComponent) != m_components.end())
-        {
-            return;
-        }
-
-        m_components.push_back(inComponent);
-
-        m_componentObservable->next(m_components);
     }
 
     void Level::removeComponent(Component* inComponent)

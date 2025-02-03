@@ -7,7 +7,7 @@
 class Strcuture : public Chicane::Actor
 {
 public:
-    Strcuture(const std::string& inMesh);
+    Strcuture();
 
 private:
     Chicane::CMesh* m_mesh;

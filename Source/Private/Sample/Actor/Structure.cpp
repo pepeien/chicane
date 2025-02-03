@@ -1,11 +1,15 @@
 #include "Actor/Structure.hpp"
 
-Strcuture::Strcuture(const std::string& inMesh)
+#include "Chicane/Application.hpp"
+
+Strcuture::Strcuture()
     : Chicane::Actor(),
-    m_mesh(new Chicane::CMesh(inMesh))
+    m_mesh(nullptr)
 {
     setCanCollide(true);
 
+    m_mesh = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_mesh->attachTo(this);
+    m_mesh->setMesh("Content/Sample/Meshes/Cube.bmsh");
     m_mesh->activate();
 }

@@ -8,10 +8,11 @@ namespace Chicane
     class CAudio : public Component
     {
     public:
-        CAudio(const std::string& inAudio);
+        CAudio();
         virtual ~CAudio() = default;
 
     public:
+        void load(const std::string& inAudio);
         void play() const;
 
     protected:

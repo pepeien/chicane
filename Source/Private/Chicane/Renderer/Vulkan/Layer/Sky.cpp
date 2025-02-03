@@ -150,7 +150,7 @@ namespace Chicane
                     }
 
                     inLevel->watchActors(
-                        [this](Actor* inActor)
+                        [this](const std::vector<Actor*>& inActors)
                         {
                             std::vector<ASky*> skies = Application::getLevel()->getActors<ASky>();
 
@@ -161,14 +161,26 @@ namespace Chicane
                                 return;
                             }
 
-                            if (is(Layer::Status::Idle))
+                            if (!is(Layer::Status::Idle))
                             {
-                                m_asset = skies.front()->getSky();
-
-                                setStatus(Layer::Status::Initialized);
-
-                                build();
+                                return;
                             }
+
+                            skies.front()->watchSky(
+                                [this](const Chicane::Box::Sky::Instance* inSky)
+                                {
+                                    if (!is(Layer::Status::Idle) || !inSky)
+                                    {
+                                        return;
+                                    }
+
+                                    setStatus(Layer::Status::Initialized);
+
+                                    m_asset = inSky;
+
+                                    build();
+                                }
+                            );
                         }
                     );
                 }

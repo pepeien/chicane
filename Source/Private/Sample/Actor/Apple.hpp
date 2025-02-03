@@ -6,13 +6,15 @@
 class Apple : public Chicane::Actor
 {
 public:
-    Apple(const Chicane::Vec<3, float>& inStartPosition);
+    Apple();
 
 protected:
     void onTick(float inDeltaTime) override;
 
 public:
     void onHit(const Chicane::Actor* inSubject);
+
+    void setInitialPosition(const Chicane::Vec<3, float>& inPosition);
 
 private:
     float                  m_fallingRate;
