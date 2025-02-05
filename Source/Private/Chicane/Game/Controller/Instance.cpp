@@ -24,13 +24,6 @@ namespace Chicane
             onActivation();
         }
 
-        void Instance::tick(float inDeltaTime)
-        {
-            m_mouseButtonEvents.repeat();
-            m_keyboardKeyEvents.repeat();
-            m_gamepadButtonEvents.repeat();
-        }
-
         Subscription<APawn*>* Instance::watchAttachment(
             std::function<void (APawn*)> inNext,
             std::function<void (const std::string&)> inError,
@@ -134,6 +127,8 @@ namespace Chicane
                 return;
             }
 
+            repeatEvents();
+
             switch (inEvent.type)
             {
             // Mouse
@@ -204,6 +199,13 @@ namespace Chicane
             EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
 
             m_gamepadButtonEvents.exec(button, status);
+        }
+
+        void Instance::repeatEvents()
+        {
+            m_mouseButtonEvents.repeat();
+            m_keyboardKeyEvents.repeat();
+            m_gamepadButtonEvents.repeat();
         }
 
         void Instance::clearEvents()

@@ -277,11 +277,6 @@ namespace Chicane
             {
                 m_level->tick(m_telemetry.frame.deltaToTick());
             }
-
-            if (hasController())
-            {
-                m_controller->tick(m_telemetry.frame.deltaToTick());
-            }
         }
     }
 }

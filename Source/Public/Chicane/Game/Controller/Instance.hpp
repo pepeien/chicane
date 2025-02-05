@@ -20,12 +20,10 @@ namespace Chicane
 
         public:
             virtual void onActivation() { return; };
-            virtual void onTick(float inDeltaTime) { return; } 
 
         public:
             // Lifecycle
             void activate();
-            void tick(float inDeltaTime);
 
             template<class T = APawn>
             const T* getPawn() const
@@ -67,6 +65,8 @@ namespace Chicane
             // Controller Events
             void onGamepadMotionEvent(const SDL_GamepadAxisEvent& inEvent);
             void onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent);
+
+            void repeatEvents();
 
             void clearEvents();
 
