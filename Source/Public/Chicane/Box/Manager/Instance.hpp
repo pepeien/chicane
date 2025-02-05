@@ -179,21 +179,6 @@ namespace Chicane
                     m_usedIds.shrink_to_fit();
                     Utils::sort(m_usedIds);
 
-                    if (!isUsing(inId))
-                    {
-                        m_activeIds.erase(
-                            std::find(
-                                m_activeIds.begin(),
-                                m_activeIds.end(),
-                                inId
-                            )
-                        );
-                        m_activeIds.shrink_to_fit();
-                        Utils::sort(m_activeIds);
-
-                        onDeactivation(inId);
-                    }
-
                     m_observable->next(EventType::Activation);
                 }
 

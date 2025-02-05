@@ -10,13 +10,15 @@ namespace Chicane
         struct Plane
         {
         public:
-            float getDistance(const Vec<3, float>& inPoint) const;
-
+            bool contains(const Vec<3, float>& inPoint) const;
             void update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint);
 
-        public:
-            float         distance = 0.0f;
-            Vec<3, float> normal   = {};
+        private:
+            float distanceToPoint(const Vec<3, float>& inPoint) const;
+
+        private:
+            float         m_distance = 0.0f;
+            Vec<3, float> m_normal   = Vec3Zero;
         };
     }
 }

@@ -172,6 +172,6 @@ namespace Chicane
         m_data.viewProjection         = m_data.projection * m_data.view;
         m_data.inversedViewProjection = glm::inverse(m_data.viewProjection);
 
-        m_frustum.use(this);
+        m_frustum.update(this);
     }
 }

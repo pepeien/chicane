@@ -1,5 +1,7 @@
 #include "Chicane/Game/Transformable/Component/Camera.hpp"
 
+#include "Chicane/Application.hpp"
+
 namespace Chicane
 {
     CCamera::CCamera()
@@ -11,5 +13,17 @@ namespace Chicane
         CView::onTransform();
 
         setFocusPoint(getTranslation() + getForward());
+
+        for (CMesh* mesh : Application::getLevel()->getComponents<CMesh>())
+        {
+            if (canSee(mesh))
+            {
+                mesh->show();
+            }
+            else
+            {
+                mesh->hide();
+            }
+        }
     }
 }

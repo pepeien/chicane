@@ -52,9 +52,9 @@ namespace Chicane
         void updateViewProjection();
 
     protected:
-        View::Settings      m_settings;
-        View::SphereFrustum m_frustum;
-        View::Data          m_data;
-        Vec<3, float>       m_focusPoint;
+        View::Settings m_settings;
+        View::Frustum  m_frustum;
+        View::Data     m_data;
+        Vec<3, float>  m_focusPoint;
     }; 
 }

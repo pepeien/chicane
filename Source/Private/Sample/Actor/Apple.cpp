@@ -16,7 +16,7 @@ Apple::Apple()
     m_mesh(nullptr)
 {
     setCanTick(true);
-
+    setCanCollide(true);
     setAbsoluteTranslation(m_startPosition);
     setAbsoluteRotation(90.0f, 0.0f, 0.0f);
     setAbsoluteScale(100.0f);
@@ -29,15 +29,13 @@ Apple::Apple()
 
 void Apple::onTick(float inDeltaTime)
 {
-    if (getAbsoluteTranslation().z <= 0.0f)
-    {
-        setAbsoluteTranslation(m_startPosition);
-
-        return;
-    }
-
     addAbsoluteRotation(0.0f, 0.0f, 0.1f);
     addAbsoluteTranslation(0.0f, 0.0f, -m_fallingRate);
+}
+
+void Apple::onCollision(const Chicane::Actor* inSubject)
+{
+    setAbsoluteTranslation(m_startPosition);
 }
 
 void Apple::onHit(const Chicane::Actor* inSubject)

@@ -16,10 +16,11 @@ namespace Chicane
         void onActivation() override;
         void onDeactivation() override;
         void onAttachment(Transformable* inRoot) override;
-        void onTick(float inDeltaTime) override;
 
     public:
         bool isDrawable() const;
+        void show();
+        void hide();
 
         bool hasMesh() const;
         void setMesh(const std::string& inMesh);
@@ -29,10 +30,6 @@ namespace Chicane
 
     protected:
         void generateBounds();
-
-        void refresh();
-        void show();
-        void hide();
 
     protected:
         bool                       m_bIsVisible;

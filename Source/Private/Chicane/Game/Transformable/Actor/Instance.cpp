@@ -16,6 +16,21 @@ namespace Chicane
         m_forceVelocity(Vec3Zero)
     {}
 
+    void Actor::onCollision(const Actor* inSubject)
+    {
+        if (!inSubject)
+        {
+            return;
+        }
+
+        resetForce();
+
+        const Bounds& currentBounds = getBounds();
+        const Bounds& subjectBounds = inSubject->getBounds();
+
+        addAbsoluteTranslation(-currentBounds.getOverlap(subjectBounds));
+    }
+
     bool Actor::canTick() const
     {
         return m_bCanTick;
@@ -71,7 +86,7 @@ namespace Chicane
 
     void Actor::collideWith(const Actor* inSubject)
     {
-        if (!canCollide())
+        if (!canCollide() || !inSubject)
         {
             return;
         }
@@ -140,16 +155,15 @@ namespace Chicane
             return;
         }
 
-        for (const Actor* actor : Application::getLevel()->getActors())
+        for (Actor* actor : Application::getLevel()->getActors())
         {
             if (actor == this || !actor->canCollide() || !actor->isCollidingWith(this))
             {
                 continue;
             }
 
-            resetForce();
-
-            setAbsoluteTranslation(getTranslation() + (actor->getTop() * 1.0f));
+            collideWith(actor);
+            actor->collideWith(this);
         }
     }
 }

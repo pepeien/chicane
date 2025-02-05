@@ -21,8 +21,6 @@ private:
     void onMoveLeft();
     void onMoveRight();
 
-    void onJump();
-
 private:
     // Camera
     Chicane::CCamera* m_camera;

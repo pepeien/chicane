@@ -16,22 +16,22 @@ namespace Chicane
 
     void CMesh::onActivation()
     {
-        if (!Application::hasLevel())
-        {
-            return;
-        }
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
-        show();
+        for (const auto& group : m_mesh->getGroups())
+        {
+            textureManager->activate(group.getTexture());
+        }
     }
 
     void CMesh::onDeactivation()
     {
-        if (!Application::hasLevel())
-        {
-            return;
-        }
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
-        hide();
+        for (const auto& group : m_mesh->getGroups())
+        {
+            textureManager->deactivate(group.getTexture());
+        }
     }
 
     void CMesh::onAttachment(Transformable* inRoot)
@@ -44,11 +44,6 @@ namespace Chicane
         inRoot->setBounds(getBounds());
     }
 
-    void CMesh::onTick(float inDeltaTime)
-    {
-        refresh();
-    }
-
     bool CMesh::isDrawable() const
     {
         if (!Application::hasCamera() || !Application::hasLevel())
@@ -57,6 +52,40 @@ namespace Chicane
         }
 
         return hasMesh() && isActive() && m_bIsVisible;
+    }
+
+    void CMesh::show()
+    {
+        if (m_bIsVisible)
+        {
+            return;
+        }
+
+        Box::Model::Manager* modelManager = Box::getModelManager();
+
+        for (const auto& group : m_mesh->getGroups())
+        {
+            modelManager->activate(group.getModel());
+        }
+
+        m_bIsVisible = true;
+    }
+
+    void CMesh::hide()
+    {
+        if (!m_bIsVisible)
+        {
+            return;
+        }
+
+        Box::Model::Manager* modelManager = Box::getModelManager();
+
+        for (const auto& group : m_mesh->getGroups())
+        {
+            modelManager->deactivate(group.getModel());
+        }
+
+        m_bIsVisible = false;
     }
 
     bool CMesh::hasMesh() const
@@ -126,60 +155,5 @@ namespace Chicane
         {
             m_attachment->setBounds(bounds);
         }
-    }
-
-    void CMesh::refresh()
-    {
-        if (!Application::hasCamera())
-        {
-            return;
-        }
-
-        if (Application::getCamera()->canSee(this))
-        {
-            //show();
-        }
-        else
-        {
-            //hide();
-        }
-    }
-
-    void CMesh::show()
-    {
-        if (m_bIsVisible)
-        {
-            return;
-        }
-
-        Box::Model::Manager* modelManager     = Box::getModelManager();
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            modelManager->activate(group.getModel());
-            textureManager->activate(group.getTexture());
-        }
-
-        m_bIsVisible = true;
-    }
-
-    void CMesh::hide()
-    {
-        if (!m_bIsVisible)
-        {
-            return;
-        }
-
-        Box::Model::Manager* modelManager     = Box::getModelManager();
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            modelManager->deactivate(group.getModel());
-            textureManager->deactivate(group.getTexture());
-        }
-
-        m_bIsVisible = false;
     }
 }

@@ -94,7 +94,7 @@ void Character::onControlAttachment()
     m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::Space,
         Chicane::Controller::EventStatus::Pressed,
-        std::bind(&Character::onJump, this)
+        std::bind(&Chicane::ACharacter::jump, this)
     );
 }
 
@@ -139,9 +139,4 @@ void Character::onMoveLeft()
 void Character::onMoveRight()
 {
     move(getRight(), MOVE_COEFFICIENT);
-}
-
-void Character::onJump()
-{
-    jump();
 }

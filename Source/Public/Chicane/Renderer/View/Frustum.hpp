@@ -14,14 +14,8 @@ namespace Chicane
         struct Frustum
         {
         public:
-        	virtual bool contains(const Transformable* inSubject) const { return false; }
-            virtual void use(const CView* inView) { return; }
-
-        protected:
-        	virtual bool isWithinPlane(const Plane& inPlane, const Vec<3, float>& inCenter) const { return false; }
-
-        public:
-            Vec<3, float> center   = {};
+        	virtual bool contains(const Transformable* inSubject) const;
+            virtual void update(const CView* inView);
 
         protected:
             Plane         m_top    = {};

@@ -330,7 +330,7 @@ namespace Chicane
         return m_bounds.getCenter();
     }
 
-    const Vec<3, float>& Transformable::getOrigin() const
+    const Vec<3, float>& Transformable::getBottom() const
     {
         return m_bounds.getBottom();
     }

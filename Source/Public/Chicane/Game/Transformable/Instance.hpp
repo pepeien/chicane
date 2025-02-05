@@ -86,7 +86,7 @@ namespace Chicane
 
         const Vec<3, float>& getTop() const;
         const Vec<3, float>& getCenter() const;
-        const Vec<3, float>& getOrigin() const;
+        const Vec<3, float>& getBottom() const;
 
         // Events
         Subscription<void*>* watchTransform(

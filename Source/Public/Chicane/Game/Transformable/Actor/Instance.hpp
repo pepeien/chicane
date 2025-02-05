@@ -14,7 +14,7 @@ namespace Chicane
 
     protected:
         virtual void onTick(float inDeltaTime) { return; };
-        virtual void onCollision(const Actor* inSubject) { return; };
+        virtual void onCollision(const Actor* inSubject);
 
     public:
         bool canTick() const;

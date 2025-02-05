@@ -10,6 +10,7 @@ public:
 
 protected:
     void onTick(float inDeltaTime) override;
+    void onCollision(const Chicane::Actor* inSubject) override;
 
 public:
     void onHit(const Chicane::Actor* inSubject);
