@@ -1,14 +1,10 @@
 #include "Chicane/Game/Transformable/Actor/Pawn/Character.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     ACharacter::ACharacter()
         : APawn()
-    {
-        setCanCollide(true);
-    }
+    {}
 
     void ACharacter::move(const Vec<3, float>& inDirection, float inScale)
     {
@@ -17,7 +13,7 @@ namespace Chicane
 
     void ACharacter::jump()
     {
-        addForce(getUp(), 0.22f);
+        getPhysicsComponent()->addForce(getUp(), 0.22f);
     }
 
     void ACharacter::addPitch(float inValue)

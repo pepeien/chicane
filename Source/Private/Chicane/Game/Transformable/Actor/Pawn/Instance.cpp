@@ -1,13 +1,21 @@
 #include "Chicane/Game/Transformable/Actor/Pawn/Instance.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Game/Controller/Instance.hpp"
 
 namespace Chicane
 {
     APawn::APawn()
         : Actor(),
-        m_controller(nullptr)
-    {}
+        m_controller(nullptr),
+        m_physicsComponent(nullptr)
+    {
+        setCanCollide(true);
+
+        m_physicsComponent = Application::getLevel()->createComponent<CPhysics>();
+        m_physicsComponent->attachTo(this);
+        m_physicsComponent->activate();
+    }
 
     bool APawn::isControlled() const
     {
@@ -26,5 +34,10 @@ namespace Chicane
         m_controller = nullptr;
 
         onControleDeattachment();
+    }
+
+    CPhysics* APawn::getPhysicsComponent() const
+    {
+        return m_physicsComponent;
     }
 }

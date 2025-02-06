@@ -36,7 +36,7 @@ namespace Chicane
         bool isAttached() const;
         template<class T = Transformable>
         T* getAttachment() const {
-            return dynamic_cast<T*>(m_attachment);
+            return static_cast<T*>(m_attachment);
         }
         void attachTo(Transformable* inRoot);
 

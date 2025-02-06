@@ -2,6 +2,7 @@
 
 #include "Chicane/Base.hpp"
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
+#include "Chicane/Game/Transformable/Component/Physics.hpp"
 
 namespace Chicane
 {
@@ -21,17 +22,20 @@ namespace Chicane
         virtual void onControleDeattachment() { return; };
 
     public:
+        bool isControlled() const;
         template<class T = Controller::Instance>
         T* getController() const
         {
             return dynamic_cast<T*>(m_controller);
         }
-
-        bool isControlled() const;
         void attachController(Controller::Instance* inController);
         void deattachController();
 
+        CPhysics* getPhysicsComponent() const;
+
     protected:
         Controller::Instance*  m_controller;
+
+        CPhysics*              m_physicsComponent;
     };
 }

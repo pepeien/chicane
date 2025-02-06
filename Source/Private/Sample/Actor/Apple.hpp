@@ -22,5 +22,6 @@ private:
 
     Chicane::Vec<3, float> m_startPosition;
 
-    Chicane::CMesh*        m_mesh;
+    Chicane::CMesh*        m_meshComponent;
+    Chicane::CPhysics*     m_physicsComponent;
 };

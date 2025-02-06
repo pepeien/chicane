@@ -594,11 +594,6 @@ namespace Chicane
 
             for (const std::string& id : m_modelManager->getActiveIds())
             {
-                if (!m_modelManager->isUsing(id))
-                {
-                    continue;
-                }
-
                 const auto& data = m_modelManager->getData(id);
 
                 inCommandBuffer.drawIndexed(

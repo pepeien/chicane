@@ -14,7 +14,7 @@ namespace Chicane
 
     protected:
         virtual void onTick(float inDeltaTime) { return; };
-        virtual void onCollision(const Actor* inSubject);
+        virtual void onCollision(const Actor* inSubject) { return; };
 
     public:
         bool canTick() const;
@@ -28,21 +28,8 @@ namespace Chicane
         bool isCollidingWith(const Vec<3, float>& inPoint) const;
         void collideWith(const Actor* inSubject);
 
-        void addForce(const Vec<3, float>& inDirection, float inForce);
-
     protected:
-        void processCollision();
-
-        void processForce();
-        void resetForce();
-
-    protected:
-        bool          m_bCanTick;
-        bool          m_bCanCollide;
-        bool          m_bIsRigidBodyEnabled;
-        bool          m_bIsApplyingForce;
-
-        Vec<3, float> m_forceDirection;
-        Vec<3, float> m_forceVelocity;
+        bool m_bCanTick;
+        bool m_bCanCollide;
     };
 } 

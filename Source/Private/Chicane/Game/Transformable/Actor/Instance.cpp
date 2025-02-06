@@ -1,35 +1,12 @@
 #include "Chicane/Game/Transformable/Actor/Instance.hpp"
 
-#include "Chicane/Application.hpp"
-
-static constexpr float FORCE_MAX_VELOCITY               = 0.3f;
-static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
-
 namespace Chicane
 {
     Actor::Actor()
         : Transformable(),
         m_bCanCollide(false),
-        m_bCanTick(false),
-        m_bIsApplyingForce(false),
-        m_forceDirection(Vec3Zero),
-        m_forceVelocity(Vec3Zero)
+        m_bCanTick(false)
     {}
-
-    void Actor::onCollision(const Actor* inSubject)
-    {
-        if (!inSubject)
-        {
-            return;
-        }
-
-        resetForce();
-
-        const Bounds& currentBounds = getBounds();
-        const Bounds& subjectBounds = inSubject->getBounds();
-
-        addAbsoluteTranslation(-currentBounds.getOverlap(subjectBounds));
-    }
 
     bool Actor::canTick() const
     {
@@ -43,9 +20,6 @@ namespace Chicane
 
     void Actor::tick(float inDeltaTime)
     {
-        processCollision();
-        processForce();
-
         if (!canTick())
         {
             return;
@@ -92,78 +66,5 @@ namespace Chicane
         }
 
         onCollision(inSubject);
-    }
-
-    void Actor::addForce(const Vec<3, float>& inDirection, float inForce)
-    {
-        if (m_bIsApplyingForce)
-        {
-            return;
-        }
-
-        m_bIsApplyingForce = true;
-        m_forceDirection   = inDirection;
-        m_forceVelocity    = m_forceDirection * inForce;
-    }
-
-    void Actor::processForce()
-    {
-        if (!m_bIsApplyingForce)
-        {
-            return;
-        }
-
-        setAbsoluteTranslation(getTranslation() + m_forceVelocity);
-
-        m_forceVelocity -= m_forceDirection * FORCE_DEACCELERATION_COEFFICIENT;
-        m_forceVelocity.x = std::max(
-            m_forceVelocity.x,
-            -FORCE_MAX_VELOCITY
-        );
-        m_forceVelocity.y = std::max(
-            m_forceVelocity.y,
-            -FORCE_MAX_VELOCITY
-        );
-        m_forceVelocity.z = std::max(
-            m_forceVelocity.z,
-            -FORCE_MAX_VELOCITY
-        );
-    }
-
-    void Actor::resetForce()
-    {
-        if (!m_bIsApplyingForce)
-        {
-            return;
-        }
-
-        m_bIsApplyingForce = false;
-
-        m_forceDirection.x = 0.0f;
-        m_forceDirection.y = 0.0f;
-        m_forceDirection.z = 0.0f;
-
-        m_forceVelocity.x = 0.0f;
-        m_forceVelocity.y = 0.0f;
-        m_forceVelocity.z = 0.0f;
-    }
-
-    void Actor::processCollision()
-    {
-        if (!canCollide() || !Application::hasLevel())
-        {
-            return;
-        }
-
-        for (Actor* actor : Application::getLevel()->getActors())
-        {
-            if (actor == this || !actor->canCollide() || !actor->isCollidingWith(this))
-            {
-                continue;
-            }
-
-            collideWith(actor);
-            actor->collideWith(this);
-        }
     }
 }

@@ -13,7 +13,8 @@ Apple::Apple()
         )
     ),
     m_startPosition(Chicane::Vec3Zero),
-    m_mesh(nullptr)
+    m_meshComponent(nullptr),
+    m_physicsComponent(nullptr)
 {
     setCanTick(true);
     setCanCollide(true);
@@ -21,10 +22,14 @@ Apple::Apple()
     setAbsoluteRotation(90.0f, 0.0f, 0.0f);
     setAbsoluteScale(100.0f);
 
-    m_mesh = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
-    m_mesh->setMesh("Content/Sample/Meshes/Apple.bmsh");
-    m_mesh->attachTo(this);
-    m_mesh->activate();
+    m_meshComponent = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
+    m_meshComponent->setMesh("Content/Sample/Meshes/Apple.bmsh");
+    m_meshComponent->attachTo(this);
+    m_meshComponent->activate();
+
+    m_physicsComponent = Chicane::Application::getLevel()->createComponent<Chicane::CPhysics>();
+    m_physicsComponent->attachTo(this);
+    m_physicsComponent->activate();
 }
 
 void Apple::onTick(float inDeltaTime)
@@ -45,9 +50,9 @@ void Apple::onHit(const Chicane::Actor* inSubject)
         return;
     }
 
-    setCanTick(true);
+    setCanTick(false);
 
-    m_mesh->deactivate();
+    m_meshComponent->deactivate();
 
     Game::incrementScore(1);
 }
