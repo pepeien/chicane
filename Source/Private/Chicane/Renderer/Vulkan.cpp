@@ -125,15 +125,15 @@ namespace Chicane
 
             currentImage.reset(m_logicalDevice);
 
-            setupFrame(currentImage);
-            setupLayers(currentImage);
-
             std::uint32_t nextImageIndex = acquireResult.value;
             Frame::Instance& nextImage   = m_swapChain.frames.at(nextImageIndex);
 
             vk::CommandBufferBeginInfo commandBufferBegin = {};
             commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
             currentCommandBuffer.reset();
+
+            setupFrame(nextImage);
+            setupLayers(nextImage);
 
             nextImage.updateDescriptorSets();
 
