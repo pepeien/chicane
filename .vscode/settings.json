@@ -103,6 +103,7 @@
         "cfenv": "cpp",
         "*.def": "cpp",
         "text_encoding": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "complex": "cpp"
     }
 }

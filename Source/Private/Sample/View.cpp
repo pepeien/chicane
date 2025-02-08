@@ -49,6 +49,6 @@ Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Component::Event& inE
 Chicane::Grid::Reference View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
 {
     return Chicane::Grid::Reference::fromValue<const float>(
-        &Chicane::Application::getTelemetry().frame.time
+        &Chicane::Application::getTelemetry().frame.delta
     );
 }

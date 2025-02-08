@@ -85,14 +85,14 @@ namespace Chicane
 
             void repeat()
             {
-                std::clock_t time = std::clock();
+                m_timing.endCapture();
 
-                if (FrameTelemetry::deltaToMs(time - m_lastRepeatTime) < EVENT_REPEAT_COOLDOWN_IN_MS)
+                if (m_timing.delta < EVENT_REPEAT_COOLDOWN_IN_MS)
                 {
                     return;
                 }
 
-                m_lastRepeatTime  = time;
+                m_timing.startCapture();
 
                 for (B button : m_pressed)
                 {
@@ -102,7 +102,6 @@ namespace Chicane
 
             void clear()
             {
-                m_lastRepeatTime = 0;
                 m_pressed.clear();
                 m_events.clear();
             }
@@ -135,9 +134,9 @@ namespace Chicane
             }
 
         private:
-            std::clock_t                                                                               m_lastRepeatTime = 0;
-            std::vector<B>                                                                             m_pressed        = {};
-            std::unordered_map<B, std::unordered_map<EventStatus, std::vector<std::function<void()>>>> m_events         = {};
+            FrameTelemetry                                                                             m_timing  = {};
+            std::vector<B>                                                                             m_pressed = {};
+            std::unordered_map<B, std::unordered_map<EventStatus, std::vector<std::function<void()>>>> m_events  = {};
         };
     }
 }

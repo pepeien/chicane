@@ -275,7 +275,7 @@ namespace Chicane
 
             if (hasLevel())
             {
-                m_level->tick(m_telemetry.frame.deltaToTick());
+                m_level->tick(m_telemetry.frame.delta);
             }
         }
     }

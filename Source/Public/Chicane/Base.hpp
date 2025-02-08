@@ -26,7 +26,7 @@
 #include <array>
 #include <condition_variable>
 #include <cstdlib>
-#include <ctime>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <functional>

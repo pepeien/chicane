@@ -7,58 +7,30 @@ namespace Chicane
     struct FrameTelemetry
     {
     public:
-        static float deltaToMs(std::clock_t inDelta)
-        {
-            return (inDelta / (float)CLOCKS_PER_SEC) * 1000.0f;
-        }
-
-        static float deltaToTick(std::clock_t inDelta)
-        {
-            return inDelta / 1000.0f;
-        }
+        typedef std::chrono::time_point<std::chrono::steady_clock> Time;
 
     public:
-        float deltaToMs() const
-        {
-            return FrameTelemetry::deltaToMs(delta);
-        }
-
-        float deltaToTick() const
-        {
-            return FrameTelemetry::deltaToTick(delta);
-        }
-
         void startCapture()
         {
-            m_beginFrame = std::clock();
+            m_beginTime = std::chrono::steady_clock::now();
         }
 
         void endCapture()
         {
-            m_endFrame = std::clock();
+            m_endTime = std::chrono::steady_clock::now();
 
-            delta += m_endFrame - m_beginFrame;
-            count += 1;
-
-            if (delta < CLOCKS_PER_SEC)
-            {
-                return;
-            }
-
-            rate  = std::uint32_t((count * 0.5) + (rate * 0.5));
-            count = 0;
-            time  = 1000.0f / float(rate ==0 ? 0.001 : rate);
-            delta = 0;
+            delta = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(
+                m_endTime - m_beginTime
+            ).count();
+            rate = 1000U / delta;
         }
 
     public:
-        std::clock_t  delta = 0;
-        std::uint32_t count = 0;
-        std::uint32_t rate  = 0;
-        float         time  = 0.0f;
+        float         delta = 0.0f;
+        std::uint32_t rate  = 0U;
 
     private:
-        std::clock_t  m_beginFrame;
-        std::clock_t  m_endFrame;
+        Time m_beginTime    = std::chrono::steady_clock::now();
+        Time m_endTime      = std::chrono::steady_clock::now();
     };
 }
