@@ -354,14 +354,14 @@ namespace Chicane
 
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                Frame::Buffer::CreateInfo framebufferCreateInfo = {};
-                framebufferCreateInfo.id              = m_id;
-                framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
-                framebufferCreateInfo.renderPass      = m_graphicsPipeline->renderPass;
-                framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
-                framebufferCreateInfo.attachments.push_back(frame.colorImage.view);
+                Frame::Buffer::CreateInfo createInfo = {};
+                createInfo.id              = m_id;
+                createInfo.logicalDevice   = m_internals.logicalDevice;
+                createInfo.renderPass      = m_graphicsPipeline->renderPass;
+                createInfo.extent          = m_internals.swapchain->extent;
+                createInfo.attachments.push_back(frame.colorImage.view);
 
-                Frame::Buffer::init(frame, framebufferCreateInfo);
+                Frame::Buffer::init(frame, createInfo);
             }
         }
 

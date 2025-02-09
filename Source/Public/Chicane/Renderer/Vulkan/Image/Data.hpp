@@ -17,6 +17,7 @@ namespace Chicane
 	    		vk::DeviceMemory memory;
 	    		vk::Sampler      sampler;
                 vk::Format       format;
+                vk::Extent2D     extent;
 	    	};
         }
     }

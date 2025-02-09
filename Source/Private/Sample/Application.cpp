@@ -5,13 +5,18 @@
 Application::Application()
 {
     Chicane::Application::CreateInfo createInfo = {};
-    createInfo.title        = "Chicane Sample";
-    createInfo.resolution.x = 1600;
-    createInfo.resolution.y = 900;
-    createInfo.window       = Chicane::Window::Type::Windowed;
-    createInfo.renderer     = Chicane::Renderer::Type::Vulkan;
-    createInfo.display      = 0;
-    createInfo.onSetup      = [this]() {
+
+    // Window
+    createInfo.window.title   = "Chicane Sample";
+    createInfo.window.size    = Chicane::Vec<2, int>(1600, 900);
+    createInfo.window.type    = Chicane::Window::Type::Windowed;
+    createInfo.window.display = 0;
+
+    // Renderer
+    createInfo.renderer.type = Chicane::Renderer::Type::Vulkan;
+
+    // Setup
+    createInfo.onSetup = [this]() {
         initLevel();
         initChacater();
         initView();

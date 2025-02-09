@@ -17,8 +17,8 @@ namespace Chicane
                     framebufferInfo.renderPass      = inCreateInfo.renderPass;
                     framebufferInfo.attachmentCount = static_cast<std::uint32_t>(inCreateInfo.attachments.size());
                     framebufferInfo.pAttachments    = inCreateInfo.attachments.data();
-                    framebufferInfo.width           = inCreateInfo.swapChainExtent.width;
-                    framebufferInfo.height          = inCreateInfo.swapChainExtent.height;
+                    framebufferInfo.width           = inCreateInfo.extent.width;
+                    framebufferInfo.height          = inCreateInfo.extent.height;
                     framebufferInfo.layers          = 1;
 
                     vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);

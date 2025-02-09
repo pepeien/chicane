@@ -16,25 +16,11 @@ namespace Chicane
 
     void CMesh::onActivation()
     {
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            textureManager->activate(group.getTexture());
-        }
-
         show();
     }
 
     void CMesh::onDeactivation()
     {
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            textureManager->deactivate(group.getTexture());
-        }
-
         hide();
     }
 
@@ -65,11 +51,13 @@ namespace Chicane
             return;
         }
 
-        Box::Model::Manager* modelManager = Box::getModelManager();
+        Box::Model::Manager* modelManager     = Box::getModelManager();
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
             modelManager->activate(group.getModel());
+            textureManager->activate(group.getTexture());
         }
 
         m_bIsVisible = true;
@@ -82,11 +70,13 @@ namespace Chicane
             return;
         }
 
-        Box::Model::Manager* modelManager = Box::getModelManager();
+        Box::Model::Manager* modelManager     = Box::getModelManager();
+        Box::Texture::Manager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
             modelManager->deactivate(group.getModel());
+            textureManager->deactivate(group.getTexture());
         }
 
         m_bIsVisible = false;

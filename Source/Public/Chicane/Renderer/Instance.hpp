@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Window.hpp"
+#include "Chicane/Renderer/CreateInfo.hpp"
 #include "Chicane/Renderer/Layer.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -19,7 +20,7 @@ namespace Chicane
             typedef Instance Super;
 
         public:
-            Instance(Window::Instance* inWindow);
+            Instance(const CreateInfo& inCreateInfo, Window::Instance* inWindow);
             virtual ~Instance() = default;
 
         public:

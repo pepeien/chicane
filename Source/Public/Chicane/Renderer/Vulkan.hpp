@@ -49,7 +49,7 @@ namespace Chicane
             };
 
         public:
-            Renderer(Window::Instance* inWindow);
+            Renderer(const Chicane::Renderer::CreateInfo& inCreateInfo, Window::Instance* inWindow);
             ~Renderer();
 
         public:

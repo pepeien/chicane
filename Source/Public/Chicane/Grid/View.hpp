@@ -23,7 +23,7 @@ namespace Chicane
 
         public:
             virtual void show(
-                const Vec<2, int>& inResolution,
+                const Vec<2, int>& inSize,
                 const Vec<2, int>& inPosition
             );
 
@@ -49,7 +49,7 @@ namespace Chicane
             void validate(const pugi::xml_node& inNode);
             void compile(
                 const pugi::xml_node& inNode,
-                const Vec<2, int>& inResolution,
+                const Vec<2, int>& inSize,
                 const Vec<2, int>& inPosition
             );
 
@@ -64,7 +64,7 @@ namespace Chicane
 
             ImGuiWindowFlags     m_flags;
 
-            ImVec2               m_resolution;
+            ImVec2               m_size;
             ImVec2               m_position;
         };
     }

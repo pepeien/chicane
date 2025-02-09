@@ -24,7 +24,7 @@ namespace Chicane
 
         void Instance::setup(const CreateInfo& inCreateInfo)
         {
-            initWindow(inCreateInfo);
+            initWindow(inCreateInfo.window, inCreateInfo.renderer.type);
             initRenderer(inCreateInfo.renderer);
 
             if (inCreateInfo.onSetup)
@@ -214,32 +214,32 @@ namespace Chicane
             return m_renderer.get() != nullptr;
         }
 
-        void Instance::initWindow(const Window::CreateInfo& inWindowCreateInfo)
+        void Instance::initWindow(const Window::CreateInfo& inCreateInfo, Renderer::Type inRendererType)
         {
             if (hasWindow())
             {
                 return;
             }
 
-            m_window = std::make_unique<Window::Instance>(inWindowCreateInfo);
+            m_window = std::make_unique<Window::Instance>(inCreateInfo, inRendererType);
         }
 
-        void Instance::initRenderer(Renderer::Type inRenderer)
+        void Instance::initRenderer(const Renderer::CreateInfo& inCreateInfo)
         {
             if (!hasWindow() || hasRenderer())
             {
                 return;
             }
 
-            switch (inRenderer)
+            switch (inCreateInfo.type)
             {
             case Renderer::Type::Vulkan:
-                m_renderer = std::make_unique<Vulkan::Renderer>(m_window.get());
+                m_renderer = std::make_unique<Vulkan::Renderer>(inCreateInfo, m_window.get());
 
                 break;
 
             default:
-                m_renderer = std::make_unique<Renderer::Instance>(m_window.get());
+                m_renderer = std::make_unique<Renderer::Instance>(inCreateInfo, m_window.get());
 
                 break;
             }

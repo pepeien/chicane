@@ -71,13 +71,13 @@ namespace Chicane
         }
 
         void View::show(
-            const Vec<2, int>& inResolution,
+            const Vec<2, int>& inSize,
             const Vec<2, int>& inPosition
         )
         {
             compile(
                 m_document.first_child(),
-                inResolution,
+                inSize,
                 inPosition
             );
         }
@@ -196,14 +196,14 @@ namespace Chicane
 
         void View::compile(
             const pugi::xml_node& inNode,
-            const Vec<2, int>& inResolution,
+            const Vec<2, int>& inSize,
             const Vec<2, int>& inPosition
         )
         {
-            m_resolution.x = inResolution.x;
-            m_resolution.y = inResolution.y;
-            ImGui::SetNextWindowContentSize(m_resolution);
-            ImGui::SetNextWindowSize(       m_resolution);
+            m_size.x = inSize.x;
+            m_size.y = inSize.y;
+            ImGui::SetNextWindowContentSize(m_size);
+            ImGui::SetNextWindowSize(       m_size);
 
             m_position.x = inPosition.x;
             m_position.y = inPosition.y;

@@ -19,16 +19,14 @@ namespace Chicane
             class Instance
             {
             public:
-                // Sychronization
-                void setupSync();
+                // Lifecycle
                 void wait(const vk::Device& inLogicalDevice);
                 void reset(const vk::Device& inLogicalDevice);
-                void destroySync();
+                void destroy();
 
-                vk::ResultValue<std::uint32_t> getNextIndex(
-                    const vk::SwapchainKHR& inSwapchain,
-                    const vk::Device& inLogicalDevice
-                );
+                // Sychronization
+                void setupSync();
+                void destroySync();
 
                 // Resources
                 void setupCameraData(const std::vector<CCamera*>& inCameras);
@@ -43,15 +41,17 @@ namespace Chicane
                 void updateMeshData(const std::vector<CMesh*>& inMeshes);
                 void destroyMeshData();
 
-                void setupColorImage(vk::Format inFormat);
+                // Image
+                void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
                 void destroyColorImage();
 
-                void setupDepthImage(vk::Format inFormat);
+                void setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent);
                 void destroyDepthImage();
 
-                void setupShadowImage(vk::Format inFormat);
+                void setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent);
                 void destroyShadowImage();
 
+                // Vulkan
                 void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
                 vk::Framebuffer getFramebuffer(const std::string& inId) const;
 
@@ -61,18 +61,12 @@ namespace Chicane
                 void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
                 void updateDescriptorSets();
 
-                void destroy();
-
             private:
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
             public:
                 vk::Device                                        logicalDevice;
                 vk::PhysicalDevice                                physicalDevice;
-
-                // Swapchain
-                std::uint32_t                                     width;
-                std::uint32_t                                     height;
 
                 // Image
                 Image::Data                                       colorImage;

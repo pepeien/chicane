@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        Instance::Instance(Window::Instance* inWindow)
+        Instance::Instance(const CreateInfo& inCreateInfo, Window::Instance* inWindow)
             : m_window(inWindow),
             m_viewport({}),
             m_viewportObservable(std::make_unique<Observable<const Viewport&>>()),

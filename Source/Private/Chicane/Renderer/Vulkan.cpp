@@ -12,8 +12,8 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        Renderer::Renderer(Window::Instance* inWindow)
-            : Chicane::Renderer::Instance(inWindow),
+        Renderer::Renderer(const Chicane::Renderer::CreateInfo& inCreateInfo, Window::Instance* inWindow)
+            : Chicane::Renderer::Instance(inCreateInfo, inWindow),
             m_swapChain({}),
             m_imageCount(0),
             m_currentImageIndex(0)
@@ -108,9 +108,11 @@ namespace Chicane
 
             currentImage.wait(m_logicalDevice);
 
-            vk::ResultValue<std::uint32_t> acquireResult = currentImage.getNextIndex(
+            vk::ResultValue<std::uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
                 m_swapChain.instance,
-                m_logicalDevice
+                UINT64_MAX,
+                currentImage.presentSemaphore,
+                nullptr
             );
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
@@ -276,14 +278,19 @@ namespace Chicane
                 m_swapChain,
                 m_physicalDevice,
                 m_logicalDevice,
-                m_surface,
-                m_window->getDrawableSize()
+                m_surface
             );
 
             m_imageCount = static_cast<int>(m_swapChain.frames.size());
 
             for (Frame::Instance& frame : m_swapChain.frames)
             {
+                // Images
+                frame.setupColorImage(m_swapChain.colorFormat, m_swapChain.extent);
+                frame.setupDepthImage(m_swapChain.depthFormat, m_swapChain.extent);
+                frame.setupShadowImage(m_swapChain.depthFormat, m_swapChain.extent);
+
+                // Sync
                 frame.setupSync();
             }
 

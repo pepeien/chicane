@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Window
     {
-        Instance::Instance(const CreateInfo& inCreateInfo)
+        Instance::Instance(const CreateInfo& inCreateInfo, Renderer::Type inRendererType)
             : instance(nullptr),
             m_bIsFocused(false),
             m_bIsResizable(true),
@@ -44,11 +44,11 @@ namespace Chicane
             }
 
             int width = std::min(
-                inCreateInfo.resolution.x,
+                inCreateInfo.size.x,
                 displaySettings->w
             );
             int height = std::min(
-                inCreateInfo.resolution.y,
+                inCreateInfo.size.y,
                 displaySettings->h
             );
 
@@ -60,7 +60,7 @@ namespace Chicane
 
             SDL_WindowFlags windowFlags = SDL_WINDOW_HIDDEN;
 
-            if (inCreateInfo.renderer == Renderer::Type::Vulkan)
+            if (inRendererType == Renderer::Type::Vulkan)
             {
                 windowFlags = SDL_WINDOW_VULKAN;
             }
@@ -78,7 +78,7 @@ namespace Chicane
             }
 
             setDisplay(display);
-            setType(inCreateInfo.window);
+            setType(inCreateInfo.type);
             setIcon(inCreateInfo.icon);
 
             refreshSize();

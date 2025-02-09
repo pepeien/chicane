@@ -242,18 +242,18 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Frame::Buffer::CreateInfo framebufferCreateInfo = {};
-            framebufferCreateInfo.id              = m_id;
-            framebufferCreateInfo.logicalDevice   = m_internals.logicalDevice;
-            framebufferCreateInfo.renderPass      = m_renderPass;
-            framebufferCreateInfo.swapChainExtent = m_internals.swapchain->extent;
+            Vulkan::Frame::Buffer::CreateInfo createInfo = {};
+            createInfo.id            = m_id;
+            createInfo.logicalDevice = m_internals.logicalDevice;
+            createInfo.renderPass    = m_renderPass;
+            createInfo.extent        = m_internals.swapchain->extent;
 
             for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                framebufferCreateInfo.attachments.clear();
-                framebufferCreateInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.clear();
+                createInfo.attachments.push_back(frame.colorImage.view);
 
-                Vulkan::Frame::Buffer::init(frame, framebufferCreateInfo);
+                Vulkan::Frame::Buffer::init(frame, createInfo);
             }
         }
 

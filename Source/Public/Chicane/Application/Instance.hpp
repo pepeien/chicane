@@ -93,8 +93,8 @@ namespace Chicane
 
         private:
             // Setup
-            void initWindow(const Window::CreateInfo& inCreateInfo);
-            void initRenderer(Renderer::Type inRenderer);
+            void initWindow(const Window::CreateInfo& inCreateInfo, Renderer::Type inRendererType);
+            void initRenderer(const Renderer::CreateInfo& inCreateInfo);
 
             // Lifecycle
             void onEvent(const SDL_Event& inEvent);

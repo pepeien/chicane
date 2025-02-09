@@ -14,7 +14,7 @@ namespace Chicane
         class Instance
         {
         public:
-            Instance(const CreateInfo& inCreateInfo);
+            Instance(const CreateInfo& inCreateInfo, Renderer::Type inRendererType);
             ~Instance();
 
         public:
@@ -68,7 +68,6 @@ namespace Chicane
             Vec<2, int>  m_size;
             Vec<2, int>  m_drawableSize;
             Vec<2, int>  m_position;
-            Vec<2, int>  m_resolution;
 
             bool         m_bIsFocused;
             bool         m_bIsResizable;

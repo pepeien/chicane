@@ -27,19 +27,12 @@ namespace Chicane
                 vk::PresentModeKHR& outPresentMode,
                 const std::vector<vk::PresentModeKHR>& inPresentModes
             );
-            void pickExtent(
-                vk::Extent2D& outExtent,
-                std::uint32_t inWidth,
-                std::uint32_t inHeight,
-                const vk::SurfaceCapabilitiesKHR& inCapabilities
-            );
 
             void init(
                 Bundle& outSwapChain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device& inLogicalDevice,
-                const vk::SurfaceKHR& inSurface,
-                const Vec<2, int>& inResolution
+                const vk::SurfaceKHR& inSurface
             );
         }
     }

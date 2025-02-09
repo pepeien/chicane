@@ -16,7 +16,7 @@ namespace Chicane
                     std::string                id;
                     vk::Device                 logicalDevice;
                     vk::RenderPass             renderPass;
-                    vk::Extent2D               swapChainExtent;
+                    vk::Extent2D               extent;
                     std::vector<vk::ImageView> attachments;
                 };
             }

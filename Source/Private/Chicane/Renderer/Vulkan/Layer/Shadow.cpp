@@ -297,8 +297,9 @@ namespace Chicane
                 createInfo.id              = m_id;
                 createInfo.logicalDevice   = m_internals.logicalDevice;
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
-                createInfo.swapChainExtent = m_internals.swapchain->extent;
+                createInfo.extent          = m_internals.swapchain->extent;
                 createInfo.attachments.push_back(frame.shadowImage.view);
+
                 Frame::Buffer::init(frame, createInfo);
             }
         }

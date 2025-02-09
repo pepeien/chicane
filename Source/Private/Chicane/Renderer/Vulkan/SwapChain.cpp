@@ -84,41 +84,11 @@ namespace Chicane
                 outPresentMode = vk::PresentModeKHR::eFifo;
             }
 
-            void pickExtent(
-                vk::Extent2D& outExtent,
-                std::uint32_t inWidth,
-                std::uint32_t inHeight,
-                const vk::SurfaceCapabilitiesKHR& inCapabilities
-            )
-            {
-                if (inCapabilities.currentExtent.width < UINT32_MAX)
-                {
-                    outExtent = inCapabilities.currentExtent;
-
-                    return;
-                }
-
-                outExtent.setWidth(
-                    std::min(
-                        inCapabilities.maxImageExtent.width,
-                        std::max(inCapabilities.minImageExtent.width, inWidth)
-                    )
-                );
-
-                outExtent.setHeight(
-                    std::min(
-                        inCapabilities.maxImageExtent.height,
-                        std::max(inCapabilities.minImageExtent.height, inHeight)
-                    )
-                );
-            }
-
             void init(
                 Bundle& outSwapChain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device& inLogicalDevice,
-                const vk::SurfaceKHR& inSurface,
-                const Vec<2, int>& inResolution
+                const vk::SurfaceKHR& inSurface
             )
             {
                 SupportDetails supportDetails;
@@ -147,13 +117,7 @@ namespace Chicane
                     supportDetails.presentModes
                 );
 
-                vk::Extent2D extent;
-                pickExtent(
-                    extent,
-                    inResolution.x,
-                    inResolution.y,
-                    supportDetails.capabilities
-                );
+                vk::Extent2D extent = supportDetails.capabilities.currentExtent;
 
                 std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
 
@@ -230,15 +194,9 @@ namespace Chicane
                 for (int i = 0; i < images.size(); i++)
                 {
                     Frame::Instance& frame = outSwapChain.frames[i];
-                    frame.width               = extent.width;
-                    frame.height              = extent.height;
                     frame.physicalDevice      = inPhysicalDevice;
                     frame.logicalDevice       = inLogicalDevice;
                     frame.colorImage.instance = images[i];
-
-                    frame.setupColorImage(outSwapChain.colorFormat);
-                    frame.setupDepthImage(outSwapChain.depthFormat);
-                    frame.setupShadowImage(outSwapChain.depthFormat);
                 }
             }
         }
