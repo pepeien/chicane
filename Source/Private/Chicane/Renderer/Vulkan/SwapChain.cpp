@@ -179,16 +179,14 @@ namespace Chicane
                     );
                 }
 
-                vk::SwapchainCreateInfoKHR createInfo = vk::SwapchainCreateInfoKHR(
-                    vk::SwapchainCreateFlagsKHR(),
-                    inSurface,
-                    imageCount,
-                    surfaceFormat.format,
-                    surfaceFormat.colorSpace,
-                    extent,
-                    1,
-                    vk::ImageUsageFlagBits::eColorAttachment
-                );
+                vk::SwapchainCreateInfoKHR createInfo = {};
+                createInfo.surface          = inSurface;
+                createInfo.minImageCount    = imageCount;
+                createInfo.imageFormat      = surfaceFormat.format;
+                createInfo.imageColorSpace  = surfaceFormat.colorSpace;
+                createInfo.imageExtent      = extent;
+                createInfo.imageArrayLayers = 1;
+                createInfo.imageUsage       = vk::ImageUsageFlagBits::eColorAttachment;
 
                 Queue::FamilyIndices familyIndices;
                 Queue::findFamilyInidices(

@@ -18,12 +18,12 @@ namespace Chicane
             virtual void update(const CView* inView);
 
         protected:
-            Plane         m_top    = {};
-            Plane         m_bottom = {};
-            Plane         m_left   = {};
-            Plane         m_right  = {};
-            Plane         m_near   = {};
-            Plane         m_far    = {};
+            Plane m_top    = {};
+            Plane m_bottom = {};
+            Plane m_left   = {};
+            Plane m_right  = {};
+            Plane m_near   = {};
+            Plane m_far    = {};
         };
     }
 }

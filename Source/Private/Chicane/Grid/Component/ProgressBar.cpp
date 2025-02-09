@@ -18,7 +18,7 @@ namespace Chicane
     
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
                 result.percentage = getAttribute(PERCENTAGE_ATTRIBUTE_NAME, inNode).as_float();
                 result.style      = Style::getStyle(inNode);
 
@@ -47,7 +47,7 @@ namespace Chicane
 
             void compile(const pugi::xml_node& inNode)
             {
-                if (!Utils::areEquals(TAG_ID, inNode.name()))
+                if (!String::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }

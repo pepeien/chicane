@@ -6,7 +6,7 @@ namespace Chicane
     {
         bool Plane::contains(const Vec<3, float>& inPoint) const
         {
-            return -distanceToPoint(inPoint) >= -FLT_EPSILON;
+            return distanceToPoint(inPoint) >= -FLT_EPSILON;
         }
 
         void Plane::update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint)
@@ -17,7 +17,7 @@ namespace Chicane
 
         float Plane::distanceToPoint(const Vec<3, float>& inPoint) const
         {
-            return m_normal.dot(inPoint) + m_distance;
+            return m_normal.dot(inPoint) - m_distance;
         }
     }
 }

@@ -30,12 +30,12 @@ namespace Chicane
                 return false;
             }
 
-            return Utils::areEquals(std::string(inTarget.end() - inEnding.size(), inTarget.end()), inEnding);
+            return String::areEquals(std::string(inTarget.end() - inEnding.size(), inTarget.end()), inEnding);
         }
  
         ImVec4 hexToImGuiColor(const std::string& inColor)
         {
-            std::string backgroundColor = Utils::trim(inColor);
+            std::string backgroundColor = String::trim(inColor);
             std::transform(
                 backgroundColor.begin(),
                 backgroundColor.end(),
@@ -43,7 +43,7 @@ namespace Chicane
                 ::tolower
             );
 
-            bool bIsTransparent = backgroundColor.empty() || Utils::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
+            bool bIsTransparent = backgroundColor.empty() || String::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
             bool bIsNotHex      = backgroundColor.size() < 7 || backgroundColor.size() > 9;
 
             if (bIsTransparent || bIsNotHex)
@@ -266,7 +266,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            if (Utils::areEquals(inValue, AUTO_SIZE_UNIT))
+            if (String::areEquals(inValue, AUTO_SIZE_UNIT))
             {
                 return getSizeFromPercentage("100%", inDirection, inPosition);
             }
@@ -425,7 +425,7 @@ namespace Chicane
 
         Component::FunctionData parseFunction(const std::string& inRefValue)
         {
-            std::string trimmedValue = Utils::trim(inRefValue);
+            std::string trimmedValue = String::trim(inRefValue);
 
             if (trimmedValue.empty())
             {
@@ -439,7 +439,7 @@ namespace Chicane
             paramsStart += 1;
             paramsEnd   -= paramsStart;
 
-            std::string params = Utils::trim(
+            std::string params = String::trim(
                 inRefValue.substr(
                     paramsStart,
                     paramsEnd
@@ -449,10 +449,10 @@ namespace Chicane
             Component::FunctionData data = {};
             data.name = name;
 
-            for (std::string& value : Utils::split(params, ','))
+            for (std::string& value : String::split(params, ','))
             {
                 data.params.push_back(
-                    parseReference(Utils::trim(value))
+                    parseReference(String::trim(value))
                 );
             }
 
@@ -510,7 +510,7 @@ namespace Chicane
 
         std::string parseText(const std::string& inText)
         {
-            if (Utils::trim(inText).empty())
+            if (String::trim(inText).empty())
             {
                 return "";
             }
@@ -532,7 +532,7 @@ namespace Chicane
             foundClosing -= foundOpening;
 
             std::string value = inText.substr(foundOpening, foundClosing);
-            value = Utils::trim(value);
+            value = String::trim(value);
 
             if (!value.empty())
             {

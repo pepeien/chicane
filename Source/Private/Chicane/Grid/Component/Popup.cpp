@@ -17,9 +17,9 @@ namespace Chicane
 
                 Props result = {};
                 result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible     = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
-                result.bIsConstrained = isConstrained.empty() || Utils::areEquals(isConstrained, "1") || Utils::areEquals(isConstrained, "true");
-                result.bIsResizable   = isResizable.empty() || Utils::areEquals(isResizable, "1") || Utils::areEquals(isResizable, "true");
+                result.bIsVisible     = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
+                result.bIsConstrained = isConstrained.empty() || String::areEquals(isConstrained, "1") || String::areEquals(isConstrained, "true");
+                result.bIsResizable   = isResizable.empty() || String::areEquals(isResizable, "1") || String::areEquals(isResizable, "true");
                 result.style          = Style::getStyle(inNode);
                 result.children       = inNode.children();
 
@@ -82,7 +82,7 @@ namespace Chicane
 
             void compile(const pugi::xml_node& inNode)
             {
-                if (!Utils::areEquals(TAG_ID, inNode.name()))
+                if (!String::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }

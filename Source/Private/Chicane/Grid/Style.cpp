@@ -67,7 +67,7 @@ namespace Chicane
         static constexpr const char* ALIGNMENT_END            = "END";
 
         Style::Sources m_sources = {};
-        Style::Styles m_styles    = {};
+        Style::Styles m_styles   = {};
 
         static const Style::Sources EMPTY_SOURCE_MAP = {};
 
@@ -85,14 +85,14 @@ namespace Chicane
 
             std::string display = inData.at(DISPLAY_ATTRIBUTE_NAME);
 
-            if (Utils::areEquals(display, "none"))
+            if (String::areEquals(display, "none"))
             {
                 outStyle.display = Style::Display::None;
 
                 return;
             }
 
-            if (Utils::areEquals(display, "hidden"))
+            if (String::areEquals(display, "hidden"))
             {
                 outStyle.display = Style::Display::Hidden;
 
@@ -138,9 +138,9 @@ namespace Chicane
                 return;
             }
 
-            std::string position = Utils::trim(inData.at(POSITION_ATTRIBUTE_NAME));
+            std::string position = String::trim(inData.at(POSITION_ATTRIBUTE_NAME));
 
-            if (Utils::areEquals(position, POSITION_TYPE_ABSOLUTE))
+            if (String::areEquals(position, POSITION_TYPE_ABSOLUTE))
             {
                 outStyle.position = Style::Position::Absolute;
             }
@@ -154,7 +154,7 @@ namespace Chicane
         {
             float result = getSize(inRawValue, inDirection, inStyle.position);
 
-            if (Utils::areEquals(inRawValue, AUTO_SIZE_UNIT))
+            if (String::areEquals(inRawValue, AUTO_SIZE_UNIT))
             {
                 result -= inDirection == Style::Direction::Horizontal ? inStyle.width : inStyle.height;
             }
@@ -224,8 +224,8 @@ namespace Chicane
 
             std::string oneline = inData.at(inOnelineAttributeName);
 
-            std::vector<std::string> splittedOneline = Utils::split(
-                Utils::trim(oneline),
+            std::vector<std::string> splittedOneline = String::split(
+                String::trim(oneline),
                 ONELINE_SEPARATOR
             );
 
@@ -364,7 +364,7 @@ namespace Chicane
                 return;
             }
 
-            std::string listDirection = Utils::trim(inData.at(LIST_DIRECTION_ATTRIBUTE_NAME));
+            std::string listDirection = String::trim(inData.at(LIST_DIRECTION_ATTRIBUTE_NAME));
             std::transform(
                 listDirection.begin(),
                 listDirection.end(),
@@ -372,7 +372,7 @@ namespace Chicane
                 ::toupper
             );
 
-            if (Utils::areEquals(listDirection, LIST_DIRECTION_COLUMN))
+            if (String::areEquals(listDirection, LIST_DIRECTION_COLUMN))
             {
                 outStyle.listDirection = Style::ListDirection::Column;
 
@@ -394,7 +394,7 @@ namespace Chicane
                 return;
             }
 
-            outStyle.foregroundColor = Utils::trim(inData.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
+            outStyle.foregroundColor = String::trim(inData.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
         }
 
         void _setBackgroundColor(
@@ -409,7 +409,7 @@ namespace Chicane
                 return;
             }
 
-            outStyle.backgroundColor = Utils::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
+            outStyle.backgroundColor = String::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
         }
 
         Style::Alignment _getAlignment(const std::string& inValue)
@@ -419,7 +419,7 @@ namespace Chicane
                 return Style::Alignment::Start;
             }
 
-            std::string value = Utils::trim(inValue);
+            std::string value = String::trim(inValue);
             std::transform(
                 value.begin(),
                 value.end(),
@@ -427,12 +427,12 @@ namespace Chicane
                 ::toupper
             );
 
-            if (Utils::areEquals(value, ALIGNMENT_CENTER))
+            if (String::areEquals(value, ALIGNMENT_CENTER))
             {
                 return Style::Alignment::Center;
             }
 
-            if (Utils::areEquals(value, ALIGNMENT_END))
+            if (String::areEquals(value, ALIGNMENT_END))
             {
                 return Style::Alignment::End;
             }
@@ -453,8 +453,8 @@ namespace Chicane
                 return;
             }
 
-            std::vector<std::string> splittedOneline = Utils::split(
-                Utils::trim(inData.at(ALIGNMENT_ATTRIBUTE_NAME)),
+            std::vector<std::string> splittedOneline = String::split(
+                String::trim(inData.at(ALIGNMENT_ATTRIBUTE_NAME)),
                 ONELINE_SEPARATOR
             );
 
@@ -479,6 +479,7 @@ namespace Chicane
                 return result;
             }
 
+            _setVisiblity(result, inSource);
             _setSize(result, inSource);
             _setPosition(result, inSource);
             _setMargin(result, inSource);
@@ -523,7 +524,7 @@ namespace Chicane
 
         Style::Source extractStyleSource(const std::string& inData)
         {
-            std::vector<std::string> blocks = Utils::split(
+            std::vector<std::string> blocks = String::split(
                 inData,
                 ';'
             );
@@ -532,13 +533,13 @@ namespace Chicane
 
             for (const std::string& block : blocks)
             {
-                std::vector<std::string> splittedBlock = Utils::split(
+                std::vector<std::string> splittedBlock = String::split(
                     block,
                     ':'
                 );
 
-                std::string key   = Utils::trim(splittedBlock.at(0));
-                std::string value = Utils::trim(splittedBlock.at(1));
+                std::string key   = String::trim(splittedBlock.at(0));
+                std::string value = String::trim(splittedBlock.at(1));
                 std::transform(
                     value.begin(),
                     value.end(),
@@ -586,24 +587,24 @@ namespace Chicane
                 data.cend()
             );
 
-            std::vector<std::string> styles = Utils::split(
+            std::vector<std::string> styles = String::split(
                 data,
                 '}'
             );
 
             for (const std::string& style : styles)
             {
-                std::vector<std::string> splittedStyle = Utils::split(
+                std::vector<std::string> splittedStyle = String::split(
                     style,
                     '{'
                 );
 
-                std::string identifiers = Utils::trim(splittedStyle.at(0));
-                std::string source      = Utils::trim(splittedStyle.at(1));
+                std::string identifiers = String::trim(splittedStyle.at(0));
+                std::string source      = String::trim(splittedStyle.at(1));
 
-                for (std::string rawIdentifier : Utils::split(identifiers, ','))
+                for (std::string rawIdentifier : String::split(identifiers, ','))
                 {
-                    std::string identifier = Utils::trim(rawIdentifier);
+                    std::string identifier = String::trim(rawIdentifier);
 
                     if (result.find(identifier) != result.end())
                     {
@@ -629,17 +630,17 @@ namespace Chicane
                 return EMPTY_SOURCE_MAP;
             }
 
-            std::vector<std::string> splittedFilePath = Utils::split(
+            std::vector<std::string> splittedFilePath = String::split(
                 inFilePath,
                 FileSystem::SEPARATOR
             );
-            std::vector<std::string> splittedFilename = Utils::split(
+            std::vector<std::string> splittedFilename = String::split(
                 splittedFilePath.back(),
                 '.'
             );
             std::string fileExtension = splittedFilename.back();
 
-            if (!Utils::areEquals(fileExtension, FILE_EXTENSION_NAME))
+            if (!String::areEquals(fileExtension, FILE_EXTENSION_NAME))
             {
                 return EMPTY_SOURCE_MAP;
             }
@@ -677,7 +678,7 @@ namespace Chicane
                 return Style::empty();
             }
 
-            Style& style              = m_styles.at(id);
+            Style& style                = m_styles.at(id);
             const Style::Source& source = m_sources.at(id);
 
             _setVisiblity(style, source);

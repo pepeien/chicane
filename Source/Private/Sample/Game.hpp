@@ -5,7 +5,6 @@
 namespace Game
 {
     std::uint32_t getScore();
-    void setScore(std::uint32_t inScore);
     void incrementScore(std::uint32_t inScore);
     void decrementScore(std::uint32_t inScore);
 

@@ -35,7 +35,7 @@ namespace Chicane
                     return;
                 }
 
-                m_model = Utils::trim(inFilepath);
+                m_model = String::trim(inFilepath);
             }
 
             const std::string& Group::getTexture() const
@@ -50,7 +50,7 @@ namespace Chicane
                     return;
                 }
 
-                m_texture = Utils::trim(inFilepath);
+                m_texture = String::trim(inFilepath);
             }
         }
     }

@@ -78,7 +78,7 @@ namespace Chicane
                 auto foundGroupEntry = std::find_if(
                     m_groups.begin(),
                     m_groups.end(),
-                    [inGroup](const auto& A) { return Utils::areEquals(A.getId(), inGroup.getId()); }
+                    [inGroup](const auto& A) { return String::areEquals(A.getId(), inGroup.getId()); }
                 );
 
                 if (foundGroupEntry == m_groups.end())
@@ -119,7 +119,7 @@ namespace Chicane
 
                 for (const auto& groupNode : getXMLRoot().children())
                 {
-                    if (!Utils::areEquals(groupNode.name(), GROUP_TAG))
+                    if (!String::areEquals(groupNode.name(), GROUP_TAG))
                     {
                         continue;
                     }
@@ -130,24 +130,16 @@ namespace Chicane
                     {
                         std::string currentTag = assetNode.name();
 
-                        if (Utils::areEquals(currentTag, Model::TAG))
+                        if (String::areEquals(currentTag, Model::TAG))
                         {
-                            group.setModel(
-                                Utils::trim(
-                                    assetNode.child_value()
-                                )
-                            );
+                            group.setModel(String::trim(assetNode.child_value()));
 
                             continue;
                         }
 
-                        if (Utils::areEquals(currentTag, Texture::TAG))
+                        if (String::areEquals(currentTag, Texture::TAG))
                         {
-                            group.setTexture(
-                                Utils::trim(
-                                    assetNode.child_value()
-                                )
-                            );
+                            group.setTexture(String::trim(assetNode.child_value()));
 
                             continue;
                         }

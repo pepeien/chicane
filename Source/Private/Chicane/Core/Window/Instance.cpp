@@ -1,5 +1,6 @@
 #include "Chicane/Core/Window/Instance.hpp"
 
+#include "Chicane/Application.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Game.hpp"
 
@@ -257,7 +258,7 @@ namespace Chicane
 
         void Instance::setIcon(const std::string& inIconPath)
         {
-            std::string iconPath = Utils::trim(inIconPath);
+            std::string iconPath = String::trim(inIconPath);
 
             if (iconPath.empty())
             {

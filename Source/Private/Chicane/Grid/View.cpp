@@ -188,7 +188,7 @@ namespace Chicane
                 throw std::runtime_error("UI document root element must not have any siblings");
             }
 
-            if (!Utils::areEquals(TAG_ID, inNode.name()))
+            if (!String::areEquals(TAG_ID, inNode.name()))
             {
                 throw std::runtime_error("UI document root element must be a " + TAG_ID);
             }

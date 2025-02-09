@@ -149,12 +149,12 @@ namespace Chicane
                     }
 
                     m_usedIds.push_back(inId);
-                    Utils::sort(m_usedIds);
+                    String::sort(m_usedIds);
 
                     if (!isActive(inId))
                     {
                         m_activeIds.push_back(inId);
-                        Utils::sort(m_activeIds);
+                        String::sort(m_activeIds);
 
                         onActivation(inId);
                     }
@@ -177,7 +177,7 @@ namespace Chicane
                         )
                     );
                     m_usedIds.shrink_to_fit();
-                    Utils::sort(m_usedIds);
+                    String::sort(m_usedIds);
 
                     if (!isUsing(inId))
                     {
@@ -189,9 +189,7 @@ namespace Chicane
                             )
                         );
                         m_activeIds.shrink_to_fit();
-                        Utils::sort(m_activeIds);
-
-                        onDeactivation(inId);
+                        String::sort(m_activeIds);
                     }
 
                     m_observable->next(EventType::Activation);

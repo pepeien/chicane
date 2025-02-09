@@ -41,7 +41,7 @@ namespace Chicane
 
                     if (param.isType<std::string>())
                     {
-                        if (Utils::trim(*param.getValue<std::string>()) == ON_INPUT_EVENT_KEYWORD)
+                        if (String::trim(*param.getValue<std::string>()) == ON_INPUT_EVENT_KEYWORD)
                         {
                             event.values[0] = Reference::fromValue<const pugi::xml_node>(&inNode);
                         }
@@ -57,7 +57,7 @@ namespace Chicane
     
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || Utils::areEquals(isVisible, "1") || Utils::areEquals(isVisible, "true");
+                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
                 result.value      = *Application::getView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
                 result.style      = Style::getStyle(inNode);
@@ -70,7 +70,7 @@ namespace Chicane
 
             void validate(const pugi::xml_node& inNode)
             {
-                if (!Utils::areEquals(TAG_ID, inNode.name()))
+                if (!String::areEquals(TAG_ID, inNode.name()))
                 {
                     throw std::runtime_error("Component is not a " + TAG_ID);
                 }

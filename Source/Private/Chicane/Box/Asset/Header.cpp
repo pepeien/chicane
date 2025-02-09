@@ -83,7 +83,7 @@ namespace Chicane
                     return;
                 }
 
-                const std::string extension = Utils::trim(filepath.extension().string());
+                const std::string extension = String::trim(filepath.extension().string());
 
                 if (TYPES.find(extension) == TYPES.end())
                 {

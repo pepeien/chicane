@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     try
     {
-        std::unique_ptr<Application> application = std::make_unique<Application>();
+        Application();
     }
     catch (const std::exception& e)
     {

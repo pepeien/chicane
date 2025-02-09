@@ -266,17 +266,17 @@ namespace Chicane
 
         void Instance::onRender()
         {
-            if (hasRenderer())
-            {
-                m_telemetry.startCapture();
+            m_telemetry.startCapture();
+                if (hasRenderer())
+                {
                     m_renderer->render();
-                m_telemetry.endCapture();
-            }
+                }
 
-            if (hasLevel())
-            {
-                m_level->tick(m_telemetry.frame.delta);
-            }
+                if (hasLevel())
+                {
+                    m_level->tick(m_telemetry.frame.delta);
+                }
+            m_telemetry.endCapture();
         }
     }
 }

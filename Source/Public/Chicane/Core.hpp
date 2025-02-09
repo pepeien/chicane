@@ -8,6 +8,6 @@
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Telemetry.hpp"
-#include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Xml.hpp"

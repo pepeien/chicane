@@ -20,7 +20,7 @@ namespace Chicane
 
                     for (const auto& extensionProperties : supportedExtensions)
                     {
-                        if (!Utils::areEquals(extensionName, extensionProperties.extensionName))
+                        if (!String::areEquals(extensionName, extensionProperties.extensionName))
                         {
                             bIsSupported = true;
 

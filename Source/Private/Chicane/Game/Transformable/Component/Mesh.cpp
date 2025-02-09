@@ -22,6 +22,8 @@ namespace Chicane
         {
             textureManager->activate(group.getTexture());
         }
+
+        show();
     }
 
     void CMesh::onDeactivation()
@@ -32,6 +34,8 @@ namespace Chicane
         {
             textureManager->deactivate(group.getTexture());
         }
+
+        hide();
     }
 
     void CMesh::onAttachment(Transformable* inRoot)

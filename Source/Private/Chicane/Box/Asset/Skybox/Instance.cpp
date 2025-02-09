@@ -51,7 +51,7 @@ namespace Chicane
                     return;
                 }
 
-                std::string filepath = Utils::trim(inFilepath);
+                std::string filepath = String::trim(inFilepath);
 
                 if (!FileSystem::exists(filepath))
                 {
@@ -138,7 +138,7 @@ namespace Chicane
                     m_sides.insert(
                         std::make_pair(
                             side,
-                            Utils::trim(texture.child_value())
+                            String::trim(texture.child_value())
                         )
                     );
                 }
@@ -153,7 +153,7 @@ namespace Chicane
             {
                 const auto& model = getXMLRoot().child(Model::TAG);
 
-                m_model = Utils::trim(model.child_value());
+                m_model = String::trim(model.child_value());
             }
         }
     }

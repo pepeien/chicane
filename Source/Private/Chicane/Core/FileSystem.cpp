@@ -54,7 +54,7 @@ namespace Chicane
                 throw std::runtime_error("Unable to open a folder dialog without a active window");
             }
 
-            std::string location = Utils::trim(inProps.location);
+            std::string location = String::trim(inProps.location);
 
 
             SDL_ShowOpenFolderDialog(
@@ -73,7 +73,7 @@ namespace Chicane
                 throw std::runtime_error("Unable to open a file dialog without a active window");
             }
 
-            std::string location = Utils::trim(inProps.location);
+            std::string location = String::trim(inProps.location);
 
             SDL_ShowOpenFileDialog(
                 inCallback,

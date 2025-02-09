@@ -3,7 +3,7 @@
 #include "Chicane/Base.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
-#include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Log/Entry.hpp"
 
 namespace Chicane
@@ -34,7 +34,7 @@ namespace Chicane
             emmit(
                 inHexColor,
                 inIdentifier,
-                Utils::sprint(inMessage, inParams...)
+                String::sprint(inMessage, inParams...)
             );
         }
 
@@ -42,28 +42,28 @@ namespace Chicane
         template<typename... T>
         void info(const std::string& inMessage, T... inParams)
         {
-            info(Utils::sprint(inMessage, inParams...));
+            info(String::sprint(inMessage, inParams...));
         }
 
         void warning(const std::string& inMessage);
         template<typename... T>
         void warning(const std::string& inMessage, T... inParams)
         {
-            warning(Utils::sprint(inMessage, inParams...));
+            warning(String::sprint(inMessage, inParams...));
         }
 
         void error(const std::string& inMessage);
         template<typename... T>
         void error(const std::string& inMessage, T... inParams)
         {
-            error(Utils::sprint(inMessage, inParams...));
+            error(String::sprint(inMessage, inParams...));
         }
 
         void critical(const std::string& inMessage);
         template<typename... T>
         void critical(const std::string& inMessage, T... inParams)
         {
-            critical(Utils::sprint(inMessage, inParams...));
+            critical(String::sprint(inMessage, inParams...));
         }
     }
 }

@@ -8,10 +8,12 @@
 
 namespace Chicane
 {
-    namespace Utils
+    namespace String
     {
+        // Comparable
         bool areEquals(const std::string& inA, const std::string& inB);
 
+        // Print
         template<typename... T>
         std::string sprint(const std::string& inTarget, T... inParams)
         {
@@ -40,6 +42,7 @@ namespace Chicane
             return result;
         }
 
+        // Helper
         std::string trim(const std::string& inTarget);
 
         std::vector<std::string> split(const std::string& inTarget, char inDelimeter);

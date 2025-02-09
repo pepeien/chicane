@@ -1,10 +1,10 @@
-#include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core/String.hpp"
 
 #include "Chicane/Core.hpp"
 
 namespace Chicane
 {
-    namespace Utils
+    namespace String
     {
         bool areEquals(const std::string& inA, const std::string& inB)
         {

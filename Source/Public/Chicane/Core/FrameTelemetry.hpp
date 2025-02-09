@@ -2,6 +2,8 @@
 
 #include "Chicane/Base.hpp"
 
+static constexpr float UPDATE_RATE_IN_MS = 1000.0f;
+
 namespace Chicane
 {
     struct FrameTelemetry
@@ -19,18 +21,24 @@ namespace Chicane
         {
             m_endTime = std::chrono::steady_clock::now();
 
-            delta = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(
-                m_endTime - m_beginTime
-            ).count();
-            rate = 1000U / delta;
+            if (std::chrono::duration<float, std::milli>(m_endTime - m_updateTime).count() < UPDATE_RATE_IN_MS)
+            {
+                return;
+            }
+
+            m_updateTime = m_endTime;
+
+            delta = std::chrono::duration<float, std::milli>(m_endTime - m_beginTime).count();
+            rate  = delta > 0.0f ? static_cast<std::uint32_t>(1000.0f / delta) : 0;
         }
 
     public:
-        float         delta = 0.0f;
-        std::uint32_t rate  = 0U;
+        float         delta       = 0.0f;
+        std::uint32_t rate        = 0U;
 
     private:
-        Time m_beginTime    = std::chrono::steady_clock::now();
-        Time m_endTime      = std::chrono::steady_clock::now();
+        Time          m_beginTime  = std::chrono::steady_clock::now();
+        Time          m_endTime    = std::chrono::steady_clock::now();
+        Time          m_updateTime = std::chrono::steady_clock::now();
     };
 }

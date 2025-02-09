@@ -4,7 +4,7 @@
 
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Math.hpp"
-#include "Chicane/Core/Utils.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Grid.hpp"
 
 static constexpr const char* LOG_COLOR_START = "\33[";
@@ -50,7 +50,7 @@ namespace Chicane
                 message = inMessage;
             }
 
-            message = Utils::trim(message);
+            message = String::trim(message);
 
             std::string hexColor = inHexColor;
             std::transform(

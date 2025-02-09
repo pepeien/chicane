@@ -12,7 +12,7 @@ namespace Chicane
 
             Instance::Instance(const std::string& inFilepath)
             {
-                std::string filepath = Utils::trim(inFilepath);
+                std::string filepath = String::trim(inFilepath);
 
                 if (filepath.empty())
                 {
@@ -57,7 +57,7 @@ namespace Chicane
 
             void Instance::setFilepath(const std::filesystem::path& inFilepath)
             {
-                m_header.filepath = Utils::trim(inFilepath.string());
+                m_header.filepath = String::trim(inFilepath.string());
             }
 
             std::uint32_t Instance::getVersion() const
@@ -155,7 +155,7 @@ namespace Chicane
                     throw std::runtime_error("Asset files root element must not have any siblings");
                 }
 
-                if (!Utils::areEquals(TAG, root.name()))
+                if (!String::areEquals(TAG, root.name()))
                 {
                     throw std::runtime_error("Asset files root element must be a " + TAG);
                 }
