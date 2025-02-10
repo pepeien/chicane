@@ -200,13 +200,13 @@ namespace Chicane
             const Vec<2, int>& inPosition
         )
         {
-            m_size.x = inSize.x;
-            m_size.y = inSize.y;
+            m_size.x = static_cast<float>(inSize.x);
+            m_size.y = static_cast<float>(inSize.y);
             ImGui::SetNextWindowContentSize(m_size);
             ImGui::SetNextWindowSize(       m_size);
 
-            m_position.x = inPosition.x;
-            m_position.y = inPosition.y;
+            m_position.x = static_cast<float>(inPosition.x);
+            m_position.y = static_cast<float>(inPosition.y);
             ImGui::SetNextWindowPos(m_position);
 
             if (!m_bWasStyleAdded)

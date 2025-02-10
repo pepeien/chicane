@@ -49,7 +49,7 @@ namespace Chicane
 
     void CView::setViewport(std::uint32_t inWidth, std::uint32_t inHeight)
     {
-        setViewport(inWidth, inHeight);
+        setViewport(Vec<2, std::uint32_t>(inWidth, inHeight));
     }
 
     void CView::setViewport(const Vec<2, std::uint32_t>& inViewport)

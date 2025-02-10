@@ -38,7 +38,7 @@ namespace Chicane
 
                 if (item.type == Item::Type::Folder)
                 {
-                    item.childCount = ls(item.path, 1).size();
+                    item.childCount = static_cast<std::uint32_t>(ls(item.path, 1).size());
                 }
 
                 result.push_back(item);
