@@ -130,40 +130,6 @@ namespace Chicane
             return m_application->watchLevel(inNext, inError, inComplete);
         }
 
-        bool hasCamera()
-        {
-            if (!m_application || !hasLevel())
-            {
-                return false;
-            }
-
-            return m_application->getLevel()->hasCamera();
-        }
-
-        CCamera* getCamera()
-        {
-            if (!m_application || !hasLevel())
-            {
-                return nullptr;
-            }
-
-            return m_application->getLevel()->getCamera();
-        }
-
-        Subscription<CCamera*>* watchCamera(
-            std::function<void (CCamera*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
-        {
-            if (!m_application || !hasLevel())
-            {
-                return nullptr;
-            }
-
-            return m_application->getLevel()->watchCamera(inNext, inError, inComplete);
-        }
-
         bool hasView()
         {
             if (!m_application)

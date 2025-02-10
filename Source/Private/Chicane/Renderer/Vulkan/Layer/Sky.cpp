@@ -234,14 +234,14 @@ namespace Chicane
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
 
-                vk::WriteDescriptorSet writeDescriptorSet;
-                writeDescriptorSet.dstSet          = descriptorSet;
-                writeDescriptorSet.dstBinding      = 0;
-                writeDescriptorSet.dstArrayElement = 0;
-                writeDescriptorSet.descriptorCount = 1;
-                writeDescriptorSet.descriptorType  = vk::DescriptorType::eUniformBuffer;
-                writeDescriptorSet.pBufferInfo     = &frame.cameraResource.bufferInfo;
-                frame.addWriteDescriptorSet(writeDescriptorSet);
+                vk::WriteDescriptorSet cameraWriteInfo;
+                cameraWriteInfo.dstSet          = descriptorSet;
+                cameraWriteInfo.dstBinding      = 0;
+                cameraWriteInfo.dstArrayElement = 0;
+                cameraWriteInfo.descriptorCount = 1;
+                cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
             }
         }
 

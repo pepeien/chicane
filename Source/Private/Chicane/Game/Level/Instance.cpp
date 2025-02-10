@@ -12,8 +12,7 @@ namespace Chicane
         : m_actors({}),
         m_actorObservable(std::make_unique<Observable<const std::vector<Actor*>&>>()),
         m_components({}),
-        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>()),
-        m_cameraObservable(std::make_unique<Observable<CCamera*>>())
+        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>())
     {
         m_actors.reserve(MAX_ACTOR_COUNT);
         m_components.reserve(MAX_COMPONENT_COUNT);
@@ -143,21 +142,5 @@ namespace Chicane
         }
 
         return nullptr;
-    }
-
-    Subscription<CCamera*>* Level::watchCamera(
-        std::function<void (CCamera*)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
-    )
-    {
-        Subscription<CCamera*>* subscription = m_cameraObservable->subscribe(
-            inNext,
-            inError,
-            inComplete
-        );
-        subscription->next(getCamera());
-
-        return subscription;
     }
 }

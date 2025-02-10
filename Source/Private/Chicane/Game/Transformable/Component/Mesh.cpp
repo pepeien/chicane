@@ -36,7 +36,7 @@ namespace Chicane
 
     bool CMesh::isDrawable() const
     {
-        if (!Application::hasCamera() || !Application::hasLevel())
+        if (!Application::hasLevel())
         {
             return false;
         }

@@ -109,11 +109,6 @@ namespace Chicane
         // Camera
         bool hasCamera();
         CCamera* getCamera();
-        Subscription<CCamera*>* watchCamera(
-            std::function<void (CCamera*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
-        );
 
         template<typename T = Actor>
         std::vector<T*> traceLine(
@@ -194,7 +189,5 @@ namespace Chicane
 
         std::vector<Component*>                                     m_components;
         std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;
-
-        std::unique_ptr<Observable<CCamera*>>                       m_cameraObservable;
     };
 }

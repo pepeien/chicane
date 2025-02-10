@@ -38,14 +38,6 @@ namespace Chicane
             std::function<void ()> inComplete = nullptr
         );
 
-        bool hasCamera();
-        CCamera* getCamera();
-        Subscription<CCamera*>* watchCamera(
-            std::function<void (CCamera*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
-        );
-
         // UI
         bool hasView();
         void addView(Grid::View* inView);
