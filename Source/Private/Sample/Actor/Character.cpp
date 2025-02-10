@@ -63,6 +63,7 @@ Character::Character()
 
 void Character::onControlAttachment()
 {
+    // Mouse
     m_controller->bindEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
 
     m_controller->bindEvent(
@@ -70,7 +71,13 @@ void Character::onControlAttachment()
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onLeftClick, this)
     );
+    m_controller->bindEvent(
+        Chicane::Controller::MouseButton::Right,
+        Chicane::Controller::EventStatus::Pressed,
+        std::bind(&Character::onRightClick, this)
+    );
 
+    // Keyboard
     m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::W,
         Chicane::Controller::EventStatus::Pressed,
@@ -94,18 +101,30 @@ void Character::onControlAttachment()
     m_controller->bindEvent(
         Chicane::Controller::KeyboardKey::Space,
         Chicane::Controller::EventStatus::Pressed,
-        std::bind(&Chicane::ACharacter::jump, this)
+        std::bind(&Character::onJump, this)
     );
 }
 
 void Character::onLook(const Chicane::Controller::MouseMotionEvent& inEvent)
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
     m_camera->addRelativeRotation(-inEvent.yrel * 0.5f, 0.0f, 0.0f);
     addYaw(-inEvent.xrel * 0.5f);
 }
 
 void Character::onLeftClick()
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        Chicane::Application::getWindow()->focus();
+
+        return;
+    }
+
     const Chicane::Vec<3, float>& origin     = m_camera->getTranslation();
     const Chicane::Vec<3, float> destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
@@ -121,22 +140,62 @@ void Character::onLeftClick()
     }
 }
 
+void Character::onRightClick()
+{
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
+    Chicane::Application::getWindow()->blur();
+}
+
 void Character::onMoveForward()
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
     move(getForward(), MOVE_COEFFICIENT);
 }
 
 void Character::onMoveBackward()
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
     move(getForward(), -MOVE_COEFFICIENT);
 }
 
 void Character::onMoveLeft()
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
     move(getRight(), -MOVE_COEFFICIENT);
 }
 
 void Character::onMoveRight()
 {
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
     move(getRight(), MOVE_COEFFICIENT);
+}
+
+void Character::onJump()
+{
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
+    jump();
 }

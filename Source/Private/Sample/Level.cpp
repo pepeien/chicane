@@ -24,7 +24,7 @@ void Level::onActivation()
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Lake.bsky"));
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Gray.bsky"));
 }
 
 void Level::spawnLights()

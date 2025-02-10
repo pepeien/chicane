@@ -12,14 +12,19 @@ protected:
     void onControlAttachment() override;
 
 private:
+    // Mouse
     void onLook(const Chicane::Controller::MouseMotionEvent& inEvent);
 
     void onLeftClick();
+    void onRightClick();
 
+    // Keyboard
     void onMoveForward();
     void onMoveBackward();
     void onMoveLeft();
     void onMoveRight();
+
+    void onJump();
 
 private:
     // Camera
