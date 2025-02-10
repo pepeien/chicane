@@ -114,11 +114,6 @@ namespace Chicane
 
         void Instance::onEvent(const SDL_Event& inEvent)
         {
-            if (!Application::getWindow()->isFocused())
-            {
-                return;
-            }
-
             repeatEvents();
 
             switch (inEvent.type)
