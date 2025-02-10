@@ -23,7 +23,7 @@ namespace Chicane
             }
             else
             {
-                mesh->hide();
+                //mesh->hide();
             }
         }
     }

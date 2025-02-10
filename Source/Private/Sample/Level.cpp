@@ -5,8 +5,8 @@
 #include "Actor/Structure.hpp"
 #include "Actor/Sun.hpp"
 
-static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 5;
-static constexpr std::uint32_t APPLE_COLUMN_COUNT = 15;
+static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 2;
+static constexpr std::uint32_t APPLE_COLUMN_COUNT = 5;
 static constexpr std::uint32_t APPLE_ROW_COUNT    = 2;
 static constexpr float         APPLE_STEP         = 20.0f;
 
@@ -24,7 +24,7 @@ void Level::onActivation()
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Black.bsky"));
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::loadSky("Content/Sample/Skies/Lake.bsky"));
 }
 
 void Level::spawnLights()
@@ -34,7 +34,7 @@ void Level::spawnLights()
 
 void Level::spawnStructures()
 {
-    createActor<Strcuture>()->setAbsoluteScale(1000.0f, 1000.0f, 0.25f);
+    createActor<Strcuture>()->setAbsoluteScale(500.0f, 500.0f, 0.25f);
 }
 
 void Level::spawnApples()

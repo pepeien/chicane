@@ -18,9 +18,7 @@ Apple::Apple()
 {
     setCanTick(true);
     setCanCollide(true);
-    setAbsoluteTranslation(m_startPosition);
-    setAbsoluteRotation(90.0f, 0.0f, 0.0f);
-    setAbsoluteScale(100.0f);
+    setAbsoluteScale(1.5f);
 
     m_meshComponent = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Content/Sample/Meshes/Apple.bmsh");
@@ -60,4 +58,6 @@ void Apple::onHit(const Chicane::Actor* inSubject)
 void Apple::setInitialPosition(const Chicane::Vec<3, float>& inPosition)
 {
     m_startPosition = inPosition;
+
+    setAbsoluteTranslation(m_startPosition);
 }

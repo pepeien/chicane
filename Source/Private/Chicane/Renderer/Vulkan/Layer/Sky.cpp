@@ -106,7 +106,7 @@ namespace Chicane
                 m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
                 // Textures
-                m_sky->bind(commandBuffer,  m_graphicsPipeline->layout);
+                m_sky->bind(commandBuffer, m_graphicsPipeline->layout);
 
                 //Model
                 vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };

@@ -10,6 +10,6 @@ Strcuture::Strcuture()
 
     m_mesh = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_mesh->attachTo(this);
-    m_mesh->setMesh("Content/Sample/Meshes/Cube.bmsh");
+    m_mesh->setMesh("Content/Sample/Meshes/Structure.bmsh");
     m_mesh->activate();
 }

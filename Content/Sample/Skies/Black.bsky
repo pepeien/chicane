@@ -7,5 +7,5 @@
         <Texture side="Up">Content/Sample/Textures/Black.btex</Texture>
         <Texture side="Down">Content/Sample/Textures/Black.btex</Texture>
     </Sides>
-    <Model>Content/Sample/Models/Cube.bmdl</Model>
+    <Model>Content/Sample/Models/Skybox.bmdl</Model>
 </Asset>

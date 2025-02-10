@@ -73,15 +73,15 @@ namespace Chicane
 
         if (overlapX < overlapY && overlapX < overlapZ)
         {
-            result.x = overlapX * (min.x < otherMin.x ? -1.0f : 1.0f);
+            result.x = overlapX;
         }
         else if (overlapY < overlapX && overlapY < overlapZ)
         {
-            result.y = overlapY * (min.y < otherMin.y ? -1.0f : 1.0f);
+            result.y = overlapY;
         }
         else
         {
-            result.z = overlapZ * (min.z < otherMin.z ? -1.0f : 1.0f);
+            result.z = overlapZ;
         }
 
         return result;
@@ -125,11 +125,20 @@ namespace Chicane
         //  +------+
         // min
 
-        m_min    = (m_baseMin    * scale) + translation;
-        m_max    = (m_baseMax    * scale) + translation;
-        m_top    = (m_baseTop    * scale) + translation;
-        m_center = (m_baseCenter * scale) + translation;
-        m_bottom = (m_baseBottom * scale) + translation;
+        m_min = (m_baseMin * scale) + translation;
+        m_max = (m_baseMax * scale) + translation;
+
+        m_center.x = (m_min.x + m_max.x) * 0.5f;
+        m_center.y = (m_min.y + m_max.y) * 0.5f;
+        m_center.z = (m_min.z + m_max.z) * 0.5f;
+
+        m_top.x = m_center.x;
+        m_top.y = m_center.y;
+        m_top.z = m_max.z;
+
+        m_bottom.x = m_center.x;
+        m_bottom.y = m_center.y;
+        m_bottom.z = m_min.z;
 
         if (m_corners.empty())
         {

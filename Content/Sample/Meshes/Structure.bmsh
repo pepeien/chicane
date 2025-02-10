@@ -1,0 +1,6 @@
+<Asset version="1" id="Structure">
+    <Group id="Body">
+        <Model>Content/Sample/Models/Cube.bmdl</Model>
+        <Texture>Content/Sample/Textures/Checkered.btex</Texture>
+    </Group>
+</Asset>

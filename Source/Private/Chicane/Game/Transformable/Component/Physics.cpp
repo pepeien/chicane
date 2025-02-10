@@ -82,11 +82,9 @@ namespace Chicane
 
         resetForce();
 
-        const Bounds& subjectBounds = inSubject->getBounds();
+        Vec<3, float> overlap = inSubject->getBounds().getOverlap(m_attachment->getBounds());
 
-        Vec<3, float> overlap = subjectBounds.getOverlap(getBounds());
-
-        addAbsoluteTranslation(overlap);
+        m_attachment->addAbsoluteTranslation(overlap * 1.1f);
     }
 
     void CPhysics::updateForce()
