@@ -14,7 +14,8 @@ namespace Chicane
             : instance(nullptr),
             m_bIsFocused(false),
             m_bIsResizable(true),
-            m_bIsMinimized(false)
+            m_bIsMinimized(false),
+            m_sizeObservable(std::make_unique<Observable<const Vec<2, int>&>>())
         {
             SDL_InitFlags initFlags = SDL_INIT_GAMEPAD;
             initFlags              |= SDL_INIT_VIDEO;
@@ -126,37 +127,6 @@ namespace Chicane
             }
         }
 
-        bool Instance::isFocused() const
-        {
-            return m_bIsFocused;
-        }
-
-        void Instance::focus()
-        {
-            m_bIsFocused = true;
-
-            SDL_SetWindowRelativeMouseMode(instance, true);
-        }
-
-        void Instance::switchFocus()
-        {
-            if (isFocused())
-            {
-                blur();
-
-                return;
-            }
-
-            focus();
-        }
-
-        void Instance::blur()
-        {
-            m_bIsFocused = false;
-
-            SDL_SetWindowRelativeMouseMode(instance, false);
-        }
-
         const Vec<2, int>& Instance::getSize() const
         {
             if (m_bIsMinimized)
@@ -179,43 +149,12 @@ namespace Chicane
                 return;
             }
 
-            SDL_SetWindowSize(
-                instance,
-                inWidth,
-                inHeight
-            );
+            SDL_SetWindowSize(instance, inWidth, inHeight);
 
             m_size.x = inWidth;
             m_size.y = inHeight;
-        }
 
-        const Vec<2, int>& Instance::getDrawableSize() const
-        {
-            if (m_bIsMinimized)
-            {
-                return VEC2_ZERO;
-            }
-
-            return m_drawableSize;
-        }
-
-        void Instance::setDrawableSize(const Vec<2, int>& inSize)
-        {
-            setDrawableSize(
-                inSize.x,
-                inSize.y
-            );
-        }
-
-        void Instance::setDrawableSize(int inWidth, int inHeight)
-        {
-            if (m_drawableSize.x == inWidth && m_drawableSize.y == inWidth)
-            {
-                return;
-            }
-
-            m_drawableSize.x = inWidth;
-            m_drawableSize.y = inHeight;
+            m_sizeObservable->next(m_size);
         }
 
         const Vec<2, int>& Instance::getPosition() const
@@ -225,10 +164,7 @@ namespace Chicane
 
         void Instance::setPosition(const Vec<2, int>& inPosition)
         {
-            setPosition(
-                inPosition.x,
-                inPosition.y
-            );
+            setPosition(inPosition.x, inPosition.y);
         }
 
         void Instance::setPosition(int inX, int inY)
@@ -238,11 +174,7 @@ namespace Chicane
                 return;
             }
 
-            SDL_SetWindowPosition(
-                instance,
-                inX,
-                inY
-            );
+            SDL_SetWindowPosition(instance, inX,  inY);
 
             m_position.x = inX;
             m_position.y = inY;
@@ -250,10 +182,7 @@ namespace Chicane
 
         void Instance::setTitle(const std::string& inTitle)
         {
-            SDL_SetWindowTitle(
-                instance,
-                inTitle.c_str()
-            );
+            SDL_SetWindowTitle(instance, inTitle.c_str());
         }
 
         void Instance::setIcon(const std::string& inIconPath)
@@ -357,6 +286,37 @@ namespace Chicane
             return m_type;
         }
 
+        bool Instance::isFocused() const
+        {
+            return m_bIsFocused;
+        }
+
+        void Instance::focus()
+        {
+            m_bIsFocused = true;
+
+            SDL_SetWindowRelativeMouseMode(instance, true);
+        }
+
+        void Instance::switchFocus()
+        {
+            if (isFocused())
+            {
+                blur();
+
+                return;
+            }
+
+            focus();
+        }
+
+        void Instance::blur()
+        {
+            m_bIsFocused = false;
+
+            SDL_SetWindowRelativeMouseMode(instance, false);
+        }
+
         bool Instance::isResizable()
         {
             return m_bIsResizable;
@@ -369,20 +329,14 @@ namespace Chicane
                 return;
             }
 
-            SDL_SetWindowResizable(
-                instance,
-                true
-            );
+            SDL_SetWindowResizable(instance, true);
 
             m_bIsResizable = true;
         }
 
         void Instance::disableResizing()
         {
-            SDL_SetWindowResizable(
-                instance,
-                false
-            );
+            SDL_SetWindowResizable(instance, false);
 
             m_bIsResizable = false;
         }
@@ -394,34 +348,30 @@ namespace Chicane
             return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
         }
 
+        Subscription<const Vec<2, int>&>* Instance::watchSize(
+            std::function<void (const Vec<2, int>&)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        )
+        {
+            Subscription<const Vec<2, int>&>* subscription = m_sizeObservable->subscribe(
+                inNext,
+                inError,
+                inComplete
+            );
+            subscription->next(m_size);
+
+            return subscription;
+        }
+
         void Instance::refreshSize()
         {
             int width  = 0;
             int height = 0;
 
-            SDL_GetWindowSize(
-                instance,
-                &width,
-                &height
-            );
+            SDL_GetWindowSize(instance, &width, &height);
 
             setSize(width, height);
-
-            refreshDrawableSize();
-        }
-
-        void Instance::refreshDrawableSize()
-        {
-            int width  = 0;
-            int height = 0;
-
-            SDL_GetWindowSize(
-                instance,
-                &width,
-                &height
-            );
-
-            setDrawableSize(width, height);
         }
 
         void Instance::refreshPosition()
@@ -429,11 +379,7 @@ namespace Chicane
             int x = 0;
             int y = 0;
 
-            SDL_GetWindowPosition(
-                instance,
-                &x,
-                &y
-            );
+            SDL_GetWindowPosition(instance, &x, &y);
 
             setPosition(x, y);
         }
