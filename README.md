@@ -21,6 +21,11 @@
 ## Compiling
 This project uses CMake to generate and build files, it should pretty straight forward both on linux and windows platforms.
 
+### Compilers
+
+- Windows - (MinGW, Visual Studio 19 or 22);
+- Linux - (GCC or G++).
+
 ### Requeriments
 
 - [CMake](https://cmake.org/download) (^=3.11.0);
