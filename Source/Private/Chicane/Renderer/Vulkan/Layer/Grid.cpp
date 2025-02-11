@@ -92,10 +92,7 @@ namespace Chicane
             ImGui_ImplSDL3_NewFrame();
             ImGui::NewFrame();
 
-            m_view->show(
-                m_window->getDrawableSize(),
-                m_window->getPosition()
-            );
+            m_view->show(m_window->getSize(), m_window->getPosition());
         }
 
         void LGrid::render(void* outData)

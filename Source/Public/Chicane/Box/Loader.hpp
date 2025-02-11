@@ -15,7 +15,5 @@ namespace Chicane
         const Box::Texture::Instance* loadTexture(const std::string& inFilePath);
         const Box::Sky::Instance* loadSky(const std::string& inFilePath);
         const Box::Mesh::Instance* loadMesh(const std::string& inFilePath);
-
-        void reset();
     }
 }

@@ -17,7 +17,7 @@ namespace Chicane
         template<typename... T>
         std::string sprint(const std::string& inTarget, T... inParams)
         {
-            const int bufferSize = inTarget.size() * 10;
+            const int bufferSize = static_cast<int>(inTarget.size()) * 10;
 
             char* buffer = new char[bufferSize];
 

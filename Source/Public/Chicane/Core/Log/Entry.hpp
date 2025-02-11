@@ -8,14 +8,15 @@ namespace Chicane
     {
         struct Entry
         {
-            std::string text  = "";
-            std::string color = "";
-
         public:
             bool isEmpty() const
             {
                 return text.empty();
             }
+
+        public:
+            std::string text  = "";
+            std::string color = "";
         };
     }
 }

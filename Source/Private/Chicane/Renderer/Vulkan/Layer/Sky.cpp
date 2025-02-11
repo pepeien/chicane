@@ -126,7 +126,7 @@ namespace Chicane
                 );
 
                 commandBuffer.drawIndexed(
-                    Box::getModelManager()->getInstance(m_asset->getModel()).indices.size(),
+                    static_cast<std::uint32_t>(Box::getModelManager()->getInstance(m_asset->getModel()).indices.size()),
                     1,
                     0,
                     0,

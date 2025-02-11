@@ -431,7 +431,7 @@ namespace Chicane
                 {
                     Box::Mesh::CompiledData data = {};
                     data.matrix       = mesh->getTransform().getMatrix();
-                    data.textureIndex = Vec<4, float>(textureManager->getIndex(mesh->getTexture()));
+                    data.textureIndex = Vec<4, float>(static_cast<float>(textureManager->getIndex(mesh->getTexture())));
 
                     meshes.push_back(data);
                 }

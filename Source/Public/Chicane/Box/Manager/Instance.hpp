@@ -80,7 +80,7 @@ namespace Chicane
 
                 std::uint32_t getActiveCount() const
                 {
-                    return m_activeIds.size();
+                    return static_cast<std::uint32_t>(m_activeIds.size());
                 }
 
                 std::uint32_t getUsedCount() const
@@ -95,7 +95,7 @@ namespace Chicane
                         return 0;
                     }
 
-                    return std::count(m_usedIds.begin(),  m_usedIds.end(), inId);
+                    return static_cast<std::uint32_t>(std::count(m_usedIds.begin(),  m_usedIds.end(), inId));
                 }
 
                 // Lifecycle

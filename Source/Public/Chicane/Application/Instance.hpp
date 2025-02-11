@@ -16,7 +16,6 @@ namespace Chicane
         {
         public:
             Instance();
-            ~Instance();
 
         public:
             // Lifecycle

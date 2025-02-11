@@ -65,7 +65,7 @@ namespace Chicane
                 Image::Instance::CreateInfo instanceCreateInfo = {};
                 instanceCreateInfo.width         = m_image.width;
                 instanceCreateInfo.height        = m_image.height;
-                instanceCreateInfo.count         = Box::Sky::ORDER.size();
+                instanceCreateInfo.count         = static_cast<std::uint32_t>(Box::Sky::ORDER.size());
                 instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
                 instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
                 instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
@@ -129,7 +129,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eUndefined,
                     vk::ImageLayout::eTransferDstOptimal,
-                    Box::Sky::ORDER.size()
+                    static_cast<std::uint32_t>(Box::Sky::ORDER.size())
                 );
 
                 Image::copyBufferToImage(
@@ -139,7 +139,7 @@ namespace Chicane
                     m_image.instance,
                     m_image.width,
                     m_image.height,
-                    Box::Sky::ORDER.size()
+                    static_cast<std::uint32_t>(Box::Sky::ORDER.size())
                 );
 
                 Image::transitionLayout(
@@ -148,7 +148,7 @@ namespace Chicane
                     m_image.instance,
                     vk::ImageLayout::eTransferDstOptimal,
                     vk::ImageLayout::eShaderReadOnlyOptimal,
-                    Box::Sky::ORDER.size()
+                    static_cast<std::uint32_t>(Box::Sky::ORDER.size())
                 );
 
                 Buffer::destroy(m_logicalDevice, stagingBuffer);

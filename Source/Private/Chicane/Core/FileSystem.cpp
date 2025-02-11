@@ -19,12 +19,17 @@ namespace Chicane
 
         std::vector<Item> ls(const std::string& inDir, std::uint32_t inDepth)
         {
-            std::vector<Item> result = {};
+            if (inDir.empty())
+            {
+                return {};
+            }
 
             if (inDepth > 1)
             {
-                return result;
+                return {};
             }
+
+            std::vector<Item> result = {};
 
             for (const auto& entry : std::filesystem::directory_iterator(inDir))
             {

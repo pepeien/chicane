@@ -236,12 +236,5 @@ namespace Chicane
 
             return getAsset<Mesh::Instance>(inFilePath);
         }
-
-        void reset()
-        {
-            m_audioManager.reset();
-            m_textureManager.reset();
-            m_modelManager.reset();
-        }
     }
 }

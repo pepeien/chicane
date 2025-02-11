@@ -462,7 +462,7 @@ namespace Chicane
             set.dstSet          = m_textureDescriptor.set;
             set.dstBinding      = 0;
             set.dstArrayElement = 0;
-            set.descriptorCount = imageInfos.size();
+            set.descriptorCount = static_cast<std::uint32_t>(imageInfos.size());
             set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
             set.pImageInfo      = imageInfos.data();
 
