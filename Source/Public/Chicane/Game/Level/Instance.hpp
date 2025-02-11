@@ -107,15 +107,15 @@ namespace Chicane
         );
 
         // Camera
-        bool hasCamera();
-        CCamera* getCamera();
+        bool hasCamera() const;
+        CCamera* getCamera() const;
 
         template<typename T = Actor>
         std::vector<T*> traceLine(
             const Vec<3, float>& inOrigin,
             const Vec<3, float>& inDestination,
             const std::vector<Actor*>& inIgnoredActors
-        )
+        ) const
         {
             if (!hasActors())
             {

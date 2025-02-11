@@ -4,7 +4,7 @@
 
 namespace Chicane
 {
-    AAudio::AAudio(const std::string& inAudio)
+    AAudio::AAudio()
         : Actor(),
         m_audio(nullptr)
     {

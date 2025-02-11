@@ -126,12 +126,12 @@ namespace Chicane
         return subscription;
     }
 
-    bool Level::hasCamera()
+    bool Level::hasCamera() const
     {
         return getCamera() != nullptr;
     }
 
-    CCamera* Level::getCamera()
+    CCamera* Level::getCamera() const
     {
         for (CCamera* camera : getComponents<CCamera>())
         {

@@ -11,9 +11,9 @@ namespace Chicane
         Model::Manager* getModelManager();
         Texture::Manager* getTextureManager();
 
-        const Box::Audio::Instance* loadAudio(const std::string& inFilePath);
-        const Box::Texture::Instance* loadTexture(const std::string& inFilePath);
-        const Box::Sky::Instance* loadSky(const std::string& inFilePath);
-        const Box::Mesh::Instance* loadMesh(const std::string& inFilePath);
+        const Audio::Instance* loadAudio(const std::string& inFilePath);
+        const Texture::Instance* loadTexture(const std::string& inFilePath);
+        const Sky::Instance* loadSky(const std::string& inFilePath);
+        const Mesh::Instance* loadMesh(const std::string& inFilePath);
     }
 }

@@ -9,7 +9,7 @@ namespace Chicane
     class AAudio : public Actor
     {
     public:
-        AAudio(const std::string& inAudio);
+        AAudio();
         virtual ~AAudio() = default;
 
     public:

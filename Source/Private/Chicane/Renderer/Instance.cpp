@@ -72,7 +72,7 @@ namespace Chicane
             return subscription;
         }
 
-        bool Instance::hasLayer(Layer::Instance* inLayer)
+        bool Instance::hasLayer(Layer::Instance* inLayer) const
         {
             if (!inLayer)
             {
@@ -82,7 +82,7 @@ namespace Chicane
             return hasLayer(inLayer->getId());
         }
 
-        bool Instance::hasLayer(const std::string& inId)
+        bool Instance::hasLayer(const std::string& inId) const
         {
             return std::find_if(
                 m_layers.begin(),

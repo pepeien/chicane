@@ -67,45 +67,45 @@ void Character::onControlAttachment()
     m_controller->bindEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
 
     m_controller->bindEvent(
-        Chicane::Controller::MouseButton::Left,
+        Chicane::Controller::Mouse::Button::Left,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onLeftClick, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::MouseButton::Right,
+        Chicane::Controller::Mouse::Button::Right,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onRightClick, this)
     );
 
     // Keyboard
     m_controller->bindEvent(
-        Chicane::Controller::KeyboardKey::W,
+        Chicane::Controller::Keyboard::Key::W,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveForward, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::KeyboardKey::S,
+        Chicane::Controller::Keyboard::Key::S,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveBackward, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::KeyboardKey::A,
+        Chicane::Controller::Keyboard::Key::A,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveLeft, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::KeyboardKey::D,
+        Chicane::Controller::Keyboard::Key::D,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onMoveRight, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::KeyboardKey::Space,
+        Chicane::Controller::Keyboard::Key::Space,
         Chicane::Controller::EventStatus::Pressed,
         std::bind(&Character::onJump, this)
     );
 }
 
-void Character::onLook(const Chicane::Controller::MouseMotionEvent& inEvent)
+void Character::onLook(const Chicane::Controller::Mouse::MotionEvent& inEvent)
 {
     if (!Chicane::Application::getWindow()->isFocused())
     {

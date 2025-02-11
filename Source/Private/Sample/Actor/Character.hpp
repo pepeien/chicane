@@ -13,7 +13,7 @@ protected:
 
 private:
     // Mouse
-    void onLook(const Chicane::Controller::MouseMotionEvent& inEvent);
+    void onLook(const Chicane::Controller::Mouse::MotionEvent& inEvent);
 
     void onLeftClick();
     void onRightClick();

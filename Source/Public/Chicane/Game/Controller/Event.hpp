@@ -44,6 +44,9 @@ namespace Chicane
         struct PressableEvents
         {
         public:
+            typedef std::unordered_map<B, std::unordered_map<EventStatus, std::vector<std::function<void()>>>> Events;
+
+        public:
             void bind(B inButton, EventStatus inStatus, std::function<void()> inExec)
             {
                 if (m_events.find(inButton) == m_events.end())
@@ -85,14 +88,14 @@ namespace Chicane
 
             void repeat()
             {
-                m_timing.endCapture();
+                m_timer.endCapture();
 
-                if (m_timing.delta < EVENT_REPEAT_COOLDOWN_IN_MS)
+                if (m_timer.delta < EVENT_REPEAT_COOLDOWN_IN_MS)
                 {
                     return;
                 }
 
-                m_timing.startCapture();
+                m_timer.startCapture();
 
                 for (B button : m_pressed)
                 {
@@ -134,9 +137,9 @@ namespace Chicane
             }
 
         private:
-            FrameTelemetry                                                                             m_timing  = {};
-            std::vector<B>                                                                             m_pressed = {};
-            std::unordered_map<B, std::unordered_map<EventStatus, std::vector<std::function<void()>>>> m_events  = {};
+            FrameTelemetry m_timer   = {};
+            std::vector<B> m_pressed = {};
+            Events         m_events  = {};
         };
     }
 }

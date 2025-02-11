@@ -48,8 +48,8 @@ namespace Chicane
             );
 
             // Layer
-            bool hasLayer(Layer::Instance* inLayer);
-            bool hasLayer(const std::string& inId);
+            bool hasLayer(Layer::Instance* inLayer) const;
+            bool hasLayer(const std::string& inId) const;
 
             void pushLayer(
                 Layer::Instance* inLayer,

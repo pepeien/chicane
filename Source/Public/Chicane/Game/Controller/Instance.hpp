@@ -42,15 +42,15 @@ namespace Chicane
             void deattach();
 
             // Mouse Events
-            void bindEvent(MouseMotionEventFunction inEvent);
-            void bindEvent(MouseButton inButton, EventStatus inStatus, MouseButtonEventFunction inEvent);
+            void bindEvent(Mouse::MotionEventFunction inEvent);
+            void bindEvent(Mouse::Button inButton, EventStatus inStatus, Mouse::ButtonEventFunction inEvent);
 
             // Keyboard Events
-            void bindEvent(KeyboardKey inKey, EventStatus inStatus, KeyboardEventFunction inEvent);
+            void bindEvent(Keyboard::Key inKey, EventStatus inStatus, Keyboard::KeyEventFunction inEvent);
 
             // Controller Events
-            void bindEvent(GamepadMotionEventFunction inEvent);
-            void bindEvent(GamepadButton inButton, EventStatus inStatus, GamepadButtonEventFunction inEvent);
+            void bindEvent(Gamepad::MotionEventFunction inEvent);
+            void bindEvent(Gamepad::Button inButton, EventStatus inStatus, Gamepad::ButtonEventFunction inEvent);
 
             void onEvent(const SDL_Event& inEvent);
 
@@ -67,7 +67,6 @@ namespace Chicane
             void onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent);
 
             void repeatEvents();
-
             void clearEvents();
 
         private:
@@ -76,15 +75,15 @@ namespace Chicane
             std::unique_ptr<Observable<APawn*>> m_pawnObservable;
 
             // Mouse Events
-            Events<MouseMotionEvent>            m_mouseMotionEvents;
-            PressableEvents<MouseButton>        m_mouseButtonEvents;   
+            Events<Mouse::MotionEvent>          m_mouseMotionEvents;
+            PressableEvents<Mouse::Button>      m_mouseButtonEvents;   
 
             // Keyboard Events
-            PressableEvents<KeyboardKey>        m_keyboardKeyEvents;
+            PressableEvents<Keyboard::Key>      m_keyboardKeyEvents;
 
             // Gamepad Events
-            Events<GamepadMotionEvent>          m_gamepadMotionEvents;
-            PressableEvents<GamepadButton>      m_gamepadButtonEvents;
+            Events<Gamepad::MotionEvent>        m_gamepadMotionEvents;
+            PressableEvents<Gamepad::Button>    m_gamepadButtonEvents;
         };
     }
 }
