@@ -18,7 +18,7 @@ Application::Application()
     // Setup
     createInfo.onSetup = [this]() {
         initLevel();
-        initChacater();
+        initCharacter();
         initView();
     };
 
@@ -36,7 +36,7 @@ void Application::initLevel()
     m_level->activate();
 }
 
-void Application::initChacater()
+void Application::initCharacter()
 {
     m_controller = std::make_unique<Chicane::Controller::Instance>();
     Chicane::Application::setController(m_controller.get());

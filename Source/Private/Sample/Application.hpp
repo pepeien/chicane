@@ -17,7 +17,7 @@ public:
 
 private:
     void initLevel();
-    void initChacater();
+    void initCharacter();
     void initView();
 
 private:
