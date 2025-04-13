@@ -61,5 +61,14 @@ namespace Chicane
                 }
             );
         }
+
+        bool toBool(const std::string& inTarget)
+        {
+            if (inTarget.empty()) {
+                return false;
+            }
+
+            return areEquals(inTarget, "1") || areEquals(inTarget, "true");
+        }
     }
 }

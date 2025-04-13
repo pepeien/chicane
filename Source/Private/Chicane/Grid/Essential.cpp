@@ -5,17 +5,12 @@
 #include "Chicane/Game.hpp"
 #include "Chicane/Grid/View.hpp"
 
-static const ImVec2 START_POSITION = ImVec2(0.0f, 0.0f);
-
 namespace Chicane
 {
     namespace Grid
     {
         static const std::vector<Reference> EMPTY_ITEMS = {};
 
-        std::unordered_map<std::string, ImVec4> m_imguiColors {
-            { HEX_COLOR_TRANSPARENT, ImVec4(0.0f, 0.0f, 0.0f, 0.0f) }
-        };
         std::unordered_map<std::string, Vec<4, std::uint32_t>> m_rgbaColors {
             { HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
         };
@@ -32,8 +27,8 @@ namespace Chicane
 
             return String::areEquals(std::string(inTarget.end() - inEnding.size(), inTarget.end()), inEnding);
         }
- 
-        ImVec4 hexToImGuiColor(const std::string& inColor)
+
+        Vec<4, std::uint32_t> hexToRgba(const std::string& inColor)
         {
             std::string backgroundColor = String::trim(inColor);
             std::transform(
@@ -51,7 +46,7 @@ namespace Chicane
                 backgroundColor = HEX_COLOR_TRANSPARENT;
             }
 
-            if (m_imguiColors.find(backgroundColor) == m_imguiColors.end())
+            if (m_rgbaColors.find(backgroundColor) == m_rgbaColors.end())
             {
                 std::string hexColor = backgroundColor;
 
@@ -59,18 +54,20 @@ namespace Chicane
                     1,
                     backgroundColor.size() - 1
                 );
-                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "ff" : backgroundColor;
-                std::uint32_t color = std::stoul(
-                    backgroundColor,
-                    nullptr,
-                    16
+                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "FF" : backgroundColor;
+
+                Vec<4, std::uint32_t> result = Vec<4, std::uint32_t>(0U);
+                
+                sscanf(
+                    backgroundColor.c_str(),
+                    "%02hx%02x%02hx%02hx",
+                    &result.r,
+                    &result.g,
+                    &result.b,
+                    &result.a
                 );
 
-                // IDK why the result is #AABBGGRR A.K.A reversed
-                ImVec4 reversedResult = ImGui::ColorConvertU32ToFloat4(color);
-                ImVec4 result         = ImVec4(reversedResult.w, reversedResult.z, reversedResult.y, reversedResult.x);
-
-                m_imguiColors.insert(
+                m_rgbaColors.insert(
                     std::make_pair(
                         hexColor,
                         result
@@ -80,33 +77,7 @@ namespace Chicane
                 return result;
             }
 
-            return m_imguiColors.at(backgroundColor);
-        }
-
-        Vec<4, std::uint32_t> hexToRgba(const std::string& inColor)
-        {
-            ImVec4 color = hexToImGuiColor(inColor);
-
-            if (m_rgbaColors.find(inColor) == m_rgbaColors.end())
-            {
-                Vec<4, std::uint32_t> result(
-                    color.x * 255,
-                    color.y * 255,
-                    color.z * 255,
-                    color.w * 255
-                );
-
-                m_rgbaColors.insert(
-                    std::make_pair(
-                        inColor,
-                        result
-                    )
-                );
-
-                return result;
-            }
-
-            return m_rgbaColors.at(inColor);
+            return m_rgbaColors.at(backgroundColor);
         }
 
         Vec<3, std::uint32_t> hexToRgb(const std::string& inColor)
@@ -115,7 +86,7 @@ namespace Chicane
 
             if (m_rgbColors.find(inColor) == m_rgbColors.end())
             {
-                Vec<3, std::uint32_t> result(color.x, color.y,  color.z);
+                Vec<3, std::uint32_t> result(color.x, color.y, color.z);
 
                 m_rgbColors.insert(
                     std::make_pair(
@@ -187,7 +158,7 @@ namespace Chicane
 
             float percentage = std::stof(std::string(inValue.begin(), inValue.end() - 1)) / 100;
 
-            ImVec2 regionSize = inPosition == Style::Position::Absolute ? ImGui::GetCurrentWindowRead()->Size : ImGui::GetContentRegionAvail();
+            Vec<2, std::uint32_t> regionSize = Vec<2, std::uint32_t>(0U);
 
             if (inDirection == Style::Direction::Horizontal)
             {
@@ -349,7 +320,7 @@ namespace Chicane
             {
                 return;
             }
-
+/*
             ImVec2 position = style.position == Style::Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
 
             if (style.margin.left != 0.0f || style.margin.right != 0.0f)
@@ -386,6 +357,7 @@ namespace Chicane
             execOnTick(inNode);
 
             getComponent(inNode.name())(inNode);
+*/
         }
 
         std::string anyToString(const Reference& inValue)

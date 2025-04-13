@@ -22,13 +22,13 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(
+                    getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
 
-                std::string huh = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
-    
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
+                result.bIsVisible = String::toBool(isVisible);
                 result.itemSize   = getItemSize(inNode);
                 result.style      = Style::getStyle(inNode);
                 result.items      = getItems(inNode);
@@ -38,11 +38,13 @@ namespace Chicane
                 return result;
             }
 
-            void validate(const Props& inProps)
+            void assertProps(const Props& inProps)
             {
                 if (inProps.id.empty())
                 {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                    throw std::runtime_error(
+                        TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute"
+                    );
                 }
             }
 
@@ -56,7 +58,7 @@ namespace Chicane
                 {
                     return;
                 }
-
+/*
                 ImVec2 wrapperSize(
                     inProps.style.width,
                     inProps.style.height
@@ -130,6 +132,7 @@ namespace Chicane
                         }
                     ImGui::EndChild();
                 ImGui::PopStyleColor();
+*/
             }
 
             void showRenderers(const Props& inProps)
@@ -187,7 +190,7 @@ namespace Chicane
 
             void compileRaw(const Props& inProps)
             {
-                validate(inProps);
+                assertProps(inProps);
 
                 if (!inProps.bIsVisible)
                 {

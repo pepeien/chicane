@@ -46,7 +46,7 @@ namespace Chicane
             void removeFunction(const std::string& inId);
 
         protected:
-            void validate(const pugi::xml_node& inNode);
+            void assertProps(const pugi::xml_node& inNode);
             void compile(
                 const pugi::xml_node& inNode,
                 const Vec<2, int>& inSize,
@@ -60,12 +60,7 @@ namespace Chicane
             Component::Functions m_functions;
 
         private:
-            bool                 m_bWasStyleAdded;
-
-            ImGuiWindowFlags     m_flags;
-
-            ImVec2               m_size;
-            ImVec2               m_position;
+            bool m_bWasStyleAdded;
         };
     }
 }

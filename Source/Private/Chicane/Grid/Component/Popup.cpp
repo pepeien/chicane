@@ -11,32 +11,40 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible     = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
-                const std::string& isConstrained = parseText(getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string());
-                const std::string& isResizable   = parseText(getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(
+                    getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
+                const std::string& isConstrained = parseText(
+                    getAttribute(IS_CONSTRAINED_ATTRIBUTE_NAME, inNode).as_string()
+                );
+                const std::string& isResizable = parseText(
+                    getAttribute(IS_RESIZABLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
 
                 Props result = {};
                 result.id             = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible     = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
-                result.bIsConstrained = isConstrained.empty() || String::areEquals(isConstrained, "1") || String::areEquals(isConstrained, "true");
-                result.bIsResizable   = isResizable.empty() || String::areEquals(isResizable, "1") || String::areEquals(isResizable, "true");
+                result.bIsVisible     = String::toBool(isVisible);
+                result.bIsConstrained = String::toBool(isConstrained);
+                result.bIsResizable   = String::toBool(isResizable);
                 result.style          = Style::getStyle(inNode);
                 result.children       = inNode.children();
 
                 return result;
             }
 
-            void validate(const Props& inProps)
+            void assertProps(const Props& inProps)
             {
                 if (inProps.id.empty())
                 {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                    throw std::runtime_error(
+                        TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute"
+                    );
                 }
             }
 
             void compileRaw(const Props& inProps)
             {
-                validate(inProps);
+                assertProps(inProps);
 
                 if (!inProps.bIsVisible)
                 {
@@ -44,7 +52,7 @@ namespace Chicane
                 }
 
                 const char* id = inProps.id.c_str();
-
+/*
                 ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
 
                 if (!inProps.bIsResizable)
@@ -78,6 +86,7 @@ namespace Chicane
                         }
                     ImGui::End();
                 ImGui::PopStyleColor();
+*/
             }
 
             void compile(const pugi::xml_node& inNode)

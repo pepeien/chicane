@@ -29,9 +29,7 @@ namespace Chicane
                     return;
                 }
 
-                outProps.onClick = view->getFunction(
-                    onClickFunctionData.name
-                );
+                outProps.onClick = view->getFunction(onClickFunctionData.name);
 
                 Component::Event onClickEvent = {};
                 onClickEvent.values = onClickFunctionData.params;
@@ -54,11 +52,13 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(
+                    getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
     
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
+                result.bIsVisible = String::toBool(isVisible);
                 result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
@@ -67,23 +67,26 @@ namespace Chicane
                 return result;
             }
 
-            void validate(const Props& inProps)
+            void assertProps(const Props& inProps)
             {
                 if (inProps.id.empty())
                 {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                    throw std::runtime_error(
+                        TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute"
+                    );
                 }
             }
 
             void compileRaw(const Props& inProps)
             {
-                validate(inProps);
+                assertProps(inProps);
 
                 if (!inProps.bIsVisible)
                 {
                     return;
                 }
 
+/*
                 ImVec2 initialPosition = ImGui::GetCursorPos();
 
                 if (
@@ -104,7 +107,7 @@ namespace Chicane
                 }
 
                 ImGui::SetCursorPos(initialPosition);
-
+*/
                 Container::Props containerProps {};
                 containerProps.id         = inProps.id + "_content";
                 containerProps.style      = inProps.style;

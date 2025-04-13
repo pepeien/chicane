@@ -11,11 +11,14 @@ namespace Chicane
         {
             void handlePositioning(const std::string& inText, const Style& inStyle)
             {
-                if (inStyle.horizontalAlignment == Style::Alignment::Start && inStyle.verticalAlignment == Style::Alignment::Start)
+                if (
+                    inStyle.horizontalAlignment == Style::Alignment::Start &&
+                    inStyle.verticalAlignment == Style::Alignment::Start
+                )
                 {
                     return;
                 }
-
+/*
                 ImVec2 textSize = ImGui::CalcTextSize(inText.c_str());
 
                 if (inStyle.horizontalAlignment == Style::Alignment::Center || inStyle.horizontalAlignment == Style::Alignment::End)
@@ -41,18 +44,20 @@ namespace Chicane
                         ImGui::SetCursorPosY(diff * 0.5f);
                     }
                 }
+*/
             }
 
             void compileRaw(const std::string& inText, const Style& inStyle)
             {
                 handlePositioning(inText, inStyle);
-
+/*
                 ImGui::PushStyleColor(
                     ImGuiCol_Text,
                     hexToImGuiColor(inStyle.foregroundColor)
                 );
                     ImGui::TextWrapped(parseText(inText).c_str());
                 ImGui::PopStyleColor();
+*/
             }
 
             void compile(const pugi::xml_node& inNode)

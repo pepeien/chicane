@@ -37,13 +37,7 @@ namespace Chicane
                 throw std::runtime_error("UI document " + inSource + " does not have any components");
             }
 
-            validate(m_document.first_child());
-
-            m_flags = ImGuiWindowFlags_NoNav |
-                      ImGuiWindowFlags_NoDecoration |
-                      ImGuiWindowFlags_NoMove |
-                      ImGuiWindowFlags_NoBackground |
-                      ImGuiWindowFlags_NoBringToFrontOnFocus;
+            assertProps(m_document.first_child());
 
             Application::addView(this);
         }
@@ -178,7 +172,7 @@ namespace Chicane
             m_functions.erase(inId);
         }
 
-        void View::validate(const pugi::xml_node& inNode)
+        void View::assert(const pugi::xml_node& inNode)
         {
             bool bIsRoot  = inNode.parent() == inNode.root();
             bool bIsAlone = bIsRoot && !inNode.next_sibling();
@@ -200,6 +194,7 @@ namespace Chicane
             const Vec<2, int>& inPosition
         )
         {
+    /*
             m_size.x = static_cast<float>(inSize.x);
             m_size.y = static_cast<float>(inSize.y);
             ImGui::SetNextWindowContentSize(m_size);
@@ -225,6 +220,7 @@ namespace Chicane
             );
                 compileChildren(inNode);
             ImGui::End();
+*/
         }
     }
 }

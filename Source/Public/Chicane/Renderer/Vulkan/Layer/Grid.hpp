@@ -21,9 +21,7 @@ namespace Chicane
             void build() override;
             void destroy() override;
             void rebuild() override;
-
-            void onEvent(const SDL_Event& inEvent) override;
-
+    
             void setup(void* outData) override;
             void render(void* outData) override;
 
@@ -33,8 +31,6 @@ namespace Chicane
             void initDescriptorPool();
             void initRenderpass();
             void initFramebuffers();
-            void setupImgui();
-            void initImgui();
 
         private:
             // Window

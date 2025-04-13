@@ -11,11 +11,13 @@ namespace Chicane
         {
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(
+                    getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
 
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "true") || String::areEquals(isVisible, "1");
+                result.bIsVisible = String::toBool(isVisible);
                 result.style      = Style::getStyle(inNode);
                 result.items      = getItems(inNode);
                 result.itemGetter = getItemGetter(inNode);
@@ -26,6 +28,7 @@ namespace Chicane
 
             void handlePositioning(const Props& inProps, std::uint32_t inIndex)
             {
+/*
                 if (inProps.style.listDirection == Style::ListDirection::Row)
                 {
                     ImGui::SameLine();
@@ -46,25 +49,28 @@ namespace Chicane
                         ImGui::GetCursorPosY() + ((inProps.style.gap.top / 2) + (inProps.style.gap.bottom / 2))
                     );
                 }
+*/
             }
 
-            void validate(const Props& inProps)
+            void assertProps(const Props& inProps)
             {
                 if (inProps.id.empty())
                 {
-                    throw std::runtime_error(TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute");
+                    throw std::runtime_error(
+                        TAG_ID + " components must have a " + ID_ATTRIBUTE_NAME + " attribute"
+                    );
                 }
             }
 
             void compileRaw(const Props& inProps)
             {
-                validate(inProps);
+                assertProps(inProps);
 
                 if (!inProps.bIsVisible)
                 {
                     return;
                 }
-
+/*
                 ImGui::PushStyleColor(
                     ImGuiCol_ChildBg,
                     hexToImGuiColor(inProps.style.backgroundColor)
@@ -106,6 +112,7 @@ namespace Chicane
                         }
                     ImGui::EndChild();
                 ImGui::PopStyleColor();
+*/
             }
 
             void compile(const pugi::xml_node& inNode)

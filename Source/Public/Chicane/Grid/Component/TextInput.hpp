@@ -31,7 +31,7 @@ namespace Chicane
                 Component::Function onInput;           // Optional
             };
 
-            void validate(const pugi::xml_node& inNode);
+            void assertProps(const pugi::xml_node& inNode);
             void compile(const pugi::xml_node& inNode);
         }
     }

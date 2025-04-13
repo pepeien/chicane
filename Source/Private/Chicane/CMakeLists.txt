@@ -6,14 +6,6 @@ file(
     ${RUNTIME_SOURCE_DIR}/*.cpp
 
     ${VENDORS_DIR}/base64/base64.cpp
-    ${VENDORS_DIR}/imgui/imgui_draw.cpp
-    ${VENDORS_DIR}/imgui/imgui_tables.cpp
-    ${VENDORS_DIR}/imgui/imgui_widgets.cpp
-    ${VENDORS_DIR}/imgui/imgui_chicane.cpp
-    ${VENDORS_DIR}/imgui/imgui.cpp
-    ${VENDORS_DIR}/imgui/misc/cpp/imgui_stdlib.cpp
-    ${VENDORS_DIR}/imgui/backends/imgui_impl_sdl3.cpp
-    ${VENDORS_DIR}/imgui/backends/imgui_impl_vulkan.cpp
 )
 
 ############## Setup Static #######################
@@ -43,7 +35,6 @@ target_include_directories(
         ${VENDORS_DIR}/base64
         ${VENDORS_DIR}/fast_obj
         ${VENDORS_DIR}/glm
-        ${VENDORS_DIR}/imgui
         ${VENDORS_DIR}/pugixml
         ${VENDORS_DIR}/SDL3/include
     PRIVATE

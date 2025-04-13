@@ -53,13 +53,17 @@ namespace Chicane
 
             Props getProps(const pugi::xml_node& inNode)
             {
-                const std::string& isVisible = parseText(getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string());
+                const std::string& isVisible = parseText(
+                    getAttribute(IS_VISIBLE_ATTRIBUTE_NAME, inNode).as_string()
+                );
     
                 Props result = {};
                 result.id         = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-                result.bIsVisible = isVisible.empty() || String::areEquals(isVisible, "1") || String::areEquals(isVisible, "true");
+                result.bIsVisible = String::toBool(isVisible);
                 result.label      = getAttribute(LABEL_ATTRIBUTE_NAME, inNode).as_string();
-                result.value      = *Application::getView()->getVariable(getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string());
+                result.value      = *Application::getView()->getVariable(
+                    getAttribute(VALUE_ATTRIBUTE_NAME, inNode).as_string()
+                );
                 result.style      = Style::getStyle(inNode);
                 result.children   = inNode.children();
 
@@ -68,7 +72,7 @@ namespace Chicane
                 return result;
             }
 
-            void validate(const pugi::xml_node& inNode)
+            void assertProps(const pugi::xml_node& inNode)
             {
                 if (!String::areEquals(TAG_ID, inNode.name()))
                 {
@@ -79,7 +83,9 @@ namespace Chicane
 
                 if (variable.empty())
                 {
-                    throw std::runtime_error(TAG_ID + " components must have a " + VALUE_ATTRIBUTE_NAME + " attribute");
+                    throw std::runtime_error(
+                        TAG_ID + " components must have a " + VALUE_ATTRIBUTE_NAME + " attribute"
+                    );
                 }
 
                 if (!Application::hasView())
@@ -91,7 +97,9 @@ namespace Chicane
 
                 if (!view->hasVariable(variable))
                 {
-                    throw std::runtime_error("The view " + view->getId() + " doesn't have the variable " + variable + " exposed");
+                    throw std::runtime_error(
+                        "The view " + view->getId() + " doesn't have the variable " + variable + " exposed"
+                    );
                 }
 
                 if (view->getVariable(variable)->isType<std::string>())
@@ -102,7 +110,7 @@ namespace Chicane
 
             void compile(const pugi::xml_node& inNode)
             {
-                validate(inNode);
+                assertProps(inNode);
 
                 Props props = getProps(inNode);
 
@@ -112,7 +120,7 @@ namespace Chicane
                 }
     
                 const Style& style = props.style;
-
+/*
                 ImGui::PushItemWidth(style.width);
                     const char* label = props.label.empty() ? " " : props.label.c_str();
 
@@ -123,6 +131,7 @@ namespace Chicane
                         }
                     }
                 ImGui::PopItemWidth();
+*/
             }
         }
     }
