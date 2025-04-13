@@ -63,7 +63,7 @@ namespace Chicane
                         std::string data = std::string(inData.begin(), inData.end());
                         data.push_back('\n');
 
-                        fastObjMesh* mesh = fast_obj_read_data(
+                        fastObjMesh* mesh = fast_obj_read_memory(
                             &data.front(),
                             &data.back()
                         );

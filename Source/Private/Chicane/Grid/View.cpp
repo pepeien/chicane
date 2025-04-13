@@ -172,7 +172,7 @@ namespace Chicane
             m_functions.erase(inId);
         }
 
-        void View::assert(const pugi::xml_node& inNode)
+        void View::assertProps(const pugi::xml_node& inNode)
         {
             bool bIsRoot  = inNode.parent() == inNode.root();
             bool bIsAlone = bIsRoot && !inNode.next_sibling();
