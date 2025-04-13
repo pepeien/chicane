@@ -63,10 +63,7 @@ namespace Chicane
                         std::string data = std::string(inData.begin(), inData.end());
                         data.push_back('\n');
 
-                        fastObjMesh* mesh = fast_obj_read_memory(
-                            &data.front(),
-                            &data.back()
-                        );
+                        fastObjMesh* mesh = fast_obj_read_memory(&data.front(), &data.back());
 
                         std::uint32_t indexPerFace = *mesh->face_vertices;
 
