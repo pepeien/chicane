@@ -1,0 +1,11 @@
+<Asset version="1" id="Black">
+    <Sides>
+        <Texture side="Left">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+        <Texture side="Right">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+        <Texture side="Front">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+        <Texture side="Back">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+        <Texture side="Up">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+        <Texture side="Down">Contents/Sample/Shooter/Textures/Black.btex</Texture>
+    </Sides>
+    <Model>Contents/Sample/Shooter/Models/Skybox.bmdl</Model>
+</Asset>
