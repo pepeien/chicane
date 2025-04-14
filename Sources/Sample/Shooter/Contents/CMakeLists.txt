@@ -2,44 +2,9 @@
 add_custom_target(${SHOOTER_CONTENT_TARGET_NAME})
 
 ##############  Set source files  #######################
-file(
-    GLOB_RECURSE
-
-    SOURCES
-        "${SHOOTER_CONTENT_SOURCE_DIR}/*"
+CH_COPY_FILES(
+    ${SHOOTER_CONTENT_TARGET_NAME}
+    ${SHOOTER_CONTENT_SOURCE_DIR}
+    ${BUILD_DIR}/Contents/Sample/Shooter
+    ".:*CMakeLists.txt|.frag|.vert$"
 )
-
-list(
-    FILTER
-        SOURCES
-    EXCLUDE
-    REGEX
-        ".:*CMakeLists.txt|.frag|.vert$"
-)
-
-##############  Copy files  #######################
-foreach(ITEM ${SOURCES})
-    get_filename_component(FILE_DIR  ${ITEM} DIRECTORY)
-    get_filename_component(FILE_NAME ${ITEM} NAME)
-
-    set(ITEM_DIR "${FILE_DIR}")
-    string(REPLACE "${SHOOTER_CONTENT_SOURCE_DIR}" "" ITEM_DIR ${ITEM_DIR})
-
-    set(ITEM_DIR "${BUILD_DIR}/Contents/Sample/Shooter/${ITEM_DIR}")
-    string(REPLACE "//" "/" ITEM_DIR ${ITEM_DIR})
-
-    file(MAKE_DIRECTORY "${ITEM_DIR}")
-
-    set(ITEM_FILE "${ITEM_DIR}/${FILE_NAME}")
-    string(REPLACE "//" "/" ITEM_FILE ${ITEM_FILE})
-
-    add_custom_command(
-        TARGET
-            ${SHOOTER_CONTENT_TARGET_NAME}
-        POST_BUILD
-        COMMAND
-            ${CMAKE_COMMAND} -E copy
-                ${ITEM}
-                ${ITEM_FILE}
-    )
-endforeach(ITEM)
