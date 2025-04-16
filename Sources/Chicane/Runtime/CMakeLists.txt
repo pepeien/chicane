@@ -1,4 +1,4 @@
-##############  Set source files  #######################
+##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
@@ -15,8 +15,8 @@ file(
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
 
-############## Setup Static #######################
-add_library(${RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+##################### Setup #######################
+add_library(${RUNTIME_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 add_library(
     "${NAME}::Runtime"
@@ -33,23 +33,17 @@ target_include_directories(
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
+    PRIVATE
         # Systems
-        ${CORE_INCLUDE_DIRS}
-        ${BOX_INCLUDE_DIRS}
         ${RUNTIME_INCLUDE_DIRS}
 )
 
 target_link_libraries(
     ${RUNTIME_TARGET_NAME}
 
-    PUBLIC
+    PRIVATE
         # Systems
-        Chicane::Box
-        Chicane::Core
-        Chicane::Grid
-
-        # Vendors
-        Vulkan::Vulkan
+        ${RUNTIME_LIBRARIES}
 )
 
 add_dependencies(
@@ -59,5 +53,4 @@ add_dependencies(
     ${RUNTIME_CONTENT_TARGET_NAME}
 )
 
-##############  Set compiler  #######################
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})

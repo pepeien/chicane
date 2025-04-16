@@ -1,7 +1,6 @@
 #include "Chicane/Box/Asset/Model/Instance.hpp"
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
@@ -70,7 +69,7 @@ namespace Chicane
 
                 m_data = inData;
 
-                getXMLRoot().text().set(base64::encode(inData));
+                getXMLRoot().text().set(Base64::encode(inData));
             }
 
             void Instance::setData(const std::string& inFilepath)
@@ -80,7 +79,7 @@ namespace Chicane
                     return;
                 }
 
-                setData(base64::read_file(inFilepath));
+                setData(Base64::readFile(inFilepath));
             }
 
             void Instance::fetchVendor()
@@ -112,7 +111,7 @@ namespace Chicane
                     return;
                 }
 
-                m_data = base64::decode(getXMLRoot().text().as_string());
+                m_data = Base64::decode(getXMLRoot().text().as_string());
             }
         }
     }

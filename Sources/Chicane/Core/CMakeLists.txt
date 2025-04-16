@@ -1,13 +1,10 @@
-##############  Set source files  #######################
+##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
 
     # Sources
     ${CORE_HEADER_DIR}/*.hpp
-
-    # Vendors
-    ${VENDORS_DIR}/base64/base64.cpp
 )
 
 file(
@@ -18,8 +15,8 @@ file(
     ${CORE_SOURCE_DIR}/*.cpp
 )
 
-############## Setup Static #######################
-add_library(${CORE_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+##################### Setup #######################
+add_library(${CORE_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 add_library(
     "${NAME}::Core"
@@ -36,6 +33,7 @@ target_include_directories(
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
+    PRIVATE
         # Systems
         ${CORE_INCLUDE_DIRS}
 )
@@ -43,10 +41,9 @@ target_include_directories(
 target_link_libraries(
     ${CORE_TARGET_NAME}
 
-    PUBLIC
-        pugixml::pugixml
-        SDL3::SDL3
+    PRIVATE
+        # Systems
+        ${CORE_LIBRARIES}
 )
 
-##############  Set compiler  #######################
 CH_ADD_COMPILER(${CORE_TARGET_NAME})

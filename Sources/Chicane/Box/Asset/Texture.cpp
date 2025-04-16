@@ -1,5 +1,6 @@
 #include "Chicane/Box/Asset/Texture/Instance.hpp"
 
+#include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Xml.hpp"
 
@@ -71,7 +72,7 @@ namespace Chicane
 
                 m_data = inData;
 
-                getXMLRoot().text().set(base64::encode(inData));
+                getXMLRoot().text().set(Base64::encode(inData));
             }
 
             void Instance::setData(const std::string& inFilepath)
@@ -81,7 +82,7 @@ namespace Chicane
                     return;
                 }
 
-                setData(base64::read_file(inFilepath));
+                setData(Base64::readFile(inFilepath));
             }
 
             void Instance::fetchVendor()
@@ -113,7 +114,7 @@ namespace Chicane
                     return;
                 }
 
-                m_data = base64::decode(getXMLRoot().text().as_string());
+                m_data = Base64::decode(getXMLRoot().text().as_string());
             }
         }
     }

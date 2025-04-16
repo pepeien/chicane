@@ -1,4 +1,4 @@
-##############  Set source files  #######################
+##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
@@ -15,8 +15,8 @@ file(
     ${BOX_SOURCE_DIR}/*.cpp
 )
 
-############## Setup Static #######################
-add_library(${BOX_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+##################### Setup #######################
+add_library(${BOX_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 add_library(
     "${NAME}::Box"
@@ -33,17 +33,17 @@ target_include_directories(
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
+    PRIVATE
         # Systems
         ${BOX_INCLUDE_DIRS}
-        ${CORE_INCLUDE_DIRS}
 )
 
 target_link_libraries(
     ${BOX_TARGET_NAME}
 
-    PUBLIC
-        Chicane::Core
+    PRIVATE
+        # Systems
+        ${BOX_LIBRARIES}
 )
 
-##############  Set compiler  #######################
 CH_ADD_COMPILER(${BOX_TARGET_NAME})

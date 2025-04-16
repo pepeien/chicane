@@ -1,4 +1,4 @@
-##############  Set source files  #######################
+##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
@@ -15,8 +15,8 @@ file(
     ${GRID_SOURCE_DIR}/*.cpp
 )
 
-############## Setup Static #######################
-add_library(${GRID_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+##################### Setup #######################
+add_library(${GRID_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 add_library(
     "${NAME}::Grid"
@@ -33,18 +33,17 @@ target_include_directories(
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
+    PRIVATE
         # Systems
-        ${CORE_INCLUDE_DIRS}
-        ${BOX_INCLUDE_DIRS}
+        ${GRID_INCLUDE_DIRS}
 )
 
 target_link_libraries(
     ${GRID_TARGET_NAME}
 
-    PUBLIC
-        Chicane::Box
-        Chicane::Core
+    PRIVATE
+        # Systems
+        ${GRID_LIBRARIES}
 )
 
-##############  Set compiler  #######################
 CH_ADD_COMPILER(${GRID_TARGET_NAME})
