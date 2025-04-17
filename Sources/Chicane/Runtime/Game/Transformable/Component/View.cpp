@@ -1,6 +1,6 @@
-#include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
+#include "Runtime/Game/Transformable/Component/View.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

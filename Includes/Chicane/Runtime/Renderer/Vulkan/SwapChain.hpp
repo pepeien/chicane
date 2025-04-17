@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Frame.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/SwapChain/Bundle.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/SwapChain/SupportDetails.hpp"
+#include "Runtime/Renderer/Vulkan/Base.hpp"
+#include "Runtime/Renderer/Vulkan/Frame.hpp"
+#include "Runtime/Renderer/Vulkan/Queue.hpp"
+#include "Runtime/Renderer/Vulkan/Image.hpp"
+#include "Runtime/Renderer/Vulkan/SwapChain/Bundle.hpp"
+#include "Runtime/Renderer/Vulkan/SwapChain/SupportDetails.hpp"
 
 namespace Chicane
 {

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Window.hpp"
-#include "Chicane/Runtime/Game/Level/Instance.hpp"
-#include "Chicane/Grid/View.hpp"
-#include "Chicane/Runtime/Renderer/Layer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Core.hpp"
+#include "Core/Window.hpp"
+#include "Runtime/Game/Level/Instance.hpp"
+#include "Grid/View.hpp"
+#include "Runtime/Renderer/Layer.hpp"
+#include "Runtime/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {

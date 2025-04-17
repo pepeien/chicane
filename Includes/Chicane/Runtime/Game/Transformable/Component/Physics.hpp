@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
+#include "Core.hpp"
+#include "Core/Math.hpp"
+#include "Runtime/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
 {

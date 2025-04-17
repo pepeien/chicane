@@ -1,7 +1,7 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
+#include "Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Runtime/Renderer/Vulkan/CommandBuffer.hpp"
+#include "Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 
 namespace Chicane
 {

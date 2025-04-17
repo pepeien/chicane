@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Mesh/Data.hpp"
-#include "Chicane/Runtime/Renderer/View/Data.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"
+#include "Box/Asset/Mesh/Data.hpp"
+#include "Runtime/Renderer/View/Data.hpp"
+#include "Runtime/Renderer/Vulkan/Base.hpp"
+#include "Runtime/Renderer/Vulkan/Image/Data.hpp"
+#include "Runtime/Renderer/Vulkan/Frame/Resource.hpp"
 
 namespace Chicane
 {

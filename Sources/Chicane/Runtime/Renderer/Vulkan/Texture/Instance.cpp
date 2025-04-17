@@ -1,10 +1,10 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp"
+#include "Runtime/Renderer/Vulkan/Texture/Instance.hpp"
 
-#include "Chicane/Box/Asset/Texture.hpp"
-#include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
+#include "Box/Asset/Texture.hpp"
+#include "Core/FileSystem.hpp"
+#include "Runtime/Renderer/Vulkan/Buffer.hpp"
+#include "Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
 
 namespace Chicane
 {

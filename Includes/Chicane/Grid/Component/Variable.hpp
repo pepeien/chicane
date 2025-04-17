@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Reference.hpp"
+#include "Core.hpp"
+#include "Grid/Reference.hpp"
 
 namespace Chicane
 {

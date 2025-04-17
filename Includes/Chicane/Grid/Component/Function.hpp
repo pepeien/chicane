@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Component/Event.hpp"
-#include "Chicane/Grid/Reference.hpp"
+#include "Core.hpp"
+#include "Grid/Component/Event.hpp"
+#include "Grid/Reference.hpp"
 
 namespace Chicane
 {

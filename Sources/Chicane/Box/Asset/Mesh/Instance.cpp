@@ -1,8 +1,8 @@
-#include "Chicane/Box/Asset/Mesh/Instance.hpp"
+#include "Box/Asset/Mesh/Instance.hpp"
 
-#include "Chicane/Box/Asset/Model.hpp"
-#include "Chicane/Box/Asset/Texture.hpp"
-#include "Chicane/Core.hpp"
+#include "Box/Asset/Model.hpp"
+#include "Box/Asset/Texture.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

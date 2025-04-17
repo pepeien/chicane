@@ -1,8 +1,8 @@
-#include "Chicane/Box/Asset/Audio/Instance.hpp"
+#include "Box/Asset/Audio/Instance.hpp"
 
-#include "Chicane/Core/Base64.hpp"
-#include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Core/Xml.hpp"
+#include "Core/Base64.hpp"
+#include "Core/FileSystem.hpp"
+#include "Core/Xml.hpp"
 
 namespace Chicane
 {

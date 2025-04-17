@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Component/Child.hpp"
-#include "Chicane/Grid/Component/Event.hpp"
-#include "Chicane/Grid/Style.hpp"
+#include "Core.hpp"
+#include "Grid/Component/Child.hpp"
+#include "Grid/Component/Event.hpp"
+#include "Grid/Style.hpp"
 
 namespace Chicane
 {

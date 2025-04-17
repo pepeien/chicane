@@ -1,8 +1,8 @@
-#include "Chicane/Runtime/Renderer/Instance.hpp"
+#include "Runtime/Renderer/Instance.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Runtime/Application.hpp"
+#include "Core.hpp"
+#include "Runtime/Game.hpp"
 
 namespace Chicane
 {

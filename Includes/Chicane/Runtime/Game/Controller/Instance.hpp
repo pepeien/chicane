@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game/Controller/Gamepad.hpp"
-#include "Chicane/Runtime/Game/Controller/Keyboard.hpp"
-#include "Chicane/Runtime/Game/Controller/Mouse.hpp"
+#include "Core.hpp"
+#include "Runtime/Game/Controller/Gamepad.hpp"
+#include "Runtime/Game/Controller/Keyboard.hpp"
+#include "Runtime/Game/Controller/Mouse.hpp"
 
 namespace Chicane
 {

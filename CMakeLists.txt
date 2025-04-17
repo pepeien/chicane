@@ -1,10 +1,11 @@
 ##################### Includes #######################
 include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
 include(Functions.cmake)
-include(CMakePackageConfigHelpers)
+
+include(GNUInstallDirs)
 
 ##################### Settings #######################
-cmake_minimum_required(VERSION 3.11.0)
+cmake_minimum_required(VERSION 3.16.0)
 
 set(CMAKE_CXX_STANDARD          20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -13,18 +14,14 @@ set(NAME "Chicane")
 
 project(${NAME} VERSION 0.1.0)
 
-option(BUILD_SHARED_LIBS "Build package with shared libraries." ON)
+set(BUILD_SHARED_LIBS ON)
 
 if (BUILD_SHARED_LIBS)
     add_definitions(-DBUILD_SHARED)
-    add_definitions(-DBUILD_SHARED_DLL)
-endif()
 
-##################### Vendors #######################
-find_package(Vulkan REQUIRED)
-
-if (NOT Vulkan_FOUND)
-    message(FATAL_ERROR "Vulkan not found")
+    if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+        add_definitions(-DBUILD_EXPORT)
+    endif()
 endif()
 
 ##################### Values #######################
@@ -37,7 +34,8 @@ if (NOT DEFINED BUILD_DIR)
 endif()
 
 ## System
-set(CMAKE_STATIC_LIBRARY_PREFIX "")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BUILD_DIR})
+
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 ## Base
@@ -46,56 +44,57 @@ set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
 set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
 set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 
-set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}/${NAME}")
-set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}")
+set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}/${NAME}")
+set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
 
 ## Chicane
 set(CHICANE_INCLUDES_DIR "${INCLUDES_DIR}/Chicane")
 set(CHICANE_SOURCES_DIR  "${SOURCES_DIR}/Chicane")
 set(CHICANE_INSTALL_DIR  "${CMAKE_INSTALL_INCLUDEDIR}/Chicane")
 
+## Vendors
+set(VENDORS_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/Vendors")
+
 ## Box
 set(BOX_TARGET_NAME "${NAME}-Box")
 set(BOX_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Box")
 set(BOX_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Box")
 set(
-    BOX_INCLUDE_DIRS
+    BOX_INCLUDES
+
+    # Alias
+    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
     # Vendors
     ${VENDORS_DIR}/fast_obj
-    ${VENDORS_DIR}/glm
-    ${VENDORS_DIR}/pugixml/src
-    ${VENDORS_DIR}/SDL3/include
-    ${VENDORS_DIR}/stb
 )
 set(
     BOX_LIBRARIES
 
     # Systems
     Chicane::Core
-
-    # Vendors
-    pugixml::pugixml
-    SDL3::SDL3
 )
-
+message("${${VENDORS_DIR}/stb}")
 ## Core
 set(CORE_TARGET_NAME "${NAME}-Core")
 set(CORE_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Core")
 set(CORE_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Core")
 set(
-    CORE_INCLUDE_DIRS
+    CORE_INCLUDES
+
+    # Alias
+    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 
     # Vendors
-    ${VENDORS_DIR}/glm
-    ${VENDORS_DIR}/pugixml/src
-    ${VENDORS_DIR}/SDL3/include
     ${VENDORS_DIR}/stb
 )
 set(
     CORE_LIBRARIES
 
     # Vendors
+    glm::glm
     pugixml::pugixml
     SDL3::SDL3
 )
@@ -105,14 +104,11 @@ set(GRID_TARGET_NAME "${NAME}-Grid")
 set(GRID_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Grid")
 set(GRID_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Grid")
 set(
-    GRID_INCLUDE_DIRS
+    GRID_INCLUDES
 
-    # Vendors
-    ${VENDORS_DIR}/fast_obj
-    ${VENDORS_DIR}/glm
-    ${VENDORS_DIR}/pugixml/src
-    ${VENDORS_DIR}/SDL3/include
-    ${VENDORS_DIR}/stb
+    # Alias
+    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 )
 set(
     GRID_LIBRARIES
@@ -120,10 +116,6 @@ set(
     # Systems
     Chicane::Box
     Chicane::Core
-
-    # Vendors
-    pugixml::pugixml
-    SDL3::SDL3
 )
 
 ## Runtime
@@ -133,12 +125,11 @@ set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
 set(
     RUNTIME_INCLUDE_DIRS
 
+    # Alias
+    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+
     # Vendors
-    ${VENDORS_DIR}/fast_obj
-    ${VENDORS_DIR}/glm
-    ${VENDORS_DIR}/pugixml/src
-    ${VENDORS_DIR}/SDL3/include
-    ${VENDORS_DIR}/stb
     ${Vulkan_INCLUDE_DIRS}
 )
 set(
@@ -150,8 +141,6 @@ set(
     Chicane::Grid
 
     # Vendors
-    pugixml::pugixml
-    SDL3::SDL3
     Vulkan::Vulkan
 )
 
@@ -166,9 +155,6 @@ set(RUNTIME_CONTENT_VULKAN_SHADERS_SOURCE_DIR  "${RUNTIME_CONTENT_VULKAN_SOURCE_
 
 ##################### Directories #######################
 add_subdirectory(Contents)
+add_subdirectory(Samples)
 add_subdirectory(Sources)
 add_subdirectory(Vendors)
-
-##################### Install #######################
-CH_INSTALL_FILES("${CHICANE_INCLUDES_DIR}/*.hpp" ${CHICANE_INCLUDES_DIR} ${CHICANE_INSTALL_DIR})
-CH_INSTALL_FILES("${BUILD_DIR}/*" ${BUILD_DIR} ${CMAKE_INSTALL_BINDIR})

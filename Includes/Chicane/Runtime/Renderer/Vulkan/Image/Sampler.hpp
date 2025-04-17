@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo.hpp"
+#include "Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo.hpp"

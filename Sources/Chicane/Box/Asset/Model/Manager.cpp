@@ -1,4 +1,4 @@
-#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Box/Asset/Model/Manager.hpp"
 
 namespace Chicane
 {

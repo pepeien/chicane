@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolSizeCreateInfo.hpp"
+#include "Runtime/Renderer/Vulkan/Base.hpp"
+#include "Runtime/Renderer/Vulkan/Descriptor/PoolSizeCreateInfo.hpp"
 
 namespace Chicane
 {

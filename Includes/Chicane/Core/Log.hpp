@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
-#include "Chicane/Core/Color.hpp"
-#include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Log/Entry.hpp"
-#include "Chicane/Core/String.hpp"
+#include "Core/Essentials.hpp"
+#include "Core/Color.hpp"
+#include "Core/Event.hpp"
+#include "Core/Log/Entry.hpp"
+#include "Core/String.hpp"
 
 namespace Chicane
 {

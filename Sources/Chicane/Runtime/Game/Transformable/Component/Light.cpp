@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
+#include "Runtime/Game/Transformable/Component/Light.hpp"
 
 namespace Chicane
 {

@@ -1,8 +1,8 @@
-#include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
+#include "Runtime/Game/Transformable/Component/Mesh.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core.hpp"
+#include "Runtime/Application.hpp"
+#include "Box.hpp"
+#include "Core.hpp"
 
 const std::string EMPTY_STRING = "";
 

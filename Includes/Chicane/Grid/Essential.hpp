@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 #include "Component.hpp"
 #include "Reference.hpp"
 #include "Style.hpp"

@@ -1,4 +1,4 @@
-#include "Chicane/Core/Log.hpp"
+#include "Core/Log.hpp"
 
 static constexpr const char* LOG_COLOR_START = "\33[";
 static constexpr const char* LOG_COLOR_END   = "\33[0m\n";

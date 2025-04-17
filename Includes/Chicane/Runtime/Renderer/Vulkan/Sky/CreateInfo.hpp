@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box/Asset/Sky.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Core.hpp"
+#include "Box/Asset/Sky.hpp"
+#include "Runtime/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
 {

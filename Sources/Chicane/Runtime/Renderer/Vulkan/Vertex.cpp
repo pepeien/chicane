@@ -1,6 +1,6 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Vertex.hpp"
+#include "Runtime/Renderer/Vulkan/Vertex.hpp"
 
-#include "Chicane/Box/Asset/Model/Data.hpp"
+#include "Box/Asset/Model/Data.hpp"
 
 namespace Chicane
 {

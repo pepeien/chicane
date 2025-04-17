@@ -1,6 +1,0 @@
-<Asset version="1" id="Apple">
-    <Group id="Body">
-        <Model>Contents/Sample/Shooter/Models/Apple.bmdl</Model>
-        <Texture>Contents/Sample/Shooter/Textures/Apple.btex</Texture>
-    </Group>
-</Asset>

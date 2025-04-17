@@ -1,8 +1,8 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Renderer/Viewport.hpp"
+#include "Runtime/Application.hpp"
+#include "Core.hpp"
+#include "Runtime/Renderer/Viewport.hpp"
 
 namespace Chicane
 {

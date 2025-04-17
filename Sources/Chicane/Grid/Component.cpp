@@ -1,6 +1,6 @@
-#include "Chicane/Grid/Component.hpp"
+#include "Grid/Component.hpp"
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Grid/Essential.hpp"
 
 static const Chicane::Grid::Component::FunctionData EMPTY_FUNCTION_DATA = {};
 

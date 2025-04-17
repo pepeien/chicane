@@ -1,8 +1,8 @@
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Instance.hpp"
+#include "Runtime/Renderer/Vulkan/GraphicsPipeline/Instance.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Shader.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Vertex.hpp"
+#include "Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Runtime/Renderer/Vulkan/Shader.hpp"
+#include "Runtime/Renderer/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {

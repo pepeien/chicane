@@ -1,8 +1,8 @@
-#include "Chicane/Box/Asset/Texture/Instance.hpp"
+#include "Box/Asset/Texture/Instance.hpp"
 
-#include "Chicane/Core/Base64.hpp"
-#include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Core/Xml.hpp"
+#include "Core/Base64.hpp"
+#include "Core/FileSystem.hpp"
+#include "Core/Xml.hpp"
 
 namespace Chicane
 {

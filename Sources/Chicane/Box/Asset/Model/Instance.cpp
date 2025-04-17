@@ -1,6 +1,6 @@
-#include "Chicane/Box/Asset/Model/Instance.hpp"
+#include "Box/Asset/Model/Instance.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

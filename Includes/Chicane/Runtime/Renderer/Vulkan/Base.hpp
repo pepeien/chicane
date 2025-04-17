@@ -1,10 +1,9 @@
 #pragma once
 
-#include "SDL3/SDL_vulkan.h"
+#include <SDL3/SDL_vulkan.h>
+#include <vulkan/vulkan.hpp>
 
-#include "vulkan/vulkan.hpp"
-
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 // Consts
 static const std::vector<const char*> LAYERS = {

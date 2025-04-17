@@ -1,4 +1,4 @@
-<View id="home" style="Contents/Sample/Shooter/Views/Home.decal">
+<View id="home" style="Contents/Samples/Shooter/Views/Home.decal">
     <Container id="victory" isVisible="{{ didPlayerWin }}">
         <Text id="victoryText">YOU WIN!</Text>
     </Container>

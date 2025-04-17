@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Surface.hpp"
+#include "Runtime/Renderer/Vulkan/Surface.hpp"
 
 namespace Chicane
 {

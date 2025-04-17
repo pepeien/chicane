@@ -1,7 +1,7 @@
-#include "Chicane/Grid/Component/List.hpp"
+#include "Grid/Component/List.hpp"
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Essential.hpp"
+#include "Core.hpp"
+#include "Grid/Essential.hpp"
 
 namespace Chicane
 {

@@ -1,7 +1,7 @@
-#include "Chicane/Grid/Component/ProgressBar.hpp"
+#include "Grid/Component/ProgressBar.hpp"
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Essential.hpp"
+#include "Core.hpp"
+#include "Grid/Essential.hpp"
 
 constexpr float MIN_PERCENTAGE = 0.0f;
 constexpr float MAX_PERCENTAGE = 100.0f;

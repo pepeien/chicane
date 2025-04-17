@@ -1,6 +1,6 @@
-#include "Chicane/Core/FileSystem.hpp"
+#include "Core/FileSystem.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

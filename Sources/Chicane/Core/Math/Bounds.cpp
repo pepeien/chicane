@@ -1,6 +1,6 @@
-#include "Chicane/Core/Math/Bounds.hpp"
+#include "Core/Math/Bounds.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 

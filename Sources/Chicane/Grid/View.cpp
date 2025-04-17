@@ -1,8 +1,8 @@
-#include "Chicane/Grid/View.hpp"
+#include "Grid/View.hpp"
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Style.hpp"
+#include "Core.hpp"
+#include "Grid/Essential.hpp"
+#include "Grid/Style.hpp"
 
 static const std::string TAG_ID = "View";
 

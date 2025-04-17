@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Core.hpp"
+#include "Core/Math.hpp"
 #include "Component/Function.hpp"
 #include "Component/Variable.hpp"
 

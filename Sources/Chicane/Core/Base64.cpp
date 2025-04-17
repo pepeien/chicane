@@ -1,4 +1,4 @@
-#include "Chicane/Core/Base64.hpp"
+#include "Core/Base64.hpp"
 
 namespace Chicane
 {

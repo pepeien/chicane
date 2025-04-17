@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box/Manager/EventType.hpp"
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
+#include "Box/Manager/EventType.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

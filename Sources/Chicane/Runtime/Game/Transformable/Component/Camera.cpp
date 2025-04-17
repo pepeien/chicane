@@ -1,7 +1,7 @@
-#include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
+#include "Runtime/Game/Transformable/Component/Camera.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
+#include "Runtime/Application.hpp"
+#include "Runtime/Game/Transformable/Component/Mesh.hpp"
 
 namespace Chicane
 {

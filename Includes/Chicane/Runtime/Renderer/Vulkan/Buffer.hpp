@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Buffer/Instance.hpp"
+#include "Runtime/Renderer/Vulkan/Base.hpp"
+#include "Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp"
+#include "Runtime/Renderer/Vulkan/Buffer/Instance.hpp"
 
 namespace Chicane
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
-#include "Chicane/Box/Asset/Model/Parse/Result.hpp"
+#include "Box/Asset/Model/Parse/Result.hpp"
 
 namespace Chicane
 {

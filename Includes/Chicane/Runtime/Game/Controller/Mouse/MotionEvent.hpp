@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game/Controller/Event.hpp"
+#include "Core.hpp"
+#include "Runtime/Game/Controller/Event.hpp"
 
 namespace Chicane
 {

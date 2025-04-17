@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Math/Bounds.hpp"
-#include "Chicane/Core/Math/Mat.hpp"
-#include "Chicane/Core/Math/Quat.hpp"
-#include "Chicane/Core/Math/Transform.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
+#include "Core/Math/Bounds.hpp"
+#include "Core/Math/Mat.hpp"
+#include "Core/Math/Quat.hpp"
+#include "Core/Math/Transform.hpp"
+#include "Core/Math/Vec.hpp"

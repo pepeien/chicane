@@ -1,8 +1,8 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Grid.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid.hpp"
+#include "Runtime/Application.hpp"
+#include "Core.hpp"
+#include "Grid.hpp"
 
 namespace Chicane
 {

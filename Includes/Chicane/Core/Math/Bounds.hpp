@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Model/Data.hpp"
-#include "Chicane/Core/Essentials.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
-#include "Chicane/Core/Math/Transform.hpp"
+#include "Box/Asset/Model/Data.hpp"
+#include "Core/Essentials.hpp"
+#include "Core/Math/Vec.hpp"
+#include "Core/Math/Transform.hpp"
 
 namespace Chicane
 {

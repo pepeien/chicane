@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 #include "Component/BaseProps.hpp"
 #include "Component/Button.hpp"
 #include "Component/Child.hpp"

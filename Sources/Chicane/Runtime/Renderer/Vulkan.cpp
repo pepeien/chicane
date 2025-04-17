@@ -1,12 +1,12 @@
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Runtime/Renderer/Vulkan.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Level.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Sky.hpp"
+#include "Runtime/Application.hpp"
+#include "Core.hpp"
+#include "Runtime/Game.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Grid.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Level.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
+#include "Runtime/Renderer/Vulkan/Layer/Sky.hpp"
 
 namespace Chicane
 {

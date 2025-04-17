@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Image/Memory/CreateInfo.hpp"
+#include "Runtime/Renderer/Vulkan/Image/Memory/CreateInfo.hpp"

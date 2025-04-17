@@ -1,7 +1,7 @@
-#include "Chicane/Runtime/Game/Transformable/Component/Physics.hpp"
+#include "Runtime/Game/Transformable/Component/Physics.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game/Transformable/Actor.hpp"
+#include "Runtime/Application.hpp"
+#include "Runtime/Game/Transformable/Actor.hpp"
 
 static constexpr float FORCE_MAX_VELOCITY               = 0.3f;
 static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;

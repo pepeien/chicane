@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Reference.hpp"
-#include "Chicane/Grid/Style.hpp"
-#include "Chicane/Grid/View.hpp"
+#include "Grid/Component.hpp"
+#include "Grid/Essential.hpp"
+#include "Grid/Reference.hpp"
+#include "Grid/Style.hpp"
+#include "Grid/View.hpp"

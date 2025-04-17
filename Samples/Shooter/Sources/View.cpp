@@ -9,7 +9,7 @@
 View::View()
     : Chicane::Grid::View(
         "home",
-        "Contents/Sample/Shooter/Views/Home.grid"
+        "Contents/Samples/Shooter/Views/Home.grid"
     ),
     m_didPlayerWin(false),
     m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin))

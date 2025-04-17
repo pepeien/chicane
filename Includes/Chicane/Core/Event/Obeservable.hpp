@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
-#include "Chicane/Core/Event/Subscription.hpp"
+#include "Core/Essentials.hpp"
+#include "Core/Event/Subscription.hpp"
 
 namespace Chicane
 {

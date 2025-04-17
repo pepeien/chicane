@@ -1,3 +1,6 @@
+##################### Vendors #######################
+find_package(Vulkan REQUIRED)
+
 ##################### Files #######################
 file(
     GLOB_RECURSE
@@ -29,20 +32,13 @@ target_include_directories(
     ${RUNTIME_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-    PRIVATE
-        # Systems
-        ${RUNTIME_INCLUDE_DIRS}
+        ${RUNTIME_INCLUDES}
 )
 
 target_link_libraries(
     ${RUNTIME_TARGET_NAME}
 
-    PRIVATE
-        # Systems
+    PUBLIC
         ${RUNTIME_LIBRARIES}
 )
 

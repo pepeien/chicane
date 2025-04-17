@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/View/Plane.hpp"
+#include "Runtime/Renderer/View/Plane.hpp"
 
 namespace Chicane
 {

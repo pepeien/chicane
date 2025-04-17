@@ -29,20 +29,13 @@ target_include_directories(
     ${BOX_TARGET_NAME}
 
     PUBLIC
-        # Alias
-        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-    PRIVATE
-        # Systems
-        ${BOX_INCLUDE_DIRS}
+        ${BOX_INCLUDES}
 )
 
 target_link_libraries(
     ${BOX_TARGET_NAME}
 
-    PRIVATE
-        # Systems
+    PUBLIC
         ${BOX_LIBRARIES}
 )
 

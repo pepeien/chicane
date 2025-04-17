@@ -1,4 +1,4 @@
-#include "Chicane/Box/Asset/Audio/Manager.hpp"
+#include "Box/Asset/Audio/Manager.hpp"
 
 namespace Chicane
 {

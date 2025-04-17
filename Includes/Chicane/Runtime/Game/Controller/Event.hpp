@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/FrameTelemetry.hpp"
+#include "Core/FrameTelemetry.hpp"
 
 static constexpr float EVENT_REPEAT_COOLDOWN_IN_MS = 30.0f;
 

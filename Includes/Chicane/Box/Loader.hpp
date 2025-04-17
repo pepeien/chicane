@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Box/Asset.hpp"
+#include "Box/Asset.hpp"
 #include "Manager.hpp"
 
 namespace Chicane

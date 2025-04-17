@@ -22,7 +22,7 @@ Character::Character()
 
     m_wand = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);
-    m_wand->setMesh("Contents/Sample/Shooter/Meshes/Cube.bmsh");
+    m_wand->setMesh("Contents/Samples/Shooter/Meshes/Cube.bmsh");
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
     m_wand->setRelativeRotation(0.0f, 0.0f, 8.0f);
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
@@ -30,19 +30,19 @@ Character::Character()
 
     m_body = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
-    m_body->setMesh("Contents/Sample/Shooter/Meshes/Cube.bmsh");
+    m_body->setMesh("Contents/Samples/Shooter/Meshes/Cube.bmsh");
     m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
     m_hitAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_hitAudio->attachTo(this);
-    m_hitAudio->load("Contents/Sample/Shooter/Sounds/Hit.baud");
+    m_hitAudio->load("Contents/Samples/Shooter/Sounds/Hit.baud");
     m_hitAudio->activate();
 
     m_victoryAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_victoryAudio->attachTo(this);
-    m_victoryAudio->load("Contents/Sample/Shooter/Sounds/Victory.baud");
+    m_victoryAudio->load("Contents/Samples/Shooter/Sounds/Victory.baud");
     m_victoryAudio->activate();
 
     Game::watchScore(

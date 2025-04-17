@@ -1,6 +1,6 @@
-#include "Chicane/Box/Asset/Mesh/Group.hpp"
+#include "Box/Asset/Mesh/Group.hpp"
 
-#include "Chicane/Core.hpp"
+#include "Core.hpp"
 
 namespace Chicane
 {

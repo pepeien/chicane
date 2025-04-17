@@ -1,6 +1,6 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
+#include "Runtime/Renderer/Vulkan/Debug.hpp"
 
-#include "Chicane/Core/Log.hpp"
+#include "Core/Log.hpp"
 
 namespace Chicane
 {

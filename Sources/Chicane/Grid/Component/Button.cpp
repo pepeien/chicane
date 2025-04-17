@@ -1,8 +1,8 @@
-#include "Chicane/Grid/Component/Button.hpp"
+#include "Grid/Component/Button.hpp"
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Core.hpp"
+#include "Grid/Essential.hpp"
+#include "Grid/Component/Container.hpp"
 
 namespace Chicane
 {

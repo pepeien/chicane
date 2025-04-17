@@ -1,7 +1,7 @@
-#include "Chicane/Grid/Style.hpp"
+#include "Grid/Style.hpp"
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid/Essential.hpp"
+#include "Core.hpp"
+#include "Grid/Essential.hpp"
 
 const Chicane::Grid::Style EMPTY_STYLE = {};
 

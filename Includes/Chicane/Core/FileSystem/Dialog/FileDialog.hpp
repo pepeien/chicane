@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
-#include "Chicane/Core/FileSystem/Dialog.hpp"
+#include "Core/Essentials.hpp"
+#include "Core/FileSystem/Dialog.hpp"
 
 namespace Chicane
 {

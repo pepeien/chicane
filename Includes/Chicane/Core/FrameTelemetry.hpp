@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Core/Essentials.hpp"
 
 static constexpr float UPDATE_RATE_IN_MS = 1000.0f;
 

@@ -1,4 +1,4 @@
-#include "Chicane/Core/Xml.hpp"
+#include "Core/Xml.hpp"
 
 namespace Chicane
 {

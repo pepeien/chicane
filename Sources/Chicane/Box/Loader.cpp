@@ -1,4 +1,4 @@
-#include "Chicane/Box/Loader.hpp"
+#include "Box/Loader.hpp"
 
 namespace Chicane
 {
