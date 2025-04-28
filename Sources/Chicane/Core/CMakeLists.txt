@@ -29,14 +29,23 @@ target_include_directories(
     ${CORE_TARGET_NAME}
 
     PUBLIC
-        ${CORE_INCLUDES}
+        # Alias
+        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+
+    PUBLIC
+        # Vendors
+        ${VENDORS_DIR}/stb
 )
 
 target_link_libraries(
     ${CORE_TARGET_NAME}
-
+ 
     PUBLIC
-        ${CORE_LIBRARIES}
+        # Vendors
+        glm::glm
+        pugixml::pugixml
+        SDL3::SDL3
 )
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})

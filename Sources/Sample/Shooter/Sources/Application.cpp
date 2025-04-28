@@ -7,7 +7,7 @@ Application::Application()
     Chicane::Application::CreateInfo createInfo = {};
 
     // Window
-    createInfo.window.title   = "Chicane Sample";
+    createInfo.window.title   = "Shooter Sample";
     createInfo.window.size    = Chicane::Vec<2, int>(1600, 900);
     createInfo.window.type    = Chicane::Window::Type::Windowed;
     createInfo.window.display = 0;

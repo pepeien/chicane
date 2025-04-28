@@ -38,7 +38,7 @@ namespace Chicane
             );
         }
 
-        void info(const std::string& inMessage);
+        CHICANE void info(const std::string& inMessage);
         template<typename... T>
         void info(const std::string& inMessage, T... inParams)
         {

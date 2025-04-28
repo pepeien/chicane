@@ -16,18 +16,33 @@ file(
 ##################### Directories #######################
 add_executable(${SHOOTER_TARGET_NAME} ${HEADERS} ${SOURCES})
 
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if (WIN32)
+        target_link_options(${SHOOTER_TARGET_NAME} PRIVATE -mwindows)
+    endif()
+endif()
+
+set_target_properties(
+    ${SHOOTER_TARGET_NAME}
+
+    PROPERTIES
+        OUTPUT_NAME
+            "ShooterSample"
+)
+
 target_include_directories(
     ${SHOOTER_TARGET_NAME}
 
     PUBLIC
         $<BUILD_INTERFACE:${SHOOTER_BUILD_INTERFACE_DIR}>
+
         ${INCLUDES_DIR}
 )
 
 target_link_libraries(
     ${SHOOTER_TARGET_NAME}
 
-    PUBLIC
+    PRIVATE
         Chicane::Runtime
 )
 

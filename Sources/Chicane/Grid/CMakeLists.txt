@@ -29,14 +29,18 @@ target_include_directories(
     ${GRID_TARGET_NAME}
 
     PUBLIC
-        ${GRID_INCLUDES}
+        # Alias
+        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
 )
 
 target_link_libraries(
     ${GRID_TARGET_NAME}
 
     PUBLIC
-        ${GRID_LIBRARIES}
+        # Systems
+        Chicane::Box
+        Chicane::Core
 )
 
 CH_ADD_COMPILER(${GRID_TARGET_NAME})

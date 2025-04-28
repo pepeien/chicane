@@ -1,13 +1,14 @@
 ##################### Includes #######################
-include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
-include(Functions.cmake)
+include(CMakePackageConfigHelpers)
 
-include(GNUInstallDirs)
+include(.env.cmake OPTIONAL RESULT_VARIABLE LOCAL_ENV)
+
+include(Functions.cmake)
 
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)
 
-set(CMAKE_CXX_STANDARD          20)
+set(CMAKE_CXX_STANDARD          17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(NAME "Chicane")
@@ -16,13 +17,15 @@ project(${NAME} VERSION 0.1.0)
 
 set(BUILD_SHARED_LIBS ON)
 
-if (BUILD_SHARED_LIBS)
-    add_definitions(-DBUILD_SHARED)
+add_definitions(-DBUILD_SHARED)
 
-    if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-        add_definitions(-DBUILD_EXPORT)
-    endif()
+if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    add_definitions(-DBUILD_EXPORT)
 endif()
+
+# SDL3 Setup
+set(SDL3_DISABLE_INSTALL ON  CACHE BOOL "" FORCE)
+set(SDL3_TESTS           OFF CACHE BOOL "" FORCE)
 
 ##################### Values #######################
 if (NOT DEFINED BUILD_DIR)
@@ -59,90 +62,21 @@ set(VENDORS_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/Vendors")
 set(BOX_TARGET_NAME "${NAME}-Box")
 set(BOX_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Box")
 set(BOX_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Box")
-set(
-    BOX_INCLUDES
 
-    # Alias
-    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-    # Vendors
-    ${VENDORS_DIR}/fast_obj
-)
-set(
-    BOX_LIBRARIES
-
-    # Systems
-    Chicane::Core
-)
-message("${${VENDORS_DIR}/stb}")
 ## Core
 set(CORE_TARGET_NAME "${NAME}-Core")
 set(CORE_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Core")
 set(CORE_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Core")
-set(
-    CORE_INCLUDES
-
-    # Alias
-    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-    # Vendors
-    ${VENDORS_DIR}/stb
-)
-set(
-    CORE_LIBRARIES
-
-    # Vendors
-    glm::glm
-    pugixml::pugixml
-    SDL3::SDL3
-)
 
 ## Grid
 set(GRID_TARGET_NAME "${NAME}-Grid")
 set(GRID_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Grid")
 set(GRID_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Grid")
-set(
-    GRID_INCLUDES
-
-    # Alias
-    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-)
-set(
-    GRID_LIBRARIES
-
-    # Systems
-    Chicane::Box
-    Chicane::Core
-)
 
 ## Runtime
 set(RUNTIME_TARGET_NAME "${NAME}-Runtime")
 set(RUNTIME_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Runtime")
 set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
-set(
-    RUNTIME_INCLUDE_DIRS
-
-    # Alias
-    $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
-    $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-    # Vendors
-    ${Vulkan_INCLUDE_DIRS}
-)
-set(
-    RUNTIME_LIBRARIES
-
-    # Systems
-    Chicane::Box
-    Chicane::Core
-    Chicane::Grid
-
-    # Vendors
-    Vulkan::Vulkan
-)
 
 set(RUNTIME_CONTENT_TARGET_NAME "${RUNTIME_TARGET_NAME}-Content")
 set(RUNTIME_CONTENT_SOURCE_DIR  "${CONTENTS_DIR}/Runtime")
@@ -155,6 +89,5 @@ set(RUNTIME_CONTENT_VULKAN_SHADERS_SOURCE_DIR  "${RUNTIME_CONTENT_VULKAN_SOURCE_
 
 ##################### Directories #######################
 add_subdirectory(Contents)
-add_subdirectory(Samples)
 add_subdirectory(Sources)
 add_subdirectory(Vendors)
