@@ -87,27 +87,39 @@ namespace Chicane
             m_pawnObservable->next(nullptr);
         }
 
-        void Instance::bindEvent(Mouse::MotionEventFunction inEvent)
+        void Instance::bindEvent(Input::Mouse::MotionEventFunction inEvent)
         {
             m_mouseMotionEvents.bind(inEvent);
         }
 
-        void Instance::bindEvent(Mouse::Button inButton, EventStatus inStatus, Mouse::ButtonEventFunction inEvent)
+        void Instance::bindEvent(
+            Input::Mouse::Button inButton,
+            Input::Event::Status inStatus,
+            Input::Mouse::ButtonEventFunction inEvent
+        )
         {
             m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
         }
 
-        void Instance::bindEvent(Keyboard::Key inKey, EventStatus inStatus, Keyboard::KeyEventFunction inEvent)
+        void Instance::bindEvent(
+            Input::Keyboard::Key inKey,
+            Input::Event::Status inStatus,
+            Input::Keyboard::KeyEventFunction inEvent
+        )
         {
             m_keyboardKeyEvents.bind(inKey, inStatus, inEvent);
         }
 
-        void Instance::bindEvent(Gamepad::MotionEventFunction inEvent)
+        void Instance::bindEvent(Input::Gamepad::MotionEventFunction inEvent)
         {
             m_gamepadMotionEvents.bind(inEvent);
         }
 
-        void Instance::bindEvent(Gamepad::Button inButton, EventStatus inStatus, Gamepad::ButtonEventFunction inEvent)
+        void Instance::bindEvent(
+            Input::Gamepad::Button inButton,
+            Input::Event::Status inStatus,
+            Input::Gamepad::ButtonEventFunction inEvent
+        )
         {
             m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
         }
@@ -161,16 +173,20 @@ namespace Chicane
 
         void Instance::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
         {
-            Mouse::Button button = (Mouse::Button) inEvent.button;
-            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
+            Input::Mouse::Button button = (Input::Mouse::Button) inEvent.button;
+            Input::Event::Status status = inEvent.down ?
+                Input::Event::Status::Pressed :
+                Input::Event::Status::Released;
 
             m_mouseButtonEvents.exec(button, status);
         }
 
         void Instance::onKeyboardKeyEvent(const SDL_KeyboardEvent& inEvent)
         {
-            Keyboard::Key key = (Keyboard::Key) inEvent.scancode;
-            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
+            Input::Keyboard::Key key = (Input::Keyboard::Key) inEvent.scancode;
+            Input::Event::Status status = inEvent.down ?
+                Input::Event::Status::Pressed :
+                Input::Event::Status::Released;
 
             m_keyboardKeyEvents.exec(key, status);
         }
@@ -182,8 +198,10 @@ namespace Chicane
 
         void Instance::onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent)
         {
-            Gamepad::Button button = (Gamepad::Button) inEvent.button;
-            EventStatus status = inEvent.down ? EventStatus::Pressed : EventStatus::Released;
+            Input::Gamepad::Button button = (Input::Gamepad::Button) inEvent.button;
+            Input::Event::Status status = inEvent.down ?
+                Input::Event::Status::Pressed :
+                Input::Event::Status::Released;
 
             m_gamepadButtonEvents.exec(button, status);
         }

@@ -103,30 +103,6 @@ namespace Chicane
             return m_rgbColors.at(inColor);
         }
 
-        std::uint32_t getChildrenCount(const Component::Children& inChildren)
-        {
-            std::uint32_t result = 0;
-
-            for (const Component::Child& child : inChildren)
-            {
-                result++;
-            }
-
-            return result;
-        }
-
-        std::vector<pugi::xml_node> extractChildren(const Component::Children& inChildren)
-        {
-            std::vector<pugi::xml_node> result = {};
-
-            for (const Component::Child& child : inChildren)
-            {
-                result.push_back(*child);
-            }
-
-            return result;
-        }
-
         float getSizeFromPixel(const std::string& inValue)
         {
             if (!endsWith(inValue, PIXEL_SIZE_UNIT))
@@ -224,14 +200,6 @@ namespace Chicane
             return getSizeFromViewportWidth(inAttribute.as_string());
         }
 
-        pugi::xml_attribute getAttribute(
-            const std::string& inName,
-            const pugi::xml_node& inNode
-        )
-        {
-            return inNode.attribute(inName.c_str());
-        }
-
         float getSize(const std::string& inValue, Style::Direction inDirection, Style::Position inPosition)
         {
             if (inValue.empty())
@@ -279,7 +247,7 @@ namespace Chicane
             const pugi::xml_node& inNode
         )
         {
-            pugi::xml_attribute attributeValue = getAttribute(inAttributeName, inNode);
+            pugi::xml_attribute attributeValue = XML::getAttribute(inAttributeName, inNode);
 
             if (attributeValue.empty())
             {
@@ -291,7 +259,7 @@ namespace Chicane
 
         void execOnTick(const pugi::xml_node& inNode)
         {
-            pugi::xml_attribute onTickFunction = getAttribute(ON_TICK_ATTRIBUTE, inNode);
+            pugi::xml_attribute onTickFunction = XML::getAttribute(ON_TICK_ATTRIBUTE, inNode);
 
             if (onTickFunction.empty())
             {
@@ -311,6 +279,7 @@ namespace Chicane
 
         void compileChild(const pugi::xml_node& inNode)
         {
+/*
             if (!hasComponent(inNode.name()))
             {
                 return;
@@ -322,7 +291,7 @@ namespace Chicane
             {
                 return;
             }
-/*
+
             ImVec2 position = style.position == Style::Position::Relative ? ImGui::GetCursorPos() : START_POSITION;
 
             if (style.margin.left != 0.0f || style.margin.right != 0.0f)
@@ -397,13 +366,13 @@ namespace Chicane
             return "";
         }
 
-        Component::FunctionData parseFunction(const std::string& inRefValue)
+        FunctionData parseFunction(const std::string& inRefValue)
         {
             std::string trimmedValue = String::trim(inRefValue);
 
             if (trimmedValue.empty())
             {
-                return Component::FunctionData::empty();
+                return {};
             }
 
             std::size_t paramsStart = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
@@ -420,7 +389,7 @@ namespace Chicane
                 )
             );
 
-            Component::FunctionData data = {};
+            FunctionData data = {};
             data.name = name;
 
             for (std::string& value : String::split(params, ','))
@@ -460,23 +429,23 @@ namespace Chicane
 
             if (!doesTextContainsFunction(inValue))
             {
-                if (!view->hasVariable(inValue))
+                if (!view->hasReference(inValue))
                 {
                     return Reference::fromValue<const std::string>(&inValue);
                 }
 
-                return *view->getVariable(inValue);
+                return *view->getReference(inValue);
             }
 
-            Component::FunctionData functionData = parseFunction(inValue);
-            Component::Function functionRef      = view->getFunction(functionData.name);
+            FunctionData functionData = parseFunction(inValue);
+            Function functionRef      = view->getFunction(functionData.name);
 
             if (!functionRef)
             {
                 return Reference::fromValue<const std::string>(&inValue);
             }
 
-            Component::Event event = {};
+            Event event = {};
             event.values = functionData.params;
 
             return functionRef(event);
@@ -530,14 +499,14 @@ namespace Chicane
 
             View* view = getView();
 
-            std::string value = getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
+            std::string value = XML::getAttribute(ITEMS_ATTRIBUTE_NAME, inNode).as_string();
 
-            if (value.empty() || !view->hasVariable(value))
+            if (value.empty() || !view->hasReference(value))
             {
                 return EMPTY_ITEMS;
             }
 
-            Reference items = *view->getVariable(value);
+            Reference items = *view->getReference(value);
 
             if (!items.isType<std::vector<Reference>>())
             {
@@ -547,7 +516,7 @@ namespace Chicane
             return *items.getValue<std::vector<Reference>>();
         }
 
-        Component::Function getItemGetter(const pugi::xml_node& inNode)
+        Function getItemGetter(const pugi::xml_node& inNode)
         {
             if (!hasView())
             {
@@ -556,7 +525,7 @@ namespace Chicane
 
             View* view = getView();
 
-            std::string itemGetterFunctionRef = getAttribute(
+            std::string itemGetterFunctionRef = XML::getAttribute(
                 ITEM_GETTER_ATTRIBUTE_NAME, inNode
             ).as_string();
 

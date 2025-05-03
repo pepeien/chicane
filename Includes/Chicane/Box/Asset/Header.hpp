@@ -3,7 +3,6 @@
 #include "Core.hpp"
 #include "Box/Asset/Base.hpp"
 #include "Box/Asset/Type.hpp"
-#include "Core.hpp"
 
 namespace Chicane
 {

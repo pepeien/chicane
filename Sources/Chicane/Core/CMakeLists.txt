@@ -25,6 +25,14 @@ add_library(
         ${CORE_TARGET_NAME}
 )
 
+set_target_properties(
+    ${CORE_TARGET_NAME}
+
+    PROPERTIES
+        OUTPUT_NAME
+            "${NAME}Core"
+)
+
 target_include_directories(
     ${CORE_TARGET_NAME}
 

@@ -25,6 +25,14 @@ add_library(
         ${GRID_TARGET_NAME}
 )
 
+set_target_properties(
+    ${GRID_TARGET_NAME}
+
+    PROPERTIES
+        OUTPUT_NAME
+            "${NAME}Grid"
+)
+
 target_include_directories(
     ${GRID_TARGET_NAME}
 

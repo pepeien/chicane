@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Runtime/Game/Controller/Event.hpp"
+#include "Core/Essentials.hpp"
 
 namespace Chicane
 {
-    namespace Controller
+    namespace Input
     {
         namespace Mouse
         {

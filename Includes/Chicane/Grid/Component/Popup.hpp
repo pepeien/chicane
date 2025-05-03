@@ -1,30 +1,22 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Grid/Component/BaseProps.hpp"
+#include "Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace Popup
+        class CHICANE Popup : public Component
         {
-            const std::string TAG_ID = "Popup";
+        public:
+            // Tag
+            static constexpr const char* TAG_ID = "Popup";
 
             // Attributes
-            const std::string IS_OPEN_ATTRIBUTE_NAME        = "isOpen";
-            const std::string IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
-            const std::string IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
-
-            // Props
-            struct CHICANE Props : Component::BaseProps
-            {
-                bool bIsConstrained = true; // Optional
-                bool bIsResizable   = true; // Optional
-            };
-
-            CHICANE void compileRaw(const Props& inProps);
-            CHICANE void compile(const pugi::xml_node& inNode);
-        }
+            static constexpr const char* IS_OPEN_ATTRIBUTE_NAME        = "isOpen";
+            static constexpr const char* IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
+            static constexpr const char* IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
+        };
     }
 }

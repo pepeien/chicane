@@ -20,7 +20,7 @@ namespace Chicane
                 { Audio::EXTENSION,   Type::Audio   },
                 { Mesh::EXTENSION,    Type::Mesh    },
                 { Model::EXTENSION,   Type::Model   },
-                { Sky::EXTENSION,  Type::Sky  },
+                { Sky::EXTENSION,     Type::Sky     },
                 { Texture::EXTENSION, Type::Texture }
             };
         }

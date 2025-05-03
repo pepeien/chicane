@@ -7,9 +7,10 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Component
+        struct CHICANE Event
         {
-            typedef std::unordered_map<std::string, Reference*> Variables;
-        }
+        public:
+            std::vector<Reference> values = {};
+        };
     }
 }

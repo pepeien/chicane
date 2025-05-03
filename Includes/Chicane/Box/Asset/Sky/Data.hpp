@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Core/Image.hpp"
 #include "Box/Asset/Sky/Side.hpp"
 
 namespace Chicane

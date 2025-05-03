@@ -64,5 +64,7 @@ namespace Chicane
             const void*     m_value = nullptr;
             std::type_index m_type  = std::type_index(typeid(int));
         };
+
+        typedef std::unordered_map<std::string, Reference*> References;
     }
 }

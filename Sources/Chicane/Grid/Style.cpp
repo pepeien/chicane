@@ -1,9 +1,6 @@
 #include "Grid/Style.hpp"
 
-#include "Core.hpp"
 #include "Grid/Essential.hpp"
-
-const Chicane::Grid::Style EMPTY_STYLE = {};
 
 namespace Chicane
 {
@@ -66,106 +63,310 @@ namespace Chicane
         static constexpr const char* ALIGNMENT_CENTER         = "CENTER";
         static constexpr const char* ALIGNMENT_END            = "END";
 
-        Style::Sources m_sources = {};
-        Style::Styles m_styles   = {};
+        Style::Style(const pugi::xml_node& inNode)
+            : Style(
+                std::filesystem::path(
+                    XML::getAttribute(STYLE_ATTRIBUTE_NAME, inNode).as_string()
+                )
+            )
+        {}
 
-        static const Style::Sources EMPTY_SOURCE_MAP = {};
-
-        void _setVisiblity(
-            Style& outStyle,
-            const Style::Source& inData
-        )
+        Style::Style(const std::filesystem::path& inPath)
         {
-            if (inData.find(DISPLAY_ATTRIBUTE_NAME) == inData.end())
+            if (inPath.empty())
             {
-                outStyle.display = Style::Display::Visible;
-
                 return;
             }
 
-            std::string display = inData.at(DISPLAY_ATTRIBUTE_NAME);
+            std::vector<std::string> splittedFilePath = String::split(
+                inPath.string(),
+                FileSystem::SEPARATOR
+            );
+            std::vector<std::string> splittedFilename = String::split(
+                splittedFilePath.back(),
+                '.'
+            );
+            std::string fileExtension = splittedFilename.back();
 
-            if (String::areEquals(display, "none"))
+            if (!String::areEquals(fileExtension, FILE_EXTENSION_NAME))
             {
-                outStyle.display = Style::Display::None;
-
                 return;
             }
 
-            if (String::areEquals(display, "hidden"))
-            {
-                outStyle.display = Style::Display::Hidden;
+            std::vector<char> data = FileSystem::readFile(inPath.string());
 
-                return;
-            }
-
-            outStyle.display = Style::Display::Visible;
+            parseData(
+                std::string(
+                    data.begin(),
+                    data.end()
+                )
+            );
         }
 
-        void _setSize(
-            Style& outStyle,
-            const Style::Source& inData
-        )
+        Style::Style(const std::string& inData)
         {
-            if (inData.find(HEIGHT_ATTRIBUTE_NAME) != inData.end())
+            parseData(inData);
+        }
+
+        Style::Style(const Source& inSource)
+            : m_source(inSource)
+        {
+            update();
+        }
+
+        Style::Style()
+            : display(Display::Visible),
+            height(0.0f),
+            width(0.0f),
+            position(Position::Relative),
+            horizontalAlignment(Alignment::Start),
+            verticalAlignment(Alignment::Start),
+            gap({}),
+            margin({}),
+            listDirection(ListDirection::Column),
+            backgroundColor(BACKGROUND_COLOR_TRANSPARENT),
+            foregroundColor("#FFFFFF"),
+            m_source({})
+        {}
+    
+        void Style::update()
+        {
+            updateVisibility();
+            updateSize();
+            updatePosition();
+            updateMargin();
+            updateGap();
+            updateAlignment();
+            updateForegroundColor();
+            updateBackgroundColor();
+            updateListDirection();
+        }
+
+        void Style::parseData(const std::string& inData)
+        {
+            m_source.clear();
+
+            std::vector<std::string> blocks = String::split(
+                inData,
+                ';'
+            );
+
+            for (const std::string& block : blocks)
             {
-                outStyle.height = getSize(
-                    inData.at(HEIGHT_ATTRIBUTE_NAME),
+                std::vector<std::string> splittedBlock = String::split(
+                    block,
+                    ':'
+                );
+
+                std::string key   = String::trim(splittedBlock.at(0));
+                std::string value = String::trim(splittedBlock.at(1));
+                std::transform(
+                    value.begin(),
+                    value.end(),
+                    value.begin(),
+                    ::tolower
+                );
+
+                if (m_source.find(key) != m_source.end())
+                {
+                    m_source[key] = value;
+
+                    continue;
+                }
+
+                m_source.insert(
+                    std::make_pair(
+                        key,
+                        value
+                    )
+                );
+            }
+
+            update();
+        }
+
+        void Style::updateVisibility()
+        {
+            if (m_source.find(DISPLAY_ATTRIBUTE_NAME) == m_source.end())
+            {
+                display = Style::Display::Visible;
+
+                return;
+            }
+
+            std::string rawDisplay = m_source.at(DISPLAY_ATTRIBUTE_NAME);
+
+            if (String::areEquals(rawDisplay, "none"))
+            {
+                display = Style::Display::None;
+
+                return;
+            }
+
+            if (String::areEquals(rawDisplay, "hidden"))
+            {
+                display = Style::Display::Hidden;
+
+                return;
+            }
+
+            display = Style::Display::Visible;
+        }
+
+        void Style::updateSize()
+        {
+            if (m_source.find(HEIGHT_ATTRIBUTE_NAME) != m_source.end())
+            {
+                height = getSize(
+                    m_source.at(HEIGHT_ATTRIBUTE_NAME),
                     Style::Direction::Vertical,
-                    outStyle.position
+                    position
                 );
             }
 
-            if (inData.find(WIDTH_ATTRIBUTE_NAME) != inData.end())
+            if (m_source.find(WIDTH_ATTRIBUTE_NAME) != m_source.end())
             {
-                outStyle.width = getSize(
-                    inData.at(WIDTH_ATTRIBUTE_NAME),
+                width = getSize(
+                    m_source.at(WIDTH_ATTRIBUTE_NAME),
                     Style::Direction::Horizontal,
-                    outStyle.position
+                    position
                 );
             }
         }
 
-        void _setPosition(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
+        void Style::updatePosition()
         {
-            outStyle.position = Style::Position::Relative;
+            position = Style::Position::Relative;
 
-            if (inData.find(POSITION_ATTRIBUTE_NAME) == inData.end())
+            if (m_source.find(POSITION_ATTRIBUTE_NAME) == m_source.end())
             {
                 return;
             }
 
-            std::string position = String::trim(inData.at(POSITION_ATTRIBUTE_NAME));
+            std::string rawPosition = String::trim(m_source.at(POSITION_ATTRIBUTE_NAME));
 
-            if (String::areEquals(position, POSITION_TYPE_ABSOLUTE))
+            if (String::areEquals(rawPosition, POSITION_TYPE_ABSOLUTE))
             {
-                outStyle.position = Style::Position::Absolute;
+                position = Style::Position::Absolute;
             }
         }
 
-        float _calculateDirectionSize(
-            const Style& inStyle,
-            const std::string& inRawValue,
-            Style::Direction inDirection
-        )
+        void Style::updateMargin()
         {
-            float result = getSize(inRawValue, inDirection, inStyle.position);
+            updateDirectionalSize(
+                margin,
+                MARGIN_ATTRIBUTE_NAME,
+                MARGIN_TOP_ATTRIBUTE_NAME,
+                MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                MARGIN_LEFT_ATTRIBUTE_NAME,
+                MARGIN_RIGHT_ATTRIBUTE_NAME
+            );
+        }
 
-            if (String::areEquals(inRawValue, AUTO_SIZE_UNIT))
+        void Style::updateGap()
+        {
+            updateDirectionalSize(
+                gap,
+                GAP_ATTRIBUTE_NAME,
+                GAP_TOP_ATTRIBUTE_NAME,
+                GAP_BOTTOM_ATTRIBUTE_NAME,
+                GAP_LEFT_ATTRIBUTE_NAME,
+                GAP_RIGHT_ATTRIBUTE_NAME
+            );
+        }
+
+        void Style::updateAlignment()
+        {
+            if (m_source.empty() || m_source.find(ALIGNMENT_ATTRIBUTE_NAME) == m_source.end())
             {
-                result -= inDirection == Style::Direction::Horizontal ? inStyle.width : inStyle.height;
+                horizontalAlignment = Style::Alignment::Start;
+                verticalAlignment   = Style::Alignment::Start;
+
+                return;
+            }
+
+            std::vector<std::string> splittedOneline = String::split(
+                String::trim(m_source.at(ALIGNMENT_ATTRIBUTE_NAME)),
+                ONELINE_SEPARATOR
+            );
+
+            if (splittedOneline.size() == 1)
+            {
+                horizontalAlignment = getAlignment(splittedOneline.at(0));
+                verticalAlignment   = horizontalAlignment;
+
+                return;
+            }
+
+            horizontalAlignment = getAlignment(splittedOneline.at(0));
+            verticalAlignment   = getAlignment(splittedOneline.at(1));
+        }
+
+        void Style::updateForegroundColor()
+        {
+            if (m_source.empty() || m_source.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == m_source.end())
+            {
+                backgroundColor = FOREGROUND_DEFAULT_COLOR;
+
+                return;
+            }
+
+            foregroundColor = String::trim(m_source.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
+        }
+
+        void Style::updateBackgroundColor()
+        {
+            if (m_source.empty() || m_source.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == m_source.end())
+            {
+                backgroundColor = BACKGROUND_COLOR_TRANSPARENT;
+
+                return;
+            }
+
+            backgroundColor = String::trim(m_source.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
+        }
+
+        void Style::updateListDirection()
+        {
+            if (m_source.empty() || m_source.find(LIST_DIRECTION_ATTRIBUTE_NAME) == m_source.end())
+            {
+                listDirection = Style::ListDirection::Row;
+
+                return;
+            }
+
+            std::string listDirectionRaw = String::trim(m_source.at(LIST_DIRECTION_ATTRIBUTE_NAME));
+            std::transform(
+                listDirectionRaw.begin(),
+                listDirectionRaw.end(),
+                listDirectionRaw.begin(),
+                ::toupper
+            );
+
+            if (String::areEquals(listDirectionRaw, LIST_DIRECTION_COLUMN))
+            {
+                listDirection = Style::ListDirection::Column;
+
+                return;
+            }
+
+            listDirection = Style::ListDirection::Row;
+        }
+
+        float Style::getDirectionalSize(const std::string& inValue, Style::Direction inDirection)
+        {
+            float result = getSize(inValue, inDirection, position);
+
+            if (String::areEquals(inValue, AUTO_SIZE_UNIT))
+            {
+                result -= inDirection == Style::Direction::Horizontal ? width : height;
             }
 
             return result;
         }
 
-        void _setDirectionalSize(
+        void Style::updateDirectionalSize(
             Style::DirectionalSize& outValue,
-            const Style& inStyle,
-            const std::unordered_map<std::string, std::string>& inData,
             const std::string& inOnelineAttributeName,
             const std::string& inTopAttributeName,
             const std::string& inBottomAttributeName,
@@ -173,48 +374,44 @@ namespace Chicane
             const std::string& inRightAttributeName
         )
         {
-            if (inData.empty())
+            if (m_source.empty())
             {
                 return;
             }
 
             if (
-                inData.find(inOnelineAttributeName) == inData.end() ||
-                inData.at(inOnelineAttributeName).empty()
+                m_source.find(inOnelineAttributeName) == m_source.end() ||
+                m_source.at(inOnelineAttributeName).empty()
             )
             {
-                if (inData.find(inTopAttributeName) != inData.end())
+                if (m_source.find(inTopAttributeName) != m_source.end())
                 {
-                    outValue.top = _calculateDirectionSize(
-                        inStyle,
-                        inData.at(inTopAttributeName),
+                    outValue.top = getDirectionalSize(
+                        m_source.at(inTopAttributeName),
                         Style::Direction::Vertical
                     );
                 }
 
-                if (inData.find(inBottomAttributeName) != inData.end())
+                if (m_source.find(inBottomAttributeName) != m_source.end())
                 {
-                    outValue.bottom = _calculateDirectionSize(
-                        inStyle,
-                        inData.at(inBottomAttributeName),
+                    outValue.bottom = getDirectionalSize(
+                        m_source.at(inBottomAttributeName),
                         Style::Direction::Vertical
                     );
                 }
 
-                if (inData.find(inLeftAttributeName) != inData.end())
+                if (m_source.find(inLeftAttributeName) != m_source.end())
                 {
-                    outValue.left = _calculateDirectionSize(
-                        inStyle,
-                        inData.at(inLeftAttributeName),
+                    outValue.left = getDirectionalSize(
+                        m_source.at(inLeftAttributeName),
                         Style::Direction::Horizontal
                     );
                 }
 
-                if (inData.find(inRightAttributeName) != inData.end())
+                if (m_source.find(inRightAttributeName) != m_source.end())
                 {
-                    outValue.right = _calculateDirectionSize(
-                        inStyle,
-                        inData.at(inRightAttributeName),
+                    outValue.right = getDirectionalSize(
+                        m_source.at(inRightAttributeName),
                         Style::Direction::Horizontal
                     );
                 }
@@ -222,7 +419,7 @@ namespace Chicane
                 return;
             }
 
-            std::string oneline = inData.at(inOnelineAttributeName);
+            std::string oneline = m_source.at(inOnelineAttributeName);
 
             std::vector<std::string> splittedOneline = String::split(
                 String::trim(oneline),
@@ -233,13 +430,11 @@ namespace Chicane
             {
                 std::string value = splittedOneline.at(0);
 
-                float vertical = _calculateDirectionSize(
-                    inStyle,
+                float vertical = getDirectionalSize(
                     value,
                     Style::Direction::Vertical
                 );
-                float horizontal = _calculateDirectionSize(
-                    inStyle,
+                float horizontal = getDirectionalSize(
                     value,
                     Style::Direction::Horizontal
                 );
@@ -252,13 +447,11 @@ namespace Chicane
 
             if (splittedOneline.size() == 2) // VERTICAL HORIZONTAL
             {
-                float vertical = _calculateDirectionSize(
-                    inStyle,
+                float vertical = getDirectionalSize(
                     splittedOneline.at(0),
                     Style::Direction::Vertical
                 );
-                float horizontal = _calculateDirectionSize(
-                    inStyle,
+                float horizontal = getDirectionalSize(
                     splittedOneline.at(1),
                     Style::Direction::Horizontal
                 );
@@ -271,18 +464,15 @@ namespace Chicane
 
             if (splittedOneline.size() == 3) // TOP BOTTOM HORIZONTAL
             {
-                float top = _calculateDirectionSize(
-                    inStyle,
+                float top = getDirectionalSize(
                     splittedOneline.at(0),
                     Style::Direction::Vertical
                 );
-                float bottom = _calculateDirectionSize(
-                    inStyle,
+                float bottom = getDirectionalSize(
                     splittedOneline.at(1),
                     Style::Direction::Vertical
                 );
-                float horizontal = _calculateDirectionSize(
-                    inStyle,
+                float horizontal = getDirectionalSize(
                     splittedOneline.at(2),
                     Style::Direction::Horizontal
                 );
@@ -295,124 +485,26 @@ namespace Chicane
 
             if (splittedOneline.size() >= 4) // TOP RIGHT BOTTOM LEFT
             {
-                outValue.top = _calculateDirectionSize(
-                    inStyle,
+                outValue.top = getDirectionalSize(
                     splittedOneline.at(0),
                     Style::Direction::Vertical
                 );
-                outValue.right = _calculateDirectionSize(
-                    inStyle,
+                outValue.right = getDirectionalSize(
                     splittedOneline.at(1),
                     Style::Direction::Horizontal
                 );
-                outValue.bottom = _calculateDirectionSize(
-                    inStyle,
+                outValue.bottom = getDirectionalSize(
                     splittedOneline.at(2),
                     Style::Direction::Vertical
                 );
-                outValue.left = _calculateDirectionSize(
-                    inStyle,
+                outValue.left = getDirectionalSize(
                     splittedOneline.at(3),
                     Style::Direction::Horizontal
                 );
             }
         }
 
-        void _setMargin(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            _setDirectionalSize(
-                outStyle.margin,
-                outStyle,
-                inData,
-                MARGIN_ATTRIBUTE_NAME,
-                MARGIN_TOP_ATTRIBUTE_NAME,
-                MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                MARGIN_LEFT_ATTRIBUTE_NAME,
-                MARGIN_RIGHT_ATTRIBUTE_NAME
-            );
-        }
-
-        void _setGap(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            _setDirectionalSize(
-                outStyle.gap,
-                outStyle,
-                inData,
-                GAP_ATTRIBUTE_NAME,
-                GAP_TOP_ATTRIBUTE_NAME,
-                GAP_BOTTOM_ATTRIBUTE_NAME,
-                GAP_LEFT_ATTRIBUTE_NAME,
-                GAP_RIGHT_ATTRIBUTE_NAME
-            );
-        }
-
-        void _setListDirection(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            if (inData.empty() || inData.find(LIST_DIRECTION_ATTRIBUTE_NAME) == inData.end())
-            {
-                outStyle.listDirection = Style::ListDirection::Row;
-
-                return;
-            }
-
-            std::string listDirection = String::trim(inData.at(LIST_DIRECTION_ATTRIBUTE_NAME));
-            std::transform(
-                listDirection.begin(),
-                listDirection.end(),
-                listDirection.begin(),
-                ::toupper
-            );
-
-            if (String::areEquals(listDirection, LIST_DIRECTION_COLUMN))
-            {
-                outStyle.listDirection = Style::ListDirection::Column;
-
-                return;
-            }
-
-            outStyle.listDirection = Style::ListDirection::Row;
-        }
-
-        void _setForegroundColor(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            if (inData.empty() || inData.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
-            {
-                outStyle.backgroundColor = FOREGROUND_DEFAULT_COLOR;
-
-                return;
-            }
-
-            outStyle.foregroundColor = String::trim(inData.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
-        }
-
-        void _setBackgroundColor(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            if (inData.empty() || inData.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == inData.end())
-            {
-                outStyle.backgroundColor = BACKGROUND_COLOR_TRANSPARENT;
-
-                return;
-            }
-
-            outStyle.backgroundColor = String::trim(inData.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
-        }
-
-        Style::Alignment _getAlignment(const std::string& inValue)
+        Style::Alignment Style::getAlignment(const std::string& inValue)
         {
             if (inValue.empty())
             {
@@ -438,262 +530,6 @@ namespace Chicane
             }
 
             return Style::Alignment::Start;
-        }
-
-        void _setAlignment(
-            Style& outStyle,
-            const std::unordered_map<std::string, std::string>& inData
-        )
-        {
-            if (inData.empty() || inData.find(ALIGNMENT_ATTRIBUTE_NAME) == inData.end())
-            {
-                outStyle.horizontalAlignment = Style::Alignment::Start;
-                outStyle.verticalAlignment   = Style::Alignment::Start;
-
-                return;
-            }
-
-            std::vector<std::string> splittedOneline = String::split(
-                String::trim(inData.at(ALIGNMENT_ATTRIBUTE_NAME)),
-                ONELINE_SEPARATOR
-            );
-
-            if (splittedOneline.size() == 1)
-            {
-                outStyle.horizontalAlignment = _getAlignment(splittedOneline.at(0));
-                outStyle.verticalAlignment   = outStyle.horizontalAlignment;
-
-                return;
-            }
-
-            outStyle.horizontalAlignment = _getAlignment(splittedOneline.at(0));
-            outStyle.verticalAlignment   = _getAlignment(splittedOneline.at(1));
-        }
-
-        Style _parseStyle(const Style::Source& inSource)
-        {
-            Style result = {};
-
-            if (inSource.empty())
-            {
-                return result;
-            }
-
-            _setVisiblity(result, inSource);
-            _setSize(result, inSource);
-            _setPosition(result, inSource);
-            _setMargin(result, inSource);
-            _setGap(result, inSource);
-            _setListDirection(result, inSource);
-            _setForegroundColor(result, inSource);
-            _setBackgroundColor(result, inSource);
-            _setAlignment(result, inSource);
-
-            return result;
-        }
-
-        void _addStyle(const std::string& inFilePath)
-        {
-            m_sources = Style::extractStyleFromFile(inFilePath);
-
-            // TODO Implement property based overwrite
-            for (const auto& [id, source] : m_sources)
-            {
-                Style style = _parseStyle(source);
-
-                if (m_styles.find(id) != m_styles.end())
-                {
-                    m_styles[id] = style;
-
-                    continue;
-                }
-
-                m_styles.insert(
-                    std::make_pair(
-                        id,
-                        style
-                    )
-                );
-            }
-        }
-
-        const Style& Style::empty()
-        {
-            return EMPTY_STYLE;
-        }
-
-        Style::Source extractStyleSource(const std::string& inData)
-        {
-            std::vector<std::string> blocks = String::split(
-                inData,
-                ';'
-            );
-    
-            Style::Source result = {};
-
-            for (const std::string& block : blocks)
-            {
-                std::vector<std::string> splittedBlock = String::split(
-                    block,
-                    ':'
-                );
-
-                std::string key   = String::trim(splittedBlock.at(0));
-                std::string value = String::trim(splittedBlock.at(1));
-                std::transform(
-                    value.begin(),
-                    value.end(),
-                    value.begin(),
-                    ::tolower
-                );
-
-                if (result.find(key) != result.end())
-                {
-                    result[key] = value;
-
-                    continue;
-                }
-
-                result.insert(
-                    std::make_pair(
-                        key,
-                        value
-                    )
-                );
-            }
-
-            return result;
-        }
-
-        Style::Sources Style::extractStyleFromString(const std::string& inData)
-        {
-            Style::Sources result = {};
-
-            std::string data = inData;
-            data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\n'
-                ),
-                data.cend()
-            );
-            data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\r'
-                ),
-                data.cend()
-            );
-
-            std::vector<std::string> styles = String::split(
-                data,
-                '}'
-            );
-
-            for (const std::string& style : styles)
-            {
-                std::vector<std::string> splittedStyle = String::split(
-                    style,
-                    '{'
-                );
-
-                std::string identifiers = String::trim(splittedStyle.at(0));
-                std::string source      = String::trim(splittedStyle.at(1));
-
-                for (std::string rawIdentifier : String::split(identifiers, ','))
-                {
-                    std::string identifier = String::trim(rawIdentifier);
-
-                    if (result.find(identifier) != result.end())
-                    {
-                        continue;
-                    }
-
-                    result.insert(
-                        std::make_pair(
-                            identifier,
-                            extractStyleSource(source)
-                        )
-                    );
-                }
-            }
-
-            return result;
-        }
-
-        Style::Sources Style::extractStyleFromFile(const std::string& inFilePath)
-        {
-            if (inFilePath.empty())
-            {
-                return EMPTY_SOURCE_MAP;
-            }
-
-            std::vector<std::string> splittedFilePath = String::split(
-                inFilePath,
-                FileSystem::SEPARATOR
-            );
-            std::vector<std::string> splittedFilename = String::split(
-                splittedFilePath.back(),
-                '.'
-            );
-            std::string fileExtension = splittedFilename.back();
-
-            if (!String::areEquals(fileExtension, FILE_EXTENSION_NAME))
-            {
-                return EMPTY_SOURCE_MAP;
-            }
-
-            std::vector<char> data = FileSystem::readFile(inFilePath);
-
-            return extractStyleFromString(
-                std::string(
-                    data.begin(),
-                    data.end()
-                )
-            );
-        }
-
-        void Style::addStyle(const pugi::xml_node& inNode)
-        {
-            std::string styleLocation = getAttribute(STYLE_ATTRIBUTE_NAME, inNode).as_string();
-
-            _addStyle(styleLocation);
-        }
-
-        const Style& Style::getStyle(const pugi::xml_node& inNode)
-        {
-            std::string id = getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string();
-
-            if (id.empty())
-            {
-                return Style::empty();
-            }
-
-            id = "#" + id;
-
-            if (m_styles.empty() || m_styles.find(id) == m_styles.end())
-            {
-                return Style::empty();
-            }
-
-            Style& style                = m_styles.at(id);
-            const Style::Source& source = m_sources.at(id);
-
-            _setVisiblity(style, source);
-
-            if (style.display != Style::Display::Visible)
-            {
-                return style;
-            }
-
-            _setSize(style, source);
-            _setPosition(style, source);
-            _setMargin(style, source);
-            _setGap(style, source);
-
-            return style;
         }
     }
 }

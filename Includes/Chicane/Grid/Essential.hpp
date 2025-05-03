@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Component.hpp"
-#include "Reference.hpp"
-#include "Style.hpp"
-#include "View.hpp"
+#include "Grid/Component.hpp"
+#include "Grid/Function.hpp"
+#include "Grid/Reference.hpp"
+#include "Grid/Style.hpp"
+#include "Grid/View.hpp"
 
 namespace Chicane
 {
@@ -41,9 +42,6 @@ namespace Chicane
         CHICANE Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
         CHICANE Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
 
-        CHICANE std::uint32_t getChildrenCount(const Component::Children& inChildren);
-        CHICANE std::vector<pugi::xml_node> extractChildren(const Component::Children& inChildren);
-
         CHICANE float getSizeFromPixel(const pugi::xml_attribute& inAttribute);
 
         CHICANE float calculateSizeFromViewportHeight(float inVhValue);
@@ -51,11 +49,6 @@ namespace Chicane
 
         CHICANE float calculateSizeFromViewportWidth(float inVwValue);
         CHICANE float getSizeFromViewportWidth(const pugi::xml_attribute& inAttribute);
-
-        CHICANE pugi::xml_attribute getAttribute(
-            const std::string& inName,
-            const pugi::xml_node& inNode
-        );
 
         CHICANE float getSize(
             const std::string& inValue,
@@ -74,7 +67,7 @@ namespace Chicane
 
         CHICANE std::string anyToString(const Reference& inValue);
 
-        CHICANE Component::FunctionData parseFunction(const std::string& inRefValue);
+        CHICANE FunctionData parseFunction(const std::string& inRefValue);
 
         CHICANE bool doesTextContainsReference(const std::string& inText);
         CHICANE bool doesTextContainsFunction(const std::string& inValue);
@@ -82,7 +75,7 @@ namespace Chicane
         CHICANE std::string parseText(const std::string& inText);
 
         CHICANE std::vector<Reference> getItems(const pugi::xml_node& inNode);
-        CHICANE Component::Function getItemGetter(const pugi::xml_node& inNode);
+        CHICANE Function getItemGetter(const pugi::xml_node& inNode);
 
         CHICANE bool hasView();
         CHICANE void addView(View* inView);

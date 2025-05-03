@@ -66,45 +66,45 @@ void Character::onControlAttachment()
     m_controller->bindEvent(std::bind(&Character::onLook, this, std::placeholders::_1));
 
     m_controller->bindEvent(
-        Chicane::Controller::Mouse::Button::Left,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Mouse::Button::Left,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onLeftClick, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::Mouse::Button::Right,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Mouse::Button::Right,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onRightClick, this)
     );
 
     // Keyboard
     m_controller->bindEvent(
-        Chicane::Controller::Keyboard::Key::W,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Keyboard::Key::W,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onMoveForward, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::Keyboard::Key::S,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Keyboard::Key::S,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onMoveBackward, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::Keyboard::Key::A,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Keyboard::Key::A,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onMoveLeft, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::Keyboard::Key::D,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Keyboard::Key::D,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onMoveRight, this)
     );
     m_controller->bindEvent(
-        Chicane::Controller::Keyboard::Key::Space,
-        Chicane::Controller::EventStatus::Pressed,
+        Chicane::Input::Keyboard::Key::Space,
+        Chicane::Input::Event::Status::Pressed,
         std::bind(&Character::onJump, this)
     );
 }
 
-void Character::onLook(const Chicane::Controller::Mouse::MotionEvent& inEvent)
+void Character::onLook(const Chicane::Input::Mouse::MotionEvent& inEvent)
 {
     if (!Chicane::Application::getWindow()->isFocused())
     {

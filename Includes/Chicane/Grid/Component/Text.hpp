@@ -1,19 +1,17 @@
 #pragma once
 
 #include "Core.hpp"
+#include "Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        struct Style;
-
-        namespace Text
+        class CHICANE Text : public Component
         {
-            const std::string TAG_ID = "Text";
-
-            CHICANE void compileRaw(const std::string& inText, const Style& inStyle);
-            CHICANE void compile(const pugi::xml_node& inNode);
-        }
+        public:
+            // Tag
+            static constexpr const char* TAG_ID = "Text";
+        };
     }
 }

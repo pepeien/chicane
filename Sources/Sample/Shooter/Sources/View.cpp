@@ -1,8 +1,7 @@
 #include "View.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Core.hpp"
-
+#include "Chicane/Runtime/Application.hpp"
 #include "Actor/Apple.hpp"
 #include "Game.hpp"
 
@@ -24,7 +23,7 @@ View::View()
         }
     );
 
-    addVariable(
+    addReference(
         "didPlayerWin",
         &m_uiDidPlayerWin
     );
@@ -39,14 +38,14 @@ View::View()
     );
 }
 
-Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Component::Event& inEvent)
+Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Event& inEvent)
 {
     return Chicane::Grid::Reference::fromValue<const std::uint32_t>(
         &Chicane::Application::getTelemetry().frame.rate
     );
 }
 
-Chicane::Grid::Reference View::getFrametime(const Chicane::Grid::Component::Event& inEvent)
+Chicane::Grid::Reference View::getFrametime(const Chicane::Grid::Event& inEvent)
 {
     return Chicane::Grid::Reference::fromValue<const float>(
         &Chicane::Application::getTelemetry().frame.delta

@@ -28,6 +28,14 @@ add_library(
         ${RUNTIME_TARGET_NAME}
 )
 
+set_target_properties(
+    ${RUNTIME_TARGET_NAME}
+
+    PROPERTIES
+        OUTPUT_NAME
+            "${NAME}Runtime"
+)
+
 target_include_directories(
     ${RUNTIME_TARGET_NAME}
 
@@ -51,13 +59,6 @@ target_link_libraries(
 
         # Vendors
         Vulkan::Vulkan
-)
-
-add_dependencies(
-    ${RUNTIME_TARGET_NAME}
-
-    # Contents
-    ${RUNTIME_CONTENT_TARGET_NAME}
 )
 
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})

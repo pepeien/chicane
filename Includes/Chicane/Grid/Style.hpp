@@ -58,35 +58,64 @@ namespace Chicane
             typedef std::unordered_map<std::string, Style> Styles;
 
         public:
-            static const Style& empty();
+            Style(const pugi::xml_node& inNode);
+            Style(const std::filesystem::path& inPath);
+            Style(const std::string& inData);
+            Style(const Source& inSource);
+            Style();
 
-            static Sources extractStyleFromString(const std::string& inRawData);
-            static Sources extractStyleFromFile(const std::string& inFilePath);
+        public:
+            void update();
 
-            static void addStyle(const pugi::xml_node& inNode);
-            static const Style& getStyle(const pugi::xml_node& inNode);
+        private:
+            void parseData(const std::string& inData);
+
+            void updateVisibility();
+            void updateSize();
+            void updatePosition();
+            void updateMargin();
+            void updateGap();
+            void updateAlignment();
+            void updateForegroundColor();
+            void updateBackgroundColor();
+            void updateListDirection();
+
+            float getDirectionalSize(const std::string& inValue, Direction inDirection);
+            void updateDirectionalSize(
+                DirectionalSize& outValue,
+                const std::string& inOnelineAttributeName,
+                const std::string& inTopAttributeName,
+                const std::string& inBottomAttributeName,
+                const std::string& inLeftAttributeName,
+                const std::string& inRightAttributeName
+            );
+
+            Alignment getAlignment(const std::string& inValue);
 
         public:
             // Visiblity
-            Display         display              = Display::Visible;
+            Display         display;
 
             // Size
-            float           height               = 0.0f;
-            float           width                = 0.0f;
+            float           height;
+            float           width;
 
             // Positioning
-            Position        position             = Position::Relative;
-            Alignment       horizontalAlignment  = Alignment::Start;
-            Alignment       verticalAlignment    = Alignment::Start;
-            DirectionalSize gap                  = {};
-            DirectionalSize margin               = {};
+            Position        position;
+            Alignment       horizontalAlignment;
+            Alignment       verticalAlignment;
+            DirectionalSize gap;
+            DirectionalSize margin;
 
             // Layout
-            ListDirection   listDirection        = ListDirection::Column;
+            ListDirection   listDirection;
 
             // Color
-            std::string     backgroundColor      = BACKGROUND_COLOR_TRANSPARENT;
-            std::string     foregroundColor      = "#FFFFFF";
+            std::string     backgroundColor;
+            std::string     foregroundColor;
+
+        private:
+            Source m_source = {};
         };
     }
 }

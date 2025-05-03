@@ -2,7 +2,6 @@
 
 #include "Core.hpp"
 #include "Box/Manager/EventType.hpp"
-#include "Core.hpp"
 
 namespace Chicane
 {

@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Manager/EventType.hpp"
-#include "Manager/Instance.hpp"
+#include "Box/Manager/EventType.hpp"
+#include "Box/Manager/Instance.hpp"

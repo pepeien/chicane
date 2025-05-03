@@ -1,33 +1,27 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Grid/Component/BaseProps.hpp"
-#include "Grid/Component/Function.hpp"
+#include "Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace Button
+        class CHICANE Button : public Component
         {
-            const std::string TAG_ID = "Button";
+        public:
+            // Header
+            static constexpr const char* TAG_ID = "Button";
 
             // Attributes
-            const std::string ON_CLICK_ATTRIBUTE_NAME = "onClick";
-            const std::string ON_CLICK_EVENT_KEYWORD  = "$event";
+            static constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
+            static constexpr const char* ON_CLICK_EVENT_KEYWORD  = "$event";
 
-            // Props
-            struct CHICANE Props : Component::BaseProps
-            {
-                // onClick
-                Component::Event           onClickEvent = {}; // Optional
-                Component::Event::Function onClick; // Optional
-            };
+        public:
+            Button(const pugi::xml_node& inNode);
 
-            CHICANE void assertProps(const Props& inProps);
-
-            CHICANE void compileRaw(const Props& inProps);
-            CHICANE void compile(const pugi::xml_node& inNode);
-        }
+        public:
+            virtual void onClick(const Event& inEvent) { return; }
+        };
     }
 }

@@ -1,53 +1,24 @@
 #pragma once
 
+#include "Core/Essentials.hpp"
 #include "Core/FrameTelemetry.hpp"
+#include "Core/Input/Event/Events.hpp"
+#include "Core/Input/Event/Status.hpp"
 
 static constexpr float EVENT_REPEAT_COOLDOWN_IN_MS = 30.0f;
 
 namespace Chicane
 {
-    namespace Controller
+    namespace Input
     {
-        enum class EventStatus
-        {
-            Pressed,
-            Released
-        };
-
-        template<typename E>
-        struct CHICANE Events
-        {
-        public:
-            void bind(std::function<void(const E&)> inExec)
-            {
-                m_execs.push_back(inExec);
-            }
-
-            void exec(const E& inEvent)
-            {
-                for (auto& function : m_execs)
-                {
-                    function(inEvent);
-                }
-            }
-
-            void clear()
-            {
-                m_execs.clear();
-            }
-
-        private:
-            std::vector<std::function<void(const E&)>> m_execs = {};
-        };
-
         template<typename B>
         struct CHICANE PressableEvents
         {
         public:
-            typedef std::unordered_map<B, std::unordered_map<EventStatus, std::vector<std::function<void()>>>> Events;
+            typedef std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>> Events;
 
         public:
-            void bind(B inButton, EventStatus inStatus, std::function<void()> inExec)
+            void bind(B inButton, Event::Status inStatus, std::function<void()> inExec)
             {
                 if (m_events.find(inButton) == m_events.end())
                 {
@@ -64,7 +35,7 @@ namespace Chicane
                 events.at(inStatus).push_back(inExec);
             }
 
-            void exec(B inButton, EventStatus inStatus)
+            void exec(B inButton, Event::Status inStatus)
             {
                 store(inButton, inStatus);
 
@@ -99,7 +70,7 @@ namespace Chicane
 
                 for (B button : m_pressed)
                 {
-                    exec(button, EventStatus::Pressed);
+                    exec(button, Event::Status::Pressed);
                 }
             }
 
@@ -110,7 +81,7 @@ namespace Chicane
             }
 
         private:
-            void store(B inButton, EventStatus inStatus)
+            void store(B inButton, Event::Status inStatus)
             {
                 auto foundButton = std::find(
                     m_pressed.begin(),
@@ -118,7 +89,7 @@ namespace Chicane
                     inButton
                 );
 
-                if (inStatus == EventStatus::Pressed)
+                if (inStatus == Event::Status::Pressed)
                 {
                     if (foundButton == m_pressed.end())
                     {

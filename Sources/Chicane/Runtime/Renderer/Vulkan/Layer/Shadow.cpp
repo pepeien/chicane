@@ -249,7 +249,7 @@ namespace Chicane
 
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Chicane/Runtime/Vulkan/Shaders/shadow.vert.spv";
+            vertexShader.path = "Engine/Shaders/Vulkan/shadow.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Core.hpp"
+#include "Core/Essentials.hpp"
 
 namespace Chicane
 {
-    namespace Controller
+    namespace Input
     {
-        namespace Gamepad
+        namespace Mouse
         {
             typedef std::function<void()> ButtonEventFunction;
         }

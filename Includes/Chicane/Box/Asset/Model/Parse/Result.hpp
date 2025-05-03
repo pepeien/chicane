@@ -2,7 +2,6 @@
 
 #include "Core.hpp"
 #include "Box/Asset/Model/Data.hpp"
-#include "Core/Math.hpp"
 
 namespace Chicane
 {

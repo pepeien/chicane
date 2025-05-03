@@ -1,29 +1,21 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Grid/Component/BaseProps.hpp"
+#include "Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace ProgressBar
+        class CHICANE ProgressBar : public Component
         {
-            const std::string TAG_ID = "ProgressBar";
+        public:
+            // Tag
+            static constexpr const char* TAG_ID = "ProgressBar";
     
             // Attributes
-            const std::string PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`
-            const std::string OVERLAY_ATTRIBUTE_NAME    = "overlay"; // Text that goes inside
-
-            // Types
-            struct CHICANE Props : Component::BaseProps
-            {
-                float       percentage = 0.0f; // Optional
-                std::string text       = ""; // Optional
-            };
-    
-            CHICANE void compileRaw(const Props& inProps);
-            CHICANE void compile(const pugi::xml_node& inNode);
-        }
+            static constexpr const char* PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`
+            static constexpr const char* OVERLAY_ATTRIBUTE_NAME    = "overlay"; // Text that goes inside
+        };
     }
 }

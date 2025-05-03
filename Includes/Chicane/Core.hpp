@@ -6,6 +6,7 @@
 #include "Core/Event.hpp"
 #include "Core/FileSystem.hpp"
 #include "Core/FrameTelemetry.hpp"
+#include "Core/Input.hpp"
 #include "Core/Image.hpp"
 #include "Core/Log.hpp"
 #include "Core/Math.hpp"

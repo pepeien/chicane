@@ -25,6 +25,14 @@ add_library(
         ${BOX_TARGET_NAME}
 )
 
+set_target_properties(
+    ${BOX_TARGET_NAME}
+
+    PROPERTIES
+        OUTPUT_NAME
+            "${NAME}Box"
+)
+
 target_include_directories(
     ${BOX_TARGET_NAME}
 

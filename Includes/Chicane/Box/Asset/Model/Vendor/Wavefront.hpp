@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.hpp"
-
 #include "Box/Asset/Model/Parse/Result.hpp"
 
 namespace Chicane

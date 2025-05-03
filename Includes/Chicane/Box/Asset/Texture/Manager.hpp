@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Core/Image.hpp"
 #include "Box/Asset/Texture/Instance.hpp"
 #include "Box/Manager.hpp"
 

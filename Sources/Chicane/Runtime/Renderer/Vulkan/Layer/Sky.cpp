@@ -306,11 +306,11 @@ namespace Chicane
             }
 
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Chicane/Runtime/Vulkan/Shaders/sky.vert.spv";
+            vertexShader.path = "Engine/Shaders/Vulkan/sky.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Chicane/Runtime/Vulkan/Shaders/sky.frag.spv";
+            fragmentShader.path = "Engine/Shaders/Vulkan/sky.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

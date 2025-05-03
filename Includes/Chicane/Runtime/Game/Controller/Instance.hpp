@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Runtime/Game/Controller/Gamepad.hpp"
-#include "Runtime/Game/Controller/Keyboard.hpp"
-#include "Runtime/Game/Controller/Mouse.hpp"
 
 namespace Chicane
 {
@@ -41,15 +38,27 @@ namespace Chicane
             void deattach();
 
             // Mouse Events
-            void bindEvent(Mouse::MotionEventFunction inEvent);
-            void bindEvent(Mouse::Button inButton, EventStatus inStatus, Mouse::ButtonEventFunction inEvent);
+            void bindEvent(Input::Mouse::MotionEventFunction inEvent);
+            void bindEvent(
+                Input::Mouse::Button inButton,
+                Input::Event::Status inStatus,
+                Input::Mouse::ButtonEventFunction inEvent
+            );
 
             // Keyboard Events
-            void bindEvent(Keyboard::Key inKey, EventStatus inStatus, Keyboard::KeyEventFunction inEvent);
+            void bindEvent(
+                Input::Keyboard::Key inKey,
+                Input::Event::Status inStatus,
+                Input::Keyboard::KeyEventFunction inEvent
+            );
 
             // Controller Events
-            void bindEvent(Gamepad::MotionEventFunction inEvent);
-            void bindEvent(Gamepad::Button inButton, EventStatus inStatus, Gamepad::ButtonEventFunction inEvent);
+            void bindEvent(Input::Gamepad::MotionEventFunction inEvent);
+            void bindEvent(
+                Input::Gamepad::Button inButton,
+                Input::Event::Status inStatus,
+                Input::Gamepad::ButtonEventFunction inEvent
+            );
 
             void onEvent(const SDL_Event& inEvent);
 
@@ -70,19 +79,19 @@ namespace Chicane
 
         private:
             // Pawn
-            APawn*                              m_pawn;
-            std::unique_ptr<Observable<APawn*>> m_pawnObservable;
+            APawn*                                            m_pawn;
+            std::unique_ptr<Observable<APawn*>>               m_pawnObservable;
 
             // Mouse Events
-            Events<Mouse::MotionEvent>          m_mouseMotionEvents;
-            PressableEvents<Mouse::Button>      m_mouseButtonEvents;   
+            Input::Events<Input::Mouse::MotionEvent>          m_mouseMotionEvents;
+            Input::PressableEvents<Input::Mouse::Button>      m_mouseButtonEvents;   
 
             // Keyboard Events
-            PressableEvents<Keyboard::Key>      m_keyboardKeyEvents;
+            Input::PressableEvents<Input::Keyboard::Key>      m_keyboardKeyEvents;
 
             // Gamepad Events
-            Events<Gamepad::MotionEvent>        m_gamepadMotionEvents;
-            PressableEvents<Gamepad::Button>    m_gamepadButtonEvents;
+            Input::Events<Input::Gamepad::MotionEvent>        m_gamepadMotionEvents;
+            Input::PressableEvents<Input::Gamepad::Button>    m_gamepadButtonEvents;
         };
     }
 }
