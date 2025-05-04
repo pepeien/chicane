@@ -21,6 +21,7 @@ namespace Chicane
         // Value attributes
         static constexpr const char* IS_VISIBLE_ATTRIBUTE_NAME = "isVisible";
         static constexpr const char* ID_ATTRIBUTE_NAME         = "id";
+        static constexpr const char* CLASS_ATTRIBUTE_NAME      = "class";
 
         // Lifecycle attributes
         static constexpr const char* ON_TICK_ATTRIBUTE = "onTick";

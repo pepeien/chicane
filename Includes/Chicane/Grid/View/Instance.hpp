@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Grid/Function.hpp"
-#include "Grid/Reference.hpp"
 #include "Grid/Component.hpp"
 
 namespace Chicane
@@ -12,35 +10,20 @@ namespace Chicane
         class CHICANE View : public Component
         {
         public:
-            View(
-                const std::string& inId,
-                const std::string& inSource,
-                const References& inReferences = {},
-                const Functions& inFunctions = {} 
-            );
-            View(const std::string& inId);
+            static constexpr const char* TAG_ID = "View";
+
+        public:
+            View(const std::string& inId, const std::string& inSource);
 
             virtual ~View() = default;
 
         public:
-            virtual void show(const Vec<2, int>& inSize, const Vec<2, int>& inPosition);
-
-        public:
-            void activate();
-            void rebuild();
-
-        protected:
-            void compile(
-                const pugi::xml_node& inNode,
-                const Vec<2, int>& inSize,
-                const Vec<2, int>& inPosition
-            );
+            void onChildAddition(Component* inChild) override;
 
         protected:
             pugi::xml_document m_document;
 
-        private:
-            bool m_bWasStyleAdded;
+            Style::Sources m_styles;
         };
     }
 }

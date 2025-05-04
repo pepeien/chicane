@@ -1,3 +1,10 @@
+Container {
+    position: absolute;
+    height: 10px;
+    width: 2px;
+    background-color: #FFFFFF;
+}
+
 #victory {
     position: absolute;
     height: 30vh;
@@ -29,33 +36,17 @@
 }
 
 #crosshairTop {
-    position: absolute;
-    height: 10px;
-    width: 2px;
-    background-color: #FFFFFF;
     margin: 50% 2px 28px 50%;
 }
 
 #crosshairBottom {
-    position: absolute;
-    height: 10px;
-    width: 2px;
-    background-color: #FFFFFF;
     margin: 50% 2px 8px 50%;
 }
 
 #crosshairLeft {
-    position: absolute;
-    height: 2px;
-    width: 10px;
-    background-color: #FFFFFF;
     margin: 50% 15px 15px 50%;
 }
 
 #crosshairRight {
-    position: absolute;
-    height: 2px;
-    width: 10px;
-    background-color: #FFFFFF;
     margin: 50% -5px 15px 50%;
 }

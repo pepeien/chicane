@@ -12,15 +12,37 @@ namespace Chicane
         class CHICANE Component
         {
         public:
-            Component(const pugi::xml_node& inNode);
-            Component(const std::string& inId);
-
-            virtual ~Component() = default;
+            typedef std::function<Component* (const pugi::xml_node& inNode)> Compiler;
 
         public:
-            void render() const;
+            static Component* createComponent(const pugi::xml_node& inNode);
+            static void registerComponent(const std::string& inTag, Compiler inCompiler);
+
+        public:
+            Component(const pugi::xml_node& inNode);
+            Component(const std::string& inTag, const std::string& inId);
+
+            virtual ~Component();
+
+        public:
+            virtual void onChildAddition(Component* inComponent) { return; }
+
+        public:
+            bool isValidChild(const Component* inComponent) const;
+
+            const std::string& getTag() const;
+            void setTag(const std::string& inTag);
 
             const std::string& getId() const;
+            void setId(const std::string& inId);
+
+            const std::string& getClass() const;
+            void setClass(const std::string& inClass);
+
+            const Style::Instance& getStyle() const;
+            void setStyle(const Style::Sources& inSources);
+            void setStyle(const Style::Properties& inSource);
+            void setStyle(const Style::Instance& inStyle);
 
             const Vec<2, int>& getSize() const;
             void setSize(const Vec<2, int>& inSize);
@@ -42,21 +64,29 @@ namespace Chicane
             void addFunction(const std::string& inId, Function inFunction);
             void removeFunction(const std::string& inId);
 
+            bool hasRoot() const;
+            const Component* getRoot() const;
+            void setRoot(const Component* inComponent);
+
             bool hasParent() const;
             const Component* getParent() const;
-            void setParent(const Component* inParent);
+            void setParent(const Component* inComponent);
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
-            void addChild(Component* inChild);
+            void addChildren(const pugi::xml_node& inNode);
+            void addChild(Component* inComponent);
 
         protected:
+            std::string             m_tag;
             std::string             m_id;
-            Style                   m_style;
+            std::string             m_class;
+            Style::Instance         m_style;
 
             References              m_references;
             Functions               m_functions;
 
+            const Component*        m_root;
             const Component*        m_parent;
             std::vector<Component*> m_children;
 

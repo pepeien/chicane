@@ -94,6 +94,11 @@ namespace Chicane
 */
         }
 
+        std::vector<char> readFile(const std::filesystem::path& inFilepath)
+        {
+            return FileSystem::readFile(inFilepath.string());
+        }
+
         std::vector<char> readFile(const std::string& inFilepath)
         {
             std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);

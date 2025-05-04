@@ -18,6 +18,7 @@ namespace Chicane
         CHICANE void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback);
         CHICANE void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback);
 
+        CHICANE std::vector<char> readFile(const std::filesystem::path& inFilepath);
         CHICANE std::vector<char> readFile(const std::string& inFilepath);
         CHICANE std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath);
         CHICANE Image::Pixels readImageFromFile(const std::string& inFilepath);

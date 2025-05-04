@@ -11,7 +11,7 @@ namespace Chicane
     {
         std::unordered_map<std::string, std::string> m_colors = {};
 
-        std::deque<Entry>                        m_logs           = {};
+        List                                     m_logs           = {};
         std::unique_ptr<Observable<const List*>> m_logsObservable = std::make_unique<Observable<const List*>>();
 
         Subscription<const List*>* watchLogs(

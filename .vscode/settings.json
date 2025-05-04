@@ -106,6 +106,7 @@
         "*.rh": "cpp",
         "complex": "cpp",
         "fast_obj.h": "c",
-        "ciso646": "cpp"
+        "ciso646": "cpp",
+        "xstddef": "cpp"
     }
 }

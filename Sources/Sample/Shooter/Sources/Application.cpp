@@ -50,5 +50,4 @@ void Application::initCharacter()
 void Application::initView()
 {
     m_view = std::make_unique<View>();
-    m_view->activate();
 }

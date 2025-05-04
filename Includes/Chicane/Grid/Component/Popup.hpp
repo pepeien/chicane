@@ -17,6 +17,11 @@ namespace Chicane
             static constexpr const char* IS_OPEN_ATTRIBUTE_NAME        = "isOpen";
             static constexpr const char* IS_CONSTRAINED_ATTRIBUTE_NAME = "isConstrained";
             static constexpr const char* IS_RESIZABLE_ATTRIBUTE_NAME   = "isResizable";
+
+        public:
+            Popup(const pugi::xml_node& inNode)
+                : Component(inNode)
+            {}
         };
     }
 }

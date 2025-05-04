@@ -10,10 +10,10 @@ namespace Chicane
         static const std::vector<Reference> EMPTY_ITEMS = {};
 
         std::unordered_map<std::string, Vec<4, std::uint32_t>> m_rgbaColors {
-            { HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
+            { Style::HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
         };
         std::unordered_map<std::string, Vec<3, std::uint32_t>> m_rgbColors {
-            { HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
+            { Style::HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
         };
 
         std::unordered_map<std::string, View*> m_views          = {};
@@ -40,12 +40,13 @@ namespace Chicane
                 ::tolower
             );
 
-            bool bIsTransparent = backgroundColor.empty() || String::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
+            bool bIsTransparent = backgroundColor.empty() ||
+                                  String::areEquals(backgroundColor, Style::BACKGROUND_COLOR_TRANSPARENT);
             bool bIsNotHex      = backgroundColor.size() < 7 || backgroundColor.size() > 9;
 
             if (bIsTransparent || bIsNotHex)
             {
-                backgroundColor = HEX_COLOR_TRANSPARENT;
+                backgroundColor = Style::HEX_COLOR_TRANSPARENT;
             }
 
             if (m_rgbaColors.find(backgroundColor) == m_rgbaColors.end())

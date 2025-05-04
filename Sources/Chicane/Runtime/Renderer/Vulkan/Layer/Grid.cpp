@@ -82,8 +82,9 @@ namespace Chicane
             ImGui_ImplVulkan_NewFrame();
             ImGui_ImplSDL3_NewFrame();
             ImGui::NewFrame();
-*/
+
             m_view->show(m_window->getSize(), m_window->getPosition());
+*/
         }
 
         void LGrid::render(void* outData)

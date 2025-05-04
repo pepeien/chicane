@@ -1,40 +1,185 @@
 #include "Grid/Component/Instance.hpp"
 
-#include "Grid/Essential.hpp"
+#include "Grid.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        Component::Component(const pugi::xml_node& inNode)
-            : m_id(XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string()),
-            m_style(Style(inNode)),
-            m_functions({}),
-            m_children({})
-        {}
+        std::unordered_map<std::string, Component::Compiler> m_components = {
+            { Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); } },
+            { List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); }  },
+            { Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); }  },
+            { Popup::TAG_ID,       [](const pugi::xml_node& inNode) { return new Popup(inNode); }  },
+            { ProgressBar::TAG_ID, [](const pugi::xml_node& inNode) { return new ProgressBar(inNode); }  },
+            { Text::TAG_ID,        [](const pugi::xml_node& inNode) { return new Text(inNode); }  },
+            { TextInput::TAG_ID,   [](const pugi::xml_node& inNode) { return new TextInput(inNode); }  }
+        };
 
-        Component::Component(const std::string& inId)
-            : m_id(inId),
-            m_style(Style()),
-            m_functions({}),
-            m_children({})
-        {}
-
-        void Component::render() const
+        Component* Component::createComponent(const pugi::xml_node& inNode)
         {
-            if (m_style.display == Style::Display::None) {
+            const std::string& tag = inNode.name();
+
+            if (m_components.find(tag) == m_components.end())
+            {
+                return nullptr;
+            }
+
+            return m_components.at(tag)(inNode);
+        }
+
+        void Component::registerComponent(const std::string& inTag, Compiler inCompiler)
+        {
+            if (m_components.find(inTag) != m_components.end())
+            {
                 return;
             }
 
-            for (const Component* child : m_children)
+            m_components.insert(
+                std::make_pair(
+                    inTag,
+                    inCompiler
+                )
+            );
+        }
+
+        Component::Component(const pugi::xml_node& inNode)
+            : Component(inNode.name(), XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string())
+        {}
+
+        Component::Component(const std::string& inTag, const std::string& inId)
+            : m_tag(inTag),
+            m_id(inId),
+            m_class(""),
+            m_style({}),
+            m_functions({}),
+            m_root(nullptr),
+            m_parent(nullptr),
+            m_children({})
+        {}
+
+        Component::~Component()
+        {
+            for (Component* child : m_children)
             {
-                child->render();
+                delete child;
             }
+
+            m_children.clear();
+        }
+
+        bool Component::isValidChild(const Component* inComponent) const
+        {
+            return inComponent != nullptr && inComponent != this;
+        }
+
+        const std::string& Component::getTag() const
+        {
+            return m_tag;
+        }
+
+        void Component::setTag(const std::string& inTag)
+        {
+            m_tag = inTag;
         }
 
         const std::string& Component::getId() const
         {
             return m_id;
+        }
+
+        void Component::setId(const std::string& inId)
+        {
+            m_id = inId;
+        }
+
+        const std::string& Component::getClass() const
+        {
+            return m_class;
+        }
+
+        void Component::setClass(const std::string& inClass)
+        {
+            m_class = inClass;
+        }
+        
+        const Style::Instance& Component::getStyle() const
+        {
+            return m_style;
+        }
+
+        void Component::setStyle(const Style::Sources& inSources)
+        {
+            if (inSources.empty())
+            {
+                return;
+            }
+
+            for (const Style::Source& source : inSources)
+            {
+                if (source.isEmpty())
+                {
+                    continue;
+                }
+
+                for (const std::string& selector : String::split(source.selector, Style::SELECTOR_SEPARATOR))
+                {
+                    if (String::areEquals(selector, std::to_string(Style::INCLUSIVE_SELECTOR)))
+                    {
+                        setStyle(source.properties);
+
+                        continue;
+                    }
+
+                    if (!getTag().empty())
+                    {
+                        if (String::areEquals(selector, getTag()))
+                        {
+                            setStyle(source.properties);
+
+                            continue;
+                        }
+                    }
+
+                    if (!getClass().empty())
+                    {
+                        for (const std::string& className : String::split(getClass(), Style::CLASS_SEPARATOR))
+                        {
+                            if (String::areEquals(selector, Style::CLASS_SELECTOR + className))
+                            {
+                                setStyle(source.properties);
+
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (!getId().empty())
+                    {
+                        if (String::areEquals(selector, Style::ID_SELECTOR + getId()))
+                        {
+                            setStyle(source.properties);
+
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            for (Component* child : getChildren())
+            {
+                child->setStyle(inSources);
+            }
+        }
+
+        void Component::setStyle(const Style::Properties& inSource)
+        {
+            m_style.update(inSource);
+        }
+
+        void Component::setStyle(const Style::Instance& inStyle)
+        {
+            m_style = inStyle;
         }
 
         const Vec<2, int>& Component::getSize() const
@@ -176,9 +321,29 @@ namespace Chicane
             m_functions.erase(inId);
         }
 
+        bool Component::hasRoot() const
+        {
+            return m_root != nullptr && m_root != this;
+        }
+
+        const Component* Component::getRoot() const
+        {
+            return m_root;
+        }
+
+        void Component::setRoot(const Component* inComponent)
+        {
+            if (inComponent == this)
+            {
+                return;
+            }
+
+            m_root = inComponent;
+        }
+
         bool Component::hasParent() const
         {
-            return m_parent != nullptr;
+            return m_parent != nullptr && m_parent != this;
         }
 
         const Component* Component::getParent() const
@@ -186,14 +351,14 @@ namespace Chicane
             return m_parent;
         }
 
-        void Component::setParent(const Component* inParent)
+        void Component::setParent(const Component* inComponent)
         {
-            if (inParent == this)
+            if (inComponent == this)
             {
                 return;
             }
 
-            m_parent = inParent;
+            m_parent = inComponent;
         }
 
         bool Component::hasChildren() const
@@ -206,16 +371,36 @@ namespace Chicane
             return m_children;
         }
 
-        void Component::addChild(Component* inChild)
+        void Component::addChildren(const pugi::xml_node& inNode)
         {
-            if (inChild == nullptr || inChild == this)
+            if (inNode.empty())
             {
                 return;
             }
 
-            inChild->setParent(this);
+            for (const auto& child : inNode.children())
+            {
+                Component* component = Component::createComponent(child);
 
-            m_children.push_back(inChild);
+                addChild(component);
+
+                component->addChildren(child);
+            }
+        }
+
+        void Component::addChild(Component* inComponent)
+        {
+            if (!isValidChild(inComponent))
+            {
+                return;
+            }
+
+            inComponent->setRoot(m_root);
+            inComponent->setParent(this);
+
+            m_children.push_back(inComponent);
+
+            onChildAddition(inComponent);
         }
     }
 }

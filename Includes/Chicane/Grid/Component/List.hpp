@@ -16,6 +16,11 @@ namespace Chicane
             // Attributes
             static constexpr const char* ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";
             static constexpr const char* ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
+
+        public:
+            List(const pugi::xml_node& inNode)
+                : Component(inNode)
+            {}
         };
     }
 }

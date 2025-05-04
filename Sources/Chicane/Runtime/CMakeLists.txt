@@ -34,6 +34,8 @@ set_target_properties(
     PROPERTIES
         OUTPUT_NAME
             "${NAME}Runtime"
+        VS_DEBUGGER_WORKING_DIRECTORY
+            "${BUILD_DIR}"
 )
 
 target_include_directories(

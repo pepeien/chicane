@@ -12,6 +12,11 @@ namespace Chicane
         public:
             // Tag
             static constexpr const char* TAG_ID = "Text";
+
+        public:
+            Text(const pugi::xml_node& inNode)
+                : Component(inNode)
+            {}
         };
     }
 }
