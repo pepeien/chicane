@@ -96,7 +96,8 @@ namespace Chicane
                 {
                     std::vector<std::string> splittedBlock = String::split(
                         block,
-                        ':');
+                        ':'
+                    );
 
                     std::string key = String::trim(splittedBlock.at(0));
                     std::string value = String::trim(splittedBlock.at(1));

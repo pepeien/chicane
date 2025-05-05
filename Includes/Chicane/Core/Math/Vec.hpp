@@ -20,4 +20,5 @@ namespace Chicane
 
     const Vec<2, float> Vec2Zero = Vec<2, float>(0.0f);
     const Vec<3, float> Vec3Zero = Vec<3, float>(0.0f);
+    const Vec<4, float> Vec4Zero = Vec<4, float>(0.0f);
 }

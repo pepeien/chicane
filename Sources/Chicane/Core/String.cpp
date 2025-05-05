@@ -11,6 +11,19 @@ namespace Chicane
             return strcmp(inA.c_str(), inB.c_str()) == 0;
         }
 
+        bool endsWith(const std::string& inTarget, const std::string& inEnding)
+        {
+            if (inTarget.empty() || inTarget.size() < inEnding.size())
+            {
+                return false;
+            }
+
+            return String::areEquals(
+                std::string(inTarget.end() - inEnding.size(), inTarget.end()),
+                inEnding
+            );
+        }
+
         std::string trim(const std::string& inTarget)
         {
             std::string result = inTarget;

@@ -11,7 +11,7 @@ layout(set = 1, binding = 0) uniform sampler2D textures[];
 layout(location = 0) in flat int inTextureIndex;
 layout(location = 1) in vec2 inUV;
 layout(location = 2) in vec3 inNormal;
-layout(location = 3) in vec3 inColor;
+layout(location = 3) in vec4 inColor;
 layout(location = 4) in vec3 inViewPosition;
 layout(location = 5) in vec3 inLightPosition;
 layout(location = 8) in vec4 inShadowPosition; 

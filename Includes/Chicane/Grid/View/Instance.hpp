@@ -20,10 +20,18 @@ namespace Chicane
         public:
             void onChildAddition(Component* inChild) override;
 
+        public:
+            void onEvent(const SDL_Event& inEvent);
+
+            Window::Instance* getWindow() const;
+            void setWindow(Window::Instance* inWindow);
+
         protected:
+            Window::Instance*  m_window;
+
             pugi::xml_document m_document;
 
-            Style::Sources m_styles;
+            Style::Sources     m_styles;
         };
     }
 }

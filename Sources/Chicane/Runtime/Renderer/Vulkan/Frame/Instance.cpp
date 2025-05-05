@@ -58,6 +58,7 @@ namespace Chicane
                 destroyCameraData();
                 destroyLightData();
                 destroyMeshData();
+                destroyUiData();
             }
 
             void Instance::setupSync()
@@ -229,6 +230,52 @@ namespace Chicane
             void Instance::destroyMeshData()
             {
                 meshResource.destroy(logicalDevice);
+            }
+
+            void Instance::setupUiData(const std::vector<const Grid::Component*>& inComponents)
+            {
+                destroyUiData();
+
+                if (inComponents.empty())
+                {
+                    return;
+                }
+
+                Buffer::CreateInfo bufferCreateInfo = {};
+                bufferCreateInfo.logicalDevice    = logicalDevice;
+                bufferCreateInfo.physicalDevice   = physicalDevice;
+                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                                    vk::MemoryPropertyFlagBits::eHostCoherent;
+                bufferCreateInfo.size             = sizeof(ComponentData) * inComponents.size();
+                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
+
+                uiResource.setup(bufferCreateInfo);
+
+                updateUiData(inComponents);
+            }
+
+            void Instance::updateUiData(const std::vector<const Grid::Component*>& inComponents)
+            {
+                if (inComponents.empty())
+                {
+                    destroyMeshData();
+
+                    return;
+                }
+
+                if (uiResource.isDirty())
+                {
+                    setupUiData(inComponents);
+
+                    return;
+                }
+
+                refreshUiData(inComponents);
+            }
+
+            void Instance::destroyUiData()
+            {
+                uiResource.destroy(logicalDevice);
             }
 
             void Instance::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)
@@ -437,6 +484,27 @@ namespace Chicane
                 }
 
                 meshResource.copyToBuffer(meshes.data());
+            }
+
+            void Instance::refreshUiData(const std::vector<const Grid::Component*>& inComponents)
+            {
+                if (inComponents.empty())
+                {
+                    return;
+                }
+
+                std::vector<ComponentData> result = {};
+
+                for (const Grid::Component* component : inComponents)
+                {
+                    ComponentData data = {};
+                    data.position = component->getNormalizedPosition();
+                    data.size = component->getNormalizedSize();
+
+                    result.push_back(data);
+                }
+
+                uiResource.copyToBuffer(result.data());
             }
         }
     }

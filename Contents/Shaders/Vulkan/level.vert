@@ -40,13 +40,13 @@ layout(std140, set = 0, binding = 2) readonly buffer StorageBuffer {
 layout(location = 0) out flat int outTextureIndex;
 layout(location = 1) out vec2 outUV;
 layout(location = 2) out vec3 outNormal;
-layout(location = 3) out vec3 outColor;
+layout(location = 3) out vec4 outColor;
 layout(location = 4) out vec3 outViewPosition;
 layout(location = 5) out vec3 outLightPosition;
 layout(location = 8) out vec4 outShadowPosition; 
 
 layout(location = 0) in vec3 inPosition;
-layout(location = 1) in vec3 inColor;
+layout(location = 1) in vec4 inColor;
 layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 

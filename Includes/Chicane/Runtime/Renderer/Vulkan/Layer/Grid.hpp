@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Core/Window.hpp"
-#include "Runtime/Game/Level/Instance.hpp"
-#include "Grid/View.hpp"
+#include "Grid/Component/Instance.hpp"
 #include "Runtime/Renderer/Layer.hpp"
 #include "Runtime/Renderer/Vulkan.hpp"
 
@@ -28,22 +26,35 @@ namespace Chicane
         private:
             void loadEvents();
 
-            void initDescriptorPool();
-            void initRenderpass();
+            // Resource
+            void initFrameResources();
+            void destroyFrameResources();
+
+            // Pipeline
+            void initGraphicsPipeline();
             void initFramebuffers();
 
+            // Model
+            void buildModelVertexBuffer();
+            void buildModelData();
+            void destroyModelData();
+            void rebuildModelData();
+
+            // Render Pass
+            void renderModels(const vk::CommandBuffer& inCommandBuffer);
+
         private:
-            // Window
-            Window::Instance*           m_window;
+            Renderer::Internals                         m_internals;
 
-            // UI
-            Grid::View*                 m_view;
+            std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
-            // Vulkan
-            Renderer::Internals         m_internals;
-            vk::RenderPass              m_renderPass;
-            vk::DescriptorPool          m_descriptorPool;
-            std::vector<vk::ClearValue> m_clearValues;
+            Descriptor::Bundle                          m_frameDescriptor;
+
+            Buffer::Instance                            m_modelVertexBuffer;
+
+            std::vector<vk::ClearValue>                 m_clearValues;
+
+            std::vector<const Grid::Component*>         m_components;
         };
     }
 }

@@ -35,7 +35,7 @@ namespace Chicane
                 vk::VertexInputAttributeDescription colorDescription;
                 colorDescription.binding  = 0;
                 colorDescription.location = 1;
-                colorDescription.format   = vk::Format::eR32G32B32Sfloat;
+                colorDescription.format   = vk::Format::eR32G32B32A32Sfloat;
                 colorDescription.offset   = offsetof(Box::Model::Vertex, color);
 
                 attributeDescriptions.push_back(colorDescription);

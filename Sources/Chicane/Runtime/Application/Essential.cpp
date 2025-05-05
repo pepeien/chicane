@@ -1,4 +1,4 @@
-#include "Runtime/Application.hpp"
+#include "Runtime/Application/Essential.hpp"
 
 #include "Runtime/Renderer/Vulkan.hpp"
 
@@ -148,6 +148,11 @@ namespace Chicane
             }
 
             m_application->addView(inView);
+
+            if (!hasView())
+            {
+                setView(inView->getId());
+            }
         }
 
         void setView(const std::string& inId)

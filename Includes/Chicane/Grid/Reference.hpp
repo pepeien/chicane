@@ -26,6 +26,41 @@ namespace Chicane
                 return m_value == nullptr;
             }
 
+            std::string toString() const
+            {
+                if (isType<std::string>())
+                {
+                    return *getValue<std::string>();
+                }
+
+                if (isType<bool>())
+                {
+                    return std::to_string(*getValue<bool>());
+                }
+
+                if (isType<int>())
+                {
+                    return std::to_string(*getValue<int>());
+                }
+
+                if (isType<std::uint64_t>())
+                {
+                    return std::to_string(*getValue<std::uint64_t>());
+                }
+
+                if (isType<std::uint32_t>())
+                {
+                    return std::to_string(*getValue<std::uint32_t>());
+                }
+
+                if (isType<float>())
+                {
+                    return std::to_string(*getValue<float>());
+                }
+
+                return "";
+            }
+
             template<typename T>
             bool isType() const
             {

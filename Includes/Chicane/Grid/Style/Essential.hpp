@@ -8,26 +8,37 @@ namespace Chicane
     {
         namespace Style
         {
+            // Extension
             static constexpr const char* FILE_EXTENSION_NAME = "decal";
 
+            // Attribute
             static constexpr const char* STYLE_ATTRIBUTE_NAME = "style";
 
+            // Display
             static constexpr const char* DISPLAY_ATTRIBUTE_NAME = "display";
 
+            // Sizes
             static constexpr const char* WIDTH_ATTRIBUTE_NAME  = "width";
             static constexpr const char* HEIGHT_ATTRIBUTE_NAME = "height";
 
+            // Position
             static constexpr const char* POSITION_ATTRIBUTE_NAME = "position";
             static constexpr const char* POSITION_TYPE_ABSOLUTE  = "absolute";
             static constexpr const char* POSITION_TYPE_RELATIVE  = "relative";
 
+            // Separator
             static constexpr char ONELINE_SEPARATOR  = ' ';
             static constexpr char SELECTOR_SEPARATOR = ',';
             static constexpr char CLASS_SEPARATOR    = ' ';
 
+            // Selector
             static constexpr char ID_SELECTOR        = '#';
             static constexpr char CLASS_SELECTOR     = '.';
             static constexpr char INCLUSIVE_SELECTOR = '*';
+
+            // Color
+            static constexpr const char* BACKGROUND_COLOR_TRANSPARENT = "transparent";
+            static constexpr const char* HEX_COLOR_TRANSPARENT        = "#00000000";
 
             /*
             * Template 1: "`SINGLE_MARGIN`"
@@ -70,9 +81,6 @@ namespace Chicane
             static constexpr const char* ALIGNMENT_START          = "START";
             static constexpr const char* ALIGNMENT_CENTER         = "CENTER";
             static constexpr const char* ALIGNMENT_END            = "END";
-
-            static constexpr const char* BACKGROUND_COLOR_TRANSPARENT = "transparent";
-            static constexpr const char* HEX_COLOR_TRANSPARENT        = "#00000000";
         }
     }
 }

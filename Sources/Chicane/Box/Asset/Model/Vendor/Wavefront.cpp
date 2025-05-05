@@ -38,7 +38,7 @@ namespace Chicane
 
                         Vertex vertex = {};
 
-                        vertex.color = Vec<3, float>(1.0f, 1.0f, 1.0f);
+                        vertex.color = Vec<4, float>(1.0f);
 
                         vertex.position.x = inMesh->positions[inIndices.p * 3 + 0];
                         vertex.position.y = inMesh->positions[inIndices.p * 3 + 1];

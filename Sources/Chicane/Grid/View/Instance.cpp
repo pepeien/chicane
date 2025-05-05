@@ -38,6 +38,8 @@ namespace Chicane
             }
 
             m_styles = Style::Instance::parseSources(node);
+            m_style.position = Style::Position::Absolute;
+
             m_root = this;
             m_parent = this;
 
@@ -47,6 +49,32 @@ namespace Chicane
         void View::onChildAddition(Component* inComponent)
         {
             inComponent->setStyle(m_styles);
+        }
+
+        void View::onEvent(const SDL_Event& inEvent)
+        {
+        }
+
+        Window::Instance* View::getWindow() const
+        {
+            return m_window;
+        }
+
+        void View::setWindow(Window::Instance* inWindow)
+        {
+            m_window = inWindow;
+
+            if (m_window == nullptr)
+            {
+                return;
+            }
+
+            m_window->watchSize(
+                [this](const Vec<2, int>& inSize)
+                {
+                    setSize(inSize.x, inSize.y);
+                }
+            );
         }
     }
 }

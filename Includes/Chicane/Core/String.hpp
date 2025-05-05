@@ -8,6 +8,7 @@ namespace Chicane
     {
         // Comparable
         CHICANE bool areEquals(const std::string& inA, const std::string& inB);
+        CHICANE bool endsWith(const std::string& inTarget, const std::string& inEnding);
 
         // Print
         template<typename... T>

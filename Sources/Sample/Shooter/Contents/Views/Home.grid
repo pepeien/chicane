@@ -7,9 +7,9 @@
         <Text id="frameTimeText">{{ getFrametime() }} ms</Text>
     </Container>
     <Container id="crosshair">
-        <Container id="crosshairTop"></Container>
-        <Container id="crosshairBottom"></Container>
-        <Container id="crosshairLeft"></Container>
-        <Container id="crosshairRight"></Container>
+        <Container id="crosshairTop" class="crosshair"></Container>
+        <Container id="crosshairBottom" class="crosshair"></Container>
+        <Container id="crosshairLeft" class="crosshair"></Container>
+        <Container id="crosshairRight" class="crosshair"></Container>
     </Container>
 </View>

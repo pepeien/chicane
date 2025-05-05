@@ -166,6 +166,13 @@ namespace Chicane
             m_view = view;
 
             m_viewObservable->next(view);
+
+            if (m_view == nullptr)
+            {
+                return;
+            }
+
+            m_view->setWindow(m_window.get());
         }
 
         Grid::View* Instance::getView(const std::string& inId)
@@ -256,6 +263,11 @@ namespace Chicane
             if (m_controller)
             {
                 m_controller->onEvent(inEvent);
+            }
+
+            if (m_view)
+            {
+                m_view->onEvent(inEvent);
             }
         }
 

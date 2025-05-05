@@ -10,12 +10,10 @@ namespace Chicane
     {
         LGrid::LGrid()
             : Layer::Instance("UI"),
-            m_window(Application::getWindow()),
-            m_view(nullptr),
-            m_internals(Application::getRenderer<Vulkan::Renderer>()->getInternals()),
+            m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_clearValues({})
         {
-            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
             loadEvents();
         }
@@ -28,13 +26,10 @@ namespace Chicane
             }
 
             m_internals.logicalDevice.waitIdle();
-/*
-            ImGui_ImplVulkan_Shutdown();
-            ImGui_ImplSDL3_Shutdown();
-            ImGui::DestroyContext();
-*/
-            m_internals.logicalDevice.destroyRenderPass(m_renderPass);
-            m_internals.logicalDevice.destroyDescriptorPool(m_descriptorPool);
+
+            destroyModelData();
+
+            m_graphicsPipeline.reset();
         }
 
         void LGrid::build()
@@ -43,17 +38,26 @@ namespace Chicane
             {
                 return;
             }
-/*
-            initDescriptorPool();
-            initRenderpass();
+
+            initFrameResources();
+
+            initGraphicsPipeline();
             initFramebuffers();
-            initImgui();
-*/
+
+            buildModelData();
+
             setStatus(Layer::Status::Running);
         }
 
         void LGrid::destroy()
         {
+            if (!is(Layer::Status::Running))
+            {
+                return;
+            }
+
+            destroyFrameResources();
+
             setStatus(Layer::Status::Idle);
         }
 
@@ -63,13 +67,11 @@ namespace Chicane
             {
                 return;
             }
-/*
+
+            initFrameResources();
             initFramebuffers();
 
-            m_view->rebuild();
-
             setStatus(Layer::Status::Running);
-*/
         }
 
         void LGrid::setup(void* outData)
@@ -78,13 +80,10 @@ namespace Chicane
             {
                 return;
             }
-/*
-            ImGui_ImplVulkan_NewFrame();
-            ImGui_ImplSDL3_NewFrame();
-            ImGui::NewFrame();
 
-            m_view->show(m_window->getSize(), m_window->getPosition());
-*/
+            Frame::Instance* frame = (Frame::Instance*) outData;
+
+            frame->updateUiData(m_components);
         }
 
         void LGrid::render(void* outData)
@@ -93,13 +92,13 @@ namespace Chicane
             {
                 return;
             }
-/*
+
             Renderer::Data* data             = (Renderer::Data*) outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
 
             vk::RenderPassBeginInfo beginInfo = {};
-            beginInfo.renderPass          = m_renderPass;
+            beginInfo.renderPass          = m_graphicsPipeline->renderPass;
             beginInfo.framebuffer         = frame.getFramebuffer(m_id);
             beginInfo.renderArea.offset.x = 0;
             beginInfo.renderArea.offset.y = 0;
@@ -107,16 +106,16 @@ namespace Chicane
             beginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
             beginInfo.pClearValues        = m_clearValues.data();
 
-            ImGui::Render();
-        	ImGui::UpdatePlatformWindows();
-	    	ImGui::RenderPlatformWindowsDefault();
-
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
-                ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
-            commandBuffer.endRenderPass();
+                // Pipeline
+                m_graphicsPipeline->bind(commandBuffer);
 
-            ImGui::EndFrame();
-*/
+                // Frame
+                m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+
+                // Model
+                renderModels(commandBuffer);
+            commandBuffer.endRenderPass();
         }
 
         void LGrid::loadEvents()
@@ -131,7 +130,14 @@ namespace Chicane
             Application::watchView(
                 [&](Grid::View* inView)
                 {
-                    m_view = inView;
+                    if (inView == nullptr)
+                    {
+                        return;
+                    }
+
+                    m_components.clear();
+
+                    Grid::Component::getComponents(m_components, inView);
 
                     if (!inView)
                     {
@@ -150,79 +156,120 @@ namespace Chicane
             );
         }
 
-        void LGrid::initDescriptorPool()
+        void LGrid::initFrameResources()
         {
-            if (!is(Layer::Status::Initialized))
+            if (is(Layer::Status::Running))
             {
                 return;
             }
 
-            Vulkan::Descriptor::PoolCreateInfo createInfo;
-            createInfo.flags   = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
-            createInfo.maxSets = 1000;
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eSampler, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eSampledImage, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageImage, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformTexelBuffer, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageTexelBuffer, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBufferDynamic, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageBufferDynamic, .descriptorCount = createInfo.maxSets }
-            );
-            createInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eInputAttachment, .descriptorCount = createInfo.maxSets }
+            Descriptor::SetLayoutBidingsCreateInfo bidings = {};
+            bidings.count = 1;
+
+            /// Model
+            bidings.indices.push_back(0);
+            bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            Descriptor::initSetLayout(
+                m_frameDescriptor.setLayout,
+                m_internals.logicalDevice,
+                bidings
             );
 
-            Vulkan::Descriptor::initPool(
-                m_descriptorPool,
+            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
+            descriptorPoolCreateInfo.sizes.push_back(
+                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+            );
+
+            Descriptor::initPool(
+                m_frameDescriptor.pool,
                 m_internals.logicalDevice,
-                createInfo
+                descriptorPoolCreateInfo
+            );
+
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
+            {
+                vk::DescriptorSet descriptorSet;
+
+                Descriptor::allocalteSet(
+                    descriptorSet,
+                    m_internals.logicalDevice,
+                    m_frameDescriptor.setLayout,
+                    m_frameDescriptor.pool
+                );
+                frame.addDescriptorSet(m_id, descriptorSet);
+
+                vk::WriteDescriptorSet meshWriteInfo = {};
+                meshWriteInfo.dstSet          = descriptorSet;
+                meshWriteInfo.dstBinding      = 0;
+                meshWriteInfo.dstArrayElement = 0;
+                meshWriteInfo.descriptorCount = 1;
+                meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                meshWriteInfo.pBufferInfo     = &frame.uiResource.bufferInfo;
+                frame.addWriteDescriptorSet(meshWriteInfo);
+            }
+        }
+
+        void LGrid::destroyFrameResources()
+        {
+            m_internals.logicalDevice.destroyDescriptorSetLayout(
+                m_frameDescriptor.setLayout
+            );
+            m_internals.logicalDevice.destroyDescriptorPool(
+                m_frameDescriptor.pool
             );
         }
 
-        void LGrid::initRenderpass()
+        void LGrid::initGraphicsPipeline()
         {
             if (!is(Layer::Status::Initialized))
             {
                 return;
             }
 
-            Vulkan::GraphicsPipeline::Attachment colorAttachment = {};
+            // Shader
+            Shader::StageCreateInfo vertexShader = {};
+            vertexShader.path = "Engine/Shaders/Vulkan/grid.vert.spv";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            Shader::StageCreateInfo fragmentShader = {};
+            fragmentShader.path = "Engine/Shaders/Vulkan/grid.frag.spv";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
+
+            std::vector<Shader::StageCreateInfo> shaders = {};
+            shaders.push_back(vertexShader);
+            shaders.push_back(fragmentShader);
+
+            // Set Layouts
+            std::vector<vk::DescriptorSetLayout> setLayouts = {};
+            setLayouts.push_back(m_frameDescriptor.setLayout);
+
+            // Attachments
+            GraphicsPipeline::Attachment colorAttachment = {};
             colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            vk::AttachmentDescription attachment = Vulkan::GraphicsPipeline::createColorAttachment(colorAttachment);
+            std::vector<GraphicsPipeline::Attachment> attachments = {};
+            attachments.push_back(colorAttachment);
 
-            m_renderPass = Vulkan::GraphicsPipeline::createRendepass(
-                { attachment },
-                m_internals.logicalDevice,
-                true,
-                false
-            );
+            GraphicsPipeline::CreateInfo createInfo = {};
+            createInfo.bHasVertices             = true;
+            createInfo.bHasDepthWrite           = false;
+            createInfo.bHasBlending             = true;
+            createInfo.logicalDevice            = m_internals.logicalDevice;
+            createInfo.shaders                  = shaders;
+            createInfo.extent                   = m_internals.swapchain->extent;
+            createInfo.descriptorSetLayouts     = setLayouts;
+            createInfo.attachments              = attachments;
+            createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+
+            m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
         void LGrid::initFramebuffers()
@@ -232,18 +279,128 @@ namespace Chicane
                 return;
             }
 
-            Vulkan::Frame::Buffer::CreateInfo createInfo = {};
-            createInfo.id            = m_id;
-            createInfo.logicalDevice = m_internals.logicalDevice;
-            createInfo.renderPass    = m_renderPass;
-            createInfo.extent        = m_internals.swapchain->extent;
-
-            for (Vulkan::Frame::Instance& frame : m_internals.swapchain->frames)
+            for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
-                createInfo.attachments.clear();
+                Frame::Buffer::CreateInfo createInfo = {};
+                createInfo.id              = m_id;
+                createInfo.logicalDevice   = m_internals.logicalDevice;
+                createInfo.renderPass      = m_graphicsPipeline->renderPass;
+                createInfo.extent          = m_internals.swapchain->extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
 
-                Vulkan::Frame::Buffer::init(frame, createInfo);
+                Frame::Buffer::init(frame, createInfo);
+            }
+        }
+
+        void LGrid::buildModelVertexBuffer()
+        {
+            std::vector<Box::Model::Vertex> vertices = {};
+
+            for (const Grid::Component* component : m_components)
+            {
+                const Grid::Style::Instance& style = component->getStyle();
+                const Vec<4, std::uint32_t> color = Grid::hexToRgba(style.backgroundColor);
+
+                Box::Model::Vertex vertex = {};
+                vertex.color.r = color.r / 255.0f;
+                vertex.color.g = color.g / 255.0f;
+                vertex.color.b = color.b / 255.0f;
+                vertex.color.a = color.a / 255.0f;
+
+                vertex.position.x = -1.0f;
+                vertex.position.y = -1.0f;
+                vertices.push_back(vertex);
+
+                vertex.position.x =  1.0f;
+                vertex.position.y = -1.0f;
+                vertices.push_back(vertex);
+
+                vertex.position.x = 1.0f;
+                vertex.position.y = 1.0f;
+                vertices.push_back(vertex);
+
+                vertex.position.x = 1.0f;
+                vertex.position.y = 1.0f;
+                vertices.push_back(vertex);
+
+                vertex.position.x = -1.0f;
+                vertex.position.y =  1.0f;
+                vertices.push_back(vertex);
+
+                vertex.position.x = -1.0f;
+                vertex.position.y = -1.0f;
+                vertices.push_back(vertex);
+            }
+
+            Buffer::CreateInfo createInfo;
+            createInfo.physicalDevice   = m_internals.physicalDevice;
+            createInfo.logicalDevice    = m_internals.logicalDevice;
+            createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            Buffer::Instance stagingBuffer;
+            Buffer::init(stagingBuffer, createInfo);
+
+            void* writeLocation = m_internals.logicalDevice.mapMemory(
+                stagingBuffer.memory,
+                0,
+                createInfo.size
+            );
+            memcpy(writeLocation, vertices.data(), createInfo.size);
+            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
+
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+            Buffer::init(m_modelVertexBuffer, createInfo);
+            Buffer::copy(
+                stagingBuffer,
+                m_modelVertexBuffer,
+                createInfo.size,
+                m_internals.graphicsQueue,
+                m_internals.mainCommandBuffer
+            );
+
+            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
+        }
+
+        void LGrid::buildModelData()
+        {
+            buildModelVertexBuffer();
+        }
+
+        void LGrid::destroyModelData()
+        {
+            m_internals.logicalDevice.waitIdle();
+
+            Buffer::destroy(
+                m_internals.logicalDevice,
+                m_modelVertexBuffer
+            );
+        }
+
+        void LGrid::rebuildModelData()
+        {
+            destroyModelData();
+            buildModelData();
+        }
+
+        void LGrid::renderModels(const vk::CommandBuffer& inCommandBuffer)
+        {
+            vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
+            vk::DeviceSize offsets[]   = { 0 };
+
+            inCommandBuffer.bindVertexBuffers(
+                0,
+                1,
+                vertexBuffers,
+                offsets
+            );
+
+            for (std::uint32_t i = 0; i < m_components.size(); i++)
+            {
+                inCommandBuffer.draw(6, 1, i * 6, i);
             }
         }
     }

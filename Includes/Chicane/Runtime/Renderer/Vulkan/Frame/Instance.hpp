@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Box/Asset/Mesh/Data.hpp"
+#include "Grid/Component.hpp"
 #include "Runtime/Renderer/View/Data.hpp"
 #include "Runtime/Renderer/Vulkan/Base.hpp"
 #include "Runtime/Renderer/Vulkan/Image/Data.hpp"
@@ -16,6 +17,13 @@ namespace Chicane
     {
         namespace Frame
         {
+            struct CHICANE ComponentData
+            {
+            public:
+                Vec<2, float> size     = Vec2Zero;
+                Vec<2, float> position = Vec2Zero;
+            };
+
             class CHICANE Instance
             {
             public:
@@ -41,6 +49,10 @@ namespace Chicane
                 void updateMeshData(const std::vector<CMesh*>& inMeshes);
                 void destroyMeshData();
 
+                void setupUiData(const std::vector<const Grid::Component*>& inComponents);
+                void updateUiData(const std::vector<const Grid::Component*>& inComponents);
+                void destroyUiData();
+
                 // Image
                 void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
                 void destroyColorImage();
@@ -63,6 +75,7 @@ namespace Chicane
 
             private:
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
+                void refreshUiData(const std::vector<const Grid::Component*>& inComponents);
 
             public:
                 vk::Device                                        logicalDevice;
@@ -87,6 +100,7 @@ namespace Chicane
                 Resource<Chicane::View::Data>                     cameraResource;
                 Resource<Chicane::View::Data>                     lightResource;
                 Resource<Box::Mesh::CompiledData>                 meshResource;
+                Resource<ComponentData>                           uiResource;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;

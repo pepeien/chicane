@@ -56,8 +56,8 @@ namespace Chicane
                 Display         display             = Display::Visible;
 
                 // Size
-                std::string     height              = "0px";
-                std::string     width               = "0px";
+                std::string     height              = "100%";
+                std::string     width               = "100%";
 
                 // Positioning
                 Position        position            = Position::Relative;
