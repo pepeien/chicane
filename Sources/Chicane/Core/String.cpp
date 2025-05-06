@@ -1,7 +1,5 @@
 #include "Core/String.hpp"
 
-#include "Core.hpp"
-
 namespace Chicane
 {
     namespace String
@@ -11,16 +9,31 @@ namespace Chicane
             return strcmp(inA.c_str(), inB.c_str()) == 0;
         }
 
-        bool endsWith(const std::string& inTarget, const std::string& inEnding)
+        bool contains(const std::string& inTarget, const std::string& inValue)
         {
-            if (inTarget.empty() || inTarget.size() < inEnding.size())
+            return inTarget.find(inValue) != std::string::npos;
+        }
+
+        bool startsWith(const std::string& inTarget, const std::string& inValue)
+        {
+            if (inTarget.empty() || inTarget.size() < inValue.size())
+            {
+                return false;
+            }
+
+            return String::areEquals(inTarget.substr(0, inValue.size()), inValue);
+        }
+
+        bool endsWith(const std::string& inTarget, const std::string& inValue)
+        {
+            if (inTarget.empty() || inTarget.size() < inValue.size())
             {
                 return false;
             }
 
             return String::areEquals(
-                std::string(inTarget.end() - inEnding.size(), inTarget.end()),
-                inEnding
+                inTarget.substr(inTarget.size() - inValue.size()),
+                inValue
             );
         }
 
@@ -49,7 +62,7 @@ namespace Chicane
             std::stringstream stream(inTarget);
             while (getline(stream, item, inDelimeter))
             {
-                result.push_back(item);
+                result.push_back(String::trim(item));
             }
 
             return result;
@@ -61,6 +74,34 @@ namespace Chicane
                 std::string(inTarget.begin(), inTarget.end()),
                 inDelimiter
             );
+        }
+
+        std::string join(
+            const std::vector<std::string>& inTarget,
+            const std::string& inJoiner,
+            std::uint32_t inStart,
+            std::uint32_t inEnd
+        )
+        {
+            const std::uint32_t size  = static_cast<std::uint32_t>(inTarget.size() - 1);
+            const std::uint32_t start = std::max(
+                static_cast<std::uint32_t>(0),
+                std::min(inStart, size)
+            );
+            const std::uint32_t end = std::max(
+                start,
+                inStart == 0 && inEnd == 0 ? size : std::min(inEnd, size)
+            );
+
+            std::string result = "";
+
+            for (std::uint32_t i = start; i <= end; i++)
+            {
+                result.append(inTarget.at(i));
+                result.append(inJoiner);
+            }
+
+            return result;
         }
 
         void sort(std::vector<std::string>& outValue)

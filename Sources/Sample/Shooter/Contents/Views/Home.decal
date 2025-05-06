@@ -14,7 +14,7 @@
     position: absolute;
     width: 175px;
     height: 25px;
-    margin-left: auto;
+    margin: 0 auto auto 0;
     background-color: #333333;
 }
 
@@ -29,31 +29,33 @@
     color: #24f51d;
 }
 
-.crosshair {
+.crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
     position: absolute;
     background-color: #FFFFFF;
 }
 
-#crosshairTop {
+.crosshair__top, .crosshair__bottom {
     height: 10px;
     width: 2px;
-    margin: 50% 2px 28px 50%;
 }
 
-#crosshairBottom {
-    height: 10px;
-    width: 2px;
-    margin: 50% 2px 8px 50%;
-}
-
-#crosshairLeft {
+.crosshair__left, .crosshair__right {
     height: 2px;
     width: 10px;
-    margin: 50% 15px 15px 50%;
 }
 
-#crosshairRight {
-    height: 2px;
-    width: 10px;
-    margin: 50% -5px 15px 50%;
+.crosshair__top {
+    margin: 0 0 calc(50% + var(crosshairGap)vh) 50%;
+}
+
+.crosshair__bottom {
+    margin: 0 0 calc(50% - var(crosshairGap)vh) 50%;
+}
+
+.crosshair__left {
+    margin: 0 0 50% calc(50% - var(crosshairGap)vh);
+}
+
+.crosshair__right {
+    margin: 0 0 50% calc(50% + var(crosshairGap)vh);
 }

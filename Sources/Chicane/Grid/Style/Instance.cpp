@@ -1,5 +1,7 @@
 #include "Grid/Style/Instance.hpp"
 
+#include "Grid/Essential.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -74,7 +76,7 @@ namespace Chicane
                     std::vector<std::string> splittedStyle = String::split(style, '{');
 
                     Source source = {};
-                    source.selector   = String::trim(splittedStyle.at(0));
+                    source.selectors  = String::split(splittedStyle.at(0), SELECTOR_SEPARATOR);
                     source.properties = Instance::parseSource(String::trim(splittedStyle.at(1)));
 
                     result.push_back(source);
@@ -101,12 +103,6 @@ namespace Chicane
 
                     std::string key = String::trim(splittedBlock.at(0));
                     std::string value = String::trim(splittedBlock.at(1));
-                    std::transform(
-                        value.begin(),
-                        value.end(),
-                        value.begin(),
-                        ::tolower
-                    );
 
                     if (result.find(key) != result.end())
                     {
@@ -204,7 +200,8 @@ namespace Chicane
                     MARGIN_TOP_ATTRIBUTE_NAME,
                     MARGIN_BOTTOM_ATTRIBUTE_NAME,
                     MARGIN_LEFT_ATTRIBUTE_NAME,
-                    MARGIN_RIGHT_ATTRIBUTE_NAME);
+                    MARGIN_RIGHT_ATTRIBUTE_NAME
+                );
             }
 
             void Instance::updateGap(const Properties &inSource)
@@ -216,7 +213,8 @@ namespace Chicane
                     GAP_TOP_ATTRIBUTE_NAME,
                     GAP_BOTTOM_ATTRIBUTE_NAME,
                     GAP_LEFT_ATTRIBUTE_NAME,
-                    GAP_RIGHT_ATTRIBUTE_NAME);
+                    GAP_RIGHT_ATTRIBUTE_NAME
+                );
             }
 
             void Instance::updateAlignment(const Properties &inSource)
@@ -303,7 +301,8 @@ namespace Chicane
 
                 if (
                     inSource.find(inOnelineAttributeName) == inSource.end() ||
-                    inSource.at(inOnelineAttributeName).empty())
+                    inSource.at(inOnelineAttributeName).empty()
+                )
                 {
                     if (inSource.find(inTopAttributeName) != inSource.end())
                     {
@@ -328,51 +327,101 @@ namespace Chicane
                     return;
                 }
 
-                std::string oneline = inSource.at(inOnelineAttributeName);
+                const std::string& oneline = inSource.at(inOnelineAttributeName);
 
                 std::vector<std::string> splittedOneline = String::split(
-                    String::trim(oneline),
-                    ONELINE_SEPARATOR);
+                    inSource.at(inOnelineAttributeName),
+                    ONELINE_SEPARATOR
+                );
+
+                if (String::contains(oneline, CALCULATION_KEYWORD))
+                {
+                    const std::uint32_t calculationStart = std::distance(
+                        splittedOneline.begin(),
+                        std::find_if(
+                            splittedOneline.begin(),
+                            splittedOneline.end(),
+                            [](const std::string& value)
+                            {
+                                return String::contains(value, CALCULATION_KEYWORD);
+                            }
+                        )
+                    );
+                    const std::uint32_t calculationEnd = std::distance(
+                        std::find_if(
+                            splittedOneline.rbegin(),
+                            splittedOneline.rend(),
+                            [](const std::string& value)
+                            {
+                                return String::contains(value, FUNCTION_PARAMS_CLOSING);
+                            }
+                        ),
+                        splittedOneline.rend()
+                    );
+
+                    std::vector<std::string> replacement = {};
+
+                    for (std::uint32_t i = 0; i < calculationStart && i < splittedOneline.size(); i++)
+                    {
+                        replacement.push_back(splittedOneline.at(i));
+                    }
+
+                    replacement.push_back(
+                        String::join(
+                            splittedOneline,
+                            "",
+                            calculationStart,
+                            calculationEnd - 1
+                        )
+                    );
+
+                    for (std::uint32_t i = calculationEnd; i < splittedOneline.size(); i++)
+                    {
+                        replacement.push_back(splittedOneline.at(i));
+                    }
+
+                    splittedOneline = replacement;
+                }
 
                 if (splittedOneline.size() == 1) // SINGLE
                 {
                     std::string value = splittedOneline.at(0);
 
-                    outValue.top = value;
-                    outValue.right = value;
+                    outValue.top    = value;
+                    outValue.right  = value;
                     outValue.bottom = value;
-                    outValue.left = value;
+                    outValue.left   = value;
                 }
 
                 if (splittedOneline.size() == 2) // VERTICAL HORIZONTAL
                 {
-                    const std::string &vertical = splittedOneline.at(0);
-                    const std::string &horizontal = splittedOneline.at(1);
+                    const std::string& vertical   = splittedOneline.at(0);
+                    const std::string& horizontal = splittedOneline.at(1);
 
-                    outValue.top = vertical;
+                    outValue.top    = vertical;
                     outValue.bottom = vertical;
-                    outValue.right = horizontal;
-                    outValue.left = horizontal;
+                    outValue.right  = horizontal;
+                    outValue.left   = horizontal;
                 }
 
                 if (splittedOneline.size() == 3) // TOP BOTTOM HORIZONTAL
                 {
-                    const std::string &top = splittedOneline.at(0);
-                    const std::string &bottom = splittedOneline.at(1);
-                    const std::string &horizontal = splittedOneline.at(2);
+                    const std::string& top        = splittedOneline.at(0);
+                    const std::string& bottom     = splittedOneline.at(1);
+                    const std::string& horizontal = splittedOneline.at(2);
 
-                    outValue.top = top;
+                    outValue.top    = top;
                     outValue.bottom = bottom;
-                    outValue.right = horizontal;
-                    outValue.left = horizontal;
+                    outValue.right  = horizontal;
+                    outValue.left   = horizontal;
                 }
 
                 if (splittedOneline.size() >= 4) // TOP RIGHT BOTTOM LEFT
                 {
-                    outValue.top = splittedOneline.at(0);
-                    outValue.right = splittedOneline.at(1);
+                    outValue.top    = splittedOneline.at(0);
+                    outValue.right  = splittedOneline.at(1);
                     outValue.bottom = splittedOneline.at(2);
-                    outValue.left = splittedOneline.at(3);
+                    outValue.left   = splittedOneline.at(3);
                 }
             }
 

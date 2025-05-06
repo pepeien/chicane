@@ -8,6 +8,9 @@ class View : public Chicane::Grid::View
 public:
     View();
 
+public:
+    void onTick(float inDelta) override;
+
 private:
     Chicane::Grid::Reference getFPS(const Chicane::Grid::Event& inEvent);
     Chicane::Grid::Reference getFrametime(const Chicane::Grid::Event& inEvent);
@@ -15,4 +18,7 @@ private:
 private:
     bool                     m_didPlayerWin;
     Chicane::Grid::Reference m_uiDidPlayerWin;
+
+    float                    m_crosshairGap;
+    Chicane::Grid::Reference m_uiCrosshairGap;
 };

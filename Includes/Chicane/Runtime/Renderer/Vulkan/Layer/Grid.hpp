@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.hpp"
-#include "Grid/Component/Instance.hpp"
+#include "Grid.hpp"
 #include "Runtime/Renderer/Layer.hpp"
 #include "Runtime/Renderer/Vulkan.hpp"
 
@@ -35,13 +35,13 @@ namespace Chicane
             void initFramebuffers();
 
             // Model
-            void buildModelVertexBuffer();
-            void buildModelData();
-            void destroyModelData();
-            void rebuildModelData();
+            void buildVertexBuffer();
+            void buildData();
+            void destroyData();
+            void rebuildData();
 
             // Render Pass
-            void renderModels(const vk::CommandBuffer& inCommandBuffer);
+            void renderComponents(const vk::CommandBuffer& inCommandBuffer);
 
         private:
             Renderer::Internals                         m_internals;
@@ -50,7 +50,7 @@ namespace Chicane
 
             Descriptor::Bundle                          m_frameDescriptor;
 
-            Buffer::Instance                            m_modelVertexBuffer;
+            Buffer::Instance                            m_vertexBuffer;
 
             std::vector<vk::ClearValue>                 m_clearValues;
 

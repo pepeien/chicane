@@ -8,7 +8,9 @@ namespace Chicane
     {
         // Comparable
         CHICANE bool areEquals(const std::string& inA, const std::string& inB);
-        CHICANE bool endsWith(const std::string& inTarget, const std::string& inEnding);
+        CHICANE bool contains(const std::string& inTarget, const std::string& inValue);
+        CHICANE bool startsWith(const std::string& inTarget, const std::string& inValue);
+        CHICANE bool endsWith(const std::string& inTarget, const std::string& inValue);
 
         // Print
         template<typename... T>
@@ -44,6 +46,13 @@ namespace Chicane
 
         CHICANE std::vector<std::string> split(const std::string& inTarget, char inDelimeter);
         CHICANE std::vector<std::string> split(const std::vector<unsigned char>& inTarget, char inDelimiter);
+
+        CHICANE std::string join(
+            const std::vector<std::string>& inTarget,
+            const std::string& inJoiner,
+            std::uint32_t inStart = 0,
+            std::uint32_t inEnd = 0
+        );
 
         CHICANE void sort(std::vector<std::string>& outValue);
 

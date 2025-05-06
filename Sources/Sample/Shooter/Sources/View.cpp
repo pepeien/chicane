@@ -2,6 +2,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Application.hpp"
+
 #include "Actor/Apple.hpp"
 #include "Game.hpp"
 
@@ -11,7 +12,9 @@ View::View()
         "Contents/Samples/Shooter/Views/Home.grid"
     ),
     m_didPlayerWin(false),
-    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin))
+    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin)),
+    m_crosshairGap(0.0),
+    m_uiCrosshairGap(Chicane::Grid::Reference::fromValue<float>(&m_crosshairGap))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)
@@ -27,6 +30,10 @@ View::View()
         "didPlayerWin",
         &m_uiDidPlayerWin
     );
+    addReference(
+        "crosshairGap",
+        &m_uiCrosshairGap
+    );
 
     addFunction(
         "getFPS",
@@ -36,6 +43,11 @@ View::View()
         "getFrametime",
         std::bind(&View::getFrametime, this, std::placeholders::_1)
     );
+}
+
+void View::onTick(float inDelta)
+{
+    m_crosshairGap += 0.0001f;
 }
 
 Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Event& inEvent)

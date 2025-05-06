@@ -81,6 +81,29 @@ namespace Chicane
             static constexpr const char* ALIGNMENT_START          = "START";
             static constexpr const char* ALIGNMENT_CENTER         = "CENTER";
             static constexpr const char* ALIGNMENT_END            = "END";
+
+            // Size units
+            static constexpr const char* AUTO_SIZE_UNIT            = "auto";
+            static constexpr const char* PIXEL_SIZE_UNIT           = "px";
+            static constexpr const char* PERCENTAGE_SIZE_UNIT      = "%";
+            static constexpr const char* VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
+            static constexpr const char* VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
+
+            // Special keywords
+            static constexpr const char* CALCULATION_KEYWORD = "calc";
+            static constexpr const char* VARIABLE_KEYWORD    = "var";
+
+            // Calculation
+            static constexpr const char* CALCULATION_OPERATOR_SUM = "+";
+            static constexpr const char* CALCULATION_OPERATOR_SUB = "-";
+            static constexpr const char* CALCULATION_OPERATOR_MUL = "*";
+            static constexpr const char* CALCULATION_OPERATOR_DIV = "\\";
+            static const std::vector<const char*> CALCULATION_OPERATORS = {
+                CALCULATION_OPERATOR_SUM,
+                CALCULATION_OPERATOR_SUB,
+                CALCULATION_OPERATOR_MUL,
+                CALCULATION_OPERATOR_DIV
+            };
         }
     }
 }

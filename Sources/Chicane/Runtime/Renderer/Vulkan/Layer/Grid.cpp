@@ -1,8 +1,6 @@
 #include "Runtime/Renderer/Vulkan/Layer/Grid.hpp"
 
 #include "Runtime/Application.hpp"
-#include "Core.hpp"
-#include "Grid.hpp"
 
 namespace Chicane
 {
@@ -27,7 +25,7 @@ namespace Chicane
 
             m_internals.logicalDevice.waitIdle();
 
-            destroyModelData();
+            destroyData();
 
             m_graphicsPipeline.reset();
         }
@@ -44,7 +42,7 @@ namespace Chicane
             initGraphicsPipeline();
             initFramebuffers();
 
-            buildModelData();
+            buildData();
 
             setStatus(Layer::Status::Running);
         }
@@ -114,7 +112,7 @@ namespace Chicane
                 m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
                 // Model
-                renderModels(commandBuffer);
+                renderComponents(commandBuffer);
             commandBuffer.endRenderPass();
         }
 
@@ -179,9 +177,14 @@ namespace Chicane
             );
 
             Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
+            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(
+                m_internals.swapchain->frames.size()
+            );
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+                {
+                    .type = vk::DescriptorType::eStorageBuffer,
+                    .descriptorCount = descriptorPoolCreateInfo.maxSets
+                }
             );
 
             Descriptor::initPool(
@@ -292,7 +295,7 @@ namespace Chicane
             }
         }
 
-        void LGrid::buildModelVertexBuffer()
+        void LGrid::buildVertexBuffer()
         {
             std::vector<Box::Model::Vertex> vertices = {};
 
@@ -332,12 +335,13 @@ namespace Chicane
                 vertices.push_back(vertex);
             }
 
-            Buffer::CreateInfo createInfo;
+            Buffer::CreateInfo createInfo = {};
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -350,13 +354,14 @@ namespace Chicane
             memcpy(writeLocation, vertices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-            Buffer::init(m_modelVertexBuffer, createInfo);
+            Buffer::init(m_vertexBuffer, createInfo);
             Buffer::copy(
                 stagingBuffer,
-                m_modelVertexBuffer,
+                m_vertexBuffer,
                 createInfo.size,
                 m_internals.graphicsQueue,
                 m_internals.mainCommandBuffer
@@ -365,38 +370,30 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
-        void LGrid::buildModelData()
+        void LGrid::buildData()
         {
-            buildModelVertexBuffer();
+            buildVertexBuffer();
         }
 
-        void LGrid::destroyModelData()
+        void LGrid::destroyData()
         {
             m_internals.logicalDevice.waitIdle();
 
-            Buffer::destroy(
-                m_internals.logicalDevice,
-                m_modelVertexBuffer
-            );
+            Buffer::destroy(m_internals.logicalDevice, m_vertexBuffer);
         }
 
-        void LGrid::rebuildModelData()
+        void LGrid::rebuildData()
         {
-            destroyModelData();
-            buildModelData();
+            destroyData();
+            buildData();
         }
 
-        void LGrid::renderModels(const vk::CommandBuffer& inCommandBuffer)
+        void LGrid::renderComponents(const vk::CommandBuffer& inCommandBuffer)
         {
-            vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
+            vk::Buffer vertexBuffers[] = { m_vertexBuffer.instance };
             vk::DeviceSize offsets[]   = { 0 };
 
-            inCommandBuffer.bindVertexBuffers(
-                0,
-                1,
-                vertexBuffers,
-                offsets
-            );
+            inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
             for (std::uint32_t i = 0; i < m_components.size(); i++)
             {

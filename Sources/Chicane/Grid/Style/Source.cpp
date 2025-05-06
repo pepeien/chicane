@@ -8,7 +8,7 @@ namespace Chicane
         {
             bool Source::isEmpty() const
             {
-                return selector.empty() || properties.empty();
+                return selectors.empty() || properties.empty();
             }
         }
     }

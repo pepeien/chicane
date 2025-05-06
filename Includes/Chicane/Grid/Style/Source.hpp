@@ -16,8 +16,8 @@ namespace Chicane
                 bool isEmpty() const;
 
             public:
-                std::string selector;
-                Properties  properties;
+                std::vector<std::string> selectors;
+                Properties               properties;
             };
 
             typedef std::vector<Source> Sources;

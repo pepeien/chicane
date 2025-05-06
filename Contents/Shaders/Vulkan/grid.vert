@@ -21,7 +21,8 @@ void main() {
 
     outColor = inColor;
 
-    vec3 position = (inPosition * vec3(mesh.position, 0.0)) * vec3(mesh.size, 0.0);
+    vec2 scaledPos = inPosition.xy * mesh.size;
+    vec2 finalPos = scaledPos + mesh.position;
 
-    gl_Position = vec4(position.x, position.y, 1.0, 1.0);
+    gl_Position = vec4(finalPos, 0.0, 1.0);
 }

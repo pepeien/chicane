@@ -27,14 +27,16 @@ namespace Chicane
             virtual ~Component();
 
         public:
-            virtual void onChildAddition(Component* inComponent) { return; }
+            virtual void onChildAddition(Component* inComponent);
+            virtual void onTick(float inDelta);
 
         public:
             bool isValidChild(Component* inComponent) const;
+            bool isDrawable() const;
+
+            void tick(float inDelta);
 
             void refresh();
-            void refreshSize();
-            void refreshPosition();
 
             const std::string& getTag() const;
             void setTag(const std::string& inTag);
@@ -42,6 +44,7 @@ namespace Chicane
             const std::string& getId() const;
             void setId(const std::string& inId);
 
+            const std::vector<std::string> getClasses() const;
             const std::string& getClass() const;
             void setClass(const std::string& inClass);
 
@@ -50,13 +53,13 @@ namespace Chicane
             void setStyle(const Style::Properties& inSource);
             void setStyle(const Style::Instance& inStyle);
 
-            bool hasReference(const std::string& inId) const;
+            bool hasReference(const std::string& inId, bool isLocalOnly = false) const;
             Reference* getReference(const std::string& inId) const;
             void addReference(const References& inReference);
             void addReference(const std::string& inId, Reference* inReference);
             void removeReference(const std::string& inId);
 
-            bool hasFunction(const std::string& inId) const;
+            bool hasFunction(const std::string& inId, bool isLocalOnly = false) const;
             const Function getFunction(const std::string& inId) const;
             void addFunction(const Functions& inFunctions);
             void addFunction(const std::string& inId, Function inFunction);
@@ -100,28 +103,31 @@ namespace Chicane
             ) const;
 
         private:
-            float getSizeFromPixel(const pugi::xml_attribute& inAttribute);
-            float getSizeFromPixel(const std::string& inValue);
+            void refreshSize();
+            void refreshPosition();
 
-            float getSizeFromViewportHeight(const pugi::xml_attribute& inAttribute);
-            float getSizeFromViewportHeight(const std::string& inValue);
-            float getSizeFromViewportHeight(float inValue);
+            float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
+            float calculateSizeFromPixel(const std::string& inValue) const;
 
-            float getSizeFromViewportWidth(const pugi::xml_attribute& inAttribute);
-            float getSizeFromViewportWidth(const std::string& inValue);
-            float getSizeFromViewportWidth(float inValue);
+            float calculateSizeFromViewportHeight(const pugi::xml_attribute& inAttribute) const;
+            float calculateSizeFromViewportHeight(const std::string& inValue) const;
+            float calculateSizeFromViewportHeight(float inValue) const;
 
-            float getSizeFromPercentage(const std::string& inValue, Style::Direction inDirection);
-            float getSizeFromPercentage(float inValue, Style::Direction inDirection);
+            float calculateSizeFromViewportWidth(const pugi::xml_attribute& inAttribute) const;
+            float calculateSizeFromViewportWidth(const std::string& inValue) const;
+            float calculateSizeFromViewportWidth(float inValue) const;
 
-            float getSize(const std::string& inValue, Style::Direction inDirection);
+            float calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const;
+            float calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const;
 
-            FunctionData parseFunction(const std::string& inRefValue);
+            float calculateSize(const std::string& inValue, Style::Direction inDirection) const;
 
-            bool doesTextContainsReference(const std::string& inText);
-            bool doesTextContainsFunction(const std::string& inValue);
-            Reference parseReference(const std::string& inValue);
-            std::string parseText(const std::string& inText);
+            FunctionData parseFunction(const std::string& inRefValue) const;
+
+            bool doesTextContainsReference(const std::string& inText) const;
+            bool doesTextContainsFunction(const std::string& inValue) const;
+            Reference parseReference(const std::string& inValue) const;
+            std::string parseText(const std::string& inText) const;
 
         protected:
             std::string                                       m_tag;

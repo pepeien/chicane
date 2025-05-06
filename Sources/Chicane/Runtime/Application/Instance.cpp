@@ -283,6 +283,11 @@ namespace Chicane
                 {
                     m_level->tick(m_telemetry.frame.delta);
                 }
+
+                if (hasView())
+                {
+                    m_view->tick(m_telemetry.frame.delta);
+                }
             m_telemetry.endCapture();
         }
     }
