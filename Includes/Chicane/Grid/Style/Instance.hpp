@@ -2,11 +2,11 @@
 
 #include "Core.hpp"
 #include "Grid/Style/Alignment.hpp"
+#include "Grid/Style/Corners.hpp"
 #include "Grid/Style/Direction.hpp"
-#include "Grid/Style/DirectionalSize.hpp"
 #include "Grid/Style/Display.hpp"
 #include "Grid/Style/Essential.hpp"
-#include "Grid/Style/ListDirection.hpp"
+#include "Grid/Style/Flex.hpp"
 #include "Grid/Style/Position.hpp"
 #include "Grid/Style/Source.hpp"
 
@@ -29,49 +29,37 @@ namespace Chicane
                 void update(const Properties& inSource);
 
             private:
-                void updateVisibility(const Properties& inSource);
+                void updateDisplay(const Properties& inSource);
                 void updateSize(const Properties& inSource);
+                void updateFlex(const Properties& inSource);
                 void updatePosition(const Properties& inSource);
+                void updateAlignment(const Properties& inSource);
                 void updateMargin(const Properties& inSource);
                 void updateGap(const Properties& inSource);
-                void updateAlignment(const Properties& inSource);
                 void updateForegroundColor(const Properties& inSource);
                 void updateBackgroundColor(const Properties& inSource);
-                void updateListDirection(const Properties& inSource);
-
-                void updateDirectionalSize(
-                    DirectionalSize& outValue,
-                    const Properties& inSource,
-                    const std::string& inOnelineAttributeName,
-                    const std::string& inTopAttributeName,
-                    const std::string& inBottomAttributeName,
-                    const std::string& inLeftAttributeName,
-                    const std::string& inRightAttributeName
-                );
-
-                Alignment getAlignment(const std::string& inValue);
 
             public:
                 // Visiblity
-                Display         display             = Display::Visible;
+                std::string display         = DISPLAY_TYPE_VISIBLE;
 
                 // Size
-                std::string     height              = "100%";
-                std::string     width               = "100%";
+                std::string height          = "100%";
+                std::string width           = "100%";
+
+                // Flex
+                Flex        flex            =  {};
 
                 // Positioning
-                Position        position            = Position::Relative;
-                Alignment       horizontalAlignment = Alignment::Start;
-                Alignment       verticalAlignment   = Alignment::Start;
-                DirectionalSize gap                 = {};
-                DirectionalSize margin              = {};
-
-                // Layout
-                ListDirection   listDirection       = ListDirection::Column;
+                std::string position        = POSITION_TYPE_RELATIVE;
+                std::string align           = ALIGNMENT_TYPE_START;
+                std::string justify         = ALIGNMENT_TYPE_START;
+                Corners     gap             = {};
+                Corners     margin          = {};
 
                 // Color
-                std::string     backgroundColor     = BACKGROUND_COLOR_TRANSPARENT;
-                std::string     foregroundColor     = "#FFFFFF";
+                std::string backgroundColor = TEXT_COLOR_TRANSPARENT;
+                std::string foregroundColor = TEXT_COLOR_WHITE;
             };
         }
 

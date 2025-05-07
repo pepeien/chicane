@@ -9,7 +9,19 @@ namespace Chicane
         namespace Style
         {
             std::unordered_map<std::string, Vec<4, std::uint32_t>> m_colors {
-                { HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
+                { HEX_COLOR_TRANSPARENT,  Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
+                { HEX_COLOR_RED,          Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
+                { HEX_COLOR_GREEN,        Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
+                { HEX_COLOR_BLUE,         Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
+                { HEX_COLOR_BLACK,        Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
+                { HEX_COLOR_WHITE,        Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) },
+
+                { TEXT_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
+                { TEXT_COLOR_RED,         Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
+                { TEXT_COLOR_GREEN,       Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
+                { TEXT_COLOR_BLUE,        Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
+                { TEXT_COLOR_BLACK,       Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
+                { TEXT_COLOR_WHITE,       Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) }
             };
     
             Vec<4, std::uint32_t> hexToRgba(const std::string& inValue)
@@ -23,7 +35,7 @@ namespace Chicane
                 );
     
                 bool bIsTransparent = color.empty() ||
-                                      String::areEquals(color, BACKGROUND_COLOR_TRANSPARENT);
+                                      String::areEquals(color, TEXT_COLOR_TRANSPARENT);
                 bool bIsNotHex      = color.size() < 7 || color.size() > 9;
     
                 if (bIsTransparent || bIsNotHex)
@@ -60,6 +72,13 @@ namespace Chicane
                 return m_colors.at(color);
             }
     
+            bool isColorVisible(const std::string& inValue)
+            {
+                return !inValue.empty() &&
+                       !String::areEquals(inValue, Style::TEXT_COLOR_TRANSPARENT) &&
+                       !String::areEquals(inValue, Style::HEX_COLOR_TRANSPARENT);
+            }
+
             Vec<4, std::uint32_t> toRgba(const std::string& inValue)
             {
                 if (String::startsWith(inValue, HEX_KEYWORD))

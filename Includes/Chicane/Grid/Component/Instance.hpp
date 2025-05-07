@@ -27,17 +27,21 @@ namespace Chicane
             virtual ~Component();
 
         public:
+            // Lifecycle
             virtual void onChildAddition(Component* inComponent);
             virtual void onTick(float inDelta);
 
         public:
-            bool isValidChild(Component* inComponent) const;
+            // Checkers
+            bool isRoot() const;
+            bool isVisible() const;
             bool isDrawable() const;
+            bool isValidChild(Component* inComponent) const;
 
+            // Lifecycle
             void tick(float inDelta);
 
-            void refresh();
-
+            // Properties
             const std::string& getTag() const;
             void setTag(const std::string& inTag);
 
@@ -78,6 +82,7 @@ namespace Chicane
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
 
+            // Positioning
             const Vec<2, float>& getCursor() const;
             void addCursor(const Vec<2, float>& inCursor);
             void setCursor(const Vec<2, float>& inCursor);
@@ -102,15 +107,26 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             ) const;
 
-            Vec<4, std::uint32_t> getBackgroundColor() const;
+            // Style Properties
+            bool isDisplayStyle(Style::Display inDisplay) const;
+            Style::Display getDisplayStyle() const;
 
-        private:
+            float getWidthStyle() const;
+            float getHeightStyle() const;
+
+            bool isPositionStyle(Style::Position inPosition) const;
+            Style::Position getPositionStyle() const;
+
+            std::string getBackgroundColorStyle() const;
+
+        protected:
             void refreshSize();
             void refreshPosition();
-            void refreshBackgroundColor();
 
-            float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
-            float calculateSizeFromPixel(const std::string& inValue) const;
+            float calculateSize(const std::string& inValue, Style::Direction inDirection) const;
+
+            float calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const;
+            float calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const;
 
             float calculateSizeFromViewportHeight(const pugi::xml_attribute& inAttribute) const;
             float calculateSizeFromViewportHeight(const std::string& inValue) const;
@@ -120,17 +136,16 @@ namespace Chicane
             float calculateSizeFromViewportWidth(const std::string& inValue) const;
             float calculateSizeFromViewportWidth(float inValue) const;
 
-            float calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const;
-            float calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const;
+            float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
+            float calculateSizeFromPixel(const std::string& inValue) const;
 
-            float calculateSize(const std::string& inValue, Style::Direction inDirection) const;
-
-            FunctionData parseFunction(const std::string& inRefValue) const;
+            std::string parseText(const std::string& inText) const;
 
             bool doesTextContainsReference(const std::string& inText) const;
-            bool doesTextContainsFunction(const std::string& inValue) const;
             Reference parseReference(const std::string& inValue) const;
-            std::string parseText(const std::string& inText) const;
+
+            bool doesTextContainsFunction(const std::string& inValue) const;
+            FunctionData parseFunction(const std::string& inRefValue) const;
 
         protected:
             std::string                                       m_tag;

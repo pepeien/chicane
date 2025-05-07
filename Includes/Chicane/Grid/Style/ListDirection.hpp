@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Style
         {
-            enum class ListDirection : std::uint8_t
+            enum class FlexDirection : std::uint8_t
             {
                 Column,
                 Row

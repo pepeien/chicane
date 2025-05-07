@@ -14,7 +14,10 @@ private:
 
 private:
     bool                     m_didPlayerWin;
-    Chicane::Grid::Reference m_uiDidPlayerWin;
+
+    // Victory Text
+    std::string              m_victoryVisibility;
+    Chicane::Grid::Reference m_uiVictoryVisibility;
 
     // Crosshair
     float                    m_crosshairSize;

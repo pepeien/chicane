@@ -46,6 +46,32 @@ namespace Chicane
             return result;
         }
 
+        std::string toLower(const std::string& inTarget)
+        {
+            std::string value = inTarget;
+            std::transform(
+                value.begin(),
+                value.end(),
+                value.begin(),
+                ::tolower
+            );
+
+            return value;
+        }
+
+        std::string toUpper(const std::string& inTarget)
+        {
+            std::string value = inTarget;
+            std::transform(
+                value.begin(),
+                value.end(),
+                value.begin(),
+                ::toupper
+            );
+
+            return value;
+        }
+
         std::vector<std::string> split(const std::string& inTarget, char inDelimeter)
         {
             std::vector<std::string> result = {};

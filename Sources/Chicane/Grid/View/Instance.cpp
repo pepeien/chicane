@@ -38,7 +38,7 @@ namespace Chicane
             }
 
             m_styles = Style::Instance::parseSources(node);
-            m_style.position = Style::Position::Absolute;
+            m_style.position = Style::POSITION_TYPE_ABSOLUTE;
 
             m_root = this;
             m_parent = this;

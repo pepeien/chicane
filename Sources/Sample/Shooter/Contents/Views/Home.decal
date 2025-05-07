@@ -1,4 +1,5 @@
-#victory {
+.victory {
+    display: var(victoryDisplay);
     position: absolute;
     height: 30vh;
     width: 100%;
@@ -6,11 +7,7 @@
     background-color: #333333;
 }
 
-#victoryText {
-    alignment: center;
-}
-
-#frameTelemetry {
+.telemetry {
     position: absolute;
     width: 175px;
     height: 25px;
@@ -18,13 +15,13 @@
     background-color: #333333;
 }
 
-#framePerSecond {
+.telemetry__fps {
     margin-left: 1vw;
     alignment: start center;
     color: #24f51d;
 }
 
-#frameTimeText {
+.telemetry__frametime {
     alignment: end center;
     color: #24f51d;
 }

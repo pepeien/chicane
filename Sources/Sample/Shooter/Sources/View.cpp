@@ -11,8 +11,9 @@ View::View()
         "home",
         "Contents/Samples/Shooter/Views/Home.grid"
     ),
-    m_didPlayerWin(false),
-    m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin)),
+    m_didPlayerWin(true),
+    m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
+    m_uiVictoryVisibility(Chicane::Grid::Reference::fromValue<std::string>(&m_victoryVisibility)),
     m_crosshairSize(1.0f),
     m_uiCrosshairSize(Chicane::Grid::Reference::fromValue<float>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
@@ -34,13 +35,15 @@ View::View()
             if (Game::didReachMaxScore())
             {
                 m_didPlayerWin = true;
+
+                m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
             }
         }
     );
 
     addReference(
-        "didPlayerWin",
-        &m_uiDidPlayerWin
+        "victoryDisplay",
+        &m_uiVictoryVisibility
     );
     addReference(
         "crosshairSize",

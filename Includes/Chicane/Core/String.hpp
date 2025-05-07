@@ -43,6 +43,8 @@ namespace Chicane
 
         // Helper
         CHICANE std::string trim(const std::string& inTarget);
+        CHICANE std::string toLower(const std::string& inTarget);
+        CHICANE std::string toUpper(const std::string& inTarget);
 
         CHICANE std::vector<std::string> split(const std::string& inTarget, char inDelimeter);
         CHICANE std::vector<std::string> split(const std::vector<unsigned char>& inTarget, char inDelimiter);

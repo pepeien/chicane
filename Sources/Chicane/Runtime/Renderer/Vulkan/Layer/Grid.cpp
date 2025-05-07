@@ -133,9 +133,21 @@ namespace Chicane
                         return;
                     }
 
+                    std::vector<const Grid::Component*> components = {};
+
+                    Grid::Component::getComponents(components, inView);
+
                     m_components.clear();
 
-                    Grid::Component::getComponents(m_components, inView);
+                    for (const Grid::Component* component : components)
+                    {
+                        if (!component->isDrawable())
+                        {
+                            continue;
+                        }
+
+                        m_components.push_back(component);
+                    }
 
                     if (!inView)
                     {
@@ -301,7 +313,9 @@ namespace Chicane
 
             for (const Grid::Component* component : m_components)
             {
-                const Vec<4, std::uint32_t> color = component->getBackgroundColor();
+                const Vec<4, std::uint32_t> color = Grid::Style::toRgba(
+                    component->getBackgroundColorStyle()
+                );
 
                 Box::Model::Vertex vertex = {};
                 vertex.color.r = color.r / 255.0f;
