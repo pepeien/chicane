@@ -10,8 +10,9 @@ namespace Chicane
         static constexpr const char* REFERENCE_VALUE_OPENING = "{{";
         static constexpr const char* REFERENCE_VALUE_CLOSING = "}}";
 
-        static constexpr const char* FUNCTION_PARAMS_OPENING = "(";
-        static constexpr const char* FUNCTION_PARAMS_CLOSING = ")";
+        static constexpr const char* FUNCTION_PARAMS_OPENING   = "(";
+        static constexpr const char* FUNCTION_PARAMS_SEPARATOR = ",";
+        static constexpr const char* FUNCTION_PARAMS_CLOSING   = ")";
 
         // Value attributes
         static constexpr const char* IS_VISIBLE_ATTRIBUTE_NAME = "isVisible";
@@ -25,7 +26,6 @@ namespace Chicane
         static constexpr const char* ITEMS_ATTRIBUTE_NAME       = "items";
         static constexpr const char* ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
 
-        CHICANE Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
-        CHICANE Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
+        std::string extractParams(const std::string& inValue);
     }
 }

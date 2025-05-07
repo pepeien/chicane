@@ -13,8 +13,20 @@ View::View()
     ),
     m_didPlayerWin(false),
     m_uiDidPlayerWin(Chicane::Grid::Reference::fromValue<bool>(&m_didPlayerWin)),
-    m_crosshairGap(0.0),
-    m_uiCrosshairGap(Chicane::Grid::Reference::fromValue<float>(&m_crosshairGap))
+    m_crosshairSize(1.0f),
+    m_uiCrosshairSize(Chicane::Grid::Reference::fromValue<float>(&m_crosshairSize)),
+    m_crosshairThickness(0.25f),
+    m_uiCrosshairThickness(Chicane::Grid::Reference::fromValue<float>(&m_crosshairThickness)),
+    m_crosshairGap(1.0f),
+    m_uiCrosshairGap(Chicane::Grid::Reference::fromValue<float>(&m_crosshairGap)),
+    m_crosshairColorR(255),
+    m_uiCrosshairColorR(Chicane::Grid::Reference::fromValue<int>(&m_crosshairColorR)),
+    m_crosshairColorG(255),
+    m_uiCrosshairColorG(Chicane::Grid::Reference::fromValue<int>(&m_crosshairColorG)),
+    m_crosshairColorB(255),
+    m_uiCrosshairColorB(Chicane::Grid::Reference::fromValue<int>(&m_crosshairColorB)),
+    m_crosshairColorA(255),
+    m_uiCrosshairColorA(Chicane::Grid::Reference::fromValue<int>(&m_crosshairColorA))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)
@@ -31,8 +43,32 @@ View::View()
         &m_uiDidPlayerWin
     );
     addReference(
+        "crosshairSize",
+        &m_uiCrosshairSize
+    );
+    addReference(
+        "crosshairThickness",
+        &m_uiCrosshairThickness
+    );
+    addReference(
         "crosshairGap",
         &m_uiCrosshairGap
+    );
+    addReference(
+        "crosshairColorR",
+        &m_uiCrosshairColorR
+    );
+    addReference(
+        "crosshairColorG",
+        &m_uiCrosshairColorG
+    );
+    addReference(
+        "crosshairColorB",
+        &m_uiCrosshairColorB
+    );
+    addReference(
+        "crosshairColorA",
+        &m_uiCrosshairColorA
     );
 
     addFunction(
@@ -43,11 +79,6 @@ View::View()
         "getFrametime",
         std::bind(&View::getFrametime, this, std::placeholders::_1)
     );
-}
-
-void View::onTick(float inDelta)
-{
-    m_crosshairGap += 0.0001f;
 }
 
 Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Event& inEvent)

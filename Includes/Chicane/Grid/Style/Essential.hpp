@@ -92,6 +92,9 @@ namespace Chicane
             // Special keywords
             static constexpr const char* CALCULATION_KEYWORD = "calc";
             static constexpr const char* VARIABLE_KEYWORD    = "var";
+            static constexpr const char* HEX_KEYWORD         = "#";
+            static constexpr const char* RGB_KEYWORD         = "rgb";
+            static constexpr const char* RGBA_KEYWORD        = "rgba";
 
             // Calculation
             static constexpr const char* CALCULATION_OPERATOR_SUM = "+";
@@ -104,6 +107,11 @@ namespace Chicane
                 CALCULATION_OPERATOR_MUL,
                 CALCULATION_OPERATOR_DIV
             };
+
+            CHICANE Vec<4, std::uint32_t> toRgba(const std::string& inValue);
+
+            CHICANE std::string variableToReference(const std::string& inValue);
+            CHICANE std::string colorToReference(const std::string& inValue);
         }
     }
 }

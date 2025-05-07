@@ -100,11 +100,13 @@ namespace Chicane
 
         void Component::tick(float inDelta)
         {
+            refresh();
+
             onTick(inDelta);
 
             for (Component* child : m_children)
             {
-                child->onTick(inDelta);
+                child->tick(inDelta);
             }
         }
 
@@ -380,7 +382,7 @@ namespace Chicane
 
         bool Component::hasRoot() const
         {
-            return m_root != nullptr && m_root != this;
+            return m_root != nullptr;
         }
 
         Component* Component::getRoot() const
@@ -400,7 +402,7 @@ namespace Chicane
 
         bool Component::hasParent() const
         {
-            return m_parent != nullptr && m_parent != this;
+            return m_parent != nullptr;
         }
 
         Component* Component::getParent() const
@@ -518,11 +520,6 @@ namespace Chicane
 
         void Component::setSize(int inWidth, int inHeight)
         {
-            if (m_size.x == inWidth && m_size.y == inWidth)
-            {
-                return;
-            }
-
             m_size.x = inWidth;
             m_size.y = inHeight;
 
@@ -568,11 +565,6 @@ namespace Chicane
 
         void Component::setPosition(int inX, int inY)
         {
-            if (m_position.x == inX && m_position.y == inX)
-            {
-                return;
-            }
-
             m_position.x = inX;
             m_position.y = inY;
 
@@ -595,6 +587,41 @@ namespace Chicane
             subscription->next(m_position);
 
             return subscription;
+        }
+
+        Vec<4, std::uint32_t> Component::getBackgroundColor() const
+        {
+            const std::string color = m_style.backgroundColor;
+
+            if (
+                String::startsWith(color, Style::RGB_KEYWORD) ||
+                String::startsWith(color, Style::RGBA_KEYWORD)
+            )
+            {
+                const std::string keyword = String::startsWith(color, Style::RGBA_KEYWORD) ?
+                    Style::RGBA_KEYWORD :
+                    Style::RGB_KEYWORD;
+
+                std::string result = "";
+                result.append(keyword);
+                result.append(FUNCTION_PARAMS_OPENING);
+
+                for (std::string value : String::split(extractParams(color), FUNCTION_PARAMS_SEPARATOR[0]))
+                {
+                    result.append(parseText(Style::colorToReference(value)));
+                    result.append(",");
+                }
+
+                result.append(FUNCTION_PARAMS_CLOSING);
+
+                return Style::toRgba(result);
+            }
+
+            return Style::toRgba(
+                parseText(
+                    Style::colorToReference(color)
+                )
+            );
         }
 
         void Component::refreshSize()
@@ -655,6 +682,11 @@ namespace Chicane
             }
 
             m_parent->addCursor(m_size + margin);
+        }
+
+        void Component::refreshBackgroundColor()
+        {
+            
         }
 
         float Component::calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const
@@ -774,16 +806,7 @@ namespace Chicane
 
             if (String::startsWith(inValue, Style::VARIABLE_KEYWORD))
             {
-                const std::uint32_t start = inValue.find_first_of(FUNCTION_PARAMS_OPENING) + 1;
-                const std::uint32_t end   = inValue.find_last_of(FUNCTION_PARAMS_CLOSING);
-
-                std::string reference = "";
-                reference.append(REFERENCE_VALUE_OPENING);
-                reference.append(inValue.substr(start, end - start));
-                reference.append(REFERENCE_VALUE_CLOSING);
-                reference.append(inValue.substr(end + 1));
-
-                const std::string parsedReference = parseText(reference);
+                const std::string parsedReference = parseText(Style::variableToReference(inValue));
 
                 if (parsedReference.empty())
                 {
@@ -795,10 +818,7 @@ namespace Chicane
 
             if (String::startsWith(inValue, Style::CALCULATION_KEYWORD))
             {
-                const std::uint32_t start = inValue.find_first_of(FUNCTION_PARAMS_OPENING) + 1;
-                const std::uint32_t end   = inValue.find_last_of(FUNCTION_PARAMS_CLOSING);
-
-                const std::string operation = inValue.substr(start, end - start);
+                const std::string operation = extractParams(inValue);
 
                 for (std::uint32_t i = 0; i < operation.size(); i++)
                 {
@@ -869,22 +889,6 @@ namespace Chicane
                 return calculateSizeFromPixel(inValue);
             }
 
-            if (String::startsWith(inValue, REFERENCE_VALUE_OPENING))
-            {
-                const std::uint32_t start = inValue.find_first_of(REFERENCE_VALUE_OPENING);
-                const std::uint32_t end   = inValue.find_last_of(REFERENCE_VALUE_CLOSING);
-
-                std::string parsedValue = parseText(inValue.substr(start, end - start));
-                parsedValue.append(inValue.substr(end + 1));
-
-                if (parsedValue.empty())
-                {
-                    return 0.0f;
-                }
-
-                return calculateSize(parsedValue, inDirection);
-            }
-
             return 0.0f;
         }
 
@@ -924,10 +928,10 @@ namespace Chicane
             return data;
         }
 
-        bool Component::doesTextContainsReference(const std::string& inText) const
+        bool Component::doesTextContainsReference(const std::string& inValue) const
         {
-            bool hasOpening = inText.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
-            bool hasClosing = inText.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
+            bool hasOpening = inValue.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
+            bool hasClosing = inValue.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
 
             return hasOpening && hasClosing;
         }
@@ -965,43 +969,37 @@ namespace Chicane
             return m_parent->getFunction(data.name)(event);
         }
 
-        std::string Component::parseText(const std::string& inText) const
-        {
-            if (String::trim(inText).empty())
+        std::string Component::parseText(const std::string& inValue) const
+        {            
+            if (String::trim(inValue).empty())
             {
                 return "";
             }
 
-            if (!doesTextContainsReference(inText))
+            if (!doesTextContainsReference(inValue))
             {
-                return inText;
+                return inValue;
             }
 
-            std::size_t foundOpening = inText.find_first_of(REFERENCE_VALUE_OPENING);
-            std::size_t foundClosing = inText.find_first_of(REFERENCE_VALUE_CLOSING);
-            std::string resultText = inText.substr(0, foundOpening);
-            std::string remainderText = inText.substr(
-                foundClosing + 2,
-                inText.size() - foundClosing
-            );
+            const std::uint32_t start = inValue.find_first_of(REFERENCE_VALUE_OPENING) + 1;
+            const std::uint32_t end   = inValue.find_last_of(REFERENCE_VALUE_CLOSING) - 1;
 
-            foundOpening += 2;
-            foundClosing -= foundOpening;
+            const std::string value     = inValue.substr(start + 1, end - start - 1);
+            const std::string remainder = inValue.substr(end);
 
-            std::string value = inText.substr(foundOpening, foundClosing);
-            value = String::trim(value);
+            std::string result = "";
 
             if (!value.empty())
             {
-                resultText += parseReference(value).toString();
+                result += parseReference(value).toString();
             }
 
-            if (!remainderText.empty())
+            if (!remainder.empty())
             {
-                resultText += parseText(remainderText);
+                result += parseText(remainder);
             }
 
-            return resultText;
+            return result;
         }
     }
 }

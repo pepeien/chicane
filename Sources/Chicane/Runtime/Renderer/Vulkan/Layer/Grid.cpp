@@ -301,8 +301,7 @@ namespace Chicane
 
             for (const Grid::Component* component : m_components)
             {
-                const Grid::Style::Instance& style = component->getStyle();
-                const Vec<4, std::uint32_t> color = Grid::hexToRgba(style.backgroundColor);
+                const Vec<4, std::uint32_t> color = component->getBackgroundColor();
 
                 Box::Model::Vertex vertex = {};
                 vertex.color.r = color.r / 255.0f;

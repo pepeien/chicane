@@ -31,17 +31,17 @@
 
 .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
     position: absolute;
-    background-color: #FFFFFF;
+    background-color: rgba(var(crosshairColorR), var(crosshairColorG), var(crosshairColorB), var(crosshairColorA));
 }
 
 .crosshair__top, .crosshair__bottom {
-    height: 10px;
-    width: 2px;
+    height: var(crosshairSize)vh;
+    width: var(crosshairThickness)vh;
 }
 
 .crosshair__left, .crosshair__right {
-    height: 2px;
-    width: 10px;
+    height: var(crosshairThickness)vh;
+    width: var(crosshairSize)vh;
 }
 
 .crosshair__top {

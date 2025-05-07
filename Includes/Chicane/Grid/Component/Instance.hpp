@@ -102,9 +102,12 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             ) const;
 
+            Vec<4, std::uint32_t> getBackgroundColor() const;
+
         private:
             void refreshSize();
             void refreshPosition();
+            void refreshBackgroundColor();
 
             float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
             float calculateSizeFromPixel(const std::string& inValue) const;
