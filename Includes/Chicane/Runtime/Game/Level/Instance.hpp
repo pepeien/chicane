@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Core/Event.hpp"
-#include "Core/Log.hpp"
-#include "Runtime/Game/Transformable/Actor/Instance.hpp"
-#include "Runtime/Game/Transformable/Component/Camera.hpp"
-#include "Runtime/Game/Transformable/Component/Instance.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Log.hpp"
+#include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
 static constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
 

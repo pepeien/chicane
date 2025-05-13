@@ -1,4 +1,4 @@
-#include "Core/String.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {

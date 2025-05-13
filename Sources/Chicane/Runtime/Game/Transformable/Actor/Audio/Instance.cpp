@@ -1,6 +1,6 @@
-#include "Runtime/Game/Transformable/Actor/Audio/Instance.hpp"
+#include "Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp"
 
-#include "Runtime/Application.hpp"
+#include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
 {

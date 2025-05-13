@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Essentials.hpp"
-#include "Core/Event/Subscription.hpp"
+#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
 
 namespace Chicane
 {
@@ -11,9 +11,9 @@ namespace Chicane
     public:
         ~Observable()
         {
-            for (std::uint32_t i = 0; i < m_subscriptions.size(); i++)
+            for (Subscription<T>* subscription : m_subscriptions)
             {
-                m_subscriptions.at(i).release();
+                delete subscription;
             }
 
             m_subscriptions.clear();
@@ -27,14 +27,14 @@ namespace Chicane
         )
         {
             m_subscriptions.push_back(
-                std::make_unique<Subscription<T>>(
+                new Subscription<T>(
                     inNext,
                     inError,
                     inComplete
                 )
             );
 
-            return m_subscriptions.back().get();
+            return m_subscriptions.back();
         }
 
         void next(T inData)
@@ -62,6 +62,6 @@ namespace Chicane
         }
 
     protected:
-        std::vector<std::unique_ptr<Subscription<T>>> m_subscriptions;
+        std::vector<Subscription<T>*> m_subscriptions;
     };
 }

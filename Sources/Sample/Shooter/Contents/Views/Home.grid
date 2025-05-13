@@ -1,4 +1,4 @@
-<View id="home" style="Contents/Samples/Shooter/Views/Home.decal">
+<View id="home" style="Contents/Shooter/Views/Home.decal">
     <Container class="victory">
         <Text class="victory__text">YOU WIN!</Text>
     </Container>

@@ -1,11 +1,11 @@
 <Asset version="1" id="Lake">
     <Sides>
-        <Texture side="Left">Contents/Samples/Shooter/Textures/Lake/Left.btex</Texture>
-        <Texture side="Right">Contents/Samples/Shooter/Textures/Lake/Right.btex</Texture>
-        <Texture side="Front">Contents/Samples/Shooter/Textures/Lake/Front.btex</Texture>
-        <Texture side="Back">Contents/Samples/Shooter/Textures/Lake/Back.btex</Texture>
-        <Texture side="Up">Contents/Samples/Shooter/Textures/Lake/Up.btex</Texture>
-        <Texture side="Down">Contents/Samples/Shooter/Textures/Lake/Down.btex</Texture>
+        <Texture side="Left">Contents/Shooter/Textures/Lake/Left.btex</Texture>
+        <Texture side="Right">Contents/Shooter/Textures/Lake/Right.btex</Texture>
+        <Texture side="Front">Contents/Shooter/Textures/Lake/Front.btex</Texture>
+        <Texture side="Back">Contents/Shooter/Textures/Lake/Back.btex</Texture>
+        <Texture side="Up">Contents/Shooter/Textures/Lake/Up.btex</Texture>
+        <Texture side="Down">Contents/Shooter/Textures/Lake/Down.btex</Texture>
     </Sides>
-    <Model>Contents/Samples/Shooter/Models/Skybox.bmdl</Model>
+    <Model>Contents/Shooter/Models/Skybox.bmdl</Model>
 </Asset>

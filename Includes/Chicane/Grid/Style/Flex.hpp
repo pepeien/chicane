@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Grid/Style/Essential.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Style/Essential.hpp"
 
 namespace Chicane
 {

@@ -9,7 +9,7 @@
 View::View()
     : Chicane::Grid::View(
         "home",
-        "Contents/Samples/Shooter/Views/Home.grid"
+        "Contents/Shooter/Views/Home.grid"
     ),
     m_didPlayerWin(true),
     m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Runtime/Application.hpp"
-#include "Runtime/Game.hpp"
-#include "Runtime/Grid.hpp"
-#include "Runtime/Renderer.hpp"
+#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Grid.hpp"
+#include "Chicane/Runtime/Renderer.hpp"

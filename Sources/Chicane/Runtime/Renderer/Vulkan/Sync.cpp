@@ -1,4 +1,4 @@
-#include "Runtime/Renderer/Vulkan/Sync.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sync.hpp"
 
 namespace Chicane
 {

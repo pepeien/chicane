@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core/Essentials.hpp"
-#include "Core/FrameTelemetry.hpp"
-#include "Core/Input/Event/Events.hpp"
-#include "Core/Input/Event/Status.hpp"
+#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/FrameTelemetry.hpp"
+#include "Chicane/Core/Input/Event/Events.hpp"
+#include "Chicane/Core/Input/Event/Status.hpp"
 
 static constexpr float EVENT_REPEAT_COOLDOWN_IN_MS = 30.0f;
 

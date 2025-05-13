@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Clock.hpp"
-#include "Core/Essentials.hpp"
+#include "Chicane/Core/Clock.hpp"
+#include "Chicane/Core/Essentials.hpp"
 
 namespace Chicane
 {

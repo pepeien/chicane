@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Box/Asset/Model/Data.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 
 namespace Chicane
 {

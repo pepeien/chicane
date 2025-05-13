@@ -1,14 +1,14 @@
-#include "Runtime/Renderer/Vulkan/Frame/Instance.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 
-#include "Runtime/Game/Level/Instance.hpp"
-#include "Runtime/Game/Transformable/Component/Camera.hpp"
-#include "Runtime/Game/Transformable/Component/Mesh.hpp"
-#include "Runtime/Game/Transformable/Component/Light.hpp"
-#include "Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Runtime/Renderer/Vulkan/Descriptor.hpp"
-#include "Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Runtime/Renderer/Vulkan/Image.hpp"
-#include "Runtime/Renderer/Vulkan/Sync.hpp"
+#include "Chicane/Runtime/Game/Level/Instance.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sync.hpp"
 
 namespace Chicane
 {
@@ -256,7 +256,19 @@ namespace Chicane
 
             void Instance::updateUiData(const std::vector<const Grid::Component*>& inComponents)
             {
-                if (inComponents.empty())
+                std::vector<const Grid::Component*> components = {};
+
+                for (const Grid::Component* component : inComponents)
+                {
+                    if (!component->isDrawable())
+                    {
+                        continue;
+                    }
+
+                    components.push_back(component);
+                }
+
+                if (components.empty())
                 {
                     destroyMeshData();
 
@@ -497,9 +509,17 @@ namespace Chicane
 
                 for (const Grid::Component* component : inComponents)
                 {
+                    const Vec<2, float>& rootSize = component->getRoot()->getSize();
+
+                    const Vec<2, float>& size     = component->getSize();
+                    const Vec<2, float>& position = component->getPosition();
+
                     ComponentData data = {};
-                    data.position = component->getNormalizedPosition();
-                    data.size = component->getNormalizedSize();
+                    data.position = {
+                        ((2.0f * position.x) / rootSize.x) - 1.0f,
+                        ((2.0f * position.y) / rootSize.y) - 1.0f
+                    };
+                    data.size = size / rootSize;
 
                     result.push_back(data);
                 }

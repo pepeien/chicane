@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Grid/Component.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
 {
@@ -25,6 +25,12 @@ namespace Chicane
 
             Window::Instance* getWindow() const;
             void setWindow(Window::Instance* inWindow);
+
+            std::vector<const Component*> getDrawableChildren() const;
+            std::vector<const Component*> flatChildren() const;
+
+        private:
+            std::vector<const Component*> flatChildren(const Component* inParent) const;
 
         protected:
             Window::Instance*  m_window;

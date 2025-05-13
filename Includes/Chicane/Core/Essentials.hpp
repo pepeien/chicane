@@ -26,6 +26,10 @@
 #      else
 #          define CHICANE __declspec(dllimport)
 #      endif
+#   elif __GNUC__ >= 4
+#       define __attribute__((visibility("default")))
+#   else
+#       define CHICANE
 #   endif
 #else
 #   define CHICANE

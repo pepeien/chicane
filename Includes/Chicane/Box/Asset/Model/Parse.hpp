@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Box/Asset/Model/Parse/Result.hpp"
+#include "Chicane/Box/Asset/Model/Parse/Result.hpp"

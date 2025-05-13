@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Core/Essentials.hpp"
-#include "Core/Event.hpp"
-#include "Core/Math/Vec.hpp"
-#include "Core/Window/CreateInfo.hpp"
-#include "Core/Window/Type.hpp"
-#include "Runtime/Renderer/Type.hpp"
+#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Window/CreateInfo.hpp"
+#include "Chicane/Core/Window/Type.hpp"
+#include "Chicane/Runtime/Renderer/Type.hpp"
 
 namespace Chicane
 {

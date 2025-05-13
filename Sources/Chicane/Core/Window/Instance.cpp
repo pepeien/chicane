@@ -1,6 +1,6 @@
-#include "Core/Window/Instance.hpp"
+#include "Chicane/Core/Window/Instance.hpp"
 
-#include "Core.hpp"
+#include "Chicane/Core.hpp"
 
 const Chicane::Vec<2, int> VEC2_ZERO(0);
 

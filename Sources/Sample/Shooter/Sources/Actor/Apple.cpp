@@ -21,7 +21,7 @@ Apple::Apple()
     setAbsoluteScale(1.5f);
 
     m_meshComponent = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
-    m_meshComponent->setMesh("Contents/Samples/Shooter/Meshes/Apple.bmsh");
+    m_meshComponent->setMesh("Contents/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 

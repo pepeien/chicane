@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Runtime/Renderer/Layer/Status.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Renderer/Layer/Status.hpp"
 
 namespace Chicane
 {

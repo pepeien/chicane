@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Box/Asset/Base.hpp"
-#include "Box/Asset/Audio.hpp"
-#include "Box/Asset/Header.hpp"
-#include "Box/Asset/Instance.hpp"
-#include "Box/Asset/Mesh.hpp"
-#include "Box/Asset/Model.hpp"
-#include "Box/Asset/Sky.hpp"
-#include "Box/Asset/Texture.hpp"
-#include "Box/Asset/Type.hpp"
+#include "Chicane/Box/Asset/Base.hpp"
+#include "Chicane/Box/Asset/Audio.hpp"
+#include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Asset/Instance.hpp"
+#include "Chicane/Box/Asset/Mesh.hpp"
+#include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Asset/Texture.hpp"
+#include "Chicane/Box/Asset/Type.hpp"
 
 namespace Chicane
 {

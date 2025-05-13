@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Core/Window/CreateInfo.hpp"
-#include "Runtime/Renderer/CreateInfo.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Core/Window/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/CreateInfo.hpp"
 
 namespace Chicane
 {

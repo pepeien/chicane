@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Box.hpp"
-#include "Core.hpp"
-#include "Grid.hpp"
-#include "Runtime/Application/CreateInfo.hpp"
-#include "Runtime/Game.hpp"
-#include "Runtime/Renderer.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Box.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid.hpp"
+#include "Chicane/Runtime/Application/CreateInfo.hpp"
+#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Renderer.hpp"
 
 namespace Chicane
 {

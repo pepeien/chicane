@@ -1,4 +1,4 @@
-#include "Core/FileSystem/Dialog.hpp"
+#include "Chicane/Core/FileSystem/Dialog.hpp"
 
 namespace Chicane
 {

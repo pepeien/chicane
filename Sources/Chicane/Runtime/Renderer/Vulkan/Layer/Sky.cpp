@@ -1,9 +1,9 @@
-#include "Runtime/Renderer/Vulkan/Layer/Sky.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Layer/Sky.hpp"
 
-#include "Runtime/Application.hpp"
-#include "Box.hpp"
-#include "Core.hpp"
-#include "Runtime/Game.hpp"
+#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Box.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Game.hpp"
 
 namespace Chicane
 {

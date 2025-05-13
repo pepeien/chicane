@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Runtime/Renderer/Vulkan/Base.hpp"
-#include "Runtime/Renderer/Vulkan/Queue.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 
 namespace Chicane
 {

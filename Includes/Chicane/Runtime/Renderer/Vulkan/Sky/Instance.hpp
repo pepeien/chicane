@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Runtime/Renderer/Vulkan/Base.hpp"
-#include "Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp"
-#include "Runtime/Renderer/Vulkan/Descriptor.hpp"
-#include "Runtime/Renderer/Vulkan/Image/Data.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
 
 namespace Chicane
 {

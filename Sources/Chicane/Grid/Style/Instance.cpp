@@ -1,6 +1,6 @@
-#include "Grid/Style/Instance.hpp"
+#include "Chicane/Grid/Style/Instance.hpp"
 
-#include "Grid/Essential.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Image.hpp"
-#include "Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Core/Image.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
 
 namespace Chicane
 {

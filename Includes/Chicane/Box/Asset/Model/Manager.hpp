@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Box/Asset/Model/Data.hpp"
-#include "Box/Asset/Model/Instance.hpp"
-#include "Box/Manager.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
+#include "Chicane/Box/Asset/Model/Instance.hpp"
+#include "Chicane/Box/Manager.hpp"
 
 namespace Chicane
 {

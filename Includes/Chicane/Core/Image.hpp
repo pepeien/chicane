@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Core/Image/Data.hpp"
+#include "Chicane/Core/Image/Data.hpp"

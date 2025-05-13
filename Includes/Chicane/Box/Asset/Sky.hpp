@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Box/Asset/Sky/Instance.hpp"
-#include "Box/Asset/Sky/Side.hpp"
+#include "Chicane/Box/Asset/Sky/Instance.hpp"
+#include "Chicane/Box/Asset/Sky/Side.hpp"
 
 namespace Chicane
 {

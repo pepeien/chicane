@@ -1,6 +1,6 @@
-#include "Core/Color.hpp"
+#include "Chicane/Core/Color.hpp"
 
-#include "Core/String.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {

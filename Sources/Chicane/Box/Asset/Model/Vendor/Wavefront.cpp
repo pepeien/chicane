@@ -1,10 +1,10 @@
-#include "Box/Asset/Model/Vendor/Wavefront.hpp"
+#include "Chicane/Box/Asset/Model/Vendor/Wavefront.hpp"
 
 #define FAST_OBJ_IMPLEMENTATION
-#include "fast_obj.h"
+#include <fast_obj.h>
 
-#include "Core/Math.hpp"
-#include "Box/Asset/Model/Data.hpp"
+#include "Chicane/Core/Math.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 
 namespace Chicane
 {

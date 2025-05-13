@@ -1,17 +1,16 @@
 .victory {
-    display: var(victoryDisplay);
     position: absolute;
+    display: var(victoryDisplay);
     height: 30vh;
     width: 100%;
-    margin-top: 10vh;
+    margin: auto 0;
     background-color: #333333;
 }
 
-.telemetry {
-    position: absolute;
-    width: 175px;
-    height: 25px;
-    margin: 0 auto auto 0;
+.telemetry  {
+    width: 200px;
+    height: 2.5vh;
+    margin-left: auto;
     background-color: #333333;
 }
 
@@ -42,17 +41,17 @@
 }
 
 .crosshair__top {
-    margin: 0 0 calc(50% + var(crosshairGap)vh) 50%;
+    margin: calc(50% - var(crosshairGap)vh) 0 0 50%;
 }
 
 .crosshair__bottom {
-    margin: 0 0 calc(50% - var(crosshairGap)vh) 50%;
+    margin: calc(50% + var(crosshairGap)vh) 0 0 50%;
 }
 
 .crosshair__left {
-    margin: 0 0 50% calc(50% - var(crosshairGap)vh);
+    margin: 50% 0 0 calc(50% - var(crosshairGap)vh);
 }
 
 .crosshair__right {
-    margin: 0 0 50% calc(50% + var(crosshairGap)vh);
+    margin: 50% 0 0 calc(50% + var(crosshairGap)vh);
 }

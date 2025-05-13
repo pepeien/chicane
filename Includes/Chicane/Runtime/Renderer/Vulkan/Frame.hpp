@@ -1,5 +1,5 @@
 #pragma once
 
-#include "Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
-#include "Runtime/Renderer/Vulkan/Frame/Instance.hpp"
-#include "Runtime/Renderer/Vulkan/Frame/Resource.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"

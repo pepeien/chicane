@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Box/Asset/Texture/Instance.hpp"
-#include "Box/Asset/Texture/Manager.hpp"
-#include "Box/Asset/Texture/Vendor.hpp"
+#include "Chicane/Box/Asset/Texture/Instance.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Box/Asset/Texture/Vendor.hpp"
 
 namespace Chicane
 {

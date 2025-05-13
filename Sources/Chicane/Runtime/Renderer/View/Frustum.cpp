@@ -1,8 +1,8 @@
-#include "Runtime/Renderer/View/Frustum.hpp"
+#include "Chicane/Runtime/Renderer/View/Frustum.hpp"
 
-#include "Core/Log.hpp"
-#include "Runtime/Game/Transformable/Instance.hpp"
-#include "Runtime/Game/Transformable/Component/View.hpp"
+#include "Chicane/Core/Log.hpp"
+#include "Chicane/Runtime/Game/Transformable/Instance.hpp"
+#include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
 
 namespace Chicane
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/Essentials.hpp"
-#include "Core/FrameTelemetry.hpp"
+#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/FrameTelemetry.hpp"
 
 namespace Chicane
 {

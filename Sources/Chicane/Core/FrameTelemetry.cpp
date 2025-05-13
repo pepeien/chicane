@@ -1,4 +1,4 @@
-#include "Core/FrameTelemetry.hpp"
+#include "Chicane/Core/FrameTelemetry.hpp"
 
 static constexpr float UPDATE_RATE_IN_MS = 5000.0f;
 

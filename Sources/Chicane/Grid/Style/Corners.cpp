@@ -1,7 +1,7 @@
-#include "Grid/Style/Corners.hpp"
+#include "Chicane/Grid/Style/Corners.hpp"
 
-#include "Grid/Essential.hpp"
-#include "Grid/Style/Essential.hpp"
+#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/Style/Essential.hpp"
 
 namespace Chicane
 {

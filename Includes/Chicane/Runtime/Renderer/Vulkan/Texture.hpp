@@ -1,4 +1,4 @@
 #pragma once
 
-#include "Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
-#include "Runtime/Renderer/Vulkan/Texture/Instance.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp"

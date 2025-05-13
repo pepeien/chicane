@@ -1,6 +1,6 @@
 <Asset version="1" id="Cube">
     <Group id="Body">
-        <Model>Contents/Samples/Shooter/Models/Cube.bmdl</Model>
-        <Texture>Contents/Samples/Shooter/Textures/Gray.btex</Texture>
+        <Model>Contents/Shooter/Models/Cube.bmdl</Model>
+        <Texture>Contents/Shooter/Textures/Gray.btex</Texture>
     </Group>
 </Asset>

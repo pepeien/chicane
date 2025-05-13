@@ -1,7 +1,7 @@
-#include "Runtime/Game/Level/Instance.hpp"
+#include "Chicane/Runtime/Game/Level/Instance.hpp"
 
-#include "Runtime/Application.hpp"
-#include "Core.hpp"
+#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Core.hpp"
 
 static constexpr std::uint32_t MAX_ACTOR_COUNT     = 10000;
 static constexpr std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;

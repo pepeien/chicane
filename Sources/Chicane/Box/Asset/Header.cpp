@@ -1,7 +1,7 @@
-#include "Box/Asset/Header.hpp"
+#include "Chicane/Box/Asset/Header.hpp"
 
-#include "Box/Asset.hpp"
-#include "Core.hpp"
+#include "Chicane/Box/Asset.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {

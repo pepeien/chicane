@@ -1,14 +1,6 @@
 ##################### Files #######################
 file(
     GLOB_RECURSE
-    HEADERS
-
-    # Sources
-    ${BOX_HEADER_DIR}/*.hpp
-)
-
-file(
-    GLOB_RECURSE
     SOURCES
 
     # Sources
@@ -16,7 +8,7 @@ file(
 )
 
 ##################### Setup #######################
-add_library(${BOX_TARGET_NAME} ${HEADERS} ${SOURCES})
+add_library(${BOX_TARGET_NAME} ${SOURCES})
 
 add_library(
     "${NAME}::Box"

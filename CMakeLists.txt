@@ -8,7 +8,7 @@ include(Functions.cmake)
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)
 
-set(CMAKE_CXX_STANDARD          17)
+set(CMAKE_CXX_STANDARD          20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(NAME "Chicane")
@@ -17,15 +17,20 @@ project(${NAME} VERSION 0.1.0)
 
 set(BUILD_SHARED_LIBS ON)
 
-add_definitions(-DBUILD_SHARED)
+if (BUILD_SHARED_LIBS)
+    add_definitions(-DBUILD_SHARED)
 
-if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-    add_definitions(-DBUILD_EXPORT)
+    if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+        add_definitions(-DBUILD_EXPORT)
+    endif()
 endif()
 
 # SDL3 Setup
 set(SDL3_DISABLE_INSTALL ON  CACHE BOOL "" FORCE)
 set(SDL3_TESTS           OFF CACHE BOOL "" FORCE)
+
+set(GLM_DISABLE_INSTALL ON  CACHE BOOL "" FORCE)
+set(GLM_TESTS           OFF CACHE BOOL "" FORCE)
 
 ##################### Values #######################
 if (NOT DEFINED BUILD_DIR)
@@ -37,7 +42,8 @@ if (NOT DEFINED BUILD_DIR)
 endif()
 
 ## System
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BUILD_DIR})
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_DIR}")
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_DIR}")
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
@@ -46,7 +52,7 @@ set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
 set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
 set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 
-set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}/${NAME}")
+set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}")
 set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
 
 ## Chicane

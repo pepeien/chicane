@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Grid.hpp"
-#include "Runtime/Renderer/Layer.hpp"
-#include "Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid.hpp"
+#include "Chicane/Runtime/Renderer/Layer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
 namespace Chicane
 {
@@ -54,6 +54,7 @@ namespace Chicane
 
             std::vector<vk::ClearValue>                 m_clearValues;
 
+            const Grid::View*                           m_view;
             std::vector<const Grid::Component*>         m_components;
         };
     }

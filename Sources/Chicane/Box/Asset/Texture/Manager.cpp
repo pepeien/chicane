@@ -1,6 +1,6 @@
-#include "Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 
-#include "Core/FileSystem.hpp"
+#include "Chicane/Core/FileSystem.hpp"
 
 namespace Chicane
 {

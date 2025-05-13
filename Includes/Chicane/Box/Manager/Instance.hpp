@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Box/Manager/EventType.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Box/Manager/EventType.hpp"
 
 namespace Chicane
 {

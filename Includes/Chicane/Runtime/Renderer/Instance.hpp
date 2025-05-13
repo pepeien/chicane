@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core/Event.hpp"
-#include "Core/Window.hpp"
-#include "Runtime/Renderer/CreateInfo.hpp"
-#include "Runtime/Renderer/Layer.hpp"
-#include "Runtime/Renderer/Viewport.hpp"
+#include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Window.hpp"
+#include "Chicane/Runtime/Renderer/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Layer.hpp"
+#include "Chicane/Runtime/Renderer/Viewport.hpp"
 
 namespace Chicane
 {

@@ -1,6 +1,6 @@
-#include "Runtime/Renderer/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
 
-#include "Runtime/Application.hpp"
+#include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
 {
@@ -9,7 +9,9 @@ namespace Chicane
         LGrid::LGrid()
             : Layer::Instance("UI"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
-            m_clearValues({})
+            m_clearValues({}),
+            m_view(nullptr),
+            m_components({})
         {
             m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
@@ -128,31 +130,16 @@ namespace Chicane
             Application::watchView(
                 [&](Grid::View* inView)
                 {
-                    if (inView == nullptr)
-                    {
-                        return;
-                    }
-
-                    std::vector<const Grid::Component*> components = {};
-
-                    Grid::Component::getComponents(components, inView);
+                    m_view = inView;
 
                     m_components.clear();
 
-                    for (const Grid::Component* component : components)
-                    {
-                        if (!component->isDrawable())
-                        {
-                            continue;
-                        }
-
-                        m_components.push_back(component);
-                    }
-
-                    if (!inView)
+                    if (m_view == nullptr)
                     {
                         return;
                     }
+
+                    m_components = m_view->getDrawableChildren();
 
                     if (!is(Layer::Status::Idle))
                     {

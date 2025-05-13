@@ -1,6 +1,6 @@
-#include "Grid/Component/Instance.hpp"
+#include "Chicane/Grid/Component/Instance.hpp"
 
-#include "Grid.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
@@ -41,16 +41,6 @@ namespace Chicane
                     inCompiler
                 )
             );
-        }
-
-        void Component::getComponents(std::vector<const Component*>& outValue, const Component* inComponent)
-        {
-            outValue.push_back(inComponent);
-
-            for (const Component* component : inComponent->getChildren())
-            {
-                getComponents(outValue, component);
-            }
         }
 
         Component::Component(const pugi::xml_node& inNode)
@@ -116,7 +106,8 @@ namespace Chicane
         bool Component::isVisible() const
         {
             const bool isParentVisible = isRoot() ? true : m_parent->isVisible();
-            const bool isDisplayable   = isDisplayStyle(Style::Display::Visible);
+            const bool isDisplayable   = !isDisplayStyle(Style::Display::None) &&
+                                         !isDisplayStyle(Style::Display::Hidden);
 
             return isParentVisible && isDisplayable;
         }
@@ -124,7 +115,7 @@ namespace Chicane
         bool Component::isDrawable() const
         {
             const bool isBackgroundVisible = Style::isColorVisible(getBackgroundColorStyle());
- 
+
             return isVisible() && isBackgroundVisible;
         }
 
@@ -501,11 +492,6 @@ namespace Chicane
             m_cursor = inCursor;
         }
 
-        Vec<2, float> Component::getNormalizedSize() const
-        {
-            return m_size / m_root->getSize();
-        }
-
         const Vec<2, float>& Component::getSize() const
         {
             return m_size;
@@ -538,17 +524,6 @@ namespace Chicane
             subscription->next(m_size);
 
             return subscription;
-        }
-
-        Vec<2, float> Component::getNormalizedPosition() const
-        {
-            const Vec<2, float>& size = m_root->getSize();
-
-            Vec<2, float> result = Vec2Zero;
-            result.x = (2.0f * m_position.x) / size.x - 1.0f;
-            result.y = 1.0f - (2.0f * m_position.y) / size.y;
-
-            return result;
         }
 
         const Vec<2, float>& Component::getPosition() const
@@ -781,62 +756,82 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
-            setCursor(
-                isPositionStyle(Style::Position::Absolute) || isRoot() ?
-                    Vec2Zero :
-                    m_parent->getCursor()
-            );
-
-            Vec<2, float> margin = Vec2Zero;
-
-            margin.x = calculateSize(m_style.margin.left, Style::Direction::Horizontal);
-            if (!String::areEquals(m_style.margin.left, m_style.margin.right))
+            if (isRoot())
             {
-                float rightMargin = calculateSize(m_style.margin.right, Style::Direction::Horizontal);
+                setCursor(Vec2Zero);
 
-                if (margin.x > 0.0f && rightMargin > 0.0f)
-                {
-                    rightMargin *= -1.0f;
-                }
-
-                margin.x += rightMargin;
-            }
-            else
-            {
-                if (String::areEquals(m_style.margin.left, Style::AUTO_SIZE_UNIT))
-                {
-                    margin.x *= 0.5f;
-                }
-            }
-
-            margin.y = calculateSize(m_style.margin.top, Style::Direction::Vertical);
-            if (!String::areEquals(m_style.margin.top, m_style.margin.bottom))
-            {
-                float bottomMargin = calculateSize(m_style.margin.bottom, Style::Direction::Vertical);
-
-                if (margin.y > 0.0f && bottomMargin > 0.0f)
-                {
-                    bottomMargin *= -1.0f;
-                }
-
-                margin.y += bottomMargin;
-            }
-            else
-            {
-                if (String::areEquals(m_style.margin.top, Style::AUTO_SIZE_UNIT))
-                {
-                    margin.y *= 0.5f;
-                }
-            }
-
-            setPosition(m_cursor + margin);
-
-            if (isPositionStyle(Style::Position::Absolute) || isRoot())
-            {
                 return;
             }
 
-            m_parent->addCursor(m_size + margin);
+            Vec<2, float> margin = Vec2Zero;
+
+            const Vec<2, float>&       size = getSize();
+
+            setCursor(
+                isPositionStyle(Style::Position::Absolute) ?
+                Vec2Zero :
+                m_parent->getCursor()
+            );
+
+            float left   = calculateSize(m_style.margin.left,   Style::Direction::Horizontal);
+            float right  = calculateSize(m_style.margin.right,  Style::Direction::Horizontal);
+            float top    = calculateSize(m_style.margin.top,    Style::Direction::Vertical);
+            float bottom = calculateSize(m_style.margin.bottom, Style::Direction::Vertical);
+
+            if (
+                String::areEquals(m_style.margin.left, Style::AUTO_SIZE_UNIT) &&
+                String::areEquals(m_style.margin.right, Style::AUTO_SIZE_UNIT)
+            )
+            {
+                margin.x = left * 0.5f;
+            }
+            else
+            {
+                margin.x  = left;
+                margin.x -= right;
+            }
+
+            if (
+                String::areEquals(m_style.margin.top, Style::AUTO_SIZE_UNIT) &&
+                String::areEquals(m_style.margin.bottom, Style::AUTO_SIZE_UNIT)
+            )
+            {
+                margin.y = top * 0.5f;
+            }
+            else
+            {
+                margin.y  = top;
+                margin.y -= bottom;
+            }
+
+
+            if (isPositionStyle(Style::Position::Relative))
+            {
+                const Vec<2, float> parentCenter = m_parent->getSize() * 0.5f;
+  
+                const Vec<2, float> position = m_cursor + margin;
+
+                Vec<2, float> offset = { m_size.x * 0.5f, m_size.y * 0.5f };
+
+                if (position.x >= parentCenter.x)
+                {
+                    offset.x *= -1;
+                }
+
+                if (position.y >= parentCenter.y)
+                {
+                    offset.y *= -1;
+                }
+
+                margin.x += offset.x;
+                margin.y += offset.y;
+
+                const Vec<2, float> cursor = m_size + margin;
+
+                m_parent->addCursor({ cursor.x, 0.0f });
+            }
+
+            setPosition(m_cursor + margin);
         }
 
         float Component::calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const
@@ -865,12 +860,16 @@ namespace Chicane
                 m_root->getSize() :
                 m_parent->getSize();
 
+            const Vec<2, float>& offset = isPositionStyle(Style::Position::Absolute) ?
+                Vec2Zero :
+                m_cursor;
+
             if (inDirection == Style::Direction::Horizontal)
             {
-                return size.x * value;
+                return std::max(0.0f, size.x - offset.x) * value;
             }
 
-            return size.y * value;
+            return std::max(0.0f, size.y - offset.y) * value;
         }
 
         float Component::calculateSizeFromViewportHeight(const pugi::xml_attribute& inAttribute) const

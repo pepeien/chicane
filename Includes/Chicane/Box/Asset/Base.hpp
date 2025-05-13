@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {

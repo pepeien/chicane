@@ -1,6 +1,6 @@
-#include "Runtime/Game/Transformable/Instance.hpp"
+#include "Chicane/Runtime/Game/Transformable/Instance.hpp"
 
-#include "Core.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Input/Event.hpp"
-#include "Core/Input/Gamepad.hpp"
-#include "Core/Input/Keyboard.hpp"
-#include "Core/Input/Mouse.hpp"
+#include "Chicane/Core/Input/Event.hpp"
+#include "Chicane/Core/Input/Gamepad.hpp"
+#include "Chicane/Core/Input/Keyboard.hpp"
+#include "Chicane/Core/Input/Mouse.hpp"

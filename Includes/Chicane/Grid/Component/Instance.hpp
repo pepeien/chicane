@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Grid/Function.hpp"
-#include "Grid/Reference.hpp"
-#include "Grid/Style.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Function.hpp"
+#include "Chicane/Grid/Reference.hpp"
+#include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
 {
@@ -17,8 +17,6 @@ namespace Chicane
         public:
             static Component* createComponent(const pugi::xml_node& inNode);
             static void registerComponent(const std::string& inTag, Compiler inCompiler);
-
-            static void getComponents(std::vector<const Component*>& outValue, const Component* inComponent);
 
         public:
             Component(const pugi::xml_node& inNode);
@@ -87,7 +85,6 @@ namespace Chicane
             void addCursor(const Vec<2, float>& inCursor);
             void setCursor(const Vec<2, float>& inCursor);
 
-            Vec<2, float> getNormalizedSize() const;
             const Vec<2, float>& getSize() const;
             void setSize(const Vec<2, float>& inSize);
             void setSize(int inWidth, int inHeight);
@@ -97,7 +94,6 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             ) const;
 
-            Vec<2, float> getNormalizedPosition() const;
             const Vec<2, float>& getPosition() const;
             void setPosition(const Vec<2, float>& inPosition);
             void setPosition(int inX, int inY);

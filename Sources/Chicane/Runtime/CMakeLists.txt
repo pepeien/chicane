@@ -4,14 +4,6 @@ find_package(Vulkan REQUIRED)
 ##################### Files #######################
 file(
     GLOB_RECURSE
-    HEADERS
-
-    # Sources
-    ${RUNTIME_HEADER_DIR}/*.hpp
-)
-
-file(
-    GLOB_RECURSE
     SOURCES
 
     # Sources
@@ -19,7 +11,7 @@ file(
 )
 
 ##################### Setup #######################
-add_library(${RUNTIME_TARGET_NAME} ${HEADERS} ${SOURCES})
+add_library(${RUNTIME_TARGET_NAME} ${SOURCES})
 
 add_library(
     "${NAME}::Runtime"

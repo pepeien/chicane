@@ -5,6 +5,6 @@ add_custom_target(${SHOOTER_CONTENT_TARGET_NAME})
 CH_COPY_FILES(
     ${SHOOTER_CONTENT_TARGET_NAME}
     ${SHOOTER_CONTENT_SOURCE_DIR}
-    ${BUILD_DIR}/Contents/Samples/Shooter
+    ${BUILD_DIR}/Contents/Shooter
     ".:*CMakeLists.txt|.frag|.vert$"
 )

@@ -1,6 +1,6 @@
-#include "Runtime/Renderer/Vulkan/CommandBuffer/Worker.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Worker.hpp"
 
-#include "Core/Log.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {

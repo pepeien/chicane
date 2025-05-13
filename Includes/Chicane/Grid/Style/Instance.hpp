@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Core.hpp"
-#include "Grid/Style/Alignment.hpp"
-#include "Grid/Style/Corners.hpp"
-#include "Grid/Style/Direction.hpp"
-#include "Grid/Style/Display.hpp"
-#include "Grid/Style/Essential.hpp"
-#include "Grid/Style/Flex.hpp"
-#include "Grid/Style/Position.hpp"
-#include "Grid/Style/Source.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Style/Alignment.hpp"
+#include "Chicane/Grid/Style/Corners.hpp"
+#include "Chicane/Grid/Style/Direction.hpp"
+#include "Chicane/Grid/Style/Display.hpp"
+#include "Chicane/Grid/Style/Essential.hpp"
+#include "Chicane/Grid/Style/Flex.hpp"
+#include "Chicane/Grid/Style/Position.hpp"
+#include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
 {
@@ -44,8 +44,8 @@ namespace Chicane
                 std::string display         = DISPLAY_TYPE_VISIBLE;
 
                 // Size
-                std::string height          = "100%";
-                std::string width           = "100%";
+                std::string height          = "0px";
+                std::string width           = "0px";
 
                 // Flex
                 Flex        flex            =  {};

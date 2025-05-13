@@ -1,5 +1,5 @@
 #pragma once
 
-#include "Core/Input/Gamepad/Button.hpp"
-#include "Core/Input/Gamepad/ButtonEvent.hpp"
-#include "Core/Input/Gamepad/MotionEvent.hpp"
+#include "Chicane/Core/Input/Gamepad/Button.hpp"
+#include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
+#include "Chicane/Core/Input/Gamepad/MotionEvent.hpp"
