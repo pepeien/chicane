@@ -41,6 +41,7 @@
 }
 
 .crosshair__dot {
+    display: var(crosshairGapDisplay);
     margin: 50% 0 0 50%;
     height: var(crosshairThickness)vh;
     width: var(crosshairThickness)vh;

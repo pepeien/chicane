@@ -9,8 +9,10 @@
 View::View()
     : Chicane::Grid::View("Contents/Shooter/Views/Home.grid"),
     m_didPlayerWin(true),
-    m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_VISIBLE),
+    m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
     m_uiVictoryVisibility(Chicane::Grid::Reference::fromValue<std::string>(&m_victoryVisibility)),
+    m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
+    m_uiCrosshairDotVisibility(Chicane::Grid::Reference::fromValue<std::string>(&m_crosshairDotVisibility)),
     m_crosshairSize(1),
     m_uiCrosshairSize(Chicane::Grid::Reference::fromValue<int>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
@@ -41,6 +43,10 @@ View::View()
     addReference(
         "victoryDisplay",
         &m_uiVictoryVisibility
+    );
+    addReference(
+        "crosshairDotDisplay",
+        &m_uiCrosshairDotVisibility
     );
     addReference(
         "crosshairSize",
