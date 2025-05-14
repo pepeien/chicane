@@ -10,3 +10,6 @@
 [submodule "Vendors/SDL3"]
 	path = Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
+[submodule "Vendors/freetype"]
+	path = Vendors/freetype
+	url = https://github.com/pepeien/freetype
