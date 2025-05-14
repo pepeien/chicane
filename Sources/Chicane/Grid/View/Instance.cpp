@@ -1,11 +1,13 @@
 #include "Chicane/Grid/View/Instance.hpp"
 
+#include "Chicane/Grid/Loader.hpp"
+
 namespace Chicane
 {
     namespace Grid
     {
-        View::View(const std::string& inId, const std::string& inSource)
-            : Component(TAG_ID, inId),
+        View::View(const std::string& inSource)
+            : Component(TAG_ID),
             m_styles({})
         {
             if (inSource.empty())
@@ -13,19 +15,21 @@ namespace Chicane
                 return;
             }
 
-            if (!m_document.load_file(inSource.c_str()))
+            pugi::xml_document document;
+
+            if (!document.load_file(inSource.c_str()))
             {
                 throw std::runtime_error("Failed to read " + inSource);
             }
 
-            if (m_document.empty() || m_document.children().empty())
+            if (document.empty() || document.children().empty())
             {
                 throw std::runtime_error("UI document " + inSource + " does not have any components");
             }
 
-            const pugi::xml_node& node = m_document.first_child();
+            const pugi::xml_node& node = document.first_child();
 
-            bool bIsRoot  = node.parent() == node.root() && !node.next_sibling();
+            bool bIsRoot = node.parent() == node.root() && !node.next_sibling();
 
             if (!bIsRoot)
             {
@@ -37,15 +41,16 @@ namespace Chicane
                 throw std::runtime_error("UI document root element must be a " + std::string(TAG_ID));
             }
 
-            m_styles         = Style::Instance::parseSources(node);
-            m_style.width    = "100%";
-            m_style.height   = "100%";
-            m_style.position = Style::POSITION_TYPE_ABSOLUTE;
+            m_path = XML::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
+
+            m_styles = Style::Instance::parseSources(node);
 
             m_root   = this;
             m_parent = this;
 
             addChildren(node);
+
+            registerView(this);
         }
 
         void View::onChildAddition(Component* inComponent)
@@ -53,8 +58,16 @@ namespace Chicane
             inComponent->setStyle(m_styles);
         }
 
-        void View::onEvent(const SDL_Event& inEvent)
+        void View::activate()
         {
+            activateView(m_path);
+
+            onActivation();
+        }
+
+        const std::string& View::getPath() const
+        {
+            return m_path;
         }
 
         Window::Instance* View::getWindow() const
@@ -66,7 +79,7 @@ namespace Chicane
         {
             m_window = inWindow;
 
-            if (m_window == nullptr)
+            if (!m_window)
             {
                 return;
             }

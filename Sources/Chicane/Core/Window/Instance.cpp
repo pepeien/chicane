@@ -369,7 +369,10 @@ namespace Chicane
 
             SDL_GetWindowSize(instance, &width, &height);
 
-            setSize(width, height);
+            m_size.x = width;
+            m_size.y = height;
+
+            m_sizeObservable->next(m_size);
         }
 
         void Instance::refreshPosition()
@@ -379,7 +382,8 @@ namespace Chicane
 
             SDL_GetWindowPosition(instance, &x, &y);
 
-            setPosition(x, y);
+            m_position.x = x;
+            m_position.y = y;
         }
     }
 }

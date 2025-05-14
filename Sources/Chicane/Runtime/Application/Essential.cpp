@@ -130,65 +130,6 @@ namespace Chicane
             return m_application->watchLevel(inNext, inError, inComplete);
         }
 
-        bool hasView()
-        {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return m_application->hasView();
-        }
-
-        void addView(Grid::View* inView)
-        {
-            if (!m_application)
-            {
-                return;
-            }
-
-            m_application->addView(inView);
-
-            if (!hasView())
-            {
-                setView(inView->getId());
-            }
-        }
-
-        void setView(const std::string& inId)
-        {
-            if (!m_application)
-            {
-                return;
-            }
-
-            m_application->setView(inId);
-        }
-
-        Grid::View* getView(const std::string& inId)
-        {
-            if (!m_application)
-            {
-                return nullptr;
-            }
-
-            return m_application->getView(inId);
-        }
-
-        Subscription<Grid::View*>* watchView(
-            std::function<void (Grid::View*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
-        {
-            if (!m_application)
-            {
-                return nullptr;
-            }
-
-            return m_application->watchView(inNext, inError, inComplete);
-        }
-
         bool hasWindow()
         {
             if (!m_application)

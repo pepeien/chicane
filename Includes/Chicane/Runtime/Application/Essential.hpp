@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Grid.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Application/Instance.hpp"
 #include "Chicane/Runtime/Game.hpp"
@@ -33,17 +32,6 @@ namespace Chicane
         CHICANE void setLevel(Level* inLevel);
         CHICANE Subscription<Level*>* watchLevel(
             std::function<void (Level*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
-        );
-
-        // UI
-        CHICANE bool hasView();
-        CHICANE void addView(Grid::View* inView);
-        CHICANE void setView(const std::string& inId);
-        CHICANE Grid::View* getView(const std::string& inId = "");
-        CHICANE Subscription<Grid::View*>* watchView(
-            std::function<void (Grid::View*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

@@ -12,9 +12,9 @@ namespace Chicane
             : glm::vec<O, T, Q>(args...)
         {}
 
-        T dot(const Vec<O, T, Q>& inTarget) const
+        T dot(const Vec<O, T, Q>& inValue) const
         {
-            return glm::dot<O, T, Q>(*this, inTarget);
+            return glm::dot<O, T, Q>(*this, inValue);
         }
     };
 

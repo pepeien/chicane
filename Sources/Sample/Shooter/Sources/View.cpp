@@ -7,19 +7,16 @@
 #include "Game.hpp"
 
 View::View()
-    : Chicane::Grid::View(
-        "home",
-        "Contents/Shooter/Views/Home.grid"
-    ),
+    : Chicane::Grid::View("Contents/Shooter/Views/Home.grid"),
     m_didPlayerWin(true),
-    m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
+    m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_VISIBLE),
     m_uiVictoryVisibility(Chicane::Grid::Reference::fromValue<std::string>(&m_victoryVisibility)),
-    m_crosshairSize(1.0f),
-    m_uiCrosshairSize(Chicane::Grid::Reference::fromValue<float>(&m_crosshairSize)),
+    m_crosshairSize(1),
+    m_uiCrosshairSize(Chicane::Grid::Reference::fromValue<int>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
     m_uiCrosshairThickness(Chicane::Grid::Reference::fromValue<float>(&m_crosshairThickness)),
-    m_crosshairGap(1.0f),
-    m_uiCrosshairGap(Chicane::Grid::Reference::fromValue<float>(&m_crosshairGap)),
+    m_crosshairGap(0),
+    m_uiCrosshairGap(Chicane::Grid::Reference::fromValue<int>(&m_crosshairGap)),
     m_crosshairColorR(255),
     m_uiCrosshairColorR(Chicane::Grid::Reference::fromValue<int>(&m_crosshairColorR)),
     m_crosshairColorG(255),

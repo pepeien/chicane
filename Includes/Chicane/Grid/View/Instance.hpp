@@ -12,16 +12,23 @@ namespace Chicane
         public:
             static constexpr const char* TAG_ID = "View";
 
+            static constexpr const char* PATH_ATTRIBUTE_NAME = "path";
+
         public:
-            View(const std::string& inId, const std::string& inSource);
+            View(const std::string& inSource);
 
             virtual ~View() = default;
+
+        public:
+            virtual void onActivation() { return; }
 
         public:
             void onChildAddition(Component* inChild) override;
 
         public:
-            void onEvent(const SDL_Event& inEvent);
+            void activate();
+
+            const std::string& getPath() const;
 
             Window::Instance* getWindow() const;
             void setWindow(Window::Instance* inWindow);
@@ -33,9 +40,9 @@ namespace Chicane
             std::vector<const Component*> flatChildren(const Component* inParent) const;
 
         protected:
-            Window::Instance*  m_window;
+            std::string        m_path;
 
-            pugi::xml_document m_document;
+            Window::Instance*  m_window;
 
             Style::Sources     m_styles;
         };

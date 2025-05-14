@@ -27,7 +27,7 @@ namespace Chicane
         void emmit(
             const std::string& inHexColor,
             const std::string& inIdentifier,
-            const std::string& inMessage,
+            std::string inMessage,
             T... inParams
         )
         {
@@ -40,28 +40,28 @@ namespace Chicane
 
         CHICANE void info(const std::string& inMessage);
         template<typename... T>
-        void info(const std::string& inMessage, T... inParams)
+        void info(std::string inMessage, T... inParams)
         {
             info(String::sprint(inMessage, inParams...));
         }
 
         CHICANE void warning(const std::string& inMessage);
         template<typename... T>
-        void warning(const std::string& inMessage, T... inParams)
+        void warning(std::string inMessage, T... inParams)
         {
             warning(String::sprint(inMessage, inParams...));
         }
 
         CHICANE void error(const std::string& inMessage);
         template<typename... T>
-        void error(const std::string& inMessage, T... inParams)
+        void error(std::string inMessage, T... inParams)
         {
             error(String::sprint(inMessage, inParams...));
         }
 
         CHICANE void critical(const std::string& inMessage);
         template<typename... T>
-        void critical(const std::string& inMessage, T... inParams)
+        void critical(std::string inMessage, T... inParams)
         {
             critical(String::sprint(inMessage, inParams...));
         }

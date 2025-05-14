@@ -11,16 +11,25 @@ namespace Chicane
             m_controller(nullptr),
             m_controllerObservable(std::make_unique<Observable<Controller::Instance*>>()),
             m_level(nullptr),
-            m_levelObservable(std::make_unique<Observable<Level*>>()),
-            m_views({}),
-            m_view(nullptr),
-            m_viewObservable(std::make_unique<Observable<Grid::View*>>())
+            m_levelObservable(std::make_unique<Observable<Level*>>())
         {}
 
         void Instance::setup(const CreateInfo& inCreateInfo)
         {
             initWindow(inCreateInfo.window, inCreateInfo.renderer.type);
             initRenderer(inCreateInfo.renderer);
+
+            Grid::watchActiveView(
+                [this](Grid::View* inView)
+                {
+                    if (!inView)
+                    {
+                        return;
+                    }
+
+                    inView->setWindow(m_window.get());
+                }
+            );
 
             if (inCreateInfo.onSetup)
             {
@@ -129,83 +138,6 @@ namespace Chicane
             return subscription;
         }
 
-        bool Instance::hasView()
-        {
-            return m_view != nullptr;
-        }
-
-        void Instance::addView(Grid::View* inView)
-        {
-            if (!inView)
-            {
-                return;
-            }
-
-            if (m_views.find(inView->getId()) != m_views.end())
-            {
-                return;
-            }
-
-            m_views.insert(
-                std::make_pair(
-                    inView->getId(),
-                    inView
-                )
-            );
-        }
-
-        void Instance::setView(const std::string& inId)
-        {
-            Grid::View* view = Instance::getView(inId);
-
-            if (view == m_view)
-            {
-                return;
-            }
-
-            m_view = view;
-
-            m_viewObservable->next(view);
-
-            if (m_view == nullptr)
-            {
-                return;
-            }
-
-            m_view->setWindow(m_window.get());
-        }
-
-        Grid::View* Instance::getView(const std::string& inId)
-        {
-            if (inId.empty())
-            {
-                return m_view;
-            }
-
-            if (m_views.find(inId) == m_views.end())
-            {
-                return nullptr;
-            }
-
-            return m_views.at(inId);
-        }
-
-        Subscription<Grid::View*>* Instance::watchView(
-            std::function<void (Grid::View*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
-        {
-            Subscription<Grid::View*>* susbcription = m_viewObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            susbcription->next(m_view);
-
-            return susbcription;
-        }
-
         bool Instance::hasWindow()
         {
             return m_window.get() != nullptr;
@@ -265,9 +197,9 @@ namespace Chicane
                 m_controller->onEvent(inEvent);
             }
 
-            if (m_view)
+            if (Grid::hasActiveView())
             {
-                m_view->onEvent(inEvent);
+                Grid::getActiveView()->onEvent(inEvent);
             }
         }
 
@@ -284,9 +216,9 @@ namespace Chicane
                     m_level->tick(m_telemetry.frame.delta);
                 }
 
-                if (hasView())
+                if (Grid::hasActiveView())
                 {
-                    m_view->tick(m_telemetry.frame.delta);
+                    Grid::getActiveView()->tick(m_telemetry.frame.delta);
                 }
             m_telemetry.endCapture();
         }

@@ -24,16 +24,16 @@ namespace Chicane
             // Special keywords
             static constexpr const char* CALCULATION_KEYWORD = "calc";
             static constexpr const char* VARIABLE_KEYWORD    = "var";
-            static constexpr const char* HEX_KEYWORD         = "#";
+            static constexpr char        HEX_KEYWORD         = '#';
             static constexpr const char* RGB_KEYWORD         = "rgb";
             static constexpr const char* RGBA_KEYWORD        = "rgba";
 
             // Calculation
-            static constexpr const char* CALCULATION_OPERATOR_SUM = "+";
-            static constexpr const char* CALCULATION_OPERATOR_SUB = "-";
-            static constexpr const char* CALCULATION_OPERATOR_MUL = "*";
-            static constexpr const char* CALCULATION_OPERATOR_DIV = "\\";
-            static const std::vector<const char*> CALCULATION_OPERATORS = {
+            static constexpr char CALCULATION_OPERATOR_SUM = '+';
+            static constexpr char CALCULATION_OPERATOR_SUB = '-';
+            static constexpr char CALCULATION_OPERATOR_MUL = '*';
+            static constexpr char CALCULATION_OPERATOR_DIV = '/';
+            static const std::vector<char> CALCULATION_OPERATORS = {
                 CALCULATION_OPERATOR_SUM,
                 CALCULATION_OPERATOR_SUB,
                 CALCULATION_OPERATOR_MUL,

@@ -1,57 +1,22 @@
 #include "Chicane/Grid/Component/Instance.hpp"
 
-#include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/Loader.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        std::unordered_map<std::string, Component::Compiler> m_components = {
-            { Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); } },
-            { List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); }  },
-            { Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); }  },
-            { Popup::TAG_ID,       [](const pugi::xml_node& inNode) { return new Popup(inNode); }  },
-            { ProgressBar::TAG_ID, [](const pugi::xml_node& inNode) { return new ProgressBar(inNode); }  },
-            { Text::TAG_ID,        [](const pugi::xml_node& inNode) { return new Text(inNode); }  },
-            { TextInput::TAG_ID,   [](const pugi::xml_node& inNode) { return new TextInput(inNode); }  }
-        };
-
-        Component* Component::createComponent(const pugi::xml_node& inNode)
-        {
-            const std::string& tag = inNode.name();
-
-            if (m_components.find(tag) == m_components.end())
-            {
-                return nullptr;
-            }
-
-            return m_components.at(tag)(inNode);
-        }
-
-        void Component::registerComponent(const std::string& inTag, Compiler inCompiler)
-        {
-            if (m_components.find(inTag) != m_components.end())
-            {
-                return;
-            }
-
-            m_components.insert(
-                std::make_pair(
-                    inTag,
-                    inCompiler
-                )
-            );
-        }
-
         Component::Component(const pugi::xml_node& inNode)
-            : Component(inNode.name(), XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string())
+            : Component(inNode.name())
         {
+            setId(XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
             setClass(XML::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
         }
 
-        Component::Component(const std::string& inTag, const std::string& inId)
+        Component::Component(const std::string& inTag)
             : m_tag(inTag),
-            m_id(inId),
+            m_id(""),
             m_class(""),
             m_style({}),
             m_functions({}),
@@ -180,7 +145,7 @@ namespace Chicane
 
                 for (const std::string& selector : source.selectors)
                 {
-                    if (String::areEquals(selector, std::to_string(Style::INCLUSIVE_SELECTOR)))
+                    if (String::areEquals(selector, Style::INCLUSIVE_SELECTOR))
                     {
                         setStyle(source.properties);
 
@@ -408,7 +373,7 @@ namespace Chicane
 
             m_parent = inComponent;
 
-            if (m_parent == nullptr || isRoot())
+            if (!m_parent || isRoot())
             {
                 return;
             }
@@ -447,9 +412,9 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
-                Component* component = Component::createComponent(child);
+                Component* component = createComponent(child);
 
-                if (component == nullptr)
+                if (!component)
                 {
                     continue;
                 }
@@ -634,15 +599,15 @@ namespace Chicane
 
                 std::string result = "";
                 result.append(keyword);
-                result.append(FUNCTION_PARAMS_OPENING);
+                result.push_back(FUNCTION_PARAMS_OPENING);
 
-                for (std::string value : String::split(extractParams(value), FUNCTION_PARAMS_SEPARATOR[0]))
+                for (std::string value : String::split(extractParams(value), FUNCTION_PARAMS_SEPARATOR))
                 {
                     result.append(parseText(Style::colorToReference(value)));
                     result.append(",");
                 }
 
-                result.append(FUNCTION_PARAMS_CLOSING);
+                result.push_back(FUNCTION_PARAMS_CLOSING);
 
                 value = result;
             }
@@ -656,102 +621,12 @@ namespace Chicane
 
         void Component::refreshSize()
         {
+            if (isRoot())
+            {
+                return;
+            }
+
             setSize(getWidthStyle(), getHeightStyle());
-        }
-
-        float Component::calculateSize(const std::string& inValue, Style::Direction inDirection) const
-        {
-            if (inValue.empty())
-            {
-                return 0.0f;
-            }
-
-            if (String::startsWith(inValue, Style::VARIABLE_KEYWORD))
-            {
-                const std::string parsedReference = parseText(Style::variableToReference(inValue));
-
-                if (parsedReference.empty())
-                {
-                    return 0.0f;
-                }
-
-                return calculateSize(parsedReference, inDirection);
-            }
-
-            if (String::startsWith(inValue, Style::CALCULATION_KEYWORD))
-            {
-                const std::string operation = extractParams(inValue);
-
-                for (std::uint32_t i = 0; i < operation.size(); i++)
-                {
-                    const std::string operatorSymbol = std::string(1, operation.at(i));
-
-                    const auto& iterator = std::find(
-                        Style::CALCULATION_OPERATORS.begin(),
-                        Style::CALCULATION_OPERATORS.end(),
-                        operatorSymbol
-                    );
-
-                    if (iterator == Style::CALCULATION_OPERATORS.end())
-                    {
-                        continue;
-                    }
-
-                    const std::string left  = operation.substr(0, i);
-                    const std::string right = operation.substr(i + 1);
-
-                    if (String::areEquals(operatorSymbol, Style::CALCULATION_OPERATOR_SUM))
-                    {
-                        return calculateSize(left, inDirection) + calculateSize(right, inDirection);
-                    }
-
-                    if (String::areEquals(operatorSymbol, Style::CALCULATION_OPERATOR_SUB))
-                    {
-                        return calculateSize(left, inDirection) - calculateSize(right, inDirection);
-                    }
-
-                    if (String::areEquals(operatorSymbol, Style::CALCULATION_OPERATOR_MUL))
-                    {
-                        return calculateSize(left, inDirection) * calculateSize(right, inDirection);
-                    }
-
-                    if (String::areEquals(operatorSymbol, Style::CALCULATION_OPERATOR_DIV))
-                    {
-                        return calculateSize(left, inDirection) / calculateSize(right, inDirection);
-                    }
-
-                    return 0.0f;
-                }
-
-                return 0.0f;
-            }
-
-            if (String::areEquals(inValue, Style::AUTO_SIZE_UNIT))
-            {
-                return calculateSizeFromPercentage("100%", inDirection);
-            }
-
-            if (String::endsWith(inValue, Style::PERCENTAGE_SIZE_UNIT))
-            {
-                return calculateSizeFromPercentage(inValue, inDirection);
-            }
-
-            if (String::endsWith(inValue, Style::VIEWPORT_HEIGHT_SIZE_UNIT))
-            {
-                return calculateSizeFromViewportHeight(inValue);
-            }
-
-            if (String::endsWith(inValue, Style::VIEWPORT_WIDTH_SIZE_UNIT))
-            {
-                return calculateSizeFromViewportWidth(inValue);
-            }
-
-            if (String::endsWith(inValue, Style::PIXEL_SIZE_UNIT))
-            {
-                return calculateSizeFromPixel(inValue);
-            }
-
-            return 0.0f;
         }
 
         void Component::refreshPosition()
@@ -773,10 +648,10 @@ namespace Chicane
                 m_parent->getCursor()
             );
 
-            float left   = calculateSize(m_style.margin.left,   Style::Direction::Horizontal);
-            float right  = calculateSize(m_style.margin.right,  Style::Direction::Horizontal);
             float top    = calculateSize(m_style.margin.top,    Style::Direction::Vertical);
+            float right  = calculateSize(m_style.margin.right,  Style::Direction::Horizontal);
             float bottom = calculateSize(m_style.margin.bottom, Style::Direction::Vertical);
+            float left   = calculateSize(m_style.margin.left,   Style::Direction::Horizontal);
 
             if (
                 String::areEquals(m_style.margin.left, Style::AUTO_SIZE_UNIT) &&
@@ -803,7 +678,6 @@ namespace Chicane
                 margin.y  = top;
                 margin.y -= bottom;
             }
-
 
             if (isPositionStyle(Style::Position::Relative))
             {
@@ -834,7 +708,132 @@ namespace Chicane
             setPosition(m_cursor + margin);
         }
 
-        float Component::calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const
+        float Component::calculateSize(const std::string& inValue, Style::Direction inDirection) const
+        {
+            if (inValue.empty())
+            {
+                return 0.0f;
+            }
+
+            if (String::startsWith(inValue, Style::VARIABLE_KEYWORD))
+            {
+                return calculateSize(parseText(Style::variableToReference(inValue)), inDirection);
+            }
+
+            if (String::startsWith(inValue, Style::CALCULATION_KEYWORD))
+            {
+                return calculateSizeFromCalculation(inValue, inDirection);
+            }
+
+            if (String::areEquals(inValue, Style::AUTO_SIZE_UNIT))
+            {
+                return calculateSizeFromPercentage("100%", inDirection);
+            }
+
+            if (String::endsWith(inValue, Style::PERCENTAGE_SIZE_UNIT))
+            {
+                return calculateSizeFromPercentage(inValue, inDirection);
+            }
+
+            if (String::endsWith(inValue, Style::VIEWPORT_HEIGHT_SIZE_UNIT))
+            {
+                return calculateSizeFromViewportHeight(inValue);
+            }
+
+            if (String::endsWith(inValue, Style::VIEWPORT_WIDTH_SIZE_UNIT))
+            {
+                return calculateSizeFromViewportWidth(inValue);
+            }
+
+            if (String::endsWith(inValue, Style::PIXEL_SIZE_UNIT))
+            {
+                return calculateSizeFromPixel(inValue);
+            }
+
+            if (!String::isNaN(inValue))
+            {
+                return std::stof(inValue);
+            }
+
+            return 0.0f;
+        }
+
+        float Component::calculateSizeFromCalculation(
+            const std::string& inValue,
+            Style::Direction inDirection
+        ) const
+        {
+            if (!String::startsWith(inValue, Style::CALCULATION_KEYWORD))
+            {
+                return 0.0f;
+            }
+
+            const std::string operation = extractParams(inValue);
+
+            std::uint32_t parathesisCount = 0;
+
+            for (std::uint32_t i = 0; i < operation.size(); i++)
+            {
+                const char character = operation.at(i);
+
+                if (character == FUNCTION_PARAMS_OPENING)
+                {
+                    parathesisCount++;
+
+                    continue;
+                }
+
+                if (character == FUNCTION_PARAMS_CLOSING)
+                {
+                    parathesisCount--;
+
+                    continue;
+                }
+
+                const auto& iterator = std::find(
+                    Style::CALCULATION_OPERATORS.begin(),
+                    Style::CALCULATION_OPERATORS.end(),
+                    character
+                );
+
+                if (iterator == Style::CALCULATION_OPERATORS.end() || parathesisCount > 0)
+                {
+                    continue;
+                }
+
+                const float left  = calculateSize(String::trim(operation.substr(0, i)), inDirection);
+                const float right = calculateSize(String::trim(operation.substr(i + 1)), inDirection);
+
+                if (character == Style::CALCULATION_OPERATOR_SUM)
+                {
+                    return left + right;
+                }
+    
+                if (character == Style::CALCULATION_OPERATOR_SUB)
+                {
+                    return left - right;
+                }
+    
+                if (character == Style::CALCULATION_OPERATOR_MUL)
+                {
+                    return left * right;
+                }
+    
+                if (character == Style::CALCULATION_OPERATOR_DIV)
+                {
+                    return left / right;
+                }
+
+                break;
+            }
+
+            return 0.0f;
+        }
+
+        float Component::calculateSizeFromPercentage(
+            const std::string& inValue,
+            Style::Direction inDirection
+        ) const
         {
             if (!String::endsWith(inValue, Style::PERCENTAGE_SIZE_UNIT))
             {
@@ -842,7 +841,12 @@ namespace Chicane
             }
 
             return calculateSizeFromPercentage(
-                std::stof(std::string(inValue.begin(), inValue.end() - 1)),
+                std::stof(
+                    inValue.substr(
+                        0,
+                        inValue.length() - strlen(Style::PERCENTAGE_SIZE_UNIT)
+                    )
+                ),
                 inDirection
             );
         }
@@ -890,13 +894,18 @@ namespace Chicane
             }
 
             return calculateSizeFromViewportHeight(
-                std::stof(std::string(inValue.begin(), inValue.end() - 2))
+                std::stof(
+                    inValue.substr(
+                        0,
+                        inValue.length() - strlen(Style::VIEWPORT_HEIGHT_SIZE_UNIT)
+                    )
+                )
             );
         }
 
         float Component::calculateSizeFromViewportHeight(float inVhValue) const
         {
-            return m_root->getSize().y * (inVhValue / 100);
+            return m_root->getSize().y * (inVhValue / 100.0f);
         }
 
         float Component::calculateSizeFromViewportWidth(const pugi::xml_attribute& inAttribute) const
@@ -916,14 +925,19 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return calculateSizeFromViewportWidth(
-                std::stof(std::string(inValue.begin(), inValue.end() - 2))
+            return calculateSizeFromViewportHeight(
+                std::stof(
+                    inValue.substr(
+                        0,
+                        inValue.length() - strlen(Style::VIEWPORT_WIDTH_SIZE_UNIT)
+                    )
+                )
             );
         }
 
         float Component::calculateSizeFromViewportWidth(float inVwValue) const
         {
-            return  m_root->getSize().x * (inVwValue / 100);
+            return  m_root->getSize().x * (inVwValue / 100.0f);
         }
 
         float Component::calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const
@@ -943,7 +957,12 @@ namespace Chicane
                 return 0.0f;
             }
         
-            return std::stof(std::string(inValue.begin(), inValue.end() - 2));
+            return std::stof(
+                inValue.substr(
+                    0,
+                    inValue.length() - strlen(Style::PIXEL_SIZE_UNIT)
+                )
+            );
         }
 
         std::string Component::parseText(const std::string& inValue) const
@@ -1046,7 +1065,7 @@ namespace Chicane
             FunctionData data = {};
             data.name = name;
 
-            for (std::string& value : String::split(params, ','))
+            for (std::string& value : String::split(params, ","))
             {
                 data.params.push_back(
                     parseReference(String::trim(value))

@@ -15,17 +15,13 @@ namespace Chicane
             typedef std::function<Component* (const pugi::xml_node& inNode)> Compiler;
 
         public:
-            static Component* createComponent(const pugi::xml_node& inNode);
-            static void registerComponent(const std::string& inTag, Compiler inCompiler);
-
-        public:
             Component(const pugi::xml_node& inNode);
-            Component(const std::string& inTag, const std::string& inId);
+            Component(const std::string& inTag);
 
             virtual ~Component();
 
         public:
-            // Lifecycle
+            virtual void onEvent(const SDL_Event& inEvent) { return; }
             virtual void onChildAddition(Component* inComponent);
             virtual void onTick(float inDelta);
 
@@ -120,6 +116,11 @@ namespace Chicane
             void refreshPosition();
 
             float calculateSize(const std::string& inValue, Style::Direction inDirection) const;
+
+            float calculateSizeFromCalculation(
+                const std::string& inValue,
+                Style::Direction inDirection
+            ) const;
 
             float calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const;
             float calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const;

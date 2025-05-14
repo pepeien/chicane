@@ -44,17 +44,6 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             );
 
-            // UI
-            bool hasView();
-            void addView(Grid::View* inView);
-            void setView(const std::string& inId);
-            Grid::View* getView(const std::string& inId = "");
-            Subscription<Grid::View*>* watchView(
-                std::function<void (Grid::View*)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            );
-
             // Render
             bool hasWindow();
             template<class T = Window::Instance>
@@ -109,11 +98,6 @@ namespace Chicane
 
             Level*                                             m_level;
             std::unique_ptr<Observable<Level*>>                m_levelObservable;
-
-            // UI
-            std::unordered_map<std::string, Grid::View*>       m_views;
-            Grid::View*                                        m_view;
-            std::unique_ptr<Observable<Grid::View*>>           m_viewObservable;
 
             // Render
             std::unique_ptr<Window::Instance>                  m_window;

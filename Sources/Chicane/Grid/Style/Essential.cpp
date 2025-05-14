@@ -95,7 +95,7 @@ namespace Chicane
 
                     if (m_colors.find(color) == m_colors.end())
                     {
-                        const std::vector<std::string> values = String::split(color, ',');
+                        const std::vector<std::string> values = String::split(color, ",");
     
                         Vec<4, std::uint32_t> result = Vec<4, std::uint32_t>(0U);
                         result.r = std::stoi(values.at(0));

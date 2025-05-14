@@ -75,7 +75,7 @@ namespace Chicane
             template<typename T>
             void setValue(T* inValue)
             {
-                if (inValue == nullptr)
+                if (!inValue)
                 {
                     return;
                 }

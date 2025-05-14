@@ -20,11 +20,11 @@ private:
     Chicane::Grid::Reference m_uiVictoryVisibility;
 
     // Crosshair
-    float                    m_crosshairSize;
+    int                      m_crosshairSize;
     Chicane::Grid::Reference m_uiCrosshairSize;
     float                    m_crosshairThickness;
     Chicane::Grid::Reference m_uiCrosshairThickness;
-    float                    m_crosshairGap;
+    int                      m_crosshairGap;
     Chicane::Grid::Reference m_uiCrosshairGap;
     int                      m_crosshairColorR;
     Chicane::Grid::Reference m_uiCrosshairColorR;

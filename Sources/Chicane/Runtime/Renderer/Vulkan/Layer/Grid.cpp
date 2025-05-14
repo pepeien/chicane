@@ -127,14 +127,14 @@ namespace Chicane
 
             setStatus(Layer::Status::Idle);
 
-            Application::watchView(
+            Grid::watchActiveView(
                 [&](Grid::View* inView)
                 {
                     m_view = inView;
 
                     m_components.clear();
 
-                    if (m_view == nullptr)
+                    if (!m_view)
                     {
                         return;
                     }

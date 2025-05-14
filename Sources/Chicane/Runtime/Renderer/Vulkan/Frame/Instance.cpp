@@ -515,11 +515,11 @@ namespace Chicane
                     const Vec<2, float>& position = component->getPosition();
 
                     ComponentData data = {};
+                    data.size     = size / rootSize;
                     data.position = {
                         ((2.0f * position.x) / rootSize.x) - 1.0f,
                         ((2.0f * position.y) / rootSize.y) - 1.0f
                     };
-                    data.size = size / rootSize;
 
                     result.push_back(data);
                 }

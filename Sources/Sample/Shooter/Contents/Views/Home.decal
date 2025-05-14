@@ -3,7 +3,7 @@
     display: var(victoryDisplay);
     height: 30vh;
     width: 100%;
-    margin: auto 0;
+    margin: 50% 0 0 50%;
     background-color: #333333;
 }
 
@@ -25,7 +25,7 @@
     color: #24f51d;
 }
 
-.crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
+.crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
     position: absolute;
     background-color: rgba(var(crosshairColorR), var(crosshairColorG), var(crosshairColorB), var(crosshairColorA));
 }
@@ -40,18 +40,30 @@
     width: var(crosshairSize)vh;
 }
 
+.crosshair__dot {
+    margin: 50% 0 0 50%;
+    height: var(crosshairThickness)vh;
+    width: var(crosshairThickness)vh;
+}
+
 .crosshair__top {
-    margin: calc(50% - var(crosshairGap)vh) 0 0 50%;
+    margin-top: 50%;
+    margin-bottom: calc(var(crosshairSize)vh + var(crosshairGap)vh);
+    margin-left: 50%;
 }
 
 .crosshair__bottom {
-    margin: calc(50% + var(crosshairGap)vh) 0 0 50%;
+    margin-top: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
+    margin-left: 50%;
 }
 
 .crosshair__left {
-    margin: 50% 0 0 calc(50% - var(crosshairGap)vh);
+    margin-top: 50%;
+    margin-right: calc(var(crosshairSize)vh + var(crosshairGap)vh);
+    margin-left: 50%;
 }
 
 .crosshair__right {
-    margin: 50% 0 0 calc(50% + var(crosshairGap)vh);
+    margin-top: 50%;
+    margin-left: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
 }
