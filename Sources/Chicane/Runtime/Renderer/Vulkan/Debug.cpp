@@ -56,7 +56,7 @@ namespace Chicane
                 }
 
                 std::string prefix = "Vk::";
-                std::string color  = Chicane::Color::White;
+                std::string color  = Chicane::Color::HEX_COLOR_WHITE;
 
                 switch (inMessageType)
                 {
@@ -86,12 +86,12 @@ namespace Chicane
                 switch (inSeverity)
                 {
                 case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-                    color = Chicane::Color::Yellow;
+                    color = Chicane::Color::HEX_COLOR_YELLOW;
 
                     break;
 
                 case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-                    color = Chicane::Color::Orange;
+                    color = Chicane::Color::HEX_COLOR_ORANGE;
 
                     break;
                 }

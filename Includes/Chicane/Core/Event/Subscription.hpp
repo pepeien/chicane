@@ -5,7 +5,7 @@
 namespace Chicane
 {
     template<typename T>
-    class CHICANE_CORE Subscription
+    class Subscription
     {
     public:
         Subscription(

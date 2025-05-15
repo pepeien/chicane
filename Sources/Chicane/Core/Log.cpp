@@ -55,7 +55,7 @@ namespace Chicane
 
             if (m_colors.find(hexColor) == m_colors.end())
             {
-                Vec<3, std::uint32_t> rgbColor = Color::hexToRgb(inHexColor);
+                Vec<3, std::uint32_t> rgbColor = Color::toRgba(inHexColor);
 
                 m_colors.insert(
                     std::make_pair(
@@ -90,7 +90,7 @@ namespace Chicane
         void info(const std::string& inMessage)
         {
             emmit(
-                Color::White,
+                Color::HEX_COLOR_WHITE,
                 "INFO",
                 inMessage
             );
@@ -99,7 +99,7 @@ namespace Chicane
         void warning(const std::string& inMessage)
         {
             emmit(
-                Color::Yellow,
+                Color::HEX_COLOR_YELLOW,
                 "WARNING",
                 inMessage
             );
@@ -108,7 +108,7 @@ namespace Chicane
         void error(const std::string& inMessage)
         {
             emmit(
-                Color::Orange,
+                Color::HEX_COLOR_ORANGE,
                 "ERROR",
                 inMessage
             );
@@ -117,7 +117,7 @@ namespace Chicane
         void critical(const std::string& inMessage)
         {
             emmit(
-                Color::Red,
+                Color::HEX_COLOR_RED,
                 "CRITICAL",
                 inMessage
             );

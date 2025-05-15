@@ -58,8 +58,8 @@ namespace Chicane
                 Corners     margin          = {};
 
                 // Color
-                std::string backgroundColor = TEXT_COLOR_TRANSPARENT;
-                std::string foregroundColor = TEXT_COLOR_WHITE;
+                std::string backgroundColor = Color::TEXT_COLOR_TRANSPARENT;
+                std::string foregroundColor = Color::TEXT_COLOR_WHITE;
             };
         }
 

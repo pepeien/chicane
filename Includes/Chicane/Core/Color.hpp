@@ -7,17 +7,33 @@ namespace Chicane
 {
     namespace Color
     {
-        static constexpr const char* Red    = "#F73B3B";
-        static constexpr const char* Green  = "#1FED4F";
-        static constexpr const char* Lime   = "#07e8b7";
-        static constexpr const char* Blue   = "#4E8DDE";
-        static constexpr const char* Yellow = "#E8E805";
-        static constexpr const char* Orange = "#fc850d";
-        static constexpr const char* Cyan   = "#05AEB0";
-        static constexpr const char* White  = "#FFFFFF";
-        static constexpr const char* Black  = "#000000";
+        // Keyword
+        static constexpr char        HEX_KEYWORD         = '#';
+        static constexpr const char* RGB_KEYWORD         = "rgb";
+        static constexpr const char* RGBA_KEYWORD        = "rgba";
 
-        CHICANE_CORE Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
-        CHICANE_CORE Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
+        // Hex
+        static constexpr const char* HEX_COLOR_TRANSPARENT = "#00000000";
+        static constexpr const char* HEX_COLOR_RED         = "#F73B3BFF";
+        static constexpr const char* HEX_COLOR_GREEN       = "#1FED4FFF";
+        static constexpr const char* HEX_COLOR_BLUE        = "#4E8DDEFF";
+        static constexpr const char* HEX_COLOR_LIME        = "#07E8B7FF";
+        static constexpr const char* HEX_COLOR_YELLOW      = "#E8E805FF";
+        static constexpr const char* HEX_COLOR_ORANGE      = "#FC850DFF";
+        static constexpr const char* HEX_COLOR_CYAN        = "#05AEB0FF";
+        static constexpr const char* HEX_COLOR_WHITE       = "#FFFFFFFF";
+        static constexpr const char* HEX_COLOR_BLACK       = "#000000FF";
+
+        // Text
+        static constexpr const char* TEXT_COLOR_TRANSPARENT = "transparent";
+        static constexpr const char* TEXT_COLOR_BLACK       = "black";
+        static constexpr const char* TEXT_COLOR_RED         = "red";
+        static constexpr const char* TEXT_COLOR_GREEN       = "green";
+        static constexpr const char* TEXT_COLOR_BLUE        = "blue";
+        static constexpr const char* TEXT_COLOR_WHITE       = "white";
+
+        CHICANE_CORE bool isVisible(const std::string& inValue);
+
+        CHICANE_CORE Vec<4, std::uint32_t> toRgba(const std::string& inValue);
     }
 }

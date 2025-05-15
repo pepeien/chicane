@@ -6,7 +6,7 @@
 namespace Chicane
 {
     template<typename T>
-    class CHICANE_CORE Observable
+    class Observable
     {
     public:
         ~Observable()

@@ -12,7 +12,7 @@ namespace Chicane
         {
             std::vector<Vertex> result = {};
 
-            const Vec<4, std::uint32_t> color = Style::toRgba(
+            const Vec<4, std::uint32_t> color = Color::toRgba(
                 getBackgroundColorStyle()
             );
 

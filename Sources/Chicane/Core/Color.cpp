@@ -6,88 +6,113 @@ namespace Chicane
 {
     namespace Color
     {
-        static constexpr const char* BACKGROUND_COLOR_TRANSPARENT = "transparent";
-        static constexpr const char* HEX_COLOR_TRANSPARENT        = "#00000000";
+        std::unordered_map<std::string, Vec<4, std::uint32_t>> m_colors {
+            { HEX_COLOR_TRANSPARENT,  Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
+            { HEX_COLOR_RED,          Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
+            { HEX_COLOR_GREEN,        Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
+            { HEX_COLOR_BLUE,         Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
+            { HEX_COLOR_BLACK,        Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
+            { HEX_COLOR_WHITE,        Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) },
 
-        std::unordered_map<std::string, Vec<4, std::uint32_t>> m_rgbaColors {
-            { HEX_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(0) }
-        };
-        std::unordered_map<std::string, Vec<3, std::uint32_t>> m_rgbColors {
-            { HEX_COLOR_TRANSPARENT, Vec<3, std::uint32_t>(0) }
+            { TEXT_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
+            { TEXT_COLOR_RED,         Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
+            { TEXT_COLOR_GREEN,       Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
+            { TEXT_COLOR_BLUE,        Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
+            { TEXT_COLOR_BLACK,       Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
+            { TEXT_COLOR_WHITE,       Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) }
         };
 
-        Vec<4, std::uint32_t> hexToRgba(const std::string& inColor)
+        bool isVisible(const std::string& inValue)
         {
-            std::string backgroundColor = String::trim(inColor);
-            std::transform(
-                backgroundColor.begin(),
-                backgroundColor.end(),
-                backgroundColor.begin(),
-                ::tolower
-            );
-
-            bool bIsTransparent = backgroundColor.empty() ||
-                                  String::areEquals(backgroundColor, BACKGROUND_COLOR_TRANSPARENT);
-            bool bIsNotHex      = backgroundColor.size() < 7 || backgroundColor.size() > 9;
-
-            if (bIsTransparent || bIsNotHex)
-            {
-                backgroundColor = HEX_COLOR_TRANSPARENT;
-            }
-
-            if (m_rgbaColors.find(backgroundColor) == m_rgbaColors.end())
-            {
-                std::string hexColor = backgroundColor;
-
-                backgroundColor = backgroundColor.substr(
-                    1,
-                    backgroundColor.size() - 1
-                );
-                backgroundColor = backgroundColor.size() == 6 ? backgroundColor + "FF" : backgroundColor;
-
-                Vec<4, std::uint32_t> result = Vec<4, std::uint32_t>(0U);
-                
-                sscanf(
-                    backgroundColor.c_str(),
-                    "%02hx%02x%02hx%02hx",
-                    &result.r,
-                    &result.g,
-                    &result.b,
-                    &result.a
-                );
-
-                m_rgbaColors.insert(
-                    std::make_pair(
-                        hexColor,
-                        result
-                    )
-                );
-
-                return result;
-            }
-
-            return m_rgbaColors.at(backgroundColor);
+            return !inValue.empty() &&
+                   !String::areEquals(inValue, TEXT_COLOR_TRANSPARENT) &&
+                   !String::areEquals(inValue, HEX_COLOR_TRANSPARENT);
         }
 
-        Vec<3, std::uint32_t> hexToRgb(const std::string& inColor)
+        Vec<4, std::uint32_t> toRgba(const std::string& inValue)
         {
-            Vec<4, std::uint32_t> color = hexToRgba(inColor);
-
-            if (m_rgbColors.find(inColor) == m_rgbColors.end())
+            if (String::startsWith(inValue, HEX_KEYWORD))
             {
-                Vec<3, std::uint32_t> result(color.x, color.y, color.z);
-
-                m_rgbColors.insert(
-                    std::make_pair(
-                        inColor,
-                        result
-                    )
+                std::string color = String::trim(inValue);
+                std::transform(
+                    color.begin(),
+                    color.end(),
+                    color.begin(),
+                    ::tolower
                 );
-
-                return result;
+    
+                bool bIsTransparent = color.empty() ||
+                                      String::areEquals(color, TEXT_COLOR_TRANSPARENT);
+                bool bIsNotHex      = color.size() < 7 || color.size() > 9;
+    
+                if (bIsTransparent || bIsNotHex)
+                {
+                    color = HEX_COLOR_TRANSPARENT;
+                }
+    
+                color = color.substr(1);
+                color = color.size() == 6 ? color + "FF" : color;
+    
+                if (m_colors.find(color) == m_colors.end())
+                {
+                    std::uint16_t r = 0;
+                    std::uint16_t g = 0;
+                    std::uint16_t b = 0;
+                    std::uint16_t a = 0;
+    
+                    sscanf(
+                        color.c_str(),
+                        "%02hx%02x%02hx%02hx",
+                        &r,
+                        &g,
+                        &b,
+                        &a
+                    );
+    
+                    const Vec<4, std::uint32_t> result = { r, g, b, a };
+    
+                    m_colors.insert(std::make_pair(color, result));
+    
+                    return result;
+                }
+    
+                return m_colors.at(color);
             }
 
-            return m_rgbColors.at(inColor);
+            if (
+                String::startsWith(inValue, RGB_KEYWORD) ||
+                String::startsWith(inValue, RGBA_KEYWORD)
+            )
+            {
+                const std::uint32_t start = inValue.find_first_of("(") + 1;
+                const std::uint32_t end   = inValue.find_last_of(")");
+
+                const std::string color = inValue.substr(start, end - start);
+
+                if (m_colors.find(color) == m_colors.end())
+                {
+                    const std::vector<std::string> values = String::split(color, ",");
+
+                    Vec<4, std::uint32_t> result = Vec<4, std::uint32_t>(0U);
+                    result.r = std::stoi(values.at(0));
+                    result.g = std::stoi(values.at(1));
+                    result.b = std::stoi(values.at(2));
+                    result.a = values.size() < 3 ? 255 : std::stoi(values.at(3));
+    
+                    m_colors.insert(
+                        std::make_pair(
+                            color,
+                            result
+                        )
+                    );
+
+                    return result;
+                }
+
+                return m_colors.at(color);
+            }
+
+            return m_colors.at(HEX_COLOR_TRANSPARENT);
         }
     }
 }

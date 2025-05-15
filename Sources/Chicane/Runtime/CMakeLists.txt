@@ -4,6 +4,14 @@ find_package(Vulkan REQUIRED)
 ##################### Files #######################
 file(
     GLOB_RECURSE
+    HEADERS
+
+    # Headers
+    ${RUNTIME_HEADER_DIR}/*.hpp
+)
+
+file(
+    GLOB_RECURSE
     SOURCES
 
     # Sources
@@ -11,7 +19,7 @@ file(
 )
 
 ##################### Setup #######################
-add_library(${RUNTIME_TARGET_NAME} ${SOURCES})
+add_library(${RUNTIME_TARGET_NAME} ${HEADERS} ${SOURCES})
 
 add_library(
     "${NAME}::Runtime"
@@ -19,10 +27,6 @@ add_library(
     ALIAS
         ${RUNTIME_TARGET_NAME}
 )
-
-if (BUILD_SHARED_LIBS)
-    target_compile_definitions(${RUNTIME_TARGET_NAME} PRIVATE BUILD_EXPORT)
-endif()
 
 set_target_properties(
     ${RUNTIME_TARGET_NAME}
@@ -32,6 +36,10 @@ set_target_properties(
             "${NAME}Runtime"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
+        DEFINE_SYMBOL
+            "BUILD_EXPORT"
+        POSITION_INDEPENDENT_CODE
+            TRUE
 )
 
 target_include_directories(

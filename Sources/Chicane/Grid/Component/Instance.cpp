@@ -69,7 +69,7 @@ namespace Chicane
 
         bool Component::isDrawable() const
         {
-            const bool isBackgroundVisible = Style::isColorVisible(getBackgroundColorStyle());
+            const bool isBackgroundVisible = Color::isVisible(getBackgroundColorStyle());
 
             return isVisible() && isBackgroundVisible;
         }

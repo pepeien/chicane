@@ -9,8 +9,8 @@ include(Functions.cmake)
 cmake_minimum_required(VERSION 3.16.0)
 
 set(CMAKE_CXX_STANDARD               17)
-set(CMAKE_CXX_STANDARD_REQUIRED      TRUE)
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED      ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 set(NAME "Chicane")
 

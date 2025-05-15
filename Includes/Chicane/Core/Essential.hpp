@@ -8,14 +8,14 @@
 #endif
 
 #if defined(BUILD_SHARED)
-#   if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#   if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 #      if defined(BUILD_EXPORT)
 #          define CHICANE_CORE __declspec(dllexport)
 #      else
 #          define CHICANE_CORE __declspec(dllimport)
 #      endif
-#   elif __GNUC__ >= 4
-#       define __attribute__((visibility("default")))
+#   elif defined(__GNUC__) && __GNUC__ >= 4
+#       define CHICANE_CORE __attribute__((visibility("default")))
 #   else
 #       define CHICANE_CORE
 #   endif

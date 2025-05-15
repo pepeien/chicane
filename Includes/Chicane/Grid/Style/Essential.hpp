@@ -50,21 +50,6 @@ namespace Chicane
             static constexpr char CLASS_SELECTOR     = '.';
             static constexpr char INCLUSIVE_SELECTOR = '*';
 
-            // Color Values
-            static constexpr const char* HEX_COLOR_TRANSPARENT = "#00000000";
-            static constexpr const char* HEX_COLOR_RED         = "#FF0000FF";
-            static constexpr const char* HEX_COLOR_GREEN       = "#00FF00FF";
-            static constexpr const char* HEX_COLOR_BLUE        = "#0000FFFF";
-            static constexpr const char* HEX_COLOR_BLACK       = "#000000FF";
-            static constexpr const char* HEX_COLOR_WHITE       = "#FFFFFFFF";
-
-            static constexpr const char* TEXT_COLOR_TRANSPARENT = "transparent";
-            static constexpr const char* TEXT_COLOR_BLACK       = "black";
-            static constexpr const char* TEXT_COLOR_RED         = "red";
-            static constexpr const char* TEXT_COLOR_GREEN       = "green";
-            static constexpr const char* TEXT_COLOR_BLUE        = "blue";
-            static constexpr const char* TEXT_COLOR_WHITE       = "white";
-
             // Display
             static constexpr const char* DISPLAY_ATTRIBUTE_NAME = "display";
             static constexpr const char* DISPLAY_TYPE_FLEX      = "flex";
@@ -88,10 +73,10 @@ namespace Chicane
 
             // Color
             static constexpr const char* BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
-            static constexpr const char* BACKGROUND_DEFAULT_COLOR        = HEX_COLOR_TRANSPARENT;
+            static constexpr const char* BACKGROUND_DEFAULT_COLOR        = Color::HEX_COLOR_TRANSPARENT;
 
             static constexpr const char* FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
-            static constexpr const char* FOREGROUND_DEFAULT_COLOR        = HEX_COLOR_WHITE;
+            static constexpr const char* FOREGROUND_DEFAULT_COLOR        = Color::HEX_COLOR_WHITE;
 
             /*
             * Template 1: "`SINGLE_MARGIN`"
@@ -125,10 +110,6 @@ namespace Chicane
             static constexpr const char* ALIGNMENT_TYPE_START     = "start";
             static constexpr const char* ALIGNMENT_TYPE_CENTER    = "center";
             static constexpr const char* ALIGNMENT_TYPE_END       = "end";
-
-            CHICANE_GRID bool isColorVisible(const std::string& inValue);
-
-            CHICANE_GRID Vec<4, std::uint32_t> toRgba(const std::string& inValue);
 
             CHICANE_GRID std::string variableToReference(const std::string& inValue);
             CHICANE_GRID std::string colorToReference(const std::string& inValue);

@@ -2,7 +2,6 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Game.hpp"
 #include "Chicane/Runtime/Renderer.hpp"
 
