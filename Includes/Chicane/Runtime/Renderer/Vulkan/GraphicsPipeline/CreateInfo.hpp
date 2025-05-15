@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Shader/CreateInfo.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace GraphicsPipeline
         {
-            struct CHICANE CreateInfo
+            struct CHICANE_RUNTIME CreateInfo
             {
             public:
                 // Modifiers

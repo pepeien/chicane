@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,13 +10,13 @@ namespace Chicane
         {
             namespace Worker
             {
-                CHICANE void startJob(const vk::CommandBuffer& inCommandBuffer);
-                CHICANE void endJob(
+                CHICANE_RUNTIME void startJob(const vk::CommandBuffer& inCommandBuffer);
+                CHICANE_RUNTIME void endJob(
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::Queue& inQueue,
                     const std::string& inDescription = "Command Buffer"
                 );
-                CHICANE void endJob(
+                CHICANE_RUNTIME void endJob(
                     const vk::Queue& inQueue,
                     const vk::SubmitInfo& inSubmitInfo,
                     const std::string& inDescription = "Command Buffer"

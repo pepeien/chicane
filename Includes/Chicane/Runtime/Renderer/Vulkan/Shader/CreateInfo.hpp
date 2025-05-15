@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Shader
         {
-            struct CHICANE StageCreateInfo
+            struct CHICANE_RUNTIME StageCreateInfo
             {
             public:
                 std::string             path;

@@ -73,14 +73,14 @@ namespace Chicane
 
                 std::string sideID = side->first;
 
-                pugi::xml_node sideNode = getXMLRoot().find_child_by_attribute(
+                pugi::xml_node sideNode = getXML().find_child_by_attribute(
                     TEXTURE_SIDE_ATTRIBUTE_NAME,
                     sideID.c_str()
                 );
 
                 if (XML::isEmpty(sideNode))
                 {
-                    sideNode = getXMLRoot().append_child(Texture::TAG);
+                    sideNode = getXML().append_child(Texture::TAG);
                     sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.c_str());
                 }
 
@@ -112,14 +112,14 @@ namespace Chicane
 
             void Instance::fetchSides()
             {
-                if (getFilepath().empty() || isXMLEmpty())
+                if (getFilepath().empty() || isEmpty())
                 {
                     m_sides.clear();
 
                     return;
                 }
 
-                const auto& root = getXMLRoot();
+                const auto& root = getXML();
 
                 for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
                 {
@@ -151,7 +151,7 @@ namespace Chicane
 
             void Instance::fetchModel()
             {
-                const auto& model = getXMLRoot().child(Model::TAG);
+                const auto& model = getXML().child(Model::TAG);
 
                 m_model = String::trim(model.child_value());
             }

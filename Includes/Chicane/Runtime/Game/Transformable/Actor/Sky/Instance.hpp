@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
 
 namespace Chicane
 {
-    class CHICANE ASky : public Actor
+    class CHICANE_RUNTIME ASky : public Actor
     {
     public:
         ASky();

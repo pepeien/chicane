@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
@@ -13,22 +13,22 @@ namespace Chicane
     {
         namespace SwapChain
         {
-            CHICANE void querySupport(
+            CHICANE_RUNTIME void querySupport(
                 SupportDetails& outSupportDetails,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::SurfaceKHR& inSurface
             );
         
-            CHICANE void pickSurfaceFormat(
+            CHICANE_RUNTIME void pickSurfaceFormat(
                 vk::SurfaceFormatKHR& outSurfaceFormat,
                 const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             );
-            CHICANE void pickPresentMode(
+            CHICANE_RUNTIME void pickPresentMode(
                 vk::PresentModeKHR& outPresentMode,
                 const std::vector<vk::PresentModeKHR>& inPresentModes
             );
 
-            CHICANE void init(
+            CHICANE_RUNTIME void init(
                 Bundle& outSwapChain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device& inLogicalDevice,

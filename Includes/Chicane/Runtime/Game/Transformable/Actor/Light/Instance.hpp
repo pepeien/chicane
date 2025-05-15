@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
 
 namespace Chicane
 {
-    class CHICANE ALight : public Actor
+    class CHICANE_RUNTIME ALight : public Actor
     {
     public:
         ALight();

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     namespace Log
     {
-        struct CHICANE Entry
+        struct CHICANE_CORE Entry
         {
         public:
             bool isEmpty() const

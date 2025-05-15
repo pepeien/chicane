@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     namespace Input
     {
         template<typename E>
-        struct CHICANE Events
+        struct CHICANE_CORE Events
         {
         public:
             void bind(std::function<void(const E&)> inExec)

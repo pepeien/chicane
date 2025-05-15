@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Queue
         {
-            struct CHICANE FamilyIndices
+            struct CHICANE_RUNTIME FamilyIndices
             {
             public:
                 bool isComplete();

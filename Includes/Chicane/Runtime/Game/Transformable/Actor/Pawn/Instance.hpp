@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Physics.hpp"
 
@@ -11,7 +11,7 @@ namespace Chicane
         class Instance;
     }
 
-    class CHICANE APawn : public Actor
+    class CHICANE_RUNTIME APawn : public Actor
     {
     public:
         APawn();

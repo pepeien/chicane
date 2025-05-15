@@ -2,7 +2,7 @@
 
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Color.hpp"
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/FrameTelemetry.hpp"
@@ -10,6 +10,7 @@
 #include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Renderer.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Telemetry.hpp"
 #include "Chicane/Core/Window.hpp"

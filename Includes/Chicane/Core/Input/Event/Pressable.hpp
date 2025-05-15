@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/FrameTelemetry.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Event/Status.hpp"
@@ -12,7 +12,7 @@ namespace Chicane
     namespace Input
     {
         template<typename B>
-        struct CHICANE PressableEvents
+        struct CHICANE_CORE PressableEvents
         {
         public:
             typedef std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>> Events;

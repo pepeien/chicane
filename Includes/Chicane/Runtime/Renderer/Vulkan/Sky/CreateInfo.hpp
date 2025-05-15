@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box/Asset/Sky.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -12,7 +11,7 @@ namespace Chicane
         {
             typedef Box::Sky::CompiledSides Images;
 
-            struct CHICANE CreateInfo
+            struct CHICANE_RUNTIME CreateInfo
             {
             public:
                 Images                  images;

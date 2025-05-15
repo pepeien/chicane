@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 
 namespace Chicane
@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace Asset
         {
-            class CHICANE Instance
+            class CHICANE_BOX Instance
             {
             public:
                 static std::string TAG;
@@ -19,6 +19,7 @@ namespace Chicane
 
             public:
                 bool isType(Type inType) const;
+                bool isEmpty() const;
 
                 const Header& getHeader() const;
                 void setHeader(const Header& inHeader);
@@ -35,11 +36,8 @@ namespace Chicane
                 Type getType() const;
                 void setType(Type inType);
 
+                pugi::xml_node getXML() const;
                 void saveXML();
-
-            protected:
-                bool isXMLEmpty();
-                pugi::xml_node getXMLRoot();
 
             private:
                 void createXML(const std::string& inFilepath);

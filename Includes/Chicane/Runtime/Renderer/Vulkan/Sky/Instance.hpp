@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
@@ -12,7 +12,7 @@ namespace Chicane
     {
         namespace Sky
         {
-            class CHICANE Instance
+            class CHICANE_RUNTIME Instance
             {
             public:
                 Instance(const CreateInfo& inCreateInfo);

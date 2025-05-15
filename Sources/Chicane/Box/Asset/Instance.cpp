@@ -37,6 +37,18 @@ namespace Chicane
                 return m_header.type == inType;
             }
 
+            bool Instance::isEmpty() const
+            {
+                pugi::xml_node root = getXML();
+
+                if (XML::isEmpty(root))
+                {
+                    return true;
+                }
+
+                return root.first_child() == root.last_child() && XML::isEmpty(root.first_child());
+            }
+
             const Header& Instance::getHeader() const
             {
                 return m_header;
@@ -110,19 +122,12 @@ namespace Chicane
                 m_header.type = inType;
             }
 
-            bool Instance::isXMLEmpty()
+            void Instance::saveXML()
             {
-                pugi::xml_node root = getXMLRoot();
-
-                if (XML::isEmpty(root))
-                {
-                    return true;
-                }
-
-                return root.first_child() == root.last_child() && XML::isEmpty(root.first_child());
+                XML::save(m_xml, getFilepath().string());
             }
 
-            pugi::xml_node Instance::getXMLRoot()
+            pugi::xml_node Instance::getXML() const
             {
                 return m_xml.first_child();
             }
@@ -145,7 +150,7 @@ namespace Chicane
             {
                 XML::load(m_xml, inFilepath);
 
-                pugi::xml_node root = getXMLRoot();
+                pugi::xml_node root = getXML();
 
                 bool bIsRoot  = root.parent() == root.root();
                 bool bIsAlone = bIsRoot && !root.next_sibling();
@@ -159,11 +164,6 @@ namespace Chicane
                 {
                     throw std::runtime_error("Asset files root element must be a " + TAG);
                 }
-            }
-
-            void Instance::saveXML()
-            {
-                XML::save(m_xml, getFilepath().string());
             }
 
             void Instance::fetchHeader(const std::string& inFilepath)

@@ -1,8 +1,6 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Sky.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Game.hpp"
 
 namespace Chicane
@@ -214,7 +212,7 @@ namespace Chicane
             Descriptor::PoolCreateInfo frameDescriptorPoolCreateInfo;
             frameDescriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
             frameDescriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = frameDescriptorPoolCreateInfo.maxSets }
+                { vk::DescriptorType::eUniformBuffer, frameDescriptorPoolCreateInfo.maxSets }
             );
 
             Descriptor::initPool(
@@ -278,7 +276,7 @@ namespace Chicane
             Descriptor::PoolCreateInfo materialDescriptorPoolCreateInfo;
             materialDescriptorPoolCreateInfo.maxSets = 1;
             materialDescriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = 1 }
+                { vk::DescriptorType::eCombinedImageSampler, 1 }
             );
 
             Descriptor::initPool(
@@ -410,7 +408,7 @@ namespace Chicane
             Buffer::CreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
+            createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 

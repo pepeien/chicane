@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core/Window.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Level/Instance.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
@@ -11,7 +9,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE LLevel : public Layer::Instance
+        class CHICANE_RUNTIME LLevel : public Layer::Instance
         {
         public:
             LLevel();

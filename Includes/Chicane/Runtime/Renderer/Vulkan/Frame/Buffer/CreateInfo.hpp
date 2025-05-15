@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
         {
             namespace Buffer
             {
-                struct CHICANE CreateInfo
+                struct CHICANE_RUNTIME CreateInfo
                 {
                 public:
                     std::string                id;

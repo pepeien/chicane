@@ -6,7 +6,6 @@ namespace Chicane
     {
         namespace Model
         {
-            
             static const RawData      EMPTY_INSTANCE = {};
             static const CompiledData EMPTY_DATA     = {};
 

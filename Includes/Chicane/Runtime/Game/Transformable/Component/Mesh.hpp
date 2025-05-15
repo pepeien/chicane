@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
 {
-    class CHICANE CMesh : public Component
+    class CHICANE_RUNTIME CMesh : public Component
     {
     public:
         CMesh();

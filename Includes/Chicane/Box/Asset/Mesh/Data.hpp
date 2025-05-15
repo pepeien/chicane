@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Mesh
         {
-            struct CHICANE CompiledData
+            struct CHICANE_BOX CompiledData
             {
             public:
                 Mat<4, float> matrix       = Mat<4, float>(1.0f);

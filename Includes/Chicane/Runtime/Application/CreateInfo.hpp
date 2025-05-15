@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Window/CreateInfo.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/CreateInfo.hpp"
 
 namespace Chicane
 {
     namespace Application
     {
-        struct CHICANE CreateInfo
+        struct CHICANE_RUNTIME CreateInfo
         {
         public:
             // Renderer

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Window/Type.hpp"
 
@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Window
     {
-        struct CHICANE CreateInfo
+        struct CHICANE_CORE CreateInfo
         {
         public:
             std::string    title   = "";

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace SwapChain
         {
-            struct CHICANE SupportDetails
+            struct CHICANE_RUNTIME SupportDetails
             {
             public:
                 vk::SurfaceCapabilitiesKHR        capabilities;

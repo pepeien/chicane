@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Audio/Data.hpp"
 #include "Chicane/Box/Asset/Audio/Vendor.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Audio
         {
-            class CHICANE Instance : public Asset::Instance
+            class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
                 Instance(const std::string& inFilepath);

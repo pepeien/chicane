@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Transform/Instance.hpp"
 
 namespace Chicane
 {
     namespace Transform
     {
-        struct CHICANE Combined : protected Instance
+        struct CHICANE_CORE Combined : protected Instance
         {
         public:
             // Transformation

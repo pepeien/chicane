@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Vertex
         {
-            CHICANE vk::VertexInputBindingDescription getBindingDescription();
-            CHICANE std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
+            CHICANE_RUNTIME vk::VertexInputBindingDescription getBindingDescription();
+            CHICANE_RUNTIME std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
         }
     }
 }

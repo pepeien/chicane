@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp"
 
-#include "Chicane/Box/Asset/Texture.hpp"
-#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"

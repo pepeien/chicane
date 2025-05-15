@@ -3,7 +3,7 @@
 #include <SDL3/SDL_vulkan.h>
 #include <vulkan/vulkan.hpp>
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 
 // Consts
 static const std::vector<const char*> LAYERS = {

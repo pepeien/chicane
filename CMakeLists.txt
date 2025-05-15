@@ -8,8 +8,9 @@ include(Functions.cmake)
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)
 
-set(CMAKE_CXX_STANDARD          20)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD               17)
+set(CMAKE_CXX_STANDARD_REQUIRED      TRUE)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 set(NAME "Chicane")
 
@@ -19,10 +20,6 @@ set(BUILD_SHARED_LIBS ON)
 
 if (BUILD_SHARED_LIBS)
     add_definitions(-DBUILD_SHARED)
-
-    if (CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-        add_definitions(-DBUILD_EXPORT)
-    endif()
 endif()
 
 # SDL3 Setup

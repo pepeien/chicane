@@ -17,6 +17,10 @@ add_library(
         ${CORE_TARGET_NAME}
 )
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(${CORE_TARGET_NAME} PRIVATE BUILD_EXPORT)
+endif()
+
 set_target_properties(
     ${CORE_TARGET_NAME}
 

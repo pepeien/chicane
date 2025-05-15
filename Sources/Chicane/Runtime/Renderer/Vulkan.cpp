@@ -1,7 +1,6 @@
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Game.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Level.hpp"

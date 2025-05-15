@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
@@ -16,7 +16,7 @@ namespace Chicane
     {
         namespace Style
         {
-            struct CHICANE Instance
+            struct CHICANE_GRID Instance
             {
             public:
                 static Sources parseSources(const pugi::xml_node& inNode);
@@ -41,7 +41,7 @@ namespace Chicane
 
             public:
                 // Visiblity
-                std::string display         = DISPLAY_TYPE_VISIBLE;
+                std::string display         = DISPLAY_TYPE_BLOCK;
 
                 // Size
                 std::string height          = "0px";

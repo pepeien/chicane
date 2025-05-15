@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
 {
     class Actor;
 
-    class CHICANE CPhysics : public Component
+    class CHICANE_RUNTIME CPhysics : public Component
     {
     public:
         CPhysics();

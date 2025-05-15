@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 
 namespace Chicane
 {
     namespace View
     {
-        struct CHICANE Settings
+        struct CHICANE_RUNTIME Settings
         {
         public:
             Vec<2, std::uint32_t> viewport    = Vec<2, std::uint32_t>(0);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
@@ -9,7 +9,7 @@ namespace Chicane
         typedef unsigned char*             Pixels;
         typedef std::vector<unsigned char> RawData;
 
-        struct CHICANE CompiledData
+        struct CHICANE_CORE CompiledData
         {
         public:
             int    width    = 0;

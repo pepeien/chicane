@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace GraphicsPipeline
         {
-            struct CHICANE Attachment
+            struct CHICANE_RUNTIME Attachment
             {
             public:
                 enum class Type : std::uint8_t

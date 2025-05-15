@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid.hpp"
+#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Game.hpp"
 #include "Chicane/Runtime/Renderer.hpp"
@@ -12,7 +10,7 @@ namespace Chicane
 {
     namespace Application
     {
-        class CHICANE Instance
+        class CHICANE_RUNTIME Instance
         {
         public:
             Instance();

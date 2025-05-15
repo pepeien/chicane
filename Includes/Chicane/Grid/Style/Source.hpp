@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
         {
             typedef std::unordered_map<std::string, std::string> Properties;
 
-            struct CHICANE Source
+            struct CHICANE_GRID Source
             {
             public:
                 bool isEmpty() const;

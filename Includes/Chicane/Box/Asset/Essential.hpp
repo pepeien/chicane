@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -12,8 +12,8 @@ namespace Chicane
             static constexpr std::uint32_t CURRENT_VERSION = 1;
 
             // Attributes
-            static constexpr const char*   VERSION_ATTRIBUTE_NAME = "version";
-            static constexpr const char*   ID_ATTRIBUTE_NAME      = "id";
+            static constexpr const char* VERSION_ATTRIBUTE_NAME = "version";
+            static constexpr const char* ID_ATTRIBUTE_NAME      = "id";
         }
     }
 }

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Layer/Status.hpp"
 
 namespace Chicane
 {
     namespace Layer
     {
-        class CHICANE Instance
+        class CHICANE_RUNTIME Instance
         {
         public:
             Instance()

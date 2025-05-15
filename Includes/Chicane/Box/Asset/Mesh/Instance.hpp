@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Mesh/Group.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace Mesh
         {
-            class CHICANE Instance : public Asset::Instance
+            class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
                 Instance(const std::string& inFilepath);

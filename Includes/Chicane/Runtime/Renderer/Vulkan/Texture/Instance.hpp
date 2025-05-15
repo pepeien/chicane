@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            class CHICANE Instance
+            class CHICANE_RUNTIME Instance
             {
             public:
                 Instance(const CreateInfo& inCreateInfo);

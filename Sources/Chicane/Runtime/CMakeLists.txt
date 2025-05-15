@@ -20,6 +20,10 @@ add_library(
         ${RUNTIME_TARGET_NAME}
 )
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(${RUNTIME_TARGET_NAME} PRIVATE BUILD_EXPORT)
+endif()
+
 set_target_properties(
     ${RUNTIME_TARGET_NAME}
 

@@ -1,17 +1,17 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Renderer/Type.hpp"
 #include "Chicane/Core/Window/CreateInfo.hpp"
 #include "Chicane/Core/Window/Type.hpp"
-#include "Chicane/Runtime/Renderer/Type.hpp"
 
 namespace Chicane
 {
     namespace Window
     {
-        class CHICANE Instance
+        class CHICANE_CORE Instance
         {
         public:
             Instance(const CreateInfo& inCreateInfo, Renderer::Type inRendererType);

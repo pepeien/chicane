@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
 
 namespace Chicane
 {
-    class CHICANE CLight : public CView
+    class CHICANE_RUNTIME CLight : public CView
     {
     public:
         CLight();

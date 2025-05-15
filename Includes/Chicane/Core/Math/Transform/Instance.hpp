@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Mat.hpp"
 #include "Chicane/Core/Math/Quat.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Transform
     {
-        struct CHICANE Instance
+        struct CHICANE_CORE Instance
         {
         public:
             // Transformation

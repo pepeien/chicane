@@ -1,8 +1,6 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Box.hpp"
-#include "Chicane/Core.hpp"
 
 const std::string EMPTY_STRING = "";
 
@@ -128,7 +126,7 @@ namespace Chicane
     {
         const Box::Model::Manager* manager = Box::getModelManager();
 
-        std::vector<Box::Model::Vertex> vertices = {};
+        std::vector<Vertex> vertices = {};
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {

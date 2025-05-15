@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE LSky : public Layer::Instance
+        class CHICANE_RUNTIME LSky : public Layer::Instance
         {
         public:
             LSky();

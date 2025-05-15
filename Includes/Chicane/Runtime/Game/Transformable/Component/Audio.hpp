@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
 namespace Chicane
 {
-    class CHICANE CAudio : public Component
+    class CHICANE_RUNTIME CAudio : public Component
     {
     public:
         CAudio();

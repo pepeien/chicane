@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 
 namespace Chicane
 {
-    class CHICANE ACharacter : public APawn
+    class CHICANE_RUNTIME ACharacter : public APawn
     {
     public:
         ACharacter();

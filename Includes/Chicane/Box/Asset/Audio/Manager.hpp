@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Audio/Data.hpp"
 #include "Chicane/Box/Asset/Audio/Instance.hpp"
 #include "Chicane/Box/Manager.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Audio
         {
-            class CHICANE Manager : public Box::Manager::Instance<RawData, CompiledData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<RawData, CompiledData>
             {
             public:
                 Manager();

@@ -1,7 +1,6 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core/Log.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
 
 namespace Chicane

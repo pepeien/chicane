@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
-        struct CHICANE Item
+        struct CHICANE_CORE Item
         {
         public:
             enum class Type : std::uint8_t

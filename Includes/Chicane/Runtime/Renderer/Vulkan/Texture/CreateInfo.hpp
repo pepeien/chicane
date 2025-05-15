@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Image.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -9,7 +8,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            struct CHICANE CreateInfo
+            struct CHICANE_RUNTIME CreateInfo
             {
             public:
                 Chicane::Image::CompiledData image;

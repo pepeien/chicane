@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Grid.hpp"
+#include "Chicane/Grid.hpp"
 
 class View : public Chicane::Grid::View
 {

@@ -5,3 +5,4 @@
 #include "Chicane/Core/Math/Quat.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"

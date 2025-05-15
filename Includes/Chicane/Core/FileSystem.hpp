@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/FileSystem/Dialog.hpp"
 #include "Chicane/Core/FileSystem/Dialog/FileDialog.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
@@ -12,28 +12,29 @@ namespace Chicane
     {
         static constexpr auto SEPARATOR = std::filesystem::path::preferred_separator;
 
-        CHICANE bool exists(const std::string& inPath);
-        CHICANE std::vector<Item> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
+        CHICANE_CORE bool exists(const std::string& inPath);
+        CHICANE_CORE std::vector<Item> ls(const std::string& inDir = ".", std::uint32_t inDepth = 0);
 
-        CHICANE void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback);
-        CHICANE void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback);
+        CHICANE_CORE void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback);
+        CHICANE_CORE void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback);
 
-        CHICANE std::vector<char> readFile(const std::filesystem::path& inFilepath);
-        CHICANE std::vector<char> readFile(const std::string& inFilepath);
-        CHICANE std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath);
-        CHICANE Image::Pixels readImageFromFile(const std::string& inFilepath);
-        CHICANE Image::Pixels readImageFromFile(
+        CHICANE_CORE std::vector<char> readFile(const std::filesystem::path& inFilepath);
+        CHICANE_CORE std::vector<char> readFile(const std::string& inFilepath);
+        CHICANE_CORE std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath);
+        CHICANE_CORE Image::Pixels readImageFromFile(const std::string& inFilepath);
+        CHICANE_CORE Image::Pixels readImageFromFile(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             int& outFormat,
             const std::string& inFilepath
         );
-        CHICANE Image::Pixels readImageFromMemory(
+        CHICANE_CORE Image::Pixels readImageFromMemory(
             int& outWidth,
             int& outHeight,
             int& outChannel,
             const Image::RawData& inData
         );
+        CHICANE_CORE void freeImage(Image::Pixels inImage);
     }
 }

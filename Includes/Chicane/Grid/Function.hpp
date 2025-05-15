@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Event.hpp"
 #include "Chicane/Grid/Reference.hpp"
 
@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        struct CHICANE FunctionData
+        struct CHICANE_GRID FunctionData
         {
         public:
             std::string            name   = "";

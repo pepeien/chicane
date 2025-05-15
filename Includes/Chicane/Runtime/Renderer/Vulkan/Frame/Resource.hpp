@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 
 namespace Chicane
@@ -10,7 +10,7 @@ namespace Chicane
         namespace Frame
         {
             template<typename T>
-            struct CHICANE Resource
+            struct CHICANE_RUNTIME Resource
             {
             public:
                 void setup(const Vulkan::Buffer::CreateInfo& inBufferCreateInfo)

@@ -26,7 +26,7 @@ namespace Chicane
 
             void Instance::setGroups(const std::vector<Group>& inGroups)
             {
-                pugi::xml_node root = getXMLRoot();
+                pugi::xml_node root = getXML();
                 root.remove_children();
 
                 for (const Group& group : inGroups)
@@ -44,7 +44,7 @@ namespace Chicane
 
                 std::string id = inGroup.getId();
 
-                pugi::xml_node root = getXMLRoot();
+                pugi::xml_node root = getXML();
 
                 if (
                     !XML::isEmpty(
@@ -90,7 +90,7 @@ namespace Chicane
 
                 std::string id = inGroup.getId();
 
-                pugi::xml_node root           = getXMLRoot();
+                pugi::xml_node root           = getXML();
                 pugi::xml_node foundGroupNode = root.find_child_by_attribute(
                     GROUP_ID_ATTRIBUTE_NAME,
                     id.c_str()
@@ -112,12 +112,12 @@ namespace Chicane
 
             void Instance::fetchGroups()
             {
-                if (getFilepath().empty() || isXMLEmpty())
+                if (getFilepath().empty() || isEmpty())
                 {
                     return;
                 }
 
-                for (const auto& groupNode : getXMLRoot().children())
+                for (const auto& groupNode : getXML().children())
                 {
                     if (!String::areEquals(groupNode.name(), GROUP_TAG))
                     {

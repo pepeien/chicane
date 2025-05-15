@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Application/Instance.hpp"
 #include "Chicane/Runtime/Game.hpp"
@@ -11,34 +11,34 @@ namespace Chicane
     namespace Application
     {
         // Setup
-        CHICANE void run(const CreateInfo& inCreateInfo);
-        CHICANE void stop();
+        CHICANE_RUNTIME void run(const CreateInfo& inCreateInfo);
+        CHICANE_RUNTIME void stop();
 
         // Telemetry
-        CHICANE const Telemetry& getTelemetry();
+        CHICANE_RUNTIME const Telemetry& getTelemetry();
 
         // Game
-        CHICANE bool hasController();
-        CHICANE Controller::Instance* getController();
-        CHICANE void setController(Controller::Instance* inController);
-        CHICANE Subscription<Controller::Instance*>* watchController(
+        CHICANE_RUNTIME bool hasController();
+        CHICANE_RUNTIME Controller::Instance* getController();
+        CHICANE_RUNTIME void setController(Controller::Instance* inController);
+        CHICANE_RUNTIME Subscription<Controller::Instance*>* watchController(
             std::function<void (Controller::Instance*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
-        CHICANE bool hasLevel();
-        CHICANE Level* getLevel();
-        CHICANE void setLevel(Level* inLevel);
-        CHICANE Subscription<Level*>* watchLevel(
+        CHICANE_RUNTIME bool hasLevel();
+        CHICANE_RUNTIME Level* getLevel();
+        CHICANE_RUNTIME void setLevel(Level* inLevel);
+        CHICANE_RUNTIME Subscription<Level*>* watchLevel(
             std::function<void (Level*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
         // Render
-        CHICANE bool hasWindow();
-        CHICANE Window::Instance* getWindow();
+        CHICANE_RUNTIME bool hasWindow();
+        CHICANE_RUNTIME Window::Instance* getWindow();
         template<class T>
         T* getWindow()
         {
@@ -50,8 +50,8 @@ namespace Chicane
             return static_cast<T*>(getWindow());
         }
 
-        CHICANE bool hasRenderer();
-        CHICANE Renderer::Instance* getRenderer();
+        CHICANE_RUNTIME bool hasRenderer();
+        CHICANE_RUNTIME Renderer::Instance* getRenderer();
         template<class T>
         T* getRenderer()
         {

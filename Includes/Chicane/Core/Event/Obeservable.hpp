@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 
 namespace Chicane
 {
     template<typename T>
-    class CHICANE Observable
+    class CHICANE_CORE Observable
     {
     public:
         ~Observable()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,13 +8,13 @@ namespace Chicane
     {
         namespace Debug
         {
-            CHICANE void initMessenger(
+            CHICANE_RUNTIME void initMessenger(
                 vk::DebugUtilsMessengerEXT& outDebugMessenger,
                 const vk::Instance& inInstance,
                 const vk::DispatchLoaderDynamic& inDldi
             );
         
-            CHICANE VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+            CHICANE_RUNTIME VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
                 VkDebugUtilsMessageSeverityFlagBitsEXT inMessageSeverity,
                 VkDebugUtilsMessageTypeFlagsEXT inMessageType,
                 const VkDebugUtilsMessengerCallbackDataEXT* inData,

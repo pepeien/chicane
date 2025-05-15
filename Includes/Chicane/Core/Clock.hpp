@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     typedef std::chrono::steady_clock Clock;
 
-    struct CHICANE Time
+    struct CHICANE_CORE Time
     {
     public:
         typedef std::chrono::time_point<Clock> Point;

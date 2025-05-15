@@ -40,16 +40,6 @@ namespace Chicane
             m_children.clear();
         }
 
-        void Component::onChildAddition(Component* inComponent)
-        {
-            return;
-        }
-
-        void Component::onTick(float inDelta)
-        {
-            return;
-        }
-
         void Component::tick(float inDelta)
         {
             refreshSize();
@@ -541,9 +531,9 @@ namespace Chicane
                 value = parseText(Style::variableToReference(value));
             }
 
-            if (String::areEquals(value, Style::DISPLAY_TYPE_VISIBLE))
+            if (String::areEquals(value, Style::DISPLAY_TYPE_BLOCK))
             {
-                return Style::Display::Visible;
+                return Style::Display::Block;
             }
 
             if (String::areEquals(value, Style::DISPLAY_TYPE_FLEX))

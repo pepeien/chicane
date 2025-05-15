@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Chicane/Core/Clock.hpp"
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
-    struct CHICANE FrameTelemetry
+    struct CHICANE_CORE FrameTelemetry
     {
     public:
         void startCapture();

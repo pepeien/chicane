@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager/EventType.hpp"
 
 namespace Chicane
@@ -10,7 +10,7 @@ namespace Chicane
         namespace Manager
         {
             template<typename I, typename E>
-            class CHICANE Instance
+            class CHICANE_BOX Instance
             {
             protected:
                 typedef Instance Super;

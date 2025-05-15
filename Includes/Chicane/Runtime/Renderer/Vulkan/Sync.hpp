@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Sync
         {
-            CHICANE void initSempahore(vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice);
-            CHICANE void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice);
+            CHICANE_RUNTIME void initSempahore(vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice);
+            CHICANE_RUNTIME void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice);
         }
     }
 }

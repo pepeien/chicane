@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Audio.hpp"
 
-#include "Chicane/Box.hpp"
-
 namespace Chicane
 {
     CAudio::CAudio()

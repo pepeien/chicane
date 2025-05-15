@@ -226,7 +226,8 @@ namespace Chicane
             bool iconResult = SDL_SetWindowIcon(instance, icon);
 
             SDL_DestroySurface(icon);
-            stbi_image_free(pixels);
+
+            FileSystem::freeImage(pixels);
 
             if (!iconResult)
             {

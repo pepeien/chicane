@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Window.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/CreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Viewport.hpp"
@@ -14,7 +13,7 @@ namespace Chicane
 
     namespace Renderer
     {
-        class CHICANE Instance
+        class CHICANE_RUNTIME Instance
         {
         public:
             typedef Instance Super;

@@ -17,6 +17,10 @@ add_library(
         ${GRID_TARGET_NAME}
 )
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(${GRID_TARGET_NAME} PRIVATE BUILD_EXPORT)
+endif()
+
 set_target_properties(
     ${GRID_TARGET_NAME}
 
@@ -41,7 +45,6 @@ target_link_libraries(
 
     PUBLIC
         # Systems
-        Chicane::Box
         Chicane::Core
 )
 

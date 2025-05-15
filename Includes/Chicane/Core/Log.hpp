@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/Log/Entry.hpp"
@@ -12,13 +12,13 @@ namespace Chicane
     {
         typedef std::deque<Entry> List;
 
-        CHICANE Subscription<const List*>* watchLogs(
+        CHICANE_CORE Subscription<const List*>* watchLogs(
             std::function<void (const List*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
 
-        CHICANE void emmit(
+        CHICANE_CORE void emmit(
             const std::string& inHexColor,
             const std::string& inIdentifier,
             const std::string& inMessage
@@ -38,28 +38,28 @@ namespace Chicane
             );
         }
 
-        CHICANE void info(const std::string& inMessage);
+        CHICANE_CORE void info(const std::string& inMessage);
         template<typename... T>
         void info(std::string inMessage, T... inParams)
         {
             info(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE void warning(const std::string& inMessage);
+        CHICANE_CORE void warning(const std::string& inMessage);
         template<typename... T>
         void warning(std::string inMessage, T... inParams)
         {
             warning(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE void error(const std::string& inMessage);
+        CHICANE_CORE void error(const std::string& inMessage);
         template<typename... T>
         void error(std::string inMessage, T... inParams)
         {
             error(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE void critical(const std::string& inMessage);
+        CHICANE_CORE void critical(const std::string& inMessage);
         template<typename... T>
         void critical(std::string inMessage, T... inParams)
         {

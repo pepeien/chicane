@@ -5,6 +5,7 @@ namespace Chicane
     namespace Box
     {
         std::unique_ptr<Audio::Manager>   m_audioManager   = std::make_unique<Audio::Manager>();
+        std::unique_ptr<Font::Manager>    m_fontManager    = std::make_unique<Font::Manager>();
         std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
         std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
@@ -13,6 +14,11 @@ namespace Chicane
         Audio::Manager* getAudioManager()
         {
             return m_audioManager.get();
+        }
+
+        Font::Manager* getFontManager()
+        {
+            return m_fontManager.get();
         }
 
         Model::Manager* getModelManager()
@@ -64,6 +70,40 @@ namespace Chicane
             }
 
             return static_cast<const T*>(m_cache.at(inIdentifier));
+        }
+
+        void loadAudio(const Asset::Instance* inAsset)
+        {
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Audio))
+            {
+                return;
+            }
+
+            const std::string filepath = inAsset->getFilepath().string();
+
+            cacheAsset(filepath, inAsset);
+
+            m_audioManager->load(
+                filepath,
+                static_cast<const Audio::Instance*>(inAsset)
+            );
+        }
+
+        void loadFont(const Font::Instance* inAsset)
+        {
+            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Font))
+            {
+                return;
+            }
+
+            const std::string filepath = inAsset->getFilepath().string();
+
+            cacheAsset(filepath, inAsset);
+
+            m_fontManager->load(
+                filepath,
+                static_cast<const Font::Instance*>(inAsset)
+            );
         }
 
         void loadModel(const Asset::Instance* inAsset)
@@ -131,23 +171,6 @@ namespace Chicane
             }
         }
 
-        void loadAudio(const Asset::Instance* inAsset)
-        {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Audio))
-            {
-                return;
-            }
-
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            m_audioManager->load(
-                filepath,
-                static_cast<const Audio::Instance*>(inAsset)
-            );
-        }
-
         void loadSky(const Asset::Instance* inAsset)
         {
             if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Sky))
@@ -184,6 +207,23 @@ namespace Chicane
             }
 
             return getAsset<Audio::Instance>(inFilePath);
+        }
+
+        const Font::Instance* loadFont(const std::string& inFilePath)
+        {
+            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
+
+            if (header.type != Asset::Type::Font)
+            {
+                throw std::runtime_error(inFilePath + " is not a font");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadFont(new Font::Instance(inFilePath));
+            }
+
+            return getAsset<Font::Instance>(inFilePath);
         }
 
         const Texture::Instance* loadTexture(const std::string& inFilePath)

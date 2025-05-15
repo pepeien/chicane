@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 
 namespace Chicane
 {
     namespace View
     {
-        struct CHICANE Plane
+        struct CHICANE_RUNTIME Plane
         {
         public:
             bool contains(const Vec<3, float>& inPoint) const;

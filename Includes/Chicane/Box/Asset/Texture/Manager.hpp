@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Texture/Instance.hpp"
 #include "Chicane/Box/Manager.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            class CHICANE Manager : public Box::Manager::Instance<Image::RawData, Image::CompiledData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Image::RawData, Image::CompiledData>
             {
             public:
                 Manager();

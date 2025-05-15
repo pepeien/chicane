@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
 
 namespace Chicane
 {
-    class CHICANE CCamera : public CView
+    class CHICANE_RUNTIME CCamera : public CView
     {
     public:
         CCamera();

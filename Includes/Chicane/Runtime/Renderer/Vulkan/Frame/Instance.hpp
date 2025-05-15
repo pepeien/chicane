@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Mesh/Data.hpp"
-#include "Chicane/Grid/Component.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/View/Data.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"
 
@@ -17,14 +16,14 @@ namespace Chicane
     {
         namespace Frame
         {
-            struct CHICANE ComponentData
+            struct CHICANE_RUNTIME ComponentData
             {
             public:
                 Vec<2, float> size     = Vec2Zero;
                 Vec<2, float> position = Vec2Zero;
             };
 
-            class CHICANE Instance
+            class CHICANE_RUNTIME Instance
             {
             public:
                 // Lifecycle

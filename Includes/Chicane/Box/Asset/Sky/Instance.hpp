@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
 #include "Chicane/Box/Asset/Sky/Data.hpp"
 #include "Chicane/Box/Asset/Sky/Side.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Sky
         {
-            class CHICANE Instance : public Asset::Instance
+            class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
                 Instance(const std::string& inFilepath);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Model/Parse/Result.hpp"
 
 namespace Chicane
@@ -13,7 +13,7 @@ namespace Chicane
             {
                 namespace Wavefront
                 {
-                    CHICANE void parse(Parse::Result& outResult, const std::vector<unsigned char>& inData);
+                    CHICANE_BOX void parse(Parse::Result& outResult, const std::vector<unsigned char>& inData);
                 }
             }
         }

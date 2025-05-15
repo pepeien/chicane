@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 
 namespace Chicane
 {
-    class CHICANE CView : public Component
+    class CHICANE_RUNTIME CView : public Component
     {
     public:
         CView();

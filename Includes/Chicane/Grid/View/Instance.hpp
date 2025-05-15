@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE View : public Component
+        class CHICANE_GRID View : public Component
         {
         public:
             static constexpr const char* TAG_ID = "View";

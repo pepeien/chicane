@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -68,7 +68,7 @@ namespace Chicane
             // Display
             static constexpr const char* DISPLAY_ATTRIBUTE_NAME = "display";
             static constexpr const char* DISPLAY_TYPE_FLEX      = "flex";
-            static constexpr const char* DISPLAY_TYPE_VISIBLE   = "visible";
+            static constexpr const char* DISPLAY_TYPE_BLOCK     = "block";
             static constexpr const char* DISPLAY_TYPE_HIDDEN    = "hidden";
             static constexpr const char* DISPLAY_TYPE_NONE      = "none";
 
@@ -126,12 +126,12 @@ namespace Chicane
             static constexpr const char* ALIGNMENT_TYPE_CENTER    = "center";
             static constexpr const char* ALIGNMENT_TYPE_END       = "end";
 
-            CHICANE bool isColorVisible(const std::string& inValue);
+            CHICANE_GRID bool isColorVisible(const std::string& inValue);
 
-            CHICANE Vec<4, std::uint32_t> toRgba(const std::string& inValue);
+            CHICANE_GRID Vec<4, std::uint32_t> toRgba(const std::string& inValue);
 
-            CHICANE std::string variableToReference(const std::string& inValue);
-            CHICANE std::string colorToReference(const std::string& inValue);
+            CHICANE_GRID std::string variableToReference(const std::string& inValue);
+            CHICANE_GRID std::string colorToReference(const std::string& inValue);
         }
     }
 }

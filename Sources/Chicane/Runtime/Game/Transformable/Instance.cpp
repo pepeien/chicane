@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Game/Transformable/Instance.hpp"
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     Transformable::Transformable()

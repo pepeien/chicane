@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
         {
             namespace Pool
             {
-                CHICANE void init(
+                CHICANE_RUNTIME void init(
                     vk::CommandPool& outCommandPool,
                     const vk::Device& inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,

@@ -17,6 +17,10 @@ add_library(
         ${BOX_TARGET_NAME}
 )
 
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(${BOX_TARGET_NAME} PRIVATE BUILD_EXPORT)
+endif()
+
 set_target_properties(
     ${BOX_TARGET_NAME}
 
@@ -46,6 +50,9 @@ target_link_libraries(
     PUBLIC
         # Systems
         Chicane::Core
+
+        # Vendors
+        freetype
 )
 
 CH_ADD_COMPILER(${BOX_TARGET_NAME})

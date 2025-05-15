@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 
 namespace Chicane
@@ -17,7 +17,7 @@ namespace Chicane
         static constexpr const char* White  = "#FFFFFF";
         static constexpr const char* Black  = "#000000";
 
-        CHICANE Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
-        CHICANE Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
+        CHICANE_CORE Vec<4, std::uint32_t> hexToRgba(const std::string& inColor);
+        CHICANE_CORE Vec<3, std::uint32_t> hexToRgb(const std::string& inColor);
     }
 }

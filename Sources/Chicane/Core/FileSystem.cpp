@@ -1,5 +1,9 @@
 #include "Chicane/Core/FileSystem.hpp"
 
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include "Chicane/Core.hpp"
 
 namespace Chicane
@@ -202,6 +206,11 @@ namespace Chicane
             }
 
             return result;
+        }
+
+        void freeImage(Image::Pixels inImage)
+        {  
+            stbi_image_free(inImage);
         }
     }
 }

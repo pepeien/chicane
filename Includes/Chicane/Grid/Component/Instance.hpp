@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Function.hpp"
 #include "Chicane/Grid/Reference.hpp"
 #include "Chicane/Grid/Style.hpp"
@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE Component
+        class CHICANE_GRID Component
         {
         public:
             typedef std::function<Component* (const pugi::xml_node& inNode)> Compiler;
@@ -22,8 +22,10 @@ namespace Chicane
 
         public:
             virtual void onEvent(const SDL_Event& inEvent) { return; }
-            virtual void onChildAddition(Component* inComponent);
-            virtual void onTick(float inDelta);
+            virtual void onChildAddition(Component* inComponent) { return; }
+            virtual void onTick(float inDelta) { return; }
+
+            virtual std::vector<Vertex> getPrimitive() const { return {}; }
 
         public:
             // Checkers

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     template<typename T, glm::qualifier Q = glm::packed_highp>
-    struct CHICANE Quat : glm::qua<T, Q>
+    struct CHICANE_CORE Quat : glm::qua<T, Q>
     {
         template<typename... A>
         Quat(A ...args)

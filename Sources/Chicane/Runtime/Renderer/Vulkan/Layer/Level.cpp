@@ -1,7 +1,6 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Level.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Renderer/Viewport.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Texture.hpp"
 
@@ -217,16 +216,16 @@ namespace Chicane
             Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets  = static_cast<std::uint32_t>(m_internals.swapchain->frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+                { vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets }
             );
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eUniformBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+                { vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets }
             );
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eStorageBuffer, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+                { vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets }
             );
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = descriptorPoolCreateInfo.maxSets }
+                { vk::DescriptorType::eCombinedImageSampler, descriptorPoolCreateInfo.maxSets }
             );
 
             Descriptor::initPool(
@@ -398,7 +397,7 @@ namespace Chicane
             Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
             descriptorPoolCreateInfo.maxSets = 1;
             descriptorPoolCreateInfo.sizes.push_back(
-                { .type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = Box::Texture::MAX_COUNT }
+                { vk::DescriptorType::eCombinedImageSampler, Box::Texture::MAX_COUNT }
             );
 
             Descriptor::initPool(
@@ -476,7 +475,7 @@ namespace Chicane
             Buffer::CreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
+            createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
 

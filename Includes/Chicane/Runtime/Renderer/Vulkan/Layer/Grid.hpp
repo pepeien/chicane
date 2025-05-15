@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Grid.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
@@ -9,7 +8,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE LGrid : public Layer::Instance
+        class CHICANE_RUNTIME LGrid : public Layer::Instance
         {
         public:
             LGrid();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Descriptor
         {
-            struct CHICANE SetLayoutBidingsCreateInfo
+            struct CHICANE_RUNTIME SetLayoutBidingsCreateInfo
             {
             public:
                 std::uint32_t                           count        = 0;

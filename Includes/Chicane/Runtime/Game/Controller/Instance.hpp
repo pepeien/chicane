@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
 
     namespace Controller
     {
-        class CHICANE Instance
+        class CHICANE_RUNTIME Instance
         {
         public:
             Instance();

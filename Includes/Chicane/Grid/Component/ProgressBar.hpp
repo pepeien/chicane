@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE ProgressBar : public Component
+        class CHICANE_GRID ProgressBar : public Component
         {
         public:
             // Tag

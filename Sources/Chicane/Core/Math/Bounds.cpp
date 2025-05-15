@@ -6,12 +6,12 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(const std::vector<Box::Model::Vertex>& inVertices)
+    Bounds::Bounds(const std::vector<Vertex>& inVertices)
     {
         m_baseMin = Vec<3, float>(FLT_MAX);
         m_baseMax = Vec<3, float>(-FLT_MAX);
 
-        for (const Box::Model::Vertex& vertex : inVertices)
+        for (const Vertex& vertex : inVertices)
         {
             const Vec<3, float>& position = vertex.position;
 

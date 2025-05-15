@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Shader.hpp"
 
-#include "Chicane/Core/FileSystem.hpp"
-
 namespace Chicane
 {
     namespace Vulkan

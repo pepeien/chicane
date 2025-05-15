@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/View/Plane.hpp"
 
 namespace Chicane
@@ -11,7 +10,7 @@ namespace Chicane
 
     namespace View
     {
-        struct CHICANE Frustum
+        struct CHICANE_RUNTIME Frustum
         {
         public:
         	virtual bool contains(const Transformable* inSubject) const;

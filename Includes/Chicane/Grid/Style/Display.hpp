@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,10 +10,10 @@ namespace Chicane
         {
             enum class Display : std::uint8_t
             {
-                Flex,    // Same as `Visible` plus enables flex capabilities
-                Visible, // Visible and occupies space on the overall layout
-                Hidden,  // Visibly hidden but still occupies space on the overall layout
-                None     // Visibly hidden and doesn't occupiy space on the overall layout
+                Flex,   // Same as `Block` plus enables flex capabilities
+                Block,  // Visible and occupies space on the overall layout
+                Hidden, // Visibly hidden but still occupies space on the overall layout
+                None    // Visibly hidden and doesn't occupiy space on the overall layout
             };
         }
     }

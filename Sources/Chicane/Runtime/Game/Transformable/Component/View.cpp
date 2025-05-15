@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     CView::CView()

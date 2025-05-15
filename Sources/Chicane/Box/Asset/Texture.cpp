@@ -46,7 +46,7 @@ namespace Chicane
 
                 std::string vendorID = vendor->first;
 
-                pugi::xml_node root = getXMLRoot();
+                pugi::xml_node root = getXML();
 
                 if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
                 {
@@ -72,7 +72,7 @@ namespace Chicane
 
                 m_data = inData;
 
-                getXMLRoot().text().set(Base64::encode(inData));
+                getXML().text().set(Base64::encode(inData));
             }
 
             void Instance::setData(const std::string& inFilepath)
@@ -87,14 +87,14 @@ namespace Chicane
 
             void Instance::fetchVendor()
             {
-                if (getFilepath().empty() || isXMLEmpty())
+                if (getFilepath().empty() || isEmpty())
                 {
                     return;
                 }
 
                 std::string vendor = XML::getAttribute(
                     VENDOR_ATTRIBUTE_NAME,
-                    getXMLRoot()
+                    getXML()
                 ).as_string();
 
                 if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
@@ -109,12 +109,12 @@ namespace Chicane
 
             void Instance::fetchData()
             {
-                if (getFilepath().empty() || isXMLEmpty())
+                if (getFilepath().empty() || isEmpty())
                 {
                     return;
                 }
 
-                m_data = Base64::decode(getXMLRoot().text().as_string());
+                m_data = Base64::decode(getXML().text().as_string());
             }
         }
     }

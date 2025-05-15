@@ -181,8 +181,8 @@ namespace Chicane
             );
             descriptorPoolCreateInfo.sizes.push_back(
                 {
-                    .type = vk::DescriptorType::eStorageBuffer,
-                    .descriptorCount = descriptorPoolCreateInfo.maxSets
+                    vk::DescriptorType::eStorageBuffer,
+                    descriptorPoolCreateInfo.maxSets
                 }
             );
 
@@ -296,49 +296,28 @@ namespace Chicane
 
         void LGrid::buildVertexBuffer()
         {
-            std::vector<Box::Model::Vertex> vertices = {};
+            std::vector<Chicane::Vertex> vertices = {};
 
             for (const Grid::Component* component : m_components)
             {
-                const Vec<4, std::uint32_t> color = Grid::Style::toRgba(
-                    component->getBackgroundColorStyle()
+                const std::vector<Chicane::Vertex> primitives = component->getPrimitive();
+
+                if (primitives.empty())
+                {
+                    continue;
+                }
+
+                vertices.insert(
+                    vertices.begin(),
+                    primitives.begin(),
+                    primitives.end()
                 );
-
-                Box::Model::Vertex vertex = {};
-                vertex.color.r = color.r / 255.0f;
-                vertex.color.g = color.g / 255.0f;
-                vertex.color.b = color.b / 255.0f;
-                vertex.color.a = color.a / 255.0f;
-
-                vertex.position.x = -1.0f;
-                vertex.position.y = -1.0f;
-                vertices.push_back(vertex);
-
-                vertex.position.x =  1.0f;
-                vertex.position.y = -1.0f;
-                vertices.push_back(vertex);
-
-                vertex.position.x = 1.0f;
-                vertex.position.y = 1.0f;
-                vertices.push_back(vertex);
-
-                vertex.position.x = 1.0f;
-                vertex.position.y = 1.0f;
-                vertices.push_back(vertex);
-
-                vertex.position.x = -1.0f;
-                vertex.position.y =  1.0f;
-                vertices.push_back(vertex);
-
-                vertex.position.x = -1.0f;
-                vertex.position.y = -1.0f;
-                vertices.push_back(vertex);
             }
 
             Buffer::CreateInfo createInfo = {};
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Box::Model::Vertex) * vertices.size();
+            createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                           vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -397,7 +376,14 @@ namespace Chicane
 
             for (std::uint32_t i = 0; i < m_components.size(); i++)
             {
-                inCommandBuffer.draw(6, 1, i * 6, i);
+                const std::vector<Chicane::Vertex> primitives = m_components.at(i)->getPrimitive();
+
+                if (primitives.empty())
+                {
+                    continue;
+                }
+
+                inCommandBuffer.draw(primitives.size(), 1, i * primitives.size(), i);
             }
         }
     }

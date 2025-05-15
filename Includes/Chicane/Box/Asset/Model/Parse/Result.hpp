@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Model/Data.hpp"
 
 namespace Chicane
@@ -11,7 +11,7 @@ namespace Chicane
         {
             namespace Parse
             {
-                struct CHICANE Result
+                struct CHICANE_BOX Result
                 {
                 public:
                     std::vector<Vertex>                            vertices;

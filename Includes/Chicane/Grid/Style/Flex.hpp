@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style/Essential.hpp"
 
 namespace Chicane
@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace Style
         {
-            struct CHICANE Flex
+            struct CHICANE_GRID Flex
             {
             public:
                 enum class Direction : std::uint8_t

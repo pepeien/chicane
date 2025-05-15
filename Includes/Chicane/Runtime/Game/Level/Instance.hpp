@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Log.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Instance.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
@@ -11,7 +9,7 @@ static constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {
-    class CHICANE Level
+    class CHICANE_RUNTIME Level
     {
     public:
         Level();

@@ -2,13 +2,13 @@
 
 #include <typeindex>
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        struct CHICANE Reference
+        struct CHICANE_GRID Reference
         {
         public:
             template<typename T>

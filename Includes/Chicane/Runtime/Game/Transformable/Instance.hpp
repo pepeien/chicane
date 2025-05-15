@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Core/Math.hpp"
-#include "Chicane/Core/Event.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 
 namespace Chicane
 {
-    class CHICANE Transformable
+    class CHICANE_RUNTIME Transformable
     {
     public:
         Transformable();

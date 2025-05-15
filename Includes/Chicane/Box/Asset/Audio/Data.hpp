@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -10,7 +10,7 @@ namespace Chicane
         {
             typedef std::vector<unsigned char> RawData;
 
-            struct CHICANE CompiledData
+            struct CHICANE_BOX CompiledData
             {
             public:
                 SDL_AudioSpec    specification = {};

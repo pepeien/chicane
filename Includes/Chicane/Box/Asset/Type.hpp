@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -12,6 +12,7 @@ namespace Chicane
             {
                 Undefined, // N/A
                 Audio,     // Audio
+                Font,      // Text Font
                 Mesh,      // Two entries [Model, Texture] both being refNames
                 Model,     // 3D Model
                 Sky,       // 6 entries all being images [Positive X, Negative X, Positive Y, Negative Y, Positive Z, Negative Z]

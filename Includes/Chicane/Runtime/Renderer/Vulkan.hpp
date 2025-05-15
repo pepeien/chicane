@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Runtime/Renderer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Sky.hpp"
@@ -24,10 +24,10 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE Renderer : public Chicane::Renderer::Instance
+        class CHICANE_RUNTIME Renderer : public Chicane::Renderer::Instance
         {
         public:
-            struct CHICANE Internals
+            struct CHICANE_RUNTIME Internals
             {
             public:
                 vk::PhysicalDevice physicalDevice;
@@ -40,7 +40,7 @@ namespace Chicane
                 int                imageCount;
             };
 
-            struct CHICANE Data
+            struct CHICANE_RUNTIME Data
             {
             public:
                 Vulkan::Frame::Instance frame;

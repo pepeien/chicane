@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame.hpp"
 
 namespace Chicane
@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace SwapChain
         {
-            struct CHICANE Bundle
+            struct CHICANE_RUNTIME Bundle
             {
             public:
                 vk::SwapchainKHR             instance;

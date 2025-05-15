@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     template<typename T>
-    class CHICANE Subscription
+    class CHICANE_CORE Subscription
     {
     public:
         Subscription(

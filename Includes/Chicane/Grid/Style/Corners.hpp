@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace Style
         {
-            struct CHICANE Corners
+            struct CHICANE_GRID Corners
             {
             public:
                 void update(

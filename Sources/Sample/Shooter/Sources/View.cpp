@@ -85,6 +85,8 @@ View::View()
         "getFrametime",
         std::bind(&View::getFrametime, this, std::placeholders::_1)
     );
+
+    Chicane::Box::loadFont("Engine/Fonts/Kenney.bfon");
 }
 
 Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Event& inEvent)

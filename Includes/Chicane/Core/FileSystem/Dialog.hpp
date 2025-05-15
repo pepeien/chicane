@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Chicane/Core/Essentials.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
-        struct CHICANE Dialog
+        struct CHICANE_CORE Dialog
         {
         public:
             typedef SDL_DialogFileCallback Callback;
 
         public:
-            struct CHICANE Result
+            struct CHICANE_CORE Result
             {
             public:
                 static std::vector<Result> fromRaw(const char* const* inData);

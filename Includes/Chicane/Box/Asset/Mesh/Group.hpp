@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Mesh
         {
-            struct CHICANE Group
+            struct CHICANE_BOX Group
             {
             public:
                 bool isValid() const;

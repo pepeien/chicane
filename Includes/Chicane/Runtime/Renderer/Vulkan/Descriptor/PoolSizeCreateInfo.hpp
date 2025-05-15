@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Base.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Descriptor
         {
-            struct CHICANE PoolSizeCreateInfo
+            struct CHICANE_RUNTIME PoolSizeCreateInfo
             {
             public:
                 vk::DescriptorType type;
