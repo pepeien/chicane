@@ -1,5 +1,6 @@
 #include "Chicane/Core/Color.hpp"
 
+#include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -41,8 +42,7 @@ namespace Chicane
                     ::tolower
                 );
     
-                bool bIsTransparent = color.empty() ||
-                                      String::areEquals(color, TEXT_COLOR_TRANSPARENT);
+                bool bIsTransparent = color.empty() || String::areEquals(color, TEXT_COLOR_TRANSPARENT);
                 bool bIsNotHex      = color.size() < 7 || color.size() > 9;
     
                 if (bIsTransparent || bIsNotHex)
@@ -62,7 +62,7 @@ namespace Chicane
     
                     sscanf(
                         color.c_str(),
-                        "%02hx%02x%02hx%02hx",
+                        "%02hx%02hx%02hx%02hx",
                         &r,
                         &g,
                         &b,
@@ -97,7 +97,7 @@ namespace Chicane
                     result.r = std::stoi(values.at(0));
                     result.g = std::stoi(values.at(1));
                     result.b = std::stoi(values.at(2));
-                    result.a = values.size() < 3 ? 255 : std::stoi(values.at(3));
+                    result.a = values.size() < 4 ? 255 : std::stoi(values.at(3));
     
                     m_colors.insert(
                         std::make_pair(

@@ -17,12 +17,16 @@ namespace Chicane
                 Manager();
 
             public:
+                bool isFamilyLoaded(const std::string& inFamily) const;
+
                 // Setup
-                void load(const std::string& inId, const Font::Instance* inModel);
+                void load(const std::string& inId, const Font::Instance* inFont);
 
                 // Data
                 const RawData& getInstance(const std::string& inId) const;
                 const CompiledData& getData(const std::string& inId) const;
+
+                const RawData& getByFamily(const std::string& inFamily) const;
             };
         }
     }

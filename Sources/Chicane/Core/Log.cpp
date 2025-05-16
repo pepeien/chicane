@@ -45,27 +45,30 @@ namespace Chicane
 
             message = String::trim(message);
 
-            std::string hexColor = inHexColor;
+            std::string color = inHexColor;
             std::transform(
-                hexColor.begin(),
-                hexColor.end(),
-                hexColor.begin(),
+                color.begin(),
+                color.end(),
+                color.begin(),
                 ::toupper
             );
 
-            if (m_colors.find(hexColor) == m_colors.end())
+            if (m_colors.find(color) == m_colors.end())
             {
                 Vec<3, std::uint32_t> rgbColor = Color::toRgba(inHexColor);
 
                 m_colors.insert(
                     std::make_pair(
-                        hexColor,
-                        "38;2;" + std::to_string(rgbColor.x) + ";" + std::to_string(rgbColor.y) + ";" + std::to_string(rgbColor.z) + "m"
+                        color,
+                        "38;2;" +
+                        std::to_string(rgbColor.r) + ";" +
+                        std::to_string(rgbColor.g) + ";" +
+                        std::to_string(rgbColor.b) + "m"
                     )
                 );
             }
 
-            std::string terminalColor = m_colors.at(hexColor);
+            std::string terminalColor = m_colors.at(color);
 
             if (IS_DEBUGGING)
             {
@@ -80,7 +83,7 @@ namespace Chicane
 
             Entry instance = {};
             instance.text  = message;
-            instance.color = hexColor;
+            instance.color = color;
 
             m_logs.emplace_back(instance);
 

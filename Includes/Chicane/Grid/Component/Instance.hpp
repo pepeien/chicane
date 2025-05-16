@@ -21,6 +21,8 @@ namespace Chicane
             virtual ~Component();
 
         public:
+            virtual bool isDrawable() const { return isVisible() && Color::isVisible(getBackgroundColorStyle()); }
+
             virtual void onEvent(const SDL_Event& inEvent) { return; }
             virtual void onChildAddition(Component* inComponent) { return; }
             virtual void onTick(float inDelta) { return; }
@@ -31,7 +33,6 @@ namespace Chicane
             // Checkers
             bool isRoot() const;
             bool isVisible() const;
-            bool isDrawable() const;
             bool isValidChild(Component* inComponent) const;
 
             // Lifecycle
@@ -112,6 +113,10 @@ namespace Chicane
             Style::Position getPositionStyle() const;
 
             std::string getBackgroundColorStyle() const;
+            std::string getForegroundColorStyle() const;  
+
+            std::string getFontFamilyStyle() const;  
+            float getFontSizeStyle() const;
 
         protected:
             void refreshSize();
@@ -137,6 +142,8 @@ namespace Chicane
 
             float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
             float calculateSizeFromPixel(const std::string& inValue) const;
+
+            std::string parseColor(const std::string& inValue) const;
 
             std::string parseText(const std::string& inText) const;
 

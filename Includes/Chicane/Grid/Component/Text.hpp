@@ -14,9 +14,17 @@ namespace Chicane
             static constexpr const char* TAG_ID = "Text";
 
         public:
-            Text(const pugi::xml_node& inNode)
-                : Component(inNode)
-            {}
+            Text(const pugi::xml_node& inNode);
+
+        public:
+            void onTick(float inDelta) override;
+
+        public:
+            const std::string& getText() const;
+            void setText(const std::string& inValue);
+
+        private:
+            std::string m_text;
         };
     }
 }

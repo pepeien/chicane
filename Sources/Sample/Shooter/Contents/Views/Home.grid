@@ -1,16 +1,3 @@
 <View path="home" style="Contents/Shooter/Views/Home.decal">
-    <Container class="victory">
-        <Text class="victory__text">YOU WIN!</Text>
-    </Container>
-    <Container class="telemetry">
-        <Text id="telemetry__fps">{{ getFPS() }} FPS</Text>
-        <Text id="telemetry__frametime">{{ getFrametime() }} ms</Text>
-    </Container>
-    <Container>
-        <Container class="crosshair__dot"></Container>
-        <Container class="crosshair__top"></Container>
-        <Container class="crosshair__bottom"></Container>
-        <Container class="crosshair__left"></Container>
-        <Container class="crosshair__right"></Container>
-    </Container>
+    <Text>A</Text>
 </View>

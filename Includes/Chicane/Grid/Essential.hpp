@@ -17,6 +17,7 @@
 #   define CHICANE_GRID
 #endif
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
 
 namespace Chicane

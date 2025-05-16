@@ -1,8 +1,5 @@
 #include "Chicane/Grid/Style/Corners.hpp"
 
-#include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Style/Essential.hpp"
-
 namespace Chicane
 {
     namespace Grid

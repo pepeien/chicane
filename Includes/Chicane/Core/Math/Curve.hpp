@@ -6,10 +6,22 @@
 
 namespace Chicane
 {
-    template<std::uint32_t O>
     struct CHICANE_CORE Curve : public Line
     {
     public:
-        std::array<Vec<2, float>, O> controls = {};
+        void setSegmentCount(std::uint32_t inSegmentCount);
+
+        void addQuadraticPoint(
+            const Vec<2, float>& inControl,
+            const Vec<2, float>& inPoint
+        );
+        void addBezierPoint(
+            const Vec<2, float>& inControlA,
+            const Vec<2, float>& inControlB,
+            const Vec<2, float>& inPoint
+        );
+
+    protected:
+        std::uint32_t m_segmentCount = 0;
     };
 }

@@ -53,6 +53,7 @@ target_link_libraries(
 
     PUBLIC
         # Systems
+        Chicane::Box
         Chicane::Core
 )
 

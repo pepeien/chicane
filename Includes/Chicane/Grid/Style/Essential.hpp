@@ -73,10 +73,20 @@ namespace Chicane
 
             // Color
             static constexpr const char* BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
-            static constexpr const char* BACKGROUND_DEFAULT_COLOR        = Color::HEX_COLOR_TRANSPARENT;
+            static constexpr const char* BACKGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_TRANSPARENT;
 
             static constexpr const char* FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
-            static constexpr const char* FOREGROUND_DEFAULT_COLOR        = Color::HEX_COLOR_WHITE;
+            static constexpr const char* FOREGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_WHITE;
+
+            // Corner
+            static constexpr const char* CORNER_DEFAULT_VALUE = "0px";
+
+            // Text
+            static constexpr const char* FONT_FAMILY_ATTRIBUTE_NAME = "font-family";
+            static constexpr const char* FONT_FAMILY_DEFAULT_VALUE  = "Kenney Future";
+
+            static constexpr const char* FONT_SIZE_ATTRIBUTE_NAME = "font-size";
+            static constexpr const char* FONT_SIZE_DEFAULT_VALUE  = "16px";
 
             /*
             * Template 1: "`SINGLE_MARGIN`"

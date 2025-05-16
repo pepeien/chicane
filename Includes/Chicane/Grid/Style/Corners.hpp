@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/Style/Essential.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
@@ -22,10 +22,10 @@ namespace Chicane
                 );
 
             public:
-                std::string top    = "0px";
-                std::string bottom = "0px";
-                std::string left   = "0px";
-                std::string right  = "0px";
+                std::string top    = CORNER_DEFAULT_VALUE;
+                std::string bottom = CORNER_DEFAULT_VALUE;
+                std::string left   = CORNER_DEFAULT_VALUE;
+                std::string right  = CORNER_DEFAULT_VALUE;
             };
         }
     }

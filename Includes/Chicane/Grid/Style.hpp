@@ -6,7 +6,7 @@
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Essential.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
+#include "Chicane/Grid/Style/Font.hpp"
 #include "Chicane/Grid/Style/Instance.hpp"
-#include "Chicane/Grid/Style/ListDirection.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Source.hpp"

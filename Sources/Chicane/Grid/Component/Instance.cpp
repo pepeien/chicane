@@ -12,6 +12,8 @@ namespace Chicane
         {
             setId(XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
             setClass(XML::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
+
+            addChildren(inNode);
         }
 
         Component::Component(const std::string& inTag)
@@ -65,13 +67,6 @@ namespace Chicane
                                          !isDisplayStyle(Style::Display::Hidden);
 
             return isParentVisible && isDisplayable;
-        }
-
-        bool Component::isDrawable() const
-        {
-            const bool isBackgroundVisible = Color::isVisible(getBackgroundColorStyle());
-
-            return isVisible() && isBackgroundVisible;
         }
 
         bool Component::isValidChild(Component* inComponent) const
@@ -342,6 +337,11 @@ namespace Chicane
             }
 
             m_root = inComponent;
+
+            for (Component* child : m_children)
+            {
+                child->setRoot(m_root);
+            }
         }
 
         bool Component::hasParent() const
@@ -402,18 +402,7 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
-                Component* component = createComponent(child);
-
-                if (!component)
-                {
-                    continue;
-                }
-
-                component->setRoot(m_root);
-                component->setParent(this);
-                component->addChildren(child);
-
-                addChild(component);
+                addChild(createComponent(child));
             }
         }
 
@@ -576,37 +565,22 @@ namespace Chicane
 
         std::string Component::getBackgroundColorStyle() const
         {
-            std::string value = m_style.backgroundColor;
+            return parseColor(m_style.backgroundColor);
+        }
 
-            if (
-                String::startsWith(value, Style::RGB_KEYWORD) ||
-                String::startsWith(value, Style::RGBA_KEYWORD)
-            )
-            {
-                const std::string keyword = String::startsWith(value, Style::RGBA_KEYWORD) ?
-                    Style::RGBA_KEYWORD :
-                    Style::RGB_KEYWORD;
+        std::string Component::getForegroundColorStyle() const
+        {
+            return parseColor(m_style.foregroundColor);
+        }
 
-                std::string result = "";
-                result.append(keyword);
-                result.push_back(FUNCTION_PARAMS_OPENING);
+        std::string Component::getFontFamilyStyle() const
+        {
+            return parseText(m_style.font.family);
+        }
 
-                for (std::string value : String::split(extractParams(value), FUNCTION_PARAMS_SEPARATOR))
-                {
-                    result.append(parseText(Style::colorToReference(value)));
-                    result.append(",");
-                }
-
-                result.push_back(FUNCTION_PARAMS_CLOSING);
-
-                value = result;
-            }
-            else
-            {
-                value = parseText(value);
-            }
-
-            return value;
+        float Component::getFontSizeStyle() const
+        {
+            return calculateSize(m_style.font.size, Style::Direction::Vertical);
         }
 
         void Component::refreshSize()
@@ -955,6 +929,53 @@ namespace Chicane
             );
         }
 
+        std::string Component::parseColor(const std::string& inValue) const
+        {
+
+            if (
+                String::startsWith(inValue, Style::RGB_KEYWORD) ||
+                String::startsWith(inValue, Style::RGBA_KEYWORD)
+            )
+            {
+                const std::string keyword = String::startsWith(inValue, Style::RGBA_KEYWORD) ?
+                    Style::RGBA_KEYWORD :
+                    Style::RGB_KEYWORD;
+
+                std::string rawParams = extractParams(inValue);
+
+                if (rawParams.empty())
+                {
+                    throw std::runtime_error("Invalid " + keyword + " parameters");
+                }
+
+                std::vector<std::string> splittedParams = String::split(
+                    rawParams,
+                    FUNCTION_PARAMS_SEPARATOR
+                );
+
+                std::string result = "";
+                result.append(keyword);
+                result.push_back(FUNCTION_PARAMS_OPENING);
+
+                for (const std::string& param : splittedParams)
+                {
+                    result.append(parseText(Style::colorToReference(param)));
+                    result.append(",");
+                }
+
+                if (String::endsWith(result, ","))
+                {
+                    result.pop_back();
+                }
+
+                result.push_back(FUNCTION_PARAMS_CLOSING);
+
+                return result;
+            }
+
+            return parseText(inValue);
+        }
+
         std::string Component::parseText(const std::string& inValue) const
         {            
             if (String::trim(inValue).empty())
@@ -1055,7 +1076,7 @@ namespace Chicane
             FunctionData data = {};
             data.name = name;
 
-            for (std::string& value : String::split(params, ","))
+            for (std::string& value : String::split(params, FUNCTION_PARAMS_SEPARATOR))
             {
                 data.params.push_back(
                     parseReference(String::trim(value))

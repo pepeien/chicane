@@ -16,12 +16,6 @@ file(
 ##################### Directories #######################
 add_executable(${SHOOTER_TARGET_NAME} ${HEADERS} ${SOURCES})
 
-if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if (WIN32)
-        target_link_options(${SHOOTER_TARGET_NAME} PRIVATE -mwindows)
-    endif()
-endif()
-
 set_target_properties(
     ${SHOOTER_TARGET_NAME}
 

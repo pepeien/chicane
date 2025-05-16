@@ -1,5 +1,7 @@
 #include "Chicane/Core/String.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace String
@@ -31,7 +33,7 @@ namespace Chicane
                 return false;
             }
 
-            return String::areEquals(inTarget.substr(0, inValue.size()), inValue);
+            return areEquals(inTarget.substr(0, inValue.size()), inValue);
         }
 
         bool startsWith(const std::string& inTarget, char inValue)
@@ -41,7 +43,7 @@ namespace Chicane
                 return false;
             }
 
-            return String::areEquals(inTarget.substr(0, 1), inValue);
+            return areEquals(inTarget.substr(0, 1), inValue);
         }
 
         bool endsWith(const std::string& inTarget, const std::string& inValue)
@@ -51,7 +53,7 @@ namespace Chicane
                 return false;
             }
 
-            return String::areEquals(
+            return areEquals(
                 inTarget.substr(inTarget.size() - inValue.size()),
                 inValue
             );
@@ -103,55 +105,71 @@ namespace Chicane
             );
         }
 
-        std::vector<std::string> split(
-            const std::string& inValue,
-            char inDelimeter
-        )
+        std::vector<std::string> split(const std::string& inValue, char inDelimeter)
         {
-            std::vector<std::string> result = {};
-
-            if (inValue.empty())
-            {
-                return result;
-            }
-
-            result.reserve(inValue.size() / 2);
-
-            std::string item = "";
-
-            std::stringstream stream(inValue);
-            while (getline(stream, item, inDelimeter))
-            {
-                result.push_back(String::trim(item));
-            }
-
-            return result;
+            return split(inValue, std::string(1, inDelimeter));
         }
 
-        std::vector<std::string> split(
-            const std::string& inValue,
-            const std::string& inDelimeter
-        )
+        std::string formatSplittedBlock(const std::string& inValue, const std::string& inDelimeter)
         {
             if (inValue.empty())
             {
-                return { "" };
+                return "";
             }
+
+            std::string block = inValue;
+
+            if (startsWith(block, inDelimeter))
+            {
+                block.erase(0, 1);
+            }
+
+            if (endsWith(block, inDelimeter))
+            {
+                block.pop_back();
+            }
+
+            return trim(block);
+        }
+
+        std::vector<std::string> split(const std::string& inValue, const std::string& inDelimeter)
+        {
+            if (inValue.empty())
+            {
+                return {};
+            }
+
+            int start = 0;
 
             std::vector<std::string> result = {};
 
-            std::size_t position = 0;
-            std::size_t previous = 0;
-
-            while ((position = inValue.find(inDelimeter, previous)) != std::string::npos) 
+            for (int i = 0; i < inValue.size(); i += inDelimeter.size())
             {
-                result.push_back(
-                    String::trim(
-                        inValue.substr(previous, position - previous)
-                    )
+                if (!areEquals(inValue.substr(i, inDelimeter.size()), inDelimeter))
+                {
+                    continue;
+                }
+
+                const std::string block = formatSplittedBlock(
+                    inValue.substr(start, i - start),
+                    inDelimeter
                 );
 
-                previous = position + inDelimeter.length();
+                start = i;
+
+                if (block.empty())
+                {
+                    continue;
+                }
+
+                result.push_back(block);
+            }
+
+            const std::string block = formatSplittedBlock(inValue.substr(start), inDelimeter);
+
+            if (!block.empty())
+            {
+                result.push_back(block);
             }
 
             return result;
@@ -208,6 +226,11 @@ namespace Chicane
 
         bool isNaN(const std::string& inValue)
         {
+            if (inValue.empty())
+            {
+                return false;
+            }
+
             std::istringstream iss(inValue);
 
             double num;

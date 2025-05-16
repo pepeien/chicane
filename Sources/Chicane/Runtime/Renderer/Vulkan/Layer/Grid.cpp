@@ -308,7 +308,7 @@ namespace Chicane
                 }
 
                 vertices.insert(
-                    vertices.begin(),
+                    vertices.end(),
                     primitives.begin(),
                     primitives.end()
                 );

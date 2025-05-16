@@ -19,7 +19,7 @@ namespace Chicane
         template<typename... T>
         std::string sprint(const std::string& inValue, T... inParams)
         {
-            const int bufferSize = static_cast<int>(inValue.size()) * 10;
+            const int bufferSize = static_cast<int>(inValue.size()) * 50;
 
             char* buffer = new char[bufferSize];
 
@@ -53,14 +53,8 @@ namespace Chicane
             const std::vector<unsigned char>& inValue,
             const std::string& inDelimiter
         );
-        CHICANE_CORE std::vector<std::string> split(
-            const std::string& inValue,
-            char inDelimeter
-        );
-        CHICANE_CORE std::vector<std::string> split(
-            const std::string& inValue,
-            const std::string& inDelimeter
-        );
+        CHICANE_CORE std::vector<std::string> split(const std::string& inValue, char inDelimeter);
+        CHICANE_CORE std::vector<std::string> split(const std::string& inValue, const std::string& inDelimeter);
 
         CHICANE_CORE std::string join(
             const std::vector<std::string>& inValue,

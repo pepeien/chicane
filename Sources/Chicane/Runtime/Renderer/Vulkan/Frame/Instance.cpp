@@ -523,7 +523,6 @@ namespace Chicane
 
                     result.push_back(data);
                 }
-
                 uiResource.copyToBuffer(result.data());
             }
         }

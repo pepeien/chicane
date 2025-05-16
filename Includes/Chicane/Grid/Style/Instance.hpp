@@ -7,6 +7,7 @@
 #include "Chicane/Grid/Style/Display.hpp"
 #include "Chicane/Grid/Style/Essential.hpp"
 #include "Chicane/Grid/Style/Flex.hpp"
+#include "Chicane/Grid/Style/Font.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
@@ -38,6 +39,7 @@ namespace Chicane
                 void updateGap(const Properties& inSource);
                 void updateForegroundColor(const Properties& inSource);
                 void updateBackgroundColor(const Properties& inSource);
+                void updateFont(const Properties& inSource);
 
             public:
                 // Visiblity
@@ -60,6 +62,9 @@ namespace Chicane
                 // Color
                 std::string backgroundColor = Color::TEXT_COLOR_TRANSPARENT;
                 std::string foregroundColor = Color::TEXT_COLOR_WHITE;
+
+                // Text
+                Font        font            = {};
             };
         }
 

@@ -24,17 +24,9 @@ namespace Chicane
                     return {};
                 }
 
-                std::vector<std::string> splittedFilePath = String::split(
-                    inFilePath.string(),
-                    FileSystem::SEPARATOR
-                );
-                std::vector<std::string> splittedFilename = String::split(
-                    splittedFilePath.back(),
-                    '.'
-                );
-                std::string fileExtension = splittedFilename.back();
+                std::string fileExtension = inFilePath.filename().extension().string();
 
-                if (!String::areEquals(fileExtension, FILE_EXTENSION_NAME))
+                if (!String::endsWith(fileExtension, FILE_EXTENSION_NAME))
                 {
                     return {};
                 }
@@ -75,9 +67,14 @@ namespace Chicane
                 {
                     std::vector<std::string> splittedStyle = String::split(style, '{');
 
+                    if (splittedStyle.size() < 2)
+                    {
+                        continue;
+                    }
+
                     Source source = {};
                     source.selectors  = String::split(splittedStyle.at(0), SELECTOR_SEPARATOR);
-                    source.properties = Instance::parseSource(String::trim(splittedStyle.at(1)));
+                    source.properties = Instance::parseSource(splittedStyle.at(1));
 
                     result.push_back(source);
                 }
@@ -100,6 +97,11 @@ namespace Chicane
                         block,
                         ':'
                     );
+
+                    if (splittedBlock.size() < 2)
+                    {
+                        continue;
+                    }
 
                     std::string key = String::trim(splittedBlock.at(0));
                     std::string value = String::trim(splittedBlock.at(1));
@@ -133,6 +135,7 @@ namespace Chicane
                 updateAlignment(inSource);
                 updateForegroundColor(inSource);
                 updateBackgroundColor(inSource);
+                updateFont(inSource);
             }
 
             void Instance::updateDisplay(const Properties &inSource)
@@ -245,6 +248,11 @@ namespace Chicane
                 }
 
                 backgroundColor = String::trim(inSource.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
+            }
+
+            void Instance::updateFont(const Properties& inSource)
+            {
+                font.update(inSource);
             }
         }
     }

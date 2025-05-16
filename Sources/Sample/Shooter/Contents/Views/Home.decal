@@ -7,21 +7,29 @@
     background-color: #333333;
 }
 
-.telemetry  {
+.telemetry {
     width: 200px;
     height: 2.5vh;
     margin-left: auto;
     background-color: #333333;
 }
 
+.telemetry__fps, .telemetry__frametime {
+    width: 100%;
+    color: #24f51d;
+}
+
 .telemetry__fps {
     margin-left: 1vw;
     alignment: start center;
-    color: #24f51d;
 }
 
 .telemetry__frametime {
     alignment: end center;
+}
+
+Text {
+    width: 100%;
     color: #24f51d;
 }
 
