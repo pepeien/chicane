@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Chicane/Box/Essential.hpp"
-#include "Chicane/Box/Asset/Mesh/Group.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
+#include "Chicane/Box/Asset/Mesh/Group.hpp"
 
 namespace Chicane
 {

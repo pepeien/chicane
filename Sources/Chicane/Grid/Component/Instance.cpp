@@ -1,6 +1,5 @@
 #include "Chicane/Grid/Component/Instance.hpp"
 
-#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Loader.hpp"
 
 namespace Chicane
@@ -603,8 +602,6 @@ namespace Chicane
             }
 
             Vec<2, float> margin = Vec2Zero;
-
-            const Vec<2, float>&       size = getSize();
 
             setCursor(
                 isPositionStyle(Style::Position::Absolute) ?

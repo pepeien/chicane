@@ -1,6 +1,6 @@
 #include "Chicane/Box/Asset/Font/Manager.hpp"
 
-#include "Chicane/Box/Asset/Font/Vendor/TrueType.hpp"
+#include "Chicane/Box/Asset/Font.hpp"
 
 namespace Chicane
 {
@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Font
         {
-            static const RawData      EMPTY_INSTANCE = {};
-            static const CompiledData EMPTY_DATA     = {};
+            static const RawData    EMPTY_DATA     = {};
+            static const ParsedData EMPTY_INSTANCE = {};
 
             Manager::Manager()
                 : Super()
@@ -18,13 +18,13 @@ namespace Chicane
             bool Manager::isFamilyLoaded(const std::string& inFamily) const
             {
                 return std::find_if(
-                    m_instances.begin(),
-                    m_instances.end(),
-                    [inFamily](const std::pair<std::string, RawData>& pair)
+                    m_datum.begin(),
+                    m_datum.end(),
+                    [inFamily](const std::pair<std::string, ParsedData>& pair)
                     {
                         return String::areEquals(inFamily, pair.second.name);
                     }
-                ) != m_instances.end();
+                ) != m_datum.end();
             }
 
             void Manager::load(const std::string& inId, const Font::Instance* inFont)
@@ -34,41 +34,62 @@ namespace Chicane
                     return;
                 }
 
-                switch (inFont->getVendor())
+                if (inFont->isEmpty())
                 {
-                case Vendor::Type::TrueType:
-                    Super::load(inId, Vendor::TrueType::parse(inFont->getData()));
+                    return;
+                }
+
+                RawData instance = {};
+                instance.vendor = inFont->getVendor();
+                instance.data   = inFont->getData();
+
+                Super::load(inId, instance);
+
+                allocate(inId);
+            }
+
+            void Manager::allocate(const std::string& inId)
+            {
+                if (isAllocated(inId))
+                {
+                    return;
+                }
+
+                const RawData& instance = getData(inId);
+
+                switch (instance.vendor)
+                {
+                case Vendor::TrueType:
+                    Super::allocate(inId, TrueType::parse(instance.data));
 
                     break;
 
                 default:
                     throw std::runtime_error("Failed to import Model due to invalid type");
                 }
-
-                Super::allocate(inId, {});
             }
 
-            const RawData& Manager::getInstance(const std::string& inId) const
+            const RawData& Manager::getData(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
-                    return EMPTY_INSTANCE;
+                    return EMPTY_DATA;
                 }
 
                 return m_instances.at(inId);
             }
 
-            const CompiledData& Manager::getData(const std::string& inId) const
+            const ParsedData& Manager::getParsed(const std::string& inId) const
             {
                 if (!isAllocated(inId))
                 {
-                    return EMPTY_DATA;
+                    return EMPTY_INSTANCE;
                 }
 
                 return m_datum.at(inId);
             }
 
-            const RawData& Manager::getByFamily(const std::string& inFamily) const
+            const ParsedData& Manager::getByFamily(const std::string& inFamily) const
             {
                 if (!isFamilyLoaded(inFamily))
                 {
@@ -76,15 +97,15 @@ namespace Chicane
                 }
 
                 auto found = std::find_if(
-                    m_instances.begin(),
-                    m_instances.end(),
-                    [inFamily](const std::pair<std::string, RawData>& pair)
+                    m_datum.begin(),
+                    m_datum.end(),
+                    [inFamily](const std::pair<std::string, ParsedData>& pair)
                     {
                         return String::areEquals(inFamily, pair.second.name);
                     }
                 );
 
-                if (found == m_instances.end())
+                if (found == m_datum.end())
                 {
                     return EMPTY_INSTANCE;
                 }

@@ -49,6 +49,7 @@ target_include_directories(
 
     PUBLIC
         # Vendors
+        ${VENDORS_DIR}/earcut
         ${VENDORS_DIR}/stb
 )
 

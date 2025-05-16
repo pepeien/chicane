@@ -1,12 +1,14 @@
 #include "Chicane/Box/Asset/Model/Manager.hpp"
 
+#include "Chicane/Box/Asset/Model/Wavefront.hpp"
+
 namespace Chicane
 {
     namespace Box
     {
         namespace Model
         {
-            static const RawData      EMPTY_INSTANCE = {};
+            static const ParsedData   EMPTY_INSTANCE = {};
             static const CompiledData EMPTY_DATA     = {};
 
             Manager::Manager()
@@ -15,7 +17,7 @@ namespace Chicane
 
             void Manager::onAllocation(const std::string& inId, const CompiledData& inData)
             {
-                const RawData& instance = getInstance(inId);
+                const ParsedData& instance = getInstance(inId);
 
                 m_vertices.insert(
                     m_vertices.end(),
@@ -46,7 +48,7 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                const RawData& instance = getInstance(inId);
+                const ParsedData& instance = getInstance(inId);
 
                 CompiledData data = {};
                 data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
@@ -79,27 +81,19 @@ namespace Chicane
                     return;
                 }
 
-                Parse::Result result = {};
-
                 switch (inModel->getVendor())
                 {
-                case Vendor::Type::Wavefront:
-                    Vendor::Wavefront::parse(result, inModel->getData());
+                case Vendor::Wavefront:
+                    Super::load(inId, Wavefront::parse(inModel->getData()));
 
                     break;
 
                 default:
                     throw std::runtime_error("Failed to import Model due to invalid type");
                 }
-
-                RawData instance = {};
-                instance.vertices = result.vertices;
-                instance.indices  = result.indexes;
-
-                Super::load(inId, instance);
             }
 
-            const RawData& Manager::getInstance(const std::string& inId) const
+            const ParsedData& Manager::getInstance(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {

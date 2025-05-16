@@ -1,7 +1,5 @@
 #include "Chicane/Grid/Loader.hpp"
 
-#include "Chicane/Grid/Essential.hpp"
-
 namespace Chicane
 {
     namespace Grid

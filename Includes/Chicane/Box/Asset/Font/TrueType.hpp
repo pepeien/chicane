@@ -9,12 +9,9 @@ namespace Chicane
     {
         namespace Font
         {
-            namespace Vendor
+            namespace TrueType
             {
-                namespace TrueType
-                {
-                    CHICANE_BOX RawData parse(const std::vector<unsigned char>& inData);
-                }
+                CHICANE_BOX ParsedData parse(const std::vector<unsigned char>& inData);
             }
         }
     }

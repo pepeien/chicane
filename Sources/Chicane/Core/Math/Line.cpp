@@ -4,7 +4,7 @@ namespace Chicane
 {
     bool Line::isEmpty() const
     {
-        return !m_points.empty();
+        return m_points.empty();
     }
 
     const Vec<2, float>& Line::getStartPoint() const

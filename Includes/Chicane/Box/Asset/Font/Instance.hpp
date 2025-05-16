@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Chicane/Box/Essential.hpp"
+#include "Chicane/Box/Asset/Font/Vendor.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
-#include "Chicane/Box/Asset/Font/Vendor/Type.hpp"
 
 namespace Chicane
 {
@@ -16,8 +16,8 @@ namespace Chicane
                 Instance(const std::string& inFilepath);
 
             public:
-                Vendor::Type getVendor() const;
-                void setVendor(Vendor::Type inVendor);
+                Vendor getVendor() const;
+                void setVendor(Vendor inVendor);
 
                 const std::vector<unsigned char>& getData() const;
                 void setData(const std::vector<unsigned char>& inData);
@@ -28,7 +28,7 @@ namespace Chicane
                 void fetchData();
 
             private:
-                Vendor::Type               m_vendor;
+                Vendor                     m_vendor;
                 std::vector<unsigned char> m_data;
             };
         }

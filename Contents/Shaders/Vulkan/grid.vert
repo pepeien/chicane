@@ -22,7 +22,7 @@ void main() {
     outColor = inColor;
 
     vec2 scaledPos = inPosition.xy * mesh.size;
-    vec2 finalPos = scaledPos + mesh.position;
+    vec2 finalPos  = scaledPos + mesh.position;
 
     gl_Position = vec4(finalPos, 0.0, 1.0);
 }

@@ -130,7 +130,7 @@ namespace Chicane
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {
-            const Box::Model::RawData& model = manager->getInstance(group.getModel());
+            const Box::Model::ParsedData& model = manager->getInstance(group.getModel());
 
             vertices.insert(
                 vertices.end(),

@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Model
         {
-            struct CHICANE_BOX RawData
+            struct CHICANE_BOX ParsedData
             {
             public:
                 std::vector<Vertex>        vertices = {};

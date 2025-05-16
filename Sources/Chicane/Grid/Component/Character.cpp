@@ -4,8 +4,8 @@ namespace Chicane
 {
     namespace Grid
     {
-        static const Box::Font::RawData EMPTY_FONT  = {};
-        static const Box::Font::Glyph   EMPTY_GLYPH = {};
+        static const Box::Font::ParsedData EMPTY_FONT  = {};
+        static const Box::Font::Glyph  EMPTY_GLYPH = {};
 
         Character::Character()
             : Component(TAG_ID),
@@ -36,6 +36,9 @@ namespace Chicane
                 return {};
             }
 
+            const std::vector<Vec<3, float>>& vertices = getGlyph().vertices;
+            const std::vector<std::uint32_t>& indices  = getGlyph().indices;
+
             std::vector<Vertex> result = {};
 
             Vertex vertex = {};
@@ -43,10 +46,10 @@ namespace Chicane
                 getForegroundColorStyle()
             );
 
-            for (const Vec<3, float>& points : getGlyph().vertices)
+            for (std::uint32_t index : indices)
             {
-                vertex.position = points;
-
+                vertex.position = vertices.at(index);
+    
                 result.push_back(vertex);
             }
 
@@ -75,7 +78,7 @@ namespace Chicane
             return Box::getFontManager()->isFamilyLoaded(getFontFamilyStyle());
         }
 
-        const Box::Font::RawData& Character::getFont() const
+        const Box::Font::ParsedData& Character::getFont() const
         {
             if (!hasFont())
             {

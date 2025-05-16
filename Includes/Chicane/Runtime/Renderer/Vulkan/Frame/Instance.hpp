@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/View/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"

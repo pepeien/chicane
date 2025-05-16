@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Font/Data.hpp"
+#include "Chicane/Box/Asset/Font/Glyph.hpp"
 #include "Chicane/Box/Asset/Font/Instance.hpp"
 #include "Chicane/Box/Asset/Font/Manager.hpp"
-#include "Chicane/Box/Asset/Font/Vendor/TrueType.hpp"
-#include "Chicane/Box/Asset/Font/Vendor/Type.hpp"
+#include "Chicane/Box/Asset/Font/TrueType.hpp"
+#include "Chicane/Box/Asset/Font/Vendor.hpp"
 
 namespace Chicane
 {

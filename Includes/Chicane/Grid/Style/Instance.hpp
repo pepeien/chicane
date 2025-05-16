@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"

@@ -6,12 +6,12 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Model
+        namespace Font
         {
             enum class Vendor : std::uint8_t
             {
                 Undefined, // N/A
-                Wavefront  // .obj
+                TrueType  // .ttf
             };
         }
     }

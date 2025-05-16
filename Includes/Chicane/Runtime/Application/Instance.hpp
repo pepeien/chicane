@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
-#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
+#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Game.hpp"
 #include "Chicane/Runtime/Renderer.hpp"
 

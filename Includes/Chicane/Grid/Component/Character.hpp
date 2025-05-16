@@ -26,7 +26,7 @@ namespace Chicane
             void setCharacter(char inValue);
 
             bool hasFont() const;
-            const Box::Font::RawData& getFont() const;
+            const Box::Font::ParsedData& getFont() const;
 
             bool hasGlyph() const;
             const Box::Font::Glyph& getGlyph() const;
