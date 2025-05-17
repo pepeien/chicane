@@ -29,6 +29,57 @@ namespace Chicane
 
                 return inValue;
             }
+
+            std::vector<std::string> splitOneliner(const std::string& inValue)
+            {
+                std::vector<std::string> result = {};
+
+                std::uint32_t start = 0;
+                std::uint32_t end   = 0;
+
+                std::uint32_t parathesisCount = 0;
+
+                for (std::uint32_t i = 0; i < inValue.size(); i++)
+                {
+                    const char character = inValue.at(i);
+
+                    end++;
+
+                    if (character == FUNCTION_PARAMS_OPENING)
+                    {
+                        parathesisCount++;
+
+                        continue;
+                    }
+
+                    if (character == FUNCTION_PARAMS_CLOSING)
+                    {
+                        parathesisCount--;
+
+                        continue;
+                    }
+
+                    if (character != ONELINE_SEPARATOR || parathesisCount > 0)
+                    {
+                        continue;
+                    }
+
+                    std::string block = inValue.substr(start, end - start);
+
+                    start = end;
+
+                    if (block.empty())
+                    {
+                        continue;
+                    }
+
+                    result.push_back(String::trim(block));
+                }
+
+                result.push_back(inValue.substr(start, end - start));
+
+                return result;
+            }
         }
     }
 }

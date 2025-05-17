@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         static const Box::Font::ParsedData EMPTY_FONT  = {};
-        static const Box::Font::Glyph  EMPTY_GLYPH = {};
+        static const Box::Font::Glyph      EMPTY_GLYPH = {};
 
         Character::Character()
             : Component(TAG_ID),
@@ -19,41 +19,55 @@ namespace Chicane
                         return;
                     }
 
-                    refreshStyle();
+                    const Style::Instance& style = m_parent->getStyle();
+
+                    m_style.foregroundColor = style.foregroundColor;
+                    m_style.font            = style.font;
+                    m_style.width           = m_style.font.size;
+                    m_style.height          = m_style.font.size;
+
+                    if (!hasGlyph())
+                    {
+                        return;
+                    }
+
+                    const Box::Font::Glyph& glyph = getGlyph();
+                    //m_style.margin.top    = Style::AUTO_SIZE_UNIT;
+                    //m_style.margin.right  = String::sprint("-%d%s", static_cast<int>(glyph.bearing.x), Style::PIXEL_SIZE_UNIT);
+                    //m_style.margin.bottom = String::sprint("-%d%s", static_cast<int>(glyph.bearing.y), Style::PIXEL_SIZE_UNIT);
+                    //m_style.margin.left   = Style::AUTO_SIZE_UNIT;
+
+                    m_style.emmitChanges();
                 }
             );
         }
 
         bool Character::isDrawable() const
         {
-            return isVisible() && hasGlyph();
+            return isVisible() && hasGlyph() && !isPrimitiveEmpty();
         }
 
-        std::vector<Vertex> Character::getPrimitive() const
+        void Character::refreshPrimitive()
         {
+            m_primitive.clear();
+
             if (!hasGlyph())
             {
-                return {};
+                return;
             }
 
             const std::vector<Vec<3, float>>& vertices = getGlyph().vertices;
             const std::vector<std::uint32_t>& indices  = getGlyph().indices;
 
-            std::vector<Vertex> result = {};
-
             Vertex vertex = {};
-            vertex.color  = Color::toRgba(
-                getForegroundColorStyle()
-            );
+            vertex.color  = m_style.foregroundColor;
 
             for (std::uint32_t index : indices)
             {
                 vertex.position = vertices.at(index);
     
-                result.push_back(vertex);
+                m_primitive.push_back(vertex);
             }
-
-            return result;
         }
 
         char Character::getCharacter() const
@@ -69,13 +83,11 @@ namespace Chicane
             }
 
             m_character = inValue;
-
-            refreshStyle();
         }
 
         bool Character::hasFont() const
         {
-            return Box::getFontManager()->isFamilyLoaded(getFontFamilyStyle());
+            return Box::getFontManager()->isFamilyLoaded(m_style.font.family);
         }
 
         const Box::Font::ParsedData& Character::getFont() const
@@ -85,7 +97,7 @@ namespace Chicane
                 return EMPTY_FONT;
             }
 
-            return Box::getFontManager()->getByFamily(getFontFamilyStyle());
+            return Box::getFontManager()->getByFamily(m_style.font.family);
         }
 
         bool Character::hasGlyph() const
@@ -101,28 +113,6 @@ namespace Chicane
             }
 
             return getFont().getGlyph(m_character);
-        }
-
-        void Character::refreshStyle()
-        {
-            const Style::Instance& style = m_parent->getStyle();
-
-            m_style.foregroundColor = style.foregroundColor;
-            m_style.font            = style.font;
-
-            if (!hasGlyph())
-            {
-                return;
-            }
-
-            const Box::Font::Glyph& glyph = getGlyph();
-
-            m_style.width         = m_style.font.size;
-            m_style.height        = m_style.font.size;
-            //m_style.margin.top    = Style::AUTO_SIZE_UNIT;
-            //m_style.margin.right  = String::sprint("-%d%s", static_cast<int>(glyph.bearing.x), Style::PIXEL_SIZE_UNIT);
-            //m_style.margin.bottom = String::sprint("-%d%s", static_cast<int>(glyph.bearing.y), Style::PIXEL_SIZE_UNIT);
-            //m_style.margin.left   = Style::AUTO_SIZE_UNIT;
         }
     }
 }

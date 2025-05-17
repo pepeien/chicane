@@ -19,7 +19,8 @@ namespace Chicane
         public:
             bool isDrawable() const override;
 
-            std::vector<Vertex> getPrimitive() const override;
+        protected:
+            void refreshPrimitive() override;
 
         public:
             char getCharacter() const;
@@ -30,9 +31,6 @@ namespace Chicane
 
             bool hasGlyph() const;
             const Box::Font::Glyph& getGlyph() const;
-
-        private:
-            void refreshStyle();
 
         private:
             char m_character;

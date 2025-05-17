@@ -16,8 +16,8 @@ namespace Chicane
         public:
             Container(const pugi::xml_node& inNode);
 
-        public:
-            std::vector<Vertex> getPrimitive() const override;
+        protected:
+            void refreshPrimitive() override;
         };
     }
 }

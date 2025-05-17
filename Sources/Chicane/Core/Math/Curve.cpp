@@ -4,6 +4,41 @@
 
 namespace Chicane
 {
+    std::vector<std::vector<std::array<float, 2>>> getPolygons(const std::vector<Curve>& inContours)
+    {
+        std::vector<std::vector<std::array<float, 2>>> result = {};
+
+        for (const Curve& curve : inContours)
+        {
+            if (curve.isEmpty())
+            {
+                continue;
+            }
+
+            std::vector<std::array<float, 2>> contour = {};
+
+            for (const Vec<2, float>& point : curve.getPoints())
+            {
+                contour.push_back({ point.x, point.y });
+            }
+
+            if (
+                contour.size() > 1 &&
+                (
+                    contour.front()[0] != contour.back()[0] || 
+                    contour.front()[1] != contour.back()[1]
+                )
+            )
+            {
+                contour.push_back(contour.front());
+            }
+
+            result.push_back(contour);
+        }
+
+        return result;
+    }
+
     std::vector<Vec<3, float>> Curve::getTriangleVertices(
         const std::vector<Curve>& inContours,
         float inPixelSize
@@ -41,35 +76,36 @@ namespace Chicane
             return {};
         }
 
-        std::vector<Curve> sortedContours = inContours;
+        std::vector<Curve> outerContours = {};
+        std::vector<Curve> holeContours  = {};
 
-        std::sort(
-            sortedContours.begin(),
-            sortedContours.end(),
-            [](const Curve& inA, const Curve& inB)
-            {
-                return std::abs(inA.getSignedArea()) > std::abs(inB.getSignedArea());
-            }
-        );
-
-        std::vector<std::vector<std::array<float, 2>>> polygons = {};
-
-        for (const Curve& curve : sortedContours)
+        for (const Curve& curve : inContours)
         {
-            if (curve.isEmpty())
+            if (curve.getSignedArea() < 0)
             {
+                holeContours.push_back(curve);
+
                 continue;
             }
 
-            std::vector<std::array<float, 2>> contour = {};
-
-            for (const Vec<2, float>& point : curve.getPoints())
-            {
-                contour.push_back({ point.x, point.y });
-            }
-
-            polygons.push_back(contour);
+            outerContours.push_back(curve);
         }
+
+        std::vector<std::vector<std::array<float, 2>>> polygons = {};
+
+        const auto outerPolygons = getPolygons(outerContours);
+        polygons.insert(
+            polygons.end(),
+            outerPolygons.begin(),
+            outerPolygons.end()
+        );
+
+        const auto holePolygons = getPolygons(holeContours);
+        polygons.insert(
+            polygons.end(),
+            holePolygons.begin(),
+            holePolygons.end()
+        );
 
         return mapbox::earcut<std::uint32_t>(polygons);
     }
@@ -89,17 +125,20 @@ namespace Chicane
             return;
         }
 
-        for (int i = 0; i <= m_segmentCount; i++)
+        const Vec<2, float>& startPoint = getEndPoint();
+
+        for (int i = 1; i <= m_segmentCount; i++)
         {
             float t = static_cast<float>(i) / m_segmentCount;
             float mt = 1.0f - t;
 
             // Quadratic bezier formula: B(t) = (1-t)²P₀ + 2(1-t)tP₁ + t²P₂
-            addPoint(
-                mt * mt * getEndPoint() + 
-                2.0f * mt * t * inControl + 
-                t * t * inPoint
-            );
+            Vec<2, float> point = {};
+            point += mt * mt * startPoint;
+            point += 2.0f * mt * t * inControl;
+            point += t * t * inPoint;
+
+            addPoint(point);
         }
     }
 
@@ -114,32 +153,41 @@ namespace Chicane
             return;
         }
 
-        for (int i = 0; i <= m_segmentCount; i++)
+        const Vec<2, float>& startPoint = getEndPoint();
+
+        for (int i = 1; i <= m_segmentCount; i++)
         {
             float t = static_cast<float>(i) / m_segmentCount;
             float mt = 1.0f - t;
 
             // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ + t³P₃
-            addPoint(
-                mt * mt * mt * getEndPoint() + 
-                3.0f * mt * mt * t * inControlA + 
-                3.0f * mt * t * t * inControlB + 
-                t * t * t * inPoint
-            );
+            Vec<2, float> point = {};
+            point += mt * mt * mt * startPoint;
+            point += 3.0f * mt * mt * t * inControlA;
+            point += 3.0f * mt * t * t * inControlB;
+            point += t * t * t * inPoint;
+
+            addPoint(point);
         }
     }
 
     float Curve::getSignedArea() const
     {
-        double area = 0.0;
-
-        for (size_t i = 0; i < m_points.size(); ++i) {
-            const auto& p0 = m_points.at(i);
-            const auto& p1 = m_points.at((i + 1) % m_points.size());
-
-            area += (p0[0] * p1[1]) - (p1[0] * p0[1]);
+        if (m_points.size() < 3) {
+            return 0.0f;
         }
 
-        return 0.5 * area;
+        double result = 0.0;
+
+        for (size_t i = 0; i < m_points.size(); ++i) {
+            const Vec<2, float>& point        = m_points.at(i);
+            const Vec<2, float>& nearestPoint = m_points.at((i + 1) % m_points.size());
+
+            result += static_cast<double>(
+                (point.x * nearestPoint.y) - (nearestPoint.x * point.y)
+            );
+        }
+
+        return static_cast<float>(0.5f * result);
     }
 }

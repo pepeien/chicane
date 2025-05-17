@@ -14,6 +14,8 @@ namespace Chicane
 {
     namespace Grid
     {
+        class Component;
+
         namespace Style
         {
             struct CHICANE_GRID Instance
@@ -26,47 +28,102 @@ namespace Chicane
                 static Properties parseSource(const std::string& inData);
 
             public:
-                void update(const Properties& inSource);
+                Instance(const Properties& inProperties, Component* inParent);
+                Instance();
+
+            public:
+                bool isDisplay(Display inValue) const;
+                bool isPosition(Position inValue) const;
+
+                bool hasProperties() const;
+                void setProperties(const Properties& inProperties);
+
+                bool hasParent() const;
+                void setParent(Component* inComponent);
+
+                void refresh();
+
+                void emmitChanges();
+                Subscription<void*>* watchChanges(
+                    std::function<void (void*)> inNext,
+                    std::function<void (const std::string&)> inError = nullptr,
+                    std::function<void ()> inComplete = nullptr
+                ) const;
 
             private:
-                void updateDisplay(const Properties& inSource);
-                void updateSize(const Properties& inSource);
-                void updateFlex(const Properties& inSource);
-                void updatePosition(const Properties& inSource);
-                void updateAlignment(const Properties& inSource);
-                void updateMargin(const Properties& inSource);
-                void updateGap(const Properties& inSource);
-                void updateForegroundColor(const Properties& inSource);
-                void updateBackgroundColor(const Properties& inSource);
-                void updateFont(const Properties& inSource);
+                void refreshDisplay();
+                void refreshSize();
+                void refreshPosition();
+                void refreshAlignment();
+                void refreshMargin();
+                void refreshForegroundColor();
+                void refreshBackgroundColor();
+                void refreshFont();
+
+                Color::Rgba parseColor(const std::string& inValue) const;
+                float parseSize(const std::string& inValue, Direction inDirection) const;
+                std::string parseText(const std::string& inValue) const;
+
+                float parseCalculation(const std::string& inValue, Style::Direction inDirection) const;
+
+                float parsePercentage(const std::string& inValue, Style::Direction inDirection) const;
+                float parsePercentage(float inValue, Style::Direction inDirection) const;
+
+                float parseViewportHeight(const pugi::xml_attribute& inAttribute) const;
+                float parseViewportHeight(const std::string& inValue) const;
+                float parseViewportHeight(float inValue) const;
+
+                float parseViewportWidth(const pugi::xml_attribute& inAttribute) const;
+                float parseViewportWidth(const std::string& inValue) const;
+                float parseViewportWidth(float inValue) const;
+
+                float parsePixel(const pugi::xml_attribute& inAttribute) const;
+                float parsePixel(const std::string& inValue) const;
+
+                template<typename T>
+                void setProperty(T& outProperty, T inNewValue)
+                {
+                    if (outProperty == inNewValue)
+                    {
+                        return;
+                    }
+
+                    outProperty = inNewValue;
+
+                    emmitChanges();
+                }
 
             public:
                 // Visiblity
-                std::string display         = DISPLAY_TYPE_BLOCK;
+                Display display;
 
                 // Size
-                std::string height          = "0px";
-                std::string width           = "0px";
+                float   width;
+                float   height;
 
                 // Flex
-                Flex        flex            =  {};
+                Flex        flex;
 
                 // Positioning
-                std::string position        = POSITION_TYPE_RELATIVE;
-                std::string align           = ALIGNMENT_TYPE_START;
-                std::string justify         = ALIGNMENT_TYPE_START;
-                Corners     gap             = {};
-                Corners     margin          = {};
+                Position    position;
+                Alignment   align;
+                Alignment   justify;
+                Corners     margin;
 
                 // Color
-                std::string backgroundColor = Color::TEXT_COLOR_TRANSPARENT;
-                std::string foregroundColor = Color::TEXT_COLOR_WHITE;
+                Color::Rgba backgroundColor;
+                Color::Rgba foregroundColor;
 
                 // Text
-                Font        font            = {};
+                Font        font;
+
+            private:
+                Properties                         m_properties;
+
+                Component*                         m_parent;
+
+                std::unique_ptr<Observable<void*>> m_changesObersable;
             };
         }
-
-        typedef std::unordered_map<std::string, Style::Instance> Styles;
     }
 }

@@ -19,7 +19,7 @@ namespace Chicane
             : m_tag(inTag),
             m_id(""),
             m_class(""),
-            m_style({}),
+            m_style(Style::Instance()),
             m_functions({}),
             m_root(nullptr),
             m_parent(nullptr),
@@ -28,8 +28,20 @@ namespace Chicane
             m_size({}),
             m_sizeObservable(std::make_unique<Observable<const Vec<2, float>&>>()),
             m_position({}),
-            m_positionObservable(std::make_unique<Observable<const Vec<2, float>&>>())
-        {}
+            m_positionObservable(std::make_unique<Observable<const Vec<2, float>&>>()),
+            m_primitive({})
+        {
+            m_style.setParent(this);
+
+            m_style.watchChanges(
+                [&](void* inParam)
+                {
+                    refreshSize();
+                    refreshPosition();
+                    refreshPrimitive();
+                }
+            );
+        }
 
         Component::~Component()
         {
@@ -43,8 +55,7 @@ namespace Chicane
 
         void Component::tick(float inDelta)
         {
-            refreshSize();
-            refreshPosition();
+            refreshStyle();
 
             onTick(inDelta);
 
@@ -62,8 +73,8 @@ namespace Chicane
         bool Component::isVisible() const
         {
             const bool isParentVisible = isRoot() ? true : m_parent->isVisible();
-            const bool isDisplayable   = !isDisplayStyle(Style::Display::None) &&
-                                         !isDisplayStyle(Style::Display::Hidden);
+            const bool isDisplayable   = !m_style.isDisplay(Style::Display::None) &&
+                                         !m_style.isDisplay(Style::Display::Hidden);
 
             return isParentVisible && isDisplayable;
         }
@@ -187,12 +198,7 @@ namespace Chicane
 
         void Component::setStyle(const Style::Properties& inSource)
         {
-            m_style.update(inSource);
-        }
-
-        void Component::setStyle(const Style::Instance& inStyle)
-        {
-            m_style = inStyle;
+            m_style.setProperties(inSource);
         }
 
         bool Component::hasReference(const std::string& inId, bool isLocalOnly) const
@@ -205,12 +211,12 @@ namespace Chicane
                 return wasFoundLocally;
             }
 
-            return wasFoundLocally || m_parent->hasReference(inId);
+            return wasFoundLocally || m_parent->isReference(inId);
         }
 
         Reference* Component::getReference(const std::string& inId) const
         {
-            if (!hasReference(inId))
+            if (!isReference(inId))
             {
                 return nullptr;
             }
@@ -266,12 +272,12 @@ namespace Chicane
                 return isLocal;
             }
 
-            return isLocal || m_parent->hasFunction(inId);
+            return isLocal || m_parent->isFunction(inId);
         }
 
         const Function Component::getFunction(const std::string& inId) const
         {
-            if (!hasFunction(inId))
+            if (!isFunction(inId))
             {
                 return nullptr;
             }
@@ -505,81 +511,24 @@ namespace Chicane
             return subscription;
         }
 
-        bool Component::isDisplayStyle(Style::Display inDisplay) const
+        bool Component::isPrimitiveEmpty() const
         {
-            return getDisplayStyle() == inDisplay;
+            return m_primitive.empty();
         }
 
-        Style::Display Component::getDisplayStyle() const
+        std::uint32_t Component::getPrimitiveCount() const
         {
-            std::string value = m_style.display;
-
-            if (String::startsWith(value, Style::VARIABLE_KEYWORD))
-            {
-                value = parseText(Style::variableToReference(value));
-            }
-
-            if (String::areEquals(value, Style::DISPLAY_TYPE_BLOCK))
-            {
-                return Style::Display::Block;
-            }
-
-            if (String::areEquals(value, Style::DISPLAY_TYPE_FLEX))
-            {
-                return Style::Display::Flex;
-            }
-
-            if (String::areEquals(value, Style::DISPLAY_TYPE_HIDDEN))
-            {
-                return Style::Display::Hidden;
-            }
-
-            return Style::Display::None;
+            return m_primitive.size();
         }
 
-        float Component::getWidthStyle() const
+        const std::vector<Vertex>& Component::getPrimitive() const
         {
-            return calculateSize(m_style.width, Style::Direction::Horizontal);
+            return m_primitive;
         }
 
-        float Component::getHeightStyle() const
+        void Component::refreshStyle()
         {
-            return calculateSize(m_style.height, Style::Direction::Vertical);
-        }
-
-        bool Component::isPositionStyle(Style::Position inPosition) const
-        {
-            return getPositionStyle() == inPosition;
-        }
-
-        Style::Position Component::getPositionStyle() const
-        {
-            if (String::areEquals(m_style.position, Style::POSITION_TYPE_ABSOLUTE))
-            {
-                return Style::Position::Absolute;
-            }
-
-            return Style::Position::Relative;
-        }
-
-        std::string Component::getBackgroundColorStyle() const
-        {
-            return parseColor(m_style.backgroundColor);
-        }
-
-        std::string Component::getForegroundColorStyle() const
-        {
-            return parseColor(m_style.foregroundColor);
-        }
-
-        std::string Component::getFontFamilyStyle() const
-        {
-            return parseText(m_style.font.family);
-        }
-
-        float Component::getFontSizeStyle() const
-        {
-            return calculateSize(m_style.font.size, Style::Direction::Vertical);
+            m_style.refresh();
         }
 
         void Component::refreshSize()
@@ -589,7 +538,7 @@ namespace Chicane
                 return;
             }
 
-            setSize(getWidthStyle(), getHeightStyle());
+            setSize(m_style.width, m_style.height);
         }
 
         void Component::refreshPosition()
@@ -601,46 +550,18 @@ namespace Chicane
                 return;
             }
 
-            Vec<2, float> margin = Vec2Zero;
-
             setCursor(
-                isPositionStyle(Style::Position::Absolute) ?
+                m_style.isPosition(Style::Position::Absolute) ?
                 Vec2Zero :
                 m_parent->getCursor()
             );
 
-            float top    = calculateSize(m_style.margin.top,    Style::Direction::Vertical);
-            float right  = calculateSize(m_style.margin.right,  Style::Direction::Horizontal);
-            float bottom = calculateSize(m_style.margin.bottom, Style::Direction::Vertical);
-            float left   = calculateSize(m_style.margin.left,   Style::Direction::Horizontal);
+            Vec<2, float> margin = {
+                m_style.margin.left - m_style.margin.right,
+                m_style.margin.top - m_style.margin.bottom
+            };
 
-            if (
-                String::areEquals(m_style.margin.left, Style::AUTO_SIZE_UNIT) &&
-                String::areEquals(m_style.margin.right, Style::AUTO_SIZE_UNIT)
-            )
-            {
-                margin.x = left * 0.5f;
-            }
-            else
-            {
-                margin.x  = left;
-                margin.x -= right;
-            }
-
-            if (
-                String::areEquals(m_style.margin.top, Style::AUTO_SIZE_UNIT) &&
-                String::areEquals(m_style.margin.bottom, Style::AUTO_SIZE_UNIT)
-            )
-            {
-                margin.y = top * 0.5f;
-            }
-            else
-            {
-                margin.y  = top;
-                margin.y -= bottom;
-            }
-
-            if (isPositionStyle(Style::Position::Relative))
+            if (m_style.isPosition(Style::Position::Relative))
             {
                 const Vec<2, float> parentCenter = m_parent->getSize() * 0.5f;
   
@@ -669,310 +590,6 @@ namespace Chicane
             setPosition(m_cursor + margin);
         }
 
-        float Component::calculateSize(const std::string& inValue, Style::Direction inDirection) const
-        {
-            if (inValue.empty())
-            {
-                return 0.0f;
-            }
-
-            if (String::startsWith(inValue, Style::VARIABLE_KEYWORD))
-            {
-                return calculateSize(parseText(Style::variableToReference(inValue)), inDirection);
-            }
-
-            if (String::startsWith(inValue, Style::CALCULATION_KEYWORD))
-            {
-                return calculateSizeFromCalculation(inValue, inDirection);
-            }
-
-            if (String::areEquals(inValue, Style::AUTO_SIZE_UNIT))
-            {
-                return calculateSizeFromPercentage("100%", inDirection);
-            }
-
-            if (String::endsWith(inValue, Style::PERCENTAGE_SIZE_UNIT))
-            {
-                return calculateSizeFromPercentage(inValue, inDirection);
-            }
-
-            if (String::endsWith(inValue, Style::VIEWPORT_HEIGHT_SIZE_UNIT))
-            {
-                return calculateSizeFromViewportHeight(inValue);
-            }
-
-            if (String::endsWith(inValue, Style::VIEWPORT_WIDTH_SIZE_UNIT))
-            {
-                return calculateSizeFromViewportWidth(inValue);
-            }
-
-            if (String::endsWith(inValue, Style::PIXEL_SIZE_UNIT))
-            {
-                return calculateSizeFromPixel(inValue);
-            }
-
-            if (!String::isNaN(inValue))
-            {
-                return std::stof(inValue);
-            }
-
-            return 0.0f;
-        }
-
-        float Component::calculateSizeFromCalculation(
-            const std::string& inValue,
-            Style::Direction inDirection
-        ) const
-        {
-            if (!String::startsWith(inValue, Style::CALCULATION_KEYWORD))
-            {
-                return 0.0f;
-            }
-
-            const std::string operation = extractParams(inValue);
-
-            std::uint32_t parathesisCount = 0;
-
-            for (std::uint32_t i = 0; i < operation.size(); i++)
-            {
-                const char character = operation.at(i);
-
-                if (character == FUNCTION_PARAMS_OPENING)
-                {
-                    parathesisCount++;
-
-                    continue;
-                }
-
-                if (character == FUNCTION_PARAMS_CLOSING)
-                {
-                    parathesisCount--;
-
-                    continue;
-                }
-
-                const auto& iterator = std::find(
-                    Style::CALCULATION_OPERATORS.begin(),
-                    Style::CALCULATION_OPERATORS.end(),
-                    character
-                );
-
-                if (iterator == Style::CALCULATION_OPERATORS.end() || parathesisCount > 0)
-                {
-                    continue;
-                }
-
-                const float left  = calculateSize(String::trim(operation.substr(0, i)), inDirection);
-                const float right = calculateSize(String::trim(operation.substr(i + 1)), inDirection);
-
-                if (character == Style::CALCULATION_OPERATOR_SUM)
-                {
-                    return left + right;
-                }
-    
-                if (character == Style::CALCULATION_OPERATOR_SUB)
-                {
-                    return left - right;
-                }
-    
-                if (character == Style::CALCULATION_OPERATOR_MUL)
-                {
-                    return left * right;
-                }
-    
-                if (character == Style::CALCULATION_OPERATOR_DIV)
-                {
-                    return left / right;
-                }
-
-                break;
-            }
-
-            return 0.0f;
-        }
-
-        float Component::calculateSizeFromPercentage(
-            const std::string& inValue,
-            Style::Direction inDirection
-        ) const
-        {
-            if (!String::endsWith(inValue, Style::PERCENTAGE_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromPercentage(
-                std::stof(
-                    inValue.substr(
-                        0,
-                        inValue.length() - strlen(Style::PERCENTAGE_SIZE_UNIT)
-                    )
-                ),
-                inDirection
-            );
-        }
-
-        float Component::calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const
-        {
-            float value = inValue / 100;
-
-            if (!hasRoot() || !hasParent())
-            {
-                return value;
-            }
-
-            const Vec<2, float>& size = isPositionStyle(Style::Position::Absolute) ?
-                m_root->getSize() :
-                m_parent->getSize();
-
-            const Vec<2, float>& offset = isPositionStyle(Style::Position::Absolute) ?
-                Vec2Zero :
-                m_cursor;
-
-            if (inDirection == Style::Direction::Horizontal)
-            {
-                return std::max(0.0f, size.x - offset.x) * value;
-            }
-
-            return std::max(0.0f, size.y - offset.y) * value;
-        }
-
-        float Component::calculateSizeFromViewportHeight(const pugi::xml_attribute& inAttribute) const
-        {
-            if (inAttribute.empty())
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromViewportHeight(inAttribute.as_string());
-        }
-
-        float Component::calculateSizeFromViewportHeight(const std::string& inValue) const
-        {
-            if (!String::endsWith(inValue, Style::VIEWPORT_HEIGHT_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromViewportHeight(
-                std::stof(
-                    inValue.substr(
-                        0,
-                        inValue.length() - strlen(Style::VIEWPORT_HEIGHT_SIZE_UNIT)
-                    )
-                )
-            );
-        }
-
-        float Component::calculateSizeFromViewportHeight(float inVhValue) const
-        {
-            return m_root->getSize().y * (inVhValue / 100.0f);
-        }
-
-        float Component::calculateSizeFromViewportWidth(const pugi::xml_attribute& inAttribute) const
-        {
-            if (inAttribute.empty())
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromViewportWidth(inAttribute.as_string());
-        }
-
-        float Component::calculateSizeFromViewportWidth(const std::string& inValue) const
-        {
-            if (!String::endsWith(inValue, Style::VIEWPORT_WIDTH_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromViewportHeight(
-                std::stof(
-                    inValue.substr(
-                        0,
-                        inValue.length() - strlen(Style::VIEWPORT_WIDTH_SIZE_UNIT)
-                    )
-                )
-            );
-        }
-
-        float Component::calculateSizeFromViewportWidth(float inVwValue) const
-        {
-            return  m_root->getSize().x * (inVwValue / 100.0f);
-        }
-
-        float Component::calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const
-        {
-            if (inAttribute.empty())
-            {
-                return 0.0f;
-            }
-
-            return calculateSizeFromPixel(inAttribute.as_string());
-        }
-
-        float Component::calculateSizeFromPixel(const std::string& inValue) const
-        {
-            if (!String::endsWith(inValue, Style::PIXEL_SIZE_UNIT))
-            {
-                return 0.0f;
-            }
-        
-            return std::stof(
-                inValue.substr(
-                    0,
-                    inValue.length() - strlen(Style::PIXEL_SIZE_UNIT)
-                )
-            );
-        }
-
-        std::string Component::parseColor(const std::string& inValue) const
-        {
-
-            if (
-                String::startsWith(inValue, Style::RGB_KEYWORD) ||
-                String::startsWith(inValue, Style::RGBA_KEYWORD)
-            )
-            {
-                const std::string keyword = String::startsWith(inValue, Style::RGBA_KEYWORD) ?
-                    Style::RGBA_KEYWORD :
-                    Style::RGB_KEYWORD;
-
-                std::string rawParams = extractParams(inValue);
-
-                if (rawParams.empty())
-                {
-                    throw std::runtime_error("Invalid " + keyword + " parameters");
-                }
-
-                std::vector<std::string> splittedParams = String::split(
-                    rawParams,
-                    FUNCTION_PARAMS_SEPARATOR
-                );
-
-                std::string result = "";
-                result.append(keyword);
-                result.push_back(FUNCTION_PARAMS_OPENING);
-
-                for (const std::string& param : splittedParams)
-                {
-                    result.append(parseText(Style::colorToReference(param)));
-                    result.append(",");
-                }
-
-                if (String::endsWith(result, ","))
-                {
-                    result.pop_back();
-                }
-
-                result.push_back(FUNCTION_PARAMS_CLOSING);
-
-                return result;
-            }
-
-            return parseText(inValue);
-        }
-
         std::string Component::parseText(const std::string& inValue) const
         {            
             if (String::trim(inValue).empty())
@@ -980,7 +597,7 @@ namespace Chicane
                 return "";
             }
 
-            if (!doesTextContainsReference(inValue))
+            if (!isReference(inValue))
             {
                 return inValue;
             }
@@ -1006,7 +623,7 @@ namespace Chicane
             return result;
         }
 
-        bool Component::doesTextContainsReference(const std::string& inValue) const
+        bool Component::isReference(const std::string& inValue) const
         {
             bool hasOpening = inValue.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
             bool hasClosing = inValue.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
@@ -1016,9 +633,9 @@ namespace Chicane
 
         Reference Component::parseReference(const std::string& inValue) const
         {
-            if (!doesTextContainsFunction(inValue))
+            if (!isFunction(inValue))
             {
-                if (!hasReference(inValue))
+                if (!isReference(inValue))
                 {
                     return Reference::fromValue<const std::string>(&inValue);
                 }
@@ -1026,7 +643,7 @@ namespace Chicane
                 return *getReference(inValue);
             }
 
-            if (!hasFunction(inValue))
+            if (!isFunction(inValue))
             {
                 return Reference::fromValue<const std::string>(&inValue);
             }
@@ -1039,7 +656,7 @@ namespace Chicane
             return getFunction(data.name)(event);
         }
 
-        bool Component::doesTextContainsFunction(const std::string& inValue) const
+        bool Component::isFunction(const std::string& inValue) const
         {
             bool hasOpening = inValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
             bool hasClosing = inValue.find_last_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;

@@ -7,6 +7,10 @@ namespace Chicane
 {
     namespace Color
     {
+        // Types
+        typedef Vec<3, std::uint32_t> Rgb;
+        typedef Vec<4, std::uint32_t> Rgba;
+
         // Keyword
         static constexpr char        HEX_KEYWORD         = '#';
         static constexpr const char* RGB_KEYWORD         = "rgb";
@@ -33,7 +37,8 @@ namespace Chicane
         static constexpr const char* TEXT_COLOR_WHITE       = "white";
 
         CHICANE_CORE bool isVisible(const std::string& inValue);
+        CHICANE_CORE bool isVisible(const Rgba& inValue);
 
-        CHICANE_CORE Vec<4, std::uint32_t> toRgba(const std::string& inValue);
+        CHICANE_CORE Rgba toRgba(const std::string& inValue);
     }
 }

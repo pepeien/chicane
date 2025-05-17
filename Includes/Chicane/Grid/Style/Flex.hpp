@@ -19,7 +19,7 @@ namespace Chicane
                 };
 
             public:
-                std::string direction = FLEX_DIRECTION_TYPE_ROW;
+                Direction direction = Direction::Row;
             };
         }
     }

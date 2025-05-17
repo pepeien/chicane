@@ -21,13 +21,16 @@ namespace Chicane
             virtual ~Component();
 
         public:
-            virtual bool isDrawable() const { return isVisible() && Color::isVisible(getBackgroundColorStyle()); }
+            virtual bool isDrawable() const { 
+                return isVisible() && !isPrimitiveEmpty() && Color::isVisible(m_style.backgroundColor);
+            }
 
             virtual void onEvent(const SDL_Event& inEvent) { return; }
             virtual void onChildAddition(Component* inComponent) { return; }
             virtual void onTick(float inDelta) { return; }
 
-            virtual std::vector<Vertex> getPrimitive() const { return {}; }
+        protected:
+            virtual void refreshPrimitive() { return; }
 
         public:
             // Checkers
@@ -52,7 +55,6 @@ namespace Chicane
             const Style::Instance& getStyle() const;
             void setStyle(const Style::Sources& inSources);
             void setStyle(const Style::Properties& inSource);
-            void setStyle(const Style::Instance& inStyle);
 
             bool hasReference(const std::string& inId, bool isLocalOnly = false) const;
             Reference* getReference(const std::string& inId) const;
@@ -102,55 +104,21 @@ namespace Chicane
                 std::function<void ()> inComplete = nullptr
             ) const;
 
-            // Style Properties
-            bool isDisplayStyle(Style::Display inDisplay) const;
-            Style::Display getDisplayStyle() const;
+            bool isPrimitiveEmpty() const;
+            std::uint32_t getPrimitiveCount() const;
+            const std::vector<Vertex>& getPrimitive() const;
 
-            float getWidthStyle() const;
-            float getHeightStyle() const;
-
-            bool isPositionStyle(Style::Position inPosition) const;
-            Style::Position getPositionStyle() const;
-
-            std::string getBackgroundColorStyle() const;
-            std::string getForegroundColorStyle() const;  
-
-            std::string getFontFamilyStyle() const;  
-            float getFontSizeStyle() const;
+            std::string parseText(const std::string& inValue) const;
 
         protected:
+            void refreshStyle();
             void refreshSize();
             void refreshPosition();
 
-            float calculateSize(const std::string& inValue, Style::Direction inDirection) const;
-
-            float calculateSizeFromCalculation(
-                const std::string& inValue,
-                Style::Direction inDirection
-            ) const;
-
-            float calculateSizeFromPercentage(const std::string& inValue, Style::Direction inDirection) const;
-            float calculateSizeFromPercentage(float inValue, Style::Direction inDirection) const;
-
-            float calculateSizeFromViewportHeight(const pugi::xml_attribute& inAttribute) const;
-            float calculateSizeFromViewportHeight(const std::string& inValue) const;
-            float calculateSizeFromViewportHeight(float inValue) const;
-
-            float calculateSizeFromViewportWidth(const pugi::xml_attribute& inAttribute) const;
-            float calculateSizeFromViewportWidth(const std::string& inValue) const;
-            float calculateSizeFromViewportWidth(float inValue) const;
-
-            float calculateSizeFromPixel(const pugi::xml_attribute& inAttribute) const;
-            float calculateSizeFromPixel(const std::string& inValue) const;
-
-            std::string parseColor(const std::string& inValue) const;
-
-            std::string parseText(const std::string& inText) const;
-
-            bool doesTextContainsReference(const std::string& inText) const;
+            bool isReference(const std::string& inValue) const;
             Reference parseReference(const std::string& inValue) const;
 
-            bool doesTextContainsFunction(const std::string& inValue) const;
+            bool isFunction(const std::string& inValue) const;
             FunctionData parseFunction(const std::string& inRefValue) const;
 
         protected:
@@ -172,6 +140,8 @@ namespace Chicane
             std::unique_ptr<Observable<const Vec<2, float>&>> m_sizeObservable;
             Vec<2, float>                                     m_position;
             std::unique_ptr<Observable<const Vec<2, float>&>> m_positionObservable;
+
+            std::vector<Vertex>                               m_primitive;
         };
     }
 }

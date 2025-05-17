@@ -7,20 +7,20 @@ namespace Chicane
 {
     namespace Color
     {
-        std::unordered_map<std::string, Vec<4, std::uint32_t>> m_colors {
-            { HEX_COLOR_TRANSPARENT,  Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
-            { HEX_COLOR_RED,          Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
-            { HEX_COLOR_GREEN,        Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
-            { HEX_COLOR_BLUE,         Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
-            { HEX_COLOR_BLACK,        Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
-            { HEX_COLOR_WHITE,        Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) },
+        std::unordered_map<std::string, Rgba> m_colors {
+            { HEX_COLOR_TRANSPARENT,  Rgba(  0U,   0U,   0U,   0U) },
+            { HEX_COLOR_RED,          Rgba(255U,   0U,   0U, 255U) },
+            { HEX_COLOR_GREEN,        Rgba(  0U, 255U,   0U, 255U) },
+            { HEX_COLOR_BLUE,         Rgba(  0U,   0U, 255U, 255U) },
+            { HEX_COLOR_BLACK,        Rgba(  0U,   0U,   0U, 255U) },
+            { HEX_COLOR_WHITE,        Rgba(255U, 255U, 255U, 255U) },
 
-            { TEXT_COLOR_TRANSPARENT, Vec<4, std::uint32_t>(  0U,   0U,   0U,   0U) },
-            { TEXT_COLOR_RED,         Vec<4, std::uint32_t>(255U,   0U,   0U, 255U) },
-            { TEXT_COLOR_GREEN,       Vec<4, std::uint32_t>(  0U, 255U,   0U, 255U) },
-            { TEXT_COLOR_BLUE,        Vec<4, std::uint32_t>(  0U,   0U, 255U, 255U) },
-            { TEXT_COLOR_BLACK,       Vec<4, std::uint32_t>(  0U,   0U,   0U, 255U) },
-            { TEXT_COLOR_WHITE,       Vec<4, std::uint32_t>(255U, 255U, 255U, 255U) }
+            { TEXT_COLOR_TRANSPARENT, Rgba(  0U,   0U,   0U,   0U) },
+            { TEXT_COLOR_RED,         Rgba(255U,   0U,   0U, 255U) },
+            { TEXT_COLOR_GREEN,       Rgba(  0U, 255U,   0U, 255U) },
+            { TEXT_COLOR_BLUE,        Rgba(  0U,   0U, 255U, 255U) },
+            { TEXT_COLOR_BLACK,       Rgba(  0U,   0U,   0U, 255U) },
+            { TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U) }
         };
 
         bool isVisible(const std::string& inValue)
@@ -30,7 +30,12 @@ namespace Chicane
                    !String::areEquals(inValue, HEX_COLOR_TRANSPARENT);
         }
 
-        Vec<4, std::uint32_t> toRgba(const std::string& inValue)
+        bool isVisible(const Rgba& inValue)
+        {
+            return inValue.a > 0.0f;
+        }
+
+        Rgba toRgba(const std::string& inValue)
         {
             if (String::startsWith(inValue, HEX_KEYWORD))
             {
@@ -69,7 +74,7 @@ namespace Chicane
                         &a
                     );
     
-                    const Vec<4, std::uint32_t> result = { r, g, b, a };
+                    const Rgba result = { r, g, b, a };
     
                     m_colors.insert(std::make_pair(color, result));
     
@@ -93,7 +98,7 @@ namespace Chicane
                 {
                     const std::vector<std::string> values = String::split(color, ",");
 
-                    Vec<4, std::uint32_t> result = Vec<4, std::uint32_t>(0U);
+                    Rgba result = Rgba(0U);
                     result.r = std::stoi(values.at(0));
                     result.g = std::stoi(values.at(1));
                     result.b = std::stoi(values.at(2));

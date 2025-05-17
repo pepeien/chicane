@@ -9,6 +9,14 @@ namespace Chicane
         class CHICANE_RUNTIME LGrid : public Layer::Instance
         {
         public:
+            struct PushConstant
+            {
+            public:
+                Vec<2, float> size     = {};
+                Vec<2, float> position = {};
+            };
+
+        public:
             LGrid();
             ~LGrid();
 
@@ -16,22 +24,19 @@ namespace Chicane
             void build() override;
             void destroy() override;
             void rebuild() override;
-    
-            void setup(void* outData) override;
+
             void render(void* outData) override;
 
         private:
             void loadEvents();
 
-            // Resource
-            void initFrameResources();
-            void destroyFrameResources();
-
             // Pipeline
             void initGraphicsPipeline();
+
+            // Frame
             void initFramebuffers();
 
-            // Model
+            // Vertex
             void buildVertexBuffer();
             void buildData();
             void destroyData();
@@ -44,8 +49,6 @@ namespace Chicane
             Renderer::Internals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
-
-            Descriptor::Bundle                          m_frameDescriptor;
 
             Buffer::Instance                            m_vertexBuffer;
 

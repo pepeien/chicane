@@ -1,147 +1,156 @@
 #include "Chicane/Grid/Style/Corners.hpp"
 
+#include "Chicane/Grid/Component/Instance.hpp"
+
 namespace Chicane
 {
     namespace Grid
     {
         namespace Style
         {
-            void Corners::update(
+            Corners::Corners(
+                const std::string& inOnelineAttributeName,
+                const std::string& inTopAttributeName,
+                const std::string& inBottomAttributeName,
+                const std::string& inLeftAttributeName,
+                const std::string& inRightAttributeName
+            )
+                : top(0.0f),
+                bottom(0.0f),
+                left(0.0f),
+                right(0.0f),
+                m_onelineAttributeName(inOnelineAttributeName),
+                m_topAttributeName(inTopAttributeName),
+                m_bottomAttributeName(inBottomAttributeName),
+                m_leftAttributeName(inLeftAttributeName),
+                m_rightAttributeName(inRightAttributeName)
+            {}
+
+            bool Corners::refresh(
                 const Properties &inSource,
-                const std::string &inOnelineAttributeName,
-                const std::string &inTopAttributeName,
-                const std::string &inBottomAttributeName,
-                const std::string &inLeftAttributeName,
-                const std::string &inRightAttributeName
+                std::function<float (const std::string&, Direction)> inCalculator
             )
             {
                 if (inSource.empty())
                 {
-                    return;
+                    return false;
+                }
+
+                std::string topValue    = Style::CORNER_DEFAULT_VALUE;
+                std::string rightValue  = Style::CORNER_DEFAULT_VALUE;
+                std::string bottomValue = Style::CORNER_DEFAULT_VALUE;
+                std::string leftValue   = Style::CORNER_DEFAULT_VALUE;
+
+                if (
+                    inSource.find(m_onelineAttributeName) == inSource.end() ||
+                    inSource.at(m_onelineAttributeName).empty()
+                )
+                {
+                    if (inSource.find(m_topAttributeName) != inSource.end())
+                    {
+                        topValue  = String::trim(inSource.at(m_topAttributeName));
+                    }
+
+                    if (inSource.find(m_rightAttributeName) != inSource.end())
+                    {
+                        rightValue  = String::trim(inSource.at(m_rightAttributeName));
+                    }
+
+                    if (inSource.find(m_bottomAttributeName) != inSource.end())
+                    {
+                        bottomValue  = String::trim(inSource.at(m_bottomAttributeName));
+                    }
+
+                    if (inSource.find(m_leftAttributeName) != inSource.end())
+                    {
+                        leftValue  = String::trim(inSource.at(m_leftAttributeName));
+                    }
+                }
+                else
+                {
+                    const std::vector<std::string> values = splitOneliner(
+                        inSource.at(m_onelineAttributeName)
+                    );
+    
+                    if (values.size() == 1) // SINGLE
+                    {
+                        std::string value = String::trim(values.at(0));
+        
+                        topValue     = value;
+                        rightValue   = value;
+                        bottomValue  = value;
+                        leftValue    = value;
+                    }
+        
+                    if (values.size() == 2) // VERTICAL HORIZONTAL
+                    {
+                        const std::string& vertical   = String::trim(values.at(0));
+                        const std::string& horizontal = String::trim(values.at(1));
+        
+                        topValue     = vertical;
+                        bottomValue  = vertical;
+                        rightValue   = horizontal;
+                        leftValue    = horizontal;
+                    }
+        
+                    if (values.size() == 3) // TOP BOTTOM HORIZONTAL
+                    {
+                        const std::string& horizontal = String::trim(values.at(2));
+        
+                        topValue     = String::trim(values.at(0));
+                        bottomValue  = String::trim(values.at(1));
+                        rightValue   = horizontal;
+                        leftValue    = horizontal;
+                    }
+        
+                    if (values.size() >= 4) // TOP RIGHT BOTTOM LEFT
+                    {
+                        topValue     = String::trim(values.at(0));
+                        rightValue   = String::trim(values.at(1));
+                        bottomValue  = String::trim(values.at(2));
+                        leftValue    = String::trim(values.at(3));
+                    }
+                }
+
+                const float lastTop = top;
+                top = inCalculator(topValue, Direction::Vertical);
+
+                const float lastRight = right;
+                right = inCalculator(rightValue, Direction::Horizontal);
+
+                const float lastBottom = bottom;
+                bottom = inCalculator(bottomValue, Direction::Vertical);
+
+                const float lastLeft = left;
+                left = inCalculator(leftValue, Direction::Horizontal);
+
+                if (
+                    String::areEquals(leftValue, Style::AUTO_SIZE_UNIT) &&
+                    String::areEquals(rightValue, Style::AUTO_SIZE_UNIT)
+                )
+                {
+                    right *= 0.5f;
                 }
 
                 if (
-                    inSource.find(inOnelineAttributeName) == inSource.end() ||
-                    inSource.at(inOnelineAttributeName).empty()
+                    String::areEquals(topValue, Style::AUTO_SIZE_UNIT) &&
+                    String::areEquals(bottomValue, Style::AUTO_SIZE_UNIT)
                 )
                 {
-                    if (inSource.find(inTopAttributeName) != inSource.end())
-                    {
-                        top = String::trim(inSource.at(inTopAttributeName));
-                    }
-
-                    if (inSource.find(inBottomAttributeName) != inSource.end())
-                    {
-                        bottom = String::trim(inSource.at(inBottomAttributeName));
-                    }
-
-                    if (inSource.find(inLeftAttributeName) != inSource.end())
-                    {
-                        left = String::trim(inSource.at(inLeftAttributeName));
-                    }
-
-                    if (inSource.find(inRightAttributeName) != inSource.end())
-                    {
-                        right = String::trim(inSource.at(inRightAttributeName));
-                    }
-
-                    return;
+                    bottom *= 0.5f;
                 }
 
-                const std::string& oneline = inSource.at(inOnelineAttributeName);
-    
-                std::vector<std::string> splittedOneline = {};
-
-                std::uint32_t start = 0;
-                std::uint32_t end   = 0;
-
-                std::uint32_t parathesisCount = 0;
-
-                for (std::uint32_t i = 0; i < oneline.size(); i++)
+                if (
+                    (lastTop    != top) ||
+                    (lastRight  != right) ||
+                    (lastBottom != bottom) ||
+                    (lastLeft   != left)
+                )
                 {
-                    const char character = oneline.at(i);
-
-                    end++;
-
-                    if (character == FUNCTION_PARAMS_OPENING)
-                    {
-                        parathesisCount++;
-
-                        continue;
-                    }
-
-                    if (character == FUNCTION_PARAMS_CLOSING)
-                    {
-                        parathesisCount--;
-
-                        continue;
-                    }
-
-                    if (character != ONELINE_SEPARATOR || parathesisCount > 0)
-                    {
-                        continue;
-                    }
-
-                    std::string block = oneline.substr(start, end - start);
-
-                    start = end;
-
-                    if (block.empty())
-                    {
-                        continue;
-                    }
-
-                    splittedOneline.push_back(String::trim(block));
+                    return true;
                 }
 
-                splittedOneline.push_back(oneline.substr(start, end - start));
-
-                if (splittedOneline.size() == 1) // SINGLE
-                {
-                    std::string value = String::trim(splittedOneline.at(0));
-    
-                    top    = value;
-                    right  = value;
-                    bottom = value;
-                    left   = value;
-
-                    return;
-                }
-    
-                if (splittedOneline.size() == 2) // VERTICAL HORIZONTAL
-                {
-                    const std::string& vertical   = String::trim(splittedOneline.at(0));
-                    const std::string& horizontal = String::trim(splittedOneline.at(1));
-    
-                    top    = vertical;
-                    bottom = vertical;
-                    right  = horizontal;
-                    left   = horizontal;
-
-                    return;
-                }
-    
-                if (splittedOneline.size() == 3) // TOP BOTTOM HORIZONTAL
-                {
-                    const std::string& horizontal = String::trim(splittedOneline.at(2));
-    
-                    top    = String::trim(splittedOneline.at(0));
-                    bottom = String::trim(splittedOneline.at(1));
-                    right  = horizontal;
-                    left   = horizontal;
-
-                    return;
-                }
-    
-                if (splittedOneline.size() >= 4) // TOP RIGHT BOTTOM LEFT
-                {
-                    top    = String::trim(splittedOneline.at(0));
-                    right  = String::trim(splittedOneline.at(1));
-                    bottom = String::trim(splittedOneline.at(2));
-                    left   = String::trim(splittedOneline.at(3));
-
-                    return;
-                }
+                return false;
             }
         }
     }

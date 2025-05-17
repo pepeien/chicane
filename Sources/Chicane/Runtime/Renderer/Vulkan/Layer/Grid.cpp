@@ -39,8 +39,6 @@ namespace Chicane
                 return;
             }
 
-            initFrameResources();
-
             initGraphicsPipeline();
             initFramebuffers();
 
@@ -56,8 +54,6 @@ namespace Chicane
                 return;
             }
 
-            destroyFrameResources();
-
             setStatus(Layer::Status::Idle);
         }
 
@@ -68,22 +64,9 @@ namespace Chicane
                 return;
             }
 
-            initFrameResources();
             initFramebuffers();
 
             setStatus(Layer::Status::Running);
-        }
-
-        void LGrid::setup(void* outData)
-        {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
-
-            Frame::Instance* frame = (Frame::Instance*) outData;
-
-            frame->updateUiData(m_components);
         }
 
         void LGrid::render(void* outData)
@@ -113,7 +96,7 @@ namespace Chicane
                 // Frame
                 m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
-                // Model
+                // UI
                 renderComponents(commandBuffer);
             commandBuffer.endRenderPass();
         }
@@ -139,89 +122,31 @@ namespace Chicane
                         return;
                     }
 
-                    m_components = m_view->getDrawableChildren();
+                    m_view->watchSize(
+                        [&](const Vec<2, float> inSize)
+                        {
+                            m_components = m_view->getDrawableChildren();
 
-                    if (!is(Layer::Status::Idle))
-                    {
-                        return;
-                    }
+                            if (m_components.empty())
+                            {
+                                destroy();
 
-                    setStatus(Layer::Status::Initialized);
+                                return;
+                            }
 
-                    build();
+                            if (is(Layer::Status::Running))
+                            {
+                                destroy();
+                                rebuild();
+
+                                return;
+                            }
+
+                            setStatus(Layer::Status::Initialized);
+                            build();
+                        }
+                    );
                 }
-            );
-        }
-
-        void LGrid::initFrameResources()
-        {
-            if (is(Layer::Status::Running))
-            {
-                return;
-            }
-
-            Descriptor::SetLayoutBidingsCreateInfo bidings = {};
-            bidings.count = 1;
-
-            /// Model
-            bidings.indices.push_back(0);
-            bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
-            bidings.counts.push_back(1);
-            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
-
-            Descriptor::initSetLayout(
-                m_frameDescriptor.setLayout,
-                m_internals.logicalDevice,
-                bidings
-            );
-
-            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(
-                m_internals.swapchain->frames.size()
-            );
-            descriptorPoolCreateInfo.sizes.push_back(
-                {
-                    vk::DescriptorType::eStorageBuffer,
-                    descriptorPoolCreateInfo.maxSets
-                }
-            );
-
-            Descriptor::initPool(
-                m_frameDescriptor.pool,
-                m_internals.logicalDevice,
-                descriptorPoolCreateInfo
-            );
-
-            for (Frame::Instance& frame : m_internals.swapchain->frames)
-            {
-                vk::DescriptorSet descriptorSet;
-
-                Descriptor::allocalteSet(
-                    descriptorSet,
-                    m_internals.logicalDevice,
-                    m_frameDescriptor.setLayout,
-                    m_frameDescriptor.pool
-                );
-                frame.addDescriptorSet(m_id, descriptorSet);
-
-                vk::WriteDescriptorSet meshWriteInfo = {};
-                meshWriteInfo.dstSet          = descriptorSet;
-                meshWriteInfo.dstBinding      = 0;
-                meshWriteInfo.dstArrayElement = 0;
-                meshWriteInfo.descriptorCount = 1;
-                meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                meshWriteInfo.pBufferInfo     = &frame.uiResource.bufferInfo;
-                frame.addWriteDescriptorSet(meshWriteInfo);
-            }
-        }
-
-        void LGrid::destroyFrameResources()
-        {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_frameDescriptor.pool
             );
         }
 
@@ -245,9 +170,14 @@ namespace Chicane
             shaders.push_back(vertexShader);
             shaders.push_back(fragmentShader);
 
-            // Set Layouts
-            std::vector<vk::DescriptorSetLayout> setLayouts = {};
-            setLayouts.push_back(m_frameDescriptor.setLayout);
+            // Push Constants
+            vk::PushConstantRange pushConstantRange = {};
+            pushConstantRange.offset     = 0;
+            pushConstantRange.size       = sizeof(PushConstant);
+            pushConstantRange.stageFlags = vk::ShaderStageFlagBits::eVertex;
+
+            std::vector<vk::PushConstantRange> pushConstantRanges = {};
+            pushConstantRanges.push_back(pushConstantRange);
 
             // Attachments
             GraphicsPipeline::Attachment colorAttachment = {};
@@ -267,7 +197,7 @@ namespace Chicane
             createInfo.logicalDevice            = m_internals.logicalDevice;
             createInfo.shaders                  = shaders;
             createInfo.extent                   = m_internals.swapchain->extent;
-            createInfo.descriptorSetLayouts     = setLayouts;
+            createInfo.pushConstantRanges       = pushConstantRanges;
             createInfo.attachments              = attachments;
             createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
 
@@ -374,16 +304,31 @@ namespace Chicane
 
             inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            for (std::uint32_t i = 0; i < m_components.size(); i++)
-            {
-                const std::vector<Chicane::Vertex> primitives = m_components.at(i)->getPrimitive();
+            std::uint32_t firstVertex = 0;
+            std::uint32_t firstIndex  = 0;
 
-                if (primitives.empty())
+            for (const Grid::Component* component : m_components)
+            {
+                if (component->isPrimitiveEmpty())
                 {
                     continue;
                 }
 
-                inCommandBuffer.draw(primitives.size(), 1, i * primitives.size(), i);
+                PushConstant pushConstant = {};
+                pushConstant.size     = component->getSize();
+                pushConstant.position = component->getPosition();
+
+                inCommandBuffer.pushConstants(
+                    m_graphicsPipeline->layout,
+                    vk::ShaderStageFlagBits::eVertex,
+                    0,
+                    sizeof(PushConstant),
+                    &pushConstant
+                );
+                inCommandBuffer.draw(component->getPrimitiveCount(), 1, firstVertex, firstIndex);
+
+                firstVertex += component->getPrimitiveCount();
+                firstIndex  += 1;
             }
         }
     }

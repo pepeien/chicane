@@ -32,6 +32,7 @@ namespace Chicane
 
                 // Pipeline Layout
                 std::vector<vk::DescriptorSetLayout>     descriptorSetLayouts;
+                std::vector<vk::PushConstantRange>       pushConstantRanges;
 
                 // Vulkan
                 vk::Device                               logicalDevice;

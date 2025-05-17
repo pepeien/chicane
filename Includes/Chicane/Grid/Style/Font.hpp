@@ -12,11 +12,8 @@ namespace Chicane
             struct CHICANE_GRID Font
             {
             public:
-                void update(const Properties &inSource);
-
-            public:
                 std::string family = FONT_FAMILY_DEFAULT_VALUE;
-                std::string size   = FONT_SIZE_DEFAULT_VALUE;
+                float size         = 16.0f;
             };
         }
     }

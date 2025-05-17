@@ -151,14 +151,18 @@ namespace Chicane
                 return createInfo;
             }
 
-            vk::PipelineLayout createLayout(const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,const vk::Device& inLogicalDevice)
+            vk::PipelineLayout createLayout(
+                const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
+                const std::vector<vk::PushConstantRange>& inPushConstants,
+                const vk::Device& inLogicalDevice
+            )
             {
                 vk::PipelineLayoutCreateInfo createInfo = {};
                 createInfo.flags                  = vk::PipelineLayoutCreateFlags();
                 createInfo.setLayoutCount         = static_cast<std::uint32_t>(inDescriptorSetLayouts.size());
                 createInfo.pSetLayouts            = inDescriptorSetLayouts.data();
-                createInfo.pushConstantRangeCount = 0;
-                createInfo.pPushConstantRanges    = nullptr;
+                createInfo.pushConstantRangeCount = static_cast<std::uint32_t>(inPushConstants.size());
+                createInfo.pPushConstantRanges    = inPushConstants.data();
 
                 return inLogicalDevice.createPipelineLayout(createInfo);
             }

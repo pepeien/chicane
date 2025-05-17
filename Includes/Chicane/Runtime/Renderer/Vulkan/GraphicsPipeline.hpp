@@ -28,7 +28,11 @@ namespace Chicane
             CHICANE_RUNTIME vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
             CHICANE_RUNTIME vk::PipelineColorBlendStateCreateInfo createColorBlendState();
             CHICANE_RUNTIME vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
-            CHICANE_RUNTIME vk::PipelineLayout createLayout(const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts, const vk::Device& inLogicalDevice);
+            CHICANE_RUNTIME vk::PipelineLayout createLayout(
+                const std::vector<vk::DescriptorSetLayout>& inDescriptorSetLayouts,
+                const std::vector<vk::PushConstantRange>& inPushConstants,
+                const vk::Device& inLogicalDevice
+            );
             CHICANE_RUNTIME vk::AttachmentDescription createColorAttachment(const Attachment& inAttachment);
             CHICANE_RUNTIME vk::SubpassDependency createColorSubpassDepedency();
             CHICANE_RUNTIME vk::AttachmentDescription createDepthAttachment(const Attachment& inAttachment);

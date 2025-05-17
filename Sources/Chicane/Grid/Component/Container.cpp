@@ -8,13 +8,11 @@ namespace Chicane
             : Component(inNode)
         {}
 
-        std::vector<Vertex> Container::getPrimitive() const
+        void Container::refreshPrimitive()
         {
-            std::vector<Vertex> result = {};
+            m_primitive.clear();
 
-            const Vec<4, std::uint32_t> color = Color::toRgba(
-                getBackgroundColorStyle()
-            );
+            const Vec<4, std::uint32_t> color = m_style.backgroundColor;
 
             Vertex vertex = {};
             vertex.color.r = color.r / 255.0f;
@@ -24,29 +22,27 @@ namespace Chicane
 
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;
-            result.push_back(vertex);
+            m_primitive.push_back(vertex);
 
             vertex.position.x =  1.0f;
             vertex.position.y = -1.0f;
-            result.push_back(vertex);
+            m_primitive.push_back(vertex);
 
             vertex.position.x = 1.0f;
             vertex.position.y = 1.0f;
-            result.push_back(vertex);
+            m_primitive.push_back(vertex);
 
             vertex.position.x = 1.0f;
             vertex.position.y = 1.0f;
-            result.push_back(vertex);
+            m_primitive.push_back(vertex);
 
             vertex.position.x = -1.0f;
             vertex.position.y =  1.0f;
-            result.push_back(vertex);
+            m_primitive.push_back(vertex);
 
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;
-            result.push_back(vertex);
-
-            return result;
+            m_primitive.push_back(vertex);
         }
     }
 }

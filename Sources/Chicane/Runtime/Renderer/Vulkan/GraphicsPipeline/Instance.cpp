@@ -97,7 +97,11 @@ namespace Chicane
                 pipelineInfo.pMultisampleState   = &multisampleState;
                 pipelineInfo.pColorBlendState    = &colorBlendState;
                 pipelineInfo.pDepthStencilState  = &depthStencilState;
-                pipelineInfo.layout              = createLayout(inCreateInfo.descriptorSetLayouts, m_logicalDevice);
+                pipelineInfo.layout              = createLayout(
+                    inCreateInfo.descriptorSetLayouts,
+                    inCreateInfo.pushConstantRanges,
+                    m_logicalDevice
+                );
                 pipelineInfo.renderPass          = createRendepass(
                     attachments,
                     m_logicalDevice,

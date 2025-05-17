@@ -16,6 +16,8 @@ namespace Chicane
         static std::vector<std::uint32_t> getTriangleIndices(const std::vector<Curve>& inContours);
 
     public:
+        bool isClosuredWith(const Curve& inCurve) const;
+
         void setSegmentCount(std::uint32_t inSegmentCount);
 
         void addQuadraticPoint(

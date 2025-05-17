@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid/Style/Essential.hpp"
 
 namespace Chicane
 {
@@ -14,6 +14,8 @@ namespace Chicane
                 Center,
                 End
             };
+
+            Alignment toAlignment(const std::string& inText);
         }
     }
 }
