@@ -211,16 +211,11 @@ namespace Chicane
                 return wasFoundLocally;
             }
 
-            return wasFoundLocally || m_parent->isReference(inId);
+            return wasFoundLocally || m_parent->hasReference(inId);
         }
 
         Reference* Component::getReference(const std::string& inId) const
         {
-            if (!isReference(inId))
-            {
-                return nullptr;
-            }
-
             if (!hasParent() || isRoot())
             {
                 return m_references.at(inId);
@@ -264,24 +259,19 @@ namespace Chicane
 
         bool Component::hasFunction(const std::string& inId, bool isLocalOnly) const
         {
-            bool isLocal = m_functions.find(inId) != m_functions.end() &&
-                           m_functions.at(inId) && m_functions.at(inId) != nullptr;
+            bool hasLocally = m_functions.find(inId) != m_functions.end() &&
+                              m_functions.at(inId) && m_functions.at(inId) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
-                return isLocal;
+                return hasLocally;
             }
 
-            return isLocal || m_parent->isFunction(inId);
+            return hasLocally || m_parent->hasFunction(inId);
         }
 
         const Function Component::getFunction(const std::string& inId) const
         {
-            if (!isFunction(inId))
-            {
-                return nullptr;
-            }
-
             if (!hasParent() || isRoot())
             {
                 return m_functions.at(inId);
@@ -635,15 +625,15 @@ namespace Chicane
         {
             if (!isFunction(inValue))
             {
-                if (!isReference(inValue))
+                if (hasReference(inValue))
                 {
-                    return Reference::fromValue<const std::string>(&inValue);
+                    return *getReference(inValue);
                 }
 
-                return *getReference(inValue);
+                return Reference::fromValue<const std::string>(&inValue);
             }
 
-            if (!isFunction(inValue))
+            if (!hasFunction(inValue))
             {
                 return Reference::fromValue<const std::string>(&inValue);
             }

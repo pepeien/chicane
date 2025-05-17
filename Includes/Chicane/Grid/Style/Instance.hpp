@@ -69,16 +69,16 @@ namespace Chicane
                 float parsePercentage(const std::string& inValue, Style::Direction inDirection) const;
                 float parsePercentage(float inValue, Style::Direction inDirection) const;
 
-                float parseViewportHeight(const pugi::xml_attribute& inAttribute) const;
                 float parseViewportHeight(const std::string& inValue) const;
                 float parseViewportHeight(float inValue) const;
 
-                float parseViewportWidth(const pugi::xml_attribute& inAttribute) const;
                 float parseViewportWidth(const std::string& inValue) const;
                 float parseViewportWidth(float inValue) const;
 
-                float parsePixel(const pugi::xml_attribute& inAttribute) const;
                 float parsePixel(const std::string& inValue) const;
+
+                float parseNumber(const std::string& inValue, const std::string& inUnit) const;
+                float parseNumber(const std::string& inValue) const;
 
                 template<typename T>
                 void setProperty(T& outProperty, T inNewValue)

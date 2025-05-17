@@ -376,50 +376,50 @@ namespace Chicane
                     const std::string keyword = String::startsWith(inValue, RGBA_KEYWORD) ?
                         RGBA_KEYWORD :
                         RGB_KEYWORD;
-    
+
                     std::string rawParams = extractParams(inValue);
-    
+
                     if (rawParams.empty())
                     {
                         throw std::runtime_error("Invalid " + keyword + " parameters");
                     }
-    
+
                     std::vector<std::string> splittedParams = String::split(
                         rawParams,
                         FUNCTION_PARAMS_SEPARATOR
                     );
-    
+
                     result.append(keyword);
                     result.push_back(FUNCTION_PARAMS_OPENING);
-    
+
                     for (const std::string& param : splittedParams)
                     {
                         result.append(parseText(colorToReference(param)));
                         result.append(",");
                     }
-    
+
                     if (String::endsWith(result, ","))
                     {
                         result.pop_back();
                     }
-    
+
                     result.push_back(FUNCTION_PARAMS_CLOSING);
                 }
                 else
                 {
                     result = parseText(inValue);
                 }
-    
+
                 return Color::toRgba(result);
             }
 
             float Instance::parseSize(const std::string& inValue, Direction inDirection) const
             {
-                std::string value = parseText(inValue);
+                const std::string value = parseText(inValue);
 
-                if (String::startsWith(inValue, CALCULATION_KEYWORD))
+                if (String::startsWith(value, CALCULATION_KEYWORD))
                 {
-                    return parseCalculation(inValue, inDirection);
+                    return parseCalculation(value, inDirection);
                 }
 
                 if (String::areEquals(inValue, AUTO_SIZE_UNIT))
@@ -447,21 +447,16 @@ namespace Chicane
                     return parsePixel(inValue);
                 }
 
-                if (!String::isNaN(inValue))
-                {
-                    return std::stof(inValue);
-                }
-
-                return 0.0f;
+                return parseNumber(inValue);
             }
 
             std::string Instance::parseText(const std::string& inValue) const
             {
                 std::string result = inValue;
 
-                if (String::startsWith(result, VARIABLE_KEYWORD))
+                if (String::startsWith(inValue, VARIABLE_KEYWORD))
                 {
-                    result = variableToReference(result);
+                    result = variableToReference(inValue);
                 }
 
                 return m_parent->parseText(result);
@@ -473,87 +468,79 @@ namespace Chicane
                 {
                     return 0.0f;
                 }
-    
+
                 const std::string operation = extractParams(inValue);
-    
+
                 std::uint32_t parathesisCount = 0;
-    
+
                 for (std::uint32_t i = 0; i < operation.size(); i++)
                 {
                     const char character = operation.at(i);
-    
+
                     if (character == FUNCTION_PARAMS_OPENING)
                     {
                         parathesisCount++;
     
                         continue;
                     }
-    
+
                     if (character == FUNCTION_PARAMS_CLOSING)
                     {
                         parathesisCount--;
     
                         continue;
                     }
-    
+
                     const auto& iterator = std::find(
                         CALCULATION_OPERATORS.begin(),
                         CALCULATION_OPERATORS.end(),
                         character
                     );
-    
+
                     if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
                     {
                         continue;
                     }
-    
+
                     const float left  = parseSize(String::trim(operation.substr(0, i)), inDirection);
                     const float right = parseSize(String::trim(operation.substr(i + 1)), inDirection);
-    
+
                     if (character == CALCULATION_OPERATOR_SUM)
                     {
                         return left + right;
                     }
-        
+
                     if (character == CALCULATION_OPERATOR_SUB)
                     {
                         return left - right;
                     }
-        
+
                     if (character == CALCULATION_OPERATOR_MUL)
                     {
                         return left * right;
                     }
-        
+
                     if (character == CALCULATION_OPERATOR_DIV)
                     {
                         return left / right;
                     }
-    
+
                     break;
                 }
-    
+
                 return 0.0f;
             }
-    
+
             float Instance::parsePercentage(const std::string& inValue, Direction inDirection) const
             {
                 if (!String::endsWith(inValue, PERCENTAGE_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
-    
-                return parsePercentage(
-                    std::stof(
-                        inValue.substr(
-                            0,
-                            inValue.length() - strlen(PERCENTAGE_SIZE_UNIT)
-                        )
-                    ),
-                    inDirection
-                );
+
+                return parsePercentage(parseNumber(inValue, PERCENTAGE_SIZE_UNIT), inDirection);
             }
-    
+
             float Instance::parsePercentage(float inValue, Direction inDirection) const
             {
                 float value = inValue / 100;
@@ -562,11 +549,11 @@ namespace Chicane
                 {
                     return value;
                 }
-    
+
                 const Vec<2, float>& size = isPosition(Position::Absolute) ?
                     m_parent->getRoot()->getSize() :
                     m_parent->getSize();
-    
+
                 const Vec<2, float>& offset = isPosition(Position::Absolute) ?
                     Vec2Zero :
                     m_parent->getCursor();
@@ -575,52 +562,25 @@ namespace Chicane
                 {
                     return std::max(0.0f, size.x - offset.x) * value;
                 }
-    
+
                 return std::max(0.0f, size.y - offset.y) * value;
             }
-    
-            float Instance::parseViewportHeight(const pugi::xml_attribute& inAttribute) const
-            {
-                if (inAttribute.empty())
-                {
-                    return 0.0f;
-                }
-    
-                return parseViewportHeight(inAttribute.as_string());
-            }
-    
+
             float Instance::parseViewportHeight(const std::string& inValue) const
             {
                 if (!String::endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
-    
-                return parseViewportHeight(
-                    std::stof(
-                        inValue.substr(
-                            0,
-                            inValue.length() - strlen(VIEWPORT_HEIGHT_SIZE_UNIT)
-                        )
-                    )
-                );
+
+                return parseViewportHeight(parseNumber(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
             }
-    
+
             float Instance::parseViewportHeight(float inVhValue) const
             {
                 return m_parent->getRoot()->getSize().y * (inVhValue / 100.0f);
             }
-    
-            float Instance::parseViewportWidth(const pugi::xml_attribute& inAttribute) const
-            {
-                if (inAttribute.empty())
-                {
-                    return 0.0f;
-                }
-    
-                return parseViewportWidth(inAttribute.as_string());
-            }
-    
+
             float Instance::parseViewportWidth(const std::string& inValue) const
             {
                 if (!String::endsWith(inValue, VIEWPORT_WIDTH_SIZE_UNIT))
@@ -628,31 +588,14 @@ namespace Chicane
                     return 0.0f;
                 }
     
-                return parseViewportHeight(
-                    std::stof(
-                        inValue.substr(
-                            0,
-                            inValue.length() - strlen(VIEWPORT_WIDTH_SIZE_UNIT)
-                        )
-                    )
-                );
+                return parseViewportWidth(parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
             }
-    
+
             float Instance::parseViewportWidth(float inVwValue) const
             {
                 return m_parent->getRoot()->getSize().x * (inVwValue / 100.0f);
             }
-    
-            float Instance::parsePixel(const pugi::xml_attribute& inAttribute) const
-            {
-                if (inAttribute.empty())
-                {
-                    return 0.0f;
-                }
-    
-                return parsePixel(inAttribute.as_string());
-            }
-    
+
             float Instance::parsePixel(const std::string& inValue) const
             {
                 if (!String::endsWith(inValue, PIXEL_SIZE_UNIT))
@@ -660,12 +603,32 @@ namespace Chicane
                     return 0.0f;
                 }
             
-                return std::stof(
-                    inValue.substr(
-                        0,
-                        inValue.length() - strlen(PIXEL_SIZE_UNIT)
-                    )
+                return parseNumber(inValue, PIXEL_SIZE_UNIT);
+            }
+
+            float Instance::parseNumber(const std::string& inValue, const std::string& inUnit) const
+            {
+                if (inValue.empty() || inValue.size() < inUnit.size())
+                {
+                    return 0.0f;
+                }
+
+                const std::string value = inValue.substr(
+                    0,
+                    inValue.length() - inUnit.length()
                 );
+
+                return parseNumber(inValue);
+            }
+
+            float Instance::parseNumber(const std::string& inValue) const
+            {
+                if (String::isNaN(inValue))
+                {
+                    return 0.0f;
+                }
+
+                return std::stof(inValue);
             }
         }
     }
