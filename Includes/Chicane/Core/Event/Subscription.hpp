@@ -4,10 +4,24 @@
 
 namespace Chicane
 {
-    template<typename T>
+    template<typename T = void*>
     class Subscription
     {
     public:
+        Subscription(
+            std::function<void ()> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        ) : Subscription(
+                [inNext](T inValue)
+                {
+                    inNext();
+                },
+                inError,
+                inComplete
+            )
+        {}
+
         Subscription(
             std::function<void (T)> inNext,
             std::function<void (const std::string&)> inError,
@@ -19,6 +33,11 @@ namespace Chicane
         {}
 
     public:
+        void next()
+        {
+            next(nullptr);
+        }
+
         void next(T inData)
         {
             if (isCompleted())

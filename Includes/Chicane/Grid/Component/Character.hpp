@@ -32,6 +32,9 @@ namespace Chicane
             bool hasGlyph() const;
             const Box::Font::Glyph& getGlyph() const;
 
+        protected:
+            void refreshFont();
+
         private:
             char m_character;
         };

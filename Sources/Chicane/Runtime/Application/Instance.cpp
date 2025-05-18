@@ -18,6 +18,7 @@ namespace Chicane
         {
             initWindow(inCreateInfo.window, inCreateInfo.renderer.type);
             initRenderer(inCreateInfo.renderer);
+            initAssets(".");
 
             Grid::watchActiveView(
                 [this](Grid::View* inView)
@@ -179,6 +180,26 @@ namespace Chicane
             }
 
             m_renderer->initLayers();
+        }
+
+        void Instance::initAssets(const std::string& inPath)
+        {
+            for (const FileSystem::Item item : FileSystem::ls(inPath))
+            {
+                if (item.type != FileSystem::Item::Type::File)
+                {
+                    initAssets(item.path);
+
+                    continue;
+                }
+
+                if (!Box::Asset::isFileAsset(item.path))
+                {
+                    continue;
+                }
+
+                Box::load(item.path);
+            }
         }
 
         void Instance::onEvent(const SDL_Event& inEvent) {

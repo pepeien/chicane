@@ -44,7 +44,7 @@ namespace Chicane
 
     void CMesh::show()
     {
-        if (m_bIsVisible)
+        if (m_bIsVisible || !hasMesh())
         {
             return;
         }
@@ -63,7 +63,7 @@ namespace Chicane
 
     void CMesh::hide()
     {
-        if (!m_bIsVisible)
+        if (!m_bIsVisible  || !hasMesh())
         {
             return;
         }
@@ -87,12 +87,12 @@ namespace Chicane
 
     void CMesh::setMesh(const std::string& inMesh)
     {
-        if (inMesh.empty() || m_mesh)
+        if (inMesh.empty() || hasMesh())
         {
             return;
         }
 
-        m_mesh = Box::loadMesh(inMesh);
+        m_mesh = Box::load<Box::Mesh::Instance>(inMesh);
 
         generateBounds();
     }
@@ -124,6 +124,11 @@ namespace Chicane
 
     void CMesh::generateBounds()
     {
+        if (!hasMesh())
+        {
+            return;
+        }
+
         const Box::Model::Manager* manager = Box::getModelManager();
 
         std::vector<Vertex> vertices = {};

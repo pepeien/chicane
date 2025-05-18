@@ -47,16 +47,6 @@ namespace Chicane
             setStatus(Layer::Status::Running);
         }
 
-        void LGrid::destroy()
-        {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
-
-            setStatus(Layer::Status::Idle);
-        }
-
         void LGrid::rebuild()
         {
             if (!is(Layer::Status::Idle))
@@ -93,9 +83,6 @@ namespace Chicane
                 // Pipeline
                 m_graphicsPipeline->bind(commandBuffer);
 
-                // Frame
-                m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
-
                 // UI
                 renderComponents(commandBuffer);
             commandBuffer.endRenderPass();
@@ -122,22 +109,19 @@ namespace Chicane
                         return;
                     }
 
-                    m_view->watchSize(
-                        [&](const Vec<2, float> inSize)
+                    m_view->watchChanges(
+                        [&]()
                         {
                             m_components = m_view->getDrawableChildren();
 
                             if (m_components.empty())
                             {
-                                destroy();
-
                                 return;
                             }
 
-                            if (is(Layer::Status::Running))
+                            if (!is(Layer::Status::Idle))
                             {
-                                destroy();
-                                rebuild();
+                                rebuildData();
 
                                 return;
                             }
@@ -159,11 +143,11 @@ namespace Chicane
 
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Engine/Shaders/Vulkan/grid.vert.spv";
+            vertexShader.path = "Contents/Shaders/Vulkan/grid.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Engine/Shaders/Vulkan/grid.frag.spv";
+            fragmentShader.path = "Contents/Shaders/Vulkan/grid.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};
@@ -307,6 +291,8 @@ namespace Chicane
             std::uint32_t firstVertex = 0;
             std::uint32_t firstIndex  = 0;
 
+            const Vec<2, float>& rootSize = m_view->getSize();
+
             for (const Grid::Component* component : m_components)
             {
                 if (component->isPrimitiveEmpty())
@@ -314,9 +300,15 @@ namespace Chicane
                     continue;
                 }
 
+                const Vec<2, float>& size     = component->getSize();
+                const Vec<2, float>& position = component->getPosition();
+
                 PushConstant pushConstant = {};
-                pushConstant.size     = component->getSize();
-                pushConstant.position = component->getPosition();
+                pushConstant.size     = size / rootSize;
+                pushConstant.position = {
+                    ((2.0f * position.x) / rootSize.x) - 1.0f,
+                    ((2.0f * position.y) / rootSize.y) - 1.0f
+                };
 
                 inCommandBuffer.pushConstants(
                     m_graphicsPipeline->layout,

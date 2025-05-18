@@ -80,6 +80,7 @@ namespace Chicane
             // Setup
             void initWindow(const Window::CreateInfo& inCreateInfo, Renderer::Type inRendererType);
             void initRenderer(const Renderer::CreateInfo& inCreateInfo);
+            void initAssets(const std::string& inPath);
 
             // Lifecycle
             void onEvent(const SDL_Event& inEvent);

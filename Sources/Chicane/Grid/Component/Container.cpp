@@ -12,7 +12,12 @@ namespace Chicane
         {
             m_primitive.clear();
 
-            const Vec<4, std::uint32_t> color = m_style.backgroundColor;
+            const Vec<4, std::uint32_t>& color = m_style.backgroundColor;
+
+            if (!Color::isVisible(m_style.backgroundColor))
+            {
+                return;
+            }
 
             Vertex vertex = {};
             vertex.color.r = color.r / 255.0f;

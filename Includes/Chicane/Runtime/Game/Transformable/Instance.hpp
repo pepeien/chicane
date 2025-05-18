@@ -4,7 +4,7 @@
 
 namespace Chicane
 {
-    class CHICANE_RUNTIME Transformable
+    class CHICANE_RUNTIME Transformable : public Changeable
     {
     public:
         Transformable();
@@ -86,24 +86,14 @@ namespace Chicane
         const Vec<3, float>& getCenter() const;
         const Vec<3, float>& getBottom() const;
 
-        // Events
-        Subscription<void*>* watchTransform(
-            std::function<void (void*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
-        );
-
     private:
         void refresh();
 
     private:
         // Transform
-        Transform::Combined                m_transform;
+        Transform::Combined m_transform;
 
         // Bounds
-        Bounds                             m_bounds;
-
-        // Events
-        std::unique_ptr<Observable<void*>> m_transformObservable;
+        Bounds              m_bounds;
     };
 }

@@ -17,7 +17,7 @@ namespace Chicane
                 Manager();
 
             public:
-                bool isFamilyLoaded(const std::string& inFamily) const;
+                bool isFamilyAllocated(const std::string& inFamily) const;
 
                 // Setup
                 void load(const std::string& inId, const Font::Instance* inFont);

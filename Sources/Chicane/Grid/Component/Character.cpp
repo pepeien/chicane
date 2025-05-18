@@ -14,57 +14,35 @@ namespace Chicane
             Box::getFontManager()->watchChanges(
                 [this](Box::Manager::EventType event)
                 {
-                    if (event != Box::Manager::EventType::Load)
-                    {
-                        return;
-                    }
-
-                    const Style::Instance& style = m_parent->getStyle();
-
-                    m_style.foregroundColor = style.foregroundColor;
-                    m_style.font            = style.font;
-                    m_style.width           = m_style.font.size;
-                    m_style.height          = m_style.font.size;
-
-                    if (!hasGlyph())
-                    {
-                        return;
-                    }
-
-                    const Box::Font::Glyph& glyph = getGlyph();
-                    //m_style.margin.top    = Style::AUTO_SIZE_UNIT;
-                    //m_style.margin.right  = String::sprint("-%d%s", static_cast<int>(glyph.bearing.x), Style::PIXEL_SIZE_UNIT);
-                    //m_style.margin.bottom = String::sprint("-%d%s", static_cast<int>(glyph.bearing.y), Style::PIXEL_SIZE_UNIT);
-                    //m_style.margin.left   = Style::AUTO_SIZE_UNIT;
-
-                    m_style.emmitChanges();
+                    refreshFont();
                 }
             );
         }
 
         bool Character::isDrawable() const
         {
-            return isVisible() && hasGlyph() && !isPrimitiveEmpty();
+            return m_parent->isVisible() && hasGlyph() && !isPrimitiveEmpty();
         }
 
         void Character::refreshPrimitive()
         {
+            refreshFont();
+
             m_primitive.clear();
 
-            if (!hasGlyph())
+            if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
             {
                 return;
             }
 
-            const std::vector<Vec<3, float>>& vertices = getGlyph().vertices;
-            const std::vector<std::uint32_t>& indices  = getGlyph().indices;
+            const Box::Font::Glyph& glyph = getGlyph();
 
             Vertex vertex = {};
             vertex.color  = m_style.foregroundColor;
 
-            for (std::uint32_t index : indices)
+            for (std::uint32_t index : glyph.indices)
             {
-                vertex.position = vertices.at(index);
+                vertex.position = glyph.vertices.at(index);
     
                 m_primitive.push_back(vertex);
             }
@@ -83,11 +61,13 @@ namespace Chicane
             }
 
             m_character = inValue;
+
+            refreshFont();
         }
 
         bool Character::hasFont() const
         {
-            return Box::getFontManager()->isFamilyLoaded(m_style.font.family);
+            return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
         }
 
         const Box::Font::ParsedData& Character::getFont() const
@@ -113,6 +93,31 @@ namespace Chicane
             }
 
             return getFont().getGlyph(m_character);
+        }
+
+        void Character::refreshFont()
+        {
+            if (!hasParent())
+            {
+                return;
+            }
+
+            const Style::Instance& parentStyle = m_parent->getStyle();
+
+            m_style.foregroundColor = parentStyle.foregroundColor;
+            m_style.font            = parentStyle.font;
+
+            if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
+            {
+                return;
+            }
+
+            const Box::Font::Glyph& glyph = getGlyph();
+
+            m_style.width           = m_style.font.size;
+            m_style.height          = m_style.font.size;
+            //m_style.margin.right    = glyph.bearing.x;
+            //m_style.margin.bottom   = glyph.bearing.y;
         }
     }
 }

@@ -89,6 +89,21 @@ namespace Chicane
             );
         }
 
+        const Audio::Instance* loadAudio(const std::string& inFilePath)
+        {
+            if (Asset::getType(inFilePath) != Asset::Type::Audio)
+            {
+                throw std::runtime_error(inFilePath + " is not a audio");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadAudio(new Audio::Instance(inFilePath));
+            }
+
+            return getAsset<Audio::Instance>(inFilePath);
+        }
+
         void loadFont(const Font::Instance* inAsset)
         {
             if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Font))
@@ -104,6 +119,21 @@ namespace Chicane
                 filepath,
                 static_cast<const Font::Instance*>(inAsset)
             );
+        }
+
+        const Font::Instance* loadFont(const std::string& inFilePath)
+        {
+            if (Asset::getType(inFilePath) != Asset::Type::Font)
+            {
+                throw std::runtime_error(inFilePath + " is not a font");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadFont(new Font::Instance(inFilePath));
+            }
+
+            return getAsset<Font::Instance>(inFilePath);
         }
 
         void loadModel(const Asset::Instance* inAsset)
@@ -140,6 +170,21 @@ namespace Chicane
             );
         }
 
+        const Texture::Instance* loadTexture(const std::string& inFilePath)
+        {
+            if (Asset::getType(inFilePath) != Asset::Type::Texture)
+            {
+                throw std::runtime_error(inFilePath + "is not a texture");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadTexture(new Texture::Instance(inFilePath));
+            }
+
+            return getAsset<Texture::Instance>(inFilePath);
+        }
+
         void loadMesh(const Asset::Instance* inAsset)
         {
             if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Mesh))
@@ -171,6 +216,21 @@ namespace Chicane
             }
         }
 
+        const Mesh::Instance* loadMesh(const std::string& inFilePath)
+        {
+            if (Asset::getType(inFilePath) != Asset::Type::Mesh)
+            {
+                throw std::runtime_error(inFilePath + "is not a mesh");
+            }
+
+            if (!isLoaded(inFilePath))
+            {
+                loadMesh(new Mesh::Instance(inFilePath));
+            }
+
+            return getAsset<Mesh::Instance>(inFilePath);
+        }
+
         void loadSky(const Asset::Instance* inAsset)
         {
             if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Sky))
@@ -192,62 +252,9 @@ namespace Chicane
             loadModel(new Model::Instance(cubeMap->getModel()));
         }
 
-        const Audio::Instance* loadAudio(const std::string& inFilePath)
-        {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::Audio)
-            {
-                throw std::runtime_error(inFilePath + " is not a audio");
-            }
-
-            if (!isLoaded(inFilePath))
-            {
-                loadAudio(new Audio::Instance(inFilePath));
-            }
-
-            return getAsset<Audio::Instance>(inFilePath);
-        }
-
-        const Font::Instance* loadFont(const std::string& inFilePath)
-        {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::Font)
-            {
-                throw std::runtime_error(inFilePath + " is not a font");
-            }
-
-            if (!isLoaded(inFilePath))
-            {
-                loadFont(new Font::Instance(inFilePath));
-            }
-
-            return getAsset<Font::Instance>(inFilePath);
-        }
-
-        const Texture::Instance* loadTexture(const std::string& inFilePath)
-        {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::Texture)
-            {
-                throw std::runtime_error(inFilePath + "is not a texture");
-            }
-
-            if (!isLoaded(inFilePath))
-            {
-                loadTexture(new Texture::Instance(inFilePath));
-            }
-
-            return getAsset<Texture::Instance>(inFilePath);
-        }
-
         const Sky::Instance* loadSky(const std::string& inFilePath)
         {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::Sky)
+            if (Asset::getType(inFilePath) != Asset::Type::Sky)
             {
                 throw std::runtime_error(inFilePath + " is not a skybox");
             }
@@ -260,21 +267,37 @@ namespace Chicane
             return getAsset<Sky::Instance>(inFilePath);
         }
 
-        const Mesh::Instance* loadMesh(const std::string& inFilePath)
+        const Asset::Instance* load(const std::string& inFilePath)
         {
-            Asset::Header header = Asset::Header::fromFilepath(inFilePath);
-
-            if (header.type != Asset::Type::Mesh)
+            if (!Box::Asset::isFileAsset(inFilePath))
             {
-                throw std::runtime_error(inFilePath + "is not a mesh");
+                Log::warning("File [%s] is not a valid asset", inFilePath.c_str());
+
+                return nullptr;
             }
 
-            if (!isLoaded(inFilePath))
-            {
-                loadMesh(new Mesh::Instance(inFilePath));
-            }
+            const Asset::Header header = Asset::Header::fromFilepath(inFilePath);
 
-            return getAsset<Mesh::Instance>(inFilePath);
+            switch (header.type)
+            {
+            case Asset::Type::Audio:
+                return loadAudio(inFilePath);
+
+            case Asset::Type::Font:
+                return loadFont(inFilePath);
+
+            case Asset::Type::Mesh:
+                return loadMesh(inFilePath);
+
+            case Asset::Type::Sky:
+                return loadSky(inFilePath);
+
+            case Asset::Type::Texture:
+                return loadTexture(inFilePath);
+            
+            default:
+                return nullptr;
+            }
         }
     }
 }

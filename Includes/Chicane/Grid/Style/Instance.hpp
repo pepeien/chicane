@@ -18,7 +18,7 @@ namespace Chicane
 
         namespace Style
         {
-            struct CHICANE_GRID Instance
+            struct CHICANE_GRID Instance : public Changeable
             {
             public:
                 static Sources parseSources(const pugi::xml_node& inNode);
@@ -42,13 +42,6 @@ namespace Chicane
                 void setParent(Component* inComponent);
 
                 void refresh();
-
-                void emmitChanges();
-                Subscription<void*>* watchChanges(
-                    std::function<void (void*)> inNext,
-                    std::function<void (const std::string&)> inError = nullptr,
-                    std::function<void ()> inComplete = nullptr
-                ) const;
 
             private:
                 void refreshDisplay();
@@ -95,11 +88,11 @@ namespace Chicane
 
             public:
                 // Visiblity
-                Display display;
+                Display     display;
 
                 // Size
-                float   width;
-                float   height;
+                float       width;
+                float       height;
 
                 // Flex
                 Flex        flex;
@@ -118,11 +111,9 @@ namespace Chicane
                 Font        font;
 
             private:
-                Properties                         m_properties;
+                Properties m_properties;
 
-                Component*                         m_parent;
-
-                std::unique_ptr<Observable<void*>> m_changesObersable;
+                Component* m_parent;
             };
         }
     }

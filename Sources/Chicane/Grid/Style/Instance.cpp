@@ -150,8 +150,7 @@ namespace Chicane
                 foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
                 font({}),
                 m_properties({}),
-                m_parent(nullptr),
-                m_changesObersable(std::make_unique<Observable<void*>>())
+                m_parent(nullptr)
             {}
 
             bool Instance::isDisplay(Display inValue) const
@@ -171,7 +170,12 @@ namespace Chicane
 
             void Instance::setProperties(const Properties& inProperties)
             {
-                m_properties = inProperties;
+                for (const auto& [name, value] : inProperties)
+                {
+                    m_properties[name] = value;
+                }
+
+                refresh();
             }
 
             bool Instance::hasParent() const
@@ -187,6 +191,8 @@ namespace Chicane
                 }
 
                 m_parent = inComponent;
+
+                refresh();
             }
 
             void Instance::refresh()
@@ -199,20 +205,6 @@ namespace Chicane
                 refreshForegroundColor();
                 refreshBackgroundColor();
                 refreshFont();
-            }
-
-            void Instance::emmitChanges()
-            {
-                m_changesObersable->next(nullptr);
-            }
-
-            Subscription<void*>* Instance::watchChanges(
-                std::function<void (void*)> inNext,
-                std::function<void (const std::string&)> inError,
-                std::function<void ()> inComplete
-            ) const
-            {
-                return m_changesObersable->subscribe(inNext, inError, inComplete);
             }
 
             void Instance::refreshDisplay()
@@ -266,7 +258,7 @@ namespace Chicane
                     return;
                 }
 
-                const std::string value = parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
+                const std::string value = parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
 
                 if (String::areEquals(value, POSITION_TYPE_ABSOLUTE))
                 {
@@ -326,10 +318,23 @@ namespace Chicane
                     return;
                 }
 
-                setProperty(
-                    foregroundColor,
-                    parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME))
+                const Vec<4, std::uint32_t> color = parseColor(
+                    m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)
                 );
+
+                if (
+                    foregroundColor.r == color.r &&
+                    foregroundColor.g == color.g &&
+                    foregroundColor.b == color.b &&
+                    foregroundColor.a == color.a
+                )
+                {
+                    return;
+                }
+
+                foregroundColor = color;
+
+                emmitChanges();
             }
 
             void Instance::refreshBackgroundColor()
@@ -339,10 +344,23 @@ namespace Chicane
                     return;
                 }
 
-                setProperty(
-                    backgroundColor,
-                    parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME))
+                const Vec<4, std::uint32_t> color = parseColor(
+                    m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)
                 );
+
+                if (
+                    backgroundColor.r == color.r &&
+                    backgroundColor.g == color.g &&
+                    backgroundColor.b == color.b &&
+                    backgroundColor.a == color.a
+                )
+                {
+                    return;
+                }
+
+                backgroundColor = color;
+
+                emmitChanges();
             }
 
             void Instance::refreshFont()
@@ -384,7 +402,7 @@ namespace Chicane
                         throw std::runtime_error("Invalid " + keyword + " parameters");
                     }
 
-                    std::vector<std::string> splittedParams = String::split(
+                    const std::vector<std::string> params = String::split(
                         rawParams,
                         FUNCTION_PARAMS_SEPARATOR
                     );
@@ -392,9 +410,9 @@ namespace Chicane
                     result.append(keyword);
                     result.push_back(FUNCTION_PARAMS_OPENING);
 
-                    for (const std::string& param : splittedParams)
+                    for (const std::string& param : params)
                     {
-                        result.append(parseText(colorToReference(param)));
+                        result.append(parseText(param));
                         result.append(",");
                     }
 
@@ -422,44 +440,49 @@ namespace Chicane
                     return parseCalculation(value, inDirection);
                 }
 
-                if (String::areEquals(inValue, AUTO_SIZE_UNIT))
+                if (String::areEquals(value, AUTO_SIZE_UNIT))
                 {
                     return parsePercentage("100%", inDirection);
                 }
 
-                if (String::endsWith(inValue, PERCENTAGE_SIZE_UNIT))
+                if (String::endsWith(value, PERCENTAGE_SIZE_UNIT))
                 {
-                    return parsePercentage(inValue, inDirection);
+                    return parsePercentage(value, inDirection);
                 }
 
-                if (String::endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
+                if (String::endsWith(value, VIEWPORT_HEIGHT_SIZE_UNIT))
                 {
-                    return parseViewportHeight(inValue);
+                    return parseViewportHeight(value);
                 }
 
-                if (String::endsWith(inValue, VIEWPORT_WIDTH_SIZE_UNIT))
+                if (String::endsWith(value, VIEWPORT_WIDTH_SIZE_UNIT))
                 {
-                    return parseViewportWidth(inValue);
+                    return parseViewportWidth(value);
                 }
 
-                if (String::endsWith(inValue, PIXEL_SIZE_UNIT))
+                if (String::endsWith(value, PIXEL_SIZE_UNIT))
                 {
-                    return parsePixel(inValue);
+                    return parsePixel(value);
                 }
 
-                return parseNumber(inValue);
+                return parseNumber(value);
             }
 
             std::string Instance::parseText(const std::string& inValue) const
             {
-                std::string result = inValue;
-
-                if (String::startsWith(inValue, VARIABLE_KEYWORD))
+                if (!hasParent())
                 {
-                    result = variableToReference(inValue);
+                    return inValue;
                 }
 
-                return m_parent->parseText(result);
+                std::string value = String::trim(inValue);
+
+                if (String::startsWith(value, VARIABLE_KEYWORD))
+                {
+                    value = variableToReference(value);
+                }
+
+                return m_parent->parseText(value);
             }
 
             float Instance::parseCalculation(const std::string& inValue, Direction inDirection) const
@@ -502,8 +525,8 @@ namespace Chicane
                         continue;
                     }
 
-                    const float left  = parseSize(String::trim(operation.substr(0, i)), inDirection);
-                    const float right = parseSize(String::trim(operation.substr(i + 1)), inDirection);
+                    const float left  = parseSize(operation.substr(0, i), inDirection);
+                    const float right = parseSize(operation.substr(i + 1), inDirection);
 
                     if (character == CALCULATION_OPERATOR_SUM)
                     {
@@ -543,27 +566,26 @@ namespace Chicane
 
             float Instance::parsePercentage(float inValue, Direction inDirection) const
             {
-                float value = inValue / 100;
-    
-                if (!m_parent->hasRoot() || !m_parent->hasParent())
+                const float value = inValue / 100;
+
+                if (
+                    !hasParent() ||
+                    !m_parent->hasRoot() || !m_parent->hasParent()
+                )
                 {
                     return value;
                 }
 
                 const Vec<2, float>& size = isPosition(Position::Absolute) ?
                     m_parent->getRoot()->getSize() :
-                    m_parent->getSize();
+                    m_parent->getParent()->getAvailableSize();
 
-                const Vec<2, float>& offset = isPosition(Position::Absolute) ?
-                    Vec2Zero :
-                    m_parent->getCursor();
-    
                 if (inDirection == Direction::Horizontal)
                 {
-                    return std::max(0.0f, size.x - offset.x) * value;
+                    return std::max(0.0f, size.x) * value;
                 }
 
-                return std::max(0.0f, size.y - offset.y) * value;
+                return std::max(0.0f, size.y) * value;
             }
 
             float Instance::parseViewportHeight(const std::string& inValue) const
@@ -576,9 +598,14 @@ namespace Chicane
                 return parseViewportHeight(parseNumber(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
             }
 
-            float Instance::parseViewportHeight(float inVhValue) const
+            float Instance::parseViewportHeight(float inValue) const
             {
-                return m_parent->getRoot()->getSize().y * (inVhValue / 100.0f);
+                if (!hasParent())
+                {
+                    return inValue;
+                }
+
+                return m_parent->getRoot()->getSize().y * (inValue / 100.0f);
             }
 
             float Instance::parseViewportWidth(const std::string& inValue) const
@@ -591,9 +618,14 @@ namespace Chicane
                 return parseViewportWidth(parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
             }
 
-            float Instance::parseViewportWidth(float inVwValue) const
+            float Instance::parseViewportWidth(float inValue) const
             {
-                return m_parent->getRoot()->getSize().x * (inVwValue / 100.0f);
+                if (!hasParent())
+                {
+                    return inValue;
+                }
+
+                return m_parent->getRoot()->getSize().x * (inValue / 100.0f);
             }
 
             float Instance::parsePixel(const std::string& inValue) const
@@ -618,17 +650,19 @@ namespace Chicane
                     inValue.length() - inUnit.length()
                 );
 
-                return parseNumber(inValue);
+                return parseNumber(value);
             }
 
             float Instance::parseNumber(const std::string& inValue) const
             {
-                if (String::isNaN(inValue))
+                const std::string value = String::trim(inValue);
+
+                if (String::isNaN(value))
                 {
                     return 0.0f;
                 }
 
-                return std::stof(inValue);
+                return std::stof(value);
             }
         }
     }

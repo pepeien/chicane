@@ -10,6 +10,9 @@ namespace Chicane
     {
         namespace Asset
         {
+            CHICANE_BOX bool isFileAsset(const std::string& inFilepath);
+            CHICANE_BOX Type getType(const std::string& inFilepath);
+
             struct CHICANE_BOX Header
             {
             public:

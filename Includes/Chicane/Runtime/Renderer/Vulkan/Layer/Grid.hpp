@@ -22,7 +22,6 @@ namespace Chicane
 
         public:
             void build() override;
-            void destroy() override;
             void rebuild() override;
 
             void render(void* outData) override;

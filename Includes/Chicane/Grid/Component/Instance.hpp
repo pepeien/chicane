@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE_GRID Component
+        class CHICANE_GRID Component : public Changeable
         {
         public:
             typedef std::function<Component* (const pugi::xml_node& inNode)> Compiler;
@@ -21,11 +21,12 @@ namespace Chicane
             virtual ~Component();
 
         public:
-            virtual bool isDrawable() const { 
-                return isVisible() && !isPrimitiveEmpty() && Color::isVisible(m_style.backgroundColor);
-            }
+            virtual bool isDrawable() const;
 
             virtual void onEvent(const SDL_Event& inEvent) { return; }
+
+            // Lifecycle
+            virtual void onParentAddition(Component* inComponent) { return; }
             virtual void onChildAddition(Component* inComponent) { return; }
             virtual void onTick(float inDelta) { return; }
 
@@ -86,23 +87,14 @@ namespace Chicane
             void addCursor(const Vec<2, float>& inCursor);
             void setCursor(const Vec<2, float>& inCursor);
 
+            Vec<2, float> getAvailableSize() const;
             const Vec<2, float>& getSize() const;
             void setSize(const Vec<2, float>& inSize);
             void setSize(int inWidth, int inHeight);
-            Subscription<const Vec<2, float>&>* watchSize(
-                std::function<void (const Vec<2, float>&)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            ) const;
 
             const Vec<2, float>& getPosition() const;
             void setPosition(const Vec<2, float>& inPosition);
             void setPosition(int inX, int inY);
-            Subscription<const Vec<2, float>&>* watchPosition(
-                std::function<void (const Vec<2, float>&)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            ) const;
 
             bool isPrimitiveEmpty() const;
             std::uint32_t getPrimitiveCount() const;
@@ -114,6 +106,7 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
+            void refresh();
 
             bool isReference(const std::string& inValue) const;
             Reference parseReference(const std::string& inValue) const;
@@ -122,26 +115,23 @@ namespace Chicane
             FunctionData parseFunction(const std::string& inRefValue) const;
 
         protected:
-            std::string                                       m_tag;
-            std::string                                       m_id;
-            std::string                                       m_class;
-            Style::Instance                                   m_style;
+            std::string             m_tag;
+            std::string             m_id;
+            std::string             m_class;
+            Style::Instance         m_style;
 
-            References                                        m_references;
-            Functions                                         m_functions;
+            References              m_references;
+            Functions               m_functions;
 
-            Component*                                        m_root;
-            Component*                                        m_parent;
-            std::vector<Component*>                           m_children;
+            Component*              m_root;
+            Component*              m_parent;
+            std::vector<Component*> m_children;
 
-            Vec<2, float>                                     m_cursor;
+            Vec<2, float>           m_size;
+            Vec<2, float>           m_position;
+            Vec<2, float>           m_cursor;
 
-            Vec<2, float>                                     m_size;
-            std::unique_ptr<Observable<const Vec<2, float>&>> m_sizeObservable;
-            Vec<2, float>                                     m_position;
-            std::unique_ptr<Observable<const Vec<2, float>&>> m_positionObservable;
-
-            std::vector<Vertex>                               m_primitive;
+            std::vector<Vertex>     m_primitive;
         };
     }
 }

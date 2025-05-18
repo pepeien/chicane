@@ -85,8 +85,8 @@ namespace Chicane
                 m_attachmentTransformSubscription->complete();
             }
 
-            m_attachmentTransformSubscription = m_attachment->watchTransform(
-                [&](void* inData)
+            m_attachmentTransformSubscription = m_attachment->watchChanges(
+                [&]()
                 {
                     Transform::Instance transform = {};
                     transform.setTranslation(m_attachment->getTranslation());

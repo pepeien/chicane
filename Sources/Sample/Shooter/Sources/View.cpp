@@ -40,42 +40,15 @@ View::View()
         }
     );
 
-    addReference(
-        "victoryDisplay",
-        &m_uiVictoryVisibility
-    );
-    addReference(
-        "crosshairDotDisplay",
-        &m_uiCrosshairDotVisibility
-    );
-    addReference(
-        "crosshairSize",
-        &m_uiCrosshairSize
-    );
-    addReference(
-        "crosshairThickness",
-        &m_uiCrosshairThickness
-    );
-    addReference(
-        "crosshairGap",
-        &m_uiCrosshairGap
-    );
-    addReference(
-        "crosshairColorR",
-        &m_uiCrosshairColorR
-    );
-    addReference(
-        "crosshairColorG",
-        &m_uiCrosshairColorG
-    );
-    addReference(
-        "crosshairColorB",
-        &m_uiCrosshairColorB
-    );
-    addReference(
-        "crosshairColorA",
-        &m_uiCrosshairColorA
-    );
+    addReference("victoryDisplay",      &m_uiVictoryVisibility);
+    addReference("crosshairDotDisplay", &m_uiCrosshairDotVisibility);
+    addReference("crosshairSize",       &m_uiCrosshairSize);
+    addReference("crosshairThickness",  &m_uiCrosshairThickness);
+    addReference("crosshairGap",        &m_uiCrosshairGap);
+    addReference("crosshairColorR",     &m_uiCrosshairColorR);
+    addReference("crosshairColorG",     &m_uiCrosshairColorG);
+    addReference("crosshairColorB",     &m_uiCrosshairColorB);
+    addReference("crosshairColorA",     &m_uiCrosshairColorA);
 
     addFunction(
         "getFPS",
@@ -85,8 +58,6 @@ View::View()
         "getFrametime",
         std::bind(&View::getFrametime, this, std::placeholders::_1)
     );
-
-    Chicane::Box::loadFont("Engine/Fonts/Kenney.bfon");
 }
 
 Chicane::Grid::Reference View::getFPS(const Chicane::Grid::Event& inEvent)

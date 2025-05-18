@@ -9,14 +9,15 @@
 
 .telemetry {
     width: 200px;
-    height: 2.5vh;
+    height: 5vh;
     margin-left: auto;
     background-color: #333333;
 }
 
-.telemetry__fps, .telemetry__frametime {
+Text {
     width: 100%;
     color: #24f51d;
+    font-size: 4px;
 }
 
 .telemetry__fps {
@@ -26,11 +27,6 @@
 
 .telemetry__frametime {
     alignment: end center;
-}
-
-Text {
-    width: 100%;
-    color: #24f51d;
 }
 
 .crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {

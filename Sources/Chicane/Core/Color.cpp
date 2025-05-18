@@ -98,6 +98,16 @@ namespace Chicane
                 {
                     const std::vector<std::string> values = String::split(color, ",");
 
+                    for (const std::string& value : values)
+                    {
+                        if (!String::isNaN(value))
+                        {
+                            continue;
+                        }
+
+                        return m_colors.at(HEX_COLOR_TRANSPARENT);
+                    }
+
                     Rgba result = Rgba(0U);
                     result.r = std::stoi(values.at(0));
                     result.g = std::stoi(values.at(1));

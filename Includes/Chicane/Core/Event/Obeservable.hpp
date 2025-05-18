@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    template<typename T>
+    template<typename T = void*>
     class Observable
     {
     public:
@@ -21,6 +21,23 @@ namespace Chicane
 
     public:
         Subscription<T>* subscribe(
+            std::function<void ()> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
+        )
+        {
+            m_subscriptions.push_back(
+                new Subscription<T>(
+                    inNext,
+                    inError,
+                    inComplete
+                )
+            );
+
+            return m_subscriptions.back();
+        }
+
+        Subscription<T>* subscribe(
             std::function<void (T)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
@@ -35,6 +52,11 @@ namespace Chicane
             );
 
             return m_subscriptions.back();
+        }
+
+        void next()
+        {
+            next(nullptr);
         }
 
         void next(T inData)

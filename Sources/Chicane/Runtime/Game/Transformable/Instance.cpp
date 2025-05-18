@@ -4,8 +4,7 @@ namespace Chicane
 {
     Transformable::Transformable()
         : m_transform({}),
-        m_bounds(),
-        m_transformObservable(std::make_unique<Observable<void*>>())
+        m_bounds()
     {}
 
     const Transform::Combined& Transformable::getTransform() const
@@ -333,19 +332,10 @@ namespace Chicane
         return m_bounds.getBottom();
     }
 
-    Subscription<void*>* Transformable::watchTransform(
-        std::function<void (void*)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
-    )
-    {
-        return m_transformObservable->subscribe(inNext, inError, inComplete);
-    }
-
     void Transformable::refresh()
     {
         m_bounds.update(m_transform);
 
-        m_transformObservable->next(nullptr);
+        emmitChanges();
     }
 }

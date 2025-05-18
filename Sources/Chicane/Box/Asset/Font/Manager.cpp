@@ -15,7 +15,7 @@ namespace Chicane
                 : Super()
             {}
 
-            bool Manager::isFamilyLoaded(const std::string& inFamily) const
+            bool Manager::isFamilyAllocated(const std::string& inFamily) const
             {
                 return std::find_if(
                     m_datum.begin(),
@@ -91,7 +91,7 @@ namespace Chicane
 
             const ParsedData& Manager::getByFamily(const std::string& inFamily) const
             {
-                if (!isFamilyLoaded(inFamily))
+                if (!isFamilyAllocated(inFamily))
                 {
                     return EMPTY_INSTANCE;
                 }

@@ -23,9 +23,9 @@ namespace Chicane
 
         public:
             // Initialization
-            virtual void build() { return; }
-            virtual void destroy() { return; }
-            virtual void rebuild() { return; }
+            virtual void build() { setStatus(Layer::Status::Running); }
+            virtual void destroy() { setStatus(Layer::Status::Idle); }
+            virtual void rebuild() { setStatus(Layer::Status::Running); }
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { return; }

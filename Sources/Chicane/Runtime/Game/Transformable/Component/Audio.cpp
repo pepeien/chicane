@@ -16,7 +16,7 @@ namespace Chicane
 
         m_audio = inAudio;
 
-        Box::loadAudio(m_audio);
+        Box::load(m_audio);
     }
 
     void CAudio::play() const

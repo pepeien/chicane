@@ -1,7 +1,6 @@
 #include "Chicane/Box/Asset/Header.hpp"
 
 #include "Chicane/Box/Asset.hpp"
-#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -9,6 +8,45 @@ namespace Chicane
     {
         namespace Asset
         {
+            const std::unordered_map<std::string, Type> TYPES = {
+                { Audio::EXTENSION,   Type::Audio   },
+                { Font::EXTENSION,    Type::Font    },
+                { Mesh::EXTENSION,    Type::Mesh    },
+                { Model::EXTENSION,   Type::Model   },
+                { Sky::EXTENSION,     Type::Sky     },
+                { Texture::EXTENSION, Type::Texture }
+            };
+
+            bool isFileAsset(const std::string& inFilepath)
+            {
+                if (inFilepath.empty())
+                {
+                    return false;
+                }
+
+                const std::string extension = String::split(
+                    inFilepath,
+                    "."
+                ).back();
+
+                return TYPES.find("." + extension) != TYPES.end();
+            }
+
+            Type getType(const std::string& inFilepath)
+            {
+                if (!isFileAsset(inFilepath))
+                {
+                    return Type::Undefined;
+                }
+
+                const std::string extension = String::split(
+                    inFilepath,
+                    "."
+                ).back();
+
+                return TYPES.at("." + extension);
+            }
+
             Header Header::fromFilepath(const std::string& inFilepath)
             {
                 if (inFilepath.empty())
@@ -76,23 +114,7 @@ namespace Chicane
 
             void Header::fetchType()
             {
-                if (filepath.empty())
-                {
-                    type = Type::Undefined;
-
-                    return;
-                }
-
-                const std::string extension = String::trim(filepath.extension().string());
-
-                if (TYPES.find(extension) == TYPES.end())
-                {
-                    type = Type::Undefined;
-
-                    return;
-                }
-
-                type = TYPES.at(extension);
+                type = getType(filepath.string());
             }
         }
     }

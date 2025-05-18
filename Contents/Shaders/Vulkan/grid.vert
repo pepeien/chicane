@@ -14,10 +14,10 @@ layout(push_constant) uniform constants
 } PushConstants;
 
 void main() {
-    outColor = inColor;
+    const vec2 scaledPos = inPosition.xy * PushConstants.size;
+    const vec2 finalPos  = scaledPos + PushConstants.position;
 
-    vec2 scaledPos = inPosition.xy * PushConstants.size;
-    vec2 finalPos  = scaledPos + PushConstants.position;
+    outColor = inColor;
 
     gl_Position = vec4(finalPos, 0.0, 1.0);
 }
