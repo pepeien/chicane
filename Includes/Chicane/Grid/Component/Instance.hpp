@@ -21,14 +21,17 @@ namespace Chicane
             virtual ~Component();
 
         public:
+            // Status
             virtual bool isDrawable() const;
 
+            // Lifecycle
             virtual void onEvent(const SDL_Event& inEvent) { return; }
 
-            // Lifecycle
+            virtual void onTick(float inDelta) { return; }
+            virtual void onRefresh() { return; }
+
             virtual void onParentAddition(Component* inComponent) { return; }
             virtual void onChildAddition(Component* inComponent) { return; }
-            virtual void onTick(float inDelta) { return; }
 
         protected:
             virtual void refreshPrimitive() { return; }

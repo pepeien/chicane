@@ -36,6 +36,8 @@ namespace Chicane
         static constexpr const char* TEXT_COLOR_BLUE        = "blue";
         static constexpr const char* TEXT_COLOR_WHITE       = "white";
 
+        CHICANE_CORE bool areEquals(const Rgba& inA, const Rgba& inB);
+
         CHICANE_CORE bool isVisible(const std::string& inValue);
         CHICANE_CORE bool isVisible(const Rgba& inValue);
 

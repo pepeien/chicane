@@ -4,12 +4,15 @@ namespace Chicane
 {
     namespace Grid
     {
+        static constexpr const char NULL_CHARACTER = '\0';
+
         static const Box::Font::ParsedData EMPTY_FONT  = {};
         static const Box::Font::Glyph      EMPTY_GLYPH = {};
 
         Character::Character()
             : Component(TAG_ID),
-            m_character('\0')
+            m_canUpdate(false),
+            m_character(NULL_CHARACTER)
         {
             Box::getFontManager()->watchChanges(
                 [this](Box::Manager::EventType event)
@@ -27,6 +30,11 @@ namespace Chicane
         void Character::refreshPrimitive()
         {
             refreshFont();
+
+            if (!m_canUpdate)
+            {
+                return;
+            }
 
             m_primitive.clear();
 
@@ -46,6 +54,18 @@ namespace Chicane
     
                 m_primitive.push_back(vertex);
             }
+
+            m_canUpdate = false;
+        }
+
+        void Character::disable()
+        {
+            setCharacter(NULL_CHARACTER);
+        }
+
+        bool Character::hasCharacter() const
+        {
+            return m_character != NULL_CHARACTER;
         }
 
         char Character::getCharacter() const
@@ -55,12 +75,19 @@ namespace Chicane
 
         void Character::setCharacter(char inValue)
         {
-            if (m_character == inValue || inValue == '\0')
+            if (m_character == inValue)
             {
                 return;
             }
 
             m_character = inValue;
+
+            m_canUpdate = true;
+
+            if (!hasCharacter())
+            {
+                return;
+            }
 
             refreshFont();
         }
@@ -82,7 +109,7 @@ namespace Chicane
 
         bool Character::hasGlyph() const
         {
-            return hasFont() && getFont().hasGlyph(m_character);
+            return hasCharacter() && hasFont() && getFont().hasGlyph(m_character);
         }
 
         const Box::Font::Glyph& Character::getGlyph() const
@@ -114,10 +141,10 @@ namespace Chicane
 
             const Box::Font::Glyph& glyph = getGlyph();
 
-            m_style.width           = m_style.font.size;
-            m_style.height          = m_style.font.size;
-            //m_style.margin.right    = glyph.bearing.x;
-            //m_style.margin.bottom   = glyph.bearing.y;
+            m_style.width         = m_style.font.size;
+            m_style.height        = m_style.font.size;
+            m_style.margin.right  = glyph.bearing.x;
+            m_style.margin.bottom = glyph.bearing.y;
         }
     }
 }

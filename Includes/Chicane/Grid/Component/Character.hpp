@@ -23,6 +23,9 @@ namespace Chicane
             void refreshPrimitive() override;
 
         public:
+            void disable();
+
+            bool hasCharacter() const;
             char getCharacter() const;
             void setCharacter(char inValue);
 
@@ -36,6 +39,8 @@ namespace Chicane
             void refreshFont();
 
         private:
+            bool m_canUpdate;
+
             char m_character;
         };
     }

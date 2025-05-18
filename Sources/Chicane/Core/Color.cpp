@@ -23,6 +23,16 @@ namespace Chicane
             { TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U) }
         };
 
+        bool areEquals(const Rgba& inA, const Rgba& inB)
+        {
+            return (
+                inA.r == inB.r &&
+                inA.g == inB.g &&
+                inA.b == inB.b &&
+                inA.a == inB.a
+            );
+        }
+
         bool isVisible(const std::string& inValue)
         {
             return !inValue.empty() &&

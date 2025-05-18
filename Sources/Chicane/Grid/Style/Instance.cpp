@@ -322,12 +322,7 @@ namespace Chicane
                     m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)
                 );
 
-                if (
-                    foregroundColor.r == color.r &&
-                    foregroundColor.g == color.g &&
-                    foregroundColor.b == color.b &&
-                    foregroundColor.a == color.a
-                )
+                if (Color::areEquals(foregroundColor, color))
                 {
                     return;
                 }
@@ -348,12 +343,7 @@ namespace Chicane
                     m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)
                 );
 
-                if (
-                    backgroundColor.r == color.r &&
-                    backgroundColor.g == color.g &&
-                    backgroundColor.b == color.b &&
-                    backgroundColor.a == color.a
-                )
+                if (Color::areEquals(backgroundColor, color))
                 {
                     return;
                 }

@@ -266,25 +266,29 @@ namespace Chicane
 
         bool Component::hasFunction(const std::string& inId, bool isLocalOnly) const
         {
-            bool hasLocally = m_functions.find(inId) != m_functions.end() &&
-                              m_functions.at(inId) && m_functions.at(inId) != nullptr;
+            const std::string id = String::split(inId, FUNCTION_PARAMS_OPENING).front();
+
+            bool hasLocally = m_functions.find(id) != m_functions.end() &&
+                              m_functions.at(id) && m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
                 return hasLocally;
             }
 
-            return hasLocally || m_parent->hasFunction(inId);
+            return hasLocally || m_parent->hasFunction(id);
         }
 
         const Function Component::getFunction(const std::string& inId) const
         {
+            const std::string id = String::split(inId, FUNCTION_PARAMS_OPENING).front();
+
             if (!hasParent() || isRoot())
             {
-                return m_functions.at(inId);
+                return m_functions.at(id);
             }
 
-            return hasFunction(inId, true) ? m_functions.at(inId) : m_parent->getFunction(inId);
+            return hasFunction(id, true) ? m_functions.at(id) : m_parent->getFunction(id);
         }
 
         void Component::addFunction(const Functions& inFunctions)
@@ -565,11 +569,13 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshPrimitive();
+
+            onRefresh();
         }
 
         std::string Component::parseText(const std::string& inValue) const
         {            
-            if (String::trim(inValue).empty())
+            if (inValue.empty())
             {
                 return "";
             }
@@ -582,7 +588,7 @@ namespace Chicane
             const std::uint32_t start = inValue.find_first_of(REFERENCE_VALUE_OPENING) + 1;
             const std::uint32_t end   = inValue.find_last_of(REFERENCE_VALUE_CLOSING) - 1;
 
-            const std::string value     = inValue.substr(start + 1, end - start - 1);
+            const std::string value     = String::trim(inValue.substr(start + 1, end - start - 1));
             const std::string remainder = inValue.substr(end + 2);
 
             std::string result = "";

@@ -23,8 +23,12 @@ namespace Chicane
             const std::string& getText() const;
             void setText(const std::string& inValue);
 
+        protected:
+            void refreshText();
+
         private:
             std::string m_text;
+            std::string m_lastText;
         };
     }
 }
