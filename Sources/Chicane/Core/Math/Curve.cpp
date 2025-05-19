@@ -22,17 +22,6 @@ namespace Chicane
                 contour.push_back({ point.x, point.y });
             }
 
-            if (
-                contour.size() > 1 &&
-                (
-                    contour.front()[0] != contour.back()[0] || 
-                    contour.front()[1] != contour.back()[1]
-                )
-            )
-            {
-                contour.push_back(contour.front());
-            }
-
             result.push_back(contour);
         }
 
@@ -81,7 +70,7 @@ namespace Chicane
 
         for (const Curve& curve : inContours)
         {
-            if (curve.getSignedArea() < 0)
+            if (curve.isHole())
             {
                 holeContours.push_back(curve);
 
@@ -89,6 +78,11 @@ namespace Chicane
             }
 
             outerContours.push_back(curve);
+        }
+
+        if (outerContours.empty())
+        {
+            return {};
         }
 
         std::vector<std::vector<std::array<float, 2>>> polygons = {};
@@ -171,23 +165,25 @@ namespace Chicane
         }
     }
 
-    float Curve::getSignedArea() const
+    bool Curve::isHole() const
     {
         if (m_points.size() < 3) {
-            return 0.0f;
+            return true;
         }
 
-        double result = 0.0;
+        std::size_t pointCount = m_points.size();
 
-        for (size_t i = 0; i < m_points.size(); ++i) {
+        double area = 0.0;
+
+        for (std::size_t i = 0; i < pointCount; ++i) {
             const Vec<2, float>& point        = m_points.at(i);
-            const Vec<2, float>& nearestPoint = m_points.at((i + 1) % m_points.size());
+            const Vec<2, float>& nearestPoint = m_points.at((i + 1) % pointCount);
 
-            result += static_cast<double>(
-                (point.x * nearestPoint.y) - (nearestPoint.x * point.y)
+            area += static_cast<double>(
+                (point.x - nearestPoint.y) * (nearestPoint.x - point.y)
             );
         }
 
-        return static_cast<float>(0.5f * result);
+        return (area / 2.0) < 0;
     }
 }
