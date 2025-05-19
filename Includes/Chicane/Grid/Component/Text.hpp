@@ -16,7 +16,7 @@ namespace Chicane
         public:
             Text(const pugi::xml_node& inNode);
 
-        public:
+        protected:
             void onTick(float inDelta) override;
 
         public:

@@ -102,6 +102,13 @@ namespace Chicane
 
         void Renderer::render()
         {
+            setupLayers();
+
+            if (!canRender())
+            {
+                return;
+            }
+
             Frame::Instance& currentImage           = m_swapChain.frames.at(m_currentImageIndex);
             vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
 
@@ -134,7 +141,6 @@ namespace Chicane
             currentCommandBuffer.reset();
 
             setupFrame(nextImage);
-            setupLayers(nextImage);
 
             nextImage.updateDescriptorSets();
 
@@ -296,6 +302,20 @@ namespace Chicane
             setViewportSize(m_swapChain.extent.width, m_swapChain.extent.height);
         }
 
+        void Renderer::destroySwapChain()
+        {
+            for (Frame::Instance& frame : m_swapChain.frames)
+            {
+                frame.destroy();
+            }
+
+            m_swapChain.frames.clear();
+
+            m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
+
+            destroyLayers();
+        }
+
         void Renderer::rebuildSwapChain()
         {
             if (m_window->isMinimized())
@@ -312,20 +332,6 @@ namespace Chicane
 
             rebuildFrames();
             rebuildLayers();
-        }
-
-        void Renderer::destroySwapChain()
-        {
-            for (Frame::Instance& frame : m_swapChain.frames)
-            {
-                frame.destroy();
-            }
-
-            m_swapChain.frames.clear();
-
-            m_logicalDevice.destroySwapchainKHR(m_swapChain.instance);
-
-            destroyLayers();
         }
 
         void Renderer::buildCommandPool()
@@ -390,11 +396,11 @@ namespace Chicane
             outFrame.updateMeshData(m_meshes);
         }
 
-        void Renderer::setupLayers(Frame::Instance& outFrame)
+        void Renderer::setupLayers()
         {
             for (Layer::Instance* layer : m_layers)
             {
-                layer->setup(&outFrame);
+                layer->setup();
             }
         }
 

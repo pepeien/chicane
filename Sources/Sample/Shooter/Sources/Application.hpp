@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game.hpp"
-#include "Chicane/Runtime/Renderer.hpp"
+#include "Essential.hpp"
 
 #include "View.hpp"
 #include "Level.hpp"

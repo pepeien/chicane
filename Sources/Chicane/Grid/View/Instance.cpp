@@ -53,7 +53,7 @@ namespace Chicane
             registerView(this);
         }
 
-        void View::onChildAddition(Component* inComponent)
+        void View::onAdopted(Component* inComponent)
         {
             inComponent->setStyle(m_styles);
         }

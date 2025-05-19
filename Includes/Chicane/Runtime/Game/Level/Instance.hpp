@@ -27,6 +27,22 @@ namespace Chicane
         // Actors
         bool hasActors() const;
 
+        template<class T>
+        bool hasActors() const
+        {
+            for (Actor* actor : getActors())
+            {
+                if (typeid(*actor) != typeid(T))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         const std::vector<Actor*>& getActors() const;
 
         template<class T>
@@ -54,8 +70,12 @@ namespace Chicane
 
             m_actorObservable->next(m_actors);
 
+            refreshDefaultCamera();
+
             return static_cast<T*>(m_actors.back());
         }
+
+        void removeActor(Actor* inActor);
 
         Subscription<const std::vector<Actor*>&>* watchActors(
             std::function<void (const std::vector<Actor*>&)> inNext,
@@ -65,6 +85,22 @@ namespace Chicane
 
         // Components
         bool hasComponents() const;
+
+        template<class T>
+        bool hasComponents() const
+        {
+            for (Component* component : getComponents())
+            {
+                if (typeid(*component) != typeid(T))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         const std::vector<Component*>& getComponents() const;
 
@@ -93,6 +129,8 @@ namespace Chicane
 
             m_componentObservable->next(m_components);
 
+            refreshDefaultCamera();
+
             return static_cast<T*>(m_components.back());
         }
 
@@ -104,10 +142,7 @@ namespace Chicane
             std::function<void ()> inComplete = nullptr
         );
 
-        // Camera
-        bool hasCamera() const;
-        CCamera* getCamera() const;
-
+        // Helper
         template<typename T = Actor>
         std::vector<T*> traceLine(
             const Vec<3, float>& inOrigin,
@@ -181,11 +216,18 @@ namespace Chicane
             return result;
         }
 
+    protected:
+        void createDefaultCamera();
+        void removeDefaultCamera();
+        void refreshDefaultCamera();
+
     private:
         std::vector<Actor*>                                         m_actors;
         std::unique_ptr<Observable<const std::vector<Actor*>&>>     m_actorObservable;
 
         std::vector<Component*>                                     m_components;
         std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;
+
+        CCamera*                                                    m_defaultCamera;
     };
 }

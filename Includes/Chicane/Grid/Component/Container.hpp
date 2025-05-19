@@ -16,10 +16,9 @@ namespace Chicane
         public:
             Container(const pugi::xml_node& inNode);
 
-        public:
+        protected:
             void onRefresh() override;
 
-        protected:
             void refreshPrimitive() override;
 
         protected:

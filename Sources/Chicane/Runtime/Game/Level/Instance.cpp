@@ -11,7 +11,8 @@ namespace Chicane
         : m_actors({}),
         m_actorObservable(std::make_unique<Observable<const std::vector<Actor*>&>>()),
         m_components({}),
-        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>())
+        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>()),
+        m_defaultCamera(nullptr)
     {
         m_actors.reserve(MAX_ACTOR_COUNT);
         m_components.reserve(MAX_COMPONENT_COUNT);
@@ -64,6 +65,27 @@ namespace Chicane
         return m_actors;
     }
 
+    void Level::removeActor(Actor* inActor)
+    {
+        if (!inActor)
+        {
+            return;
+        }
+
+        auto found = std::find(m_actors.begin(), m_actors.end(), inActor);
+
+        if (found == m_actors.end())
+        {
+            return;
+        }
+
+        m_actors.erase(found);
+
+        m_actorObservable->next(m_actors);
+
+        refreshDefaultCamera();
+    }
+
     Subscription<const std::vector<Actor*>&>* Level::watchActors(
         std::function<void (const std::vector<Actor*>&)> inNext,
         std::function<void (const std::string&)> inError,
@@ -97,16 +119,18 @@ namespace Chicane
             return;
         }
 
-        auto foundComponent = std::find(m_components.begin(), m_components.end(), inComponent);
+        auto found = std::find(m_components.begin(), m_components.end(), inComponent);
 
-        if (foundComponent == m_components.end())
+        if (found == m_components.end())
         {
             return;
         }
 
-        m_components.erase(foundComponent);
+        m_components.erase(found);
 
         m_componentObservable->next(m_components);
+
+        refreshDefaultCamera();
     }
 
     Subscription<const std::vector<Component*>&>* Level::watchComponents(
@@ -125,21 +149,56 @@ namespace Chicane
         return subscription;
     }
 
-    bool Level::hasCamera() const
+    void Level::createDefaultCamera()
     {
-        return getCamera() != nullptr;
-    }
-
-    CCamera* Level::getCamera() const
-    {
-        for (CCamera* camera : getComponents<CCamera>())
+        if (m_defaultCamera != nullptr)
         {
-            if (camera->isActive())
-            {
-                return camera;
-            }
+            return;
         }
 
-        return nullptr;
+        m_defaultCamera = new CCamera();
+        m_defaultCamera->activate();
+
+        m_components.push_back(m_defaultCamera);
+
+        m_componentObservable->next(m_components);
+    }
+
+    void Level::removeDefaultCamera()
+    {
+        if (!m_defaultCamera)
+        {
+            return;
+        }
+
+        removeComponent(m_defaultCamera);
+
+        m_defaultCamera = nullptr;
+    }
+
+    void Level::refreshDefaultCamera()
+    {
+        bool hasUserCamera = false;
+
+        for (CCamera* camera : getComponents<CCamera>())
+        {
+            if (camera == m_defaultCamera || !camera->isActive())
+            {
+                continue;
+            }
+
+            hasUserCamera = true;
+
+            break;
+        }
+
+        if (hasUserCamera)
+        {
+            removeDefaultCamera();
+
+            return;
+        }
+
+        createDefaultCamera();
     }
 }

@@ -21,10 +21,9 @@ namespace Chicane
             ~LGrid();
 
         public:
-            void build() override;
-            void rebuild() override;
-
-            void render(void* outData) override;
+            bool onBuild() override;
+            bool onRebuild() override;
+            void onRender(void* outData) override;
 
         private:
             void loadEvents();

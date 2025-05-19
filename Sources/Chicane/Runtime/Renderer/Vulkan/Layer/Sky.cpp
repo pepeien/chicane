@@ -8,9 +8,18 @@ namespace Chicane
     namespace Vulkan
     {
         LSky::LSky()
-            : Layer::Instance("Sky"),
+            : Layer::Instance("Engine_Sky"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
-            m_clearValues({})
+            m_graphicsPipeline(nullptr),
+            m_frameDescriptor({}),
+            m_textureDescriptor({}),
+            m_sky(nullptr),
+            m_asset(nullptr),
+            m_modelVertexBuffer({}),
+            m_modelIndexBuffer({}),
+            m_clearValues({}),
+            m_modelManager(Box::getModelManager()),
+            m_textureManager(Box::getTextureManager())
         {
             m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
 
@@ -19,11 +28,6 @@ namespace Chicane
 
         LSky::~LSky()
         {
-            if (is(Layer::Status::Offline))
-            {
-                return;
-            }
-
             m_internals.logicalDevice.waitIdle();
 
             destroyTextureResources();
@@ -32,11 +36,11 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        void LSky::build()
+        bool LSky::onBuild()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!m_asset)
             {
-                return;
+                return false;
             }
 
             initFrameResources();
@@ -48,35 +52,30 @@ namespace Chicane
             buildTextureData();
             buildModelData();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LSky::destroy()
+        bool LSky::onDestroy()
         {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
-
             destroyFrameResources();
 
-            setStatus(Layer::Status::Idle);
+            return true;
         }
 
-        void LSky::rebuild()
+        bool LSky::onRebuild()
         {
-            if (!is(Layer::Status::Idle))
+            if (!m_asset)
             {
-                return;
+                return false;
             }
 
             initFramebuffers();
             initFrameResources();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LSky::render(void* outData)
+        void LSky::onRender(void* outData)
         {
             if (!is(Layer::Status::Running))
             {
@@ -124,7 +123,7 @@ namespace Chicane
                 );
 
                 commandBuffer.drawIndexed(
-                    static_cast<std::uint32_t>(Box::getModelManager()->getInstance(m_asset->getModel()).indices.size()),
+                    static_cast<std::uint32_t>(m_modelManager->getInstance(m_asset->getModel()).indices.size()),
                     1,
                     0,
                     0,
@@ -150,7 +149,7 @@ namespace Chicane
                     inLevel->watchActors(
                         [this](const std::vector<Actor*>& inActors)
                         {
-                            std::vector<ASky*> skies = Application::getLevel()->getActors<ASky>();
+                            const std::vector<ASky*> skies = Application::getLevel()->getActors<ASky>();
 
                             if (skies.empty())
                             {
@@ -159,20 +158,13 @@ namespace Chicane
                                 return;
                             }
 
-                            if (!is(Layer::Status::Idle))
-                            {
-                                return;
-                            }
-
                             skies.front()->watchSky(
                                 [this](const Chicane::Box::Sky::Instance* inSky)
                                 {
-                                    if (!is(Layer::Status::Idle) || !inSky)
+                                    if (!is(Layer::Status::Offline) || !inSky)
                                     {
                                         return;
                                     }
-
-                                    setStatus(Layer::Status::Initialized);
 
                                     m_asset = inSky;
 
@@ -183,13 +175,11 @@ namespace Chicane
                     );
                 }
             );
-
-            setStatus(Layer::Status::Idle);
         }
 
         void LSky::initFrameResources()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -255,7 +245,7 @@ namespace Chicane
 
         void LSky::initTextureResources()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
@@ -298,7 +288,7 @@ namespace Chicane
 
         void LSky::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
@@ -345,7 +335,7 @@ namespace Chicane
 
         void LSky::initFramebuffers()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -365,14 +355,9 @@ namespace Chicane
 
         void LSky::buildTextureData()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!m_asset)
             {
                 return;
-            }
-
-            if (m_sky.get() != nullptr)
-            {
-                m_sky.reset();
             }
 
             Sky::CreateInfo createInfo = {};
@@ -384,7 +369,7 @@ namespace Chicane
             createInfo.descriptorPool      = m_textureDescriptor.pool;
             createInfo.descriptorSetLayout = m_textureDescriptor.setLayout;
 
-            Box::Texture::Manager* textureManager = Box::getTextureManager();
+            Box::Texture::Manager* textureManager = m_textureManager;
 
             for (const auto& [side, texture] : m_asset->getSides())
             {
@@ -398,12 +383,18 @@ namespace Chicane
                 );
             }
 
+            m_sky.reset();
             m_sky = std::make_unique<Sky::Instance>(createInfo);
         }
 
         void LSky::buildModelVertexBuffer()
         {
-            const auto& vertices = Box::getModelManager()->getInstance(m_asset->getModel()).vertices;
+            if (!m_asset)
+            {
+                return;
+            }
+
+            const auto& vertices = m_modelManager->getInstance(m_asset->getModel()).vertices;
 
             Buffer::CreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;
@@ -440,7 +431,12 @@ namespace Chicane
 
         void LSky::buildModelIndexBuffer()
         {
-            const auto& indices = Box::getModelManager()->getInstance(m_asset->getModel()).indices;
+            if (!m_asset)
+            {
+                return;
+            }
+
+            const auto& indices = m_modelManager->getInstance(m_asset->getModel()).indices;
 
             Buffer::CreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;

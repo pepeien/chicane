@@ -13,11 +13,10 @@ namespace Chicane
             ~LSky();
 
         public:
-            void build() override;
-            void destroy() override;
-            void rebuild() override;
-
-            void render(void* outData) override;
+            bool onBuild() override;
+            bool onDestroy() override;
+            bool onRebuild() override;
+            void onRender(void* outData) override;
 
         private:
             void loadEvents();
@@ -58,6 +57,9 @@ namespace Chicane
             Buffer::Instance                            m_modelIndexBuffer;
 
             std::vector<vk::ClearValue>                 m_clearValues;
+
+            Box::Model::Manager*                        m_modelManager;
+            Box::Texture::Manager*                      m_textureManager;
         };
     }
 }

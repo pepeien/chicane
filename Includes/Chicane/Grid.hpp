@@ -5,6 +5,5 @@
 #include "Chicane/Grid/Event.hpp"
 #include "Chicane/Grid/Function.hpp"
 #include "Chicane/Grid/Loader.hpp"
-#include "Chicane/Grid/Reference.hpp"
 #include "Chicane/Grid/Style.hpp"
 #include "Chicane/Grid/View.hpp"

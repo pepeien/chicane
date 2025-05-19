@@ -19,6 +19,21 @@ namespace Chicane
             loadEvents();
         }
 
+        bool Instance::canRender() const
+        {
+            for (Layer::Instance* layer : m_layers)
+            {
+                if (!layer->is(Layer::Status::Running))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
         const Viewport& Instance::getViewport() const
         {
             return m_viewport;

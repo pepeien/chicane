@@ -226,7 +226,7 @@ namespace Chicane
 
         void Instance::onRender()
         {
-            m_telemetry.startCapture();
+            m_telemetry.start();
                 if (hasRenderer())
                 {
                     m_renderer->render();
@@ -234,14 +234,14 @@ namespace Chicane
 
                 if (hasLevel())
                 {
-                    m_level->tick(m_telemetry.frame.delta);
+                    m_level->tick(m_telemetry.delta);
                 }
 
                 if (Grid::hasActiveView())
                 {
-                    Grid::getActiveView()->tick(m_telemetry.frame.delta);
+                    Grid::getActiveView()->tick(m_telemetry.delta);
                 }
-            m_telemetry.endCapture();
+            m_telemetry.end();
         }
     }
 }

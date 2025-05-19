@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Essential.hpp"
 
 class Level : public Chicane::Level
 {

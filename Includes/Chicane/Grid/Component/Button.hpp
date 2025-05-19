@@ -20,7 +20,7 @@ namespace Chicane
         public:
             Button(const pugi::xml_node& inNode);
 
-        public:
+        protected:
             virtual void onClick(const Event& inEvent) { return; }
         };
     }

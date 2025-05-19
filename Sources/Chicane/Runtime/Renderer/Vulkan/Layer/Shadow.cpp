@@ -8,10 +8,14 @@ namespace Chicane
     namespace Vulkan
     {
         LShadow::LShadow()
-            : Layer::Instance("Shadow"),
+            : Layer::Instance("Engine_Shadow"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
-            m_clearValues({}),
-            m_modelManager(Box::getModelManager())
+            m_graphicsPipeline(nullptr),
+            m_frameDescriptor({}),
+            m_modelVertexBuffer({}),
+            m_modelIndexBuffer({}),
+            m_modelManager(Box::getModelManager()),
+            m_clearValues({})
         {
             m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
@@ -20,11 +24,6 @@ namespace Chicane
 
         LShadow::~LShadow()
         {
-            if (is(Layer::Status::Offline))
-            {
-                return;
-            }
-
             m_internals.logicalDevice.waitIdle();
 
             destroyModelData();
@@ -32,11 +31,11 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        void LShadow::build()
+        bool LShadow::onBuild()
         {
-            if (!is(Layer::Status::Initialized))
+            if (m_modelManager->isEmpty())
             {
-                return;
+                return false;
             }
 
             initFrameResources();
@@ -46,35 +45,30 @@ namespace Chicane
 
             buildModelData();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LShadow::destroy()
+        bool LShadow::onDestroy()
         {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
-
             destroyFrameResources();
 
-            setStatus(Layer::Status::Idle);
+            return true;
         }
 
-        void LShadow::rebuild()
+        bool LShadow::onRebuild()
         {
-            if (!is(Layer::Status::Idle))
+            if (m_modelManager->isEmpty())
             {
-                return;
+                return false;
             }
 
             initFrameResources();
             initFramebuffers();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LShadow::render(void* outData)
+        void LShadow::onRender(void* outData)
         {
             if (!is(Layer::Status::Running))
             {
@@ -113,8 +107,6 @@ namespace Chicane
                 return;
             }
 
-            setStatus(Layer::Status::Idle);
-
             m_modelManager->watchChanges(
                 [&](Box::Manager::EventType inEvent)
                 {
@@ -123,26 +115,21 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Idle))
+                    if (is(Layer::Status::Offline))
                     {
-                        setStatus(Layer::Status::Initialized);
-
                         build();
 
                         return;
                     }
 
-                    if (is(Layer::Status::Running))
-                    {
-                        rebuildModelData();
-                    }
+                    rebuildModelData();
                 }
             );
         }
 
         void LShadow::initFrameResources()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -227,7 +214,7 @@ namespace Chicane
 
         void LShadow::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
@@ -285,7 +272,7 @@ namespace Chicane
 
         void LShadow::initFramebuffers()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -305,6 +292,11 @@ namespace Chicane
 
         void LShadow::buildModelVertexBuffer()
         {
+            if (m_modelManager->isEmpty())
+            {
+                return;
+            }
+
             const auto& vertices = m_modelManager->getVertices();
 
             Buffer::CreateInfo createInfo = {};
@@ -342,6 +334,11 @@ namespace Chicane
 
         void LShadow::buildModelIndexBuffer()
         {
+            if (m_modelManager->isEmpty())
+            {
+                return;
+            }
+
             const auto& indices = m_modelManager->getIndices();
 
             Buffer::CreateInfo createInfo;

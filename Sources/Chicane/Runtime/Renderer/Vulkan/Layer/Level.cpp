@@ -9,7 +9,7 @@ namespace Chicane
     namespace Vulkan
     {
         LLevel::LLevel()
-            : Layer::Instance("Level"),
+            : Layer::Instance("Engine_Level"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_clearValues({}),
             m_textureManager(Box::getTextureManager()),
@@ -23,11 +23,6 @@ namespace Chicane
 
         LLevel::~LLevel()
         {
-            if (is(Layer::Status::Offline))
-            {
-                return;
-            }
-
             m_internals.logicalDevice.waitIdle();
 
             destroyTextureResources();
@@ -36,11 +31,11 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        void LLevel::build()
+        bool LLevel::onBuild()
         {
-            if (!is(Layer::Status::Initialized))
+            if (m_modelManager->isEmpty() || m_textureManager->isEmpty())
             {
-                return;
+                return false;
             }
 
             initFrameResources();
@@ -52,35 +47,35 @@ namespace Chicane
             buildTextureData();
             buildModelData();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LLevel::destroy()
+        bool LLevel::onDestroy()
         {
-            if (!is(Layer::Status::Running))
+            if (is(Layer::Status::Offline))
             {
-                return;
+                return false;
             }
 
             destroyFrameResources();
 
-            setStatus(Layer::Status::Idle);
+            return true;
         }
 
-        void LLevel::rebuild()
+        bool LLevel::onRebuild()
         {
-            if (!is(Layer::Status::Idle))
+            if (m_modelManager->isEmpty() || m_textureManager->isEmpty())
             {
-                return;
+                return false;
             }
 
             initFrameResources();
             initFramebuffers();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LLevel::render(void* outData)
+        void LLevel::onRender(void* outData)
         {
             if (!is(Layer::Status::Running))
             {
@@ -122,8 +117,6 @@ namespace Chicane
                 return;
             }
 
-            setStatus(Layer::Status::Idle);
-
             m_textureManager->watchChanges(
                 [&](Box::Manager::EventType inEvent)
                 {
@@ -132,19 +125,14 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Idle) && m_modelManager->getActiveCount() > 0)
+                    if (is(Layer::Status::Offline))
                     {
-                        setStatus(Layer::Status::Initialized);
-
                         build();
 
                         return;
                     }
 
-                    if (is(Layer::Status::Running))
-                    {
-                        buildTextureData();
-                    }
+                    buildTextureData();
                 }
             );
 
@@ -156,26 +144,21 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Idle) && m_textureManager->getActiveCount() > 0)
+                    if (is(Layer::Status::Offline))
                     {
-                        setStatus(Layer::Status::Initialized);
-
                         build();
 
                         return;
                     }
 
-                    if (is(Layer::Status::Running))
-                    {
-                        rebuildModelData();
-                    }
+                    rebuildModelData();
                 }
             );
         }
 
         void LLevel::initFrameResources()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -296,7 +279,7 @@ namespace Chicane
 
         void LLevel::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
@@ -354,7 +337,7 @@ namespace Chicane
 
         void LLevel::initFramebuffers()
         {
-            if (is(Layer::Status::Running))
+            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
             {
                 return;
             }
@@ -375,7 +358,7 @@ namespace Chicane
 
         void LLevel::initTextureResources()
         {
-            if (!is(Layer::Status::Initialized))
+            if (!is(Layer::Status::Offline))
             {
                 return;
             }
@@ -427,6 +410,11 @@ namespace Chicane
 
         void LLevel::buildTextureData()
         {
+            if (m_textureManager->isEmpty())
+            {
+                return;
+            }
+
             // Textures
             Texture::CreateInfo createInfo = {};
             createInfo.logicalDevice  = m_internals.logicalDevice;

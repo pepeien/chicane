@@ -1,24 +1,20 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/FrameTelemetry.hpp"
+#include "Chicane/Core/Timer.hpp"
 
 namespace Chicane
 {
-    struct CHICANE_CORE Telemetry
+    struct CHICANE_CORE Telemetry : public Timer
     {
     public:
-        FrameTelemetry frame {};
+        Telemetry();
+
+    protected:
+        void onTime() override;
 
     public:
-        void startCapture()
-        {
-            frame.startCapture();
-        }
-
-        void endCapture()
-        {
-            frame.endCapture();
-        }
+        float         delta = 0.0f;
+        std::uint32_t rate  = 0U;
     };
 }

@@ -2,7 +2,6 @@
 
 #include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Event.hpp"
-#include "Chicane/Grid/Reference.hpp"
 
 namespace Chicane
 {

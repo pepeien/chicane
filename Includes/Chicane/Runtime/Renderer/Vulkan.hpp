@@ -81,8 +81,8 @@ namespace Chicane
             void destroyDevices();
 
             void buildSwapChain();
-            void rebuildSwapChain();
             void destroySwapChain();
+            void rebuildSwapChain();
 
             void buildCommandPool();
             void destroyCommandPool();
@@ -95,7 +95,7 @@ namespace Chicane
             void rebuildFrames();
             void setupFrame(Frame::Instance& outFrame);
 
-            void setupLayers(Frame::Instance& outFrame);
+            void setupLayers();
             void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
         private:

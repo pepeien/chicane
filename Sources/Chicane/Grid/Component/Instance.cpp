@@ -24,6 +24,7 @@ namespace Chicane
             m_root(nullptr),
             m_parent(nullptr),
             m_children({}),
+            m_childrenObservable(std::make_unique<Observable<>>()),
             m_size({}),
             m_position({}),
             m_cursor({}),
@@ -34,7 +35,9 @@ namespace Chicane
             m_style.watchChanges(
                 [&]()
                 {
-                    refresh();
+                    refresh(false);
+
+                    emmitChanges();
                 }
             );
         }
@@ -50,7 +53,7 @@ namespace Chicane
         }
 
         bool Component::isDrawable() const { 
-            return isVisible() && !isPrimitiveEmpty();
+            return isVisible() && !hasPrimitive();
         }
 
         void Component::tick(float inDelta)
@@ -248,8 +251,6 @@ namespace Chicane
                     inReference
                 )
             );
-
-            emmitChanges();
         }
 
         void Component::removeReference(const std::string& inId)
@@ -260,8 +261,6 @@ namespace Chicane
             }
 
             m_references.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasFunction(const std::string& inId, bool isLocalOnly) const
@@ -312,8 +311,6 @@ namespace Chicane
                     inFunction
                 )
             );
-
-            emmitChanges();
         }
 
         void Component::removeFunction(const std::string& inId)
@@ -324,8 +321,6 @@ namespace Chicane
             }
 
             m_functions.erase(inId);
-
-            emmitChanges();
         }
 
         bool Component::hasRoot() const
@@ -372,7 +367,7 @@ namespace Chicane
 
             m_parent = inComponent;
 
-            onParentAddition(inComponent);
+            onAdoption(inComponent);
 
             if (!m_parent || isRoot())
             {
@@ -383,8 +378,6 @@ namespace Chicane
                 [this]()
                 {
                     refresh();
-
-                    emmitChanges();
                 }
             );
         }
@@ -421,17 +414,34 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
+            inComponent->watchChanges(
+                [this]()
+                {
+                    m_childrenObservable->next();
+                }
+            );
+            inComponent->watchChildren(
+                [this]()
+                {
+                    m_childrenObservable->next();
+                }
+            );
 
             m_children.push_back(inComponent);
 
-            onChildAddition(inComponent);
+            onAdopted(inComponent);
+        }
 
-            if (isRoot() || !hasParent())
-            {
-                emmitChanges();
+        Subscription<>* Component::watchChildren(
+            std::function<void ()> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        ) const
+        {
+            Subscription<>* subscription = m_childrenObservable->subscribe(inNext, inError, inComplete);
+            subscription->next();
 
-                return;
-            }
+            return subscription;
         }
 
         const Vec<2, float>& Component::getCursor() const
@@ -446,7 +456,14 @@ namespace Chicane
 
         void Component::setCursor(const Vec<2, float>& inCursor)
         {
+            if (m_cursor.x == inCursor.x || m_cursor.y == inCursor.y)
+            {
+                return;
+            }
+
             m_cursor = inCursor;
+
+            emmitChanges();
         }
 
         Vec<2, float> Component::getAvailableSize() const
@@ -466,6 +483,11 @@ namespace Chicane
 
         void Component::setSize(int inWidth, int inHeight)
         {
+            if (m_size.x == inWidth && m_size.y == inHeight)
+            {
+                return;
+            }
+
             m_size.x = inWidth;
             m_size.y = inHeight;
 
@@ -484,15 +506,18 @@ namespace Chicane
 
         void Component::setPosition(int inX, int inY)
         {
+            if (m_position.x == inX && m_position.y == inY)
+            {
+                return;
+            }
+
             m_position.x = inX;
             m_position.y = inY;
 
             setCursor(m_position);
-
-            emmitChanges();
         }
 
-        bool Component::isPrimitiveEmpty() const
+        bool Component::hasPrimitive() const
         {
             return m_primitive.empty();
         }
@@ -524,12 +549,12 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
-            setCursor(Vec2Zero);
-
             if (isRoot())
             {
                 return;
             }
+
+            Vec<2, float> cursor = Vec2Zero;
 
             Vec<2, float> margin = {
                 m_style.margin.left - m_style.margin.right,
@@ -538,11 +563,11 @@ namespace Chicane
 
             if (m_style.isPosition(Style::Position::Relative))
             {
-                setCursor(m_parent->getCursor());
+                cursor = m_parent->getCursor();
 
                 const Vec<2, float> parentCenter = m_parent->getSize() * 0.5f;
   
-                const Vec<2, float> position = m_cursor + margin;
+                const Vec<2, float> position = cursor + margin;
 
                 Vec<2, float> offset = { m_size.x * 0.5f, m_size.y * 0.5f };
 
@@ -560,12 +585,16 @@ namespace Chicane
                 margin.y += offset.y;
             }
 
-            setPosition(m_cursor + margin);
+            setPosition(cursor + margin);
         }
 
-        void Component::refresh()
+        void Component::refresh(bool canRefreshStyle)
         {
-            refreshStyle();
+            if (canRefreshStyle)
+            {
+                refreshStyle();
+            }
+
             refreshSize();
             refreshPosition();
             refreshPrimitive();

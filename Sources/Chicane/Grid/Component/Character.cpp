@@ -24,7 +24,7 @@ namespace Chicane
 
         bool Character::isDrawable() const
         {
-            return m_parent->isVisible() && hasGlyph() && !isPrimitiveEmpty();
+            return m_parent->isVisible() && hasGlyph() && !hasPrimitive();
         }
 
         void Character::refreshPrimitive()

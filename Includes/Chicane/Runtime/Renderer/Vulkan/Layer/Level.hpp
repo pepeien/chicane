@@ -13,11 +13,10 @@ namespace Chicane
             ~LLevel();
 
         public:
-            void build() override;
-            void destroy() override;
-            void rebuild() override;
-
-            void render(void* outData) override;
+            bool onBuild() override;
+            bool onDestroy() override;
+            bool onRebuild() override;
+            void onRender(void* outData) override;
 
         private:
             void loadEvents();

@@ -2,7 +2,6 @@
 
 #include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Function.hpp"
-#include "Chicane/Grid/Reference.hpp"
 #include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
@@ -21,19 +20,16 @@ namespace Chicane
             virtual ~Component();
 
         public:
-            // Status
             virtual bool isDrawable() const;
 
-            // Lifecycle
             virtual void onEvent(const SDL_Event& inEvent) { return; }
 
+        protected:
             virtual void onTick(float inDelta) { return; }
             virtual void onRefresh() { return; }
+            virtual void onAdoption(Component* inChild) { return; }
+            virtual void onAdopted(Component* inParent) { return; }
 
-            virtual void onParentAddition(Component* inComponent) { return; }
-            virtual void onChildAddition(Component* inComponent) { return; }
-
-        protected:
             virtual void refreshPrimitive() { return; }
 
         public:
@@ -84,6 +80,11 @@ namespace Chicane
             const std::vector<Component*>& getChildren() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
+            Subscription<>* watchChildren(
+                std::function<void ()> inNext,
+                std::function<void (const std::string&)> inError = nullptr,
+                std::function<void ()> inComplete = nullptr
+            ) const;
 
             // Positioning
             const Vec<2, float>& getCursor() const;
@@ -99,7 +100,7 @@ namespace Chicane
             void setPosition(const Vec<2, float>& inPosition);
             void setPosition(int inX, int inY);
 
-            bool isPrimitiveEmpty() const;
+            bool hasPrimitive() const;
             std::uint32_t getPrimitiveCount() const;
             const std::vector<Vertex>& getPrimitive() const;
 
@@ -109,7 +110,7 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
-            void refresh();
+            void refresh(bool canRefreshStyle = true);
 
             bool isReference(const std::string& inValue) const;
             Reference parseReference(const std::string& inValue) const;
@@ -118,23 +119,24 @@ namespace Chicane
             FunctionData parseFunction(const std::string& inRefValue) const;
 
         protected:
-            std::string             m_tag;
-            std::string             m_id;
-            std::string             m_class;
-            Style::Instance         m_style;
+            std::string                   m_tag;
+            std::string                   m_id;
+            std::string                   m_class;
+            Style::Instance               m_style;
 
-            References              m_references;
-            Functions               m_functions;
+            References                    m_references;
+            Functions                     m_functions;
 
-            Component*              m_root;
-            Component*              m_parent;
-            std::vector<Component*> m_children;
+            Component*                    m_root;
+            Component*                    m_parent;
+            std::vector<Component*>       m_children;
+            std::unique_ptr<Observable<>> m_childrenObservable;
 
-            Vec<2, float>           m_size;
-            Vec<2, float>           m_position;
-            Vec<2, float>           m_cursor;
+            Vec<2, float>                 m_size;
+            Vec<2, float>                 m_position;
+            Vec<2, float>                 m_cursor;
 
-            std::vector<Vertex>     m_primitive;
+            std::vector<Vertex>           m_primitive;
         };
     }
 }

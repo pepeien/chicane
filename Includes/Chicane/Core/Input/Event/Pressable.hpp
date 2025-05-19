@@ -1,21 +1,39 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/FrameTelemetry.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Event/Status.hpp"
+#include "Chicane/Core/Timer.hpp"
 
-static constexpr float EVENT_REPEAT_COOLDOWN_IN_MS = 30.0f;
+static constexpr const float COOLDOWN_IN_MS = 30.0f;
 
 namespace Chicane
 {
     namespace Input
     {
         template<typename B>
-        struct CHICANE_CORE PressableEvents
+        struct CHICANE_CORE PressableEvents : private Timer
         {
         public:
             typedef std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>> Events;
+
+        public:
+            PressableEvents()
+                : Timer(COOLDOWN_IN_MS),
+                m_pressed({}),
+                m_events({})
+            {}
+
+        protected:
+            void onTime()
+            {
+                start();
+
+                for (B button : m_pressed)
+                {
+                    exec(button, Event::Status::Pressed);
+                }
+            }
 
         public:
             void bind(B inButton, Event::Status inStatus, std::function<void()> inExec)
@@ -59,19 +77,7 @@ namespace Chicane
 
             void repeat()
             {
-                m_timer.endCapture();
-
-                if (m_timer.delta < EVENT_REPEAT_COOLDOWN_IN_MS)
-                {
-                    return;
-                }
-
-                m_timer.startCapture();
-
-                for (B button : m_pressed)
-                {
-                    exec(button, Event::Status::Pressed);
-                }
+                end();
             }
 
             void clear()
@@ -108,9 +114,8 @@ namespace Chicane
             }
 
         private:
-            FrameTelemetry m_timer   = {};
-            std::vector<B> m_pressed = {};
-            Events         m_events  = {};
+            std::vector<B> m_pressed;
+            Events         m_events;
         };
     }
 }

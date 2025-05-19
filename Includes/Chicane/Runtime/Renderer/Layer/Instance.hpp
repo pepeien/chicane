@@ -9,38 +9,45 @@ namespace Chicane
     {
         class CHICANE_RUNTIME Instance
         {
-        public:
-            Instance()
-                : Instance("Unamed")
-            {}
+        protected:
+            typedef Instance Super;
 
-            Instance(const std::string& inId)
-                : m_id(inId),
-                  m_status(Status::Offline)
-            {}
+        public:
+            Instance();
+            Instance(const std::string& inId);
 
             virtual ~Instance() = default;
 
         public:
-            // Initialization
-            virtual void build() { setStatus(Layer::Status::Running); }
-            virtual void destroy() { setStatus(Layer::Status::Idle); }
-            virtual void rebuild() { setStatus(Layer::Status::Running); }
+            // Builds the Layer
+            virtual bool onBuild() { return false; }
+            // Destroys any resource that can be rebuilt at rebuild
+            virtual bool onDestroy() { return true; }
+            // Rebuilds resources of the layer
+            virtual bool onRebuild() { return true; }
+            // Setup layer for rendering
+            virtual bool onSetup() { return true; }
+            // Renders layer
+            virtual void onRender(void* outData) { return; }
 
             // Event
             virtual void onEvent(const SDL_Event& inEvent) { return; }
 
-            // Rendering
-            virtual void setup(void* outData) { return; }
-            virtual void render(void* outData) { return; }
+        public:  
+            void build();
+            void destroy();
+            void rebuild();
+            void setup();
+            void render(void* outData);
 
         public:
-            bool is(Status inStatus) const { return m_status == inStatus; };
+            bool is(Status inStatus) const;
+            Status getStatus() const;
 
-            const std::string& getId() const { return m_id; }
+            const std::string& getId() const;
 
         protected:
-            void setStatus(Status inStatus) { m_status = inStatus; };
+            void setStatus(Status inStatus);
 
         protected:
             std::string m_id;

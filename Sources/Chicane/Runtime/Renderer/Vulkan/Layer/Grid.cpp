@@ -9,6 +9,8 @@ namespace Chicane
         LGrid::LGrid()
             : Layer::Instance("UI"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
+            m_graphicsPipeline(nullptr),
+            m_vertexBuffer({}),
             m_clearValues({}),
             m_view(nullptr),
             m_components({})
@@ -20,11 +22,6 @@ namespace Chicane
 
         LGrid::~LGrid()
         {
-            if (is(Layer::Status::Offline))
-            {
-                return;
-            }
-
             m_internals.logicalDevice.waitIdle();
 
             destroyData();
@@ -32,11 +29,11 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        void LGrid::build()
+        bool LGrid::onBuild()
         {
-            if (!is(Layer::Status::Initialized))
+            if (m_components.empty())
             {
-                return;
+                return false;
             }
 
             initGraphicsPipeline();
@@ -44,28 +41,23 @@ namespace Chicane
 
             buildData();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LGrid::rebuild()
+        bool LGrid::onRebuild()
         {
-            if (!is(Layer::Status::Idle))
+            if (m_components.empty())
             {
-                return;
+                return false;
             }
 
             initFramebuffers();
 
-            setStatus(Layer::Status::Running);
+            return true;
         }
 
-        void LGrid::render(void* outData)
+        void LGrid::onRender(void* outData)
         {
-            if (!is(Layer::Status::Running))
-            {
-                return;
-            }
-
             Renderer::Data* data             = (Renderer::Data*) outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             Frame::Instance& frame           = data->frame;
@@ -90,44 +82,31 @@ namespace Chicane
 
         void LGrid::loadEvents()
         {
-            if (!is(Layer::Status::Offline))
-            {
-                return;
-            }
-
-            setStatus(Layer::Status::Idle);
-
             Grid::watchActiveView(
                 [&](Grid::View* inView)
                 {
-                    m_view = inView;
-
                     m_components.clear();
+
+                    m_view = inView;
 
                     if (!m_view)
                     {
                         return;
                     }
 
-                    m_view->watchChanges(
+                    m_view->watchChildren(
                         [&]()
                         {
                             m_components = m_view->getDrawableChildren();
 
-                            if (m_components.empty())
+                            if (is(Layer::Status::Offline))
                             {
-                                return;
-                            }
-
-                            if (!is(Layer::Status::Idle))
-                            {
-                                rebuildData();
+                                build();
 
                                 return;
                             }
 
-                            setStatus(Layer::Status::Initialized);
-                            build();
+                            rebuildData();
                         }
                     );
                 }
@@ -136,11 +115,6 @@ namespace Chicane
 
         void LGrid::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Initialized))
-            {
-                return;
-            }
-
             // Shader
             Shader::StageCreateInfo vertexShader = {};
             vertexShader.path = "Contents/Shaders/Vulkan/grid.vert.spv";
@@ -190,11 +164,6 @@ namespace Chicane
 
         void LGrid::initFramebuffers()
         {
-            if (is(Layer::Status::Running))
-            {
-                return;
-            }
-
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 Frame::Buffer::CreateInfo createInfo = {};
@@ -210,6 +179,11 @@ namespace Chicane
 
         void LGrid::buildVertexBuffer()
         {
+            if (m_components.empty())
+            {
+                return;
+            }
+
             std::vector<Chicane::Vertex> vertices = {};
 
             for (const Grid::Component* component : m_components)
@@ -295,7 +269,7 @@ namespace Chicane
 
             for (const Grid::Component* component : m_components)
             {
-                if (component->isPrimitiveEmpty())
+                if (component->hasPrimitive())
                 {
                     continue;
                 }

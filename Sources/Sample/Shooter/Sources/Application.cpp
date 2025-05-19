@@ -1,6 +1,6 @@
 #include "Application.hpp"
 
-#include "Actor/Character.hpp"
+#include "Actor.hpp"
 
 Application::Application()
 {

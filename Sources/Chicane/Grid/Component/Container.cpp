@@ -71,6 +71,8 @@ namespace Chicane
             m_color = m_style.backgroundColor;
 
             m_canUpdate = true;
+
+            refreshPrimitive();
         }
     }
 }

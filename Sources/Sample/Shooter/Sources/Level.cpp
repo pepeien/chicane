@@ -1,8 +1,6 @@
 #include "Level.hpp"
 
-#include "Actor/Apple.hpp"
-#include "Actor/Structure.hpp"
-#include "Actor/Sun.hpp"
+#include "Actor.hpp"
 #include "Game.hpp"
 
 static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 2;
@@ -25,7 +23,7 @@ void Level::onActivation()
 void Level::spawnSky()
 {
     createActor<Chicane::ASky>()->setSky(
-        Chicane::Box::load<Chicane::Box::Sky::Instance>("Contents/Skies/Gray.bsky")
+        Chicane::Box::load<Chicane::Box::Sky::Instance>("Contents/Shooter/Skies/Lake.bsky")
     );
 }
 

@@ -83,7 +83,7 @@ namespace Chicane
 
             // Text
             static constexpr const char* FONT_FAMILY_ATTRIBUTE_NAME = "font-family";
-            static constexpr const char* FONT_FAMILY_DEFAULT_VALUE  = "Kenney Future";
+            static constexpr const char* FONT_FAMILY_DEFAULT_VALUE  = "Poppins";
 
             static constexpr const char* FONT_SIZE_ATTRIBUTE_NAME = "font-size";
             static constexpr const char* FONT_SIZE_DEFAULT_VALUE  = "16px";

@@ -19,11 +19,11 @@ namespace Chicane
 
             virtual ~View() = default;
 
-        public:
+        protected:
             virtual void onActivation() { return; }
 
-        public:
-            void onChildAddition(Component* inChild) override;
+        protected:
+            void onAdopted(Component* inChild) override;
 
         public:
             void activate();

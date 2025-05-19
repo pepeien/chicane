@@ -33,6 +33,8 @@ namespace Chicane
             virtual void render() { return; };
 
         public:
+            bool canRender() const;
+
             // Settings
             const Viewport& getViewport() const;
             void setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight);

@@ -9,7 +9,6 @@ namespace Chicane
         enum class Status : std::uint8_t
         {
             Offline,
-            Idle,
             Initialized,
             Running
         };

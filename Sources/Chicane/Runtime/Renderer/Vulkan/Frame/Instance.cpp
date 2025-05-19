@@ -409,6 +409,11 @@ namespace Chicane
 
             void Instance::updateDescriptorSets()
             {
+                if (descriptorSetWrites.empty())
+                {
+                    return;
+                }
+
                 logicalDevice.updateDescriptorSets(
                     descriptorSetWrites,
                     nullptr
