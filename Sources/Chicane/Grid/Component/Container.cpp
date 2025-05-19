@@ -36,29 +36,25 @@ namespace Chicane
 
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;
-            m_primitive.push_back(vertex);
+            m_primitive.vertices.push_back(vertex);
 
             vertex.position.x =  1.0f;
             vertex.position.y = -1.0f;
-            m_primitive.push_back(vertex);
+            m_primitive.vertices.push_back(vertex);
 
             vertex.position.x = 1.0f;
             vertex.position.y = 1.0f;
-            m_primitive.push_back(vertex);
-
-            vertex.position.x = 1.0f;
-            vertex.position.y = 1.0f;
-            m_primitive.push_back(vertex);
+            m_primitive.vertices.push_back(vertex);
 
             vertex.position.x = -1.0f;
             vertex.position.y =  1.0f;
-            m_primitive.push_back(vertex);
+            m_primitive.vertices.push_back(vertex);
 
-            vertex.position.x = -1.0f;
-            vertex.position.y = -1.0f;
-            m_primitive.push_back(vertex);
+            m_primitive.indices = { 0, 1, 2, 2, 3, 0 };
 
             m_canUpdate = false;
+
+            emmitChangesToParent();
         }
 
         void Container::refreshColor()

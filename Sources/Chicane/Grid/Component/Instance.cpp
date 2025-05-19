@@ -53,7 +53,7 @@ namespace Chicane
         }
 
         bool Component::isDrawable() const { 
-            return isVisible() && !hasPrimitive();
+            return isVisible() && hasPrimitive();
         }
 
         void Component::tick(float inDelta)
@@ -382,6 +382,11 @@ namespace Chicane
             );
         }
 
+        void Component::emmitChangesToParent()
+        {
+            m_childrenObservable->next();
+        }
+
         bool Component::hasChildren() const
         {
             return !m_children.empty();
@@ -417,13 +422,13 @@ namespace Chicane
             inComponent->watchChanges(
                 [this]()
                 {
-                    m_childrenObservable->next();
+                    emmitChangesToParent();
                 }
             );
             inComponent->watchChildren(
                 [this]()
                 {
-                    m_childrenObservable->next();
+                    emmitChangesToParent();
                 }
             );
 
@@ -519,15 +524,10 @@ namespace Chicane
 
         bool Component::hasPrimitive() const
         {
-            return m_primitive.empty();
+            return !m_primitive.isEmpty();
         }
 
-        std::uint32_t Component::getPrimitiveCount() const
-        {
-            return m_primitive.size();
-        }
-
-        const std::vector<Vertex>& Component::getPrimitive() const
+        const Primitive& Component::getPrimitive() const
         {
             return m_primitive;
         }

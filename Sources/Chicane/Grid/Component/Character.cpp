@@ -24,7 +24,7 @@ namespace Chicane
 
         bool Character::isDrawable() const
         {
-            return m_parent->isVisible() && hasGlyph() && !hasPrimitive();
+            return m_parent->isVisible() && hasGlyph() && hasPrimitive();
         }
 
         void Character::refreshPrimitive()
@@ -48,14 +48,18 @@ namespace Chicane
             Vertex vertex = {};
             vertex.color  = m_style.foregroundColor;
 
-            for (std::uint32_t index : glyph.indices)
+            for (const Vec<3, float> position : glyph.vertices)
             {
-                vertex.position = glyph.vertices.at(index);
+                vertex.position = position;
     
-                m_primitive.push_back(vertex);
+                m_primitive.vertices.push_back(vertex);
             }
 
+            m_primitive.indices = glyph.indices;
+
             m_canUpdate = false;
+
+            emmitChangesToParent();
         }
 
         void Character::disable()

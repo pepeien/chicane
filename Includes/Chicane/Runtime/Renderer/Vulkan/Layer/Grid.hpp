@@ -16,6 +16,14 @@ namespace Chicane
                 Vec<2, float> position = {};
             };
 
+            struct DrawData
+            {
+            public:
+                const Grid::Component*    component         = {};
+                Grid::Primitive           primitive         = {};
+                Grid::Primitive::Compiled compiledPrimitive = {};
+            };
+
         public:
             LGrid();
             ~LGrid();
@@ -36,6 +44,7 @@ namespace Chicane
 
             // Vertex
             void buildVertexBuffer();
+            void buildIndexuffer();
             void buildData();
             void destroyData();
             void rebuildData();
@@ -43,17 +52,21 @@ namespace Chicane
             // Render Pass
             void renderComponents(const vk::CommandBuffer& inCommandBuffer);
 
+            // Data
+            void refreshDrawDatum();
+
         private:
             Renderer::Internals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
             Buffer::Instance                            m_vertexBuffer;
+            Buffer::Instance                            m_indexBuffer;
 
             std::vector<vk::ClearValue>                 m_clearValues;
 
             const Grid::View*                           m_view;
-            std::vector<const Grid::Component*>         m_components;
+            std::vector<DrawData>                       m_drawDatum;
         };
     }
 }

@@ -11,9 +11,10 @@ namespace Chicane
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
             m_vertexBuffer({}),
+            m_indexBuffer({}),
             m_clearValues({}),
             m_view(nullptr),
-            m_components({})
+            m_drawDatum({})
         {
             m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
@@ -31,7 +32,7 @@ namespace Chicane
 
         bool LGrid::onBuild()
         {
-            if (m_components.empty())
+            if (m_drawDatum.empty())
             {
                 return false;
             }
@@ -46,7 +47,7 @@ namespace Chicane
 
         bool LGrid::onRebuild()
         {
-            if (m_components.empty())
+            if (m_drawDatum.empty())
             {
                 return false;
             }
@@ -85,7 +86,7 @@ namespace Chicane
             Grid::watchActiveView(
                 [&](Grid::View* inView)
                 {
-                    m_components.clear();
+                    m_drawDatum.clear();
 
                     m_view = inView;
 
@@ -97,7 +98,7 @@ namespace Chicane
                     m_view->watchChildren(
                         [&]()
                         {
-                            m_components = m_view->getDrawableChildren();
+                            refreshDrawDatum();
 
                             if (is(Layer::Status::Offline))
                             {
@@ -179,33 +180,28 @@ namespace Chicane
 
         void LGrid::buildVertexBuffer()
         {
-            if (m_components.empty())
+            if (m_drawDatum.empty())
             {
                 return;
             }
 
-            std::vector<Chicane::Vertex> vertices = {};
+            std::vector<Chicane::Vertex> data = {};
 
-            for (const Grid::Component* component : m_components)
+            for (const DrawData& drawData : m_drawDatum)
             {
-                const std::vector<Chicane::Vertex> primitives = component->getPrimitive();
+                const std::vector<Chicane::Vertex>& vertices = drawData.primitive.vertices;
 
-                if (primitives.empty())
-                {
-                    continue;
-                }
-
-                vertices.insert(
-                    vertices.end(),
-                    primitives.begin(),
-                    primitives.end()
+                data.insert(
+                    data.end(),
+                    drawData.primitive.vertices.begin(),
+                    drawData.primitive.vertices.end()
                 );
             }
 
             Buffer::CreateInfo createInfo = {};
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
+            createInfo.size             = sizeof(Chicane::Vertex) * data.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                           vk::MemoryPropertyFlagBits::eHostCoherent;
@@ -218,7 +214,7 @@ namespace Chicane
                 0,
                 createInfo.size
             );
-            memcpy(writeLocation, vertices.data(), createInfo.size);
+            memcpy(writeLocation, data.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
@@ -237,9 +233,63 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
+        void LGrid::buildIndexuffer()
+        {
+            if (m_drawDatum.empty())
+            {
+                return;
+            }
+
+            std::vector<std::uint32_t> data = {};
+
+            for (const DrawData& drawData : m_drawDatum)
+            {
+                data.insert(
+                    data.end(),
+                    drawData.primitive.indices.begin(),
+                    drawData.primitive.indices.end()
+                );
+            }
+
+            Buffer::CreateInfo createInfo;
+            createInfo.physicalDevice   = m_internals.physicalDevice;
+            createInfo.logicalDevice    = m_internals.logicalDevice;
+            createInfo.size             = sizeof(std::uint32_t) * data.size();
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            Buffer::Instance stagingBuffer;
+            Buffer::init(stagingBuffer, createInfo);
+
+            void* writeLocation = m_internals.logicalDevice.mapMemory(
+                stagingBuffer.memory,
+                0,
+                createInfo.size
+            );
+            memcpy(writeLocation, data.data(), createInfo.size);
+            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
+
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+            Buffer::init(m_indexBuffer, createInfo);
+            Buffer::copy(
+                stagingBuffer,
+                m_indexBuffer,
+                createInfo.size,
+                m_internals.graphicsQueue,
+                m_internals.mainCommandBuffer
+            );
+
+            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
+        }
+
         void LGrid::buildData()
         {
             buildVertexBuffer();
+            buildIndexuffer();
         }
 
         void LGrid::destroyData()
@@ -247,6 +297,7 @@ namespace Chicane
             m_internals.logicalDevice.waitIdle();
 
             Buffer::destroy(m_internals.logicalDevice, m_vertexBuffer);
+            Buffer::destroy(m_internals.logicalDevice, m_indexBuffer);
         }
 
         void LGrid::rebuildData()
@@ -261,18 +312,14 @@ namespace Chicane
             vk::DeviceSize offsets[]   = { 0 };
 
             inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-
-            std::uint32_t firstVertex = 0;
-            std::uint32_t firstIndex  = 0;
+            inCommandBuffer.bindIndexBuffer(m_indexBuffer.instance, 0, vk::IndexType::eUint32);
 
             const Vec<2, float>& rootSize = m_view->getSize();
 
-            for (const Grid::Component* component : m_components)
+            for (const DrawData& drawData : m_drawDatum)
             {
-                if (component->hasPrimitive())
-                {
-                    continue;
-                }
+                const Grid::Component*           component = drawData.component;
+                const Grid::Primitive::Compiled& primitive = drawData.compiledPrimitive;
 
                 const Vec<2, float>& size     = component->getSize();
                 const Vec<2, float>& position = component->getPosition();
@@ -291,10 +338,53 @@ namespace Chicane
                     sizeof(PushConstant),
                     &pushConstant
                 );
-                inCommandBuffer.draw(component->getPrimitiveCount(), 1, firstVertex, firstIndex);
 
-                firstVertex += component->getPrimitiveCount();
-                firstIndex  += 1;
+                inCommandBuffer.drawIndexed(
+                    primitive.indexCount,
+                    1,
+                    primitive.firstIndex,
+                    0,
+                    0
+                );
+            }
+        }
+
+        void LGrid::refreshDrawDatum()
+        {
+            m_drawDatum.clear();
+
+            std::uint32_t firstVertex = 0;
+            std::uint32_t firstIndex  = 0;
+
+            for (const Grid::Component* component : m_view->getDrawableChildren())
+            {
+                if (!component->hasPrimitive())
+                {
+                    continue;
+                }
+
+                Grid::Primitive primitive = component->getPrimitive();
+
+                for (std::uint32_t& index : primitive.indices)
+                {
+                    index +=  firstVertex;
+                }
+
+                Grid::Primitive::Compiled compiledPrimitive = {};
+                compiledPrimitive.vertexCount = primitive.vertices.size();
+                compiledPrimitive.firstVertex = firstVertex;
+                compiledPrimitive.indexCount  = primitive.indices.size();
+                compiledPrimitive.firstIndex  = firstIndex;
+      
+                DrawData drawData = {};
+                drawData.component         = component;
+                drawData.primitive         = primitive;
+                drawData.compiledPrimitive = compiledPrimitive;
+
+                m_drawDatum.push_back(drawData);
+
+                firstVertex += compiledPrimitive.vertexCount;
+                firstIndex  += compiledPrimitive.indexCount;
             }
         }
     }

@@ -2,6 +2,7 @@
 
 #include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Function.hpp"
+#include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 
 namespace Chicane
@@ -75,6 +76,7 @@ namespace Chicane
             bool hasParent() const;
             Component* getParent() const;
             void setParent(Component* inComponent);
+            void emmitChangesToParent();
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
@@ -101,8 +103,7 @@ namespace Chicane
             void setPosition(int inX, int inY);
 
             bool hasPrimitive() const;
-            std::uint32_t getPrimitiveCount() const;
-            const std::vector<Vertex>& getPrimitive() const;
+            const Primitive& getPrimitive() const;
 
             std::string parseText(const std::string& inValue) const;
 
@@ -136,7 +137,7 @@ namespace Chicane
             Vec<2, float>                 m_position;
             Vec<2, float>                 m_cursor;
 
-            std::vector<Vertex>           m_primitive;
+            Primitive                     m_primitive;
         };
     }
 }
