@@ -1,4 +1,4 @@
-#include "Chicane/Grid/View/Instance.hpp"
+#include "Chicane/Grid/Component/View.hpp"
 
 #include "Chicane/Grid/Loader.hpp"
 
@@ -49,8 +49,6 @@ namespace Chicane
             m_parent = this;
 
             addChildren(node);
-
-            registerView(this);
         }
 
         void View::onAdopted(Component* inComponent)
@@ -60,9 +58,12 @@ namespace Chicane
 
         void View::activate()
         {
-            activateView(m_path);
-
             onActivation();
+        }
+
+        void View::deactivate()
+        {
+            onDeactivation();
         }
 
         const std::string& View::getPath() const

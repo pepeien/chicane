@@ -26,13 +26,8 @@ namespace Chicane
         std::function<void ()> inComplete
     )
     {
-        Subscription<const Box::Sky::Instance*>* subscription = m_assetObservable->subscribe(
-            inNext,
-            inError,
-            inComplete
-        );
-        subscription->next(m_asset);
+        inNext(m_asset);
 
-        return subscription;
+        return m_assetObservable->subscribe(inNext, inError,inComplete);
     }
 }

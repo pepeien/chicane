@@ -24,7 +24,6 @@ namespace Chicane
             m_root(nullptr),
             m_parent(nullptr),
             m_children({}),
-            m_childrenObservable(std::make_unique<Observable<>>()),
             m_size({}),
             m_position({}),
             m_cursor({}),
@@ -382,11 +381,6 @@ namespace Chicane
             );
         }
 
-        void Component::emmitChangesToParent()
-        {
-            m_childrenObservable->next();
-        }
-
         bool Component::hasChildren() const
         {
             return !m_children.empty();
@@ -406,7 +400,7 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
-                addChild(createComponent(child));
+                addChild(Loader::createComponent(child));
             }
         }
 
@@ -422,31 +416,13 @@ namespace Chicane
             inComponent->watchChanges(
                 [this]()
                 {
-                    emmitChangesToParent();
-                }
-            );
-            inComponent->watchChildren(
-                [this]()
-                {
-                    emmitChangesToParent();
+                    refresh();
                 }
             );
 
             m_children.push_back(inComponent);
 
             onAdopted(inComponent);
-        }
-
-        Subscription<>* Component::watchChildren(
-            std::function<void ()> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        ) const
-        {
-            Subscription<>* subscription = m_childrenObservable->subscribe(inNext, inError, inComplete);
-            subscription->next();
-
-            return subscription;
         }
 
         const Vec<2, float>& Component::getCursor() const

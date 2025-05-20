@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game/Controller/Instance.hpp"
+#include "Chicane/Runtime/Game/Controller.hpp"
 
 namespace Chicane
 {
@@ -22,7 +22,7 @@ namespace Chicane
         return m_controller != nullptr;
     }
 
-    void APawn::attachController(Controller::Instance* inController)
+    void APawn::attachController(Controller* inController)
     {
         m_controller = inController;
 

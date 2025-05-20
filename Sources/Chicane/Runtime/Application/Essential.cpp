@@ -52,7 +52,7 @@ namespace Chicane
             return  m_application->hasController();
         }
 
-        Controller::Instance* getController()
+        Controller* getController()
         {
             if (!m_application)
             {
@@ -62,7 +62,7 @@ namespace Chicane
             return  m_application->getController();
         }
 
-        void setController(Controller::Instance* inController)
+        void setController(Controller* inController)
         {
             if (!m_application)
             {
@@ -72,8 +72,8 @@ namespace Chicane
             m_application->setController(inController);
         }
 
-        Subscription<Controller::Instance*>* watchController(
-            std::function<void (Controller::Instance*)> inNext,
+        Subscription<Controller*>* watchController(
+            std::function<void (Controller*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )
@@ -128,6 +128,50 @@ namespace Chicane
             }
 
             return m_application->watchLevel(inNext, inError, inComplete);
+        }
+
+        bool hasView()
+        {
+            if (!m_application)
+            {
+                return false;
+            }
+
+            return m_application->hasView();
+        }
+
+        Grid::View* getView()
+        {
+            if (!m_application)
+            {
+                return nullptr;
+            }
+
+            return m_application->getView();
+        }
+
+        void setView(Grid::View* inView)
+        {
+            if (!m_application)
+            {
+                return;
+            }
+    
+            m_application->setView(inView);
+        }
+
+        Subscription<Grid::View*>* watchView(
+            std::function<void (Grid::View*)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        )
+        {
+            if (!m_application)
+            {
+                return nullptr;
+            }
+
+            return m_application->watchView(inNext, inError, inComplete);
         }
 
         bool hasWindow()

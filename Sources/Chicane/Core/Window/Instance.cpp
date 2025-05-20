@@ -353,14 +353,9 @@ namespace Chicane
             std::function<void ()> inComplete
         )
         {
-            Subscription<const Vec<2, int>&>* subscription = m_sizeObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_size);
+            inNext(m_size);
 
-            return subscription;
+            return m_sizeObservable->subscribe(inNext, inError,inComplete);
         }
 
         void Instance::refreshSize()

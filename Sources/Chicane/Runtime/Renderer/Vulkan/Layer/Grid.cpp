@@ -83,7 +83,7 @@ namespace Chicane
 
         void LGrid::loadEvents()
         {
-            Grid::watchActiveView(
+            Application::watchView(
                 [&](Grid::View* inView)
                 {
                     m_drawDatum.clear();
@@ -95,7 +95,7 @@ namespace Chicane
                         return;
                     }
 
-                    m_view->watchChildren(
+                    m_view->watchChanges(
                         [&]()
                         {
                             refreshDrawDatum();

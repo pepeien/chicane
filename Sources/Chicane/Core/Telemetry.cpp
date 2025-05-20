@@ -5,7 +5,9 @@ static constexpr const float COOLDOWN_IN_MS = 5000.0f; // 5 Seconds
 namespace Chicane
 {
     Telemetry::Telemetry()
-        : Timer(COOLDOWN_IN_MS)
+        : Recorder(COOLDOWN_IN_MS),
+        delta(0.0f),
+        rate(0U)
     {}
 
     void Telemetry::onTime()

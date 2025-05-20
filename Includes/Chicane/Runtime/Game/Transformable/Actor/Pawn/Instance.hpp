@@ -6,10 +6,7 @@
 
 namespace Chicane
 {
-    namespace Controller
-    {
-        class Instance;
-    }
+    class Controller;
 
     class CHICANE_RUNTIME APawn : public Actor
     {
@@ -23,19 +20,19 @@ namespace Chicane
 
     public:
         bool isControlled() const;
-        template<class T = Controller::Instance>
+        template<class T = Controller>
         T* getController() const
         {
             return dynamic_cast<T*>(m_controller);
         }
-        void attachController(Controller::Instance* inController);
+        void attachController(Controller* inController);
         void deattachController();
 
         CPhysics* getPhysicsComponent() const;
 
     protected:
-        Controller::Instance*  m_controller;
+        Controller*  m_controller;
 
-        CPhysics*              m_physicsComponent;
+        CPhysics*    m_physicsComponent;
     };
 }

@@ -17,12 +17,14 @@ namespace Chicane
 
     public:
         virtual void onActivation() { return; }
-        virtual void onTick(float inDeltaTime) { return; };
+        virtual void onTick(float inDeltaTime) { return; }
+        virtual void onDeactivation() { return; }
 
     public:
         // Lifecycle
         void activate();
         void tick(float inDeltaTime);
+        void deactivate();
 
         // Actors
         bool hasActors() const;

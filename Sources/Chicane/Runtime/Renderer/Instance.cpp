@@ -76,14 +76,9 @@ namespace Chicane
             std::function<void ()> inComplete
         )
         {
-            Subscription<const Viewport&>* subscription = m_viewportObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_viewport);
+            inNext(m_viewport);
 
-            return subscription;
+            return m_viewportObservable->subscribe(inNext, inError,inComplete);
         }
 
         bool Instance::hasLayer(Layer::Instance* inLayer) const

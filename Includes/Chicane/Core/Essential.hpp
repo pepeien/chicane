@@ -26,6 +26,7 @@
 // System
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <condition_variable>
 #include <cstdlib>
 #include <chrono>

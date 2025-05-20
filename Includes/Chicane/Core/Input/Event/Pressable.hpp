@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Chicane/Core/Async.hpp"
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Event/Status.hpp"
-#include "Chicane/Core/Timer.hpp"
 
 static constexpr const float COOLDOWN_IN_MS = 30.0f;
 
@@ -12,27 +12,26 @@ namespace Chicane
     namespace Input
     {
         template<typename B>
-        struct CHICANE_CORE PressableEvents : private Timer
+        struct CHICANE_CORE PressableEvents
         {
         public:
             typedef std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>> Events;
 
         public:
             PressableEvents()
-                : Timer(COOLDOWN_IN_MS),
-                m_pressed({}),
+                : m_pressed({}),
                 m_events({})
-            {}
-
-        protected:
-            void onTime()
             {
-                start();
-
-                for (B button : m_pressed)
-                {
-                    exec(button, Event::Status::Pressed);
-                }
+                setInterval(
+                    [this]()
+                    {
+                        for (B button : m_pressed)
+                        {
+                            exec(button, Event::Status::Pressed);
+                        }
+                    },
+                    COOLDOWN_IN_MS
+                );
             }
 
         public:
@@ -73,11 +72,6 @@ namespace Chicane
                 {
                     function();
                 }
-            }
-
-            void repeat()
-            {
-                end();
             }
 
             void clear()

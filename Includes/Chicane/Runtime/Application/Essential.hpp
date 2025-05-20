@@ -19,10 +19,10 @@ namespace Chicane
 
         // Game
         CHICANE_RUNTIME bool hasController();
-        CHICANE_RUNTIME Controller::Instance* getController();
-        CHICANE_RUNTIME void setController(Controller::Instance* inController);
-        CHICANE_RUNTIME Subscription<Controller::Instance*>* watchController(
-            std::function<void (Controller::Instance*)> inNext,
+        CHICANE_RUNTIME Controller* getController();
+        CHICANE_RUNTIME void setController(Controller* inController);
+        CHICANE_RUNTIME Subscription<Controller*>* watchController(
+            std::function<void (Controller*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );
@@ -32,6 +32,16 @@ namespace Chicane
         CHICANE_RUNTIME void setLevel(Level* inLevel);
         CHICANE_RUNTIME Subscription<Level*>* watchLevel(
             std::function<void (Level*)> inNext,
+            std::function<void (const std::string&)> inError = nullptr,
+            std::function<void ()> inComplete = nullptr
+        );
+
+        // UI
+        CHICANE_RUNTIME bool hasView();
+        CHICANE_RUNTIME Grid::View* getView();
+        CHICANE_RUNTIME void setView(Grid::View* inView);
+        CHICANE_RUNTIME Subscription<Grid::View*>* watchView(
+            std::function<void (Grid::View*)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

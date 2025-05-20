@@ -33,12 +33,13 @@ Application::~Application()
 void Application::initLevel()
 {
     m_level = std::make_unique<Level>();
-    m_level->activate();
+
+    Chicane::Application::setLevel(m_level.get());
 }
 
 void Application::initCharacter()
 {
-    m_controller = std::make_unique<Chicane::Controller::Instance>();
+    m_controller = std::make_unique<Chicane::Controller>();
     Chicane::Application::setController(m_controller.get());
 
     Character* character = m_level->createActor<Character>();
@@ -50,5 +51,6 @@ void Application::initCharacter()
 void Application::initView()
 {
     m_view = std::make_unique<View>();
-    m_view->activate();
+
+    Chicane::Application::setView(m_view.get());
 }

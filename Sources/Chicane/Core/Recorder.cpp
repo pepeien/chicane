@@ -1,28 +1,28 @@
-#include "Chicane/Core/Timer.hpp"
+#include "Chicane/Core/Recorder.hpp"
 
 static constexpr const float COOLDOWN_IN_MS = 10.0f; // 0.1 Seconds
 
 namespace Chicane
 {
-    Timer::Timer(float inUpdateRate)
-        : Timer()
+    Recorder::Recorder(float inUpdateRate)
+        : Recorder()
     {
         m_cooldown = inUpdateRate;
     }
 
-    Timer::Timer()
+    Recorder::Recorder()
         : m_begin(Clock::now()),
         m_end(Clock::now()),
         m_time(Clock::now()),
         m_cooldown(COOLDOWN_IN_MS)
     {}
 
-    void Timer::start()
+    void Recorder::start()
     {
         m_begin = Clock::now();
     }
 
-    void Timer::end()
+    void Recorder::end()
     {
         m_end = Clock::now();
 
@@ -36,7 +36,7 @@ namespace Chicane
         onTime();
     }
 
-    void Timer::setUpdateRate(float inValue)
+    void Recorder::setUpdateRate(float inValue)
     {
         m_cooldown = inValue;
     }

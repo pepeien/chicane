@@ -5,11 +5,11 @@
 
 namespace Chicane
 {
-    struct CHICANE_CORE Timer
+    struct CHICANE_CORE Recorder
     {
     public:
-        Timer(float inUpdateRate);
-        Timer();
+        Recorder(float inUpdateRate);
+        Recorder();
 
     protected:
         virtual void onTime() { return; }

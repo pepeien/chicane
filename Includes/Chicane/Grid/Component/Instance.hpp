@@ -76,17 +76,11 @@ namespace Chicane
             bool hasParent() const;
             Component* getParent() const;
             void setParent(Component* inComponent);
-            void emmitChangesToParent();
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
-            Subscription<>* watchChildren(
-                std::function<void ()> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            ) const;
 
             // Positioning
             const Vec<2, float>& getCursor() const;
@@ -120,24 +114,23 @@ namespace Chicane
             FunctionData parseFunction(const std::string& inRefValue) const;
 
         protected:
-            std::string                   m_tag;
-            std::string                   m_id;
-            std::string                   m_class;
-            Style::Instance               m_style;
+            std::string             m_tag;
+            std::string             m_id;
+            std::string             m_class;
+            Style::Instance         m_style;
 
-            References                    m_references;
-            Functions                     m_functions;
+            References              m_references;
+            Functions               m_functions;
 
-            Component*                    m_root;
-            Component*                    m_parent;
-            std::vector<Component*>       m_children;
-            std::unique_ptr<Observable<>> m_childrenObservable;
+            Component*              m_root;
+            Component*              m_parent;
+            std::vector<Component*> m_children;
 
-            Vec<2, float>                 m_size;
-            Vec<2, float>                 m_position;
-            Vec<2, float>                 m_cursor;
+            Vec<2, float>           m_size;
+            Vec<2, float>           m_position;
+            Vec<2, float>           m_cursor;
 
-            Primitive                     m_primitive;
+            Primitive               m_primitive;
         };
     }
 }

@@ -7,4 +7,3 @@
 #include "Chicane/Grid/Loader.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
-#include "Chicane/Grid/View.hpp"

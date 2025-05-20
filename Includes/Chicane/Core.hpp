@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Core/Async.hpp"
 #include "Chicane/Core/Base64.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Essential.hpp"
@@ -9,10 +10,10 @@
 #include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
+#include "Chicane/Core/Recorder.hpp"
 #include "Chicane/Core/Reference.hpp"
 #include "Chicane/Core/Renderer.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Telemetry.hpp"
-#include "Chicane/Core/Timer.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Xml.hpp"

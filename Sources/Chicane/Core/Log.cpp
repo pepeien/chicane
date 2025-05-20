@@ -20,14 +20,9 @@ namespace Chicane
             std::function<void ()> inComplete
         )
         {
-            Subscription<const List*>* subscription = m_logsObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(&m_logs);
+            inNext(&m_logs);
 
-            return subscription;
+            return m_logsObservable->subscribe(inNext, inError,inComplete);
         }
 
         void emmit(

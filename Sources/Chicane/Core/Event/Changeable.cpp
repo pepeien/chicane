@@ -17,9 +17,8 @@ namespace Chicane
         std::function<void ()> inComplete
     ) const
     {
-        Subscription<>* subscription = m_observable->subscribe(inNext, inError, inComplete);
-        subscription->next();
+        inNext();
 
-        return subscription;
+        return m_observable->subscribe(inNext, inError, inComplete);
     }
 }

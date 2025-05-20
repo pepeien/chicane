@@ -59,7 +59,7 @@ namespace Chicane
 
             m_canUpdate = false;
 
-            emmitChangesToParent();
+            emmitChanges();
         }
 
         void Character::disable()

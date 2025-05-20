@@ -21,12 +21,15 @@ namespace Chicane
 
         protected:
             virtual void onActivation() { return; }
+            virtual void onDeactivation() { return; }
 
         protected:
             void onAdopted(Component* inChild) override;
 
         public:
+            // Lifecycle
             void activate();
+            void deactivate();
 
             const std::string& getPath() const;
 

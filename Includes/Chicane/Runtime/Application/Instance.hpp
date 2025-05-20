@@ -20,31 +20,41 @@ namespace Chicane
             void run();
 
             // Telemetry
-            const Telemetry& getTelemetry();
+            const Telemetry& getTelemetry() const;
 
             // Game
-            bool hasController();
-            Controller::Instance* getController();
-            void setController(Controller::Instance* inController);
-            Subscription<Controller::Instance*>* watchController(
-                std::function<void (Controller::Instance*)> inNext,
+            bool hasController() const;
+            Controller* getController() const;
+            void setController(Controller* inController);
+            Subscription<Controller*>* watchController(
+                std::function<void (Controller*)> inNext,
                 std::function<void (const std::string&)> inError = nullptr,
                 std::function<void ()> inComplete = nullptr
-            );
+            ) const;
 
-            bool hasLevel();
-            Level* getLevel();
+            bool hasLevel() const;
+            Level* getLevel() const;
             void setLevel(Level* inLevel);
             Subscription<Level*>* watchLevel(
                 std::function<void (Level*)> inNext,
                 std::function<void (const std::string&)> inError = nullptr,
                 std::function<void ()> inComplete = nullptr
-            );
+            ) const;
+
+            // UI
+            bool hasView() const;
+            Grid::View* getView() const;
+            void setView(Grid::View* inView);
+            Subscription<Grid::View*>* watchView(
+                std::function<void (Grid::View*)> inNext,
+                std::function<void (const std::string&)> inError = nullptr,
+                std::function<void ()> inComplete = nullptr
+            ) const;
 
             // Render
-            bool hasWindow();
+            bool hasWindow() const;
             template<class T = Window::Instance>
-            T* getWindow()
+            T* getWindow() const
             {
                 if (!hasWindow())
                 {
@@ -59,9 +69,9 @@ namespace Chicane
                 return static_cast<T*>(m_window.get());
             }
 
-            bool hasRenderer();
+            bool hasRenderer() const;
             template<class T = Renderer::Instance>
-            T* getRenderer()
+            T* getRenderer() const
             {
                 if (!hasRenderer())
                 {
@@ -88,18 +98,22 @@ namespace Chicane
 
         private:
             // Telemetry
-            Telemetry                                          m_telemetry;
+            Telemetry                                m_telemetry;
 
             // Game
-            Controller::Instance*                              m_controller;
-            std::unique_ptr<Observable<Controller::Instance*>> m_controllerObservable;
+            Controller*                              m_controller;
+            std::unique_ptr<Observable<Controller*>> m_controllerObservable;
 
-            Level*                                             m_level;
-            std::unique_ptr<Observable<Level*>>                m_levelObservable;
+            Level*                                   m_level;
+            std::unique_ptr<Observable<Level*>>      m_levelObservable;
+
+            // UI
+            Grid::View*                              m_view;
+            std::unique_ptr<Observable<Grid::View*>> m_viewObservable;
 
             // Render
-            std::unique_ptr<Window::Instance>                  m_window;
-            std::unique_ptr<Renderer::Instance>                m_renderer;
+            std::unique_ptr<Window::Instance>        m_window;
+            std::unique_ptr<Renderer::Instance>      m_renderer;
         };
     }
 }

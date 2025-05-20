@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Timer.hpp"
+#include "Chicane/Core/Recorder.hpp"
 
 namespace Chicane
 {
-    struct CHICANE_CORE Telemetry : public Timer
+    struct CHICANE_CORE Telemetry : public Recorder
     {
     public:
         Telemetry();
@@ -14,7 +14,7 @@ namespace Chicane
         void onTime() override;
 
     public:
-        float         delta = 0.0f;
-        std::uint32_t rate  = 0U;
+        float         delta;
+        std::uint32_t rate;
     };
 }

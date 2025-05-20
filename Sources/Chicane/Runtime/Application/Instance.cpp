@@ -9,9 +9,11 @@ namespace Chicane
         Instance::Instance()
             : m_telemetry({}),
             m_controller(nullptr),
-            m_controllerObservable(std::make_unique<Observable<Controller::Instance*>>()),
+            m_controllerObservable(std::make_unique<Observable<Controller*>>()),
             m_level(nullptr),
-            m_levelObservable(std::make_unique<Observable<Level*>>())
+            m_levelObservable(std::make_unique<Observable<Level*>>()),
+            m_view(nullptr),
+            m_viewObservable(std::make_unique<Observable<Grid::View*>>())
         {}
 
         void Instance::setup(const CreateInfo& inCreateInfo)
@@ -19,18 +21,6 @@ namespace Chicane
             initWindow(inCreateInfo.window, inCreateInfo.renderer.type);
             initRenderer(inCreateInfo.renderer);
             initAssets(".");
-
-            Grid::watchActiveView(
-                [this](Grid::View* inView)
-                {
-                    if (!inView)
-                    {
-                        return;
-                    }
-
-                    inView->setWindow(m_window.get());
-                }
-            );
 
             if (inCreateInfo.onSetup)
             {
@@ -58,22 +48,22 @@ namespace Chicane
             }
         }
 
-        const Telemetry& Instance::getTelemetry()
+        const Telemetry& Instance::getTelemetry() const
         {
             return m_telemetry;
         }
 
-        bool Instance::hasController()
+        bool Instance::hasController() const
         {
             return  m_controller != nullptr;
         }
 
-        Controller::Instance* Instance::getController()
+        Controller* Instance::getController() const
         {
             return  m_controller;
         }
 
-        void Instance::setController(Controller::Instance* inController)
+        void Instance::setController(Controller* inController)
         {
             if (inController == m_controller)
             {
@@ -85,28 +75,23 @@ namespace Chicane
             m_controllerObservable->next(m_controller);
         }
 
-        Subscription<Controller::Instance*>* Instance::watchController(
-            std::function<void (Controller::Instance*)> inNext,
+        Subscription<Controller*>* Instance::watchController(
+            std::function<void (Controller*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
-        )
+        ) const
         {
-            Subscription<Controller::Instance*>* subscription = m_controllerObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_controller);
+            inNext(m_controller);
 
-            return subscription;
+            return m_controllerObservable->subscribe(inNext, inError,inComplete);
         }
 
-        bool Instance::hasLevel()
+        bool Instance::hasLevel() const
         {
             return m_level != nullptr;
         }
 
-        Level* Instance::getLevel()
+        Level* Instance::getLevel() const
         {
             return m_level;
         }
@@ -118,7 +103,13 @@ namespace Chicane
                 return;
             }
 
+            if (hasLevel())
+            {
+                m_level->deactivate();
+            }
+
             m_level = inLevel;
+            m_level->activate();
 
             m_levelObservable->next(inLevel);
         }
@@ -127,24 +118,59 @@ namespace Chicane
             std::function<void (Level*)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete 
-        )
+        ) const
         {
-            Subscription<Level*>* subscription = m_levelObservable->subscribe(
-                inNext,
-                inError,
-                inComplete
-            );
-            subscription->next(m_level);
+            inNext(m_level);
 
-            return subscription;
+            return m_levelObservable->subscribe(inNext, inError,inComplete);
         }
 
-        bool Instance::hasWindow()
+        bool Instance::hasView() const
+        {
+            return m_view != nullptr;
+        }
+
+        Grid::View* Instance::getView() const
+        {
+            return m_view;
+        }
+
+        void Instance::setView(Grid::View* inView)
+        {
+            if (inView == m_view)
+            {
+                return;
+            }
+
+            if (hasView())
+            {
+                m_view->deactivate();
+            }
+
+            m_view = inView;
+            m_view->setWindow(m_window.get());
+            m_view->activate();
+
+            m_viewObservable->next(m_view);
+        }
+
+        Subscription<Grid::View*>* Instance::watchView(
+            std::function<void (Grid::View*)> inNext,
+            std::function<void (const std::string&)> inError,
+            std::function<void ()> inComplete
+        ) const
+        {
+            inNext(m_view);
+
+            return m_viewObservable->subscribe(inNext, inError, inComplete);
+        }
+
+        bool Instance::hasWindow() const
         {
             return m_window.get() != nullptr;
         }
 
-        bool Instance::hasRenderer()
+        bool Instance::hasRenderer() const
         {
             return m_renderer.get() != nullptr;
         }
@@ -218,9 +244,9 @@ namespace Chicane
                 m_controller->onEvent(inEvent);
             }
 
-            if (Grid::hasActiveView())
+            if (hasView())
             {
-                Grid::getActiveView()->onEvent(inEvent);
+                m_view->onEvent(inEvent);
             }
         }
 
@@ -237,9 +263,9 @@ namespace Chicane
                     m_level->tick(m_telemetry.delta);
                 }
 
-                if (Grid::hasActiveView())
+                if (hasView())
                 {
-                    Grid::getActiveView()->tick(m_telemetry.delta);
+                    m_view->tick(m_telemetry.delta);
                 }
             m_telemetry.end();
         }
