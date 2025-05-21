@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Color
     {
-        std::unordered_map<std::string, Rgba> m_colors {
+        static std::unordered_map<std::string, Rgba> g_colors {
             { HEX_COLOR_TRANSPARENT,  Rgba(  0U,   0U,   0U,   0U) },
             { HEX_COLOR_RED,          Rgba(255U,   0U,   0U, 255U) },
             { HEX_COLOR_GREEN,        Rgba(  0U, 255U,   0U, 255U) },
@@ -68,7 +68,7 @@ namespace Chicane
                 color = color.substr(1);
                 color = color.size() == 6 ? color + "FF" : color;
     
-                if (m_colors.find(color) == m_colors.end())
+                if (g_colors.find(color) == g_colors.end())
                 {
                     std::uint16_t r = 0;
                     std::uint16_t g = 0;
@@ -86,12 +86,12 @@ namespace Chicane
     
                     const Rgba result = { r, g, b, a };
     
-                    m_colors.insert(std::make_pair(color, result));
+                    g_colors.insert(std::make_pair(color, result));
     
                     return result;
                 }
     
-                return m_colors.at(color);
+                return g_colors.at(color);
             }
 
             if (
@@ -104,7 +104,7 @@ namespace Chicane
 
                 const std::string color = inValue.substr(start, end - start);
 
-                if (m_colors.find(color) == m_colors.end())
+                if (g_colors.find(color) == g_colors.end())
                 {
                     const std::vector<std::string> values = String::split(color, ",");
 
@@ -115,7 +115,7 @@ namespace Chicane
                             continue;
                         }
 
-                        return m_colors.at(HEX_COLOR_TRANSPARENT);
+                        return g_colors.at(HEX_COLOR_TRANSPARENT);
                     }
 
                     Rgba result = Rgba(0U);
@@ -124,7 +124,7 @@ namespace Chicane
                     result.b = std::stoi(values.at(2));
                     result.a = values.size() < 4 ? 255 : std::stoi(values.at(3));
     
-                    m_colors.insert(
+                    g_colors.insert(
                         std::make_pair(
                             color,
                             result
@@ -134,10 +134,10 @@ namespace Chicane
                     return result;
                 }
 
-                return m_colors.at(color);
+                return g_colors.at(color);
             }
 
-            return m_colors.at(HEX_COLOR_TRANSPARENT);
+            return g_colors.at(HEX_COLOR_TRANSPARENT);
         }
     }
 }

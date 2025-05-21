@@ -7,7 +7,7 @@ const std::string EMPTY_STRING = "";
 namespace Chicane
 {
     CMesh::CMesh()
-        : Component(),
+        : Super(),
         m_bIsVisible(false),
         m_mesh(nullptr)
     {}
@@ -135,7 +135,7 @@ namespace Chicane
 
         for (const Box::Mesh::Group& group : m_mesh->getGroups())
         {
-            const Box::Model::ParsedData& model = manager->getInstance(group.getModel());
+            const Box::Model::Extracted& model = manager->getInstance(group.getModel());
 
             vertices.insert(
                 vertices.end(),

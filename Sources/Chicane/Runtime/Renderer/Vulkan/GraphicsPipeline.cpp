@@ -8,7 +8,7 @@ namespace Chicane
         {
             vk::Viewport createViewport(
                 const Vec<2, std::uint32_t>& inSize,
-                const Vec<2, float>& inPosition
+                const Vec2& inPosition
             )
             {
                 vk::Viewport viewport = {};

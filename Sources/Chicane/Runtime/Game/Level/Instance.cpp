@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Game/Level/Instance.hpp"
 
-static constexpr std::uint32_t MAX_ACTOR_COUNT     = 10000;
-static constexpr std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
+static constexpr const std::uint32_t MAX_ACTOR_COUNT     = 10000;
+static constexpr const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
 
 namespace Chicane
 {
@@ -93,9 +93,9 @@ namespace Chicane
         std::function<void ()> inComplete
     )
     {
-        inNext(m_actors);
-
-        return m_actorObservable->subscribe(inNext, inError,inComplete);
+        return m_actorObservable
+            ->subscribe(inNext, inError, inComplete)
+            ->next(m_actors);
     }
 
     bool Level::hasComponents() const
@@ -135,9 +135,9 @@ namespace Chicane
         std::function<void ()> inComplete
     )
     {
-        inNext(m_components);
-
-        return m_componentObservable->subscribe(inNext, inError,inComplete);
+        return m_componentObservable
+            ->subscribe(inNext, inError, inComplete)
+            ->next(m_components);
     }
 
     void Level::createDefaultCamera()

@@ -8,64 +8,65 @@ namespace Chicane
     class Subscription
     {
     public:
-        Subscription(
-            std::function<void ()> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        ) : Subscription(
-                [inNext](T inValue)
-                {
-                    inNext();
-                },
+        using EmptyCallback    = std::function<void ()>;
+        using NextCallback     = std::function<void (T)>;
+        using ErrorCallback    = std::function<void (const std::string&)>;
+        using CompleteCallback = std::function<void ()>;
+
+    public:
+        Subscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+            : Subscription(
+                [inNext](T inValue) { inNext(); },
                 inError,
                 inComplete
             )
         {}
 
-        Subscription(
-            std::function<void (T)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        ) : m_bIsCompleted(false),
+        Subscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+            : m_bIsCompleted(false),
             m_next(inNext),
             m_error(inError),
             m_complete(inComplete)
         {}
 
     public:
-        void next()
+        Subscription<T>* next()
         {
-            next(nullptr);
+            return next(nullptr);
         }
 
-        void next(T inData)
+        Subscription<T>* next(T inData)
         {
             if (isCompleted())
             {
-                return;
+                return this;
             }
 
             if (!m_next)
             {
-                return;
+                return this;
             }
 
             m_next(inData);
+
+            return this;
         }
 
-        void error(const std::string& inMessage)
+        Subscription<T>* error(const std::string& inMessage)
         {
             if (isCompleted())
             {
-                return;
+                return this;
             }
 
             if (!m_error)
             {
-                return;
+                return this;
             }
 
             m_error(inMessage);
+
+            return this;
         }
 
         bool isCompleted() const
@@ -73,28 +74,30 @@ namespace Chicane
             return m_bIsCompleted;
         }
 
-        void complete()
+        Subscription<T>* complete()
         {
             if (isCompleted())
             {
-                return;
+                return this;
             }
 
             m_bIsCompleted = true;
 
             if (!m_complete)
             {
-                return;
+                return this;
             }
 
             m_complete();
+
+            return this;
         }
 
-    protected:
-        bool m_bIsCompleted;
+    private:
+        bool             m_bIsCompleted;
 
-        std::function<void (T)> m_next;
-        std::function<void (const std::string&)> m_error;
-        std::function<void ()> m_complete;
+        NextCallback     m_next;
+        ErrorCallback    m_error;
+        CompleteCallback m_complete;
     };
 }

@@ -12,7 +12,7 @@ namespace Chicane
         {
             static constexpr const char*   EXTENSION = ".btex";
             static constexpr const char*   TAG       = "Texture";
-            static constexpr std::uint32_t MAX_COUNT = 1000;
+            static constexpr const std::uint32_t MAX_COUNT = 1000;
         }
     }
 }

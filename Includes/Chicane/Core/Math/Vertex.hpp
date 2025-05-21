@@ -7,9 +7,20 @@ namespace Chicane
     struct CHICANE_CORE Vertex
     {
     public:
-        Vec<3, float> position = Vec3Zero;
-        Vec<4, float> color    = Vec4Zero;
-        Vec<2, float> uv       = Vec2Zero;
-        Vec<3, float> normal   = Vec3Zero;
+        friend bool operator==(const Vertex& inLeft, const Vertex& inRight)
+        {
+            return (
+                inLeft.position == inRight.position &&
+                inLeft.color    == inRight.color &&
+                inLeft.uv       == inRight.uv &&
+                inLeft.normal   == inRight.normal
+            );
+        }
+
+    public:
+        Vec3 position = Vec3::Zero;
+        Vec4 color    = Vec4::Zero;
+        Vec2 uv       = Vec2::Zero;
+        Vec3 normal   = Vec3::Zero;
     };
 }

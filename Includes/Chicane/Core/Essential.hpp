@@ -63,8 +63,3 @@
 // Settings
 static constexpr const char* APPLICATION_NAME = "Chicane Engine";
 static constexpr const char* ENGINE_NAME      = "Chicane";
-
-// Z-Up Right Handed
-static constexpr glm::vec3 UP_DIRECTION      = glm::vec3(0.0f, 0.0f, 1.0f);
-static constexpr glm::vec3 RIGHT_DIRECTION   = glm::vec3(1.0f, 0.0f, 0.0f);
-static constexpr glm::vec3 FORWARD_DIRECTION = glm::vec3(0.0f, 1.0f, 0.0f);

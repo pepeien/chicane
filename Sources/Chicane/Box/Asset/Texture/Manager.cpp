@@ -8,43 +8,21 @@ namespace Chicane
     {
         namespace Texture
         {
-            static const Image::RawData      EMPTY_RAW_DATA      = {};
-            static const Image::CompiledData EMPTY_COMPILED_DATA = {};
+            static const Image::Raw      EMPTY_RAW_DATA      = {};
+            static const Image::Instance EMPTY_COMPILED_DATA = {};
 
             Manager::Manager()
                 : Super()
             {}
 
-            Manager::~Manager()
-            {
-                for (auto& [id, image] : m_datum)
-                {
-                    if (image.pixels)
-                    {
-                        free(image.pixels);
-                        image.pixels = nullptr;
-                    }
-                }
-            }
-
             void Manager::onActivation(const std::string& inId)
             {
-                Image::CompiledData data = {};
-                data.pixels = FileSystem::readImageFromMemory(
-                    data.width,
-                    data.height,
-                    data.channels,
-                    getInstance(inId)
-                );
-
-                Super::allocate(inId, data);
+                Super::allocate(inId, Image::Instance(getInstance(inId)));
             }
 
             void Manager::onDeactivation(const std::string& inId)
             {
-                free(m_datum.at(inId).pixels);
-
-                m_datum.at(inId).pixels = nullptr;
+                m_datum.at(inId).free();
 
                 Super::deallocate(inId);
             }
@@ -59,7 +37,7 @@ namespace Chicane
                 Super::load(inId, inAsset->getData());
             }
 
-            const Image::RawData& Manager::getInstance(const std::string& inId) const
+            const Image::Raw& Manager::getInstance(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -69,7 +47,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const Image::CompiledData& Manager::getData(const std::string& inId) const
+            const Image::Instance& Manager::getData(const std::string& inId) const
             {
                 if (!isLoaded(inId) || !isAllocated(inId))
                 {

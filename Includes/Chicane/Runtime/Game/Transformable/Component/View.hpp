@@ -43,8 +43,8 @@ namespace Chicane
         const View::Data& getData() const;
 
         // Focus
-        const Vec<3, float>& getFocusPoint() const;
-        void setFocusPoint(const Vec<3, float>& inPoint);
+        const Vec3& getFocusPoint() const;
+        void setFocusPoint(const Vec3& inPoint);
 
     protected:
         void updateProjection();
@@ -55,6 +55,6 @@ namespace Chicane
         View::Settings m_settings;
         View::Frustum  m_frustum;
         View::Data     m_data;
-        Vec<3, float>  m_focusPoint;
+        Vec3           m_focusPoint;
     }; 
 }

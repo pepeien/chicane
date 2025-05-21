@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Gamepad
         {
-           typedef std::function<void()> ButtonEventFunction;
+           using ButtonEventFunction = std::function<void()>;
         }
     }
 }

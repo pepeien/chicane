@@ -20,46 +20,46 @@ namespace Chicane
         void update(const Transform::Combined& inTransform);
 
         bool contains(const Bounds& inBounds) const;
-        bool contains(const Vec<3, float>& inPoint) const;
+        bool contains(const Vec3& inPoint) const;
 
-        Vec<3, float> getOverlap(const Bounds& inBounds) const;
+        Vec3 getOverlap(const Bounds& inBounds) const;
 
-        const Vec<3, float>& getMin() const;
-        const Vec<3, float>& getBaseMin() const;
+        const Vec3& getMin() const;
+        const Vec3& getBaseMin() const;
 
-        const Vec<3, float>& getMax() const;
-        const Vec<3, float>& getBaseMax() const;
+        const Vec3& getMax() const;
+        const Vec3& getBaseMax() const;
 
-        const Vec<3, float>& getCenter() const;
-        const Vec<3, float>& getBaseCenter() const;
+        const Vec3& getCenter() const;
+        const Vec3& getBaseCenter() const;
 
-        const Vec<3, float>& getTop() const;
-        const Vec<3, float>& getBaseTop() const;
+        const Vec3& getTop() const;
+        const Vec3& getBaseTop() const;
 
-        const Vec<3, float>& getBottom() const;
-        const Vec<3, float>& getBaseBottom() const;
+        const Vec3& getBottom() const;
+        const Vec3& getBaseBottom() const;
 
-        const std::vector<Vec<3, float>>& getCorners() const;
+        const std::vector<Vec3>& getCorners() const;
 
     private:
         void refresh();
 
     private:
-        Vec<3, float>              m_min        = Vec3Zero;
-        Vec<3, float>              m_baseMin    = Vec3Zero;
+        Vec3              m_min        = Vec3::Zero;
+        Vec3              m_baseMin    = Vec3::Zero;
 
-        Vec<3, float>              m_max        = Vec3Zero;
-        Vec<3, float>              m_baseMax    = Vec3Zero;
+        Vec3              m_max        = Vec3::Zero;
+        Vec3              m_baseMax    = Vec3::Zero;
 
-        Vec<3, float>              m_top        = Vec3Zero;
-        Vec<3, float>              m_baseTop    = Vec3Zero;
+        Vec3              m_top        = Vec3::Zero;
+        Vec3              m_baseTop    = Vec3::Zero;
 
-        Vec<3, float>              m_center     = Vec3Zero;
-        Vec<3, float>              m_baseCenter = Vec3Zero;
+        Vec3              m_center     = Vec3::Zero;
+        Vec3              m_baseCenter = Vec3::Zero;
 
-        Vec<3, float>              m_bottom     = Vec3Zero;
-        Vec<3, float>              m_baseBottom = Vec3Zero;
+        Vec3              m_bottom     = Vec3::Zero;
+        Vec3              m_baseBottom = Vec3::Zero;
 
-        std::vector<Vec<3, float>> m_corners    = {};
+        std::vector<Vec3> m_corners    = {};
     };
 }

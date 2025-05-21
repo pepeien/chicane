@@ -7,6 +7,9 @@ namespace Chicane
 {   
     class CHICANE_RUNTIME Component : public Transformable
     {
+    protected:
+        using Super = Component;
+
     public:
         Component();
         virtual ~Component() = default;

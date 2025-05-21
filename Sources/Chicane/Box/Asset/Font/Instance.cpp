@@ -14,7 +14,7 @@ namespace Chicane
                 { "TTF", Vendor::TrueType }
             };
 
-            Instance::Instance(const std::string& inFilepath)
+            Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath)
             {
                 fetchVendor();
@@ -55,12 +55,22 @@ namespace Chicane
                 root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
             }
 
-            const std::vector<unsigned char>& Instance::getData() const
+            const Raw& Instance::getData() const
             {
                 return m_data;
             }
 
-            void Instance::setData(const std::vector<unsigned char>& inData)
+            void Instance::setData(const FileSystem::Path& inFilepath)
+            {
+                if (!FileSystem::exists(inFilepath))
+                {
+                    return;
+                }
+
+                setData(FileSystem::readUnsigned(inFilepath));
+            }
+
+            void Instance::setData(const Raw& inData)
             {
                 if (inData.empty())
                 {
@@ -70,16 +80,6 @@ namespace Chicane
                 m_data = inData;
 
                 getXML().text().set(Base64::encode(inData));
-            }
-
-            void Instance::setData(const std::string& inFilepath)
-            {
-                if (!FileSystem::exists(inFilepath))
-                {
-                    return;
-                }
-
-                setData(Base64::readFile(inFilepath));
             }
 
             void Instance::fetchVendor()
@@ -111,7 +111,7 @@ namespace Chicane
                     return;
                 }
 
-                m_data = Base64::decode(getXML().text().as_string());
+                m_data = Base64::decodeToUnsigned(getXML().text().as_string());
             }
         }
     }

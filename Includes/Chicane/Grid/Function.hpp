@@ -14,7 +14,7 @@ namespace Chicane
             std::vector<Reference> params = {};
         };
 
-        typedef std::function<Reference (const Event&)> Function;
-        typedef std::unordered_map<std::string, Function> Functions;
+        using Function  = std::function<Reference (const Event&)>;
+        using Functions = std::unordered_map<std::string, Function>;
     }
 }

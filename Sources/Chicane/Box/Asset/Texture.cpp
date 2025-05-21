@@ -16,7 +16,7 @@ namespace Chicane
                 { "PNG", Vendor::Png }
             };
 
-            Instance::Instance(const std::string& inFilepath)
+            Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath),
                 m_vendor(Vendor::Undefined)
             {
@@ -58,21 +58,9 @@ namespace Chicane
                 root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
             }
 
-            const Image::RawData& Instance::getData() const
+            const Image::Raw& Instance::getData() const
             {
                 return m_data;
-            }
-
-            void Instance::setData(const Image::RawData& inData)
-            {
-                if (inData.empty())
-                {
-                    return;
-                }
-
-                m_data = inData;
-
-                getXML().text().set(Base64::encode(inData));
             }
 
             void Instance::setData(const std::string& inFilepath)
@@ -82,7 +70,19 @@ namespace Chicane
                     return;
                 }
 
-                setData(Base64::readFile(inFilepath));
+                setData(FileSystem::readUnsigned(inFilepath));
+            }
+
+            void Instance::setData(const Image::Raw& inData)
+            {
+                if (inData.empty())
+                {
+                    return;
+                }
+
+                m_data = inData;
+
+                getXML().text().set(Base64::encode(inData));
             }
 
             void Instance::fetchVendor()
@@ -114,7 +114,7 @@ namespace Chicane
                     return;
                 }
 
-                m_data = Base64::decode(getXML().text().as_string());
+                m_data = Base64::decodeToUnsigned(getXML().text().as_string());
             }
         }
     }

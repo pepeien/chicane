@@ -12,9 +12,9 @@ namespace Chicane
             {
             public:
                 std::uint32_t              code     = 0;
-                Vec<2, float>              advance  = {};
-                Vec<2, float>              bearing  = {};
-                std::vector<Vec<3, float>> vertices = {};
+                Vec2                       advance  = {};
+                Vec2                       bearing  = {};
+                std::vector<Vec3>          vertices = {};
                 std::vector<std::uint32_t> indices  = {};
             };
         }

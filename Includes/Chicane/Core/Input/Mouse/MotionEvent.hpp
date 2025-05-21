@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Mouse
         {
-            typedef SDL_MouseMotionEvent MotionEvent;
-            typedef std::function<void(const MotionEvent&)> MotionEventFunction;
+            using MotionEvent         = SDL_MouseMotionEvent;
+            using MotionEventFunction = std::function<void(const MotionEvent&)>;
         }
     }
 }

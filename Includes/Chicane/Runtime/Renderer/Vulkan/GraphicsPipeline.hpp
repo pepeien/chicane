@@ -13,7 +13,7 @@ namespace Chicane
         {
             CHICANE_RUNTIME vk::Viewport createViewport(
                 const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0),
-                const Vec<2, float>& inPosition = Vec2Zero
+                const Vec2& inPosition = Vec2::Zero
             );
             CHICANE_RUNTIME vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
             CHICANE_RUNTIME vk::PipelineVertexInputStateCreateInfo createVertexInputState();

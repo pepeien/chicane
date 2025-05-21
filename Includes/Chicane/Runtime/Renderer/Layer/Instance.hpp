@@ -10,7 +10,7 @@ namespace Chicane
         class CHICANE_RUNTIME Instance
         {
         protected:
-            typedef Instance Super;
+            using Super = Instance;
 
         public:
             Instance();

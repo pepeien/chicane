@@ -4,16 +4,16 @@ namespace Chicane
 {
     namespace Box
     {
-        std::unique_ptr<Audio::Manager>   m_audioManager   = std::make_unique<Audio::Manager>();
-        std::unique_ptr<Font::Manager>    m_fontManager    = std::make_unique<Font::Manager>();
-        std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
-        std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
+        static const std::unique_ptr<Audio::Manager>   g_audioManager   = std::make_unique<Audio::Manager>();
+        static const std::unique_ptr<Font::Manager>    m_fontManager    = std::make_unique<Font::Manager>();
+        static const std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
+        static const std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
 
-        std::unordered_map<std::string, const Asset::Instance*> m_cache = {};
+        static std::unordered_map<std::string, const Asset::Instance*> g_cache = {};
 
         Audio::Manager* getAudioManager()
         {
-            return m_audioManager.get();
+            return g_audioManager.get();
         }
 
         Font::Manager* getFontManager()
@@ -33,7 +33,7 @@ namespace Chicane
 
         bool isLoaded(const std::string& inIdentifier)
         {
-            return m_cache.find(inIdentifier) != m_cache.end();
+            return g_cache.find(inIdentifier) != g_cache.end();
         }
 
         bool isLoaded(const Asset::Instance* inInstance)
@@ -53,7 +53,7 @@ namespace Chicane
                 return;
             }
 
-            m_cache.insert(
+            g_cache.insert(
                 std::make_pair(
                     inIdentifier,
                     inInstance
@@ -69,7 +69,7 @@ namespace Chicane
                 return nullptr;
             }
 
-            return static_cast<const T*>(m_cache.at(inIdentifier));
+            return static_cast<const T*>(g_cache.at(inIdentifier));
         }
 
         void loadAudio(const Asset::Instance* inAsset)
@@ -83,7 +83,7 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_audioManager->load(
+            g_audioManager->load(
                 filepath,
                 static_cast<const Audio::Instance*>(inAsset)
             );

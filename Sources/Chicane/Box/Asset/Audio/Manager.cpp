@@ -6,8 +6,8 @@ namespace Chicane
     {
         namespace Audio
         {
-            static const Audio::RawData      EMPTY_INSTANCE = {};
-            static const Audio::CompiledData EMPTY_DATA     = {};
+            static const Audio::Raw      EMPTY_INSTANCE = {};
+            static const Audio::Parsed EMPTY_DATA     = {};
 
             Manager::Manager()
                 : Super()
@@ -27,9 +27,9 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                Audio::CompiledData data = {};
+                Audio::Parsed data = {};
 
-                Audio::RawData instance = getInstance(inId);
+                Audio::Raw instance = getInstance(inId);
 
                 bool wasLoaded = SDL_LoadWAV_IO(
                     SDL_IOFromMem((void*)instance.data(), sizeof(unsigned char) * instance.size()),
@@ -61,7 +61,7 @@ namespace Chicane
 
             void Manager::onDeactivation(const std::string& inId)
             {
-                Audio::CompiledData& audio = m_datum.at(inId);
+                Audio::Parsed& audio = m_datum.at(inId);
 
                 SDL_ClearAudioStream(audio.stream);
                 audio.stream = nullptr;
@@ -83,7 +83,7 @@ namespace Chicane
                 Super::activate(inId);
             }
 
-            const Audio::RawData& Manager::getInstance(const std::string& inId) const
+            const Audio::Raw& Manager::getInstance(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -93,7 +93,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const Audio::CompiledData& Manager::getData(const std::string& inId) const
+            const Audio::Parsed& Manager::getData(const std::string& inId) const
             {
                 if (!isLoaded(inId) || !isAllocated(inId))
                 {

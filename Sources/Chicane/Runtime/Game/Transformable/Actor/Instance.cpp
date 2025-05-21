@@ -53,7 +53,7 @@ namespace Chicane
         return getBounds().contains(inBounds);
     }
 
-    bool Actor::isCollidingWith(const Vec<3, float>& inPoint) const
+    bool Actor::isCollidingWith(const Vec3& inPoint) const
     {
         return getBounds().contains(inPoint);
     }

@@ -28,9 +28,9 @@ namespace Chicane
         std::function<void ()> inComplete
     )
     {
-        inNext(m_pawn);
-
-        return m_pawnObservable->subscribe(inNext, inError,inComplete);
+        return m_pawnObservable
+            ->subscribe(inNext, inError, inComplete)
+            ->next(m_pawn);
     }
 
     bool Controller::isAttached() const

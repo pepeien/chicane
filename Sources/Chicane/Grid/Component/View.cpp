@@ -1,13 +1,11 @@
 #include "Chicane/Grid/Component/View.hpp"
 
-#include "Chicane/Grid/Loader.hpp"
-
 namespace Chicane
 {
     namespace Grid
     {
         View::View(const std::string& inSource)
-            : Component(TAG_ID),
+            : Super(TAG_ID),
             m_styles({})
         {
             if (inSource.empty())

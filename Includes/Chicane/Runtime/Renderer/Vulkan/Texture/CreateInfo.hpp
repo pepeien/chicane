@@ -11,7 +11,7 @@ namespace Chicane
             struct CHICANE_RUNTIME CreateInfo
             {
             public:
-                Chicane::Image::CompiledData image;
+                Chicane::Image::Instance image;
 
                 vk::Device                   logicalDevice;
                 vk::PhysicalDevice           physicalDevice;

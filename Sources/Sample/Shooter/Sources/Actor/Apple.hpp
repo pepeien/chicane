@@ -15,12 +15,12 @@ protected:
 public:
     void onHit(const Chicane::Actor* inSubject);
 
-    void setInitialPosition(const Chicane::Vec<3, float>& inPosition);
+    void setInitialPosition(const Chicane::Vec3& inPosition);
 
 private:
     float                  m_fallingRate;
 
-    Chicane::Vec<3, float> m_startPosition;
+    Chicane::Vec3 m_startPosition;
 
     Chicane::CMesh*        m_meshComponent;
     Chicane::CPhysics*     m_physicsComponent;

@@ -4,18 +4,18 @@ namespace Chicane
 {
     namespace View
     {
-        bool Plane::contains(const Vec<3, float>& inPoint) const
+        bool Plane::contains(const Vec3& inPoint) const
         {
             return distanceToPoint(inPoint) >= -FLT_EPSILON;
         }
 
-        void Plane::update(const Vec<3, float>& inNormal, const Vec<3, float>& inPoint)
+        void Plane::update(const Vec3& inNormal, const Vec3& inPoint)
         {
             m_normal   = glm::normalize(inNormal);
             m_distance = -m_normal.dot(inPoint);
         }
 
-        float Plane::distanceToPoint(const Vec<3, float>& inPoint) const
+        float Plane::distanceToPoint(const Vec3& inPoint) const
         {
             return m_normal.dot(inPoint) - m_distance;
         }

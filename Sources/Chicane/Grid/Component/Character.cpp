@@ -6,11 +6,11 @@ namespace Chicane
     {
         static constexpr const char NULL_CHARACTER = '\0';
 
-        static const Box::Font::ParsedData EMPTY_FONT  = {};
+        static const Box::Font::Parsed EMPTY_FONT  = {};
         static const Box::Font::Glyph      EMPTY_GLYPH = {};
 
         Character::Character()
-            : Component(TAG_ID),
+            : Super(TAG_ID),
             m_canUpdate(false),
             m_character(NULL_CHARACTER)
         {
@@ -29,37 +29,36 @@ namespace Chicane
 
         void Character::refreshPrimitive()
         {
-            refreshFont();
-
             if (!m_canUpdate)
             {
                 return;
             }
 
-            m_primitive.clear();
-
             if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
             {
+                clearPrimitive();
+    
                 return;
             }
 
+            m_canUpdate = false;
+
             const Box::Font::Glyph& glyph = getGlyph();
+
+            Primitive primitive = {};
+            primitive.indices = glyph.indices;
 
             Vertex vertex = {};
             vertex.color  = m_style.foregroundColor;
 
-            for (const Vec<3, float> position : glyph.vertices)
+            for (const Vec3 position : glyph.vertices)
             {
                 vertex.position = position;
     
-                m_primitive.vertices.push_back(vertex);
+                primitive.vertices.push_back(vertex);
             }
 
-            m_primitive.indices = glyph.indices;
-
-            m_canUpdate = false;
-
-            emmitChanges();
+            setPrimitive(primitive);
         }
 
         void Character::disable()
@@ -84,14 +83,9 @@ namespace Chicane
                 return;
             }
 
-            m_character = inValue;
+            setProperty(m_character, inValue);
 
             m_canUpdate = true;
-
-            if (!hasCharacter())
-            {
-                return;
-            }
 
             refreshFont();
         }
@@ -101,7 +95,7 @@ namespace Chicane
             return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
         }
 
-        const Box::Font::ParsedData& Character::getFont() const
+        const Box::Font::Parsed& Character::getFont() const
         {
             if (!hasFont())
             {

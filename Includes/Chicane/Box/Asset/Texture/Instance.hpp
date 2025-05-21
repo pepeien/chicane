@@ -13,23 +13,23 @@ namespace Chicane
             class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
-                Instance(const std::string& inFilepath);
+                Instance(const FileSystem::Path& inFilepath);
 
             public:
                 Vendor getVendor() const;
                 void setVendor(Vendor inVendor);
 
-                const Image::RawData& getData() const;
-                void setData(const Image::RawData& inData);
+                const Image::Raw& getData() const;
                 void setData(const std::string& inFilepath);
+                void setData(const Image::Raw& inData);
 
             private:
                 void fetchVendor();
                 void fetchData();
 
             private:
-                Vendor         m_vendor;
-                Image::RawData m_data;
+                Vendor     m_vendor;
+                Image::Raw m_data;
             };
         }
     }

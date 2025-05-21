@@ -8,22 +8,22 @@ namespace Chicane
         {
             static const Glyph EMPTY_GLYPH = {};
 
-            bool ParsedData::hasGlyph(char inCharacter) const
+            bool Parsed::hasGlyph(char inCharacter) const
             {
                 return hasGlyph(static_cast<std::uint32_t>(inCharacter));
             }
 
-            bool ParsedData::hasGlyph(std::uint32_t inCode) const
+            bool Parsed::hasGlyph(std::uint32_t inCode) const
             {
                 return glyphs.find(inCode) != glyphs.end();
             }
 
-            const Glyph& ParsedData::getGlyph(char inCharacter) const
+            const Glyph& Parsed::getGlyph(char inCharacter) const
             {
                 return getGlyph(static_cast<std::uint32_t>(inCharacter));
             }
 
-            const Glyph& ParsedData::getGlyph(std::uint32_t inCode) const
+            const Glyph& Parsed::getGlyph(std::uint32_t inCode) const
             {
                 if (!hasGlyph(inCode))
                 {

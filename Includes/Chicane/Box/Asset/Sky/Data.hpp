@@ -9,10 +9,11 @@ namespace Chicane
     {
         namespace Sky
         {
-            typedef std::string                            RawSide;
-            typedef std::unordered_map<Side, RawSide>      RawSides;
-            typedef Image::CompiledData                    CompiledSide;
-            typedef std::unordered_map<Side, CompiledSide> CompiledSides;
+            using RawSide  = std::string;
+            using RawSides = std::unordered_map<Side, RawSide>;
+
+            using ParsedSide  = Image::Instance;
+            using ParsedSides = std::unordered_map<Side, ParsedSide>;
         }
     }
 }

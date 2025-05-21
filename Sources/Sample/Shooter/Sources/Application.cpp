@@ -43,7 +43,7 @@ void Application::initCharacter()
     Chicane::Application::setController(m_controller.get());
 
     Character* character = m_level->createActor<Character>();
-    character->setAbsoluteTranslation(Chicane::Vec<3, float>(0.0f, -150.0f, 20.0f));
+    character->setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 20.0f));
 
     m_controller->attachTo(character);
 }

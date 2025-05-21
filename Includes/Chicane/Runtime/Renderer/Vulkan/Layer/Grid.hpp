@@ -12,8 +12,8 @@ namespace Chicane
             struct PushConstant
             {
             public:
-                Vec<2, float> size     = {};
-                Vec<2, float> position = {};
+                Vec2 size     = {};
+                Vec2 position = {};
             };
 
             struct DrawData

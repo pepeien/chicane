@@ -8,9 +8,9 @@ namespace Chicane
     {
         namespace Audio
         {
-            typedef std::vector<unsigned char> RawData;
+            using Raw = std::vector<unsigned char>;
 
-            struct CHICANE_BOX CompiledData
+            struct CHICANE_BOX Parsed
             {
             public:
                 SDL_AudioSpec    specification = {};

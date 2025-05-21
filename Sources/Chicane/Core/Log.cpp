@@ -1,28 +1,28 @@
 #include "Chicane/Core/Log.hpp"
 
-static constexpr const char* LOG_COLOR_START = "\33[";
-static constexpr const char* LOG_COLOR_END   = "\33[0m\n";
-
-constexpr std::uint32_t MAX_LOG_COUNT = 500;
-
 namespace Chicane
 {
     namespace Log
     {
-        std::unordered_map<std::string, std::string> m_colors = {};
+        static constexpr const char* LOG_COLOR_START = "\33[";
+        static constexpr const char* LOG_COLOR_END   = "\33[0m\n";
 
-        List                                     m_logs           = {};
-        std::unique_ptr<Observable<const List*>> m_logsObservable = std::make_unique<Observable<const List*>>();
+        static constexpr const std::uint32_t MAX_LOG_COUNT = 500;
 
-        Subscription<const List*>* watchLogs(
-            std::function<void (const List*)> inNext,
+        static std::unordered_map<std::string, std::string> g_colors = {};
+
+        static List                              g_logs           = {};
+        static std::unique_ptr<Observable<List>> g_logsObservable = std::make_unique<Observable<List>>();
+
+        Subscription<List>* watchLogs(
+            std::function<void (List)> inNext,
             std::function<void (const std::string&)> inError,
             std::function<void ()> inComplete
         )
         {
-            inNext(&m_logs);
-
-            return m_logsObservable->subscribe(inNext, inError,inComplete);
+            return g_logsObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(g_logs);
         }
 
         void emmit(
@@ -48,11 +48,11 @@ namespace Chicane
                 ::toupper
             );
 
-            if (m_colors.find(color) == m_colors.end())
+            if (g_colors.find(color) == g_colors.end())
             {
                 Vec<3, std::uint32_t> rgbColor = Color::toRgba(inHexColor);
 
-                m_colors.insert(
+                g_colors.insert(
                     std::make_pair(
                         color,
                         "38;2;" +
@@ -63,7 +63,7 @@ namespace Chicane
                 );
             }
 
-            std::string terminalColor = m_colors.at(color);
+            const std::string& terminalColor = g_colors.at(color);
 
             if (IS_DEBUGGING)
             {
@@ -71,18 +71,14 @@ namespace Chicane
             }
 
             // History
-            if (m_logs.size() > MAX_LOG_COUNT)
+            if (g_logs.size() > MAX_LOG_COUNT)
             {
-                m_logs.pop_front();
+                g_logs.pop_front();
             }
 
-            Entry instance = {};
-            instance.text  = message;
-            instance.color = color;
+            g_logs.emplace_back(message, color);
 
-            m_logs.emplace_back(instance);
-
-            m_logsObservable->next(&m_logs);
+            g_logsObservable->next(g_logs);
         }
 
         void info(const std::string& inMessage)

@@ -8,16 +8,16 @@ namespace Chicane
     {
         namespace Model
         {
-            static const ParsedData   EMPTY_INSTANCE = {};
-            static const CompiledData EMPTY_DATA     = {};
+            static const Extracted   EMPTY_INSTANCE = {};
+            static const Parsed EMPTY_DATA     = {};
 
             Manager::Manager()
                 : Super()
             {}
 
-            void Manager::onAllocation(const std::string& inId, const CompiledData& inData)
+            void Manager::onAllocation(const std::string& inId, const Parsed& inData)
             {
-                const ParsedData& instance = getInstance(inId);
+                const Extracted& instance = getInstance(inId);
 
                 m_vertices.insert(
                     m_vertices.end(),
@@ -48,9 +48,9 @@ namespace Chicane
 
             void Manager::onActivation(const std::string& inId)
             {
-                const ParsedData& instance = getInstance(inId);
+                const Extracted& instance = getInstance(inId);
 
-                CompiledData data = {};
+                Parsed data = {};
                 data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
                 data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
                 data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
@@ -61,7 +61,7 @@ namespace Chicane
 
             void Manager::onDeactivation(const std::string& inId)
             {
-                const CompiledData& data = m_datum.at(inId);
+                const Parsed& data = m_datum.at(inId);
 
                 auto verticesStart = m_vertices.begin() + data.firstVertex;
                 auto verticesEnd   = verticesStart + data.vertexCount;
@@ -93,7 +93,7 @@ namespace Chicane
                 }
             }
 
-            const ParsedData& Manager::getInstance(const std::string& inId) const
+            const Extracted& Manager::getInstance(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -103,7 +103,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const CompiledData& Manager::getData(const std::string& inId) const
+            const Parsed& Manager::getData(const std::string& inId) const
             {
                 if (!isAllocated(inId))
                 {

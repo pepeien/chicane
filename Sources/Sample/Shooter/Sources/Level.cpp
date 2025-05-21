@@ -39,12 +39,12 @@ void Level::spawnStructures()
 
 void Level::spawnApples()
 {
-    const Chicane::Vec<3, float> startPosition(
+    const Chicane::Vec3 startPosition(
         -(APPLE_COLUMN_COUNT * APPLE_STEP) * 0.5f,
         (APPLE_DEPTH_COUNT * APPLE_STEP) * 0.5f,
         (APPLE_ROW_COUNT * APPLE_STEP) * 0.5f
     );
-    Chicane::Vec<3, float> position = startPosition;
+    Chicane::Vec3 position = startPosition;
 
     Game::setMaxScore(APPLE_ROW_COUNT * APPLE_COLUMN_COUNT * APPLE_DEPTH_COUNT);
 

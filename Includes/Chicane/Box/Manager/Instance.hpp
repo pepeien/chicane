@@ -13,7 +13,7 @@ namespace Chicane
             class CHICANE_BOX Instance
             {
             protected:
-                typedef Instance Super;
+                using Super = Instance;
 
             public:
                 Instance()

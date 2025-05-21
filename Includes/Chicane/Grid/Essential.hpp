@@ -28,9 +28,9 @@ namespace Chicane
         static constexpr const char* REFERENCE_VALUE_OPENING = "{{";
         static constexpr const char* REFERENCE_VALUE_CLOSING = "}}";
 
-        static constexpr char FUNCTION_PARAMS_OPENING   = '(';
-        static constexpr char FUNCTION_PARAMS_SEPARATOR = ',';
-        static constexpr char FUNCTION_PARAMS_CLOSING   = ')';
+        static constexpr const char FUNCTION_PARAMS_OPENING   = '(';
+        static constexpr const char FUNCTION_PARAMS_SEPARATOR = ',';
+        static constexpr const char FUNCTION_PARAMS_CLOSING   = ')';
 
         // Value attributes
         static constexpr const char* ID_ATTRIBUTE_NAME    = "id";

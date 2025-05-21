@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Keyboard
         {
-            typedef std::function<void()> KeyEventFunction;
+            using KeyEventFunction = std::function<void()>;
         }
     }
 }

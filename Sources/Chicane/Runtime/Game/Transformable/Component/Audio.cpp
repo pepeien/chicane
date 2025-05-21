@@ -3,7 +3,7 @@
 namespace Chicane
 {
     CAudio::CAudio()
-        : Component(),
+        : Super(),
         m_audio("")
     {}
 
@@ -33,7 +33,7 @@ namespace Chicane
             return;
         }
 
-        const Box::Audio::CompiledData& audio = manager->getData(m_audio);
+        const Box::Audio::Parsed& audio = manager->getData(m_audio);
 
         SDL_ClearAudioStream(audio.stream);
         SDL_ResumeAudioStreamDevice(audio.stream);

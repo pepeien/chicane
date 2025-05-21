@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
+#include "Chicane/Box/Asset/Model/Data.hpp"
 #include "Chicane/Box/Asset/Model/Vendor.hpp"
 
 namespace Chicane
@@ -13,23 +14,23 @@ namespace Chicane
             class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
-                Instance(const std::string& inFilepath);
+                Instance(const FileSystem::Path& inFilepath);
 
             public:
                 Vendor getVendor() const;
                 void setVendor(Vendor inVendor);
 
-                const std::vector<unsigned char>& getData() const;
-                void setData(const std::vector<unsigned char>& inData);
-                void setData(const std::string& inFilepath);
+                const Raw& getData() const;
+                void setData(const FileSystem::Path& inFilepath);
+                void setData(const Raw& inData);
 
             private:
                 void fetchVendor();
                 void fetchData();
 
             private:
-                Vendor               m_vendor;
-                std::vector<unsigned char> m_data;
+                Vendor m_vendor;
+                Raw    m_data;
             };
         }
     }

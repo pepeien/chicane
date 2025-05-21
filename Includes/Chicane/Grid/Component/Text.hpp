@@ -28,7 +28,7 @@ namespace Chicane
 
         private:
             std::string m_text;
-            std::string m_lastText;
+            std::string m_parsedText;
         };
     }
 }

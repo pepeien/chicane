@@ -25,7 +25,7 @@ namespace Chicane
                 void fetchType();
 
             public:
-                std::filesystem::path filepath = "";
+                FileSystem::Path filepath = "";
                 std::uint32_t         version  = CURRENT_VERSION;
                 std::string           id       = "";
                 Type                  type     = Type::Undefined;

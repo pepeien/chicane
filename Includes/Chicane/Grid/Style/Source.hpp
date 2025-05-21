@@ -8,10 +8,17 @@ namespace Chicane
     {
         namespace Style
         {
-            typedef std::unordered_map<std::string, std::string> Properties;
+            using Properties = std::unordered_map<std::string, std::string>;
 
             struct CHICANE_GRID Source
             {
+            public:
+                using List = std::vector<Source>;
+
+            public:
+                Source(const std::vector<std::string>& inSelectors, const Properties& inProperties);
+                Source();
+
             public:
                 bool isEmpty() const;
 
@@ -19,8 +26,6 @@ namespace Chicane
                 std::vector<std::string> selectors;
                 Properties               properties;
             };
-
-            typedef std::vector<Source> Sources;
         }
     }
 }

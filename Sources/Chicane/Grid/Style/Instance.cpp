@@ -8,16 +8,16 @@ namespace Chicane
     {
         namespace Style
         {
-            Sources Instance::parseSources(const pugi::xml_node &inNode)
+            Source::List Instance::parseSources(const pugi::xml_node &inNode)
             {
                 return Instance::parseSources(
-                    std::filesystem::path(
+                    FileSystem::Path(
                         XML::getAttribute(ATTRIBUTE_NAME, inNode).as_string()
                     )
                 );
             }
 
-            Sources Instance::parseSources(const std::filesystem::path &inFilePath)
+            Source::List Instance::parseSources(const FileSystem::Path &inFilePath)
             {
                 if (inFilePath.empty())
                 {
@@ -31,12 +31,12 @@ namespace Chicane
                     return {};
                 }
 
-                std::vector<char> data = FileSystem::readFile(inFilePath);
+                std::vector<unsigned char> data = FileSystem::readUnsigned(inFilePath);
 
                 return Instance::parseSources(std::string(data.begin(), data.end()));
             }
 
-            Sources Instance::parseSources(const std::string &inData)
+            Source::List Instance::parseSources(const std::string &inData)
             {
                 std::string data = inData;
                 data.erase(
@@ -56,27 +56,26 @@ namespace Chicane
                     data.cend()
                 );
 
-                std::vector<std::string> styles = String::split(
+                const std::vector<std::string> styles = String::split(
                     data,
                     '}'
                 );
 
-                Sources result = {};
+                Source::List result = {};
 
                 for (const std::string &style : styles)
                 {
-                    std::vector<std::string> splittedStyle = String::split(style, '{');
+                    const std::vector<std::string> splittedStyle = String::split(style, '{');
 
                     if (splittedStyle.size() < 2)
                     {
                         continue;
                     }
 
-                    Source source = {};
-                    source.selectors  = String::split(splittedStyle.at(0), SELECTOR_SEPARATOR);
-                    source.properties = Instance::parseSource(splittedStyle.at(1));
-
-                    result.push_back(source);
+                    result.emplace_back(
+                        String::split(splittedStyle.at(0), SELECTOR_SEPARATOR),
+                        Instance::parseSource(splittedStyle.at(1))
+                    );
                 }
 
                 return result;
@@ -93,7 +92,7 @@ namespace Chicane
 
                 for (const std::string &block : blocks)
                 {
-                    std::vector<std::string> splittedBlock = String::split(
+                    const std::vector<std::string> splittedBlock = String::split(
                         block,
                         ':'
                     );
@@ -103,8 +102,8 @@ namespace Chicane
                         continue;
                     }
 
-                    std::string key   = String::trim(splittedBlock.at(0));
-                    std::string value = String::trim(splittedBlock.at(1));
+                    const std::string key   = String::trim(splittedBlock.at(0));
+                    const std::string value = String::trim(splittedBlock.at(1));
 
                     if (result.find(key) != result.end())
                     {
@@ -566,7 +565,7 @@ namespace Chicane
                     return value;
                 }
 
-                const Vec<2, float>& size = isPosition(Position::Absolute) ?
+                const Vec2& size = isPosition(Position::Absolute) ?
                     m_parent->getRoot()->getSize() :
                     m_parent->getParent()->getAvailableSize();
 

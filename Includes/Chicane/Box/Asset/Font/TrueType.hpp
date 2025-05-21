@@ -11,7 +11,7 @@ namespace Chicane
         {
             namespace TrueType
             {
-                CHICANE_BOX ParsedData parse(const std::vector<unsigned char>& inData);
+                CHICANE_BOX Parsed parse(const std::vector<unsigned char>& inData);
             }
         }
     }

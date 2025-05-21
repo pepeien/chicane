@@ -13,7 +13,7 @@ namespace Chicane
             static constexpr const char* GROUP_TAG               = "Group";
             static constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";
 
-            Instance::Instance(const std::string& inFilepath)
+            Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath)
             {
                 fetchGroups();

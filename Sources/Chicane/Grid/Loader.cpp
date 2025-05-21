@@ -6,7 +6,7 @@ namespace Chicane
     {
         namespace Loader
         {
-            static std::unordered_map<std::string, Component::Compiler> m_components = {
+            static std::unordered_map<std::string, Component::Compiler> g_components = {
                 { Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); } },
                 { List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); } },
                 { Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); } },
@@ -20,27 +20,22 @@ namespace Chicane
             {
                 const std::string& tag = inNode.name();
 
-                if (m_components.find(tag) == m_components.end())
+                if (g_components.find(tag) == g_components.end())
                 {
                     return nullptr;
                 }
 
-                return m_components.at(tag)(inNode);
+                return g_components.at(tag)(inNode);
             }
 
             void registerComponent(const std::string& inTag, Component::Compiler inCompiler)
             {
-                if (m_components.find(inTag) != m_components.end())
+                if (g_components.find(inTag) != g_components.end())
                 {
                     return;
                 }
 
-                m_components.insert(
-                    std::make_pair(
-                        inTag,
-                        inCompiler
-                    )
-                );
+                g_components.insert(std::make_pair(inTag, inCompiler));
             }
         }
     }

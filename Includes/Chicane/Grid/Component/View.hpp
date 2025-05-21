@@ -43,11 +43,11 @@ namespace Chicane
             std::vector<const Component*> flatChildren(const Component* inParent) const;
 
         protected:
-            std::string        m_path;
+            std::string         m_path;
 
-            Window::Instance*  m_window;
+            Window::Instance*   m_window;
 
-            Style::Sources     m_styles;
+            Style::Source::List m_styles;
         };
     }
 }

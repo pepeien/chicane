@@ -19,6 +19,15 @@ namespace Chicane
             };
 
         public:
+            friend bool operator==(const Primitive& inLeft, const Primitive& inRight)
+            {
+                return (
+                    inLeft.vertices == inRight.vertices &&
+                    inLeft.indices  == inRight.indices
+                );
+            }
+
+        public:
             bool isEmpty() const
             {
                 return vertices.empty() || indices.empty();

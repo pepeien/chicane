@@ -11,7 +11,7 @@ namespace Chicane
         {
             namespace Wavefront
             {
-                CHICANE_BOX ParsedData parse(const std::vector<unsigned char>& inData);
+                CHICANE_BOX Extracted parse(const std::vector<unsigned char>& inData);
             }
         }
     }

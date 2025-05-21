@@ -13,44 +13,44 @@ namespace Chicane
         {
         public:
             // Transformation
-            const Mat<4, float>& getMatrix() const;
-            void setMatrix(const Mat<4, float>&  inMatrix);
+            const Mat4& getMatrix() const;
+            void setMatrix(const Mat4&  inMatrix);
 
             void setTransform(const Instance& inTransform);
 
-            const Vec<3, float>& getTranslation() const;
-            void addTranslation(const Vec<3, float>& inTranslation);
-            void setTranslation(const Vec<3, float>& inTranslation);
+            const Vec3& getTranslation() const;
+            void addTranslation(const Vec3& inTranslation);
+            void setTranslation(const Vec3& inTranslation);
 
-            const Vec<3, float>& getRotation() const;
-            void addRotation(const Vec<3, float>& inRotation);
-            void setRotation(const Vec<3, float>& inRotation);
+            const Vec3& getRotation() const;
+            void addRotation(const Vec3& inRotation);
+            void setRotation(const Vec3& inRotation);
 
-            const Vec<3, float>& getScale() const;
-            void addScale(const Vec<3, float>& inScale);
-            void setScale(const Vec<3, float>& inScale);
+            const Vec3& getScale() const;
+            void addScale(const Vec3& inScale);
+            void setScale(const Vec3& inScale);
 
             // Orientation
-            const Vec<3, float>& getRight() const;
-            const Vec<3, float>& getForward() const;
-            const Vec<3, float>& getUp() const;
+            const Vec3& getRight() const;
+            const Vec3& getForward() const;
+            const Vec3& getUp() const;
 
         protected:
-            void refreshOrientation(const Quat<float>& inOrientation);
-            void refreshTransform(const Quat<float>& inOrientation);
+            void refreshOrientation(const QuatFloat& inOrientation);
+            void refreshTransform(const QuatFloat& inOrientation);
             void refresh();
 
         protected:
             // Transformation
-            Mat<4, float> m_matrix         = Mat<4, float>(1.0f);
-            Vec<3, float> m_translation    = Vec<3, float>(0.0f);
-            Vec<3, float> m_rotation       = Vec<3, float>(0.0f);
-            Vec<3, float> m_scale          = Vec<3, float>(1.0f);
+            Mat4 m_matrix      = Mat4::One;
+            Vec3 m_translation = Vec3::Zero;
+            Vec3 m_rotation    = Vec3::Zero;
+            Vec3 m_scale       = Vec3::Zero;
 
             // Orientation
-            Vec<3, float> m_forward        = FORWARD_DIRECTION;
-            Vec<3, float> m_up             = UP_DIRECTION;
-            Vec<3, float> m_right          = RIGHT_DIRECTION;
+            Vec3 m_forward     = Vec3::Forward;
+            Vec3 m_up          = Vec3::Up;
+            Vec3 m_right       = Vec3::Right;
         };
     }
 }

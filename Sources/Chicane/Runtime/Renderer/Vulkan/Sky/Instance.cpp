@@ -9,7 +9,7 @@ namespace Chicane
         namespace Sky
         {
             Instance::Instance(const CreateInfo& inCreateInfo)
-                : m_image({}),
+                : m_image(),
                 m_images(inCreateInfo.images),
                 m_logicalDevice(inCreateInfo.logicalDevice),
                 m_physicalDevice(inCreateInfo.physicalDevice),
@@ -26,10 +26,7 @@ namespace Chicane
                 m_descriptor.set       = nullptr;
                 m_descriptor.pool      = inCreateInfo.descriptorPool;
 
-                const auto& baseImage = m_images.at(Box::Sky::Side::Up);
-                m_image.width    = baseImage.width;
-                m_image.height   = baseImage.height;
-                m_image.channels = baseImage.channels;
+                m_image = Image::Data(m_images.at(Box::Sky::Side::Up));
 
                 initImage();
                 copyPixels();
@@ -61,8 +58,8 @@ namespace Chicane
             void Instance::initImage()
             {
                 Image::Instance::CreateInfo instanceCreateInfo = {};
-                instanceCreateInfo.width         = m_image.width;
-                instanceCreateInfo.height        = m_image.height;
+                instanceCreateInfo.width         = m_image.getWidth();
+                instanceCreateInfo.height        = m_image.getHeight();
                 instanceCreateInfo.count         = static_cast<std::uint32_t>(Box::Sky::ORDER.size());
                 instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
                 instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
@@ -94,12 +91,13 @@ namespace Chicane
 
             void Instance::copyPixels()
             {
-                std::uint32_t pixelCount = sizeof(float) * (m_image.width * m_image.height);
+                std::uint32_t pixelCount = sizeof(float) * m_image.getSize();
 
                 Buffer::CreateInfo createInfo = {};
                 createInfo.logicalDevice    = m_logicalDevice;
                 createInfo.physicalDevice   = m_physicalDevice;
-                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
+                createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostCoherent |
+                                              vk::MemoryPropertyFlagBits::eHostVisible;
                 createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
                 createInfo.size             = pixelCount * Box::Sky::ORDER.size();
 
@@ -116,7 +114,7 @@ namespace Chicane
                         pixelCount
                     );
 
-                    memcpy(writeLocation, image.pixels, pixelCount);
+                    memcpy(writeLocation, image.getPixels(), pixelCount);
 
                     m_logicalDevice.unmapMemory(stagingBuffer.memory);
                 }
@@ -135,8 +133,8 @@ namespace Chicane
                     m_queue,
                     stagingBuffer.instance,
                     m_image.instance,
-                    m_image.width,
-                    m_image.height,
+                    m_image.getWidth(),
+                    m_image.getHeight(),
                     static_cast<std::uint32_t>(Box::Sky::ORDER.size())
                 );
 

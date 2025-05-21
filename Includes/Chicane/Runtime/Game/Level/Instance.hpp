@@ -5,7 +5,7 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
-static constexpr float LINE_TRACE_STEP_SIZE = 0.1f;
+static constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {
@@ -147,8 +147,8 @@ namespace Chicane
         // Helper
         template<typename T = Actor>
         std::vector<T*> traceLine(
-            const Vec<3, float>& inOrigin,
-            const Vec<3, float>& inDestination,
+            const Vec3& inOrigin,
+            const Vec3& inDestination,
             const std::vector<Actor*>& inIgnoredActors
         ) const
         {
@@ -157,9 +157,9 @@ namespace Chicane
                 return {};
             }
 
-            Vec<3, float> point = inOrigin;
+            Vec3 point = inOrigin;
 
-            const Vec<3, float> direction = glm::normalize(
+            const Vec3 direction = glm::normalize(
                 inDestination - inOrigin
             );
 
@@ -210,9 +210,15 @@ namespace Chicane
                 point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
                 point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
 
-                bHasXReachedDestination = bIsXPositive ? (point.x >= inDestination.x) : (point.x <= inDestination.x);
-                bHasYReachedDestination = bIsYPositive ? (point.y >= inDestination.y) : (point.y <= inDestination.y);
-                bHasZReachedDestination = bIsZPositive ? (point.z >= inDestination.z) : (point.z <= inDestination.z);
+                bHasXReachedDestination = bIsXPositive ?
+                    point.x >= inDestination.x :
+                    point.x <= inDestination.x;
+                bHasYReachedDestination = bIsYPositive ?
+                    point.y >= inDestination.y :
+                    point.y <= inDestination.y;
+                bHasZReachedDestination = bIsZPositive ?
+                    point.z >= inDestination.z :
+                    point.z <= inDestination.z;
             }
 
             return result;

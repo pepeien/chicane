@@ -12,7 +12,7 @@ namespace Chicane
             namespace Wavefront
             {
                 void parseDataset(
-                    ParsedData& outResult,
+                    Extracted& outResult,
                     std::unordered_map<std::string, std::uint32_t>& outMap,
                     const fastObjMesh* inMesh,
                     std::uint32_t inIndex
@@ -36,7 +36,7 @@ namespace Chicane
 
                     Vertex vertex = {};
 
-                    vertex.color = Vec<4, float>(1.0f);
+                    vertex.color = Vec4(1.0f);
 
                     vertex.position.x = inMesh->positions[index.p * 3 + 0];
                     vertex.position.y = inMesh->positions[index.p * 3 + 1];
@@ -57,9 +57,9 @@ namespace Chicane
                     outMap.insert(std::make_pair(dataSet, currentIndex));
                 }
 
-                ParsedData parse(const std::vector<unsigned char>& inData)
+                Extracted parse(const std::vector<unsigned char>& inData)
                 {
-                    ParsedData result = {};
+                    Extracted result = {};
 
                     std::string data = std::string(inData.begin(), inData.end());
                     data.push_back('\n');

@@ -8,8 +8,8 @@ namespace Chicane
     {
         namespace Font
         {
-            static const RawData    EMPTY_DATA     = {};
-            static const ParsedData EMPTY_INSTANCE = {};
+            static const Extracted    EMPTY_DATA     = {};
+            static const Parsed EMPTY_INSTANCE = {};
 
             Manager::Manager()
                 : Super()
@@ -20,7 +20,7 @@ namespace Chicane
                 return std::find_if(
                     m_datum.begin(),
                     m_datum.end(),
-                    [inFamily](const std::pair<std::string, ParsedData>& pair)
+                    [inFamily](const std::pair<std::string, Parsed>& pair)
                     {
                         return String::areEquals(inFamily, pair.second.name);
                     }
@@ -39,7 +39,7 @@ namespace Chicane
                     return;
                 }
 
-                RawData instance = {};
+                Extracted instance = {};
                 instance.vendor = inFont->getVendor();
                 instance.data   = inFont->getData();
 
@@ -55,7 +55,7 @@ namespace Chicane
                     return;
                 }
 
-                const RawData& instance = getData(inId);
+                const Extracted& instance = getData(inId);
 
                 switch (instance.vendor)
                 {
@@ -69,7 +69,7 @@ namespace Chicane
                 }
             }
 
-            const RawData& Manager::getData(const std::string& inId) const
+            const Extracted& Manager::getData(const std::string& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -79,7 +79,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const ParsedData& Manager::getParsed(const std::string& inId) const
+            const Parsed& Manager::getParsed(const std::string& inId) const
             {
                 if (!isAllocated(inId))
                 {
@@ -89,7 +89,7 @@ namespace Chicane
                 return m_datum.at(inId);
             }
 
-            const ParsedData& Manager::getByFamily(const std::string& inFamily) const
+            const Parsed& Manager::getByFamily(const std::string& inFamily) const
             {
                 if (!isFamilyAllocated(inFamily))
                 {
@@ -99,7 +99,7 @@ namespace Chicane
                 auto found = std::find_if(
                     m_datum.begin(),
                     m_datum.end(),
-                    [inFamily](const std::pair<std::string, ParsedData>& pair)
+                    [inFamily](const std::pair<std::string, Parsed>& pair)
                     {
                         return String::areEquals(inFamily, pair.second.name);
                     }

@@ -7,6 +7,9 @@ namespace Chicane
 {
     class CHICANE_RUNTIME Actor : public Transformable
     {
+    protected:
+        using Super = Actor;
+
     public:
         Actor();
         virtual ~Actor() = default;
@@ -24,7 +27,7 @@ namespace Chicane
         void setCanCollide(bool inCanCollide);
         bool isCollidingWith(const Actor* inSubject) const;
         bool isCollidingWith(const Bounds& inBounds) const;
-        bool isCollidingWith(const Vec<3, float>& inPoint) const;
+        bool isCollidingWith(const Vec3& inPoint) const;
         void collideWith(const Actor* inSubject);
 
     protected:

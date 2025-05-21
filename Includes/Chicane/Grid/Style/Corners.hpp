@@ -24,6 +24,17 @@ namespace Chicane
                 );
 
             public:
+                friend bool operator==(const Corners& inLeft, const Corners& inRight)
+                {
+                    return (
+                        std::fabs(inLeft.top    - inRight.top)    < FLT_EPSILON &&
+                        std::fabs(inLeft.bottom - inRight.bottom) < FLT_EPSILON &&
+                        std::fabs(inLeft.left   - inRight.left)   < FLT_EPSILON &&
+                        std::fabs(inLeft.right  - inRight.right)  < FLT_EPSILON
+                    );
+                }
+
+            public:
                 bool refresh(
                     const Properties &inSource,
                     std::function<float (const std::string&, Direction)> inCalculator

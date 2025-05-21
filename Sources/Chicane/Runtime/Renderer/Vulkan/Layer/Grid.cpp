@@ -16,7 +16,7 @@ namespace Chicane
             m_view(nullptr),
             m_drawDatum({})
         {
-            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
             loadEvents();
         }
@@ -314,15 +314,15 @@ namespace Chicane
             inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
             inCommandBuffer.bindIndexBuffer(m_indexBuffer.instance, 0, vk::IndexType::eUint32);
 
-            const Vec<2, float>& rootSize = m_view->getSize();
+            const Vec2& rootSize = m_view->getSize();
 
             for (const DrawData& drawData : m_drawDatum)
             {
                 const Grid::Component*           component = drawData.component;
                 const Grid::Primitive::Compiled& primitive = drawData.compiledPrimitive;
 
-                const Vec<2, float>& size     = component->getSize();
-                const Vec<2, float>& position = component->getPosition();
+                const Vec2& size     = component->getSize();
+                const Vec2& position = component->getPosition();
 
                 PushConstant pushConstant = {};
                 pushConstant.size     = size / rootSize;

@@ -8,16 +8,14 @@ namespace Chicane
     {
         namespace Asset
         {
-            std::string Instance::TAG = "Asset";
-
-            Instance::Instance(const std::string& inFilepath)
+            Instance::Instance(const FileSystem::Path& inFilepath)
             {
-                std::string filepath = String::trim(inFilepath);
-
-                if (filepath.empty())
+                if (inFilepath.empty())
                 {
                     return;
                 }
+
+                const std::string filepath = inFilepath.string();
 
                 if (FileSystem::exists(filepath))
                 {
@@ -62,12 +60,12 @@ namespace Chicane
                 setType(inHeader.type);
             }
 
-            const std::filesystem::path& Instance::getFilepath() const
+            const FileSystem::Path& Instance::getFilepath() const
             {
                 return m_header.filepath;
             }
 
-            void Instance::setFilepath(const std::filesystem::path& inFilepath)
+            void Instance::setFilepath(const FileSystem::Path& inFilepath)
             {
                 m_header.filepath = String::trim(inFilepath.string());
             }
@@ -162,7 +160,11 @@ namespace Chicane
 
                 if (!String::areEquals(TAG, root.name()))
                 {
-                    throw std::runtime_error("Asset files root element must be a " + TAG);
+                    throw std::runtime_error(
+                        String::sprint(
+                            "Asset files root element must be have [%s] as a tag", TAG
+                        )
+                    );
                 }
             }
 

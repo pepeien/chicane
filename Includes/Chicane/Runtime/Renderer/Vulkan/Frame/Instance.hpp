@@ -19,8 +19,8 @@ namespace Chicane
             struct CHICANE_RUNTIME ComponentData
             {
             public:
-                Vec<2, float> size     = Vec2Zero;
-                Vec<2, float> position = Vec2Zero;
+                Vec2 size     = Vec2::Zero;
+                Vec2 position = Vec2::Zero;
             };
 
             class CHICANE_RUNTIME Instance
@@ -93,7 +93,7 @@ namespace Chicane
                 // Resources
                 Resource<Chicane::View::Data>                     cameraResource;
                 Resource<Chicane::View::Data>                     lightResource;
-                Resource<Box::Mesh::CompiledData>                 meshResource;
+                Resource<Box::Mesh::Parsed>                 meshResource;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;

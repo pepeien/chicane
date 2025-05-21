@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Audio
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<RawData, CompiledData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Raw, Parsed>
             {
             public:
                 Manager();
@@ -26,8 +26,8 @@ namespace Chicane
                 void load(const std::string& inId, const Audio::Instance* inAudio);
 
                 // Data
-                const RawData& getInstance(const std::string& inId) const;
-                const CompiledData& getData(const std::string& inId) const;
+                const Raw& getInstance(const std::string& inId) const;
+                const Parsed& getData(const std::string& inId) const;
             };
         }
     }

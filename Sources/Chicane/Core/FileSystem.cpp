@@ -1,16 +1,12 @@
 #include "Chicane/Core/FileSystem.hpp"
 
-#define STB_IMAGE_STATIC
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
-#include "Chicane/Core.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     namespace FileSystem
     {
-        bool exists(const std::string& inPath)
+        bool exists(const Path& inPath)
         {
             if (inPath.empty())
             {
@@ -20,7 +16,7 @@ namespace Chicane
             return std::filesystem::exists(inPath);
         }
 
-        std::vector<Item> ls(const std::string& inDir, std::uint32_t inDepth)
+        std::vector<Item> ls(const Path& inDir, std::uint32_t inDepth)
         {
             if (inDir.empty())
             {
@@ -55,162 +51,145 @@ namespace Chicane
             return result;
         }
 
-        void openFolderDialog(const Dialog& inProps, Dialog::Callback inCallback)
+        std::string readStringUnsigned(const Path& inFilepath)
         {
-/*
-            if (!Application::hasWindow())
+            const std::vector<unsigned char> raw = readUnsigned(inFilepath);
+
+            if (raw.empty())
             {
-                throw std::runtime_error("Unable to open a folder dialog without a active window");
+                return "";
             }
 
-            std::string location = String::trim(inProps.location);
+            return std::string(raw.begin(), raw.end());
+        }
 
-
-            SDL_ShowOpenFolderDialog(
-                inCallback,
-                nullptr,
-                Application::getWindow()->instance,
-                location.empty() ? nullptr : location.c_str(),
-                inProps.canSelectMany
+        std::vector<unsigned char> readUnsigned(const Path& inFilepath)
+        {
+            std::basic_ifstream<unsigned char> file(
+                inFilepath.string(),
+                std::ios::ate | std::ios::binary
             );
-*/
-        }
 
-        void openFileDialog(const FileDialog& inProps, Dialog::Callback inCallback)
-        {
-/*
-            if (!Application::hasWindow())
+            if (!file)
             {
-                throw std::runtime_error("Unable to open a file dialog without a active window");
-            }
-
-            std::string location = String::trim(inProps.location);
-
-            SDL_ShowOpenFileDialog(
-                inCallback,
-                nullptr,
-                Application::getWindow()->instance,
-                inProps.filters,
-                inProps.filterCount,
-                location.empty() ? nullptr : location.c_str(),
-                inProps.canSelectMany
-            );
-*/
-        }
-
-        std::vector<char> readFile(const std::filesystem::path& inFilepath)
-        {
-            return FileSystem::readFile(inFilepath.string());
-        }
-
-        std::vector<char> readFile(const std::string& inFilepath)
-        {
-            std::ifstream file(inFilepath, std::ios::ate | std::ios::binary);
-
-            if (!file.is_open())
-            {
-                throw std::runtime_error("Failed to open file -> " + inFilepath);
+                throw std::runtime_error(
+                    String::sprint(
+                        "Failed to open the file [%s]",
+                        inFilepath.c_str()
+                    )
+                );
             }
     
-            size_t fileSize = (size_t)file.tellg();
-            std::vector<char> buffer(fileSize);
+            std::vector<unsigned char> result = {};
+            result.reserve(file.tellg());
     
+            unsigned char character;
+
             file.seekg(0);
-            file.read(buffer.data(), fileSize);
+
+            while (file.read(&character, sizeof(unsigned char)))
+            {
+                result.push_back(character);
+            }
+
             file.close();
     
-            return buffer;
-        }
-
-        std::vector<unsigned char> readFileUnsigned(const std::string& inFilepath)
-        {
-            std::basic_ifstream<unsigned char> file(inFilepath, std::ios::ate | std::ios::binary);
-
-            if (!file.is_open())
-            {
-                throw std::runtime_error("Failed to open file -> " + inFilepath);
-            }
-    
-            size_t fileSize = (size_t)file.tellg();
-            std::vector<unsigned char> buffer(fileSize);
-    
-            file.seekg(0);
-            file.read(buffer.data(), fileSize);
-            file.close();
-    
-            return buffer;
-        }
-
-        
-        Image::Pixels readImageFromFile(const std::string& inFilepath)
-        {
-            int width   = 0;
-            int height  = 0;
-            int channel = 0;
-            int format  = 0;
-
-            return readImageFromFile(
-                width,
-                height,
-                channel,
-                format,
-                inFilepath
-            );
-        }
-
-        Image::Pixels readImageFromFile(
-            int& outWidth,
-            int& outHeight,
-            int& outChannel,
-            int& outFormat,
-            const std::string& inFilepath
-        )
-        {
-            outFormat = STBI_rgb_alpha;
-
-            Image::Pixels result = stbi_load(
-                inFilepath.c_str(),
-                &outWidth,
-                &outHeight,
-                &outChannel,
-                STBI_rgb_alpha
-            );
-
-            if (!result)
-            {
-                throw std::runtime_error(stbi_failure_reason());
-            }
-
             return result;
         }
 
-        Image::Pixels readImageFromMemory(
-            int& outWidth,
-            int& outHeight,
-            int& outChannel,
-            const Image::RawData& inData
-        )
+        std::string readString(const Path& inFilepath)
         {
-            Image::Pixels result = stbi_load_from_memory(
-                &inData[0],
-                static_cast<int>(inData.size()),
-                &outWidth,
-                &outHeight,
-                &outChannel,
-                STBI_rgb_alpha
-            );
+            const std::vector<char> raw = read(inFilepath);
 
-            if (!result)
+            if (raw.empty())
             {
-                throw std::runtime_error(stbi_failure_reason());
+                return "";
             }
 
+            return std::string(raw.begin(), raw.end());
+        }
+
+        std::vector<char> read(const Path& inFilepath)
+        {
+            std::basic_ifstream<char> file(
+                inFilepath.string(),
+                std::ios::ate | std::ios::binary
+            );
+
+            if (!file)
+            {
+                throw std::runtime_error(
+                    String::sprint(
+                        "Failed to open the file [%s]",
+                        inFilepath.c_str()
+                    )
+                );
+            }
+    
+            size_t fileSize = (size_t)file.tellg();
+            std::vector<char> result(fileSize);
+            
+            file.seekg(0);
+            file.read(result.data(), fileSize);
+            file.close();
+    
             return result;
         }
 
-        void freeImage(Image::Pixels inImage)
-        {  
-            stbi_image_free(inImage);
+        void write(const std::string& inData, const Path& inFilepath)
+        {
+            std::vector<unsigned char> data;
+            std::copy(inData.begin(), inData.end(), std::back_inserter(data));
+
+            write(data, inFilepath);
+        }
+
+        void write(const std::vector<unsigned char>& inData, const Path& inFilepath)
+        {
+            if (inData.empty())
+            {
+                return;
+            }
+
+            std::ofstream file(inFilepath.string(), std::ios::binary);
+
+            if (!file)
+            {
+                throw std::runtime_error(
+                    String::sprint(
+                        "Failed to write the file [%s]",
+                        inFilepath.c_str()
+                    )
+                );
+            }
+
+            file.write((const char*) inData.data(), sizeof(unsigned char) * inData.size());
+            file.flush();
+            file.close();
+        }
+
+        void write(const std::vector<char>& inData, const Path& inFilepath)
+        {
+            if (inData.empty())
+            {
+                return;
+            }
+
+            std::ofstream file(inFilepath.string(), std::ios::binary);
+
+            if (!file)
+            {
+                throw std::runtime_error(
+                    String::sprint(
+                        "Failed to write the file [%s]",
+                        inFilepath.c_str()
+                    )
+                );
+            }
+
+            file.write(inData.data(), sizeof(char) * inData.size());
+            file.flush();
+            file.close();
         }
     }
 }

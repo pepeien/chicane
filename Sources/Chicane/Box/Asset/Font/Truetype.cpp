@@ -25,14 +25,14 @@ namespace Chicane
 
                         if (!contours->empty() && contours->back().isEmpty())
                         {
-                            contours->back().addPoint(Vec<2, float>(inPoint->x, inPoint->y));
+                            contours->back().addPoint(Vec2(inPoint->x, inPoint->y));
 
                             return 0;
                         }
 
                         Curve curve = {};
                         curve.setSegmentCount(5);
-                        curve.addPoint(Vec<2, float>(inPoint->x, inPoint->y));
+                        curve.addPoint(Vec2(inPoint->x, inPoint->y));
 
                         contours->push_back(curve);
 
@@ -47,7 +47,7 @@ namespace Chicane
                             return 0;
                         }
 
-                        curve->addPoint(Vec<2, float>(inPoint->x, inPoint->y));
+                        curve->addPoint(Vec2(inPoint->x, inPoint->y));
 
                         return 0;
                     };
@@ -65,8 +65,8 @@ namespace Chicane
                         }
 
                         curve->addQuadraticPoint(
-                            Vec<2, float>(inControl->x, inControl->y),
-                            Vec<2, float>(inPoint->x,   inPoint->y)
+                            Vec2(inControl->x, inControl->y),
+                            Vec2(inPoint->x,   inPoint->y)
                         );
 
                         return 0;
@@ -86,9 +86,9 @@ namespace Chicane
                         }
 
                         curve->addBezierPoint(
-                            Vec<2, float>(inControlA->x, inControlA->y),
-                            Vec<2, float>(inControlB->x, inControlB->y),
-                            Vec<2, float>(inPoint->x,    inPoint->y)
+                            Vec2(inControlA->x, inControlA->y),
+                            Vec2(inControlB->x, inControlB->y),
+                            Vec2(inPoint->x,    inPoint->y)
                         );
 
                         return 0;
@@ -117,7 +117,7 @@ namespace Chicane
                     return result;
                 }
 
-                ParsedData parse(const std::vector<unsigned char>& inData)
+                Parsed parse(const std::vector<unsigned char>& inData)
                 {
                     FT_Library library = nullptr;
                     FT_Init_FreeType(&library);
@@ -157,7 +157,7 @@ namespace Chicane
                         throw std::runtime_error("Failed to load the font char map");
                     }
 
-                    ParsedData result = {};
+                    Parsed result = {};
                     result.name = face->family_name;
 
                     for (FT_ULong code = 0; code < 0x10FFFF; code++)
@@ -169,7 +169,7 @@ namespace Chicane
                             continue;
                         }
 
-                        if (FT_Load_Glyph(face, index, FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING))
+                        if (FT_Load_Glyph(face, index, FT_LOAD_NO_SCALE | FT_LOAD_NO_HINTING))
                         {
                             continue;
                         }

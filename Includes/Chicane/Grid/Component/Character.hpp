@@ -30,7 +30,7 @@ namespace Chicane
             void setCharacter(char inValue);
 
             bool hasFont() const;
-            const Box::Font::ParsedData& getFont() const;
+            const Box::Font::Parsed& getFont() const;
 
             bool hasGlyph() const;
             const Box::Font::Glyph& getGlyph() const;

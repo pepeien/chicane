@@ -51,7 +51,8 @@ namespace Chicane
             m_children.clear();
         }
 
-        bool Component::isDrawable() const { 
+        bool Component::isDrawable() const
+        {
             return isVisible() && hasPrimitive();
         }
 
@@ -129,7 +130,7 @@ namespace Chicane
             return m_style;
         }
 
-        void Component::setStyle(const Style::Sources& inSources)
+        void Component::setStyle(const Style::Source::List& inSources)
         {
             if (inSources.empty())
             {
@@ -229,7 +230,7 @@ namespace Chicane
             return hasReference(inId, true) ? m_references.at(inId) : m_parent->getReference(inId);
         }
 
-        void Component::addReference(const References& inReferences)
+        void Component::addReference(const Reference::Map& inReferences)
         {
             for (auto [id, reference] : inReferences)
             {
@@ -250,6 +251,8 @@ namespace Chicane
                     inReference
                 )
             );
+
+            emmitChanges();
         }
 
         void Component::removeReference(const std::string& inId)
@@ -260,6 +263,8 @@ namespace Chicane
             }
 
             m_references.erase(inId);
+
+            emmitChanges();
         }
 
         bool Component::hasFunction(const std::string& inId, bool isLocalOnly) const
@@ -310,6 +315,8 @@ namespace Chicane
                     inFunction
                 )
             );
+
+            emmitChanges();
         }
 
         void Component::removeFunction(const std::string& inId)
@@ -320,6 +327,8 @@ namespace Chicane
             }
 
             m_functions.erase(inId);
+
+            emmitChanges();
         }
 
         bool Component::hasRoot() const
@@ -416,7 +425,7 @@ namespace Chicane
             inComponent->watchChanges(
                 [this]()
                 {
-                    refresh();
+                    emmitChanges();
                 }
             );
 
@@ -425,77 +434,61 @@ namespace Chicane
             onAdopted(inComponent);
         }
 
-        const Vec<2, float>& Component::getCursor() const
+        const Vec2& Component::getCursor() const
         {
             return m_cursor;
         }
 
-        void Component::addCursor(const Vec<2, float>& inCursor)
+        void Component::addCursor(const Vec2& inCursor)
         {
             setCursor(m_cursor + inCursor);
         }
 
-        void Component::setCursor(const Vec<2, float>& inCursor)
+        void Component::setCursor(const Vec2& inCursor)
         {
-            if (m_cursor.x == inCursor.x || m_cursor.y == inCursor.y)
-            {
-                return;
-            }
-
-            m_cursor = inCursor;
-
-            emmitChanges();
+            setCursor(inCursor.x, inCursor.y);
         }
 
-        Vec<2, float> Component::getAvailableSize() const
+        void Component::setCursor(float inX, float inY)
+        {
+            setProperty(m_cursor, { inX, inY });
+        }
+
+        Vec2 Component::getAvailableSize() const
         {
             return m_size;
         }
 
-        const Vec<2, float>& Component::getSize() const
+        const Vec2& Component::getSize() const
         {
             return m_size;
         }
 
-        void Component::setSize(const Vec<2, float>& inSize)
+        void Component::setSize(const Vec2& inSize)
         {
             setSize(inSize.x, inSize.y);
         }
 
-        void Component::setSize(int inWidth, int inHeight)
+        void Component::setSize(float inWidth, float inHeight)
         {
-            if (m_size.x == inWidth && m_size.y == inHeight)
-            {
-                return;
-            }
-
-            m_size.x = inWidth;
-            m_size.y = inHeight;
-
-            emmitChanges();
+            setProperty(m_size, { inWidth, inHeight });
         }
 
-        const Vec<2, float>& Component::getPosition() const
+        const Vec2& Component::getPosition() const
         {
             return m_position;
         }
 
-        void Component::setPosition(const Vec<2, float>& inPosition)
+        void Component::setPosition(const Vec2& inPosition)
         {
             setPosition(inPosition.x, inPosition.y);
         }
 
-        void Component::setPosition(int inX, int inY)
+        void Component::setPosition(float inX, float inY)
         {
-            if (m_position.x == inX && m_position.y == inY)
-            {
-                return;
-            }
+            setProperty(m_position, { inX, inY });
 
-            m_position.x = inX;
-            m_position.y = inY;
-
-            setCursor(m_position);
+            setCursor(inX, inY);
         }
 
         bool Component::hasPrimitive() const
@@ -506,6 +499,16 @@ namespace Chicane
         const Primitive& Component::getPrimitive() const
         {
             return m_primitive;
+        }
+
+        void Component::clearPrimitive()
+        {
+            setProperty(m_primitive, {});
+        }
+
+        void Component::setPrimitive(const Primitive& inPrimitive)
+        {
+            setProperty(m_primitive, inPrimitive);
         }
 
         void Component::refreshStyle()
@@ -530,9 +533,9 @@ namespace Chicane
                 return;
             }
 
-            Vec<2, float> cursor = Vec2Zero;
+            Vec2 cursor = Vec2::Zero;
 
-            Vec<2, float> margin = {
+            Vec2 margin = {
                 m_style.margin.left - m_style.margin.right,
                 m_style.margin.top - m_style.margin.bottom
             };
@@ -541,11 +544,11 @@ namespace Chicane
             {
                 cursor = m_parent->getCursor();
 
-                const Vec<2, float> parentCenter = m_parent->getSize() * 0.5f;
+                const Vec2 parentCenter = m_parent->getSize() * 0.5f;
   
-                const Vec<2, float> position = cursor + margin;
+                const Vec2 position = cursor + margin;
 
-                Vec<2, float> offset = { m_size.x * 0.5f, m_size.y * 0.5f };
+                Vec2 offset = { m_size.x * 0.5f, m_size.y * 0.5f };
 
                 if (position.x >= parentCenter.x)
                 {
@@ -680,9 +683,7 @@ namespace Chicane
 
             for (std::string& value : String::split(params, FUNCTION_PARAMS_SEPARATOR))
             {
-                data.params.push_back(
-                    parseReference(String::trim(value))
-                );
+                data.params.push_back(parseReference(String::trim(value)));
             }
 
             return data;

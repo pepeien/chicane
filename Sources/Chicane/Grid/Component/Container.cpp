@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         Container::Container(const pugi::xml_node& inNode)
-            : Component(inNode),
+            : Super(inNode),
             m_canUpdate(false)
         {}
 
@@ -21,12 +21,17 @@ namespace Chicane
                 return;
             }
 
-            m_primitive.clear();
-
             if (!Color::isVisible(m_color))
             {
+                clearPrimitive();
+
                 return;
             }
+
+            m_canUpdate = false;
+
+            Primitive primitive = {};
+            primitive.indices = { 0, 1, 2, 2, 3, 0 };
 
             Vertex vertex = {};
             vertex.color.r = m_color.r / 255.0f;
@@ -36,25 +41,21 @@ namespace Chicane
 
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;
-            m_primitive.vertices.push_back(vertex);
+            primitive.vertices.push_back(vertex);
 
             vertex.position.x =  1.0f;
             vertex.position.y = -1.0f;
-            m_primitive.vertices.push_back(vertex);
+            primitive.vertices.push_back(vertex);
 
             vertex.position.x = 1.0f;
             vertex.position.y = 1.0f;
-            m_primitive.vertices.push_back(vertex);
+            primitive.vertices.push_back(vertex);
 
             vertex.position.x = -1.0f;
             vertex.position.y =  1.0f;
-            m_primitive.vertices.push_back(vertex);
+            primitive.vertices.push_back(vertex);
 
-            m_primitive.indices = { 0, 1, 2, 2, 3, 0 };
-
-            m_canUpdate = false;
-
-            emmitChanges();
+            setPrimitive(primitive);
         }
 
         void Container::refreshColor()

@@ -53,10 +53,10 @@ namespace Chicane
 
         void Instance::setViewportPosition(float inX, float inY)
         {
-            setViewportPosition(Vec<2, float>(inX, inY));
+            setViewportPosition(Vec2(inX, inY));
         }
 
-        void Instance::setViewportPosition(const Vec<2, float>& inPosition)
+        void Instance::setViewportPosition(const Vec2& inPosition)
         {
             m_viewport.position = inPosition;
 
@@ -76,9 +76,9 @@ namespace Chicane
             std::function<void ()> inComplete
         )
         {
-            inNext(m_viewport);
-
-            return m_viewportObservable->subscribe(inNext, inError,inComplete);
+            return m_viewportObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(m_viewport);
         }
 
         bool Instance::hasLayer(Layer::Instance* inLayer) const

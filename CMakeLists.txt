@@ -22,13 +22,6 @@ if (BUILD_SHARED_LIBS)
     add_definitions(-DBUILD_SHARED)
 endif()
 
-# SDL3 Setup
-set(SDL3_DISABLE_INSTALL ON  CACHE BOOL "" FORCE)
-set(SDL3_TESTS           OFF CACHE BOOL "" FORCE)
-
-set(GLM_DISABLE_INSTALL ON  CACHE BOOL "" FORCE)
-set(GLM_TESTS           OFF CACHE BOOL "" FORCE)
-
 ##################### Values #######################
 if (NOT DEFINED BUILD_DIR)
     if (NOT CMAKE_BUILD_TYPE)
@@ -49,7 +42,6 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 ## Base
 set(INCLUDES_DIR "${CMAKE_CURRENT_LIST_DIR}/Includes")
 set(SOURCES_DIR  "${CMAKE_CURRENT_LIST_DIR}/Sources")
-set(VENDORS_DIR  "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 
 set(BUILD_INTERFACE_DIR   "${INCLUDES_DIR}")
 set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
@@ -85,4 +77,3 @@ set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
 ##################### Directories #######################
 add_subdirectory(Contents)
 add_subdirectory(Sources)
-add_subdirectory(Vendors)

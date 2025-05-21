@@ -15,7 +15,7 @@ namespace Chicane
         struct CHICANE_CORE PressableEvents
         {
         public:
-            typedef std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>> Events;
+            using Events = std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>>;
 
         public:
             PressableEvents()

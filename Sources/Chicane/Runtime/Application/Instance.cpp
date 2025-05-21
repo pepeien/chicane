@@ -81,9 +81,9 @@ namespace Chicane
             std::function<void ()> inComplete
         ) const
         {
-            inNext(m_controller);
-
-            return m_controllerObservable->subscribe(inNext, inError,inComplete);
+            return m_controllerObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(m_controller);
         }
 
         bool Instance::hasLevel() const
@@ -120,9 +120,9 @@ namespace Chicane
             std::function<void ()> inComplete 
         ) const
         {
-            inNext(m_level);
-
-            return m_levelObservable->subscribe(inNext, inError,inComplete);
+            return m_levelObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(m_level);
         }
 
         bool Instance::hasView() const
@@ -160,9 +160,9 @@ namespace Chicane
             std::function<void ()> inComplete
         ) const
         {
-            inNext(m_view);
-
-            return m_viewObservable->subscribe(inNext, inError, inComplete);
+            return m_viewObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(m_view);
         }
 
         bool Instance::hasWindow() const

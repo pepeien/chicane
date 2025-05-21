@@ -1,6 +1,6 @@
 #include "Chicane/Core/Math/Curve.hpp"
 
-#include <earcut.hpp>
+#include <mapbox/earcut.hpp>
 
 namespace Chicane
 {
@@ -17,7 +17,7 @@ namespace Chicane
 
             std::vector<std::array<float, 2>> contour = {};
 
-            for (const Vec<2, float>& point : curve.getPoints())
+            for (const Vec2& point : curve.getPoints())
             {
                 contour.push_back({ point.x, point.y });
             }
@@ -28,7 +28,7 @@ namespace Chicane
         return result;
     }
 
-    std::vector<Vec<3, float>> Curve::getTriangleVertices(
+    std::vector<Vec3> Curve::getTriangleVertices(
         const std::vector<Curve>& inContours,
         float inPixelSize
     )
@@ -40,7 +40,7 @@ namespace Chicane
 
         const float fixedPoint = inPixelSize * 64.0f;
 
-        std::vector<Vec<3, float>> result = {};
+        std::vector<Vec3> result = {};
 
         for (const Curve& curve : inContours)
         {
@@ -49,7 +49,7 @@ namespace Chicane
                 continue;
             }
 
-            for (const Vec<2, float>& point : curve.getPoints())
+            for (const Vec2& point : curve.getPoints())
             {
                 result.push_back({ point.x / fixedPoint, point.y / fixedPoint, 0.0f });
             }
@@ -109,17 +109,14 @@ namespace Chicane
         m_segmentCount = inSegmentCount;
     }
 
-    void Curve::addQuadraticPoint(
-        const Vec<2, float>& inControl,
-        const Vec<2, float>& inPoint
-    )
+    void Curve::addQuadraticPoint(const Vec2& inControl, const Vec2& inPoint)
     {
         if (isEmpty() || m_segmentCount <= 0)
         {
             return;
         }
 
-        const Vec<2, float>& startPoint = getEndPoint();
+        const Vec2& startPoint = getEndPoint();
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
@@ -127,7 +124,7 @@ namespace Chicane
             float mt = 1.0f - t;
 
             // Quadratic bezier formula: B(t) = (1-t)²P₀ + 2(1-t)tP₁ + t²P₂
-            Vec<2, float> point = {};
+            Vec2 point = {};
             point += mt * mt * startPoint;
             point += 2.0f * mt * t * inControl;
             point += t * t * inPoint;
@@ -136,18 +133,14 @@ namespace Chicane
         }
     }
 
-    void Curve::addBezierPoint(
-        const Vec<2, float>& inControlA,
-        const Vec<2, float>& inControlB,
-        const Vec<2, float>& inPoint
-    )
+    void Curve::addBezierPoint(const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint)
     {
         if (isEmpty() || m_segmentCount <= 0)
         {
             return;
         }
 
-        const Vec<2, float>& startPoint = getEndPoint();
+        const Vec2& startPoint = getEndPoint();
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
@@ -155,7 +148,7 @@ namespace Chicane
             float mt = 1.0f - t;
 
             // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ + t³P₃
-            Vec<2, float> point = {};
+            Vec2 point = {};
             point += mt * mt * mt * startPoint;
             point += 3.0f * mt * mt * t * inControlA;
             point += 3.0f * mt * t * t * inControlB;
@@ -176,8 +169,8 @@ namespace Chicane
         double area = 0.0;
 
         for (std::size_t i = 0; i < pointCount; ++i) {
-            const Vec<2, float>& point        = m_points.at(i);
-            const Vec<2, float>& nearestPoint = m_points.at((i + 1) % pointCount);
+            const Vec2& point        = m_points.at(i);
+            const Vec2& nearestPoint = m_points.at((i + 1) % pointCount);
 
             area += static_cast<double>(
                 (point.x - nearestPoint.y) * (nearestPoint.x - point.y)

@@ -20,6 +20,19 @@ namespace Chicane
             std::function<void ()> inComplete = nullptr
         ) const;
 
+        template<typename T>
+        void setProperty(T& outProperty, T inNewValue)
+        {
+            if (outProperty == inNewValue)
+            {
+                return;
+            }
+
+            outProperty = inNewValue;
+
+            emmitChanges();
+        }
+
     private:
         std::unique_ptr<Observable<>> m_observable;
     };

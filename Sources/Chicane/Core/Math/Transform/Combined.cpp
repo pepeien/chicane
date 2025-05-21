@@ -4,22 +4,22 @@ namespace Chicane
 {
     namespace Transform
     {
-        const Mat<4, float>& Combined::getMatrix() const
+        const Mat4& Combined::getMatrix() const
         {
             return m_matrix;
         }
 
-        const Vec<3, float>& Combined::getTranslation() const
+        const Vec3& Combined::getTranslation() const
         {
             return m_translation;
         }
 
-        const Vec<3, float>& Combined::getRotation() const
+        const Vec3& Combined::getRotation() const
         {
             return m_rotation;
         }
 
-        const Vec<3, float>& Combined::getScale() const
+        const Vec3& Combined::getScale() const
         {
             return m_scale;
         }
@@ -36,57 +36,57 @@ namespace Chicane
             refresh();
         }
 
-        const Vec<3, float>& Combined::getRelativeTranslation() const
+        const Vec3& Combined::getRelativeTranslation() const
         {
             return m_relative.getTranslation();
         }
 
-        void Combined::addRelativeTranslation(const Vec<3, float>& inTranslation)
+        void Combined::addRelativeTranslation(const Vec3& inTranslation)
         {
             m_relative.addRotation(inTranslation);
 
             refresh();
         }
 
-        void Combined::setRelativeTranslation(const Vec<3, float>& inTranslation)
+        void Combined::setRelativeTranslation(const Vec3& inTranslation)
         {
             m_relative.setTranslation(inTranslation);
 
             refresh();
         }
 
-        const Vec<3, float>& Combined::getRelativeRotation() const
+        const Vec3& Combined::getRelativeRotation() const
         {
             return m_relative.getRotation();
         }
 
-        void Combined::addRelativeRotation(const Vec<3, float>& inRotation)
+        void Combined::addRelativeRotation(const Vec3& inRotation)
         {
             m_relative.addRotation(inRotation);
 
             refresh();
         }
 
-        void Combined::setRelativeRotation(const Vec<3, float>& inRotation)
+        void Combined::setRelativeRotation(const Vec3& inRotation)
         {
             m_relative.setRotation(inRotation);
 
             refresh();
         }
 
-        const Vec<3, float>& Combined::getRelativeScale() const
+        const Vec3& Combined::getRelativeScale() const
         {
             return m_relative.getScale();
         }
 
-        void Combined::addRelativeScale(const Vec<3, float>& inScale)
+        void Combined::addRelativeScale(const Vec3& inScale)
         {
             m_relative.addScale(inScale);
 
             refresh();
         }
 
-        void Combined::setRelativeScale(const Vec<3, float>& inScale)
+        void Combined::setRelativeScale(const Vec3& inScale)
         {
             m_relative.setScale(inScale);
 
@@ -105,74 +105,74 @@ namespace Chicane
             refresh();
         }
 
-        const Vec<3, float>& Combined::getAbsoluteTranslation() const
+        const Vec3& Combined::getAbsoluteTranslation() const
         {
             return m_absolute.getTranslation();
         }
 
-        void Combined::addAbsoluteTranslation(const Vec<3, float>& inTranslation)
+        void Combined::addAbsoluteTranslation(const Vec3& inTranslation)
         {
             m_absolute.addTranslation(inTranslation);
 
             refresh();
         }
 
-        void Combined::setAbsoluteTranslation(const Vec<3, float>& inTranslation)
+        void Combined::setAbsoluteTranslation(const Vec3& inTranslation)
         {
             m_absolute.setTranslation(inTranslation);
 
             refresh();
         }
 
-        const Vec<3, float>& Combined::getAbsoluteRotation() const
+        const Vec3& Combined::getAbsoluteRotation() const
         {
             return m_absolute.getRotation();
         }
 
-        void Combined::addAbsoluteRotation(const Vec<3, float>& inRotation)
+        void Combined::addAbsoluteRotation(const Vec3& inRotation)
         {
             m_absolute.addRotation(inRotation);
 
             refresh();
         }
 
-        void Combined::setAbsoluteRotation(const Vec<3, float>& inRotation)
+        void Combined::setAbsoluteRotation(const Vec3& inRotation)
         {
             m_absolute.setRotation(inRotation);
 
             refresh();
         }
 
-        const Vec<3, float>& Combined::getAbsoluteScale() const
+        const Vec3& Combined::getAbsoluteScale() const
         {
             return m_absolute.getScale();
         }
 
-        void Combined::addAbsoluteScale(const Vec<3, float>& inScale)
+        void Combined::addAbsoluteScale(const Vec3& inScale)
         {
             m_absolute.addScale(inScale);
 
             refresh();
         }
 
-        void Combined::setAbsoluteScale(const Vec<3, float>& inScale)
+        void Combined::setAbsoluteScale(const Vec3& inScale)
         {
             m_absolute.setScale(inScale);
 
             refresh();
         }
 
-        const Vec<3, float>& Combined::getRight() const
+        const Vec3& Combined::getRight() const
         {
             return m_right;
         }
 
-        const Vec<3, float>& Combined::getForward() const
+        const Vec3& Combined::getForward() const
         {
             return m_forward;
         }
 
-        const Vec<3, float>& Combined::getUp() const
+        const Vec3& Combined::getUp() const
         {
             return m_up;
         }

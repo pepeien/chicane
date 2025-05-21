@@ -12,7 +12,7 @@ Apple::Apple()
             (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 0.01f
         )
     ),
-    m_startPosition(Chicane::Vec3Zero),
+    m_startPosition(Chicane::Vec3::Zero),
     m_meshComponent(nullptr),
     m_physicsComponent(nullptr)
 {
@@ -55,7 +55,7 @@ void Apple::onHit(const Chicane::Actor* inSubject)
     Game::incrementScore(1);
 }
 
-void Apple::setInitialPosition(const Chicane::Vec<3, float>& inPosition)
+void Apple::setInitialPosition(const Chicane::Vec3& inPosition)
 {
     m_startPosition = inPosition;
 

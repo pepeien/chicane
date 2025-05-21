@@ -9,7 +9,7 @@ namespace Chicane
     struct CHICANE_CORE Curve : public Line
     {
     public:
-        static std::vector<Vec<3, float>> getTriangleVertices(
+        static std::vector<Vec3> getTriangleVertices(
             const std::vector<Curve>& inContours,
             float inPixelSize = 1.0f
         );
@@ -18,15 +18,8 @@ namespace Chicane
     public:
         void setSegmentCount(std::uint32_t inSegmentCount);
 
-        void addQuadraticPoint(
-            const Vec<2, float>& inControl,
-            const Vec<2, float>& inPoint
-        );
-        void addBezierPoint(
-            const Vec<2, float>& inControlA,
-            const Vec<2, float>& inControlB,
-            const Vec<2, float>& inPoint
-        );
+        void addQuadraticPoint(const Vec2& inControl, const Vec2& inPoint);
+        void addBezierPoint(const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint);
 
         bool isHole() const;
 

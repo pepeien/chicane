@@ -3,7 +3,7 @@
 namespace Chicane
 {
     ASky::ASky()
-        : Actor(),
+        : Super(),
         m_asset(nullptr),
         m_assetObservable(std::make_unique<Observable<const Box::Sky::Instance*>>())
     {}
@@ -26,8 +26,8 @@ namespace Chicane
         std::function<void ()> inComplete
     )
     {
-        inNext(m_asset);
-
-        return m_assetObservable->subscribe(inNext, inError,inComplete);
+        return m_assetObservable
+            ->subscribe(inNext, inError, inComplete)
+            ->next(m_asset);
     }
 }

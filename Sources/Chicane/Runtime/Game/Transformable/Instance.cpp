@@ -12,32 +12,32 @@ namespace Chicane
         return m_transform;
     }
 
-    const Vec<3, float>& Transformable::getTranslation() const
+    const Vec3& Transformable::getTranslation() const
     {
         return m_transform.getTranslation();
     }
 
-    const Vec<3, float>& Transformable::getRotation() const
+    const Vec3& Transformable::getRotation() const
     {
         return m_transform.getRotation();
     }
 
-    const Vec<3, float>& Transformable::getScale() const
+    const Vec3& Transformable::getScale() const
     {
         return m_transform.getScale();
     }
 
-    const Vec<3, float>& Transformable::getForward() const
+    const Vec3& Transformable::getForward() const
     {
         return m_transform.getForward();
     }
 
-    const Vec<3, float>& Transformable::getRight() const
+    const Vec3& Transformable::getRight() const
     {
         return m_transform.getRight();
     }
 
-    const Vec<3, float>& Transformable::getUp() const
+    const Vec3& Transformable::getUp() const
     {
         return m_transform.getUp();
     }
@@ -54,22 +54,22 @@ namespace Chicane
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getRelativeTranslation() const
+    const Vec3& Transformable::getRelativeTranslation() const
     {
         return m_transform.getRelativeTranslation();
     }
 
     void Transformable::addRelativeTranslation(float inTranslation)
     {
-        addRelativeTranslation(Vec<3, float>(inTranslation));
+        addRelativeTranslation(Vec3(inTranslation));
     }
 
     void Transformable::addRelativeTranslation(float inX, float inY, float inZ)
     {
-        addRelativeTranslation(Vec<3, float>(inX, inY, inZ));
+        addRelativeTranslation(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::addRelativeTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::addRelativeTranslation(const Vec3& inTranslation)
     {
         m_transform.addRelativeTranslation(inTranslation);
 
@@ -78,37 +78,37 @@ namespace Chicane
 
     void Transformable::setRelativeTranslation(float inTranslation)
     {
-        setRelativeTranslation(Vec<3, float>(inTranslation));
+        setRelativeTranslation(Vec3(inTranslation));
     }
 
     void Transformable::setRelativeTranslation(float inX, float inY, float inZ)
     {
-        setRelativeTranslation(Vec<3, float>(inX, inY, inZ));
+        setRelativeTranslation(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::setRelativeTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::setRelativeTranslation(const Vec3& inTranslation)
     {
         m_transform.setRelativeTranslation(inTranslation);
 
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getRelativeRotation() const
+    const Vec3& Transformable::getRelativeRotation() const
     {
         return m_transform.getRelativeRotation();
     }
 
     void Transformable::addRelativeRotation(float inRotation)
     {
-        addRelativeRotation(Vec<3, float>(inRotation));
+        addRelativeRotation(Vec3(inRotation));
     }
 
     void Transformable::addRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        addRelativeRotation(Vec<3, float>(inPitch, inRoll, inYaw));
+        addRelativeRotation(Vec3(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::addRelativeRotation(const Vec<3, float>& inRotation)
+    void Transformable::addRelativeRotation(const Vec3& inRotation)
     {
         m_transform.addRelativeRotation(inRotation);
 
@@ -117,37 +117,37 @@ namespace Chicane
 
     void Transformable::setRelativeRotation(float inRotation)
     {
-        setRelativeRotation(Vec<3, float>(inRotation));
+        setRelativeRotation(Vec3(inRotation));
     }
 
     void Transformable::setRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        setRelativeRotation(Vec<3, float>(inPitch, inRoll, inYaw));
+        setRelativeRotation(Vec3(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setRelativeRotation(const Vec<3, float>& inRotation)
+    void Transformable::setRelativeRotation(const Vec3& inRotation)
     {
         m_transform.setRelativeRotation(inRotation);
 
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getRelativeScale() const
+    const Vec3& Transformable::getRelativeScale() const
     {
         return m_transform.getRelativeScale();
     }
 
     void Transformable::addRelativeScale(float inScale)
     {
-        addRelativeScale(Vec<3, float>(inScale));
+        addRelativeScale(Vec3(inScale));
     }
 
     void Transformable::addRelativeScale(float inX, float inY, float inZ)
     {
-        addRelativeScale(Vec<3, float>(inX, inY, inZ));
+        addRelativeScale(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::addRelativeScale(const Vec<3, float>& inScale)
+    void Transformable::addRelativeScale(const Vec3& inScale)
     {
         m_transform.addRelativeScale(inScale);
 
@@ -156,15 +156,15 @@ namespace Chicane
 
     void Transformable::setRelativeScale(float inScale)
     {
-        setRelativeScale(Vec<3, float>(inScale));
+        setRelativeScale(Vec3(inScale));
     }
 
     void Transformable::setRelativeScale(float inX, float inY, float inZ)
     {
-        setRelativeScale(Vec<3, float>(inX, inY, inZ));
+        setRelativeScale(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::setRelativeScale(const Vec<3, float>& inScale)
+    void Transformable::setRelativeScale(const Vec3& inScale)
     {
         m_transform.setRelativeScale(inScale);
 
@@ -183,22 +183,22 @@ namespace Chicane
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getAbsoluteTranslation() const
+    const Vec3& Transformable::getAbsoluteTranslation() const
     {
         return m_transform.getAbsoluteTranslation();
     }
 
     void Transformable::addAbsoluteTranslation(float inTranslation)
     {
-        addAbsoluteTranslation(Vec<3, float>(inTranslation));
+        addAbsoluteTranslation(Vec3(inTranslation));
     }
 
     void Transformable::addAbsoluteTranslation(float inX, float inY, float inZ)
     {
-        addAbsoluteTranslation(Vec<3, float>(inX, inY, inZ));
+        addAbsoluteTranslation(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::addAbsoluteTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::addAbsoluteTranslation(const Vec3& inTranslation)
     {
         m_transform.addAbsoluteTranslation(inTranslation);
 
@@ -207,37 +207,37 @@ namespace Chicane
 
     void Transformable::setAbsoluteTranslation(float inTranslation)
     {
-        setAbsoluteTranslation(Vec<3, float>(inTranslation));
+        setAbsoluteTranslation(Vec3(inTranslation));
     }
 
     void Transformable::setAbsoluteTranslation(float inX, float inY, float inZ)
     {
-        setAbsoluteTranslation(Vec<3, float>(inX, inY, inZ));
+        setAbsoluteTranslation(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::setAbsoluteTranslation(const Vec<3, float>& inTranslation)
+    void Transformable::setAbsoluteTranslation(const Vec3& inTranslation)
     {
         m_transform.setAbsoluteTranslation(inTranslation);
 
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getAbsoluteRotation() const
+    const Vec3& Transformable::getAbsoluteRotation() const
     {
         return m_transform.getAbsoluteRotation();
     }
 
     void Transformable::addAbsoluteRotation(float inRotation)
     {
-        addAbsoluteRotation(Vec<3, float>(inRotation));
+        addAbsoluteRotation(Vec3(inRotation));
     }
 
     void Transformable::addAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
-        addAbsoluteRotation(Vec<3, float>(inPitch, inRoll, inYaw));
+        addAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::addAbsoluteRotation(const Vec<3, float>& inRotation)
+    void Transformable::addAbsoluteRotation(const Vec3& inRotation)
     {
         m_transform.addAbsoluteRotation(inRotation);
 
@@ -246,37 +246,37 @@ namespace Chicane
 
     void Transformable::setAbsoluteRotation(float inRotation)
     {
-        setAbsoluteRotation(Vec<3, float>(inRotation));
+        setAbsoluteRotation(Vec3(inRotation));
     }
 
     void Transformable::setAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
-        setAbsoluteRotation(Vec<3, float>(inPitch, inRoll, inYaw));
+        setAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setAbsoluteRotation(const Vec<3, float>& inRotation)
+    void Transformable::setAbsoluteRotation(const Vec3& inRotation)
     {
         m_transform.setAbsoluteRotation(inRotation);
 
         refresh();
     }
 
-    const Vec<3, float>& Transformable::getAbsoluteScale() const
+    const Vec3& Transformable::getAbsoluteScale() const
     {
         return m_transform.getAbsoluteScale();
     }
 
     void Transformable::addAbsoluteScale(float inScale)
     {
-        addAbsoluteScale(Vec<3, float>(inScale));
+        addAbsoluteScale(Vec3(inScale));
     }
 
     void Transformable::addAbsoluteScale(float inX, float inY, float inZ)
     {
-        addAbsoluteScale(Vec<3, float>(inX, inY, inZ));
+        addAbsoluteScale(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::addAbsoluteScale(const Vec<3, float>& inScale)
+    void Transformable::addAbsoluteScale(const Vec3& inScale)
     {
         m_transform.addAbsoluteScale(inScale);
 
@@ -285,15 +285,15 @@ namespace Chicane
 
     void Transformable::setAbsoluteScale(float inScale)
     {
-        setAbsoluteScale(Vec<3, float>(inScale));
+        setAbsoluteScale(Vec3(inScale));
     }
 
     void Transformable::setAbsoluteScale(float inX, float inY, float inZ)
     {
-        setAbsoluteScale(Vec<3, float>(inX, inY, inZ));
+        setAbsoluteScale(Vec3(inX, inY, inZ));
     }
 
-    void Transformable::setAbsoluteScale(const Vec<3, float>& inScale)
+    void Transformable::setAbsoluteScale(const Vec3& inScale)
     {
         m_transform.setAbsoluteScale(inScale);
 
@@ -317,17 +317,17 @@ namespace Chicane
         m_bounds.update(m_transform);
     }
 
-    const Vec<3, float>& Transformable::getTop() const
+    const Vec3& Transformable::getTop() const
     {
         return m_bounds.getTop();
     }
 
-    const Vec<3, float>& Transformable::getCenter() const
+    const Vec3& Transformable::getCenter() const
     {
         return m_bounds.getCenter();
     }
 
-    const Vec<3, float>& Transformable::getBottom() const
+    const Vec3& Transformable::getBottom() const
     {
         return m_bounds.getBottom();
     }

@@ -2,20 +2,20 @@
 
 namespace Chicane
 {
-    static std::unordered_map<TimerId, std::shared_ptr<std::atomic<bool>>> m_timers = {};
-    static std::mutex                                                      m_mutexTimers;
+    static std::unordered_map<TimerId, std::shared_ptr<std::atomic<bool>>> g_timers = {};
+    static std::mutex                                                      g_mutexTimers;
 
-    static std::atomic<TimerId> m_currentTimerId = { 0 };
+    static std::atomic<TimerId> g_currentTimerId = { 0 };
 
     TimerId setTimeout(std::function<void()> inCallback, std::uint32_t inDelayInMs)
     {
-        TimerId timerId = m_currentTimerId++;
+        TimerId timerId = g_currentTimerId++;
 
         auto isActive = std::make_shared<std::atomic<bool>>(true);
 
         {
-            std::lock_guard<std::mutex> lock(m_mutexTimers);
-            m_timers[timerId] = isActive;
+            std::lock_guard<std::mutex> lock(g_mutexTimers);
+            g_timers[timerId] = isActive;
         }
 
         std::thread(
@@ -28,13 +28,13 @@ namespace Chicane
                     inCallback();
                 }
 
-                std::lock_guard<std::mutex> lock(m_mutexTimers);
+                std::lock_guard<std::mutex> lock(g_mutexTimers);
 
-                auto found = m_timers.find(timerId);
+                auto found = g_timers.find(timerId);
 
-                if (found != m_timers.end() && found->second == isActive)
+                if (found != g_timers.end() && found->second == isActive)
                 {
-                    m_timers.erase(found);
+                    g_timers.erase(found);
                 }
             }
         ).detach();
@@ -44,32 +44,32 @@ namespace Chicane
 
     bool clearTimeout(TimerId inTimerId)
     {
-        std::lock_guard<std::mutex> lock(m_mutexTimers);
+        std::lock_guard<std::mutex> lock(g_mutexTimers);
 
-        auto found = m_timers.find(inTimerId);
+        auto found = g_timers.find(inTimerId);
 
-        if (found == m_timers.end())
+        if (found == g_timers.end())
         {
             return false;
         }
 
         found->second->store(false);
 
-        m_timers.erase(found);
+        g_timers.erase(found);
 
         return true;
     }
 
     TimerId setInterval(std::function<void()> inCallback, std::uint32_t inIntervalInMs)
     {
-        TimerId timerId = m_currentTimerId++;
+        TimerId timerId = g_currentTimerId++;
 
         auto isActive = std::make_shared<std::atomic<bool>>(true);
 
         {
-            std::lock_guard<std::mutex> lock(m_mutexTimers);
+            std::lock_guard<std::mutex> lock(g_mutexTimers);
 
-            m_timers[timerId] = isActive;
+            g_timers[timerId] = isActive;
         }
 
         std::thread(
@@ -87,13 +87,13 @@ namespace Chicane
                     inCallback();
                 }
 
-                std::lock_guard<std::mutex> lock(m_mutexTimers);
+                std::lock_guard<std::mutex> lock(g_mutexTimers);
 
-                auto found = m_timers.find(timerId);
+                auto found = g_timers.find(timerId);
 
-                if (found != m_timers.end() && found->second == isActive)
+                if (found != g_timers.end() && found->second == isActive)
                 {
-                    m_timers.erase(found);
+                    g_timers.erase(found);
                 }
             }
         ).detach();

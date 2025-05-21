@@ -12,7 +12,10 @@ namespace Chicane
         class CHICANE_GRID Component : public Changeable
         {
         public:
-            typedef std::function<Component* (const pugi::xml_node& inNode)> Compiler;
+            using Compiler = std::function<Component* (const pugi::xml_node& inNode)>;
+
+        protected:
+            using Super = Component;
 
         public:
             Component(const pugi::xml_node& inNode);
@@ -54,12 +57,12 @@ namespace Chicane
             void setClass(const std::string& inClass);
 
             const Style::Instance& getStyle() const;
-            void setStyle(const Style::Sources& inSources);
+            void setStyle(const Style::Source::List& inSources);
             void setStyle(const Style::Properties& inSource);
 
             bool hasReference(const std::string& inId, bool isLocalOnly = false) const;
             Reference* getReference(const std::string& inId) const;
-            void addReference(const References& inReference);
+            void addReference(const Reference::Map& inReference);
             void addReference(const std::string& inId, Reference* inReference);
             void removeReference(const std::string& inId);
 
@@ -83,21 +86,24 @@ namespace Chicane
             void addChild(Component* inComponent);
 
             // Positioning
-            const Vec<2, float>& getCursor() const;
-            void addCursor(const Vec<2, float>& inCursor);
-            void setCursor(const Vec<2, float>& inCursor);
+            const Vec2& getCursor() const;
+            void addCursor(const Vec2& inCursor);
+            void setCursor(const Vec2& inCursor);
+            void setCursor(float inX, float inY);
 
-            Vec<2, float> getAvailableSize() const;
-            const Vec<2, float>& getSize() const;
-            void setSize(const Vec<2, float>& inSize);
-            void setSize(int inWidth, int inHeight);
+            Vec2 getAvailableSize() const;
+            const Vec2& getSize() const;
+            void setSize(const Vec2& inSize);
+            void setSize(float inWidth, float inHeight);
 
-            const Vec<2, float>& getPosition() const;
-            void setPosition(const Vec<2, float>& inPosition);
-            void setPosition(int inX, int inY);
+            const Vec2& getPosition() const;
+            void setPosition(const Vec2& inPosition);
+            void setPosition(float inX, float inY);
 
             bool hasPrimitive() const;
             const Primitive& getPrimitive() const;
+            void clearPrimitive();
+            void setPrimitive(const Primitive& inPrimitive);
 
             std::string parseText(const std::string& inValue) const;
 
@@ -119,16 +125,16 @@ namespace Chicane
             std::string             m_class;
             Style::Instance         m_style;
 
-            References              m_references;
+            Reference::Map          m_references;
             Functions               m_functions;
 
             Component*              m_root;
             Component*              m_parent;
             std::vector<Component*> m_children;
 
-            Vec<2, float>           m_size;
-            Vec<2, float>           m_position;
-            Vec<2, float>           m_cursor;
+            Vec2                    m_size;
+            Vec2                    m_position;
+            Vec2                    m_cursor;
 
             Primitive               m_primitive;
         };

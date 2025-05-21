@@ -5,7 +5,7 @@
 namespace Chicane
 {
     AAudio::AAudio()
-        : Actor(),
+        : Super(),
         m_audio(nullptr)
     {
         m_audio = Application::getLevel()->createComponent<CAudio>();

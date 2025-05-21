@@ -22,7 +22,7 @@ namespace Chicane
                 { "BACK",  Side::Back }
             };
 
-            Instance::Instance(const std::string& inFilepath)
+            Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath)
             {
                 fetchSides();

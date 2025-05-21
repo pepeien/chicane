@@ -6,7 +6,7 @@ namespace Chicane
         : APawn()
     {}
 
-    void ACharacter::move(const Vec<3, float>& inDirection, float inScale)
+    void ACharacter::move(const Vec3& inDirection, float inScale)
     {
         addAbsoluteTranslation(inDirection * inScale);
     }

@@ -21,9 +21,9 @@ namespace Chicane
             struct CHICANE_GRID Instance : public Changeable
             {
             public:
-                static Sources parseSources(const pugi::xml_node& inNode);
-                static Sources parseSources(const std::filesystem::path& inPath);
-                static Sources parseSources(const std::string& inData);
+                static Source::List parseSources(const pugi::xml_node& inNode);
+                static Source::List parseSources(const FileSystem::Path& inPath);
+                static Source::List parseSources(const std::string& inData);
 
                 static Properties parseSource(const std::string& inData);
 
@@ -72,19 +72,6 @@ namespace Chicane
 
                 float parseNumber(const std::string& inValue, const std::string& inUnit) const;
                 float parseNumber(const std::string& inValue) const;
-
-                template<typename T>
-                void setProperty(T& outProperty, T inNewValue)
-                {
-                    if (outProperty == inNewValue)
-                    {
-                        return;
-                    }
-
-                    outProperty = inNewValue;
-
-                    emmitChanges();
-                }
 
             public:
                 // Visiblity

@@ -5,7 +5,7 @@
 namespace Chicane
 {
     ALight::ALight()
-        : Actor(),
+        : Super(),
         m_light(nullptr)
     {
         m_light = Application::getLevel()->createComponent<CLight>();

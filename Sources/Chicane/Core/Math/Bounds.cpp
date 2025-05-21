@@ -8,12 +8,12 @@ namespace Chicane
 {
     Bounds::Bounds(const std::vector<Vertex>& inVertices)
     {
-        m_baseMin = Vec<3, float>(FLT_MAX);
-        m_baseMax = Vec<3, float>(-FLT_MAX);
+        m_baseMin = Vec3(FLT_MAX);
+        m_baseMax = Vec3(-FLT_MAX);
 
         for (const Vertex& vertex : inVertices)
         {
-            const Vec<3, float>& position = vertex.position;
+            const Vec3& position = vertex.position;
 
             m_baseMin.x = std::min(m_baseMin.x, position.x);
             m_baseMin.y = std::min(m_baseMin.y, position.y);
@@ -29,7 +29,7 @@ namespace Chicane
 
     bool Bounds::contains(const Bounds& inBounds) const
     {
-        for (const Vec<3, float>& corner : inBounds.getCorners())
+        for (const Vec3& corner : inBounds.getCorners())
         {
             if (contains(corner))
             {
@@ -40,10 +40,10 @@ namespace Chicane
         return false;
     }
 
-    bool Bounds::contains(const Vec<3, float>& inPoint) const
+    bool Bounds::contains(const Vec3& inPoint) const
     {
-        const Vec<3, float> min = getMin();
-        const Vec<3, float> max = getMax();
+        const Vec3 min = getMin();
+        const Vec3 max = getMax();
 
         const bool isWithinX = inPoint.x >= min.x && inPoint.x <= max.x;
         const bool isWithinY = inPoint.y >= min.y && inPoint.y <= max.y;
@@ -52,13 +52,13 @@ namespace Chicane
         return isWithinX && isWithinY && isWithinZ;
     }
 
-    Vec<3, float> Bounds::getOverlap(const Bounds& inOther) const
+    Vec3 Bounds::getOverlap(const Bounds& inOther) const
     {
-        const Vec<3, float>& min = getMin();
-        const Vec<3, float>& max = getMax();
+        const Vec3& min = getMin();
+        const Vec3& max = getMax();
 
-        const Vec<3, float>& otherMin = inOther.getMin();
-        const Vec<3, float>& otherMax = inOther.getMax();
+        const Vec3& otherMin = inOther.getMin();
+        const Vec3& otherMax = inOther.getMax();
 
         float overlapX = std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
         float overlapY = std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
@@ -66,10 +66,10 @@ namespace Chicane
 
         if (overlapX <= 0 || overlapY <= 0 || overlapZ <= 0)
         {
-            return Vec3Zero;
+            return Vec3::Zero;
         }
 
-        Vec<3, float> result = Vec3Zero;
+        Vec3 result = Vec3::Zero;
 
         if (overlapX < overlapY && overlapX < overlapZ)
         {
@@ -97,12 +97,12 @@ namespace Chicane
 
     void Bounds::add(const Bounds& inBounds)
     {
-        const Vec<3, float>& min = inBounds.getBaseMin();
+        const Vec3& min = inBounds.getBaseMin();
         m_baseMin.x = std::min(m_baseMin.x, min.x);
         m_baseMin.y = std::min(m_baseMin.y, min.y);
         m_baseMin.z = std::min(m_baseMin.z, min.z);
 
-        const Vec<3, float>& max = inBounds.getBaseMax();
+        const Vec3& max = inBounds.getBaseMax();
         m_baseMax.x = std::max(m_baseMax.x, max.x);
         m_baseMax.y = std::max(m_baseMax.y, max.y);
         m_baseMax.z = std::max(m_baseMax.z, max.z);
@@ -112,8 +112,8 @@ namespace Chicane
 
     void Bounds::update(const Transform::Combined& inTransform)
     {
-        const Vec<3, float>& scale       = inTransform.getScale();
-        const Vec<3, float>& translation = inTransform.getTranslation();
+        const Vec3& scale       = inTransform.getScale();
+        const Vec3& translation = inTransform.getTranslation();
 
         //            max
         //    +------+
@@ -186,57 +186,57 @@ namespace Chicane
         m_corners[7].z = m_max.z;
     }
 
-    const Vec<3, float>& Bounds::getMin() const
+    const Vec3& Bounds::getMin() const
     {
         return m_min;
     }
 
-    const Vec<3, float>& Bounds::getBaseMin() const
+    const Vec3& Bounds::getBaseMin() const
     {
         return m_baseMin;
     }
 
-    const Vec<3, float>& Bounds::getMax() const
+    const Vec3& Bounds::getMax() const
     {
         return m_max;
     }
 
-    const Vec<3, float>& Bounds::getBaseMax() const
+    const Vec3& Bounds::getBaseMax() const
     {
         return m_baseMax;
     }
 
-    const Vec<3, float>& Bounds::getTop() const
+    const Vec3& Bounds::getTop() const
     {
         return m_top;
     }
 
-    const Vec<3, float>& Bounds::getBaseTop() const
+    const Vec3& Bounds::getBaseTop() const
     {
         return m_baseCenter;
     }
 
-    const Vec<3, float>& Bounds::getBaseCenter() const
+    const Vec3& Bounds::getBaseCenter() const
     {
         return m_baseCenter;
     }
 
-    const Vec<3, float>& Bounds::getCenter() const
+    const Vec3& Bounds::getCenter() const
     {
         return m_center;
     }
 
-    const Vec<3, float>& Bounds::getBottom() const
+    const Vec3& Bounds::getBottom() const
     {
         return m_bottom;
     }
 
-    const Vec<3, float>& Bounds::getBaseBottom() const
+    const Vec3& Bounds::getBaseBottom() const
     {
         return m_baseBottom;
     }
 
-    const std::vector<Vec<3, float>>& Bounds::getCorners() const
+    const std::vector<Vec3>& Bounds::getCorners() const
     {
         return m_corners;
     }

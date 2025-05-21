@@ -5,7 +5,7 @@
 #include "Chicane/Core.hpp"
 #include "Game.hpp"
 
-static constexpr float MOVE_COEFFICIENT = 3.0f;
+static constexpr const float MOVE_COEFFICIENT = 3.0f;
 
 Character::Character()
     : Chicane::ACharacter(),
@@ -124,8 +124,8 @@ void Character::onLeftClick()
         return;
     }
 
-    const Chicane::Vec<3, float>& origin     = m_camera->getTranslation();
-    const Chicane::Vec<3, float> destination = origin + (m_camera->getForward() * m_camera->getFarClip());
+    const Chicane::Vec3& origin     = m_camera->getTranslation();
+    const Chicane::Vec3 destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
     std::vector<Apple*> hitApples = Chicane::Application::getLevel()->traceLine<Apple>(
         origin,

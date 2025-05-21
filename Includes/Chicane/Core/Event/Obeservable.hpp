@@ -9,6 +9,12 @@ namespace Chicane
     class Observable
     {
     public:
+        using EmptyCallback    = std::function<void ()>;
+        using NextCallback     = std::function<void (T)>;
+        using ErrorCallback    = std::function<void (const std::string&)>;
+        using CompleteCallback = std::function<void ()>;
+
+    public:
         ~Observable()
         {
             for (Subscription<T>* subscription : m_subscriptions)
@@ -21,9 +27,9 @@ namespace Chicane
 
     public:
         Subscription<T>* subscribe(
-            std::function<void ()> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+            EmptyCallback inNext,
+            ErrorCallback inError = nullptr,
+            CompleteCallback inComplete = nullptr
         )
         {
             m_subscriptions.push_back(
@@ -38,9 +44,9 @@ namespace Chicane
         }
 
         Subscription<T>* subscribe(
-            std::function<void (T)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+            NextCallback inNext,
+            ErrorCallback inError = nullptr,
+            CompleteCallback inComplete = nullptr
         )
         {
             m_subscriptions.push_back(
@@ -83,7 +89,7 @@ namespace Chicane
             }
         }
 
-    protected:
+    private:
         std::vector<Subscription<T>*> m_subscriptions;
     };
 }

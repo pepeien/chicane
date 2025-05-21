@@ -9,6 +9,9 @@ namespace Chicane
     struct CHICANE_CORE Reference
     {
     public:
+        using Map = std::unordered_map<std::string, Reference*>;
+
+    public:
         template<typename T>
         static Reference fromValue(T* inValue)
         {
@@ -65,6 +68,4 @@ namespace Chicane
         const void*     m_value;
         std::type_index m_type;
     };
-
-    typedef std::unordered_map<std::string, Reference*> References;
 }

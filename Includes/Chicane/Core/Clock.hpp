@@ -4,12 +4,12 @@
 
 namespace Chicane
 {
-    typedef std::chrono::steady_clock Clock;
+    using Clock = std::chrono::steady_clock;
 
     struct CHICANE_CORE Time
     {
     public:
-        typedef std::chrono::time_point<Clock> Point;
+        using Point = std::chrono::time_point<Clock>;
 
     public:
         Time()

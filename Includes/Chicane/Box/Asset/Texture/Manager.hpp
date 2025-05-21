@@ -10,11 +10,10 @@ namespace Chicane
     {
         namespace Texture
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<Image::RawData, Image::CompiledData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Image::Raw, Image::Instance>
             {
             public:
                 Manager();
-                ~Manager();
 
             protected:
                 void onActivation(const std::string& inId) override;
@@ -25,8 +24,8 @@ namespace Chicane
                 void load(const std::string& inId, const Texture::Instance* inTexture);
 
                 // Data
-                const Image::RawData& getInstance(const std::string& inId) const;
-                const Image::CompiledData& getData(const std::string& inId) const;
+                const Image::Raw& getInstance(const std::string& inId) const;
+                const Image::Instance& getData(const std::string& inId) const;
                 std::uint32_t getIndex(const std::string& inId) const;
             };
         }

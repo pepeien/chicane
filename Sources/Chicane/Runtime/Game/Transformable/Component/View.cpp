@@ -3,31 +3,31 @@
 namespace Chicane
 {
     CView::CView()
-        : Component(),
+        : Super(),
         m_settings({}),
         m_frustum({}),
         m_data({}),
-        m_focusPoint(Vec3Zero)
+        m_focusPoint(Vec3::Zero)
     {}
 
     void CView::onTransform()
     {
-        const Vec<3, float>& forward = getForward();
+        const Vec3& forward = getForward();
         m_data.forward.x = forward.x;
         m_data.forward.y = forward.y;
         m_data.forward.z = forward.z;
 
-        const Vec<3, float>& right = getRight();
+        const Vec3& right = getRight();
         m_data.right.x = right.x;
         m_data.right.y = right.y;
         m_data.right.z = right.z;
 
-        const Vec<3, float>& up = getUp();
+        const Vec3& up = getUp();
         m_data.up.x = up.x;
         m_data.up.y = up.y;
         m_data.up.z = up.z;
 
-        const Vec<3, float>& translation = getTranslation();
+        const Vec3& translation = getTranslation();
         m_data.translation.x = translation.x;
         m_data.translation.y = translation.y;
         m_data.translation.z = translation.z;
@@ -120,12 +120,12 @@ namespace Chicane
         setFarClip(inFarClip);
     }
 
-    const Vec<3, float>& CView::getFocusPoint() const
+    const Vec3& CView::getFocusPoint() const
     {
         return m_focusPoint;
     }
 
-    void CView::setFocusPoint(const Vec<3, float>& inPoint)
+    void CView::setFocusPoint(const Vec3& inPoint)
     {
         m_focusPoint = inPoint;
 

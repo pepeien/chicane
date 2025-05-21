@@ -10,13 +10,13 @@ namespace Chicane
         bool Frustum::contains(const Transformable* inSubject) const
         {
             const std::vector<Plane> planes = { m_top, m_bottom, m_near, m_far, m_right, m_left };
-            const std::vector<Vec<3, float>>& corners = inSubject->getBounds().getCorners();
+            const std::vector<Vec3>& corners = inSubject->getBounds().getCorners();
 
             for (const Plane& plane : planes)
             {
                 bool isFullyOutside = true;
 
-                for (const Vec<3, float>& corner : corners)
+                for (const Vec3& corner : corners)
                 {
                     if (plane.contains(corner))
                     {
@@ -37,10 +37,10 @@ namespace Chicane
 
         void Frustum::update(const CView* inView)
         {
-            const Vec<3, float>& up          = inView->getUp();
-            const Vec<3, float>& right       = inView->getRight();
-            const Vec<3, float>& forward     = inView->getForward();
-            const Vec<3, float>& translation = inView->getTranslation();
+            const Vec3& up          = inView->getUp();
+            const Vec3& right       = inView->getRight();
+            const Vec3& forward     = inView->getForward();
+            const Vec3& translation = inView->getTranslation();
 
             const float aspectRatio = inView->getAspectRatio();
             const float fieldOfView = inView->getFieldOfView();
@@ -50,8 +50,8 @@ namespace Chicane
             const float halfVertical   = farClip * tanf(fieldOfView * 0.5f);
             const float halfHorizontal = halfVertical * aspectRatio;
 
-            const Vec<3, float> nearCenter = translation + (nearClip * forward);
-            const Vec<3, float> farCenter = translation + (farClip * forward);
+            const Vec3 nearCenter = translation + (nearClip * forward);
+            const Vec3 farCenter = translation + (farClip * forward);
 
             m_near.update(-forward, nearCenter);
             m_far.update(forward, farCenter);

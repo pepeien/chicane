@@ -107,7 +107,7 @@ namespace Chicane
             Level*                                   m_level;
             std::unique_ptr<Observable<Level*>>      m_levelObservable;
 
-            // UI
+            // Grid
             Grid::View*                              m_view;
             std::unique_ptr<Observable<Grid::View*>> m_viewObservable;
 

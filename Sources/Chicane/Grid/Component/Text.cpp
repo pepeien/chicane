@@ -7,8 +7,8 @@ namespace Chicane
     namespace Grid
     {
         Text::Text(const pugi::xml_node& inNode)
-            : Component(inNode),
-            m_lastText("")
+            : Super(inNode),
+            m_parsedText("")
         {
             setText(inNode.text().as_string());
         }
@@ -44,14 +44,14 @@ namespace Chicane
         {
             const std::string value = parseText(m_text);
 
-            if (String::areEquals(value, m_lastText))
+            if (String::areEquals(value, m_parsedText))
             {
                 return;
             }
 
-            m_lastText = value;
+            m_parsedText = value;
 
-            for (std::uint32_t i = 0; i < m_lastText.size(); i++)
+            for (std::uint32_t i = 0; i < m_parsedText.size(); i++)
             {
                 if (i >= m_children.size())
                 {
@@ -66,11 +66,11 @@ namespace Chicane
                 }
 
                 static_cast<Character*>(child)->setCharacter(
-                    m_lastText.at(i)
+                    m_parsedText.at(i)
                 );
             }
 
-            for (std::uint32_t i = m_lastText.size(); i < m_children.size(); i++)
+            for (std::uint32_t i = m_parsedText.size(); i < m_children.size(); i++)
             {
                 Component* child = m_children.at(i);
 

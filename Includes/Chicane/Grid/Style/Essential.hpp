@@ -24,15 +24,15 @@ namespace Chicane
             // Special keywords
             static constexpr const char* CALCULATION_KEYWORD = "calc";
             static constexpr const char* VARIABLE_KEYWORD    = "var";
-            static constexpr char        HEX_KEYWORD         = '#';
+            static constexpr const char  HEX_KEYWORD         = '#';
             static constexpr const char* RGB_KEYWORD         = "rgb";
             static constexpr const char* RGBA_KEYWORD        = "rgba";
 
             // Calculation
-            static constexpr char CALCULATION_OPERATOR_SUM = '+';
-            static constexpr char CALCULATION_OPERATOR_SUB = '-';
-            static constexpr char CALCULATION_OPERATOR_MUL = '*';
-            static constexpr char CALCULATION_OPERATOR_DIV = '/';
+            static constexpr const char CALCULATION_OPERATOR_SUM = '+';
+            static constexpr const char CALCULATION_OPERATOR_SUB = '-';
+            static constexpr const char CALCULATION_OPERATOR_MUL = '*';
+            static constexpr const char CALCULATION_OPERATOR_DIV = '/';
             static const std::vector<char> CALCULATION_OPERATORS = {
                 CALCULATION_OPERATOR_SUM,
                 CALCULATION_OPERATOR_SUB,
@@ -41,14 +41,14 @@ namespace Chicane
             };
 
             // Separator
-            static constexpr char ONELINE_SEPARATOR  = ' ';
-            static constexpr char SELECTOR_SEPARATOR = ',';
-            static constexpr char CLASS_SEPARATOR    = ' ';
+            static constexpr const char ONELINE_SEPARATOR  = ' ';
+            static constexpr const char SELECTOR_SEPARATOR = ',';
+            static constexpr const char CLASS_SEPARATOR    = ' ';
 
             // Selectors
-            static constexpr char ID_SELECTOR        = '#';
-            static constexpr char CLASS_SELECTOR     = '.';
-            static constexpr char INCLUSIVE_SELECTOR = '*';
+            static constexpr const char ID_SELECTOR        = '#';
+            static constexpr const char CLASS_SELECTOR     = '.';
+            static constexpr const char INCLUSIVE_SELECTOR = '*';
 
             // Display
             static constexpr const char* DISPLAY_ATTRIBUTE_NAME = "display";

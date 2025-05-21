@@ -10,10 +10,10 @@ namespace Chicane
 {
     namespace Log
     {
-        typedef std::deque<Entry> List;
+        using List = std::deque<Entry>;
 
-        CHICANE_CORE Subscription<const List*>* watchLogs(
-            std::function<void (const List*)> inNext,
+        CHICANE_CORE Subscription<List>* watchLogs(
+            std::function<void (List)> inNext,
             std::function<void (const std::string&)> inError = nullptr,
             std::function<void ()> inComplete = nullptr
         );

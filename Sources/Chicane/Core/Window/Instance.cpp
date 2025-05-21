@@ -197,25 +197,14 @@ namespace Chicane
                 throw std::runtime_error("The file [ " + iconPath + " ] doesn't exist");
             }
 
-            int width   = 0;
-            int height  = 0;
-            int channel = 0;
-            int format  = 0;
-
-            Image::Pixels pixels = FileSystem::readImageFromFile(
-                width,
-                height,
-                channel,
-                format,
-                inIconPath
-            );
+            Image::Instance image = Image::Instance(iconPath);
 
             SDL_Surface* icon = SDL_CreateSurfaceFrom(
-                width,
-                height,
+                image.getWidth(),
+                image.getHeight(),
                 SDL_PIXELFORMAT_ARGB8888,
-                pixels,
-                format * width
+                image.getPixels(),
+                image.getPitch()
             );
 
             if (!icon)
@@ -226,8 +215,6 @@ namespace Chicane
             bool iconResult = SDL_SetWindowIcon(instance, icon);
 
             SDL_DestroySurface(icon);
-
-            FileSystem::freeImage(pixels);
 
             if (!iconResult)
             {
@@ -353,9 +340,9 @@ namespace Chicane
             std::function<void ()> inComplete
         )
         {
-            inNext(m_size);
-
-            return m_sizeObservable->subscribe(inNext, inError,inComplete);
+            return m_sizeObservable
+                ->subscribe(inNext, inError, inComplete)
+                ->next(m_size);
         }
 
         void Instance::refreshSize()

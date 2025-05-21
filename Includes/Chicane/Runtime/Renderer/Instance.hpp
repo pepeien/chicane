@@ -15,8 +15,8 @@ namespace Chicane
     {
         class CHICANE_RUNTIME Instance
         {
-        public:
-            typedef Instance Super;
+        protected:
+            using Super = Instance;
 
         public:
             Instance(const CreateInfo& inCreateInfo, Window::Instance* inWindow);
@@ -40,7 +40,7 @@ namespace Chicane
             void setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight);
             void setViewportSize(const Vec<2, std::uint32_t>& inSize);
             void setViewportPosition(float inX, float inY);
-            void setViewportPosition(const Vec<2, float>& inPosition);
+            void setViewportPosition(const Vec2& inPosition);
             void setViewport(const Viewport& inViewport);
             Subscription<const Viewport&>* watchViewport(
                 std::function<void (const Viewport&)> inNext,

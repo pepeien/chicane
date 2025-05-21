@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Sky
         {
-            typedef Box::Sky::CompiledSides Images;
+            using Images = Box::Sky::ParsedSides;
 
             struct CHICANE_RUNTIME CreateInfo
             {

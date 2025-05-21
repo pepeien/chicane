@@ -8,11 +8,11 @@ namespace Chicane
     {
         namespace Mesh
         {
-            struct CHICANE_BOX CompiledData
+            struct CHICANE_BOX Parsed
             {
             public:
-                Mat<4, float> matrix       = Mat<4, float>(1.0f);
-                Vec<4, float> textureIndex = Vec<4, float>(0.0f);
+                Mat4 matrix       = Mat4::One;
+                Vec4 textureIndex = Vec4::Zero;
             };
         }
     }

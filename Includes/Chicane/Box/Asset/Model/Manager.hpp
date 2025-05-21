@@ -11,13 +11,13 @@ namespace Chicane
     {
         namespace Model
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<ParsedData, CompiledData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Extracted, Parsed>
             {
             public:
                 Manager();
 
             protected:
-                void onAllocation(const std::string& inId, const CompiledData& inData) override;
+                void onAllocation(const std::string& inId, const Parsed& inData) override;
                 void onDeallocation(const std::string& inId) override;
                 void onActivation(const std::string& inId) override;
                 void onDeactivation(const std::string& inId) override;
@@ -27,8 +27,8 @@ namespace Chicane
                 void load(const std::string& inId, const Model::Instance* inModel);
 
                 // Data
-                const ParsedData& getInstance(const std::string& inId) const;
-                const CompiledData& getData(const std::string& inId) const;
+                const Extracted& getInstance(const std::string& inId) const;
+                const Parsed& getData(const std::string& inId) const;
                 const std::vector<Vertex>& getVertices() const;
                 const std::vector<std::uint32_t>& getIndices() const;
                 std::uint32_t getFirstUse(const std::string& inId) const;

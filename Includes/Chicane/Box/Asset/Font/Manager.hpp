@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Font
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<RawData, ParsedData>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Extracted, Parsed>
             {
             public:
                 Manager();
@@ -24,10 +24,10 @@ namespace Chicane
                 void allocate(const std::string& inId);
 
                 // Data
-                const RawData& getData(const std::string& inId) const;
-                const ParsedData& getParsed(const std::string& inId) const;
+                const Extracted& getData(const std::string& inId) const;
+                const Parsed& getParsed(const std::string& inId) const;
 
-                const ParsedData& getByFamily(const std::string& inFamily) const;
+                const Parsed& getByFamily(const std::string& inFamily) const;
             };
         }
     }

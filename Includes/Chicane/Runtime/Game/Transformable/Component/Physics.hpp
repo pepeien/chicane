@@ -19,7 +19,7 @@ namespace Chicane
     public:
         bool canCollide() const;
 
-        void addForce(const Vec<3, float>& inDirection, float inForce);
+        void addForce(const Vec3& inDirection, float inForce);
 
     protected:
         void updateCollision();
@@ -29,9 +29,9 @@ namespace Chicane
         void resetForce();
 
     protected:
-        bool          m_bIsApplyingForce;
+        bool m_bIsApplyingForce;
 
-        Vec<3, float> m_forceDirection;
-        Vec<3, float> m_forceVelocity;
+        Vec3 m_forceDirection;
+        Vec3 m_forceVelocity;
     };
 }

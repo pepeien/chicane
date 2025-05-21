@@ -10,14 +10,16 @@ namespace Chicane
     {
         namespace Font
         {
-            struct CHICANE_BOX RawData
+            using Raw = std::vector<unsigned char>;
+
+            struct CHICANE_BOX Extracted
             {
             public:
-                Vendor                     vendor = Vendor::Undefined;
-                std::vector<unsigned char> data   = {};
+                Vendor vendor = Vendor::Undefined;
+                Raw    data   = {};
             };
 
-            struct CHICANE_BOX ParsedData
+            struct CHICANE_BOX Parsed
             {
             public:
                 bool hasGlyph(char inCharacter) const;

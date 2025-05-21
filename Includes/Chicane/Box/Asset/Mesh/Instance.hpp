@@ -13,7 +13,7 @@ namespace Chicane
             class CHICANE_BOX Instance : public Asset::Instance
             {
             public:
-                Instance(const std::string& inFilepath);
+                Instance(const FileSystem::Path& inFilepath);
 
             public:
                 const std::vector<Group>& getGroups() const;

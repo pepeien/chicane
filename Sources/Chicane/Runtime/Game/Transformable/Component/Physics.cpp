@@ -3,16 +3,16 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor.hpp"
 
-static constexpr float FORCE_MAX_VELOCITY               = 0.3f;
-static constexpr float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
+static constexpr const float FORCE_MAX_VELOCITY               = 0.3f;
+static constexpr const float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
 
 namespace Chicane
 {
     CPhysics::CPhysics()
-        : Component(),
+        : Super(),
         m_bIsApplyingForce(false),
-        m_forceDirection(Vec3Zero),
-        m_forceVelocity(Vec3Zero)
+        m_forceDirection(Vec3::Zero),
+        m_forceVelocity(Vec3::Zero)
     {
         setCanTick(true);
     }
@@ -33,7 +33,7 @@ namespace Chicane
         return isAttached() && Application::hasLevel();
     }
 
-    void CPhysics::addForce(const Vec<3, float>& inDirection, float inForce)
+    void CPhysics::addForce(const Vec3& inDirection, float inForce)
     {
         if (!canCollide() || m_bIsApplyingForce)
         {
@@ -82,7 +82,7 @@ namespace Chicane
 
         resetForce();
 
-        Vec<3, float> overlap = inSubject->getBounds().getOverlap(m_attachment->getBounds());
+        Vec3 overlap = inSubject->getBounds().getOverlap(m_attachment->getBounds());
 
         m_attachment->addAbsoluteTranslation(overlap * 1.1f);
     }

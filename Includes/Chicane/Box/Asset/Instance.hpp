@@ -11,11 +11,14 @@ namespace Chicane
         {
             class CHICANE_BOX Instance
             {
-            public:
-                static std::string TAG;
+            protected:
+                using Super = Instance;
 
             public:
-                Instance(const std::string& inFilepath);
+                static constexpr const char* TAG = "Asset";
+
+            public:
+                Instance(const FileSystem::Path& inFilepath);
 
             public:
                 bool isType(Type inType) const;
@@ -24,8 +27,8 @@ namespace Chicane
                 const Header& getHeader() const;
                 void setHeader(const Header& inHeader);
 
-                const std::filesystem::path& getFilepath() const;
-                void setFilepath(const std::filesystem::path& inFilepath);
+                const FileSystem::Path& getFilepath() const;
+                void setFilepath(const FileSystem::Path& inFilepath);
 
                 std::uint32_t getVersion() const;
                 void setVersion(std::uint32_t inVersion);

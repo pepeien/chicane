@@ -40,7 +40,7 @@ View::View()
     );
 
     addReference("frameTime",           &m_uiFrameTime);
-    addReference("freamesPerSecond",    &m_uiFramesPerSecond);
+    addReference("framesPerSecond",     &m_uiFramesPerSecond);
     addReference("victoryDisplay",      &m_uiVictoryVisibility);
     addReference("crosshairDotDisplay", &m_uiCrosshairDotVisibility);
     addReference("crosshairSize",       &m_uiCrosshairSize);
