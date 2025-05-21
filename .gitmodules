@@ -13,3 +13,6 @@
 [submodule "Vendors/SDL3"]
 	path = Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
+[submodule "Vendors/base64"]
+	path = Vendors/base64
+	url = https://github.com/pepeien/base64.git
