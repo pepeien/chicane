@@ -16,3 +16,30 @@
 [submodule "Vendors/base64"]
 	path = Vendors/base64
 	url = https://github.com/pepeien/base64.git
+[submodule "Vendors/earcut"]
+	path = Vendors/earcut
+	url = https://github.com/pepeien/earcut.hpp.git
+[submodule "Sources/Box/Vendors/freetype"]
+	path = Sources/Box/Vendors/freetype
+	url = https://github.com/pepeien/freetype.git
+[submodule "Sources/Chicane/Box/Vendors/freetype"]
+	path = Sources/Chicane/Box/Vendors/freetype
+	url = https://github.com/pepeien/freetype.git
+[submodule "Sources/Chicane/Core/Vendors/base64"]
+	path = Sources/Chicane/Core/Vendors/base64
+	url = https://github.com/pepeien/base64.git
+[submodule "Sources/Chicane/Core/Vendors/earcut"]
+	path = Sources/Chicane/Core/Vendors/earcut
+	url = https://github.com/pepeien/earcut.hpp.git
+[submodule "Sources/Chicane/Core/Vendors/glm"]
+	path = Sources/Chicane/Core/Vendors/glm
+	url = https://github.com/pepeien/glm.git
+[submodule "Sources/Chicane/Core/Vendors/pugixml"]
+	path = Sources/Chicane/Core/Vendors/pugixml
+	url = https://github.com/pepeien/pugixml.git
+[submodule "Sources/Chicane/Core/Vendors/SDL3"]
+	path = Sources/Chicane/Core/Vendors/SDL3
+	url = https://github.com/pepeien/SDL.git
+[submodule "Sources/Chicane/Box/Vendors/fast_obj"]
+	path = Sources/Chicane/Box/Vendors/fast_obj
+	url = https://github.com/pepeien/fast_obj.git
