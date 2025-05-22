@@ -1,0 +1,72 @@
+.victory {
+    position: absolute;
+    display: var(victoryDisplay);
+    height: 30vh;
+    width: 100%;
+    margin: 50% 0 0 50%;
+    background-color: #333333;
+}
+
+.telemetry {
+    width: 100%;
+    height: 5vh;
+}
+
+Text {
+    width: 100%;
+    color: #24f51d;
+    font-size: 4px;
+}
+
+.telemetry__fps {
+    margin-left: 1vw;
+    alignment: start center;
+}
+
+.telemetry__frametime {
+    alignment: end center;
+}
+
+.crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
+    position: absolute;
+    background-color: rgba(var(crosshairColorR), var(crosshairColorG), var(crosshairColorB), var(crosshairColorA));
+}
+
+.crosshair__top, .crosshair__bottom {
+    height: var(crosshairSize)vh;
+    width: var(crosshairThickness)vh;
+}
+
+.crosshair__left, .crosshair__right {
+    height: var(crosshairThickness)vh;
+    width: var(crosshairSize)vh;
+}
+
+.crosshair__dot {
+    display: var(crosshairGapDisplay);
+    margin: 50% 0 0 50%;
+    height: var(crosshairThickness)vh;
+    width: var(crosshairThickness)vh;
+}
+
+.crosshair__top {
+    margin-top: 50%;
+    margin-bottom: calc(var(crosshairSize)vh + var(crosshairGap)vh);
+    margin-left: 50%;
+}
+
+.crosshair__bottom {
+    margin-top: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
+    margin-left: 50%;
+}
+
+.crosshair__left {
+    margin-top: 50%;
+    margin-right: calc(var(crosshairSize)vh + var(crosshairGap)vh);
+    margin-left: 50%;
+}
+
+.crosshair__right {
+    margin-top: 50%;
+    margin-left: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
+}

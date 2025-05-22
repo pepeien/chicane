@@ -104,6 +104,9 @@
         "*.def": "cpp",
         "text_encoding": "cpp",
         "*.rh": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "fast_obj.h": "c",
+        "ciso646": "cpp",
+        "xstddef": "cpp"
     }
 }
