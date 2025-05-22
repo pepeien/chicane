@@ -40,7 +40,7 @@ This project uses CMake to generate and build files, it should pretty straight f
 - [Vulkan SDK](https://www.lunarg.com/vulkan-sdk/) (^=1.3.269).
 
 ## Examples
-If you desire to check some examplary code, this repository hosts a sample located at `Sources/Samples`.
+If you desire to check some examplary code, this repository hosts a sample located at `Sources/Sample`.
 
 ## Documentation
 Further documentation is hosted at [Chicane Engine Documentation](https://chicane.erickfrederick.com), available in English (en-us), Japanese (ja-jp) and Brazillian Portuguese (pt-br).
