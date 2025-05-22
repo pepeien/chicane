@@ -8,7 +8,7 @@ namespace Chicane
     struct CHICANE_CORE Vec : glm::vec<O, T, Q>
     {
         template<typename... A>
-        Vec(A ...args)
+        constexpr Vec(A ...args)
             : glm::vec<O, T, Q>(args...)
         {}
 

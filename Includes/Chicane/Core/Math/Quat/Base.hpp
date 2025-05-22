@@ -8,7 +8,7 @@ namespace Chicane
     struct CHICANE_CORE Quat : glm::qua<T, Q>
     {
         template<typename... A>
-        Quat(A ...args)
+        constexpr Quat(A ...args)
             : glm::qua<T, Q>(args...)
         {}
     };

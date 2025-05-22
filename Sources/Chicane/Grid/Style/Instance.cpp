@@ -31,9 +31,7 @@ namespace Chicane
                     return {};
                 }
 
-                std::vector<unsigned char> data = FileSystem::readUnsigned(inFilePath);
-
-                return Instance::parseSources(std::string(data.begin(), data.end()));
+                return Instance::parseSources(FileSystem::readString(inFilePath));
             }
 
             Source::List Instance::parseSources(const std::string &inData)
@@ -297,7 +295,7 @@ namespace Chicane
                 if (
                     !margin.refresh(
                         m_properties,
-                        [&](const std::string& inValue, Direction inDirection)
+                        [this](const std::string& inValue, Direction inDirection)
                         {
                             return parseSize(inValue, inDirection);
                         }
@@ -644,14 +642,23 @@ namespace Chicane
 
             float Instance::parseNumber(const std::string& inValue) const
             {
-                const std::string value = String::trim(inValue);
+                try
+                {
+                    const std::string value = String::trim(inValue);
 
-                if (String::isNaN(value))
+                    if (String::isNaN(value))
+                    {
+                        return 0.0f;
+                    }
+
+                    char* end;
+                    return std::strtod(value.c_str(), &end);
+                }
+                catch(...)
                 {
                     return 0.0f;
                 }
-
-                return std::stof(value);
+                
             }
         }
     }

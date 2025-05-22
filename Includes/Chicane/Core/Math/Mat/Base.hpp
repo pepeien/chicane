@@ -8,7 +8,7 @@ namespace Chicane
     struct CHICANE_CORE Mat : glm::mat<O, O, T, Q>
     {
         template<typename... A>
-        Mat(A ...args)
+        constexpr Mat(A ...args)
             : glm::mat<O, O, T, Q>(args...)
         {}
     };

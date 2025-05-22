@@ -149,15 +149,17 @@ namespace Chicane
                     m_usedIds.push_back(inId);
                     String::sort(m_usedIds);
 
+                    m_observable->next(EventType::Use);
+
                     if (!isActive(inId))
                     {
                         m_activeIds.push_back(inId);
                         String::sort(m_activeIds);
 
                         onActivation(inId);
-                    }
 
-                    m_observable->next(EventType::Activation);
+                        m_observable->next(EventType::Activation);
+                    }
                 }
 
                 void deactivate(const std::string& inId)
@@ -177,6 +179,8 @@ namespace Chicane
                     m_usedIds.shrink_to_fit();
                     String::sort(m_usedIds);
 
+                    m_observable->next(EventType::Use);
+
                     if (!isUsing(inId))
                     {
                         m_activeIds.erase(
@@ -188,9 +192,9 @@ namespace Chicane
                         );
                         m_activeIds.shrink_to_fit();
                         String::sort(m_activeIds);
-                    }
 
-                    m_observable->next(EventType::Activation);
+                        m_observable->next(EventType::Activation);
+                    }
                 }
 
                 // Events

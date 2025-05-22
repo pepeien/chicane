@@ -2,7 +2,7 @@
 
 struct MeshData {
     mat4 matrix;
-    vec4 textureIndex;
+    uint textureIndex;
 };
 
 layout(set = 0, binding = 0) uniform CameraData {
@@ -37,7 +37,7 @@ layout(std140, set = 0, binding = 2) readonly buffer StorageBuffer {
     MeshData data[];
 } meshes;
 
-layout(location = 0) out flat int outTextureIndex;
+layout(location = 0) out flat uint outTextureIndex;
 layout(location = 1) out vec2 outUV;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec4 outColor;
@@ -62,7 +62,7 @@ void main() {
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = int(mesh.textureIndex.x);
+    outTextureIndex   = mesh.textureIndex;
     outUV             = inUV;
     outNormal         = mat3(mesh.matrix) * inNormal;
     outColor          = inColor;

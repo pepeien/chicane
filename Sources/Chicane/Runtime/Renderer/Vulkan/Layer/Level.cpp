@@ -139,7 +139,7 @@ namespace Chicane
             m_modelManager->watchChanges(
                 [&](Box::Manager::EventType inEvent)
                 {
-                    if (inEvent != Box::Manager::EventType::Activation)
+                    if (inEvent != Box::Manager::EventType::Use)
                     {
                         return;
                     }
@@ -269,12 +269,8 @@ namespace Chicane
 
         void LLevel::destroyFrameResources()
         {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_frameDescriptor.pool
-            );
+            m_internals.logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
+            m_internals.logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
         void LLevel::initGraphicsPipeline()
@@ -399,13 +395,8 @@ namespace Chicane
 
         void LLevel::destroyTextureResources()
         {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_textureDescriptor.setLayout
-            );
-
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_textureDescriptor.pool
-            );
+            m_internals.logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
+            m_internals.logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
         }
 
         void LLevel::buildTextureData()
@@ -428,12 +419,7 @@ namespace Chicane
             {
                 createInfo.image = m_textureManager->getData(id);
 
-                m_textures.insert(
-                    std::make_pair(
-                        id,
-                        std::make_unique<Texture::Instance>(createInfo)
-                    )
-                );
+                m_textures[id] = std::make_unique<Texture::Instance>(createInfo);
 
                 Image::Data image = m_textures.at(id)->getImage();
 
@@ -465,7 +451,8 @@ namespace Chicane
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -478,7 +465,8 @@ namespace Chicane
             memcpy(writeLocation, vertices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Buffer::init(m_modelVertexBuffer, createInfo);
@@ -502,7 +490,8 @@ namespace Chicane
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(std::uint32_t) * indices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -515,7 +504,8 @@ namespace Chicane
             memcpy(writeLocation, indices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Buffer::init(m_modelIndexBuffer, createInfo);
@@ -540,14 +530,8 @@ namespace Chicane
         {
             m_internals.logicalDevice.waitIdle();
 
-            Buffer::destroy(
-                m_internals.logicalDevice,
-                m_modelVertexBuffer
-            );
-            Buffer::destroy(
-                m_internals.logicalDevice,
-                m_modelIndexBuffer
-            );
+            Buffer::destroy(m_internals.logicalDevice, m_modelVertexBuffer);
+            Buffer::destroy(m_internals.logicalDevice, m_modelIndexBuffer);
         }
 
         void LLevel::rebuildModelData()
@@ -567,18 +551,9 @@ namespace Chicane
             vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
             vk::DeviceSize offsets[]   = { 0 };
 
-            inCommandBuffer.bindVertexBuffers(
-                0,
-                1,
-                vertexBuffers,
-                offsets
-            );
+            inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            inCommandBuffer.bindIndexBuffer(
-                m_modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            inCommandBuffer.bindIndexBuffer( m_modelIndexBuffer.instance, 0, vk::IndexType::eUint32 );
 
             for (const std::string& id : m_modelManager->getActiveIds())
             {

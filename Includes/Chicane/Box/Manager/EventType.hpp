@@ -12,7 +12,8 @@ namespace Chicane
             {
                 Load,
                 Allocation,
-                Activation
+                Activation,
+                Use
             };
         }
     }

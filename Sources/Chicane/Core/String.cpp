@@ -61,9 +61,9 @@ namespace Chicane
 
         std::string trim(const std::string& inValue)
         {
-            std::string result = inValue;
-            result.erase(result.find_last_not_of(' ') + 1);
-            result.erase(0, result.find_first_not_of(' '));
+            std::string result(inValue);
+            result.erase(0, result.find_first_not_of(" \n\r\t"));
+            result.erase(result.find_last_not_of(" \n\r\t") + 1);
 
             return result;
         }
@@ -228,19 +228,14 @@ namespace Chicane
         {
             if (inValue.empty())
             {
-                return false;
-            }
-
-            std::istringstream iss(inValue);
-
-            double num;
-            char leftover;
-
-            if (!(iss >> num) || (iss >> leftover)) {
                 return true;
             }
 
-            return std::isnan(num); 
+            return std::find_if(
+                inValue.begin(), 
+                inValue.end(),
+                [](unsigned char c) { return !std::isdigit(c); }
+            ) != inValue.end();
         }
     }
 }

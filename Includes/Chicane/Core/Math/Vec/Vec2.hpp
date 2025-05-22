@@ -1,21 +1,22 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Math/Vec/Base.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 namespace Chicane
 {
     struct CHICANE_CORE Vec2 : public Vec<2, float>
     {
     public:
-        static const Vec2 Zero;
+        inline static constexpr Vec<2, float> Zero  = Vec<2, float>(0.0f);
 
-        static const Vec2 Up;
-        static const Vec2 Right;
+        inline static constexpr Vec<2, float> Up    = Vec<2, float>(Vec3::Up.x,    Vec3::Up.y);
+        inline static constexpr Vec<2, float> Right = Vec<2, float>(Vec3::Right.x, Vec3::Right.y);
 
     public:
         template<typename... A>
-        Vec2(A ...args)
+        constexpr Vec2(A ...args)
             : Vec<2, float>(args...)
         {}
 

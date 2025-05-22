@@ -88,6 +88,7 @@ namespace Chicane
             // Positioning
             const Vec2& getCursor() const;
             void addCursor(const Vec2& inCursor);
+            void addCursor(float inX, float inY);
             void setCursor(const Vec2& inCursor);
             void setCursor(float inX, float inY);
 

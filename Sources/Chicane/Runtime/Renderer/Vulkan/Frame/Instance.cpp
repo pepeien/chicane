@@ -1,6 +1,5 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 
-#include "Chicane/Runtime/Game/Level/Instance.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
@@ -427,16 +426,26 @@ namespace Chicane
                     return;
                 }
 
+                std::vector<CMesh*> components = inMeshes;
+                std::sort(
+                    components.begin(),
+                    components.end(),
+                    [](CMesh* inA, CMesh* inB)
+                    {
+                        return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
+                    }
+                );
+
                 Box::Texture::Manager* textureManager = Box::getTextureManager();
 
                 std::vector<Box::Mesh::Parsed> meshes = {};
-                meshes.reserve(inMeshes.size());
+                meshes.reserve(components.size());
 
-                for (const CMesh* mesh : inMeshes)
+                for (const CMesh* mesh : components)
                 {
                     Box::Mesh::Parsed data = {};
                     data.matrix       = mesh->getTransform().getMatrix();
-                    data.textureIndex = Vec4(static_cast<float>(textureManager->getIndex(mesh->getTexture())));
+                    data.textureIndex = textureManager->getIndex(mesh->getTexture());
 
                     meshes.push_back(data);
                 }

@@ -11,8 +11,10 @@ namespace Chicane
             struct CHICANE_BOX Parsed
             {
             public:
-                Mat4 matrix       = Mat4::One;
-                Vec4 textureIndex = Vec4::Zero;
+                Mat4          matrix       = Mat4::One;
+                std::uint32_t textureIndex = 0;
+
+                std::uint32_t _padding[3];
             };
         }
     }

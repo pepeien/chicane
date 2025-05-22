@@ -352,6 +352,14 @@ namespace Chicane
 
             SDL_GetWindowSize(instance, &width, &height);
 
+            if (
+                m_size.x == width &&
+                m_size.y == height
+            )
+            {
+                return;
+            }
+
             m_size.x = width;
             m_size.y = height;
 

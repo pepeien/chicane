@@ -45,7 +45,7 @@ namespace Chicane
             Mat4 m_matrix      = Mat4::One;
             Vec3 m_translation = Vec3::Zero;
             Vec3 m_rotation    = Vec3::Zero;
-            Vec3 m_scale       = Vec3::Zero;
+            Vec3 m_scale       = Vec3::One;
 
             // Orientation
             Vec3 m_forward     = Vec3::Forward;

@@ -422,12 +422,6 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
-            inComponent->watchChanges(
-                [this]()
-                {
-                    emmitChanges();
-                }
-            );
 
             m_children.push_back(inComponent);
 
@@ -441,7 +435,12 @@ namespace Chicane
 
         void Component::addCursor(const Vec2& inCursor)
         {
-            setCursor(m_cursor + inCursor);
+            addCursor(inCursor.x, inCursor.y);
+        }
+
+        void Component::addCursor(float inX, float inY)
+        {
+            setCursor(m_cursor.x + inX, m_cursor.y + inY);
         }
 
         void Component::setCursor(const Vec2& inCursor)
@@ -451,7 +450,16 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            setProperty(m_cursor, { inX, inY });
+            if (
+                std::fabs(m_cursor.x - inX) < FLT_EPSILON &&
+                std::fabs(m_cursor.y - inY) < FLT_EPSILON
+            )
+            {
+                return;
+            }
+
+            m_cursor.x = inX;
+            m_cursor.y = inY;
         }
 
         Vec2 Component::getAvailableSize() const
@@ -486,9 +494,20 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            setProperty(m_position, { inX, inY });
+            if (
+                std::fabs(m_position.x - inX) < FLT_EPSILON &&
+                std::fabs(m_position.y - inY) < FLT_EPSILON
+            )
+            {
+                return;
+            }
 
-            setCursor(inX, inY);
+            m_position.x = inX;
+            m_position.y = inY;
+
+            setCursor(m_position);
+
+            emmitChanges();
         }
 
         bool Component::hasPrimitive() const
@@ -528,41 +547,42 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
-            if (isRoot())
+            Vec2 margin = Vec2(
+                m_style.margin.left - m_style.margin.right,
+                m_style.margin.top - m_style.margin.bottom
+            );
+
+            if (isRoot() || m_style.isPosition(Style::Position::Absolute))
             {
+                setPosition(margin);
+
                 return;
             }
 
-            Vec2 cursor = Vec2::Zero;
+            const Vec2 cursor = m_parent->getCursor();
 
-            Vec2 margin = {
-                m_style.margin.left - m_style.margin.right,
-                m_style.margin.top - m_style.margin.bottom
-            };
-
-            if (m_style.isPosition(Style::Position::Relative))
-            {
-                cursor = m_parent->getCursor();
-
-                const Vec2 parentCenter = m_parent->getSize() * 0.5f;
+            const Vec2 parentCenter = m_parent->getSize() * 0.5f;
   
-                const Vec2 position = cursor + margin;
+            const Vec2 position = cursor + margin;
 
-                Vec2 offset = { m_size.x * 0.5f, m_size.y * 0.5f };
+            Vec2 offset = { m_size.x * 0.5f, m_size.y * 0.5f };
 
-                if (position.x >= parentCenter.x)
-                {
-                    offset.x *= -1.0f;
-                }
-
-                if (position.y >= parentCenter.y)
-                {
-                    offset.y *= -1.0f;
-                }
-
-                margin.x += offset.x;
-                margin.y += offset.y;
+            if (position.x >= parentCenter.x)
+            {
+                offset.x *= -1.0f;
             }
+
+            if (position.y >= parentCenter.y)
+            {
+                offset.y *= -1.0f;
+            }
+
+            margin.x += offset.x;
+            margin.y += offset.y;
+
+            const Vec2 occupiedSpace = m_size + margin;
+
+            m_parent->addCursor(occupiedSpace.x, 0.0f);
 
             setPosition(cursor + margin);
         }

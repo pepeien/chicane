@@ -9,7 +9,7 @@ namespace Chicane
     {
     public:
         template<typename... A>
-        QuatFloat(A ...args)
+        constexpr QuatFloat(A ...args)
             : Quat<float>(args...)
         {}
     };

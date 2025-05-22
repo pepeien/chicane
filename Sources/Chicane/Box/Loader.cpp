@@ -5,9 +5,9 @@ namespace Chicane
     namespace Box
     {
         static const std::unique_ptr<Audio::Manager>   g_audioManager   = std::make_unique<Audio::Manager>();
-        static const std::unique_ptr<Font::Manager>    m_fontManager    = std::make_unique<Font::Manager>();
-        static const std::unique_ptr<Model::Manager>   m_modelManager   = std::make_unique<Model::Manager>();
-        static const std::unique_ptr<Texture::Manager> m_textureManager = std::make_unique<Texture::Manager>();
+        static const std::unique_ptr<Font::Manager>    g_fontManager    = std::make_unique<Font::Manager>();
+        static const std::unique_ptr<Model::Manager>   g_modelManager   = std::make_unique<Model::Manager>();
+        static const std::unique_ptr<Texture::Manager> g_textureManager = std::make_unique<Texture::Manager>();
 
         static std::unordered_map<std::string, const Asset::Instance*> g_cache = {};
 
@@ -18,17 +18,17 @@ namespace Chicane
 
         Font::Manager* getFontManager()
         {
-            return m_fontManager.get();
+            return g_fontManager.get();
         }
 
         Model::Manager* getModelManager()
         {
-            return m_modelManager.get();
+            return g_modelManager.get();
         }
 
         Texture::Manager* getTextureManager()
         {
-            return m_textureManager.get();
+            return g_textureManager.get();
         }
 
         bool isLoaded(const std::string& inIdentifier)
@@ -115,7 +115,7 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_fontManager->load(
+            g_fontManager->load(
                 filepath,
                 static_cast<const Font::Instance*>(inAsset)
             );
@@ -147,7 +147,7 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_modelManager->load(
+            g_modelManager->load(
                 filepath,
                 static_cast<const Model::Instance*>(inAsset)
             );
@@ -164,7 +164,7 @@ namespace Chicane
 
             cacheAsset(filepath, inAsset);
 
-            m_textureManager->load(
+            g_textureManager->load(
                 filepath,
                 static_cast<const Texture::Instance*>(inAsset)
             );
