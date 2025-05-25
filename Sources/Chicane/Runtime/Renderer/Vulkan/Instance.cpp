@@ -64,11 +64,7 @@ namespace Chicane
                 return true;
             }
         
-            void init(
-                vk::Instance& outInstance,
-                vk::DispatchLoaderDynamic& outDldi,
-                SDL_Window* inWindow
-            )
+            void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
             {
                 std::uint32_t sdlExtensionCount = 0;
 

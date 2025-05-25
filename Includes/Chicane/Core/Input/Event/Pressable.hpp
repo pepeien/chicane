@@ -3,9 +3,9 @@
 #include "Chicane/Core/Async.hpp"
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
-#include "Chicane/Core/Input/Event/Status.hpp"
+#include "Chicane/Core/Input/Status.hpp"
 
-static constexpr const float COOLDOWN_IN_MS = 30.0f;
+static constexpr inline const float COOLDOWN_IN_MS = 30.0f;
 
 namespace Chicane
 {
@@ -15,7 +15,7 @@ namespace Chicane
         struct CHICANE_CORE PressableEvents
         {
         public:
-            using Events = std::unordered_map<B, std::unordered_map<Event::Status, std::vector<std::function<void()>>>>;
+            using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
             PressableEvents()
@@ -27,7 +27,7 @@ namespace Chicane
                     {
                         for (B button : m_pressed)
                         {
-                            exec(button, Event::Status::Pressed);
+                            exec(button, Status::Pressed);
                         }
                     },
                     COOLDOWN_IN_MS
@@ -35,7 +35,7 @@ namespace Chicane
             }
 
         public:
-            void bind(B inButton, Event::Status inStatus, std::function<void()> inExec)
+            void bind(B inButton, Status inStatus, std::function<void()> inExec)
             {
                 if (m_events.find(inButton) == m_events.end())
                 {
@@ -52,7 +52,7 @@ namespace Chicane
                 events.at(inStatus).push_back(inExec);
             }
 
-            void exec(B inButton, Event::Status inStatus)
+            void exec(B inButton, Status inStatus)
             {
                 store(inButton, inStatus);
 
@@ -81,7 +81,7 @@ namespace Chicane
             }
 
         private:
-            void store(B inButton, Event::Status inStatus)
+            void store(B inButton, Status inStatus)
             {
                 auto foundButton = std::find(
                     m_pressed.begin(),
@@ -89,7 +89,7 @@ namespace Chicane
                     inButton
                 );
 
-                if (inStatus == Event::Status::Pressed)
+                if (inStatus == Status::Pressed)
                 {
                     if (foundButton == m_pressed.end())
                     {

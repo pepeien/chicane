@@ -15,40 +15,43 @@ namespace Chicane
     {
         class CHICANE_RUNTIME Instance
         {
+        public:
+            using ViewportObservable   = Observable<Viewport>;
+            using ViewportSubscription = Subscription<Viewport>;
+
         protected:
             using Super = Instance;
 
         public:
-            Instance(const CreateInfo& inCreateInfo, Window::Instance* inWindow);
+            Instance();
             virtual ~Instance() = default;
 
-        public:
-            // Setup
-            virtual void initLayers() { return; };
-
-            // Event
-            virtual void onEvent(const SDL_Event& inEvent) { emmitEventToLayers(inEvent); };
-
-            // Render
-            virtual void render() { return; };
+        protected:
+            virtual void onInit() { return; }
+            virtual void onRender() { return; }
+            virtual void onEvent(const SDL_Event& inEvent) { return; }
+            virtual void onResizing() { return; }
+            virtual void onRepositioning() { return; }
 
         public:
+            // Status
             bool canRender() const;
 
-            // Settings
-            const Viewport& getViewport() const;
-            void setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight);
-            void setViewportSize(const Vec<2, std::uint32_t>& inSize);
-            void setViewportPosition(float inX, float inY);
-            void setViewportPosition(const Vec2& inPosition);
-            void setViewport(const Viewport& inViewport);
-            Subscription<const Viewport&>* watchViewport(
-                std::function<void (const Viewport&)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
-            );
+            // Lifecycle
+            void init(const CreateInfo& inCreateInfo);
+            void render();
+            void handle(const SDL_Event& inEvent);
 
-            // Layer
+            // Settings
+            const Vec2& getResolution() const;
+            void setResolution(const Vec2& inResolution);
+            void setResolution(float inWidth, float inHeight);
+
+            const Vec2& getPosition() const;
+            void setPosition(const Vec2& inPosition);
+            void setPosition(float inX, float inY);
+
+            // Layers
             bool hasLayer(Layer::Instance* inLayer) const;
             bool hasLayer(const std::string& inId) const;
 
@@ -64,7 +67,8 @@ namespace Chicane
             void pushLayerBefore(const std::string& inId, Layer::Instance* inLayer);
             void pushLayerAfter(const std::string& inId, Layer::Instance* inLayer);
 
-            void emmitEventToLayers(const SDL_Event& inEvent);
+            void emmitToLayers(const SDL_Event& inEvent);
+            void setupLayers();
             void destroyLayers();
             void rebuildLayers();
             void deleteLayers();
@@ -75,20 +79,17 @@ namespace Chicane
             void updateViewComponents();
 
         protected:
-            // Window
-            Window::Instance*                            m_window;
-
             // Settings
-            Viewport                                     m_viewport;  
-            std::unique_ptr<Observable<const Viewport&>> m_viewportObservable;      
+            Vec2                          m_resolution;
+            Vec2                          m_position;
 
             // Layer
-            std::vector<Layer::Instance*>                m_layers;
+            std::vector<Layer::Instance*> m_layers;
 
             // Game
-            std::vector<CCamera*>                        m_cameras;
-            std::vector<CLight*>                         m_lights;
-            std::vector<CMesh*>                          m_meshes;
+            std::vector<CCamera*>         m_cameras;
+            std::vector<CLight*>          m_lights;
+            std::vector<CMesh*>           m_meshes;
         };
     }
 }

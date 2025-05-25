@@ -10,9 +10,9 @@ namespace Chicane
         class CHICANE_GRID View : public Component
         {
         public:
-            static constexpr const char* TAG_ID = "View";
+            static constexpr inline const char* TAG_ID = "View";
 
-            static constexpr const char* PATH_ATTRIBUTE_NAME = "path";
+            static constexpr inline const char* PATH_ATTRIBUTE_NAME = "path";
 
         public:
             View(const std::string& inSource);
@@ -33,19 +33,8 @@ namespace Chicane
 
             const std::string& getPath() const;
 
-            Window::Instance* getWindow() const;
-            void setWindow(Window::Instance* inWindow);
-
-            std::vector<const Component*> getDrawableChildren() const;
-            std::vector<const Component*> flatChildren() const;
-
-        private:
-            std::vector<const Component*> flatChildren(const Component* inParent) const;
-
         protected:
             std::string         m_path;
-
-            Window::Instance*   m_window;
 
             Style::Source::List m_styles;
         };

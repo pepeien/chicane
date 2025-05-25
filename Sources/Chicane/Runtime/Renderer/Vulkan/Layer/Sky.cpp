@@ -36,7 +36,7 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        bool LSky::onBuild()
+        bool LSky::onInit()
         {
             if (!m_asset)
             {
@@ -168,7 +168,7 @@ namespace Chicane
 
                                     m_asset = inSky;
 
-                                    build();
+                                    init();
                                 }
                             );
                         }

@@ -9,10 +9,11 @@ namespace Chicane
     struct CHICANE_CORE Vec2 : public Vec<2, float>
     {
     public:
-        inline static constexpr Vec<2, float> Zero  = Vec<2, float>(0.0f);
+        static const Vec2 Zero;
+        static const Vec2 One;
 
-        inline static constexpr Vec<2, float> Up    = Vec<2, float>(Vec3::Up.x,    Vec3::Up.y);
-        inline static constexpr Vec<2, float> Right = Vec<2, float>(Vec3::Right.x, Vec3::Right.y);
+        static const Vec2 Up;
+        static const Vec2 Right;
 
     public:
         template<typename... A>

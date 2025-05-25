@@ -2,18 +2,18 @@
 
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Vec/Base.hpp"
-#include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 namespace Chicane
 {
     struct CHICANE_CORE Vec4 : public Vec<4, float>
     {
     public:
-        static constexpr Vec<4, float> Zero    = Vec<4, float>(0.0f);
+        static const Vec4 Zero;
+        static const Vec4 One;
 
-        static constexpr Vec<4, float> Up      = Vec<4, float>(Vec3::Up,      0.0f);
-        static constexpr Vec<4, float> Right   = Vec<4, float>(Vec3::Right,   0.0f);
-        static constexpr Vec<4, float> Forward = Vec<4, float>(Vec3::Forward, 0.0f);
+        static const Vec4 Up;
+        static const Vec4 Right;
+        static const Vec4 Forward;
 
     public:
         template<typename... A>

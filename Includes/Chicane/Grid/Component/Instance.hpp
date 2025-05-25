@@ -24,11 +24,12 @@ namespace Chicane
             virtual ~Component();
 
         public:
+            // Status
             virtual bool isDrawable() const;
 
-            virtual void onEvent(const SDL_Event& inEvent) { return; }
-
         protected:
+            // Events
+            virtual void onEvent(const SDL_Event& inEvent) { return; }
             virtual void onTick(float inDelta) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
@@ -43,7 +44,9 @@ namespace Chicane
             bool isValidChild(Component* inComponent) const;
 
             // Lifecycle
+            void handle(const SDL_Event& inEvent);
             void tick(float inDelta);
+            void refresh();
 
             // Properties
             const std::string& getTag() const;
@@ -112,7 +115,6 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
-            void refresh(bool canRefreshStyle = true);
 
             bool isReference(const std::string& inValue) const;
             Reference parseReference(const std::string& inValue) const;

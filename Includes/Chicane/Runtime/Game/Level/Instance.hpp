@@ -5,12 +5,19 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
-static constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
+static constexpr inline const float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {
     class CHICANE_RUNTIME Level
     {
+    public:
+        using ActorsObservable   = Observable<std::vector<Actor*>>;
+        using ActorsSubscription = Subscription<std::vector<Actor*>>;
+
+        using ComponentsObservable   = Observable<std::vector<Component*>>;
+        using ComponentsSubscription = Subscription<std::vector<Component*>>;
+
     public:
         Level();
         virtual ~Level();
@@ -79,10 +86,10 @@ namespace Chicane
 
         void removeActor(Actor* inActor);
 
-        Subscription<const std::vector<Actor*>&>* watchActors(
-            std::function<void (const std::vector<Actor*>&)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        ActorsSubscription* watchActors(
+            ActorsSubscription::NextCallback inNext,
+            ActorsSubscription::ErrorCallback inError = nullptr,
+            ActorsSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Components
@@ -138,10 +145,10 @@ namespace Chicane
 
         void removeComponent(Component* inComponent);
 
-        Subscription<const std::vector<Component*>&>* watchComponents(
-            std::function<void (const std::vector<Component*>&)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        ComponentsSubscription* watchComponents(
+            ComponentsSubscription::NextCallback inNext,
+            ComponentsSubscription::ErrorCallback inError = nullptr,
+            ComponentsSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Helper
@@ -230,12 +237,12 @@ namespace Chicane
         void refreshDefaultCamera();
 
     private:
-        std::vector<Actor*>                                         m_actors;
-        std::unique_ptr<Observable<const std::vector<Actor*>&>>     m_actorObservable;
+        std::vector<Actor*>                   m_actors;
+        std::unique_ptr<ActorsObservable>     m_actorObservable;
 
-        std::vector<Component*>                                     m_components;
-        std::unique_ptr<Observable<const std::vector<Component*>&>> m_componentObservable;
+        std::vector<Component*>               m_components;
+        std::unique_ptr<ComponentsObservable> m_componentObservable;
 
-        CCamera*                                                    m_defaultCamera;
+        CCamera*                              m_defaultCamera;
     };
 }

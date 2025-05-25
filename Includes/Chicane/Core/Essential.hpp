@@ -61,5 +61,5 @@
 #include <SDL3/SDL_audio.h>
 
 // Settings
-static constexpr const char* APPLICATION_NAME = "Chicane Engine";
-static constexpr const char* ENGINE_NAME      = "Chicane";
+static constexpr inline const char* APPLICATION_NAME = "Chicane Engine";
+static constexpr inline const char* ENGINE_NAME      = "Chicane";

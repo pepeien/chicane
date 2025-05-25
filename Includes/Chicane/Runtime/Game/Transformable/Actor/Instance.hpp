@@ -15,8 +15,8 @@ namespace Chicane
         virtual ~Actor() = default;
 
     protected:
-        virtual void onTick(float inDeltaTime) { return; };
-        virtual void onCollision(const Actor* inSubject) { return; };
+        virtual void onTick(float inDeltaTime) { return; }
+        virtual void onCollision(const Actor* inSubject) { return; }
 
     public:
         bool canTick() const;

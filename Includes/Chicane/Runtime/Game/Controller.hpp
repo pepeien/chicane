@@ -9,15 +9,21 @@ namespace Chicane
     class CHICANE_RUNTIME Controller
     {
     public:
+        using PawnObservable   = Observable<APawn*>;
+        using PawnSubscription = Subscription<APawn*>;
+
+    public:
         Controller();
         virtual ~Controller() = default;
 
-    public:
-        virtual void onActivation() { return; };
+    protected:
+        virtual void onActivation() { return; }
+        virtual void onEvent(const SDL_Event& inEvent) { return; }
 
     public:
         // Lifecycle
         void activate();
+        void handle(const SDL_Event& inEvent);
 
         template<class T = APawn>
         const T* getPawn() const
@@ -25,10 +31,10 @@ namespace Chicane
             return dynamic_cast<T*>(m_pawn);
         }
 
-        Subscription<APawn*>* watchAttachment(
-            std::function<void (APawn*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        PawnSubscription* watchAttachment(
+            PawnSubscription::NextCallback inNext,
+            PawnSubscription::ErrorCallback inError = nullptr,
+            PawnSubscription::CompleteCallback inComplete = nullptr
         );
 
         bool isAttached() const;
@@ -36,58 +42,44 @@ namespace Chicane
         void deattach();
 
         // Mouse Events
-        void bindEvent(Input::Mouse::MotionEventFunction inEvent);
-        void bindEvent(
-            Input::Mouse::Button inButton,
-            Input::Event::Status inStatus,
-            Input::Mouse::ButtonEventFunction inEvent
-        );
+        void bindEvent(Mouse::MotionEvent inEvent);
+        void bindEvent(Mouse::Button inButton, Input::Status inStatus, Mouse::ButtonEvent inEvent);
 
         // Keyboard Events
-        void bindEvent(
-            Input::Keyboard::Key inKey,
-            Input::Event::Status inStatus,
-            Input::Keyboard::KeyEventFunction inEvent
-        );
+        void bindEvent(Keyboard::Button inButton, Input::Status inStatus, Keyboard::Event inEvent);
 
         // Controller Events
-        void bindEvent(Input::Gamepad::MotionEventFunction inEvent);
-        void bindEvent(
-            Input::Gamepad::Button inButton,
-            Input::Event::Status inStatus,
-            Input::Gamepad::ButtonEventFunction inEvent
-        );
-
-        void onEvent(const SDL_Event& inEvent);
+        void bindEvent(Gamepad::MotionEvent inEvent);
+        void bindEvent(Gamepad::Button inButton, Input::Status inStatus, Gamepad::ButtonEvent inEvent);
 
     private:
         // Mouse Events
-        void onMouseMotionEvent(const SDL_MouseMotionEvent& inData);
-        void onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent);
+        void onMouseMotionEvent(const Mouse::MotionEventData& inData);
+        void onMouseButtonEvent(const Mouse::ButtonEventData& inEvent);
 
         // Keyboard Events
-        void onKeyboardKeyEvent(const SDL_KeyboardEvent& inEvent);
+        void onKeyboardButtonEvent(const Keyboard::EventData& inEvent);
 
         // Controller Events
-        void onGamepadMotionEvent(const SDL_GamepadAxisEvent& inEvent);
-        void onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent);
+        void onGamepadMotionEvent(const Gamepad::MotionEventData& inEvent);
+        void onGamepadButtonEvent(const Gamepad::ButtonEventData& inEvent);
 
         void clearEvents();
 
     private:
         // Pawn
-        APawn*                                            m_pawn;
-        std::unique_ptr<Observable<APawn*>>               m_pawnObservable;
+        APawn*                                   m_pawn;
+        std::unique_ptr<PawnObservable>          m_pawnObservable;
 
         // Mouse Events
-        Input::Events<Input::Mouse::MotionEvent>          m_mouseMotionEvents;
-        Input::PressableEvents<Input::Mouse::Button>      m_mouseButtonEvents;   
+        Input::Events<Mouse::MotionEventData>    m_mouseMotionEvents;
+        Input::PressableEvents<Mouse::Button>    m_mouseButtonEvents;   
 
         // Keyboard Events
-        Input::PressableEvents<Input::Keyboard::Key>      m_keyboardKeyEvents;
+        Input::PressableEvents<Keyboard::Button> m_keyboardKeyEvents;
 
         // Gamepad Events
-        Input::Events<Input::Gamepad::MotionEvent>        m_gamepadMotionEvents;
-        Input::PressableEvents<Input::Gamepad::Button>    m_gamepadButtonEvents;
+        Input::Events<Gamepad::MotionEventData>  m_gamepadMotionEvents;
+        Input::PressableEvents<Gamepad::Button>  m_gamepadButtonEvents;
     };
 }

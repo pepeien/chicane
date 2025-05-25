@@ -9,15 +9,19 @@ namespace Chicane
     class CHICANE_CORE Changeable
     {
     public:
+        using ChangesObservable   = Observable<>;
+        using ChangesSubscription = Subscription<>;
+
+    public:
         Changeable();
         virtual ~Changeable() = default;
 
     public:
         void emmitChanges();
-        Subscription<>* watchChanges(
-            std::function<void ()> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        ChangesSubscription* watchChanges(
+            ChangesSubscription::EmptyCallback inNext,
+            ChangesSubscription::ErrorCallback inError = nullptr,
+            ChangesSubscription::CompleteCallback inComplete = nullptr
         ) const;
 
         template<typename T>
@@ -34,6 +38,6 @@ namespace Chicane
         }
 
     private:
-        std::unique_ptr<Observable<>> m_observable;
+        std::unique_ptr<ChangesObservable> m_observable;
     };
 }

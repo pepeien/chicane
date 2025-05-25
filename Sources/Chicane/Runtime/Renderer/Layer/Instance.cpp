@@ -13,14 +13,14 @@ namespace Chicane
               m_status(Status::Offline)
         {}
 
-        void Instance::build()
+        void Instance::init()
         {
             if (!is(Status::Offline))
             {
                 return;
             }
 
-            if (!onBuild())
+            if (!onInit())
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace Chicane
 
         void Instance::setup()
         {
-            if (!is(Status::Initialized))
+            if (is(Status::Offline))
             {
                 return;
             }
@@ -81,6 +81,11 @@ namespace Chicane
             }
 
             onRender(outData);
+        }
+
+        void Instance::handle(const SDL_Event& inEvent)
+        {
+            onEvent(inEvent);
         }
 
         bool Instance::is(Status inStatus) const

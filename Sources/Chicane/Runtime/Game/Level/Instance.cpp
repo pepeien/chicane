@@ -1,15 +1,15 @@
 #include "Chicane/Runtime/Game/Level/Instance.hpp"
 
-static constexpr const std::uint32_t MAX_ACTOR_COUNT     = 10000;
-static constexpr const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
+static constexpr inline const std::uint32_t MAX_ACTOR_COUNT     = 10000;
+static constexpr inline const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
 
 namespace Chicane
 {
     Level::Level()
         : m_actors({}),
-        m_actorObservable(std::make_unique<Observable<const std::vector<Actor*>&>>()),
+        m_actorObservable(std::make_unique<ActorsObservable>()),
         m_components({}),
-        m_componentObservable(std::make_unique<Observable<const std::vector<Component*>&>>()),
+        m_componentObservable(std::make_unique<ComponentsObservable>()),
         m_defaultCamera(nullptr)
     {
         m_actors.reserve(MAX_ACTOR_COUNT);
@@ -87,10 +87,10 @@ namespace Chicane
         refreshDefaultCamera();
     }
 
-    Subscription<const std::vector<Actor*>&>* Level::watchActors(
-        std::function<void (const std::vector<Actor*>&)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
+    Level::ActorsSubscription* Level::watchActors(
+        ActorsSubscription::NextCallback inNext,
+        ActorsSubscription::ErrorCallback inError,
+        ActorsSubscription::CompleteCallback inComplete
     )
     {
         return m_actorObservable
@@ -129,10 +129,10 @@ namespace Chicane
         refreshDefaultCamera();
     }
 
-    Subscription<const std::vector<Component*>&>* Level::watchComponents(
-        std::function<void (const std::vector<Component*>&)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
+    Level::ComponentsSubscription* Level::watchComponents(
+        ComponentsSubscription::NextCallback inNext,
+        ComponentsSubscription::ErrorCallback inError,
+        ComponentsSubscription::CompleteCallback inComplete
     )
     {
         return m_componentObservable

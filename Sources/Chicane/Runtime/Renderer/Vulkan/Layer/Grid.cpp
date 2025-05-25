@@ -10,11 +10,9 @@ namespace Chicane
             : Layer::Instance("UI"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
-            m_vertexBuffer({}),
-            m_indexBuffer({}),
             m_clearValues({}),
             m_view(nullptr),
-            m_drawDatum({})
+            m_draws({})
         {
             m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
@@ -25,35 +23,42 @@ namespace Chicane
         {
             m_internals.logicalDevice.waitIdle();
 
-            destroyData();
+            destroyDraws();
 
             m_graphicsPipeline.reset();
         }
 
-        bool LGrid::onBuild()
+        bool LGrid::onInit()
         {
-            if (m_drawDatum.empty())
-            {
-                return false;
-            }
-
             initGraphicsPipeline();
             initFramebuffers();
-
-            buildData();
 
             return true;
         }
 
         bool LGrid::onRebuild()
         {
-            if (m_drawDatum.empty())
+            initFramebuffers();
+
+            return true;
+        }
+
+        bool LGrid::onSetup()
+        {
+            destroyDraws();
+
+            if (m_view == nullptr)
             {
                 return false;
             }
 
-            initFramebuffers();
+            buildDraws(m_view->getChildren());
 
+            if (m_draws.empty())
+            {
+                return false;
+            }
+    
             return true;
         }
 
@@ -86,30 +91,7 @@ namespace Chicane
             Application::watchView(
                 [&](Grid::View* inView)
                 {
-                    m_drawDatum.clear();
-
                     m_view = inView;
-
-                    if (!m_view)
-                    {
-                        return;
-                    }
-
-                    m_view->watchChanges(
-                        [&]()
-                        {
-                            refreshDrawDatum();
-
-                            if (is(Layer::Status::Offline))
-                            {
-                                build();
-
-                                return;
-                            }
-
-                            rebuildData();
-                        }
-                    );
                 }
             );
         }
@@ -178,158 +160,25 @@ namespace Chicane
             }
         }
 
-        void LGrid::buildVertexBuffer()
-        {
-            if (m_drawDatum.empty())
-            {
-                return;
-            }
-
-            std::vector<Chicane::Vertex> data = {};
-
-            for (const DrawData& drawData : m_drawDatum)
-            {
-                const std::vector<Chicane::Vertex>& vertices = drawData.primitive.vertices;
-
-                data.insert(
-                    data.end(),
-                    drawData.primitive.vertices.begin(),
-                    drawData.primitive.vertices.end()
-                );
-            }
-
-            Buffer::CreateInfo createInfo = {};
-            createInfo.physicalDevice   = m_internals.physicalDevice;
-            createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Chicane::Vertex) * data.size();
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                          vk::MemoryPropertyFlagBits::eHostCoherent;
-
-            Buffer::Instance stagingBuffer;
-            Buffer::init(stagingBuffer, createInfo);
-
-            void* writeLocation = m_internals.logicalDevice.mapMemory(
-                stagingBuffer.memory,
-                0,
-                createInfo.size
-            );
-            memcpy(writeLocation, data.data(), createInfo.size);
-            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
-
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
-                                          vk::BufferUsageFlagBits::eVertexBuffer;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-
-            Buffer::init(m_vertexBuffer, createInfo);
-            Buffer::copy(
-                stagingBuffer,
-                m_vertexBuffer,
-                createInfo.size,
-                m_internals.graphicsQueue,
-                m_internals.mainCommandBuffer
-            );
-
-            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
-        }
-
-        void LGrid::buildIndexuffer()
-        {
-            if (m_drawDatum.empty())
-            {
-                return;
-            }
-
-            std::vector<std::uint32_t> data = {};
-
-            for (const DrawData& drawData : m_drawDatum)
-            {
-                data.insert(
-                    data.end(),
-                    drawData.primitive.indices.begin(),
-                    drawData.primitive.indices.end()
-                );
-            }
-
-            Buffer::CreateInfo createInfo;
-            createInfo.physicalDevice   = m_internals.physicalDevice;
-            createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(std::uint32_t) * data.size();
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                          vk::MemoryPropertyFlagBits::eHostCoherent;
-
-            Buffer::Instance stagingBuffer;
-            Buffer::init(stagingBuffer, createInfo);
-
-            void* writeLocation = m_internals.logicalDevice.mapMemory(
-                stagingBuffer.memory,
-                0,
-                createInfo.size
-            );
-            memcpy(writeLocation, data.data(), createInfo.size);
-            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
-
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
-                                          vk::BufferUsageFlagBits::eIndexBuffer;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
-
-            Buffer::init(m_indexBuffer, createInfo);
-            Buffer::copy(
-                stagingBuffer,
-                m_indexBuffer,
-                createInfo.size,
-                m_internals.graphicsQueue,
-                m_internals.mainCommandBuffer
-            );
-
-            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
-        }
-
-        void LGrid::buildData()
-        {
-            buildVertexBuffer();
-            buildIndexuffer();
-        }
-
-        void LGrid::destroyData()
-        {
-            m_internals.logicalDevice.waitIdle();
-
-            Buffer::destroy(m_internals.logicalDevice, m_vertexBuffer);
-            Buffer::destroy(m_internals.logicalDevice, m_indexBuffer);
-        }
-
-        void LGrid::rebuildData()
-        {
-            destroyData();
-            buildData();
-        }
-
         void LGrid::renderComponents(const vk::CommandBuffer& inCommandBuffer)
         {
-            vk::Buffer vertexBuffers[] = { m_vertexBuffer.instance };
-            vk::DeviceSize offsets[]   = { 0 };
-
-            inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
-            inCommandBuffer.bindIndexBuffer(m_indexBuffer.instance, 0, vk::IndexType::eUint32);
-
             const Vec2& rootSize = m_view->getSize();
 
-            for (const DrawData& drawData : m_drawDatum)
+            for (const Draw& draw : m_draws)
             {
-                const Grid::Component*           component = drawData.component;
-                const Grid::Primitive::Compiled& primitive = drawData.compiledPrimitive;
-
-                const Vec2& size     = component->getSize();
-                const Vec2& position = component->getPosition();
+                const Vec2& size     = draw.size;
+                const Vec2& position = draw.position;
 
                 PushConstant pushConstant = {};
-                pushConstant.size     = size / rootSize;
-                pushConstant.position = {
-                    ((2.0f * position.x) / rootSize.x) - 1.0f,
-                    ((2.0f * position.y) / rootSize.y) - 1.0f
-                };
+                pushConstant.size       = size / rootSize;
+                pushConstant.position.x = ((2.0f * position.x) / rootSize.x) - 1.0f;
+                pushConstant.position.y = ((2.0f * position.y) / rootSize.y) - 1.0f;
+
+                vk::DeviceSize offsets[] = { 0 };
+
+                inCommandBuffer.bindVertexBuffers(0, 1, &draw.vertexBuffer.instance, offsets);
+
+                inCommandBuffer.bindIndexBuffer(draw.indexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 inCommandBuffer.pushConstants(
                     m_graphicsPipeline->layout,
@@ -339,53 +188,142 @@ namespace Chicane
                     &pushConstant
                 );
 
-                inCommandBuffer.drawIndexed(
-                    primitive.indexCount,
-                    1,
-                    primitive.firstIndex,
-                    0,
-                    0
-                );
+                inCommandBuffer.drawIndexed(draw.indexCount, 1, 0, 0, 0);
             }
         }
 
-        void LGrid::refreshDrawDatum()
+        void LGrid::setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices)
         {
-            m_drawDatum.clear();
-
-            std::uint32_t firstVertex = 0;
-            std::uint32_t firstIndex  = 0;
-
-            for (const Grid::Component* component : m_view->getDrawableChildren())
+            if (inVertices.empty())
             {
-                if (!component->hasPrimitive())
+                return;
+            }
+
+            Buffer::CreateInfo createInfo = {};
+            createInfo.physicalDevice   = m_internals.physicalDevice;
+            createInfo.logicalDevice    = m_internals.logicalDevice;
+            createInfo.size             = sizeof(Chicane::Vertex) * inVertices.size();
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            Buffer::Instance stagingBuffer;
+            Buffer::init(stagingBuffer, createInfo);
+
+            memcpy(
+                m_internals.logicalDevice.mapMemory(
+                    stagingBuffer.memory,
+                    0,
+                    createInfo.size
+                ),
+                inVertices.data(),
+                createInfo.size
+            );
+            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
+
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+            Buffer::init(outDraw.vertexBuffer, createInfo);
+            Buffer::copy(
+                stagingBuffer,
+                outDraw.vertexBuffer,
+                createInfo.size,
+                m_internals.graphicsQueue,
+                m_internals.mainCommandBuffer
+            );
+
+            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
+        }
+
+        void LGrid::setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices)
+        {
+            if (inIndices.empty())
+            {
+                return;
+            }
+
+            Buffer::CreateInfo createInfo;
+            createInfo.physicalDevice   = m_internals.physicalDevice;
+            createInfo.logicalDevice    = m_internals.logicalDevice;
+            createInfo.size             = sizeof(std::uint32_t) * inIndices.size();
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
+
+            Buffer::Instance stagingBuffer;
+            Buffer::init(stagingBuffer, createInfo);
+
+            memcpy(
+                m_internals.logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size),
+                inIndices.data(),
+                createInfo.size
+            );
+            m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
+
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+
+            Buffer::init(outDraw.indexBuffer, createInfo);
+            Buffer::copy(
+                stagingBuffer,
+                outDraw.indexBuffer,
+                createInfo.size,
+                m_internals.graphicsQueue,
+                m_internals.mainCommandBuffer
+            );
+
+            Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
+        }
+
+        void LGrid::buildDraws(const std::vector<Grid::Component*>& inComponents)
+        {
+            if (inComponents.empty())
+            {
+                return;
+            }
+
+            for (Grid::Component* component : inComponents)
+            {
+                component->refresh();
+
+                if (!component->isVisible())
                 {
                     continue;
                 }
 
-                Grid::Primitive primitive = component->getPrimitive();
-
-                for (std::uint32_t& index : primitive.indices)
+                if (component->isDrawable())
                 {
-                    index +=  firstVertex;
+                    const Grid::Primitive primitive = component->getPrimitive();
+
+                    Draw drawData = {};
+                    drawData.size        = component->getSize();
+                    drawData.position    = component->getPosition();
+                    drawData.vertexCount = primitive.vertices.size();
+                    drawData.indexCount  = primitive.indices.size();
+                    setDrawVertexBuffer(drawData, primitive.vertices);
+                    setDrawIndexBuffer(drawData, primitive.indices);
+
+                    m_draws.push_back(drawData);
                 }
 
-                Grid::Primitive::Compiled compiledPrimitive = {};
-                compiledPrimitive.vertexCount = primitive.vertices.size();
-                compiledPrimitive.firstVertex = firstVertex;
-                compiledPrimitive.indexCount  = primitive.indices.size();
-                compiledPrimitive.firstIndex  = firstIndex;
-      
-                DrawData drawData = {};
-                drawData.component         = component;
-                drawData.primitive         = primitive;
-                drawData.compiledPrimitive = compiledPrimitive;
-
-                m_drawDatum.push_back(drawData);
-
-                firstVertex += compiledPrimitive.vertexCount;
-                firstIndex  += compiledPrimitive.indexCount;
+                buildDraws(component->getChildren());
             }
+        }
+
+        void LGrid::destroyDraws()
+        {
+            m_internals.logicalDevice.waitIdle();
+
+            for (const Draw& draw : m_draws)
+            {
+                Buffer::destroy(m_internals.logicalDevice, draw.vertexBuffer);
+                Buffer::destroy(m_internals.logicalDevice, draw.indexBuffer);
+            }
+
+            m_draws.clear();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        bool LShadow::onBuild()
+        bool LShadow::onInit()
         {
             if (m_modelManager->isEmpty())
             {
@@ -117,7 +117,7 @@ namespace Chicane
 
                     if (is(Layer::Status::Offline))
                     {
-                        build();
+                        init();
 
                         return;
                     }

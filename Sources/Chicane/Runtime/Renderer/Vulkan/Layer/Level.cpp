@@ -31,7 +31,7 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        bool LLevel::onBuild()
+        bool LLevel::onInit()
         {
             if (m_modelManager->isEmpty() || m_textureManager->isEmpty())
             {
@@ -127,7 +127,7 @@ namespace Chicane
 
                     if (is(Layer::Status::Offline))
                     {
-                        build();
+                        init();
 
                         return;
                     }
@@ -146,7 +146,7 @@ namespace Chicane
 
                     if (is(Layer::Status::Offline))
                     {
-                        build();
+                        init();
 
                         return;
                     }

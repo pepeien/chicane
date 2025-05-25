@@ -10,9 +10,9 @@ namespace Chicane
     {
         namespace Texture
         {
-            static constexpr const char*   EXTENSION = ".btex";
-            static constexpr const char*   TAG       = "Texture";
-            static constexpr const std::uint32_t MAX_COUNT = 1000;
+            static constexpr inline const char*   EXTENSION = ".btex";
+            static constexpr inline const char*   TAG       = "Texture";
+            static constexpr inline const std::uint32_t MAX_COUNT = 1000;
         }
     }
 }

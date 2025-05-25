@@ -9,7 +9,9 @@ namespace Chicane
         struct CHICANE_RUNTIME CreateInfo
         {
         public:
-            Type type = Type::Undefined;
+            Vec2 resolution = Vec2::Zero;
+            Vec2 position   = Vec2::Zero;
+            Type type       = Type::Undefined;
         };
     }
 }

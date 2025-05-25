@@ -15,7 +15,7 @@ namespace Chicane
                 using Super = Instance;
 
             public:
-                static constexpr const char* TAG = "Asset";
+                static constexpr inline const char* TAG = "Asset";
 
             public:
                 Instance(const FileSystem::Path& inFilepath);

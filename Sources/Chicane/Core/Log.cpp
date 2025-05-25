@@ -4,20 +4,20 @@ namespace Chicane
 {
     namespace Log
     {
-        static constexpr const char* LOG_COLOR_START = "\33[";
-        static constexpr const char* LOG_COLOR_END   = "\33[0m\n";
+        static constexpr inline const char* LOG_COLOR_START = "\33[";
+        static constexpr inline const char* LOG_COLOR_END   = "\33[0m\n";
 
-        static constexpr const std::uint32_t MAX_LOG_COUNT = 500;
+        static constexpr inline const std::uint32_t MAX_LOG_COUNT = 500;
 
         static std::unordered_map<std::string, std::string> g_colors = {};
 
-        static List                              g_logs           = {};
-        static std::unique_ptr<Observable<List>> g_logsObservable = std::make_unique<Observable<List>>();
+        static List                            g_logs           = {};
+        static std::unique_ptr<ListObservable> g_logsObservable = std::make_unique<ListObservable>();
 
-        Subscription<List>* watchLogs(
-            std::function<void (List)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
+        ListSubscription* watchLogs(
+            ListSubscription::NextCallback inNext,
+            ListSubscription::ErrorCallback inError,
+            ListSubscription::CompleteCallback inComplete
         )
         {
             return g_logsObservable

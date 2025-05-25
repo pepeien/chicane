@@ -69,6 +69,8 @@ namespace Chicane
                 void updateDescriptorSets();
 
             private:
+                View::Data normalizeViewData(const View::Data& outData);
+
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
             public:
@@ -91,9 +93,9 @@ namespace Chicane
                 vk::Semaphore                                     renderSemaphore;
 
                 // Resources
-                Resource<Chicane::View::Data>                     cameraResource;
-                Resource<Chicane::View::Data>                     lightResource;
-                Resource<Box::Mesh::Parsed>                 meshResource;
+                Resource<View::Data>                              cameraResource;
+                Resource<View::Data>                              lightResource;
+                Resource<Box::Mesh::Parsed>                       meshResource;
 
                 std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;

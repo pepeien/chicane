@@ -6,9 +6,10 @@ namespace Chicane
 {
     namespace Input
     {
-        namespace Gamepad
+        enum class Status
         {
-           using ButtonEventFunction = std::function<void()>;
-        }
+            Pressed,
+            Released
+        };
     }
 }

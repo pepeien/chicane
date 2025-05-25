@@ -9,6 +9,15 @@ namespace Chicane
 {
     namespace Application
     {
+        using ControllerObservable   = Observable<Controller*>;
+        using ControllerSubscription = Subscription<Controller*>;
+
+        using LevelObservable   = Observable<Level*>;
+        using LevelSubscription = Subscription<Level*>;
+
+        using ViewObservable   = Observable<Grid::View*>;
+        using ViewSubscription = Subscription<Grid::View*>;
+
         class CHICANE_RUNTIME Instance
         {
         public:
@@ -26,29 +35,29 @@ namespace Chicane
             bool hasController() const;
             Controller* getController() const;
             void setController(Controller* inController);
-            Subscription<Controller*>* watchController(
-                std::function<void (Controller*)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
+            ControllerSubscription* watchController(
+                ControllerSubscription::NextCallback inNext,
+                ControllerSubscription::ErrorCallback inError = nullptr,
+                ControllerSubscription::CompleteCallback inComplete = nullptr
             ) const;
 
             bool hasLevel() const;
             Level* getLevel() const;
             void setLevel(Level* inLevel);
-            Subscription<Level*>* watchLevel(
-                std::function<void (Level*)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
+            LevelSubscription* watchLevel(
+                LevelSubscription::NextCallback inNext,
+                LevelSubscription::ErrorCallback inError = nullptr,
+                LevelSubscription::CompleteCallback inComplete = nullptr
             ) const;
 
             // UI
             bool hasView() const;
             Grid::View* getView() const;
             void setView(Grid::View* inView);
-            Subscription<Grid::View*>* watchView(
-                std::function<void (Grid::View*)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
+            ViewSubscription* watchView(
+                ViewSubscription::NextCallback inNext,
+                ViewSubscription::ErrorCallback inError = nullptr,
+                ViewSubscription::CompleteCallback inComplete = nullptr
             ) const;
 
             // Render
@@ -70,6 +79,7 @@ namespace Chicane
             }
 
             bool hasRenderer() const;
+            void setRenderer(Renderer::Type inType);
             template<class T = Renderer::Instance>
             T* getRenderer() const
             {
@@ -88,8 +98,8 @@ namespace Chicane
 
         private:
             // Setup
-            void initWindow(const Window::CreateInfo& inCreateInfo, Renderer::Type inRendererType);
-            void initRenderer(const Renderer::CreateInfo& inCreateInfo);
+            void initWindow();
+            void initRenderer();
             void initAssets(const std::string& inPath);
 
             // Lifecycle
@@ -98,22 +108,26 @@ namespace Chicane
 
         private:
             // Telemetry
-            Telemetry                                m_telemetry;
+            Telemetry                             m_telemetry;
 
             // Game
-            Controller*                              m_controller;
-            std::unique_ptr<Observable<Controller*>> m_controllerObservable;
+            Controller*                           m_controller;
+            std::unique_ptr<ControllerObservable> m_controllerObservable;
 
-            Level*                                   m_level;
-            std::unique_ptr<Observable<Level*>>      m_levelObservable;
+            Level*                                m_level;
+            std::unique_ptr<LevelObservable>      m_levelObservable;
 
             // Grid
-            Grid::View*                              m_view;
-            std::unique_ptr<Observable<Grid::View*>> m_viewObservable;
+            Grid::View*                           m_view;
+            std::unique_ptr<ViewObservable>       m_viewObservable;
 
-            // Render
-            std::unique_ptr<Window::Instance>        m_window;
-            std::unique_ptr<Renderer::Instance>      m_renderer;
+            // Window
+            Window::CreateInfo                    m_windowInfo;
+            std::unique_ptr<Window::Instance>     m_window;
+
+            // Renderer
+            Renderer::CreateInfo                  m_rendererInfo;
+            std::unique_ptr<Renderer::Instance>   m_renderer;
         };
     }
 }

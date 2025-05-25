@@ -9,16 +9,6 @@ namespace Chicane
         struct CHICANE_GRID Primitive
         {
         public:
-            struct Compiled
-            {
-            public:
-                std::uint32_t vertexCount   = 0;
-                std::uint32_t firstVertex   = 0;
-                std::uint32_t indexCount    = 0;
-                std::uint32_t firstIndex    = 0;
-            };
-
-        public:
             friend bool operator==(const Primitive& inLeft, const Primitive& inRight)
             {
                 return (

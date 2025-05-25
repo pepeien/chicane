@@ -9,8 +9,8 @@ namespace Chicane
         struct CHICANE_RUNTIME Viewport
         {
         public:
-            Vec<2, std::uint32_t> size     = Vec<2, std::uint32_t>(0);
-            Vec2         position = Vec2::Zero;
+            Vec2 size     = Vec2::Zero;
+            Vec2 position = Vec2::Zero;
         };
     }
 }

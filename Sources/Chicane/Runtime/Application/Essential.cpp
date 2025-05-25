@@ -72,10 +72,10 @@ namespace Chicane
             m_application->setController(inController);
         }
 
-        Subscription<Controller*>* watchController(
-            std::function<void (Controller*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
+        ControllerSubscription* watchController(
+            ControllerSubscription::NextCallback inNext,
+            ControllerSubscription::ErrorCallback inError,
+            ControllerSubscription::CompleteCallback inComplete
         )
         {
             if (!m_application)
@@ -116,10 +116,10 @@ namespace Chicane
             m_application->setLevel(inLevel);
         }
 
-        Subscription<Level*>* watchLevel(
-            std::function<void (Level*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete 
+        LevelSubscription* watchLevel(
+            LevelSubscription::NextCallback inNext,
+            LevelSubscription::ErrorCallback inError,
+            LevelSubscription::CompleteCallback inComplete 
         )
         {
             if (!m_application)
@@ -160,10 +160,10 @@ namespace Chicane
             m_application->setView(inView);
         }
 
-        Subscription<Grid::View*>* watchView(
-            std::function<void (Grid::View*)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
+        ViewSubscription* watchView(
+            ViewSubscription::NextCallback inNext,
+            ViewSubscription::ErrorCallback inError,
+            ViewSubscription::CompleteCallback inComplete
         )
         {
             if (!m_application)

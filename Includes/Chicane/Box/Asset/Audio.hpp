@@ -11,8 +11,8 @@ namespace Chicane
     {
         namespace Audio
         {
-            static constexpr const char* EXTENSION = ".baud";
-            static constexpr const char* TAG       = "Audio";
+            static constexpr inline const char* EXTENSION = ".baud";
+            static constexpr inline const char* TAG       = "Audio";
         }
     }
 }

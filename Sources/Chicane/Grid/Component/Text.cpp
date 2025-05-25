@@ -25,11 +25,6 @@ namespace Chicane
 
         void Text::setText(const std::string& inValue)
         {
-            if (inValue.empty())
-            {
-                return;
-            }
-
             if (String::areEquals(inValue, m_text))
             {
                 return;
@@ -81,6 +76,8 @@ namespace Chicane
 
                 static_cast<Character*>(child)->disable();
             }
+
+            emmitChanges();
         }
     }
 }

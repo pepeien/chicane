@@ -8,21 +8,21 @@ include(Functions.cmake)
 ##################### Settings #######################
 cmake_minimum_required(VERSION 3.16.0)
 
-set(CMAKE_CXX_STANDARD               17)
-set(CMAKE_CXX_STANDARD_REQUIRED      ON)
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_CXX_STANDARD          17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(NAME "Chicane")
 
 project(${NAME} VERSION 0.1.0)
 
-set(BUILD_SHARED_LIBS ON)
+##################### Options #######################
+option(CHICANE_SHARED "Build a shared version of the library" BUILD_SHARED_LIBS)
 
-if (BUILD_SHARED_LIBS)
+##################### Values #######################
+if (CHICANE_SHARED)
     add_definitions(-DBUILD_SHARED)
 endif()
 
-##################### Values #######################
 if (NOT DEFINED BUILD_DIR)
     if (NOT CMAKE_BUILD_TYPE)
         set(CMAKE_BUILD_TYPE Debug)
@@ -32,10 +32,10 @@ if (NOT DEFINED BUILD_DIR)
 endif()
 
 ## System
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG   "${BUILD_DIR}")
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${BUILD_DIR}")
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_DIR}")
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_DEBUG   "${BUILD_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE "${BUILD_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${BUILD_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${BUILD_DIR}")
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
 

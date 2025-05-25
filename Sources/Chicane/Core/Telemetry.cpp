@@ -1,6 +1,6 @@
 #include "Chicane/Core/Telemetry.hpp"
 
-static constexpr const float COOLDOWN_IN_MS = 5000.0f; // 5 Seconds
+static constexpr inline const float COOLDOWN_IN_MS = 5000.0f; // 5 Seconds
 
 namespace Chicane
 {

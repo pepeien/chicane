@@ -10,12 +10,14 @@ namespace Chicane
 {
     namespace Log
     {
-        using List = std::deque<Entry>;
+        using List             = std::deque<Entry>;
+        using ListObservable   = Observable<List>;
+        using ListSubscription = Subscription<List>;
 
-        CHICANE_CORE Subscription<List>* watchLogs(
-            std::function<void (List)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        CHICANE_CORE ListSubscription* watchLogs(
+            ListSubscription::NextCallback inNext,
+            ListSubscription::ErrorCallback inError = nullptr,
+            ListSubscription::CompleteCallback inComplete = nullptr
         );
 
         CHICANE_CORE void emmit(

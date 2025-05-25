@@ -11,30 +11,19 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        Renderer::Renderer(const Chicane::Renderer::CreateInfo& inCreateInfo, Window::Instance* inWindow)
-            : Chicane::Renderer::Instance(inCreateInfo, inWindow),
+        Renderer::Renderer()
+            : Super(),
             m_swapChain({}),
             m_imageCount(0),
-            m_currentImageIndex(0)
+            m_currentImageIndex(0),
+            m_vkViewport({}),
+            m_vkScissor(vk::Rect2D())
         {
-            watchViewport(
-                [this](const auto& inViewport)
-                {
-                    // Viewport
-                    m_vkViewport.x        = inViewport.position.x;
-                    m_vkViewport.y        = inViewport.position.y;
-                    m_vkViewport.width    = static_cast<float>(inViewport.size.x);
-                    m_vkViewport.height   = static_cast<float>(inViewport.size.y);
-                    m_vkViewport.minDepth = 0.0f;
-                    m_vkViewport.maxDepth = 1.0f;
+            m_vkViewport.minDepth = 0.0f;
+            m_vkViewport.maxDepth = 1.0f;
 
-                    // Scissor
-                    m_vkScissor.offset.x      = 0;
-                    m_vkScissor.offset.y      = 0;
-                    m_vkScissor.extent.width  = inViewport.size.x;
-                    m_vkScissor.extent.height = inViewport.size.y;
-                }
-            );
+            m_vkScissor.offset.x = 0;
+            m_vkScissor.offset.y = 0;
 
             buildInstance();
             buildDebugMessenger();
@@ -82,7 +71,7 @@ namespace Chicane
             return internals;
         }
 
-        void Renderer::initLayers()
+        void Renderer::onInit()
         {
             pushLayer(new LSky());
             pushLayer(new LShadow());
@@ -96,19 +85,28 @@ namespace Chicane
             {
                 rebuildSwapChain();
             }
-
-            Super::onEvent(inEvent);
         }
 
-        void Renderer::render()
+        void Renderer::onResizing()
         {
-            setupLayers();
+            // Viewport
+            m_vkViewport.width  = m_resolution.x;
+            m_vkViewport.height = m_resolution.y;
 
-            if (!canRender())
-            {
-                return;
-            }
+            // Scissor
+            m_vkScissor.extent.width  = m_resolution.x;
+            m_vkScissor.extent.height = m_resolution.y;
+        }
 
+        void Renderer::onRepositioning()
+        {
+            // Viewport
+            m_vkViewport.x = m_position.x;
+            m_vkViewport.y = m_position.y;
+        }
+
+        void Renderer::onRender()
+        {
             Frame::Instance& currentImage           = m_swapChain.frames.at(m_currentImageIndex);
             vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
 
@@ -193,11 +191,7 @@ namespace Chicane
 
         void Renderer::buildInstance()
         {
-            Vulkan::Instance::init(
-                m_instance,
-                m_dldi,
-                m_window->instance
-            );
+            Vulkan::Instance::init(m_instance, m_dldi);
         }
 
         void Renderer::destroyInstance()
@@ -233,7 +227,7 @@ namespace Chicane
             Surface::init(
                 m_surface,
                 m_instance,
-                m_window->instance
+                Application::getWindow()->getInstance()
             );
         }
 
@@ -299,7 +293,7 @@ namespace Chicane
                 frame.setupSync();
             }
 
-            setViewportSize(m_swapChain.extent.width, m_swapChain.extent.height);
+            setResolution(m_swapChain.extent.width, m_swapChain.extent.height);
         }
 
         void Renderer::destroySwapChain()
@@ -318,7 +312,7 @@ namespace Chicane
 
         void Renderer::rebuildSwapChain()
         {
-            if (m_window->isMinimized())
+            if (Application::getWindow()->isMinimized())
             {
                 return;
             }
@@ -394,14 +388,6 @@ namespace Chicane
             outFrame.updateCameraData(m_cameras);
             outFrame.updateLightData(m_lights);
             outFrame.updateMeshData(m_meshes);
-        }
-
-        void Renderer::setupLayers()
-        {
-            for (Layer::Instance* layer : m_layers)
-            {
-                layer->setup();
-            }
         }
 
         void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)

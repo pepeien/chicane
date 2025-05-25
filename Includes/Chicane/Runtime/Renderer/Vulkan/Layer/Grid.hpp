@@ -16,12 +16,15 @@ namespace Chicane
                 Vec2 position = {};
             };
 
-            struct DrawData
+            struct Draw
             {
             public:
-                const Grid::Component*    component         = {};
-                Grid::Primitive           primitive         = {};
-                Grid::Primitive::Compiled compiledPrimitive = {};
+                Vec2             size         = Vec2::Zero;
+                Vec2             position     = Vec2::Zero;
+                std::uint32_t    vertexCount  = 0;
+                Buffer::Instance vertexBuffer = {};
+                std::uint32_t    indexCount   = 0;
+                Buffer::Instance indexBuffer  = {};
             };
 
         public:
@@ -29,8 +32,9 @@ namespace Chicane
             ~LGrid();
 
         public:
-            bool onBuild() override;
+            bool onInit() override;
             bool onRebuild() override;
+            bool onSetup() override;
             void onRender(void* outData) override;
 
         private:
@@ -42,31 +46,24 @@ namespace Chicane
             // Frame
             void initFramebuffers();
 
-            // Vertex
-            void buildVertexBuffer();
-            void buildIndexuffer();
-            void buildData();
-            void destroyData();
-            void rebuildData();
-
             // Render Pass
             void renderComponents(const vk::CommandBuffer& inCommandBuffer);
 
-            // Data
-            void refreshDrawDatum();
+            // Draw
+            void setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices);
+            void setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices);
+            void buildDraws(const std::vector<Grid::Component*>& inComponents);
+            void destroyDraws();
 
         private:
             Renderer::Internals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
-            Buffer::Instance                            m_vertexBuffer;
-            Buffer::Instance                            m_indexBuffer;
-
             std::vector<vk::ClearValue>                 m_clearValues;
 
             const Grid::View*                           m_view;
-            std::vector<DrawData>                       m_drawDatum;
+            std::vector<Draw>                       m_draws;
         };
     }
 }

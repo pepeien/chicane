@@ -15,8 +15,8 @@ namespace Chicane
         virtual ~APawn() = default;
 
     protected:
-        virtual void onControlAttachment() { return; };
-        virtual void onControleDeattachment() { return; };
+        virtual void onControlAttachment() { return; }
+        virtual void onControleDeattachment() { return; }
 
     public:
         bool isControlled() const;

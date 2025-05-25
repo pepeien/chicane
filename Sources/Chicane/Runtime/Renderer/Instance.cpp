@@ -7,10 +7,9 @@ namespace Chicane
 {
     namespace Renderer
     {
-        Instance::Instance(const CreateInfo& inCreateInfo, Window::Instance* inWindow)
-            : m_window(inWindow),
-            m_viewport({}),
-            m_viewportObservable(std::make_unique<Observable<const Viewport&>>()),
+        Instance::Instance()
+            : m_resolution(Vec2::Zero),
+            m_position(Vec2::Zero),
             m_layers({}),
             m_cameras({}),
             m_lights({}),
@@ -34,51 +33,85 @@ namespace Chicane
             return false;
         }
 
-        const Viewport& Instance::getViewport() const
+        void Instance::init(const CreateInfo& inCreateInfo)
         {
-            return m_viewport;
+            setResolution(inCreateInfo.resolution);
+            setPosition(inCreateInfo.position);
+
+            onInit();
         }
 
-        void Instance::setViewportSize(std::uint32_t inWidth, std::uint32_t inHeight)
+        void Instance::render()
         {
-            setViewportSize(Vec<2, std::uint32_t>(inWidth, inHeight));
+            setupLayers();
+
+            if (!canRender())
+            {
+                return;
+            }
+
+            onRender();
         }
 
-        void Instance::setViewportSize(const Vec<2, std::uint32_t>& inSize)
+        void Instance::handle(const SDL_Event& inEvent)
         {
-            m_viewport.size = inSize;
+            onEvent(inEvent);
 
-            m_viewportObservable->next(m_viewport);
+            emmitToLayers(inEvent);
         }
 
-        void Instance::setViewportPosition(float inX, float inY)
+        const Vec2& Instance::getResolution() const
         {
-            setViewportPosition(Vec2(inX, inY));
+            return m_resolution;
         }
 
-        void Instance::setViewportPosition(const Vec2& inPosition)
+        void Instance::setResolution(const Vec2& inValue)
         {
-            m_viewport.position = inPosition;
-
-            m_viewportObservable->next(m_viewport);
+            setResolution(inValue.x, inValue.y);
         }
 
-        void Instance::setViewport(const Viewport& inViewport)
+        void Instance::setResolution(float inWidth, float inHeight)
         {
-            m_viewport = inViewport;
+            if (
+                std::fabs(m_resolution.x - inWidth) - FLT_EPSILON &&
+                std::fabs(m_resolution.y - inHeight) - FLT_EPSILON
+            )
+            {
+                return;
+            }
 
-            m_viewportObservable->next(m_viewport);
+            m_resolution.x = inWidth;
+            m_resolution.y = inHeight;
+
+            onResizing();
+
+            updateViewComponents();
         }
 
-        Subscription<const Viewport&>* Instance::watchViewport(
-            std::function<void (const Viewport&)> inNext,
-            std::function<void (const std::string&)> inError,
-            std::function<void ()> inComplete
-        )
+        const Vec2& Instance::getPosition() const
         {
-            return m_viewportObservable
-                ->subscribe(inNext, inError, inComplete)
-                ->next(m_viewport);
+            return m_position;
+        }
+
+        void Instance::setPosition(const Vec2& inValue)
+        {
+            setPosition(inValue.x, inValue.y);
+        }
+
+        void Instance::setPosition(float inX, float inY)
+        {
+            if (
+                std::fabs(m_position.x - inX) - FLT_EPSILON &&
+                std::fabs(m_position.y - inY) - FLT_EPSILON
+            )
+            {
+                return;
+            }
+
+            m_position.x = inX;
+            m_position.y = inY;
+
+            onRepositioning();
         }
 
         bool Instance::hasLayer(Layer::Instance* inLayer) const
@@ -112,7 +145,7 @@ namespace Chicane
                 inLayer
             );
 
-            inLayer->build();
+            inLayer->init();
         }
 
         void Instance::pushLayer(
@@ -165,7 +198,7 @@ namespace Chicane
 
             m_layers.push_back(inLayer);
 
-            inLayer->build();
+            inLayer->init();
         }
 
         void Instance::pushLayerBefore(const std::string& inId, Layer::Instance* inLayer)
@@ -191,7 +224,7 @@ namespace Chicane
                 inLayer
             );
 
-            inLayer->build();
+            inLayer->init();
         }
 
         void Instance::pushLayerAfter(const std::string& inId, Layer::Instance* inLayer)
@@ -217,10 +250,10 @@ namespace Chicane
                 inLayer
             );
 
-            inLayer->build();
+            inLayer->init();
         }
 
-        void Instance::emmitEventToLayers(const SDL_Event& inEvent)
+        void Instance::emmitToLayers(const SDL_Event& inEvent)
         {
             for (Layer::Instance* layer : m_layers)
             {
@@ -229,7 +262,15 @@ namespace Chicane
                     continue;
                 }
 
-                layer->onEvent(inEvent);
+                layer->handle(inEvent);
+            }
+        }
+
+        void Instance::setupLayers()
+        {
+            for (Layer::Instance* layer : m_layers)
+            {
+                layer->setup();
             }
         }
 
@@ -271,13 +312,6 @@ namespace Chicane
 
         void Instance::loadEvents()
         {
-            watchViewport(
-                [this](const Viewport& inViewport)
-                {
-                    updateViewComponents();
-                }
-            );
-
             Application::watchLevel(
                 [this](Level* inLevel) {
                     if (!inLevel)
@@ -329,12 +363,12 @@ namespace Chicane
         {
             for (CCamera* camera : m_cameras)
             {
-                camera->setViewport(m_viewport.size);
+                camera->setViewport(m_resolution);
             }
 
             for (CLight* light : m_lights)
             {
-                light->setViewport(m_viewport.size);
+                light->setViewport(m_resolution);
             }
         }
     }

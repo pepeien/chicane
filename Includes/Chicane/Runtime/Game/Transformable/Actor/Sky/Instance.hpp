@@ -8,6 +8,10 @@ namespace Chicane
     class CHICANE_RUNTIME ASky : public Actor
     {
     public:
+        using AssetObservable   = Observable<const Box::Sky::Instance*>;
+        using AssetSubscription = Subscription<const Box::Sky::Instance*>;
+
+    public:
         ASky();
         ASky(ASky&& other) = default;
         virtual ~ASky() = default;
@@ -17,14 +21,14 @@ namespace Chicane
     public:
         const Box::Sky::Instance* getSky() const;
         void setSky(const Box::Sky::Instance* inSky);
-        Subscription<const Box::Sky::Instance*>* watchSky(
-            std::function<void (const Box::Sky::Instance*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        AssetSubscription* watchSky(
+            AssetSubscription::NextCallback inNext,
+            AssetSubscription::ErrorCallback inError = nullptr,
+            AssetSubscription::CompleteCallback inComplete = nullptr
         );
 
     protected:
-        const Box::Sky::Instance*                              m_asset;
-        std::unique_ptr<Observable<const Box::Sky::Instance*>> m_assetObservable;
+        const Box::Sky::Instance*        m_asset;
+        std::unique_ptr<AssetObservable> m_assetObservable;
     };
 }

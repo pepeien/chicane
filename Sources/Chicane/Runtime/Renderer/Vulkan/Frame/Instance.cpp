@@ -91,16 +91,18 @@ namespace Chicane
                     return;
                 }
 
+                const View::Data data = normalizeViewData(inCameras.at(0)->getData());
+
                 Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Chicane::View::Data);
+                bufferCreateInfo.size             = sizeof(View::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 cameraResource.setup(bufferCreateInfo);
-                cameraResource.copyToBuffer(&inCameras.at(0)->getData());
+                cameraResource.copyToBuffer(&data);
             }
 
             void Instance::updateCameraData(const std::vector<CCamera*>& inCameras)
@@ -119,7 +121,8 @@ namespace Chicane
                     return;
                 }
 
-                cameraResource.copyToBuffer(&inCameras.at(0)->getData());
+                const View::Data data = normalizeViewData(inCameras.at(0)->getData());
+                cameraResource.copyToBuffer(&data);
             }
 
             void Instance::destroyCameraData()
@@ -136,16 +139,18 @@ namespace Chicane
                     return;
                 }
 
+                const View::Data data = normalizeViewData(inLights.at(0)->getData());
+    
                 Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Chicane::View::Data);
+                bufferCreateInfo.size             = sizeof(View::Data);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 lightResource.setup(bufferCreateInfo);
-                lightResource.copyToBuffer(&inLights.at(0)->getData());
+                lightResource.copyToBuffer(&data);
             }
 
             void Instance::updateLightData(const std::vector<CLight*>& inLights)
@@ -164,7 +169,9 @@ namespace Chicane
                     return;
                 }
 
-                lightResource.copyToBuffer(&inLights.at(0)->getData());
+                const View::Data data = normalizeViewData(inLights.at(0)->getData());
+
+                lightResource.copyToBuffer(&data);
             }
 
             void Instance::destroyLightData()
@@ -417,6 +424,15 @@ namespace Chicane
                     descriptorSetWrites,
                     nullptr
                 );
+            }
+
+            View::Data Instance::normalizeViewData(const View::Data& outData)
+            {
+                View::Data result = outData;
+                result.projection [1][1] *= -1;
+                result.viewProjection = result.projection * result.view;
+
+                return result;
             }
 
             void Instance::refreshMeshData(const std::vector<CMesh*>& inMeshes)

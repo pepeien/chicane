@@ -9,14 +9,14 @@ namespace Chicane
             void init(
                 vk::SurfaceKHR& outSurface,
                 const vk::Instance& inInstance,
-                SDL_Window* inWindow
+                void* inWindow
             )
             {
                 VkSurfaceKHR c_style_surface;
         
                 if (
                     !SDL_Vulkan_CreateSurface(
-                        inWindow,
+                        static_cast<SDL_Window*>(inWindow),
                         inInstance,
                         nullptr,
                         &c_style_surface

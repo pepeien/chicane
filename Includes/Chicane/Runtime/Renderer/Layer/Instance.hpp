@@ -18,27 +18,21 @@ namespace Chicane
 
             virtual ~Instance() = default;
 
-        public:
-            // Builds the Layer
-            virtual bool onBuild() { return false; }
-            // Destroys any resource that can be rebuilt at rebuild
+        protected:
+            virtual bool onInit() { return false; }
             virtual bool onDestroy() { return true; }
-            // Rebuilds resources of the layer
             virtual bool onRebuild() { return true; }
-            // Setup layer for rendering
             virtual bool onSetup() { return true; }
-            // Renders layer
             virtual void onRender(void* outData) { return; }
-
-            // Event
             virtual void onEvent(const SDL_Event& inEvent) { return; }
 
         public:  
-            void build();
+            void init();
             void destroy();
             void rebuild();
             void setup();
             void render(void* outData);
+            void handle(const SDL_Event& inEvent);
 
         public:
             bool is(Status inStatus) const;

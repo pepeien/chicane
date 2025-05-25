@@ -12,23 +12,27 @@ namespace Chicane
             template<typename I, typename E>
             class CHICANE_BOX Instance
             {
+            public:
+                using EventObservable   = Observable<EventType>;
+                using EventSubscription = Subscription<EventType>;
+
             protected:
                 using Super = Instance;
 
             public:
                 Instance()
-                    : m_observable(std::make_unique<Observable<EventType>>())
+                    : m_observable(std::make_unique<EventObservable>())
                 {}
 
                 virtual ~Instance() = default;
 
             protected:
                 // Event
-                virtual void onLoad(const std::string& inId, const I& inInstance) { return; };
-                virtual void onAllocation(const std::string& inId, const E& inData) { return; };
-                virtual void onDeallocation(const std::string& inId) { return; };
-                virtual void onActivation(const std::string& inId) { return; };
-                virtual void onDeactivation(const std::string& inId) { return; };
+                virtual void onLoad(const std::string& inId, const I& inInstance) { return; }
+                virtual void onAllocation(const std::string& inId, const E& inData) { return; }
+                virtual void onDeallocation(const std::string& inId) { return; }
+                virtual void onActivation(const std::string& inId) { return; }
+                virtual void onDeactivation(const std::string& inId) { return; }
 
             public:
                 // Status
@@ -198,10 +202,10 @@ namespace Chicane
                 }
 
                 // Events
-                Subscription<EventType>* watchChanges(
-                    std::function<void (EventType)> inNext,
-                    std::function<void (const std::string&)> inError = nullptr,
-                    std::function<void ()> inComplete = nullptr
+                EventSubscription* watchChanges(
+                    EventSubscription::NextCallback inNext,
+                    EventSubscription::ErrorCallback inError = nullptr,
+                    EventSubscription::CompleteCallback inComplete = nullptr
                 )
                 {
                     return m_observable->subscribe(

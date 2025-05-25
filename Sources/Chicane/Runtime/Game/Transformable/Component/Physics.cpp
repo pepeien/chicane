@@ -3,8 +3,8 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor.hpp"
 
-static constexpr const float FORCE_MAX_VELOCITY               = 0.3f;
-static constexpr const float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
+static constexpr inline const float FORCE_MAX_VELOCITY               = 0.3f;
+static constexpr inline const float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
 
 namespace Chicane
 {

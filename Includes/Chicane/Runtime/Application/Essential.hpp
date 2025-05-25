@@ -21,29 +21,29 @@ namespace Chicane
         CHICANE_RUNTIME bool hasController();
         CHICANE_RUNTIME Controller* getController();
         CHICANE_RUNTIME void setController(Controller* inController);
-        CHICANE_RUNTIME Subscription<Controller*>* watchController(
-            std::function<void (Controller*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        CHICANE_RUNTIME ControllerSubscription* watchController(
+            ControllerSubscription::NextCallback inNext,
+            ControllerSubscription::ErrorCallback inError = nullptr,
+            ControllerSubscription::CompleteCallback inComplete = nullptr
         );
 
         CHICANE_RUNTIME bool hasLevel();
         CHICANE_RUNTIME Level* getLevel();
         CHICANE_RUNTIME void setLevel(Level* inLevel);
-        CHICANE_RUNTIME Subscription<Level*>* watchLevel(
-            std::function<void (Level*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        CHICANE_RUNTIME LevelSubscription* watchLevel(
+            LevelSubscription::NextCallback inNext,
+            LevelSubscription::ErrorCallback inError = nullptr,
+            LevelSubscription::CompleteCallback inComplete = nullptr
         );
 
         // UI
         CHICANE_RUNTIME bool hasView();
         CHICANE_RUNTIME Grid::View* getView();
         CHICANE_RUNTIME void setView(Grid::View* inView);
-        CHICANE_RUNTIME Subscription<Grid::View*>* watchView(
-            std::function<void (Grid::View*)> inNext,
-            std::function<void (const std::string&)> inError = nullptr,
-            std::function<void ()> inComplete = nullptr
+        CHICANE_RUNTIME ViewSubscription* watchView(
+            ViewSubscription::NextCallback inNext,
+            ViewSubscription::ErrorCallback inError = nullptr,
+            ViewSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Render

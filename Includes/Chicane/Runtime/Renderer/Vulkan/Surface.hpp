@@ -11,7 +11,7 @@ namespace Chicane
             CHICANE_RUNTIME void init(
                 vk::SurfaceKHR& outSurface,
                 const vk::Instance& inInstance,
-                SDL_Window* inWindow
+                void* inWindow
             );
         }
     }

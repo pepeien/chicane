@@ -9,17 +9,18 @@ Application::Application()
     // Window
     createInfo.window.title   = "Shooter Sample";
     createInfo.window.size    = Chicane::Vec<2, int>(1600, 900);
-    createInfo.window.type    = Chicane::Window::Type::Windowed;
     createInfo.window.display = 0;
+    createInfo.window.type    = Chicane::Window::Type::Windowed;
 
     // Renderer
-    createInfo.renderer.type = Chicane::Renderer::Type::Vulkan;
+    createInfo.renderer.resolution = Chicane::Vec2(1660.0f, 900.0f);
+    createInfo.renderer.type       = Chicane::Renderer::Type::Vulkan;
 
     // Setup
     createInfo.onSetup = [this]() {
         initLevel();
         initCharacter();
-        initView();
+        //initView();
     };
 
     Chicane::Application::run(createInfo);

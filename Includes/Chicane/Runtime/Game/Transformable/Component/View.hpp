@@ -49,7 +49,6 @@ namespace Chicane
     protected:
         void updateProjection();
         void updateView();
-        void updateViewProjection();
 
     protected:
         View::Settings m_settings;

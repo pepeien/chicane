@@ -11,11 +11,11 @@ namespace Chicane
         {
         public:
             // Header
-            static constexpr const char* TAG_ID = "Button";
+            static constexpr inline const char* TAG_ID = "Button";
 
             // Attributes
-            static constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
-            static constexpr const char* ON_CLICK_EVENT_KEYWORD  = "$event";
+            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
+            static constexpr inline const char* ON_CLICK_EVENT_KEYWORD  = "$event";
 
         public:
             Button(const pugi::xml_node& inNode);

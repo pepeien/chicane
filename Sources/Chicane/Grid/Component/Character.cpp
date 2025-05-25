@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        static constexpr const char NULL_CHARACTER = '\0';
+        static constexpr inline const char NULL_CHARACTER = '\0';
 
         static const Box::Font::Parsed EMPTY_FONT  = {};
         static const Box::Font::Glyph      EMPTY_GLYPH = {};
@@ -25,6 +25,11 @@ namespace Chicane
         bool Character::isDrawable() const
         {
             return m_parent->isVisible() && hasGlyph() && hasPrimitive();
+        }
+
+        void Character::onRefresh()
+        {
+            refreshFont();
         }
 
         void Character::refreshPrimitive()
@@ -84,10 +89,6 @@ namespace Chicane
             }
 
             setProperty(m_character, inValue);
-
-            m_canUpdate = true;
-
-            refreshFont();
         }
 
         bool Character::hasFont() const
@@ -142,7 +143,11 @@ namespace Chicane
             m_style.width         = m_style.font.size;
             m_style.height        = m_style.font.size;
             m_style.margin.right  = glyph.bearing.x;
-            m_style.margin.bottom = glyph.bearing.y;
+            //m_style.margin.bottom = glyph.bearing.y;
+
+            m_canUpdate = true;
+
+            refreshPrimitive();
         }
     }
 }

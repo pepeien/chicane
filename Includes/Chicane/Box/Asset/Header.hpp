@@ -26,9 +26,9 @@ namespace Chicane
 
             public:
                 FileSystem::Path filepath = "";
-                std::uint32_t         version  = CURRENT_VERSION;
-                std::string           id       = "";
-                Type                  type     = Type::Undefined;
+                std::uint32_t    version  = CURRENT_VERSION;
+                std::string      id       = "";
+                Type             type     = Type::Undefined;
             };
         }
     }

@@ -7,7 +7,7 @@ namespace Chicane
 {
     Controller::Controller()
         : m_pawn(nullptr),
-        m_pawnObservable(std::make_unique<Observable<APawn*>>()),
+        m_pawnObservable(std::make_unique<PawnObservable>()),
         m_mouseMotionEvents({}),
         m_mouseButtonEvents({}),
         m_keyboardKeyEvents({}),
@@ -22,10 +22,52 @@ namespace Chicane
         onActivation();
     }
 
-    Subscription<APawn*>* Controller::watchAttachment(
-        std::function<void (APawn*)> inNext,
-        std::function<void (const std::string&)> inError,
-        std::function<void ()> inComplete
+    void Controller::handle(const SDL_Event& inEvent)
+    {
+        switch (inEvent.type)
+        {
+        // Mouse
+        case SDL_EVENT_MOUSE_MOTION:
+            onMouseMotionEvent(inEvent.motion);
+
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            onMouseButtonEvent(inEvent.button);
+
+            break;
+
+        // Keyboard
+        case SDL_EVENT_KEY_DOWN:
+        case SDL_EVENT_KEY_UP:
+            onKeyboardButtonEvent(inEvent.key);
+
+            break;
+
+        // Gamepad
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+            onGamepadMotionEvent(inEvent.gaxis);
+
+            break;
+
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+        case SDL_EVENT_GAMEPAD_BUTTON_UP:
+            onGamepadButtonEvent(inEvent.gbutton);
+
+            break;
+
+        default:
+            break;
+        }
+
+        onEvent(inEvent);
+    }
+
+    Controller::PawnSubscription* Controller::watchAttachment(
+        PawnSubscription::NextCallback inNext,
+        PawnSubscription::ErrorCallback inError,
+        PawnSubscription::CompleteCallback inComplete
     )
     {
         return m_pawnObservable
@@ -80,119 +122,67 @@ namespace Chicane
         m_pawnObservable->next(nullptr);
     }
 
-    void Controller::bindEvent(Input::Mouse::MotionEventFunction inEvent)
+    void Controller::bindEvent(Mouse::MotionEvent inEvent)
     {
         m_mouseMotionEvents.bind(inEvent);
     }
 
-    void Controller::bindEvent(
-        Input::Mouse::Button inButton,
-        Input::Event::Status inStatus,
-        Input::Mouse::ButtonEventFunction inEvent
-    )
+    void Controller::bindEvent(Mouse::Button inButton, Input::Status inStatus, Mouse::ButtonEvent inEvent)
     {
         m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
-    void Controller::bindEvent(
-        Input::Keyboard::Key inKey,
-        Input::Event::Status inStatus,
-        Input::Keyboard::KeyEventFunction inEvent
-    )
+    void Controller::bindEvent(Keyboard::Button inButton, Input::Status inStatus, Keyboard::Event inEvent)
     {
-        m_keyboardKeyEvents.bind(inKey, inStatus, inEvent);
+        m_keyboardKeyEvents.bind(inButton, inStatus, inEvent);
     }
 
-    void Controller::bindEvent(Input::Gamepad::MotionEventFunction inEvent)
+    void Controller::bindEvent(Gamepad::MotionEvent inEvent)
     {
         m_gamepadMotionEvents.bind(inEvent);
     }
 
-    void Controller::bindEvent(
-        Input::Gamepad::Button inButton,
-        Input::Event::Status inStatus,
-        Input::Gamepad::ButtonEventFunction inEvent
-    )
+    void Controller::bindEvent(Gamepad::Button inButton, Input::Status inStatus, Gamepad::ButtonEvent inEvent)
     {
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
-    void Controller::onEvent(const SDL_Event& inEvent)
-    {
-        switch (inEvent.type)
-        {
-        // Mouse
-        case SDL_EVENT_MOUSE_MOTION:
-            onMouseMotionEvent(inEvent.motion);
-
-            break;
-
-        case SDL_EVENT_MOUSE_BUTTON_DOWN:
-        case SDL_EVENT_MOUSE_BUTTON_UP:
-            onMouseButtonEvent(inEvent.button);
-
-            break;
-
-        // Keyboard
-        case SDL_EVENT_KEY_DOWN:
-        case SDL_EVENT_KEY_UP:
-            onKeyboardKeyEvent(inEvent.key);
-
-            break;
-
-        // Gamepad
-        case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-            onGamepadMotionEvent(inEvent.gaxis);
-
-            break;
-
-        case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
-        case SDL_EVENT_GAMEPAD_BUTTON_UP:
-            onGamepadButtonEvent(inEvent.gbutton);
-
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    void Controller::onMouseMotionEvent(const SDL_MouseMotionEvent& inData)
+    void Controller::onMouseMotionEvent(const Mouse::MotionEventData& inData)
     {
         m_mouseMotionEvents.exec(inData);
     }
 
-    void Controller::onMouseButtonEvent(const SDL_MouseButtonEvent& inEvent)
+    void Controller::onMouseButtonEvent(const Mouse::ButtonEventData& inEvent)
     {
-        Input::Mouse::Button button = (Input::Mouse::Button) inEvent.button;
-        Input::Event::Status status = inEvent.down ?
-            Input::Event::Status::Pressed :
-            Input::Event::Status::Released;
+        Mouse::Button button = (Mouse::Button) inEvent.button;
+        Input::Status status = inEvent.down ?
+            Input::Status::Pressed :
+            Input::Status::Released;
 
         m_mouseButtonEvents.exec(button, status);
     }
 
-    void Controller::onKeyboardKeyEvent(const SDL_KeyboardEvent& inEvent)
+    void Controller::onKeyboardButtonEvent(const Keyboard::EventData& inEvent)
     {
-        Input::Keyboard::Key key = (Input::Keyboard::Key) inEvent.scancode;
-        Input::Event::Status status = inEvent.down ?
-            Input::Event::Status::Pressed :
-            Input::Event::Status::Released;
+        Keyboard::Button button = (Keyboard::Button) inEvent.scancode;
+        Input::Status status = inEvent.down ?
+            Input::Status::Pressed :
+            Input::Status::Released;
 
-        m_keyboardKeyEvents.exec(key, status);
+        m_keyboardKeyEvents.exec(button, status);
     }
 
-    void Controller::onGamepadMotionEvent(const SDL_GamepadAxisEvent& inEvent)
+    void Controller::onGamepadMotionEvent(const Gamepad::MotionEventData& inEvent)
     {
         m_gamepadMotionEvents.exec(inEvent);
     }
 
-    void Controller::onGamepadButtonEvent(const SDL_GamepadButtonEvent& inEvent)
+    void Controller::onGamepadButtonEvent(const Gamepad::ButtonEventData& inEvent)
     {
-        Input::Gamepad::Button button = (Input::Gamepad::Button) inEvent.button;
-        Input::Event::Status status = inEvent.down ?
-            Input::Event::Status::Pressed :
-            Input::Event::Status::Released;
+        Gamepad::Button button = (Gamepad::Button) inEvent.button;
+        Input::Status status = inEvent.down ?
+            Input::Status::Pressed :
+            Input::Status::Released;
 
         m_gamepadButtonEvents.exec(button, status);
     }

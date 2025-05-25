@@ -49,18 +49,16 @@ namespace Chicane
             };
 
         public:
-            Renderer(const Chicane::Renderer::CreateInfo& inCreateInfo, Window::Instance* inWindow);
+            Renderer();
             ~Renderer();
 
         public:
-            // Setup
-            void initLayers() override;
-
-            // Events
+            // Lifecycle
+            void onInit() override;
+            void onRender() override;
             void onEvent(const SDL_Event& inEvent) override;
-
-            // Render
-            void render() override;
+            void onResizing() override;
+            void onRepositioning() override;
 
         public:
             Internals getInternals();

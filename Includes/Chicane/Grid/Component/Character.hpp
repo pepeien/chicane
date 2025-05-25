@@ -11,13 +11,15 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr const char* TAG_ID = "Character";
+            static constexpr inline const char* TAG_ID = "Character";
 
         public:
             Character();
 
         public:
             bool isDrawable() const override;
+
+            void onRefresh() override;
 
         protected:
             void refreshPrimitive() override;

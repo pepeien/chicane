@@ -9,6 +9,7 @@ namespace Chicane
         enum class Type : std::uint8_t
         {
             Undefined,
+            OpenGL,
             Vulkan
         };
     }

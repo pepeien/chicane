@@ -3,10 +3,10 @@
 #include "Actor.hpp"
 #include "Game.hpp"
 
-static constexpr std::uint32_t APPLE_DEPTH_COUNT  = 2;
-static constexpr std::uint32_t APPLE_COLUMN_COUNT = 5;
-static constexpr std::uint32_t APPLE_ROW_COUNT    = 2;
-static constexpr float         APPLE_STEP         = 20.0f;
+static constexpr inline std::uint32_t APPLE_DEPTH_COUNT  = 2;
+static constexpr inline std::uint32_t APPLE_COLUMN_COUNT = 5;
+static constexpr inline std::uint32_t APPLE_ROW_COUNT    = 2;
+static constexpr inline float         APPLE_STEP         = 20.0f;
 
 Level::Level()
     : Chicane::Level()

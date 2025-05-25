@@ -10,7 +10,7 @@ namespace Chicane
     {
         namespace Texture
         {
-            static constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
             static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
                 { "PNG", Vendor::Png }

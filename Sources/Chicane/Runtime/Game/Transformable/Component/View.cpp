@@ -148,10 +148,8 @@ namespace Chicane
             m_data.clip.x,
             m_data.clip.y
         );
-        // Normalize OpenGL's to Vulkan's coordinate system
-        m_data.projection[1][1] *= -1;
 
-        updateViewProjection();
+        m_frustum.update(this);
     }
 
     void CView::updateView()
@@ -161,14 +159,6 @@ namespace Chicane
             m_focusPoint,
             getUp()
         );
-
-        updateViewProjection();
-    }
-
-    void CView::updateViewProjection()
-    {
-        m_data.viewProjection         = m_data.projection * m_data.view;
-        m_data.inversedViewProjection = glm::inverse(m_data.viewProjection);
 
         m_frustum.update(this);
     }

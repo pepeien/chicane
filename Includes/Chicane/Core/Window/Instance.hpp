@@ -14,31 +14,41 @@ namespace Chicane
         class CHICANE_CORE Instance
         {
         public:
-            Instance(const CreateInfo& inCreateInfo, Renderer::Type inRendererType);
+            using SizeObservable   = Observable<Vec<2, int>>;
+            using SizeSubscription = Subscription<Vec<2, int>>;
+
+        public:
+            Instance();
             ~Instance();
 
         public:
-            // Event
-            void onEvent(const SDL_Event& inEvent);
+            // Lifecycle
+            void init(const CreateInfo& inCreateInfo, Renderer::Type inType);
+            void handle(const SDL_Event& inEvent);
 
             // Settings
             void setTitle(const std::string& inTitle);
-            void setIcon(const std::string& inIconPath);
+            void setIcon(const std::string& inPath);
 
             const Vec<2, int>& getSize() const;
-            void setSize(const Vec<2, int>& inSize);
+            void setSize(const Vec<2, int>& inValue);
             void setSize(int inWidth, int inHeight);
 
             const Vec<2, int>& getPosition() const;
-            void setPosition(const Vec<2, int>& inPosition);
+            void setPosition(const Vec<2, int>& inValue);
             void setPosition(int inX, int inY);
 
-            void setDisplay(int inMonitorIndex);
+            void setDisplay(int inIndex);
 
             void setType(Type inType);
             Type getType() const;
 
             // Status
+            void* getInstance() const;
+
+            bool wasCreated() const;
+            void destroy();
+
             bool isFocused() const;
             void switchFocus();
             void focus();
@@ -51,10 +61,10 @@ namespace Chicane
             bool isMinimized();
 
             // Event
-            Subscription<const Vec<2, int>&>* watchSize(
-                std::function<void (const Vec<2, int>&)> inNext,
-                std::function<void (const std::string&)> inError = nullptr,
-                std::function<void ()> inComplete = nullptr
+            SizeSubscription* watchSize(
+                SizeSubscription::NextCallback inNext,
+                SizeSubscription::ErrorCallback inError = nullptr,
+                SizeSubscription::CompleteCallback inComplete = nullptr
             );
 
         private:
@@ -62,22 +72,27 @@ namespace Chicane
             void refreshSize();
             void refreshPosition();
 
-        public:
-            SDL_Window*                                     instance;
+            void emmitWarning(const std::string& inMessage);
+            void emmitError(const std::string& inMessage);
 
         private:
+            void*                           m_instance;
+
             // Settings
-            Type                                            m_type;
-            Vec<2, int>                                     m_size;
-            Vec<2, int>                                     m_position;
+            std::string                     m_title;
+            std::string                     m_icon;
+            Vec<2, int>                     m_size;
+            int                             m_display;
+            Type                            m_type;
+            Vec<2, int>                     m_position;
 
             // Status
-            bool                                            m_bIsFocused;
-            bool                                            m_bIsResizable;
-            bool                                            m_bIsMinimized; // Only takes effect when the type is `Window::Type::Windowed`
+            bool                            m_bIsFocused;
+            bool                            m_bIsResizable;
+            bool                            m_bIsMinimized; // Only takes effect when the type is `Window::Type::Windowed`
 
             // Event
-            std::unique_ptr<Observable<const Vec<2, int>&>> m_sizeObservable;
+            std::unique_ptr<SizeObservable> m_sizeObservable;
         };
     }
 }

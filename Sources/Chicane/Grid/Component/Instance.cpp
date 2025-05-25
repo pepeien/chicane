@@ -30,15 +30,6 @@ namespace Chicane
             m_primitive({})
         {
             m_style.setParent(this);
-
-            m_style.watchChanges(
-                [&]()
-                {
-                    refresh(false);
-
-                    emmitChanges();
-                }
-            );
         }
 
         Component::~Component()
@@ -56,16 +47,29 @@ namespace Chicane
             return isVisible() && hasPrimitive();
         }
 
+        void Component::handle(const SDL_Event& inEvent)
+        {
+            onEvent(inEvent);
+        }
+
         void Component::tick(float inDelta)
         {
-            refreshStyle();
-
             onTick(inDelta);
 
             for (Component* child : m_children)
             {
                 child->tick(inDelta);
             }
+        }
+
+        void Component::refresh()
+        {
+            refreshStyle();
+            refreshSize();
+            refreshPosition();
+            refreshPrimitive();
+
+            onRefresh();
         }
 
         bool Component::isRoot() const
@@ -376,18 +380,6 @@ namespace Chicane
             m_parent = inComponent;
 
             onAdoption(inComponent);
-
-            if (!m_parent || isRoot())
-            {
-                return;
-            }
-
-            m_parent->watchChanges(
-                [this]()
-                {
-                    refresh();
-                }
-            );
         }
 
         bool Component::hasChildren() const
@@ -440,7 +432,16 @@ namespace Chicane
 
         void Component::addCursor(float inX, float inY)
         {
-            setCursor(m_cursor.x + inX, m_cursor.y + inY);
+            Vec2 cursor = m_cursor;
+            cursor.x += inX;
+
+            if (cursor.x >= m_size.x)
+            {
+                cursor.x = 0;
+                cursor.y = inY;
+            }
+
+            setCursor(cursor);
         }
 
         void Component::setCursor(const Vec2& inCursor)
@@ -547,6 +548,8 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
+            setCursor(0.0f, 0.0f);
+
             Vec2 margin = Vec2(
                 m_style.margin.left - m_style.margin.right,
                 m_style.margin.top - m_style.margin.bottom
@@ -585,20 +588,6 @@ namespace Chicane
             m_parent->addCursor(occupiedSpace.x, 0.0f);
 
             setPosition(cursor + margin);
-        }
-
-        void Component::refresh(bool canRefreshStyle)
-        {
-            if (canRefreshStyle)
-            {
-                refreshStyle();
-            }
-
-            refreshSize();
-            refreshPosition();
-            refreshPrimitive();
-
-            onRefresh();
         }
 
         std::string Component::parseText(const std::string& inValue) const

@@ -234,7 +234,7 @@ namespace Chicane
             return std::find_if(
                 inValue.begin(), 
                 inValue.end(),
-                [](unsigned char c) { return !std::isdigit(c); }
+                [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
             ) != inValue.end();
         }
     }
