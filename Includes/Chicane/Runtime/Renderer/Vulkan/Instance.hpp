@@ -8,8 +8,20 @@ namespace Chicane
     {
         namespace Instance
         {
+            static const std::vector<const char*> LAYERS = {
+                #if IS_DEBUGGING
+                    "VK_LAYER_KHRONOS_validation"
+                #endif
+            };
+
+            static const std::vector<const char*> EXTENSIONS = {
+                #if IS_DEBUGGING
+                    VK_EXT_DEBUG_UTILS_EXTENSION_NAME
+                #endif
+            };
+
             CHICANE_RUNTIME bool areExtensionsSupported(const std::vector<const char*>& inExtensions);
-            CHICANE_RUNTIME bool areValidationLayersSupported(const std::vector<const char*>& inValidationLayers);
+            CHICANE_RUNTIME bool areLayersSupported(const std::vector<const char*>& inLayers);
 
             CHICANE_RUNTIME void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi);
         }

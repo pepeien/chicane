@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Text";
+            static inline constexpr const char* TAG_ID = "Text";
 
         public:
             Text(const pugi::xml_node& inNode);

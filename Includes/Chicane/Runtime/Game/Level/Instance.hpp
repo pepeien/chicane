@@ -5,7 +5,7 @@
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Instance.hpp"
 
-static constexpr inline const float LINE_TRACE_STEP_SIZE = 0.1f;
+static inline constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {

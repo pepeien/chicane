@@ -12,8 +12,8 @@ namespace Chicane
     {
         namespace Model
         {
-            static constexpr inline const char* EXTENSION = ".bmdl";
-            static constexpr inline const char* TAG       = "Model";
+            static inline constexpr const char* EXTENSION = ".bmdl";
+            static inline constexpr const char* TAG       = "Model";
         }
     }
 }

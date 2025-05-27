@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Model
         {
-            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
             static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
                 { "OBJ", Vendor::Wavefront }

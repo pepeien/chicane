@@ -4,10 +4,10 @@ namespace Chicane
 {
     namespace Log
     {
-        static constexpr inline const char* LOG_COLOR_START = "\33[";
-        static constexpr inline const char* LOG_COLOR_END   = "\33[0m\n";
+        static inline constexpr const char* LOG_COLOR_START = "\33[";
+        static inline constexpr const char* LOG_COLOR_END   = "\33[0m\n";
 
-        static constexpr inline const std::uint32_t MAX_LOG_COUNT = 500;
+        static inline constexpr const std::uint32_t MAX_LOG_COUNT = 500;
 
         static std::unordered_map<std::string, std::string> g_colors = {};
 

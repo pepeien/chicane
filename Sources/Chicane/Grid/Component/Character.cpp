@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        static constexpr inline const char NULL_CHARACTER = '\0';
+        static inline constexpr const char NULL_CHARACTER = '\0';
 
         static const Box::Font::Parsed EMPTY_FONT  = {};
         static const Box::Font::Glyph      EMPTY_GLYPH = {};

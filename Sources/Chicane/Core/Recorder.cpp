@@ -1,6 +1,6 @@
 #include "Chicane/Core/Recorder.hpp"
 
-static constexpr inline const float COOLDOWN_IN_MS = 10.0f; // 0.1 Seconds
+static inline constexpr const float COOLDOWN_IN_MS = 10.0f; // 0.1 Seconds
 
 namespace Chicane
 {

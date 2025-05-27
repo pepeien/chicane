@@ -5,7 +5,7 @@
 #include "Chicane/Core/Input/Status.hpp"
 #include "Chicane/Core/Recorder.hpp"
 
-static constexpr inline const float COOLDOWN_IN_MS = 30.0f;
+static inline constexpr const float COOLDOWN_IN_MS = 30.0f;
 
 namespace Chicane
 {

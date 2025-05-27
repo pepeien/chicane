@@ -13,8 +13,8 @@ namespace Chicane
     {
         namespace Font
         {
-            static constexpr inline const char* EXTENSION = ".bfon";
-            static constexpr inline const char* TAG       = "Font";
+            static inline constexpr const char* EXTENSION = ".bfon";
+            static inline constexpr const char* TAG       = "Font";
         }
     }
 }

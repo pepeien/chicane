@@ -9,8 +9,8 @@ namespace Chicane
     {
         namespace Sky
         {
-            static constexpr inline const char* EXTENSION = ".bsky";
-            static constexpr inline const char* TAG       = "Sky";
+            static inline constexpr const char* EXTENSION = ".bsky";
+            static inline constexpr const char* TAG       = "Sky";
 
             static const std::vector<Side> ORDER = {
                 Side::Left,

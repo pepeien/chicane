@@ -5,7 +5,7 @@
 #include "Chicane/Core.hpp"
 #include "Game.hpp"
 
-static constexpr inline const float MOVE_COEFFICIENT = 3.0f;
+static inline constexpr const float MOVE_COEFFICIENT = 3.0f;
 
 Character::Character()
     : Chicane::ACharacter(),

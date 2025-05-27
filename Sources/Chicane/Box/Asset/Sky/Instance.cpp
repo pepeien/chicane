@@ -10,8 +10,8 @@ namespace Chicane
     {
         namespace Sky
         {
-            static constexpr inline const char* SIDES_TAG_NAME              = "Sides";
-            static constexpr inline const char* TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
+            static inline constexpr const char* SIDES_TAG_NAME              = "Sides";
+            static inline constexpr const char* TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
 
             static const std::map<std::string, Side> SIDE_MAP {
                 { "UP",    Side::Up },

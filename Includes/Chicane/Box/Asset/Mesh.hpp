@@ -10,8 +10,8 @@ namespace Chicane
     {
         namespace Mesh
         {
-            static constexpr inline const char* EXTENSION = ".bmsh";
-            static constexpr inline const char* TAG       = "Mesh";
+            static inline constexpr const char* EXTENSION = ".bmsh";
+            static inline constexpr const char* TAG       = "Mesh";
         }
     }
 }

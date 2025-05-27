@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static constexpr inline const char* TAG_ID = "Character";
+            static inline constexpr const char* TAG_ID = "Character";
 
         public:
             Character();

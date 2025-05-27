@@ -10,8 +10,8 @@ namespace Chicane
     {
         namespace Mesh
         {
-            static constexpr inline const char* GROUP_TAG               = "Group";
-            static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME = "id";
+            static inline constexpr const char* GROUP_TAG               = "Group";
+            static inline constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";
 
             Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath)

@@ -10,60 +10,42 @@ namespace Chicane
         {
             bool areExtensionsSupported(const std::vector<const char*>& inExtensions)
             {
-                bool bIsSupported = false;
+                std::set<std::string> extensions(inExtensions.begin(), inExtensions.end());
 
-                auto supportedExtensions = vk::enumerateInstanceExtensionProperties();
-
-                for (const char* extensionName : inExtensions)
+                for (vk::ExtensionProperties& extension : vk::enumerateInstanceExtensionProperties())
                 {
-                    bIsSupported = false;
-
-                    for (const auto& extensionProperties : supportedExtensions)
-                    {
-                        if (!String::areEquals(extensionName, extensionProperties.extensionName))
-                        {
-                            bIsSupported = true;
-
-                            break;
-                        }
-                    }
-
-                    if (!bIsSupported)
-                    {
-                        return false;
-                    }
+                    extensions.erase(extension.extensionName);
                 }
 
-                return true;
+                for (const std::string& unsupportedExtension : extensions)
+                {
+                    Log::warning(
+                        "The vulkan instance extension [%s] is not supported",
+                        unsupportedExtension.c_str()
+                    );
+                }
+
+                return extensions.empty();
             }
 
-            bool areValidationLayersSupported(const std::vector<const char*>& inValidationLayers)
+            bool areLayersSupported(const std::vector<const char*>& inLayers)
             {
-                bool bIsSupported = false;
+                std::set<std::string> layers(inLayers.begin(), inLayers.end());
 
-                auto supportedLayers = vk::enumerateInstanceLayerProperties();
-
-                for (const char* layerName : inValidationLayers)
+                for (vk::LayerProperties& layer : vk::enumerateInstanceLayerProperties())
                 {
-                    bIsSupported = false;
-
-                    for (const auto& supportedLayer : supportedLayers)
-                    {
-                        if (strcmp(layerName, supportedLayer.layerName) == 0)
-                        {
-                            bIsSupported = true;
-
-                            break;
-                        }
-                    }
-
-                    if (!bIsSupported)
-                    {
-                        return false;
-                    }
+                    layers.erase(layer.layerName);
                 }
 
-                return true;
+                for (const std::string& unsupportedLayer : layers)
+                {
+                    Log::warning(
+                        "The vulkan instance layer [%s] is not supported",
+                        unsupportedLayer.c_str()
+                    );
+                }
+
+                return layers.empty();
             }
         
             void init(vk::Instance& outInstance, vk::DispatchLoaderDynamic& outDldi)
@@ -77,26 +59,23 @@ namespace Chicane
                     throw std::runtime_error(SDL_GetError());
                 }
 
-                std::vector<const char*> extensions(
+                std::vector<const char*> extensions = EXTENSIONS;
+                extensions.insert(
+                    extensions.end(),
                     sdlRawExtensions,
                     sdlRawExtensions + sdlExtensionCount
                 );
 
-                if (IS_DEBUGGING)
-                {
-                    extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-                }
-
                 if (!areExtensionsSupported(extensions))
                 {
-                    throw std::runtime_error("SDL layers are not fully supported");
+                    throw std::runtime_error("Extensions are not fully supported");
                 }
 
-                std::vector<const char*> layers = { LAYERS.begin(), LAYERS.end() };
+                std::vector<const char*> layers = LAYERS;
 
-                if (!areValidationLayersSupported(layers))
+                if (!areLayersSupported(layers))
                 {
-                    throw std::runtime_error("Validation Layers are not fully supported");
+                    throw std::runtime_error("Layers are not fully supported");
                 }
 
                 vk::ApplicationInfo applicationInfo = {};

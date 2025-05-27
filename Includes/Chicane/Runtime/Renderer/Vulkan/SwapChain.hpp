@@ -13,6 +13,8 @@ namespace Chicane
     {
         namespace SwapChain
         {
+            static inline constexpr const std::uint32_t MAX_IMAGE_COUNT = 3;
+
             CHICANE_RUNTIME void querySupport(
                 SupportDetails& outSupportDetails,
                 const vk::PhysicalDevice& inPhysicalDevice,

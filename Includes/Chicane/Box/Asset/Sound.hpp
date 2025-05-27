@@ -9,10 +9,10 @@ namespace Chicane
     {
         namespace Sound
         {
-            static constexpr inline const char* EXTENSION = ".bsnd";
-            static constexpr inline const char* TAG       = "Sound";
+            static inline constexpr const char* EXTENSION = ".bsnd";
+            static inline constexpr const char* TAG       = "Sound";
 
-            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
         }
     }
 }

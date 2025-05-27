@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Game/Level/Instance.hpp"
 
-static constexpr inline const std::uint32_t MAX_ACTOR_COUNT     = 10000;
-static constexpr inline const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
+static inline constexpr const std::uint32_t MAX_ACTOR_COUNT     = 10000;
+static inline constexpr const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
 
 namespace Chicane
 {

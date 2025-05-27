@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Font
         {
-            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
             static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
                 { "TTF", Vendor::TrueType }

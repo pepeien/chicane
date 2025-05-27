@@ -8,26 +8,28 @@ namespace Chicane
         {
             bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice)
             {
-                std::set<std::string> requiredExtensions(EXTENSIONS.begin(), EXTENSIONS.end());
+                std::set<std::string> extensions(EXTENSIONS.begin(), EXTENSIONS.end());
 
                 for (vk::ExtensionProperties& extension : inPhysicalDevice.enumerateDeviceExtensionProperties())
                 {
-                    requiredExtensions.erase(extension.extensionName);
+                    extensions.erase(extension.extensionName);
                 }
 
-                return requiredExtensions.empty();
+                return extensions.empty();
             }
 
             void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance)
             {
                 for (vk::PhysicalDevice physicalDevice : inInstance.enumeratePhysicalDevices())
                 {
-                    if (isPhysicalDeviceSuitable(physicalDevice))
+                    if (!isPhysicalDeviceSuitable(physicalDevice))
                     {
-                        outPhysicalDevice = physicalDevice;
-
-                        return;
+                        continue;
                     }
+ 
+                    outPhysicalDevice = physicalDevice;
+
+                    return;
                 }
 
                 throw std::runtime_error("Failed to pick a suitable physical device");
@@ -66,9 +68,6 @@ namespace Chicane
                     );
                 }
 
-                std::vector<const char*> layers     = LAYERS;
-                std::vector<const char*> extensions = EXTENSIONS;
-
                 vk::PhysicalDeviceFeatures features = vk::PhysicalDeviceFeatures();
                 features.fillModeNonSolid = true;
                 features.depthClamp       = true;
@@ -82,11 +81,11 @@ namespace Chicane
                     static_cast<std::uint32_t>(queueCreateInfos.size()),
                     queueCreateInfos.data(),
 
-                    static_cast<std::uint32_t>(layers.size()),
-                    layers.data(),
+                    static_cast<std::uint32_t>(LAYERS.size()),
+                    LAYERS.data(),
 
-                    static_cast<std::uint32_t>(extensions.size()),
-                    extensions.data(),
+                    static_cast<std::uint32_t>(EXTENSIONS.size()),
+                    EXTENSIONS.data(),
 
                     &features
                 );

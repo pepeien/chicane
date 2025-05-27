@@ -9,11 +9,11 @@ namespace Chicane
         namespace Asset
         {
             // Settings
-            static constexpr inline const std::uint32_t CURRENT_VERSION = 1;
+            static inline constexpr const std::uint32_t CURRENT_VERSION = 1;
 
             // Attributes
-            static constexpr inline const char* VERSION_ATTRIBUTE_NAME = "version";
-            static constexpr inline const char* ID_ATTRIBUTE_NAME      = "id";
+            static inline constexpr const char* VERSION_ATTRIBUTE_NAME = "version";
+            static inline constexpr const char* ID_ATTRIBUTE_NAME      = "id";
         }
     }
 }

@@ -9,6 +9,12 @@ namespace Chicane
     {
         namespace Device
         {
+            static const std::vector<const char*> LAYERS = {};
+
+            static const std::vector<const char*> EXTENSIONS = {
+                VK_KHR_SWAPCHAIN_EXTENSION_NAME
+            };
+
             CHICANE_RUNTIME bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice);
 
             CHICANE_RUNTIME void pickPhysicalDevice(
