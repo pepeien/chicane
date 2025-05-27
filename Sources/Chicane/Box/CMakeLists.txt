@@ -18,7 +18,11 @@ file(
 list(FILTER SOURCES EXCLUDE REGEX "Vendors/.*")
 
 ##################### Setup #######################
-add_library(${BOX_TARGET_NAME} ${HEADERS} ${SOURCES})
+if (CHICANE_SHARED)
+    add_library(${BOX_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+else()
+    add_library(${BOX_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+endif()
 
 add_library(
     "${NAME}::Box"

@@ -16,7 +16,11 @@ file(
 )
 
 ##################### Setup #######################
-add_library(${GRID_TARGET_NAME} ${HEADERS} ${SOURCES})
+if (CHICANE_SHARED)
+    add_library(${GRID_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+else()
+    add_library(${GRID_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+endif()
 
 add_library(
     "${NAME}::Grid"

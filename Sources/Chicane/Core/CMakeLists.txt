@@ -23,7 +23,11 @@ list(FILTER SOURCES EXCLUDE REGEX "Vendors/.*")
 set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendors")
 
 ##################### Setup #######################
-add_library(${CORE_TARGET_NAME} ${HEADERS} ${SOURCES})
+if (CHICANE_SHARED)
+    add_library(${CORE_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+else()
+    add_library(${CORE_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+endif()
 
 add_library(
     "${NAME}::Core"

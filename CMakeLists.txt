@@ -16,7 +16,7 @@ set(NAME "Chicane")
 project(${NAME} VERSION 0.1.0)
 
 ##################### Options #######################
-option(CHICANE_SHARED "Build a shared version of the library" BUILD_SHARED_LIBS)
+option(CHICANE_SHARED "Build a shared version of the library" ON)
 
 ##################### Values #######################
 if (CHICANE_SHARED)
