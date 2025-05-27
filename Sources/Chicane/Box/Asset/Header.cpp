@@ -24,7 +24,7 @@ namespace Chicane
                     return false;
                 }
 
-                return TYPES.find(inFilepath.extension()) != TYPES.end();
+                return TYPES.find(inFilepath.extension().string()) != TYPES.end();
             }
 
             Type getType(const FileSystem::Path& inFilepath)
@@ -34,7 +34,7 @@ namespace Chicane
                     return Type::Undefined;
                 }
 
-                return TYPES.at(inFilepath.extension());
+                return TYPES.at(inFilepath.extension().string());
             }
 
             Header::Header(const FileSystem::Path& inFilepath)
