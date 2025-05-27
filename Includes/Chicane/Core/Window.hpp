@@ -3,7 +3,7 @@
 #include "Chicane/Core/Gamepad.hpp"
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event.hpp"
-#include "Chicane/Core/Filesystem.hpp"
+#include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Keyboard.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Mouse.hpp"

@@ -19,17 +19,12 @@ namespace Chicane
 
             bool isFileAsset(const FileSystem::Path& inFilepath)
             {
-                if (inFilepath.empty())
+                if (inFilepath.empty() || !inFilepath.has_extension())
                 {
                     return false;
                 }
 
-                const std::string extension = String::split(
-                    inFilepath.extension().string(),
-                    "."
-                ).back();
-
-                return TYPES.find("." + extension) != TYPES.end();
+                return TYPES.find(inFilepath.extension()) != TYPES.end();
             }
 
             Type getType(const FileSystem::Path& inFilepath)
@@ -39,12 +34,7 @@ namespace Chicane
                     return Type::Undefined;
                 }
 
-                const std::string extension = String::split(
-                    inFilepath.extension().string(),
-                    "."
-                ).back();
-
-                return TYPES.at("." + extension);
+                return TYPES.at(inFilepath.extension());
             }
 
             Header::Header(const FileSystem::Path& inFilepath)
