@@ -7,14 +7,14 @@ namespace Chicane
 {
     namespace Box
     {
-        CHICANE_BOX Audio::Manager* getAudioManager();
+        CHICANE_BOX Sound::Manager* getSoundManager();
         CHICANE_BOX Font::Manager* getFontManager();
         CHICANE_BOX Model::Manager* getModelManager();
         CHICANE_BOX Texture::Manager* getTextureManager();
 
-        CHICANE_BOX const Asset::Instance* load(const std::string& inFilePath);
+        CHICANE_BOX const Asset::Instance* load(const FileSystem::Path& inFilePath);
         template<typename T>
-        const T* load(const std::string& inFilePath)
+        const T* load(const FileSystem::Path& inFilePath)
         {
             return static_cast<const T*>(load(inFilePath));
         }

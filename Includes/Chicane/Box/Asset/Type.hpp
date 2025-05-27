@@ -11,7 +11,7 @@ namespace Chicane
             enum class Type : std::uint8_t
             {
                 Undefined, // N/A
-                Audio,     // Audio
+                Sound,     // Audio
                 Font,      // Text Font
                 Mesh,      // Two entries [Model, Texture] both being refNames
                 Model,     // 3D Model

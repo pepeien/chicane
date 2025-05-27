@@ -19,6 +19,7 @@ namespace Chicane
 
             public:
                 Instance(const FileSystem::Path& inFilepath);
+                virtual ~Instance() = default;
 
             public:
                 bool isType(Type inType) const;
@@ -43,9 +44,8 @@ namespace Chicane
                 void saveXML();
 
             private:
-                void createXML(const std::string& inFilepath);
-                void fetchXML(const std::string& inFilepath);
-                void fetchHeader(const std::string& inFilepath);
+                void createXML(const FileSystem::Path& inFilepath);
+                void fetchXML(const FileSystem::Path& inFilepath);
 
             protected:
                 Header             m_header;

@@ -65,13 +65,13 @@ target_link_libraries(
     PUBLIC
         # Vendors
         glm::glm
-        SDL3::SDL3
         pugixml::pugixml
 
     PRIVATE
         # Vendors
         base64
         earcut_hpp::earcut_hpp
+        SDL3::SDL3
 )
 
 CH_ADD_COMPILER(${CORE_TARGET_NAME})

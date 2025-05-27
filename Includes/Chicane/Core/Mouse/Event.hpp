@@ -1,15 +1,31 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/Input/Status.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/Mouse/Button.hpp"
 
 namespace Chicane
 {
     namespace Mouse
     {
-        using ButtonEventData     = SDL_MouseButtonEvent;
-        using ButtonEvent         = std::function<void()>;
+        struct CHICANE_CORE ButtonEvent
+        {
+        public:
+            Button        button   = Button::Left;
+            Input::Status status   = Input::Status::Pressed;
+            std::uint8_t  clicks   = 0;
+            Vec2          location = Vec2::Zero;
+        };
+        using ButtonEventCallback = std::function<void()>;
 
-        using MotionEventData     = SDL_MouseMotionEvent;
-        using MotionEvent         = std::function<void(const MotionEventData&)>;
+        struct CHICANE_CORE MotionEvent
+        {
+        public:
+            Input::Status status           = Input::Status::Pressed;
+            Vec2          location         = Vec2::Zero;
+            Vec2          relativeLocation = Vec2::Zero;
+        };
+        using MotionEventCallback = std::function<void(const MotionEvent&)>;
     }
 }

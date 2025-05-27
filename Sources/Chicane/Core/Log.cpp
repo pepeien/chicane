@@ -11,18 +11,18 @@ namespace Chicane
 
         static std::unordered_map<std::string, std::string> g_colors = {};
 
-        static List                            g_logs           = {};
-        static std::unique_ptr<ListObservable> g_logsObservable = std::make_unique<ListObservable>();
+        static List           g_logs           = {};
+        static ListObservable g_logsObservable = {};
 
-        ListSubscription* watchLogs(
+        ListSubscription watchLogs(
             ListSubscription::NextCallback inNext,
             ListSubscription::ErrorCallback inError,
             ListSubscription::CompleteCallback inComplete
         )
         {
             return g_logsObservable
-                ->subscribe(inNext, inError, inComplete)
-                ->next(g_logs);
+                .subscribe(inNext, inError, inComplete)
+                .next(g_logs);
         }
 
         void emmit(
@@ -78,7 +78,7 @@ namespace Chicane
 
             g_logs.emplace_back(message, color);
 
-            g_logsObservable->next(g_logs);
+            g_logsObservable.next(g_logs);
         }
 
         void info(const std::string& inMessage)

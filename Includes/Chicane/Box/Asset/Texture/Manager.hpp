@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Texture/Instance.hpp"
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
-#include "Chicane/Box/Asset/Texture/Instance.hpp"
 
 namespace Chicane
 {
@@ -14,6 +14,7 @@ namespace Chicane
             {
             public:
                 Manager();
+                virtual ~Manager() = default;
 
             protected:
                 void onActivation(const std::string& inId) override;
@@ -21,7 +22,7 @@ namespace Chicane
 
             public:
                 // Setup
-                void load(const std::string& inId, const Texture::Instance* inTexture);
+                void load(const std::string& inId, const Texture::Instance& inAsset);
 
                 // Data
                 const Image::Raw& getInstance(const std::string& inId) const;

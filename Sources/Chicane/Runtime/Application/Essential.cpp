@@ -18,8 +18,7 @@ namespace Chicane
             }
 
             m_application = std::make_unique<Instance>();
-            m_application->setup(inCreateInfo);
-            m_application->run();
+            m_application->init(inCreateInfo);
         }
 
         void stop()
@@ -72,7 +71,7 @@ namespace Chicane
             m_application->setController(inController);
         }
 
-        ControllerSubscription* watchController(
+        ControllerSubscription watchController(
             ControllerSubscription::NextCallback inNext,
             ControllerSubscription::ErrorCallback inError,
             ControllerSubscription::CompleteCallback inComplete
@@ -80,7 +79,7 @@ namespace Chicane
         {
             if (!m_application)
             {
-                return nullptr;
+                return {};
             }
 
             return m_application->watchController(inNext, inError, inComplete);
@@ -116,7 +115,7 @@ namespace Chicane
             m_application->setLevel(inLevel);
         }
 
-        LevelSubscription* watchLevel(
+        LevelSubscription watchLevel(
             LevelSubscription::NextCallback inNext,
             LevelSubscription::ErrorCallback inError,
             LevelSubscription::CompleteCallback inComplete 
@@ -124,7 +123,7 @@ namespace Chicane
         {
             if (!m_application)
             {
-                return nullptr;
+                return {};
             }
 
             return m_application->watchLevel(inNext, inError, inComplete);
@@ -160,7 +159,7 @@ namespace Chicane
             m_application->setView(inView);
         }
 
-        ViewSubscription* watchView(
+        ViewSubscription watchView(
             ViewSubscription::NextCallback inNext,
             ViewSubscription::ErrorCallback inError,
             ViewSubscription::CompleteCallback inComplete
@@ -168,7 +167,7 @@ namespace Chicane
         {
             if (!m_application)
             {
-                return nullptr;
+                return {};
             }
 
             return m_application->watchView(inNext, inError, inComplete);
@@ -184,7 +183,7 @@ namespace Chicane
             return m_application->hasWindow();
         }
 
-        Window::Instance* getWindow()
+        Window* getWindow()
         {
             if (!m_application)
             {
@@ -204,7 +203,17 @@ namespace Chicane
             return m_application->hasRenderer();
         }
 
-        Renderer::Instance* getRenderer()
+        void setRenderer(Window::Renderer inType)
+        {
+            if (!m_application)
+            {
+                return;
+            }
+
+            m_application->setRenderer(inType);
+        }
+
+        Renderer* getRenderer()
         {
             if (!m_application)
             {

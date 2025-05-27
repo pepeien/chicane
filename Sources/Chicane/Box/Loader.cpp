@@ -4,16 +4,16 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unique_ptr<Audio::Manager>   g_audioManager   = std::make_unique<Audio::Manager>();
+        static const std::unique_ptr<Sound::Manager>   g_soundManager   = std::make_unique<Sound::Manager>();
         static const std::unique_ptr<Font::Manager>    g_fontManager    = std::make_unique<Font::Manager>();
         static const std::unique_ptr<Model::Manager>   g_modelManager   = std::make_unique<Model::Manager>();
         static const std::unique_ptr<Texture::Manager> g_textureManager = std::make_unique<Texture::Manager>();
 
-        static std::unordered_map<std::string, const Asset::Instance*> g_cache = {};
+        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset::Instance>> g_cache = {};
 
-        Audio::Manager* getAudioManager()
+        Sound::Manager* getSoundManager()
         {
-            return g_audioManager.get();
+            return g_soundManager.get();
         }
 
         Font::Manager* getFontManager()
@@ -31,263 +31,188 @@ namespace Chicane
             return g_textureManager.get();
         }
 
-        bool isLoaded(const std::string& inIdentifier)
+        bool hasAsset(const FileSystem::Path& inSource)
         {
-            return g_cache.find(inIdentifier) != g_cache.end();
-        }
-
-        bool isLoaded(const Asset::Instance* inInstance)
-        {
-            if (!inInstance)
-            {
-                return false;
-            }
-
-            return isLoaded(inInstance->getFilepath().string());
-        }
-
-        void cacheAsset(const std::string& inIdentifier, const Asset::Instance* inInstance)
-        {
-            if (isLoaded(inIdentifier))
-            {
-                return;
-            }
-
-            g_cache.insert(
-                std::make_pair(
-                    inIdentifier,
-                    inInstance
-                )
-            );
+            return g_cache.find(inSource) != g_cache.end();
         }
 
         template<class T = Asset::Instance>
-        const T* getAsset(const std::string& inIdentifier)
+        const T* getAsset(const FileSystem::Path& inSource)
         {
-            if (!isLoaded(inIdentifier))
+            if (!hasAsset(inSource))
             {
                 return nullptr;
             }
 
-            return static_cast<const T*>(g_cache.at(inIdentifier));
+            return dynamic_cast<const T*>(g_cache.at(inSource).get());
         }
 
-        void loadAudio(const Asset::Instance* inAsset)
+        template<class T = Asset::Instance>
+        const T* addAsset(const FileSystem::Path& inSource)
         {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Audio))
+            const std::string identifier = inSource.string();
+
+            if (!hasAsset(inSource))
             {
-                return;
+                g_cache.insert(std::make_pair(identifier, std::make_unique<const T>(inSource)));
             }
 
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            g_audioManager->load(
-                filepath,
-                static_cast<const Audio::Instance*>(inAsset)
-            );
+            return getAsset<T>(inSource);
         }
 
-        const Audio::Instance* loadAudio(const std::string& inFilePath)
+        const Sound::Instance* loadAudio(const FileSystem::Path& inFilePath)
         {
-            if (Asset::getType(inFilePath) != Asset::Type::Audio)
+            if (Asset::getType(inFilePath) != Asset::Type::Sound)
             {
-                throw std::runtime_error(inFilePath + " is not a audio");
+                throw std::runtime_error(inFilePath.string() + " is not a audio");
             }
 
-            if (!isLoaded(inFilePath))
+            if (!hasAsset(inFilePath))
             {
-                loadAudio(new Audio::Instance(inFilePath));
+                const Sound::Instance* asset = addAsset<Sound::Instance>(inFilePath);
+
+                g_soundManager->load(*asset);
+
+                return asset;
             }
 
-            return getAsset<Audio::Instance>(inFilePath);
+            return getAsset<Sound::Instance>(inFilePath);
         }
 
-        void loadFont(const Font::Instance* inAsset)
-        {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Font))
-            {
-                return;
-            }
-
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            g_fontManager->load(
-                filepath,
-                static_cast<const Font::Instance*>(inAsset)
-            );
-        }
-
-        const Font::Instance* loadFont(const std::string& inFilePath)
+        const Font::Instance* loadFont(const FileSystem::Path& inFilePath)
         {
             if (Asset::getType(inFilePath) != Asset::Type::Font)
             {
-                throw std::runtime_error(inFilePath + " is not a font");
+                throw std::runtime_error(inFilePath.string() + " is not a font");
             }
 
-            if (!isLoaded(inFilePath))
+            if (!hasAsset(inFilePath))
             {
-                loadFont(new Font::Instance(inFilePath));
+                const Font::Instance* asset = addAsset<Font::Instance>(inFilePath);
+
+                g_fontManager->load(inFilePath.string(), *asset);
+
+                return asset;
             }
 
             return getAsset<Font::Instance>(inFilePath);
         }
 
-        void loadModel(const Asset::Instance* inAsset)
+        const Model::Instance* loadModel(const FileSystem::Path& inFilePath)
         {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Model))
+            if (Asset::getType(inFilePath) != Asset::Type::Model)
             {
-                return;
+                throw std::runtime_error(inFilePath.string() + "is not a model");
             }
 
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            g_modelManager->load(
-                filepath,
-                static_cast<const Model::Instance*>(inAsset)
-            );
-        }
-
-        void loadTexture(const Asset::Instance* inAsset)
-        {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Texture))
+            if (!hasAsset(inFilePath))
             {
-                return;
+                const Model::Instance* asset = addAsset<Model::Instance>(inFilePath);
+
+                g_modelManager->load(inFilePath.string(), *asset);
+
+                return asset;
             }
 
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            g_textureManager->load(
-                filepath,
-                static_cast<const Texture::Instance*>(inAsset)
-            );
+            return getAsset<Model::Instance>(inFilePath);
         }
 
-        const Texture::Instance* loadTexture(const std::string& inFilePath)
+        const Texture::Instance* loadTexture(const FileSystem::Path& inFilePath)
         {
             if (Asset::getType(inFilePath) != Asset::Type::Texture)
             {
-                throw std::runtime_error(inFilePath + "is not a texture");
+                throw std::runtime_error(inFilePath.string() + "is not a texture");
             }
 
-            if (!isLoaded(inFilePath))
+            if (!hasAsset(inFilePath))
             {
-                loadTexture(new Texture::Instance(inFilePath));
+                const Texture::Instance* asset = addAsset<Texture::Instance>(inFilePath);
+
+                g_textureManager->load(inFilePath.string(), *asset);
+
+                return asset;
             }
 
             return getAsset<Texture::Instance>(inFilePath);
         }
 
-        void loadMesh(const Asset::Instance* inAsset)
-        {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Mesh))
-            {
-                return;
-            }
-
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            const Mesh::Instance* mesh = static_cast<const Mesh::Instance*>(inAsset);
-
-            for (const Mesh::Group& group : mesh->getGroups())
-            {
-                const std::string& model = group.getModel();
-
-                if (!model.empty() && !isLoaded(model))
-                {
-                    loadModel(new Model::Instance(model));
-                }
-
-                const std::string& texture = group.getTexture();
-
-                if (!texture.empty() && !isLoaded(texture))
-                {
-                    loadTexture(new Texture::Instance(texture));
-                }
-            }
-        }
-
-        const Mesh::Instance* loadMesh(const std::string& inFilePath)
+        const Mesh::Instance* loadMesh(const FileSystem::Path& inFilePath)
         {
             if (Asset::getType(inFilePath) != Asset::Type::Mesh)
             {
-                throw std::runtime_error(inFilePath + "is not a mesh");
+                throw std::runtime_error(inFilePath.string() + "is not a mesh");
             }
 
-            if (!isLoaded(inFilePath))
+            if (!hasAsset(inFilePath))
             {
-                loadMesh(new Mesh::Instance(inFilePath));
+                const Mesh::Instance* asset = addAsset<Mesh::Instance>(inFilePath);
+
+                for (const Mesh::Group& group : asset->getGroups())
+                {
+                    const std::string& model = group.getModel();
+                    if (!model.empty() && !hasAsset(model))
+                    {
+                        loadModel(model);
+                    }
+
+                    const std::string& texture = group.getTexture();
+                    if (!texture.empty() && !hasAsset(texture))
+                    {
+                        loadTexture(texture);
+                    }
+                }
+
+                return asset;
             }
 
             return getAsset<Mesh::Instance>(inFilePath);
         }
 
-        void loadSky(const Asset::Instance* inAsset)
-        {
-            if (!inAsset || isLoaded(inAsset) || !inAsset->isType(Asset::Type::Sky))
-            {
-                return;
-            }
-
-            const std::string filepath = inAsset->getFilepath().string();
-
-            cacheAsset(filepath, inAsset);
-
-            const Sky::Instance* cubeMap = static_cast<const Sky::Instance*>(inAsset);
-
-            for (const auto& [side, texture] : cubeMap->getSides())
-            {
-                loadTexture(texture);
-            }
-
-            loadModel(new Model::Instance(cubeMap->getModel()));
-        }
-
-        const Sky::Instance* loadSky(const std::string& inFilePath)
+        const Sky::Instance* loadSky(const FileSystem::Path& inFilePath)
         {
             if (Asset::getType(inFilePath) != Asset::Type::Sky)
             {
-                throw std::runtime_error(inFilePath + " is not a skybox");
+                throw std::runtime_error(inFilePath.string() + " is not a skybox");
             }
 
-            if (!isLoaded(inFilePath))
+            if (!hasAsset(inFilePath))
             {
-                loadSky(new Sky::Instance(inFilePath));
+                const Sky::Instance* asset = addAsset<Sky::Instance>(inFilePath);
+
+                loadModel(asset->getModel());
+
+                for (const auto& [side, texture] : asset->getSides())
+                {
+                    loadTexture(texture);
+                }
+
+                return asset;
             }
 
             return getAsset<Sky::Instance>(inFilePath);
         }
 
-        const Asset::Instance* load(const std::string& inFilePath)
+        const Asset::Instance* load(const FileSystem::Path& inFilePath)
         {
             if (!Box::Asset::isFileAsset(inFilePath))
             {
-                Log::warning("File [%s] is not a valid asset", inFilePath.c_str());
+                Log::warning("File [%s] is not a valid asset", inFilePath.string().c_str());
 
                 return nullptr;
             }
 
-            const Asset::Header header = Asset::Header::fromFilepath(inFilePath);
+            const Asset::Header header = Asset::Header(inFilePath);
 
             switch (header.type)
             {
-            case Asset::Type::Audio:
-                return loadAudio(inFilePath);
-
             case Asset::Type::Font:
                 return loadFont(inFilePath);
 
             case Asset::Type::Mesh:
                 return loadMesh(inFilePath);
+
+            case Asset::Type::Sound:
+                return loadAudio(inFilePath);
 
             case Asset::Type::Sky:
                 return loadSky(inFilePath);

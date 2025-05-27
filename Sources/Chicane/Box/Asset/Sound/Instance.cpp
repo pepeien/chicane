@@ -1,35 +1,31 @@
-#include "Chicane/Box/Asset/Audio/Instance.hpp"
+#include "Chicane/Box/Asset/Sound/Instance.hpp"
 
-#include "Chicane/Core/Base64.hpp"
-#include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Core/Xml.hpp"
+#include "Chicane/Box/Asset/Sound.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Audio
+        namespace Sound
         {
-            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
-
-            static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
-                { "WAVE", Vendor::Wave }
+            static const std::unordered_map<std::string, Audio::Vendor> VENDOR_MAP {
+                { "WAVE", Audio::Vendor::Wave }
             };
 
             Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath),
-                m_vendor(Vendor::Undefined)
+                m_vendor(Audio::Vendor::Undefined)
             {
                 fetchVendor();
                 fetchData();
             }
 
-            Vendor Instance::getVendor() const
+            Audio::Vendor Instance::getVendor() const
             {
                 return m_vendor;
             }
 
-            void Instance::setVendor(Vendor inVendor)
+            void Instance::setVendor(Audio::Vendor inVendor)
             {
                 m_vendor = inVendor;
 
@@ -58,7 +54,7 @@ namespace Chicane
                 root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
             }
 
-            const Raw& Instance::getData() const
+            const Audio::Raw& Instance::getData() const
             {
                 return m_data;
             }
@@ -73,7 +69,7 @@ namespace Chicane
                 setData(FileSystem::readUnsigned(inFilepath));
             }
 
-            void Instance::setData(const Raw& inData)
+            void Instance::setData(const Audio::Raw& inData)
             {
                 if (inData.empty())
                 {
@@ -99,7 +95,7 @@ namespace Chicane
 
                 if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
                 {
-                    m_vendor = Vendor::Undefined;
+                    m_vendor = Audio::Vendor::Undefined;
 
                     return;
                 }

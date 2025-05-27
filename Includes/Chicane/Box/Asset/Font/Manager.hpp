@@ -20,7 +20,7 @@ namespace Chicane
                 bool isFamilyAllocated(const std::string& inFamily) const;
 
                 // Setup
-                void load(const std::string& inId, const Font::Instance* inFont);
+                void load(const std::string& inId, const Font::Instance& inFont);
                 void allocate(const std::string& inId);
 
                 // Data

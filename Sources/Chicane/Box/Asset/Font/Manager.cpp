@@ -27,21 +27,21 @@ namespace Chicane
                 ) != m_datum.end();
             }
 
-            void Manager::load(const std::string& inId, const Font::Instance* inFont)
+            void Manager::load(const std::string& inId, const Font::Instance& inFont)
             {
                 if (isLoaded(inId))
                 {
                     return;
                 }
 
-                if (inFont->isEmpty())
+                if (inFont.isEmpty())
                 {
                     return;
                 }
 
                 Extracted instance = {};
-                instance.vendor = inFont->getVendor();
-                instance.data   = inFont->getData();
+                instance.vendor = inFont.getVendor();
+                instance.data   = inFont.getData();
 
                 Super::load(inId, instance);
 

@@ -10,14 +10,14 @@ namespace Chicane
     {
         namespace Asset
         {
-            CHICANE_BOX bool isFileAsset(const std::string& inFilepath);
-            CHICANE_BOX Type getType(const std::string& inFilepath);
+            CHICANE_BOX bool isFileAsset(const FileSystem::Path& inFilepath);
+            CHICANE_BOX Type getType(const FileSystem::Path& inFilepath);
 
             struct CHICANE_BOX Header
             {
             public:
-                static Header fromFilepath(const std::string& inFilepath);
-                static Header fromXML(const std::string& inFilepath, const pugi::xml_document& inDocument);
+                Header(const FileSystem::Path& inFilepath);
+                Header();
 
             private:
                 void fetchVersion(const pugi::xml_node& inRoot);
@@ -25,10 +25,10 @@ namespace Chicane
                 void fetchType();
 
             public:
-                FileSystem::Path filepath = "";
-                std::uint32_t    version  = CURRENT_VERSION;
-                std::string      id       = "";
-                Type             type     = Type::Undefined;
+                FileSystem::Path filepath;
+                std::uint32_t    version;
+                std::string      id;
+                Type             type;
             };
         }
     }

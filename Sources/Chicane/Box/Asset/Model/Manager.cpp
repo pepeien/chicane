@@ -74,17 +74,17 @@ namespace Chicane
                 Super::deallocate(inId);
             }
 
-            void Manager::load(const std::string& inId, const Model::Instance* inModel)
+            void Manager::load(const std::string& inId, const Model::Instance& inModel)
             {
                 if (isLoaded(inId))
                 {
                     return;
                 }
 
-                switch (inModel->getVendor())
+                switch (inModel.getVendor())
                 {
                 case Vendor::Wavefront:
-                    Super::load(inId, Wavefront::parse(inModel->getData()));
+                    Super::load(inId, Wavefront::parse(inModel.getData()));
 
                     break;
 

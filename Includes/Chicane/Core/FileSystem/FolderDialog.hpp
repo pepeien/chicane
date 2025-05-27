@@ -9,7 +9,7 @@ namespace Chicane
         struct CHICANE_CORE FolderDialog
         {
         public:
-            using Callback = SDL_DialogFileCallback;
+            using Callback = std::function<void ()>;
 
         public:
             FolderDialog();

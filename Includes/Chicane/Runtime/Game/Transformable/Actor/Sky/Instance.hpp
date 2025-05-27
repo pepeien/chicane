@@ -21,14 +21,14 @@ namespace Chicane
     public:
         const Box::Sky::Instance* getSky() const;
         void setSky(const Box::Sky::Instance* inSky);
-        AssetSubscription* watchSky(
+        AssetSubscription watchSky(
             AssetSubscription::NextCallback inNext,
             AssetSubscription::ErrorCallback inError = nullptr,
             AssetSubscription::CompleteCallback inComplete = nullptr
         );
 
     protected:
-        const Box::Sky::Instance*        m_asset;
-        std::unique_ptr<AssetObservable> m_assetObservable;
+        const Box::Sky::Instance* m_asset;
+        AssetObservable           m_assetObservable;
     };
 }

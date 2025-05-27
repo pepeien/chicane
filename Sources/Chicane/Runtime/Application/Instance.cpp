@@ -9,28 +9,20 @@ namespace Chicane
         Instance::Instance()
             : m_telemetry({}),
             m_controller(nullptr),
-            m_controllerObservable(std::make_unique<ControllerObservable>()),
+            m_controllerObservable({}),
             m_level(nullptr),
-            m_levelObservable(std::make_unique<LevelObservable>()),
+            m_levelObservable({}),
             m_view(nullptr),
-            m_viewObservable(std::make_unique<ViewObservable>())
+            m_viewObservable({})
         {}
 
-        void Instance::setup(const CreateInfo& inCreateInfo)
+        void Instance::init(const CreateInfo& inCreateInfo)
         {
             m_windowInfo = inCreateInfo.window;
-            if (!hasWindow())
-            {
-                initWindow();
-                m_window->init(m_windowInfo, inCreateInfo.renderer.type);
-            }
+            initWindow();
 
             m_rendererInfo = inCreateInfo.renderer;
-            if (!hasRenderer())
-            {
-                initRenderer();
-                m_renderer->init(m_rendererInfo);
-            }
+            initRenderer();
 
             initAssets(".");
 
@@ -38,25 +30,15 @@ namespace Chicane
             {
                 inCreateInfo.onSetup();
             }
-        }
-
-        void Instance::run()
-        {
-            SDL_Event event;
 
             while (true)
             {
-                while (SDL_PollEvent(&event))
+                if (!m_window->update())
                 {
-                    if (event.type == SDL_EVENT_QUIT)
-                    {
-                        return;
-                    }
-
-                    onEvent(event);
+                   return; 
                 }
 
-                onRender();
+                render();
             }
         }
 
@@ -84,18 +66,18 @@ namespace Chicane
 
             m_controller = inController;
 
-            m_controllerObservable->next(m_controller);
+            m_controllerObservable.next(m_controller);
         }
 
-        ControllerSubscription* Instance::watchController(
+        ControllerSubscription Instance::watchController(
             ControllerSubscription::NextCallback inNext,
             ControllerSubscription::ErrorCallback inError,
             ControllerSubscription::CompleteCallback inComplete
-        ) const
+        )
         {
             return m_controllerObservable
-                ->subscribe(inNext, inError, inComplete)
-                ->next(m_controller);
+                .subscribe(inNext, inError, inComplete)
+                .next(m_controller);
         }
 
         bool Instance::hasLevel() const
@@ -123,18 +105,18 @@ namespace Chicane
             m_level = inLevel;
             m_level->activate();
 
-            m_levelObservable->next(inLevel);
+            m_levelObservable.next(inLevel);
         }
 
-        LevelSubscription* Instance::watchLevel(
+        LevelSubscription Instance::watchLevel(
             LevelSubscription::NextCallback inNext,
             LevelSubscription::ErrorCallback inError,
             LevelSubscription::CompleteCallback inComplete
-        ) const
+        )
         {
             return m_levelObservable
-                ->subscribe(inNext, inError, inComplete)
-                ->next(m_level);
+                .subscribe(inNext, inError, inComplete)
+                .next(m_level);
         }
 
         bool Instance::hasView() const
@@ -163,18 +145,18 @@ namespace Chicane
             m_view->setSize(m_window->getSize());
             m_view->activate();
 
-            m_viewObservable->next(m_view);
+            m_viewObservable.next(m_view);
         }
 
-        ViewSubscription* Instance::watchView(
+        ViewSubscription Instance::watchView(
             ViewSubscription::NextCallback inNext,
             ViewSubscription::ErrorCallback inError,
             ViewSubscription::CompleteCallback inComplete
-        ) const
+        )
         {
             return m_viewObservable
-                ->subscribe(inNext, inError, inComplete)
-                ->next(m_view);
+                .subscribe(inNext, inError, inComplete)
+                .next(m_view);
         }
 
         bool Instance::hasWindow() const
@@ -187,67 +169,60 @@ namespace Chicane
             return m_renderer.get() != nullptr;
         }
 
-        void Instance::setRenderer(Renderer::Type inType)
+        void Instance::setRenderer(Window::Renderer inRenderer)
         {
-            if (!hasWindow())
-            {
-                return;
-            }
+            m_windowInfo.renderer = inRenderer;
 
-            if (hasRenderer())
-            {
-                m_renderer.reset();
-            }
-
-            m_rendererInfo.type = inType;
-
-            m_window->destroy();
-            m_window->init(m_windowInfo, m_rendererInfo.type);
-
+            initWindow();
             initRenderer();
         }
 
         void Instance::initWindow()
         {
-            if (hasWindow())
+            if (!hasWindow())
             {
-                return;
+                m_window = std::make_unique<Window>();
+                m_window->watchSize(
+                    [this](const Vec<2, int>& inSize)
+                    {
+                        if (!m_view)
+                        {
+                            return;
+                        }
+
+                        m_view->setSize(inSize.x, inSize.y);
+                    }
+                );
+            }
+            else
+            {
+                m_window->destroy();
             }
 
-            m_window = std::make_unique<Window::Instance>();
-
-            m_window->watchSize(
-                [this](const Vec<2, int>& inSize)
-                {
-                    if (!m_view)
-                    {
-                        return;
-                    }
-
-                    m_view->setSize(inSize.x, inSize.y);
-                }
-            );
+            m_window->init(m_windowInfo);
         }
 
         void Instance::initRenderer()
         {
-            if (hasRenderer())
+            if (!hasRenderer())
             {
-                return;
+                m_renderer.release();
             }
 
-            switch (m_rendererInfo.type)
+            switch (m_windowInfo.renderer)
             {
-            case Renderer::Type::Vulkan:
+            case Window::Renderer::Vulkan:
                 m_renderer = std::make_unique<Vulkan::Renderer>();
 
                 break;
 
             default:
-                m_renderer = std::make_unique<Renderer::Instance>();
+                m_renderer = std::make_unique<Renderer>();
 
                 break;
             }
+
+            m_renderer->init(m_rendererInfo);
         }
 
         void Instance::initAssets(const std::string& inPath)
@@ -270,29 +245,7 @@ namespace Chicane
             }
         }
 
-        void Instance::onEvent(const SDL_Event& inEvent) {
-            if (hasWindow())
-            {
-                m_window->handle(inEvent);
-            }
-
-            if (hasRenderer())
-            {
-                m_renderer->handle(inEvent);
-            }
-
-            if (hasView())
-            {
-                m_view->handle(inEvent);
-            }
-
-            if (hasController())
-            {
-                m_controller->handle(inEvent);
-            }
-        }
-
-        void Instance::onRender()
+        void Instance::render()
         {
             m_telemetry.start();
                 if (hasRenderer())

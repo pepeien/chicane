@@ -37,12 +37,12 @@ Character::Character()
 
     m_hitAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_hitAudio->attachTo(this);
-    m_hitAudio->load("Contents/Shooter/Sounds/Hit.baud");
+    m_hitAudio->load("Hit");
     m_hitAudio->activate();
 
     m_victoryAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
     m_victoryAudio->attachTo(this);
-    m_victoryAudio->load("Contents/Shooter/Sounds/Victory.baud");
+    m_victoryAudio->load("Victory");
     m_victoryAudio->activate();
 
     Game::watchScore(
@@ -104,15 +104,15 @@ void Character::onControlAttachment()
     );
 }
 
-void Character::onLook(const Chicane::Mouse::MotionEventData& inEvent)
+void Character::onLook(const Chicane::Mouse::MotionEvent& inEvent)
 {
     if (!Chicane::Application::getWindow()->isFocused())
     {
         return;
     }
 
-    m_camera->addRelativeRotation(-inEvent.yrel * 0.5f, 0.0f, 0.0f);
-    addYaw(-inEvent.xrel * 0.5f);
+    m_camera->addRelativeRotation(-inEvent.relativeLocation.y * 0.5f, 0.0f, 0.0f);
+    addYaw(-inEvent.relativeLocation.x * 0.5f);
 }
 
 void Character::onLeftClick()

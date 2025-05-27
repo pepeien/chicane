@@ -1,7 +1,6 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/Viewport.hpp"
 
 namespace Chicane
 {
@@ -304,7 +303,8 @@ namespace Chicane
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -317,7 +317,8 @@ namespace Chicane
             memcpy(writeLocation, vertices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Buffer::init(m_modelVertexBuffer, createInfo);
@@ -346,7 +347,8 @@ namespace Chicane
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(std::uint32_t) * indices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -359,7 +361,8 @@ namespace Chicane
             memcpy(writeLocation, indices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Buffer::init(m_modelIndexBuffer, createInfo);

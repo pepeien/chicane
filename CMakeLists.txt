@@ -77,3 +77,4 @@ set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
 ##################### Directories #######################
 add_subdirectory(Contents)
 add_subdirectory(Sources)
+add_subdirectory(Vendors)

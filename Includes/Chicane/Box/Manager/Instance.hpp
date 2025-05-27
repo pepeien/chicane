@@ -21,7 +21,7 @@ namespace Chicane
 
             public:
                 Instance()
-                    : m_observable(std::make_unique<EventObservable>())
+                    : m_observable({})
                 {}
 
                 virtual ~Instance() = default;
@@ -112,7 +112,7 @@ namespace Chicane
 
                     onLoad(inId, inInstance);
 
-                    m_observable->next(EventType::Load);
+                    m_observable.next(EventType::Load);
                 }
 
                 void allocate(const std::string& inId, const E& inData)
@@ -126,7 +126,7 @@ namespace Chicane
 
                     onAllocation(inId, inData);
 
-                    m_observable->next(EventType::Allocation);
+                    m_observable.next(EventType::Allocation);
                 }
 
                 void deallocate(const std::string& inId)
@@ -140,7 +140,7 @@ namespace Chicane
 
                     onDeallocation(inId);
 
-                    m_observable->next(EventType::Allocation);
+                    m_observable.next(EventType::Allocation);
                 }
 
                 void activate(const std::string& inId)
@@ -153,7 +153,7 @@ namespace Chicane
                     m_usedIds.push_back(inId);
                     String::sort(m_usedIds);
 
-                    m_observable->next(EventType::Use);
+                    m_observable.next(EventType::Use);
 
                     if (!isActive(inId))
                     {
@@ -162,7 +162,7 @@ namespace Chicane
 
                         onActivation(inId);
 
-                        m_observable->next(EventType::Activation);
+                        m_observable.next(EventType::Activation);
                     }
                 }
 
@@ -183,7 +183,7 @@ namespace Chicane
                     m_usedIds.shrink_to_fit();
                     String::sort(m_usedIds);
 
-                    m_observable->next(EventType::Use);
+                    m_observable.next(EventType::Use);
 
                     if (!isUsing(inId))
                     {
@@ -197,30 +197,26 @@ namespace Chicane
                         m_activeIds.shrink_to_fit();
                         String::sort(m_activeIds);
 
-                        m_observable->next(EventType::Activation);
+                        m_observable.next(EventType::Activation);
                     }
                 }
 
                 // Events
-                EventSubscription* watchChanges(
+                EventSubscription watchChanges(
                     EventSubscription::NextCallback inNext,
                     EventSubscription::ErrorCallback inError = nullptr,
                     EventSubscription::CompleteCallback inComplete = nullptr
                 )
                 {
-                    return m_observable->subscribe(
-                        inNext,
-                        inError,
-                        inComplete
-                    );
+                    return m_observable.subscribe(inNext, inError, inComplete);
                 }
 
             protected:
-                std::map<std::string, I>               m_instances;
-                std::map<std::string, E>               m_datum;
-                std::vector<std::string>               m_activeIds;
-                std::vector<std::string>               m_usedIds;
-                std::unique_ptr<Observable<EventType>> m_observable;
+                std::map<std::string, I> m_instances;
+                std::map<std::string, E> m_datum;
+                std::vector<std::string> m_activeIds;
+                std::vector<std::string> m_usedIds;
+                EventObservable          m_observable;
             };
         }
     }

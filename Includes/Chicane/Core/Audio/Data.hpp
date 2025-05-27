@@ -4,8 +4,8 @@
 
 namespace Chicane
 {
-    namespace Window
+    namespace Audio
     {
-        
+        using Raw = std::vector<unsigned char>;
     }
 }

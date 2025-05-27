@@ -14,6 +14,7 @@ namespace Chicane
             {
             public:
                 Instance(const FileSystem::Path& inFilepath);
+                virtual ~Instance() = default;
 
             public:
                 const std::vector<Group>& getGroups() const;

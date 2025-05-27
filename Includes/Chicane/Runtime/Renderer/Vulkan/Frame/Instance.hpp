@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/View/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
@@ -16,13 +15,6 @@ namespace Chicane
     {
         namespace Frame
         {
-            struct CHICANE_RUNTIME ComponentData
-            {
-            public:
-                Vec2 size     = Vec2::Zero;
-                Vec2 position = Vec2::Zero;
-            };
-
             class CHICANE_RUNTIME Instance
             {
             public:

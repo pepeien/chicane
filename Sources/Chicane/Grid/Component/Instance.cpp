@@ -37,6 +37,7 @@ namespace Chicane
             for (Component* child : m_children)
             {
                 delete child;
+                child = nullptr;
             }
 
             m_children.clear();
@@ -45,11 +46,6 @@ namespace Chicane
         bool Component::isDrawable() const
         {
             return isVisible() && hasPrimitive();
-        }
-
-        void Component::handle(const SDL_Event& inEvent)
-        {
-            onEvent(inEvent);
         }
 
         void Component::tick(float inDelta)

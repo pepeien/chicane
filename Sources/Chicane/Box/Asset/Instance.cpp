@@ -1,33 +1,29 @@
 #include "Chicane/Box/Asset/Instance.hpp"
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     namespace Box
     {
         namespace Asset
         {
-            Instance::Instance(const FileSystem::Path& inFilepath)
+            Instance::Instance(const FileSystem::Path& inSource)
             {
-                if (inFilepath.empty())
+                if (inSource.empty())
                 {
                     return;
                 }
 
-                const std::string filepath = inFilepath.string();
-
-                if (FileSystem::exists(filepath))
+                if (FileSystem::exists(inSource))
                 {
-                    fetchXML(filepath);
-                    fetchHeader(filepath);
-
-                    return;
+                    fetchXML(inSource);
+                }
+                else
+                {
+                    createXML(inSource);
+                    saveXML();
                 }
 
-                createXML(filepath);
-                fetchHeader(filepath);
-                saveXML();
+                m_header = Header(inSource);
             }
 
             bool Instance::isType(Type inType) const
@@ -130,7 +126,7 @@ namespace Chicane
                 return m_xml.first_child();
             }
 
-            void Instance::createXML(const std::string& inFilepath)
+            void Instance::createXML(const FileSystem::Path& inFilepath)
             {
                 if (inFilepath.empty() || !m_xml.children().empty())
                 {
@@ -144,9 +140,9 @@ namespace Chicane
                 .set_value(CURRENT_VERSION);
             }
 
-            void Instance::fetchXML(const std::string& inFilepath)
+            void Instance::fetchXML(const FileSystem::Path& inFilepath)
             {
-                XML::load(m_xml, inFilepath);
+                m_xml = XML::load(inFilepath);
 
                 pugi::xml_node root = getXML();
 
@@ -166,16 +162,6 @@ namespace Chicane
                         )
                     );
                 }
-            }
-
-            void Instance::fetchHeader(const std::string& inFilepath)
-            {
-                if (inFilepath.empty())
-                {
-                    return;
-                }
-
-                m_header = Header::fromXML(inFilepath, m_xml);
             }
         }
     }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include "Chicane/Core/Essential.hpp"
 
 namespace Chicane
 {
@@ -8,8 +8,8 @@ namespace Chicane
     {
         enum class Vendor : std::uint8_t
         {
-            Undefined,
-            Wave // .wav
+            Undefined, // N/A
+            Wave       // .wav
         };
     }
 }

@@ -17,45 +17,28 @@ namespace Chicane
     public:
         ~Observable()
         {
-            for (Subscription<T>* subscription : m_subscriptions)
-            {
-                delete subscription;
-            }
-
             m_subscriptions.clear();
         }
 
     public:
-        Subscription<T>* subscribe(
+        Subscription<T> subscribe(
             EmptyCallback inNext,
             ErrorCallback inError = nullptr,
             CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(
-                new Subscription<T>(
-                    inNext,
-                    inError,
-                    inComplete
-                )
-            );
+            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }
 
-        Subscription<T>* subscribe(
+        Subscription<T> subscribe(
             NextCallback inNext,
             ErrorCallback inError = nullptr,
             CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(
-                new Subscription<T>(
-                    inNext,
-                    inError,
-                    inComplete
-                )
-            );
+            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }
@@ -67,29 +50,29 @@ namespace Chicane
 
         void next(T inData)
         {
-            for (std::uint32_t i = 0; i < m_subscriptions.size(); i++)
+            for (Subscription<T>& subscription : m_subscriptions)
             {
-                m_subscriptions.at(i)->next(inData);
+                subscription.next(inData);
             }
         }
 
         void error(const std::string& inMessage)
         {
-            for (std::uint32_t i = 0; i < m_subscriptions.size(); i++)
+            for (Subscription<T>& subscription : m_subscriptions)
             {
-                m_subscriptions.at(i)->error(inMessage);
+                subscription.error(inMessage);
             }
         }
 
         void complete()
         {
-            for (std::uint32_t i = 0; i < m_subscriptions.size(); i++)
+            for (Subscription<T>& subscription : m_subscriptions)
             {
-                m_subscriptions.at(i)->complete();
+                subscription.complete();
             }
         }
 
     private:
-        std::vector<Subscription<T>*> m_subscriptions;
+        std::vector<Subscription<T>> m_subscriptions;
     };
 }

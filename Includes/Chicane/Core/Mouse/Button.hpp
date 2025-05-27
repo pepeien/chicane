@@ -8,9 +8,9 @@ namespace Chicane
     {
         enum class Button : std::uint8_t
         {
-            Left   = SDL_BUTTON_LEFT,
-            Middle = SDL_BUTTON_MIDDLE,
-            Right  = SDL_BUTTON_RIGHT
+            Left = 1,
+            Middle,
+            Right
         };
     }
 }

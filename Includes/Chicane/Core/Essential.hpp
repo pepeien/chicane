@@ -29,6 +29,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <cstdlib>
+#include <cstring>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -56,9 +57,6 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include <pugixml.hpp>
-
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_audio.h>
 
 // Settings
 static constexpr inline const char* APPLICATION_NAME = "Chicane Engine";

@@ -29,7 +29,7 @@ namespace Chicane
 
         protected:
             // Events
-            virtual void onEvent(const SDL_Event& inEvent) { return; }
+            virtual void onEvent(const Window::Event& inEvent) { return; }
             virtual void onTick(float inDelta) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
@@ -44,7 +44,6 @@ namespace Chicane
             bool isValidChild(Component* inComponent) const;
 
             // Lifecycle
-            void handle(const SDL_Event& inEvent);
             void tick(float inDelta);
             void refresh();
 

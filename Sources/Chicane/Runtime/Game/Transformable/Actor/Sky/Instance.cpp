@@ -5,7 +5,7 @@ namespace Chicane
     ASky::ASky()
         : Super(),
         m_asset(nullptr),
-        m_assetObservable(std::make_unique<AssetObservable>())
+        m_assetObservable({})
     {}
 
     const Box::Sky::Instance* ASky::getSky() const
@@ -17,17 +17,17 @@ namespace Chicane
     {
         m_asset = inSky;
 
-        m_assetObservable->next(inSky);
+        m_assetObservable.next(inSky);
     }
 
-    ASky::AssetSubscription* ASky::watchSky(
+    ASky::AssetSubscription ASky::watchSky(
         AssetSubscription::NextCallback inNext,
         AssetSubscription::ErrorCallback inError,
         AssetSubscription::CompleteCallback inComplete
     )
     {
         return m_assetObservable
-            ->subscribe(inNext, inError, inComplete)
-            ->next(m_asset);
+            .subscribe(inNext, inError, inComplete)
+            .next(m_asset);
     }
 }

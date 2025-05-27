@@ -13,7 +13,6 @@ namespace Chicane
     Recorder::Recorder()
         : m_begin(Clock::now()),
         m_end(Clock::now()),
-        m_time(Clock::now()),
         m_cooldown(COOLDOWN_IN_MS)
     {}
 
@@ -26,12 +25,12 @@ namespace Chicane
     {
         m_end = Clock::now();
 
-        if (Time::miliseconds(m_end.point - m_time.point) < m_cooldown)
+        if (Time::miliseconds(m_end.point - m_begin.point) < m_cooldown)
         {
             return;
         }
 
-        m_time = m_end;
+        m_begin = m_end;
 
         onTime();
     }

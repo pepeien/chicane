@@ -2,20 +2,19 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
-#include "Chicane/Box/Asset/Audio/Data.hpp"
-#include "Chicane/Box/Asset/Audio/Instance.hpp"
+#include "Chicane/Box/Asset/Sound/Instance.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Audio
+        namespace Sound
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<Raw, Parsed>
+            class CHICANE_BOX Manager : public Box::Manager::Instance<Audio::Raw, Audio::Instance>
             {
             public:
                 Manager();
-                ~Manager();
+                virtual ~Manager() = default;
 
             protected:
                 void onActivation(const std::string& inId) override;
@@ -23,11 +22,11 @@ namespace Chicane
 
             public:
                 // Setup
-                void load(const std::string& inId, const Audio::Instance* inAudio);
+                void load(const Sound::Instance& inAudio);
 
                 // Data
-                const Raw& getInstance(const std::string& inId) const;
-                const Parsed& getData(const std::string& inId) const;
+                const Audio::Raw& getInstance(const std::string& inId) const;
+                Audio::Instance getData(const std::string& inId) const;
             };
         }
     }

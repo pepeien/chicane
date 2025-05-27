@@ -12,24 +12,24 @@ namespace Chicane
         {
             static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
-            static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
-                { "PNG", Vendor::Png }
+            static const std::unordered_map<std::string, Image::Vendor> VENDOR_MAP {
+                { "PNG", Image::Vendor::Png }
             };
 
             Instance::Instance(const FileSystem::Path& inFilepath)
                 : Asset::Instance(inFilepath),
-                m_vendor(Vendor::Undefined)
+                m_vendor(Image::Vendor::Undefined)
             {
                 fetchVendor();
                 fetchData();
             }
 
-            Vendor Instance::getVendor() const
+            Image::Vendor Instance::getVendor() const
             {
                 return m_vendor;
             }
 
-            void Instance::setVendor(Vendor inVendor)
+            void Instance::setVendor(Image::Vendor inVendor)
             {
                 m_vendor = inVendor;
 
@@ -99,7 +99,7 @@ namespace Chicane
 
                 if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
                 {
-                    m_vendor = Vendor::Undefined;
+                    m_vendor = Image::Vendor::Undefined;
 
                     return;
                 }

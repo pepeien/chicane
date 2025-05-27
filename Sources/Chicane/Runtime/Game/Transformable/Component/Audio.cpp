@@ -4,7 +4,8 @@ namespace Chicane
 {
     CAudio::CAudio()
         : Super(),
-        m_audio("")
+        m_audio(""),
+        m_manager(Box::getSoundManager())
     {}
 
     void CAudio::load(const std::string& inAudio)
@@ -14,9 +15,19 @@ namespace Chicane
             return;
         }
 
+        if (String::areEquals(m_audio, inAudio))
+        {
+            return;
+        }
+
+        if (!m_audio.empty())
+        {
+            m_manager->deactivate(m_audio);
+        }
+
         m_audio = inAudio;
 
-        Box::load(m_audio);
+        m_manager->activate(m_audio);
     }
 
     void CAudio::play() const
@@ -26,21 +37,11 @@ namespace Chicane
             return;
         }
 
-        Box::Audio::Manager* manager = Box::getAudioManager();
-
-        if (!manager->isActive(m_audio))
+        if (!m_manager->isActive(m_audio))
         {
             return;
         }
 
-        const Box::Audio::Parsed& audio = manager->getData(m_audio);
-
-        SDL_ClearAudioStream(audio.stream);
-        SDL_ResumeAudioStreamDevice(audio.stream);
-        SDL_PutAudioStreamData(
-            audio.stream,
-            audio.bufferData,
-            audio.bufferLength
-        );    
+        m_manager->getData(m_audio).play();
     }
 }

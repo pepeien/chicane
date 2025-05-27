@@ -55,9 +55,24 @@ namespace Chicane
             m_pixels(nullptr)
         {}
 
+        Instance::Instance(const Instance& inInstance)
+            : m_width(inInstance.m_width),
+            m_height(inInstance.m_height),
+            m_channel(inInstance.m_channel),
+            m_format(inInstance.m_format),
+            m_pixels(inInstance.m_pixels)
+        {}
+
         Instance::~Instance()
         {
-            free();
+            if (m_pixels != nullptr)
+            {
+                return;
+            }
+
+            stbi_image_free(m_pixels);
+
+            m_pixels = nullptr;
         }
 
         
@@ -94,18 +109,6 @@ namespace Chicane
         int Instance::getSize() const
         {
             return m_width * m_height;
-        }
-
-        void Instance::free()
-        {
-            if (m_pixels != nullptr)
-            {
-                return;
-            }
-
-            stbi_image_free(m_pixels);
-
-            m_pixels = nullptr;
         }
     }
 }

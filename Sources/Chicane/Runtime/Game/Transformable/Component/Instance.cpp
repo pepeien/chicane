@@ -10,7 +10,7 @@ namespace Chicane
         m_bCanTick(true),
         m_bIsActive(false),
         m_attachment(nullptr),
-        m_attachmentTransformSubscription(nullptr)  
+        m_attachmentTransformSubscription({})
     {}
 
     bool Component::isActive() const
@@ -80,11 +80,7 @@ namespace Chicane
 
         if (isAttached())
         {  
-            if (m_attachmentTransformSubscription)
-            {
-                m_attachmentTransformSubscription->complete();
-            }
-
+            m_attachmentTransformSubscription.complete();
             m_attachmentTransformSubscription = m_attachment->watchChanges(
                 [&]()
                 {

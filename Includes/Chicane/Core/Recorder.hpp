@@ -23,7 +23,6 @@ namespace Chicane
     protected:
         Time  m_begin;
         Time  m_end;
-        Time  m_time;
 
         float m_cooldown;
     };

@@ -17,5 +17,8 @@ namespace Chicane
 
     protected:
         std::string m_audio;
+
+    private:
+        Box::Sound::Manager* m_manager;
     }; 
 }

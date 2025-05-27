@@ -24,7 +24,7 @@ namespace Chicane
 
             public:
                 // Setup
-                void load(const std::string& inId, const Model::Instance* inModel);
+                void load(const std::string& inId, const Model::Instance& inModel);
 
                 // Data
                 const Extracted& getInstance(const std::string& inId) const;

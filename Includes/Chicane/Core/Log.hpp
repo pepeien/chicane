@@ -14,7 +14,7 @@ namespace Chicane
         using ListObservable   = Observable<List>;
         using ListSubscription = Subscription<List>;
 
-        CHICANE_CORE ListSubscription* watchLogs(
+        CHICANE_CORE ListSubscription watchLogs(
             ListSubscription::NextCallback inNext,
             ListSubscription::ErrorCallback inError = nullptr,
             ListSubscription::CompleteCallback inComplete = nullptr

@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
 
+#include <SDL3/SDL_vulkan.h>
+
 namespace Chicane
 {
     namespace Vulkan

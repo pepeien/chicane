@@ -7,9 +7,9 @@ namespace Chicane
 {
     Level::Level()
         : m_actors({}),
-        m_actorObservable(std::make_unique<ActorsObservable>()),
+        m_actorObservable({}),
         m_components({}),
-        m_componentObservable(std::make_unique<ComponentsObservable>()),
+        m_componentObservable({}),
         m_defaultCamera(nullptr)
     {
         m_actors.reserve(MAX_ACTOR_COUNT);
@@ -21,12 +21,14 @@ namespace Chicane
         for (Component* component : m_components)
         {
             delete component;
+            component = nullptr;
         }
         m_components.clear();
 
         for (Actor* actor : m_actors)
         {
             delete actor;
+            actor = nullptr;
         }
         m_actors.clear();
     }
@@ -82,20 +84,20 @@ namespace Chicane
 
         m_actors.erase(found);
 
-        m_actorObservable->next(m_actors);
+        m_actorObservable.next(m_actors);
 
         refreshDefaultCamera();
     }
 
-    Level::ActorsSubscription* Level::watchActors(
+    Level::ActorsSubscription Level::watchActors(
         ActorsSubscription::NextCallback inNext,
         ActorsSubscription::ErrorCallback inError,
         ActorsSubscription::CompleteCallback inComplete
     )
     {
         return m_actorObservable
-            ->subscribe(inNext, inError, inComplete)
-            ->next(m_actors);
+            .subscribe(inNext, inError, inComplete)
+            .next(m_actors);
     }
 
     bool Level::hasComponents() const
@@ -124,20 +126,20 @@ namespace Chicane
 
         m_components.erase(found);
 
-        m_componentObservable->next(m_components);
+        m_componentObservable.next(m_components);
 
         refreshDefaultCamera();
     }
 
-    Level::ComponentsSubscription* Level::watchComponents(
+    Level::ComponentsSubscription Level::watchComponents(
         ComponentsSubscription::NextCallback inNext,
         ComponentsSubscription::ErrorCallback inError,
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
         return m_componentObservable
-            ->subscribe(inNext, inError, inComplete)
-            ->next(m_components);
+           .subscribe(inNext, inError, inComplete)
+           .next(m_components);
     }
 
     void Level::createDefaultCamera()
@@ -152,7 +154,7 @@ namespace Chicane
 
         m_components.push_back(m_defaultCamera);
 
-        m_componentObservable->next(m_components);
+        m_componentObservable.next(m_components);
     }
 
     void Level::removeDefaultCamera()

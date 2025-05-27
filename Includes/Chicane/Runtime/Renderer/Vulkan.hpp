@@ -24,7 +24,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME Renderer : public Chicane::Renderer::Instance
+        class CHICANE_RUNTIME Renderer : public Chicane::Renderer
         {
         public:
             struct CHICANE_RUNTIME Internals
@@ -56,7 +56,7 @@ namespace Chicane
             // Lifecycle
             void onInit() override;
             void onRender() override;
-            void onEvent(const SDL_Event& inEvent) override;
+            void onEvent(const Window::Event& inEvent) override;
             void onResizing() override;
             void onRepositioning() override;
 

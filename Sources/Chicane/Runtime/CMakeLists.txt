@@ -65,6 +65,9 @@ target_link_libraries(
 
         # Vendors
         Vulkan::Vulkan
+
+    PRIVATE
+        SDL3::SDL3
 )
 
 add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})

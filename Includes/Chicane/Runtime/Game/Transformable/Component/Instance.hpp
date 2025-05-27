@@ -44,10 +44,10 @@ namespace Chicane
         void attachTo(Transformable* inRoot);
 
     public:
-        bool                 m_bCanTick;
-        bool                 m_bIsActive;
+        bool            m_bCanTick;
+        bool            m_bIsActive;
 
-        Transformable*       m_attachment;
-        Subscription<void*>* m_attachmentTransformSubscription;
+        Transformable*  m_attachment;
+        Subscription<>  m_attachmentTransformSubscription;
     };
 }

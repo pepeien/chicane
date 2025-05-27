@@ -9,7 +9,7 @@ namespace Chicane
         namespace Asset
         {
             const std::unordered_map<std::string, Type> TYPES = {
-                { Audio::EXTENSION,   Type::Audio   },
+                { Sound::EXTENSION,   Type::Sound   },
                 { Font::EXTENSION,    Type::Font    },
                 { Mesh::EXTENSION,    Type::Mesh    },
                 { Model::EXTENSION,   Type::Model   },
@@ -17,7 +17,7 @@ namespace Chicane
                 { Texture::EXTENSION, Type::Texture }
             };
 
-            bool isFileAsset(const std::string& inFilepath)
+            bool isFileAsset(const FileSystem::Path& inFilepath)
             {
                 if (inFilepath.empty())
                 {
@@ -25,14 +25,14 @@ namespace Chicane
                 }
 
                 const std::string extension = String::split(
-                    inFilepath,
+                    inFilepath.extension().string(),
                     "."
                 ).back();
 
                 return TYPES.find("." + extension) != TYPES.end();
             }
 
-            Type getType(const std::string& inFilepath)
+            Type getType(const FileSystem::Path& inFilepath)
             {
                 if (!isFileAsset(inFilepath))
                 {
@@ -40,39 +40,36 @@ namespace Chicane
                 }
 
                 const std::string extension = String::split(
-                    inFilepath,
+                    inFilepath.extension().string(),
                     "."
                 ).back();
 
                 return TYPES.at("." + extension);
             }
 
-            Header Header::fromFilepath(const std::string& inFilepath)
+            Header::Header(const FileSystem::Path& inFilepath)
+                : Header()
             {
                 if (inFilepath.empty())
                 {
-                    return {};
+                    return;
                 }
 
-                pugi::xml_document xml;
+                const pugi::xml_document document = XML::load(inFilepath);
+                const pugi::xml_node root = document.first_child();
 
-                XML::load(xml, inFilepath);
-
-                return Header::fromXML(inFilepath, xml);
+                filepath = inFilepath;
+                fetchVersion(root);
+                fetchId(root);
+                fetchType();
             }
 
-            Header Header::fromXML(const std::string& inFilepath, const pugi::xml_document& inDocument)
-            {
-                const pugi::xml_node root = inDocument.first_child();
-
-                Header header = {};
-                header.filepath = inFilepath;
-                header.fetchVersion(root);
-                header.fetchId(root);
-                header.fetchType();
-
-                return header;
-            }
+            Header::Header()
+                : filepath(""),
+                version(CURRENT_VERSION),
+                id(""),
+                type(Type::Undefined)
+            {}
 
             void Header::fetchVersion(const pugi::xml_node& inRoot)
             {

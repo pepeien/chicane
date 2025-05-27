@@ -21,7 +21,7 @@ namespace Chicane
         CHICANE_RUNTIME bool hasController();
         CHICANE_RUNTIME Controller* getController();
         CHICANE_RUNTIME void setController(Controller* inController);
-        CHICANE_RUNTIME ControllerSubscription* watchController(
+        CHICANE_RUNTIME ControllerSubscription watchController(
             ControllerSubscription::NextCallback inNext,
             ControllerSubscription::ErrorCallback inError = nullptr,
             ControllerSubscription::CompleteCallback inComplete = nullptr
@@ -30,7 +30,7 @@ namespace Chicane
         CHICANE_RUNTIME bool hasLevel();
         CHICANE_RUNTIME Level* getLevel();
         CHICANE_RUNTIME void setLevel(Level* inLevel);
-        CHICANE_RUNTIME LevelSubscription* watchLevel(
+        CHICANE_RUNTIME LevelSubscription watchLevel(
             LevelSubscription::NextCallback inNext,
             LevelSubscription::ErrorCallback inError = nullptr,
             LevelSubscription::CompleteCallback inComplete = nullptr
@@ -40,7 +40,7 @@ namespace Chicane
         CHICANE_RUNTIME bool hasView();
         CHICANE_RUNTIME Grid::View* getView();
         CHICANE_RUNTIME void setView(Grid::View* inView);
-        CHICANE_RUNTIME ViewSubscription* watchView(
+        CHICANE_RUNTIME ViewSubscription watchView(
             ViewSubscription::NextCallback inNext,
             ViewSubscription::ErrorCallback inError = nullptr,
             ViewSubscription::CompleteCallback inComplete = nullptr
@@ -48,20 +48,11 @@ namespace Chicane
 
         // Render
         CHICANE_RUNTIME bool hasWindow();
-        CHICANE_RUNTIME Window::Instance* getWindow();
-        template<class T>
-        T* getWindow()
-        {
-            if (!hasWindow())
-            {
-                return nullptr;
-            }
-
-            return static_cast<T*>(getWindow());
-        }
+        CHICANE_RUNTIME Window* getWindow();
 
         CHICANE_RUNTIME bool hasRenderer();
-        CHICANE_RUNTIME Renderer::Instance* getRenderer();
+        CHICANE_RUNTIME void setRenderer(Window::Renderer inType);
+        CHICANE_RUNTIME Renderer* getRenderer();
         template<class T>
         T* getRenderer()
         {

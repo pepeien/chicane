@@ -3,22 +3,22 @@
 namespace Chicane
 {
     Changeable::Changeable()
-        : m_observable(std::make_unique<ChangesObservable>())
+        : m_observable({})
     {}
 
     void Changeable::emmitChanges()
     {
-        m_observable->next();
+        m_observable.next();
     }
 
-    Changeable::ChangesSubscription* Changeable::watchChanges(
+    Changeable::ChangesSubscription Changeable::watchChanges(
         ChangesSubscription::EmptyCallback inNext,
         ChangesSubscription::ErrorCallback inError,
         ChangesSubscription::CompleteCallback inComplete
-    ) const
+    )
     {
         return m_observable
-            ->subscribe(inNext, inError, inComplete)
-            ->next();
+            .subscribe(inNext, inError, inComplete)
+            .next();
     }
 }

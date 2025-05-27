@@ -14,7 +14,7 @@ namespace Chicane
             return inNode.children().empty() && !inNode.value();
         }
 
-        void save(const pugi::xml_document& inDocument, const std::string& inFilepath)
+        void save(const pugi::xml_document& inDocument, const FileSystem::Path& inFilepath)
         {
             if (inFilepath.empty())
             {
@@ -28,23 +28,23 @@ namespace Chicane
             );
         }
 
-        void load(pugi::xml_document& outDocument, const std::string& inFilepath)
+        pugi::xml_document load(const FileSystem::Path& inFilepath)
         {
             if (inFilepath.empty())
             {
                 throw std::runtime_error("The document filepath is invalid");
             }
 
-            if (!outDocument.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
+            pugi::xml_document result;
+            if (!result.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
             {
-                throw std::runtime_error("Failed to read " + inFilepath);
+                throw std::runtime_error("Failed to read " + inFilepath.string());
             }
+
+            return result;
         }
 
-        pugi::xml_attribute getAttribute(
-            const std::string& inName,
-            const pugi::xml_node& inNode
-        )
+        pugi::xml_attribute getAttribute(const std::string& inName, const pugi::xml_node& inNode)
         {
             return inNode.attribute(inName.c_str());
         }

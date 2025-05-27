@@ -18,11 +18,11 @@ namespace Chicane
 
     public:
         void emmitChanges();
-        ChangesSubscription* watchChanges(
+        ChangesSubscription watchChanges(
             ChangesSubscription::EmptyCallback inNext,
             ChangesSubscription::ErrorCallback inError = nullptr,
             ChangesSubscription::CompleteCallback inComplete = nullptr
-        ) const;
+        );
 
         template<typename T>
         void setProperty(T& outProperty, T inNewValue)
@@ -38,6 +38,6 @@ namespace Chicane
         }
 
     private:
-        std::unique_ptr<ChangesObservable> m_observable;
+        ChangesObservable m_observable;
     };
 }

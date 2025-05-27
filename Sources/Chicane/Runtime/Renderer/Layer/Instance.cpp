@@ -83,7 +83,7 @@ namespace Chicane
             onRender(outData);
         }
 
-        void Instance::handle(const SDL_Event& inEvent)
+        void Instance::handle(const Window::Event& inEvent)
         {
             onEvent(inEvent);
         }

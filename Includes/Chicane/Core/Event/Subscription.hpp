@@ -29,44 +29,47 @@ namespace Chicane
             m_complete(inComplete)
         {}
 
+        Subscription()
+            : m_bIsCompleted(false),
+            m_next(nullptr),
+            m_error(nullptr),
+            m_complete(nullptr)
+        {}
+
     public:
-        Subscription<T>* next()
+        Subscription<T> next()
         {
             return next(nullptr);
         }
 
-        Subscription<T>* next(T inData)
+        Subscription<T> next(T inData)
         {
             if (isCompleted())
             {
-                return this;
+                return *this;
             }
 
-            if (!m_next)
+            if (m_next)
             {
-                return this;
+                m_next(inData);
             }
 
-            m_next(inData);
-
-            return this;
+            return *this;
         }
 
-        Subscription<T>* error(const std::string& inMessage)
+        Subscription<T> error(const std::string& inMessage)
         {
             if (isCompleted())
             {
-                return this;
+                return *this;
             }
 
-            if (!m_error)
+            if (m_error)
             {
-                return this;
+                m_error(inMessage);
             }
 
-            m_error(inMessage);
-
-            return this;
+            return *this;
         }
 
         bool isCompleted() const
@@ -74,23 +77,21 @@ namespace Chicane
             return m_bIsCompleted;
         }
 
-        Subscription<T>* complete()
+        Subscription<T> complete()
         {
             if (isCompleted())
             {
-                return this;
+                return *this;
             }
 
             m_bIsCompleted = true;
 
-            if (!m_complete)
+            if (m_complete)
             {
-                return this;
+                m_complete();
             }
 
-            m_complete();
-
-            return this;
+            return *this;
         }
 
     private:

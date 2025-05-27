@@ -79,9 +79,9 @@ namespace Chicane
             pushLayer(new LGrid());
         }
 
-        void Renderer::onEvent(const SDL_Event& inEvent)
+        void Renderer::onEvent(const Window::Event& inEvent)
         {
-            if (inEvent.type == SDL_EVENT_WINDOW_RESIZED)
+            if (inEvent.type == Window::EventType::WindowResized)
             {
                 rebuildSwapChain();
             }
@@ -90,12 +90,12 @@ namespace Chicane
         void Renderer::onResizing()
         {
             // Viewport
-            m_vkViewport.width  = m_resolution.x;
-            m_vkViewport.height = m_resolution.y;
+            m_vkViewport.width  = m_size.x;
+            m_vkViewport.height = m_size.y;
 
             // Scissor
-            m_vkScissor.extent.width  = m_resolution.x;
-            m_vkScissor.extent.height = m_resolution.y;
+            m_vkScissor.extent.width  = m_size.x;
+            m_vkScissor.extent.height = m_size.y;
         }
 
         void Renderer::onRepositioning()
@@ -124,7 +124,10 @@ namespace Chicane
                 rebuildSwapChain();
 
                 return;
-            } else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
+            } else if (
+                acquireResult.result != vk::Result::eSuccess &&
+                acquireResult.result != vk::Result::eSuboptimalKHR
+            )
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
@@ -178,7 +181,10 @@ namespace Chicane
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
+            if (
+                presentResult == vk::Result::eErrorOutOfDateKHR ||
+                presentResult == vk::Result::eSuboptimalKHR
+            )
             {
                 rebuildSwapChain();
             } else if (presentResult != vk::Result::eSuccess)
@@ -293,7 +299,7 @@ namespace Chicane
                 frame.setupSync();
             }
 
-            setResolution(m_swapChain.extent.width, m_swapChain.extent.height);
+            setSize(m_swapChain.extent.width, m_swapChain.extent.height);
         }
 
         void Renderer::destroySwapChain()

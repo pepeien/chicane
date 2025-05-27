@@ -77,7 +77,7 @@ namespace Chicane
         {
             m_actors.push_back(new T());
 
-            m_actorObservable->next(m_actors);
+            m_actorObservable.next(m_actors);
 
             refreshDefaultCamera();
 
@@ -86,7 +86,7 @@ namespace Chicane
 
         void removeActor(Actor* inActor);
 
-        ActorsSubscription* watchActors(
+        ActorsSubscription watchActors(
             ActorsSubscription::NextCallback inNext,
             ActorsSubscription::ErrorCallback inError = nullptr,
             ActorsSubscription::CompleteCallback inComplete = nullptr
@@ -136,7 +136,7 @@ namespace Chicane
         {
             m_components.push_back(new T());
 
-            m_componentObservable->next(m_components);
+            m_componentObservable.next(m_components);
 
             refreshDefaultCamera();
 
@@ -145,7 +145,7 @@ namespace Chicane
 
         void removeComponent(Component* inComponent);
 
-        ComponentsSubscription* watchComponents(
+        ComponentsSubscription watchComponents(
             ComponentsSubscription::NextCallback inNext,
             ComponentsSubscription::ErrorCallback inError = nullptr,
             ComponentsSubscription::CompleteCallback inComplete = nullptr
@@ -237,12 +237,12 @@ namespace Chicane
         void refreshDefaultCamera();
 
     private:
-        std::vector<Actor*>                   m_actors;
-        std::unique_ptr<ActorsObservable>     m_actorObservable;
+        std::vector<Actor*>     m_actors;
+        ActorsObservable        m_actorObservable;
 
-        std::vector<Component*>               m_components;
-        std::unique_ptr<ComponentsObservable> m_componentObservable;
+        std::vector<Component*> m_components;
+        ComponentsObservable    m_componentObservable;
 
-        CCamera*                              m_defaultCamera;
+        CCamera*                m_defaultCamera;
     };
 }

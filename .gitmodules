@@ -19,3 +19,6 @@
 [submodule "Sources/Chicane/Core/Vendors/SDL3"]
 	path = Sources/Chicane/Core/Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
+[submodule "Vendors/SDL3"]
+	path = Vendors/SDL3
+	url = https://github.com/pepeien/SDL.git

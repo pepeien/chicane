@@ -24,7 +24,7 @@ namespace Chicane
             virtual bool onRebuild() { return true; }
             virtual bool onSetup() { return true; }
             virtual void onRender(void* outData) { return; }
-            virtual void onEvent(const SDL_Event& inEvent) { return; }
+            virtual void onEvent(const Window::Event& inEvent) { return; }
 
         public:  
             void init();
@@ -32,7 +32,7 @@ namespace Chicane
             void rebuild();
             void setup();
             void render(void* outData);
-            void handle(const SDL_Event& inEvent);
+            void handle(const Window::Event& inEvent);
 
         public:
             bool is(Status inStatus) const;

@@ -22,19 +22,17 @@ namespace Chicane
 
             void Manager::onDeactivation(const std::string& inId)
             {
-                m_datum.at(inId).free();
-
                 Super::deallocate(inId);
             }
 
-            void Manager::load(const std::string& inId, const Texture::Instance* inAsset)
+            void Manager::load(const std::string& inId, const Texture::Instance& inAsset)
             {
                 if (isLoaded(inId))
                 {
                     return;
                 }
 
-                Super::load(inId, inAsset->getData());
+                Super::load(inId, inAsset.getData());
             }
 
             const Image::Raw& Manager::getInstance(const std::string& inId) const

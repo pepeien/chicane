@@ -2,7 +2,6 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
-#include "Chicane/Box/Asset/Texture/Vendor.hpp"
 
 namespace Chicane
 {
@@ -14,10 +13,11 @@ namespace Chicane
             {
             public:
                 Instance(const FileSystem::Path& inFilepath);
+                virtual ~Instance() = default;
 
             public:
-                Vendor getVendor() const;
-                void setVendor(Vendor inVendor);
+                Image::Vendor getVendor() const;
+                void setVendor(Image::Vendor inVendor);
 
                 const Image::Raw& getData() const;
                 void setData(const std::string& inFilepath);
@@ -28,8 +28,8 @@ namespace Chicane
                 void fetchData();
 
             private:
-                Vendor     m_vendor;
-                Image::Raw m_data;
+                Image::Vendor m_vendor;
+                Image::Raw    m_data;
             };
         }
     }

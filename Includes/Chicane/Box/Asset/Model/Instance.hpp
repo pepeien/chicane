@@ -15,6 +15,7 @@ namespace Chicane
             {
             public:
                 Instance(const FileSystem::Path& inFilepath);
+                virtual ~Instance() = default;
 
             public:
                 Vendor getVendor() const;

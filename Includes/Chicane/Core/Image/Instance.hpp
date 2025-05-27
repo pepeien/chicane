@@ -3,6 +3,7 @@
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Image/Data.hpp"
+#include "Chicane/Core/Image/Vendor.hpp"
 
 namespace Chicane
 {
@@ -18,7 +19,9 @@ namespace Chicane
             Instance(const Raw& inData);
             Instance();
 
-            ~Instance();
+            Instance(const Instance& inInstance);
+
+            virtual ~Instance();
 
         public:
             int getWidth() const;
@@ -30,14 +33,14 @@ namespace Chicane
             int getPitch() const;
             int getSize() const;
 
-            void free();
-
         protected:
-            int    m_width   = 0;
-            int    m_height  = 0;
-            int    m_channel = 0;
-            int    m_format  = 0;
-            Pixels m_pixels  = nullptr;
+            Vendor m_type;
+
+            int    m_width;
+            int    m_height;
+            int    m_channel;
+            int    m_format;
+            Pixels m_pixels;
         };
     }
 }
