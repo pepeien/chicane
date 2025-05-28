@@ -31,13 +31,8 @@ namespace Chicane
                 inCreateInfo.onSetup();
             }
 
-            while (true)
+            while (m_window->run())
             {
-                if (!m_window->update())
-                {
-                   return; 
-                }
-
                 render();
             }
         }

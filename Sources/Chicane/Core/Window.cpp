@@ -120,7 +120,7 @@ namespace Chicane
         setType(inCreateInfo.type);
     }
 
-    bool Window::update()
+    bool Window::run()
     {
         SDL_Event data;
 

@@ -24,12 +24,12 @@ namespace Chicane
                     bufferInfo.offset = 0;
                     bufferInfo.range  = m_allocationSize;
 
-                    m_isDirty = false;
+                    m_bIsDirty = false;
                 }
 
                 void destroy(const vk::Device& inLogicalDevice)
                 {
-                    m_isDirty = true;
+                    m_bIsDirty = true;
 
                     if (!m_buffer.memory)
                     {
@@ -43,19 +43,19 @@ namespace Chicane
 
                 bool isDirty() const
                 {
-                    return m_isDirty;
+                    return m_bIsDirty;
                 }
 
                 void setAsDirty()
                 {
-                    m_isDirty = true;
+                    m_bIsDirty = true;
                 }
 
                 void copyToBuffer(const T* inData)
                 {
                     memcpy(m_writeLocation, inData, m_allocationSize);
 
-                    m_isDirty = false;
+                    m_bIsDirty = false;
                 }
 
             public: 
@@ -63,7 +63,7 @@ namespace Chicane
 
             private:
                 // Status
-                bool                     m_isDirty        = true;
+                bool                     m_bIsDirty       = true;
 
                 // Memory
                 size_t                   m_allocationSize = 0;

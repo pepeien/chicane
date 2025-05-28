@@ -42,14 +42,14 @@ namespace Chicane
 
     bool Bounds::contains(const Vec3& inPoint) const
     {
-        const Vec3 min = getMin();
-        const Vec3 max = getMax();
+        const Vec3& min = getMin();
+        const Vec3& max = getMax();
 
-        const bool isWithinX = inPoint.x >= min.x && inPoint.x <= max.x;
-        const bool isWithinY = inPoint.y >= min.y && inPoint.y <= max.y;
-        const bool isWithinZ = inPoint.z >= min.z && inPoint.z <= max.z;
+        const bool bIsWithinX = inPoint.x >= min.x && inPoint.x <= max.x;
+        const bool bIsWithinY = inPoint.y >= min.y && inPoint.y <= max.y;
+        const bool bIsWithinZ = inPoint.z >= min.z && inPoint.z <= max.z;
 
-        return isWithinX && isWithinY && isWithinZ;
+        return bIsWithinX && bIsWithinY && bIsWithinZ;
     }
 
     Vec3 Bounds::getOverlap(const Bounds& inOther) const

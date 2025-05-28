@@ -215,7 +215,7 @@ namespace Chicane
     public:
         // Lifecycle
         void init(const CreateInfo& inCreateInfo);
-        bool update();
+        bool run();
 
         // Settings
         void setTitle(const std::string& inTitle);

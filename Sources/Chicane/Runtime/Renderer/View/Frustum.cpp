@@ -14,19 +14,19 @@ namespace Chicane
 
             for (const Plane& plane : planes)
             {
-                bool isFullyOutside = true;
+                bool bIsFullyOutside = true;
 
                 for (const Vec3& corner : corners)
                 {
                     if (plane.contains(corner))
                     {
-                        isFullyOutside = false;
+                        bIsFullyOutside = false;
 
                         break;
                     }
                 }
 
-                if (isFullyOutside)
+                if (bIsFullyOutside)
                 {
                     return false;
                 }

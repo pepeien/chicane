@@ -143,11 +143,9 @@ namespace Chicane
             m_style.width         = m_style.font.size;
             m_style.height        = m_style.font.size;
             m_style.margin.right  = glyph.bearing.x;
-            //m_style.margin.bottom = glyph.bearing.y;
+            m_style.margin.bottom = glyph.bearing.y;
 
             m_canUpdate = true;
-
-            refreshPrimitive();
         }
     }
 }

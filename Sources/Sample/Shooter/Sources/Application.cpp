@@ -17,7 +17,7 @@ Application::Application()
     createInfo.onSetup = [this]() {
         initLevel();
         initCharacter();
-        //initView();
+        initView();
     };
 
     Chicane::Application::run(createInfo);

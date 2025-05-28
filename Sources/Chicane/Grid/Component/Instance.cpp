@@ -24,12 +24,19 @@ namespace Chicane
             m_root(nullptr),
             m_parent(nullptr),
             m_children({}),
+            m_childrenObservable({}),
             m_size({}),
             m_position({}),
             m_cursor({}),
             m_primitive({})
         {
             m_style.setParent(this);
+            m_style.watchChanges(
+                [this]()
+                {
+                    refresh();
+                }
+            );
         }
 
         Component::~Component()
@@ -50,6 +57,8 @@ namespace Chicane
 
         void Component::tick(float inDelta)
         {
+            refreshStyle();
+
             onTick(inDelta);
 
             for (Component* child : m_children)
@@ -60,7 +69,6 @@ namespace Chicane
 
         void Component::refresh()
         {
-            refreshStyle();
             refreshSize();
             refreshPosition();
             refreshPrimitive();
@@ -410,10 +418,41 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
+            inComponent->watchChanges(
+                [this, inComponent]()
+                {
+                    m_childrenObservable.next(inComponent);
+                }
+            );
+            inComponent->watchChildren(
+                [this](Grid::Component* component)
+                {
+                    m_childrenObservable.next(component);
+                }
+            );
+
+            watchChanges(
+                [inComponent]()
+                {
+                    inComponent->refreshStyle();
+                    inComponent->refresh();
+                }
+            );
 
             m_children.push_back(inComponent);
 
             onAdopted(inComponent);
+        }
+
+        Component::ChildrenSubscription Component::watchChildren(
+            ChildrenSubscription::NextCallback inNext,
+            ChildrenSubscription::ErrorCallback inError,
+            ChildrenSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_childrenObservable
+                .subscribe(inNext, inError, inComplete)
+                .next(this);
         }
 
         const Vec2& Component::getCursor() const
@@ -503,8 +542,6 @@ namespace Chicane
             m_position.y = inY;
 
             setCursor(m_position);
-
-            emmitChanges();
         }
 
         bool Component::hasPrimitive() const
@@ -621,10 +658,10 @@ namespace Chicane
 
         bool Component::isReference(const std::string& inValue) const
         {
-            bool hasOpening = inValue.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
-            bool hasClosing = inValue.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
+            const bool bHasOpening = inValue.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
+            const bool bHasClosing = inValue.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
 
-            return hasOpening && hasClosing;
+            return bHasOpening && bHasClosing;
         }
 
         Reference Component::parseReference(const std::string& inValue) const
@@ -654,10 +691,10 @@ namespace Chicane
 
         bool Component::isFunction(const std::string& inValue) const
         {
-            bool hasOpening = inValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
-            bool hasClosing = inValue.find_last_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
+            const bool bHasOpening = inValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
+            const bool bHasClosing = inValue.find_last_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
 
-            return hasOpening && hasClosing;
+            return bHasOpening && bHasClosing;
         }
 
         FunctionData Component::parseFunction(const std::string& inRefValue) const

@@ -25,7 +25,7 @@ namespace Chicane
                 const vk::Queue& inQueue,
                 const vk::CommandBuffer& inCommandBuffer
             );
-            CHICANE_RUNTIME void destroy(const vk::Device& inLogicalDevice, const Instance& inBuffer);
+            CHICANE_RUNTIME void destroy(const vk::Device& inLogicalDevice, Instance& inBuffer);
         }
     }
 }

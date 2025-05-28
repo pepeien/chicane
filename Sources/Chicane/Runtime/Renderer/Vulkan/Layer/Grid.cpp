@@ -45,14 +45,12 @@ namespace Chicane
 
         bool LGrid::onSetup()
         {
-            destroyDraws();
-
-            if (m_view == nullptr)
+            if (!m_view)
             {
                 return false;
             }
 
-            buildDraws(m_view->getChildren());
+            refreshDraws(m_view);
 
             if (m_draws.empty())
             {
@@ -91,7 +89,28 @@ namespace Chicane
             Application::watchView(
                 [&](Grid::View* inView)
                 {
+                    destroyDraws();
+
                     m_view = inView;
+
+                    if (!m_view)
+                    {
+                        return;
+                    }
+
+                    buildDraws(m_view);
+
+                    m_view->watchChildren(
+                        [this](Grid::Component* inChild)
+                        {
+                            if (!hasDraw(inChild))
+                            {
+                                return;
+                            }
+
+                            getDraw(inChild).bIsOutdated = true;
+                        }
+                    );
                 }
             );
         }
@@ -166,6 +185,11 @@ namespace Chicane
 
             for (const Draw& draw : m_draws)
             {
+                if (!draw.bIsDrawable)
+                {
+                    continue;
+                }
+
                 const Vec2& size     = draw.size;
                 const Vec2& position = draw.position;
 
@@ -174,9 +198,9 @@ namespace Chicane
                 pushConstant.position.x = ((2.0f * position.x) / rootSize.x) - 1.0f;
                 pushConstant.position.y = ((2.0f * position.y) / rootSize.y) - 1.0f;
 
-                vk::DeviceSize offsets[] = { 0 };
+                vk::DeviceSize offset = 0;
 
-                inCommandBuffer.bindVertexBuffers(0, 1, &draw.vertexBuffer.instance, offsets);
+                inCommandBuffer.bindVertexBuffers(0, 1, &draw.vertexBuffer.instance, &offset);
 
                 inCommandBuffer.bindIndexBuffer(draw.indexBuffer.instance, 0, vk::IndexType::eUint32);
 
@@ -194,6 +218,8 @@ namespace Chicane
 
         void LGrid::setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices)
         {
+            destroyDrawVertexBuffer(outDraw);
+
             if (inVertices.empty())
             {
                 return;
@@ -237,8 +263,17 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
+        void LGrid::destroyDrawVertexBuffer(Draw& outDraw)
+        {
+            m_internals.logicalDevice.waitIdle();
+
+            Buffer::destroy(m_internals.logicalDevice, outDraw.vertexBuffer);
+        }
+
         void LGrid::setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices)
         {
+            destroyDrawIndexBuffer(outDraw);
+
             if (inIndices.empty())
             {
                 return;
@@ -278,49 +313,117 @@ namespace Chicane
             Buffer::destroy(m_internals.logicalDevice, stagingBuffer);
         }
 
-        void LGrid::buildDraws(const std::vector<Grid::Component*>& inComponents)
+        void LGrid::destroyDrawIndexBuffer(Draw& outDraw)
         {
-            if (inComponents.empty())
+            m_internals.logicalDevice.waitIdle();
+
+            Buffer::destroy(m_internals.logicalDevice, outDraw.indexBuffer);
+        }
+
+        bool LGrid::hasDraw(Grid::Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return false;
+            }
+
+            return std::find_if(
+                m_draws.begin(),
+                m_draws.end(),
+                [inComponent](const Draw& draw) { return draw.component == inComponent; }
+            ) != m_draws.end();
+        }
+
+        LGrid::Draw& LGrid::getDraw(Grid::Component* inComponent)
+        {
+            return *std::find_if(
+                m_draws.begin(),
+                m_draws.end(),
+                [inComponent](const Draw& draw) { return draw.component == inComponent; }
+            );
+        }
+
+        void LGrid::buildDraws(Grid::Component* inComponent)
+        {
+            if (!inComponent)
             {
                 return;
             }
 
-            for (Grid::Component* component : inComponents)
+            if (!inComponent->isRoot())
             {
-                component->refresh();
-
-                if (!component->isVisible())
+                if (!hasDraw(inComponent))
                 {
-                    continue;
+                    Draw draw = {};
+                    draw.component = inComponent;
+
+                    m_draws.push_back(draw);
+                }
+            }
+    
+            for (Grid::Component* component : inComponent->getChildren())
+            {
+                buildDraws(component);
+            }
+        }
+
+        void LGrid::refreshDraws(Grid::Component* inComponent)
+        {
+            if (!inComponent)
+            {
+                return;
+            }
+
+            if (!inComponent->isRoot())
+            {
+                if (!hasDraw(inComponent))
+                {
+                    buildDraws(inComponent);
                 }
 
-                if (component->isDrawable())
+                Draw& draw = getDraw(inComponent);
+
+                if (draw.bIsOutdated)
                 {
-                    const Grid::Primitive primitive = component->getPrimitive();
+                    if (inComponent->isDrawable())
+                    {
+                        const Grid::Primitive primitive = inComponent->getPrimitive();
 
-                    Draw drawData = {};
-                    drawData.size        = component->getSize();
-                    drawData.position    = component->getPosition();
-                    drawData.vertexCount = primitive.vertices.size();
-                    drawData.indexCount  = primitive.indices.size();
-                    setDrawVertexBuffer(drawData, primitive.vertices);
-                    setDrawIndexBuffer(drawData, primitive.indices);
+                        draw.size        = inComponent->getSize();
+                        draw.position    = inComponent->getPosition();
+                        draw.vertexCount = primitive.vertices.size();
+                        draw.indexCount  = primitive.indices.size();
+                        draw.bIsDrawable = true;
+                        setDrawVertexBuffer(draw, primitive.vertices);
+                        setDrawIndexBuffer(draw, primitive.indices);
+                    }
+                    else
+                    {
+                        draw.size        = Vec2::Zero;
+                        draw.position    = Vec2::Zero;
+                        draw.vertexCount = 0;
+                        draw.indexCount  = 0;
+                        draw.bIsDrawable = false;
+                        destroyDrawVertexBuffer(draw);
+                        destroyDrawIndexBuffer(draw);
+                    }
 
-                    m_draws.push_back(drawData);
+                    draw.bIsOutdated = false;
                 }
+            }
 
-                buildDraws(component->getChildren());
+            for (Grid::Component* component : inComponent->getChildren())
+            {
+                refreshDraws(component);
             }
         }
 
         void LGrid::destroyDraws()
         {
-            m_internals.logicalDevice.waitIdle();
-
-            for (const Draw& draw : m_draws)
+            for (Draw& draw : m_draws)
             {
-                Buffer::destroy(m_internals.logicalDevice, draw.vertexBuffer);
-                Buffer::destroy(m_internals.logicalDevice, draw.indexBuffer);
+                destroyDrawVertexBuffer(draw);
+                destroyDrawIndexBuffer(draw);
             }
 
             m_draws.clear();

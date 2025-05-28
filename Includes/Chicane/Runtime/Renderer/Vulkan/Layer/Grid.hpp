@@ -12,8 +12,8 @@ namespace Chicane
             struct PushConstant
             {
             public:
-                Vec2 size     = {};
-                Vec2 position = {};
+                Vec2 size     = Vec2::Zero;
+                Vec2 position = Vec2::Zero;
             };
 
             struct Draw
@@ -25,6 +25,11 @@ namespace Chicane
                 Buffer::Instance vertexBuffer = {};
                 std::uint32_t    indexCount   = 0;
                 Buffer::Instance indexBuffer  = {};
+
+                Grid::Component* component    = nullptr;
+
+                bool             bIsOutdated  = true;
+                bool             bIsDrawable  = false;
             };
 
         public:
@@ -51,8 +56,13 @@ namespace Chicane
 
             // Draw
             void setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices);
+            void destroyDrawVertexBuffer(Draw& outDraw);
             void setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices);
-            void buildDraws(const std::vector<Grid::Component*>& inComponents);
+            void destroyDrawIndexBuffer(Draw& outDraw);
+            bool hasDraw(Grid::Component* inComponent);
+            Draw& getDraw(Grid::Component* inComponent);
+            void buildDraws(Grid::Component* inComponent);
+            void refreshDraws(Grid::Component* inComponent);
             void destroyDraws();
 
         private:
@@ -62,8 +72,8 @@ namespace Chicane
 
             std::vector<vk::ClearValue>                 m_clearValues;
 
-            const Grid::View*                           m_view;
-            std::vector<Draw>                       m_draws;
+            Grid::View*                                 m_view;
+            std::vector<Draw>                           m_draws;
         };
     }
 }

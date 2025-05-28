@@ -14,6 +14,9 @@ namespace Chicane
         public:
             using Compiler = std::function<Component* (const pugi::xml_node& inNode)>;
 
+            using ChildrenObservable   = Observable<Component*>;
+            using ChildrenSubscription = Subscription<Component*>;
+
         protected:
             using Super = Component;
 
@@ -86,6 +89,11 @@ namespace Chicane
             const std::vector<Component*>& getChildren() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
+            ChildrenSubscription watchChildren(
+                ChildrenSubscription::NextCallback inNext,
+                ChildrenSubscription::ErrorCallback inError = nullptr,
+                ChildrenSubscription::CompleteCallback inComplete = nullptr
+            );
 
             // Positioning
             const Vec2& getCursor() const;
@@ -133,6 +141,7 @@ namespace Chicane
             Component*              m_root;
             Component*              m_parent;
             std::vector<Component*> m_children;
+            ChildrenObservable      m_childrenObservable;
 
             Vec2                    m_size;
             Vec2                    m_position;

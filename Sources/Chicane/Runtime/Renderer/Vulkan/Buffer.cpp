@@ -69,11 +69,20 @@ namespace Chicane
                 CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
             }
 
-            void destroy(const vk::Device& inLogicalDevice, const Instance& inBuffer)
+            void destroy(const vk::Device& inLogicalDevice, Instance& inBuffer)
             {
-                inLogicalDevice.destroyBuffer(inBuffer.instance);
-                inLogicalDevice.freeMemory(inBuffer.memory);
-            } 
+                if (inBuffer.instance)
+                {
+                    inLogicalDevice.destroyBuffer(inBuffer.instance);
+                    inBuffer.instance = nullptr;
+                }
+
+                if (inBuffer.memory)
+                {
+                    inLogicalDevice.freeMemory(inBuffer.memory);
+                    inBuffer.memory = nullptr;
+                }
+            }
         }
     }
 }
