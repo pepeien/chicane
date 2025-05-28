@@ -33,7 +33,9 @@ namespace Chicane
 
             while (m_window->run())
             {
-                render();
+                m_telemetry.start();
+                    render();
+                m_telemetry.end();
             }
         }
 
@@ -242,22 +244,20 @@ namespace Chicane
 
         void Instance::render()
         {
-            m_telemetry.start();
-                if (hasRenderer())
-                {
-                    m_renderer->render();
-                }
+            if (hasRenderer())
+            {
+                m_renderer->render();
+            }
 
-                if (hasLevel())
-                {
-                    m_level->tick(m_telemetry.delta);
-                }
+            if (hasView())
+            {
+                m_view->tick(m_telemetry.delta);
+            }
 
-                if (hasView())
-                {
-                    m_view->tick(m_telemetry.delta);
-                }
-            m_telemetry.end();
+            if (hasLevel())
+            {
+                m_level->tick(m_telemetry.delta);
+            }
         }
     }
 }

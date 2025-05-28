@@ -27,11 +27,6 @@ namespace Chicane
             return m_parent->isVisible() && hasGlyph() && hasPrimitive();
         }
 
-        void Character::onRefresh()
-        {
-            refreshFont();
-        }
-
         void Character::refreshPrimitive()
         {
             if (!m_canUpdate)
@@ -89,6 +84,8 @@ namespace Chicane
             }
 
             setProperty(m_character, inValue);
+
+            refreshFont();
         }
 
         bool Character::hasFont() const

@@ -19,8 +19,6 @@ namespace Chicane
         public:
             bool isDrawable() const override;
 
-            void onRefresh() override;
-
         protected:
             void refreshPrimitive() override;
 

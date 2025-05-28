@@ -17,7 +17,7 @@ namespace Chicane
             Text(const pugi::xml_node& inNode);
 
         protected:
-            void onTick(float inDelta) override;
+            void onRefresh() override;
 
         public:
             const std::string& getText() const;

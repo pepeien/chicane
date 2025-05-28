@@ -30,9 +30,9 @@ namespace Chicane
             return;
         }
 
-        m_begin = m_end;
-
         onTime();
+
+        m_begin = m_end;
     }
 
     void Recorder::setUpdateRate(float inValue)

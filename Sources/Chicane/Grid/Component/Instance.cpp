@@ -31,12 +31,6 @@ namespace Chicane
             m_primitive({})
         {
             m_style.setParent(this);
-            m_style.watchChanges(
-                [this]()
-                {
-                    refresh();
-                }
-            );
         }
 
         Component::~Component()
@@ -57,7 +51,7 @@ namespace Chicane
 
         void Component::tick(float inDelta)
         {
-            refreshStyle();
+            refresh();
 
             onTick(inDelta);
 
@@ -69,6 +63,7 @@ namespace Chicane
 
         void Component::refresh()
         {
+            refreshStyle();
             refreshSize();
             refreshPosition();
             refreshPrimitive();
@@ -232,7 +227,7 @@ namespace Chicane
         {
             if (!hasParent() || isRoot())
             {
-                return m_references.at(inId);
+                return hasReference(inId, true) ? m_references.at(inId) : nullptr;
             }
 
             return hasReference(inId, true) ? m_references.at(inId) : m_parent->getReference(inId);
@@ -296,7 +291,7 @@ namespace Chicane
 
             if (!hasParent() || isRoot())
             {
-                return m_functions.at(id);
+                return hasFunction(id, true) ? m_functions.at(id) : nullptr;
             }
 
             return hasFunction(id, true) ? m_functions.at(id) : m_parent->getFunction(id);
@@ -428,14 +423,6 @@ namespace Chicane
                 [this](Grid::Component* component)
                 {
                     m_childrenObservable.next(component);
-                }
-            );
-
-            watchChanges(
-                [inComponent]()
-                {
-                    inComponent->refreshStyle();
-                    inComponent->refresh();
                 }
             );
 

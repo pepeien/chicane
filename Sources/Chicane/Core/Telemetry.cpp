@@ -1,11 +1,9 @@
 #include "Chicane/Core/Telemetry.hpp"
 
-static inline constexpr const float COOLDOWN_IN_MS = 5000.0f; // 5 Seconds
-
 namespace Chicane
 {
     Telemetry::Telemetry()
-        : Recorder(COOLDOWN_IN_MS),
+        : Recorder(0.0f),
         delta(0.0f),
         rate(0U)
     {}

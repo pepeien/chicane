@@ -13,7 +13,7 @@ namespace Chicane
             setText(inNode.text().as_string());
         }
 
-        void Text::onTick(float inDelta)
+        void Text::onRefresh()
         {
             refreshText();
         }
@@ -31,8 +31,6 @@ namespace Chicane
             }
 
             m_text = inValue;
-
-            refreshText();
         }
 
         void Text::refreshText()
@@ -76,8 +74,6 @@ namespace Chicane
 
                 static_cast<Character*>(child)->disable();
             }
-
-            emmitChanges();
         }
     }
 }

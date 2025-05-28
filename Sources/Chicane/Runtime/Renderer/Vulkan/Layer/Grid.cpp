@@ -98,8 +98,6 @@ namespace Chicane
                         return;
                     }
 
-                    buildDraws(m_view);
-
                     m_view->watchChildren(
                         [this](Grid::Component* inChild)
                         {
