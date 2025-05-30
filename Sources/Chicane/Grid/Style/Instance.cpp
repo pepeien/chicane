@@ -12,7 +12,7 @@ namespace Chicane
             {
                 return Instance::parseSources(
                     FileSystem::Path(
-                        XML::getAttribute(ATTRIBUTE_NAME, inNode).as_string()
+                        Xml::getAttribute(ATTRIBUTE_NAME, inNode).as_string()
                     )
                 );
             }

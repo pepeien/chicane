@@ -1,0 +1,50 @@
+# Project Information
+PROJECT_NAME           = "Chicane"
+PROJECT_BRIEF          = "A graphics engine "
+PROJECT_NUMBER         = "0.0.1"
+
+# Input
+INPUT                  = ./Includes
+INPUT                 += ./Sources
+FILE_PATTERNS          = *.hpp
+EXCLUDE_PATTERNS       = */Vendors/* */Sample/*
+RECURSIVE              = YES
+
+# Extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_METHODS  = YES
+
+# Source Browser
+SOURCE_BROWSER         = YES
+VERBATIM_HEADERS       = NO
+
+# Output
+OUTPUT_DIRECTORY       = ./.docs
+CREATE_SUBDIRS         = YES
+
+# Output Formats
+GENERATE_HTML          = NO
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
+XML_OUTPUT             = xml
+XML_PROGRAMLISTING     = YES
+
+# Cross-referencing
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+REFERENCES_LINK_SOURCE = YES
+TEMPLATE_RELATIONS     = YES
+
+# Warnings
+WARN_IF_UNDOCUMENTED   = YES
+
+# Optional
+QUIET                  = NO
+
+
+# Optimization
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_JAVA   = NO

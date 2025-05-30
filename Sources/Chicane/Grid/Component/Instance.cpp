@@ -9,8 +9,8 @@ namespace Chicane
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
-            setId(XML::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
-            setClass(XML::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
+            setId(Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
+            setClass(Xml::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
 
             addChildren(inNode);
         }

@@ -78,7 +78,7 @@ namespace Chicane
                     sideID.c_str()
                 );
 
-                if (XML::isEmpty(sideNode))
+                if (Xml::isEmpty(sideNode))
                 {
                     sideNode = getXML().append_child(Texture::TAG);
                     sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.c_str());
@@ -124,7 +124,7 @@ namespace Chicane
                 for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
                 {
                     Side side = getSideFromString(
-                        XML::getAttribute(
+                        Xml::getAttribute(
                             TEXTURE_SIDE_ATTRIBUTE_NAME,
                             texture
                         ).as_string()

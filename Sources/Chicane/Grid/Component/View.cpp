@@ -39,7 +39,7 @@ namespace Chicane
                 throw std::runtime_error("UI document root element must be a " + std::string(TAG_ID));
             }
 
-            m_path = XML::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
+            m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
 
             m_styles = Style::Instance::parseSources(node);
 

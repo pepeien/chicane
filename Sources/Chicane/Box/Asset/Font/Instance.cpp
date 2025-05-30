@@ -89,7 +89,7 @@ namespace Chicane
                     return;
                 }
 
-                std::string vendor = XML::getAttribute(
+                std::string vendor = Xml::getAttribute(
                     VENDOR_ATTRIBUTE_NAME,
                     getXML()
                 ).as_string();

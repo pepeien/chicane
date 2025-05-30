@@ -5,7 +5,7 @@
 
 namespace Chicane
 {
-    namespace XML
+    namespace Xml
     {
         CHICANE_CORE bool isEmpty(const pugi::xml_document& inDocument);
         CHICANE_CORE bool isEmpty(const pugi::xml_node& inNode);

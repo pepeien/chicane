@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    namespace XML
+    namespace Xml
     {
         bool isEmpty(const pugi::xml_document& inDocument)
         {

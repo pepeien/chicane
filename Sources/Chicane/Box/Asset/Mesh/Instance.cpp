@@ -47,7 +47,7 @@ namespace Chicane
                 pugi::xml_node root = getXML();
 
                 if (
-                    !XML::isEmpty(
+                    !Xml::isEmpty(
                         root.find_child_by_attribute(
                             GROUP_ID_ATTRIBUTE_NAME,
                             id.c_str()
@@ -62,10 +62,10 @@ namespace Chicane
                 groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id);
 
                 pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
-                XML::addText(modelNode, inGroup.getModel());
+                Xml::addText(modelNode, inGroup.getModel());
 
                 pugi::xml_node textureNode = groupNode.append_child(Texture::TAG);
-                XML::addText(textureNode, inGroup.getTexture());
+                Xml::addText(textureNode, inGroup.getTexture());
             }
 
             void Instance::updateGroup(const Group& inGroup)
@@ -96,7 +96,7 @@ namespace Chicane
                     id.c_str()
                 );
 
-                if (XML::isEmpty(foundGroupNode))
+                if (Xml::isEmpty(foundGroupNode))
                 {
                     appendGroup(inGroup);
 
@@ -104,10 +104,10 @@ namespace Chicane
                 }
 
                 pugi::xml_node modelNode = foundGroupNode.child(Model::TAG);
-                XML::addText(modelNode, inGroup.getModel());
+                Xml::addText(modelNode, inGroup.getModel());
 
                 pugi::xml_node textureNode = foundGroupNode.child(Texture::TAG);
-                XML::addText(textureNode, inGroup.getTexture());
+                Xml::addText(textureNode, inGroup.getTexture());
             }
 
             void Instance::fetchGroups()

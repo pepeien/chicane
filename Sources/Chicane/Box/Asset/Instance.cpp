@@ -35,12 +35,12 @@ namespace Chicane
             {
                 pugi::xml_node root = getXML();
 
-                if (XML::isEmpty(root))
+                if (Xml::isEmpty(root))
                 {
                     return true;
                 }
 
-                return root.first_child() == root.last_child() && XML::isEmpty(root.first_child());
+                return root.first_child() == root.last_child() && Xml::isEmpty(root.first_child());
             }
 
             const Header& Instance::getHeader() const
@@ -118,7 +118,7 @@ namespace Chicane
 
             void Instance::saveXML()
             {
-                XML::save(m_xml, getFilepath().string());
+                Xml::save(m_xml, getFilepath().string());
             }
 
             pugi::xml_node Instance::getXML() const
@@ -142,7 +142,7 @@ namespace Chicane
 
             void Instance::fetchXML(const FileSystem::Path& inFilepath)
             {
-                m_xml = XML::load(inFilepath);
+                m_xml = Xml::load(inFilepath);
 
                 pugi::xml_node root = getXML();
 

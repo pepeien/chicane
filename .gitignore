@@ -2,15 +2,23 @@
 *.env.*
 
 # Build results
-[Bb]in/
-[Bb]uild/
-__pycache__/
+[Bb]in/*
+[Bb]uild/*
+__pycache__/*
 
 # Microsoft Fakes
-.vs/
+.vs/*
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # Ignore VS project files
 *.sln
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+# Documentation
+.docs/

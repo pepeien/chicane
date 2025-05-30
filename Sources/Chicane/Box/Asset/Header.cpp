@@ -45,7 +45,7 @@ namespace Chicane
                     return;
                 }
 
-                const pugi::xml_document document = XML::load(inFilepath);
+                const pugi::xml_document document = Xml::load(inFilepath);
                 const pugi::xml_node root = document.first_child();
 
                 filepath = inFilepath;
@@ -70,7 +70,7 @@ namespace Chicane
                     return;
                 }
 
-                version = XML::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
+                version = Xml::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
 
                 if (version > 0)
                 {
@@ -89,7 +89,7 @@ namespace Chicane
                     return;
                 }
 
-                id = XML::getAttribute(ID_ATTRIBUTE_NAME, inRoot).as_string();
+                id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inRoot).as_string();
 
                 if (!id.empty())
                 {
