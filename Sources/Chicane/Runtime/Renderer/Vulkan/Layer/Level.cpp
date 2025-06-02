@@ -1,7 +1,7 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Level.hpp"
+#include "Chicane/Runtime/Vulkan/Layer/Level.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Texture.hpp"
+#include "Chicane/Runtime/Vulkan/Texture.hpp"
 
 namespace Chicane
 {

@@ -1,7 +1,7 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
+#include "Chicane/Runtime/Vulkan/Image.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Worker.hpp"
+#include "Chicane/Runtime/Vulkan/Device.hpp"
+#include "Chicane/Runtime/Vulkan/CommandBuffer/Worker.hpp"
 
 namespace Chicane
 {

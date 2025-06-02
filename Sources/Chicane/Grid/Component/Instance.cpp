@@ -1,6 +1,6 @@
 #include "Chicane/Grid/Component/Instance.hpp"
 
-#include "Chicane/Grid/Loader.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {
@@ -400,7 +400,7 @@ namespace Chicane
 
             for (const auto& child : inNode.children())
             {
-                addChild(Loader::createComponent(child));
+                addChild(createComponent(child));
             }
         }
 

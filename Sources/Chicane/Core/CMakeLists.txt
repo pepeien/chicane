@@ -6,6 +6,7 @@ file(
     # Headers
     ${CORE_HEADER_DIR}/*.hpp
 )
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Core.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendors/.*")
 
 file(

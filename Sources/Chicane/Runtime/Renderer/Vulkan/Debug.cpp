@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
+#include "Chicane/Runtime/Vulkan/Debug.hpp"
 
 namespace Chicane
 {

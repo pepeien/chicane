@@ -6,6 +6,7 @@ file(
     # Headers
     ${GRID_HEADER_DIR}/*.hpp
 )
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Grid.hpp)
 
 file(
     GLOB_RECURSE
@@ -14,6 +15,7 @@ file(
     # Sources
     ${GRID_SOURCE_DIR}/*.cpp
 )
+list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Grid.cpp)
 
 ##################### Setup #######################
 if (CHICANE_SHARED)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Box/Essential.hpp"
-#include "Chicane/Box/Asset/Essential.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
 
 namespace Chicane

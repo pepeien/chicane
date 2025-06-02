@@ -1,5 +1,7 @@
 #include "Chicane/Box/Asset/Instance.hpp"
 
+#include "Chicane/Box/Asset.hpp"
+
 namespace Chicane
 {
     namespace Box

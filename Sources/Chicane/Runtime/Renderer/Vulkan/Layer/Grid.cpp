@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Runtime/Vulkan/Layer/Grid.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 

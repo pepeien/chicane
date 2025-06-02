@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Vulkan/Descriptor.hpp"
 
 namespace Chicane
 {

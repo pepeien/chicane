@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Application/Essential.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 namespace Chicane
 {
@@ -183,7 +183,7 @@ namespace Chicane
             return m_application->hasWindow();
         }
 
-        Window* getWindow()
+        Window::Instance* getWindow()
         {
             if (!m_application)
             {
@@ -213,7 +213,7 @@ namespace Chicane
             m_application->setRenderer(inType);
         }
 
-        Renderer* getRenderer()
+        Renderer::Instance* getRenderer()
         {
             if (!m_application)
             {

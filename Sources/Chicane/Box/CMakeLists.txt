@@ -6,6 +6,7 @@ file(
     # Headers
     ${BOX_HEADER_DIR}/*.hpp
 )
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Box.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendors/.*")
 
 file(
@@ -15,6 +16,7 @@ file(
     # Sources
     ${BOX_SOURCE_DIR}/*.cpp
 )
+list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Box.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendors/.*")
 
 ##################### Setup #######################

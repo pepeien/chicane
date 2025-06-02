@@ -9,6 +9,7 @@ file(
     # Headers
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
 
 file(
     GLOB_RECURSE

@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Shadow.hpp"
+#include "Chicane/Runtime/Vulkan/Layer/Shadow.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 

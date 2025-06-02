@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/SwapChain.hpp"
+#include "Chicane/Runtime/Vulkan/SwapChain.hpp"
 
 namespace Chicane
 {

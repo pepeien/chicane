@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Runtime/Vulkan/GraphicsPipeline.hpp"
 
 namespace Chicane
 {

@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Queue/FamilyIndices.hpp"
+#include "Chicane/Runtime/Vulkan/Queue/FamilyIndices.hpp"
 
 namespace Chicane
 {

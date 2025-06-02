@@ -61,7 +61,7 @@ namespace Chicane
 
             // Render
             bool hasWindow() const;
-            template<class T = Window>
+            template<class T = Window::Instance>
             T* getWindow() const
             {
                 if (!hasWindow())
@@ -69,7 +69,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (typeid(T) == typeid(Window))
+                if (typeid(T) == typeid(Window::Instance))
                 {
                     return m_window.get();
                 }
@@ -79,7 +79,7 @@ namespace Chicane
 
             bool hasRenderer() const;
             void setRenderer(Window::Renderer inType);
-            template<class T = Renderer>
+            template<class T = Renderer::Instance>
             T* getRenderer() const
             {
                 if (!hasRenderer())
@@ -87,7 +87,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (typeid(T) == typeid(Renderer))
+                if (typeid(T) == typeid(Renderer::Instance))
                 {
                     return m_renderer.get();
                 }
@@ -106,26 +106,26 @@ namespace Chicane
 
         private:
             // Telemetry
-            Telemetry                 m_telemetry;
+            Telemetry                           m_telemetry;
 
             // Game
-            Controller*               m_controller;
-            ControllerObservable      m_controllerObservable;
+            Controller*                         m_controller;
+            ControllerObservable                m_controllerObservable;
 
-            Level*                    m_level;
-            LevelObservable           m_levelObservable;
+            Level*                              m_level;
+            LevelObservable                     m_levelObservable;
 
             // Grid
-            Grid::View*               m_view;
-            ViewObservable            m_viewObservable;
+            Grid::View*                         m_view;
+            ViewObservable                      m_viewObservable;
 
             // Window
-            Window::CreateInfo        m_windowInfo;
-            std::unique_ptr<Window>   m_window;
+            Window::CreateInfo                  m_windowInfo;
+            std::unique_ptr<Window::Instance>   m_window;
 
             // Renderer
-            Renderer::CreateInfo      m_rendererInfo;
-            std::unique_ptr<Renderer> m_renderer;
+            Renderer::CreateInfo                m_rendererInfo;
+            std::unique_ptr<Renderer::Instance> m_renderer;
         };
     }
 }

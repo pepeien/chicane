@@ -4,26 +4,26 @@ PROJECT_BRIEF          = "A graphics engine "
 PROJECT_NUMBER         = "0.0.1"
 
 # Input
-INPUT                  = ./Includes
-INPUT                 += ./Sources
+INPUT                  = Includes
+INPUT                 += Sources
 FILE_PATTERNS          = *.hpp
-EXCLUDE_PATTERNS       = */Vendors/* */Sample/*
+EXCLUDE_PATTERNS       = */Vendors/*
+EXCLUDE_PATTERNS      += */Sample/*
 RECURSIVE              = YES
 
 # Extraction
-EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = YES
-EXTRACT_STATIC         = YES
-EXTRACT_LOCAL_CLASSES  = YES
-EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_ALL     = YES
+EXTRACT_PRIVATE = YES
+EXTRACT_STATIC  = YES
 
 # Source Browser
 SOURCE_BROWSER         = YES
 VERBATIM_HEADERS       = NO
 
 # Output
-OUTPUT_DIRECTORY       = ./.docs
+OUTPUT_DIRECTORY       = .docs
 CREATE_SUBDIRS         = YES
+FULL_PATH_NAMES        = NO
 
 # Output Formats
 GENERATE_HTML          = NO
@@ -33,17 +33,10 @@ XML_OUTPUT             = xml
 XML_PROGRAMLISTING     = YES
 
 # Cross-referencing
-REFERENCED_BY_RELATION = YES
-REFERENCES_RELATION    = YES
-REFERENCES_LINK_SOURCE = YES
 TEMPLATE_RELATIONS     = YES
 
-# Warnings
-WARN_IF_UNDOCUMENTED   = YES
-
 # Optional
-QUIET                  = NO
-
+QUIET                  = YES
 
 # Optimization
 OPTIMIZE_OUTPUT_FOR_C  = NO

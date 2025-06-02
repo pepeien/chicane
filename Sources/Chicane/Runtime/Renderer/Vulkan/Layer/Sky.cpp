@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Layer/Sky.hpp"
+#include "Chicane/Runtime/Vulkan/Layer/Sky.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game.hpp"

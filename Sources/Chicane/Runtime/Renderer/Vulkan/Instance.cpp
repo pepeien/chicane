@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
+#include "Chicane/Runtime/Vulkan/Instance.hpp"
 
 #include <SDL3/SDL_vulkan.h>
 

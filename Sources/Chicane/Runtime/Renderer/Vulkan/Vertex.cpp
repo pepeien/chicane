@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Vertex.hpp"
+#include "Chicane/Runtime/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {

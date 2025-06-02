@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
+#include "Chicane/Runtime/Vulkan/Queue.hpp"
 
 namespace Chicane
 {

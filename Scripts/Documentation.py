@@ -3,9 +3,9 @@ import xml.etree.ElementTree as ET
 import json
 import re
 
-def pascal_to_spaced(text):
+def pascal_to_spaced(text, character = " "):
     if not text:
-        return text
+        return ""
 
     if len(text) > 1 and text[0].isupper() and text[1].isupper():
         prefix_end = 0
@@ -24,11 +24,17 @@ def pascal_to_spaced(text):
             if not remainder or not re.search(r'[A-Z]', remainder[1:]):
                 return text
 
-            spaced_remainder = re.sub(r'(?<!^)(?=[A-Z])', ' ', remainder)
+            spaced_remainder = re.sub(r'(?<!^)(?=[A-Z])', character, remainder)
 
             return prefix + spaced_remainder
 
-    return re.sub(r'(?<!^)(?=[A-Z])', ' ', text)
+    return re.sub(r'(?<!^)(?=[A-Z])', character, text)
+
+def namespace_to_snake(text, character = "_"):
+    if not text:
+        return ""
+
+    return text.replace("::", character).upper()
 
 def insert_node(tree, parts, value, accumulated_path=""):
     part = parts[0]
@@ -43,6 +49,8 @@ def insert_node(tree, parts, value, accumulated_path=""):
             "source": {
                 "header": None,
                 "namespace": None,
+                "types": [],
+                "enums": [],
                 "constructors": [],
                 "destructors": [],
                 "functions": [],
@@ -63,126 +71,239 @@ def to_dict(tree, key, value, separator):
     if not key:
         return
 
-    insert_node(tree, key.split(separator), value)
+    insert_node(tree, key.split(separator), value) 
 
-def add_definition(result, compounddef):
+def get_type(element):
+    if element is None:
+        return None
+
+    text = "" if element.text is None else element.text.strip()
+
+    reference = element.find("ref")
+    if reference is None:
+        return {
+            "name": text,
+            "path": ""
+        }
+
+    prefixes   = ""
+    references = ""
+    suffixes   = ""
+
+    for node in element.iter():
+        if node is element:
+            if node.text:
+                prefixes += node.text.strip()
+        elif node.tag == "ref":
+            text = node.text.strip() or ""
+
+            if not text in base_systems:
+                references += text
+
+            if node.tail:
+                suffixes += node.tail.strip()
+
+    return {
+        "name": prefixes + " " + references + suffixes,
+        "path": references.replace("::", "/")
+    }
+
+def get_definition(refid):
+    if refid is None:
+        return None
+
+    filepath = os.path.join(input_dir, f"{refid}.xml")
+    if not os.path.isfile(filepath):
+        return None
+
+    root = ET.parse(filepath).getroot()
+    if root is None:
+        return None
+
+    return root.find('compounddef')
+
+def add_enum_definition(result, memberdef):
+    name      = memberdef.find('name').text
+    namespace = memberdef.find('qualifiedname').text
+    typing    = memberdef.find('type')
+    location  = memberdef.find('location')
+    header    = location.attrib.get('file', '')
+
+    values = []
+
+    for enumvalue in memberdef.findall("enumvalue"):
+        enum_name = enumvalue.find("name").text
+
+        values.append(
+            {
+                "type": get_type(typing),
+                "name": enum_name,
+                "description": namespace_to_snake(namespace) + "_" + enum_name.upper() + "_DESCRIPTION"
+            }
+        )
+
+    key  = header.split(include_dir)[-1].split('.')[0]
+    data = {
+        "title": pascal_to_spaced(namespace.split("::")[-1]),
+        "source": {
+            "header": header,
+            "namespace": namespace,
+            "types": [],
+            "enums": values,
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": [],
+            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
+        }
+    }
+
+    to_dict(result, key, data, "/")
+
+def add_definition(result, refid):
+    compounddef = get_definition(refid)
+    if compounddef is None:
+        return
+
+    namespace = compounddef.find('compoundname').text
+    if not base_namespace in namespace:
+        return
+
+    types        = []
+    enums        = []
     constructors = []
     destructors  = []
     functions    = []
     members      = []
+    description  = compounddef.find("briefdescription").find("para")
+
+    name     = namespace.split("::")[-1]
+    kind     = compounddef.attrib.get('kind', '')
+    location = compounddef.find('location')
+    header   = location.attrib.get('file', '')
 
     for sectiondef in compounddef.findall('sectiondef'):
-        kind = sectiondef.attrib.get('kind', '')
-
         for memberdef in sectiondef.findall('memberdef'):
-            typing      = memberdef.find('type').text
-            name        = memberdef.find('name').text
-            accessor    = memberdef.attrib.get("prot", 'public')
+            inner_kind        = memberdef.attrib.get('kind', '')
+            inner_typing      = memberdef.find('type')
+            inner_name        = memberdef.find('name').text
+            inner_namespace   = memberdef.find('qualifiedname').text
+            inner_accessor    = memberdef.attrib.get("prot", 'public')
+            inner_description = memberdef.find("briefdescription").find("para")
 
-            modifiers = []
+            inner_modifiers = []
 
             if memberdef.attrib.get("static", "no") == "yes":
-                modifiers.append("static")
+                inner_modifiers.append("static")
 
             if memberdef.attrib.get("inline", "no") == "yes":
-                modifiers.append("inline")
+                inner_modifiers.append("inline")
 
             if memberdef.attrib.get("constexpr", "no") == "yes":
-                modifiers.append("constexpr")
+                inner_modifiers.append("constexpr")
 
             if memberdef.attrib.get("const", "no") == "yes":
-                modifiers.append("const")
+                inner_modifiers.append("const")
 
-            if kind in ["function", "friend", "public-func", "protected-func", "private-func"]:
-                args = re.search(r"\((.*?)\)", memberdef.find('argsstring').text).group(1)
+            if inner_kind == "typedef":
+                types.append(
+                    {
+                        "name": inner_name,
+                        "type": get_type(inner_typing),
+                        "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION"
+                    }
+                )
 
+            if inner_kind == "enum":
+                enums.append(memberdef)
+
+            if inner_kind in ["function", "friend"]:
                 data = {
-                    "accessor": accessor,
-                    "return": typing,
-                    "name": name,
-                    "args": [],
-                    "modifiers": modifiers
+                    "accessor": inner_accessor,
+                    "type": "standard",
+                    "return": get_type(inner_typing),
+                    "name": inner_name,
+                    "parameters": [],
+                    "modifiers": inner_modifiers,
+                    "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION"
                 }
 
-                if not args == "":
-                    data["args"] = [arg.strip().split("=")[0] for arg in args.split(",")]
+                if  memberdef.attrib.get('virt', '') == 'virtual':
+                    if memberdef.find("reimplements") is None:
+                        data["type"] = "virtual"
+                    else:
+                        data["type"] = "override"
 
-                if typing is None:
-                    if "~" in name:
+                for parameter in memberdef.findall("param"):
+                    data["parameters"].append(
+                        {
+                            "type": get_type(parameter.find("type")),
+                            "name": parameter.find("declname").text
+                        }
+                    )
+
+                if inner_name in (name, "~" + name):
+                    if "~" in inner_name:
                         destructors.append(data)    
                     else:
                         constructors.append(data)
                 else:
                     functions.append(data)
 
-            if kind in ["public-var", "protected-var", "private-var"]:
-                initializer = memberdef.find('initializer')
-
+            if inner_kind == "variable":
                 members.append(
                     {
-                        "accessor": accessor,
-                        "modifiers": modifiers,
-                        "type": typing,
-                        "name": name,
-                        "initializer": initializer.text.split("=")[-1]
+                        "accessor": inner_accessor,
+                        "modifiers": inner_modifiers,
+                        "type": get_type(inner_typing),
+                        "name": inner_name,
+                        "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION"
                     }
                 )
 
-    namespace = compounddef.find('compoundname').text
-    location  = compounddef.find('location')
-    header    = location.attrib.get('file', '')
-
-    key  = header.split('Includes/Chicane/')[-1].split('.')[0]
+    key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(namespace.split('::')[-1]),
+        "title": pascal_to_spaced(key.split('/')[-1]),
         "source": {
             "header": header,
             "namespace": namespace,
+            "types": types,
+            "enums": [],
             "constructors": constructors,
             "destructors": destructors,
             "functions": functions,
-            "members": members
+            "members": members,
+            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
         }
     }
 
     to_dict(result, key, data, "/")
 
-def add_metadata(result, refid):
-    if refid is None:
-        return
-
-    filepath = os.path.join(input_dir, f"{refid}.xml")
-    if not os.path.isfile(filepath):
-        return
-
-    root = ET.parse(filepath).getroot()
-    if root is None:
-        return
-
-    compounddef = root.find('compounddef')
-    if compounddef is None:
-        return
-
-    kind = compounddef.attrib.get('kind', '')
-    if not kind in ["class", "struct", "enum", "interface"]:
-        return
-
-    add_definition(result, compounddef)
+    # Process enums later because they aren't treated as types
+    for enum in enums:
+        add_enum_definition(result, enum)
 
 def generate_metadata(root):
     result = []
 
-    namespaces = []
-    types      = []
-
     for compound in root.findall("compound"):
-        add_metadata(result, compound.attrib.get("refid", None))
+        add_definition(result, compound.get("refid", None))
 
     return result
 
 # Values
-input_dir  = os.path.join("..", ".docs", "xml")
-output_dir = os.path.join("..", ".docs")
+base_namespace = "Chicane"
+base_systems = [
+    "CHICANE_BOX",
+    "CHICANE_CORE",
+    "CHICANE_GRID",
+    "CHICANE_RUNTIME"
+]
+
+include_dir = "Includes/Chicane/"
+
+input_dir  = os.path.join(".docs", "xml")
+output_dir = os.path.join(".docs")
 
 # Output
 with open(os.path.join(output_dir, "metadata.json"), "w", encoding="utf-8") as f:

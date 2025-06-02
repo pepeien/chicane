@@ -1,13 +1,13 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
+#include "Chicane/Runtime/Vulkan/Frame/Instance.hpp"
 
 #include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
 #include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Sync.hpp"
+#include "Chicane/Runtime/Vulkan/Buffer.hpp"
+#include "Chicane/Runtime/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Runtime/Vulkan/Image.hpp"
+#include "Chicane/Runtime/Vulkan/Sync.hpp"
 
 namespace Chicane
 {

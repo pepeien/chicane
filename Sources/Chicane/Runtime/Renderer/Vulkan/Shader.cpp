@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Shader.hpp"
+#include "Chicane/Runtime/Vulkan/Shader.hpp"
 
 namespace Chicane
 {

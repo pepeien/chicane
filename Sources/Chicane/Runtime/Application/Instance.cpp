@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Application/Instance.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 namespace Chicane
 {
@@ -178,7 +178,7 @@ namespace Chicane
         {
             if (!hasWindow())
             {
-                m_window = std::make_unique<Window>();
+                m_window = std::make_unique<Window::Instance>();
                 m_window->watchSize(
                     [this](const Vec<2, int>& inSize)
                     {
@@ -214,7 +214,7 @@ namespace Chicane
                 break;
 
             default:
-                m_renderer = std::make_unique<Renderer>();
+                m_renderer = std::make_unique<Renderer::Instance>();
 
                 break;
             }

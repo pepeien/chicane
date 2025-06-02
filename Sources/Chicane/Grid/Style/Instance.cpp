@@ -145,7 +145,7 @@ namespace Chicane
                 ),
                 backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
                 foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
-                font({}),
+                font(Font()),
                 m_properties({}),
                 m_parent(nullptr)
             {}
