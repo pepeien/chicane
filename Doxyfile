@@ -1,20 +1,18 @@
 # Project Information
 PROJECT_NAME           = "Chicane"
-PROJECT_BRIEF          = "A graphics engine "
+PROJECT_BRIEF          = "A graphics engine"
 PROJECT_NUMBER         = "0.0.1"
 
 # Input
 INPUT                  = Includes
-INPUT                 += Sources
 FILE_PATTERNS          = *.hpp
 EXCLUDE_PATTERNS       = */Vendors/*
-EXCLUDE_PATTERNS      += */Sample/*
 RECURSIVE              = YES
 
 # Extraction
-EXTRACT_ALL     = YES
-EXTRACT_PRIVATE = YES
-EXTRACT_STATIC  = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
 
 # Source Browser
 SOURCE_BROWSER         = YES
@@ -24,6 +22,7 @@ VERBATIM_HEADERS       = NO
 OUTPUT_DIRECTORY       = .docs
 CREATE_SUBDIRS         = YES
 FULL_PATH_NAMES        = NO
+HIDE_SCOPE_NAMES       = NO
 
 # Output Formats
 GENERATE_HTML          = NO
