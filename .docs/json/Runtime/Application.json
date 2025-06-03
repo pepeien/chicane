@@ -1,0 +1,595 @@
+{
+    "title": "Application",
+    "path": "Runtime/Application",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Application.hpp",
+        "namespace": "Chicane::Application",
+        "types": [
+            {
+                "name": "ControllerObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "Observable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_CONTROLLEROBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ControllerSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "Subscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_CONTROLLERSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "LevelObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "Observable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Level",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_LEVELOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "LevelSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "Subscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Level",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_LEVELSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "ViewObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "Observable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::View",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_VIEWOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ViewSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "Subscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::View",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_APPLICATION_VIEWSUBSCRIPTION_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "run",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Application/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_RUN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_STOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const",
+                    "name": "Telemetry",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getTelemetry",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETTELEMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasController",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_HASCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Controller",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getController",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setController",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Controller",
+                            "suffix": "*",
+                            "path": "Runtime/Game/Controller",
+                            "templates": []
+                        },
+                        "name": "inController"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SETCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ControllerSubscription",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "watchController",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ControllerSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_WATCHCONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasLevel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_HASLEVEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Level",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getLevel",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETLEVEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setLevel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Level",
+                            "suffix": "*",
+                            "path": "Runtime/Game/Level/Instance/Level",
+                            "templates": []
+                        },
+                        "name": "inLevel"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SETLEVEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "LevelSubscription",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "watchLevel",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LevelSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LevelSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "LevelSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_WATCHLEVEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasView",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_HASVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Grid::View",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getView",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Grid::View",
+                            "suffix": "*",
+                            "path": "Grid/Component/View",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SETVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ViewSubscription",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "watchView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_WATCHVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasWindow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_HASWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Window::Instance",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getWindow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_HASRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Window::Renderer",
+                            "suffix": "",
+                            "path": "Core/Window/Renderer",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_SETRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Renderer::Instance",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "T",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_APPLICATION_DESCRIPTION"
+    },
+    "children": []
+}

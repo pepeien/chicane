@@ -1,0 +1,15 @@
+{
+    "title": "Camera",
+    "path": "Runtime/Game/Transformable/Component/Camera",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

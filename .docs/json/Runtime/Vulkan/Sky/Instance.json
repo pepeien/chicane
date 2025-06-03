@@ -1,0 +1,233 @@
+{
+    "title": "Instance",
+    "path": "Runtime/Vulkan/Sky/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Sky/Instance.hpp",
+        "namespace": "Chicane::Vulkan::Sky::Instance",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Vulkan/Sky/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_INSTANCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_~INSTANCE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bind",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "vk::PipelineLayout",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPipelineLayout"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_BIND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_INITIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copyPixels",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_COPYPIXELS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initDescriptorSet",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_INITDESCRIPTORSET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Data",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "m_image",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Images",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Sky/CreateInfo/Sky",
+                    "templates": []
+                },
+                "name": "m_images",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_IMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Descriptor::Bundle",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_descriptor",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_DESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_logicalDevice",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_physicalDevice",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_commandBuffer",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_queue",
+                "description": "CHICANE_VULKAN_SKY_INSTANCE_M_QUEUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_SKY_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,121 @@
+{
+    "title": "Create Info",
+    "path": "Runtime/Vulkan/Image/Instance/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Image/Instance/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Image::Instance::CreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "width",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_WIDTH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "height",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_HEIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "count",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageTiling",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tiling",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_TILING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageCreateFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flags",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_FLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageUsageFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "usage",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_USAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_IMAGE_INSTANCE_CREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

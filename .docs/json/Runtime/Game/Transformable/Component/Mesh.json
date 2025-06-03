@@ -1,0 +1,15 @@
+{
+    "title": "Mesh",
+    "path": "Runtime/Game/Transformable/Component/Mesh",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

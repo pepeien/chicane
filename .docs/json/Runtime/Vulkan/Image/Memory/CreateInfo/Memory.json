@@ -1,0 +1,16 @@
+{
+    "title": "Memory",
+    "path": "Runtime/Vulkan/Image/Memory/CreateInfo/Memory",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Image/Memory/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Image::Memory",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_IMAGE_MEMORY_DESCRIPTION"
+    },
+    "children": []
+}

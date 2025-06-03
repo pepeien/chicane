@@ -1,0 +1,16 @@
+{
+    "title": "Vulkan",
+    "path": "Runtime/Vulkan/Buffer/Vulkan",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Buffer.hpp",
+        "namespace": "Chicane::Vulkan",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_DESCRIPTION"
+    },
+    "children": []
+}

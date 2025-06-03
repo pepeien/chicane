@@ -1,0 +1,704 @@
+{
+    "title": "Renderer",
+    "path": "Runtime/Vulkan/Renderer",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",
+        "namespace": "Chicane::Vulkan::Renderer",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Renderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_RENDERER_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Renderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_~RENDERER_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Window::Event",
+                            "suffix": "&",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_ONEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onResizing",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_ONRESIZING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRepositioning",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_ONREPOSITIONING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Internals",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Renderer/Internals",
+                    "templates": []
+                },
+                "name": "getInternals",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_GETINTERNALS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildInstance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyInstance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildDebugMessenger",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDDEBUGMESSENGER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyDebugMessenger",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYDEBUGMESSENGER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildSurface",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDSURFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySurface",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYSURFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildQueues",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDQUEUES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildDevices",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDDEVICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyDevices",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYDEVICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildSwapChain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySwapChain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildSwapChain",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_REBUILDSWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildCommandPool",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDCOMMANDPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyCommandPool",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_DESTROYCOMMANDPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildMainCommandBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDMAINCOMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildFramesCommandBuffers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDFRAMESCOMMANDBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderViewport",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_RENDERVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildFrames",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_REBUILDFRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupFrame",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Frame::Instance",
+                            "suffix": "&",
+                            "path": "Runtime/Vulkan/Frame/Instance",
+                            "templates": []
+                        },
+                        "name": "outFrame"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_SETUPFRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupLayers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_SETUPLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderLayers",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Frame::Instance",
+                            "suffix": "&",
+                            "path": "Runtime/Vulkan/Frame/Instance",
+                            "templates": []
+                        },
+                        "name": "outFrame"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_RENDERLAYERS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Instance",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_instance",
+                "description": "CHICANE_VULKAN_RENDERER_M_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DispatchLoaderDynamic",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_dldi",
+                "description": "CHICANE_VULKAN_RENDERER_M_DLDI_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DebugUtilsMessengerEXT",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_debugMessenger",
+                "description": "CHICANE_VULKAN_RENDERER_M_DEBUGMESSENGER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::SurfaceKHR",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_surface",
+                "description": "CHICANE_VULKAN_RENDERER_M_SURFACE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_physicalDevice",
+                "description": "CHICANE_VULKAN_RENDERER_M_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_logicalDevice",
+                "description": "CHICANE_VULKAN_RENDERER_M_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_graphicsQueue",
+                "description": "CHICANE_VULKAN_RENDERER_M_GRAPHICSQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_presentQueue",
+                "description": "CHICANE_VULKAN_RENDERER_M_PRESENTQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SwapChain::Bundle",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/SwapChain/Bundle",
+                    "templates": []
+                },
+                "name": "m_swapChain",
+                "description": "CHICANE_VULKAN_RENDERER_M_SWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandPool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mainCommandPool",
+                "description": "CHICANE_VULKAN_RENDERER_M_MAINCOMMANDPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_mainCommandBuffer",
+                "description": "CHICANE_VULKAN_RENDERER_M_MAINCOMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_imageCount",
+                "description": "CHICANE_VULKAN_RENDERER_M_IMAGECOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_currentImageIndex",
+                "description": "CHICANE_VULKAN_RENDERER_M_CURRENTIMAGEINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Viewport",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_vkViewport",
+                "description": "CHICANE_VULKAN_RENDERER_M_VKVIEWPORT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Rect2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_vkScissor",
+                "description": "CHICANE_VULKAN_RENDERER_M_VKSCISSOR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

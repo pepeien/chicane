@@ -1,0 +1,15 @@
+{
+    "title": "Create Info",
+    "path": "Runtime/Vulkan/Shader/CreateInfo",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

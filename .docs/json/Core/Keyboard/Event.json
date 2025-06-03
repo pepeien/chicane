@@ -1,0 +1,56 @@
+{
+    "title": "Event",
+    "path": "Core/Keyboard/Event",
+    "source": {
+        "header": "Includes/Chicane/Core/Keyboard/Event.hpp",
+        "namespace": "Chicane::Keyboard::Event",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Button",
+                    "suffix": "",
+                    "path": "Core/Keyboard/Button",
+                    "templates": []
+                },
+                "name": "button",
+                "description": "CHICANE_KEYBOARD_EVENT_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ButtonModifier",
+                    "suffix": "",
+                    "path": "Core/Keyboard/Button",
+                    "templates": []
+                },
+                "name": "modifier",
+                "description": "CHICANE_KEYBOARD_EVENT_MODIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Input::Status",
+                    "suffix": "",
+                    "path": "Core/Input/Status",
+                    "templates": []
+                },
+                "name": "status",
+                "description": "CHICANE_KEYBOARD_EVENT_STATUS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KEYBOARD_EVENT_DESCRIPTION"
+    },
+    "children": []
+}

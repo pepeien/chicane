@@ -1,0 +1,64 @@
+{
+    "title": "CLight",
+    "path": "Runtime/Game/Transformable/Component/Light/CLight",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Light.hpp",
+        "namespace": "Chicane::CLight",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CLight",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CLIGHT_CLIGHT_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~CLight",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CLIGHT_~CLIGHT_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTransform",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CLIGHT_ONTRANSFORM_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_CLIGHT_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,291 @@
+{
+    "title": "Corners",
+    "path": "Grid/Style/Corners",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Corners.hpp",
+        "namespace": "Chicane::Grid::Style::Corners",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Corners",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOnelineAttributeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTopAttributeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inBottomAttributeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLeftAttributeName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRightAttributeName"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_CORNERS_CORNERS_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Properties",
+                            "suffix": "&",
+                            "path": "Grid/Style",
+                            "templates": []
+                        },
+                        "name": "inSource"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float(const std::string",
+                                    "suffix": "&",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "Direction )",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCalculator"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_CORNERS_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Corners",
+                            "suffix": "&",
+                            "path": "Grid/Style/Corners",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Corners",
+                            "suffix": "&",
+                            "path": "Grid/Style/Corners",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_STYLE_CORNERS_OPERATOR==_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "top",
+                "description": "CHICANE_GRID_STYLE_CORNERS_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bottom",
+                "description": "CHICANE_GRID_STYLE_CORNERS_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "left",
+                "description": "CHICANE_GRID_STYLE_CORNERS_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "right",
+                "description": "CHICANE_GRID_STYLE_CORNERS_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_onelineAttributeName",
+                "description": "CHICANE_GRID_STYLE_CORNERS_M_ONELINEATTRIBUTENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_topAttributeName",
+                "description": "CHICANE_GRID_STYLE_CORNERS_M_TOPATTRIBUTENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bottomAttributeName",
+                "description": "CHICANE_GRID_STYLE_CORNERS_M_BOTTOMATTRIBUTENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_leftAttributeName",
+                "description": "CHICANE_GRID_STYLE_CORNERS_M_LEFTATTRIBUTENAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_rightAttributeName",
+                "description": "CHICANE_GRID_STYLE_CORNERS_M_RIGHTATTRIBUTENAME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLE_CORNERS_DESCRIPTION"
+    },
+    "children": []
+}

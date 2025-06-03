@@ -1,0 +1,103 @@
+{
+    "title": "Bundle",
+    "path": "Runtime/Vulkan/SwapChain/Bundle",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/Bundle.hpp",
+        "namespace": "Chicane::Vulkan::SwapChain::Bundle",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::SwapchainKHR",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Frame::Instance",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "frames",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_FRAMES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "colorFormat",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_COLORFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "depthFormat",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_DEPTHFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extent",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_EXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "midPoints",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_MIDPOINTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_SWAPCHAIN_BUNDLE_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,179 @@
+{
+    "title": "Header",
+    "path": "Box/Asset/Header",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Header.hpp",
+        "namespace": "Chicane::Box::Asset::Header",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Header",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_HEADER_HEADER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Header",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_HEADER_HEADER_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchVersion",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRoot"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_HEADER_FETCHVERSION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRoot"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_HEADER_FETCHID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchType",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_HEADER_FETCHTYPE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Core/FileSystem",
+                    "templates": []
+                },
+                "name": "filepath",
+                "description": "CHICANE_BOX_ASSET_HEADER_FILEPATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "version",
+                "description": "CHICANE_BOX_ASSET_HEADER_VERSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_BOX_ASSET_HEADER_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Type",
+                    "suffix": "",
+                    "path": "Box/Asset/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_BOX_ASSET_HEADER_TYPE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_ASSET_HEADER_DESCRIPTION"
+    },
+    "children": []
+}

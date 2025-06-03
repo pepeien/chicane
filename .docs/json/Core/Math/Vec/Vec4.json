@@ -1,0 +1,241 @@
+{
+    "title": "Vec4",
+    "path": "Core/Math/Vec/Vec4",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Vec/Vec4.hpp",
+        "namespace": "Chicane::Vec4",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vec4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "args"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_VEC4_VEC4_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "operator==",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inLeft"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Vec4",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec4",
+                            "templates": []
+                        },
+                        "name": "inRight"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_VEC4_OPERATOR==_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Base/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Zero",
+                "description": "CHICANE_VEC4_ZERO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Base/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "One",
+                "description": "CHICANE_VEC4_ONE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Base/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Up",
+                "description": "CHICANE_VEC4_UP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Base/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Right",
+                "description": "CHICANE_VEC4_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Base/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Forward",
+                "description": "CHICANE_VEC4_FORWARD_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VEC4_DESCRIPTION"
+    },
+    "children": []
+}

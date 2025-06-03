@@ -1,0 +1,16 @@
+{
+    "title": "Renderer",
+    "path": "Runtime/Renderer/CreateInfo/Renderer",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

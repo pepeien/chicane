@@ -1,0 +1,106 @@
+{
+    "title": "AAudio",
+    "path": "Runtime/Game/Transformable/Actor/Audio/Instance/AAudio",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp",
+        "namespace": "Chicane::AAudio",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AAudio",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_AAUDIO_AAUDIO_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~AAudio",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_AAUDIO_~AAUDIO_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "load",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAudio"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_AAUDIO_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_AAUDIO_PLAY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CAudio",
+                    "suffix": "*",
+                    "path": "Runtime/Game/Transformable/Component/Audio/CAudio",
+                    "templates": []
+                },
+                "name": "m_audio",
+                "description": "CHICANE_AAUDIO_M_AUDIO_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_AAUDIO_DESCRIPTION"
+    },
+    "children": []
+}

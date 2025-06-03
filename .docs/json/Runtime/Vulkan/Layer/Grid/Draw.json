@@ -1,0 +1,134 @@
+{
+    "title": "Draw",
+    "path": "Runtime/Vulkan/Layer/Grid/Draw",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Grid.hpp",
+        "namespace": "Chicane::Vulkan::LGrid::Draw",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_POSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexCount",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_VERTEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer::Instance",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Buffer/Instance",
+                    "templates": []
+                },
+                "name": "vertexBuffer",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_VERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexCount",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_INDEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer::Instance",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Buffer/Instance",
+                    "templates": []
+                },
+                "name": "indexBuffer",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_INDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Grid::Component",
+                    "suffix": "*",
+                    "path": "Grid/Component/Instance/Component",
+                    "templates": []
+                },
+                "name": "component",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_COMPONENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsOutdated",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_BISOUTDATED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bIsDrawable",
+                "description": "CHICANE_VULKAN_LGRID_DRAW_BISDRAWABLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_LGRID_DRAW_DESCRIPTION"
+    },
+    "children": []
+}

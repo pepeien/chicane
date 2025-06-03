@@ -1,0 +1,28 @@
+{
+    "title": "Sky",
+    "path": "Runtime/Vulkan/Sky/CreateInfo/Sky",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Sky/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Sky",
+        "types": [
+            {
+                "name": "Images",
+                "type": {
+                    "prefix": "",
+                    "name": "Box::Sky::ParsedSides",
+                    "suffix": "",
+                    "path": "Box/Asset/Sky",
+                    "templates": []
+                },
+                "description": "CHICANE_VULKAN_SKY_IMAGES_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_SKY_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,39 @@
+{
+    "title": "Vendor",
+    "path": "Core/Image/Vendor",
+    "source": {
+        "header": "Includes/Chicane/Core/Image/Vendor.hpp",
+        "namespace": "Chicane::Image::Vendor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_IMAGE_VENDOR_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Png",
+                "description": "CHICANE_IMAGE_VENDOR_PNG_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_IMAGE_VENDOR_DESCRIPTION"
+    },
+    "children": []
+}
