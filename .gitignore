@@ -19,6 +19,3 @@ __pycache__/*
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
-
-# Documentation
-.docs/
