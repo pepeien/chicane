@@ -11,15 +11,14 @@ jobs:
       runs-on: ubuntu-22.04
       steps:
         - name: Build
-        - uses: actions/checkout@v4
-        - uses: mattnotmitt/doxygen-action@1.12.0
+          uses: mattnotmitt/doxygen-action@1.12.0
           with:
-            doxyfile-path: 'Doxyfile'
+                doxyfile-path: 'Doxyfile'
 
         - name: Parse
         - uses: actions/checkout@v4
         - uses: actions/setup-python@v5.6
           with:
-            python-version: '3.13'
+                python-version: '3.13'
         - run: python Scripts/Documentation.py
     
