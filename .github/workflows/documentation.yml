@@ -30,7 +30,7 @@ jobs:
                 chmod -R 755 .
 
             - name: Cleanup References
-              run: rm -r ./docs/references
+              run: rm -rf ./docs/references
 
             - name: Build References
               run: python Scripts/Documentation.py
