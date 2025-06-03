@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/pepeien/chicane/master/.github/Images/Logo.svg" alt="Chicane logo" />
+    <img src="https://raw.githubusercontent.com/pepeien/chicane/master/.github/images/logo.svg" alt="Chicane logo" />
 </p>
 
 <p align="center">

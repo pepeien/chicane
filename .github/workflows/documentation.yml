@@ -29,7 +29,10 @@ jobs:
                 sudo chown -R $USER:$USER .
                 chmod -R 755 .
 
-            - name: Build JSON
+            - name: Cleanup References
+              run: rm -r ./docs/references
+
+            - name: Build References
               run: python Scripts/Documentation.py
 
             - name: Commit

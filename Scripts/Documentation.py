@@ -506,7 +506,7 @@ base_systems = [
 include_dir = "Includes/Chicane/"
 
 input_dir  = os.path.join(".docs", "xml")
-output_dir = os.path.join(".docs", "json")
+output_dir = os.path.join(".docs", "references")
 
 # Output
 ref_map  = {}
