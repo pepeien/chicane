@@ -5,6 +5,7 @@ on:
         paths:
             - 'Includes/Chicane/**.hpp'
             - 'Sources/Chicane/**.cpp'
+    workflow_dispatch:
 jobs:
     build:
         runs-on: ubuntu-22.04
