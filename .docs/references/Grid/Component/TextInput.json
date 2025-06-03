@@ -1,0 +1,126 @@
+{
+    "title": "Text Input",
+    "path": "Grid/Component/TextInput",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/TextInput.hpp",
+        "namespace": "Chicane::Grid::TextInput",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TextInput",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_TEXTINPUT_TEXTINPUT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_TEXTINPUT_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LABEL_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_TEXTINPUT_LABEL_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VALUE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_TEXTINPUT_VALUE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_INPUT_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_TEXTINPUT_ON_INPUT_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_INPUT_EVENT_KEYWORD",
+                "description": "CHICANE_GRID_TEXTINPUT_ON_INPUT_EVENT_KEYWORD_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_TEXTINPUT_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,15 @@
+{
+    "title": "Data",
+    "path": "Box/Asset/Mesh/Data",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

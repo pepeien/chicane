@@ -1,0 +1,673 @@
+{
+    "title": "String",
+    "path": "Core/String",
+    "source": {
+        "header": "Includes/Chicane/Core/String.hpp",
+        "namespace": "Chicane::String",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "areEquals",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inA"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inB"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_AREEQUALS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "areEquals",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inA"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inB"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_AREEQUALS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contains",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contains",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "startsWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_STARTSWITH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "startsWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_STARTSWITH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "endsWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTarget"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_ENDSWITH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sprint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_SPRINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "trim",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_TRIM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toLower",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_TOLOWER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toUpper",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_TOUPPER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "split",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "char",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelimiter"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_SPLIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "split",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelimeter"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_SPLIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "split",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDelimeter"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_SPLIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "join",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::string",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inValue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inJoiner"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inStart"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inEnd"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_JOIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sort",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::string",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_SORT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "toBool",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_TOBOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isNaN",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_STRING_ISNAN_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_STRING_DESCRIPTION"
+    },
+    "children": []
+}

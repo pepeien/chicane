@@ -1,0 +1,50 @@
+{
+    "title": "Button",
+    "path": "Core/Mouse/Button",
+    "source": {
+        "header": "Includes/Chicane/Core/Mouse/Button.hpp",
+        "namespace": "Chicane::Mouse::Button",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Left",
+                "description": "CHICANE_MOUSE_BUTTON_LEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Middle",
+                "description": "CHICANE_MOUSE_BUTTON_MIDDLE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Right",
+                "description": "CHICANE_MOUSE_BUTTON_RIGHT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_MOUSE_BUTTON_DESCRIPTION"
+    },
+    "children": []
+}

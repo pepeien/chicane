@@ -1,0 +1,160 @@
+{
+    "title": "Text",
+    "path": "Grid/Component/Text",
+    "source": {
+        "header": "Includes/Chicane/Grid/Component/Text.hpp",
+        "namespace": "Chicane::Grid::Text",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Text",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_TEXT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const",
+                    "name": "std::string",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getText",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_TEXT_GETTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setText",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_SETTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshText",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TEXT_REFRESHTEXT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG_ID",
+                "description": "CHICANE_GRID_TEXT_TAG_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_text",
+                "description": "CHICANE_GRID_TEXT_M_TEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_parsedText",
+                "description": "CHICANE_GRID_TEXT_M_PARSEDTEXT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_TEXT_DESCRIPTION"
+    },
+    "children": []
+}

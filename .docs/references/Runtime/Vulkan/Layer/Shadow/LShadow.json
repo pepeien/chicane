@@ -1,0 +1,404 @@
+{
+    "title": "LShadow",
+    "path": "Runtime/Vulkan/Layer/Shadow/LShadow",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Shadow.hpp",
+        "namespace": "Chicane::Vulkan::LShadow",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LShadow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_LSHADOW_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~LShadow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_~LSHADOW_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onInit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_ONINIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onDestroy",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_ONDESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRebuild",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_ONREBUILD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRender",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_ONRENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadEvents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_LOADEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initFrameResources",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_INITFRAMERESOURCES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyFrameResources",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_DESTROYFRAMERESOURCES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initGraphicsPipeline",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_INITGRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initFramebuffers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_INITFRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildModelVertexBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_BUILDMODELVERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildModelIndexBuffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_BUILDMODELINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildModelData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_BUILDMODELDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyModelData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_DESTROYMODELDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rebuildModelData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_REBUILDMODELDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderModels",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSHADOW_RENDERMODELS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer::Internals",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Renderer/Internals",
+                    "templates": []
+                },
+                "name": "m_internals",
+                "description": "CHICANE_VULKAN_LSHADOW_M_INTERNALS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "GraphicsPipeline::Instance",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_graphicsPipeline",
+                "description": "CHICANE_VULKAN_LSHADOW_M_GRAPHICSPIPELINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Descriptor::Bundle",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Descriptor/Bundle",
+                    "templates": []
+                },
+                "name": "m_frameDescriptor",
+                "description": "CHICANE_VULKAN_LSHADOW_M_FRAMEDESCRIPTOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer::Instance",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Buffer/Instance",
+                    "templates": []
+                },
+                "name": "m_modelVertexBuffer",
+                "description": "CHICANE_VULKAN_LSHADOW_M_MODELVERTEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Buffer::Instance",
+                    "suffix": "",
+                    "path": "Runtime/Vulkan/Buffer/Instance",
+                    "templates": []
+                },
+                "name": "m_modelIndexBuffer",
+                "description": "CHICANE_VULKAN_LSHADOW_M_MODELINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::Model::Manager",
+                    "suffix": "*",
+                    "path": "Box/Asset/Model/Manager",
+                    "templates": []
+                },
+                "name": "m_modelManager",
+                "description": "CHICANE_VULKAN_LSHADOW_M_MODELMANAGER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::ClearValue",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_clearValues",
+                "description": "CHICANE_VULKAN_LSHADOW_M_CLEARVALUES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_LSHADOW_DESCRIPTION"
+    },
+    "children": []
+}

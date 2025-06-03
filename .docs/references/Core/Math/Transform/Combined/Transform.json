@@ -1,0 +1,16 @@
+{
+    "title": "Transform",
+    "path": "Core/Math/Transform/Combined/Transform",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",
+        "namespace": "Chicane::Transform",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_TRANSFORM_DESCRIPTION"
+    },
+    "children": []
+}

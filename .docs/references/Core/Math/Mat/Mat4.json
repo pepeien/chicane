@@ -1,0 +1,109 @@
+{
+    "title": "Mat4",
+    "path": "Core/Math/Mat/Mat4",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Mat/Mat4.hpp",
+        "namespace": "Chicane::Mat4",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mat4",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "args"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_MAT4_MAT4_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Mat",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Base/Mat",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Zero",
+                "description": "CHICANE_MAT4_ZERO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const",
+                    "name": "Mat",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Base/Mat",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "4",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "One",
+                "description": "CHICANE_MAT4_ONE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_MAT4_DESCRIPTION"
+    },
+    "children": []
+}

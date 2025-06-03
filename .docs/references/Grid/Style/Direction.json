@@ -1,0 +1,39 @@
+{
+    "title": "Direction",
+    "path": "Grid/Style/Direction",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Direction.hpp",
+        "namespace": "Chicane::Grid::Style::Direction",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Vertical",
+                "description": "CHICANE_GRID_STYLE_DIRECTION_VERTICAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Horizontal",
+                "description": "CHICANE_GRID_STYLE_DIRECTION_HORIZONTAL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLE_DIRECTION_DESCRIPTION"
+    },
+    "children": []
+}

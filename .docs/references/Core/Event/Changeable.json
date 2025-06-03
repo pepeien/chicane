@@ -1,0 +1,185 @@
+{
+    "title": "Changeable",
+    "path": "Core/Event/Changeable",
+    "source": {
+        "header": "Includes/Chicane/Core/Event/Changeable.hpp",
+        "namespace": "Chicane::Changeable",
+        "types": [
+            {
+                "name": "ChangesObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_CHANGEABLE_CHANGESOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ChangesSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_CHANGEABLE_CHANGESSUBSCRIPTION_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Changeable",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CHANGEABLE_CHANGEABLE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Changeable",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CHANGEABLE_~CHANGEABLE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "emmitChanges",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CHANGEABLE_EMMITCHANGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ChangesSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Changeable",
+                    "templates": []
+                },
+                "name": "watchChanges",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ChangesSubscription::EmptyCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ChangesSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ChangesSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CHANGEABLE_WATCHCHANGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperty",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outProperty"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNewValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_CHANGEABLE_SETPROPERTY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ChangesObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Changeable",
+                    "templates": []
+                },
+                "name": "m_observable",
+                "description": "CHICANE_CHANGEABLE_M_OBSERVABLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_CHANGEABLE_DESCRIPTION"
+    },
+    "children": []
+}

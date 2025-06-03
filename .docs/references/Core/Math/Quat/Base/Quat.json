@@ -1,0 +1,46 @@
+{
+    "title": "Quat",
+    "path": "Core/Math/Quat/Base/Quat",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Quat/Base.hpp",
+        "namespace": "Chicane::Quat",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Quat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "args"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_QUAT_QUAT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_QUAT_DESCRIPTION"
+    },
+    "children": []
+}

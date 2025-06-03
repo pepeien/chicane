@@ -1,0 +1,16 @@
+{
+    "title": "Instance",
+    "path": "Runtime/Vulkan/Image/Instance/CreateInfo/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/Image/Instance/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Image::Instance",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_IMAGE_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

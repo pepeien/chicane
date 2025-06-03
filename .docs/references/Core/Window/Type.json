@@ -1,0 +1,50 @@
+{
+    "title": "Type",
+    "path": "Core/Window/Type",
+    "source": {
+        "header": "Includes/Chicane/Core/Window/Type.hpp",
+        "namespace": "Chicane::Window::Type",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Windowed",
+                "description": "CHICANE_WINDOW_TYPE_WINDOWED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WindowedBorderless",
+                "description": "CHICANE_WINDOW_TYPE_WINDOWEDBORDERLESS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Fullscreen",
+                "description": "CHICANE_WINDOW_TYPE_FULLSCREEN_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_WINDOW_TYPE_DESCRIPTION"
+    },
+    "children": []
+}

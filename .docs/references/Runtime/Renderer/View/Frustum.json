@@ -1,0 +1,150 @@
+{
+    "title": "Frustum",
+    "path": "Runtime/Renderer/View/Frustum",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
+        "namespace": "Chicane::View::Frustum",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contains",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "Transformable",
+                            "suffix": "*",
+                            "path": "Runtime/Game/Transformable/Instance/Transformable",
+                            "templates": []
+                        },
+                        "name": "inSubject"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_VIEW_FRUSTUM_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "update",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "CView",
+                            "suffix": "*",
+                            "path": "Runtime/Game/Transformable/Component/View/CView",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VIEW_FRUSTUM_UPDATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_top",
+                "description": "CHICANE_VIEW_FRUSTUM_M_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_bottom",
+                "description": "CHICANE_VIEW_FRUSTUM_M_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_left",
+                "description": "CHICANE_VIEW_FRUSTUM_M_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_right",
+                "description": "CHICANE_VIEW_FRUSTUM_M_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_near",
+                "description": "CHICANE_VIEW_FRUSTUM_M_NEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Plane",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View/Plane",
+                    "templates": []
+                },
+                "name": "m_far",
+                "description": "CHICANE_VIEW_FRUSTUM_M_FAR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VIEW_FRUSTUM_DESCRIPTION"
+    },
+    "children": []
+}

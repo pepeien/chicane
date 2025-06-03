@@ -1,0 +1,16 @@
+{
+    "title": "View",
+    "path": "Runtime/Renderer/View/Data/View",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/View/Data.hpp",
+        "namespace": "Chicane::View",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VIEW_DESCRIPTION"
+    },
+    "children": []
+}

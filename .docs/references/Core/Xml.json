@@ -1,0 +1,203 @@
+{
+    "title": "Xml",
+    "path": "Core/Xml",
+    "source": {
+        "header": "Includes/Chicane/Core/Xml.hpp",
+        "namespace": "Chicane::Xml",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_document",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDocument"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "save",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_document",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDocument"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_SAVE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "pugi::xml_document",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "load",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "pugi::xml_attribute",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getAttribute",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNode"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_GETATTRIBUTE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addText",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "pugi::xml_node",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outNode"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const",
+                            "name": "std::string",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inText"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_XML_ADDTEXT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_XML_DESCRIPTION"
+    },
+    "children": []
+}
