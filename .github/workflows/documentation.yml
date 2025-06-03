@@ -5,6 +5,7 @@ on:
         paths:
             - 'Includes/Chicane/**.hpp'
             - 'Sources/Chicane/**.cpp'
+            - 'Doxyfile'
     workflow_dispatch:
 jobs:
     build:
@@ -12,16 +13,21 @@ jobs:
         permissions:
             contents: write
         steps:
-            - name: Setup
+            - name: Setup Checkout
               uses: actions/checkout@v4
 
-            - name: Build
-              uses: mattnotmitt/doxygen-action@1.12.0
-
-            - name: Parse
+            - name: Setup Python
               uses: actions/setup-python@v5.6
               with:
                   python-version: '3.13'
-            - run: |
-                    ls .docs -a
-                    python Scripts/Documentation.py
+
+            - name: Build XML
+              uses: mattnotmitt/doxygen-action@1.12.0
+
+            - name: Fix permissions
+              run: |
+                sudo chown -R $USER:$USER .
+                chmod -R 755 .
+
+            - name: Build JSON
+              run: python Scripts/Documentation.py
