@@ -340,7 +340,6 @@ def add_definition(result, compounddef):
         if not inner_refid:
             continue
 
-        print(inner_refid)
         add_definition(result, get_definition(inner_refid))
 
 def add_enum_definition(result, memberdef):
