@@ -507,7 +507,6 @@ include_dir = "Includes/Chicane/"
 
 input_dir  = os.path.join(".docs", "xml")
 output_dir = os.path.join(".docs", "json")
-os.makedirs(os.path.join(output_dir), exist_ok=True)
 
 # Output
 ref_map  = {}
