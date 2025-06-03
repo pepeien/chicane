@@ -183,8 +183,31 @@ def get_type(text):
 
     return result
 
+def set_type_def_ref(result, component):
+    for 
+    ref = component.find("ref")
+    if ref is None:
+        return
+
+    if ref.text == result["name"]:
+        result["path"] = ref.attrib.get("refid", None)
+
+    for child in result["templates"]:
+        set_type_def_ref(child, ref)
+
 def get_type_def(typedef):
-    return get_type(type_to_string(typedef))
+    result = get_type(type_to_string(typedef))
+
+    set_type_def_ref(result, typedef)
+
+    return result
+
+def cache_reference(component, path):
+    refid = component.attrib.get('id', '')
+    if not refid:
+        return
+
+    ref_map[refid] = path
 
 def add_definition(result, compounddef):
     if compounddef is None:
@@ -206,8 +229,15 @@ def add_definition(result, compounddef):
     functions    = []
     members      = []
 
+    normalized_header = header.split(include_dir)[-1].split(".")[0].split("/")
+    if not normalized_header[-1] == name:
+        normalized_header.append(name)
+
+    key = "/".join(normalized_header)
+
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
+            inner_id          = memberdef.attrib.get('id', '')
             inner_kind        = memberdef.attrib.get('kind', '')
             inner_typing      = memberdef.find('type')
             inner_name        = memberdef.find('name').text
@@ -233,11 +263,12 @@ def add_definition(result, compounddef):
                 types.append(
                     {
                         "name": inner_name,
-                        "namespace": inner_namespace,
                         "type": get_type_def(inner_typing),
                         "description": namespace_to_snake(inner_namespace) + "_DESCRIPTION"
                     }
                 )
+
+                cache_reference(memberdef, key)
 
             if inner_kind == "enum":
                 add_enum_definition(result, memberdef)
@@ -262,7 +293,7 @@ def add_definition(result, compounddef):
                 for parameter in memberdef.findall("param"):
                     data["parameters"].append(
                         {
-                            "type": get_type(type_to_string(parameter.find("type"))),
+                            "type": get_type_def(parameter.find("type")),
                             "name": parameter.find("declname").text
                         }
                     )
@@ -286,9 +317,8 @@ def add_definition(result, compounddef):
                     }
                 )
 
-    key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(key.split('/')[-1]),
+        "title": pascal_to_spaced(name),
         "source": {
             "header": header,
             "namespace": namespace,
@@ -304,6 +334,16 @@ def add_definition(result, compounddef):
 
     to_dict(result, key, data, "/")
 
+    cache_reference(compounddef, key)
+
+    for inner in compounddef.findall("innerclass") + compounddef.findall("innerstruct"):
+        inner_refid = inner.attrib.get("refid", None)
+        if not inner_refid:
+            continue
+
+        print(inner_refid)
+        add_definition(result, get_definition(inner_refid))
+
 def add_enum_definition(result, memberdef):
     name      = memberdef.find('name').text
     namespace = memberdef.find('qualifiedname').text
@@ -318,7 +358,7 @@ def add_enum_definition(result, memberdef):
 
         values.append(
             {
-                "type": get_type(type_to_string(typing)),
+                "type": get_type_def(typing),
                 "name": enum_name,
                 "description": namespace_to_snake(namespace) + "_" + enum_name.upper() + "_DESCRIPTION"
             }
@@ -326,7 +366,7 @@ def add_enum_definition(result, memberdef):
 
     key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(namespace.split("::")[-1]),
+        "title": pascal_to_spaced(name),
         "source": {
             "header": header,
             "namespace": namespace,
@@ -342,6 +382,8 @@ def add_enum_definition(result, memberdef):
 
     to_dict(result, key, data, "/")
 
+    cache_reference(memberdef, key)
+
 def get_definition(refid):
     if refid is None:
         return None
@@ -355,21 +397,6 @@ def get_definition(refid):
         return None
 
     return root.find('compounddef')
-
-def add_class_definition(result, refid):
-    compounddef = get_definition(refid)
-    if compounddef is None:
-        return
-
-    namespace = compounddef.find('compoundname').text
-    if not base_namespace in namespace:
-        return
-
-    kind = compounddef.attrib.get('kind', '')
-    if not kind in ["class", "struct"]:
-        return
-
-    add_definition(result, compounddef)
 
 def add_namespace_definition(result, refid):
     compounddef = get_definition(refid)
@@ -385,9 +412,6 @@ def add_namespace_definition(result, refid):
         return
 
     add_definition(result, compounddef)
-
-    for inner_class in compounddef.findall("innerclass") + compounddef.findall("innerstruct"):
-        add_class_definition(result, inner_class.attrib.get("refid", None))
 
 def generate_metadata(root):
     result = []
@@ -424,36 +448,16 @@ def add_index_file(metadata):
     with open(os.path.join(output_dir, "index.json"), "w", encoding="utf-8") as f:
         json.dump(result, f, indent=4, ensure_ascii=False)
 
-def get_metadata_path(value, metadata):
-    for data in metadata:
-        path      = data["path"]
-        source    = data["source"]
-        title     = data["title"]
-        namespace = source["namespace"]
-
-        if title and namespace:
-            if value == "::".join([namespace, title]):
-                return path
-
-        for typedef in source["types"]:
-            if value == "::".join([typedef["namespace"], typedef["name"]]):
-                return path 
-
-        child_path = get_metadata_path(value, data["children"])
-        if child_path:
-            return child_path
-
-    return ""
+def get_reference_path(refid):
+    return ref_map.get(refid) or refid
 
 def add_type_path(typedef, root):
     if typedef is None:
         return
 
-    name = typedef["name"]
-    if not typedef["path"] and name:
-        path = get_metadata_path(name, root)
-        if path:
-            typedef["path"] = path
+    path = typedef["path"]
+    if path:
+        typedef["path"] = get_reference_path(path)
 
     for child_typedef in typedef["templates"]:
         add_type_path(child_typedef, root)
@@ -477,8 +481,8 @@ def add_type_paths(metadata, root):
 
 def add_types_paths(metadata, root):
     for data in metadata:
-        add_type_paths(data, root)
         add_types_paths(data["children"], root)
+        add_type_paths(data, root)
 
 def add_definition_files(metadata, root):
     for data in metadata:
@@ -507,6 +511,8 @@ input_dir  = os.path.join(".docs", "xml")
 output_dir = os.path.join(".docs", "json")
 
 # Output
+ref_map  = {}
+
 metadata = generate_metadata(ET.parse(os.path.join(input_dir, 'index.xml')).getroot())
 
 add_index_file(metadata)
