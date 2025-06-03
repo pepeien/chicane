@@ -16,4 +16,6 @@ jobs:
 
             - name: Parse
               uses: actions/setup-python@v5.6
+              with:
+                  python-version: '3.13'
             - run: python Scripts/Documentation.py
