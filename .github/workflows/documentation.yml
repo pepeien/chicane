@@ -1,8 +1,12 @@
 name: Documentation
 on:
     push:
-        branches:
-            - master
+        branches: [master]
+        paths:
+            - 'Includes/Chicane/**.hpp'
+            - 'Sources/Chicane/**.cpp'
+        paths-ignore:
+            - '**/Vendors/**'
 jobs:
     build:
         runs-on: ubuntu-22.04
