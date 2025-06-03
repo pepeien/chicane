@@ -184,7 +184,6 @@ def get_type(text):
     return result
 
 def set_type_def_ref(result, component):
-    for 
     ref = component.find("ref")
     if ref is None:
         return
