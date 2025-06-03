@@ -35,9 +35,10 @@ jobs:
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
               with:
-                commit_message: Updated documentation
-                branch: master
-                commit_options: '--no-verify --signoff'
-                file_pattern: '*.xml *.json'
+                commit_message: 'Updated documentation'
+                file_pattern: '.docs/*.json'
                 commit_user_name: github-actions[bot]
                 commit_user_email: github-actions[bot]@users.noreply.github.com
+                skip_dirty_check: false
+                skip_fetch: false
+                skip_checkout: false
