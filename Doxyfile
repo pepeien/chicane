@@ -35,7 +35,7 @@ XML_PROGRAMLISTING     = YES
 TEMPLATE_RELATIONS     = YES
 
 # Optional
-QUIET                  = YES
+QUIET                  = NO
 
 # Optimization
 OPTIMIZE_OUTPUT_FOR_C  = NO
