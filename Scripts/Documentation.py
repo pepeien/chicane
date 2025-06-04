@@ -1,11 +1,147 @@
+import argparse
 import copy
 import os
 import json
 import re
 import xml.etree.ElementTree as ET
 
-prefix_patterns = ["const", "static", "volatile", "mutable"]
-suffix_patterns = ["*", "&", "**", "&&", "[]"]
+def get_type_def(type_elem: ET.Element):
+    parts = []
+    ref_elements = []
+
+    if type_elem.text and type_elem.text.strip():
+        if not type_elem.text in base_systems:
+            parts.append((None, type_elem.text))
+    
+    for child in type_elem:
+        if child.tag == 'ref':
+            refid = child.get('refid')
+
+            if child.text and not child.text in base_systems:
+                parts.append((refid, child.text))
+
+            if child.tail and child.tail.strip():
+                parts.append((None, child.tail))
+        else:
+            pass
+
+    full_type = ''.join(text for (_, text) in parts)
+    parsed = parse_type(full_type)
+
+    current_pos = 0
+
+    for refid, text in parts:
+        if refid is None:
+            current_pos += len(text)
+
+            continue
+
+        text_len = len(text)
+        match_pos = full_type.find(text, current_pos)
+        
+        if match_pos != -1:
+            assign_refid_to_component(parsed, text, refid, match_pos)
+
+            current_pos = match_pos + text_len
+    
+    return parsed
+
+def assign_refid_to_component(parsed, text: str, refid: str, pos: int):
+    if parsed["name"] == text:
+        parsed["path"] = refid
+
+        return
+
+    for template in parsed["templates"]:
+        template_text = template["prefix"] + template["name"] + template["suffix"]
+
+        if text in template_text:
+            assign_refid_to_component(template, text, refid, pos)
+
+            return
+
+def parse_type(type_str: str):
+    type_str = type_str.strip()
+    result = {
+        "prefix": "",
+        "name": "",
+        "suffix": "",
+        "path": "",
+        "templates": []
+    }
+
+    for prefix in ['const ', 'volatile ', 'static ', 'mutable ', 'extern ']:
+        if type_str.startswith(prefix):
+            result["prefix"] = prefix
+            type_str = type_str[len(prefix):].lstrip()
+            break
+
+    suffix_parts = []
+    while True:
+        suffix_part = None
+        for suffix in ['*', '&', '&&']:
+            if type_str.endswith(suffix):
+                suffix_part = suffix
+                type_str = type_str[:-len(suffix)].rstrip()
+                suffix_parts.insert(0, suffix_part)
+                break
+
+        if type_str.endswith(']'):
+            end = type_str.rfind('[')
+            if end != -1:
+                suffix_part = type_str[end:]
+                type_str = type_str[:end].rstrip()
+                suffix_parts.insert(0, suffix_part)
+                continue
+        if not suffix_part:
+            break
+    result["suffix"] = ''.join(suffix_parts)
+
+    template_start = type_str.find('<')
+    if template_start != -1:
+        result["name"] = type_str[:template_start].strip()
+
+        depth = 1
+        template_end = template_start + 1
+        while template_end < len(type_str) and depth > 0:
+            if type_str[template_end] == '<':
+                depth += 1
+            elif type_str[template_end] == '>':
+                depth -= 1
+            template_end += 1
+        
+        if depth == 0:
+            template_args_str = type_str[template_start+1:template_end-1]
+            result["templates"] = split_template_args(template_args_str)
+        else:
+            result["name"] = type_str.strip()
+    else:
+        result["name"] = type_str.strip()
+    
+    return result
+
+def split_template_args(args_str: str):
+    args = []
+    current_arg = []
+    depth = 0
+
+    for char in args_str:
+        if char == '<':
+            depth += 1
+            current_arg.append(char)
+        elif char == '>':
+            depth -= 1
+            current_arg.append(char)
+        elif char == ',' and depth == 0:
+            args.append(''.join(current_arg).strip())
+            current_arg = []
+        else:
+            current_arg.append(char)
+
+    if current_arg:
+        args.append(''.join(current_arg).strip())
+    
+    return [parse_type(arg) for arg in args if arg.strip()]
 
 def pascal_to_spaced(text, character = " "):
     if not text:
@@ -183,30 +319,12 @@ def get_type(text):
 
     return result
 
-def set_type_def_ref(result, component):
-    ref = component.find("ref")
-    if ref is None:
-        return
-
-    if ref.text == result["name"]:
-        result["path"] = ref.attrib.get("refid", None)
-
-    for child in result["templates"]:
-        set_type_def_ref(child, ref)
-
-def get_type_def(typedef):
-    result = get_type(type_to_string(typedef))
-
-    set_type_def_ref(result, typedef)
-
-    return result
-
 def cache_reference(component, path):
     refid = component.attrib.get('id', '')
     if not refid:
         return
 
-    ref_map[refid] = path
+    references[refid] = path
 
 def add_definition(result, compounddef):
     if compounddef is None:
@@ -228,11 +346,7 @@ def add_definition(result, compounddef):
     functions    = []
     members      = []
 
-    normalized_header = header.split(include_dir)[-1].split(".")[0].split("/")
-    if not normalized_header[-1] == name:
-        normalized_header.append(name)
-
-    key = "/".join(normalized_header)
+    key = header.split(include_dir)[-1].split(".")[0]
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
@@ -364,7 +478,7 @@ def add_enum_definition(result, memberdef):
 
     key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(name),
+        "title": pascal_to_spaced(key.split('/')[-1]),
         "source": {
             "header": header,
             "namespace": namespace,
@@ -447,9 +561,9 @@ def add_index_file(metadata):
         json.dump(result, f, indent=4, ensure_ascii=False)
 
 def get_reference_path(refid):
-    return ref_map.get(refid) or refid
+    return references.get(refid) or refid
 
-def add_type_path(typedef, root):
+def add_reference_path(typedef, root):
     if typedef is None:
         return
 
@@ -458,29 +572,29 @@ def add_type_path(typedef, root):
         typedef["path"] = get_reference_path(path)
 
     for child_typedef in typedef["templates"]:
-        add_type_path(child_typedef, root)
+        add_reference_path(child_typedef, root)
 
-def add_type_paths(metadata, root):
+def add_reference_paths(metadata, root):
     source = metadata["source"]
     if source is None:
         return
 
     for typedef in source["types"]:
-        add_type_path(typedef["type"], root)
+        add_reference_path(typedef["type"], root)
 
     for function in source["constructors"] + source["destructors"] + source["functions"]:
         for parameter in function["parameters"]:
-            add_type_path(parameter["type"], root)
+            add_reference_path(parameter["type"], root)
 
-        add_type_path(function["return"], root)
+        add_reference_path(function["return"], root)
 
     for member in source["members"]:
-        add_type_path(member["type"], root)
+        add_reference_path(member["type"], root)
 
-def add_types_paths(metadata, root):
+def add_references_paths(metadata, root):
     for data in metadata:
-        add_types_paths(data["children"], root)
-        add_type_paths(data, root)
+        add_reference_paths(data, root)
+        add_references_paths(data["children"], root)
 
 def add_definition_files(metadata, root):
     for data in metadata:
@@ -494,25 +608,42 @@ def add_definition_files(metadata, root):
 
         add_definition_files(data["children"], root)
 
+# Setup
+parser = argparse.ArgumentParser(description='My script description')
+parser.add_argument('--input',     '-i', help='Input filename')
+parser.add_argument('--output',    '-o', help='Output folder')
+parser.add_argument('--directory', '-d', help='Include folder')
+parser.add_argument('--namespace', '-n', help='Base namespace')
+parser.add_argument('--systems',   '-s', help='Base systems')
+
+args = parser.parse_args()
+
 # Values
-base_namespace = "Chicane"
-base_systems = [
-    "CHICANE_BOX",
-    "CHICANE_CORE",
-    "CHICANE_GRID",
-    "CHICANE_RUNTIME"
-]
+input_dir = os.path.normpath(args.input)
+if not os.path.exists(input_dir):
+    raise Exception(f"Input directory [{input_dir}] doesn't exist") 
 
-include_dir = "Includes/Chicane/"
+index_file = os.path.join(input_dir, 'index.xml')
+if not os.path.exists(index_file):
+    raise Exception(f"Index file [{index_file}] doesn't exist") 
 
-input_dir  = os.path.join(".docs", "xml")
-output_dir = os.path.join(".docs", "references")
+output_dir = os.path.normpath(args.output)
 
-# Output
-ref_map  = {}
+include_dir = args.directory or ""
 
-metadata = generate_metadata(ET.parse(os.path.join(input_dir, 'index.xml')).getroot())
+base_namespace = args.namespace or ""
+base_systems   = (args.systems or "").split(",")
+
+print(f"Input Folder:  {input_dir}")
+print(f"Output Folder: {output_dir}")
+print(f"Directory:     {include_dir}")
+print(f"Namespace:     {base_namespace}")
+print(f"Systems:       {base_systems}")
+
+## Output
+references = {}
+metadata   = generate_metadata(ET.parse(index_file).getroot())
 
 add_index_file(metadata)
-add_types_paths(metadata, metadata)
+add_references_paths(metadata, metadata)
 add_definition_files(metadata, metadata)
