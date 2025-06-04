@@ -117,7 +117,7 @@ namespace Chicane
                     return result;
                 }
 
-                Parsed parse(const std::vector<unsigned char>& inData)
+                Parsed parse(const Raw& inData)
                 {
                     FT_Library library = nullptr;
                     FT_Init_FreeType(&library);

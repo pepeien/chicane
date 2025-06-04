@@ -11,6 +11,9 @@ namespace Chicane
             struct CHICANE_BOX Glyph
             {
             public:
+                using Map = std::unordered_map<std::uint32_t, Glyph>;
+
+            public:
                 std::uint32_t              code     = 0;
                 Vec2                       advance  = {};
                 Vec2                       bearing  = {};

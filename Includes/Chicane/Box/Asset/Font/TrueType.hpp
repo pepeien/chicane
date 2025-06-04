@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Font/Data.hpp"
+#include "Chicane/Box/Asset/Font/Parsed.hpp"
 
 namespace Chicane
 {
@@ -11,7 +12,7 @@ namespace Chicane
         {
             namespace TrueType
             {
-                CHICANE_BOX Parsed parse(const std::vector<unsigned char>& inData);
+                CHICANE_BOX Parsed parse(const Raw& inData);
             }
         }
     }

@@ -3,7 +3,9 @@
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
 #include "Chicane/Box/Asset/Font/Data.hpp"
+#include "Chicane/Box/Asset/Font/Extracted.hpp"
 #include "Chicane/Box/Asset/Font/Instance.hpp"
+#include "Chicane/Box/Asset/Font/Parsed.hpp"
 
 namespace Chicane
 {
