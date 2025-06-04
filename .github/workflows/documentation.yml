@@ -33,7 +33,7 @@ jobs:
               run: rm -rf ./docs/references
 
             - name: Build References
-              run: python Scripts/Documentation.py -i .docs/xml -o .docs/references -d 'Include/Chicane' -n 'Chicane' -s 'CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_RUNTIME'
+              run: python Scripts/Documentation.py -i .docs/xml -o .docs/references -d 'Includes/Chicane' -n 'Chicane' -s 'CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_RUNTIME'
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
