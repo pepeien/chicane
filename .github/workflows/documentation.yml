@@ -33,7 +33,7 @@ jobs:
               run: rm -rf ./docs/references
 
             - name: Build References
-              run: python Scripts/Documentation.py -i .docs/xml -o .docs/references -d Include/Chicane -n Chicane -s CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_RUNTIME
+              run: python Scripts/Documentation.py -i .docs/xml -o .docs/references -d Includes/Chicane/ -n Chicane -s CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_RUNTIME
 
             - name: Commit
               uses: stefanzweifel/git-auto-commit-action@v5
@@ -41,9 +41,6 @@ jobs:
                 branch: master
                 commit_message: 'Updated documentation'
                 file_pattern: '.docs/*.json'
-                commit_user_name: github-actions[bot]
-                commit_user_email: github-actions[bot]@users.noreply.github.com
-                commit_author: Author <actions@github.com>
                 skip_dirty_check: false
                 skip_fetch: false
                 skip_checkout: false
