@@ -1,0 +1,72 @@
+{
+    "title": "Support Details",
+    "path": "Includes/Chicane/Runtime/Vulkan/SwapChain/SupportDetails",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/SupportDetails.hpp",
+        "namespace": "Chicane::Vulkan::SwapChain::SupportDetails",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::SurfaceCapabilitiesKHR",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "capabilities",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_SUPPORTDETAILS_CAPABILITIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::SurfaceFormatKHR",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "formats",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_SUPPORTDETAILS_FORMATS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::PresentModeKHR",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "presentModes",
+                "description": "CHICANE_VULKAN_SWAPCHAIN_SUPPORTDETAILS_PRESENTMODES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_SWAPCHAIN_SUPPORTDETAILS_DESCRIPTION"
+    },
+    "children": []
+}

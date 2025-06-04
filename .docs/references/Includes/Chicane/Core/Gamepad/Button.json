@@ -1,0 +1,303 @@
+{
+    "title": "Button",
+    "path": "Includes/Chicane/Core/Gamepad/Button",
+    "source": {
+        "header": "Includes/Chicane/Core/Gamepad/Button.hpp",
+        "namespace": "Chicane::Gamepad::Button",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "South",
+                "description": "CHICANE_GAMEPAD_BUTTON_SOUTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "East",
+                "description": "CHICANE_GAMEPAD_BUTTON_EAST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "West",
+                "description": "CHICANE_GAMEPAD_BUTTON_WEST_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "North",
+                "description": "CHICANE_GAMEPAD_BUTTON_NORTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Back",
+                "description": "CHICANE_GAMEPAD_BUTTON_BACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Guide",
+                "description": "CHICANE_GAMEPAD_BUTTON_GUIDE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Start",
+                "description": "CHICANE_GAMEPAD_BUTTON_START_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftStick",
+                "description": "CHICANE_GAMEPAD_BUTTON_LEFTSTICK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightStick",
+                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTSTICK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftShoulder",
+                "description": "CHICANE_GAMEPAD_BUTTON_LEFTSHOULDER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightShoulder",
+                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTSHOULDER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DPadUp",
+                "description": "CHICANE_GAMEPAD_BUTTON_DPADUP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DPadDown",
+                "description": "CHICANE_GAMEPAD_BUTTON_DPADDOWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DPadLeft",
+                "description": "CHICANE_GAMEPAD_BUTTON_DPADLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DPadRight",
+                "description": "CHICANE_GAMEPAD_BUTTON_DPADRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightPaddlePrimary",
+                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTPADDLEPRIMARY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftPaddlePrimary",
+                "description": "CHICANE_GAMEPAD_BUTTON_LEFTPADDLEPRIMARY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightPaddleSecondary",
+                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTPADDLESECONDARY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftPaddleSecondary",
+                "description": "CHICANE_GAMEPAD_BUTTON_LEFTPADDLESECONDARY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Touchpad",
+                "description": "CHICANE_GAMEPAD_BUTTON_TOUCHPAD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc1",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc2",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc3",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc4",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc5",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Misc6",
+                "description": "CHICANE_GAMEPAD_BUTTON_MISC6_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GAMEPAD_BUTTON_DESCRIPTION"
+    },
+    "children": []
+}

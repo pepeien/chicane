@@ -1,0 +1,56 @@
+{
+    "title": "Parsed",
+    "path": "Includes/Chicane/Box/Asset/Mesh/Data",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Mesh/Data.hpp",
+        "namespace": "Chicane::Box::Mesh::Parsed",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "matrix",
+                "description": "CHICANE_BOX_MESH_PARSED_MATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "textureIndex",
+                "description": "CHICANE_BOX_MESH_PARSED_TEXTUREINDEX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_padding",
+                "description": "CHICANE_BOX_MESH_PARSED__PADDING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_MESH_PARSED_DESCRIPTION"
+    },
+    "children": []
+}

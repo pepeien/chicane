@@ -1,0 +1,50 @@
+{
+    "title": "Status",
+    "path": "Includes/Chicane/Runtime/Renderer/Layer/Status",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Layer/Status.hpp",
+        "namespace": "Chicane::Layer::Status",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Offline",
+                "description": "CHICANE_LAYER_STATUS_OFFLINE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Initialized",
+                "description": "CHICANE_LAYER_STATUS_INITIALIZED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Running",
+                "description": "CHICANE_LAYER_STATUS_RUNNING_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_LAYER_STATUS_DESCRIPTION"
+    },
+    "children": []
+}

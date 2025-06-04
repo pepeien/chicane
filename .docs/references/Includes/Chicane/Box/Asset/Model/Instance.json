@@ -1,0 +1,229 @@
+{
+    "title": "Instance",
+    "path": "Includes/Chicane/Box/Asset/Model/Instance",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Model/Instance.hpp",
+        "namespace": "Chicane::Box::Model::Instance",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_INSTANCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_~INSTANCE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vendor",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Box/Asset/Model/Vendor",
+                    "templates": []
+                },
+                "name": "getVendor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_GETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Vendor",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Box/Asset/Model/Vendor",
+                            "templates": []
+                        },
+                        "name": "inVendor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_SETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Raw",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Box/Asset/Model",
+                    "templates": []
+                },
+                "name": "getData",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_GETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Raw",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Box/Asset/Model",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchVendor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_FETCHVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_INSTANCE_FETCHDATA_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vendor",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Box/Asset/Model/Vendor",
+                    "templates": []
+                },
+                "name": "m_vendor",
+                "description": "CHICANE_BOX_MODEL_INSTANCE_M_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Raw",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Box/Asset/Model",
+                    "templates": []
+                },
+                "name": "m_data",
+                "description": "CHICANE_BOX_MODEL_INSTANCE_M_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_MODEL_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

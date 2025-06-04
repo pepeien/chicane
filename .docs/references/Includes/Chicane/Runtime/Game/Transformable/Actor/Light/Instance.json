@@ -1,0 +1,62 @@
+{
+    "title": "ALight",
+    "path": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance.hpp",
+        "namespace": "Chicane::ALight",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ALight",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ALIGHT_ALIGHT_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ALight",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ALIGHT_~ALIGHT_DESCRIPTION"
+            }
+        ],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CLight",
+                    "suffix": "*",
+                    "path": "Includes/Chicane/Runtime/Game/Transformable/Component/Light",
+                    "templates": []
+                },
+                "name": "m_light",
+                "description": "CHICANE_ALIGHT_M_LIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_ALIGHT_DESCRIPTION"
+    },
+    "children": []
+}

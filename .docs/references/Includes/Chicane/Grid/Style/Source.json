@@ -1,0 +1,149 @@
+{
+    "title": "Source",
+    "path": "Includes/Chicane/Grid/Style/Source",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Source.hpp",
+        "namespace": "Chicane::Grid::Style::Source",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Source",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Grid/Style/Source",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLE_SOURCE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Source",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::string",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inSelectors"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Properties",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Grid/Style",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_SOURCE_SOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Source",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_SOURCE_SOURCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_STYLE_SOURCE_ISEMPTY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::string",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "selectors",
+                "description": "CHICANE_GRID_STYLE_SOURCE_SELECTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Properties",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Grid/Style",
+                    "templates": []
+                },
+                "name": "properties",
+                "description": "CHICANE_GRID_STYLE_SOURCE_PROPERTIES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLE_SOURCE_DESCRIPTION"
+    },
+    "children": []
+}

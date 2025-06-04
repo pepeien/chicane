@@ -1,0 +1,36 @@
+{
+    "title": "Keyboard",
+    "path": "Includes/Chicane/Core/Keyboard/Button",
+    "source": {
+        "header": "Includes/Chicane/Core/Keyboard/Button.hpp",
+        "namespace": "Chicane::Keyboard",
+        "types": [
+            {
+                "name": "EventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_KEYBOARD_EVENTCALLBACK_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_KEYBOARD_DESCRIPTION"
+    },
+    "children": []
+}

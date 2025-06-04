@@ -1,0 +1,64 @@
+{
+    "title": "Create Info",
+    "path": "Includes/Chicane/Runtime/Application/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
+        "namespace": "Chicane::Application::CreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer::CreateInfo",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Runtime/Renderer/CreateInfo",
+                    "templates": []
+                },
+                "name": "renderer",
+                "description": "CHICANE_APPLICATION_CREATEINFO_RENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Window::CreateInfo",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Window/CreateInfo",
+                    "templates": []
+                },
+                "name": "window",
+                "description": "CHICANE_APPLICATION_CREATEINFO_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "onSetup",
+                "description": "CHICANE_APPLICATION_CREATEINFO_ONSETUP_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_APPLICATION_CREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

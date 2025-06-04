@@ -1,0 +1,678 @@
+{
+    "title": "Combined",
+    "path": "Includes/Chicane/Core/Math/Transform/Combined",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",
+        "namespace": "Chicane::Transform::Combined",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Mat4",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "getMatrix",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETMATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETTRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRotation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getScale",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETSCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Instance",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                    "templates": []
+                },
+                "name": "getRelativeTransform",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETRELATIVETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Instance",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETRELATIVETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRelativeTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTranslation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTranslation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETRELATIVETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRelativeRotation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inRotation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inRotation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRelativeScale",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETRELATIVESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Instance",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                    "templates": []
+                },
+                "name": "getAbsoluteTransform",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETABSOLUTETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Instance",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETABSOLUTETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getAbsoluteTranslation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTranslation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteTranslation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inTranslation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETABSOLUTETRANSLATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getAbsoluteRotation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inRotation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inRotation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getAbsoluteScale",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_ADDABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteScale",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inScale"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_SETABSOLUTESCALE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getRight",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETRIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getForward",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETFORWARD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getUp",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TRANSFORM_COMBINED_GETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORM_COMBINED_REFRESH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Instance",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                    "templates": []
+                },
+                "name": "m_relative",
+                "description": "CHICANE_TRANSFORM_COMBINED_M_RELATIVE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Instance",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Math/Transform/Instance",
+                    "templates": []
+                },
+                "name": "m_absolute",
+                "description": "CHICANE_TRANSFORM_COMBINED_M_ABSOLUTE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TRANSFORM_COMBINED_DESCRIPTION"
+    },
+    "children": []
+}

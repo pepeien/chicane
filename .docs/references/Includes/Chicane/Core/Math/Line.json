@@ -1,0 +1,141 @@
+{
+    "title": "Line",
+    "path": "Includes/Chicane/Core/Math/Line",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Line.hpp",
+        "namespace": "Chicane::Line",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_LINE_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getStartPoint",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_LINE_GETSTARTPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec2",
+                    "suffix": "&",
+                    "path": "Includes/Chicane/Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getEndPoint",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_LINE_GETENDPOINT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getPoints",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_LINE_GETPOINTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addPoint",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inPoint"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_LINE_ADDPOINT_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec2",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Core/Math/Vec/Vec2",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_points",
+                "description": "CHICANE_LINE_M_POINTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_LINE_DESCRIPTION"
+    },
+    "children": []
+}

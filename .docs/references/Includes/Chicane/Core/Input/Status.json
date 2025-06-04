@@ -1,0 +1,39 @@
+{
+    "title": "Status",
+    "path": "Includes/Chicane/Core/Input/Status",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Status.hpp",
+        "namespace": "Chicane::Input::Status",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pressed",
+                "description": "CHICANE_INPUT_STATUS_PRESSED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Released",
+                "description": "CHICANE_INPUT_STATUS_RELEASED_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INPUT_STATUS_DESCRIPTION"
+    },
+    "children": []
+}

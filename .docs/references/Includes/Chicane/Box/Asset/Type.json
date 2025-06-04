@@ -1,0 +1,94 @@
+{
+    "title": "Type",
+    "path": "Includes/Chicane/Box/Asset/Type",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Type.hpp",
+        "namespace": "Chicane::Box::Asset::Type",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_BOX_ASSET_TYPE_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sound",
+                "description": "CHICANE_BOX_ASSET_TYPE_SOUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Font",
+                "description": "CHICANE_BOX_ASSET_TYPE_FONT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mesh",
+                "description": "CHICANE_BOX_ASSET_TYPE_MESH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Model",
+                "description": "CHICANE_BOX_ASSET_TYPE_MODEL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sky",
+                "description": "CHICANE_BOX_ASSET_TYPE_SKY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Texture",
+                "description": "CHICANE_BOX_ASSET_TYPE_TEXTURE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_ASSET_TYPE_DESCRIPTION"
+    },
+    "children": []
+}

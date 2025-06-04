@@ -1,0 +1,121 @@
+{
+    "title": "Folder Dialog",
+    "path": "Includes/Chicane/Core/FileSystem/FolderDialog",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/FolderDialog.hpp",
+        "namespace": "Chicane::FileSystem::FolderDialog",
+        "types": [
+            {
+                "name": "Callback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_CALLBACK_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FolderDialog",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_FOLDERDIALOG_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "open",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Callback",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Core/FileSystem/FolderDialog",
+                            "templates": []
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_OPEN_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bCanSelectMany",
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_BCANSELECTMANY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "title",
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_TITLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "location",
+                "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_LOCATION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_DESCRIPTION"
+    },
+    "children": []
+}

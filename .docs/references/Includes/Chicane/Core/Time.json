@@ -1,0 +1,292 @@
+{
+    "title": "Time",
+    "path": "Includes/Chicane/Core/Time",
+    "source": {
+        "header": "Includes/Chicane/Core/Time.hpp",
+        "namespace": "Chicane::Time",
+        "types": [
+            {
+                "name": "Clock",
+                "type": {
+                    "prefix": "",
+                    "name": "std::chrono::steady_clock",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_TIME_CLOCK_DESCRIPTION"
+            },
+            {
+                "name": "Point",
+                "type": {
+                    "prefix": "",
+                    "name": "std::chrono::time_point",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Clock",
+                            "suffix": "",
+                            "path": "Includes/Chicane/Core/Time",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_TIME_POINT_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Time",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::chrono::time_point",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Clock",
+                                    "suffix": "",
+                                    "path": "Includes/Chicane/Core/Time",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inDuration"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TIME_TIME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Time",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_TIME_TIME_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "miliseconds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TIME_MILISECONDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "seconds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TIME_SECONDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "minutes",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TIME_MINUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hours",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_TIME_HOURS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "miliseconds",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Clock::duration",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDuration"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TIME_MILISECONDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "seconds",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Clock::duration",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TIME_SECONDS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "minutes",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Clock::duration",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TIME_MINUTES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hours",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Clock::duration",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTime"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_TIME_HOURS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Point",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Time",
+                    "templates": []
+                },
+                "name": "point",
+                "description": "CHICANE_TIME_POINT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_TIME_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,110 @@
+{
+    "title": "Create Info",
+    "path": "Includes/Chicane/Core/Window/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Core/Window/CreateInfo.hpp",
+        "namespace": "Chicane::Window::CreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "title",
+                "description": "CHICANE_WINDOW_CREATEINFO_TITLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FileSystem::Path",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/FileSystem",
+                    "templates": []
+                },
+                "name": "icon",
+                "description": "CHICANE_WINDOW_CREATEINFO_ICON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Math/Vec/Base",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "size",
+                "description": "CHICANE_WINDOW_CREATEINFO_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "display",
+                "description": "CHICANE_WINDOW_CREATEINFO_DISPLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Type",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Window/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_WINDOW_CREATEINFO_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Renderer",
+                    "suffix": "",
+                    "path": "Includes/Chicane/Core/Window/Renderer",
+                    "templates": []
+                },
+                "name": "renderer",
+                "description": "CHICANE_WINDOW_CREATEINFO_RENDERER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_WINDOW_CREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

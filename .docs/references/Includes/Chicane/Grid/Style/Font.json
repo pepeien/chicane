@@ -1,0 +1,59 @@
+{
+    "title": "Font",
+    "path": "Includes/Chicane/Grid/Style/Font",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Font.hpp",
+        "namespace": "Chicane::Grid::Style::Font",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Font",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_FONT_FONT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "family",
+                "description": "CHICANE_GRID_STYLE_FONT_FAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_GRID_STYLE_FONT_SIZE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_STYLE_FONT_DESCRIPTION"
+    },
+    "children": []
+}

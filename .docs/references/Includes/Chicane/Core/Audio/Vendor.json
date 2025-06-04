@@ -1,0 +1,39 @@
+{
+    "title": "Vendor",
+    "path": "Includes/Chicane/Core/Audio/Vendor",
+    "source": {
+        "header": "Includes/Chicane/Core/Audio/Vendor.hpp",
+        "namespace": "Chicane::Audio::Vendor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_AUDIO_VENDOR_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Wave",
+                "description": "CHICANE_AUDIO_VENDOR_WAVE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_AUDIO_VENDOR_DESCRIPTION"
+    },
+    "children": []
+}
