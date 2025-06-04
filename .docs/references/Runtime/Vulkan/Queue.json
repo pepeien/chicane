@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -43,7 +43,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::SurfaceKHR",
                             "suffix": "&",
                             "path": "",
@@ -79,7 +79,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -89,7 +89,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -99,7 +99,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::SurfaceKHR",
                             "suffix": "&",
                             "path": "",
@@ -135,7 +135,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -145,7 +145,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -155,7 +155,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::SurfaceKHR",
                             "suffix": "&",
                             "path": "",

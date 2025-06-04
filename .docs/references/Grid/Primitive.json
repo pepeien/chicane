@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Primitive",
                             "suffix": "&",
                             "path": "Grid/Primitive",
@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Primitive",
                             "suffix": "&",
                             "path": "Grid/Primitive",
@@ -97,7 +97,7 @@
                             "prefix": "",
                             "name": "Vertex",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vertex",
                             "templates": []
                         }
                     ]

@@ -11,7 +11,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -37,7 +37,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -76,7 +76,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Rgba",
                             "suffix": "&",
                             "path": "Core/Color",
@@ -86,7 +86,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Rgba",
                             "suffix": "&",
                             "path": "Core/Color",
@@ -112,7 +112,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -138,7 +138,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Rgba",
                             "suffix": "&",
                             "path": "Core/Color",
@@ -157,14 +157,14 @@
                     "prefix": "",
                     "name": "Rgba",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Color",
                     "templates": []
                 },
                 "name": "toRgba",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -185,7 +185,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "",
                     "path": "",
@@ -201,7 +201,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -217,7 +217,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -233,7 +233,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -249,7 +249,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -265,7 +265,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -281,7 +281,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -297,7 +297,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -313,7 +313,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -329,7 +329,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -345,7 +345,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -361,7 +361,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -377,7 +377,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -393,7 +393,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -409,7 +409,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -425,7 +425,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -441,7 +441,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -457,7 +457,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -473,7 +473,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

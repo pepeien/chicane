@@ -1,15 +1,256 @@
 {
-    "title": "Instance",
+    "title": "ASky",
     "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
     "source": {
-        "header": null,
-        "namespace": null,
-        "types": [],
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",
+        "namespace": "Chicane::ASky",
+        "types": [
+            {
+                "name": "AssetObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "Observable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Box::Sky::Instance",
+                            "suffix": "*",
+                            "path": "Box/Asset/Sky/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_ASKY_ASSETOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "AssetSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "Subscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "Box::Sky::Instance",
+                            "suffix": "*",
+                            "path": "Box/Asset/Sky/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_ASKY_ASSETSUBSCRIPTION_DESCRIPTION"
+            }
+        ],
         "enums": [],
-        "constructors": [],
-        "destructors": [],
-        "functions": [],
-        "members": []
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ASky",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_ASKY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ASky",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ASky",
+                            "suffix": "&&",
+                            "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                            "templates": []
+                        },
+                        "name": "other"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_ASKY_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ASky",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_~ASKY_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ASky",
+                    "suffix": "&",
+                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ASky",
+                            "suffix": "&&",
+                            "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                            "templates": []
+                        },
+                        "name": "other"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Box::Sky::Instance",
+                    "suffix": "*",
+                    "path": "Box/Asset/Sky/Instance",
+                    "templates": []
+                },
+                "name": "getSky",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ASKY_GETSKY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setSky",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Box::Sky::Instance",
+                            "suffix": "*",
+                            "path": "Box/Asset/Sky/Instance",
+                            "templates": []
+                        },
+                        "name": "inSky"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_SETSKY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AssetSubscription",
+                    "suffix": "",
+                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "templates": []
+                },
+                "name": "watchSky",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "AssetSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "Core/Event/Subscription",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ASKY_WATCHSKY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Box::Sky::Instance",
+                    "suffix": "*",
+                    "path": "Box/Asset/Sky/Instance",
+                    "templates": []
+                },
+                "name": "m_asset",
+                "description": "CHICANE_ASKY_M_ASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "AssetObservable",
+                    "suffix": "",
+                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "templates": []
+                },
+                "name": "m_assetObservable",
+                "description": "CHICANE_ASKY_M_ASSETOBSERVABLE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_ASKY_DESCRIPTION"
     },
     "children": []
 }

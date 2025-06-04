@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_node",
                             "suffix": "&",
                             "path": "",
@@ -50,7 +50,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Event",
                             "suffix": "&",
                             "path": "Grid/Event",
@@ -73,7 +73,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -89,7 +89,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -105,7 +105,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

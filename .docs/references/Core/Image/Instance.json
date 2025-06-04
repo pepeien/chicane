@@ -33,7 +33,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -59,10 +59,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Raw",
                             "suffix": "&",
-                            "path": "Core/Image/Data/Image",
+                            "path": "Core/Image/Data",
                             "templates": []
                         },
                         "name": "inData"
@@ -100,7 +100,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Core/Image/Instance",
@@ -203,10 +203,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Pixels",
                     "suffix": "",
-                    "path": "Core/Image/Data/Image",
+                    "path": "Core/Image/Data",
                     "templates": []
                 },
                 "name": "getPixels",
@@ -324,7 +324,7 @@
                     "prefix": "",
                     "name": "Pixels",
                     "suffix": "",
-                    "path": "Core/Image/Data/Image",
+                    "path": "Core/Image/Data",
                     "templates": []
                 },
                 "name": "m_pixels",

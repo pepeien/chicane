@@ -55,7 +55,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Sound::Instance",
                             "suffix": "&",
                             "path": "Box/Asset/Sound/Instance",
@@ -71,17 +71,17 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Audio::Raw",
                     "suffix": "&",
-                    "path": "Core/Audio/Data/Audio",
+                    "path": "Core/Audio/Data",
                     "templates": []
                 },
                 "name": "getInstance",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -109,7 +109,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -137,7 +137,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -163,7 +163,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",

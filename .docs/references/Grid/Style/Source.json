@@ -17,7 +17,7 @@
                             "prefix": "",
                             "name": "Source",
                             "suffix": "",
-                            "path": "",
+                            "path": "Grid/Style/Source",
                             "templates": []
                         }
                     ]
@@ -41,7 +41,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -59,7 +59,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Properties",
                             "suffix": "&",
                             "path": "Grid/Style",

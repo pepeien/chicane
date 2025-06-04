@@ -49,7 +49,7 @@
                             "prefix": "",
                             "name": "PoolSizeCreateInfo",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Vulkan/Descriptor/PoolSizeCreateInfo",
                             "templates": []
                         }
                     ]

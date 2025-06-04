@@ -41,10 +41,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "void()>",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "onSetup",
                 "description": "CHICANE_APPLICATION_CREATEINFO_ONSETUP_DESCRIPTION"

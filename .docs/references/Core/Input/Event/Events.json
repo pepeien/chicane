@@ -59,7 +59,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "E",
                             "suffix": "&",
                             "path": "",

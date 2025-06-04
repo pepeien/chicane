@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -56,7 +56,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
                     "path": "",
@@ -65,7 +65,7 @@
                             "prefix": "",
                             "name": "Group",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Mesh/Group",
                             "templates": []
                         }
                     ]
@@ -91,7 +91,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -100,7 +100,7 @@
                                     "prefix": "",
                                     "name": "Group",
                                     "suffix": "",
-                                    "path": "",
+                                    "path": "Box/Asset/Mesh/Group",
                                     "templates": []
                                 }
                             ]
@@ -125,7 +125,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Group",
                             "suffix": "&",
                             "path": "Box/Asset/Mesh/Group",
@@ -151,7 +151,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Group",
                             "suffix": "&",
                             "path": "Box/Asset/Mesh/Group",
@@ -193,7 +193,7 @@
                             "prefix": "",
                             "name": "Group",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Mesh/Group",
                             "templates": []
                         }
                     ]

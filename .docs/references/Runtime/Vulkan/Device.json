@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -59,7 +59,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Instance",
                             "suffix": "&",
                             "path": "",
@@ -95,7 +95,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -105,7 +105,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::SurfaceKHR",
                             "suffix": "&",
                             "path": "",
@@ -131,7 +131,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -171,13 +171,13 @@
                     "static"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "char",
                             "suffix": "*",
                             "path": "",
@@ -194,13 +194,13 @@
                     "static"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "char",
                             "suffix": "*",
                             "path": "",

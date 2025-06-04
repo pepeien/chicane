@@ -22,7 +22,7 @@
                             "prefix": "",
                             "name": "Vec3",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         }
                     ]
@@ -31,7 +31,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -40,7 +40,7 @@
                                     "prefix": "",
                                     "name": "Curve",
                                     "suffix": "",
-                                    "path": "",
+                                    "path": "Core/Math/Curve",
                                     "templates": []
                                 }
                             ]
@@ -85,7 +85,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -94,7 +94,7 @@
                                     "prefix": "",
                                     "name": "Curve",
                                     "suffix": "",
-                                    "path": "",
+                                    "path": "Core/Math/Curve",
                                     "templates": []
                                 }
                             ]
@@ -147,7 +147,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -157,7 +157,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -183,7 +183,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -193,7 +193,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -203,7 +203,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",

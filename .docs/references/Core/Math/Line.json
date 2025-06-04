@@ -30,7 +30,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
@@ -47,7 +47,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
@@ -64,7 +64,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
                     "path": "",
@@ -73,7 +73,7 @@
                             "prefix": "",
                             "name": "Vec2",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec2",
                             "templates": []
                         }
                     ]
@@ -99,7 +99,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -126,7 +126,7 @@
                             "prefix": "",
                             "name": "Vec2",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec2",
                             "templates": []
                         }
                     ]

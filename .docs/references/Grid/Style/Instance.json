@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Properties",
                             "suffix": "&",
                             "path": "Grid/Style",
@@ -34,7 +34,7 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Grid/Component/Instance/Component",
+                            "path": "Grid/Component/Instance",
                             "templates": []
                         },
                         "name": "inParent"
@@ -75,7 +75,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_node",
                             "suffix": "&",
                             "path": "",
@@ -103,7 +103,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -131,7 +131,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -159,7 +159,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -260,7 +260,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Properties",
                             "suffix": "&",
                             "path": "Grid/Style",
@@ -306,7 +306,7 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Grid/Component/Instance/Component",
+                            "path": "Grid/Component/Instance",
                             "templates": []
                         },
                         "name": "inComponent"
@@ -464,7 +464,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -492,7 +492,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -530,7 +530,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -558,7 +558,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -596,7 +596,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -672,7 +672,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -728,7 +728,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -784,7 +784,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -812,7 +812,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -822,7 +822,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -850,7 +850,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -1029,7 +1029,7 @@
                     "prefix": "",
                     "name": "Component",
                     "suffix": "*",
-                    "path": "Grid/Component/Instance/Component",
+                    "path": "Grid/Component/Instance",
                     "templates": []
                 },
                 "name": "m_parent",

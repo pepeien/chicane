@@ -1,50 +1,55 @@
 {
-    "title": "Button",
+    "title": "Mouse",
     "path": "Core/Mouse/Button",
     "source": {
         "header": "Includes/Chicane/Core/Mouse/Button.hpp",
-        "namespace": "Chicane::Mouse::Button",
-        "types": [],
-        "enums": [
+        "namespace": "Chicane::Mouse",
+        "types": [
             {
+                "name": "ButtonEventCallback",
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "Left",
-                "description": "CHICANE_MOUSE_BUTTON_LEFT_DESCRIPTION"
+                "description": "CHICANE_MOUSE_BUTTONEVENTCALLBACK_DESCRIPTION"
             },
             {
+                "name": "MotionEventCallback",
                 "type": {
                     "prefix": "",
-                    "name": "std::uint8_t",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "Middle",
-                "description": "CHICANE_MOUSE_BUTTON_MIDDLE_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Right",
-                "description": "CHICANE_MOUSE_BUTTON_RIGHT_DESCRIPTION"
+                "description": "CHICANE_MOUSE_MOTIONEVENTCALLBACK_DESCRIPTION"
             }
         ],
+        "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_MOUSE_BUTTON_DESCRIPTION"
+        "description": "CHICANE_MOUSE_DESCRIPTION"
     },
     "children": []
 }

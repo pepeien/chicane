@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -86,7 +86,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::string",
                     "suffix": "&",
                     "path": "",
@@ -150,7 +150,7 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Grid/Component/Instance/Component",
+                            "path": "Grid/Component/Instance",
                             "templates": []
                         },
                         "name": "inChild"
@@ -168,7 +168,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -184,7 +184,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

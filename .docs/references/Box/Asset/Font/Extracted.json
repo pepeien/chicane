@@ -1,9 +1,9 @@
 {
-    "title": "Motion Event",
-    "path": "Core/Gamepad/Event",
+    "title": "Extracted",
+    "path": "Box/Asset/Font/Extracted",
     "source": {
-        "header": "Includes/Chicane/Core/Gamepad/Event.hpp",
-        "namespace": "Chicane::Gamepad::MotionEvent",
+        "header": "Includes/Chicane/Box/Asset/Font/Extracted.hpp",
+        "namespace": "Chicane::Box::Font::Extracted",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -15,29 +15,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Axis",
+                    "name": "Vendor",
                     "suffix": "",
-                    "path": "Core/Gamepad/Axis",
+                    "path": "Box/Asset/Font/Vendor",
                     "templates": []
                 },
-                "name": "axis",
-                "description": "CHICANE_GAMEPAD_MOTIONEVENT_AXIS_DESCRIPTION"
+                "name": "vendor",
+                "description": "CHICANE_BOX_FONT_EXTRACTED_VENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint16_t",
+                    "name": "Raw",
                     "suffix": "",
-                    "path": "",
+                    "path": "Box/Asset/Font",
                     "templates": []
                 },
-                "name": "value",
-                "description": "CHICANE_GAMEPAD_MOTIONEVENT_VALUE_DESCRIPTION"
+                "name": "data",
+                "description": "CHICANE_BOX_FONT_EXTRACTED_DATA_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GAMEPAD_MOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_BOX_FONT_EXTRACTED_DESCRIPTION"
     },
     "children": []
 }

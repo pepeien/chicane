@@ -17,7 +17,7 @@
                     "prefix": "",
                     "name": "Images",
                     "suffix": "",
-                    "path": "Runtime/Vulkan/Sky/CreateInfo/Sky",
+                    "path": "Runtime/Vulkan/Sky/CreateInfo",
                     "templates": []
                 },
                 "name": "images",

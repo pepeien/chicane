@@ -23,10 +23,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Instance/Transformable",
+                            "path": "Runtime/Game/Transformable/Instance",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -51,10 +51,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CView",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Component/View/CView",
+                            "path": "Runtime/Game/Transformable/Component/View",
                             "templates": []
                         },
                         "name": "inView"

@@ -36,7 +36,7 @@
                             "prefix": "",
                             "name": "Frame::Instance",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Vulkan/Frame/Instance",
                             "templates": []
                         }
                     ]

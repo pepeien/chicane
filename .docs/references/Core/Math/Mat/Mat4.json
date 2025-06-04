@@ -22,7 +22,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "...",
+                            "name": "A ...",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -47,10 +47,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Mat",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Base/Mat",
+                    "path": "Core/Math/Mat/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -78,10 +78,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Mat",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Base/Mat",
+                    "path": "Core/Math/Mat/Base",
                     "templates": [
                         {
                             "prefix": "",

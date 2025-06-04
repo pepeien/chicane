@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vertex",
                             "suffix": "&",
                             "path": "Core/Math/Vertex",
@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vertex",
                             "suffix": "&",
                             "path": "Core/Math/Vertex",

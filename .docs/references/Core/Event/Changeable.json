@@ -9,9 +9,9 @@
                 "name": "ChangesObservable",
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "Observable",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Event/Observable",
                     "templates": []
                 },
                 "description": "CHICANE_CHANGEABLE_CHANGESOBSERVABLE_DESCRIPTION"
@@ -20,9 +20,9 @@
                 "name": "ChangesSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "Subscription",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Event/Subscription",
                     "templates": []
                 },
                 "description": "CHICANE_CHANGEABLE_CHANGESSUBSCRIPTION_DESCRIPTION"

@@ -23,13 +23,13 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
                             "templates": [
                                 {
-                                    "prefix": "const",
+                                    "prefix": "const ",
                                     "name": "char",
                                     "suffix": "*",
                                     "path": "",
@@ -57,13 +57,13 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
                             "templates": [
                                 {
-                                    "prefix": "const",
+                                    "prefix": "const ",
                                     "name": "char",
                                     "suffix": "*",
                                     "path": "",
@@ -121,13 +121,13 @@
                     "static"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "char",
                             "suffix": "*",
                             "path": "",
@@ -144,13 +144,13 @@
                     "static"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
                     "templates": [
                         {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "char",
                             "suffix": "*",
                             "path": "",

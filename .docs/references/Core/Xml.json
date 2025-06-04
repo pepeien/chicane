@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_document",
                             "suffix": "&",
                             "path": "",
@@ -49,7 +49,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_node",
                             "suffix": "&",
                             "path": "",
@@ -75,7 +75,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_document",
                             "suffix": "&",
                             "path": "",
@@ -85,7 +85,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -111,7 +111,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -137,7 +137,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -147,7 +147,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_node",
                             "suffix": "&",
                             "path": "",
@@ -183,7 +183,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",

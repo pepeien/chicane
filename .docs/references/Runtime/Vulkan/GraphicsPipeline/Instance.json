@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/GraphicsPipeline/CreateInfo",

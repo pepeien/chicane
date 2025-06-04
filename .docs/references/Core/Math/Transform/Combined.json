@@ -13,7 +13,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Mat4",
                     "suffix": "&",
                     "path": "Core/Math/Mat/Mat4",
@@ -30,7 +30,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -47,7 +47,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -64,7 +64,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -81,7 +81,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Instance",
                     "suffix": "&",
                     "path": "Core/Math/Transform/Instance",
@@ -108,7 +108,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Core/Math/Transform/Instance",
@@ -124,7 +124,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -151,7 +151,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -177,7 +177,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -193,7 +193,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -220,7 +220,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -246,7 +246,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -262,7 +262,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -289,7 +289,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -315,7 +315,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -331,7 +331,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Instance",
                     "suffix": "&",
                     "path": "Core/Math/Transform/Instance",
@@ -358,7 +358,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Core/Math/Transform/Instance",
@@ -374,7 +374,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -401,7 +401,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -427,7 +427,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -443,7 +443,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -470,7 +470,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -496,7 +496,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -512,7 +512,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -539,7 +539,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -565,7 +565,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -581,7 +581,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -598,7 +598,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -615,7 +615,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",

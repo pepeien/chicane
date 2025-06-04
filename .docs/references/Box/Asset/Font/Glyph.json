@@ -4,7 +4,34 @@
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Glyph.hpp",
         "namespace": "Chicane::Box::Font::Glyph",
-        "types": [],
+        "types": [
+            {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Glyph",
+                            "suffix": "",
+                            "path": "Box/Asset/Font/Glyph",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_FONT_GLYPH_MAP_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -62,7 +89,7 @@
                             "prefix": "",
                             "name": "Vec3",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         }
                     ]

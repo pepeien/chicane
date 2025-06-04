@@ -23,10 +23,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base/Vec",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -48,7 +48,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -74,10 +74,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base/Vec",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -145,7 +145,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Viewport",
                             "suffix": "&",
                             "path": "",
@@ -155,7 +155,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Rect2D",
                             "suffix": "&",
                             "path": "",
@@ -181,7 +181,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -301,7 +301,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -319,7 +319,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -337,7 +337,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -363,7 +363,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Attachment",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
@@ -404,7 +404,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Attachment",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
@@ -445,7 +445,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -463,7 +463,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",

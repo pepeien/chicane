@@ -9,10 +9,18 @@
                 "name": "EmptyCallback",
                 "type": {
                     "prefix": "",
-                    "name": "void()>",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_SUBSCRIPTION_EMPTYCALLBACK_DESCRIPTION"
             },
@@ -20,10 +28,18 @@
                 "name": "NextCallback",
                 "type": {
                     "prefix": "",
-                    "name": "void(T)>",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(T)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_SUBSCRIPTION_NEXTCALLBACK_DESCRIPTION"
             },
@@ -50,10 +66,18 @@
                 "name": "CompleteCallback",
                 "type": {
                     "prefix": "",
-                    "name": "void()>",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_SUBSCRIPTION_COMPLETECALLBACK_DESCRIPTION"
             }
@@ -259,7 +283,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",

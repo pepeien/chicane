@@ -15,7 +15,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Reference (const Event &)",
+                            "name": "Reference(const Event &)",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -43,7 +43,7 @@
                             "prefix": "",
                             "name": "Function",
                             "suffix": "",
-                            "path": "",
+                            "path": "Grid",
                             "templates": []
                         }
                     ]
@@ -62,14 +62,14 @@
                     "prefix": "",
                     "name": "Component",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Grid/Component/Instance",
                     "templates": []
                 },
                 "name": "createComponent",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "pugi::xml_node",
                             "suffix": "&",
                             "path": "",
@@ -95,7 +95,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -108,7 +108,7 @@
                             "prefix": "",
                             "name": "Component::Compiler",
                             "suffix": "",
-                            "path": "Grid/Component/Instance/Component",
+                            "path": "Grid/Component/Instance",
                             "templates": []
                         },
                         "name": "inCompiler"
@@ -131,7 +131,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -152,7 +152,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -168,7 +168,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -184,7 +184,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "",
                     "path": "",
@@ -200,7 +200,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "",
                     "path": "",
@@ -216,7 +216,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "",
                     "path": "",
@@ -232,7 +232,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -248,7 +248,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -264,7 +264,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -280,7 +280,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -296,7 +296,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

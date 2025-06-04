@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vulkan::Buffer::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Buffer/CreateInfo",
@@ -51,7 +51,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -114,7 +114,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "T",
                             "suffix": "*",
                             "path": "",

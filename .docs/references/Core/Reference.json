@@ -24,7 +24,7 @@
                             "prefix": "",
                             "name": "Reference",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Core/Reference",
                             "templates": []
                         }
                     ]
@@ -181,7 +181,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "T",
                     "suffix": "*",
                     "path": "",
@@ -201,7 +201,7 @@
                 "accessor": "private",
                 "modifiers": [],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "void",
                     "suffix": "*",
                     "path": "",

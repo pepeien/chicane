@@ -39,7 +39,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Application/CreateInfo",
@@ -55,7 +55,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Telemetry",
                     "suffix": "&",
                     "path": "Core/Telemetry",
@@ -198,7 +198,7 @@
                     "prefix": "",
                     "name": "Level",
                     "suffix": "*",
-                    "path": "Runtime/Game/Level/Instance/Level",
+                    "path": "Runtime/Game/Level/Instance",
                     "templates": []
                 },
                 "name": "getLevel",
@@ -225,7 +225,7 @@
                             "prefix": "",
                             "name": "Level",
                             "suffix": "*",
-                            "path": "Runtime/Game/Level/Instance/Level",
+                            "path": "Runtime/Game/Level/Instance",
                             "templates": []
                         },
                         "name": "inLevel"
@@ -526,7 +526,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -601,7 +601,7 @@
                     "prefix": "",
                     "name": "Level",
                     "suffix": "*",
-                    "path": "Runtime/Game/Level/Instance/Level",
+                    "path": "Runtime/Game/Level/Instance",
                     "templates": []
                 },
                 "name": "m_level",
@@ -672,7 +672,7 @@
                             "prefix": "",
                             "name": "Window::Instance",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Window/Instance",
                             "templates": []
                         }
                     ]
@@ -706,7 +706,7 @@
                             "prefix": "",
                             "name": "Renderer::Instance",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Renderer/Instance",
                             "templates": []
                         }
                     ]

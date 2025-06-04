@@ -28,14 +28,14 @@
                             "prefix": "",
                             "name": "Side",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Sky/Side",
                             "templates": []
                         },
                         {
                             "prefix": "",
                             "name": "RawSide",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Sky",
                             "templates": []
                         }
                     ]
@@ -65,14 +65,14 @@
                             "prefix": "",
                             "name": "Side",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Sky/Side",
                             "templates": []
                         },
                         {
                             "prefix": "",
                             "name": "ParsedSide",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Sky",
                             "templates": []
                         }
                     ]
@@ -92,7 +92,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -108,7 +108,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -123,7 +123,7 @@
                     "static"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -132,7 +132,7 @@
                             "prefix": "",
                             "name": "Side",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Sky/Side",
                             "templates": []
                         }
                     ]

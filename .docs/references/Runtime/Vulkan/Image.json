@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PhysicalDevice",
                             "suffix": "&",
                             "path": "",
@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -51,7 +51,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::ImageTiling",
                             "suffix": "&",
                             "path": "",
@@ -61,7 +61,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::FormatFeatureFlags",
                             "suffix": "&",
                             "path": "",
@@ -97,7 +97,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Image/Instance/CreateInfo",
@@ -133,7 +133,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Sampler::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Image/Sampler/CreateInfo",
@@ -169,7 +169,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Image",
                             "suffix": "&",
                             "path": "",
@@ -179,7 +179,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Memory::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Image/Memory/CreateInfo",
@@ -215,7 +215,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Image",
                             "suffix": "&",
                             "path": "",
@@ -225,7 +225,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "View::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Image/View/CreateInfo",
@@ -251,7 +251,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::CommandBuffer",
                             "suffix": "&",
                             "path": "",
@@ -261,7 +261,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Queue",
                             "suffix": "&",
                             "path": "",
@@ -271,7 +271,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Image",
                             "suffix": "&",
                             "path": "",
@@ -281,7 +281,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::ImageLayout",
                             "suffix": "&",
                             "path": "",
@@ -291,7 +291,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::ImageLayout",
                             "suffix": "&",
                             "path": "",
@@ -327,7 +327,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::CommandBuffer",
                             "suffix": "&",
                             "path": "",
@@ -337,7 +337,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Queue",
                             "suffix": "&",
                             "path": "",
@@ -347,7 +347,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Buffer",
                             "suffix": "&",
                             "path": "",
@@ -357,7 +357,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Image",
                             "suffix": "&",
                             "path": "",

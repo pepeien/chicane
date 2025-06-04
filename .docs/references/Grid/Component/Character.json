@@ -138,10 +138,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Box::Font::Parsed",
                     "suffix": "&",
-                    "path": "Box/Asset/Font/Data/Parsed",
+                    "path": "Box/Asset/Font/Parsed",
                     "templates": []
                 },
                 "name": "getFont",
@@ -172,7 +172,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Box::Font::Glyph",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Glyph",
@@ -224,7 +224,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

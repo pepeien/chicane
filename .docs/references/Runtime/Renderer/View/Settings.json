@@ -17,7 +17,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",

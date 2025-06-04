@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -49,7 +49,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -120,7 +120,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -129,7 +129,7 @@
                                     "prefix": "",
                                     "name": "CCamera",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Camera",
                                     "templates": []
                                 }
                             ]
@@ -154,7 +154,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -163,7 +163,7 @@
                                     "prefix": "",
                                     "name": "CCamera",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Camera",
                                     "templates": []
                                 }
                             ]
@@ -203,7 +203,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -212,7 +212,7 @@
                                     "prefix": "",
                                     "name": "CLight",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Light",
                                     "templates": []
                                 }
                             ]
@@ -237,7 +237,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -246,7 +246,7 @@
                                     "prefix": "",
                                     "name": "CLight",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Light",
                                     "templates": []
                                 }
                             ]
@@ -286,7 +286,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -295,7 +295,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Mesh",
                                     "templates": []
                                 }
                             ]
@@ -320,7 +320,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -329,7 +329,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Mesh",
                                     "templates": []
                                 }
                             ]
@@ -379,7 +379,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Extent2D",
                             "suffix": "&",
                             "path": "",
@@ -430,7 +430,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Extent2D",
                             "suffix": "&",
                             "path": "",
@@ -481,7 +481,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Extent2D",
                             "suffix": "&",
                             "path": "",
@@ -522,7 +522,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -532,7 +532,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Framebuffer",
                             "suffix": "&",
                             "path": "",
@@ -558,7 +558,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -586,7 +586,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -596,7 +596,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::DescriptorSet",
                             "suffix": "&",
                             "path": "",
@@ -622,7 +622,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -650,7 +650,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::WriteDescriptorSet",
                             "suffix": "&",
                             "path": "",
@@ -691,7 +691,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "View::Data",
                             "suffix": "&",
                             "path": "Runtime/Renderer/View/Data",
@@ -717,7 +717,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -726,7 +726,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "",
+                                    "path": "Runtime/Game/Transformable/Component/Mesh",
                                     "templates": []
                                 }
                             ]
@@ -910,7 +910,7 @@
                             "prefix": "",
                             "name": "View::Data",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Renderer/View/Data",
                             "templates": []
                         }
                     ]
@@ -931,7 +931,7 @@
                             "prefix": "",
                             "name": "View::Data",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Renderer/View/Data",
                             "templates": []
                         }
                     ]
@@ -952,7 +952,7 @@
                             "prefix": "",
                             "name": "Box::Mesh::Parsed",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Asset/Mesh/Data",
                             "templates": []
                         }
                     ]

@@ -9,10 +9,18 @@
                 "name": "Callback",
                 "type": {
                     "prefix": "",
-                    "name": "void()>",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "description": "CHICANE_FILESYSTEM_FOLDERDIALOG_CALLBACK_DESCRIPTION"
             }

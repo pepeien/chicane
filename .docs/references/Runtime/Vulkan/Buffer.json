@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Buffer/CreateInfo",
@@ -69,7 +69,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Buffer/CreateInfo",
@@ -95,7 +95,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Buffer/Instance",
@@ -105,7 +105,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Buffer/Instance",
@@ -115,7 +115,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::DeviceSize",
                             "suffix": "&",
                             "path": "",
@@ -125,7 +125,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Queue",
                             "suffix": "&",
                             "path": "",
@@ -135,7 +135,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::CommandBuffer",
                             "suffix": "&",
                             "path": "",
@@ -161,7 +161,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",

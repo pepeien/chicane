@@ -22,7 +22,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "...",
+                            "name": "A ...",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -53,7 +53,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -63,7 +63,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -86,10 +86,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -117,10 +117,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -148,10 +148,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -179,10 +179,10 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",

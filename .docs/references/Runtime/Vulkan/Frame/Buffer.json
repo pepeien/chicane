@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Frame/Buffer/CreateInfo",
@@ -68,7 +68,7 @@
                                     "prefix": "",
                                     "name": "Instance",
                                     "suffix": "",
-                                    "path": "",
+                                    "path": "Runtime/Vulkan/Frame/Instance",
                                     "templates": []
                                 }
                             ]
@@ -77,7 +77,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CommandBuffer::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",
@@ -113,7 +113,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CommandBuffer::CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",

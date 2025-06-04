@@ -62,7 +62,7 @@
                             "prefix": "",
                             "name": "Shader::StageCreateInfo",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Vulkan/Shader/CreateInfo",
                             "templates": []
                         }
                     ]
@@ -96,7 +96,7 @@
                             "prefix": "",
                             "name": "Attachment",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
                             "templates": []
                         }
                     ]

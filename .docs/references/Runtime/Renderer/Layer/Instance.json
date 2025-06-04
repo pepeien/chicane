@@ -48,7 +48,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -179,7 +179,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Window::Event",
                             "suffix": "&",
                             "path": "Core/Window/Event",
@@ -240,7 +240,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::string",
                     "suffix": "&",
                     "path": "",
@@ -363,7 +363,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Window::Event",
                             "suffix": "&",
                             "path": "Core/Window/Event",

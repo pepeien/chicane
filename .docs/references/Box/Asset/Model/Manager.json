@@ -39,7 +39,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -49,7 +49,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Model::Instance",
                             "suffix": "&",
                             "path": "Box/Asset/Model/Instance",
@@ -65,17 +65,17 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Extracted",
                     "suffix": "&",
-                    "path": "Box/Asset/Model/Data/Extracted",
+                    "path": "Box/Asset/Model/Data",
                     "templates": []
                 },
                 "name": "getInstance",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -93,17 +93,17 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Parsed",
                     "suffix": "&",
-                    "path": "Box/Asset/Model/Data/Parsed",
+                    "path": "Box/Asset/Model/Data",
                     "templates": []
                 },
                 "name": "getData",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -121,7 +121,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
                     "path": "",
@@ -130,7 +130,7 @@
                             "prefix": "",
                             "name": "Vertex",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vertex",
                             "templates": []
                         }
                     ]
@@ -146,7 +146,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
                     "path": "",
@@ -181,7 +181,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -209,7 +209,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -219,10 +219,10 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Parsed",
                             "suffix": "&",
-                            "path": "Box/Asset/Model/Data/Parsed",
+                            "path": "Box/Asset/Model/Data",
                             "templates": []
                         },
                         "name": "inData"
@@ -245,7 +245,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -271,7 +271,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -297,7 +297,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -324,7 +324,7 @@
                             "prefix": "",
                             "name": "Vertex",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vertex",
                             "templates": []
                         }
                     ]

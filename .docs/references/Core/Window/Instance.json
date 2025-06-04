@@ -17,7 +17,7 @@
                             "prefix": "",
                             "name": "Event",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Window/Event",
                             "templates": []
                         }
                     ]
@@ -36,7 +36,7 @@
                             "prefix": "",
                             "name": "Event",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Window/Event",
                             "templates": []
                         }
                     ]
@@ -55,7 +55,7 @@
                             "prefix": "",
                             "name": "Vec",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -89,7 +89,7 @@
                             "prefix": "",
                             "name": "Vec",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -162,7 +162,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Core/Window/CreateInfo",
@@ -203,7 +203,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -229,7 +229,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -245,10 +245,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -287,10 +287,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base/Vec",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -354,10 +354,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -396,10 +396,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base/Vec",
+                            "path": "Core/Math/Vec/Base",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -835,7 +835,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -861,7 +861,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -921,7 +921,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",
@@ -975,7 +975,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base/Vec",
+                    "path": "Core/Math/Vec/Base",
                     "templates": [
                         {
                             "prefix": "",

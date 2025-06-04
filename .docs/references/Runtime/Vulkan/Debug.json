@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Instance",
                             "suffix": "&",
                             "path": "",
@@ -43,7 +43,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::DispatchLoaderDynamic",
                             "suffix": "&",
                             "path": "",
@@ -89,7 +89,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "VkDebugUtilsMessengerCallbackDataEXT",
                             "suffix": "*",
                             "path": "",

@@ -41,7 +41,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",
@@ -77,7 +77,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",

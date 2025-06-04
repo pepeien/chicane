@@ -1,94 +1,55 @@
 {
-    "title": "Axis",
+    "title": "Gamepad",
     "path": "Core/Gamepad/Axis",
     "source": {
         "header": "Includes/Chicane/Core/Gamepad/Axis.hpp",
-        "namespace": "Chicane::Gamepad::Axis",
-        "types": [],
-        "enums": [
+        "namespace": "Chicane::Gamepad",
+        "types": [
             {
+                "name": "ButtonEventCallback",
                 "type": {
                     "prefix": "",
-                    "name": "int",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "Invalid",
-                "description": "CHICANE_GAMEPAD_AXIS_INVALID_DESCRIPTION"
+                "description": "CHICANE_GAMEPAD_BUTTONEVENTCALLBACK_DESCRIPTION"
             },
             {
+                "name": "MotionEventCallback",
                 "type": {
                     "prefix": "",
-                    "name": "int",
+                    "name": "std::function",
                     "suffix": "",
                     "path": "",
-                    "templates": []
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "name": "LeftX",
-                "description": "CHICANE_GAMEPAD_AXIS_LEFTX_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "LeftY",
-                "description": "CHICANE_GAMEPAD_AXIS_LEFTY_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "RightX",
-                "description": "CHICANE_GAMEPAD_AXIS_RIGHTX_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "RightY",
-                "description": "CHICANE_GAMEPAD_AXIS_RIGHTY_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "LeftTrigger",
-                "description": "CHICANE_GAMEPAD_AXIS_LEFTTRIGGER_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "RightTrigger",
-                "description": "CHICANE_GAMEPAD_AXIS_RIGHTTRIGGER_DESCRIPTION"
+                "description": "CHICANE_GAMEPAD_MOTIONEVENTCALLBACK_DESCRIPTION"
             }
         ],
+        "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GAMEPAD_AXIS_DESCRIPTION"
+        "description": "CHICANE_GAMEPAD_DESCRIPTION"
     },
     "children": []
 }

@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -30,7 +30,7 @@
                                     "prefix": "",
                                     "name": "Vertex",
                                     "suffix": "",
-                                    "path": "",
+                                    "path": "Core/Math/Vertex",
                                     "templates": []
                                 }
                             ]
@@ -73,7 +73,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Bounds",
                             "suffix": "&",
                             "path": "Core/Math/Bounds",
@@ -99,7 +99,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Bounds",
                             "suffix": "&",
                             "path": "Core/Math/Bounds",
@@ -125,7 +125,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Transform::Combined",
                             "suffix": "&",
                             "path": "Core/Math/Transform/Combined",
@@ -151,7 +151,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Bounds",
                             "suffix": "&",
                             "path": "Core/Math/Bounds",
@@ -179,7 +179,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
@@ -207,7 +207,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Bounds",
                             "suffix": "&",
                             "path": "Core/Math/Bounds",
@@ -225,7 +225,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -242,7 +242,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -259,7 +259,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -276,7 +276,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -293,7 +293,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -310,7 +310,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -327,7 +327,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -344,7 +344,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -361,7 +361,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -378,7 +378,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -395,7 +395,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "&",
                     "path": "",
@@ -404,7 +404,7 @@
                             "prefix": "",
                             "name": "Vec3",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         }
                     ]
@@ -576,7 +576,7 @@
                             "prefix": "",
                             "name": "Vec3",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         }
                     ]

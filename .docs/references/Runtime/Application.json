@@ -17,7 +17,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Controller",
                             "templates": []
                         }
                     ]
@@ -36,7 +36,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Controller",
                             "templates": []
                         }
                     ]
@@ -55,7 +55,7 @@
                             "prefix": "",
                             "name": "Level",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Level/Instance",
                             "templates": []
                         }
                     ]
@@ -74,7 +74,7 @@
                             "prefix": "",
                             "name": "Level",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Level/Instance",
                             "templates": []
                         }
                     ]
@@ -93,7 +93,7 @@
                             "prefix": "",
                             "name": "Grid::View",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Grid/Component/View",
                             "templates": []
                         }
                     ]
@@ -112,7 +112,7 @@
                             "prefix": "",
                             "name": "Grid::View",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Grid/Component/View",
                             "templates": []
                         }
                     ]
@@ -138,7 +138,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Application/CreateInfo",
@@ -169,10 +169,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Telemetry",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/Telemetry",
                     "templates": []
                 },
                 "name": "getTelemetry",
@@ -202,7 +202,7 @@
                     "prefix": "",
                     "name": "Controller",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Runtime/Game/Controller",
                     "templates": []
                 },
                 "name": "getController",
@@ -243,7 +243,7 @@
                     "prefix": "",
                     "name": "ControllerSubscription",
                     "suffix": "",
-                    "path": "",
+                    "path": "Runtime/Application",
                     "templates": []
                 },
                 "name": "watchController",
@@ -304,7 +304,7 @@
                     "prefix": "",
                     "name": "Level",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Runtime/Game/Level/Instance",
                     "templates": []
                 },
                 "name": "getLevel",
@@ -329,7 +329,7 @@
                             "prefix": "",
                             "name": "Level",
                             "suffix": "*",
-                            "path": "Runtime/Game/Level/Instance/Level",
+                            "path": "Runtime/Game/Level/Instance",
                             "templates": []
                         },
                         "name": "inLevel"
@@ -345,7 +345,7 @@
                     "prefix": "",
                     "name": "LevelSubscription",
                     "suffix": "",
-                    "path": "",
+                    "path": "Runtime/Application",
                     "templates": []
                 },
                 "name": "watchLevel",
@@ -406,7 +406,7 @@
                     "prefix": "",
                     "name": "Grid::View",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Grid/Component/View",
                     "templates": []
                 },
                 "name": "getView",
@@ -447,7 +447,7 @@
                     "prefix": "",
                     "name": "ViewSubscription",
                     "suffix": "",
-                    "path": "",
+                    "path": "Runtime/Application",
                     "templates": []
                 },
                 "name": "watchView",
@@ -508,7 +508,7 @@
                     "prefix": "",
                     "name": "Window::Instance",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Core/Window/Instance",
                     "templates": []
                 },
                 "name": "getWindow",
@@ -564,7 +564,7 @@
                     "prefix": "",
                     "name": "Renderer::Instance",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Runtime/Renderer/Instance",
                     "templates": []
                 },
                 "name": "getRenderer",

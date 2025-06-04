@@ -17,7 +17,7 @@
                             "prefix": "",
                             "name": "Viewport",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Renderer/Viewport",
                             "templates": []
                         }
                     ]
@@ -36,7 +36,7 @@
                             "prefix": "",
                             "name": "Viewport",
                             "suffix": "",
-                            "path": "",
+                            "path": "Runtime/Renderer/Viewport",
                             "templates": []
                         }
                     ]
@@ -122,7 +122,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Renderer/CreateInfo",
@@ -153,7 +153,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
@@ -180,7 +180,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -232,7 +232,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Vec2",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
@@ -259,7 +259,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Vec2",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec2",
@@ -349,7 +349,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -397,7 +397,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -457,7 +457,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Window::Event",
                             "suffix": "&",
                             "path": "Core/Window/Event",
@@ -571,7 +571,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -607,7 +607,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -760,7 +760,7 @@
                             "prefix": "",
                             "name": "Layer::Instance",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Renderer/Layer/Instance",
                             "templates": []
                         }
                     ]
@@ -781,7 +781,7 @@
                             "prefix": "",
                             "name": "CCamera",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Transformable/Component/Camera",
                             "templates": []
                         }
                     ]
@@ -802,7 +802,7 @@
                             "prefix": "",
                             "name": "CLight",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Transformable/Component/Light",
                             "templates": []
                         }
                     ]
@@ -823,7 +823,7 @@
                             "prefix": "",
                             "name": "CMesh",
                             "suffix": "*",
-                            "path": "",
+                            "path": "Runtime/Game/Transformable/Component/Mesh",
                             "templates": []
                         }
                     ]

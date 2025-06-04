@@ -15,7 +15,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "char",
+                            "name": "unsigned char",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -37,7 +37,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",
@@ -53,7 +53,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "char",
                     "suffix": "*",
                     "path": "",

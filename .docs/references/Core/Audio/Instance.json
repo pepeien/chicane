@@ -33,7 +33,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -59,10 +59,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Raw",
                             "suffix": "&",
-                            "path": "Core/Audio/Data/Audio",
+                            "path": "Core/Audio/Data",
                             "templates": []
                         },
                         "name": "inData"
@@ -100,7 +100,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Instance",
                             "suffix": "&",
                             "path": "Core/Audio/Instance",

@@ -20,7 +20,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "char",
+                            "name": "unsigned char",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -31,7 +31,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -65,7 +65,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -91,7 +91,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -114,7 +114,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "char",
+                            "name": "unsigned char",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -125,14 +125,14 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
                             "templates": [
                                 {
                                     "prefix": "",
-                                    "name": "char",
+                                    "name": "unsigned char",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -156,7 +156,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "char",
+                            "name": "unsigned char",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -167,7 +167,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -201,7 +201,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -243,7 +243,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -269,7 +269,41 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "unsigned char",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inDecoded"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BASE64_ENCODE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::string",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "encode",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
@@ -303,41 +337,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
-                            "name": "std::vector",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "char",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inDecoded"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BASE64_ENCODE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::string",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "encode",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",

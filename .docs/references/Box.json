@@ -16,7 +16,7 @@
                     "prefix": "",
                     "name": "Sound::Manager",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Box/Asset/Sound/Manager",
                     "templates": []
                 },
                 "name": "getSoundManager",
@@ -31,7 +31,7 @@
                     "prefix": "",
                     "name": "Font::Manager",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Box/Asset/Font/Manager",
                     "templates": []
                 },
                 "name": "getFontManager",
@@ -46,7 +46,7 @@
                     "prefix": "",
                     "name": "Model::Manager",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Box/Asset/Model/Manager",
                     "templates": []
                 },
                 "name": "getModelManager",
@@ -61,7 +61,7 @@
                     "prefix": "",
                     "name": "Texture::Manager",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Box/Asset/Texture/Manager",
                     "templates": []
                 },
                 "name": "getTextureManager",
@@ -73,17 +73,17 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Asset::Instance",
                     "suffix": "*",
-                    "path": "",
+                    "path": "Box/Asset/Instance",
                     "templates": []
                 },
                 "name": "load",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -99,7 +99,7 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "T",
                     "suffix": "*",
                     "path": "",
@@ -109,7 +109,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",

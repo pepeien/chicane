@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "CreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Sky/CreateInfo",
@@ -66,7 +66,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::CommandBuffer",
                             "suffix": "&",
                             "path": "",
@@ -76,7 +76,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::PipelineLayout",
                             "suffix": "&",
                             "path": "",
@@ -155,7 +155,7 @@
                     "prefix": "",
                     "name": "Images",
                     "suffix": "",
-                    "path": "Runtime/Vulkan/Sky/CreateInfo/Sky",
+                    "path": "Runtime/Vulkan/Sky/CreateInfo",
                     "templates": []
                 },
                 "name": "m_images",

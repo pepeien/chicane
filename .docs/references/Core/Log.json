@@ -17,7 +17,7 @@
                             "prefix": "",
                             "name": "Entry",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Log/Entry",
                             "templates": []
                         }
                     ]
@@ -36,7 +36,7 @@
                             "prefix": "",
                             "name": "List",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Log",
                             "templates": []
                         }
                     ]
@@ -55,7 +55,7 @@
                             "prefix": "",
                             "name": "List",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/Log",
                             "templates": []
                         }
                     ]
@@ -74,7 +74,7 @@
                     "prefix": "",
                     "name": "ListSubscription",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Log",
                     "templates": []
                 },
                 "name": "watchLogs",
@@ -127,7 +127,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -137,7 +137,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -147,7 +147,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -173,7 +173,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -183,7 +183,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -229,7 +229,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -291,7 +291,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -353,7 +353,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -415,7 +415,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",

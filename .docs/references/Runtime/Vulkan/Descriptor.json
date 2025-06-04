@@ -33,7 +33,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -43,7 +43,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "PoolCreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Descriptor/PoolCreateInfo",
@@ -79,7 +79,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -89,7 +89,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "SetLayoutBidingsCreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
@@ -125,7 +125,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -135,7 +135,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::DescriptorSetLayout",
                             "suffix": "&",
                             "path": "",
@@ -145,7 +145,7 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::DescriptorPool",
                             "suffix": "&",
                             "path": "",

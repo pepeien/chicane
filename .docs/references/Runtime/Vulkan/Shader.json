@@ -23,7 +23,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -33,10 +33,10 @@
                     },
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "StageCreateInfo",
                             "suffix": "&",
-                            "path": "Runtime/Vulkan/Shader/CreateInfo/StageCreateInfo",
+                            "path": "Runtime/Vulkan/Shader/CreateInfo",
                             "templates": []
                         },
                         "name": "inCreateInfo"

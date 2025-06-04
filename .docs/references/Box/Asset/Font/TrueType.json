@@ -16,26 +16,18 @@
                     "prefix": "",
                     "name": "Parsed",
                     "suffix": "",
-                    "path": "",
+                    "path": "Box/Asset/Font/Parsed",
                     "templates": []
                 },
                 "name": "parse",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
-                            "name": "std::vector",
+                            "prefix": "const ",
+                            "name": "Raw",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "char",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Box/Asset/Font",
+                            "templates": []
                         },
                         "name": "inData"
                     }

@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Chicane::Image::Instance",
                             "suffix": "&",
                             "path": "Core/Image/Instance",

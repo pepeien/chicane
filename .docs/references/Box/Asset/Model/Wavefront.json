@@ -16,21 +16,21 @@
                     "prefix": "",
                     "name": "Extracted",
                     "suffix": "",
-                    "path": "",
+                    "path": "Box/Asset/Model/Data",
                     "templates": []
                 },
                 "name": "parse",
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::vector",
                             "suffix": "&",
                             "path": "",
                             "templates": [
                                 {
                                     "prefix": "",
-                                    "name": "char",
+                                    "name": "unsigned char",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []

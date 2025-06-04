@@ -21,7 +21,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "FileSystem::Path",
                             "suffix": "&",
                             "path": "Core/FileSystem",
@@ -99,10 +99,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const",
+                    "prefix": "const ",
                     "name": "Image::Raw",
                     "suffix": "&",
-                    "path": "Core/Image/Data/Image",
+                    "path": "Core/Image/Data",
                     "templates": []
                 },
                 "name": "getData",
@@ -126,7 +126,7 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "std::string",
                             "suffix": "&",
                             "path": "",
@@ -152,10 +152,10 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const",
+                            "prefix": "const ",
                             "name": "Image::Raw",
                             "suffix": "&",
-                            "path": "Core/Image/Data/Image",
+                            "path": "Core/Image/Data",
                             "templates": []
                         },
                         "name": "inData"
@@ -216,7 +216,7 @@
                     "prefix": "",
                     "name": "Image::Raw",
                     "suffix": "",
-                    "path": "Core/Image/Data/Image",
+                    "path": "Core/Image/Data",
                     "templates": []
                 },
                 "name": "m_data",
