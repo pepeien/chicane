@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/CommandBuffer/CreateInfo",
+        "header": "Runtime/Vulkan/CommandBuffer/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::CommandBuffer::CreateInfo",
         "types": [],
         "enums": [],

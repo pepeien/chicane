@@ -2,7 +2,7 @@
     "title": "Group",
     "path": "Box/Asset/Mesh/Group",
     "source": {
-        "header": "Box/Asset/Mesh/Group",
+        "header": "Box/Asset/Mesh/Group.hpp",
         "namespace": "Chicane::Box::Mesh::Group",
         "types": [],
         "enums": [],

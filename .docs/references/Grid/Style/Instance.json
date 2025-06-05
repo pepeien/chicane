@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Grid/Style/Instance",
     "source": {
-        "header": "Grid/Style/Instance",
+        "header": "Grid/Style/Instance.hpp",
         "namespace": "Chicane::Grid::Style::Instance",
         "types": [],
         "enums": [],

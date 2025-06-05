@@ -2,7 +2,7 @@
     "title": "Specification",
     "path": "Core/Audio/Specification",
     "source": {
-        "header": "Core/Audio/Specification",
+        "header": "Core/Audio/Specification.hpp",
         "namespace": "Chicane::Audio::Specification",
         "types": [],
         "enums": [],

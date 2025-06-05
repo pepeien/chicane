@@ -2,7 +2,7 @@
     "title": "Surface",
     "path": "Runtime/Vulkan/Surface",
     "source": {
-        "header": "Runtime/Vulkan/Surface",
+        "header": "Runtime/Vulkan/Surface.hpp",
         "namespace": "Chicane::Vulkan::Surface",
         "types": [],
         "enums": [],

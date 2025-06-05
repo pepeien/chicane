@@ -2,7 +2,7 @@
     "title": "Base",
     "path": "Core/Math/Vec/Base",
     "source": {
-        "header": "Core/Math/Vec/Base",
+        "header": "Core/Math/Vec/Base.hpp",
         "namespace": "Chicane::Vec",
         "types": [],
         "enums": [],

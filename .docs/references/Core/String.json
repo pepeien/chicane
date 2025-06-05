@@ -2,7 +2,7 @@
     "title": "String",
     "path": "Core/String",
     "source": {
-        "header": "Core/String",
+        "header": "Core/String.hpp",
         "namespace": "Chicane::String",
         "types": [],
         "enums": [],

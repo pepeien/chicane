@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Vulkan/Buffer/Instance",
     "source": {
-        "header": "Runtime/Vulkan/Buffer/Instance",
+        "header": "Runtime/Vulkan/Buffer/Instance.hpp",
         "namespace": "Chicane::Vulkan::Buffer::Instance",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Renderer/Instance",
     "source": {
-        "header": "Runtime/Renderer/Instance",
+        "header": "Runtime/Renderer/Instance.hpp",
         "namespace": "Chicane::Renderer::Instance",
         "types": [
             {

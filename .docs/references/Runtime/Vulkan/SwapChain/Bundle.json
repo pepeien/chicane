@@ -2,7 +2,7 @@
     "title": "Bundle",
     "path": "Runtime/Vulkan/SwapChain/Bundle",
     "source": {
-        "header": "Runtime/Vulkan/SwapChain/Bundle",
+        "header": "Runtime/Vulkan/SwapChain/Bundle.hpp",
         "namespace": "Chicane::Vulkan::SwapChain::Bundle",
         "types": [],
         "enums": [],

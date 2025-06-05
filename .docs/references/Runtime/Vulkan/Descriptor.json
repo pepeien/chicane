@@ -2,7 +2,7 @@
     "title": "Descriptor",
     "path": "Runtime/Vulkan/Descriptor",
     "source": {
-        "header": "Runtime/Vulkan/Descriptor",
+        "header": "Runtime/Vulkan/Descriptor.hpp",
         "namespace": "Chicane::Vulkan::Descriptor",
         "types": [],
         "enums": [],

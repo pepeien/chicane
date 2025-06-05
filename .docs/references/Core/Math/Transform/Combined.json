@@ -2,7 +2,7 @@
     "title": "Combined",
     "path": "Core/Math/Transform/Combined",
     "source": {
-        "header": "Core/Math/Transform/Combined",
+        "header": "Core/Math/Transform/Combined.hpp",
         "namespace": "Chicane::Transform::Combined",
         "types": [],
         "enums": [],

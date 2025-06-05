@@ -2,7 +2,7 @@
     "title": "Attachment",
     "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
     "source": {
-        "header": "Runtime/Vulkan/GraphicsPipeline/Attachment",
+        "header": "Runtime/Vulkan/GraphicsPipeline/Attachment.hpp",
         "namespace": "Chicane::Vulkan::GraphicsPipeline::Attachment",
         "types": [],
         "enums": [],

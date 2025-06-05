@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Sky/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Sky/CreateInfo",
+        "header": "Runtime/Vulkan/Sky/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Sky::CreateInfo",
         "types": [],
         "enums": [],

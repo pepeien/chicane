@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Texture/Instance",
     "source": {
-        "header": "Box/Asset/Texture/Instance",
+        "header": "Box/Asset/Texture/Instance.hpp",
         "namespace": "Chicane::Box::Texture::Instance",
         "types": [],
         "enums": [],

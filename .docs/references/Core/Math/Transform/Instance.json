@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Core/Math/Transform/Instance",
     "source": {
-        "header": "Core/Math/Transform/Instance",
+        "header": "Core/Math/Transform/Instance.hpp",
         "namespace": "Chicane::Transform::Instance",
         "types": [],
         "enums": [],

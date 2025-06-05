@@ -2,7 +2,7 @@
     "title": "Base",
     "path": "Core/Math/Quat/Base",
     "source": {
-        "header": "Core/Math/Quat/Base",
+        "header": "Core/Math/Quat/Base.hpp",
         "namespace": "Chicane::Quat",
         "types": [],
         "enums": [],

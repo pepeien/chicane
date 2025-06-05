@@ -2,7 +2,7 @@
     "title": "Grid",
     "path": "Grid",
     "source": {
-        "header": "Grid",
+        "header": "Grid.hpp",
         "namespace": "Chicane::Grid",
         "types": [
             {

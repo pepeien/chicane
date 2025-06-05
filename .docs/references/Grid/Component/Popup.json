@@ -2,7 +2,7 @@
     "title": "Popup",
     "path": "Grid/Component/Popup",
     "source": {
-        "header": "Grid/Component/Popup",
+        "header": "Grid/Component/Popup.hpp",
         "namespace": "Chicane::Grid::Popup",
         "types": [],
         "enums": [],

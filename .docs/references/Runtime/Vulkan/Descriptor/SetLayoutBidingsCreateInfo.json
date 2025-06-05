@@ -2,7 +2,7 @@
     "title": "Set Layout Bidings Create Info",
     "path": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
+        "header": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Descriptor::SetLayoutBidingsCreateInfo",
         "types": [],
         "enums": [],

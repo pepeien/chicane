@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Grid/Component/Instance",
     "source": {
-        "header": "Grid/Component/Instance",
+        "header": "Grid/Component/Instance.hpp",
         "namespace": "Chicane::Grid::Component",
         "types": [
             {

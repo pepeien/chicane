@@ -2,7 +2,7 @@
     "title": "Primitive",
     "path": "Grid/Primitive",
     "source": {
-        "header": "Grid/Primitive",
+        "header": "Grid/Primitive.hpp",
         "namespace": "Chicane::Grid::Primitive",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Grid",
     "path": "Runtime/Vulkan/Layer/Grid",
     "source": {
-        "header": "Runtime/Vulkan/Layer/Grid",
+        "header": "Runtime/Vulkan/Layer/Grid.hpp",
         "namespace": "Chicane::Vulkan::LGrid::PushConstant",
         "types": [],
         "enums": [],

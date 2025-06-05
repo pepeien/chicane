@@ -2,7 +2,7 @@
     "title": "Model",
     "path": "Box/Asset/Model",
     "source": {
-        "header": "Box/Asset/Model",
+        "header": "Box/Asset/Model.hpp",
         "namespace": "Chicane::Box::Model",
         "types": [
             {

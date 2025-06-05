@@ -2,7 +2,7 @@
     "title": "Vertex",
     "path": "Runtime/Vulkan/Vertex",
     "source": {
-        "header": "Runtime/Vulkan/Vertex",
+        "header": "Runtime/Vulkan/Vertex.hpp",
         "namespace": "Chicane::Vulkan::Vertex",
         "types": [],
         "enums": [],

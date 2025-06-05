@@ -2,7 +2,7 @@
     "title": "Xml",
     "path": "Core/Xml",
     "source": {
-        "header": "Core/Xml",
+        "header": "Core/Xml.hpp",
         "namespace": "Chicane::Xml",
         "types": [],
         "enums": [],

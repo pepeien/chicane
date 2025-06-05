@@ -2,7 +2,7 @@
     "title": "Character",
     "path": "Grid/Component/Character",
     "source": {
-        "header": "Grid/Component/Character",
+        "header": "Grid/Component/Character.hpp",
         "namespace": "Chicane::Grid::Character",
         "types": [],
         "enums": [],

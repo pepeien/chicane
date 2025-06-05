@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Image/Memory/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Image/Memory/CreateInfo",
+        "header": "Runtime/Vulkan/Image/Memory/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Image::Memory::CreateInfo",
         "types": [],
         "enums": [],

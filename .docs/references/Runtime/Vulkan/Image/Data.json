@@ -2,7 +2,7 @@
     "title": "Data",
     "path": "Runtime/Vulkan/Image/Data",
     "source": {
-        "header": "Runtime/Vulkan/Image/Data",
+        "header": "Runtime/Vulkan/Image/Data.hpp",
         "namespace": "Chicane::Vulkan::Image::Data",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Core/Window/CreateInfo",
     "source": {
-        "header": "Core/Window/CreateInfo",
+        "header": "Core/Window/CreateInfo.hpp",
         "namespace": "Chicane::Window::CreateInfo",
         "types": [],
         "enums": [],

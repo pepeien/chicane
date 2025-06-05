@@ -2,7 +2,7 @@
     "title": "Level",
     "path": "Runtime/Vulkan/Layer/Level",
     "source": {
-        "header": "Runtime/Vulkan/Layer/Level",
+        "header": "Runtime/Vulkan/Layer/Level.hpp",
         "namespace": "Chicane::Vulkan::LLevel",
         "types": [],
         "enums": [],

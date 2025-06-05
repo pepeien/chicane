@@ -2,7 +2,7 @@
     "title": "Changeable",
     "path": "Core/Event/Changeable",
     "source": {
-        "header": "Core/Event/Changeable",
+        "header": "Core/Event/Changeable.hpp",
         "namespace": "Chicane::Changeable",
         "types": [
             {

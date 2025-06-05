@@ -2,7 +2,7 @@
     "title": "Manager",
     "path": "Box/Asset/Model/Manager",
     "source": {
-        "header": "Box/Asset/Model/Manager",
+        "header": "Box/Asset/Model/Manager.hpp",
         "namespace": "Chicane::Box::Model::Manager",
         "types": [],
         "enums": [],

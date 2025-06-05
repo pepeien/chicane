@@ -2,7 +2,7 @@
     "title": "Device",
     "path": "Runtime/Vulkan/Device",
     "source": {
-        "header": "Runtime/Vulkan/Device",
+        "header": "Runtime/Vulkan/Device.hpp",
         "namespace": "Chicane::Vulkan::Device",
         "types": [],
         "enums": [],

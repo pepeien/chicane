@@ -2,7 +2,7 @@
     "title": "Vec4",
     "path": "Core/Math/Vec/Vec4",
     "source": {
-        "header": "Core/Math/Vec/Vec4",
+        "header": "Core/Math/Vec/Vec4.hpp",
         "namespace": "Chicane::Vec4",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Shader/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Shader/CreateInfo",
+        "header": "Runtime/Vulkan/Shader/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Shader::StageCreateInfo",
         "types": [],
         "enums": [],

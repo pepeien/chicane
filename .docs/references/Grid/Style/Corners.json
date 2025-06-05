@@ -2,7 +2,7 @@
     "title": "Corners",
     "path": "Grid/Style/Corners",
     "source": {
-        "header": "Grid/Style/Corners",
+        "header": "Grid/Style/Corners.hpp",
         "namespace": "Chicane::Grid::Style::Corners",
         "types": [],
         "enums": [],

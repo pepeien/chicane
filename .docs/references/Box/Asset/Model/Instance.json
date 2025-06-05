@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Model/Instance",
     "source": {
-        "header": "Box/Asset/Model/Instance",
+        "header": "Box/Asset/Model/Instance.hpp",
         "namespace": "Chicane::Box::Model::Instance",
         "types": [],
         "enums": [],

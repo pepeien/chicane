@@ -2,7 +2,7 @@
     "title": "Entry",
     "path": "Core/Log/Entry",
     "source": {
-        "header": "Core/Log/Entry",
+        "header": "Core/Log/Entry.hpp",
         "namespace": "Chicane::Log::Entry",
         "types": [],
         "enums": [],

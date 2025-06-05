@@ -2,7 +2,7 @@
     "title": "Extracted",
     "path": "Box/Asset/Font/Extracted",
     "source": {
-        "header": "Box/Asset/Font/Extracted",
+        "header": "Box/Asset/Font/Extracted.hpp",
         "namespace": "Chicane::Box::Font::Extracted",
         "types": [],
         "enums": [],

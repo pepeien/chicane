@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Image/Sampler/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Image/Sampler/CreateInfo",
+        "header": "Runtime/Vulkan/Image/Sampler/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Image::Sampler::CreateInfo",
         "types": [],
         "enums": [],

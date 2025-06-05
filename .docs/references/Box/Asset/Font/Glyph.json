@@ -2,7 +2,7 @@
     "title": "Glyph",
     "path": "Box/Asset/Font/Glyph",
     "source": {
-        "header": "Box/Asset/Font/Glyph",
+        "header": "Box/Asset/Font/Glyph.hpp",
         "namespace": "Chicane::Box::Font::Glyph",
         "types": [
             {

@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Vulkan/Sky/Instance",
     "source": {
-        "header": "Runtime/Vulkan/Sky/Instance",
+        "header": "Runtime/Vulkan/Sky/Instance.hpp",
         "namespace": "Chicane::Vulkan::Sky::Instance",
         "types": [],
         "enums": [],

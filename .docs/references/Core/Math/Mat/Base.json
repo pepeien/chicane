@@ -2,7 +2,7 @@
     "title": "Base",
     "path": "Core/Math/Mat/Base",
     "source": {
-        "header": "Core/Math/Mat/Base",
+        "header": "Core/Math/Mat/Base.hpp",
         "namespace": "Chicane::Mat",
         "types": [],
         "enums": [],

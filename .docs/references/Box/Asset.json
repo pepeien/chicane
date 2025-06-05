@@ -2,7 +2,7 @@
     "title": "Asset",
     "path": "Box/Asset",
     "source": {
-        "header": "Box/Asset",
+        "header": "Box/Asset.hpp",
         "namespace": "Chicane::Box::Asset",
         "types": [],
         "enums": [],

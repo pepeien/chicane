@@ -2,7 +2,7 @@
     "title": "Graphics Pipeline",
     "path": "Runtime/Vulkan/GraphicsPipeline",
     "source": {
-        "header": "Runtime/Vulkan/GraphicsPipeline",
+        "header": "Runtime/Vulkan/GraphicsPipeline.hpp",
         "namespace": "Chicane::Vulkan::GraphicsPipeline",
         "types": [],
         "enums": [],

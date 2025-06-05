@@ -2,7 +2,7 @@
     "title": "Family Indices",
     "path": "Runtime/Vulkan/Queue/FamilyIndices",
     "source": {
-        "header": "Runtime/Vulkan/Queue/FamilyIndices",
+        "header": "Runtime/Vulkan/Queue/FamilyIndices.hpp",
         "namespace": "Chicane::Vulkan::Queue::FamilyIndices",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Sync",
     "path": "Runtime/Vulkan/Sync",
     "source": {
-        "header": "Runtime/Vulkan/Sync",
+        "header": "Runtime/Vulkan/Sync.hpp",
         "namespace": "Chicane::Vulkan::Sync",
         "types": [],
         "enums": [],

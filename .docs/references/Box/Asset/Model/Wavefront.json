@@ -2,7 +2,7 @@
     "title": "Wavefront",
     "path": "Box/Asset/Model/Wavefront",
     "source": {
-        "header": "Box/Asset/Model/Wavefront",
+        "header": "Box/Asset/Model/Wavefront.hpp",
         "namespace": "Chicane::Box::Model::Wavefront",
         "types": [],
         "enums": [],

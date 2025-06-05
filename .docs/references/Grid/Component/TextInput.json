@@ -2,7 +2,7 @@
     "title": "Text Input",
     "path": "Grid/Component/TextInput",
     "source": {
-        "header": "Grid/Component/TextInput",
+        "header": "Grid/Component/TextInput.hpp",
         "namespace": "Chicane::Grid::TextInput",
         "types": [],
         "enums": [],

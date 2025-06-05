@@ -2,7 +2,7 @@
     "title": "Light",
     "path": "Runtime/Game/Transformable/Component/Light",
     "source": {
-        "header": "Runtime/Game/Transformable/Component/Light",
+        "header": "Runtime/Game/Transformable/Component/Light.hpp",
         "namespace": "Chicane::CLight",
         "types": [],
         "enums": [],

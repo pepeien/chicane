@@ -2,7 +2,7 @@
     "title": "Shader",
     "path": "Runtime/Vulkan/Shader",
     "source": {
-        "header": "Runtime/Vulkan/Shader",
+        "header": "Runtime/Vulkan/Shader.hpp",
         "namespace": "Chicane::Vulkan::Shader",
         "types": [],
         "enums": [],

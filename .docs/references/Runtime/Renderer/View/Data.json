@@ -2,7 +2,7 @@
     "title": "Data",
     "path": "Runtime/Renderer/View/Data",
     "source": {
-        "header": "Runtime/Renderer/View/Data",
+        "header": "Runtime/Renderer/View/Data.hpp",
         "namespace": "Chicane::View::Data",
         "types": [],
         "enums": [],

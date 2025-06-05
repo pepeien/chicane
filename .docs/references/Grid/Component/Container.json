@@ -2,7 +2,7 @@
     "title": "Container",
     "path": "Grid/Component/Container",
     "source": {
-        "header": "Grid/Component/Container",
+        "header": "Grid/Component/Container.hpp",
         "namespace": "Chicane::Grid::Container",
         "types": [],
         "enums": [],
