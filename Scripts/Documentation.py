@@ -271,7 +271,7 @@ def add_definition(result, compounddef):
     kind     = compounddef.attrib.get('kind', '')
     name     = namespace.split("::")[-1]
     location = compounddef.find('location')
-    header   = location.attrib.get('file', '').split(include_dir)[-1]
+    header   = location.attrib.get('file', '')
     filename = header.split(".")[0].split("/")[-1]
 
     types        = []
@@ -281,7 +281,7 @@ def add_definition(result, compounddef):
     functions    = []
     members      = []
 
-    key = header.split(".")[0]
+    key = header.split(include_dir)[-1].split(".")[0]
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
