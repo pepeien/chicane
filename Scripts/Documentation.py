@@ -242,7 +242,7 @@ def add_enum_definition(result, memberdef):
 
     key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(key.split('/')[-1]),
+        "title": pascal_to_spaced(name),
         "source": {
             "header": header,
             "namespace": namespace,
@@ -271,8 +271,8 @@ def add_definition(result, compounddef):
     kind     = compounddef.attrib.get('kind', '')
     name     = namespace.split("::")[-1]
     location = compounddef.find('location')
-    header   = location.attrib.get('file', '').split(include_dir)[-1].split(".")[0]
-    filename = header.split("/")[-1]
+    header   = location.attrib.get('file', '').split(include_dir)[-1]
+    filename = header.split(".")[0].split("/")[-1]
 
     types        = []
     enums        = []
@@ -281,7 +281,7 @@ def add_definition(result, compounddef):
     functions    = []
     members      = []
 
-    key = header
+    key = header.split(".")[0]
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
