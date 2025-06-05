@@ -50,7 +50,7 @@ namespace Chicane
 
             if (g_colors.find(color) == g_colors.end())
             {
-                Vec<3, std::uint32_t> rgbColor = Color::toRgba(inHexColor);
+                Color::Rgba rgbColor = Color::toRgba(inHexColor);
 
                 g_colors.insert(
                     std::make_pair(

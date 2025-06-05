@@ -8,11 +8,11 @@ namespace Chicane
     namespace Color
     {
         // Types
-        using Rgb  = Vec<3, std::uint32_t>;
-        using Rgba = Vec<4, std::uint32_t>;
+        using Rgb  = Vec<3, std::uint8_t>;
+        using Rgba = Vec<4, std::uint8_t>;
 
         // Keyword
-        static inline constexpr const char        HEX_KEYWORD         = '#';
+        static inline constexpr const char  HEX_KEYWORD         = '#';
         static inline constexpr const char* RGB_KEYWORD         = "rgb";
         static inline constexpr const char* RGBA_KEYWORD        = "rgba";
 

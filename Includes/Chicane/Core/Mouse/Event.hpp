@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Input/Status.hpp"
+#include "Chicane/Core/Input.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/Mouse/Button.hpp"
 
@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Mouse
     {
-        struct CHICANE_CORE ButtonEvent
+        struct CHICANE_CORE ButtonEvent : public Input::DeviceEvent
         {
         public:
             Button        button   = Button::Left;
@@ -19,7 +19,7 @@ namespace Chicane
         };
         using ButtonEventCallback = std::function<void()>;
 
-        struct CHICANE_CORE MotionEvent
+        struct CHICANE_CORE MotionEvent : public Input::DeviceEvent
         {
         public:
             Input::Status status           = Input::Status::Pressed;

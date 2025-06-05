@@ -13,7 +13,7 @@ protected:
 
 private:
     // Mouse
-    void onLook(const Chicane::Mouse::MotionEvent& inEvent);
+    void onLook(float inX, float inY);
 
     void onLeftClick();
     void onRightClick();

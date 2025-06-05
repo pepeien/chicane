@@ -63,6 +63,12 @@ namespace Chicane
             Gamepad::ButtonEventCallback inCallback
         );
 
+        // Device
+        bool isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const;
+        bool isConnectedTo(Input::DeviceType inType) const;
+        void connectTo(Input::DeviceType inType, Input::DeviceID inId);
+        void disconnectFrom(Input::DeviceType inType);
+
     private:
         // Mouse Events
         void onMouseMotionEvent(void* inEvent);
@@ -75,22 +81,33 @@ namespace Chicane
         void onGamepadMotionEvent(void* inEvent);
         void onGamepadButtonEvent(void* inEvent);
 
+        // Events
+        void setupEvents();
         void clearEvents();
+
+        // Device
+        void setupDevices();
+        void setupDefaultGamepad();
+        void setupDefaultKeyboard();
+        void setupDefaultMouse();
 
     private:
         // Pawn
-        APawn*                                   m_pawn;
-        PawnObservable                           m_pawnObservable;
+        APawn*                                                 m_pawn;
+        PawnObservable                                         m_pawnObservable;
 
         // Mouse Events
-        Input::Events<Mouse::MotionEvent>        m_mouseMotionEvents;
-        Input::PressableEvents<Mouse::Button>    m_mouseButtonEvents;   
+        Input::Events<Mouse::MotionEvent>                      m_mouseMotionEvents;
+        Input::PressableEvents<Mouse::Button>                  m_mouseButtonEvents;   
 
         // Keyboard Events
-        Input::PressableEvents<Keyboard::Button> m_keyboardKeyEvents;
+        Input::PressableEvents<Keyboard::Button>               m_keyboardKeyEvents;
 
         // Gamepad Events
-        Input::Events<Gamepad::MotionEvent>      m_gamepadMotionEvents;
-        Input::PressableEvents<Gamepad::Button>  m_gamepadButtonEvents;
+        Input::Events<Gamepad::MotionEvent>                    m_gamepadMotionEvents;
+        Input::PressableEvents<Gamepad::Button>                m_gamepadButtonEvents;
+
+        // Device
+        std::unordered_map<Input::DeviceType, Input::DeviceID> m_devices;
     };
 }

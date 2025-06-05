@@ -57,7 +57,7 @@ namespace Chicane
                     ::tolower
                 );
     
-                bool bIsTransparent = color.empty() || String::areEquals(color, TEXT_COLOR_TRANSPARENT);
+                bool bIsTransparent = String::areEquals(color, HEX_COLOR_TRANSPARENT);
                 bool bIsNotHex      = color.size() < 7 || color.size() > 9;
     
                 if (bIsTransparent || bIsNotHex)
@@ -70,22 +70,15 @@ namespace Chicane
     
                 if (g_colors.find(color) == g_colors.end())
                 {
-                    std::uint16_t r = 0;
-                    std::uint16_t g = 0;
-                    std::uint16_t b = 0;
-                    std::uint16_t a = 0;
-    
+                    Rgba result = Rgba(0U);
                     sscanf(
                         color.c_str(),
-                        "%02hx%02hx%02hx%02hx",
-                        &r,
-                        &g,
-                        &b,
-                        &a
+                        "%02hhx%02hhx%02hhx%02hhx",
+                        &result.r,
+                        &result.g,
+                        &result.b,
+                        &result.a
                     );
-    
-                    const Rgba result = { r, g, b, a };
-    
                     g_colors.insert(std::make_pair(color, result));
     
                     return result;
@@ -118,18 +111,13 @@ namespace Chicane
                         return g_colors.at(HEX_COLOR_TRANSPARENT);
                     }
 
-                    Rgba result = Rgba(0U);
-                    result.r = std::stoi(values.at(0));
-                    result.g = std::stoi(values.at(1));
-                    result.b = std::stoi(values.at(2));
-                    result.a = values.size() < 4 ? 255 : std::stoi(values.at(3));
-    
-                    g_colors.insert(
-                        std::make_pair(
-                            color,
-                            result
-                        )
+                    Rgba result = Rgba(
+                        std::stoi(values.at(0)),
+                        std::stoi(values.at(1)),
+                        std::stoi(values.at(2)),
+                        values.size() < 4 ? 255U : std::stoi(values.at(3))
                     );
+                    g_colors.insert(std::make_pair(color, result));
 
                     return result;
                 }

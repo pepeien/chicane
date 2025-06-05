@@ -1,7 +1,11 @@
 #include "Chicane/Runtime/Game/Controller.hpp"
 
+#include <SDL3/SDL.h>
+
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Pawn.hpp"
+
+static const std::vector<std::string> DEFAULT_KEYBOARDS = { "Keyboard", "HID Keyboard Device (0x046d/0xc232)" };
 
 namespace Chicane
 {
@@ -12,55 +16,11 @@ namespace Chicane
         m_mouseButtonEvents({}),
         m_keyboardKeyEvents({}),
         m_gamepadMotionEvents({}),
-        m_gamepadButtonEvents({})
+        m_gamepadButtonEvents({}),
+        m_devices({})
     {
-        Application::getWindow()->watchEvent(
-            [this](Window::Event inEvent)
-            {
-                m_mouseButtonEvents.repeat();
-                m_keyboardKeyEvents.repeat();
-                m_gamepadButtonEvents.repeat();
-
-                switch (inEvent.type)
-                {
-                // Mouse
-                case Window::EventType::MouseMotion:
-                    onMouseMotionEvent(inEvent.data);
-
-                    break;
-
-                case Window::EventType::MouseButtonDown:
-                case Window::EventType::MouseButtonUp:
-                    onMouseButtonEvent(inEvent.data);
-
-                    break;
-
-                // Keyboard
-                case Window::EventType::KeyDown:
-                case Window::EventType::KeyUp:
-                    onKeyboardButtonEvent(inEvent.data);
-
-                    break;
-
-                // Gamepad
-                case Window::EventType::GamepadAxisMotion:
-                    onGamepadMotionEvent(inEvent.data);
-
-                    break;
-
-                case Window::EventType::GamepadButtonDown:
-                case Window::EventType::GamepadButtonUp:
-                    onGamepadButtonEvent(inEvent.data);
-
-                    break;
-
-                default:
-                    break;
-                }
-
-                onEvent(inEvent);
-            }
-        );
+        setupEvents();
+        setupDevices();
     }
 
     void Controller::activate()
@@ -165,9 +125,57 @@ namespace Chicane
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
+    bool Controller::isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const
+    {
+        return isConnectedTo(inType) && m_devices.at(inType) == inId || inId == 0U;
+    }
+
+    bool Controller::isConnectedTo(Input::DeviceType inType) const
+    {
+        return m_devices.find(inType) != m_devices.end();
+    }
+
+    void Controller::connectTo(Input::DeviceType inType, Input::DeviceID inId)
+    {
+        if (isConnectedTo(inType, inId))
+        {
+            return;
+        }
+
+        if (inType == Input::DeviceType::Gamepad)
+        {
+            if (!SDL_IsGamepad(inId))
+            {
+                return;
+            }
+
+            if (!SDL_OpenGamepad(inId))
+            {
+                throw std::runtime_error(String::sprint("Failed to open the [%d] gamepad", inId));
+            }
+        }
+
+        m_devices[inType] = inId;
+    }
+
+    void Controller::disconnectFrom(Input::DeviceType inType)
+    {
+        if (!isConnectedTo(inType))
+        {
+            return;
+        }
+
+        m_devices.erase(inType);
+    }
+
     void Controller::onMouseMotionEvent(void* inEvent)
     {
         Mouse::MotionEvent event = *static_cast<Mouse::MotionEvent*>(inEvent);
+
+        if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
+        {
+            return;
+        }
 
         m_mouseMotionEvents.exec(event);
     }
@@ -176,12 +184,22 @@ namespace Chicane
     {
         Mouse::ButtonEvent event = *static_cast<Mouse::ButtonEvent*>(inEvent);
 
+        if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
+        {
+            return;
+        }
+
         m_mouseButtonEvents.exec(event.button, event.status);
     }
 
     void Controller::onKeyboardButtonEvent(void* inEvent)
     {
         Keyboard::Event event = *static_cast<Keyboard::Event*>(inEvent);
+
+        if (!isConnectedTo(Input::DeviceType::Keyboard, event.device))
+        {
+            return;
+        }
 
         m_keyboardKeyEvents.exec(event.button, event.status);
     }
@@ -190,6 +208,11 @@ namespace Chicane
     {
         Gamepad::MotionEvent event = *static_cast<Gamepad::MotionEvent*>(inEvent);
 
+        if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
+        {
+            return;
+        }
+
         m_gamepadMotionEvents.exec(event);
     }
 
@@ -197,7 +220,81 @@ namespace Chicane
     {
         Gamepad::ButtonEvent event = *static_cast<Gamepad::ButtonEvent*>(inEvent);
 
+        if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
+        {
+            return;
+        }
+
         m_gamepadButtonEvents.exec(event.button, event.status);
+    }
+
+    void Controller::setupEvents()
+    {
+        Application::getWindow()->watchEvent(
+            [this](Window::Event inEvent)
+            {
+                m_mouseButtonEvents.repeat();
+                m_keyboardKeyEvents.repeat();
+                m_gamepadButtonEvents.repeat();
+
+                switch (inEvent.type)
+                {
+                // Gamepad
+                case Window::EventType::GamepadAdded:
+                case Window::EventType::GamepadRemoved:
+                    setupDefaultGamepad();
+
+                    break;
+
+                case Window::EventType::GamepadAxisMotion:
+                    onGamepadMotionEvent(inEvent.data);
+
+                    break;
+
+                case Window::EventType::GamepadButtonDown:
+                case Window::EventType::GamepadButtonUp:
+                    onGamepadButtonEvent(inEvent.data);
+
+                    break;
+
+                // Keyboard
+                case Window::EventType::KeyboardAdded:
+                case Window::EventType::KeyboardRemoved:
+                    setupDefaultKeyboard();
+
+                    break;
+
+                case Window::EventType::KeyDown:
+                case Window::EventType::KeyUp:
+                    onKeyboardButtonEvent(inEvent.data);
+
+                    break;
+
+                // Mouse
+                case Window::EventType::MouseAdded:
+                case Window::EventType::MouseRemoved:
+                    setupDefaultMouse();
+
+                    break;
+
+                case Window::EventType::MouseMotion:
+                    onMouseMotionEvent(inEvent.data);
+
+                    break;
+
+                case Window::EventType::MouseButtonDown:
+                case Window::EventType::MouseButtonUp:
+                    onMouseButtonEvent(inEvent.data);
+
+                    break;
+
+                default:
+                    break;
+                }
+
+                onEvent(inEvent);
+            }
+        );
     }
 
     void Controller::clearEvents()
@@ -209,5 +306,75 @@ namespace Chicane
 
         m_gamepadButtonEvents.clear();
         m_gamepadMotionEvents.clear();
+    }
+
+    void Controller::setupDevices()
+    {
+        setupDefaultGamepad();
+        setupDefaultKeyboard();
+        setupDefaultMouse();
+    }
+    
+    void Controller::setupDefaultGamepad()
+    {
+        disconnectFrom(Input::DeviceType::Gamepad);
+
+        int             gamepadCount = 0;
+        SDL_JoystickID* gamepadId    = SDL_GetGamepads(&gamepadCount);
+        if (gamepadCount <= 0)
+        {
+            return;
+        }
+
+        connectTo(Input::DeviceType::Gamepad, *gamepadId);
+    }
+
+    void Controller::setupDefaultKeyboard()
+    {
+        disconnectFrom(Input::DeviceType::Keyboard);
+
+        int             keyboardCount = 0;
+        SDL_KeyboardID* keyboardId    = SDL_GetKeyboards(&keyboardCount);
+        if (keyboardCount <= 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < keyboardCount; i++)
+        {
+            bool isDefault = false;
+            for (const std::string& defaultName : DEFAULT_KEYBOARDS)
+            {
+                if (String::areEquals(defaultName, SDL_GetKeyboardNameForID(*keyboardId)))
+                {
+                    isDefault = true;
+
+                    break;
+                }
+            }
+
+            if (!isDefault)
+            {
+                break;
+            }
+
+            keyboardId++;
+        }
+
+        connectTo(Input::DeviceType::Keyboard, *keyboardId);
+    }
+
+    void Controller::setupDefaultMouse()
+    {
+        disconnectFrom(Input::DeviceType::Mouse);
+
+        int          mouseCount = 0;
+        SDL_MouseID* mouseId    = SDL_GetMice(&mouseCount);
+        if (mouseCount <= 0)
+        {
+            return;
+        }
+
+        connectTo(Input::DeviceType::Mouse, *mouseId);
     }
 }
