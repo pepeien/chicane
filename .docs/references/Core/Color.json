@@ -22,7 +22,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "std::uint32_t",
+                            "name": "std::uint8_t",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -48,7 +48,7 @@
                         },
                         {
                             "prefix": "",
-                            "name": "std::uint32_t",
+                            "name": "std::uint8_t",
                             "suffix": "",
                             "path": "",
                             "templates": []

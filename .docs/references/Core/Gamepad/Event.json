@@ -28,7 +28,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint16_t",
+                    "name": "float",
                     "suffix": "",
                     "path": "",
                     "templates": []

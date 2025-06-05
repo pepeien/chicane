@@ -1,0 +1,50 @@
+{
+    "title": "Device Type",
+    "path": "Core/Input/Device/Type",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
+        "namespace": "Chicane::Input::DeviceType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Gamepad",
+                "description": "CHICANE_INPUT_DEVICETYPE_GAMEPAD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Keyboard",
+                "description": "CHICANE_INPUT_DEVICETYPE_KEYBOARD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mouse",
+                "description": "CHICANE_INPUT_DEVICETYPE_MOUSE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INPUT_DEVICETYPE_DESCRIPTION"
+    },
+    "children": []
+}

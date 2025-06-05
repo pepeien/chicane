@@ -408,6 +408,134 @@
                 "description": "CHICANE_CONTROLLER_BINDEVENT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isConnectedTo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceID",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Event",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CONTROLLER_ISCONNECTEDTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isConnectedTo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CONTROLLER_ISCONNECTEDTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "connectTo",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceID",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Event",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_CONNECTTO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "disconnectFrom",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Input::DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_DISCONNECTFROM_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "virtual",
                 "return": {
@@ -592,10 +720,85 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "setupEvents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_SETUPEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "clearEvents",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_CONTROLLER_CLEAREVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupDevices",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_SETUPDEVICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupDefaultGamepad",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_SETUPDEFAULTGAMEPAD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupDefaultKeyboard",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_SETUPDEFAULTKEYBOARD_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupDefaultMouse",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CONTROLLER_SETUPDEFAULTMOUSE_DESCRIPTION"
             }
         ],
         "members": [
@@ -729,6 +932,34 @@
                 },
                 "name": "m_gamepadButtonEvents",
                 "description": "CHICANE_CONTROLLER_M_GAMEPADBUTTONEVENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Input::DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Input::DeviceID",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_devices",
+                "description": "CHICANE_CONTROLLER_M_DEVICES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CONTROLLER_DESCRIPTION"

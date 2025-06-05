@@ -552,6 +552,34 @@
                 },
                 "children": [
                     {
+                        "title": "Device",
+                        "path": "Core/Input/Device",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "Device Type",
+                                "path": "Core/Input/Device/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
+                                    "namespace": "Chicane::Input::DeviceType"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Event",
+                                "path": "Core/Input/Device/Event",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
+                                    "namespace": "Chicane::Input::DeviceEvent"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "Event",
                         "path": "Core/Input/Event",
                         "source": {
