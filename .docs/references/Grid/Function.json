@@ -2,7 +2,7 @@
     "title": "Function",
     "path": "Grid/Function",
     "source": {
-        "header": "Grid/Function.hpp",
+        "header": "Includes/Chicane/Grid/Function.hpp",
         "namespace": "Chicane::Grid::FunctionData",
         "types": [],
         "enums": [],

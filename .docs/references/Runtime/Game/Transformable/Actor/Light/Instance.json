@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Light/Instance",
     "source": {
-        "header": "Runtime/Game/Transformable/Actor/Light/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance.hpp",
         "namespace": "Chicane::ALight",
         "types": [],
         "enums": [],

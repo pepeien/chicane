@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Instance",
     "source": {
-        "header": "Runtime/Game/Transformable/Actor/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Instance.hpp",
         "namespace": "Chicane::Actor",
         "types": [
             {

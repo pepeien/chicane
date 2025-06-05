@@ -2,7 +2,7 @@
     "title": "Sound",
     "path": "Box/Asset/Sound",
     "source": {
-        "header": "Box/Asset/Sound.hpp",
+        "header": "Includes/Chicane/Box/Asset/Sound.hpp",
         "namespace": "Chicane::Box::Sound",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Button",
     "path": "Grid/Component/Button",
     "source": {
-        "header": "Grid/Component/Button.hpp",
+        "header": "Includes/Chicane/Grid/Component/Button.hpp",
         "namespace": "Chicane::Grid::Button",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Item",
     "path": "Core/FileSystem/Item",
     "source": {
-        "header": "Core/FileSystem/Item.hpp",
+        "header": "Includes/Chicane/Core/FileSystem/Item.hpp",
         "namespace": "Chicane::FileSystem::Item",
         "types": [],
         "enums": [],

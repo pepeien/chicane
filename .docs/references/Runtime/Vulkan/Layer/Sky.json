@@ -2,7 +2,7 @@
     "title": "Sky",
     "path": "Runtime/Vulkan/Layer/Sky",
     "source": {
-        "header": "Runtime/Vulkan/Layer/Sky.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Sky.hpp",
         "namespace": "Chicane::Vulkan::LSky",
         "types": [],
         "enums": [],

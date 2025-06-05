@@ -2,7 +2,7 @@
     "title": "Renderer",
     "path": "Runtime/Vulkan/Renderer",
     "source": {
-        "header": "Runtime/Vulkan/Renderer.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",
         "namespace": "Chicane::Vulkan::Renderer::Internals",
         "types": [],
         "enums": [],

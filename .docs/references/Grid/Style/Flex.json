@@ -2,7 +2,7 @@
     "title": "Flex",
     "path": "Grid/Style/Flex",
     "source": {
-        "header": "Grid/Style/Flex.hpp",
+        "header": "Includes/Chicane/Grid/Style/Flex.hpp",
         "namespace": "Chicane::Grid::Style::Flex",
         "types": [],
         "enums": [],

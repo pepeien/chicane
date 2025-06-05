@@ -2,7 +2,7 @@
     "title": "Button",
     "path": "Core/Keyboard/Button",
     "source": {
-        "header": "Core/Keyboard/Button.hpp",
+        "header": "Includes/Chicane/Core/Keyboard/Button.hpp",
         "namespace": "Chicane::Keyboard",
         "types": [
             {

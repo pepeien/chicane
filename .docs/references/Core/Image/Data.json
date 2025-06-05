@@ -2,7 +2,7 @@
     "title": "Data",
     "path": "Core/Image/Data",
     "source": {
-        "header": "Core/Image/Data.hpp",
+        "header": "Includes/Chicane/Core/Image/Data.hpp",
         "namespace": "Chicane::Image",
         "types": [
             {

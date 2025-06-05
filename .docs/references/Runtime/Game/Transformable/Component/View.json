@@ -2,7 +2,7 @@
     "title": "View",
     "path": "Runtime/Game/Transformable/Component/View",
     "source": {
-        "header": "Runtime/Game/Transformable/Component/View.hpp",
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/View.hpp",
         "namespace": "Chicane::CView",
         "types": [],
         "enums": [],

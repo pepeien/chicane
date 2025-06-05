@@ -2,7 +2,7 @@
     "title": "Data",
     "path": "Core/Audio/Data",
     "source": {
-        "header": "Core/Audio/Data.hpp",
+        "header": "Includes/Chicane/Core/Audio/Data.hpp",
         "namespace": "Chicane::Audio",
         "types": [
             {

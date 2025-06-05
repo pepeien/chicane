@@ -2,7 +2,7 @@
     "title": "Data",
     "path": "Box/Asset/Mesh/Data",
     "source": {
-        "header": "Box/Asset/Mesh/Data.hpp",
+        "header": "Includes/Chicane/Box/Asset/Mesh/Data.hpp",
         "namespace": "Chicane::Box::Mesh::Parsed",
         "types": [],
         "enums": [],

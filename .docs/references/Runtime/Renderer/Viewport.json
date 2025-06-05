@@ -2,7 +2,7 @@
     "title": "Viewport",
     "path": "Runtime/Renderer/Viewport",
     "source": {
-        "header": "Runtime/Renderer/Viewport.hpp",
+        "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",
         "namespace": "Chicane::Renderer::Viewport",
         "types": [],
         "enums": [],

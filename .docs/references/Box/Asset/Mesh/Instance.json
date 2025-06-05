@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Mesh/Instance",
     "source": {
-        "header": "Box/Asset/Mesh/Instance.hpp",
+        "header": "Includes/Chicane/Box/Asset/Mesh/Instance.hpp",
         "namespace": "Chicane::Box::Mesh::Instance",
         "types": [],
         "enums": [],

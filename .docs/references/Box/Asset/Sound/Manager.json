@@ -2,7 +2,7 @@
     "title": "Manager",
     "path": "Box/Asset/Sound/Manager",
     "source": {
-        "header": "Box/Asset/Sound/Manager.hpp",
+        "header": "Includes/Chicane/Box/Asset/Sound/Manager.hpp",
         "namespace": "Chicane::Box::Sound::Manager",
         "types": [],
         "enums": [],

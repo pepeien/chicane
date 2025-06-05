@@ -2,7 +2,7 @@
     "title": "Buffer",
     "path": "Runtime/Vulkan/Buffer",
     "source": {
-        "header": "Runtime/Vulkan/Buffer.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Buffer.hpp",
         "namespace": "Chicane::Vulkan::Buffer",
         "types": [],
         "enums": [],

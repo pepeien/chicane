@@ -2,7 +2,7 @@
     "title": "Folder Dialog",
     "path": "Core/FileSystem/FolderDialog",
     "source": {
-        "header": "Core/FileSystem/FolderDialog.hpp",
+        "header": "Includes/Chicane/Core/FileSystem/FolderDialog.hpp",
         "namespace": "Chicane::FileSystem::FolderDialog",
         "types": [
             {

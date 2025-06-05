@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Font/Instance",
     "source": {
-        "header": "Box/Asset/Font/Instance.hpp",
+        "header": "Includes/Chicane/Box/Asset/Font/Instance.hpp",
         "namespace": "Chicane::Box::Font::Instance",
         "types": [],
         "enums": [],

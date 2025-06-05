@@ -2,7 +2,7 @@
     "title": "Mesh",
     "path": "Runtime/Game/Transformable/Component/Mesh",
     "source": {
-        "header": "Runtime/Game/Transformable/Component/Mesh.hpp",
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Mesh.hpp",
         "namespace": "Chicane::CMesh",
         "types": [],
         "enums": [],

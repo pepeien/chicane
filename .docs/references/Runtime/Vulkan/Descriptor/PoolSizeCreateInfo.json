@@ -2,7 +2,7 @@
     "title": "Pool Size Create Info",
     "path": "Runtime/Vulkan/Descriptor/PoolSizeCreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Descriptor::PoolSizeCreateInfo",
         "types": [],
         "enums": [],

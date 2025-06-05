@@ -2,7 +2,7 @@
     "title": "Font",
     "path": "Box/Asset/Font",
     "source": {
-        "header": "Box/Asset/Font.hpp",
+        "header": "Includes/Chicane/Box/Asset/Font.hpp",
         "namespace": "Chicane::Box::Font",
         "types": [
             {

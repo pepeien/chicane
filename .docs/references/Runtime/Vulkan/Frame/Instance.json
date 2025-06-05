@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Vulkan/Frame/Instance",
     "source": {
-        "header": "Runtime/Vulkan/Frame/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Frame/Instance.hpp",
         "namespace": "Chicane::Vulkan::Frame::Instance",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/GraphicsPipeline/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/GraphicsPipeline/CreateInfo.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::GraphicsPipeline::CreateInfo",
         "types": [],
         "enums": [],

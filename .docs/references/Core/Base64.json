@@ -2,7 +2,7 @@
     "title": "Base64",
     "path": "Core/Base64",
     "source": {
-        "header": "Core/Base64.hpp",
+        "header": "Includes/Chicane/Core/Base64.hpp",
         "namespace": "Chicane::Base64",
         "types": [],
         "enums": [],

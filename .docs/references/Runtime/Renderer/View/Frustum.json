@@ -2,7 +2,7 @@
     "title": "Frustum",
     "path": "Runtime/Renderer/View/Frustum",
     "source": {
-        "header": "Runtime/Renderer/View/Frustum.hpp",
+        "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
         "namespace": "Chicane::View::Frustum",
         "types": [],
         "enums": [],

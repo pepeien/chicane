@@ -2,7 +2,7 @@
     "title": "Vertex",
     "path": "Core/Math/Vertex",
     "source": {
-        "header": "Core/Math/Vertex.hpp",
+        "header": "Includes/Chicane/Core/Math/Vertex.hpp",
         "namespace": "Chicane::Vertex",
         "types": [],
         "enums": [],

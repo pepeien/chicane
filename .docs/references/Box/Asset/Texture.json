@@ -2,7 +2,7 @@
     "title": "Texture",
     "path": "Box/Asset/Texture",
     "source": {
-        "header": "Box/Asset/Texture.hpp",
+        "header": "Includes/Chicane/Box/Asset/Texture.hpp",
         "namespace": "Chicane::Box::Texture",
         "types": [],
         "enums": [],

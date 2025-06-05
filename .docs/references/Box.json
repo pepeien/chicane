@@ -2,7 +2,7 @@
     "title": "Box",
     "path": "Box",
     "source": {
-        "header": "Box.hpp",
+        "header": "Includes/Chicane/Box.hpp",
         "namespace": "Chicane::Box",
         "types": [],
         "enums": [],

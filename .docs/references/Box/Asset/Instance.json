@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Instance",
     "source": {
-        "header": "Box/Asset/Instance.hpp",
+        "header": "Includes/Chicane/Box/Asset/Instance.hpp",
         "namespace": "Chicane::Box::Asset::Instance",
         "types": [
             {

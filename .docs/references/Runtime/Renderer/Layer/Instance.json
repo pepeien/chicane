@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Renderer/Layer/Instance",
     "source": {
-        "header": "Runtime/Renderer/Layer/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Renderer/Layer/Instance.hpp",
         "namespace": "Chicane::Layer::Instance",
         "types": [
             {

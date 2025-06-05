@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Vulkan/GraphicsPipeline/Instance",
     "source": {
-        "header": "Runtime/Vulkan/GraphicsPipeline/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/Instance.hpp",
         "namespace": "Chicane::Vulkan::GraphicsPipeline::Instance",
         "types": [],
         "enums": [],

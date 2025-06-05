@@ -2,7 +2,7 @@
     "title": "Telemetry",
     "path": "Core/Telemetry",
     "source": {
-        "header": "Core/Telemetry.hpp",
+        "header": "Includes/Chicane/Core/Telemetry.hpp",
         "namespace": "Chicane::Telemetry",
         "types": [],
         "enums": [],

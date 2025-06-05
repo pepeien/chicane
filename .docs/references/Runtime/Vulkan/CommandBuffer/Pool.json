@@ -2,7 +2,7 @@
     "title": "Pool",
     "path": "Runtime/Vulkan/CommandBuffer/Pool",
     "source": {
-        "header": "Runtime/Vulkan/CommandBuffer/Pool.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Pool.hpp",
         "namespace": "Chicane::Vulkan::CommandBuffer::Pool",
         "types": [],
         "enums": [],

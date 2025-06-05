@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
     "source": {
-        "header": "Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",
         "namespace": "Chicane::APawn",
         "types": [],
         "enums": [],

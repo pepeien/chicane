@@ -2,7 +2,7 @@
     "title": "Vec3",
     "path": "Core/Math/Vec/Vec3",
     "source": {
-        "header": "Core/Math/Vec/Vec3.hpp",
+        "header": "Includes/Chicane/Core/Math/Vec/Vec3.hpp",
         "namespace": "Chicane::Vec3",
         "types": [],
         "enums": [],

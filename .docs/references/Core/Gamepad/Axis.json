@@ -2,7 +2,7 @@
     "title": "Axis",
     "path": "Core/Gamepad/Axis",
     "source": {
-        "header": "Core/Gamepad/Axis.hpp",
+        "header": "Includes/Chicane/Core/Gamepad/Axis.hpp",
         "namespace": "Chicane::Gamepad",
         "types": [
             {

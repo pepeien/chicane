@@ -2,7 +2,7 @@
     "title": "Bounds",
     "path": "Core/Math/Bounds",
     "source": {
-        "header": "Core/Math/Bounds.hpp",
+        "header": "Includes/Chicane/Core/Math/Bounds.hpp",
         "namespace": "Chicane::Bounds",
         "types": [],
         "enums": [],

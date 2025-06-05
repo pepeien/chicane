@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Buffer/CreateInfo",
     "source": {
-        "header": "Runtime/Vulkan/Buffer/CreateInfo.hpp",
+        "header": "Includes/Chicane/Runtime/Vulkan/Buffer/CreateInfo.hpp",
         "namespace": "Chicane::Vulkan::Buffer::CreateInfo",
         "types": [],
         "enums": [],

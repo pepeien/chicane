@@ -2,7 +2,7 @@
     "title": "Subscription",
     "path": "Core/Event/Subscription",
     "source": {
-        "header": "Core/Event/Subscription.hpp",
+        "header": "Includes/Chicane/Core/Event/Subscription.hpp",
         "namespace": "Chicane::Subscription",
         "types": [
             {

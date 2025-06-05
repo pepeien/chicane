@@ -2,7 +2,7 @@
     "title": "Text",
     "path": "Grid/Component/Text",
     "source": {
-        "header": "Grid/Component/Text.hpp",
+        "header": "Includes/Chicane/Grid/Component/Text.hpp",
         "namespace": "Chicane::Grid::Text",
         "types": [],
         "enums": [],
