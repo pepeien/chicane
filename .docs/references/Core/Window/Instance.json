@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Core/Window/Instance",
     "source": {
-        "header": "Includes/Chicane/Core/Window/Instance.hpp",
+        "header": "Core/Window/Instance",
         "namespace": "Chicane::Window::Instance",
         "types": [
             {

@@ -2,7 +2,7 @@
     "title": "Log",
     "path": "Core/Log",
     "source": {
-        "header": "Includes/Chicane/Core/Log.hpp",
+        "header": "Core/Log",
         "namespace": "Chicane::Log",
         "types": [
             {

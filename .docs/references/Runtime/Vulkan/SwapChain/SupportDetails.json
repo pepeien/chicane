@@ -2,7 +2,7 @@
     "title": "Support Details",
     "path": "Runtime/Vulkan/SwapChain/SupportDetails",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/SupportDetails.hpp",
+        "header": "Runtime/Vulkan/SwapChain/SupportDetails",
         "namespace": "Chicane::Vulkan::SwapChain::SupportDetails",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Plane",
     "path": "Runtime/Renderer/View/Plane",
     "source": {
-        "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",
+        "header": "Runtime/Renderer/View/Plane",
         "namespace": "Chicane::View::Plane",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Font",
     "path": "Grid/Style/Font",
     "source": {
-        "header": "Includes/Chicane/Grid/Style/Font.hpp",
+        "header": "Grid/Style/Font",
         "namespace": "Chicane::Grid::Style::Font",
         "types": [],
         "enums": [],

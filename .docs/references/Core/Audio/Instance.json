@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Core/Audio/Instance",
     "source": {
-        "header": "Includes/Chicane/Core/Audio/Instance.hpp",
+        "header": "Core/Audio/Instance",
         "namespace": "Chicane::Audio::Instance",
         "types": [
             {

@@ -2,7 +2,7 @@
     "title": "Event",
     "path": "Core/Window/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Window/Event.hpp",
+        "header": "Core/Window/Event",
         "namespace": "Chicane::Window::Event",
         "types": [],
         "enums": [],

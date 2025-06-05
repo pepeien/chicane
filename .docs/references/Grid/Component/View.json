@@ -2,7 +2,7 @@
     "title": "View",
     "path": "Grid/Component/View",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/View.hpp",
+        "header": "Grid/Component/View",
         "namespace": "Chicane::Grid::View",
         "types": [],
         "enums": [],

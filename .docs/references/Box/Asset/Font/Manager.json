@@ -2,7 +2,7 @@
     "title": "Manager",
     "path": "Box/Asset/Font/Manager",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Font/Manager.hpp",
+        "header": "Box/Asset/Font/Manager",
         "namespace": "Chicane::Box::Font::Manager",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Event",
     "path": "Grid/Event",
     "source": {
-        "header": "Includes/Chicane/Grid/Event.hpp",
+        "header": "Grid/Event",
         "namespace": "Chicane::Grid::Event",
         "types": [],
         "enums": [],

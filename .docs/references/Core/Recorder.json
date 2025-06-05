@@ -2,7 +2,7 @@
     "title": "Recorder",
     "path": "Core/Recorder",
     "source": {
-        "header": "Includes/Chicane/Core/Recorder.hpp",
+        "header": "Core/Recorder",
         "namespace": "Chicane::Recorder",
         "types": [],
         "enums": [],

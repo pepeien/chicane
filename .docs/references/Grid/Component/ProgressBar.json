@@ -2,7 +2,7 @@
     "title": "Progress Bar",
     "path": "Grid/Component/ProgressBar",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/ProgressBar.hpp",
+        "header": "Grid/Component/ProgressBar",
         "namespace": "Chicane::Grid::ProgressBar",
         "types": [],
         "enums": [],

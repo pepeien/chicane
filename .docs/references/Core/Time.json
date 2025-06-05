@@ -2,7 +2,7 @@
     "title": "Time",
     "path": "Core/Time",
     "source": {
-        "header": "Includes/Chicane/Core/Time.hpp",
+        "header": "Core/Time",
         "namespace": "Chicane::Time",
         "types": [
             {

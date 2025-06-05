@@ -2,7 +2,7 @@
     "title": "Swap Chain",
     "path": "Runtime/Vulkan/SwapChain",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/SwapChain.hpp",
+        "header": "Runtime/Vulkan/SwapChain",
         "namespace": "Chicane::Vulkan::SwapChain",
         "types": [],
         "enums": [],

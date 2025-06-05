@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Runtime/Application/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Application/Instance.hpp",
+        "header": "Runtime/Application/Instance",
         "namespace": "Chicane::Application::Instance",
         "types": [],
         "enums": [],

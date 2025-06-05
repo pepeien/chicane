@@ -2,7 +2,7 @@
     "title": "Observable",
     "path": "Core/Event/Observable",
     "source": {
-        "header": "Includes/Chicane/Core/Event/Observable.hpp",
+        "header": "Core/Event/Observable",
         "namespace": "Chicane::Observable",
         "types": [
             {

@@ -2,7 +2,7 @@
     "title": "Color",
     "path": "Core/Color",
     "source": {
-        "header": "Includes/Chicane/Core/Color.hpp",
+        "header": "Core/Color",
         "namespace": "Chicane::Color",
         "types": [
             {

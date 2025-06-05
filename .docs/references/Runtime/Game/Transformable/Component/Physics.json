@@ -1,8 +1,8 @@
 {
-    "title": "CPhysics",
+    "title": "Physics",
     "path": "Runtime/Game/Transformable/Component/Physics",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Physics.hpp",
+        "header": "Runtime/Game/Transformable/Component/Physics",
         "namespace": "Chicane::CPhysics",
         "types": [],
         "enums": [],

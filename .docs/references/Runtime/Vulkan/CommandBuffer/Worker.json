@@ -2,7 +2,7 @@
     "title": "Worker",
     "path": "Runtime/Vulkan/CommandBuffer/Worker",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Worker.hpp",
+        "header": "Runtime/Vulkan/CommandBuffer/Worker",
         "namespace": "Chicane::Vulkan::CommandBuffer::Worker",
         "types": [],
         "enums": [],

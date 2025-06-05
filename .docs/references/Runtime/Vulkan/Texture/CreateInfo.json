@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Vulkan/Texture/CreateInfo",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Texture/CreateInfo.hpp",
+        "header": "Runtime/Vulkan/Texture/CreateInfo",
         "namespace": "Chicane::Vulkan::Texture::CreateInfo",
         "types": [],
         "enums": [],

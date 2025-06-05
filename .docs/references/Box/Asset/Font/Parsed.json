@@ -2,7 +2,7 @@
     "title": "Parsed",
     "path": "Box/Asset/Font/Parsed",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Font/Parsed.hpp",
+        "header": "Box/Asset/Font/Parsed",
         "namespace": "Chicane::Box::Font::Parsed",
         "types": [],
         "enums": [],

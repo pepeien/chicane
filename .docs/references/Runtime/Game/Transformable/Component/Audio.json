@@ -1,8 +1,8 @@
 {
-    "title": "CAudio",
+    "title": "Audio",
     "path": "Runtime/Game/Transformable/Component/Audio",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Audio.hpp",
+        "header": "Runtime/Game/Transformable/Component/Audio",
         "namespace": "Chicane::CAudio",
         "types": [],
         "enums": [],

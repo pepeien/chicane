@@ -1,8 +1,8 @@
 {
-    "title": "Vec",
+    "title": "Base",
     "path": "Core/Math/Vec/Base",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Vec/Base.hpp",
+        "header": "Core/Math/Vec/Base",
         "namespace": "Chicane::Vec",
         "types": [],
         "enums": [],

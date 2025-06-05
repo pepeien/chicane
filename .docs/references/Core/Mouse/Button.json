@@ -1,8 +1,8 @@
 {
-    "title": "Mouse",
+    "title": "Button",
     "path": "Core/Mouse/Button",
     "source": {
-        "header": "Includes/Chicane/Core/Mouse/Button.hpp",
+        "header": "Core/Mouse/Button",
         "namespace": "Chicane::Mouse",
         "types": [
             {

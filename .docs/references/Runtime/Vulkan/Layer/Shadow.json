@@ -1,8 +1,8 @@
 {
-    "title": "LShadow",
+    "title": "Shadow",
     "path": "Runtime/Vulkan/Layer/Shadow",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Shadow.hpp",
+        "header": "Runtime/Vulkan/Layer/Shadow",
         "namespace": "Chicane::Vulkan::LShadow",
         "types": [],
         "enums": [],

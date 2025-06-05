@@ -2,7 +2,7 @@
     "title": "True Type",
     "path": "Box/Asset/Font/TrueType",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Font/TrueType.hpp",
+        "header": "Box/Asset/Font/TrueType",
         "namespace": "Chicane::Box::Font::TrueType",
         "types": [],
         "enums": [],

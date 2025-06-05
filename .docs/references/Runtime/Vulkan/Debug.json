@@ -2,7 +2,7 @@
     "title": "Debug",
     "path": "Runtime/Vulkan/Debug",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Debug.hpp",
+        "header": "Runtime/Vulkan/Debug",
         "namespace": "Chicane::Vulkan::Debug",
         "types": [],
         "enums": [],

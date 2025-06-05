@@ -2,7 +2,7 @@
     "title": "Mesh",
     "path": "Box/Asset/Mesh",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Mesh.hpp",
+        "header": "Box/Asset/Mesh",
         "namespace": "Chicane::Box::Mesh",
         "types": [],
         "enums": [],

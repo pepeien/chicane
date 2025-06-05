@@ -2,7 +2,7 @@
     "title": "Create Info",
     "path": "Runtime/Application/CreateInfo",
     "source": {
-        "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
+        "header": "Runtime/Application/CreateInfo",
         "namespace": "Chicane::Application::CreateInfo",
         "types": [],
         "enums": [],

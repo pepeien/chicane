@@ -2,7 +2,7 @@
     "title": "File Dialog",
     "path": "Core/FileSystem/FileDialog",
     "source": {
-        "header": "Includes/Chicane/Core/FileSystem/FileDialog.hpp",
+        "header": "Core/FileSystem/FileDialog",
         "namespace": "Chicane::FileSystem::FileDialog",
         "types": [],
         "enums": [],

@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Asset/Sky/Instance",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Sky/Instance.hpp",
+        "header": "Box/Asset/Sky/Instance",
         "namespace": "Chicane::Box::Sky::Instance",
         "types": [],
         "enums": [],

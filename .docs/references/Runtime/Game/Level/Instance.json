@@ -1,8 +1,8 @@
 {
-    "title": "Level",
+    "title": "Instance",
     "path": "Runtime/Game/Level/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Level/Instance.hpp",
+        "header": "Runtime/Game/Level/Instance",
         "namespace": "Chicane::Level",
         "types": [
             {

@@ -2,7 +2,7 @@
     "title": "Reference",
     "path": "Core/Reference",
     "source": {
-        "header": "Includes/Chicane/Core/Reference.hpp",
+        "header": "Core/Reference",
         "namespace": "Chicane::Reference",
         "types": [
             {

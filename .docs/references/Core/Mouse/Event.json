@@ -1,8 +1,8 @@
 {
-    "title": "Motion Event",
+    "title": "Event",
     "path": "Core/Mouse/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Mouse/Event.hpp",
+        "header": "Core/Mouse/Event",
         "namespace": "Chicane::Mouse::MotionEvent",
         "types": [],
         "enums": [],

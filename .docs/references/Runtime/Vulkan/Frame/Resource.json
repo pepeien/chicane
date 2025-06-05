@@ -2,7 +2,7 @@
     "title": "Resource",
     "path": "Runtime/Vulkan/Frame/Resource",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Frame/Resource.hpp",
+        "header": "Runtime/Vulkan/Frame/Resource",
         "namespace": "Chicane::Vulkan::Frame::Resource",
         "types": [],
         "enums": [],

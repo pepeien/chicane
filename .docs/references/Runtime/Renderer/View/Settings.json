@@ -2,7 +2,7 @@
     "title": "Settings",
     "path": "Runtime/Renderer/View/Settings",
     "source": {
-        "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",
+        "header": "Runtime/Renderer/View/Settings",
         "namespace": "Chicane::View::Settings",
         "types": [],
         "enums": [],

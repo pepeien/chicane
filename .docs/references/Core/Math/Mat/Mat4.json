@@ -2,7 +2,7 @@
     "title": "Mat4",
     "path": "Core/Math/Mat/Mat4",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Mat/Mat4.hpp",
+        "header": "Core/Math/Mat/Mat4",
         "namespace": "Chicane::Mat4",
         "types": [],
         "enums": [],

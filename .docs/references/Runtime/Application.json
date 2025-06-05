@@ -2,7 +2,7 @@
     "title": "Application",
     "path": "Runtime/Application",
     "source": {
-        "header": "Includes/Chicane/Runtime/Application.hpp",
+        "header": "Runtime/Application",
         "namespace": "Chicane::Application",
         "types": [
             {

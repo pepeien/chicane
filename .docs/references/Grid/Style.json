@@ -2,7 +2,7 @@
     "title": "Style",
     "path": "Grid/Style",
     "source": {
-        "header": "Includes/Chicane/Grid/Style.hpp",
+        "header": "Grid/Style",
         "namespace": "Chicane::Grid::Style",
         "types": [
             {

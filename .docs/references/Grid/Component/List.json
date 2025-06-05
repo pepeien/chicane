@@ -2,7 +2,7 @@
     "title": "List",
     "path": "Grid/Component/List",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/List.hpp",
+        "header": "Grid/Component/List",
         "namespace": "Chicane::Grid::List",
         "types": [],
         "enums": [],

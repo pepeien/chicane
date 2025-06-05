@@ -2,7 +2,7 @@
     "title": "Image",
     "path": "Runtime/Vulkan/Image",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Image.hpp",
+        "header": "Runtime/Vulkan/Image",
         "namespace": "Chicane::Vulkan::Image",
         "types": [],
         "enums": [],

@@ -1,8 +1,8 @@
 {
-    "title": "AAudio",
+    "title": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Audio/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp",
+        "header": "Runtime/Game/Transformable/Actor/Audio/Instance",
         "namespace": "Chicane::AAudio",
         "types": [],
         "enums": [],

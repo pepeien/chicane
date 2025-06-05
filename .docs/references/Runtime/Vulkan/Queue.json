@@ -2,7 +2,7 @@
     "title": "Queue",
     "path": "Runtime/Vulkan/Queue",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Queue.hpp",
+        "header": "Runtime/Vulkan/Queue",
         "namespace": "Chicane::Vulkan::Queue",
         "types": [],
         "enums": [],

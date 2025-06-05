@@ -2,7 +2,7 @@
     "title": "Line",
     "path": "Core/Math/Line",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Line.hpp",
+        "header": "Core/Math/Line",
         "namespace": "Chicane::Line",
         "types": [],
         "enums": [],

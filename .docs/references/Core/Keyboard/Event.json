@@ -2,7 +2,7 @@
     "title": "Event",
     "path": "Core/Keyboard/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Keyboard/Event.hpp",
+        "header": "Core/Keyboard/Event",
         "namespace": "Chicane::Keyboard::Event",
         "types": [],
         "enums": [],

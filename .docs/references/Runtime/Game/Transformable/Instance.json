@@ -1,8 +1,8 @@
 {
-    "title": "Transformable",
+    "title": "Instance",
     "path": "Runtime/Game/Transformable/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Instance.hpp",
+        "header": "Runtime/Game/Transformable/Instance",
         "namespace": "Chicane::Transformable",
         "types": [],
         "enums": [],

@@ -1,8 +1,8 @@
 {
-    "title": "Component",
+    "title": "Instance",
     "path": "Runtime/Game/Transformable/Component/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Instance.hpp",
+        "header": "Runtime/Game/Transformable/Component/Instance",
         "namespace": "Chicane::Component",
         "types": [
             {

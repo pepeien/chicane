@@ -2,7 +2,7 @@
     "title": "Command Buffer",
     "path": "Runtime/Vulkan/CommandBuffer",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer.hpp",
+        "header": "Runtime/Vulkan/CommandBuffer",
         "namespace": "Chicane::Vulkan::CommandBuffer",
         "types": [],
         "enums": [],

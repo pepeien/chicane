@@ -2,7 +2,7 @@
     "title": "Sky",
     "path": "Box/Asset/Sky",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Sky.hpp",
+        "header": "Box/Asset/Sky",
         "namespace": "Chicane::Box::Sky",
         "types": [
             {

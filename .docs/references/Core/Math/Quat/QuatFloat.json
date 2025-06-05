@@ -2,7 +2,7 @@
     "title": "Quat Float",
     "path": "Core/Math/Quat/QuatFloat",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Quat/QuatFloat.hpp",
+        "header": "Core/Math/Quat/QuatFloat",
         "namespace": "Chicane::QuatFloat",
         "types": [],
         "enums": [],

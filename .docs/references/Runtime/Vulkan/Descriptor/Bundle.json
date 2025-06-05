@@ -2,7 +2,7 @@
     "title": "Bundle",
     "path": "Runtime/Vulkan/Descriptor/Bundle",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/Bundle.hpp",
+        "header": "Runtime/Vulkan/Descriptor/Bundle",
         "namespace": "Chicane::Vulkan::Descriptor::Bundle",
         "types": [],
         "enums": [],

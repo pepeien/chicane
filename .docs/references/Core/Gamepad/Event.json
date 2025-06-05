@@ -1,8 +1,8 @@
 {
-    "title": "Motion Event",
+    "title": "Event",
     "path": "Core/Gamepad/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Gamepad/Event.hpp",
+        "header": "Core/Gamepad/Event",
         "namespace": "Chicane::Gamepad::MotionEvent",
         "types": [],
         "enums": [],

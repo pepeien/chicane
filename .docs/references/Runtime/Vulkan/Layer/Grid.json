@@ -1,8 +1,8 @@
 {
-    "title": "Push Constant",
+    "title": "Grid",
     "path": "Runtime/Vulkan/Layer/Grid",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Grid.hpp",
+        "header": "Runtime/Vulkan/Layer/Grid",
         "namespace": "Chicane::Vulkan::LGrid::PushConstant",
         "types": [],
         "enums": [],

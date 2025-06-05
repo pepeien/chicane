@@ -1,8 +1,8 @@
 {
-    "title": "ASky",
+    "title": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",
+        "header": "Runtime/Game/Transformable/Actor/Sky/Instance",
         "namespace": "Chicane::ASky",
         "types": [
             {

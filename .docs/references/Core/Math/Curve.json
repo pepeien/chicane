@@ -2,7 +2,7 @@
     "title": "Curve",
     "path": "Core/Math/Curve",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Curve.hpp",
+        "header": "Core/Math/Curve",
         "namespace": "Chicane::Curve",
         "types": [],
         "enums": [],

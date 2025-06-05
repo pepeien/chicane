@@ -1,8 +1,8 @@
 {
-    "title": "Internals",
+    "title": "Renderer",
     "path": "Runtime/Vulkan/Renderer",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",
+        "header": "Runtime/Vulkan/Renderer",
         "namespace": "Chicane::Vulkan::Renderer::Internals",
         "types": [],
         "enums": [],

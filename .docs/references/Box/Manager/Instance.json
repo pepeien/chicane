@@ -2,7 +2,7 @@
     "title": "Instance",
     "path": "Box/Manager/Instance",
     "source": {
-        "header": "Includes/Chicane/Box/Manager/Instance.hpp",
+        "header": "Box/Manager/Instance",
         "namespace": "Chicane::Box::Manager::Instance",
         "types": [
             {

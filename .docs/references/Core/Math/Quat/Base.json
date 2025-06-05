@@ -1,8 +1,8 @@
 {
-    "title": "Quat",
+    "title": "Base",
     "path": "Core/Math/Quat/Base",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Quat/Base.hpp",
+        "header": "Core/Math/Quat/Base",
         "namespace": "Chicane::Quat",
         "types": [],
         "enums": [],

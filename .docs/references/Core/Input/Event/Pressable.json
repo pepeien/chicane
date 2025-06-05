@@ -1,8 +1,8 @@
 {
-    "title": "Pressable Events",
+    "title": "Pressable",
     "path": "Core/Input/Event/Pressable",
     "source": {
-        "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
+        "header": "Core/Input/Event/Pressable",
         "namespace": "Chicane::Input::PressableEvents",
         "types": [
             {

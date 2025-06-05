@@ -2,7 +2,7 @@
     "title": "Manager",
     "path": "Box/Asset/Texture/Manager",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Texture/Manager.hpp",
+        "header": "Box/Asset/Texture/Manager",
         "namespace": "Chicane::Box::Texture::Manager",
         "types": [],
         "enums": [],

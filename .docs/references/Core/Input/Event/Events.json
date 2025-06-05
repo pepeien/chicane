@@ -2,7 +2,7 @@
     "title": "Events",
     "path": "Core/Input/Event/Events",
     "source": {
-        "header": "Includes/Chicane/Core/Input/Event/Events.hpp",
+        "header": "Core/Input/Event/Events",
         "namespace": "Chicane::Input::Events",
         "types": [],
         "enums": [],

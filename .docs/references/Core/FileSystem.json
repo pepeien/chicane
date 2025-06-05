@@ -2,7 +2,7 @@
     "title": "File System",
     "path": "Core/FileSystem",
     "source": {
-        "header": "Includes/Chicane/Core/FileSystem.hpp",
+        "header": "Core/FileSystem",
         "namespace": "Chicane::FileSystem",
         "types": [
             {

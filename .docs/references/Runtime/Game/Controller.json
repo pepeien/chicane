@@ -2,7 +2,7 @@
     "title": "Controller",
     "path": "Runtime/Game/Controller",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Controller.hpp",
+        "header": "Runtime/Game/Controller",
         "namespace": "Chicane::Controller",
         "types": [
             {
