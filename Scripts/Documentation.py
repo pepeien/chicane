@@ -79,7 +79,7 @@ def parse_type(type_str: str):
     suffix_parts = []
     while True:
         suffix_part = None
-        for suffix in ['*', '&', '&&']:
+        for suffix in ['*', '**', '&', '&&']:
             if type_str.endswith(suffix):
                 suffix_part = suffix
                 type_str = type_str[:-len(suffix)].rstrip()
@@ -213,118 +213,52 @@ def to_dict(tree, key, value, separator):
 
     insert_node(tree, key.split(separator), value) 
 
-def get_value_between(text, open_char = "(", close_char = ")"):
-    if not text:
-        return None
-
-    start = text.find(open_char)
-    if start == -1:
-        return None
-
-    end = text.find(close_char, start)
-    if end == -1:
-        return None
-
-    nesting_level = 0
-    for i in range(start, len(text)):
-        if text[i] == open_char:
-            nesting_level += 1
-
-        elif text[i] == close_char:
-            nesting_level -= 1
-
-            if nesting_level == 0:
-                return text[start + 1:i].strip()
-    
-    return None
-
-def type_to_string(element):
-    if element is None:
-        return []
-    
-    result = []
-
-    for child in element.iter():
-        if child is element:
-            if child.text:
-                text = child.text.strip()
-
-                if text and not text in base_systems:
-                    result.append(text)
-        elif child.tag == "ref":
-            if child.text:
-                text = child.text.strip()
-
-                if text and not text in base_systems:
-                    result.append(text)
-
-        if child.tail:
-            text = child.tail.strip()
-
-            if text and not text in base_systems:
-                result.append(text)
-
-    return " ".join(" ".join(result).split())
-
-def get_type(text):
-    result = {
-        "prefix": "",
-        "name": "",
-        "suffix": "",
-        "path": "",
-        "templates": []
-    }
-
-    if text:
-        prefix    = ""
-        name      = ""
-        suffix    = ""
-        templates = []
-
-        if text:
-            splitted_text = text.split(" ")
-
-            if len(splitted_text) == 1:
-                name = text.strip()
-            elif len(splitted_text) == 2:
-                valueA = splitted_text[0].strip()
-                valueB = splitted_text[1].strip()
-
-                prefix = valueA if valueA in prefix_patterns else valueB if valueB in prefix_patterns else ""
-                suffix = valueA if valueA in suffix_patterns else valueB if valueB in suffix_patterns else ""
-                name   = valueA if valueB in [prefix, suffix] else valueB
-            elif len(splitted_text) >= 3:
-                prefix_index     = 0 if splitted_text[0] in prefix_patterns else None
-                suffix_index     = -1 if splitted_text[-1] in suffix_patterns else None
-                name_index_start = 0 if prefix_index is None else 1
-                name_index_end   = None if suffix_index is None else -1
-
-                prefix = "" if prefix_index is None else splitted_text[prefix_index].strip()
-                name   = " ".join(splitted_text[name_index_start:name_index_end]).strip()
-                suffix = "" if suffix_index is None else splitted_text[suffix_index].strip()
-
-        result["prefix"] = prefix.strip()
-        result["name"]   = name.split("<")[0].strip()
-        result["suffix"] = suffix.strip()
-
-        template_text = get_value_between(name, "<", ">")
-        if template_text:
-            if "<" in template_text or ">" in template_text:
-                templates.append(get_type(template_text))
-            else:
-                for typename in template_text.split(","):
-                    templates.append(get_type(typename))
-        
-        result["templates"] = templates
-
-    return result
-
 def cache_reference(component, path):
     refid = component.attrib.get('id', '')
     if not refid:
         return
 
     references[refid] = path
+
+def add_enum_definition(result, memberdef):
+    name      = memberdef.find('name').text
+    namespace = memberdef.find('qualifiedname').text
+    typing    = memberdef.find('type')
+    location  = memberdef.find('location')
+    header    = location.attrib.get('file', '')
+
+    values = []
+
+    for enumvalue in memberdef.findall("enumvalue"):
+        enum_name = enumvalue.find("name").text
+
+        values.append(
+            {
+                "type": get_type_def(typing),
+                "name": enum_name,
+                "description": namespace_to_snake(namespace) + "_" + enum_name.upper() + "_DESCRIPTION"
+            }
+        )
+
+    key  = header.split(include_dir)[-1].split('.')[0]
+    data = {
+        "title": pascal_to_spaced(key.split('/')[-1]),
+        "source": {
+            "header": header,
+            "namespace": namespace,
+            "types": [],
+            "enums": values,
+            "constructors": [],
+            "destructors": [],
+            "functions": [],
+            "members": [],
+            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
+        }
+    }
+
+    to_dict(result, key, data, "/")
+
+    cache_reference(memberdef, key)
 
 def add_definition(result, compounddef):
     if compounddef is None:
@@ -337,7 +271,8 @@ def add_definition(result, compounddef):
     kind     = compounddef.attrib.get('kind', '')
     name     = namespace.split("::")[-1]
     location = compounddef.find('location')
-    header   = location.attrib.get('file', '')
+    header   = location.attrib.get('file', '').split(include_dir)[-1].split(".")[0]
+    filename = header.split("/")[-1]
 
     types        = []
     enums        = []
@@ -346,7 +281,7 @@ def add_definition(result, compounddef):
     functions    = []
     members      = []
 
-    key = header.split(include_dir)[-1].split(".")[0]
+    key = header
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
@@ -430,24 +365,25 @@ def add_definition(result, compounddef):
                     }
                 )
 
-    data = {
-        "title": pascal_to_spaced(name),
-        "source": {
-            "header": header,
-            "namespace": namespace,
-            "types": types,
-            "enums": [],
-            "constructors": constructors,
-            "destructors": destructors,
-            "functions": functions,
-            "members": members,
-            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
+    if len(types) > 0 or len(constructors) > 0 or len(destructors) > 0 or len(functions) > 0 or len(members) > 0:
+        data = {
+            "title": pascal_to_spaced(filename),
+            "source": {
+                "header": header,
+                "namespace": namespace,
+                "types": types,
+                "enums": [],
+                "constructors": constructors,
+                "destructors": destructors,
+                "functions": functions,
+                "members": members,
+                "description": namespace_to_snake(namespace) + "_DESCRIPTION"
+            }
         }
-    }
 
-    to_dict(result, key, data, "/")
+        to_dict(result, key, data, "/")
 
-    cache_reference(compounddef, key)
+        cache_reference(compounddef, key)
 
     for inner in compounddef.findall("innerclass") + compounddef.findall("innerstruct"):
         inner_refid = inner.attrib.get("refid", None)
@@ -455,46 +391,6 @@ def add_definition(result, compounddef):
             continue
 
         add_definition(result, get_definition(inner_refid))
-
-def add_enum_definition(result, memberdef):
-    name      = memberdef.find('name').text
-    namespace = memberdef.find('qualifiedname').text
-    typing    = memberdef.find('type')
-    location  = memberdef.find('location')
-    header    = location.attrib.get('file', '')
-
-    values = []
-
-    for enumvalue in memberdef.findall("enumvalue"):
-        enum_name = enumvalue.find("name").text
-
-        values.append(
-            {
-                "type": get_type_def(typing),
-                "name": enum_name,
-                "description": namespace_to_snake(namespace) + "_" + enum_name.upper() + "_DESCRIPTION"
-            }
-        )
-
-    key  = header.split(include_dir)[-1].split('.')[0]
-    data = {
-        "title": pascal_to_spaced(key.split('/')[-1]),
-        "source": {
-            "header": header,
-            "namespace": namespace,
-            "types": [],
-            "enums": values,
-            "constructors": [],
-            "destructors": [],
-            "functions": [],
-            "members": [],
-            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
-        }
-    }
-
-    to_dict(result, key, data, "/")
-
-    cache_reference(memberdef, key)
 
 def get_definition(refid):
     if refid is None:
