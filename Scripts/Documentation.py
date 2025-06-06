@@ -185,6 +185,7 @@ def insert_node(tree, parts, value, accumulated_path=""):
     if existing is None:
         existing = {
             "title": pascal_to_spaced(part),
+            "filename": pascal_to_spaced(part),
             "path": path,
             "source": {
                 "header": None,
@@ -221,7 +222,7 @@ def cache_reference(component, path):
     references[refid] = path
 
 def add_enum_definition(result, memberdef):
-    name      = memberdef.find('name').text
+    title     = memberdef.find('name').text
     namespace = memberdef.find('qualifiedname').text
     typing    = memberdef.find('type')
     location  = memberdef.find('location')
@@ -243,7 +244,8 @@ def add_enum_definition(result, memberdef):
 
     key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(filename),
+        "title": pascal_to_spaced(title),
+        "filename": pascal_to_spaced(filename),
         "source": {
             "header": header,
             "namespace": namespace,
@@ -270,7 +272,7 @@ def add_definition(result, compounddef):
         return
 
     kind     = compounddef.attrib.get('kind', '')
-    name     = namespace.split("::")[-1]
+    title    = namespace.split("::")[-1]
     location = compounddef.find('location')
     header   = location.attrib.get('file', '')
     filename = header.split(".")[0].split("/")[-1]
@@ -347,7 +349,7 @@ def add_definition(result, compounddef):
                         }
                     )
 
-                if inner_name in (name, "~" + name):
+                if inner_name in (title, "~" + title):
                     if "~" in inner_name:
                         destructors.append(data)    
                     else:
@@ -368,7 +370,8 @@ def add_definition(result, compounddef):
 
     if len(types) > 0 or len(constructors) > 0 or len(destructors) > 0 or len(functions) > 0 or len(members) > 0:
         data = {
-            "title": pascal_to_spaced(filename),
+            "title": pascal_to_spaced(title),
+            "filename": pascal_to_spaced(filename),
             "source": {
                 "header": header,
                 "namespace": namespace,
@@ -436,10 +439,11 @@ def generate_index(result, metadata):
             result,
             data["path"],
             {
-                "title": data["title"],
+                "title": data.get("title"),
+                "filename": data.get("filename"),
                 "source": {
-                    "header": data["source"]["header"],
-                    "namespace": data["source"]["namespace"]
+                    "header": data.get("source").get("header"),
+                    "namespace": data.get("source").get("namespace")
                 },
                 "children": []
             },
