@@ -1,0 +1,215 @@
+{
+    "title": "Keyboard Button Modifier",
+    "path": "Core/Input/Keyboard/ButtonModifier",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Keyboard/ButtonModifier.hpp",
+        "namespace": "Chicane::Input::KeyboardButtonModifier",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftShift",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_LEFTSHIFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightShift",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_RIGHTSHIFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Leve5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_LEVE5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftCtrl",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_LEFTCTRL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightCtrl",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_RIGHTCTRL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftAlt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_LEFTALT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightAlt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_RIGHTALT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftGui",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_LEFTGUI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightGui",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_RIGHTGUI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Num",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_NUM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Caps",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_CAPS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mode",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_MODE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scroll",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_SCROLL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Ctrl",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_CTRL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Shift",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_SHIFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Alt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_ALT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Gui",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_GUI_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INPUT_KEYBOARDBUTTONMODIFIER_DESCRIPTION"
+    },
+    "children": []
+}

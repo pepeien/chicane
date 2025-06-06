@@ -1,9 +1,9 @@
 {
     "title": "Event",
-    "path": "Core/Mouse/Event",
+    "path": "Core/Input/Keyboard/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Mouse/Event.hpp",
-        "namespace": "Chicane::Mouse::MotionEvent",
+        "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
+        "namespace": "Chicane::Input::KeyboardEvent",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -15,42 +15,42 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Input::Status",
+                    "name": "KeyboardButton",
+                    "suffix": "",
+                    "path": "Core/Input/Keyboard/Button",
+                    "templates": []
+                },
+                "name": "button",
+                "description": "CHICANE_INPUT_KEYBOARDEVENT_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "KeyboardButtonModifier",
+                    "suffix": "",
+                    "path": "Core/Input/Keyboard/ButtonModifier",
+                    "templates": []
+                },
+                "name": "modifier",
+                "description": "CHICANE_INPUT_KEYBOARDEVENT_MODIFIER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Status",
                     "suffix": "",
                     "path": "Core/Input/Status",
                     "templates": []
                 },
                 "name": "status",
-                "description": "CHICANE_MOUSE_MOTIONEVENT_STATUS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "location",
-                "description": "CHICANE_MOUSE_MOTIONEVENT_LOCATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec2",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "relativeLocation",
-                "description": "CHICANE_MOUSE_MOTIONEVENT_RELATIVELOCATION_DESCRIPTION"
+                "description": "CHICANE_INPUT_KEYBOARDEVENT_STATUS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_MOUSE_MOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_KEYBOARDEVENT_DESCRIPTION"
     },
     "children": []
 }

@@ -1,6 +1,6 @@
 {
-    "title": "Mouse",
-    "path": "Core/Mouse",
+    "title": "Keyboard",
+    "path": "Core/Input/Keyboard",
     "source": {
         "header": null,
         "namespace": null,

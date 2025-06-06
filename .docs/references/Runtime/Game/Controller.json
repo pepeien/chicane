@@ -232,9 +232,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Mouse::MotionEventCallback",
+                            "name": "Input::MouseMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Mouse/Button",
+                            "path": "Core/Input/Device/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -258,9 +258,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Mouse::Button",
+                            "name": "Input::MouseButton",
                             "suffix": "",
-                            "path": "Core/Mouse/Button",
+                            "path": "Core/Input/Mouse/Button",
                             "templates": []
                         },
                         "name": "inButton"
@@ -278,9 +278,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Mouse::ButtonEventCallback",
+                            "name": "Input::MouseButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Mouse/Button",
+                            "path": "Core/Input/Device/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -304,9 +304,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Keyboard::Button",
+                            "name": "Input::KeyboardButton",
                             "suffix": "",
-                            "path": "Core/Keyboard/Button",
+                            "path": "Core/Input/Keyboard/Button",
                             "templates": []
                         },
                         "name": "inButton"
@@ -324,9 +324,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Keyboard::EventCallback",
+                            "name": "Input::KeyboardEventCallback",
                             "suffix": "",
-                            "path": "Core/Keyboard/Button",
+                            "path": "Core/Input/Device/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -350,9 +350,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Gamepad::MotionEventCallback",
+                            "name": "Input::GamepadMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Gamepad/Axis",
+                            "path": "Core/Input/Device/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -376,9 +376,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Gamepad::Button",
+                            "name": "Input::GamepadButton",
                             "suffix": "",
-                            "path": "Core/Gamepad/Button",
+                            "path": "Core/Input/Gamepad/Button",
                             "templates": []
                         },
                         "name": "inButton"
@@ -396,9 +396,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Gamepad::ButtonEventCallback",
+                            "name": "Input::GamepadButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Gamepad/Axis",
+                            "path": "Core/Input/Device/Event",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -839,9 +839,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Mouse::MotionEvent",
+                            "name": "Input::MouseMotionEvent",
                             "suffix": "",
-                            "path": "Core/Mouse/Event",
+                            "path": "Core/Input/Mouse/MotionEvent",
                             "templates": []
                         }
                     ]
@@ -860,9 +860,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Mouse::Button",
+                            "name": "Input::MouseButton",
                             "suffix": "",
-                            "path": "Core/Mouse/Button",
+                            "path": "Core/Input/Mouse/Button",
                             "templates": []
                         }
                     ]
@@ -881,9 +881,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Keyboard::Button",
+                            "name": "Input::KeyboardButton",
                             "suffix": "",
-                            "path": "Core/Keyboard/Button",
+                            "path": "Core/Input/Keyboard/Button",
                             "templates": []
                         }
                     ]
@@ -902,9 +902,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Gamepad::MotionEvent",
+                            "name": "Input::GamepadMotionEvent",
                             "suffix": "",
-                            "path": "Core/Gamepad/Event",
+                            "path": "Core/Input/Gamepad/MotionEvent",
                             "templates": []
                         }
                     ]
@@ -923,9 +923,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Gamepad::Button",
+                            "name": "Input::GamepadButton",
                             "suffix": "",
-                            "path": "Core/Gamepad/Button",
+                            "path": "Core/Input/Gamepad/Button",
                             "templates": []
                         }
                     ]
@@ -938,25 +938,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::unordered_map",
+                    "name": "Input::DeviceMap",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Input::DeviceType",
-                            "suffix": "",
-                            "path": "Core/Input/Device/Type",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "Input::DeviceID",
-                            "suffix": "",
-                            "path": "Core/Input/Device/Event",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Input/Device/Event",
+                    "templates": []
                 },
                 "name": "m_devices",
                 "description": "CHICANE_CONTROLLER_M_DEVICES_DESCRIPTION"

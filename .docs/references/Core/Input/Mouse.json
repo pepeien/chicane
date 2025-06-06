@@ -1,6 +1,6 @@
 {
-    "title": "Gamepad",
-    "path": "Core/Gamepad",
+    "title": "Mouse",
+    "path": "Core/Input/Mouse",
     "source": {
         "header": null,
         "namespace": null,

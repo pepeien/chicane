@@ -470,43 +470,6 @@
                 ]
             },
             {
-                "title": "Gamepad",
-                "path": "Core/Gamepad",
-                "source": {
-                    "header": null,
-                    "namespace": null
-                },
-                "children": [
-                    {
-                        "title": "Axis",
-                        "path": "Core/Gamepad/Axis",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Gamepad/Axis.hpp",
-                            "namespace": "Chicane::Gamepad"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Button",
-                        "path": "Core/Gamepad/Button",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Gamepad/Button.hpp",
-                            "namespace": "Chicane::Gamepad::Button"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Event",
-                        "path": "Core/Gamepad/Event",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Gamepad/Event.hpp",
-                            "namespace": "Chicane::Gamepad::MotionEvent"
-                        },
-                        "children": []
-                    }
-                ]
-            },
-            {
                 "title": "Image",
                 "path": "Core/Image",
                 "source": {
@@ -608,39 +571,131 @@
                         ]
                     },
                     {
+                        "title": "Gamepad",
+                        "path": "Core/Input/Gamepad",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "Button Event",
+                                "path": "Core/Input/Gamepad/ButtonEvent",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Gamepad/ButtonEvent.hpp",
+                                    "namespace": "Chicane::Input::GamepadButtonEvent"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Gamepad Axis",
+                                "path": "Core/Input/Gamepad/Axis",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Gamepad/Axis.hpp",
+                                    "namespace": "Chicane::Input::GamepadAxis"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Gamepad Button",
+                                "path": "Core/Input/Gamepad/Button",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",
+                                    "namespace": "Chicane::Input::GamepadButton"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Motion Event",
+                                "path": "Core/Input/Gamepad/MotionEvent",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",
+                                    "namespace": "Chicane::Input::GamepadMotionEvent"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Keyboard",
+                        "path": "Core/Input/Keyboard",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "Event",
+                                "path": "Core/Input/Keyboard/Event",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
+                                    "namespace": "Chicane::Input::KeyboardEvent"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Keyboard Button",
+                                "path": "Core/Input/Keyboard/Button",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",
+                                    "namespace": "Chicane::Input::KeyboardButton"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Keyboard Button Modifier",
+                                "path": "Core/Input/Keyboard/ButtonModifier",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Keyboard/ButtonModifier.hpp",
+                                    "namespace": "Chicane::Input::KeyboardButtonModifier"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Mouse",
+                        "path": "Core/Input/Mouse",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "Button Event",
+                                "path": "Core/Input/Mouse/ButtonEvent",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",
+                                    "namespace": "Chicane::Input::MouseButtonEvent"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Motion Event",
+                                "path": "Core/Input/Mouse/MotionEvent",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Mouse/MotionEvent.hpp",
+                                    "namespace": "Chicane::Input::MouseMotionEvent"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Mouse Button",
+                                "path": "Core/Input/Mouse/Button",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
+                                    "namespace": "Chicane::Input::MouseButton"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "Status",
                         "path": "Core/Input/Status",
                         "source": {
                             "header": "Includes/Chicane/Core/Input/Status.hpp",
                             "namespace": "Chicane::Input::Status"
-                        },
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "title": "Keyboard",
-                "path": "Core/Keyboard",
-                "source": {
-                    "header": null,
-                    "namespace": null
-                },
-                "children": [
-                    {
-                        "title": "Button",
-                        "path": "Core/Keyboard/Button",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Keyboard/Button.hpp",
-                            "namespace": "Chicane::Keyboard"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Event",
-                        "path": "Core/Keyboard/Event",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Keyboard/Event.hpp",
-                            "namespace": "Chicane::Keyboard::Event"
                         },
                         "children": []
                     }
@@ -836,34 +891,6 @@
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Vertex.hpp",
                             "namespace": "Chicane::Vertex"
-                        },
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "title": "Mouse",
-                "path": "Core/Mouse",
-                "source": {
-                    "header": null,
-                    "namespace": null
-                },
-                "children": [
-                    {
-                        "title": "Button",
-                        "path": "Core/Mouse/Button",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Mouse/Button.hpp",
-                            "namespace": "Chicane::Mouse"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Event",
-                        "path": "Core/Mouse/Event",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Mouse/Event.hpp",
-                            "namespace": "Chicane::Mouse::MotionEvent"
                         },
                         "children": []
                     }

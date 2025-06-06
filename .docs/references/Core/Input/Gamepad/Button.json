@@ -1,9 +1,9 @@
 {
-    "title": "Button",
-    "path": "Core/Gamepad/Button",
+    "title": "Gamepad Button",
+    "path": "Core/Input/Gamepad/Button",
     "source": {
-        "header": "Includes/Chicane/Core/Gamepad/Button.hpp",
-        "namespace": "Chicane::Gamepad::Button",
+        "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",
+        "namespace": "Chicane::Input::GamepadButton",
         "types": [],
         "enums": [
             {
@@ -15,7 +15,7 @@
                     "templates": []
                 },
                 "name": "South",
-                "description": "CHICANE_GAMEPAD_BUTTON_SOUTH_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_SOUTH_DESCRIPTION"
             },
             {
                 "type": {
@@ -26,7 +26,7 @@
                     "templates": []
                 },
                 "name": "East",
-                "description": "CHICANE_GAMEPAD_BUTTON_EAST_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_EAST_DESCRIPTION"
             },
             {
                 "type": {
@@ -37,7 +37,7 @@
                     "templates": []
                 },
                 "name": "West",
-                "description": "CHICANE_GAMEPAD_BUTTON_WEST_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_WEST_DESCRIPTION"
             },
             {
                 "type": {
@@ -48,7 +48,7 @@
                     "templates": []
                 },
                 "name": "North",
-                "description": "CHICANE_GAMEPAD_BUTTON_NORTH_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_NORTH_DESCRIPTION"
             },
             {
                 "type": {
@@ -59,7 +59,7 @@
                     "templates": []
                 },
                 "name": "Back",
-                "description": "CHICANE_GAMEPAD_BUTTON_BACK_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_BACK_DESCRIPTION"
             },
             {
                 "type": {
@@ -70,7 +70,7 @@
                     "templates": []
                 },
                 "name": "Guide",
-                "description": "CHICANE_GAMEPAD_BUTTON_GUIDE_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_GUIDE_DESCRIPTION"
             },
             {
                 "type": {
@@ -81,7 +81,7 @@
                     "templates": []
                 },
                 "name": "Start",
-                "description": "CHICANE_GAMEPAD_BUTTON_START_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_START_DESCRIPTION"
             },
             {
                 "type": {
@@ -92,7 +92,7 @@
                     "templates": []
                 },
                 "name": "LeftStick",
-                "description": "CHICANE_GAMEPAD_BUTTON_LEFTSTICK_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_LEFTSTICK_DESCRIPTION"
             },
             {
                 "type": {
@@ -103,7 +103,7 @@
                     "templates": []
                 },
                 "name": "RightStick",
-                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTSTICK_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_RIGHTSTICK_DESCRIPTION"
             },
             {
                 "type": {
@@ -114,7 +114,7 @@
                     "templates": []
                 },
                 "name": "LeftShoulder",
-                "description": "CHICANE_GAMEPAD_BUTTON_LEFTSHOULDER_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_LEFTSHOULDER_DESCRIPTION"
             },
             {
                 "type": {
@@ -125,7 +125,7 @@
                     "templates": []
                 },
                 "name": "RightShoulder",
-                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTSHOULDER_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_RIGHTSHOULDER_DESCRIPTION"
             },
             {
                 "type": {
@@ -136,7 +136,7 @@
                     "templates": []
                 },
                 "name": "DPadUp",
-                "description": "CHICANE_GAMEPAD_BUTTON_DPADUP_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_DPADUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -147,7 +147,7 @@
                     "templates": []
                 },
                 "name": "DPadDown",
-                "description": "CHICANE_GAMEPAD_BUTTON_DPADDOWN_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_DPADDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -158,7 +158,7 @@
                     "templates": []
                 },
                 "name": "DPadLeft",
-                "description": "CHICANE_GAMEPAD_BUTTON_DPADLEFT_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_DPADLEFT_DESCRIPTION"
             },
             {
                 "type": {
@@ -169,7 +169,7 @@
                     "templates": []
                 },
                 "name": "DPadRight",
-                "description": "CHICANE_GAMEPAD_BUTTON_DPADRIGHT_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_DPADRIGHT_DESCRIPTION"
             },
             {
                 "type": {
@@ -180,7 +180,7 @@
                     "templates": []
                 },
                 "name": "RightPaddlePrimary",
-                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTPADDLEPRIMARY_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_RIGHTPADDLEPRIMARY_DESCRIPTION"
             },
             {
                 "type": {
@@ -191,7 +191,7 @@
                     "templates": []
                 },
                 "name": "LeftPaddlePrimary",
-                "description": "CHICANE_GAMEPAD_BUTTON_LEFTPADDLEPRIMARY_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_LEFTPADDLEPRIMARY_DESCRIPTION"
             },
             {
                 "type": {
@@ -202,7 +202,7 @@
                     "templates": []
                 },
                 "name": "RightPaddleSecondary",
-                "description": "CHICANE_GAMEPAD_BUTTON_RIGHTPADDLESECONDARY_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_RIGHTPADDLESECONDARY_DESCRIPTION"
             },
             {
                 "type": {
@@ -213,7 +213,7 @@
                     "templates": []
                 },
                 "name": "LeftPaddleSecondary",
-                "description": "CHICANE_GAMEPAD_BUTTON_LEFTPADDLESECONDARY_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_LEFTPADDLESECONDARY_DESCRIPTION"
             },
             {
                 "type": {
@@ -224,7 +224,7 @@
                     "templates": []
                 },
                 "name": "Touchpad",
-                "description": "CHICANE_GAMEPAD_BUTTON_TOUCHPAD_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_TOUCHPAD_DESCRIPTION"
             },
             {
                 "type": {
@@ -235,7 +235,7 @@
                     "templates": []
                 },
                 "name": "Misc1",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC1_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC1_DESCRIPTION"
             },
             {
                 "type": {
@@ -246,7 +246,7 @@
                     "templates": []
                 },
                 "name": "Misc2",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC2_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC2_DESCRIPTION"
             },
             {
                 "type": {
@@ -257,7 +257,7 @@
                     "templates": []
                 },
                 "name": "Misc3",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC3_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC3_DESCRIPTION"
             },
             {
                 "type": {
@@ -268,7 +268,7 @@
                     "templates": []
                 },
                 "name": "Misc4",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC4_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC4_DESCRIPTION"
             },
             {
                 "type": {
@@ -279,7 +279,7 @@
                     "templates": []
                 },
                 "name": "Misc5",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC5_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC5_DESCRIPTION"
             },
             {
                 "type": {
@@ -290,14 +290,14 @@
                     "templates": []
                 },
                 "name": "Misc6",
-                "description": "CHICANE_GAMEPAD_BUTTON_MISC6_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADBUTTON_MISC6_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GAMEPAD_BUTTON_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADBUTTON_DESCRIPTION"
     },
     "children": []
 }
