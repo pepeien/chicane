@@ -1,0 +1,69 @@
+{
+    "title": "Button Event",
+    "path": "Core/Input/Mouse/ButtonEvent",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",
+        "namespace": "Chicane::Input::MouseButtonEvent",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "MouseButton",
+                    "suffix": "",
+                    "path": "Core/Input/Mouse/Button",
+                    "templates": []
+                },
+                "name": "button",
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Status",
+                    "suffix": "",
+                    "path": "Core/Input/Status",
+                    "templates": []
+                },
+                "name": "status",
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "clicks",
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_CLICKS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "location",
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_LOCATION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_DESCRIPTION"
+    },
+    "children": []
+}

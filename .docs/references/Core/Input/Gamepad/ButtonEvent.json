@@ -1,0 +1,43 @@
+{
+    "title": "Button Event",
+    "path": "Core/Input/Gamepad/ButtonEvent",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Gamepad/ButtonEvent.hpp",
+        "namespace": "Chicane::Input::GamepadButtonEvent",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "GamepadButton",
+                    "suffix": "",
+                    "path": "Core/Input/Gamepad/Button",
+                    "templates": []
+                },
+                "name": "button",
+                "description": "CHICANE_INPUT_GAMEPADBUTTONEVENT_BUTTON_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Status",
+                    "suffix": "",
+                    "path": "Core/Input/Status",
+                    "templates": []
+                },
+                "name": "status",
+                "description": "CHICANE_INPUT_GAMEPADBUTTONEVENT_STATUS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_INPUT_GAMEPADBUTTONEVENT_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,9 +1,9 @@
 {
-    "title": "Event",
-    "path": "Core/Gamepad/Event",
+    "title": "Motion Event",
+    "path": "Core/Input/Gamepad/MotionEvent",
     "source": {
-        "header": "Includes/Chicane/Core/Gamepad/Event.hpp",
-        "namespace": "Chicane::Gamepad::MotionEvent",
+        "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",
+        "namespace": "Chicane::Input::GamepadMotionEvent",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -15,13 +15,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Axis",
+                    "name": "GamepadAxis",
                     "suffix": "",
-                    "path": "Core/Gamepad/Axis",
+                    "path": "Core/Input/Gamepad/Axis",
                     "templates": []
                 },
                 "name": "axis",
-                "description": "CHICANE_GAMEPAD_MOTIONEVENT_AXIS_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_AXIS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -34,10 +34,10 @@
                     "templates": []
                 },
                 "name": "value",
-                "description": "CHICANE_GAMEPAD_MOTIONEVENT_VALUE_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_VALUE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GAMEPAD_MOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_DESCRIPTION"
     },
     "children": []
 }

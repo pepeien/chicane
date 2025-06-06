@@ -1,0 +1,94 @@
+{
+    "title": "Gamepad Axis",
+    "path": "Core/Input/Gamepad/Axis",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Gamepad/Axis.hpp",
+        "namespace": "Chicane::Input::GamepadAxis",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Invalid",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_INVALID_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftX",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_LEFTX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftY",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_LEFTY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightX",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_RIGHTX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightY",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_RIGHTY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LeftTrigger",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_LEFTTRIGGER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RightTrigger",
+                "description": "CHICANE_INPUT_GAMEPADAXIS_RIGHTTRIGGER_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INPUT_GAMEPADAXIS_DESCRIPTION"
+    },
+    "children": []
+}

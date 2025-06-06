@@ -1,0 +1,2723 @@
+{
+    "title": "Keyboard Button",
+    "path": "Core/Input/Keyboard/Button",
+    "source": {
+        "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",
+        "namespace": "Chicane::Input::KeyboardButton",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "A",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_A_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "B",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_B_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "C",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_C_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "D",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_D_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "E",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_E_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "G",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_G_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "H",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_H_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "I",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_I_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "J",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_J_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "K",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_K_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "L",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_L_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "M",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_M_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "N",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_N_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "O",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_O_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "P",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_P_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Q",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_Q_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "R",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_R_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "S",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_S_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "T",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_T_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "U",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_U_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "V",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_V_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "W",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_W_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "X",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_X_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Y",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_Y_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Z",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_Z_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number1",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number3",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number4",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number6",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number7",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number8",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number9",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Number0",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMBER0_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Return",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RETURN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Escape",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ESCAPE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Backspace",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_BACKSPACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Tab",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_TAB_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Space",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SPACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Minus",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MINUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Equals",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_EQUALS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Leftbracket",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LEFTBRACKET_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rightbracket",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RIGHTBRACKET_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Backslash",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_BACKSLASH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Nonushash",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NONUSHASH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Semicolon",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SEMICOLON_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Apostrophe",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_APOSTROPHE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Grave",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_GRAVE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Comma",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_COMMA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Period",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PERIOD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Slash",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SLASH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Capslock",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CAPSLOCK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F1",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F3",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F4",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F6",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F7",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F8",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F9",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F10",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F10_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F11",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F11_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F12",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F12_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Printscreen",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PRINTSCREEN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Scrolllock",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SCROLLLOCK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pause",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PAUSE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Insert",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INSERT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Home",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_HOME_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pageup",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PAGEUP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Delete",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_DELETE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "End",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_END_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Pagedown",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PAGEDOWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Right",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Left",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Down",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_DOWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Up",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_UP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Numlockclear",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NUMLOCKCLEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpDivide",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPDIVIDE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMultiply",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMULTIPLY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMinus",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMINUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpPlus",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPPLUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpEnter",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp1",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp3",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp4",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp6",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp7",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp8",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp9",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp0",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP0_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpPeriod",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPPERIOD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Nonusbackslash",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_NONUSBACKSLASH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_APPLICATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Power",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_POWER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpEquals",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPEQUALS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F13",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F13_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F14",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F14_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F15",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F15_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F16",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F16_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F17",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F17_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F18",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F18_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F19",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F19_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F20",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F20_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F21",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F21_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F22",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F22_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F23",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F23_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F24",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_F24_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Execute",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_EXECUTE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Help",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_HELP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Menu",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MENU_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Select",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SELECT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Stop",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_STOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Again",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_AGAIN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undo",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_UNDO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Cut",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Copy",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_COPY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Paste",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PASTE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Find",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_FIND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mute",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MUTE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Volumeup",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_VOLUMEUP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Volumedown",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_VOLUMEDOWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpComma",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPCOMMA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpEqualsas400",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPEQUALSAS400_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International1",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International3",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International4",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International6",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International7",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International8",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "International9",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_INTERNATIONAL9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang1",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang3",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang4",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang5",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang6",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang7",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang8",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Lang9",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LANG9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Alterase",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ALTERASE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sysreq",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SYSREQ_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Cancel",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CANCEL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clear",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CLEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Prior",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_PRIOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Return2",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RETURN2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Separator",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SEPARATOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Out",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_OUT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Oper",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_OPER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Clearagain",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CLEARAGAIN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Crsel",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CRSEL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Exsel",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_EXSEL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp00",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP00_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Kp000",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KP000_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Thousandsseparator",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_THOUSANDSSEPARATOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Decimalseparator",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_DECIMALSEPARATOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Currencyunit",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CURRENCYUNIT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Currencysubunit",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CURRENCYSUBUNIT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpLeftparen",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPLEFTPAREN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpRightparen",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPRIGHTPAREN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpLeftbrace",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPLEFTBRACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpRightbrace",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPRIGHTBRACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpTab",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPTAB_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpBackspace",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPBACKSPACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpA",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpB",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPB_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpC",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPC_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpD",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpE",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpF",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPF_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpXor",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPXOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpPower",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPPOWER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpPercent",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPPERCENT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpLess",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPLESS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpGreater",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPGREATER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpAmpersand",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPAMPERSAND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpDblampersand",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPDBLAMPERSAND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpVerticalbar",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPVERTICALBAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpDblverticalbar",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPDBLVERTICALBAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpColon",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPCOLON_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpHash",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPHASH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpSpace",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPSPACE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpAt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPAT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpExclam",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPEXCLAM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemstore",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMSTORE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemrecall",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMRECALL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemclear",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMCLEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemadd",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMADD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemsubtract",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMSUBTRACT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemmultiply",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMMULTIPLY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpMemdivide",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPMEMDIVIDE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpPlusminus",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPPLUSMINUS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpClear",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPCLEAR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpClearentry",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPCLEARENTRY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpBinary",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPBINARY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpOctal",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPOCTAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpDecimal",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPDECIMAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "KpHexadecimal",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_KPHEXADECIMAL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LCtrl",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LCTRL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LShift",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LSHIFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LAlt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LALT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LGui",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_LGUI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RCtrl",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RCTRL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RShift",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RSHIFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RAlt",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RALT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "RGui",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_RGUI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mode",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MODE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sleep",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SLEEP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Wake",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_WAKE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ChannelIncrement",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CHANNELINCREMENT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ChannelDecrement",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CHANNELDECREMENT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaPlay",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAPLAY_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaPause",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAPAUSE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaRecord",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIARECORD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaFastForward",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAFASTFORWARD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaRewind",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAREWIND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaNextTrack",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIANEXTTRACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaPreviousTrack",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAPREVIOUSTRACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaStop",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIASTOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaEject",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAEJECT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaPlayPause",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIAPLAYPAUSE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MediaSelect",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_MEDIASELECT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcNew",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACNEW_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcOpen",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACOPEN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcClose",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACCLOSE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcExit",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACEXIT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcSave",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACSAVE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcPrint",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACPRINT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcProperties",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACPROPERTIES_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcSearch",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACSEARCH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcHome",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACHOME_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcBack",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACBACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcForward",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACFORWARD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcStop",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACSTOP_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcRefresh",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACREFRESH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AcBookmarks",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ACBOOKMARKS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Softleft",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SOFTLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Softright",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_SOFTRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Call",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_CALL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Endcall",
+                "description": "CHICANE_INPUT_KEYBOARDBUTTON_ENDCALL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_INPUT_KEYBOARDBUTTON_DESCRIPTION"
+    },
+    "children": []
+}
