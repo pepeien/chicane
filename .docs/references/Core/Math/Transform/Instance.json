@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Core/Math/Transform/Instance",
     "source": {
         "header": "Includes/Chicane/Core/Math/Transform/Instance.hpp",

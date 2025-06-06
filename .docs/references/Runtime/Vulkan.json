@@ -1,5 +1,6 @@
 {
     "title": "Vulkan",
+    "filename": "Vulkan",
     "path": "Runtime/Vulkan",
     "source": {
         "header": null,

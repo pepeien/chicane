@@ -1,5 +1,6 @@
 {
     "title": "Curve",
+    "filename": "Curve",
     "path": "Core/Math/Curve",
     "source": {
         "header": "Includes/Chicane/Core/Math/Curve.hpp",

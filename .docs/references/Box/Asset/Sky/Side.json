@@ -1,5 +1,6 @@
 {
     "title": "Side",
+    "filename": "Side",
     "path": "Box/Asset/Sky/Side",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Sky/Side.hpp",

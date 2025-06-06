@@ -1,5 +1,6 @@
 {
     "title": "Event",
+    "filename": "Event",
     "path": "Core/Window/Event",
     "source": {
         "header": "Includes/Chicane/Core/Window/Event.hpp",

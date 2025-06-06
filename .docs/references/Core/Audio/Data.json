@@ -1,5 +1,6 @@
 {
-    "title": "Data",
+    "title": "Audio",
+    "filename": "Data",
     "path": "Core/Audio/Data",
     "source": {
         "header": "Includes/Chicane/Core/Audio/Data.hpp",

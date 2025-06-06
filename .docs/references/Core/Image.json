@@ -1,5 +1,6 @@
 {
     "title": "Image",
+    "filename": "Image",
     "path": "Core/Image",
     "source": {
         "header": null,

@@ -1,5 +1,6 @@
 {
-    "title": "Pressable",
+    "title": "Pressable Events",
+    "filename": "Pressable",
     "path": "Core/Input/Event/Pressable",
     "source": {
         "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",

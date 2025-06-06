@@ -1,5 +1,6 @@
 {
     "title": "True Type",
+    "filename": "True Type",
     "path": "Box/Asset/Font/TrueType",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/TrueType.hpp",

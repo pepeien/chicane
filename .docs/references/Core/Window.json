@@ -1,5 +1,6 @@
 {
     "title": "Window",
+    "filename": "Window",
     "path": "Core/Window",
     "source": {
         "header": null,

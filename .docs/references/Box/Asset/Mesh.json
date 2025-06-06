@@ -1,5 +1,6 @@
 {
     "title": "Mesh",
+    "filename": "Mesh",
     "path": "Box/Asset/Mesh",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Mesh.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Debug",
+    "filename": "Debug",
     "path": "Runtime/Vulkan/Debug",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Debug.hpp",

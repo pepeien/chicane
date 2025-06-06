@@ -1,5 +1,6 @@
 {
     "title": "Event Type",
+    "filename": "Event Type",
     "path": "Box/Manager/EventType",
     "source": {
         "header": "Includes/Chicane/Box/Manager/EventType.hpp",

@@ -1,5 +1,6 @@
 {
-    "title": "Button",
+    "title": "Mouse Button",
+    "filename": "Button",
     "path": "Core/Input/Mouse/Button",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",

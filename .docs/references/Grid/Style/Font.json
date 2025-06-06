@@ -1,5 +1,6 @@
 {
     "title": "Font",
+    "filename": "Font",
     "path": "Grid/Style/Font",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Font.hpp",

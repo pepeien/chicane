@@ -1,5 +1,6 @@
 {
     "title": "Line",
+    "filename": "Line",
     "path": "Core/Math/Line",
     "source": {
         "header": "Includes/Chicane/Core/Math/Line.hpp",

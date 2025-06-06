@@ -1,5 +1,6 @@
 {
     "title": "Transform",
+    "filename": "Transform",
     "path": "Core/Math/Transform",
     "source": {
         "header": null,

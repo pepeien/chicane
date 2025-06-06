@@ -1,5 +1,6 @@
 {
-    "title": "Button",
+    "title": "Gamepad Button",
+    "filename": "Button",
     "path": "Core/Input/Gamepad/Button",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",

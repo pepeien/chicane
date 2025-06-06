@@ -1,5 +1,6 @@
 {
     "title": "Buffer",
+    "filename": "Buffer",
     "path": "Runtime/Vulkan/Frame/Buffer",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Frame/Buffer.hpp",

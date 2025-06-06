@@ -1,5 +1,6 @@
 {
-    "title": "Physics",
+    "title": "CPhysics",
+    "filename": "Physics",
     "path": "Runtime/Game/Transformable/Component/Physics",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Physics.hpp",

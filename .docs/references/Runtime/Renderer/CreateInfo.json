@@ -1,5 +1,6 @@
 {
     "title": "Create Info",
+    "filename": "Create Info",
     "path": "Runtime/Renderer/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/CreateInfo.hpp",

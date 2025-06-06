@@ -1,5 +1,6 @@
 {
     "title": "Combined",
+    "filename": "Combined",
     "path": "Core/Math/Transform/Combined",
     "source": {
         "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",

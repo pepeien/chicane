@@ -1,5 +1,6 @@
 {
     "title": "Swap Chain",
+    "filename": "Swap Chain",
     "path": "Runtime/Vulkan/SwapChain",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/SwapChain.hpp",

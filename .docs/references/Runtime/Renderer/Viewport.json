@@ -1,5 +1,6 @@
 {
     "title": "Viewport",
+    "filename": "Viewport",
     "path": "Runtime/Renderer/Viewport",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",

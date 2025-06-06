@@ -1,5 +1,6 @@
 {
     "title": "Vertex",
+    "filename": "Vertex",
     "path": "Runtime/Vulkan/Vertex",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Vertex.hpp",

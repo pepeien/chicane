@@ -1,5 +1,6 @@
 {
     "title": "Component",
+    "filename": "Component",
     "path": "Runtime/Game/Transformable/Component",
     "source": {
         "header": null,

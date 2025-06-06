@@ -1,5 +1,6 @@
 {
     "title": "Texture",
+    "filename": "Texture",
     "path": "Runtime/Vulkan/Texture",
     "source": {
         "header": null,

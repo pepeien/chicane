@@ -1,5 +1,6 @@
 {
     "title": "Audio",
+    "filename": "Audio",
     "path": "Runtime/Game/Transformable/Actor/Audio",
     "source": {
         "header": null,

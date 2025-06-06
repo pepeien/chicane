@@ -1,5 +1,6 @@
 {
     "title": "Frustum",
+    "filename": "Frustum",
     "path": "Runtime/Renderer/View/Frustum",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",

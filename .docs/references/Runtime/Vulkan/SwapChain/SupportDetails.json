@@ -1,5 +1,6 @@
 {
     "title": "Support Details",
+    "filename": "Support Details",
     "path": "Runtime/Vulkan/SwapChain/SupportDetails",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/SupportDetails.hpp",

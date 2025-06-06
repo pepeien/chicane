@@ -1,5 +1,6 @@
 {
     "title": "Recorder",
+    "filename": "Recorder",
     "path": "Core/Recorder",
     "source": {
         "header": "Includes/Chicane/Core/Recorder.hpp",

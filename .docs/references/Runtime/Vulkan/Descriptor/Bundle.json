@@ -1,5 +1,6 @@
 {
     "title": "Bundle",
+    "filename": "Bundle",
     "path": "Runtime/Vulkan/Descriptor/Bundle",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/Bundle.hpp",

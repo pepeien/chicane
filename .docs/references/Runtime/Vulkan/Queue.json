@@ -1,5 +1,6 @@
 {
     "title": "Queue",
+    "filename": "Queue",
     "path": "Runtime/Vulkan/Queue",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Queue.hpp",

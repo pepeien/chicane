@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "ALight",
+    "filename": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Light/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance.hpp",

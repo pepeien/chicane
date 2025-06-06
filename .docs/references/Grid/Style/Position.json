@@ -1,5 +1,6 @@
 {
     "title": "Position",
+    "filename": "Position",
     "path": "Grid/Style/Position",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Position.hpp",

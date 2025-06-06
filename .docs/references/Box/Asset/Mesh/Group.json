@@ -1,5 +1,6 @@
 {
     "title": "Group",
+    "filename": "Group",
     "path": "Box/Asset/Mesh/Group",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Mesh/Group.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Sky",
+    "filename": "Sky",
     "path": "Runtime/Vulkan/Sky",
     "source": {
         "header": null,

@@ -1,5 +1,6 @@
 {
     "title": "Resource",
+    "filename": "Resource",
     "path": "Runtime/Vulkan/Frame/Resource",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Frame/Resource.hpp",

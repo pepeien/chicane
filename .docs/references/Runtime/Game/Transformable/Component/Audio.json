@@ -1,5 +1,6 @@
 {
-    "title": "Audio",
+    "title": "CAudio",
+    "filename": "Audio",
     "path": "Runtime/Game/Transformable/Component/Audio",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Audio.hpp",

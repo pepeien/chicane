@@ -1,5 +1,6 @@
 {
     "title": "Vertex",
+    "filename": "Vertex",
     "path": "Core/Math/Vertex",
     "source": {
         "header": "Includes/Chicane/Core/Math/Vertex.hpp",

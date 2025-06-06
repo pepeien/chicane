@@ -1,5 +1,6 @@
 {
     "title": "Telemetry",
+    "filename": "Telemetry",
     "path": "Core/Telemetry",
     "source": {
         "header": "Includes/Chicane/Core/Telemetry.hpp",

@@ -1,5 +1,6 @@
 {
-    "title": "Grid",
+    "title": "Push Constant",
+    "filename": "Grid",
     "path": "Runtime/Vulkan/Layer/Grid",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Layer/Grid.hpp",

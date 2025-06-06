@@ -1,5 +1,6 @@
 {
     "title": "Pool Create Info",
+    "filename": "Pool Create Info",
     "path": "Runtime/Vulkan/Descriptor/PoolCreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/PoolCreateInfo.hpp",

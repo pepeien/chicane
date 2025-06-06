@@ -1,5 +1,6 @@
 {
     "title": "Primitive",
+    "filename": "Primitive",
     "path": "Grid/Primitive",
     "source": {
         "header": "Includes/Chicane/Grid/Primitive.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Create Info",
+    "filename": "Create Info",
     "path": "Runtime/Vulkan/Image/Instance/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Image/Instance/CreateInfo.hpp",

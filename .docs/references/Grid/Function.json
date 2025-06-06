@@ -1,5 +1,6 @@
 {
-    "title": "Function",
+    "title": "Function Data",
+    "filename": "Function",
     "path": "Grid/Function",
     "source": {
         "header": "Includes/Chicane/Grid/Function.hpp",

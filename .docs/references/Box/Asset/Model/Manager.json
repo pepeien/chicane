@@ -1,5 +1,6 @@
 {
     "title": "Manager",
+    "filename": "Manager",
     "path": "Box/Asset/Model/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Manager.hpp",

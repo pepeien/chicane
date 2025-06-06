@@ -1,5 +1,6 @@
 {
-    "title": "Data",
+    "title": "Parsed",
+    "filename": "Data",
     "path": "Box/Asset/Mesh/Data",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Mesh/Data.hpp",

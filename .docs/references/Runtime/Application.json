@@ -1,5 +1,6 @@
 {
     "title": "Application",
+    "filename": "Application",
     "path": "Runtime/Application",
     "source": {
         "header": "Includes/Chicane/Runtime/Application.hpp",

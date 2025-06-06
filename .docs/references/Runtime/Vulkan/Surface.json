@@ -1,5 +1,6 @@
 {
     "title": "Surface",
+    "filename": "Surface",
     "path": "Runtime/Vulkan/Surface",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Surface.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Runtime/Renderer/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Instance.hpp",

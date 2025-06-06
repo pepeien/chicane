@@ -1,5 +1,6 @@
 {
     "title": "Sampler",
+    "filename": "Sampler",
     "path": "Runtime/Vulkan/Image/Sampler",
     "source": {
         "header": null,

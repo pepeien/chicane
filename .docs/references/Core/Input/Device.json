@@ -1,5 +1,6 @@
 {
     "title": "Device",
+    "filename": "Device",
     "path": "Core/Input/Device",
     "source": {
         "header": null,

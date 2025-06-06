@@ -1,5 +1,6 @@
 {
     "title": "Worker",
+    "filename": "Worker",
     "path": "Runtime/Vulkan/CommandBuffer/Worker",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Worker.hpp",

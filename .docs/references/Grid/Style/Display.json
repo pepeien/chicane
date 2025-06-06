@@ -1,5 +1,6 @@
 {
     "title": "Display",
+    "filename": "Display",
     "path": "Grid/Style/Display",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Display.hpp",

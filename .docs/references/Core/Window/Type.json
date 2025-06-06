@@ -1,5 +1,6 @@
 {
     "title": "Type",
+    "filename": "Type",
     "path": "Core/Window/Type",
     "source": {
         "header": "Includes/Chicane/Core/Window/Type.hpp",

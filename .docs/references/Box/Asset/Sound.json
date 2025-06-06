@@ -1,5 +1,6 @@
 {
     "title": "Sound",
+    "filename": "Sound",
     "path": "Box/Asset/Sound",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Sound.hpp",

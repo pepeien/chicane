@@ -1,5 +1,6 @@
 {
     "title": "Vendor",
+    "filename": "Vendor",
     "path": "Box/Asset/Font/Vendor",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Vendor.hpp",

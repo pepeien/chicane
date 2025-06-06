@@ -1,5 +1,6 @@
 {
     "title": "Vec",
+    "filename": "Vec",
     "path": "Core/Math/Vec",
     "source": {
         "header": null,

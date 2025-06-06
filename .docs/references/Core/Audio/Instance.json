@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Core/Audio/Instance",
     "source": {
         "header": "Includes/Chicane/Core/Audio/Instance.hpp",

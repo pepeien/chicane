@@ -1,5 +1,6 @@
 {
-    "title": "View",
+    "title": "CView",
+    "filename": "View",
     "path": "Runtime/Game/Transformable/Component/View",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/View.hpp",

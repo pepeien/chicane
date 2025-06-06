@@ -1,5 +1,6 @@
 {
     "title": "Light",
+    "filename": "Light",
     "path": "Runtime/Game/Transformable/Actor/Light",
     "source": {
         "header": null,

@@ -1,5 +1,6 @@
 {
     "title": "Reference",
+    "filename": "Reference",
     "path": "Core/Reference",
     "source": {
         "header": "Includes/Chicane/Core/Reference.hpp",

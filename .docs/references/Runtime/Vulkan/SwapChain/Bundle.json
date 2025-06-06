@@ -1,5 +1,6 @@
 {
     "title": "Bundle",
+    "filename": "Bundle",
     "path": "Runtime/Vulkan/SwapChain/Bundle",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/Bundle.hpp",

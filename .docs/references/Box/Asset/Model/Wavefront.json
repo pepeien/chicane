@@ -1,5 +1,6 @@
 {
     "title": "Wavefront",
+    "filename": "Wavefront",
     "path": "Box/Asset/Model/Wavefront",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Wavefront.hpp",

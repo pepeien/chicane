@@ -1,5 +1,6 @@
 {
     "title": "Pawn",
+    "filename": "Pawn",
     "path": "Runtime/Game/Transformable/Actor/Pawn",
     "source": {
         "header": null,

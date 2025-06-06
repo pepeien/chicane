@@ -1,5 +1,6 @@
 {
     "title": "Alignment",
+    "filename": "Alignment",
     "path": "Grid/Style/Alignment",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Alignment.hpp",

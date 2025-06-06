@@ -1,5 +1,6 @@
 {
-    "title": "Mesh",
+    "title": "CMesh",
+    "filename": "Mesh",
     "path": "Runtime/Game/Transformable/Component/Mesh",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Mesh.hpp",

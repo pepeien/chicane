@@ -1,5 +1,6 @@
 {
     "title": "Text Input",
+    "filename": "Text Input",
     "path": "Grid/Component/TextInput",
     "source": {
         "header": "Includes/Chicane/Grid/Component/TextInput.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Corners",
+    "filename": "Corners",
     "path": "Grid/Style/Corners",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Corners.hpp",

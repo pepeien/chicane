@@ -1,5 +1,6 @@
 {
     "title": "Subscription",
+    "filename": "Subscription",
     "path": "Core/Event/Subscription",
     "source": {
         "header": "Includes/Chicane/Core/Event/Subscription.hpp",

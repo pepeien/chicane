@@ -1,5 +1,6 @@
 {
     "title": "Vendor",
+    "filename": "Vendor",
     "path": "Core/Audio/Vendor",
     "source": {
         "header": "Includes/Chicane/Core/Audio/Vendor.hpp",

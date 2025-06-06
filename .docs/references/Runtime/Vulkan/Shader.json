@@ -1,5 +1,6 @@
 {
     "title": "Shader",
+    "filename": "Shader",
     "path": "Runtime/Vulkan/Shader",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Shader.hpp",

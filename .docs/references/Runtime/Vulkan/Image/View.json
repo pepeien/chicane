@@ -1,5 +1,6 @@
 {
     "title": "View",
+    "filename": "View",
     "path": "Runtime/Vulkan/Image/View",
     "source": {
         "header": null,

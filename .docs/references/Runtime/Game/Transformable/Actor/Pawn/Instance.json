@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "APawn",
+    "filename": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",

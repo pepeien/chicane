@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Runtime/Vulkan/Image/Instance",
     "source": {
         "header": null,

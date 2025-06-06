@@ -1,5 +1,6 @@
 {
     "title": "Family Indices",
+    "filename": "Family Indices",
     "path": "Runtime/Vulkan/Queue/FamilyIndices",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Queue/FamilyIndices.hpp",

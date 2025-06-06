@@ -1,5 +1,6 @@
 {
     "title": "Gamepad",
+    "filename": "Gamepad",
     "path": "Core/Input/Gamepad",
     "source": {
         "header": null,

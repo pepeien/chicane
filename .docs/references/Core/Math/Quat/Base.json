@@ -1,5 +1,6 @@
 {
-    "title": "Base",
+    "title": "Quat",
+    "filename": "Base",
     "path": "Core/Math/Quat/Base",
     "source": {
         "header": "Includes/Chicane/Core/Math/Quat/Base.hpp",

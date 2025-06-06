@@ -1,5 +1,6 @@
 {
     "title": "Pool",
+    "filename": "Pool",
     "path": "Runtime/Vulkan/CommandBuffer/Pool",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Pool.hpp",

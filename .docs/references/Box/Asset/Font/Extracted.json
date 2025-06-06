@@ -1,5 +1,6 @@
 {
     "title": "Extracted",
+    "filename": "Extracted",
     "path": "Box/Asset/Font/Extracted",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Extracted.hpp",

@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "ASky",
+    "filename": "Instance",
     "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",

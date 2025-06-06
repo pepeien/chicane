@@ -1,5 +1,6 @@
 {
     "title": "Manager",
+    "filename": "Manager",
     "path": "Box/Asset/Texture/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Texture/Manager.hpp",

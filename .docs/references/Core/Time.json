@@ -1,5 +1,6 @@
 {
     "title": "Time",
+    "filename": "Time",
     "path": "Core/Time",
     "source": {
         "header": "Includes/Chicane/Core/Time.hpp",

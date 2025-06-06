@@ -1,5 +1,6 @@
 {
     "title": "Sky",
+    "filename": "Sky",
     "path": "Runtime/Game/Transformable/Actor/Sky",
     "source": {
         "header": null,

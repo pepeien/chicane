@@ -1,5 +1,6 @@
 {
-    "title": "Data",
+    "title": "Parsed",
+    "filename": "Data",
     "path": "Box/Asset/Model/Data",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Data.hpp",

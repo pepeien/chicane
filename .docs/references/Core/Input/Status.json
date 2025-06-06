@@ -1,5 +1,6 @@
 {
     "title": "Status",
+    "filename": "Status",
     "path": "Core/Input/Status",
     "source": {
         "header": "Includes/Chicane/Core/Input/Status.hpp",

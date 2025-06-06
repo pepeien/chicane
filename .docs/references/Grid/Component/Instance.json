@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "Component",
+    "filename": "Instance",
     "path": "Grid/Component/Instance",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Instance.hpp",

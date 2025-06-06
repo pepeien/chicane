@@ -1,5 +1,6 @@
 {
     "title": "Command Buffer",
+    "filename": "Command Buffer",
     "path": "Runtime/Vulkan/CommandBuffer",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer.hpp",

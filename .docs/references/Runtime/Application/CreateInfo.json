@@ -1,5 +1,6 @@
 {
     "title": "Create Info",
+    "filename": "Create Info",
     "path": "Runtime/Application/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",

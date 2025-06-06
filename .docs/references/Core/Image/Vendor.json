@@ -1,5 +1,6 @@
 {
     "title": "Vendor",
+    "filename": "Vendor",
     "path": "Core/Image/Vendor",
     "source": {
         "header": "Includes/Chicane/Core/Image/Vendor.hpp",

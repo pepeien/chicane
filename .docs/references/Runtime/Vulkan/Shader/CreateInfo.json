@@ -1,5 +1,6 @@
 {
-    "title": "Create Info",
+    "title": "Stage Create Info",
+    "filename": "Create Info",
     "path": "Runtime/Vulkan/Shader/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Shader/CreateInfo.hpp",

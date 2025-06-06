@@ -1,5 +1,6 @@
 {
     "title": "Sync",
+    "filename": "Sync",
     "path": "Runtime/Vulkan/Sync",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Sync.hpp",

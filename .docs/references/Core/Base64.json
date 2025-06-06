@@ -1,5 +1,6 @@
 {
     "title": "Base64",
+    "filename": "Base64",
     "path": "Core/Base64",
     "source": {
         "header": "Includes/Chicane/Core/Base64.hpp",

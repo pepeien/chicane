@@ -1,5 +1,6 @@
 {
-    "title": "Renderer",
+    "title": "Internals",
+    "filename": "Renderer",
     "path": "Runtime/Vulkan/Renderer",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",

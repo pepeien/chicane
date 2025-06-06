@@ -1,5 +1,6 @@
 {
     "title": "Manager",
+    "filename": "Manager",
     "path": "Box/Asset/Sound/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Sound/Manager.hpp",

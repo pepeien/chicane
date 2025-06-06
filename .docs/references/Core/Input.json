@@ -1,5 +1,6 @@
 {
     "title": "Input",
+    "filename": "Input",
     "path": "Core/Input",
     "source": {
         "header": null,

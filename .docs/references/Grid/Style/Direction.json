@@ -1,5 +1,6 @@
 {
     "title": "Direction",
+    "filename": "Direction",
     "path": "Grid/Style/Direction",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Direction.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Texture",
+    "filename": "Texture",
     "path": "Box/Asset/Texture",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Texture.hpp",

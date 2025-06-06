@@ -1,5 +1,6 @@
 {
     "title": "Device",
+    "filename": "Device",
     "path": "Runtime/Vulkan/Device",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Device.hpp",

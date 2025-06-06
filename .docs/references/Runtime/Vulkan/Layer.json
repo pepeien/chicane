@@ -1,5 +1,6 @@
 {
     "title": "Layer",
+    "filename": "Layer",
     "path": "Runtime/Vulkan/Layer",
     "source": {
         "header": null,

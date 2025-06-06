@@ -1,5 +1,6 @@
 {
     "title": "Plane",
+    "filename": "Plane",
     "path": "Runtime/Renderer/View/Plane",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",

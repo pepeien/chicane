@@ -1,5 +1,6 @@
 {
-    "title": "Base",
+    "title": "Mat",
+    "filename": "Base",
     "path": "Core/Math/Mat/Base",
     "source": {
         "header": "Includes/Chicane/Core/Math/Mat/Base.hpp",

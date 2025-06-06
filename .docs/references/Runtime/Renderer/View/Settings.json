@@ -1,5 +1,6 @@
 {
     "title": "Settings",
+    "filename": "Settings",
     "path": "Runtime/Renderer/View/Settings",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",

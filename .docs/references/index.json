@@ -1,6 +1,7 @@
 [
     {
         "title": "Box",
+        "filename": "Box",
         "path": "Box",
         "source": {
             "header": "Includes/Chicane/Box.hpp",
@@ -9,6 +10,7 @@
         "children": [
             {
                 "title": "Asset",
+                "filename": "Asset",
                 "path": "Box/Asset",
                 "source": {
                     "header": "Includes/Chicane/Box/Asset.hpp",
@@ -17,6 +19,7 @@
                 "children": [
                     {
                         "title": "Font",
+                        "filename": "Font",
                         "path": "Box/Asset/Font",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Font.hpp",
@@ -25,6 +28,7 @@
                         "children": [
                             {
                                 "title": "Extracted",
+                                "filename": "Extracted",
                                 "path": "Box/Asset/Font/Extracted",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Extracted.hpp",
@@ -34,6 +38,7 @@
                             },
                             {
                                 "title": "Glyph",
+                                "filename": "Glyph",
                                 "path": "Box/Asset/Font/Glyph",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Glyph.hpp",
@@ -43,6 +48,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Font/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Instance.hpp",
@@ -52,6 +58,7 @@
                             },
                             {
                                 "title": "Manager",
+                                "filename": "Manager",
                                 "path": "Box/Asset/Font/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Manager.hpp",
@@ -61,6 +68,7 @@
                             },
                             {
                                 "title": "Parsed",
+                                "filename": "Parsed",
                                 "path": "Box/Asset/Font/Parsed",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Parsed.hpp",
@@ -70,6 +78,7 @@
                             },
                             {
                                 "title": "True Type",
+                                "filename": "True Type",
                                 "path": "Box/Asset/Font/TrueType",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/TrueType.hpp",
@@ -79,6 +88,7 @@
                             },
                             {
                                 "title": "Vendor",
+                                "filename": "Vendor",
                                 "path": "Box/Asset/Font/Vendor",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Vendor.hpp",
@@ -90,6 +100,7 @@
                     },
                     {
                         "title": "Header",
+                        "filename": "Header",
                         "path": "Box/Asset/Header",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Header.hpp",
@@ -99,6 +110,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Box/Asset/Instance",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Instance.hpp",
@@ -108,6 +120,7 @@
                     },
                     {
                         "title": "Mesh",
+                        "filename": "Mesh",
                         "path": "Box/Asset/Mesh",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Mesh.hpp",
@@ -115,16 +128,8 @@
                         },
                         "children": [
                             {
-                                "title": "Data",
-                                "path": "Box/Asset/Mesh/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Mesh/Data.hpp",
-                                    "namespace": "Chicane::Box::Mesh::Parsed"
-                                },
-                                "children": []
-                            },
-                            {
                                 "title": "Group",
+                                "filename": "Group",
                                 "path": "Box/Asset/Mesh/Group",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Mesh/Group.hpp",
@@ -134,10 +139,21 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Mesh/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Mesh/Instance.hpp",
                                     "namespace": "Chicane::Box::Mesh::Instance"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Parsed",
+                                "filename": "Data",
+                                "path": "Box/Asset/Mesh/Data",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Asset/Mesh/Data.hpp",
+                                    "namespace": "Chicane::Box::Mesh::Parsed"
                                 },
                                 "children": []
                             }
@@ -145,6 +161,7 @@
                     },
                     {
                         "title": "Model",
+                        "filename": "Model",
                         "path": "Box/Asset/Model",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Model.hpp",
@@ -152,16 +169,8 @@
                         },
                         "children": [
                             {
-                                "title": "Data",
-                                "path": "Box/Asset/Model/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Model/Data.hpp",
-                                    "namespace": "Chicane::Box::Model::Parsed"
-                                },
-                                "children": []
-                            },
-                            {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Model/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Instance.hpp",
@@ -171,6 +180,7 @@
                             },
                             {
                                 "title": "Manager",
+                                "filename": "Manager",
                                 "path": "Box/Asset/Model/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Manager.hpp",
@@ -179,7 +189,18 @@
                                 "children": []
                             },
                             {
+                                "title": "Parsed",
+                                "filename": "Data",
+                                "path": "Box/Asset/Model/Data",
+                                "source": {
+                                    "header": "Includes/Chicane/Box/Asset/Model/Data.hpp",
+                                    "namespace": "Chicane::Box::Model::Parsed"
+                                },
+                                "children": []
+                            },
+                            {
                                 "title": "Vendor",
+                                "filename": "Vendor",
                                 "path": "Box/Asset/Model/Vendor",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Vendor.hpp",
@@ -189,6 +210,7 @@
                             },
                             {
                                 "title": "Wavefront",
+                                "filename": "Wavefront",
                                 "path": "Box/Asset/Model/Wavefront",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Wavefront.hpp",
@@ -200,6 +222,7 @@
                     },
                     {
                         "title": "Sky",
+                        "filename": "Sky",
                         "path": "Box/Asset/Sky",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Sky.hpp",
@@ -208,6 +231,7 @@
                         "children": [
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Sky/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sky/Instance.hpp",
@@ -217,6 +241,7 @@
                             },
                             {
                                 "title": "Side",
+                                "filename": "Side",
                                 "path": "Box/Asset/Sky/Side",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sky/Side.hpp",
@@ -228,6 +253,7 @@
                     },
                     {
                         "title": "Sound",
+                        "filename": "Sound",
                         "path": "Box/Asset/Sound",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Sound.hpp",
@@ -236,6 +262,7 @@
                         "children": [
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Sound/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sound/Instance.hpp",
@@ -245,6 +272,7 @@
                             },
                             {
                                 "title": "Manager",
+                                "filename": "Manager",
                                 "path": "Box/Asset/Sound/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sound/Manager.hpp",
@@ -256,6 +284,7 @@
                     },
                     {
                         "title": "Texture",
+                        "filename": "Texture",
                         "path": "Box/Asset/Texture",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Texture.hpp",
@@ -264,6 +293,7 @@
                         "children": [
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Box/Asset/Texture/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Texture/Instance.hpp",
@@ -273,6 +303,7 @@
                             },
                             {
                                 "title": "Manager",
+                                "filename": "Manager",
                                 "path": "Box/Asset/Texture/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Texture/Manager.hpp",
@@ -284,6 +315,7 @@
                     },
                     {
                         "title": "Type",
+                        "filename": "Type",
                         "path": "Box/Asset/Type",
                         "source": {
                             "header": "Includes/Chicane/Box/Asset/Type.hpp",
@@ -295,6 +327,7 @@
             },
             {
                 "title": "Manager",
+                "filename": "Manager",
                 "path": "Box/Manager",
                 "source": {
                     "header": null,
@@ -303,6 +336,7 @@
                 "children": [
                     {
                         "title": "Event Type",
+                        "filename": "Event Type",
                         "path": "Box/Manager/EventType",
                         "source": {
                             "header": "Includes/Chicane/Box/Manager/EventType.hpp",
@@ -312,6 +346,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Box/Manager/Instance",
                         "source": {
                             "header": "Includes/Chicane/Box/Manager/Instance.hpp",
@@ -325,6 +360,7 @@
     },
     {
         "title": "Core",
+        "filename": "Core",
         "path": "Core",
         "source": {
             "header": null,
@@ -333,6 +369,7 @@
         "children": [
             {
                 "title": "Audio",
+                "filename": "Audio",
                 "path": "Core/Audio",
                 "source": {
                     "header": null,
@@ -340,7 +377,8 @@
                 },
                 "children": [
                     {
-                        "title": "Data",
+                        "title": "Audio",
+                        "filename": "Data",
                         "path": "Core/Audio/Data",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Data.hpp",
@@ -350,6 +388,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Core/Audio/Instance",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Instance.hpp",
@@ -359,6 +398,7 @@
                     },
                     {
                         "title": "Specification",
+                        "filename": "Specification",
                         "path": "Core/Audio/Specification",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Specification.hpp",
@@ -368,6 +408,7 @@
                     },
                     {
                         "title": "Vendor",
+                        "filename": "Vendor",
                         "path": "Core/Audio/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Vendor.hpp",
@@ -379,6 +420,7 @@
             },
             {
                 "title": "Base64",
+                "filename": "Base64",
                 "path": "Core/Base64",
                 "source": {
                     "header": "Includes/Chicane/Core/Base64.hpp",
@@ -388,6 +430,7 @@
             },
             {
                 "title": "Color",
+                "filename": "Color",
                 "path": "Core/Color",
                 "source": {
                     "header": "Includes/Chicane/Core/Color.hpp",
@@ -397,6 +440,7 @@
             },
             {
                 "title": "Event",
+                "filename": "Event",
                 "path": "Core/Event",
                 "source": {
                     "header": null,
@@ -405,6 +449,7 @@
                 "children": [
                     {
                         "title": "Changeable",
+                        "filename": "Changeable",
                         "path": "Core/Event/Changeable",
                         "source": {
                             "header": "Includes/Chicane/Core/Event/Changeable.hpp",
@@ -414,6 +459,7 @@
                     },
                     {
                         "title": "Observable",
+                        "filename": "Observable",
                         "path": "Core/Event/Observable",
                         "source": {
                             "header": "Includes/Chicane/Core/Event/Observable.hpp",
@@ -423,6 +469,7 @@
                     },
                     {
                         "title": "Subscription",
+                        "filename": "Subscription",
                         "path": "Core/Event/Subscription",
                         "source": {
                             "header": "Includes/Chicane/Core/Event/Subscription.hpp",
@@ -434,6 +481,7 @@
             },
             {
                 "title": "File System",
+                "filename": "File System",
                 "path": "Core/FileSystem",
                 "source": {
                     "header": "Includes/Chicane/Core/FileSystem.hpp",
@@ -442,6 +490,7 @@
                 "children": [
                     {
                         "title": "File Dialog",
+                        "filename": "File Dialog",
                         "path": "Core/FileSystem/FileDialog",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/FileDialog.hpp",
@@ -451,6 +500,7 @@
                     },
                     {
                         "title": "Folder Dialog",
+                        "filename": "Folder Dialog",
                         "path": "Core/FileSystem/FolderDialog",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/FolderDialog.hpp",
@@ -460,6 +510,7 @@
                     },
                     {
                         "title": "Item",
+                        "filename": "Item",
                         "path": "Core/FileSystem/Item",
                         "source": {
                             "header": "Includes/Chicane/Core/FileSystem/Item.hpp",
@@ -471,6 +522,7 @@
             },
             {
                 "title": "Image",
+                "filename": "Image",
                 "path": "Core/Image",
                 "source": {
                     "header": null,
@@ -478,7 +530,8 @@
                 },
                 "children": [
                     {
-                        "title": "Data",
+                        "title": "Image",
+                        "filename": "Data",
                         "path": "Core/Image/Data",
                         "source": {
                             "header": "Includes/Chicane/Core/Image/Data.hpp",
@@ -488,6 +541,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Core/Image/Instance",
                         "source": {
                             "header": "Includes/Chicane/Core/Image/Instance.hpp",
@@ -497,6 +551,7 @@
                     },
                     {
                         "title": "Vendor",
+                        "filename": "Vendor",
                         "path": "Core/Image/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Core/Image/Vendor.hpp",
@@ -508,6 +563,7 @@
             },
             {
                 "title": "Input",
+                "filename": "Input",
                 "path": "Core/Input",
                 "source": {
                     "header": null,
@@ -516,6 +572,7 @@
                 "children": [
                     {
                         "title": "Device",
+                        "filename": "Device",
                         "path": "Core/Input/Device",
                         "source": {
                             "header": null,
@@ -523,7 +580,8 @@
                         },
                         "children": [
                             {
-                                "title": "Event",
+                                "title": "Device Event",
+                                "filename": "Event",
                                 "path": "Core/Input/Device/Event",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
@@ -532,7 +590,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Type",
+                                "title": "Device Type",
+                                "filename": "Type",
                                 "path": "Core/Input/Device/Type",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
@@ -544,6 +603,7 @@
                     },
                     {
                         "title": "Event",
+                        "filename": "Event",
                         "path": "Core/Input/Event",
                         "source": {
                             "header": null,
@@ -552,6 +612,7 @@
                         "children": [
                             {
                                 "title": "Events",
+                                "filename": "Events",
                                 "path": "Core/Input/Event/Events",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Events.hpp",
@@ -560,7 +621,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Pressable",
+                                "title": "Pressable Events",
+                                "filename": "Pressable",
                                 "path": "Core/Input/Event/Pressable",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Event/Pressable.hpp",
@@ -572,6 +634,7 @@
                     },
                     {
                         "title": "Gamepad",
+                        "filename": "Gamepad",
                         "path": "Core/Input/Gamepad",
                         "source": {
                             "header": null,
@@ -579,7 +642,8 @@
                         },
                         "children": [
                             {
-                                "title": "Axis",
+                                "title": "Gamepad Axis",
+                                "filename": "Axis",
                                 "path": "Core/Input/Gamepad/Axis",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/Axis.hpp",
@@ -588,7 +652,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Button",
+                                "title": "Gamepad Button",
+                                "filename": "Button",
                                 "path": "Core/Input/Gamepad/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",
@@ -597,7 +662,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Button Event",
+                                "title": "Gamepad Button Event",
+                                "filename": "Button Event",
                                 "path": "Core/Input/Gamepad/ButtonEvent",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/ButtonEvent.hpp",
@@ -606,7 +672,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Motion Event",
+                                "title": "Gamepad Motion Event",
+                                "filename": "Motion Event",
                                 "path": "Core/Input/Gamepad/MotionEvent",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",
@@ -618,6 +685,7 @@
                     },
                     {
                         "title": "Keyboard",
+                        "filename": "Keyboard",
                         "path": "Core/Input/Keyboard",
                         "source": {
                             "header": null,
@@ -625,7 +693,8 @@
                         },
                         "children": [
                             {
-                                "title": "Button",
+                                "title": "Keyboard Button",
+                                "filename": "Button",
                                 "path": "Core/Input/Keyboard/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",
@@ -634,7 +703,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Button Modifier",
+                                "title": "Keyboard Button Modifier",
+                                "filename": "Button Modifier",
                                 "path": "Core/Input/Keyboard/ButtonModifier",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/ButtonModifier.hpp",
@@ -643,7 +713,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Event",
+                                "title": "Keyboard Event",
+                                "filename": "Event",
                                 "path": "Core/Input/Keyboard/Event",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
@@ -655,6 +726,7 @@
                     },
                     {
                         "title": "Mouse",
+                        "filename": "Mouse",
                         "path": "Core/Input/Mouse",
                         "source": {
                             "header": null,
@@ -662,7 +734,8 @@
                         },
                         "children": [
                             {
-                                "title": "Button",
+                                "title": "Mouse Button",
+                                "filename": "Button",
                                 "path": "Core/Input/Mouse/Button",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
@@ -671,7 +744,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Button Event",
+                                "title": "Mouse Button Event",
+                                "filename": "Button Event",
                                 "path": "Core/Input/Mouse/ButtonEvent",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",
@@ -680,7 +754,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Motion Event",
+                                "title": "Mouse Motion Event",
+                                "filename": "Motion Event",
                                 "path": "Core/Input/Mouse/MotionEvent",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Input/Mouse/MotionEvent.hpp",
@@ -692,6 +767,7 @@
                     },
                     {
                         "title": "Status",
+                        "filename": "Status",
                         "path": "Core/Input/Status",
                         "source": {
                             "header": "Includes/Chicane/Core/Input/Status.hpp",
@@ -703,6 +779,7 @@
             },
             {
                 "title": "Log",
+                "filename": "Log",
                 "path": "Core/Log",
                 "source": {
                     "header": "Includes/Chicane/Core/Log.hpp",
@@ -711,6 +788,7 @@
                 "children": [
                     {
                         "title": "Entry",
+                        "filename": "Entry",
                         "path": "Core/Log/Entry",
                         "source": {
                             "header": "Includes/Chicane/Core/Log/Entry.hpp",
@@ -722,6 +800,7 @@
             },
             {
                 "title": "Math",
+                "filename": "Math",
                 "path": "Core/Math",
                 "source": {
                     "header": null,
@@ -730,6 +809,7 @@
                 "children": [
                     {
                         "title": "Bounds",
+                        "filename": "Bounds",
                         "path": "Core/Math/Bounds",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Bounds.hpp",
@@ -739,6 +819,7 @@
                     },
                     {
                         "title": "Curve",
+                        "filename": "Curve",
                         "path": "Core/Math/Curve",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Curve.hpp",
@@ -748,6 +829,7 @@
                     },
                     {
                         "title": "Line",
+                        "filename": "Line",
                         "path": "Core/Math/Line",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Line.hpp",
@@ -757,6 +839,7 @@
                     },
                     {
                         "title": "Mat",
+                        "filename": "Mat",
                         "path": "Core/Math/Mat",
                         "source": {
                             "header": null,
@@ -764,7 +847,8 @@
                         },
                         "children": [
                             {
-                                "title": "Base",
+                                "title": "Mat",
+                                "filename": "Base",
                                 "path": "Core/Math/Mat/Base",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Mat/Base.hpp",
@@ -774,6 +858,7 @@
                             },
                             {
                                 "title": "Mat4",
+                                "filename": "Mat4",
                                 "path": "Core/Math/Mat/Mat4",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Mat/Mat4.hpp",
@@ -785,6 +870,7 @@
                     },
                     {
                         "title": "Quat",
+                        "filename": "Quat",
                         "path": "Core/Math/Quat",
                         "source": {
                             "header": null,
@@ -792,7 +878,8 @@
                         },
                         "children": [
                             {
-                                "title": "Base",
+                                "title": "Quat",
+                                "filename": "Base",
                                 "path": "Core/Math/Quat/Base",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Quat/Base.hpp",
@@ -802,6 +889,7 @@
                             },
                             {
                                 "title": "Quat Float",
+                                "filename": "Quat Float",
                                 "path": "Core/Math/Quat/QuatFloat",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Quat/QuatFloat.hpp",
@@ -813,6 +901,7 @@
                     },
                     {
                         "title": "Transform",
+                        "filename": "Transform",
                         "path": "Core/Math/Transform",
                         "source": {
                             "header": null,
@@ -821,6 +910,7 @@
                         "children": [
                             {
                                 "title": "Combined",
+                                "filename": "Combined",
                                 "path": "Core/Math/Transform/Combined",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",
@@ -830,6 +920,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Core/Math/Transform/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Transform/Instance.hpp",
@@ -841,6 +932,7 @@
                     },
                     {
                         "title": "Vec",
+                        "filename": "Vec",
                         "path": "Core/Math/Vec",
                         "source": {
                             "header": null,
@@ -848,7 +940,8 @@
                         },
                         "children": [
                             {
-                                "title": "Base",
+                                "title": "Vec",
+                                "filename": "Base",
                                 "path": "Core/Math/Vec/Base",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Base.hpp",
@@ -858,6 +951,7 @@
                             },
                             {
                                 "title": "Vec2",
+                                "filename": "Vec2",
                                 "path": "Core/Math/Vec/Vec2",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec2.hpp",
@@ -867,6 +961,7 @@
                             },
                             {
                                 "title": "Vec3",
+                                "filename": "Vec3",
                                 "path": "Core/Math/Vec/Vec3",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec3.hpp",
@@ -876,6 +971,7 @@
                             },
                             {
                                 "title": "Vec4",
+                                "filename": "Vec4",
                                 "path": "Core/Math/Vec/Vec4",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Vec/Vec4.hpp",
@@ -887,6 +983,7 @@
                     },
                     {
                         "title": "Vertex",
+                        "filename": "Vertex",
                         "path": "Core/Math/Vertex",
                         "source": {
                             "header": "Includes/Chicane/Core/Math/Vertex.hpp",
@@ -898,6 +995,7 @@
             },
             {
                 "title": "Recorder",
+                "filename": "Recorder",
                 "path": "Core/Recorder",
                 "source": {
                     "header": "Includes/Chicane/Core/Recorder.hpp",
@@ -907,6 +1005,7 @@
             },
             {
                 "title": "Reference",
+                "filename": "Reference",
                 "path": "Core/Reference",
                 "source": {
                     "header": "Includes/Chicane/Core/Reference.hpp",
@@ -916,6 +1015,7 @@
             },
             {
                 "title": "String",
+                "filename": "String",
                 "path": "Core/String",
                 "source": {
                     "header": "Includes/Chicane/Core/String.hpp",
@@ -925,6 +1025,7 @@
             },
             {
                 "title": "Telemetry",
+                "filename": "Telemetry",
                 "path": "Core/Telemetry",
                 "source": {
                     "header": "Includes/Chicane/Core/Telemetry.hpp",
@@ -934,6 +1035,7 @@
             },
             {
                 "title": "Time",
+                "filename": "Time",
                 "path": "Core/Time",
                 "source": {
                     "header": "Includes/Chicane/Core/Time.hpp",
@@ -943,6 +1045,7 @@
             },
             {
                 "title": "Window",
+                "filename": "Window",
                 "path": "Core/Window",
                 "source": {
                     "header": null,
@@ -951,6 +1054,7 @@
                 "children": [
                     {
                         "title": "Create Info",
+                        "filename": "Create Info",
                         "path": "Core/Window/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/CreateInfo.hpp",
@@ -960,6 +1064,7 @@
                     },
                     {
                         "title": "Event",
+                        "filename": "Event",
                         "path": "Core/Window/Event",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Event.hpp",
@@ -969,6 +1074,7 @@
                     },
                     {
                         "title": "Event Type",
+                        "filename": "Event Type",
                         "path": "Core/Window/EventType",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/EventType.hpp",
@@ -978,6 +1084,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Core/Window/Instance",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Instance.hpp",
@@ -987,6 +1094,7 @@
                     },
                     {
                         "title": "Renderer",
+                        "filename": "Renderer",
                         "path": "Core/Window/Renderer",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Renderer.hpp",
@@ -996,6 +1104,7 @@
                     },
                     {
                         "title": "Type",
+                        "filename": "Type",
                         "path": "Core/Window/Type",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/Type.hpp",
@@ -1007,6 +1116,7 @@
             },
             {
                 "title": "Xml",
+                "filename": "Xml",
                 "path": "Core/Xml",
                 "source": {
                     "header": "Includes/Chicane/Core/Xml.hpp",
@@ -1018,6 +1128,7 @@
     },
     {
         "title": "Grid",
+        "filename": "Grid",
         "path": "Grid",
         "source": {
             "header": "Includes/Chicane/Grid.hpp",
@@ -1026,6 +1137,7 @@
         "children": [
             {
                 "title": "Component",
+                "filename": "Component",
                 "path": "Grid/Component",
                 "source": {
                     "header": null,
@@ -1034,6 +1146,7 @@
                 "children": [
                     {
                         "title": "Button",
+                        "filename": "Button",
                         "path": "Grid/Component/Button",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Button.hpp",
@@ -1043,6 +1156,7 @@
                     },
                     {
                         "title": "Character",
+                        "filename": "Character",
                         "path": "Grid/Component/Character",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Character.hpp",
@@ -1051,16 +1165,8 @@
                         "children": []
                     },
                     {
-                        "title": "Container",
-                        "path": "Grid/Component/Container",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/Container.hpp",
-                            "namespace": "Chicane::Grid::Container"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Instance",
+                        "title": "Component",
+                        "filename": "Instance",
                         "path": "Grid/Component/Instance",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Instance.hpp",
@@ -1069,7 +1175,18 @@
                         "children": []
                     },
                     {
+                        "title": "Container",
+                        "filename": "Container",
+                        "path": "Grid/Component/Container",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Component/Container.hpp",
+                            "namespace": "Chicane::Grid::Container"
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "List",
+                        "filename": "List",
                         "path": "Grid/Component/List",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/List.hpp",
@@ -1079,6 +1196,7 @@
                     },
                     {
                         "title": "Popup",
+                        "filename": "Popup",
                         "path": "Grid/Component/Popup",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Popup.hpp",
@@ -1088,6 +1206,7 @@
                     },
                     {
                         "title": "Progress Bar",
+                        "filename": "Progress Bar",
                         "path": "Grid/Component/ProgressBar",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/ProgressBar.hpp",
@@ -1097,6 +1216,7 @@
                     },
                     {
                         "title": "Text",
+                        "filename": "Text",
                         "path": "Grid/Component/Text",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Text.hpp",
@@ -1106,6 +1226,7 @@
                     },
                     {
                         "title": "Text Input",
+                        "filename": "Text Input",
                         "path": "Grid/Component/TextInput",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/TextInput.hpp",
@@ -1115,6 +1236,7 @@
                     },
                     {
                         "title": "View",
+                        "filename": "View",
                         "path": "Grid/Component/View",
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/View.hpp",
@@ -1126,6 +1248,7 @@
             },
             {
                 "title": "Event",
+                "filename": "Event",
                 "path": "Grid/Event",
                 "source": {
                     "header": "Includes/Chicane/Grid/Event.hpp",
@@ -1134,7 +1257,8 @@
                 "children": []
             },
             {
-                "title": "Function",
+                "title": "Function Data",
+                "filename": "Function",
                 "path": "Grid/Function",
                 "source": {
                     "header": "Includes/Chicane/Grid/Function.hpp",
@@ -1144,6 +1268,7 @@
             },
             {
                 "title": "Primitive",
+                "filename": "Primitive",
                 "path": "Grid/Primitive",
                 "source": {
                     "header": "Includes/Chicane/Grid/Primitive.hpp",
@@ -1153,6 +1278,7 @@
             },
             {
                 "title": "Style",
+                "filename": "Style",
                 "path": "Grid/Style",
                 "source": {
                     "header": "Includes/Chicane/Grid/Style.hpp",
@@ -1161,6 +1287,7 @@
                 "children": [
                     {
                         "title": "Alignment",
+                        "filename": "Alignment",
                         "path": "Grid/Style/Alignment",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
@@ -1170,6 +1297,7 @@
                     },
                     {
                         "title": "Corners",
+                        "filename": "Corners",
                         "path": "Grid/Style/Corners",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Corners.hpp",
@@ -1179,6 +1307,7 @@
                     },
                     {
                         "title": "Direction",
+                        "filename": "Direction",
                         "path": "Grid/Style/Direction",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Direction.hpp",
@@ -1188,6 +1317,7 @@
                     },
                     {
                         "title": "Display",
+                        "filename": "Display",
                         "path": "Grid/Style/Display",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Display.hpp",
@@ -1197,6 +1327,7 @@
                     },
                     {
                         "title": "Flex",
+                        "filename": "Flex",
                         "path": "Grid/Style/Flex",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Flex.hpp",
@@ -1206,6 +1337,7 @@
                     },
                     {
                         "title": "Font",
+                        "filename": "Font",
                         "path": "Grid/Style/Font",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Font.hpp",
@@ -1215,6 +1347,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Grid/Style/Instance",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Instance.hpp",
@@ -1224,6 +1357,7 @@
                     },
                     {
                         "title": "Position",
+                        "filename": "Position",
                         "path": "Grid/Style/Position",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Position.hpp",
@@ -1233,6 +1367,7 @@
                     },
                     {
                         "title": "Source",
+                        "filename": "Source",
                         "path": "Grid/Style/Source",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Source.hpp",
@@ -1246,6 +1381,7 @@
     },
     {
         "title": "Runtime",
+        "filename": "Runtime",
         "path": "Runtime",
         "source": {
             "header": null,
@@ -1254,6 +1390,7 @@
         "children": [
             {
                 "title": "Application",
+                "filename": "Application",
                 "path": "Runtime/Application",
                 "source": {
                     "header": "Includes/Chicane/Runtime/Application.hpp",
@@ -1262,6 +1399,7 @@
                 "children": [
                     {
                         "title": "Create Info",
+                        "filename": "Create Info",
                         "path": "Runtime/Application/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
@@ -1271,6 +1409,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Runtime/Application/Instance",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Application/Instance.hpp",
@@ -1282,6 +1421,7 @@
             },
             {
                 "title": "Game",
+                "filename": "Game",
                 "path": "Runtime/Game",
                 "source": {
                     "header": null,
@@ -1290,6 +1430,7 @@
                 "children": [
                     {
                         "title": "Controller",
+                        "filename": "Controller",
                         "path": "Runtime/Game/Controller",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Game/Controller.hpp",
@@ -1299,6 +1440,7 @@
                     },
                     {
                         "title": "Level",
+                        "filename": "Level",
                         "path": "Runtime/Game/Level",
                         "source": {
                             "header": null,
@@ -1306,7 +1448,8 @@
                         },
                         "children": [
                             {
-                                "title": "Instance",
+                                "title": "Level",
+                                "filename": "Instance",
                                 "path": "Runtime/Game/Level/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Game/Level/Instance.hpp",
@@ -1318,6 +1461,7 @@
                     },
                     {
                         "title": "Transformable",
+                        "filename": "Transformable",
                         "path": "Runtime/Game/Transformable",
                         "source": {
                             "header": null,
@@ -1326,6 +1470,7 @@
                         "children": [
                             {
                                 "title": "Actor",
+                                "filename": "Actor",
                                 "path": "Runtime/Game/Transformable/Actor",
                                 "source": {
                                     "header": null,
@@ -1333,7 +1478,18 @@
                                 },
                                 "children": [
                                     {
+                                        "title": "Actor",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Game/Transformable/Actor/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Instance.hpp",
+                                            "namespace": "Chicane::Actor"
+                                        },
+                                        "children": []
+                                    },
+                                    {
                                         "title": "Audio",
+                                        "filename": "Audio",
                                         "path": "Runtime/Game/Transformable/Actor/Audio",
                                         "source": {
                                             "header": null,
@@ -1341,7 +1497,8 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "Instance",
+                                                "title": "AAudio",
+                                                "filename": "Instance",
                                                 "path": "Runtime/Game/Transformable/Actor/Audio/Instance",
                                                 "source": {
                                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp",
@@ -1352,16 +1509,8 @@
                                         ]
                                     },
                                     {
-                                        "title": "Instance",
-                                        "path": "Runtime/Game/Transformable/Actor/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Instance.hpp",
-                                            "namespace": "Chicane::Actor"
-                                        },
-                                        "children": []
-                                    },
-                                    {
                                         "title": "Light",
+                                        "filename": "Light",
                                         "path": "Runtime/Game/Transformable/Actor/Light",
                                         "source": {
                                             "header": null,
@@ -1369,7 +1518,8 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "Instance",
+                                                "title": "ALight",
+                                                "filename": "Instance",
                                                 "path": "Runtime/Game/Transformable/Actor/Light/Instance",
                                                 "source": {
                                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance.hpp",
@@ -1381,6 +1531,7 @@
                                     },
                                     {
                                         "title": "Pawn",
+                                        "filename": "Pawn",
                                         "path": "Runtime/Game/Transformable/Actor/Pawn",
                                         "source": {
                                             "header": null,
@@ -1388,7 +1539,8 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "Character",
+                                                "title": "ACharacter",
+                                                "filename": "Character",
                                                 "path": "Runtime/Game/Transformable/Actor/Pawn/Character",
                                                 "source": {
                                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Character.hpp",
@@ -1397,7 +1549,8 @@
                                                 "children": []
                                             },
                                             {
-                                                "title": "Instance",
+                                                "title": "APawn",
+                                                "filename": "Instance",
                                                 "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
                                                 "source": {
                                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",
@@ -1409,6 +1562,7 @@
                                     },
                                     {
                                         "title": "Sky",
+                                        "filename": "Sky",
                                         "path": "Runtime/Game/Transformable/Actor/Sky",
                                         "source": {
                                             "header": null,
@@ -1416,7 +1570,8 @@
                                         },
                                         "children": [
                                             {
-                                                "title": "Instance",
+                                                "title": "ASky",
+                                                "filename": "Instance",
                                                 "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
                                                 "source": {
                                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",
@@ -1430,6 +1585,7 @@
                             },
                             {
                                 "title": "Component",
+                                "filename": "Component",
                                 "path": "Runtime/Game/Transformable/Component",
                                 "source": {
                                     "header": null,
@@ -1437,7 +1593,8 @@
                                 },
                                 "children": [
                                     {
-                                        "title": "Audio",
+                                        "title": "CAudio",
+                                        "filename": "Audio",
                                         "path": "Runtime/Game/Transformable/Component/Audio",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Audio.hpp",
@@ -1446,7 +1603,8 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Camera",
+                                        "title": "CCamera",
+                                        "filename": "Camera",
                                         "path": "Runtime/Game/Transformable/Component/Camera",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Camera.hpp",
@@ -1455,16 +1613,8 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Instance",
-                                        "path": "Runtime/Game/Transformable/Component/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Instance.hpp",
-                                            "namespace": "Chicane::Component"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Light",
+                                        "title": "CLight",
+                                        "filename": "Light",
                                         "path": "Runtime/Game/Transformable/Component/Light",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Light.hpp",
@@ -1473,7 +1623,8 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Mesh",
+                                        "title": "CMesh",
+                                        "filename": "Mesh",
                                         "path": "Runtime/Game/Transformable/Component/Mesh",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Mesh.hpp",
@@ -1482,7 +1633,8 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "Physics",
+                                        "title": "CPhysics",
+                                        "filename": "Physics",
                                         "path": "Runtime/Game/Transformable/Component/Physics",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Physics.hpp",
@@ -1491,18 +1643,30 @@
                                         "children": []
                                     },
                                     {
-                                        "title": "View",
+                                        "title": "CView",
+                                        "filename": "View",
                                         "path": "Runtime/Game/Transformable/Component/View",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Game/Transformable/Component/View.hpp",
                                             "namespace": "Chicane::CView"
                                         },
                                         "children": []
+                                    },
+                                    {
+                                        "title": "Component",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Game/Transformable/Component/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Instance.hpp",
+                                            "namespace": "Chicane::Component"
+                                        },
+                                        "children": []
                                     }
                                 ]
                             },
                             {
-                                "title": "Instance",
+                                "title": "Transformable",
+                                "filename": "Instance",
                                 "path": "Runtime/Game/Transformable/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Game/Transformable/Instance.hpp",
@@ -1516,6 +1680,7 @@
             },
             {
                 "title": "Renderer",
+                "filename": "Renderer",
                 "path": "Runtime/Renderer",
                 "source": {
                     "header": null,
@@ -1524,6 +1689,7 @@
                 "children": [
                     {
                         "title": "Create Info",
+                        "filename": "Create Info",
                         "path": "Runtime/Renderer/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/CreateInfo.hpp",
@@ -1533,6 +1699,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Runtime/Renderer/Instance",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/Instance.hpp",
@@ -1542,6 +1709,7 @@
                     },
                     {
                         "title": "Layer",
+                        "filename": "Layer",
                         "path": "Runtime/Renderer/Layer",
                         "source": {
                             "header": null,
@@ -1550,6 +1718,7 @@
                         "children": [
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Renderer/Layer/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/Layer/Instance.hpp",
@@ -1559,6 +1728,7 @@
                             },
                             {
                                 "title": "Push Strategy",
+                                "filename": "Push Strategy",
                                 "path": "Runtime/Renderer/Layer/PushStrategy",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/Layer/PushStrategy.hpp",
@@ -1568,6 +1738,7 @@
                             },
                             {
                                 "title": "Status",
+                                "filename": "Status",
                                 "path": "Runtime/Renderer/Layer/Status",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/Layer/Status.hpp",
@@ -1579,6 +1750,7 @@
                     },
                     {
                         "title": "View",
+                        "filename": "View",
                         "path": "Runtime/Renderer/View",
                         "source": {
                             "header": null,
@@ -1587,6 +1759,7 @@
                         "children": [
                             {
                                 "title": "Data",
+                                "filename": "Data",
                                 "path": "Runtime/Renderer/View/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/View/Data.hpp",
@@ -1596,6 +1769,7 @@
                             },
                             {
                                 "title": "Frustum",
+                                "filename": "Frustum",
                                 "path": "Runtime/Renderer/View/Frustum",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
@@ -1605,6 +1779,7 @@
                             },
                             {
                                 "title": "Plane",
+                                "filename": "Plane",
                                 "path": "Runtime/Renderer/View/Plane",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",
@@ -1614,6 +1789,7 @@
                             },
                             {
                                 "title": "Settings",
+                                "filename": "Settings",
                                 "path": "Runtime/Renderer/View/Settings",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",
@@ -1625,6 +1801,7 @@
                     },
                     {
                         "title": "Viewport",
+                        "filename": "Viewport",
                         "path": "Runtime/Renderer/Viewport",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",
@@ -1636,6 +1813,7 @@
             },
             {
                 "title": "Vulkan",
+                "filename": "Vulkan",
                 "path": "Runtime/Vulkan",
                 "source": {
                     "header": null,
@@ -1644,6 +1822,7 @@
                 "children": [
                     {
                         "title": "Buffer",
+                        "filename": "Buffer",
                         "path": "Runtime/Vulkan/Buffer",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Buffer.hpp",
@@ -1652,6 +1831,7 @@
                         "children": [
                             {
                                 "title": "Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/Buffer/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Buffer/CreateInfo.hpp",
@@ -1661,6 +1841,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/Buffer/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Buffer/Instance.hpp",
@@ -1672,6 +1853,7 @@
                     },
                     {
                         "title": "Command Buffer",
+                        "filename": "Command Buffer",
                         "path": "Runtime/Vulkan/CommandBuffer",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer.hpp",
@@ -1680,6 +1862,7 @@
                         "children": [
                             {
                                 "title": "Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/CommandBuffer/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/CreateInfo.hpp",
@@ -1689,6 +1872,7 @@
                             },
                             {
                                 "title": "Pool",
+                                "filename": "Pool",
                                 "path": "Runtime/Vulkan/CommandBuffer/Pool",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Pool.hpp",
@@ -1698,6 +1882,7 @@
                             },
                             {
                                 "title": "Worker",
+                                "filename": "Worker",
                                 "path": "Runtime/Vulkan/CommandBuffer/Worker",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/CommandBuffer/Worker.hpp",
@@ -1709,6 +1894,7 @@
                     },
                     {
                         "title": "Debug",
+                        "filename": "Debug",
                         "path": "Runtime/Vulkan/Debug",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Debug.hpp",
@@ -1718,6 +1904,7 @@
                     },
                     {
                         "title": "Descriptor",
+                        "filename": "Descriptor",
                         "path": "Runtime/Vulkan/Descriptor",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Descriptor.hpp",
@@ -1726,6 +1913,7 @@
                         "children": [
                             {
                                 "title": "Bundle",
+                                "filename": "Bundle",
                                 "path": "Runtime/Vulkan/Descriptor/Bundle",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/Bundle.hpp",
@@ -1735,6 +1923,7 @@
                             },
                             {
                                 "title": "Pool Create Info",
+                                "filename": "Pool Create Info",
                                 "path": "Runtime/Vulkan/Descriptor/PoolCreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/PoolCreateInfo.hpp",
@@ -1744,6 +1933,7 @@
                             },
                             {
                                 "title": "Pool Size Create Info",
+                                "filename": "Pool Size Create Info",
                                 "path": "Runtime/Vulkan/Descriptor/PoolSizeCreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
@@ -1753,6 +1943,7 @@
                             },
                             {
                                 "title": "Set Layout Bidings Create Info",
+                                "filename": "Set Layout Bidings Create Info",
                                 "path": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp",
@@ -1764,6 +1955,7 @@
                     },
                     {
                         "title": "Device",
+                        "filename": "Device",
                         "path": "Runtime/Vulkan/Device",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Device.hpp",
@@ -1773,6 +1965,7 @@
                     },
                     {
                         "title": "Frame",
+                        "filename": "Frame",
                         "path": "Runtime/Vulkan/Frame",
                         "source": {
                             "header": null,
@@ -1781,6 +1974,7 @@
                         "children": [
                             {
                                 "title": "Buffer",
+                                "filename": "Buffer",
                                 "path": "Runtime/Vulkan/Frame/Buffer",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Frame/Buffer.hpp",
@@ -1789,6 +1983,7 @@
                                 "children": [
                                     {
                                         "title": "Create Info",
+                                        "filename": "Create Info",
                                         "path": "Runtime/Vulkan/Frame/Buffer/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Vulkan/Frame/Buffer/CreateInfo.hpp",
@@ -1800,6 +1995,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/Frame/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Frame/Instance.hpp",
@@ -1809,6 +2005,7 @@
                             },
                             {
                                 "title": "Resource",
+                                "filename": "Resource",
                                 "path": "Runtime/Vulkan/Frame/Resource",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Frame/Resource.hpp",
@@ -1820,6 +2017,7 @@
                     },
                     {
                         "title": "Graphics Pipeline",
+                        "filename": "Graphics Pipeline",
                         "path": "Runtime/Vulkan/GraphicsPipeline",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline.hpp",
@@ -1828,6 +2026,7 @@
                         "children": [
                             {
                                 "title": "Attachment",
+                                "filename": "Attachment",
                                 "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/Attachment.hpp",
@@ -1837,6 +2036,7 @@
                             },
                             {
                                 "title": "Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/GraphicsPipeline/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/CreateInfo.hpp",
@@ -1846,6 +2046,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/GraphicsPipeline/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/Instance.hpp",
@@ -1857,6 +2058,7 @@
                     },
                     {
                         "title": "Image",
+                        "filename": "Image",
                         "path": "Runtime/Vulkan/Image",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Image.hpp",
@@ -1865,6 +2067,7 @@
                         "children": [
                             {
                                 "title": "Data",
+                                "filename": "Data",
                                 "path": "Runtime/Vulkan/Image/Data",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Image/Data.hpp",
@@ -1874,6 +2077,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/Image/Instance",
                                 "source": {
                                     "header": null,
@@ -1882,6 +2086,7 @@
                                 "children": [
                                     {
                                         "title": "Create Info",
+                                        "filename": "Create Info",
                                         "path": "Runtime/Vulkan/Image/Instance/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Vulkan/Image/Instance/CreateInfo.hpp",
@@ -1893,6 +2098,7 @@
                             },
                             {
                                 "title": "Memory",
+                                "filename": "Memory",
                                 "path": "Runtime/Vulkan/Image/Memory",
                                 "source": {
                                     "header": null,
@@ -1901,6 +2107,7 @@
                                 "children": [
                                     {
                                         "title": "Create Info",
+                                        "filename": "Create Info",
                                         "path": "Runtime/Vulkan/Image/Memory/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Vulkan/Image/Memory/CreateInfo.hpp",
@@ -1912,6 +2119,7 @@
                             },
                             {
                                 "title": "Sampler",
+                                "filename": "Sampler",
                                 "path": "Runtime/Vulkan/Image/Sampler",
                                 "source": {
                                     "header": null,
@@ -1920,6 +2128,7 @@
                                 "children": [
                                     {
                                         "title": "Create Info",
+                                        "filename": "Create Info",
                                         "path": "Runtime/Vulkan/Image/Sampler/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Vulkan/Image/Sampler/CreateInfo.hpp",
@@ -1931,6 +2140,7 @@
                             },
                             {
                                 "title": "View",
+                                "filename": "View",
                                 "path": "Runtime/Vulkan/Image/View",
                                 "source": {
                                     "header": null,
@@ -1939,6 +2149,7 @@
                                 "children": [
                                     {
                                         "title": "Create Info",
+                                        "filename": "Create Info",
                                         "path": "Runtime/Vulkan/Image/View/CreateInfo",
                                         "source": {
                                             "header": "Includes/Chicane/Runtime/Vulkan/Image/View/CreateInfo.hpp",
@@ -1952,6 +2163,7 @@
                     },
                     {
                         "title": "Instance",
+                        "filename": "Instance",
                         "path": "Runtime/Vulkan/Instance",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Instance.hpp",
@@ -1960,7 +2172,18 @@
                         "children": []
                     },
                     {
+                        "title": "Internals",
+                        "filename": "Renderer",
+                        "path": "Runtime/Vulkan/Renderer",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",
+                            "namespace": "Chicane::Vulkan::Renderer::Internals"
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "Layer",
+                        "filename": "Layer",
                         "path": "Runtime/Vulkan/Layer",
                         "source": {
                             "header": null,
@@ -1968,16 +2191,8 @@
                         },
                         "children": [
                             {
-                                "title": "Grid",
-                                "path": "Runtime/Vulkan/Layer/Grid",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Vulkan/Layer/Grid.hpp",
-                                    "namespace": "Chicane::Vulkan::LGrid::PushConstant"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Level",
+                                "title": "LLevel",
+                                "filename": "Level",
                                 "path": "Runtime/Vulkan/Layer/Level",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Layer/Level.hpp",
@@ -1986,7 +2201,8 @@
                                 "children": []
                             },
                             {
-                                "title": "Shadow",
+                                "title": "LShadow",
+                                "filename": "Shadow",
                                 "path": "Runtime/Vulkan/Layer/Shadow",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Layer/Shadow.hpp",
@@ -1995,11 +2211,22 @@
                                 "children": []
                             },
                             {
-                                "title": "Sky",
+                                "title": "LSky",
+                                "filename": "Sky",
                                 "path": "Runtime/Vulkan/Layer/Sky",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Layer/Sky.hpp",
                                     "namespace": "Chicane::Vulkan::LSky"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Push Constant",
+                                "filename": "Grid",
+                                "path": "Runtime/Vulkan/Layer/Grid",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Vulkan/Layer/Grid.hpp",
+                                    "namespace": "Chicane::Vulkan::LGrid::PushConstant"
                                 },
                                 "children": []
                             }
@@ -2007,6 +2234,7 @@
                     },
                     {
                         "title": "Queue",
+                        "filename": "Queue",
                         "path": "Runtime/Vulkan/Queue",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Queue.hpp",
@@ -2015,6 +2243,7 @@
                         "children": [
                             {
                                 "title": "Family Indices",
+                                "filename": "Family Indices",
                                 "path": "Runtime/Vulkan/Queue/FamilyIndices",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Queue/FamilyIndices.hpp",
@@ -2025,16 +2254,8 @@
                         ]
                     },
                     {
-                        "title": "Renderer",
-                        "path": "Runtime/Vulkan/Renderer",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Vulkan/Renderer.hpp",
-                            "namespace": "Chicane::Vulkan::Renderer::Internals"
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Shader",
+                        "filename": "Shader",
                         "path": "Runtime/Vulkan/Shader",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Shader.hpp",
@@ -2042,7 +2263,8 @@
                         },
                         "children": [
                             {
-                                "title": "Create Info",
+                                "title": "Stage Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/Shader/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Shader/CreateInfo.hpp",
@@ -2054,6 +2276,7 @@
                     },
                     {
                         "title": "Sky",
+                        "filename": "Sky",
                         "path": "Runtime/Vulkan/Sky",
                         "source": {
                             "header": null,
@@ -2062,6 +2285,7 @@
                         "children": [
                             {
                                 "title": "Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/Sky/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Sky/CreateInfo.hpp",
@@ -2071,6 +2295,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/Sky/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Sky/Instance.hpp",
@@ -2082,6 +2307,7 @@
                     },
                     {
                         "title": "Surface",
+                        "filename": "Surface",
                         "path": "Runtime/Vulkan/Surface",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Surface.hpp",
@@ -2091,6 +2317,7 @@
                     },
                     {
                         "title": "Swap Chain",
+                        "filename": "Swap Chain",
                         "path": "Runtime/Vulkan/SwapChain",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/SwapChain.hpp",
@@ -2099,6 +2326,7 @@
                         "children": [
                             {
                                 "title": "Bundle",
+                                "filename": "Bundle",
                                 "path": "Runtime/Vulkan/SwapChain/Bundle",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/Bundle.hpp",
@@ -2108,6 +2336,7 @@
                             },
                             {
                                 "title": "Support Details",
+                                "filename": "Support Details",
                                 "path": "Runtime/Vulkan/SwapChain/SupportDetails",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/SwapChain/SupportDetails.hpp",
@@ -2119,6 +2348,7 @@
                     },
                     {
                         "title": "Sync",
+                        "filename": "Sync",
                         "path": "Runtime/Vulkan/Sync",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Sync.hpp",
@@ -2128,6 +2358,7 @@
                     },
                     {
                         "title": "Texture",
+                        "filename": "Texture",
                         "path": "Runtime/Vulkan/Texture",
                         "source": {
                             "header": null,
@@ -2136,6 +2367,7 @@
                         "children": [
                             {
                                 "title": "Create Info",
+                                "filename": "Create Info",
                                 "path": "Runtime/Vulkan/Texture/CreateInfo",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Texture/CreateInfo.hpp",
@@ -2145,6 +2377,7 @@
                             },
                             {
                                 "title": "Instance",
+                                "filename": "Instance",
                                 "path": "Runtime/Vulkan/Texture/Instance",
                                 "source": {
                                     "header": "Includes/Chicane/Runtime/Vulkan/Texture/Instance.hpp",
@@ -2156,6 +2389,7 @@
                     },
                     {
                         "title": "Vertex",
+                        "filename": "Vertex",
                         "path": "Runtime/Vulkan/Vertex",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Vulkan/Vertex.hpp",

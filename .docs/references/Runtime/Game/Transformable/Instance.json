@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "Transformable",
+    "filename": "Instance",
     "path": "Runtime/Game/Transformable/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Instance.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Game",
+    "filename": "Game",
     "path": "Runtime/Game",
     "source": {
         "header": null,

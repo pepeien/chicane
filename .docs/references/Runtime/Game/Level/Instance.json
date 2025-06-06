@@ -1,5 +1,6 @@
 {
-    "title": "Instance",
+    "title": "Level",
+    "filename": "Instance",
     "path": "Runtime/Game/Level/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Level/Instance.hpp",

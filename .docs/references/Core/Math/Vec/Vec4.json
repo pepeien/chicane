@@ -1,5 +1,6 @@
 {
     "title": "Vec4",
+    "filename": "Vec4",
     "path": "Core/Math/Vec/Vec4",
     "source": {
         "header": "Includes/Chicane/Core/Math/Vec/Vec4.hpp",

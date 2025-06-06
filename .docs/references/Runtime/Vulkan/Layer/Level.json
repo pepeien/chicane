@@ -1,5 +1,6 @@
 {
-    "title": "Level",
+    "title": "LLevel",
+    "filename": "Level",
     "path": "Runtime/Vulkan/Layer/Level",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Layer/Level.hpp",

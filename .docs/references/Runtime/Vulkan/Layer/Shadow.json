@@ -1,5 +1,6 @@
 {
-    "title": "Shadow",
+    "title": "LShadow",
+    "filename": "Shadow",
     "path": "Runtime/Vulkan/Layer/Shadow",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Layer/Shadow.hpp",

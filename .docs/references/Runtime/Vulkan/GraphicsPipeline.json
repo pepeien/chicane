@@ -1,5 +1,6 @@
 {
     "title": "Graphics Pipeline",
+    "filename": "Graphics Pipeline",
     "path": "Runtime/Vulkan/GraphicsPipeline",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Box/Asset/Font/Instance",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Instance.hpp",

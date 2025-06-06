@@ -1,5 +1,6 @@
 {
     "title": "Container",
+    "filename": "Container",
     "path": "Grid/Component/Container",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Container.hpp",

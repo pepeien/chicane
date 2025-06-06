@@ -1,5 +1,6 @@
 {
     "title": "Event",
+    "filename": "Event",
     "path": "Core/Input/Event",
     "source": {
         "header": null,

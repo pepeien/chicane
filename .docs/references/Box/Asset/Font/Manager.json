@@ -1,5 +1,6 @@
 {
     "title": "Manager",
+    "filename": "Manager",
     "path": "Box/Asset/Font/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Manager.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Image",
+    "filename": "Image",
     "path": "Runtime/Vulkan/Image",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Image.hpp",

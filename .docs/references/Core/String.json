@@ -1,5 +1,6 @@
 {
     "title": "String",
+    "filename": "String",
     "path": "Core/String",
     "source": {
         "header": "Includes/Chicane/Core/String.hpp",

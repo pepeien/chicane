@@ -1,5 +1,6 @@
 {
     "title": "Font",
+    "filename": "Font",
     "path": "Box/Asset/Font",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font.hpp",

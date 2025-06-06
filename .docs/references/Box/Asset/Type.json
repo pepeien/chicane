@@ -1,5 +1,6 @@
 {
     "title": "Type",
+    "filename": "Type",
     "path": "Box/Asset/Type",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Type.hpp",

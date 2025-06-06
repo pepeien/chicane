@@ -1,5 +1,6 @@
 {
-    "title": "Data",
+    "title": "Image",
+    "filename": "Data",
     "path": "Core/Image/Data",
     "source": {
         "header": "Includes/Chicane/Core/Image/Data.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Memory",
+    "filename": "Memory",
     "path": "Runtime/Vulkan/Image/Memory",
     "source": {
         "header": null,

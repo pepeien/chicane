@@ -1,5 +1,6 @@
 {
-    "title": "Event",
+    "title": "Keyboard Event",
+    "filename": "Event",
     "path": "Core/Input/Keyboard/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",

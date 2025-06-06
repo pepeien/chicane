@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Runtime/Vulkan/Sky/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Sky/Instance.hpp",

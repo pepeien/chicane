@@ -1,5 +1,6 @@
 {
     "title": "Popup",
+    "filename": "Popup",
     "path": "Grid/Component/Popup",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Popup.hpp",

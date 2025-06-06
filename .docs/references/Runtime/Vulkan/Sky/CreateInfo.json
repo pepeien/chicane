@@ -1,5 +1,6 @@
 {
     "title": "Create Info",
+    "filename": "Create Info",
     "path": "Runtime/Vulkan/Sky/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Sky/CreateInfo.hpp",

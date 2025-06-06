@@ -1,5 +1,6 @@
 {
     "title": "Descriptor",
+    "filename": "Descriptor",
     "path": "Runtime/Vulkan/Descriptor",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Descriptor.hpp",

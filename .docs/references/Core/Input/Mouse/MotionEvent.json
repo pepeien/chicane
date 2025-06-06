@@ -1,5 +1,6 @@
 {
-    "title": "Motion Event",
+    "title": "Mouse Motion Event",
+    "filename": "Motion Event",
     "path": "Core/Input/Mouse/MotionEvent",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/MotionEvent.hpp",

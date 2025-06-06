@@ -1,5 +1,6 @@
 {
-    "title": "Event",
+    "title": "Device Event",
+    "filename": "Event",
     "path": "Core/Input/Device/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Device/Event.hpp",

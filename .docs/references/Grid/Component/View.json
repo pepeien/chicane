@@ -1,5 +1,6 @@
 {
     "title": "View",
+    "filename": "View",
     "path": "Grid/Component/View",
     "source": {
         "header": "Includes/Chicane/Grid/Component/View.hpp",

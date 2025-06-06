@@ -1,5 +1,6 @@
 {
     "title": "Set Layout Bidings Create Info",
+    "filename": "Set Layout Bidings Create Info",
     "path": "Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Changeable",
+    "filename": "Changeable",
     "path": "Core/Event/Changeable",
     "source": {
         "header": "Includes/Chicane/Core/Event/Changeable.hpp",

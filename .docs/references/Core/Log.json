@@ -1,5 +1,6 @@
 {
     "title": "Log",
+    "filename": "Log",
     "path": "Core/Log",
     "source": {
         "header": "Includes/Chicane/Core/Log.hpp",

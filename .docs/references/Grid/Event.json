@@ -1,5 +1,6 @@
 {
     "title": "Event",
+    "filename": "Event",
     "path": "Grid/Event",
     "source": {
         "header": "Includes/Chicane/Grid/Event.hpp",

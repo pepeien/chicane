@@ -1,5 +1,6 @@
 {
     "title": "Level",
+    "filename": "Level",
     "path": "Runtime/Game/Level",
     "source": {
         "header": null,

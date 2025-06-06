@@ -1,5 +1,6 @@
 {
     "title": "Mat",
+    "filename": "Mat",
     "path": "Core/Math/Mat",
     "source": {
         "header": null,

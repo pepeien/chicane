@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Runtime/Vulkan/Buffer/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Buffer/Instance.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Mat4",
+    "filename": "Mat4",
     "path": "Core/Math/Mat/Mat4",
     "source": {
         "header": "Includes/Chicane/Core/Math/Mat/Mat4.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Vendor",
+    "filename": "Vendor",
     "path": "Box/Asset/Model/Vendor",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Vendor.hpp",

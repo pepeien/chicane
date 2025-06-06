@@ -1,5 +1,6 @@
 {
     "title": "Keyboard",
+    "filename": "Keyboard",
     "path": "Core/Input/Keyboard",
     "source": {
         "header": null,

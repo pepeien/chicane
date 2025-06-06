@@ -1,5 +1,6 @@
 {
     "title": "Xml",
+    "filename": "Xml",
     "path": "Core/Xml",
     "source": {
         "header": "Includes/Chicane/Core/Xml.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Layer",
+    "filename": "Layer",
     "path": "Runtime/Renderer/Layer",
     "source": {
         "header": null,

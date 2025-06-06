@@ -1,5 +1,6 @@
 {
-    "title": "Light",
+    "title": "CLight",
+    "filename": "Light",
     "path": "Runtime/Game/Transformable/Component/Light",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Light.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "View",
+    "filename": "View",
     "path": "Runtime/Renderer/View",
     "source": {
         "header": null,

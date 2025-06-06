@@ -1,5 +1,6 @@
 {
     "title": "Button",
+    "filename": "Button",
     "path": "Grid/Component/Button",
     "source": {
         "header": "Includes/Chicane/Grid/Component/Button.hpp",

@@ -1,5 +1,6 @@
 {
     "title": "Observable",
+    "filename": "Observable",
     "path": "Core/Event/Observable",
     "source": {
         "header": "Includes/Chicane/Core/Event/Observable.hpp",

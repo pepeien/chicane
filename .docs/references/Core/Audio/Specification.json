@@ -1,5 +1,6 @@
 {
     "title": "Specification",
+    "filename": "Specification",
     "path": "Core/Audio/Specification",
     "source": {
         "header": "Includes/Chicane/Core/Audio/Specification.hpp",

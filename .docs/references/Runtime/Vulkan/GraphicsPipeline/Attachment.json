@@ -1,5 +1,6 @@
 {
     "title": "Attachment",
+    "filename": "Attachment",
     "path": "Runtime/Vulkan/GraphicsPipeline/Attachment",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/Attachment.hpp",

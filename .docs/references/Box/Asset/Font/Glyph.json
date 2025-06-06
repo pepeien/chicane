@@ -1,5 +1,6 @@
 {
     "title": "Glyph",
+    "filename": "Glyph",
     "path": "Box/Asset/Font/Glyph",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Glyph.hpp",

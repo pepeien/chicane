@@ -1,5 +1,6 @@
 {
     "title": "Source",
+    "filename": "Source",
     "path": "Grid/Style/Source",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Source.hpp",

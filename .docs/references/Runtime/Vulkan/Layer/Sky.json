@@ -1,5 +1,6 @@
 {
-    "title": "Sky",
+    "title": "LSky",
+    "filename": "Sky",
     "path": "Runtime/Vulkan/Layer/Sky",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Layer/Sky.hpp",

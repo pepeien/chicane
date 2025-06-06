@@ -1,5 +1,6 @@
 {
     "title": "Data",
+    "filename": "Data",
     "path": "Runtime/Renderer/View/Data",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Data.hpp",

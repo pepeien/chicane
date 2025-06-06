@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Box/Manager/Instance",
     "source": {
         "header": "Includes/Chicane/Box/Manager/Instance.hpp",

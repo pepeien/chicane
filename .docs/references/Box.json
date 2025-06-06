@@ -1,5 +1,6 @@
 {
     "title": "Box",
+    "filename": "Box",
     "path": "Box",
     "source": {
         "header": "Includes/Chicane/Box.hpp",

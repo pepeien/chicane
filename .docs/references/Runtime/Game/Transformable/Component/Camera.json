@@ -1,5 +1,6 @@
 {
-    "title": "Camera",
+    "title": "CCamera",
+    "filename": "Camera",
     "path": "Runtime/Game/Transformable/Component/Camera",
     "source": {
         "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Camera.hpp",

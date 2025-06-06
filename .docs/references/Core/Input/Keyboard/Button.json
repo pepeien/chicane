@@ -1,5 +1,6 @@
 {
-    "title": "Button",
+    "title": "Keyboard Button",
+    "filename": "Button",
     "path": "Core/Input/Keyboard/Button",
     "source": {
         "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",

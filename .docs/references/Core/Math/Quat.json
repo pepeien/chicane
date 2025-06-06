@@ -1,5 +1,6 @@
 {
     "title": "Quat",
+    "filename": "Quat",
     "path": "Core/Math/Quat",
     "source": {
         "header": null,

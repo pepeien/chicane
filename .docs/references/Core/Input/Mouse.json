@@ -1,5 +1,6 @@
 {
     "title": "Mouse",
+    "filename": "Mouse",
     "path": "Core/Input/Mouse",
     "source": {
         "header": null,

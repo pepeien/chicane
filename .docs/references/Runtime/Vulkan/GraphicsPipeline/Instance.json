@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Runtime/Vulkan/GraphicsPipeline/Instance",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/GraphicsPipeline/Instance.hpp",

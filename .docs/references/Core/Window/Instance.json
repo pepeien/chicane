@@ -1,5 +1,6 @@
 {
     "title": "Instance",
+    "filename": "Instance",
     "path": "Core/Window/Instance",
     "source": {
         "header": "Includes/Chicane/Core/Window/Instance.hpp",

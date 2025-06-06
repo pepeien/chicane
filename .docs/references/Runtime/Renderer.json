@@ -1,5 +1,6 @@
 {
     "title": "Renderer",
+    "filename": "Renderer",
     "path": "Runtime/Renderer",
     "source": {
         "header": null,

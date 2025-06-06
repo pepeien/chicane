@@ -1,5 +1,6 @@
 {
     "title": "Parsed",
+    "filename": "Parsed",
     "path": "Box/Asset/Font/Parsed",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Parsed.hpp",

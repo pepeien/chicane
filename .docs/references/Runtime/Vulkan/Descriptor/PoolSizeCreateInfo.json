@@ -1,5 +1,6 @@
 {
     "title": "Pool Size Create Info",
+    "filename": "Pool Size Create Info",
     "path": "Runtime/Vulkan/Descriptor/PoolSizeCreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
