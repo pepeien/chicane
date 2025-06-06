@@ -226,6 +226,7 @@ def add_enum_definition(result, memberdef):
     typing    = memberdef.find('type')
     location  = memberdef.find('location')
     header    = location.attrib.get('file', '')
+    filename  = header.split(".")[0].split("/")[-1]
 
     values = []
 
@@ -242,7 +243,7 @@ def add_enum_definition(result, memberdef):
 
     key  = header.split(include_dir)[-1].split('.')[0]
     data = {
-        "title": pascal_to_spaced(name),
+        "title": pascal_to_spaced(filename),
         "source": {
             "header": header,
             "namespace": namespace,
