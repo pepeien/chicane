@@ -41,26 +41,26 @@ namespace Chicane
         void deattach();
 
         // Mouse Events
-        void bindEvent(Mouse::MotionEventCallback inCallback);
+        void bindEvent(Input::MouseMotionEventCallback inCallback);
         void bindEvent(
-            Mouse::Button inButton,
+            Input::MouseButton inButton,
             Input::Status inStatus,
-            Mouse::ButtonEventCallback inCallback
+            Input::MouseButtonEventCallback inCallback
         );
 
         // Keyboard Events
         void bindEvent(
-            Keyboard::Button inButton,
+            Input::KeyboardButton inButton,
             Input::Status inStatus,
-            Keyboard::EventCallback inCallback
+            Input::KeyboardEventCallback inCallback
         );
 
         // Controller Events
-        void bindEvent(Gamepad::MotionEventCallback inCallback);
+        void bindEvent(Input::GamepadMotionEventCallback inCallback);
         void bindEvent(
-            Gamepad::Button inButton,
+            Input::GamepadButton inButton,
             Input::Status inStatus,
-            Gamepad::ButtonEventCallback inCallback
+            Input::GamepadButtonEventCallback inCallback
         );
 
         // Device
@@ -93,21 +93,21 @@ namespace Chicane
 
     private:
         // Pawn
-        APawn*                                                 m_pawn;
-        PawnObservable                                         m_pawnObservable;
+        APawn*                                        m_pawn;
+        PawnObservable                                m_pawnObservable;
 
         // Mouse Events
-        Input::Events<Mouse::MotionEvent>                      m_mouseMotionEvents;
-        Input::PressableEvents<Mouse::Button>                  m_mouseButtonEvents;   
+        Input::Events<Input::MouseMotionEvent>        m_mouseMotionEvents;
+        Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;   
 
         // Keyboard Events
-        Input::PressableEvents<Keyboard::Button>               m_keyboardKeyEvents;
+        Input::PressableEvents<Input::KeyboardButton> m_keyboardKeyEvents;
 
         // Gamepad Events
-        Input::Events<Gamepad::MotionEvent>                    m_gamepadMotionEvents;
-        Input::PressableEvents<Gamepad::Button>                m_gamepadButtonEvents;
+        Input::Events<Input::GamepadMotionEvent>      m_gamepadMotionEvents;
+        Input::PressableEvents<Input::GamepadButton>  m_gamepadButtonEvents;
 
         // Device
-        std::unordered_map<Input::DeviceType, Input::DeviceID> m_devices;
+        Input::DeviceMap                              m_devices;
     };
 }

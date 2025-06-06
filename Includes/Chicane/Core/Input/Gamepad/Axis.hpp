@@ -4,9 +4,9 @@
 
 namespace Chicane
 {
-    namespace Gamepad
+    namespace Input
     {
-        enum class Axis : int
+        enum class GamepadAxis : int
         {
             Invalid = -1,
             LeftX,

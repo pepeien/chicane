@@ -63,111 +63,107 @@ Character::Character()
 void Character::onControlAttachment()
 {
     // Mouse
-    m_controller->bindEvent(
-        [this](const Chicane::Mouse::MotionEvent& inEvent)
-        {
-            onLook(-inEvent.relativeLocation.x * 0.5f, -inEvent.relativeLocation.y * 0.5f);
-        }
-    );
+    m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
 
     m_controller->bindEvent(
-        Chicane::Mouse::Button::Left,
+        Chicane::Input::MouseButton::Left,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onLeftClick, this)
     );
     m_controller->bindEvent(
-        Chicane::Mouse::Button::Right,
+        Chicane::Input::MouseButton::Right,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onRightClick, this)
     );
 
     // Keyboard
     m_controller->bindEvent(
-        Chicane::Keyboard::Button::W,
+        Chicane::Input::KeyboardButton::W,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onMoveForward, this)
     );
     m_controller->bindEvent(
-        Chicane::Keyboard::Button::S,
+        Chicane::Input::KeyboardButton::S,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onMoveBackward, this)
     );
     m_controller->bindEvent(
-        Chicane::Keyboard::Button::A,
+        Chicane::Input::KeyboardButton::A,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onMoveLeft, this)
     );
     m_controller->bindEvent(
-        Chicane::Keyboard::Button::D,
+        Chicane::Input::KeyboardButton::D,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onMoveRight, this)
     );
     m_controller->bindEvent(
-        Chicane::Keyboard::Button::Space,
+        Chicane::Input::KeyboardButton::Space,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onJump, this)
     );
 
     // Gamepad
-    m_controller->bindEvent(
-        [this](const Chicane::Gamepad::MotionEvent& inEvent)
-        {
-            if (
-                inEvent.axis == Chicane::Gamepad::Axis::LeftX ||
-                inEvent.axis == Chicane::Gamepad::Axis::LeftY
-            )
-            {
-                if (inEvent.axis == Chicane::Gamepad::Axis::LeftY)
-                {
-                    if (inEvent.value > 0.0f)
-                    {
-                        onMoveForward();
-                    }
-                    else
-                    {
-                        onMoveBackward();
-                    }
-                }
-                else
-                {
-                    if (inEvent.value > 0.0f)
-                    {
-                        onMoveRight();
-                    }
-                    else
-                    {
-                        onMoveLeft();
-                    }
-                }
-            }
-
-            if (
-                inEvent.axis == Chicane::Gamepad::Axis::RightX ||
-                inEvent.axis == Chicane::Gamepad::Axis::RightY
-            )
-            {
-                if (inEvent.axis == Chicane::Gamepad::Axis::RightY)
-                {
-                    onLook(0.0f, -inEvent.value);
-                }
-                else
-                {
-                    onLook(-inEvent.value, 0.0f);
-                }
-            }
-        }
-    );
+    m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
 }
 
-void Character::onLook(float inX, float inY)
+void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
 {
-    if (!Chicane::Application::getWindow()->isFocused())
-    {
-        return;
-    }
+    onLook(-inEvent.relativeLocation.x * 0.5f, -inEvent.relativeLocation.y * 0.5f);
+}
 
-    m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
-    addYaw(inX);
+void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent)
+{
+    switch (inEvent.axis)
+    {
+    case Chicane::Input::GamepadAxis::LeftX:
+    case Chicane::Input::GamepadAxis::LeftY:
+        if (inEvent.axis == Chicane::Input::GamepadAxis::LeftY)
+        {
+            if (inEvent.value < 0.0f)
+            {
+                onMoveForward();
+            }
+            else
+            {
+                onMoveBackward();
+            }
+        }
+        else
+        {
+            if (inEvent.value > 0.0f)
+            {
+                onMoveRight();
+            }
+            else
+            {
+                onMoveLeft();
+            }
+        }
+
+        break;
+    
+    case Chicane::Input::GamepadAxis::RightX:
+    case Chicane::Input::GamepadAxis::RightY:
+        if (inEvent.axis == Chicane::Input::GamepadAxis::RightY)
+        {
+            onLook(0.0f, -inEvent.value);
+        }
+        else
+        {
+            onLook(-inEvent.value, 0.0f);
+        }
+
+        break;
+
+    case Chicane::Input::GamepadAxis::RightTrigger:
+        onShoot();
+
+        break;
+
+    default:
+        break;
+    }
 }
 
 void Character::onLeftClick()
@@ -179,19 +175,7 @@ void Character::onLeftClick()
         return;
     }
 
-    const Chicane::Vec3& origin     = m_camera->getTranslation();
-    const Chicane::Vec3 destination = origin + (m_camera->getForward() * m_camera->getFarClip());
-
-    std::vector<Apple*> hitApples = Chicane::Application::getLevel()->traceLine<Apple>(
-        origin,
-        destination,
-        { this }
-    );
- 
-    for (Apple* apple : hitApples)
-    {
-        apple->onHit(this);
-    }
+    onShoot();
 }
 
 void Character::onRightClick()
@@ -242,6 +226,39 @@ void Character::onMoveRight()
     }
 
     move(getRight(), MOVE_COEFFICIENT);
+}
+
+void Character::onShoot()
+{
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
+    const Chicane::Vec3& origin     = m_camera->getTranslation();
+    const Chicane::Vec3 destination = origin + (m_camera->getForward() * m_camera->getFarClip());
+
+    std::vector<Apple*> hitApples = Chicane::Application::getLevel()->traceLine<Apple>(
+        origin,
+        destination,
+        { this }
+    );
+ 
+    for (Apple* apple : hitApples)
+    {
+        apple->onHit(this);
+    }
+}
+
+void Character::onLook(float inX, float inY)
+{
+    if (!Chicane::Application::getWindow()->isFocused())
+    {
+        return;
+    }
+
+    m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
+    addYaw(inX);
 }
 
 void Character::onJump()

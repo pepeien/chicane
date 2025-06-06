@@ -1,12 +1,9 @@
 #pragma once
 
-#include "Chicane/Core/Gamepad.hpp"
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event.hpp"
 #include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Core/Keyboard.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
-#include "Chicane/Core/Mouse.hpp"
 #include "Chicane/Core/Window/CreateInfo.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 #include "Chicane/Core/Window/Type.hpp"

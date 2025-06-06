@@ -4,9 +4,9 @@
 
 namespace Chicane
 {
-    namespace Gamepad
+    namespace Input
     {
-        enum class Button : std::uint8_t
+        enum class GamepadButton : std::uint8_t
         {
             South,
             East,

@@ -5,7 +5,10 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Pawn.hpp"
 
-static const std::vector<std::string> DEFAULT_KEYBOARDS = { "Keyboard", "HID Keyboard Device (0x046d/0xc232)" };
+static const std::vector<std::string> DEFAULT_KEYBOARDS = {
+    "Keyboard",
+    "HID Keyboard Device (0x046d/0xc232)"
+};
 
 namespace Chicane
 {
@@ -88,38 +91,38 @@ namespace Chicane
         m_pawnObservable.next(nullptr);
     }
 
-    void Controller::bindEvent(Mouse::MotionEventCallback inEvent)
+    void Controller::bindEvent(Input::MouseMotionEventCallback inEvent)
     {
         m_mouseMotionEvents.bind(inEvent);
     }
 
     void Controller::bindEvent(
-        Mouse::Button inButton,
+        Input::MouseButton inButton,
         Input::Status inStatus,
-        Mouse::ButtonEventCallback inEvent
+        Input::MouseButtonEventCallback inEvent
     )
     {
         m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
     void Controller::bindEvent(
-        Keyboard::Button inButton,
+        Input::KeyboardButton inButton,
         Input::Status inStatus,
-        Keyboard::EventCallback inEvent
+        Input::KeyboardEventCallback inEvent
     )
     {
         m_keyboardKeyEvents.bind(inButton, inStatus, inEvent);
     }
 
-    void Controller::bindEvent(Gamepad::MotionEventCallback inEvent)
+    void Controller::bindEvent(Input::GamepadMotionEventCallback inEvent)
     {
         m_gamepadMotionEvents.bind(inEvent);
     }
 
     void Controller::bindEvent(
-        Gamepad::Button inButton,
+        Input::GamepadButton inButton,
         Input::Status inStatus,
-        Gamepad::ButtonEventCallback inEvent
+        Input::GamepadButtonEventCallback inEvent
     )
     {
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
@@ -170,7 +173,7 @@ namespace Chicane
 
     void Controller::onMouseMotionEvent(void* inEvent)
     {
-        Mouse::MotionEvent event = *static_cast<Mouse::MotionEvent*>(inEvent);
+        Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
         {
@@ -182,7 +185,7 @@ namespace Chicane
 
     void Controller::onMouseButtonEvent(void* inEvent)
     {
-        Mouse::ButtonEvent event = *static_cast<Mouse::ButtonEvent*>(inEvent);
+        Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
         {
@@ -194,7 +197,7 @@ namespace Chicane
 
     void Controller::onKeyboardButtonEvent(void* inEvent)
     {
-        Keyboard::Event event = *static_cast<Keyboard::Event*>(inEvent);
+        Input::KeyboardEvent event = *static_cast<Input::KeyboardEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Keyboard, event.device))
         {
@@ -206,7 +209,7 @@ namespace Chicane
 
     void Controller::onGamepadMotionEvent(void* inEvent)
     {
-        Gamepad::MotionEvent event = *static_cast<Gamepad::MotionEvent*>(inEvent);
+        Input::GamepadMotionEvent event = *static_cast<Input::GamepadMotionEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
         {
@@ -218,7 +221,7 @@ namespace Chicane
 
     void Controller::onGamepadButtonEvent(void* inEvent)
     {
-        Gamepad::ButtonEvent event = *static_cast<Gamepad::ButtonEvent*>(inEvent);
+        Input::GamepadButtonEvent event = *static_cast<Input::GamepadButtonEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
         {

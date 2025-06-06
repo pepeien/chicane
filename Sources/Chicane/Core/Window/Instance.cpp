@@ -18,17 +18,17 @@ namespace Chicane
             outEvent.device = inData.which;
         }
 
-        void setupGamepadMotionEvent(Gamepad::MotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
+        void setupGamepadMotionEvent(Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
         {
             outEvent.device = inData.which;
-            outEvent.axis   = (Gamepad::Axis) inData.axis;
+            outEvent.axis   = (Input::GamepadAxis) inData.axis;
             outEvent.value  = static_cast<float>(inData.value) / 32767.0f;
         }
 
-        void setupGamepadButtonEvent(Gamepad::ButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
+        void setupGamepadButtonEvent(Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
         {
             outEvent.device = inData.which;
-            outEvent.button = (Gamepad::Button) inData.button;
+            outEvent.button = (Input::GamepadButton) inData.button;
             outEvent.status = inData.down ? Input::Status::Pressed : Input::Status::Released;
         }
 
@@ -37,11 +37,11 @@ namespace Chicane
             outEvent.device = inData.which;
         }
 
-        void setupKeyboardEvent(Keyboard::Event& outEvent, const SDL_KeyboardEvent& inData)
+        void setupKeyboardEvent(Input::KeyboardEvent& outEvent, const SDL_KeyboardEvent& inData)
         {
             outEvent.device   = inData.which;
-            outEvent.button   = (Keyboard::Button) inData.scancode;
-            outEvent.modifier = (Keyboard::ButtonModifier) inData.mod;
+            outEvent.button   = (Input::KeyboardButton) inData.scancode;
+            outEvent.modifier = (Input::KeyboardButtonModifier) inData.mod;
             outEvent.status   = inData.down ? Input::Status::Pressed : Input::Status::Released;
         }
 
@@ -50,7 +50,7 @@ namespace Chicane
             outEvent.device = inData.which;
         }
 
-        void setupMouseMotionEvent(Mouse::MotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
+        void setupMouseMotionEvent(Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
         {
             outEvent.device             = inData.which;
             outEvent.status             = (Input::Status) inData.state;
@@ -60,10 +60,10 @@ namespace Chicane
             outEvent.relativeLocation.y = inData.yrel;
         }
 
-        void setupMouseButtonEvent(Mouse::ButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
+        void setupMouseButtonEvent(Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
         {
             outEvent.device     = inData.which;
-            outEvent.button     = (Mouse::Button) inData.button;
+            outEvent.button     = (Input::MouseButton) inData.button;
             outEvent.status     = inData.down ? Input::Status::Pressed : Input::Status::Released;
             outEvent.clicks     = inData.clicks;
             outEvent.location.x = inData.x;
@@ -153,15 +153,15 @@ namespace Chicane
                 Input::DeviceEvent deviceEvent = {};
 
                 // Gamepad
-                Gamepad::MotionEvent gamepadMotionEvent = {};
-                Gamepad::ButtonEvent gamepadButtonEvent = {};
+                Input::GamepadMotionEvent gamepadMotionEvent = {};
+                Input::GamepadButtonEvent gamepadButtonEvent = {};
 
                 // Keyboard
-                Keyboard::Event keyboardEvent = {};
+                Input::KeyboardEvent keyboardEvent = {};
 
                 // Mouse
-                Mouse::MotionEvent mouseMotionEvent = {};
-                Mouse::ButtonEvent mouseButtonEvent = {};
+                Input::MouseMotionEvent mouseMotionEvent = {};
+                Input::MouseButtonEvent mouseButtonEvent = {};
 
                 // Event
                 Event event = {};

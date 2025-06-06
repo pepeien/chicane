@@ -4,9 +4,9 @@
 
 namespace Chicane
 {
-    namespace Mouse
+    namespace Input
     {
-        enum class Button : std::uint8_t
+        enum class MouseButton : std::uint8_t
         {
             Left = 1,
             Middle,

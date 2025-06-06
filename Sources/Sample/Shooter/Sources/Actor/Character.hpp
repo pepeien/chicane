@@ -12,8 +12,11 @@ protected:
     void onControlAttachment() override;
 
 private:
+    // Gamepad
+    void onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent);
+
     // Mouse
-    void onLook(float inX, float inY);
+    void onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent);
 
     void onLeftClick();
     void onRightClick();
@@ -24,6 +27,9 @@ private:
     void onMoveLeft();
     void onMoveRight();
 
+    // Actions
+    void onShoot();
+    void onLook(float inX, float inY);
     void onJump();
 
 private:
