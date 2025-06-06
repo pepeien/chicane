@@ -1,5 +1,5 @@
 {
-    "title": "Gamepad Axis",
+    "title": "Axis",
     "path": "Core/Input/Gamepad/Axis",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/Axis.hpp",

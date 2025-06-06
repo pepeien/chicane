@@ -1,5 +1,5 @@
 {
-    "title": "Device Type",
+    "title": "Type",
     "path": "Core/Input/Device/Type",
     "source": {
         "header": "Includes/Chicane/Core/Input/Device/Type.hpp",
