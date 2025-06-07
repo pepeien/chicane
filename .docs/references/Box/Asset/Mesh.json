@@ -3,48 +3,14 @@
     "filename": "Mesh",
     "path": "Box/Asset/Mesh",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Mesh.hpp",
-        "namespace": "Chicane::Box::Mesh",
+        "header": null,
+        "namespace": null,
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "EXTENSION",
-                "description": "CHICANE_BOX_MESH_EXTENSION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "TAG",
-                "description": "CHICANE_BOX_MESH_TAG_DESCRIPTION"
-            }
-        ],
-        "description": "CHICANE_BOX_MESH_DESCRIPTION"
+        "members": []
     },
     "children": []
 }

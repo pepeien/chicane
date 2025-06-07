@@ -1,338 +1,48 @@
 {
-    "title": "Instance",
+    "title": "Image",
     "filename": "Instance",
     "path": "Core/Image/Instance",
     "source": {
         "header": "Includes/Chicane/Core/Image/Instance.hpp",
-        "namespace": "Chicane::Image::Instance",
+        "namespace": "Chicane::Image",
         "types": [
             {
-                "name": "Super",
+                "name": "Raw",
                 "type": {
                     "prefix": "",
-                    "name": "Instance",
+                    "name": "std::vector",
                     "suffix": "",
-                    "path": "Core/Image/Instance",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_IMAGE_RAW_DESCRIPTION"
+            },
+            {
+                "name": "Pixels",
+                "type": {
+                    "prefix": "",
+                    "name": "unsigned char",
+                    "suffix": "*",
+                    "path": "",
                     "templates": []
                 },
-                "description": "CHICANE_IMAGE_INSTANCE_SUPER_DESCRIPTION"
+                "description": "CHICANE_IMAGE_PIXELS_DESCRIPTION"
             }
         ],
         "enums": [],
-        "constructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Instance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "FileSystem::Path",
-                            "suffix": "&",
-                            "path": "Core/FileSystem",
-                            "templates": []
-                        },
-                        "name": "inFilepath"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_INSTANCE_INSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Instance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Raw",
-                            "suffix": "&",
-                            "path": "Core/Image/Data",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_INSTANCE_INSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Instance",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_INSTANCE_INSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Instance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Instance",
-                            "suffix": "&",
-                            "path": "Core/Image/Instance",
-                            "templates": []
-                        },
-                        "name": "inInstance"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_INSTANCE_INSTANCE_DESCRIPTION"
-            }
-        ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Instance",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_IMAGE_INSTANCE_~INSTANCE_DESCRIPTION"
-            }
-        ],
-        "functions": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getWidth",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETWIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getHeight",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETHEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getChannel",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETCHANNEL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getFormat",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETFORMAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Pixels",
-                    "suffix": "",
-                    "path": "Core/Image/Data",
-                    "templates": []
-                },
-                "name": "getPixels",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETPIXELS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getPitch",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETPITCH_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getSize",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_IMAGE_INSTANCE_GETSIZE_DESCRIPTION"
-            }
-        ],
-        "members": [
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vendor",
-                    "suffix": "",
-                    "path": "Core/Image/Vendor",
-                    "templates": []
-                },
-                "name": "m_type",
-                "description": "CHICANE_IMAGE_INSTANCE_M_TYPE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_width",
-                "description": "CHICANE_IMAGE_INSTANCE_M_WIDTH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_height",
-                "description": "CHICANE_IMAGE_INSTANCE_M_HEIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_channel",
-                "description": "CHICANE_IMAGE_INSTANCE_M_CHANNEL_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_format",
-                "description": "CHICANE_IMAGE_INSTANCE_M_FORMAT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Pixels",
-                    "suffix": "",
-                    "path": "Core/Image/Data",
-                    "templates": []
-                },
-                "name": "m_pixels",
-                "description": "CHICANE_IMAGE_INSTANCE_M_PIXELS_DESCRIPTION"
-            }
-        ],
-        "description": "CHICANE_IMAGE_INSTANCE_DESCRIPTION"
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_IMAGE_DESCRIPTION"
     },
     "children": []
 }

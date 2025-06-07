@@ -103,7 +103,7 @@
                     "prefix": "const ",
                     "name": "Raw",
                     "suffix": "&",
-                    "path": "Box/Asset/Font",
+                    "path": "Box/Asset/Font/Constants",
                     "templates": []
                 },
                 "name": "getData",
@@ -156,7 +156,7 @@
                             "prefix": "const ",
                             "name": "Raw",
                             "suffix": "&",
-                            "path": "Box/Asset/Font",
+                            "path": "Box/Asset/Font/Constants",
                             "templates": []
                         },
                         "name": "inData"
@@ -217,7 +217,7 @@
                     "prefix": "",
                     "name": "Raw",
                     "suffix": "",
-                    "path": "Box/Asset/Font",
+                    "path": "Box/Asset/Font/Constants",
                     "templates": []
                 },
                 "name": "m_data",

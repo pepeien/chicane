@@ -69,7 +69,7 @@
                     "prefix": "const ",
                     "name": "Extracted",
                     "suffix": "&",
-                    "path": "Box/Asset/Model/Data",
+                    "path": "Box/Asset/Model/Extracted",
                     "templates": []
                 },
                 "name": "getInstance",
@@ -97,7 +97,7 @@
                     "prefix": "const ",
                     "name": "Parsed",
                     "suffix": "&",
-                    "path": "Box/Asset/Model/Data",
+                    "path": "Box/Asset/Model/Parsed",
                     "templates": []
                 },
                 "name": "getData",
@@ -223,7 +223,7 @@
                             "prefix": "const ",
                             "name": "Parsed",
                             "suffix": "&",
-                            "path": "Box/Asset/Model/Data",
+                            "path": "Box/Asset/Model/Parsed",
                             "templates": []
                         },
                         "name": "inData"

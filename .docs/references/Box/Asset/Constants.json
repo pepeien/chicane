@@ -1,0 +1,119 @@
+{
+    "title": "Asset",
+    "filename": "Constants",
+    "path": "Box/Asset/Constants",
+    "source": {
+        "header": "Includes/Chicane/Box/Asset/Constants.hpp",
+        "namespace": "Chicane::Box::Asset",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isFileAsset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_ISFILEASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Type",
+                    "suffix": "",
+                    "path": "Box/Asset/Type",
+                    "templates": []
+                },
+                "name": "getType",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_ASSET_GETTYPE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CURRENT_VERSION",
+                "description": "CHICANE_BOX_ASSET_CURRENT_VERSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VERSION_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ASSET_VERSION_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ID_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_ASSET_ID_ATTRIBUTE_NAME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_ASSET_DESCRIPTION"
+    },
+    "children": []
+}

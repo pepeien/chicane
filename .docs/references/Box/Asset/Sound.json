@@ -3,64 +3,14 @@
     "filename": "Sound",
     "path": "Box/Asset/Sound",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Sound.hpp",
-        "namespace": "Chicane::Box::Sound",
+        "header": null,
+        "namespace": null,
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "EXTENSION",
-                "description": "CHICANE_BOX_SOUND_EXTENSION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "TAG",
-                "description": "CHICANE_BOX_SOUND_TAG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "VENDOR_ATTRIBUTE_NAME",
-                "description": "CHICANE_BOX_SOUND_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
-            }
-        ],
-        "description": "CHICANE_BOX_SOUND_DESCRIPTION"
+        "members": []
     },
     "children": []
 }

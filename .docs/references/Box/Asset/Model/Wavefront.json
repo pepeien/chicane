@@ -17,7 +17,7 @@
                     "prefix": "",
                     "name": "Extracted",
                     "suffix": "",
-                    "path": "Box/Asset/Model/Data",
+                    "path": "Box/Asset/Model/Extracted",
                     "templates": []
                 },
                 "name": "parse",
@@ -25,18 +25,10 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Raw",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "unsigned char",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Box/Asset/Model/Constants",
+                            "templates": []
                         },
                         "name": "inData"
                     }

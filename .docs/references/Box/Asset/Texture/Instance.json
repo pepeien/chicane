@@ -103,7 +103,7 @@
                     "prefix": "const ",
                     "name": "Image::Raw",
                     "suffix": "&",
-                    "path": "Core/Image/Data",
+                    "path": "Core/Image/Instance",
                     "templates": []
                 },
                 "name": "getData",
@@ -156,7 +156,7 @@
                             "prefix": "const ",
                             "name": "Image::Raw",
                             "suffix": "&",
-                            "path": "Core/Image/Data",
+                            "path": "Core/Image/Instance",
                             "templates": []
                         },
                         "name": "inData"
@@ -217,7 +217,7 @@
                     "prefix": "",
                     "name": "Image::Raw",
                     "suffix": "",
-                    "path": "Core/Image/Data",
+                    "path": "Core/Image/Instance",
                     "templates": []
                 },
                 "name": "m_data",

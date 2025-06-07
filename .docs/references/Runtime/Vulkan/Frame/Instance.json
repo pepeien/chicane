@@ -953,7 +953,7 @@
                             "prefix": "",
                             "name": "Box::Mesh::Parsed",
                             "suffix": "",
-                            "path": "Box/Asset/Mesh/Data",
+                            "path": "Box/Asset/Mesh/Parsed",
                             "templates": []
                         }
                     ]

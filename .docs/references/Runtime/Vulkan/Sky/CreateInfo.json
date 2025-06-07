@@ -1,109 +1,29 @@
 {
-    "title": "Create Info",
+    "title": "Sky",
     "filename": "Create Info",
     "path": "Runtime/Vulkan/Sky/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Vulkan/Sky/CreateInfo.hpp",
-        "namespace": "Chicane::Vulkan::Sky::CreateInfo",
-        "types": [],
+        "namespace": "Chicane::Vulkan::Sky",
+        "types": [
+            {
+                "name": "Images",
+                "type": {
+                    "prefix": "",
+                    "name": "Box::Sky::ParsedSides",
+                    "suffix": "",
+                    "path": "Box/Asset/Sky/Constants",
+                    "templates": []
+                },
+                "description": "CHICANE_VULKAN_SKY_IMAGES_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Images",
-                    "suffix": "",
-                    "path": "Runtime/Vulkan/Sky/CreateInfo",
-                    "templates": []
-                },
-                "name": "images",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_IMAGES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::Device",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "logicalDevice",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_LOGICALDEVICE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::PhysicalDevice",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "physicalDevice",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_PHYSICALDEVICE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::CommandBuffer",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "commandBuffer",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_COMMANDBUFFER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::Queue",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "queue",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_QUEUE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::DescriptorSetLayout",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "descriptorSetLayout",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_DESCRIPTORSETLAYOUT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::DescriptorPool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "descriptorPool",
-                "description": "CHICANE_VULKAN_SKY_CREATEINFO_DESCRIPTORPOOL_DESCRIPTION"
-            }
-        ],
-        "description": "CHICANE_VULKAN_SKY_CREATEINFO_DESCRIPTION"
+        "members": [],
+        "description": "CHICANE_VULKAN_SKY_DESCRIPTION"
     },
     "children": []
 }

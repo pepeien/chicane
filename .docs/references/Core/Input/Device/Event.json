@@ -1,31 +1,150 @@
 {
-    "title": "Device Event",
+    "title": "Input",
     "filename": "Event",
     "path": "Core/Input/Device/Event",
     "source": {
         "header": "Includes/Chicane/Core/Input/Device/Event.hpp",
-        "namespace": "Chicane::Input::DeviceEvent",
-        "types": [],
+        "namespace": "Chicane::Input",
+        "types": [
+            {
+                "name": "DeviceID",
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_INPUT_DEVICEID_DESCRIPTION"
+            },
+            {
+                "name": "DeviceMap",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DeviceType",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Type",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "DeviceID",
+                            "suffix": "",
+                            "path": "Core/Input/Device/Event",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_DEVICEMAP_DESCRIPTION"
+            },
+            {
+                "name": "GamepadButtonEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_GAMEPADBUTTONEVENTCALLBACK_DESCRIPTION"
+            },
+            {
+                "name": "GamepadMotionEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const GamepadMotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENTCALLBACK_DESCRIPTION"
+            },
+            {
+                "name": "KeyboardEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_KEYBOARDEVENTCALLBACK_DESCRIPTION"
+            },
+            {
+                "name": "MouseButtonEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void()",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENTCALLBACK_DESCRIPTION"
+            },
+            {
+                "name": "MouseMotionEventCallback",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "void(const MouseMotionEvent &)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_INPUT_MOUSEMOTIONEVENTCALLBACK_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "DeviceID",
-                    "suffix": "",
-                    "path": "Core/Input/Device/Event",
-                    "templates": []
-                },
-                "name": "device",
-                "description": "CHICANE_INPUT_DEVICEEVENT_DEVICE_DESCRIPTION"
-            }
-        ],
-        "description": "CHICANE_INPUT_DEVICEEVENT_DESCRIPTION"
+        "members": [],
+        "description": "CHICANE_INPUT_DESCRIPTION"
     },
     "children": []
 }

@@ -27,7 +27,7 @@
                             "prefix": "const ",
                             "name": "Raw",
                             "suffix": "&",
-                            "path": "Box/Asset/Font",
+                            "path": "Box/Asset/Font/Constants",
                             "templates": []
                         },
                         "name": "inData"

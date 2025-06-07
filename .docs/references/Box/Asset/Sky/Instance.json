@@ -60,7 +60,7 @@
                     "prefix": "const ",
                     "name": "RawSides",
                     "suffix": "&",
-                    "path": "Box/Asset/Sky",
+                    "path": "Box/Asset/Sky/Constants",
                     "templates": []
                 },
                 "name": "getSides",
@@ -77,7 +77,7 @@
                     "prefix": "const ",
                     "name": "RawSide",
                     "suffix": "&",
-                    "path": "Box/Asset/Sky",
+                    "path": "Box/Asset/Sky/Constants",
                     "templates": []
                 },
                 "name": "getSide",
@@ -125,7 +125,7 @@
                             "prefix": "const ",
                             "name": "RawSide",
                             "suffix": "&",
-                            "path": "Box/Asset/Sky",
+                            "path": "Box/Asset/Sky/Constants",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -244,7 +244,7 @@
                     "prefix": "",
                     "name": "RawSides",
                     "suffix": "",
-                    "path": "Box/Asset/Sky",
+                    "path": "Box/Asset/Sky/Constants",
                     "templates": []
                 },
                 "name": "m_sides",

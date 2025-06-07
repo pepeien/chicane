@@ -75,7 +75,7 @@
                     "prefix": "const ",
                     "name": "Audio::Raw",
                     "suffix": "&",
-                    "path": "Core/Audio/Data",
+                    "path": "Core/Audio/Instance",
                     "templates": []
                 },
                 "name": "getInstance",

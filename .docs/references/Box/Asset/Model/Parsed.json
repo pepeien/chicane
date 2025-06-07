@@ -1,9 +1,9 @@
 {
     "title": "Parsed",
-    "filename": "Data",
-    "path": "Box/Asset/Model/Data",
+    "filename": "Parsed",
+    "path": "Box/Asset/Model/Parsed",
     "source": {
-        "header": "Includes/Chicane/Box/Asset/Model/Data.hpp",
+        "header": "Includes/Chicane/Box/Asset/Model/Parsed.hpp",
         "namespace": "Chicane::Box::Model::Parsed",
         "types": [],
         "enums": [],

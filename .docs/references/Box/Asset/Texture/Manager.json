@@ -85,7 +85,7 @@
                     "prefix": "const ",
                     "name": "Image::Raw",
                     "suffix": "&",
-                    "path": "Core/Image/Data",
+                    "path": "Core/Image/Instance",
                     "templates": []
                 },
                 "name": "getInstance",
