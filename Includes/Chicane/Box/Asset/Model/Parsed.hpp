@@ -8,15 +8,6 @@ namespace Chicane
     {
         namespace Model
         {
-            using Raw = std::vector<unsigned char>;
-
-            struct CHICANE_BOX Extracted
-            {
-            public:
-                std::vector<Vertex>        vertices = {};
-                std::vector<std::uint32_t> indices  = {};
-            };
-
             struct CHICANE_BOX Parsed
             {
             public:

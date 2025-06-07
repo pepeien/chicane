@@ -2,8 +2,9 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
-#include "Chicane/Box/Asset/Model/Data.hpp"
+#include "Chicane/Box/Asset/Model/Extracted.hpp"
 #include "Chicane/Box/Asset/Model/Instance.hpp"
+#include "Chicane/Box/Asset/Model/Parsed.hpp"
 
 namespace Chicane
 {

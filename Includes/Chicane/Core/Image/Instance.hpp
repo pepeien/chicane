@@ -2,7 +2,7 @@
 
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/FileSystem.hpp"
-#include "Chicane/Core/Image/Data.hpp"
+#include "Chicane/Core/Image/Types.hpp"
 #include "Chicane/Core/Image/Vendor.hpp"
 
 namespace Chicane

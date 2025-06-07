@@ -2,7 +2,7 @@
 
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
-#include "Chicane/Box/Asset/Sky/Data.hpp"
+#include "Chicane/Box/Asset/Sky/Types.hpp"
 #include "Chicane/Box/Asset/Sky/Side.hpp"
 
 namespace Chicane

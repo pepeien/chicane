@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Audio/Data.hpp"
+#include "Chicane/Core/Audio/Types.hpp"
 #include "Chicane/Core/Audio/Specification.hpp"
 #include "Chicane/Core/Audio/Vendor.hpp"
 #include "Chicane/Core/Essential.hpp"

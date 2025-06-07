@@ -57,7 +57,7 @@ namespace Chicane
                     outMap.insert(std::make_pair(dataSet, currentIndex));
                 }
 
-                Extracted parse(const std::vector<unsigned char>& inData)
+                Extracted parse(const Raw& inData)
                 {
                     Extracted result = {};
 

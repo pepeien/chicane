@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Essential.hpp"
-#include "Chicane/Box/Asset/Font/Data.hpp"
+#include "Chicane/Box/Asset/Font/Types.hpp"
 #include "Chicane/Box/Asset/Font/Vendor.hpp"
 #include "Chicane/Box/Asset/Instance.hpp"
 

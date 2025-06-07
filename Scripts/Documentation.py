@@ -176,7 +176,7 @@ def namespace_to_snake(text, character = "_"):
 
     return text.replace("::", character).upper()
 
-def insert_node(tree, parts, value, accumulated_path=""):
+def add_node(tree, parts, value, accumulated_path = ""):
     part = parts[0]
     path = accumulated_path + part
 
@@ -204,22 +204,36 @@ def insert_node(tree, parts, value, accumulated_path=""):
     if len(parts) == 1:
         existing.update(value)
     else:
-        insert_node(existing["children"], parts[1:], value, path + "/")
+        add_node(existing["children"], parts[1:], value, path + "/")
 
     tree.sort(key=lambda x: x["title"])
 
-def to_dict(tree, key, value, separator):
-    if not key:
+def add_to_tree(tree, path, value, separator):
+    if not path:
         return
 
-    insert_node(tree, key.split(separator), value) 
+    add_node(tree, path.split(separator), value)
 
-def cache_reference(component, path):
+def add_reference(component, path):
     refid = component.attrib.get('id', '')
     if not refid:
         return
 
     references[refid] = path
+
+def get_reference(refid):
+    if refid is None:
+        return None
+
+    filepath = os.path.join(input_dir, f"{refid}.xml")
+    if not os.path.isfile(filepath):
+        return None
+
+    root = ET.parse(filepath).getroot()
+    if root is None:
+        return None
+
+    return root.find('compounddef')
 
 def add_enum_definition(result, memberdef):
     title     = memberdef.find('name').text
@@ -259,11 +273,11 @@ def add_enum_definition(result, memberdef):
         }
     }
 
-    to_dict(result, key, data, "/")
+    add_to_tree(result, key, data, "/")
 
-    cache_reference(memberdef, key)
+    add_reference(memberdef, key)
 
-def add_definition(result, compounddef):
+def add_definition(result, compounddef, base_key = ""):
     if compounddef is None:
         return
 
@@ -285,6 +299,8 @@ def add_definition(result, compounddef):
     members      = []
 
     key = header.split(include_dir)[-1].split(".")[0]
+
+    print(get_definition(result, namespace), namespace, header)
 
     for sectiondef in compounddef.findall('sectiondef'):
         for memberdef in sectiondef.findall('memberdef'):
@@ -319,7 +335,7 @@ def add_definition(result, compounddef):
                     }
                 )
 
-                cache_reference(memberdef, key)
+                add_reference(memberdef, key)
 
             if inner_kind == "enum":
                 add_enum_definition(result, memberdef)
@@ -368,74 +384,68 @@ def add_definition(result, compounddef):
                     }
                 )
 
-    if len(types) > 0 or len(constructors) > 0 or len(destructors) > 0 or len(functions) > 0 or len(members) > 0:
-        data = {
-            "title": pascal_to_spaced(title),
-            "filename": pascal_to_spaced(filename),
-            "source": {
-                "header": header,
-                "namespace": namespace,
-                "types": types,
-                "enums": [],
-                "constructors": constructors,
-                "destructors": destructors,
-                "functions": functions,
-                "members": members,
-                "description": namespace_to_snake(namespace) + "_DESCRIPTION"
-            }
+    data = {
+        "title": pascal_to_spaced(title),
+        "filename": pascal_to_spaced(filename),
+        "source": {
+            "header": header,
+            "namespace": namespace,
+            "types": types,
+            "enums": [],
+            "constructors": constructors,
+            "destructors": destructors,
+            "functions": functions,
+            "members": members,
+            "description": namespace_to_snake(namespace) + "_DESCRIPTION"
         }
+    }
 
-        to_dict(result, key, data, "/")
+    add_to_tree(result, key, data, "/")
 
-        cache_reference(compounddef, key)
+    add_reference(compounddef, key)
 
-    for inner in compounddef.findall("innerclass") + compounddef.findall("innerstruct"):
-        inner_refid = inner.attrib.get("refid", None)
-        if not inner_refid:
-            continue
+def get_definition(tree, namespace):
+    for node in tree:
+        source = node.get("source")
+        if source is not None:
+            if source.get("namespace") == namespace:
+                return node
 
-        add_definition(result, get_definition(inner_refid))
+        children = node.get("children")
+        if children is not None:
+            result = get_definition(children , namespace)
+            if result is not None:
+                return result
 
-def get_definition(refid):
-    if refid is None:
-        return None
-
-    filepath = os.path.join(input_dir, f"{refid}.xml")
-    if not os.path.isfile(filepath):
-        return None
-
-    root = ET.parse(filepath).getroot()
-    if root is None:
-        return None
-
-    return root.find('compounddef')
-
-def add_namespace_definition(result, refid):
-    compounddef = get_definition(refid)
-    if compounddef is None:
-        return
-
-    namespace = compounddef.find('compoundname').text
-    if not base_namespace in namespace:
-        return
-
-    kind = compounddef.attrib.get('kind', '')
-    if not kind == "namespace":
-        return
-
-    add_definition(result, compounddef)
+    return None
 
 def generate_metadata(root):
     result = []
 
     for compound in root.findall("compound"):
-        add_namespace_definition(result, compound.get("refid", None))
+        refid = compound.get("refid", None)
+        if refid is None:
+            continue
+
+        compounddef = get_reference(refid)
+        if compounddef is None:
+            continue
+
+        namespace = compounddef.find('compoundname').text
+        if not base_namespace in namespace:
+            continue
+
+        kind = compounddef.attrib.get('kind', '')
+        if not kind in ["namespace", "class", "struct"]:
+            continue
+
+        add_definition(result, compounddef)
 
     return result
 
 def generate_index(result, metadata):
     for data in metadata:
-        to_dict(
+        add_to_tree(
             result,
             data["path"],
             {
