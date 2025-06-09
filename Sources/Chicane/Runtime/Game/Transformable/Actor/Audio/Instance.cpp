@@ -12,9 +12,9 @@ namespace Chicane
         m_audio->attachTo(this);
     }
 
-    void AAudio::load(const std::string& inAudio)
+    void AAudio::load(const String& inAudio)
     {
-        if (inAudio.empty())
+        if (inAudio.isEmpty())
         {
             return;
         }

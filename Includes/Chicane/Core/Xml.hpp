@@ -14,10 +14,10 @@ namespace Chicane
         CHICANE_CORE pugi::xml_document load(const FileSystem::Path& inFilepath);
 
         CHICANE_CORE pugi::xml_attribute getAttribute(
-            const std::string& inName,
+            const String& inName,
             const pugi::xml_node& inNode
         );
 
-        CHICANE_CORE void addText(pugi::xml_node& outNode, const std::string& inText);
+        CHICANE_CORE void addText(pugi::xml_node& outNode, const String& inText);
     }
 }

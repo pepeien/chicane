@@ -3,13 +3,14 @@
 #include <typeindex>
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     struct CHICANE_CORE Reference
     {
     public:
-        using Map = std::unordered_map<std::string, Reference*>;
+        using Map = std::unordered_map<String, Reference*>;
 
     public:
         template<typename T>
@@ -28,7 +29,7 @@ namespace Chicane
     public:
         bool isEmpty() const;
 
-        std::string toString() const;
+        String toString() const;
 
         template<typename T>
         bool isType() const

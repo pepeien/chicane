@@ -10,47 +10,49 @@ namespace Chicane
         {
             bool Group::isValid() const
             {
-                return !m_id.empty() && FileSystem::exists(m_model) && FileSystem::exists(m_texture);
+                return !m_id.isEmpty() &&
+                       FileSystem::exists(m_model.toStandard()) &&
+                       FileSystem::exists(m_texture.toStandard());
             }
 
-            const std::string& Group::getId() const
+            const String& Group::getId() const
             {
                 return m_id;
             }
 
-            void Group::setId(const std::string& inId)
+            void Group::setId(const String& inId)
             {
                 m_id = inId;
             }
 
-            const std::string& Group::getModel() const
+            const String& Group::getModel() const
             {
                 return m_model;
             }
 
-            void Group::setModel(const std::string& inFilepath)
+            void Group::setModel(const String& inFilepath)
             {
-                if (inFilepath.empty())
+                if (inFilepath.isEmpty())
                 {
                     return;
                 }
 
-                m_model = String::trim(inFilepath);
+                m_model = inFilepath.trim();
             }
 
-            const std::string& Group::getTexture() const
+            const String& Group::getTexture() const
             {
                 return m_texture;
             }
 
-            void Group::setTexture(const std::string& inFilepath)
+            void Group::setTexture(const String& inFilepath)
             {
-                if (inFilepath.empty())
+                if (inFilepath.isEmpty())
                 {
                     return;
                 }
 
-                m_texture = String::trim(inFilepath);
+                m_texture = inFilepath.trim();
             }
         }
     }

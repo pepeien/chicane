@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -18,10 +19,10 @@ namespace Chicane
             virtual void open(Callback inCallback) const;
 
         public:
-            bool        bCanSelectMany;
+            bool   bCanSelectMany;
 
-            std::string title;
-            std::string location;
+            String title;
+            String location;
         };
     }
 }

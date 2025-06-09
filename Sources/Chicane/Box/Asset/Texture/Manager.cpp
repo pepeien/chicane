@@ -15,17 +15,17 @@ namespace Chicane
                 : Super()
             {}
 
-            void Manager::onActivation(const std::string& inId)
+            void Manager::onActivation(const String& inId)
             {
                 Super::allocate(inId, Image::Instance(getInstance(inId)));
             }
 
-            void Manager::onDeactivation(const std::string& inId)
+            void Manager::onDeactivation(const String& inId)
             {
                 Super::deallocate(inId);
             }
 
-            void Manager::load(const std::string& inId, const Texture::Instance& inAsset)
+            void Manager::load(const String& inId, const Texture::Instance& inAsset)
             {
                 if (isLoaded(inId))
                 {
@@ -35,7 +35,7 @@ namespace Chicane
                 Super::load(inId, inAsset.getData());
             }
 
-            const Image::Raw& Manager::getInstance(const std::string& inId) const
+            const Image::Raw& Manager::getInstance(const String& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -45,7 +45,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const Image::Instance& Manager::getData(const std::string& inId) const
+            const Image::Instance& Manager::getData(const String& inId) const
             {
                 if (!isLoaded(inId) || !isAllocated(inId))
                 {
@@ -55,7 +55,7 @@ namespace Chicane
                 return m_datum.at(inId);
             }
 
-            std::uint32_t Manager::getIndex(const std::string& inId) const
+            std::uint32_t Manager::getIndex(const String& inId) const
             {
                 auto interator = std::find(
                     m_activeIds.begin(),

@@ -14,7 +14,7 @@ namespace Chicane
                 Font();
 
             public:
-                std::string family;
+                String family;
                 float       size;
             };
         }

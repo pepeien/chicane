@@ -12,7 +12,7 @@ namespace Chicane
         {
             static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
-            static const std::unordered_map<std::string, Image::Vendor> VENDOR_MAP {
+            static const std::unordered_map<String, Image::Vendor> VENDOR_MAP {
                 { "PNG", Image::Vendor::Png }
             };
 
@@ -44,18 +44,18 @@ namespace Chicane
                     return;
                 }
 
-                std::string vendorID = vendor->first;
+                String vendorID = vendor->first;
 
                 pugi::xml_node root = getXML();
 
                 if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
                 {
-                    root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+                    root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
 
                     return;
                 }
 
-                root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+                root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
             }
 
             const Image::Raw& Instance::getData() const
@@ -63,14 +63,14 @@ namespace Chicane
                 return m_data;
             }
 
-            void Instance::setData(const std::string& inFilepath)
+            void Instance::setData(const String& inFilepath)
             {
-                if (!FileSystem::exists(inFilepath))
+                if (!FileSystem::exists(inFilepath.toStandard()))
                 {
                     return;
                 }
 
-                setData(FileSystem::readUnsigned(inFilepath));
+                setData(FileSystem::readUnsigned(inFilepath.toStandard()));
             }
 
             void Instance::setData(const Image::Raw& inData)
@@ -92,7 +92,7 @@ namespace Chicane
                     return;
                 }
 
-                std::string vendor = Xml::getAttribute(
+                String vendor = Xml::getAttribute(
                     VENDOR_ATTRIBUTE_NAME,
                     getXML()
                 ).as_string();

@@ -17,17 +17,17 @@ namespace Chicane
                 virtual ~Manager() = default;
 
             protected:
-                void onActivation(const std::string& inId) override;
-                void onDeactivation(const std::string& inId) override;
+                void onActivation(const String& inId) override;
+                void onDeactivation(const String& inId) override;
 
             public:
                 // Setup
-                void load(const std::string& inId, const Texture::Instance& inAsset);
+                void load(const String& inId, const Texture::Instance& inAsset);
 
                 // Data
-                const Image::Raw& getInstance(const std::string& inId) const;
-                const Image::Instance& getData(const std::string& inId) const;
-                std::uint32_t getIndex(const std::string& inId) const;
+                const Image::Raw& getInstance(const String& inId) const;
+                const Image::Instance& getData(const String& inId) const;
+                std::uint32_t getIndex(const String& inId) const;
             };
         }
     }

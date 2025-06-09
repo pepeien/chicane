@@ -8,14 +8,14 @@ namespace Chicane
     {
         namespace Style
         {
-            Alignment toAlignment(const std::string& inValue)
+            Alignment toAlignment(const String& inValue)
             {
-                if (String::areEquals(inValue, ALIGNMENT_TYPE_CENTER))
+                if (inValue.equals(ALIGNMENT_TYPE_CENTER))
                 {
                     return Alignment::Center;
                 }
 
-                if (String::areEquals(inValue, ALIGNMENT_TYPE_START))
+                if (inValue.equals(ALIGNMENT_TYPE_START))
                 {
                     return Alignment::Start;
                 }

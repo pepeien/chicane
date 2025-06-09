@@ -117,7 +117,7 @@ namespace Chicane
             return hasLayer(inLayer->getId());
         }
 
-        bool Instance::hasLayer(const std::string& inId) const
+        bool Instance::hasLayer(const String& inId) const
         {
             return std::find_if(
                 m_layers.begin(),
@@ -144,7 +144,7 @@ namespace Chicane
         void Instance::pushLayer(
             Layer::Instance* inLayer,
             Layer::PushStrategy inPushStrategy,
-            const std::string& inId
+            const String& inId
         )
         {
             if (!inLayer)
@@ -194,7 +194,7 @@ namespace Chicane
             inLayer->init();
         }
 
-        void Instance::pushLayerBefore(const std::string& inId, Layer::Instance* inLayer)
+        void Instance::pushLayerBefore(const String& inId, Layer::Instance* inLayer)
         {
             if (hasLayer(inLayer))
             {
@@ -220,7 +220,7 @@ namespace Chicane
             inLayer->init();
         }
 
-        void Instance::pushLayerAfter(const std::string& inId, Layer::Instance* inLayer)
+        void Instance::pushLayerAfter(const String& inId, Layer::Instance* inLayer)
         {
             if (hasLayer(inLayer))
             {
@@ -343,7 +343,7 @@ namespace Chicane
                                 m_meshes.end(),
                                 [](CMesh* inA, CMesh* inB)
                                 {
-                                    return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
+                                    return inA->getModel().equals(inB->getModel());
                                 }
                             );
 

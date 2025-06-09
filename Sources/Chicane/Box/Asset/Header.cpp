@@ -8,7 +8,7 @@ namespace Chicane
     {
         namespace Asset
         {
-            const std::unordered_map<std::string, Type> TYPES = {
+            const std::unordered_map<String, Type> TYPES = {
                 { Sound::EXTENSION,   Type::Sound   },
                 { Font::EXTENSION,    Type::Font    },
                 { Mesh::EXTENSION,    Type::Mesh    },
@@ -91,7 +91,7 @@ namespace Chicane
 
                 id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inRoot).as_string();
 
-                if (!id.empty())
+                if (!id.isEmpty())
                 {
                     return;
                 }

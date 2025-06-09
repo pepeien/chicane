@@ -9,7 +9,7 @@ namespace Chicane
     {
         namespace Sky
         {
-            using RawSide  = std::string;
+            using RawSide  = String;
             using RawSides = std::unordered_map<Side, RawSide>;
 
             using ParsedSide  = Image::Instance;

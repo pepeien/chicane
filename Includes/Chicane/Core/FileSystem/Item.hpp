@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -17,12 +18,12 @@ namespace Chicane
             };
 
         public:
-            Type          type       = Type::Undefined;
-            std::string   name       = "";
-            std::string   path       = "";
+            Type   type       = Type::Undefined;
+            String name       = "";
+            String path       = "";
 
             // File only
-            std::string   extension  = "";
+            String extension  = "";
 
             // Folder only
             std::uint32_t childCount = 0;

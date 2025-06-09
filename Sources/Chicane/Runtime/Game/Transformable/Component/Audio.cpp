@@ -8,19 +8,19 @@ namespace Chicane
         m_manager(Box::getSoundManager())
     {}
 
-    void CAudio::load(const std::string& inAudio)
+    void CAudio::load(const String& inAudio)
     {
-        if (inAudio.empty())
+        if (inAudio.isEmpty())
         {
             return;
         }
 
-        if (String::areEquals(m_audio, inAudio))
+        if (m_audio.equals(inAudio))
         {
             return;
         }
 
-        if (!m_audio.empty())
+        if (!m_audio.isEmpty())
         {
             m_manager->deactivate(m_audio);
         }
@@ -32,7 +32,7 @@ namespace Chicane
 
     void CAudio::play() const
     {
-        if (m_audio.empty())
+        if (m_audio.isEmpty())
         {
             return;
         }

@@ -99,7 +99,7 @@ namespace Chicane
             // Setup
             void initWindow();
             void initRenderer();
-            void initAssets(const std::string& inPath);
+            void initAssets(const String& inPath);
 
             // Lifecycle
             void render();

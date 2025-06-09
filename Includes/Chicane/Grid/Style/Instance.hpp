@@ -23,9 +23,9 @@ namespace Chicane
             public:
                 static Source::List parseSources(const pugi::xml_node& inNode);
                 static Source::List parseSources(const FileSystem::Path& inPath);
-                static Source::List parseSources(const std::string& inData);
+                static Source::List parseSources(const String& inData);
 
-                static Properties parseSource(const std::string& inData);
+                static Properties parseSource(const String& inData);
 
             public:
                 Instance(const Properties& inProperties, Component* inParent);
@@ -53,25 +53,25 @@ namespace Chicane
                 void refreshBackgroundColor();
                 void refreshFont();
 
-                Color::Rgba parseColor(const std::string& inValue) const;
-                float parseSize(const std::string& inValue, Direction inDirection) const;
-                std::string parseText(const std::string& inValue) const;
+                Color::Rgba parseColor(const String& inValue) const;
+                float parseSize(const String& inValue, Direction inDirection) const;
+                String parseText(const String& inValue) const;
 
-                float parseCalculation(const std::string& inValue, Style::Direction inDirection) const;
+                float parseCalculation(const String& inValue, Style::Direction inDirection) const;
 
-                float parsePercentage(const std::string& inValue, Style::Direction inDirection) const;
+                float parsePercentage(const String& inValue, Style::Direction inDirection) const;
                 float parsePercentage(float inValue, Style::Direction inDirection) const;
 
-                float parseViewportHeight(const std::string& inValue) const;
+                float parseViewportHeight(const String& inValue) const;
                 float parseViewportHeight(float inValue) const;
 
-                float parseViewportWidth(const std::string& inValue) const;
+                float parseViewportWidth(const String& inValue) const;
                 float parseViewportWidth(float inValue) const;
 
-                float parsePixel(const std::string& inValue) const;
+                float parsePixel(const String& inValue) const;
 
-                float parseNumber(const std::string& inValue, const std::string& inUnit) const;
-                float parseNumber(const std::string& inValue) const;
+                float parseNumber(const String& inValue, const String& inUnit) const;
+                float parseNumber(const String& inValue) const;
 
             public:
                 // Visiblity

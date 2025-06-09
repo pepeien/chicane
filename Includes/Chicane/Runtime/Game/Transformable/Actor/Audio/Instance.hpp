@@ -13,7 +13,7 @@ namespace Chicane
         virtual ~AAudio() = default;
 
     public:
-        void load(const std::string& inAudio);
+        void load(const String& inAudio);
         void play() const;
 
     protected:

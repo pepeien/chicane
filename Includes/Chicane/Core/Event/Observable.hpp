@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -11,7 +12,7 @@ namespace Chicane
     public:
         using EmptyCallback    = std::function<void ()>;
         using NextCallback     = std::function<void (T)>;
-        using ErrorCallback    = std::function<void (const std::string&)>;
+        using ErrorCallback    = std::function<void (const String&)>;
         using CompleteCallback = std::function<void ()>;
 
     public:
@@ -56,7 +57,7 @@ namespace Chicane
             }
         }
 
-        void error(const std::string& inMessage)
+        void error(const String& inMessage)
         {
             for (Subscription<T>& subscription : m_subscriptions)
             {

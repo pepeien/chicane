@@ -13,7 +13,7 @@ namespace Chicane
             static inline constexpr const char* SIDES_TAG_NAME              = "Sides";
             static inline constexpr const char* TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
 
-            static const std::map<std::string, Side> SIDE_MAP {
+            static const std::map<String, Side> SIDE_MAP {
                 { "UP",    Side::Up },
                 { "DOWN",  Side::Down },
                 { "LEFT",  Side::Left },
@@ -34,7 +34,7 @@ namespace Chicane
                 return m_sides;
             }
 
-            const std::string& Instance::getSide(Side inSide) const
+            const String& Instance::getSide(Side inSide) const
             {
                 if (m_sides.find(inSide) == m_sides.end())
                 {
@@ -46,14 +46,14 @@ namespace Chicane
 
             void Instance::setSide(Side inSide, const RawSide& inFilepath)
             {
-                if (inFilepath.empty())
+                if (inFilepath.isEmpty())
                 {
                     return;
                 }
 
-                std::string filepath = String::trim(inFilepath);
+                const String filepath = inFilepath.trim();
 
-                if (!FileSystem::exists(filepath))
+                if (!FileSystem::exists(filepath.toStandard()))
                 {
                     throw std::runtime_error("The texture " + filepath + " doesn't exist");
                 }
@@ -71,35 +71,35 @@ namespace Chicane
                     return;
                 }
 
-                std::string sideID = side->first;
+                String sideID = side->first;
 
                 pugi::xml_node sideNode = getXML().find_child_by_attribute(
                     TEXTURE_SIDE_ATTRIBUTE_NAME,
-                    sideID.c_str()
+                    sideID.toChar()
                 );
 
                 if (Xml::isEmpty(sideNode))
                 {
                     sideNode = getXML().append_child(Texture::TAG);
-                    sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.c_str());
+                    sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.toChar());
                 }
 
                 sideNode.text().set(filepath);
             }
 
-            const std::string& Instance::getModel() const
+            const String& Instance::getModel() const
             {
                 return m_model;
             }
 
-            void Instance::setModel(const std::string& inModel)
+            void Instance::setModel(const String& inModel)
             {
                 m_model = inModel;
             }
 
-            Side Instance::getSideFromString(const std::string& inValue) const
+            Side Instance::getSideFromString(const String& inValue) const
             {
-                std::string value = inValue;
+                String value = inValue;
                 std::transform(value.begin(), value.end(), value.begin(), ::toupper);
 
                 if (SIDE_MAP.find(value) == SIDE_MAP.end())
@@ -135,12 +135,9 @@ namespace Chicane
                         throw std::runtime_error("There are duplicated sides inside the " + m_header.id + " cube map");
                     }
 
-                    m_sides.insert(
-                        std::make_pair(
-                            side,
-                            String::trim(texture.child_value())
-                        )
-                    );
+                    const String textureName = texture.child_value();
+
+                    m_sides.insert(std::make_pair(side, textureName.trim()));
                 }
 
                 if (m_sides.size() < SIDE_MAP.size())
@@ -153,7 +150,8 @@ namespace Chicane
             {
                 const auto& model = getXML().child(Model::TAG);
 
-                m_model = String::trim(model.child_value());
+                m_model = model.child_value();
+                m_model = m_model.trim();
             }
         }
     }

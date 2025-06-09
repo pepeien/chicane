@@ -12,11 +12,11 @@ namespace Chicane
         virtual ~CAudio() = default;
 
     public:
-        void load(const std::string& inAudio);
+        void load(const String& inAudio);
         void play() const;
 
     protected:
-        std::string m_audio;
+        String m_audio;
 
     private:
         Box::Sound::Manager* m_manager;

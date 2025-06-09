@@ -329,16 +329,16 @@ namespace Chicane
             m_position.y = inY;
         }
 
-        void Instance::setTitle(const std::string& inTitle)
+        void Instance::setTitle(const String& inTitle)
         {
             if (!wasCreated())
             {
                 return;
             }
 
-            const std::string title = String::trim(inTitle);
+            const String title = inTitle.trim();
 
-            if (!SDL_SetWindowTitle(static_cast<SDL_Window*>(m_instance), title.c_str()))
+            if (!SDL_SetWindowTitle(static_cast<SDL_Window*>(m_instance), title.toChar()))
             {
                 emmitWarning("Failed to set the window title");
 
@@ -658,30 +658,30 @@ namespace Chicane
             m_position.y = y;
         }
 
-        void Instance::emmitWarning(const std::string& inMessage)
+        void Instance::emmitWarning(const String& inMessage)
         {
-            if (inMessage.empty())
+            if (inMessage.isEmpty())
             {
                 return;
             }
 
-            std::string message = String::trim(inMessage);
+            String message = inMessage.trim();
             message.append(" [%s]");
 
             Log::warning(message, SDL_GetError());
         }
 
-        void Instance::emmitError(const std::string& inMessage)
+        void Instance::emmitError(const String& inMessage)
         {
-            if (inMessage.empty())
+            if (inMessage.isEmpty())
             {
                 throw std::runtime_error(SDL_GetError());
             }
 
-            std::string message = String::trim(inMessage);
+            String message = inMessage.trim();
             message.append(" [%s]");
 
-            throw std::runtime_error(String::sprint(message, SDL_GetError()));
+            throw std::runtime_error(String::sprint(message, SDL_GetError()).toChar());
         }
     }
 }

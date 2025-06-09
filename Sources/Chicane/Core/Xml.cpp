@@ -44,19 +44,19 @@ namespace Chicane
             return result;
         }
 
-        pugi::xml_attribute getAttribute(const std::string& inName, const pugi::xml_node& inNode)
+        pugi::xml_attribute getAttribute(const String& inName, const pugi::xml_node& inNode)
         {
-            return inNode.attribute(inName.c_str());
+            return inNode.attribute(inName.toChar());
         }
 
-        void addText(pugi::xml_node& outNode, const std::string& inText)
+        void addText(pugi::xml_node& outNode, const String& inText)
         {
-            if (inText.empty())
+            if (inText.isEmpty())
             {
                 return;
             }
 
-            outNode.text().set(inText);
+            outNode.text().set(inText.toStandard());
         }
     }
 }

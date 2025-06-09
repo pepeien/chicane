@@ -18,14 +18,14 @@ namespace Chicane
             refreshText();
         }
 
-        const std::string& Text::getText() const
+        const String& Text::getText() const
         {
             return m_text;
         }
 
-        void Text::setText(const std::string& inValue)
+        void Text::setText(const String& inValue)
         {
-            if (String::areEquals(inValue, m_text))
+            if (inValue.equals(m_text))
             {
                 return;
             }
@@ -35,9 +35,9 @@ namespace Chicane
 
         void Text::refreshText()
         {
-            const std::string value = parseText(m_text);
+            const String value = parseText(m_text);
 
-            if (String::areEquals(value, m_parsedText))
+            if (value.equals(m_parsedText))
             {
                 return;
             }
@@ -58,9 +58,7 @@ namespace Chicane
                     continue;
                 }
 
-                static_cast<Character*>(child)->setCharacter(
-                    m_parsedText.at(i)
-                );
+                static_cast<Character*>(child)->setCharacter(m_parsedText.at(i));
             }
 
             for (std::uint32_t i = m_parsedText.size(); i < m_children.size(); i++)

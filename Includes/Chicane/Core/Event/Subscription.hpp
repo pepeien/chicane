@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -10,7 +11,7 @@ namespace Chicane
     public:
         using EmptyCallback    = std::function<void ()>;
         using NextCallback     = std::function<void (T)>;
-        using ErrorCallback    = std::function<void (const std::string&)>;
+        using ErrorCallback    = std::function<void (const String&)>;
         using CompleteCallback = std::function<void ()>;
 
     public:
@@ -57,7 +58,7 @@ namespace Chicane
             return *this;
         }
 
-        Subscription<T> error(const std::string& inMessage)
+        Subscription<T> error(const String& inMessage)
         {
             if (isCompleted())
             {

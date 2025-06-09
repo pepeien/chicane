@@ -21,11 +21,11 @@ private:
     Chicane::Reference        m_uiFramesPerSecond;
 
     // Victory Banner
-    std::string               m_victoryVisibility;
+    Chicane::String           m_victoryVisibility;
     Chicane::Reference        m_uiVictoryVisibility;
 
     // Crosshair
-    std::string               m_crosshairDotVisibility;
+    Chicane::String           m_crosshairDotVisibility;
     Chicane::Reference        m_uiCrosshairDotVisibility;
     int                       m_crosshairSize;
     Chicane::Reference        m_uiCrosshairSize;

@@ -12,6 +12,6 @@ namespace Chicane
     namespace Grid
     {
         CHICANE_GRID Component* createComponent(const pugi::xml_node& inNode);
-        CHICANE_GRID void registerComponent(const std::string& inTag, Component::Compiler inCompiler);
+        CHICANE_GRID void registerComponent(const String& inTag, Component::Compiler inCompiler);
     }
 }

@@ -42,24 +42,23 @@ namespace Chicane
                     return;
                 }
 
-                std::string id = inGroup.getId();
+                String id = inGroup.getId();
 
                 pugi::xml_node root = getXML();
 
                 if (
                     !Xml::isEmpty(
-                        root.find_child_by_attribute(
-                            GROUP_ID_ATTRIBUTE_NAME,
-                            id.c_str()
-                        )
+                        root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar())
                     )
                 )
                 {
-                    throw std::runtime_error("A group with the ID " + inGroup.getId() + " already exists");
+                    throw std::runtime_error(
+                        "A group with the ID " + inGroup.getId().toStandard() + " already exists"
+                    );
                 }
 
                 pugi::xml_node groupNode = root.append_child(GROUP_TAG);
-                groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id);
+                groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id.toStandard());
 
                 pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
                 Xml::addText(modelNode, inGroup.getModel());
@@ -78,22 +77,27 @@ namespace Chicane
                 auto foundGroupEntry = std::find_if(
                     m_groups.begin(),
                     m_groups.end(),
-                    [inGroup](const auto& A) { return String::areEquals(A.getId(), inGroup.getId()); }
+                    [inGroup](const Mesh::Group& inValue)
+                    {
+                        return inGroup.getId().equals(inValue.getId());
+                    }
                 );
 
                 if (foundGroupEntry == m_groups.end())
                 {
-                    throw std::runtime_error("The group " + inGroup.getId() + " wasn't found");
+                    throw std::runtime_error(
+                        "The group " + inGroup.getId().toStandard() + " wasn't found"
+                    );
                 }
 
                 m_groups[foundGroupEntry - m_groups.begin()] = inGroup;
 
-                std::string id = inGroup.getId();
+                String id = inGroup.getId();
 
                 pugi::xml_node root           = getXML();
                 pugi::xml_node foundGroupNode = root.find_child_by_attribute(
                     GROUP_ID_ATTRIBUTE_NAME,
-                    id.c_str()
+                    id.toChar()
                 );
 
                 if (Xml::isEmpty(foundGroupNode))
@@ -119,7 +123,9 @@ namespace Chicane
 
                 for (const auto& groupNode : getXML().children())
                 {
-                    if (!String::areEquals(groupNode.name(), GROUP_TAG))
+                    const String name = groupNode.name();
+
+                    if (!name.equals(GROUP_TAG))
                     {
                         continue;
                     }
@@ -128,18 +134,18 @@ namespace Chicane
 
                     for (const auto& assetNode : groupNode.children())
                     {
-                        std::string currentTag = assetNode.name();
+                        String currentTag = assetNode.name();
 
-                        if (String::areEquals(currentTag, Model::TAG))
+                        if (currentTag.equals(Model::TAG))
                         {
-                            group.setModel(String::trim(assetNode.child_value()));
+                            group.setModel(assetNode.child_value());
 
                             continue;
                         }
 
-                        if (String::areEquals(currentTag, Texture::TAG))
+                        if (currentTag.equals(Texture::TAG))
                         {
-                            group.setTexture(String::trim(assetNode.child_value()));
+                            group.setTexture(assetNode.child_value());
 
                             continue;
                         }

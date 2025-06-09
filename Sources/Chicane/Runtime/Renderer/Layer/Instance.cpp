@@ -8,7 +8,7 @@ namespace Chicane
             : Instance("Unamed")
         {}
 
-        Instance::Instance(const std::string& inId)
+        Instance::Instance(const String& inId)
             : m_id(inId),
               m_status(Status::Offline)
         {}
@@ -98,7 +98,7 @@ namespace Chicane
             return m_status;
         }
 
-        const std::string& Instance::getId() const
+        const String& Instance::getId() const
         { 
             return m_id;
         }

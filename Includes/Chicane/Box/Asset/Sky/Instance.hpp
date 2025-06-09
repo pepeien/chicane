@@ -22,17 +22,17 @@ namespace Chicane
                 const RawSide& getSide(Side inSide) const;
                 void setSide(Side inSide, const RawSide& inFilepath);
 
-                const std::string& getModel() const;
-                void setModel(const std::string& inModel);
+                const String& getModel() const;
+                void setModel(const String& inModel);
 
             private:
-                Side getSideFromString(const std::string& inValue) const;
+                Side getSideFromString(const String& inValue) const;
                 void fetchSides();
                 void fetchModel();
 
             private:
                 RawSides    m_sides;
-                std::string m_model;
+                String m_model;
             };
         }
     }

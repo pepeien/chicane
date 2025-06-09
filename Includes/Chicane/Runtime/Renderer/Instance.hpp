@@ -53,19 +53,19 @@ namespace Chicane
 
             // Layers
             bool hasLayer(Layer::Instance* inLayer) const;
-            bool hasLayer(const std::string& inId) const;
+            bool hasLayer(const String& inId) const;
 
             void pushLayer(
                 Layer::Instance* inLayer,
                 Layer::PushStrategy inPushStrategy = Layer::PushStrategy::Back,
-                const std::string& inId = ""
+                const String& inId = ""
             );
 
         protected:
             void pushLayerStart(Layer::Instance* inLayer);
             void pushLayerBack(Layer::Instance* inLayer);
-            void pushLayerBefore(const std::string& inId, Layer::Instance* inLayer);
-            void pushLayerAfter(const std::string& inId, Layer::Instance* inLayer);
+            void pushLayerBefore(const String& inId, Layer::Instance* inLayer);
+            void pushLayerAfter(const String& inId, Layer::Instance* inLayer);
 
             void setupLayers();
             void destroyLayers();

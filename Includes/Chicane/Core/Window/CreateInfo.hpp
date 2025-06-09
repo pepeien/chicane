@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_CORE CreateInfo
         {
         public:
-            std::string      title    = "";
+            String      title    = "";
             FileSystem::Path icon     = "";
             Vec<2, int>      size     = Vec<2, int>(0);
             int              display  = 0;

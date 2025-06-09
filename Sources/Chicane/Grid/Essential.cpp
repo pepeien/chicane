@@ -4,10 +4,10 @@ namespace Chicane
 {
     namespace Grid
     {
-        std::string extractParams(const std::string& inValue)
+        String extractParams(const String& inValue)
         {
-            const std::uint32_t start = inValue.find_first_of(FUNCTION_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.find_last_of(FUNCTION_PARAMS_CLOSING);
+            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
+            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
 
             return inValue.substr(start, end - start);
         }

@@ -22,10 +22,10 @@ namespace Chicane
         void hide();
 
         bool hasMesh() const;
-        void setMesh(const std::string& inMesh);
+        void setMesh(const String& inMesh);
         const Box::Mesh::Instance* getMesh() const;
-        const std::string& getModel() const;
-        const std::string& getTexture() const;
+        const String& getModel() const;
+        const String& getTexture() const;
 
     protected:
         void generateBounds();

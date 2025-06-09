@@ -6,7 +6,7 @@ namespace Chicane
     {
         namespace Style
         {
-            Source::Source(const std::vector<std::string>& inSelectors, const Properties& inProperties)
+            Source::Source(const std::vector<String>& inSelectors, const Properties& inProperties)
                 : selectors(inSelectors),
                 properties(inProperties)
             {}

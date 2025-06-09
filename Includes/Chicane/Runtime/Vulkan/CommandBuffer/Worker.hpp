@@ -14,12 +14,12 @@ namespace Chicane
                 CHICANE_RUNTIME void endJob(
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::Queue& inQueue,
-                    const std::string& inDescription = "Command Buffer"
+                    const String& inDescription = "Command Buffer"
                 );
                 CHICANE_RUNTIME void endJob(
                     const vk::Queue& inQueue,
                     const vk::SubmitInfo& inSubmitInfo,
-                    const std::string& inDescription = "Command Buffer"
+                    const String& inDescription = "Command Buffer"
                 );
             }
         }

@@ -51,11 +51,11 @@ namespace Chicane
                 void destroyShadowImage();
 
                 // Vulkan
-                void addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer);
-                vk::Framebuffer getFramebuffer(const std::string& inId) const;
+                void addFrameBuffer(const String& inId, const vk::Framebuffer& inFramebuffer);
+                vk::Framebuffer getFramebuffer(const String& inId) const;
 
-                void addDescriptorSet(const std::string& inId, const vk::DescriptorSet& inDescriptorSet);
-                vk::DescriptorSet getDescriptorSet(const std::string& inId) const;
+                void addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet);
+                vk::DescriptorSet getDescriptorSet(const String& inId) const;
 
                 void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
                 void updateDescriptorSets();
@@ -76,7 +76,7 @@ namespace Chicane
                 vk::DescriptorImageInfo                           shadowImageInfo;
 
                 // Buffer
-                std::unordered_map<std::string, vk::Framebuffer>  framebuffers;
+                std::unordered_map<String, vk::Framebuffer>  framebuffers;
 
                 // Sychronization
                 vk::CommandBuffer                                 commandBuffer;
@@ -89,7 +89,7 @@ namespace Chicane
                 Resource<View::Data>                              lightResource;
                 Resource<Box::Mesh::Parsed>                       meshResource;
 
-                std::unordered_map<std::string,vk::DescriptorSet> descriptorSets;
+                std::unordered_map<String,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
             };
         }

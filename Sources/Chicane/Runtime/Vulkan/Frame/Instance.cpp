@@ -378,7 +378,7 @@ namespace Chicane
                 logicalDevice.destroySampler(shadowImage.sampler);
             }
 
-            void Instance::addFrameBuffer(const std::string& inId, const vk::Framebuffer& inFramebuffer)
+            void Instance::addFrameBuffer(const String& inId, const vk::Framebuffer& inFramebuffer)
             {
                 if (framebuffers.find(inId) != framebuffers.end())
                 {
@@ -388,12 +388,12 @@ namespace Chicane
                 framebuffers.insert(std::make_pair(inId, inFramebuffer));
             }
 
-            vk::Framebuffer Instance::getFramebuffer(const std::string& inId) const
+            vk::Framebuffer Instance::getFramebuffer(const String& inId) const
             {
                 return framebuffers.at(inId);
             }
 
-            void Instance::addDescriptorSet(const std::string& inId, const vk::DescriptorSet& inDescriptorSet)
+            void Instance::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)
             {
                 if (descriptorSets.find(inId) != descriptorSets.end())
                 {
@@ -403,7 +403,7 @@ namespace Chicane
                 descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
             }
 
-            vk::DescriptorSet Instance::getDescriptorSet(const std::string& inId) const
+            vk::DescriptorSet Instance::getDescriptorSet(const String& inId) const
             {
                 return descriptorSets.at(inId);
             }
@@ -448,7 +448,7 @@ namespace Chicane
                     components.end(),
                     [](CMesh* inA, CMesh* inB)
                     {
-                        return strcmp(inA->getModel().c_str(), inB->getModel().c_str()) > 0;
+                        return inA->getModel().equals(inB->getModel());
                     }
                 );
 

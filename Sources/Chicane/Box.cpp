@@ -50,11 +50,9 @@ namespace Chicane
         template<class T = Asset::Instance>
         const T* addAsset(const FileSystem::Path& inSource)
         {
-            const std::string identifier = inSource.string();
-
             if (!hasAsset(inSource))
             {
-                g_cache.insert(std::make_pair(identifier, std::make_unique<const T>(inSource)));
+                g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
             }
 
             return getAsset<T>(inSource);
@@ -149,16 +147,16 @@ namespace Chicane
 
                 for (const Mesh::Group& group : asset->getGroups())
                 {
-                    const std::string& model = group.getModel();
-                    if (!model.empty() && !hasAsset(model))
+                    const String& model = group.getModel();
+                    if (!model.isEmpty() && !hasAsset(model.toStandard()))
                     {
-                        loadModel(model);
+                        loadModel(model.toStandard());
                     }
 
-                    const std::string& texture = group.getTexture();
-                    if (!texture.empty() && !hasAsset(texture))
+                    const String& texture = group.getTexture();
+                    if (!texture.isEmpty() && !hasAsset(texture.toStandard()))
                     {
-                        loadTexture(texture);
+                        loadTexture(texture.toStandard());
                     }
                 }
 
@@ -179,11 +177,11 @@ namespace Chicane
             {
                 const Sky::Instance* asset = addAsset<Sky::Instance>(inFilePath);
 
-                loadModel(asset->getModel());
+                loadModel(asset->getModel().toStandard());
 
                 for (const auto& [side, texture] : asset->getSides())
                 {
-                    loadTexture(texture);
+                    loadTexture(texture.toStandard());
                 }
 
                 return asset;

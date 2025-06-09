@@ -20,15 +20,15 @@ namespace Chicane
             void onRefresh() override;
 
         public:
-            const std::string& getText() const;
-            void setText(const std::string& inValue);
+            const String& getText() const;
+            void setText(const String& inValue);
 
         protected:
             void refreshText();
 
         private:
-            std::string m_text;
-            std::string m_parsedText;
+            String m_text;
+            String m_parsedText;
         };
     }
 }

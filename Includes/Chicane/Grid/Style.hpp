@@ -18,10 +18,10 @@ namespace Chicane
     {
         namespace Style
         {
-            CHICANE_GRID std::string variableToReference(const std::string& inValue);
-            CHICANE_GRID std::string colorToReference(const std::string& inValue);
+            CHICANE_GRID String variableToReference(const String& inValue);
+            CHICANE_GRID String colorToReference(const String& inValue);
 
-            CHICANE_GRID std::vector<std::string> splitOneliner(const std::string& inValue);
+            CHICANE_GRID std::vector<String> splitOneliner(const String& inValue);
         }
     }
 }

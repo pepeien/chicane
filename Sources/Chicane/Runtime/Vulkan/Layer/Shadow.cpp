@@ -427,7 +427,7 @@ namespace Chicane
                 vk::IndexType::eUint32
             );
 
-            for (const std::string& id : m_modelManager->getActiveIds())
+            for (const String& id : m_modelManager->getActiveIds())
             {
                 const auto& data = m_modelManager->getData(id);
 

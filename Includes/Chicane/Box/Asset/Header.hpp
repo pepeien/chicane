@@ -26,7 +26,7 @@ namespace Chicane
             public:
                 FileSystem::Path filepath;
                 std::uint32_t    version;
-                std::string      id;
+                String      id;
                 Type             type;
             };
         }

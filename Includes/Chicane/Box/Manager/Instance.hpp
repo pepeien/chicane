@@ -28,11 +28,11 @@ namespace Chicane
 
             protected:
                 // Event
-                virtual void onLoad(const std::string& inId, const I& inInstance) { return; }
-                virtual void onAllocation(const std::string& inId, const E& inData) { return; }
-                virtual void onDeallocation(const std::string& inId) { return; }
-                virtual void onActivation(const std::string& inId) { return; }
-                virtual void onDeactivation(const std::string& inId) { return; }
+                virtual void onLoad(const String& inId, const I& inInstance) { return; }
+                virtual void onAllocation(const String& inId, const E& inData) { return; }
+                virtual void onDeallocation(const String& inId) { return; }
+                virtual void onActivation(const String& inId) { return; }
+                virtual void onDeactivation(const String& inId) { return; }
 
             public:
                 // Status
@@ -41,17 +41,17 @@ namespace Chicane
                     return m_instances.empty() || m_datum.empty();
                 }
 
-                bool isLoaded(const std::string& inId) const
+                bool isLoaded(const String& inId) const
                 {
                     return m_instances.find(inId) != m_instances.end();
                 }
 
-                bool isAllocated(const std::string& inId) const
+                bool isAllocated(const String& inId) const
                 {
                     return m_datum.find(inId) != m_datum.end();
                 }
 
-                bool isActive(const std::string& inId) const
+                bool isActive(const String& inId) const
                 {
                     return std::find(
                         m_activeIds.begin(),
@@ -60,7 +60,7 @@ namespace Chicane
                     ) != m_activeIds.end();
                 }
 
-                bool isUsing(const std::string& inId) const
+                bool isUsing(const String& inId) const
                 {
                     return std::find(
                         m_usedIds.begin(),
@@ -70,12 +70,12 @@ namespace Chicane
                 }
 
                 // Data
-                const std::vector<std::string>& getActiveIds() const
+                const std::vector<String>& getActiveIds() const
                 {
                     return m_activeIds;
                 }
 
-                const std::vector<std::string>& getUsedIds() const
+                const std::vector<String>& getUsedIds() const
                 {
                     return m_usedIds;
                 }
@@ -90,7 +90,7 @@ namespace Chicane
                     return m_usedIds.size();
                 }
 
-                std::uint32_t getUseCount(const std::string& inId) const
+                std::uint32_t getUseCount(const String& inId) const
                 {
                     if (!isUsing(inId))
                     {
@@ -101,7 +101,7 @@ namespace Chicane
                 }
 
                 // Lifecycle
-                void load(const std::string& inId, const I& inInstance)
+                void load(const String& inId, const I& inInstance)
                 {
                     if (isLoaded(inId))
                     {
@@ -115,7 +115,7 @@ namespace Chicane
                     m_observable.next(EventType::Load);
                 }
 
-                void allocate(const std::string& inId, const E& inData)
+                void allocate(const String& inId, const E& inData)
                 {
                     if (!isLoaded(inId) || isAllocated(inId))
                     {
@@ -129,7 +129,7 @@ namespace Chicane
                     m_observable.next(EventType::Allocation);
                 }
 
-                void deallocate(const std::string& inId)
+                void deallocate(const String& inId)
                 {
                     if (!isLoaded(inId) || isAllocated(inId))
                     {
@@ -143,7 +143,7 @@ namespace Chicane
                     m_observable.next(EventType::Allocation);
                 }
 
-                void activate(const std::string& inId)
+                void activate(const String& inId)
                 {
                     if (!isLoaded(inId))
                     {
@@ -151,14 +151,28 @@ namespace Chicane
                     }
 
                     m_usedIds.push_back(inId);
-                    String::sort(m_usedIds);
+                    std::sort(
+                        m_usedIds.begin(),
+                        m_usedIds.end(),
+                        [](const String& inA, const String& inB)
+                        {
+                            return inA.equals(inB);
+                        }
+                    );
 
                     m_observable.next(EventType::Use);
 
                     if (!isActive(inId))
                     {
                         m_activeIds.push_back(inId);
-                        String::sort(m_activeIds);
+                        std::sort(
+                            m_activeIds.begin(),
+                            m_activeIds.end(),
+                            [](const String& inA, const String& inB)
+                            {
+                                return inA.equals(inB);
+                            }
+                        );
 
                         onActivation(inId);
 
@@ -166,7 +180,7 @@ namespace Chicane
                     }
                 }
 
-                void deactivate(const std::string& inId)
+                void deactivate(const String& inId)
                 {
                     if (!isLoaded(inId) || !isAllocated(inId) || !isActive(inId))
                     {
@@ -181,7 +195,14 @@ namespace Chicane
                         )
                     );
                     m_usedIds.shrink_to_fit();
-                    String::sort(m_usedIds);
+                    std::sort(
+                        m_usedIds.begin(),
+                        m_usedIds.end(),
+                        [](const String& inA, const String& inB)
+                        {
+                            return inA.equals(inB);
+                        }
+                    );
 
                     m_observable.next(EventType::Use);
 
@@ -195,7 +216,14 @@ namespace Chicane
                             )
                         );
                         m_activeIds.shrink_to_fit();
-                        String::sort(m_activeIds);
+                        std::sort(
+                            m_activeIds.begin(),
+                            m_activeIds.end(),
+                            [](const String& inA, const String& inB)
+                            {
+                                return inA.equals(inB);
+                            }
+                        );
 
                         m_observable.next(EventType::Activation);
                     }
@@ -212,10 +240,10 @@ namespace Chicane
                 }
 
             protected:
-                std::map<std::string, I> m_instances;
-                std::map<std::string, E> m_datum;
-                std::vector<std::string> m_activeIds;
-                std::vector<std::string> m_usedIds;
+                std::map<String, I> m_instances;
+                std::map<String, E> m_datum;
+                std::vector<String> m_activeIds;
+                std::vector<String> m_usedIds;
                 EventObservable          m_observable;
             };
         }

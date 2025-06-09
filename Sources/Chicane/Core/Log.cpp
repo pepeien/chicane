@@ -9,7 +9,7 @@ namespace Chicane
 
         static inline constexpr const std::uint32_t MAX_LOG_COUNT = 500;
 
-        static std::unordered_map<std::string, std::string> g_colors = {};
+        static std::unordered_map<String, String> g_colors = {};
 
         static List           g_logs           = {};
         static ListObservable g_logsObservable = {};
@@ -26,27 +26,15 @@ namespace Chicane
         }
 
         void emmit(
-            const std::string& inHexColor,
-            const std::string& inIdentifier,
-            const std::string& inMessage
+            const String& inHexColor,
+            const String& inIdentifier,
+            const String& inMessage
         )
         {
-            std::string message = "[" + inIdentifier + "] " + inMessage;
-
-            if (inIdentifier.empty())
-            {
-                message = inMessage;
-            }
-
-            message = String::trim(message);
-
-            std::string color = inHexColor;
-            std::transform(
-                color.begin(),
-                color.end(),
-                color.begin(),
-                ::toupper
-            );
+            const String message = (
+                inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage
+            ).trim();
+            const String color = inHexColor.toUpper();
 
             if (g_colors.find(color) == g_colors.end())
             {
@@ -63,7 +51,7 @@ namespace Chicane
                 );
             }
 
-            const std::string& terminalColor = g_colors.at(color);
+            const String& terminalColor = g_colors.at(color);
 
             if (IS_DEBUGGING)
             {
@@ -81,7 +69,7 @@ namespace Chicane
             g_logsObservable.next(g_logs);
         }
 
-        void info(const std::string& inMessage)
+        void info(const String& inMessage)
         {
             emmit(
                 Color::HEX_COLOR_WHITE,
@@ -90,7 +78,7 @@ namespace Chicane
             );
         }
 
-        void warning(const std::string& inMessage)
+        void warning(const String& inMessage)
         {
             emmit(
                 Color::HEX_COLOR_YELLOW,
@@ -99,7 +87,7 @@ namespace Chicane
             );
         }
 
-        void error(const std::string& inMessage)
+        void error(const String& inMessage)
         {
             emmit(
                 Color::HEX_COLOR_ORANGE,
@@ -108,7 +96,7 @@ namespace Chicane
             );
         }
 
-        void critical(const std::string& inMessage)
+        void critical(const String& inMessage)
         {
             emmit(
                 Color::HEX_COLOR_RED,

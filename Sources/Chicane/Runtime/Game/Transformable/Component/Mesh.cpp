@@ -2,10 +2,10 @@
 
 #include "Chicane/Runtime/Application.hpp"
 
-const std::string EMPTY_STRING = "";
-
 namespace Chicane
 {
+    static const String EMPTY_STRING = "";
+
     CMesh::CMesh()
         : Super(),
         m_bIsVisible(false),
@@ -85,14 +85,14 @@ namespace Chicane
         return m_mesh && !m_mesh->getFilepath().empty();
     }
 
-    void CMesh::setMesh(const std::string& inMesh)
+    void CMesh::setMesh(const String& inMesh)
     {
-        if (inMesh.empty() || hasMesh())
+        if (inMesh.isEmpty() || hasMesh())
         {
             return;
         }
 
-        m_mesh = Box::load<Box::Mesh::Instance>(inMesh);
+        m_mesh = Box::load<Box::Mesh::Instance>(inMesh.toStandard());
 
         generateBounds();
     }
@@ -102,7 +102,7 @@ namespace Chicane
         return m_mesh;
     }
 
-    const std::string& CMesh::getModel() const
+    const String& CMesh::getModel() const
     {
         if (!hasMesh())
         {
@@ -112,7 +112,7 @@ namespace Chicane
         return m_mesh->getGroups().at(0).getModel();
     }
 
-    const std::string& CMesh::getTexture() const
+    const String& CMesh::getTexture() const
     {
         if (!hasMesh())
         {

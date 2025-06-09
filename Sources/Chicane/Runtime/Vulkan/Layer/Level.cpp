@@ -414,7 +414,7 @@ namespace Chicane
 
             std::vector<vk::DescriptorImageInfo> imageInfos = {};
 
-            for (const std::string& id : m_textureManager->getActiveIds())
+            for (const String& id : m_textureManager->getActiveIds())
             {
                 createInfo.image = m_textureManager->getData(id);
 
@@ -554,7 +554,7 @@ namespace Chicane
 
             inCommandBuffer.bindIndexBuffer( m_modelIndexBuffer.instance, 0, vk::IndexType::eUint32 );
 
-            for (const std::string& id : m_modelManager->getActiveIds())
+            for (const String& id : m_modelManager->getActiveIds())
             {
                 const auto& data = m_modelManager->getData(id);
 

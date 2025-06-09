@@ -13,7 +13,7 @@ namespace Chicane
                 struct CHICANE_RUNTIME CreateInfo
                 {
                 public:
-                    std::string                id;
+                    String                id;
                     vk::Device                 logicalDevice;
                     vk::RenderPass             renderPass;
                     vk::Extent2D               extent;

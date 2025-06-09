@@ -18,17 +18,17 @@ namespace Chicane
                 Manager();
 
             public:
-                bool isFamilyAllocated(const std::string& inFamily) const;
+                bool isFamilyAllocated(const String& inFamily) const;
 
                 // Setup
-                void load(const std::string& inId, const Font::Instance& inFont);
-                void allocate(const std::string& inId);
+                void load(const String& inId, const Font::Instance& inFont);
+                void allocate(const String& inId);
 
                 // Data
-                const Extracted& getData(const std::string& inId) const;
-                const Parsed& getParsed(const std::string& inId) const;
+                const Extracted& getData(const String& inId) const;
+                const Parsed& getParsed(const String& inId) const;
 
-                const Parsed& getByFamily(const std::string& inFamily) const;
+                const Parsed& getByFamily(const String& inFamily) const;
             };
         }
     }

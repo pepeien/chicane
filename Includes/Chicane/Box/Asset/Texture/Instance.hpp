@@ -20,7 +20,7 @@ namespace Chicane
                 void setVendor(Image::Vendor inVendor);
 
                 const Image::Raw& getData() const;
-                void setData(const std::string& inFilepath);
+                void setData(const String& inFilepath);
                 void setData(const Image::Raw& inData);
 
             private:

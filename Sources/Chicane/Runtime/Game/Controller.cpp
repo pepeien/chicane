@@ -5,13 +5,13 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Game/Transformable/Actor/Pawn.hpp"
 
-static const std::vector<std::string> DEFAULT_KEYBOARDS = {
-    "Keyboard",
-    "HID Keyboard Device (0x046d/0xc232)"
-};
-
 namespace Chicane
 {
+    static const std::vector<String> DEFAULT_KEYBOARDS = {
+        "Keyboard",
+        "HID Keyboard Device (0x046d/0xc232)"
+    };
+
     Controller::Controller()
         : m_pawn(nullptr),
         m_pawnObservable({}),
@@ -346,9 +346,9 @@ namespace Chicane
         for (int i = 0; i < keyboardCount; i++)
         {
             bool isDefault = false;
-            for (const std::string& defaultName : DEFAULT_KEYBOARDS)
+            for (const String& defaultName : DEFAULT_KEYBOARDS)
             {
-                if (String::areEquals(defaultName, SDL_GetKeyboardNameForID(*keyboardId)))
+                if (defaultName.equals(SDL_GetKeyboardNameForID(*keyboardId)))
                 {
                     isDefault = true;
 

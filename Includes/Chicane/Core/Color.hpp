@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Essential.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -38,9 +39,9 @@ namespace Chicane
 
         CHICANE_CORE bool areEquals(const Rgba& inA, const Rgba& inB);
 
-        CHICANE_CORE bool isVisible(const std::string& inValue);
+        CHICANE_CORE bool isVisible(const String& inValue);
         CHICANE_CORE bool isVisible(const Rgba& inValue);
 
-        CHICANE_CORE Rgba toRgba(const std::string& inValue);
+        CHICANE_CORE Rgba toRgba(const String& inValue);
     }
 }

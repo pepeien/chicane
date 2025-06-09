@@ -24,9 +24,9 @@ namespace Chicane
                     return {};
                 }
 
-                std::string fileExtension = inFilePath.filename().extension().string();
+                const String fileExtension = inFilePath.filename().extension().string();
 
-                if (!String::endsWith(fileExtension, FILE_EXTENSION_NAME))
+                if (!fileExtension.endsWith(FILE_EXTENSION_NAME))
                 {
                     return {};
                 }
@@ -34,9 +34,9 @@ namespace Chicane
                 return Instance::parseSources(FileSystem::readString(inFilePath));
             }
 
-            Source::List Instance::parseSources(const std::string &inData)
+            Source::List Instance::parseSources(const String &inData)
             {
-                std::string data = inData;
+                String data = inData;
                 data.erase(
                     std::remove(
                         data.begin(),
@@ -54,24 +54,22 @@ namespace Chicane
                     data.cend()
                 );
 
-                const std::vector<std::string> styles = String::split(
-                    data,
-                    '}'
-                );
+                const std::vector<String> styles = data.split('}');
 
                 Source::List result = {};
 
-                for (const std::string &style : styles)
+                for (const String &style : styles)
                 {
-                    const std::vector<std::string> splittedStyle = String::split(style, '{');
+                    const std::vector<String> splittedStyle = style.split('{');
 
                     if (splittedStyle.size() < 2)
                     {
                         continue;
                     }
 
+                    const String& selector = splittedStyle.at(0);
                     result.emplace_back(
-                        String::split(splittedStyle.at(0), SELECTOR_SEPARATOR),
+                        selector.split(SELECTOR_SEPARATOR),
                         Instance::parseSource(splittedStyle.at(1))
                     );
                 }
@@ -79,29 +77,23 @@ namespace Chicane
                 return result;
             }
 
-            Properties Instance::parseSource(const std::string &inData)
+            Properties Instance::parseSource(const String &inData)
             {
-                std::vector<std::string> blocks = String::split(
-                    inData,
-                    ';'
-                );
+                std::vector<String> blocks = inData.split(';');
 
                 Properties result = {};
 
-                for (const std::string &block : blocks)
+                for (const String &block : blocks)
                 {
-                    const std::vector<std::string> splittedBlock = String::split(
-                        block,
-                        ':'
-                    );
+                    const std::vector<String> splittedBlock = block.split(':');
 
                     if (splittedBlock.size() < 2)
                     {
                         continue;
                     }
 
-                    const std::string key   = String::trim(splittedBlock.at(0));
-                    const std::string value = String::trim(splittedBlock.at(1));
+                    const String key   = splittedBlock.at(0).trim();
+                    const String value = splittedBlock.at(1).trim();
 
                     if (result.find(key) != result.end())
                     {
@@ -110,12 +102,7 @@ namespace Chicane
                         continue;
                     }
 
-                    result.insert(
-                        std::make_pair(
-                            key,
-                            value
-                        )
-                    );
+                    result.insert(std::make_pair(key, value));
                 }
 
                 return result;
@@ -211,19 +198,19 @@ namespace Chicane
                     return;
                 }
 
-                const std::string value = parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
+                const String value = parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
 
-                if (String::areEquals(value, DISPLAY_TYPE_BLOCK))
+                if (value.equals(DISPLAY_TYPE_BLOCK))
                 {
                     setProperty(display, Display::Block);
                 }
 
-                if (String::areEquals(value, DISPLAY_TYPE_FLEX))
+                if (value.equals(DISPLAY_TYPE_FLEX))
                 {
                     setProperty(display, Display::Flex);
                 }
 
-                if (String::areEquals(value, DISPLAY_TYPE_HIDDEN))
+                if (value.equals(DISPLAY_TYPE_HIDDEN))
                 {
                     setProperty(display, Display::Hidden);
                 }
@@ -255,9 +242,9 @@ namespace Chicane
                     return;
                 }
 
-                const std::string value = parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
+                const String value = parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
 
-                if (String::areEquals(value, POSITION_TYPE_ABSOLUTE))
+                if (value.startsWith(POSITION_TYPE_ABSOLUTE))
                 {
                     setProperty(position, Position::Absolute);
 
@@ -274,9 +261,9 @@ namespace Chicane
                     return;
                 }
 
-                std::vector<std::string> values = {};
+                std::vector<String> values = {};
 
-                for (const std::string& block : splitOneliner(m_properties.at(ALIGNMENT_ATTRIBUTE_NAME)))
+                for (const String& block : splitOneliner(m_properties.at(ALIGNMENT_ATTRIBUTE_NAME)))
                 {
                     values.push_back(parseText(block));
                 }
@@ -295,7 +282,7 @@ namespace Chicane
                 if (
                     !margin.refresh(
                         m_properties,
-                        [this](const std::string& inValue, Direction inDirection)
+                        [this](const String& inValue, Direction inDirection)
                         {
                             return parseSize(inValue, inDirection);
                         }
@@ -369,46 +356,40 @@ namespace Chicane
                 }
             }
 
-            Color::Rgba Instance::parseColor(const std::string& inValue) const
+            Color::Rgba Instance::parseColor(const String& inValue) const
             {
-                std::string result = "";
+                String result = "";
 
-                if (
-                    String::startsWith(inValue, RGB_KEYWORD) ||
-                    String::startsWith(inValue, RGBA_KEYWORD)
-                )
+                if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
                 {
-                    const std::string keyword = String::startsWith(inValue, RGBA_KEYWORD) ?
+                    const String keyword = inValue.startsWith(RGBA_KEYWORD) ?
                         RGBA_KEYWORD :
                         RGB_KEYWORD;
 
-                    std::string rawParams = extractParams(inValue);
+                    String rawParams = extractParams(inValue);
 
-                    if (rawParams.empty())
+                    if (rawParams.isEmpty())
                     {
                         throw std::runtime_error("Invalid " + keyword + " parameters");
                     }
 
-                    const std::vector<std::string> params = String::split(
-                        rawParams,
-                        FUNCTION_PARAMS_SEPARATOR
-                    );
+                    const std::vector<String> params = rawParams.split(FUNCTION_PARAMS_SEPARATOR);
 
                     result.append(keyword);
-                    result.push_back(FUNCTION_PARAMS_OPENING);
+                    result.append(FUNCTION_PARAMS_OPENING);
 
-                    for (const std::string& param : params)
+                    for (const String& param : params)
                     {
                         result.append(parseText(param));
                         result.append(",");
                     }
 
-                    if (String::endsWith(result, ","))
+                    if (result.endsWith(","))
                     {
-                        result.pop_back();
+                        result.popBack();
                     }
 
-                    result.push_back(FUNCTION_PARAMS_CLOSING);
+                    result.append(FUNCTION_PARAMS_CLOSING);
                 }
                 else
                 {
@@ -418,36 +399,36 @@ namespace Chicane
                 return Color::toRgba(result);
             }
 
-            float Instance::parseSize(const std::string& inValue, Direction inDirection) const
+            float Instance::parseSize(const String& inValue, Direction inDirection) const
             {
-                const std::string value = parseText(inValue);
+                const String value = parseText(inValue);
 
-                if (String::startsWith(value, CALCULATION_KEYWORD))
+                if (value.startsWith(CALCULATION_KEYWORD))
                 {
                     return parseCalculation(value, inDirection);
                 }
 
-                if (String::areEquals(value, AUTO_SIZE_UNIT))
+                if (value.equals(AUTO_SIZE_UNIT))
                 {
                     return parsePercentage("100%", inDirection);
                 }
 
-                if (String::endsWith(value, PERCENTAGE_SIZE_UNIT))
+                if (value.endsWith(PERCENTAGE_SIZE_UNIT))
                 {
                     return parsePercentage(value, inDirection);
                 }
 
-                if (String::endsWith(value, VIEWPORT_HEIGHT_SIZE_UNIT))
+                if (value.endsWith(VIEWPORT_HEIGHT_SIZE_UNIT))
                 {
                     return parseViewportHeight(value);
                 }
 
-                if (String::endsWith(value, VIEWPORT_WIDTH_SIZE_UNIT))
+                if (value.endsWith(VIEWPORT_WIDTH_SIZE_UNIT))
                 {
                     return parseViewportWidth(value);
                 }
 
-                if (String::endsWith(value, PIXEL_SIZE_UNIT))
+                if (value.endsWith(PIXEL_SIZE_UNIT))
                 {
                     return parsePixel(value);
                 }
@@ -455,16 +436,16 @@ namespace Chicane
                 return parseNumber(value);
             }
 
-            std::string Instance::parseText(const std::string& inValue) const
+            String Instance::parseText(const String& inValue) const
             {
                 if (!hasParent())
                 {
                     return inValue;
                 }
 
-                std::string value = String::trim(inValue);
+                String value = inValue.trim();
 
-                if (String::startsWith(value, VARIABLE_KEYWORD))
+                if (value.startsWith(VARIABLE_KEYWORD))
                 {
                     value = variableToReference(value);
                 }
@@ -472,14 +453,14 @@ namespace Chicane
                 return m_parent->parseText(value);
             }
 
-            float Instance::parseCalculation(const std::string& inValue, Direction inDirection) const
+            float Instance::parseCalculation(const String& inValue, Direction inDirection) const
             {
-                if (!String::startsWith(inValue, CALCULATION_KEYWORD))
+                if (!inValue.startsWith(CALCULATION_KEYWORD))
                 {
                     return 0.0f;
                 }
 
-                const std::string operation = extractParams(inValue);
+                const String operation = extractParams(inValue);
 
                 std::uint32_t parathesisCount = 0;
 
@@ -541,9 +522,9 @@ namespace Chicane
                 return 0.0f;
             }
 
-            float Instance::parsePercentage(const std::string& inValue, Direction inDirection) const
+            float Instance::parsePercentage(const String& inValue, Direction inDirection) const
             {
-                if (!String::endsWith(inValue, PERCENTAGE_SIZE_UNIT))
+                if (!inValue.endsWith(PERCENTAGE_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
@@ -575,9 +556,9 @@ namespace Chicane
                 return std::max(0.0f, size.y) * value;
             }
 
-            float Instance::parseViewportHeight(const std::string& inValue) const
+            float Instance::parseViewportHeight(const String& inValue) const
             {
-                if (!String::endsWith(inValue, VIEWPORT_HEIGHT_SIZE_UNIT))
+                if (!inValue.endsWith(VIEWPORT_HEIGHT_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
@@ -595,9 +576,9 @@ namespace Chicane
                 return m_parent->getRoot()->getSize().y * (inValue / 100.0f);
             }
 
-            float Instance::parseViewportWidth(const std::string& inValue) const
+            float Instance::parseViewportWidth(const String& inValue) const
             {
-                if (!String::endsWith(inValue, VIEWPORT_WIDTH_SIZE_UNIT))
+                if (!inValue.endsWith(VIEWPORT_WIDTH_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
@@ -615,9 +596,9 @@ namespace Chicane
                 return m_parent->getRoot()->getSize().x * (inValue / 100.0f);
             }
 
-            float Instance::parsePixel(const std::string& inValue) const
+            float Instance::parsePixel(const String& inValue) const
             {
-                if (!String::endsWith(inValue, PIXEL_SIZE_UNIT))
+                if (!inValue.endsWith(PIXEL_SIZE_UNIT))
                 {
                     return 0.0f;
                 }
@@ -625,34 +606,29 @@ namespace Chicane
                 return parseNumber(inValue, PIXEL_SIZE_UNIT);
             }
 
-            float Instance::parseNumber(const std::string& inValue, const std::string& inUnit) const
+            float Instance::parseNumber(const String& inValue, const String& inUnit) const
             {
-                if (inValue.empty() || inValue.size() < inUnit.size())
+                if (inValue.isEmpty() || inValue.size() < inUnit.size())
                 {
                     return 0.0f;
                 }
 
-                const std::string value = inValue.substr(
-                    0,
-                    inValue.length() - inUnit.length()
-                );
-
-                return parseNumber(value);
+                return parseNumber(inValue.substr(0, inValue.size() - inUnit.size()));
             }
 
-            float Instance::parseNumber(const std::string& inValue) const
+            float Instance::parseNumber(const String& inValue) const
             {
                 try
                 {
-                    const std::string value = String::trim(inValue);
+                    const String value = inValue.trim();
 
-                    if (String::isNaN(value))
+                    if (value.isNaN())
                     {
                         return 0.0f;
                     }
 
                     char* end;
-                    return std::strtod(value.c_str(), &end);
+                    return std::strtod(value.toChar(), &end);
                 }
                 catch(...)
                 {

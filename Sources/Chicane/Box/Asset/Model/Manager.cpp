@@ -15,7 +15,7 @@ namespace Chicane
                 : Super()
             {}
 
-            void Manager::onAllocation(const std::string& inId, const Parsed& inData)
+            void Manager::onAllocation(const String& inId, const Parsed& inData)
             {
                 const Extracted& instance = getInstance(inId);
 
@@ -31,7 +31,7 @@ namespace Chicane
                 }
             }
 
-            void Manager::onDeallocation(const std::string& inId)
+            void Manager::onDeallocation(const String& inId)
             {
                 std::uint32_t firstVertex = 0;
                 std::uint32_t firstIndex  = 0;
@@ -46,7 +46,7 @@ namespace Chicane
                 }
             }
 
-            void Manager::onActivation(const std::string& inId)
+            void Manager::onActivation(const String& inId)
             {
                 const Extracted& instance = getInstance(inId);
 
@@ -59,7 +59,7 @@ namespace Chicane
                 Super::allocate(inId, data);
             }
 
-            void Manager::onDeactivation(const std::string& inId)
+            void Manager::onDeactivation(const String& inId)
             {
                 const Parsed& data = m_datum.at(inId);
 
@@ -74,7 +74,7 @@ namespace Chicane
                 Super::deallocate(inId);
             }
 
-            void Manager::load(const std::string& inId, const Model::Instance& inModel)
+            void Manager::load(const String& inId, const Model::Instance& inModel)
             {
                 if (isLoaded(inId))
                 {
@@ -93,7 +93,7 @@ namespace Chicane
                 }
             }
 
-            const Extracted& Manager::getInstance(const std::string& inId) const
+            const Extracted& Manager::getInstance(const String& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -103,7 +103,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            const Parsed& Manager::getData(const std::string& inId) const
+            const Parsed& Manager::getData(const String& inId) const
             {
                 if (!isAllocated(inId))
                 {
@@ -123,7 +123,7 @@ namespace Chicane
                 return m_indices;
             }
 
-            std::uint32_t Manager::getFirstUse(const std::string& inId) const
+            std::uint32_t Manager::getFirstUse(const String& inId) const
             {
                 if (!isLoaded(inId))
                 {

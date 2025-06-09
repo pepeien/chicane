@@ -1,7 +1,5 @@
 #include "Chicane/Core/FileSystem.hpp"
 
-#include "Chicane/Core/String.hpp"
-
 namespace Chicane
 {
     namespace FileSystem
@@ -42,7 +40,7 @@ namespace Chicane
 
                 if (item.type == Item::Type::Folder)
                 {
-                    item.childCount = static_cast<std::uint32_t>(ls(item.path, 1).size());
+                    item.childCount = static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
                 }
 
                 result.push_back(item);
@@ -51,7 +49,7 @@ namespace Chicane
             return result;
         }
 
-        std::string readStringUnsigned(const Path& inFilepath)
+        String readStringUnsigned(const Path& inFilepath)
         {
             const std::vector<unsigned char> raw = readUnsigned(inFilepath);
 
@@ -60,7 +58,7 @@ namespace Chicane
                 return "";
             }
 
-            return std::string(raw.begin(), raw.end());
+            return String(raw.begin(), raw.end());
         }
 
         std::vector<unsigned char> readUnsigned(const Path& inFilepath)
@@ -76,7 +74,7 @@ namespace Chicane
                     String::sprint(
                         "Failed to open the file [%s]",
                         inFilepath.c_str()
-                    )
+                    ).toChar()
                 );
             }
     
@@ -97,7 +95,7 @@ namespace Chicane
             return result;
         }
 
-        std::string readString(const Path& inFilepath)
+        String readString(const Path& inFilepath)
         {
             const std::vector<char> raw = read(inFilepath);
 
@@ -106,7 +104,7 @@ namespace Chicane
                 return "";
             }
 
-            return std::string(raw.begin(), raw.end());
+            return String(raw.begin(), raw.end());
         }
 
         std::vector<char> read(const Path& inFilepath)
@@ -122,7 +120,7 @@ namespace Chicane
                     String::sprint(
                         "Failed to open the file [%s]",
                         inFilepath.c_str()
-                    )
+                    ).toChar()
                 );
             }
     
@@ -136,7 +134,7 @@ namespace Chicane
             return result;
         }
 
-        void write(const std::string& inData, const Path& inFilepath)
+        void write(const String& inData, const Path& inFilepath)
         {
             std::vector<unsigned char> data;
             std::copy(inData.begin(), inData.end(), std::back_inserter(data));
@@ -159,7 +157,7 @@ namespace Chicane
                     String::sprint(
                         "Failed to write the file [%s]",
                         inFilepath.c_str()
-                    )
+                    ).toChar()
                 );
             }
 
@@ -183,7 +181,7 @@ namespace Chicane
                     String::sprint(
                         "Failed to write the file [%s]",
                         inFilepath.c_str()
-                    )
+                    ).toChar()
                 );
             }
 

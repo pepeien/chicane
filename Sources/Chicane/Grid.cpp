@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        static std::unordered_map<std::string, Component::Compiler> g_components = {
+        static std::unordered_map<String, Component::Compiler> g_components = {
             { Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); } },
             { List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); } },
             { Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); } },
@@ -16,7 +16,7 @@ namespace Chicane
 
         Component* createComponent(const pugi::xml_node& inNode)
         {
-            const std::string& tag = inNode.name();
+            const String& tag = inNode.name();
 
             if (g_components.find(tag) == g_components.end())
             {
@@ -26,7 +26,7 @@ namespace Chicane
             return g_components.at(tag)(inNode);
         }
 
-        void registerComponent(const std::string& inTag, Component::Compiler inCompiler)
+        void registerComponent(const String& inTag, Component::Compiler inCompiler)
         {
             if (g_components.find(inTag) != g_components.end())
             {

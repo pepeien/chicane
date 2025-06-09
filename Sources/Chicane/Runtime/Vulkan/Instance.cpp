@@ -10,18 +10,18 @@ namespace Chicane
         {
             bool areExtensionsSupported(const std::vector<const char*>& inExtensions)
             {
-                std::set<std::string> extensions(inExtensions.begin(), inExtensions.end());
+                std::set<String> extensions(inExtensions.begin(), inExtensions.end());
 
                 for (vk::ExtensionProperties& extension : vk::enumerateInstanceExtensionProperties())
                 {
                     extensions.erase(extension.extensionName);
                 }
 
-                for (const std::string& unsupportedExtension : extensions)
+                for (const String& unsupportedExtension : extensions)
                 {
                     Log::warning(
                         "The vulkan instance extension [%s] is not supported",
-                        unsupportedExtension.c_str()
+                        unsupportedExtension.toChar()
                     );
                 }
 
@@ -30,18 +30,18 @@ namespace Chicane
 
             bool areLayersSupported(const std::vector<const char*>& inLayers)
             {
-                std::set<std::string> layers(inLayers.begin(), inLayers.end());
+                std::set<String> layers(inLayers.begin(), inLayers.end());
 
                 for (vk::LayerProperties& layer : vk::enumerateInstanceLayerProperties())
                 {
                     layers.erase(layer.layerName);
                 }
 
-                for (const std::string& unsupportedLayer : layers)
+                for (const String& unsupportedLayer : layers)
                 {
                     Log::warning(
                         "The vulkan instance layer [%s] is not supported",
-                        unsupportedLayer.c_str()
+                        unsupportedLayer.toChar()
                     );
                 }
 

@@ -15,7 +15,7 @@ namespace Chicane
                 End
             };
 
-            Alignment toAlignment(const std::string& inText);
+            Alignment toAlignment(const String& inText);
         }
     }
 }

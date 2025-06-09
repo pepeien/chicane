@@ -55,8 +55,8 @@ namespace Chicane
                     return VK_FALSE;
                 }
 
-                std::string prefix = "Vk::";
-                std::string color  = Chicane::Color::HEX_COLOR_WHITE;
+                String prefix = "Vk::";
+                String color  = Chicane::Color::HEX_COLOR_WHITE;
 
                 switch (inMessageType)
                 {

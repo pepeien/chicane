@@ -15,7 +15,7 @@ namespace Chicane
             static inline constexpr const char* PATH_ATTRIBUTE_NAME = "path";
 
         public:
-            View(const std::string& inSource);
+            View(const String& inSource);
 
             virtual ~View() = default;
 
@@ -31,10 +31,10 @@ namespace Chicane
             void activate();
             void deactivate();
 
-            const std::string& getPath() const;
+            const String& getPath() const;
 
         protected:
-            std::string         m_path;
+            String         m_path;
 
             Style::Source::List m_styles;
         };

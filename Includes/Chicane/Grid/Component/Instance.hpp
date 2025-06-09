@@ -22,7 +22,7 @@ namespace Chicane
 
         public:
             Component(const pugi::xml_node& inNode);
-            Component(const std::string& inTag);
+            Component(const String& inTag);
 
             virtual ~Component();
 
@@ -51,31 +51,31 @@ namespace Chicane
             void refresh();
 
             // Properties
-            const std::string& getTag() const;
-            void setTag(const std::string& inTag);
+            const String& getTag() const;
+            void setTag(const String& inTag);
 
-            const std::string& getId() const;
-            void setId(const std::string& inId);
+            const String& getId() const;
+            void setId(const String& inId);
 
-            const std::vector<std::string> getClasses() const;
-            const std::string& getClass() const;
-            void setClass(const std::string& inClass);
+            const std::vector<String> getClasses() const;
+            const String& getClass() const;
+            void setClass(const String& inClass);
 
             const Style::Instance& getStyle() const;
             void setStyle(const Style::Source::List& inSources);
             void setStyle(const Style::Properties& inSource);
 
-            bool hasReference(const std::string& inId, bool isLocalOnly = false) const;
-            Reference* getReference(const std::string& inId) const;
+            bool hasReference(const String& inId, bool isLocalOnly = false) const;
+            Reference* getReference(const String& inId) const;
             void addReference(const Reference::Map& inReference);
-            void addReference(const std::string& inId, Reference* inReference);
-            void removeReference(const std::string& inId);
+            void addReference(const String& inId, Reference* inReference);
+            void removeReference(const String& inId);
 
-            bool hasFunction(const std::string& inId, bool isLocalOnly = false) const;
-            const Function getFunction(const std::string& inId) const;
+            bool hasFunction(const String& inId, bool isLocalOnly = false) const;
+            const Function getFunction(const String& inId) const;
             void addFunction(const Functions& inFunctions);
-            void addFunction(const std::string& inId, Function inFunction);
-            void removeFunction(const std::string& inId);
+            void addFunction(const String& inId, Function inFunction);
+            void removeFunction(const String& inId);
 
             bool hasRoot() const;
             Component* getRoot() const;
@@ -116,23 +116,23 @@ namespace Chicane
             void clearPrimitive();
             void setPrimitive(const Primitive& inPrimitive);
 
-            std::string parseText(const std::string& inValue) const;
+            String parseText(const String& inValue) const;
 
         protected:
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
 
-            bool isReference(const std::string& inValue) const;
-            Reference parseReference(const std::string& inValue) const;
+            bool isReference(const String& inValue) const;
+            Reference parseReference(const String& inValue) const;
 
-            bool isFunction(const std::string& inValue) const;
-            FunctionData parseFunction(const std::string& inRefValue) const;
+            bool isFunction(const String& inValue) const;
+            FunctionData parseFunction(const String& inRefValue) const;
 
         protected:
-            std::string             m_tag;
-            std::string             m_id;
-            std::string             m_class;
+            String             m_tag;
+            String             m_id;
+            String             m_class;
             Style::Instance         m_style;
 
             Reference::Map          m_references;

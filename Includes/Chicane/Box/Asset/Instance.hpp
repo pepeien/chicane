@@ -34,8 +34,8 @@ namespace Chicane
                 std::uint32_t getVersion() const;
                 void setVersion(std::uint32_t inVersion);
 
-                const std::string& getId() const;
-                void setId(const std::string& inId);
+                const String& getId() const;
+                void setId(const String& inId);
 
                 Type getType() const;
                 void setType(Type inType);

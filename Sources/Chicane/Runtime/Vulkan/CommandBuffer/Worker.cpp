@@ -21,7 +21,7 @@ namespace Chicane
                 void endJob(
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::Queue& inQueue,
-                    const std::string& inDescription
+                    const String& inDescription
                 )
                 {
                     vk::SubmitInfo submitInfo;
@@ -38,7 +38,7 @@ namespace Chicane
                 void endJob(
                     const vk::Queue& inQueue,
                     const vk::SubmitInfo& inSubmitInfo,
-                    const std::string& inDescription
+                    const String& inDescription
                 )
                 {
                     for (std::uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)

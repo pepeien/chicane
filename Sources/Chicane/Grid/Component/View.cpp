@@ -4,18 +4,18 @@ namespace Chicane
 {
     namespace Grid
     {
-        View::View(const std::string& inSource)
+        View::View(const String& inSource)
             : Super(TAG_ID),
             m_styles({})
         {
-            if (inSource.empty())
+            if (inSource.isEmpty())
             {
                 return;
             }
 
             pugi::xml_document document;
 
-            if (!document.load_file(inSource.c_str()))
+            if (!document.load_file(inSource.toChar()))
             {
                 throw std::runtime_error("Failed to read " + inSource);
             }
@@ -34,9 +34,11 @@ namespace Chicane
                 throw std::runtime_error("UI document root element must not have any siblings");
             }
 
-            if (!String::areEquals(TAG_ID, node.name()))
+            const String name = node.name();
+
+            if (!name.equals(TAG_ID))
             {
-                throw std::runtime_error("UI document root element must be a " + std::string(TAG_ID));
+                throw std::runtime_error("UI document root element must be a " + String(TAG_ID));
             }
 
             m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
@@ -64,7 +66,7 @@ namespace Chicane
             onDeactivation();
         }
 
-        const std::string& View::getPath() const
+        const String& View::getPath() const
         {
             return m_path;
         }

@@ -31,7 +31,7 @@ namespace Chicane
             bool run();
 
             // Settings
-            void setTitle(const std::string& inTitle);
+            void setTitle(const String& inTitle);
             void setIcon(const FileSystem::Path& inPath);
 
             const Vec<2, int>& getSize() const;
@@ -82,13 +82,13 @@ namespace Chicane
             void refreshPosition();
 
             // Helpers
-            void emmitWarning(const std::string& inMessage);
-            void emmitError(const std::string& inMessage);
+            void emmitWarning(const String& inMessage);
+            void emmitError(const String& inMessage);
 
         private:
             void*            m_instance;
 
-            std::string      m_title;
+            String      m_title;
             FileSystem::Path m_icon;
             Vec<2, int>      m_size;
             int              m_display;

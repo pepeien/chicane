@@ -14,7 +14,7 @@ namespace Chicane
 
         public:
             Instance();
-            Instance(const std::string& inId);
+            Instance(const String& inId);
 
             virtual ~Instance() = default;
 
@@ -38,13 +38,13 @@ namespace Chicane
             bool is(Status inStatus) const;
             Status getStatus() const;
 
-            const std::string& getId() const;
+            const String& getId() const;
 
         protected:
             void setStatus(Status inStatus);
 
         protected:
-            std::string m_id;
+            String m_id;
             Status      m_status;
         };
     }

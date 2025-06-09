@@ -15,7 +15,7 @@ namespace Chicane
             addChildren(inNode);
         }
 
-        Component::Component(const std::string& inTag)
+        Component::Component(const String& inTag)
             : m_tag(inTag),
             m_id(""),
             m_class(""),
@@ -93,37 +93,37 @@ namespace Chicane
             return inComponent != nullptr && inComponent != this;
         }
 
-        const std::string& Component::getTag() const
+        const String& Component::getTag() const
         {
             return m_tag;
         }
 
-        void Component::setTag(const std::string& inTag)
+        void Component::setTag(const String& inTag)
         {
             m_tag = inTag;
         }
 
-        const std::string& Component::getId() const
+        const String& Component::getId() const
         {
             return m_id;
         }
 
-        void Component::setId(const std::string& inId)
+        void Component::setId(const String& inId)
         {
             m_id = inId;
         }
 
-        const std::vector<std::string> Component::getClasses() const
+        const std::vector<String> Component::getClasses() const
         {
-            return String::split(m_class, Style::CLASS_SEPARATOR);
+            return m_class.split(Style::CLASS_SEPARATOR);
         }
 
-        const std::string& Component::getClass() const
+        const String& Component::getClass() const
         {
             return m_class;
         }
 
-        void Component::setClass(const std::string& inClass)
+        void Component::setClass(const String& inClass)
         {
             m_class = inClass;
         }
@@ -147,18 +147,18 @@ namespace Chicane
                     continue;
                 }
 
-                for (const std::string& selector : source.selectors)
+                for (const String& selector : source.selectors)
                 {
-                    if (String::areEquals(selector, Style::INCLUSIVE_SELECTOR))
+                    if (selector.equals(Style::INCLUSIVE_SELECTOR))
                     {
                         setStyle(source.properties);
 
                         continue;
                     }
 
-                    if (!m_tag.empty())
+                    if (!m_tag.isEmpty())
                     {
-                        if (String::areEquals(selector, m_tag))
+                        if (selector.equals(m_tag))
                         {
                             setStyle(source.properties);
 
@@ -166,15 +166,15 @@ namespace Chicane
                         }
                     }
 
-                    if (!m_class.empty())
+                    if (!m_class.isEmpty())
                     {
-                        for (const std::string& className : getClasses())
+                        for (const String& className : getClasses())
                         {
-                            std::string formattedClass = "";
-                            formattedClass.push_back(Style::CLASS_SELECTOR);
+                            String formattedClass = "";
+                            formattedClass.append(Style::CLASS_SELECTOR);
                             formattedClass.append(className);
 
-                            if (String::areEquals(selector, formattedClass))
+                            if (formattedClass.equals(selector))
                             {
                                 setStyle(source.properties);
 
@@ -183,13 +183,13 @@ namespace Chicane
                         }
                     }
 
-                    if (!m_id.empty())
+                    if (!m_id.isEmpty())
                     {
-                        std::string formattedId = "";
-                        formattedId.push_back(Style::ID_SELECTOR);
+                        String formattedId = "";
+                        formattedId.append(Style::ID_SELECTOR);
                         formattedId.append(m_id);
 
-                        if (String::areEquals(selector, formattedId))
+                        if (formattedId.equals(selector))
                         {
                             setStyle(source.properties);
 
@@ -210,7 +210,7 @@ namespace Chicane
             m_style.setProperties(inSource);
         }
 
-        bool Component::hasReference(const std::string& inId, bool isLocalOnly) const
+        bool Component::hasReference(const String& inId, bool isLocalOnly) const
         {
             bool wasFoundLocally = m_references.find(inId) != m_references.end() &&
                                    m_references.at(inId) && !m_references.at(inId)->isEmpty();
@@ -223,7 +223,7 @@ namespace Chicane
             return wasFoundLocally || m_parent->hasReference(inId);
         }
 
-        Reference* Component::getReference(const std::string& inId) const
+        Reference* Component::getReference(const String& inId) const
         {
             if (!hasParent() || isRoot())
             {
@@ -241,7 +241,7 @@ namespace Chicane
             }
         }
 
-        void Component::addReference(const std::string& inId, Reference* inReference)
+        void Component::addReference(const String& inId, Reference* inReference)
         {
             if (hasReference(inId, true))
             {
@@ -258,7 +258,7 @@ namespace Chicane
             emmitChanges();
         }
 
-        void Component::removeReference(const std::string& inId)
+        void Component::removeReference(const String& inId)
         {
             if (!hasReference(inId, true))
             {
@@ -270,9 +270,9 @@ namespace Chicane
             emmitChanges();
         }
 
-        bool Component::hasFunction(const std::string& inId, bool isLocalOnly) const
+        bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
-            const std::string id = String::split(inId, FUNCTION_PARAMS_OPENING).front();
+            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
 
             bool hasLocally = m_functions.find(id) != m_functions.end() &&
                               m_functions.at(id) && m_functions.at(id) != nullptr;
@@ -285,9 +285,9 @@ namespace Chicane
             return hasLocally || m_parent->hasFunction(id);
         }
 
-        const Function Component::getFunction(const std::string& inId) const
+        const Function Component::getFunction(const String& inId) const
         {
-            const std::string id = String::split(inId, FUNCTION_PARAMS_OPENING).front();
+            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
 
             if (!hasParent() || isRoot())
             {
@@ -305,7 +305,7 @@ namespace Chicane
             }
         }
 
-        void Component::addFunction(const std::string& inId, Function inFunction)
+        void Component::addFunction(const String& inId, Function inFunction)
         {
             if (hasFunction(inId, true))
             {
@@ -322,7 +322,7 @@ namespace Chicane
             emmitChanges();
         }
 
-        void Component::removeFunction(const std::string& inId)
+        void Component::removeFunction(const String& inId)
         {
             if (!hasFunction(inId, true))
             {
@@ -610,9 +610,9 @@ namespace Chicane
             setPosition(cursor + margin);
         }
 
-        std::string Component::parseText(const std::string& inValue) const
+        String Component::parseText(const String& inValue) const
         {            
-            if (inValue.empty())
+            if (inValue.isEmpty())
             {
                 return "";
             }
@@ -622,20 +622,20 @@ namespace Chicane
                 return inValue;
             }
 
-            const std::uint32_t start = inValue.find_first_of(REFERENCE_VALUE_OPENING) + 1;
-            const std::uint32_t end   = inValue.find_last_of(REFERENCE_VALUE_CLOSING) - 1;
+            const std::uint32_t start = inValue.firstOf(REFERENCE_VALUE_OPENING) + 1;
+            const std::uint32_t end   = inValue.lastOf(REFERENCE_VALUE_CLOSING) - 1;
 
-            const std::string value     = String::trim(inValue.substr(start + 1, end - start - 1));
-            const std::string remainder = inValue.substr(end + 2);
+            const String value     = inValue.substr(start + 1, end - start - 1).trim();
+            const String remainder = inValue.substr(end + 2);
 
-            std::string result = "";
+            String result = "";
 
-            if (!value.empty())
+            if (!value.isEmpty())
             {
                 result += parseReference(value).toString();
             }
 
-            if (!remainder.empty())
+            if (!remainder.isEmpty())
             {
                 result += parseText(remainder);
             }
@@ -643,15 +643,15 @@ namespace Chicane
             return result;
         }
 
-        bool Component::isReference(const std::string& inValue) const
+        bool Component::isReference(const String& inValue) const
         {
-            const bool bHasOpening = inValue.find_first_of(REFERENCE_VALUE_OPENING) != std::string::npos;
-            const bool bHasClosing = inValue.find_last_of(REFERENCE_VALUE_CLOSING) != std::string::npos;
+            const bool bHasOpening = inValue.firstOf(REFERENCE_VALUE_OPENING) != String::npos;
+            const bool bHasClosing = inValue.lastOf(REFERENCE_VALUE_CLOSING) != String::npos;
 
             return bHasOpening && bHasClosing;
         }
 
-        Reference Component::parseReference(const std::string& inValue) const
+        Reference Component::parseReference(const String& inValue) const
         {
             if (!isFunction(inValue))
             {
@@ -660,12 +660,12 @@ namespace Chicane
                     return *getReference(inValue);
                 }
 
-                return Reference::fromValue<const std::string>(&inValue);
+                return Reference::fromValue<const String>(&inValue);
             }
 
             if (!hasFunction(inValue))
             {
-                return Reference::fromValue<const std::string>(&inValue);
+                return Reference::fromValue<const String>(&inValue);
             }
 
             FunctionData data = parseFunction(inValue);
@@ -676,43 +676,38 @@ namespace Chicane
             return getFunction(data.name)(event);
         }
 
-        bool Component::isFunction(const std::string& inValue) const
+        bool Component::isFunction(const String& inValue) const
         {
-            const bool bHasOpening = inValue.find_first_of(FUNCTION_PARAMS_OPENING) != std::string::npos;
-            const bool bHasClosing = inValue.find_last_of(FUNCTION_PARAMS_CLOSING) != std::string::npos;
+            const bool bHasOpening = inValue.firstOf(FUNCTION_PARAMS_OPENING) != String::npos;
+            const bool bHasClosing = inValue.lastOf(FUNCTION_PARAMS_CLOSING) != String::npos;
 
             return bHasOpening && bHasClosing;
         }
 
-        FunctionData Component::parseFunction(const std::string& inRefValue) const
+        FunctionData Component::parseFunction(const String& inRefValue) const
         {
-            std::string trimmedValue = String::trim(inRefValue);
+            const String trimmedValue = inRefValue.trim();
 
-            if (trimmedValue.empty())
+            if (trimmedValue.isEmpty())
             {
                 return {};
             }
 
-            std::size_t paramsStart = trimmedValue.find_first_of(FUNCTION_PARAMS_OPENING);
-            std::size_t paramsEnd   = trimmedValue.find_last_of(FUNCTION_PARAMS_CLOSING);
-            std::string name        = trimmedValue.substr(0, paramsStart);
+            std::size_t paramsStart = trimmedValue.firstOf(FUNCTION_PARAMS_OPENING);
+            std::size_t paramsEnd   = trimmedValue.lastOf(FUNCTION_PARAMS_CLOSING);
+            String name             = trimmedValue.substr(0, paramsStart);
 
             paramsStart += 1;
             paramsEnd   -= paramsStart;
 
-            std::string params = String::trim(
-                inRefValue.substr(
-                    paramsStart,
-                    paramsEnd
-                )
-            );
+            const String params = inRefValue.substr(paramsStart, paramsEnd).trim();
 
             FunctionData data = {};
             data.name = name;
 
-            for (std::string& value : String::split(params, FUNCTION_PARAMS_SEPARATOR))
+            for (String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {
-                data.params.push_back(parseReference(String::trim(value)));
+                data.params.push_back(parseReference(value.trim()));
             }
 
             return data;

@@ -16,11 +16,11 @@ namespace Chicane
             {
             public:
                 Corners(
-                    const std::string& inOnelineAttributeName,
-                    const std::string& inTopAttributeName,
-                    const std::string& inBottomAttributeName,
-                    const std::string& inLeftAttributeName,
-                    const std::string& inRightAttributeName
+                    const String& inOnelineAttributeName,
+                    const String& inTopAttributeName,
+                    const String& inBottomAttributeName,
+                    const String& inLeftAttributeName,
+                    const String& inRightAttributeName
                 );
 
             public:
@@ -37,7 +37,7 @@ namespace Chicane
             public:
                 bool refresh(
                     const Properties &inSource,
-                    std::function<float (const std::string&, Direction)> inCalculator
+                    std::function<float (const String&, Direction)> inCalculator
                 );
 
             public:
@@ -47,11 +47,11 @@ namespace Chicane
                 float right;
 
             private:
-                std::string m_onelineAttributeName;
-                std::string m_topAttributeName;
-                std::string m_bottomAttributeName;
-                std::string m_leftAttributeName;
-                std::string m_rightAttributeName;
+                String m_onelineAttributeName;
+                String m_topAttributeName;
+                String m_bottomAttributeName;
+                String m_leftAttributeName;
+                String m_rightAttributeName;
             };
         }
     }

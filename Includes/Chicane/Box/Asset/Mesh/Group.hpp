@@ -13,19 +13,19 @@ namespace Chicane
             public:
                 bool isValid() const;
 
-                const std::string& getId() const;
-                void setId(const std::string& inId);
+                const String& getId() const;
+                void setId(const String& inId);
 
-                const std::string& getModel() const;
-                void setModel(const std::string& inFilepath);
+                const String& getModel() const;
+                void setModel(const String& inFilepath);
 
-                const std::string& getTexture() const;
-                void setTexture(const std::string& inFilepath);
+                const String& getTexture() const;
+                void setTexture(const String& inFilepath);
 
             private:
-                std::string m_id      = "";
-                std::string m_model   = "";
-                std::string m_texture = "";
+                String m_id      = "";
+                String m_model   = "";
+                String m_texture = "";
             };
         }
     }

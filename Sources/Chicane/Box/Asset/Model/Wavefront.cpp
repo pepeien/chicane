@@ -13,14 +13,14 @@ namespace Chicane
             {
                 void parseDataset(
                     Extracted& outResult,
-                    std::unordered_map<std::string, std::uint32_t>& outMap,
+                    std::unordered_map<String, std::uint32_t>& outMap,
                     const fastObjMesh* inMesh,
                     std::uint32_t inIndex
                 )
                 {
                     const fastObjIndex& index = inMesh->indices[inIndex];
 
-                    std::string dataSet = "";
+                    String dataSet = "";
                     dataSet += std::to_string(index.p) + "/";
                     dataSet += std::to_string(index.t) + "/";
                     dataSet += std::to_string(index.n);
@@ -61,8 +61,8 @@ namespace Chicane
                 {
                     Extracted result = {};
 
-                    std::string data = std::string(inData.begin(), inData.end());
-                    data.push_back('\n');
+                    String data = String(inData.begin(), inData.end());
+                    data.append('\n');
 
                     fastObjMesh* mesh = fast_obj_read_memory(&data.front(), &data.back());
 
@@ -75,7 +75,7 @@ namespace Chicane
                         vertexLayout = { 0, 1, 2, 2, 3, 0 };
                     }
 
-                    std::unordered_map<std::string, std::uint32_t> map = {};
+                    std::unordered_map<String, std::uint32_t> map = {};
 
                     for (std::uint32_t i = 0; i < mesh->index_count; i += indexPerFace)
                     {

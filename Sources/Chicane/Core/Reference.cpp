@@ -12,11 +12,11 @@ namespace Chicane
         return m_value == nullptr;
     }
 
-    std::string Reference::toString() const
+    String Reference::toString() const
     {
-        if (isType<std::string>())
+        if (isType<String>())
         {
-            return *getValue<std::string>();
+            return *getValue<String>();
         }
 
         if (isType<bool>())

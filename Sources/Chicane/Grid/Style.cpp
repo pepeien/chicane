@@ -6,12 +6,12 @@ namespace Chicane
     {
         namespace Style
         {
-            std::string variableToReference(const std::string& inValue)
+            String variableToReference(const String& inValue)
             {
-                const std::uint32_t start = inValue.find_first_of(FUNCTION_PARAMS_OPENING) + 1;
-                const std::uint32_t end   = inValue.find_last_of(FUNCTION_PARAMS_CLOSING);
+                const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
+                const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
 
-                std::string reference = "";
+                String reference = "";
                 reference.append(REFERENCE_VALUE_OPENING);
                 reference.append(inValue.substr(start, end - start));
                 reference.append(REFERENCE_VALUE_CLOSING);
@@ -20,9 +20,9 @@ namespace Chicane
                 return reference;
             }
 
-            std::string colorToReference(const std::string& inValue)
+            String colorToReference(const String& inValue)
             {
-                if (String::startsWith(inValue, VARIABLE_KEYWORD))
+                if (inValue.startsWith(VARIABLE_KEYWORD))
                 {
                     return variableToReference(inValue);
                 }
@@ -30,9 +30,9 @@ namespace Chicane
                 return inValue;
             }
 
-            std::vector<std::string> splitOneliner(const std::string& inValue)
+            std::vector<String> splitOneliner(const String& inValue)
             {
-                std::vector<std::string> result = {};
+                std::vector<String> result = {};
 
                 std::uint32_t start = 0;
                 std::uint32_t end   = 0;
@@ -64,16 +64,16 @@ namespace Chicane
                         continue;
                     }
 
-                    std::string block = inValue.substr(start, end - start);
+                    const String block = inValue.substr(start, end - start);
 
                     start = end;
 
-                    if (block.empty())
+                    if (block.isEmpty())
                     {
                         continue;
                     }
 
-                    result.push_back(String::trim(block));
+                    result.push_back(block.trim());
                 }
 
                 result.push_back(inValue.substr(start, end - start));

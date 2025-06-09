@@ -11,7 +11,7 @@ namespace Chicane
             struct CHICANE_RUNTIME StageCreateInfo
             {
             public:
-                std::string             path;
+                String             path;
                 vk::ShaderStageFlagBits type;
             };
         }

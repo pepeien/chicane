@@ -17,16 +17,16 @@ namespace Chicane
                 virtual ~Manager() = default;
 
             protected:
-                void onActivation(const std::string& inId) override;
-                void onDeactivation(const std::string& inId) override;
+                void onActivation(const String& inId) override;
+                void onDeactivation(const String& inId) override;
 
             public:
                 // Setup
                 void load(const Sound::Instance& inAudio);
 
                 // Data
-                const Audio::Raw& getInstance(const std::string& inId) const;
-                Audio::Instance getData(const std::string& inId) const;
+                const Audio::Raw& getInstance(const String& inId) const;
+                Audio::Instance getData(const String& inId) const;
             };
         }
     }

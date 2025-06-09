@@ -21,15 +21,15 @@ namespace Chicane
         );
 
         CHICANE_CORE void emmit(
-            const std::string& inHexColor,
-            const std::string& inIdentifier,
-            const std::string& inMessage
+            const String& inHexColor,
+            const String& inIdentifier,
+            const String& inMessage
         );
         template<typename... T>
         void emmit(
-            const std::string& inHexColor,
-            const std::string& inIdentifier,
-            std::string inMessage,
+            const String& inHexColor,
+            const String& inIdentifier,
+            String inMessage,
             T... inParams
         )
         {
@@ -40,30 +40,30 @@ namespace Chicane
             );
         }
 
-        CHICANE_CORE void info(const std::string& inMessage);
+        CHICANE_CORE void info(const String& inMessage);
         template<typename... T>
-        void info(std::string inMessage, T... inParams)
+        void info(String inMessage, T... inParams)
         {
             info(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE_CORE void warning(const std::string& inMessage);
+        CHICANE_CORE void warning(const String& inMessage);
         template<typename... T>
-        void warning(std::string inMessage, T... inParams)
+        void warning(String inMessage, T... inParams)
         {
             warning(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE_CORE void error(const std::string& inMessage);
+        CHICANE_CORE void error(const String& inMessage);
         template<typename... T>
-        void error(std::string inMessage, T... inParams)
+        void error(String inMessage, T... inParams)
         {
             error(String::sprint(inMessage, inParams...));
         }
 
-        CHICANE_CORE void critical(const std::string& inMessage);
+        CHICANE_CORE void critical(const String& inMessage);
         template<typename... T>
-        void critical(std::string inMessage, T... inParams)
+        void critical(String inMessage, T... inParams)
         {
             critical(String::sprint(inMessage, inParams...));
         }

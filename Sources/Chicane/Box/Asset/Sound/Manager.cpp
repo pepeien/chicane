@@ -13,19 +13,19 @@ namespace Chicane
                 : Super()
             {}
 
-            void Manager::onActivation(const std::string& inId)
+            void Manager::onActivation(const String& inId)
             {
                 Super::allocate(inId, Audio::Instance(getInstance(inId)));
             }
 
-            void Manager::onDeactivation(const std::string& inId)
+            void Manager::onDeactivation(const String& inId)
             {
                 Super::deallocate(inId);
             }
 
             void Manager::load(const Sound::Instance& inAsset)
             {
-                const std::string& id = inAsset.getId();
+                const String& id = inAsset.getId();
 
                 if (isLoaded(id))
                 {
@@ -35,7 +35,7 @@ namespace Chicane
                 Super::load(id, inAsset.getData());
             }
 
-            const Audio::Raw& Manager::getInstance(const std::string& inId) const
+            const Audio::Raw& Manager::getInstance(const String& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -45,7 +45,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            Audio::Instance Manager::getData(const std::string& inId) const
+            Audio::Instance Manager::getData(const String& inId) const
             {
                 if (!isLoaded(inId) || !isAllocated(inId))
                 {

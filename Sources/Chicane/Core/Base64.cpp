@@ -6,19 +6,19 @@ namespace Chicane
 {
     namespace Base64
     {
-        std::vector<unsigned char> decodeToUnsigned(const std::string& inEncoded)
+        std::vector<unsigned char> decodeToUnsigned(const String& inEncoded)
         {
-            return base64::decode_into<std::vector<unsigned char>>(inEncoded);
+            return base64::decode_into<std::vector<unsigned char>>(inEncoded.toStandard());
         }
 
-        std::vector<char> decodeToSigned(const std::string& inEncoded)
+        std::vector<char> decodeToSigned(const String& inEncoded)
         {
-            return base64::decode_into<std::vector<char>>(inEncoded);
+            return base64::decode_into<std::vector<char>>(inEncoded.toStandard());
         }
 
-        std::string decode(const std::string& inEncoded)
+        String decode(const String& inEncoded)
         {
-            return base64::decode_into<std::string>(inEncoded);
+            return base64::decode_into<std::string>(inEncoded.toStandard());
         }
 
         std::vector<unsigned char> encodeToUnsigned(const std::vector<unsigned char>& inDecoded)
@@ -26,9 +26,9 @@ namespace Chicane
             return base64::decode_into<std::vector<unsigned char>>(inDecoded.begin(), inDecoded.end());
         }
 
-        std::vector<unsigned char> encodeToUnsigned(const std::string& inDecoded)
+        std::vector<unsigned char> encodeToUnsigned(const String& inDecoded)
         {
-            return base64::decode_into<std::vector<unsigned char>>(inDecoded);
+            return base64::decode_into<std::vector<unsigned char>>(inDecoded.toStandard());
         }
 
         std::vector<char> encodeToSigned(const std::vector<char>& inDecoded)
@@ -36,24 +36,24 @@ namespace Chicane
             return base64::decode_into<std::vector<char>>(inDecoded.begin(), inDecoded.end());
         }
 
-        std::vector<char> encodeToSigned(const std::string& inDecoded)
+        std::vector<char> encodeToSigned(const String& inDecoded)
         {
-            return base64::decode_into<std::vector<char>>(inDecoded);
+            return base64::decode_into<std::vector<char>>(inDecoded.toStandard());
         }
 
-        std::string encode(const std::vector<unsigned char>& inDecoded)
+        String encode(const std::vector<unsigned char>& inDecoded)
         {
             return base64::decode_into<std::string>(inDecoded.begin(), inDecoded.end());
         }
 
-        std::string encode(const std::vector<char>& inDecoded)
+        String encode(const std::vector<char>& inDecoded)
         {
             return base64::decode_into<std::string>(inDecoded.begin(), inDecoded.end());
         }
 
-        std::string encode(const std::string& inDecoded)
+        String encode(const String& inDecoded)
         {
-            return base64::decode_into<std::string>(inDecoded);
+            return base64::decode_into<std::string>(inDecoded.toStandard());
         }
     }
 }

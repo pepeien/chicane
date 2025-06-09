@@ -10,7 +10,7 @@ namespace Chicane
         {
             static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
-            static const std::unordered_map<std::string, Vendor> VENDOR_MAP {
+            static const std::unordered_map<String, Vendor> VENDOR_MAP {
                 { "TTF", Vendor::TrueType }
             };
 
@@ -41,18 +41,18 @@ namespace Chicane
                     return;
                 }
 
-                std::string vendorID = vendor->first;
+                String vendorID = vendor->first;
 
                 pugi::xml_node root = getXML();
 
                 if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
                 {
-                    root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+                    root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
 
                     return;
                 }
 
-                root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.c_str());
+                root.attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
             }
 
             const Raw& Instance::getData() const
@@ -89,7 +89,7 @@ namespace Chicane
                     return;
                 }
 
-                std::string vendor = Xml::getAttribute(
+                String vendor = Xml::getAttribute(
                     VENDOR_ATTRIBUTE_NAME,
                     getXML()
                 ).as_string();

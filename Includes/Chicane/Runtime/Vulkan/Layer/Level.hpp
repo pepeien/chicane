@@ -53,7 +53,7 @@ namespace Chicane
             Descriptor::Bundle                                                  m_frameDescriptor;
 
             Descriptor::Bundle                                                  m_textureDescriptor;
-            std::unordered_map<std::string, std::unique_ptr<Texture::Instance>> m_textures;
+            std::unordered_map<String, std::unique_ptr<Texture::Instance>> m_textures;
             Box::Texture::Manager*                                              m_textureManager;
 
             Buffer::Instance                                                    m_modelVertexBuffer;

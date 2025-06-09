@@ -8,7 +8,7 @@ namespace Chicane
         {
             bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice)
             {
-                std::set<std::string> extensions(EXTENSIONS.begin(), EXTENSIONS.end());
+                std::set<String> extensions(EXTENSIONS.begin(), EXTENSIONS.end());
 
                 for (vk::ExtensionProperties& extension : inPhysicalDevice.enumerateDeviceExtensionProperties())
                 {

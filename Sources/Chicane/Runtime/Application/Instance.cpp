@@ -222,9 +222,9 @@ namespace Chicane
             m_renderer->init(m_rendererInfo);
         }
 
-        void Instance::initAssets(const std::string& inPath)
+        void Instance::initAssets(const String& inPath)
         {
-            for (const FileSystem::Item item : FileSystem::ls(inPath))
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
             {
                 if (item.type != FileSystem::Item::Type::File)
                 {
@@ -233,12 +233,12 @@ namespace Chicane
                     continue;
                 }
 
-                if (!Box::Asset::isFileAsset(item.path))
+                if (!Box::Asset::isFileAsset(item.path.toStandard()))
                 {
                     continue;
                 }
 
-                Box::load(item.path);
+                Box::load(item.path.toStandard());
             }
         }
 

@@ -9,7 +9,7 @@ namespace Chicane
         struct CHICANE_CORE Entry
         {
         public:
-            Entry(const std::string& inText, const std::string& inColor)
+            Entry(const String& inText, const String& inColor)
                 : text(inText),
                 color(inColor)
             {}
@@ -22,12 +22,12 @@ namespace Chicane
         public:
             bool isEmpty() const
             {
-                return text.empty();
+                return text.isEmpty();
             }
 
         public:
-            std::string text;
-            std::string color;
+            String text;
+            String color;
         };
     }
 }

@@ -1,241 +1,328 @@
 #include "Chicane/Core/String.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
-    namespace String
+    bool String::isEmpty() const
     {
-        bool areEquals(const std::string& inA, const std::string& inB)
+        const std::string& result = trim().toStandard();
+
+        return result.empty();
+    }
+
+    bool String::isNaN() const
+    {
+        if (isEmpty())
         {
-            return strcmp(inA.c_str(), inB.c_str()) == 0;
+            return false;
         }
 
-        bool areEquals(const std::string& inA, char inB)
+        return std::find_if(
+            m_value.begin(), 
+            m_value.end(),
+            [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
+        ) != m_value.end();
+    }
+
+    bool String::equals(const String& inValue) const
+    {
+        return strcmp(toChar(), inValue.toChar()) == 0;
+    }
+
+    bool String::equals(char inValue) const
+    {
+        return strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
+    }
+    
+    bool String::contains(const String& inValue) const
+    {
+        return contains(inValue.toChar());
+    }
+
+    bool String::contains(char inValue) const
+    {
+        return m_value.find(inValue) != std::string::npos;
+    }
+
+    bool String::startsWith(const String& inValue) const
+    {
+        if (isEmpty() || inValue.isEmpty())
         {
-            return strcmp(inA.c_str(), std::string(1, inB).c_str()) == 0;
+            return false;
         }
 
-        bool contains(const std::string& inTarget, const std::string& inValue)
+        if (inValue.size() > size())
         {
-            return inTarget.find(inValue) != std::string::npos;
+            return false;
         }
 
-        bool contains(const std::string& inTarget, char inValue)
+        return strcmp(m_value.substr(0, inValue.size()).c_str(), inValue.toChar()) == 0;
+    }
+
+    bool String::startsWith(char inValue) const
+    {
+        if (isEmpty())
         {
-            return inTarget.find(inValue) != std::string::npos;
+            return false;
         }
 
-        bool startsWith(const std::string& inTarget, const std::string& inValue)
+        return *m_value.substr(0, 1).c_str() == inValue;
+    }
+
+    bool String::endsWith(const String& inValue) const
+    {
+        if (isEmpty() || inValue.isEmpty())
         {
-            if (inTarget.empty() || inTarget.size() < inValue.size())
+            return false;
+        }
+
+        if (inValue.size() > size())
+        {
+            return false;
+        }
+
+        return strcmp(m_value.substr(size() - inValue.size()).c_str(), inValue.toChar()) == 0;
+    }
+
+    bool String::endsWith(char inValue) const
+    {
+        if (isEmpty())
+        {
+            return false;
+        }
+
+        return *m_value.substr(size() - 1).c_str() == inValue;
+    }
+
+    bool String::toBool() const
+    {
+        return equals("true") || equals("1");
+    }
+
+    const std::string& String::toStandard() const
+    {
+        return m_value;
+    }
+
+    const char* String::toChar() const
+    {
+        return m_value.c_str();
+    }
+
+    String String::toUpper() const
+    {
+        std::string result = m_value;
+        std::transform(
+            result.begin(),
+            result.end(),
+            result.begin(),
+            ::toupper
+        );
+
+        return result;
+
+    }
+
+    String String::toLower() const
+    {
+        std::string result = m_value;
+        std::transform(
+            result.begin(),
+            result.end(),
+            result.begin(),
+            ::tolower
+        );
+
+        return result;
+    }
+
+    char String::at(std::size_t inIndex) const
+    {
+        return m_value.at(inIndex);
+    }
+
+    String String::substr(std::size_t inStart, std::size_t inEnd) const
+    {
+        return m_value.substr(inStart, inEnd);
+    }
+
+    std::size_t String::firstOf(char inValue) const
+    {
+        return m_value.find_first_of(inValue);
+    }
+
+    std::size_t String::firstOf(const String& inValue) const
+    {
+        return m_value.find_first_of(inValue.toStandard());
+    }
+
+    std::size_t String::lastOf(char inValue) const
+    {
+        return m_value.find_last_of(inValue);
+    }
+
+    std::size_t String::lastOf(const String& inValue) const
+    {
+        return m_value.find_last_of(inValue.toStandard());
+    }
+
+    std::vector<String> String::split(char inDelimeter) const
+    {
+        return split(String(1, inDelimeter));
+    }
+
+    std::vector<String> String::split(const String& inDelimeter) const
+    {
+        if (isEmpty())
+        {
+            return {};
+        }
+
+        int start = 0;
+
+        std::vector<String> result = {};
+
+        for (int i = 0; i < size(); i += inDelimeter.size())
+        {
+            if (!substr(i, inDelimeter.size()).equals(inDelimeter.toChar()))
             {
-                return false;
+                continue;
             }
 
-            return areEquals(inTarget.substr(0, inValue.size()), inValue);
-        }
+            String block = m_value.substr(start, i - start);
 
-        bool startsWith(const std::string& inTarget, char inValue)
-        {
-            if (inTarget.empty())
-            {
-                return false;
-            }
-
-            return areEquals(inTarget.substr(0, 1), inValue);
-        }
-
-        bool endsWith(const std::string& inTarget, const std::string& inValue)
-        {
-            if (inTarget.empty() || inTarget.size() < inValue.size())
-            {
-                return false;
-            }
-
-            return areEquals(
-                inTarget.substr(inTarget.size() - inValue.size()),
-                inValue
-            );
-        }
-
-        std::string trim(const std::string& inValue)
-        {
-            std::string result(inValue);
-            result.erase(0, result.find_first_not_of(" \n\r\t"));
-            result.erase(result.find_last_not_of(" \n\r\t") + 1);
-
-            return result;
-        }
-
-        std::string toLower(const std::string& inValue)
-        {
-            std::string value = inValue;
-            std::transform(
-                value.begin(),
-                value.end(),
-                value.begin(),
-                ::tolower
-            );
-
-            return value;
-        }
-
-        std::string toUpper(const std::string& inValue)
-        {
-            std::string value = inValue;
-            std::transform(
-                value.begin(),
-                value.end(),
-                value.begin(),
-                ::toupper
-            );
-
-            return value;
-        }
-
-        std::vector<std::string> split(
-            const std::vector<unsigned char>& inValue,
-            const std::string& inDelimiter
-        )
-        {
-            return split(
-                std::string(inValue.begin(), inValue.end()),
-                inDelimiter
-            );
-        }
-
-        std::vector<std::string> split(const std::string& inValue, char inDelimeter)
-        {
-            return split(inValue, std::string(1, inDelimeter));
-        }
-
-        std::string formatSplittedBlock(const std::string& inValue, const std::string& inDelimeter)
-        {
-            if (inValue.empty())
-            {
-                return "";
-            }
-
-            std::string block = inValue;
-
-            if (startsWith(block, inDelimeter))
+            if (block.startsWith(inDelimeter))
             {
                 block.erase(0, 1);
             }
 
-            if (endsWith(block, inDelimeter))
+            if (block.endsWith(inDelimeter))
             {
-                block.pop_back();
+                block.popBack();
             }
 
-            return trim(block);
+            block = block.trim();
+
+            start = i;
+
+            if (block.isEmpty())
+            {
+                continue;
+            }
+
+            result.push_back(block);
         }
 
-        std::vector<std::string> split(const std::string& inValue, const std::string& inDelimeter)
+        const String block = m_value.substr(start);
+
+        if (!block.isEmpty())
         {
-            if (inValue.empty())
-            {
-                return {};
-            }
-
-            int start = 0;
-
-            std::vector<std::string> result = {};
-
-            for (int i = 0; i < inValue.size(); i += inDelimeter.size())
-            {
-                if (!areEquals(inValue.substr(i, inDelimeter.size()), inDelimeter))
-                {
-                    continue;
-                }
-
-                const std::string block = formatSplittedBlock(
-                    inValue.substr(start, i - start),
-                    inDelimeter
-                );
-
-                start = i;
-
-                if (block.empty())
-                {
-                    continue;
-                }
-
-                result.push_back(block);
-            }
-
-            const std::string block = formatSplittedBlock(inValue.substr(start), inDelimeter);
-
-            if (!block.empty())
-            {
-                result.push_back(block);
-            }
-
-            return result;
+            result.push_back(block);
         }
 
-        std::string join(
-            const std::vector<std::string>& inValue,
-            const std::string& inJoiner,
-            std::uint32_t inStart,
-            std::uint32_t inEnd
-        )
+        return result;
+    }
+
+    String String::trim() const
+    {
+        std::string result = m_value;
+        result.erase(0, result.find_first_not_of(" \n\r\t"));
+        result.erase(result.find_last_not_of(" \n\r\t") + 1);
+
+        return result;
+    }
+
+    std::size_t String::size() const
+    {
+        return m_value.size();
+    }
+
+    std::string::iterator String::begin()
+    {
+        return m_value.begin();
+    }
+
+    std::string::const_iterator String::begin() const
+    {
+        return m_value.begin();
+    }
+
+    std::string::const_iterator String::cbegin()
+    {
+        return m_value.cbegin();
+    }
+
+    std::string::const_iterator String::cbegin() const
+    {
+        return m_value.cbegin(); 
+    }
+
+    std::string::iterator String::end()
+    {
+        return m_value.end();
+    }
+
+    std::string::const_iterator String::end() const
+    {
+        return m_value.end();
+    }
+
+    std::string::const_iterator String::cend()
+    {
+        return m_value.end();
+    }
+
+    std::string::const_iterator String::cend() const
+    {
+        return m_value.cend();
+    }
+
+    char& String::front()
+    {
+        return m_value.front();
+    }
+
+    const char& String::front() const
+    {
+        return m_value.front();
+    }
+
+    char& String::back()
+    {
+        return m_value.back();
+    }
+
+    const char& String::back() const
+    {
+        return m_value.back();
+    }
+
+    void String::append(const String& inValue)
+    {
+        m_value.append(inValue.toChar());
+    }
+
+    void String::append(char inValue)
+    {
+        m_value.push_back(inValue);
+    }
+
+    void String::erase(std::string::const_iterator inStart, std::string::const_iterator inEnd)
+    {
+        m_value.erase(inStart, inEnd);
+    }
+
+    void String::erase(std::uint32_t inStart, std::uint32_t inEnd)
+    {
+        m_value.erase(inStart, inEnd);
+    }
+
+    void String::popBack()
+    {
+        if (isEmpty())
         {
-            const std::uint32_t size  = static_cast<std::uint32_t>(inValue.size() - 1);
-            const std::uint32_t start = std::max(
-                static_cast<std::uint32_t>(0),
-                std::min(inStart, size)
-            );
-            const std::uint32_t end = std::max(
-                start,
-                inStart == 0 && inEnd == 0 ? size : std::min(inEnd, size)
-            );
-
-            std::string result = "";
-
-            for (std::uint32_t i = start; i <= end; i++)
-            {
-                result.append(inValue.at(i));
-                result.append(inJoiner);
-            }
-
-            return result;
+            return;
         }
 
-        void sort(std::vector<std::string>& outValue)
-        {
-            std::sort(
-                outValue.begin(),
-                outValue.end(),
-                [](const std::string& inA, const std::string& inB)
-                {
-                    return strcmp(inA.c_str(), inB.c_str()) > 0;
-                }
-            );
-        }
-
-        bool toBool(const std::string& inValue)
-        {
-            if (inValue.empty()) {
-                return false;
-            }
-
-            return areEquals(inValue, "1") || areEquals(inValue, "true");
-        }
-
-        bool isNaN(const std::string& inValue)
-        {
-            if (inValue.empty())
-            {
-                return true;
-            }
-
-            return std::find_if(
-                inValue.begin(), 
-                inValue.end(),
-                [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
-            ) != inValue.end();
-        }
+        m_value.pop_back();
     }
 }

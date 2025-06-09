@@ -18,21 +18,21 @@ namespace Chicane
                 Manager();
 
             protected:
-                void onAllocation(const std::string& inId, const Parsed& inData) override;
-                void onDeallocation(const std::string& inId) override;
-                void onActivation(const std::string& inId) override;
-                void onDeactivation(const std::string& inId) override;
+                void onAllocation(const String& inId, const Parsed& inData) override;
+                void onDeallocation(const String& inId) override;
+                void onActivation(const String& inId) override;
+                void onDeactivation(const String& inId) override;
 
             public:
                 // Setup
-                void load(const std::string& inId, const Model::Instance& inModel);
+                void load(const String& inId, const Model::Instance& inModel);
 
                 // Data
-                const Extracted& getInstance(const std::string& inId) const;
-                const Parsed& getData(const std::string& inId) const;
+                const Extracted& getInstance(const String& inId) const;
+                const Parsed& getData(const String& inId) const;
                 const std::vector<Vertex>& getVertices() const;
                 const std::vector<std::uint32_t>& getIndices() const;
-                std::uint32_t getFirstUse(const std::string& inId) const;
+                std::uint32_t getFirstUse(const String& inId) const;
 
             private:
                 std::vector<Vertex>        m_vertices;
