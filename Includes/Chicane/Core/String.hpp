@@ -152,6 +152,8 @@ namespace Chicane
         const std::string& toStandard() const;
         const char* toChar() const;
 
+        int compare(const String& inValue) const;
+
         String toUpper() const;
         String toLower() const;
 

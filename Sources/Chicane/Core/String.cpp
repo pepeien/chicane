@@ -108,6 +108,11 @@ namespace Chicane
         return m_value.c_str();
     }
 
+    int String::compare(const String& inValue) const
+    {
+        return strcmp(toChar(), inValue.toChar());
+    }
+
     String String::toUpper() const
     {
         std::string result = m_value;

@@ -448,7 +448,7 @@ namespace Chicane
                     components.end(),
                     [](CMesh* inA, CMesh* inB)
                     {
-                        return inA->getModel().equals(inB->getModel());
+                        return inA->getModel().compare(inB->getModel()) > 0;
                     }
                 );
 

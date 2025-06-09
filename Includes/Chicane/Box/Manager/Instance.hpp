@@ -156,7 +156,7 @@ namespace Chicane
                         m_usedIds.end(),
                         [](const String& inA, const String& inB)
                         {
-                            return inA.equals(inB);
+                            return inA.compare(inB) > 0;
                         }
                     );
 
@@ -170,7 +170,7 @@ namespace Chicane
                             m_activeIds.end(),
                             [](const String& inA, const String& inB)
                             {
-                                return inA.equals(inB);
+                                return inA.compare(inB) > 0;
                             }
                         );
 
@@ -200,7 +200,7 @@ namespace Chicane
                         m_usedIds.end(),
                         [](const String& inA, const String& inB)
                         {
-                            return inA.equals(inB);
+                            return inA.compare(inB) > 0;
                         }
                     );
 
@@ -221,7 +221,7 @@ namespace Chicane
                             m_activeIds.end(),
                             [](const String& inA, const String& inB)
                             {
-                                return inA.equals(inB);
+                                return inA.compare(inB) > 0;
                             }
                         );
 
