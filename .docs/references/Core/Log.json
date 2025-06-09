@@ -129,9 +129,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inHexColor"
@@ -139,9 +139,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inIdentifier"
@@ -149,9 +149,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -175,9 +175,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inHexColor"
@@ -185,9 +185,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inIdentifier"
@@ -195,9 +195,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -231,9 +231,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -257,9 +257,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -293,9 +293,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -319,9 +319,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -355,9 +355,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -381,9 +381,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -417,9 +417,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"
@@ -443,9 +443,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"

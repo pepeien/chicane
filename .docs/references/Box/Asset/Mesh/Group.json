@@ -32,9 +32,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getId",
@@ -59,9 +59,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inId"
@@ -75,9 +75,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getModel",
@@ -102,9 +102,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -118,9 +118,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getTexture",
@@ -145,9 +145,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inFilepath"
@@ -163,9 +163,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_id",
@@ -176,9 +176,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_model",
@@ -189,9 +189,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_texture",

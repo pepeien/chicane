@@ -57,9 +57,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inAudio"
@@ -92,9 +92,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_audio",

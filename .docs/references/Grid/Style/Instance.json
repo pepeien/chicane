@@ -133,9 +133,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inData"
@@ -161,9 +161,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inData"
@@ -466,9 +466,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -494,9 +494,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -522,9 +522,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "parseText",
@@ -532,9 +532,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -560,9 +560,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -598,9 +598,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -674,9 +674,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -730,9 +730,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -786,9 +786,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -814,9 +814,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -824,9 +824,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inUnit"
@@ -852,9 +852,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"

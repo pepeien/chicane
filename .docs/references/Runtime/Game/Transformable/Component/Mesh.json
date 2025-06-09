@@ -121,9 +121,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMesh"
@@ -154,9 +154,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getModel",
@@ -171,9 +171,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getTexture",

@@ -42,9 +42,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getText",
@@ -69,9 +69,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -133,9 +133,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_text",
@@ -146,9 +146,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_parsedText",

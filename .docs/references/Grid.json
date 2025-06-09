@@ -35,9 +35,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         {
@@ -97,9 +97,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inTag"
@@ -123,9 +123,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "extractParams",
@@ -133,9 +133,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"

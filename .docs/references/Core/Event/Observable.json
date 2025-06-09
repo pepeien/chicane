@@ -54,7 +54,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "void(const std::string &)",
+                            "name": "void(const String &)",
                             "suffix": "",
                             "path": "",
                             "templates": []
@@ -277,9 +277,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inMessage"

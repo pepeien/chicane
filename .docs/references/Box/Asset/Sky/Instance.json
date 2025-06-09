@@ -139,9 +139,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "&",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "getModel",
@@ -166,9 +166,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inModel"
@@ -192,9 +192,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::string",
+                            "name": "String",
                             "suffix": "&",
-                            "path": "",
+                            "path": "Core/String",
                             "templates": []
                         },
                         "name": "inValue"
@@ -255,9 +255,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::string",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_model",
