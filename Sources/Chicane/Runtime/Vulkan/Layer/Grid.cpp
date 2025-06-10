@@ -50,7 +50,7 @@ namespace Chicane
                 return false;
             }
 
-            refreshDraws(m_view);
+            refreshDraw(m_view);
 
             if (m_draws.empty())
             {
@@ -341,7 +341,7 @@ namespace Chicane
             );
         }
 
-        void LGrid::buildDraws(Grid::Component* inComponent)
+        void LGrid::buildDraw(Grid::Component* inComponent)
         {
             if (!inComponent)
             {
@@ -361,11 +361,11 @@ namespace Chicane
     
             for (Grid::Component* component : inComponent->getChildren())
             {
-                buildDraws(component);
+                buildDraw(component);
             }
         }
 
-        void LGrid::refreshDraws(Grid::Component* inComponent)
+        void LGrid::refreshDraw(Grid::Component* inComponent)
         {
             if (!inComponent)
             {
@@ -376,7 +376,7 @@ namespace Chicane
             {
                 if (!hasDraw(inComponent))
                 {
-                    buildDraws(inComponent);
+                    buildDraw(inComponent);
                 }
 
                 Draw& draw = getDraw(inComponent);
@@ -412,7 +412,7 @@ namespace Chicane
 
             for (Grid::Component* component : inComponent->getChildren())
             {
-                refreshDraws(component);
+                refreshDraw(component);
             }
         }
 

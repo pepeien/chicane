@@ -63,7 +63,7 @@ Character::Character()
 void Character::onControlAttachment()
 {
     // Mouse
-    m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
+    m_controller->bindEvent(std::bind(&Character::onMouseMotion, this, std::placeholders::_1));
 
     m_controller->bindEvent(
         Chicane::Input::MouseButton::Left,

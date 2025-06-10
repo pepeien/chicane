@@ -61,8 +61,8 @@ namespace Chicane
             void destroyDrawIndexBuffer(Draw& outDraw);
             bool hasDraw(Grid::Component* inComponent);
             Draw& getDraw(Grid::Component* inComponent);
-            void buildDraws(Grid::Component* inComponent);
-            void refreshDraws(Grid::Component* inComponent);
+            void buildDraw(Grid::Component* inComponent);
+            void refreshDraw(Grid::Component* inComponent);
             void destroyDraws();
 
         private:

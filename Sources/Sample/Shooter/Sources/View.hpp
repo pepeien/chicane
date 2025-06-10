@@ -7,9 +7,6 @@ class View : public Chicane::Grid::View
 public:
     View();
 
-protected:
-    void onTick(float inDelta) override;
-
 private:
     bool                      m_didPlayerWin;
 

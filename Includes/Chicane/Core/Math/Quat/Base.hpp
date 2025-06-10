@@ -7,6 +7,7 @@ namespace Chicane
     template<typename T, glm::qualifier Q = glm::packed_highp>
     struct CHICANE_CORE Quat : glm::qua<T, Q>
     {
+    public:
         template<typename... A>
         constexpr Quat(A ...args)
             : glm::qua<T, Q>(args...)

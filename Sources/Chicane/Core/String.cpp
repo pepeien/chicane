@@ -2,6 +2,28 @@
 
 namespace Chicane
 {
+    String formatSplittedBlock(const String& inValue, const String inDelimeter)
+    {
+        if (inValue.isEmpty())
+        {
+            return "";
+        }
+
+        String block = inValue;
+
+        if (block.startsWith(inDelimeter))
+        {
+            block.erase(0, 1);
+        }
+
+        if (block.endsWith(inDelimeter))
+        {
+            block.popBack();
+        }
+
+        return block.trim();
+    }
+
     bool String::isEmpty() const
     {
         const std::string& result = trim().toStandard();
@@ -193,19 +215,7 @@ namespace Chicane
                 continue;
             }
 
-            String block = m_value.substr(start, i - start);
-
-            if (block.startsWith(inDelimeter))
-            {
-                block.erase(0, 1);
-            }
-
-            if (block.endsWith(inDelimeter))
-            {
-                block.popBack();
-            }
-
-            block = block.trim();
+            const String block = formatSplittedBlock(substr(start, i - start), inDelimeter);
 
             start = i;
 
@@ -217,7 +227,7 @@ namespace Chicane
             result.push_back(block);
         }
 
-        const String block = m_value.substr(start);
+        const String block = formatSplittedBlock(substr(start), inDelimeter);
 
         if (!block.isEmpty())
         {

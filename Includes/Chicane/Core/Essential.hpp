@@ -42,6 +42,7 @@
 #include <ostream>
 #include <optional>
 #include <deque>
+#include <type_traits>
 #include <set>
 #include <stdexcept>
 #include <string>
