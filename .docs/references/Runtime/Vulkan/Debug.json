@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "VKAPI_ATTR vk::Bool32 VKAPI_CALL",
+                    "name": "vk::Bool32",
                     "suffix": "",
                     "path": "",
                     "templates": []
