@@ -194,7 +194,7 @@ namespace Chicane
 
         void Renderer::buildInstance()
         {
-            Vulkan::Instance::init(m_instance, m_dldi);
+            Vulkan::Instance::init(m_instance, m_dispatcher);
         }
 
         void Renderer::destroyInstance()
@@ -204,25 +204,12 @@ namespace Chicane
 
         void Renderer::buildDebugMessenger()
         {
-            if (!IS_DEBUGGING)
-            {
-                return;
-            }
-
-            Debug::initMessenger(
-                m_debugMessenger,
-                m_instance,
-                m_dldi
-            );
+            Debug::initMessenger(m_debugMessenger, m_instance, m_dispatcher);
         }
 
         void Renderer::destroyDebugMessenger()
         {
-            m_instance.destroyDebugUtilsMessengerEXT(
-                m_debugMessenger,
-                nullptr,
-                m_dldi
-            );
+            Debug::destroyMessenger(m_debugMessenger, m_instance, m_dispatcher);
         }
 
         void Renderer::buildSurface()
@@ -241,32 +228,14 @@ namespace Chicane
 
         void Renderer::buildQueues()
         {
-            Queue::initGraphicsQueue(
-                m_graphicsQueue,
-                m_physicalDevice,
-                m_logicalDevice,
-                m_surface
-            );
-
-            Queue::initPresentQueue(
-                m_presentQueue,
-                m_physicalDevice,
-                m_logicalDevice,
-                m_surface
-            );
+            Queue::initGraphicsQueue(m_graphicsQueue, m_physicalDevice, m_logicalDevice, m_surface);
+            Queue::initPresentQueue(m_presentQueue, m_physicalDevice, m_logicalDevice, m_surface);
         }
 
         void Renderer::buildDevices()
         {
-            Device::pickPhysicalDevice(
-                m_physicalDevice,
-                m_instance
-            );
-            Device::initLogicalDevice(
-                m_logicalDevice,
-                m_physicalDevice,
-                m_surface
-            );
+            Device::pickPhysicalDevice(m_physicalDevice, m_instance);
+            Device::initLogicalDevice(m_logicalDevice, m_physicalDevice, m_surface);
         }
                     
         void Renderer::destroyDevices()
@@ -276,12 +245,7 @@ namespace Chicane
 
         void Renderer::buildSwapChain()
         {
-            SwapChain::init(
-                m_swapChain,
-                m_physicalDevice,
-                m_logicalDevice,
-                m_surface
-            );
+            SwapChain::init(m_swapChain, m_physicalDevice, m_logicalDevice, m_surface);
 
             m_imageCount = static_cast<int>(m_swapChain.frames.size());
 
@@ -333,12 +297,7 @@ namespace Chicane
 
         void Renderer::buildCommandPool()
         {
-            CommandBuffer::Pool::init(
-                m_mainCommandPool,
-                m_logicalDevice,
-                m_physicalDevice,
-                m_surface
-            );
+            CommandBuffer::Pool::init(m_mainCommandPool, m_logicalDevice, m_physicalDevice, m_surface);
         }
 
         void Renderer::destroyCommandPool()
@@ -348,28 +307,16 @@ namespace Chicane
 
         void Renderer::buildMainCommandBuffer()
         {
-            CommandBuffer::CreateInfo createInfo = {
-                m_logicalDevice,
-                m_mainCommandPool
-            };
+            CommandBuffer::CreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
 
-            CommandBuffer::init(
-                m_mainCommandBuffer,
-                createInfo
-            );
+            CommandBuffer::init(m_mainCommandBuffer, createInfo);
         }
 
         void Renderer::buildFramesCommandBuffers()
         {
-            CommandBuffer::CreateInfo createInfo = {
-                m_logicalDevice,
-                m_mainCommandPool
-            };
+            CommandBuffer::CreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
 
-            Frame::Buffer::initCommand(
-                m_swapChain.frames,
-                createInfo
-            );
+            Frame::Buffer::initCommand(m_swapChain.frames, createInfo);
         }
 
         void Renderer::renderViewport(const vk::CommandBuffer& inCommandBuffer)

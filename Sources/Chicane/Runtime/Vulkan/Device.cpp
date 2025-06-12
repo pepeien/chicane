@@ -1,33 +1,43 @@
 #include "Chicane/Runtime/Vulkan/Device.hpp"
 
+#include "Chicane/Runtime/Vulkan/Queue.hpp"
+
 namespace Chicane
 {
     namespace Vulkan
     {
         namespace Device
         {
-            bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inPhysicalDevice)
+            bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inDevice)
             {
                 std::set<String> extensions(EXTENSIONS.begin(), EXTENSIONS.end());
 
-                for (vk::ExtensionProperties& extension : inPhysicalDevice.enumerateDeviceExtensionProperties())
+                for (vk::ExtensionProperties& extension : inDevice.enumerateDeviceExtensionProperties())
                 {
                     extensions.erase(extension.extensionName);
+                }
+
+                for (const String& unsupportedExtension : extensions)
+                {
+                    Log::warning(
+                        "The vulkan device extension [%s] is not supported",
+                        unsupportedExtension.toChar()
+                    );
                 }
 
                 return extensions.empty();
             }
 
-            void pickPhysicalDevice(vk::PhysicalDevice& outPhysicalDevice, const vk::Instance& inInstance)
+            void pickPhysicalDevice(vk::PhysicalDevice& outDevice, const vk::Instance& inInstance)
             {
-                for (vk::PhysicalDevice physicalDevice : inInstance.enumeratePhysicalDevices())
+                for (const vk::PhysicalDevice& device : inInstance.enumeratePhysicalDevices())
                 {
-                    if (!isPhysicalDeviceSuitable(physicalDevice))
+                    if (!isPhysicalDeviceSuitable(device))
                     {
                         continue;
                     }
  
-                    outPhysicalDevice = physicalDevice;
+                    outDevice = device;
 
                     return;
                 }
@@ -36,7 +46,7 @@ namespace Chicane
             }
 
             void initLogicalDevice(
-                vk::Device& outLogicalDevice,
+                vk::Device& outDevice,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::SurfaceKHR& inSurface
             )
@@ -91,7 +101,7 @@ namespace Chicane
                 );
                 logicalDeviceInfo.pNext = &descriptorFeatures;
 
-                outLogicalDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
+                outDevice = inPhysicalDevice.createDevice(logicalDeviceInfo);
             }
 
             std::uint32_t findMemoryTypeIndex(

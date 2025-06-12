@@ -3,41 +3,47 @@
 </p>
 
 <p align="center">
-    <span>Chicane is a very naive C++17 cross plataform and graphics API independent graphics engine.</span>
+    <span>Chicane is a C++17 cross plataform and multi graphics API graphics engine.</span>
 </p>
 
 ## Features
-
-- Multiplataform (Window, Linux);
-- Shadow mapping;
-- Custom Asset system (Box): 
+- Multiplataform:
+    - Windows (^=10);
+    - Linux.
+- Asset system: 
     - Audio (.wav);
     - Fonts (.ttf);
     - 3D Models (.obj);
     - Textures (.png).
-- Custom UI system (Grid);
+- UI system:
     - Button;
     - Container;
     - Popup;
     - Text;
     - Input;
     - View.
-- Graphics APIs support:
-    - Vulkan.
+- Graphics API support:
+    - Vulkan:
+        - Shadow mapping.
 
 ## Compiling
 This project uses CMake to generate and build files, it should pretty straight forward both on linux and windows platforms.
 
 ### Compilers
-
-- Windows - (MinGW, Visual Studio 19 or 22);
-- Linux - (GCC or G++).
+- Windows:
+    - MinGW (^=11.2);
+    - Visual Studio (^=19).
+- Linux:
+    - Clang (^=17);
+    - GCC (^=14.20).
 
 ### Requeriments
-
-- [CMake](https://cmake.org/download) (^=3.16.0);
-- [Python 3](https://www.python.org/downloads/);
-- [Vulkan SDK](https://www.lunarg.com/vulkan-sdk/) (^=1.3.269).
+- Build:
+    - [CMake](https://cmake.org/download) (^=3.16.0);
+- Script:
+    - [Python](https://www.python.org/downloads).
+- Renderer:
+    - [Vulkan](https://www.lunarg.com/vulkan-sdk) (^=1.4.313.2).
 
 ## Examples
 If you desire to check some examplary code, this repository hosts a sample located at `Sources/Sample`.
