@@ -6,7 +6,7 @@ namespace Chicane
     {
         namespace Debug
         {
-            VKAPI_ATTR vk::Bool32 VKAPI_CALL debugCallback(
+            vk::Bool32 debugCallback(
                 vk::DebugUtilsMessageSeverityFlagBitsEXT inMessageSeverity,
                 vk::DebugUtilsMessageTypeFlagsEXT inMessageType,
                 const vk::DebugUtilsMessengerCallbackDataEXT* inData,
