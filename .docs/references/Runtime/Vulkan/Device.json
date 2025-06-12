@@ -30,7 +30,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inPhysicalDevice"
+                        "name": "inDevice"
                     }
                 ],
                 "modifiers": [],
@@ -56,7 +56,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "outPhysicalDevice"
+                        "name": "outDevice"
                     },
                     {
                         "type": {
@@ -92,7 +92,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "outLogicalDevice"
+                        "name": "outDevice"
                     },
                     {
                         "type": {
@@ -102,7 +102,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inPhysicalDevice"
+                        "name": "inDevice"
                     },
                     {
                         "type": {
@@ -138,7 +138,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inPhysicalDevice"
+                        "name": "inDevice"
                     },
                     {
                         "type": {

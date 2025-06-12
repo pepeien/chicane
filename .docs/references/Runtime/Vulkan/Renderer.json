@@ -521,13 +521,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "vk::DispatchLoaderDynamic",
+                    "name": "vk::detail::DispatchLoaderDynamic",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "m_dldi",
-                "description": "CHICANE_VULKAN_RENDERER_M_DLDI_DESCRIPTION"
+                "name": "m_dispatcher",
+                "description": "CHICANE_VULKAN_RENDERER_M_DISPATCHER_DESCRIPTION"
             },
             {
                 "accessor": "private",

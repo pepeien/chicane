@@ -15,6 +15,62 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "VKAPI_ATTR vk::Bool32 VKAPI_CALL",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "debugCallback",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DebugUtilsMessageSeverityFlagBitsEXT",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMessageSeverity"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DebugUtilsMessageTypeFlagsEXT",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inMessageType"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DebugUtilsMessengerCallbackDataEXT",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outUserData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_DEBUG_DEBUGCALLBACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -45,12 +101,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "vk::DispatchLoaderDynamic",
+                            "name": "vk::detail::DispatchLoaderDynamic",
                             "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inDldi"
+                        "name": "inDispatcher"
                     }
                 ],
                 "modifiers": [],
@@ -61,56 +117,46 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "VKAPI_ATTR VkBool32 VKAPI_CALL",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "debugCallback",
+                "name": "destroyMessenger",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "VkDebugUtilsMessageSeverityFlagBitsEXT",
-                            "suffix": "",
+                            "name": "vk::DebugUtilsMessengerEXT",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inMessageSeverity"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "VkDebugUtilsMessageTypeFlagsEXT",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inMessageType"
+                        "name": "outDebugMessenger"
                     },
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "VkDebugUtilsMessengerCallbackDataEXT",
-                            "suffix": "*",
+                            "name": "vk::Instance",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inData"
+                        "name": "inInstance"
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "void",
-                            "suffix": "*",
+                            "prefix": "const ",
+                            "name": "vk::detail::DispatchLoaderDynamic",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "outUserData"
+                        "name": "inDispatcher"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_DEBUG_DEBUGCALLBACK_DESCRIPTION"
+                "description": "CHICANE_VULKAN_DEBUG_DESTROYMESSENGER_DESCRIPTION"
             }
         ],
         "members": [],

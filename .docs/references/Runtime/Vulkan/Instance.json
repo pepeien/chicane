@@ -103,7 +103,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "vk::DispatchLoaderDynamic",
+                            "name": "vk::detail::DispatchLoaderDynamic",
                             "suffix": "&",
                             "path": "",
                             "templates": []
