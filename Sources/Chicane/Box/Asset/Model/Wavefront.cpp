@@ -1,7 +1,7 @@
 #include "Chicane/Box/Asset/Model/Wavefront.hpp"
 
 #define FAST_OBJ_IMPLEMENTATION
-#include <fast_obj.h>
+#include <fast_obj_chicane.h>
 
 namespace Chicane
 {
