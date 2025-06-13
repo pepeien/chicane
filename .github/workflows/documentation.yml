@@ -4,7 +4,6 @@ on:
         branches: [master]
         paths:
             - 'Includes/Chicane/**.hpp'
-            - 'Sources/Chicane/**.cpp'
             - 'Doxyfile'
     workflow_dispatch:
 jobs:
