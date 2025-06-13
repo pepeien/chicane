@@ -20,3 +20,6 @@
 [submodule "Sources/Vendors/SDL3"]
 	path = Sources/Vendors/SDL3
 	url = https://github.com/pepeien/SDL.git
+[submodule "Sources/Vendor/SDL3"]
+	path = Sources/Vendor/SDL3
+	url = https://github.com/pepeien/SDL.git
