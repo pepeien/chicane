@@ -48,7 +48,7 @@ set(INSTALL_INTERFACE_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
 
 ## Chicane
 set(CHICANE_INCLUDES_DIR "${INCLUDES_DIR}/Chicane")
-set(CHICANE_SOURCES_DIR  "${SOURCES_DIR}/Chicane")
+set(CHICANE_SOURCES_DIR  "${SOURCES_DIR}/Engine")
 
 ## Contents
 set(CONTENTS_TARGET_NAME "${NAME}-Contents")
@@ -77,4 +77,3 @@ set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
 ##################### Directories #######################
 add_subdirectory(Contents)
 add_subdirectory(Sources)
-add_subdirectory(Vendors)
