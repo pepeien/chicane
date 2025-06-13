@@ -1,3 +1,3 @@
 ##################### Directories #######################
-add_subdirectory(Chicane)
+add_subdirectory(Engine)
 add_subdirectory(Sample)
