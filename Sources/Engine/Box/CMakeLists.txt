@@ -72,4 +72,4 @@ target_link_libraries(
 CH_ADD_COMPILER(${BOX_TARGET_NAME})
 
 ##################### Directories #######################
-add_subdirectory(Vendors)
+add_subdirectory(Vendor)
