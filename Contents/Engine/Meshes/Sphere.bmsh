@@ -1,0 +1,6 @@
+<Asset version="1" id="Sphere">
+    <Group id="Body">
+        <Model>Contents/Engine/Models/Sphere.bmdl</Model>
+        <Texture>Contents/Engine/Textures/Gray.btex</Texture>
+    </Group>
+</Asset>

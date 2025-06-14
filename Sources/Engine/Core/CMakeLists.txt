@@ -7,7 +7,7 @@ file(
     ${CORE_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Core.hpp)
-list(FILTER HEADERS EXCLUDE REGEX "Vendors/.*")
+list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
@@ -16,12 +16,12 @@ file(
     # Sources
     ${CORE_SOURCE_DIR}/*.cpp
 )
-list(FILTER SOURCES EXCLUDE REGEX "Vendors/.*")
+list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Values #######################
 
 # Dirs
-set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendors")
+set(VENDORS_DIR "${CMAKE_CURRENT_LIST_DIR}/Vendor")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)

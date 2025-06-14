@@ -7,7 +7,7 @@ file(
     ${BOX_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Box.hpp)
-list(FILTER HEADERS EXCLUDE REGEX "Vendors/.*")
+list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
@@ -17,7 +17,7 @@ file(
     ${BOX_SOURCE_DIR}/*.cpp
 )
 list(APPEND SOURCES ${CHICANE_SOURCES_DIR}/Box.cpp)
-list(FILTER SOURCES EXCLUDE REGEX "Vendors/.*")
+list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)

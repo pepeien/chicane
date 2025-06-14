@@ -281,11 +281,11 @@ namespace Chicane
 
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Shaders/Vulkan/level.vert.spv";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/level.vert.spv";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Shaders/Vulkan/level.frag.spv";
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/level.frag.spv";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

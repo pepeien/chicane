@@ -1,0 +1,160 @@
+#console {
+    width: 60vw;
+    height: 60vh;
+    background-color: #242424;
+}
+
+#consoleHeader {
+    list-direction: row;
+    width: 100%;
+    height: 3vh;
+}
+
+#consoleHeaderText {
+    alignment: start center;
+    margin-left: 0.5vw;
+}
+
+#consoleClose {
+    width: 1vh;
+    height: 3vh;
+    margin-left: auto;
+    margin-right: 1vh;
+}
+
+#consoleCloseText {
+    alignment: center;
+}
+
+#consoleLog {
+    list-direction: column;
+    width: 100%;
+    background-color: #3d3d3d;
+}
+
+#viewport {
+    position: absolute;
+    list-direction: column;
+    width: 82vw;
+    height: 80vh;
+}
+
+#telemetry {
+    list-direction: column;
+    gap: 0.25vh;
+    margin: 0.5vh 0 0 0.5vh;
+}
+
+#buttons {
+    position: absolute;
+    gap: 0.25vw;
+    width: 100%;
+    height: 4vh;
+    margin: 0.5vh 0.25vw 0 auto;
+}
+
+#consoleButton {
+    height: 100%;
+    width: 6vw;
+    background-color: #333333;
+    margin-left: auto;
+}
+
+#meshButton {
+    height: 100%;
+    width: 7vw;
+    background-color: #333333;
+    margin-left: auto;
+    margin-right: 6.25vw;
+}
+
+#textureButton {
+    height: 100%;
+    width: 8vw;
+    background-color: #333333;
+    margin-left: auto;
+    margin-right: 13.5vw;
+}
+
+#consoleButtonText, #meshButtonText, #textureButtonText {
+    alignment: center;
+}
+
+#sideBar {
+    position: absolute;
+    list-direction: column;
+    width: 18vw;
+    margin-left: auto;
+    background-color: #333333;
+    gap: 1vh;
+}
+
+#detailsTitle, #outlinerTitle {
+    list-direction: column;
+    margin-top: 1vh;
+    height: 4vh;
+}
+
+#detailsTitleText, #outlinerTitleText {
+    alignment: center;
+}
+
+#detailsContent, #outlinerContent {
+    list-direction: column;
+    width: 100%;
+    height: 42.5vh;
+    margin-top: 1vh;
+    background-color: #525252;
+    gap: 1vh 0;
+}
+
+#translationDetail, #rotationDetail, #scalingDetail {
+    list-direction: column;
+    height: 6vh;
+    gap: 1vh;
+}
+
+#translationDetailTitle, #rotationDetailTitle, #scalingDetailTitle {
+    height: 3vh;
+}
+
+#translationX, #translationY, #translationZ,
+#rotationX, #rotationY, #rotationZ,
+#scalingX, #scalingY, #scalingZ {
+    width: 8vh;
+}
+
+#translationDetailInputs, #rotationDetailInputs, #scalingDetailInputs {
+    list-direction: row;
+    height: 3vh;
+    gap: 2vh;
+}
+
+#bottomBar {
+    position: absolute;
+    list-direction: column;
+    width: 82vw;
+    height: 25vh;
+    margin-top: auto;
+    background-color: #333333;
+    gap: 1vh 0;
+}
+
+#bottomBarTitle {
+    width: 100%;
+    margin-top: 1vh;
+}
+
+#dirHistory {
+    list-direction: row;
+    width: 99.99%;
+    height: 15%;
+    background-color: #525252;
+    gap: 0 1vh;
+}
+
+#dirContent {
+    width: 99.99%;
+    background-color: #525252;
+    gap: 1vh;
+}

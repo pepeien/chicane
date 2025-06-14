@@ -3,14 +3,14 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    ${SHOOTER_HEADER_DIR}/*.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/*.hpp
 )
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    ${SHOOTER_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
 )
 
 ##################### Directories #######################
@@ -30,9 +30,10 @@ target_include_directories(
     ${SHOOTER_TARGET_NAME}
 
     PUBLIC
-        $<BUILD_INTERFACE:${SHOOTER_BUILD_INTERFACE_DIR}>
-
-        ${INCLUDES_DIR}
+        $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
+        $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
 )
 
 target_link_libraries(
@@ -46,6 +47,3 @@ add_dependencies(${SHOOTER_TARGET_NAME} ${SHOOTER_CONTENT_TARGET_NAME})
 
 ##################### Setup #######################
 CH_ADD_COMPILER(${SHOOTER_TARGET_NAME})
-
-##################### Directories #######################
-add_subdirectory(Contents)
