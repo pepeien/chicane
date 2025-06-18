@@ -25,7 +25,7 @@ void Level::onActivation()
 void Level::spawnSky()
 {
     createActor<Chicane::ASky>()->setSky(
-        Chicane::Box::load<Chicane::Box::Sky::Instance>("Contents/Engine/Skies/Gray.bsky")
+        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky")
     );
 }
 

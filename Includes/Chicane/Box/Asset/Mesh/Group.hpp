@@ -6,27 +6,24 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Mesh
+        struct CHICANE_BOX MeshGroup
         {
-            struct CHICANE_BOX Group
-            {
-            public:
-                bool isValid() const;
+        public:
+            bool isValid() const;
 
-                const String& getId() const;
-                void setId(const String& inId);
+            const String& getId() const;
+            void setId(const String& inId);
 
-                const String& getModel() const;
-                void setModel(const String& inFilepath);
+            const String& getModel() const;
+            void setModel(const String& inFilepath);
 
-                const String& getTexture() const;
-                void setTexture(const String& inFilepath);
+            const String& getTexture() const;
+            void setTexture(const String& inFilepath);
 
-            private:
-                String m_id      = "";
-                String m_model   = "";
-                String m_texture = "";
-            };
-        }
+        private:
+            String m_id      = "";
+            String m_model   = "";
+            String m_texture = "";
+        };
     }
 }

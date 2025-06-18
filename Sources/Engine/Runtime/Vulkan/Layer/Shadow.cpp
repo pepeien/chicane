@@ -107,9 +107,9 @@ namespace Chicane
             }
 
             m_modelManager->watchChanges(
-                [&](Box::Manager::EventType inEvent)
+                [&](Box::ManagerEventType inEvent)
                 {
-                    if (inEvent != Box::Manager::EventType::Activation)
+                    if (inEvent != Box::ManagerEventType::Activation)
                     {
                         return;
                     }

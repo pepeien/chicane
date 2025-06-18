@@ -6,16 +6,13 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Mesh
+        struct CHICANE_BOX MeshParsed
         {
-            struct CHICANE_BOX Parsed
-            {
-            public:
-                Mat4          matrix       = Mat4::One;
-                std::uint32_t textureIndex = 0;
+        public:
+            Mat4          matrix       = Mat4::One;
+            std::uint32_t textureIndex = 0;
 
-                std::uint32_t _padding[3];
-            };
-        }
+            std::uint32_t _padding[3];
+        };
     }
 }

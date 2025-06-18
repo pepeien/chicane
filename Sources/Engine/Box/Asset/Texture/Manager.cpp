@@ -6,70 +6,67 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Texture
+        static const Image::Raw      EMPTY_RAW_DATA      = {};
+        static const Image::Instance EMPTY_COMPILED_DATA = {};
+
+        TextureManager::TextureManager()
+            : Super()
+        {}
+
+        void TextureManager::onActivation(const String& inId)
         {
-            static const Image::Raw      EMPTY_RAW_DATA      = {};
-            static const Image::Instance EMPTY_COMPILED_DATA = {};
+            Super::allocate(inId, Image::Instance(getInstance(inId)));
+        }
 
-            Manager::Manager()
-                : Super()
-            {}
+        void TextureManager::onDeactivation(const String& inId)
+        {
+            Super::deallocate(inId);
+        }
 
-            void Manager::onActivation(const String& inId)
+        void TextureManager::load(const String& inId, const Texture& inAsset)
+        {
+            if (isLoaded(inId))
             {
-                Super::allocate(inId, Image::Instance(getInstance(inId)));
+                return;
             }
 
-            void Manager::onDeactivation(const String& inId)
+            Super::load(inId, inAsset.getData());
+        }
+
+        const Image::Raw& TextureManager::getInstance(const String& inId) const
+        {
+            if (!isLoaded(inId))
             {
-                Super::deallocate(inId);
+                return EMPTY_RAW_DATA;
             }
 
-            void Manager::load(const String& inId, const Texture::Instance& inAsset)
-            {
-                if (isLoaded(inId))
-                {
-                    return;
-                }
+            return m_instances.at(inId);
+        }
 
-                Super::load(inId, inAsset.getData());
+        const Image::Instance& TextureManager::getData(const String& inId) const
+        {
+            if (!isLoaded(inId) || !isAllocated(inId))
+            {
+                return EMPTY_COMPILED_DATA;
             }
 
-            const Image::Raw& Manager::getInstance(const String& inId) const
-            {
-                if (!isLoaded(inId))
-                {
-                    return EMPTY_RAW_DATA;
-                }
+            return m_datum.at(inId);
+        }
 
-                return m_instances.at(inId);
+        std::uint32_t TextureManager::getIndex(const String& inId) const
+        {
+            auto interator = std::find(
+                m_activeIds.begin(),
+                m_activeIds.end(),
+                inId
+            );
+
+            if (interator == m_activeIds.end())
+            {
+                return 0;
             }
 
-            const Image::Instance& Manager::getData(const String& inId) const
-            {
-                if (!isLoaded(inId) || !isAllocated(inId))
-                {
-                    return EMPTY_COMPILED_DATA;
-                }
-
-                return m_datum.at(inId);
-            }
-
-            std::uint32_t Manager::getIndex(const String& inId) const
-            {
-                auto interator = std::find(
-                    m_activeIds.begin(),
-                    m_activeIds.end(),
-                    inId
-                );
-
-                if (interator == m_activeIds.end())
-                {
-                    return 0;
-                }
-
-                return static_cast<std::uint32_t>(interator - m_activeIds.begin());
-            }
+            return static_cast<std::uint32_t>(interator - m_activeIds.begin());
         }
     }
 }

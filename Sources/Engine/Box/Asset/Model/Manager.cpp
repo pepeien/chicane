@@ -6,140 +6,137 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Model
+        static const ModelExtracted EMPTY_INSTANCE = {};
+        static const ModelParsed    EMPTY_DATA     = {};
+
+        ModelManager::ModelManager()
+            : Super()
+        {}
+
+        void ModelManager::onAllocation(const String& inId, const ModelParsed& inData)
         {
-            static const Extracted   EMPTY_INSTANCE = {};
-            static const Parsed EMPTY_DATA     = {};
+            const ModelExtracted& instance = getInstance(inId);
 
-            Manager::Manager()
-                : Super()
-            {}
+            m_vertices.insert(
+                m_vertices.end(),
+                instance.vertices.begin(),
+                instance.vertices.end()
+            );
 
-            void Manager::onAllocation(const String& inId, const Parsed& inData)
+            for (std::uint32_t index : instance.indices)
             {
-                const Extracted& instance = getInstance(inId);
+                m_indices.push_back(index + inData.firstVertex);
+            }
+        }
 
-                m_vertices.insert(
-                    m_vertices.end(),
-                    instance.vertices.begin(),
-                    instance.vertices.end()
-                );
+        void ModelManager::onDeallocation(const String& inId)
+        {
+            std::uint32_t firstVertex = 0;
+            std::uint32_t firstIndex  = 0;
 
-                for (std::uint32_t index : instance.indices)
-                {
-                    m_indices.push_back(index + inData.firstVertex);
-                }
+            for (auto& [id, data] : m_datum)
+            {
+                data.firstVertex = firstVertex;
+                data.firstIndex  = firstIndex;
+
+                firstVertex += data.vertexCount;
+                firstIndex  += data.indexCount;
+            }
+        }
+
+        void ModelManager::onActivation(const String& inId)
+        {
+            const ModelExtracted& instance = getInstance(inId);
+
+            ModelParsed data = {};
+            data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
+            data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
+            data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
+            data.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
+
+            Super::allocate(inId, data);
+        }
+
+        void ModelManager::onDeactivation(const String& inId)
+        {
+            const ModelParsed& data = m_datum.at(inId);
+
+            auto verticesStart = m_vertices.begin() + data.firstVertex;
+            auto verticesEnd   = verticesStart + data.vertexCount;
+            m_vertices.erase(verticesStart, verticesEnd);
+
+            auto indicesStart = m_indices.begin() + data.firstIndex;
+            auto indicesEnd   = indicesStart + data.indexCount;
+            m_indices.erase(indicesStart, indicesEnd);
+
+            Super::deallocate(inId);
+        }
+
+        void ModelManager::load(const String& inId, const Model& inModel)
+        {
+            if (isLoaded(inId))
+            {
+                return;
             }
 
-            void Manager::onDeallocation(const String& inId)
+            switch (inModel.getVendor())
             {
-                std::uint32_t firstVertex = 0;
-                std::uint32_t firstIndex  = 0;
+            case ModelVendor::Wavefront:
+                Super::load(inId, ModelWavefront::parse(inModel.getData()));
 
-                for (auto& [id, data] : m_datum)
-                {
-                    data.firstVertex = firstVertex;
-                    data.firstIndex  = firstIndex;
+                break;
 
-                    firstVertex += data.vertexCount;
-                    firstIndex  += data.indexCount;
-                }
+            default:
+                throw std::runtime_error("Failed to import Model due to invalid type");
+            }
+        }
+
+        const ModelExtracted& ModelManager::getInstance(const String& inId) const
+        {
+            if (!isLoaded(inId))
+            {
+                return EMPTY_INSTANCE;
             }
 
-            void Manager::onActivation(const String& inId)
+            return m_instances.at(inId);
+        }
+
+        const ModelParsed& ModelManager::getData(const String& inId) const
+        {
+            if (!isAllocated(inId))
             {
-                const Extracted& instance = getInstance(inId);
-
-                Parsed data = {};
-                data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
-                data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
-                data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
-                data.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
-
-                Super::allocate(inId, data);
+                return EMPTY_DATA;
             }
 
-            void Manager::onDeactivation(const String& inId)
+            return m_datum.at(inId);
+        }
+
+        const std::vector<Vertex>& ModelManager::getVertices() const
+        {
+            return m_vertices;
+        }
+
+        const std::vector<std::uint32_t>& ModelManager::getIndices() const
+        {
+            return m_indices;
+        }
+
+        std::uint32_t ModelManager::getFirstUse(const String& inId) const
+        {
+            if (!isLoaded(inId))
             {
-                const Parsed& data = m_datum.at(inId);
-
-                auto verticesStart = m_vertices.begin() + data.firstVertex;
-                auto verticesEnd   = verticesStart + data.vertexCount;
-                m_vertices.erase(verticesStart, verticesEnd);
-
-                auto indicesStart = m_indices.begin() + data.firstIndex;
-                auto indicesEnd   = indicesStart + data.indexCount;
-                m_indices.erase(indicesStart, indicesEnd);
-
-                Super::deallocate(inId);
+                throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
-            void Manager::load(const String& inId, const Model::Instance& inModel)
-            {
-                if (isLoaded(inId))
-                {
-                    return;
-                }
+            std::uint32_t result = static_cast<std::uint32_t>(
+                std::find(
+                    m_usedIds.begin(),
+                    m_usedIds.end(),
+                    inId
+                ) - m_usedIds.begin()
+            );
 
-                switch (inModel.getVendor())
-                {
-                case Vendor::Wavefront:
-                    Super::load(inId, Wavefront::parse(inModel.getData()));
-
-                    break;
-
-                default:
-                    throw std::runtime_error("Failed to import Model due to invalid type");
-                }
-            }
-
-            const Extracted& Manager::getInstance(const String& inId) const
-            {
-                if (!isLoaded(inId))
-                {
-                    return EMPTY_INSTANCE;
-                }
-
-                return m_instances.at(inId);
-            }
-
-            const Parsed& Manager::getData(const String& inId) const
-            {
-                if (!isAllocated(inId))
-                {
-                    return EMPTY_DATA;
-                }
-
-                return m_datum.at(inId);
-            }
-
-            const std::vector<Vertex>& Manager::getVertices() const
-            {
-                return m_vertices;
-            }
-
-            const std::vector<std::uint32_t>& Manager::getIndices() const
-            {
-                return m_indices;
-            }
-
-            std::uint32_t Manager::getFirstUse(const String& inId) const
-            {
-                if (!isLoaded(inId))
-                {
-                    throw std::runtime_error("The Model [" + inId + "] does not exist");
-                }
-
-                std::uint32_t result = static_cast<std::uint32_t>(
-                    std::find(
-                        m_usedIds.begin(),
-                        m_usedIds.end(),
-                        inId
-                    ) - m_usedIds.begin()
-                );
-
-                return result;
-            }
+            return result;
         }
     }
 }

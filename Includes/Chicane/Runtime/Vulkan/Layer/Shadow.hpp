@@ -48,7 +48,7 @@ namespace Chicane
 
             Buffer::Instance                            m_modelVertexBuffer;
             Buffer::Instance                            m_modelIndexBuffer;
-            Box::Model::Manager*                        m_modelManager;
+            Box::ModelManager*                          m_modelManager;
 
             std::vector<vk::ClearValue>                 m_clearValues;
         };

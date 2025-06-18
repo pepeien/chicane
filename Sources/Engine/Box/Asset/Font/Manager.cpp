@@ -1,117 +1,115 @@
 #include "Chicane/Box/Asset/Font/Manager.hpp"
 
 #include "Chicane/Box/Asset/Font.hpp"
+#include "Chicane/Box/Asset/Font/TrueType.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+        static const FontExtracted EMPTY_DATA     = {};
+        static const FontParsed    EMPTY_INSTANCE = {};
+
+        FontManager::FontManager()
+            : Super()
+        {}
+
+        bool FontManager::isFamilyAllocated(const String& inFamily) const
         {
-            static const Extracted    EMPTY_DATA     = {};
-            static const Parsed EMPTY_INSTANCE = {};
+            return std::find_if(
+                m_datum.begin(),
+                m_datum.end(),
+                [inFamily](const std::pair<String, FontParsed>& pair)
+                {
+                    return inFamily.equals(pair.second.name);
+                }
+            ) != m_datum.end();
+        }
 
-            Manager::Manager()
-                : Super()
-            {}
-
-            bool Manager::isFamilyAllocated(const String& inFamily) const
+        void FontManager::load(const String& inId, const Font& inFont)
+        {
+            if (isLoaded(inId))
             {
-                return std::find_if(
-                    m_datum.begin(),
-                    m_datum.end(),
-                    [inFamily](const std::pair<String, Parsed>& pair)
-                    {
-                        return inFamily.equals(pair.second.name);
-                    }
-                ) != m_datum.end();
+                return;
             }
 
-            void Manager::load(const String& inId, const Font::Instance& inFont)
+            if (inFont.isEmpty())
             {
-                if (isLoaded(inId))
-                {
-                    return;
-                }
-
-                if (inFont.isEmpty())
-                {
-                    return;
-                }
-
-                Extracted instance = {};
-                instance.vendor = inFont.getVendor();
-                instance.data   = inFont.getData();
-
-                Super::load(inId, instance);
-
-                allocate(inId);
+                return;
             }
 
-            void Manager::allocate(const String& inId)
+            FontExtracted instance = {};
+            instance.vendor = inFont.getVendor();
+            instance.data   = inFont.getData();
+
+            Super::load(inId, instance);
+
+            allocate(inId);
+        }
+
+        void FontManager::allocate(const String& inId)
+        {
+            if (isAllocated(inId))
             {
-                if (isAllocated(inId))
-                {
-                    return;
-                }
-
-                const Extracted& instance = getData(inId);
-
-                switch (instance.vendor)
-                {
-                case Vendor::TrueType:
-                    Super::allocate(inId, TrueType::parse(instance.data));
-
-                    break;
-
-                default:
-                    throw std::runtime_error("Failed to import Model due to invalid type");
-                }
+                return;
             }
 
-            const Extracted& Manager::getData(const String& inId) const
-            {
-                if (!isLoaded(inId))
-                {
-                    return EMPTY_DATA;
-                }
+            const FontExtracted& instance = getData(inId);
 
-                return m_instances.at(inId);
+            switch (instance.vendor)
+            {
+            case FontVendor::TrueType:
+                Super::allocate(inId, FontTrueType::parse(instance.data));
+
+                break;
+
+            default:
+                throw std::runtime_error("Failed to import Model due to invalid type");
+            }
+        }
+
+        const FontExtracted& FontManager::getData(const String& inId) const
+        {
+            if (!isLoaded(inId))
+            {
+                return EMPTY_DATA;
             }
 
-            const Parsed& Manager::getParsed(const String& inId) const
-            {
-                if (!isAllocated(inId))
-                {
-                    return EMPTY_INSTANCE;
-                }
+            return m_instances.at(inId);
+        }
 
-                return m_datum.at(inId);
+        const FontParsed& FontManager::getParsed(const String& inId) const
+        {
+            if (!isAllocated(inId))
+            {
+                return EMPTY_INSTANCE;
             }
 
-            const Parsed& Manager::getByFamily(const String& inFamily) const
+            return m_datum.at(inId);
+        }
+
+        const FontParsed& FontManager::getByFamily(const String& inFamily) const
+        {
+            if (!isFamilyAllocated(inFamily))
             {
-                if (!isFamilyAllocated(inFamily))
-                {
-                    return EMPTY_INSTANCE;
-                }
-
-                auto found = std::find_if(
-                    m_datum.begin(),
-                    m_datum.end(),
-                    [inFamily](const std::pair<String, Parsed>& pair)
-                    {
-                        return inFamily.equals(pair.second.name);
-                    }
-                );
-
-                if (found == m_datum.end())
-                {
-                    return EMPTY_INSTANCE;
-                }
-
-                return found->second;
+                return EMPTY_INSTANCE;
             }
+
+            auto found = std::find_if(
+                m_datum.begin(),
+                m_datum.end(),
+                [inFamily](const std::pair<String, FontParsed>& pair)
+                {
+                    return inFamily.equals(pair.second.name);
+                }
+            );
+
+            if (found == m_datum.end())
+            {
+                return EMPTY_INSTANCE;
+            }
+
+            return found->second;
         }
     }
 }

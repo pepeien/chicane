@@ -1,34 +1,32 @@
 #pragma once
 
-#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
+#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Asset
+        struct CHICANE_BOX AssetHeader
         {
-            CHICANE_BOX bool isFileAsset(const FileSystem::Path& inFilepath);
-            CHICANE_BOX Type getType(const FileSystem::Path& inFilepath);
+        public:
+            static bool isFileAsset(const FileSystem::Path& inFilepath);
+            static AssetType getType(const FileSystem::Path& inFilepath);
 
-            struct CHICANE_BOX Header
-            {
-            public:
-                Header(const FileSystem::Path& inFilepath);
-                Header();
+        public:
+            AssetHeader(const FileSystem::Path& inFilepath);
+            AssetHeader();
 
-            private:
-                void fetchVersion(const pugi::xml_node& inRoot);
-                void fetchId(const pugi::xml_node& inRoot);
-                void fetchType();
+        private:
+            void fetchVersion(const pugi::xml_node& inRoot);
+            void fetchId(const pugi::xml_node& inRoot);
+            void fetchType();
 
-            public:
-                FileSystem::Path filepath;
-                std::uint32_t    version;
-                String      id;
-                Type             type;
-            };
-        }
+        public:
+            FileSystem::Path filepath;
+            std::uint32_t    version;
+            String           id;
+            AssetType        type;
+        };
     }
 }

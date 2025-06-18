@@ -6,13 +6,10 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Model
+        enum class ModelVendor : std::uint8_t
         {
-            enum class Vendor : std::uint8_t
-            {
-                Undefined, // N/A
-                Wavefront  // .obj
-            };
-        }
+            Undefined, // N/A
+            Wavefront  // .obj
+        };
     }
 }

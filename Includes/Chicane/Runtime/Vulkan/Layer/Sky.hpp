@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Sky.hpp"
 #include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 namespace Chicane
@@ -51,15 +52,15 @@ namespace Chicane
             Descriptor::Bundle                          m_textureDescriptor;
 
             std::unique_ptr<Sky::Instance>              m_sky;
-            const Box::Sky::Instance*                   m_asset;
+            const Box::Sky*                             m_asset;
 
             Buffer::Instance                            m_modelVertexBuffer;
             Buffer::Instance                            m_modelIndexBuffer;
 
             std::vector<vk::ClearValue>                 m_clearValues;
 
-            Box::Model::Manager*                        m_modelManager;
-            Box::Texture::Manager*                      m_textureManager;
+            Box::ModelManager*                          m_modelManager;
+            Box::TextureManager*                        m_textureManager;
         };
     }
 }

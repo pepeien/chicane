@@ -6,15 +6,12 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Manager
+        enum class ManagerEventType : std::uint8_t
         {
-            enum class EventType : std::uint8_t
-            {
-                Load,
-                Allocation,
-                Activation,
-                Use
-            };
-        }
+            Load,
+            Allocation,
+            Activation,
+            Use
+        };
     }
 }

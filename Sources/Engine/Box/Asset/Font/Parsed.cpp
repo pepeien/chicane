@@ -4,34 +4,31 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+        static const FontGlyph EMPTY_GLYPH = {};
+
+        bool FontParsed::hasGlyph(char inCharacter) const
         {
-            static const Glyph EMPTY_GLYPH = {};
+            return hasGlyph(static_cast<std::uint32_t>(inCharacter));
+        }
 
-            bool Parsed::hasGlyph(char inCharacter) const
+        bool FontParsed::hasGlyph(std::uint32_t inCode) const
+        {
+            return glyphs.find(inCode) != glyphs.end();
+        }
+
+        const FontGlyph& FontParsed::getGlyph(char inCharacter) const
+        {
+            return getGlyph(static_cast<std::uint32_t>(inCharacter));
+        }
+
+        const FontGlyph& FontParsed::getGlyph(std::uint32_t inCode) const
+        {
+            if (!hasGlyph(inCode))
             {
-                return hasGlyph(static_cast<std::uint32_t>(inCharacter));
+                return EMPTY_GLYPH;
             }
 
-            bool Parsed::hasGlyph(std::uint32_t inCode) const
-            {
-                return glyphs.find(inCode) != glyphs.end();
-            }
-
-            const Glyph& Parsed::getGlyph(char inCharacter) const
-            {
-                return getGlyph(static_cast<std::uint32_t>(inCharacter));
-            }
-
-            const Glyph& Parsed::getGlyph(std::uint32_t inCode) const
-            {
-                if (!hasGlyph(inCode))
-                {
-                    return EMPTY_GLYPH;
-                }
-
-                return glyphs.at(inCode);
-            }
+            return glyphs.at(inCode);
         }
     }
 }

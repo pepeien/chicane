@@ -6,8 +6,8 @@ namespace Chicane
     {
         static inline constexpr const char NULL_CHARACTER = '\0';
 
-        static const Box::Font::Parsed EMPTY_FONT  = {};
-        static const Box::Font::Glyph      EMPTY_GLYPH = {};
+        static const Box::FontParsed EMPTY_FONT  = {};
+        static const Box::FontGlyph  EMPTY_GLYPH = {};
 
         Character::Character()
             : Super(TAG_ID),
@@ -15,7 +15,7 @@ namespace Chicane
             m_character(NULL_CHARACTER)
         {
             Box::getFontManager()->watchChanges(
-                [this](Box::Manager::EventType event)
+                [this](Box::ManagerEventType event)
                 {
                     refreshFont();
                 }
@@ -43,7 +43,7 @@ namespace Chicane
 
             m_canUpdate = false;
 
-            const Box::Font::Glyph& glyph = getGlyph();
+            const Box::FontGlyph& glyph = getGlyph();
 
             Primitive primitive = {};
             primitive.indices = glyph.indices;
@@ -93,7 +93,7 @@ namespace Chicane
             return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
         }
 
-        const Box::Font::Parsed& Character::getFont() const
+        const Box::FontParsed& Character::getFont() const
         {
             if (!hasFont())
             {
@@ -108,7 +108,7 @@ namespace Chicane
             return hasCharacter() && hasFont() && getFont().hasGlyph(m_character);
         }
 
-        const Box::Font::Glyph& Character::getGlyph() const
+        const Box::FontGlyph& Character::getGlyph() const
         {
             if (!hasGlyph())
             {
@@ -135,7 +135,7 @@ namespace Chicane
                 return;
             }
 
-            const Box::Font::Glyph& glyph = getGlyph();
+            const Box::FontGlyph& glyph = getGlyph();
 
             m_style.width         = m_style.font.size;
             m_style.height        = m_style.font.size;

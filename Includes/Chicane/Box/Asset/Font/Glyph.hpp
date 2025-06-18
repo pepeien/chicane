@@ -6,20 +6,17 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+         struct CHICANE_BOX FontGlyph
         {
-            struct CHICANE_BOX Glyph
-            {
-            public:
-                using Map = std::unordered_map<std::uint32_t, Glyph>;
+        public:
+            using Map = std::unordered_map<std::uint32_t, FontGlyph>;
 
-            public:
-                std::uint32_t              code     = 0;
-                Vec2                       advance  = {};
-                Vec2                       bearing  = {};
-                std::vector<Vec3>          vertices = {};
-                std::vector<std::uint32_t> indices  = {};
-            };
-        }
+        public:
+            std::uint32_t              code     = 0;
+            Vec2                       advance  = {};
+            Vec2                       bearing  = {};
+            std::vector<Vec3>          vertices = {};
+            std::vector<std::uint32_t> indices  = {};
+        };
     }
 }

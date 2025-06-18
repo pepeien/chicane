@@ -7,21 +7,18 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+        struct CHICANE_BOX FontParsed
         {
-            struct CHICANE_BOX Parsed
-            {
-            public:
-                bool hasGlyph(char inCharacter) const;
-                bool hasGlyph(std::uint32_t inCode) const;
+        public:
+            bool hasGlyph(char inCharacter) const;
+            bool hasGlyph(std::uint32_t inCode) const;
 
-                const Glyph& getGlyph(char inCharacter) const;
-                const Glyph& getGlyph(std::uint32_t inCode) const;
+            const FontGlyph& getGlyph(char inCharacter) const;
+            const FontGlyph& getGlyph(std::uint32_t inCode) const;
 
-            public:
-                String name   = "";
-                Glyph::Map  glyphs = {};
-            };
-        }
+        public:
+            String          name   = "";
+            FontGlyph::Map  glyphs = {};
+        };
     }
 }

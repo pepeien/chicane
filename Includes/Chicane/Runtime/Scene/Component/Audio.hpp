@@ -19,6 +19,6 @@ namespace Chicane
         String m_audio;
 
     private:
-        Box::Sound::Manager* m_manager;
+        Box::SoundManager* m_manager;
     }; 
 }

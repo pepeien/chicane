@@ -1,108 +1,111 @@
 #include "Chicane/Box/Asset/Header.hpp"
 
 #include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Font.hpp"
+#include "Chicane/Box/Asset/Mesh.hpp"
+#include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Asset/Sound.hpp"
+#include "Chicane/Box/Asset/Texture.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Asset
+        const std::unordered_map<String, AssetType> TYPES = {
+            { Sound::EXTENSION,   AssetType::Sound   },
+            { Font::EXTENSION,    AssetType::Font    },
+            { Mesh::EXTENSION,    AssetType::Mesh    },
+            { Model::EXTENSION,   AssetType::Model   },
+            { Sky::EXTENSION,     AssetType::Sky     },
+            { Texture::EXTENSION, AssetType::Texture }
+        };
+
+        bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)
         {
-            const std::unordered_map<String, Type> TYPES = {
-                { Sound::EXTENSION,   Type::Sound   },
-                { Font::EXTENSION,    Type::Font    },
-                { Mesh::EXTENSION,    Type::Mesh    },
-                { Model::EXTENSION,   Type::Model   },
-                { Sky::EXTENSION,     Type::Sky     },
-                { Texture::EXTENSION, Type::Texture }
-            };
-
-            bool isFileAsset(const FileSystem::Path& inFilepath)
+            if (inFilepath.empty() || !inFilepath.has_extension())
             {
-                if (inFilepath.empty() || !inFilepath.has_extension())
-                {
-                    return false;
-                }
-
-                return TYPES.find(inFilepath.extension().string()) != TYPES.end();
+                return false;
             }
 
-            Type getType(const FileSystem::Path& inFilepath)
-            {
-                if (!isFileAsset(inFilepath))
-                {
-                    return Type::Undefined;
-                }
+            return TYPES.find(inFilepath.extension().string()) != TYPES.end();
+        }
 
-                return TYPES.at(inFilepath.extension().string());
+        AssetType AssetHeader::getType(const FileSystem::Path& inFilepath)
+        {
+            if (!isFileAsset(inFilepath))
+            {
+                return AssetType::Undefined;
             }
 
-            Header::Header(const FileSystem::Path& inFilepath)
-                : Header()
+            return TYPES.at(inFilepath.extension().string());
+        }
+
+        AssetHeader::AssetHeader(const FileSystem::Path& inFilepath)
+            : AssetHeader()
+        {
+            if (inFilepath.empty())
             {
-                if (inFilepath.empty())
-                {
-                    return;
-                }
-
-                const pugi::xml_document document = Xml::load(inFilepath);
-                const pugi::xml_node root = document.first_child();
-
-                filepath = inFilepath;
-                fetchVersion(root);
-                fetchId(root);
-                fetchType();
+                return;
             }
 
-            Header::Header()
-                : filepath(""),
-                version(CURRENT_VERSION),
-                id(""),
-                type(Type::Undefined)
-            {}
+            const pugi::xml_document document = Xml::load(inFilepath);
+            const pugi::xml_node root = document.first_child();
 
-            void Header::fetchVersion(const pugi::xml_node& inRoot)
+            filepath = inFilepath;
+            fetchVersion(root);
+            fetchId(root);
+            fetchType();
+        }
+
+        AssetHeader::AssetHeader()
+            : filepath(""),
+            version(Asset::CURRENT_VERSION),
+            id(""),
+            type(AssetType::Undefined)
+        {}
+
+        void AssetHeader::fetchVersion(const pugi::xml_node& inRoot)
+        {
+            if (inRoot.empty())
             {
-                if (inRoot.empty())
-                {
-                    version = CURRENT_VERSION;
+                version = Asset::CURRENT_VERSION;
 
-                    return;
-                }
-
-                version = Xml::getAttribute(VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
-
-                if (version > 0)
-                {
-                    return;
-                }
-
-                version = CURRENT_VERSION;
+                return;
             }
 
-            void Header::fetchId(const pugi::xml_node& inRoot)
+            version = Xml::getAttribute(Asset::VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
+
+            if (version > 0)
             {
-                if (inRoot.empty())
-                {
-                    id = "";
+                return;
+            }
 
-                    return;
-                }
+            version = Asset::CURRENT_VERSION;
+        }
 
-                id = Xml::getAttribute(ID_ATTRIBUTE_NAME, inRoot).as_string();
-
-                if (!id.isEmpty())
-                {
-                    return;
-                }
-
+        void AssetHeader::fetchId(const pugi::xml_node& inRoot)
+        {
+            if (inRoot.empty())
+            {
                 id = "";
+
+                return;
             }
 
-            void Header::fetchType()
+            id = Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
+
+            if (!id.isEmpty())
             {
-                type = getType(filepath.string());
+                return;
             }
+
+            id = "";
+        }
+
+        void AssetHeader::fetchType()
+        {
+            type = getType(filepath.string());
         }
     }
 }

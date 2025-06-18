@@ -6,9 +6,6 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Model
-        {
-            using Raw = std::vector<unsigned char>;
-        }
+        using ModelRaw = std::vector<unsigned char>;
     }
 }

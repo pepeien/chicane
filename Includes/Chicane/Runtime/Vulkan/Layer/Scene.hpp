@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 namespace Chicane
@@ -54,11 +56,11 @@ namespace Chicane
 
             Descriptor::Bundle                                             m_textureDescriptor;
             std::unordered_map<String, std::unique_ptr<Texture::Instance>> m_textures;
-            Box::Texture::Manager*                                         m_textureManager;
+            Box::TextureManager*                                           m_textureManager;
 
             Buffer::Instance                                               m_modelVertexBuffer;
             Buffer::Instance                                               m_modelIndexBuffer;
-            Box::Model::Manager*                                           m_modelManager;
+            Box::ModelManager*                                             m_modelManager;
 
             std::vector<vk::ClearValue>                                    m_clearValues;
         };

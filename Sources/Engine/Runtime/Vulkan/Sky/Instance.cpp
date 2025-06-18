@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Vulkan/Sky/Instance.hpp"
 
+#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Asset/Sky/Side.hpp"
 #include "Chicane/Runtime/Vulkan/Image.hpp"
 
 namespace Chicane
@@ -26,7 +28,7 @@ namespace Chicane
                 m_descriptor.set       = nullptr;
                 m_descriptor.pool      = inCreateInfo.descriptorPool;
 
-                m_image = Image::Data(m_images.at(Box::Sky::Side::Up));
+                m_image = Image::Data(m_images.at(Box::SkySide::Up));
 
                 initImage();
                 copyPixels();

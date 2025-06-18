@@ -233,7 +233,7 @@ namespace Chicane
                     continue;
                 }
 
-                if (!Box::Asset::isFileAsset(item.path.toStandard()))
+                if (!Box::AssetHeader::isFileAsset(item.path.toStandard()))
                 {
                     continue;
                 }

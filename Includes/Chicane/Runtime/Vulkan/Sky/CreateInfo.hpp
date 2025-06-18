@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Sky/Types.hpp"
 #include "Chicane/Runtime/Vulkan/Essential.hpp"
 
 namespace Chicane
@@ -8,7 +9,7 @@ namespace Chicane
     {
         namespace Sky
         {
-            using Images = Box::Sky::ParsedSides;
+            using Images = Box::SkyParsedSides;
 
             struct CHICANE_RUNTIME CreateInfo
             {

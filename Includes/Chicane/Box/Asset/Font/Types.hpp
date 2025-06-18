@@ -6,9 +6,6 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
-        {
-            using Raw = std::vector<unsigned char>;
-        }
+        using FontRaw = std::vector<unsigned char>;
     }
 }

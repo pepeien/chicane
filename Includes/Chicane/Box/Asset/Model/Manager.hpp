@@ -1,43 +1,40 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Box/Asset/Model/Extracted.hpp"
+#include "Chicane/Box/Asset/Model/Parsed.hpp"
 #include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
-#include "Chicane/Box/Asset/Model/Extracted.hpp"
-#include "Chicane/Box/Asset/Model/Instance.hpp"
-#include "Chicane/Box/Asset/Model/Parsed.hpp"
 
 namespace Chicane
 {
     namespace Box
     {
-        namespace Model
+        class CHICANE_BOX ModelManager : public Box::Manager<ModelExtracted, ModelParsed>
         {
-            class CHICANE_BOX Manager : public Box::Manager::Instance<Extracted, Parsed>
-            {
-            public:
-                Manager();
+        public:
+            ModelManager();
 
-            protected:
-                void onAllocation(const String& inId, const Parsed& inData) override;
-                void onDeallocation(const String& inId) override;
-                void onActivation(const String& inId) override;
-                void onDeactivation(const String& inId) override;
+        protected:
+            void onAllocation(const String& inId, const ModelParsed& inData) override;
+            void onDeallocation(const String& inId) override;
+            void onActivation(const String& inId) override;
+            void onDeactivation(const String& inId) override;
 
-            public:
-                // Setup
-                void load(const String& inId, const Model::Instance& inModel);
+        public:
+            // Setup
+            void load(const String& inId, const Model& inModel);
 
-                // Data
-                const Extracted& getInstance(const String& inId) const;
-                const Parsed& getData(const String& inId) const;
-                const std::vector<Vertex>& getVertices() const;
-                const std::vector<std::uint32_t>& getIndices() const;
-                std::uint32_t getFirstUse(const String& inId) const;
+            // Data
+            const ModelExtracted& getInstance(const String& inId) const;
+            const ModelParsed& getData(const String& inId) const;
+            const std::vector<Vertex>& getVertices() const;
+            const std::vector<std::uint32_t>& getIndices() const;
+            std::uint32_t getFirstUse(const String& inId) const;
 
-            private:
-                std::vector<Vertex>        m_vertices;
-                std::vector<std::uint32_t> m_indices;
-            };
-        }
+        private:
+            std::vector<Vertex>        m_vertices;
+            std::vector<std::uint32_t> m_indices;
+        };
     }
 }

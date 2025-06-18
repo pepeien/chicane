@@ -8,14 +8,11 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+        struct CHICANE_BOX FontExtracted
         {
-            struct CHICANE_BOX Extracted
-            {
-            public:
-                Vendor vendor = Vendor::Undefined;
-                Raw    data   = {};
-            };
-        }
+        public:
+            FontVendor vendor = FontVendor::Undefined;
+            FontRaw    data   = {};
+        };
     }
 }

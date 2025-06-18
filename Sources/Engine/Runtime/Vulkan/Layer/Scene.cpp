@@ -117,9 +117,9 @@ namespace Chicane
             }
 
             m_textureManager->watchChanges(
-                [&](Box::Manager::EventType inEvent)
+                [&](Box::ManagerEventType inEvent)
                 {
-                    if (inEvent != Box::Manager::EventType::Activation)
+                    if (inEvent != Box::ManagerEventType::Activation)
                     {
                         return;
                     }
@@ -136,9 +136,9 @@ namespace Chicane
             );
 
             m_modelManager->watchChanges(
-                [&](Box::Manager::EventType inEvent)
+                [&](Box::ManagerEventType inEvent)
                 {
-                    if (inEvent != Box::Manager::EventType::Use)
+                    if (inEvent != Box::ManagerEventType::Use)
                     {
                         return;
                     }

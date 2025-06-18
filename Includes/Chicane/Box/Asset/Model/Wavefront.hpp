@@ -8,12 +8,9 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Model
+        namespace ModelWavefront
         {
-            namespace Wavefront
-            {
-                CHICANE_BOX Extracted parse(const Raw& inData);
-            }
+            CHICANE_BOX ModelExtracted parse(const ModelRaw& inData);
         }
     }
 }

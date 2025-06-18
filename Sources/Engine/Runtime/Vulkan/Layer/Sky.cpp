@@ -160,7 +160,7 @@ namespace Chicane
                             }
 
                             skies.front()->watchSky(
-                                [this](const Chicane::Box::Sky::Instance* inSky)
+                                [this](const Chicane::Box::Sky* inSky)
                                 {
                                     if (!is(Layer::Status::Offline) || !inSky)
                                     {
@@ -370,7 +370,7 @@ namespace Chicane
             createInfo.descriptorPool      = m_textureDescriptor.pool;
             createInfo.descriptorSetLayout = m_textureDescriptor.setLayout;
 
-            Box::Texture::Manager* textureManager = m_textureManager;
+            Box::TextureManager* textureManager = m_textureManager;
 
             for (const auto& [side, texture] : m_asset->getSides())
             {

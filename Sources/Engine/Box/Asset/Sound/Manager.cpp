@@ -4,56 +4,53 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Sound
+        static const Audio::Raw      EMPTY_RAW_DATA      = {};
+        static const Audio::Instance EMPTY_COMPILED_DATA = {};
+
+        SoundManager::SoundManager()
+            : Super()
+        {}
+
+        void SoundManager::onActivation(const String& inId)
         {
-            static const Audio::Raw      EMPTY_RAW_DATA      = {};
-            static const Audio::Instance EMPTY_COMPILED_DATA = {};
+            Super::allocate(inId, Audio::Instance(getInstance(inId)));
+        }
 
-            Manager::Manager()
-                : Super()
-            {}
+        void SoundManager::onDeactivation(const String& inId)
+        {
+            Super::deallocate(inId);
+        }
 
-            void Manager::onActivation(const String& inId)
+        void SoundManager::load(const Sound& inAsset)
+        {
+            const String& id = inAsset.getId();
+
+            if (isLoaded(id))
             {
-                Super::allocate(inId, Audio::Instance(getInstance(inId)));
+                return;
             }
 
-            void Manager::onDeactivation(const String& inId)
+            Super::load(id, inAsset.getData());
+        }
+
+        const Audio::Raw& SoundManager::getInstance(const String& inId) const
+        {
+            if (!isLoaded(inId))
             {
-                Super::deallocate(inId);
+                return EMPTY_RAW_DATA;
             }
 
-            void Manager::load(const Sound::Instance& inAsset)
+            return m_instances.at(inId);
+        }
+
+        Audio::Instance SoundManager::getData(const String& inId) const
+        {
+            if (!isLoaded(inId) || !isAllocated(inId))
             {
-                const String& id = inAsset.getId();
-
-                if (isLoaded(id))
-                {
-                    return;
-                }
-
-                Super::load(id, inAsset.getData());
+                return EMPTY_COMPILED_DATA;
             }
 
-            const Audio::Raw& Manager::getInstance(const String& inId) const
-            {
-                if (!isLoaded(inId))
-                {
-                    return EMPTY_RAW_DATA;
-                }
-
-                return m_instances.at(inId);
-            }
-
-            Audio::Instance Manager::getData(const String& inId) const
-            {
-                if (!isLoaded(inId) || !isAllocated(inId))
-                {
-                    return EMPTY_COMPILED_DATA;
-                }
-
-                return m_datum.at(inId);
-            }
+            return m_datum.at(inId);
         }
     }
 }

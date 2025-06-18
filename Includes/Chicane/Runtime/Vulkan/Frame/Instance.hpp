@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Mesh/Parsed.hpp"
 #include "Chicane/Runtime/Renderer/View/Data.hpp"
 #include "Chicane/Runtime/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Vulkan/Image/Data.hpp"
@@ -66,31 +67,31 @@ namespace Chicane
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
             public:
-                vk::Device                                        logicalDevice;
-                vk::PhysicalDevice                                physicalDevice;
+                vk::Device                                   logicalDevice;
+                vk::PhysicalDevice                           physicalDevice;
 
                 // Image
-                Image::Data                                       colorImage;
-                Image::Data                                       depthImage;
-                Image::Data                                       shadowImage;
-                vk::DescriptorImageInfo                           shadowImageInfo;
+                Image::Data                                  colorImage;
+                Image::Data                                  depthImage;
+                Image::Data                                  shadowImage;
+                vk::DescriptorImageInfo                      shadowImageInfo;
 
                 // Buffer
                 std::unordered_map<String, vk::Framebuffer>  framebuffers;
 
                 // Sychronization
-                vk::CommandBuffer                                 commandBuffer;
-                vk::Fence                                         renderFence;
-                vk::Semaphore                                     presentSemaphore;
-                vk::Semaphore                                     renderSemaphore;
+                vk::CommandBuffer                            commandBuffer;
+                vk::Fence                                    renderFence;
+                vk::Semaphore                                presentSemaphore;
+                vk::Semaphore                                renderSemaphore;
 
                 // Resources
-                Resource<View::Data>                              cameraResource;
-                Resource<View::Data>                              lightResource;
-                Resource<Box::Mesh::Parsed>                       meshResource;
+                Resource<View::Data>                         cameraResource;
+                Resource<View::Data>                         lightResource;
+                Resource<Box::MeshParsed>                    meshResource;
 
                 std::unordered_map<String,vk::DescriptorSet> descriptorSets;
-                std::vector<vk::WriteDescriptorSet>               descriptorSetWrites;
+                std::vector<vk::WriteDescriptorSet>          descriptorSetWrites;
             };
         }
     }

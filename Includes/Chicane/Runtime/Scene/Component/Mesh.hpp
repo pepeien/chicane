@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Mesh.hpp"
 #include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
@@ -23,7 +24,7 @@ namespace Chicane
 
         bool hasMesh() const;
         void setMesh(const String& inMesh);
-        const Box::Mesh::Instance* getMesh() const;
+        const Box::Mesh* getMesh() const;
         const String& getModel() const;
         const String& getTexture() const;
 
@@ -31,8 +32,8 @@ namespace Chicane
         void generateBounds();
 
     protected:
-        bool                       m_bIsVisible;
+        bool             m_bIsVisible;
 
-        const Box::Mesh::Instance* m_mesh;
+        const Box::Mesh* m_mesh;
     };
 }

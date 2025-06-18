@@ -49,8 +49,8 @@ namespace Chicane
             return;
         }
 
-        Box::Model::Manager* modelManager     = Box::getModelManager();
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
+        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
@@ -68,8 +68,8 @@ namespace Chicane
             return;
         }
 
-        Box::Model::Manager* modelManager     = Box::getModelManager();
-        Box::Texture::Manager* textureManager = Box::getTextureManager();
+        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
         {
@@ -92,12 +92,12 @@ namespace Chicane
             return;
         }
 
-        m_mesh = Box::load<Box::Mesh::Instance>(inMesh.toStandard());
+        m_mesh = Box::load<Box::Mesh>(inMesh.toStandard());
 
         generateBounds();
     }
 
-    const Box::Mesh::Instance* CMesh::getMesh() const
+    const Box::Mesh* CMesh::getMesh() const
     {
         return m_mesh;
     }
@@ -129,13 +129,13 @@ namespace Chicane
             return;
         }
 
-        const Box::Model::Manager* manager = Box::getModelManager();
+        const Box::ModelManager* manager = Box::getModelManager();
 
         std::vector<Vertex> vertices = {};
 
-        for (const Box::Mesh::Group& group : m_mesh->getGroups())
+        for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::Model::Extracted& model = manager->getInstance(group.getModel());
+            const Box::ModelExtracted& model = manager->getInstance(group.getModel());
 
             vertices.insert(
                 vertices.end(),

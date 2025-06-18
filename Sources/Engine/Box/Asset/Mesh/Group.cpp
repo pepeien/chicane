@@ -1,59 +1,54 @@
 #include "Chicane/Box/Asset/Mesh/Group.hpp"
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     namespace Box
     {
-        namespace Mesh
+        bool MeshGroup::isValid() const
         {
-            bool Group::isValid() const
+            return !m_id.isEmpty() &&
+                   FileSystem::exists(m_model.toStandard()) &&
+                   FileSystem::exists(m_texture.toStandard());
+        }
+
+        const String& MeshGroup::getId() const
+        {
+            return m_id;
+        }
+
+        void MeshGroup::setId(const String& inId)
+        {
+            m_id = inId;
+        }
+
+        const String& MeshGroup::getModel() const
+        {
+            return m_model;
+        }
+
+        void MeshGroup::setModel(const String& inFilepath)
+        {
+            if (inFilepath.isEmpty())
             {
-                return !m_id.isEmpty() &&
-                       FileSystem::exists(m_model.toStandard()) &&
-                       FileSystem::exists(m_texture.toStandard());
+                return;
             }
 
-            const String& Group::getId() const
+            m_model = inFilepath.trim();
+        }
+
+        const String& MeshGroup::getTexture() const
+        {
+            return m_texture;
+        }
+
+        void MeshGroup::setTexture(const String& inFilepath)
+        {
+            if (inFilepath.isEmpty())
             {
-                return m_id;
+                return;
             }
 
-            void Group::setId(const String& inId)
-            {
-                m_id = inId;
-            }
-
-            const String& Group::getModel() const
-            {
-                return m_model;
-            }
-
-            void Group::setModel(const String& inFilepath)
-            {
-                if (inFilepath.isEmpty())
-                {
-                    return;
-                }
-
-                m_model = inFilepath.trim();
-            }
-
-            const String& Group::getTexture() const
-            {
-                return m_texture;
-            }
-
-            void Group::setTexture(const String& inFilepath)
-            {
-                if (inFilepath.isEmpty())
-                {
-                    return;
-                }
-
-                m_texture = inFilepath.trim();
-            }
+            m_texture = inFilepath.trim();
         }
     }
 }

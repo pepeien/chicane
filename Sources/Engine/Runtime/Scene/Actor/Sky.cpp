@@ -8,12 +8,12 @@ namespace Chicane
         m_assetObservable({})
     {}
 
-    const Box::Sky::Instance* ASky::getSky() const
+    const Box::Sky* ASky::getSky() const
     {
         return m_asset;
     }
 
-    void ASky::setSky(const Box::Sky::Instance* inSky)
+    void ASky::setSky(const Box::Sky* inSky)
     {
         m_asset = inSky;
 

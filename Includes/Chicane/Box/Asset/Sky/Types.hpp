@@ -7,13 +7,10 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Sky
-        {
-            using RawSide  = String;
-            using RawSides = std::unordered_map<Side, RawSide>;
+        using SkyRawSide  = String;
+        using SkyRawSides = std::unordered_map<SkySide, SkyRawSide>;
 
-            using ParsedSide  = Image::Instance;
-            using ParsedSides = std::unordered_map<Side, ParsedSide>;
-        }
+        using SkyParsedSide  = Image::Instance;
+        using SkyParsedSides = std::unordered_map<SkySide, SkyParsedSide>;
     }
 }

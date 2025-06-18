@@ -193,7 +193,7 @@ namespace Chicane
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Box::Mesh::Parsed) * inMeshes.size();
+                bufferCreateInfo.size             = sizeof(Box::MeshParsed) * inMeshes.size();
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
 
                 meshResource.setup(bufferCreateInfo);
@@ -452,14 +452,14 @@ namespace Chicane
                     }
                 );
 
-                Box::Texture::Manager* textureManager = Box::getTextureManager();
+                Box::TextureManager* textureManager = Box::getTextureManager();
 
-                std::vector<Box::Mesh::Parsed> meshes = {};
+                std::vector<Box::MeshParsed> meshes = {};
                 meshes.reserve(components.size());
 
                 for (const CMesh* mesh : components)
                 {
-                    Box::Mesh::Parsed data = {};
+                    Box::MeshParsed data = {};
                     data.matrix       = mesh->getTransform().getMatrix();
                     data.textureIndex = textureManager->getIndex(mesh->getTexture());
 

@@ -8,12 +8,9 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Font
+        namespace FontTrueType
         {
-            namespace TrueType
-            {
-                CHICANE_BOX Parsed parse(const Raw& inData);
-            }
+            CHICANE_BOX FontParsed parse(const FontRaw& inData);
         }
     }
 }

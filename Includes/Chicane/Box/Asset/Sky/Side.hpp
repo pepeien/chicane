@@ -6,17 +6,14 @@ namespace Chicane
 {
     namespace Box
     {
-        namespace Sky
+        enum class SkySide : std::uint8_t
         {
-            enum class Side : std::uint8_t
-            {
-                Left,
-                Right,
-                Front,
-                Back,
-                Up,
-                Down
-            };
-        }
+            Left,
+            Right,
+            Front,
+            Back,
+            Up,
+            Down
+        };
     }
 }
