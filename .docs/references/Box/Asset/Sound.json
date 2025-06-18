@@ -3,14 +3,276 @@
     "filename": "Sound",
     "path": "Box/Asset/Sound",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Box/Asset/Sound.hpp",
+        "namespace": "Chicane::Box::Sound",
         "types": [],
         "enums": [],
-        "constructors": [],
-        "destructors": [],
-        "functions": [],
-        "members": []
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sound",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_SOUND_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Sound",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_~SOUND_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Audio::Vendor",
+                    "suffix": "",
+                    "path": "Core/Audio/Vendor",
+                    "templates": []
+                },
+                "name": "getVendor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SOUND_GETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Audio::Vendor",
+                            "suffix": "",
+                            "path": "Core/Audio/Vendor",
+                            "templates": []
+                        },
+                        "name": "inVendor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_SETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Audio::Raw",
+                    "suffix": "&",
+                    "path": "Core/Audio/Instance",
+                    "templates": []
+                },
+                "name": "getData",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_SOUND_GETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Audio::Raw",
+                            "suffix": "&",
+                            "path": "Core/Audio/Instance",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchVendor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_FETCHVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_SOUND_FETCHDATA_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENSION",
+                "description": "CHICANE_BOX_SOUND_EXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG",
+                "description": "CHICANE_BOX_SOUND_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VENDOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_SOUND_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Audio::Vendor",
+                    "suffix": "",
+                    "path": "Core/Audio/Vendor",
+                    "templates": []
+                },
+                "name": "m_vendor",
+                "description": "CHICANE_BOX_SOUND_M_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Audio::Raw",
+                    "suffix": "",
+                    "path": "Core/Audio/Instance",
+                    "templates": []
+                },
+                "name": "m_data",
+                "description": "CHICANE_BOX_SOUND_M_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_SOUND_DESCRIPTION"
     },
     "children": []
 }

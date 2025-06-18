@@ -1,10 +1,10 @@
 {
-    "title": "Manager",
+    "title": "Font Manager",
     "filename": "Manager",
     "path": "Box/Asset/Font/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Manager.hpp",
-        "namespace": "Chicane::Box::Font::Manager",
+        "namespace": "Chicane::Box::FontManager",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Manager",
+                "name": "FontManager",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_MANAGER_MANAGER_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_FONTMANAGER_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -52,7 +52,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_MANAGER_ISFAMILYALLOCATED_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_ISFAMILYALLOCATED_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -79,16 +79,16 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Font::Instance",
+                            "name": "Font",
                             "suffix": "&",
-                            "path": "Box/Asset/Font/Instance",
+                            "path": "Box/Asset/Font",
                             "templates": []
                         },
                         "name": "inFont"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_MANAGER_LOAD_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -114,14 +114,14 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_MANAGER_ALLOCATE_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_ALLOCATE_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Extracted",
+                    "name": "FontExtracted",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Extracted",
                     "templates": []
@@ -142,14 +142,14 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_MANAGER_GETDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_GETDATA_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Parsed",
+                    "name": "FontParsed",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Parsed",
                     "templates": []
@@ -170,14 +170,14 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_MANAGER_GETPARSED_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_GETPARSED_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Parsed",
+                    "name": "FontParsed",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Parsed",
                     "templates": []
@@ -198,11 +198,11 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_MANAGER_GETBYFAMILY_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_GETBYFAMILY_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_FONT_MANAGER_DESCRIPTION"
+        "description": "CHICANE_BOX_FONTMANAGER_DESCRIPTION"
     },
     "children": []
 }

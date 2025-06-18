@@ -3,14 +3,276 @@
     "filename": "Model",
     "path": "Box/Asset/Model",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Box/Asset/Model.hpp",
+        "namespace": "Chicane::Box::Model",
         "types": [],
         "enums": [],
-        "constructors": [],
-        "destructors": [],
-        "functions": [],
-        "members": []
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Model",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_MODEL_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Model",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_~MODEL_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelVendor",
+                    "suffix": "",
+                    "path": "Box/Asset/Model/Vendor",
+                    "templates": []
+                },
+                "name": "getVendor",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setVendor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ModelVendor",
+                            "suffix": "",
+                            "path": "Box/Asset/Model/Vendor",
+                            "templates": []
+                        },
+                        "name": "inVendor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_SETVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ModelRaw",
+                    "suffix": "&",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "getData",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MODEL_GETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_SETDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchVendor",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_FETCHVENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODEL_FETCHDATA_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENSION",
+                "description": "CHICANE_BOX_MODEL_EXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG",
+                "description": "CHICANE_BOX_MODEL_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VENDOR_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MODEL_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ModelVendor",
+                    "suffix": "",
+                    "path": "Box/Asset/Model/Vendor",
+                    "templates": []
+                },
+                "name": "m_vendor",
+                "description": "CHICANE_BOX_MODEL_M_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ModelRaw",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "m_data",
+                "description": "CHICANE_BOX_MODEL_M_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_MODEL_DESCRIPTION"
     },
     "children": []
 }

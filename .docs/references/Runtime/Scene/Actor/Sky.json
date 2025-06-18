@@ -16,9 +16,9 @@
                     "templates": [
                         {
                             "prefix": "const ",
-                            "name": "Box::Sky::Instance",
+                            "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky/Instance",
+                            "path": "Box/Asset/Sky",
                             "templates": []
                         }
                     ]
@@ -35,9 +35,9 @@
                     "templates": [
                         {
                             "prefix": "const ",
-                            "name": "Box::Sky::Instance",
+                            "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky/Instance",
+                            "path": "Box/Asset/Sky",
                             "templates": []
                         }
                     ]
@@ -138,9 +138,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Box::Sky::Instance",
+                    "name": "Box::Sky",
                     "suffix": "*",
-                    "path": "Box/Asset/Sky/Instance",
+                    "path": "Box/Asset/Sky",
                     "templates": []
                 },
                 "name": "getSky",
@@ -165,9 +165,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Box::Sky::Instance",
+                            "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky/Instance",
+                            "path": "Box/Asset/Sky",
                             "templates": []
                         },
                         "name": "inSky"
@@ -229,9 +229,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "const ",
-                    "name": "Box::Sky::Instance",
+                    "name": "Box::Sky",
                     "suffix": "*",
-                    "path": "Box/Asset/Sky/Instance",
+                    "path": "Box/Asset/Sky",
                     "templates": []
                 },
                 "name": "m_asset",

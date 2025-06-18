@@ -1,10 +1,10 @@
 {
-    "title": "Parsed",
+    "title": "Mesh Parsed",
     "filename": "Parsed",
     "path": "Box/Asset/Mesh/Parsed",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Mesh/Parsed.hpp",
-        "namespace": "Chicane::Box::Mesh::Parsed",
+        "namespace": "Chicane::Box::MeshParsed",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -22,7 +22,7 @@
                     "templates": []
                 },
                 "name": "matrix",
-                "description": "CHICANE_BOX_MESH_PARSED_MATRIX_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHPARSED_MATRIX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,7 +35,7 @@
                     "templates": []
                 },
                 "name": "textureIndex",
-                "description": "CHICANE_BOX_MESH_PARSED_TEXTUREINDEX_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHPARSED_TEXTUREINDEX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -48,10 +48,10 @@
                     "templates": []
                 },
                 "name": "_padding",
-                "description": "CHICANE_BOX_MESH_PARSED__PADDING_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHPARSED__PADDING_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_MESH_PARSED_DESCRIPTION"
+        "description": "CHICANE_BOX_MESHPARSED_DESCRIPTION"
     },
     "children": []
 }

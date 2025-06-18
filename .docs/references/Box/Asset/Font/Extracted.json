@@ -1,10 +1,10 @@
 {
-    "title": "Extracted",
+    "title": "Font Extracted",
     "filename": "Extracted",
     "path": "Box/Asset/Font/Extracted",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Extracted.hpp",
-        "namespace": "Chicane::Box::Font::Extracted",
+        "namespace": "Chicane::Box::FontExtracted",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,29 +16,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vendor",
+                    "name": "FontVendor",
                     "suffix": "",
                     "path": "Box/Asset/Font/Vendor",
                     "templates": []
                 },
                 "name": "vendor",
-                "description": "CHICANE_BOX_FONT_EXTRACTED_VENDOR_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTEXTRACTED_VENDOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Raw",
+                    "name": "FontRaw",
                     "suffix": "",
-                    "path": "Box/Asset/Font/Constants",
+                    "path": "Box",
                     "templates": []
                 },
                 "name": "data",
-                "description": "CHICANE_BOX_FONT_EXTRACTED_DATA_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTEXTRACTED_DATA_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_FONT_EXTRACTED_DESCRIPTION"
+        "description": "CHICANE_BOX_FONTEXTRACTED_DESCRIPTION"
     },
     "children": []
 }

@@ -1,10 +1,10 @@
 {
-    "title": "Parsed",
+    "title": "Model Parsed",
     "filename": "Parsed",
     "path": "Box/Asset/Model/Parsed",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Parsed.hpp",
-        "namespace": "Chicane::Box::Model::Parsed",
+        "namespace": "Chicane::Box::ModelParsed",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -22,7 +22,7 @@
                     "templates": []
                 },
                 "name": "vertexCount",
-                "description": "CHICANE_BOX_MODEL_PARSED_VERTEXCOUNT_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_VERTEXCOUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,7 +35,7 @@
                     "templates": []
                 },
                 "name": "firstVertex",
-                "description": "CHICANE_BOX_MODEL_PARSED_FIRSTVERTEX_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_FIRSTVERTEX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -48,7 +48,7 @@
                     "templates": []
                 },
                 "name": "firstInstance",
-                "description": "CHICANE_BOX_MODEL_PARSED_FIRSTINSTANCE_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_FIRSTINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -61,7 +61,7 @@
                     "templates": []
                 },
                 "name": "indexCount",
-                "description": "CHICANE_BOX_MODEL_PARSED_INDEXCOUNT_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_INDEXCOUNT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -74,10 +74,10 @@
                     "templates": []
                 },
                 "name": "firstIndex",
-                "description": "CHICANE_BOX_MODEL_PARSED_FIRSTINDEX_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELPARSED_FIRSTINDEX_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_MODEL_PARSED_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELPARSED_DESCRIPTION"
     },
     "children": []
 }

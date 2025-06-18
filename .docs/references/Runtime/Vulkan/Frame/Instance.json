@@ -951,7 +951,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Box::Mesh::Parsed",
+                            "name": "Box::MeshParsed",
                             "suffix": "",
                             "path": "Box/Asset/Mesh/Parsed",
                             "templates": []

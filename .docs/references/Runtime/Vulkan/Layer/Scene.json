@@ -437,7 +437,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Box::Texture::Manager",
+                    "name": "Box::TextureManager",
                     "suffix": "*",
                     "path": "Box/Asset/Texture/Manager",
                     "templates": []
@@ -476,7 +476,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Box::Model::Manager",
+                    "name": "Box::ModelManager",
                     "suffix": "*",
                     "path": "Box/Asset/Model/Manager",
                     "templates": []

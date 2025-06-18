@@ -1,10 +1,10 @@
 {
-    "title": "Manager",
+    "title": "Texture Manager",
     "filename": "Manager",
     "path": "Box/Asset/Texture/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Texture/Manager.hpp",
-        "namespace": "Chicane::Box::Texture::Manager",
+        "namespace": "Chicane::Box::TextureManager",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Manager",
+                "name": "TextureManager",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_MANAGER_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_TEXTUREMANAGER_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~Manager",
+                "name": "~TextureManager",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_~MANAGER_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_~TEXTUREMANAGER_DESCRIPTION"
             }
         ],
         "functions": [
@@ -67,16 +67,16 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Texture::Instance",
+                            "name": "Texture",
                             "suffix": "&",
-                            "path": "Box/Asset/Texture/Instance",
+                            "path": "Box/Asset/Texture",
                             "templates": []
                         },
                         "name": "inAsset"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_LOAD_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -104,7 +104,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_GETINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -132,7 +132,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_GETDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_GETDATA_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -160,7 +160,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_GETINDEX_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_GETINDEX_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -186,7 +186,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_ONACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_ONACTIVATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -212,11 +212,11 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTURE_MANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_ONDEACTIVATION_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_TEXTURE_MANAGER_DESCRIPTION"
+        "description": "CHICANE_BOX_TEXTUREMANAGER_DESCRIPTION"
     },
     "children": []
 }

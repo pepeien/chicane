@@ -1,10 +1,10 @@
 {
-    "title": "Manager",
+    "title": "Sound Manager",
     "filename": "Manager",
     "path": "Box/Asset/Sound/Manager",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Sound/Manager.hpp",
-        "namespace": "Chicane::Box::Sound::Manager",
+        "namespace": "Chicane::Box::SoundManager",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Manager",
+                "name": "SoundManager",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_MANAGER_MANAGER_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_SOUNDMANAGER_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~Manager",
+                "name": "~SoundManager",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_MANAGER_~MANAGER_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_~SOUNDMANAGER_DESCRIPTION"
             }
         ],
         "functions": [
@@ -57,16 +57,16 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Sound::Instance",
+                            "name": "Sound",
                             "suffix": "&",
-                            "path": "Box/Asset/Sound/Instance",
+                            "path": "Box/Asset/Sound",
                             "templates": []
                         },
                         "name": "inAudio"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_MANAGER_LOAD_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -94,7 +94,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_SOUND_MANAGER_GETINSTANCE_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_GETINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -122,7 +122,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_SOUND_MANAGER_GETDATA_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_GETDATA_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -148,7 +148,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_MANAGER_ONACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_ONACTIVATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -174,11 +174,11 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUND_MANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_ONDEACTIVATION_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_SOUND_MANAGER_DESCRIPTION"
+        "description": "CHICANE_BOX_SOUNDMANAGER_DESCRIPTION"
     },
     "children": []
 }

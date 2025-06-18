@@ -1,10 +1,10 @@
 {
-    "title": "Side",
+    "title": "Sky Side",
     "filename": "Side",
     "path": "Box/Asset/Sky/Side",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Sky/Side.hpp",
-        "namespace": "Chicane::Box::Sky::Side",
+        "namespace": "Chicane::Box::SkySide",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Left",
-                "description": "CHICANE_BOX_SKY_SIDE_LEFT_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_LEFT_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Right",
-                "description": "CHICANE_BOX_SKY_SIDE_RIGHT_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_RIGHT_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "Front",
-                "description": "CHICANE_BOX_SKY_SIDE_FRONT_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_FRONT_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,7 +49,7 @@
                     "templates": []
                 },
                 "name": "Back",
-                "description": "CHICANE_BOX_SKY_SIDE_BACK_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_BACK_DESCRIPTION"
             },
             {
                 "type": {
@@ -60,7 +60,7 @@
                     "templates": []
                 },
                 "name": "Up",
-                "description": "CHICANE_BOX_SKY_SIDE_UP_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_UP_DESCRIPTION"
             },
             {
                 "type": {
@@ -71,14 +71,14 @@
                     "templates": []
                 },
                 "name": "Down",
-                "description": "CHICANE_BOX_SKY_SIDE_DOWN_DESCRIPTION"
+                "description": "CHICANE_BOX_SKYSIDE_DOWN_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_SKY_SIDE_DESCRIPTION"
+        "description": "CHICANE_BOX_SKYSIDE_DESCRIPTION"
     },
     "children": []
 }

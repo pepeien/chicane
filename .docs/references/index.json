@@ -13,17 +13,27 @@
                 "filename": "Asset",
                 "path": "Box/Asset",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Box/Asset.hpp",
+                    "namespace": "Chicane::Box::Asset"
                 },
                 "children": [
                     {
-                        "title": "Asset",
-                        "filename": "Constants",
-                        "path": "Box/Asset/Constants",
+                        "title": "Asset Header",
+                        "filename": "Header",
+                        "path": "Box/Asset/Header",
                         "source": {
-                            "header": "Includes/Chicane/Box/Asset/Constants.hpp",
-                            "namespace": "Chicane::Box::Asset"
+                            "header": "Includes/Chicane/Box/Asset/Header.hpp",
+                            "namespace": "Chicane::Box::AssetHeader"
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Asset Type",
+                        "filename": "Type",
+                        "path": "Box/Asset/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Box/Asset/Type.hpp",
+                            "namespace": "Chicane::Box::AssetType"
                         },
                         "children": []
                     },
@@ -32,158 +42,98 @@
                         "filename": "Font",
                         "path": "Box/Asset/Font",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Font.hpp",
+                            "namespace": "Chicane::Box::Font"
                         },
                         "children": [
                             {
-                                "title": "Extracted",
+                                "title": "Font Extracted",
                                 "filename": "Extracted",
                                 "path": "Box/Asset/Font/Extracted",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Extracted.hpp",
-                                    "namespace": "Chicane::Box::Font::Extracted"
+                                    "namespace": "Chicane::Box::FontExtracted"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Font",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Font/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Font/Constants.hpp",
-                                    "namespace": "Chicane::Box::Font"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Glyph",
+                                "title": "Font Glyph",
                                 "filename": "Glyph",
                                 "path": "Box/Asset/Font/Glyph",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Glyph.hpp",
-                                    "namespace": "Chicane::Box::Font::Glyph"
+                                    "namespace": "Chicane::Box::FontGlyph"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Font/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Font/Instance.hpp",
-                                    "namespace": "Chicane::Box::Font::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Manager",
+                                "title": "Font Manager",
                                 "filename": "Manager",
                                 "path": "Box/Asset/Font/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Manager.hpp",
-                                    "namespace": "Chicane::Box::Font::Manager"
+                                    "namespace": "Chicane::Box::FontManager"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Parsed",
+                                "title": "Font Parsed",
                                 "filename": "Parsed",
                                 "path": "Box/Asset/Font/Parsed",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Parsed.hpp",
-                                    "namespace": "Chicane::Box::Font::Parsed"
+                                    "namespace": "Chicane::Box::FontParsed"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "True Type",
+                                "title": "Font True Type",
                                 "filename": "True Type",
                                 "path": "Box/Asset/Font/TrueType",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/TrueType.hpp",
-                                    "namespace": "Chicane::Box::Font::TrueType"
+                                    "namespace": "Chicane::Box::FontTrueType"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Vendor",
+                                "title": "Font Vendor",
                                 "filename": "Vendor",
                                 "path": "Box/Asset/Font/Vendor",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Font/Vendor.hpp",
-                                    "namespace": "Chicane::Box::Font::Vendor"
+                                    "namespace": "Chicane::Box::FontVendor"
                                 },
                                 "children": []
                             }
                         ]
                     },
                     {
-                        "title": "Header",
-                        "filename": "Header",
-                        "path": "Box/Asset/Header",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Asset/Header.hpp",
-                            "namespace": "Chicane::Box::Asset::Header"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Box/Asset/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Asset/Instance.hpp",
-                            "namespace": "Chicane::Box::Asset::Instance"
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Mesh",
                         "filename": "Mesh",
                         "path": "Box/Asset/Mesh",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Mesh.hpp",
+                            "namespace": "Chicane::Box::Mesh"
                         },
                         "children": [
                             {
-                                "title": "Group",
+                                "title": "Mesh Group",
                                 "filename": "Group",
                                 "path": "Box/Asset/Mesh/Group",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Mesh/Group.hpp",
-                                    "namespace": "Chicane::Box::Mesh::Group"
+                                    "namespace": "Chicane::Box::MeshGroup"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Mesh/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Mesh/Instance.hpp",
-                                    "namespace": "Chicane::Box::Mesh::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Mesh",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Mesh/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Mesh/Constants.hpp",
-                                    "namespace": "Chicane::Box::Mesh"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Parsed",
+                                "title": "Mesh Parsed",
                                 "filename": "Parsed",
                                 "path": "Box/Asset/Mesh/Parsed",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Mesh/Parsed.hpp",
-                                    "namespace": "Chicane::Box::Mesh::Parsed"
+                                    "namespace": "Chicane::Box::MeshParsed"
                                 },
                                 "children": []
                             }
@@ -194,77 +144,57 @@
                         "filename": "Model",
                         "path": "Box/Asset/Model",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Model.hpp",
+                            "namespace": "Chicane::Box::Model"
                         },
                         "children": [
                             {
-                                "title": "Extracted",
+                                "title": "Model Extracted",
                                 "filename": "Extracted",
                                 "path": "Box/Asset/Model/Extracted",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Extracted.hpp",
-                                    "namespace": "Chicane::Box::Model::Extracted"
+                                    "namespace": "Chicane::Box::ModelExtracted"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Model/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Model/Instance.hpp",
-                                    "namespace": "Chicane::Box::Model::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Manager",
+                                "title": "Model Manager",
                                 "filename": "Manager",
                                 "path": "Box/Asset/Model/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Manager.hpp",
-                                    "namespace": "Chicane::Box::Model::Manager"
+                                    "namespace": "Chicane::Box::ModelManager"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Model",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Model/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Model/Constants.hpp",
-                                    "namespace": "Chicane::Box::Model"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Parsed",
+                                "title": "Model Parsed",
                                 "filename": "Parsed",
                                 "path": "Box/Asset/Model/Parsed",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Parsed.hpp",
-                                    "namespace": "Chicane::Box::Model::Parsed"
+                                    "namespace": "Chicane::Box::ModelParsed"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Vendor",
+                                "title": "Model Vendor",
                                 "filename": "Vendor",
                                 "path": "Box/Asset/Model/Vendor",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Vendor.hpp",
-                                    "namespace": "Chicane::Box::Model::Vendor"
+                                    "namespace": "Chicane::Box::ModelVendor"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Wavefront",
+                                "title": "Model Wavefront",
                                 "filename": "Wavefront",
                                 "path": "Box/Asset/Model/Wavefront",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Model/Wavefront.hpp",
-                                    "namespace": "Chicane::Box::Model::Wavefront"
+                                    "namespace": "Chicane::Box::ModelWavefront"
                                 },
                                 "children": []
                             }
@@ -275,37 +205,17 @@
                         "filename": "Sky",
                         "path": "Box/Asset/Sky",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Sky.hpp",
+                            "namespace": "Chicane::Box::Sky"
                         },
                         "children": [
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Sky/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Sky/Instance.hpp",
-                                    "namespace": "Chicane::Box::Sky::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Side",
+                                "title": "Sky Side",
                                 "filename": "Side",
                                 "path": "Box/Asset/Sky/Side",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sky/Side.hpp",
-                                    "namespace": "Chicane::Box::Sky::Side"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Sky",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Sky/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Sky/Constants.hpp",
-                                    "namespace": "Chicane::Box::Sky"
+                                    "namespace": "Chicane::Box::SkySide"
                                 },
                                 "children": []
                             }
@@ -316,37 +226,17 @@
                         "filename": "Sound",
                         "path": "Box/Asset/Sound",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Sound.hpp",
+                            "namespace": "Chicane::Box::Sound"
                         },
                         "children": [
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Sound/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Sound/Instance.hpp",
-                                    "namespace": "Chicane::Box::Sound::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Manager",
+                                "title": "Sound Manager",
                                 "filename": "Manager",
                                 "path": "Box/Asset/Sound/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Sound/Manager.hpp",
-                                    "namespace": "Chicane::Box::Sound::Manager"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Sound",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Sound/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Sound/Constants.hpp",
-                                    "namespace": "Chicane::Box::Sound"
+                                    "namespace": "Chicane::Box::SoundManager"
                                 },
                                 "children": []
                             }
@@ -357,51 +247,21 @@
                         "filename": "Texture",
                         "path": "Box/Asset/Texture",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Box/Asset/Texture.hpp",
+                            "namespace": "Chicane::Box::Texture"
                         },
                         "children": [
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Box/Asset/Texture/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Texture/Instance.hpp",
-                                    "namespace": "Chicane::Box::Texture::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Manager",
+                                "title": "Texture Manager",
                                 "filename": "Manager",
                                 "path": "Box/Asset/Texture/Manager",
                                 "source": {
                                     "header": "Includes/Chicane/Box/Asset/Texture/Manager.hpp",
-                                    "namespace": "Chicane::Box::Texture::Manager"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Texture",
-                                "filename": "Constants",
-                                "path": "Box/Asset/Texture/Constants",
-                                "source": {
-                                    "header": "Includes/Chicane/Box/Asset/Texture/Constants.hpp",
-                                    "namespace": "Chicane::Box::Texture"
+                                    "namespace": "Chicane::Box::TextureManager"
                                 },
                                 "children": []
                             }
                         ]
-                    },
-                    {
-                        "title": "Type",
-                        "filename": "Type",
-                        "path": "Box/Asset/Type",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Asset/Type.hpp",
-                            "namespace": "Chicane::Box::Asset::Type"
-                        },
-                        "children": []
                     }
                 ]
             },
@@ -410,27 +270,17 @@
                 "filename": "Manager",
                 "path": "Box/Manager",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Box/Manager.hpp",
+                    "namespace": "Chicane::Box::Manager"
                 },
                 "children": [
                     {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Box/Manager/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Manager/Instance.hpp",
-                            "namespace": "Chicane::Box::Manager::Instance"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Manager",
+                        "title": "Manager Event Type",
                         "filename": "Event Type",
                         "path": "Box/Manager/EventType",
                         "source": {
                             "header": "Includes/Chicane/Box/Manager/EventType.hpp",
-                            "namespace": "Chicane::Box::Manager"
+                            "namespace": "Chicane::Box::ManagerEventType"
                         },
                         "children": []
                     }

@@ -1,10 +1,10 @@
 {
-    "title": "Group",
+    "title": "Mesh Group",
     "filename": "Group",
     "path": "Box/Asset/Mesh/Group",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Mesh/Group.hpp",
-        "namespace": "Chicane::Box::Mesh::Group",
+        "namespace": "Chicane::Box::MeshGroup",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -25,7 +25,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESH_GROUP_ISVALID_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_ISVALID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -42,7 +42,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESH_GROUP_GETID_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_GETID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -68,7 +68,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESH_GROUP_SETID_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETID_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -85,7 +85,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESH_GROUP_GETMODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_GETMODEL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -111,7 +111,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESH_GROUP_SETMODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETMODEL_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -128,7 +128,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_MESH_GROUP_GETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_GETTEXTURE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -154,7 +154,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MESH_GROUP_SETTEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_SETTEXTURE_DESCRIPTION"
             }
         ],
         "members": [
@@ -169,7 +169,7 @@
                     "templates": []
                 },
                 "name": "m_id",
-                "description": "CHICANE_BOX_MESH_GROUP_M_ID_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_M_ID_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -182,7 +182,7 @@
                     "templates": []
                 },
                 "name": "m_model",
-                "description": "CHICANE_BOX_MESH_GROUP_M_MODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_M_MODEL_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -195,10 +195,10 @@
                     "templates": []
                 },
                 "name": "m_texture",
-                "description": "CHICANE_BOX_MESH_GROUP_M_TEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_MESHGROUP_M_TEXTURE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_MESH_GROUP_DESCRIPTION"
+        "description": "CHICANE_BOX_MESHGROUP_DESCRIPTION"
     },
     "children": []
 }

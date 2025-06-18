@@ -105,7 +105,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Box::Sound::Manager",
+                    "name": "Box::SoundManager",
                     "suffix": "*",
                     "path": "Box/Asset/Sound/Manager",
                     "templates": []

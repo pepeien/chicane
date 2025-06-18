@@ -1,17 +1,62 @@
 {
-    "title": "Manager",
+    "title": "Manager Event Type",
     "filename": "Event Type",
     "path": "Box/Manager/EventType",
     "source": {
         "header": "Includes/Chicane/Box/Manager/EventType.hpp",
-        "namespace": "Chicane::Box::Manager",
+        "namespace": "Chicane::Box::ManagerEventType",
         "types": [],
-        "enums": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Load",
+                "description": "CHICANE_BOX_MANAGEREVENTTYPE_LOAD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Allocation",
+                "description": "CHICANE_BOX_MANAGEREVENTTYPE_ALLOCATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Activation",
+                "description": "CHICANE_BOX_MANAGEREVENTTYPE_ACTIVATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Use",
+                "description": "CHICANE_BOX_MANAGEREVENTTYPE_USE_DESCRIPTION"
+            }
+        ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_MANAGER_DESCRIPTION"
+        "description": "CHICANE_BOX_MANAGEREVENTTYPE_DESCRIPTION"
     },
     "children": []
 }

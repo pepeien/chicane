@@ -1,10 +1,10 @@
 {
-    "title": "Wavefront",
+    "title": "Model Wavefront",
     "filename": "Wavefront",
     "path": "Box/Asset/Model/Wavefront",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Wavefront.hpp",
-        "namespace": "Chicane::Box::Model::Wavefront",
+        "namespace": "Chicane::Box::ModelWavefront",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Extracted",
+                    "name": "ModelExtracted",
                     "suffix": "",
                     "path": "Box/Asset/Model/Extracted",
                     "templates": []
@@ -25,20 +25,20 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Raw",
+                            "name": "ModelRaw",
                             "suffix": "&",
-                            "path": "Box/Asset/Model/Constants",
+                            "path": "Box",
                             "templates": []
                         },
                         "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MODEL_WAVEFRONT_PARSE_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELWAVEFRONT_PARSE_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_MODEL_WAVEFRONT_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELWAVEFRONT_DESCRIPTION"
     },
     "children": []
 }

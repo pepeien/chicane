@@ -140,7 +140,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Box::Font::Parsed",
+                    "name": "Box::FontParsed",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Parsed",
                     "templates": []
@@ -174,7 +174,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Box::Font::Glyph",
+                    "name": "Box::FontGlyph",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Glyph",
                     "templates": []

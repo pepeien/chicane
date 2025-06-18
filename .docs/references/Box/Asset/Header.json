@@ -1,10 +1,10 @@
 {
-    "title": "Header",
+    "title": "Asset Header",
     "filename": "Header",
     "path": "Box/Asset/Header",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Header.hpp",
-        "namespace": "Chicane::Box::Asset::Header",
+        "namespace": "Chicane::Box::AssetHeader",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Header",
+                "name": "AssetHeader",
                 "parameters": [
                     {
                         "type": {
@@ -32,7 +32,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_HEADER_HEADER_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_ASSETHEADER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -44,14 +44,70 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Header",
+                "name": "AssetHeader",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_HEADER_HEADER_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_ASSETHEADER_DESCRIPTION"
             }
         ],
         "destructors": [],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isFileAsset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_ISFILEASSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "AssetType",
+                    "suffix": "",
+                    "path": "Box/Asset/Type",
+                    "templates": []
+                },
+                "name": "getType",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_BOX_ASSETHEADER_GETTYPE_DESCRIPTION"
+            },
             {
                 "accessor": "private",
                 "type": "standard",
@@ -76,7 +132,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_HEADER_FETCHVERSION_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_FETCHVERSION_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -102,7 +158,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_HEADER_FETCHID_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_FETCHID_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -117,7 +173,7 @@
                 "name": "fetchType",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_BOX_ASSET_HEADER_FETCHTYPE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_FETCHTYPE_DESCRIPTION"
             }
         ],
         "members": [
@@ -132,7 +188,7 @@
                     "templates": []
                 },
                 "name": "filepath",
-                "description": "CHICANE_BOX_ASSET_HEADER_FILEPATH_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_FILEPATH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -145,7 +201,7 @@
                     "templates": []
                 },
                 "name": "version",
-                "description": "CHICANE_BOX_ASSET_HEADER_VERSION_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_VERSION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -158,23 +214,23 @@
                     "templates": []
                 },
                 "name": "id",
-                "description": "CHICANE_BOX_ASSET_HEADER_ID_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_ID_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Type",
+                    "name": "AssetType",
                     "suffix": "",
                     "path": "Box/Asset/Type",
                     "templates": []
                 },
                 "name": "type",
-                "description": "CHICANE_BOX_ASSET_HEADER_TYPE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETHEADER_TYPE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_ASSET_HEADER_DESCRIPTION"
+        "description": "CHICANE_BOX_ASSETHEADER_DESCRIPTION"
     },
     "children": []
 }

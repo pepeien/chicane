@@ -137,9 +137,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Box::Mesh::Instance",
+                    "name": "Box::Mesh",
                     "suffix": "*",
-                    "path": "Box/Asset/Mesh/Instance",
+                    "path": "Box/Asset/Mesh",
                     "templates": []
                 },
                 "name": "getMesh",
@@ -274,9 +274,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "const ",
-                    "name": "Box::Mesh::Instance",
+                    "name": "Box::Mesh",
                     "suffix": "*",
-                    "path": "Box/Asset/Mesh/Instance",
+                    "path": "Box/Asset/Mesh",
                     "templates": []
                 },
                 "name": "m_mesh",

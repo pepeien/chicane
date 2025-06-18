@@ -1,10 +1,10 @@
 {
-    "title": "True Type",
+    "title": "Font True Type",
     "filename": "True Type",
     "path": "Box/Asset/Font/TrueType",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/TrueType.hpp",
-        "namespace": "Chicane::Box::Font::TrueType",
+        "namespace": "Chicane::Box::FontTrueType",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -15,7 +15,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Parsed",
+                    "name": "FontParsed",
                     "suffix": "",
                     "path": "Box/Asset/Font/Parsed",
                     "templates": []
@@ -25,20 +25,20 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Raw",
+                            "name": "FontRaw",
                             "suffix": "&",
-                            "path": "Box/Asset/Font/Constants",
+                            "path": "Box",
                             "templates": []
                         },
                         "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONT_TRUETYPE_PARSE_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTTRUETYPE_PARSE_DESCRIPTION"
             }
         ],
         "members": [],
-        "description": "CHICANE_BOX_FONT_TRUETYPE_DESCRIPTION"
+        "description": "CHICANE_BOX_FONTTRUETYPE_DESCRIPTION"
     },
     "children": []
 }

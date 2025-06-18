@@ -369,7 +369,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Box::Model::Manager",
+                    "name": "Box::ModelManager",
                     "suffix": "*",
                     "path": "Box/Asset/Model/Manager",
                     "templates": []

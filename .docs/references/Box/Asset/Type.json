@@ -1,10 +1,10 @@
 {
-    "title": "Type",
+    "title": "Asset Type",
     "filename": "Type",
     "path": "Box/Asset/Type",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Type.hpp",
-        "namespace": "Chicane::Box::Asset::Type",
+        "namespace": "Chicane::Box::AssetType",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Undefined",
-                "description": "CHICANE_BOX_ASSET_TYPE_UNDEFINED_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_UNDEFINED_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Sound",
-                "description": "CHICANE_BOX_ASSET_TYPE_SOUND_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_SOUND_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "Font",
-                "description": "CHICANE_BOX_ASSET_TYPE_FONT_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_FONT_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,7 +49,7 @@
                     "templates": []
                 },
                 "name": "Mesh",
-                "description": "CHICANE_BOX_ASSET_TYPE_MESH_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_MESH_DESCRIPTION"
             },
             {
                 "type": {
@@ -60,7 +60,7 @@
                     "templates": []
                 },
                 "name": "Model",
-                "description": "CHICANE_BOX_ASSET_TYPE_MODEL_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_MODEL_DESCRIPTION"
             },
             {
                 "type": {
@@ -71,7 +71,7 @@
                     "templates": []
                 },
                 "name": "Sky",
-                "description": "CHICANE_BOX_ASSET_TYPE_SKY_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_SKY_DESCRIPTION"
             },
             {
                 "type": {
@@ -82,14 +82,14 @@
                     "templates": []
                 },
                 "name": "Texture",
-                "description": "CHICANE_BOX_ASSET_TYPE_TEXTURE_DESCRIPTION"
+                "description": "CHICANE_BOX_ASSETTYPE_TEXTURE_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_BOX_ASSET_TYPE_DESCRIPTION"
+        "description": "CHICANE_BOX_ASSETTYPE_DESCRIPTION"
     },
     "children": []
 }

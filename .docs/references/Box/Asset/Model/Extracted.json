@@ -1,10 +1,10 @@
 {
-    "title": "Extracted",
+    "title": "Model Extracted",
     "filename": "Extracted",
     "path": "Box/Asset/Model/Extracted",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Model/Extracted.hpp",
-        "namespace": "Chicane::Box::Model::Extracted",
+        "namespace": "Chicane::Box::ModelExtracted",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -30,7 +30,7 @@
                     ]
                 },
                 "name": "vertices",
-                "description": "CHICANE_BOX_MODEL_EXTRACTED_VERTICES_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELEXTRACTED_VERTICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -51,10 +51,10 @@
                     ]
                 },
                 "name": "indices",
-                "description": "CHICANE_BOX_MODEL_EXTRACTED_INDICES_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELEXTRACTED_INDICES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_MODEL_EXTRACTED_DESCRIPTION"
+        "description": "CHICANE_BOX_MODELEXTRACTED_DESCRIPTION"
     },
     "children": []
 }

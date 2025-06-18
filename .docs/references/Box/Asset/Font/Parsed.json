@@ -1,10 +1,10 @@
 {
-    "title": "Parsed",
+    "title": "Font Parsed",
     "filename": "Parsed",
     "path": "Box/Asset/Font/Parsed",
     "source": {
         "header": "Includes/Chicane/Box/Asset/Font/Parsed.hpp",
-        "namespace": "Chicane::Box::Font::Parsed",
+        "namespace": "Chicane::Box::FontParsed",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -36,7 +36,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_PARSED_HASGLYPH_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_HASGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -64,14 +64,14 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_PARSED_HASGLYPH_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_HASGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Glyph",
+                    "name": "FontGlyph",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Glyph",
                     "templates": []
@@ -92,14 +92,14 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_PARSED_GETGLYPH_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_GETGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Glyph",
+                    "name": "FontGlyph",
                     "suffix": "&",
                     "path": "Box/Asset/Font/Glyph",
                     "templates": []
@@ -120,7 +120,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONT_PARSED_GETGLYPH_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_GETGLYPH_DESCRIPTION"
             }
         ],
         "members": [
@@ -135,23 +135,23 @@
                     "templates": []
                 },
                 "name": "name",
-                "description": "CHICANE_BOX_FONT_PARSED_NAME_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_NAME_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Glyph::Map",
+                    "name": "FontGlyph::Map",
                     "suffix": "",
                     "path": "Box/Asset/Font/Glyph",
                     "templates": []
                 },
                 "name": "glyphs",
-                "description": "CHICANE_BOX_FONT_PARSED_GLYPHS_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTPARSED_GLYPHS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_BOX_FONT_PARSED_DESCRIPTION"
+        "description": "CHICANE_BOX_FONTPARSED_DESCRIPTION"
     },
     "children": []
 }

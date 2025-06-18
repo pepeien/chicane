@@ -5,7 +5,120 @@
     "source": {
         "header": "Includes/Chicane/Box.hpp",
         "namespace": "Chicane::Box",
-        "types": [],
+        "types": [
+            {
+                "name": "FontRaw",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_FONTRAW_DESCRIPTION"
+            },
+            {
+                "name": "ModelRaw",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MODELRAW_DESCRIPTION"
+            },
+            {
+                "name": "SkyRawSide",
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "description": "CHICANE_BOX_SKYRAWSIDE_DESCRIPTION"
+            },
+            {
+                "name": "SkyRawSides",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkySide",
+                            "suffix": "",
+                            "path": "Box/Asset/Sky/Side",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SkyRawSide",
+                            "suffix": "",
+                            "path": "Box",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
+            },
+            {
+                "name": "SkyParsedSide",
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Instance",
+                    "suffix": "",
+                    "path": "Core/Image/Instance",
+                    "templates": []
+                },
+                "description": "CHICANE_BOX_SKYPARSEDSIDE_DESCRIPTION"
+            },
+            {
+                "name": "SkyParsedSides",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkySide",
+                            "suffix": "",
+                            "path": "Box/Asset/Sky/Side",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SkyParsedSide",
+                            "suffix": "",
+                            "path": "Box",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],
@@ -15,7 +128,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Sound::Manager",
+                    "name": "SoundManager",
                     "suffix": "*",
                     "path": "Box/Asset/Sound/Manager",
                     "templates": []
@@ -30,7 +143,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Font::Manager",
+                    "name": "FontManager",
                     "suffix": "*",
                     "path": "Box/Asset/Font/Manager",
                     "templates": []
@@ -45,7 +158,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Model::Manager",
+                    "name": "ModelManager",
                     "suffix": "*",
                     "path": "Box/Asset/Model/Manager",
                     "templates": []
@@ -60,7 +173,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Texture::Manager",
+                    "name": "TextureManager",
                     "suffix": "*",
                     "path": "Box/Asset/Texture/Manager",
                     "templates": []
@@ -75,9 +188,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Asset::Instance",
+                    "name": "Asset",
                     "suffix": "*",
-                    "path": "Box/Asset/Instance",
+                    "path": "Box/Asset",
                     "templates": []
                 },
                 "name": "load",

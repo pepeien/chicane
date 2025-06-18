@@ -10,9 +10,9 @@
                 "name": "Images",
                 "type": {
                     "prefix": "",
-                    "name": "Box::Sky::ParsedSides",
+                    "name": "Box::SkyParsedSides",
                     "suffix": "",
-                    "path": "Box/Asset/Sky/Constants",
+                    "path": "Box",
                     "templates": []
                 },
                 "description": "CHICANE_VULKAN_SKY_IMAGES_DESCRIPTION"
