@@ -18,7 +18,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "Runtime/Game/Controller",
+                            "path": "Runtime/Controller",
                             "templates": []
                         }
                     ]
@@ -37,7 +37,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "Runtime/Game/Controller",
+                            "path": "Runtime/Controller",
                             "templates": []
                         }
                     ]
@@ -45,7 +45,7 @@
                 "description": "CHICANE_APPLICATION_CONTROLLERSUBSCRIPTION_DESCRIPTION"
             },
             {
-                "name": "LevelObservable",
+                "name": "SceneObservable",
                 "type": {
                     "prefix": "",
                     "name": "Observable",
@@ -54,17 +54,17 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Level",
+                            "name": "Scene",
                             "suffix": "*",
-                            "path": "Runtime/Game/Level/Instance",
+                            "path": "Runtime/Scene",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_APPLICATION_LEVELOBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SCENEOBSERVABLE_DESCRIPTION"
             },
             {
-                "name": "LevelSubscription",
+                "name": "SceneSubscription",
                 "type": {
                     "prefix": "",
                     "name": "Subscription",
@@ -73,14 +73,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Level",
+                            "name": "Scene",
                             "suffix": "*",
-                            "path": "Runtime/Game/Level/Instance",
+                            "path": "Runtime/Scene",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_APPLICATION_LEVELSUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SCENESUBSCRIPTION_DESCRIPTION"
             },
             {
                 "name": "ViewObservable",
@@ -203,7 +203,7 @@
                     "prefix": "",
                     "name": "Controller",
                     "suffix": "*",
-                    "path": "Runtime/Game/Controller",
+                    "path": "Runtime/Controller",
                     "templates": []
                 },
                 "name": "getController",
@@ -228,7 +228,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "Runtime/Game/Controller",
+                            "path": "Runtime/Controller",
                             "templates": []
                         },
                         "name": "inController"
@@ -293,25 +293,25 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "hasLevel",
+                "name": "hasScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_HASLEVEL_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_HASSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Level",
+                    "name": "Scene",
                     "suffix": "*",
-                    "path": "Runtime/Game/Level/Instance",
+                    "path": "Runtime/Scene",
                     "templates": []
                 },
-                "name": "getLevel",
+                "name": "getScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETLEVEL_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -323,38 +323,38 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setLevel",
+                "name": "setScene",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Level",
+                            "name": "Scene",
                             "suffix": "*",
-                            "path": "Runtime/Game/Level/Instance",
+                            "path": "Runtime/Scene",
                             "templates": []
                         },
-                        "name": "inLevel"
+                        "name": "inScene"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_SETLEVEL_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_SETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "LevelSubscription",
+                    "name": "SceneSubscription",
                     "suffix": "",
                     "path": "Runtime/Application",
                     "templates": []
                 },
-                "name": "watchLevel",
+                "name": "watchScene",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "LevelSubscription::NextCallback",
+                            "name": "SceneSubscription::NextCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -364,7 +364,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "LevelSubscription::ErrorCallback",
+                            "name": "SceneSubscription::ErrorCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -374,7 +374,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "LevelSubscription::CompleteCallback",
+                            "name": "SceneSubscription::CompleteCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -383,7 +383,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_WATCHLEVEL_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_WATCHSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",

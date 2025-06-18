@@ -1,10 +1,10 @@
 {
-    "title": "AAudio",
-    "filename": "Instance",
-    "path": "Runtime/Game/Transformable/Actor/Audio/Instance",
+    "title": "CAudio",
+    "filename": "Audio",
+    "path": "Runtime/Scene/Component/Audio",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp",
-        "namespace": "Chicane::AAudio",
+        "header": "Includes/Chicane/Runtime/Scene/Component/Audio.hpp",
+        "namespace": "Chicane::CAudio",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "AAudio",
+                "name": "CAudio",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_AAUDIO_AAUDIO_DESCRIPTION"
+                "description": "CHICANE_CAUDIO_CAUDIO_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~AAudio",
+                "name": "~CAudio",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_AAUDIO_~AAUDIO_DESCRIPTION"
+                "description": "CHICANE_CAUDIO_~CAUDIO_DESCRIPTION"
             }
         ],
         "functions": [
@@ -66,7 +66,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_AAUDIO_LOAD_DESCRIPTION"
+                "description": "CHICANE_CAUDIO_LOAD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -83,7 +83,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_AAUDIO_PLAY_DESCRIPTION"
+                "description": "CHICANE_CAUDIO_PLAY_DESCRIPTION"
             }
         ],
         "members": [
@@ -92,16 +92,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "CAudio",
-                    "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Component/Audio",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
                     "templates": []
                 },
                 "name": "m_audio",
-                "description": "CHICANE_AAUDIO_M_AUDIO_DESCRIPTION"
+                "description": "CHICANE_CAUDIO_M_AUDIO_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::Sound::Manager",
+                    "suffix": "*",
+                    "path": "Box/Asset/Sound/Manager",
+                    "templates": []
+                },
+                "name": "m_manager",
+                "description": "CHICANE_CAUDIO_M_MANAGER_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_AAUDIO_DESCRIPTION"
+        "description": "CHICANE_CAUDIO_DESCRIPTION"
     },
     "children": []
 }

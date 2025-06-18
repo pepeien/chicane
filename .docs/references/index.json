@@ -1480,263 +1480,14 @@
                 ]
             },
             {
-                "title": "Game",
-                "filename": "Game",
-                "path": "Runtime/Game",
+                "title": "Controller",
+                "filename": "Controller",
+                "path": "Runtime/Controller",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Runtime/Controller.hpp",
+                    "namespace": "Chicane::Controller"
                 },
-                "children": [
-                    {
-                        "title": "Controller",
-                        "filename": "Controller",
-                        "path": "Runtime/Game/Controller",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Game/Controller.hpp",
-                            "namespace": "Chicane::Controller"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Level",
-                        "filename": "Level",
-                        "path": "Runtime/Game/Level",
-                        "source": {
-                            "header": null,
-                            "namespace": null
-                        },
-                        "children": [
-                            {
-                                "title": "Level",
-                                "filename": "Instance",
-                                "path": "Runtime/Game/Level/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Game/Level/Instance.hpp",
-                                    "namespace": "Chicane::Level"
-                                },
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Transformable",
-                        "filename": "Transformable",
-                        "path": "Runtime/Game/Transformable",
-                        "source": {
-                            "header": null,
-                            "namespace": null
-                        },
-                        "children": [
-                            {
-                                "title": "Actor",
-                                "filename": "Actor",
-                                "path": "Runtime/Game/Transformable/Actor",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Actor",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Game/Transformable/Actor/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Instance.hpp",
-                                            "namespace": "Chicane::Actor"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Audio",
-                                        "filename": "Audio",
-                                        "path": "Runtime/Game/Transformable/Actor/Audio",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "AAudio",
-                                                "filename": "Instance",
-                                                "path": "Runtime/Game/Transformable/Actor/Audio/Instance",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Audio/Instance.hpp",
-                                                    "namespace": "Chicane::AAudio"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Light",
-                                        "filename": "Light",
-                                        "path": "Runtime/Game/Transformable/Actor/Light",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "ALight",
-                                                "filename": "Instance",
-                                                "path": "Runtime/Game/Transformable/Actor/Light/Instance",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Light/Instance.hpp",
-                                                    "namespace": "Chicane::ALight"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Pawn",
-                                        "filename": "Pawn",
-                                        "path": "Runtime/Game/Transformable/Actor/Pawn",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "ACharacter",
-                                                "filename": "Character",
-                                                "path": "Runtime/Game/Transformable/Actor/Pawn/Character",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Character.hpp",
-                                                    "namespace": "Chicane::ACharacter"
-                                                },
-                                                "children": []
-                                            },
-                                            {
-                                                "title": "APawn",
-                                                "filename": "Instance",
-                                                "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",
-                                                    "namespace": "Chicane::APawn"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Sky",
-                                        "filename": "Sky",
-                                        "path": "Runtime/Game/Transformable/Actor/Sky",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "ASky",
-                                                "filename": "Instance",
-                                                "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",
-                                                    "namespace": "Chicane::ASky"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Component",
-                                "filename": "Component",
-                                "path": "Runtime/Game/Transformable/Component",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "CAudio",
-                                        "filename": "Audio",
-                                        "path": "Runtime/Game/Transformable/Component/Audio",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Audio.hpp",
-                                            "namespace": "Chicane::CAudio"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "CCamera",
-                                        "filename": "Camera",
-                                        "path": "Runtime/Game/Transformable/Component/Camera",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Camera.hpp",
-                                            "namespace": "Chicane::CCamera"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "CLight",
-                                        "filename": "Light",
-                                        "path": "Runtime/Game/Transformable/Component/Light",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Light.hpp",
-                                            "namespace": "Chicane::CLight"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "CMesh",
-                                        "filename": "Mesh",
-                                        "path": "Runtime/Game/Transformable/Component/Mesh",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Mesh.hpp",
-                                            "namespace": "Chicane::CMesh"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "CPhysics",
-                                        "filename": "Physics",
-                                        "path": "Runtime/Game/Transformable/Component/Physics",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Physics.hpp",
-                                            "namespace": "Chicane::CPhysics"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "CView",
-                                        "filename": "View",
-                                        "path": "Runtime/Game/Transformable/Component/View",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/View.hpp",
-                                            "namespace": "Chicane::CView"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Component",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Game/Transformable/Component/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Instance.hpp",
-                                            "namespace": "Chicane::Component"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Transformable",
-                                "filename": "Instance",
-                                "path": "Runtime/Game/Transformable/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Game/Transformable/Instance.hpp",
-                                    "namespace": "Chicane::Transformable"
-                                },
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
+                "children": []
             },
             {
                 "title": "Renderer",
@@ -1866,6 +1617,160 @@
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",
                             "namespace": "Chicane::Renderer::Viewport"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "title": "Scene",
+                "filename": "Scene",
+                "path": "Runtime/Scene",
+                "source": {
+                    "header": "Includes/Chicane/Runtime/Scene.hpp",
+                    "namespace": "Chicane::Scene"
+                },
+                "children": [
+                    {
+                        "title": "Actor",
+                        "filename": "Actor",
+                        "path": "Runtime/Scene/Actor",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/Actor.hpp",
+                            "namespace": "Chicane::Actor"
+                        },
+                        "children": [
+                            {
+                                "title": "AAudio",
+                                "filename": "Audio",
+                                "path": "Runtime/Scene/Actor/Audio",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Actor/Audio.hpp",
+                                    "namespace": "Chicane::AAudio"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "ALight",
+                                "filename": "Light",
+                                "path": "Runtime/Scene/Actor/Light",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Actor/Light.hpp",
+                                    "namespace": "Chicane::ALight"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "APawn",
+                                "filename": "Pawn",
+                                "path": "Runtime/Scene/Actor/Pawn",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn.hpp",
+                                    "namespace": "Chicane::APawn"
+                                },
+                                "children": [
+                                    {
+                                        "title": "ACharacter",
+                                        "filename": "Character",
+                                        "path": "Runtime/Scene/Actor/Pawn/Character",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn/Character.hpp",
+                                            "namespace": "Chicane::ACharacter"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "ASky",
+                                "filename": "Sky",
+                                "path": "Runtime/Scene/Actor/Sky",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Actor/Sky.hpp",
+                                    "namespace": "Chicane::ASky"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Component",
+                        "filename": "Component",
+                        "path": "Runtime/Scene/Component",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/Component.hpp",
+                            "namespace": "Chicane::Component"
+                        },
+                        "children": [
+                            {
+                                "title": "CAudio",
+                                "filename": "Audio",
+                                "path": "Runtime/Scene/Component/Audio",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/Audio.hpp",
+                                    "namespace": "Chicane::CAudio"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "CCamera",
+                                "filename": "Camera",
+                                "path": "Runtime/Scene/Component/Camera",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/Camera.hpp",
+                                    "namespace": "Chicane::CCamera"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "CLight",
+                                "filename": "Light",
+                                "path": "Runtime/Scene/Component/Light",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/Light.hpp",
+                                    "namespace": "Chicane::CLight"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "CMesh",
+                                "filename": "Mesh",
+                                "path": "Runtime/Scene/Component/Mesh",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/Mesh.hpp",
+                                    "namespace": "Chicane::CMesh"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "CPhysics",
+                                "filename": "Physics",
+                                "path": "Runtime/Scene/Component/Physics",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/Physics.hpp",
+                                    "namespace": "Chicane::CPhysics"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "CView",
+                                "filename": "View",
+                                "path": "Runtime/Scene/Component/View",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Scene/Component/View.hpp",
+                                    "namespace": "Chicane::CView"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Transformable",
+                        "filename": "Transformable",
+                        "path": "Runtime/Scene/Transformable",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Scene/Transformable.hpp",
+                            "namespace": "Chicane::Transformable"
                         },
                         "children": []
                     }
@@ -2241,12 +2146,12 @@
                         },
                         "children": [
                             {
-                                "title": "LLevel",
-                                "filename": "Level",
-                                "path": "Runtime/Vulkan/Layer/Level",
+                                "title": "LScene",
+                                "filename": "Scene",
+                                "path": "Runtime/Vulkan/Layer/Scene",
                                 "source": {
-                                    "header": "Includes/Chicane/Runtime/Vulkan/Layer/Level.hpp",
-                                    "namespace": "Chicane::Vulkan::LLevel"
+                                    "header": "Includes/Chicane/Runtime/Vulkan/Layer/Scene.hpp",
+                                    "namespace": "Chicane::Vulkan::LScene"
                                 },
                                 "children": []
                             },

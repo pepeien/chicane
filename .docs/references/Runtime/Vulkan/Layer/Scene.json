@@ -1,10 +1,10 @@
 {
-    "title": "LLevel",
-    "filename": "Level",
-    "path": "Runtime/Vulkan/Layer/Level",
+    "title": "LScene",
+    "filename": "Scene",
+    "path": "Runtime/Vulkan/Layer/Scene",
     "source": {
-        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Level.hpp",
-        "namespace": "Chicane::Vulkan::LLevel",
+        "header": "Includes/Chicane/Runtime/Vulkan/Layer/Scene.hpp",
+        "namespace": "Chicane::Vulkan::LScene",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "LLevel",
+                "name": "LScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_LLEVEL_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_LSCENE_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~LLevel",
+                "name": "~LScene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_~LLEVEL_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_~LSCENE_DESCRIPTION"
             }
         ],
         "functions": [
@@ -55,7 +55,7 @@
                 "name": "onInit",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_ONINIT_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_ONINIT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -70,7 +70,7 @@
                 "name": "onDestroy",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_ONDESTROY_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_ONDESTROY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -85,7 +85,7 @@
                 "name": "onRebuild",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_ONREBUILD_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_ONREBUILD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -111,7 +111,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_ONRENDER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_ONRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -126,7 +126,7 @@
                 "name": "loadEvents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_LOADEVENTS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_LOADEVENTS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -141,7 +141,7 @@
                 "name": "initFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_INITFRAMERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_INITFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -156,7 +156,7 @@
                 "name": "destroyFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_DESTROYFRAMERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_DESTROYFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -171,7 +171,7 @@
                 "name": "initTextureResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_INITTEXTURERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_INITTEXTURERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -186,7 +186,7 @@
                 "name": "destroyTextureResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_DESTROYTEXTURERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_DESTROYTEXTURERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -201,7 +201,7 @@
                 "name": "initGraphicsPipeline",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_INITGRAPHICSPIPELINE_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_INITGRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -216,7 +216,7 @@
                 "name": "initFramebuffers",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_INITFRAMEBUFFERS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_INITFRAMEBUFFERS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -231,7 +231,7 @@
                 "name": "buildTextureData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_BUILDTEXTUREDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_BUILDTEXTUREDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -246,7 +246,7 @@
                 "name": "buildModelVertexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_BUILDMODELVERTEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_BUILDMODELVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -261,7 +261,7 @@
                 "name": "buildModelIndexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_BUILDMODELINDEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_BUILDMODELINDEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -276,7 +276,7 @@
                 "name": "buildModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_BUILDMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_BUILDMODELDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -291,7 +291,7 @@
                 "name": "destroyModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_DESTROYMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_DESTROYMODELDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -306,7 +306,7 @@
                 "name": "rebuildModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_REBUILDMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_REBUILDMODELDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -332,7 +332,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LLEVEL_RENDERMODELS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_RENDERMODELS_DESCRIPTION"
             }
         ],
         "members": [
@@ -347,7 +347,7 @@
                     "templates": []
                 },
                 "name": "m_internals",
-                "description": "CHICANE_VULKAN_LLEVEL_M_INTERNALS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_INTERNALS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -368,7 +368,7 @@
                     ]
                 },
                 "name": "m_graphicsPipeline",
-                "description": "CHICANE_VULKAN_LLEVEL_M_GRAPHICSPIPELINE_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_GRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -381,7 +381,7 @@
                     "templates": []
                 },
                 "name": "m_frameDescriptor",
-                "description": "CHICANE_VULKAN_LLEVEL_M_FRAMEDESCRIPTOR_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_FRAMEDESCRIPTOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -394,7 +394,7 @@
                     "templates": []
                 },
                 "name": "m_textureDescriptor",
-                "description": "CHICANE_VULKAN_LLEVEL_M_TEXTUREDESCRIPTOR_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_TEXTUREDESCRIPTOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -430,7 +430,7 @@
                     ]
                 },
                 "name": "m_textures",
-                "description": "CHICANE_VULKAN_LLEVEL_M_TEXTURES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_TEXTURES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -443,7 +443,7 @@
                     "templates": []
                 },
                 "name": "m_textureManager",
-                "description": "CHICANE_VULKAN_LLEVEL_M_TEXTUREMANAGER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_TEXTUREMANAGER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -456,7 +456,7 @@
                     "templates": []
                 },
                 "name": "m_modelVertexBuffer",
-                "description": "CHICANE_VULKAN_LLEVEL_M_MODELVERTEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_MODELVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -469,7 +469,7 @@
                     "templates": []
                 },
                 "name": "m_modelIndexBuffer",
-                "description": "CHICANE_VULKAN_LLEVEL_M_MODELINDEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_MODELINDEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -482,7 +482,7 @@
                     "templates": []
                 },
                 "name": "m_modelManager",
-                "description": "CHICANE_VULKAN_LLEVEL_M_MODELMANAGER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_MODELMANAGER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -503,10 +503,10 @@
                     ]
                 },
                 "name": "m_clearValues",
-                "description": "CHICANE_VULKAN_LLEVEL_M_CLEARVALUES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENE_M_CLEARVALUES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_VULKAN_LLEVEL_DESCRIPTION"
+        "description": "CHICANE_VULKAN_LSCENE_DESCRIPTION"
     },
     "children": []
 }

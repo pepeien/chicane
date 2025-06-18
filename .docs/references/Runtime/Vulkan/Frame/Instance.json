@@ -130,7 +130,7 @@
                                     "prefix": "",
                                     "name": "CCamera",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Camera",
+                                    "path": "Runtime/Scene/Component/Camera",
                                     "templates": []
                                 }
                             ]
@@ -164,7 +164,7 @@
                                     "prefix": "",
                                     "name": "CCamera",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Camera",
+                                    "path": "Runtime/Scene/Component/Camera",
                                     "templates": []
                                 }
                             ]
@@ -213,7 +213,7 @@
                                     "prefix": "",
                                     "name": "CLight",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Light",
+                                    "path": "Runtime/Scene/Component/Light",
                                     "templates": []
                                 }
                             ]
@@ -247,7 +247,7 @@
                                     "prefix": "",
                                     "name": "CLight",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Light",
+                                    "path": "Runtime/Scene/Component/Light",
                                     "templates": []
                                 }
                             ]
@@ -296,7 +296,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Mesh",
+                                    "path": "Runtime/Scene/Component/Mesh",
                                     "templates": []
                                 }
                             ]
@@ -330,7 +330,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Mesh",
+                                    "path": "Runtime/Scene/Component/Mesh",
                                     "templates": []
                                 }
                             ]
@@ -727,7 +727,7 @@
                                     "prefix": "",
                                     "name": "CMesh",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Component/Mesh",
+                                    "path": "Runtime/Scene/Component/Mesh",
                                     "templates": []
                                 }
                             ]

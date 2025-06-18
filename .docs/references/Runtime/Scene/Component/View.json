@@ -1,9 +1,9 @@
 {
     "title": "CView",
     "filename": "View",
-    "path": "Runtime/Game/Transformable/Component/View",
+    "path": "Runtime/Scene/Component/View",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/View.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Component/View.hpp",
         "namespace": "Chicane::CView",
         "types": [],
         "enums": [],
@@ -59,7 +59,7 @@
                             "prefix": "const ",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Instance",
+                            "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
                         "name": "inSubject"

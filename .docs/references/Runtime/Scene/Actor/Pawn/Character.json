@@ -1,9 +1,9 @@
 {
     "title": "ACharacter",
     "filename": "Character",
-    "path": "Runtime/Game/Transformable/Actor/Pawn/Character",
+    "path": "Runtime/Scene/Actor/Pawn/Character",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Character.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn/Character.hpp",
         "namespace": "Chicane::ACharacter",
         "types": [],
         "enums": [],

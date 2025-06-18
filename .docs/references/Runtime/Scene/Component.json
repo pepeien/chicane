@@ -1,9 +1,9 @@
 {
     "title": "Component",
-    "filename": "Instance",
-    "path": "Runtime/Game/Transformable/Component/Instance",
+    "filename": "Component",
+    "path": "Runtime/Scene/Component",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Component.hpp",
         "namespace": "Chicane::Component",
         "types": [
             {
@@ -12,7 +12,7 @@
                     "prefix": "",
                     "name": "Component",
                     "suffix": "",
-                    "path": "Runtime/Game/Transformable/Component/Instance",
+                    "path": "Runtime/Scene/Component",
                     "templates": []
                 },
                 "description": "CHICANE_COMPONENT_SUPER_DESCRIPTION"
@@ -240,7 +240,7 @@
                             "prefix": "",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Instance",
+                            "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
                         "name": "inRoot"
@@ -300,7 +300,7 @@
                             "prefix": "",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Instance",
+                            "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
                         "name": "inRoot"
@@ -391,7 +391,7 @@
                     "prefix": "",
                     "name": "Transformable",
                     "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Instance",
+                    "path": "Runtime/Scene/Transformable",
                     "templates": []
                 },
                 "name": "m_attachment",

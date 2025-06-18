@@ -1,9 +1,9 @@
 {
     "title": "ASky",
-    "filename": "Instance",
-    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+    "filename": "Sky",
+    "path": "Runtime/Scene/Actor/Sky",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Sky/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Actor/Sky.hpp",
         "namespace": "Chicane::ASky",
         "types": [
             {
@@ -79,7 +79,7 @@
                             "prefix": "",
                             "name": "ASky",
                             "suffix": "&&",
-                            "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                            "path": "Runtime/Scene/Actor/Sky",
                             "templates": []
                         },
                         "name": "other"
@@ -114,7 +114,7 @@
                     "prefix": "",
                     "name": "ASky",
                     "suffix": "&",
-                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "path": "Runtime/Scene/Actor/Sky",
                     "templates": []
                 },
                 "name": "operator=",
@@ -124,7 +124,7 @@
                             "prefix": "",
                             "name": "ASky",
                             "suffix": "&&",
-                            "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                            "path": "Runtime/Scene/Actor/Sky",
                             "templates": []
                         },
                         "name": "other"
@@ -183,7 +183,7 @@
                     "prefix": "",
                     "name": "AssetSubscription",
                     "suffix": "",
-                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "path": "Runtime/Scene/Actor/Sky",
                     "templates": []
                 },
                 "name": "watchSky",
@@ -244,7 +244,7 @@
                     "prefix": "",
                     "name": "AssetObservable",
                     "suffix": "",
-                    "path": "Runtime/Game/Transformable/Actor/Sky/Instance",
+                    "path": "Runtime/Scene/Actor/Sky",
                     "templates": []
                 },
                 "name": "m_assetObservable",

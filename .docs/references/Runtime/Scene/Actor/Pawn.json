@@ -1,9 +1,9 @@
 {
     "title": "APawn",
-    "filename": "Instance",
-    "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
+    "filename": "Pawn",
+    "path": "Runtime/Scene/Actor/Pawn",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Pawn/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Actor/Pawn.hpp",
         "namespace": "Chicane::APawn",
         "types": [],
         "enums": [],
@@ -94,7 +94,7 @@
                             "prefix": "",
                             "name": "Controller",
                             "suffix": "*",
-                            "path": "Runtime/Game/Controller",
+                            "path": "Runtime/Controller",
                             "templates": []
                         },
                         "name": "inController"
@@ -125,7 +125,7 @@
                     "prefix": "",
                     "name": "CPhysics",
                     "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Component/Physics",
+                    "path": "Runtime/Scene/Component/Physics",
                     "templates": []
                 },
                 "name": "getPhysicsComponent",
@@ -178,7 +178,7 @@
                     "prefix": "",
                     "name": "Controller",
                     "suffix": "*",
-                    "path": "Runtime/Game/Controller",
+                    "path": "Runtime/Controller",
                     "templates": []
                 },
                 "name": "m_controller",
@@ -191,7 +191,7 @@
                     "prefix": "",
                     "name": "CPhysics",
                     "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Component/Physics",
+                    "path": "Runtime/Scene/Component/Physics",
                     "templates": []
                 },
                 "name": "m_physicsComponent",

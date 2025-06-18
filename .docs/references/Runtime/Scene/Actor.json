@@ -1,9 +1,9 @@
 {
     "title": "Actor",
-    "filename": "Instance",
-    "path": "Runtime/Game/Transformable/Actor/Instance",
+    "filename": "Actor",
+    "path": "Runtime/Scene/Actor",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Actor/Instance.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Actor.hpp",
         "namespace": "Chicane::Actor",
         "types": [
             {
@@ -12,7 +12,7 @@
                     "prefix": "",
                     "name": "Actor",
                     "suffix": "",
-                    "path": "Runtime/Game/Transformable/Actor/Instance",
+                    "path": "Runtime/Scene/Actor",
                     "templates": []
                 },
                 "description": "CHICANE_ACTOR_SUPER_DESCRIPTION"
@@ -183,7 +183,7 @@
                             "prefix": "const ",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -267,7 +267,7 @@
                             "prefix": "const ",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -321,7 +321,7 @@
                             "prefix": "const ",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         },
                         "name": "inSubject"

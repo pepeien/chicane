@@ -1,10 +1,10 @@
 {
-    "title": "CLight",
+    "title": "ALight",
     "filename": "Light",
-    "path": "Runtime/Game/Transformable/Component/Light",
+    "path": "Runtime/Scene/Actor/Light",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Light.hpp",
-        "namespace": "Chicane::CLight",
+        "header": "Includes/Chicane/Runtime/Scene/Actor/Light.hpp",
+        "namespace": "Chicane::ALight",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "CLight",
+                "name": "ALight",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_CLIGHT_CLIGHT_DESCRIPTION"
+                "description": "CHICANE_ALIGHT_ALIGHT_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,31 +35,29 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~CLight",
+                "name": "~ALight",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_CLIGHT_~CLIGHT_DESCRIPTION"
+                "description": "CHICANE_ALIGHT_~ALIGHT_DESCRIPTION"
             }
         ],
-        "functions": [
+        "functions": [],
+        "members": [
             {
                 "accessor": "protected",
-                "type": "override",
-                "return": {
+                "modifiers": [],
+                "type": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "name": "CLight",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component/Light",
                     "templates": []
                 },
-                "name": "onTransform",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CLIGHT_ONTRANSFORM_DESCRIPTION"
+                "name": "m_light",
+                "description": "CHICANE_ALIGHT_M_LIGHT_DESCRIPTION"
             }
         ],
-        "members": [],
-        "description": "CHICANE_CLIGHT_DESCRIPTION"
+        "description": "CHICANE_ALIGHT_DESCRIPTION"
     },
     "children": []
 }

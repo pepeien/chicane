@@ -1,9 +1,9 @@
 {
     "title": "CPhysics",
     "filename": "Physics",
-    "path": "Runtime/Game/Transformable/Component/Physics",
+    "path": "Runtime/Scene/Component/Physics",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Physics.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Component/Physics.hpp",
         "namespace": "Chicane::CPhysics",
         "types": [],
         "enums": [],
@@ -153,7 +153,7 @@
                             "prefix": "",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         },
                         "name": "inSubject"

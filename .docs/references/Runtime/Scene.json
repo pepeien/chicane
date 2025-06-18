@@ -1,10 +1,10 @@
 {
-    "title": "Level",
-    "filename": "Instance",
-    "path": "Runtime/Game/Level/Instance",
+    "title": "Scene",
+    "filename": "Scene",
+    "path": "Runtime/Scene",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Level/Instance.hpp",
-        "namespace": "Chicane::Level",
+        "header": "Includes/Chicane/Runtime/Scene.hpp",
+        "namespace": "Chicane::Scene",
         "types": [
             {
                 "name": "ActorsObservable",
@@ -31,7 +31,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_LEVEL_ACTORSOBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_SCENE_ACTORSOBSERVABLE_DESCRIPTION"
             },
             {
                 "name": "ActorsSubscription",
@@ -58,7 +58,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_LEVEL_ACTORSSUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_SCENE_ACTORSSUBSCRIPTION_DESCRIPTION"
             },
             {
                 "name": "ComponentsObservable",
@@ -85,7 +85,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_LEVEL_COMPONENTSOBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_SCENE_COMPONENTSOBSERVABLE_DESCRIPTION"
             },
             {
                 "name": "ComponentsSubscription",
@@ -112,7 +112,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_LEVEL_COMPONENTSSUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_SCENE_COMPONENTSSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -127,10 +127,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Level",
+                "name": "Scene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_LEVEL_DESCRIPTION"
+                "description": "CHICANE_SCENE_SCENE_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -144,10 +144,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~Level",
+                "name": "~Scene",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_~LEVEL_DESCRIPTION"
+                "description": "CHICANE_SCENE_~SCENE_DESCRIPTION"
             }
         ],
         "functions": [
@@ -166,7 +166,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_LEVEL_ONACTIVATION_DESCRIPTION"
+                "description": "CHICANE_SCENE_ONACTIVATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -194,7 +194,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_LEVEL_ONTICK_DESCRIPTION"
+                "description": "CHICANE_SCENE_ONTICK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -211,7 +211,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_LEVEL_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_SCENE_ONDEACTIVATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -226,7 +226,7 @@
                 "name": "activate",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_ACTIVATE_DESCRIPTION"
+                "description": "CHICANE_SCENE_ACTIVATE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -252,7 +252,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_TICK_DESCRIPTION"
+                "description": "CHICANE_SCENE_TICK_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -267,7 +267,7 @@
                 "name": "deactivate",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_DEACTIVATE_DESCRIPTION"
+                "description": "CHICANE_SCENE_DEACTIVATE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -284,7 +284,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_HASACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_HASACTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -302,7 +302,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_HASACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_HASACTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -317,7 +317,7 @@
                             "prefix": "",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         }
                     ]
@@ -327,7 +327,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_GETACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_GETACTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -353,7 +353,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_GETACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_GETACTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -370,7 +370,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_LEVEL_CREATEACTOR_DESCRIPTION"
+                "description": "CHICANE_SCENE_CREATEACTOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -389,14 +389,14 @@
                             "prefix": "",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         },
                         "name": "inActor"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_REMOVEACTOR_DESCRIPTION"
+                "description": "CHICANE_SCENE_REMOVEACTOR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -405,7 +405,7 @@
                     "prefix": "",
                     "name": "ActorsSubscription",
                     "suffix": "",
-                    "path": "Runtime/Game/Level/Instance",
+                    "path": "Runtime/Scene",
                     "templates": []
                 },
                 "name": "watchActors",
@@ -442,7 +442,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_WATCHACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_WATCHACTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -459,7 +459,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_HASCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_HASCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -477,7 +477,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_HASCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_HASCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -492,7 +492,7 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Component/Instance",
+                            "path": "Runtime/Scene/Component",
                             "templates": []
                         }
                     ]
@@ -502,7 +502,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_GETCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_GETCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -528,7 +528,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_GETCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_GETCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -545,7 +545,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_LEVEL_CREATECOMPONENT_DESCRIPTION"
+                "description": "CHICANE_SCENE_CREATECOMPONENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -564,14 +564,14 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Component/Instance",
+                            "path": "Runtime/Scene/Component",
                             "templates": []
                         },
                         "name": "inComponent"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_REMOVECOMPONENT_DESCRIPTION"
+                "description": "CHICANE_SCENE_REMOVECOMPONENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -580,7 +580,7 @@
                     "prefix": "",
                     "name": "ComponentsSubscription",
                     "suffix": "",
-                    "path": "Runtime/Game/Level/Instance",
+                    "path": "Runtime/Scene",
                     "templates": []
                 },
                 "name": "watchComponents",
@@ -617,7 +617,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_WATCHCOMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_WATCHCOMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -670,7 +670,7 @@
                                     "prefix": "",
                                     "name": "Actor",
                                     "suffix": "*",
-                                    "path": "Runtime/Game/Transformable/Actor/Instance",
+                                    "path": "Runtime/Scene/Actor",
                                     "templates": []
                                 }
                             ]
@@ -682,7 +682,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_LEVEL_TRACELINE_DESCRIPTION"
+                "description": "CHICANE_SCENE_TRACELINE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -697,7 +697,7 @@
                 "name": "createDefaultCamera",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_CREATEDEFAULTCAMERA_DESCRIPTION"
+                "description": "CHICANE_SCENE_CREATEDEFAULTCAMERA_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -712,7 +712,7 @@
                 "name": "removeDefaultCamera",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_REMOVEDEFAULTCAMERA_DESCRIPTION"
+                "description": "CHICANE_SCENE_REMOVEDEFAULTCAMERA_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -727,7 +727,7 @@
                 "name": "refreshDefaultCamera",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LEVEL_REFRESHDEFAULTCAMERA_DESCRIPTION"
+                "description": "CHICANE_SCENE_REFRESHDEFAULTCAMERA_DESCRIPTION"
             }
         ],
         "members": [
@@ -744,13 +744,13 @@
                             "prefix": "",
                             "name": "Actor",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Instance",
+                            "path": "Runtime/Scene/Actor",
                             "templates": []
                         }
                     ]
                 },
                 "name": "m_actors",
-                "description": "CHICANE_LEVEL_M_ACTORS_DESCRIPTION"
+                "description": "CHICANE_SCENE_M_ACTORS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -759,11 +759,11 @@
                     "prefix": "",
                     "name": "ActorsObservable",
                     "suffix": "",
-                    "path": "Runtime/Game/Level/Instance",
+                    "path": "Runtime/Scene",
                     "templates": []
                 },
                 "name": "m_actorObservable",
-                "description": "CHICANE_LEVEL_M_ACTOROBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_SCENE_M_ACTOROBSERVABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -778,13 +778,13 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Component/Instance",
+                            "path": "Runtime/Scene/Component",
                             "templates": []
                         }
                     ]
                 },
                 "name": "m_components",
-                "description": "CHICANE_LEVEL_M_COMPONENTS_DESCRIPTION"
+                "description": "CHICANE_SCENE_M_COMPONENTS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -793,11 +793,11 @@
                     "prefix": "",
                     "name": "ComponentsObservable",
                     "suffix": "",
-                    "path": "Runtime/Game/Level/Instance",
+                    "path": "Runtime/Scene",
                     "templates": []
                 },
                 "name": "m_componentObservable",
-                "description": "CHICANE_LEVEL_M_COMPONENTOBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_SCENE_M_COMPONENTOBSERVABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -806,14 +806,14 @@
                     "prefix": "",
                     "name": "CCamera",
                     "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Component/Camera",
+                    "path": "Runtime/Scene/Component/Camera",
                     "templates": []
                 },
                 "name": "m_defaultCamera",
-                "description": "CHICANE_LEVEL_M_DEFAULTCAMERA_DESCRIPTION"
+                "description": "CHICANE_SCENE_M_DEFAULTCAMERA_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_LEVEL_DESCRIPTION"
+        "description": "CHICANE_SCENE_DESCRIPTION"
     },
     "children": []
 }

@@ -1,9 +1,9 @@
 {
     "title": "CCamera",
     "filename": "Camera",
-    "path": "Runtime/Game/Transformable/Component/Camera",
+    "path": "Runtime/Scene/Component/Camera",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Transformable/Component/Camera.hpp",
+        "header": "Includes/Chicane/Runtime/Scene/Component/Camera.hpp",
         "namespace": "Chicane::CCamera",
         "types": [],
         "enums": [],

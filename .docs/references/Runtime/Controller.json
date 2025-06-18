@@ -1,9 +1,9 @@
 {
     "title": "Controller",
     "filename": "Controller",
-    "path": "Runtime/Game/Controller",
+    "path": "Runtime/Controller",
     "source": {
-        "header": "Includes/Chicane/Runtime/Game/Controller.hpp",
+        "header": "Includes/Chicane/Runtime/Controller.hpp",
         "namespace": "Chicane::Controller",
         "types": [
             {
@@ -18,7 +18,7 @@
                             "prefix": "",
                             "name": "APawn",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
+                            "path": "Runtime/Scene/Actor/Pawn",
                             "templates": []
                         }
                     ]
@@ -37,7 +37,7 @@
                             "prefix": "",
                             "name": "APawn",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
+                            "path": "Runtime/Scene/Actor/Pawn",
                             "templates": []
                         }
                     ]
@@ -121,7 +121,7 @@
                     "prefix": "",
                     "name": "PawnSubscription",
                     "suffix": "",
-                    "path": "Runtime/Game/Controller",
+                    "path": "Runtime/Controller",
                     "templates": []
                 },
                 "name": "watchAttachment",
@@ -194,7 +194,7 @@
                             "prefix": "",
                             "name": "APawn",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
+                            "path": "Runtime/Scene/Actor/Pawn",
                             "templates": []
                         },
                         "name": "inPawn"
@@ -810,7 +810,7 @@
                     "prefix": "",
                     "name": "APawn",
                     "suffix": "*",
-                    "path": "Runtime/Game/Transformable/Actor/Pawn/Instance",
+                    "path": "Runtime/Scene/Actor/Pawn",
                     "templates": []
                 },
                 "name": "m_pawn",
@@ -823,7 +823,7 @@
                     "prefix": "",
                     "name": "PawnObservable",
                     "suffix": "",
-                    "path": "Runtime/Game/Controller",
+                    "path": "Runtime/Controller",
                     "templates": []
                 },
                 "name": "m_pawnObservable",

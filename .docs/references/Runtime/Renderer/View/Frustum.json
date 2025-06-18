@@ -27,7 +27,7 @@
                             "prefix": "const ",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Instance",
+                            "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -55,7 +55,7 @@
                             "prefix": "const ",
                             "name": "CView",
                             "suffix": "*",
-                            "path": "Runtime/Game/Transformable/Component/View",
+                            "path": "Runtime/Scene/Component/View",
                             "templates": []
                         },
                         "name": "inView"
