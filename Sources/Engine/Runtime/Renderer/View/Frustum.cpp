@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Renderer/View/Frustum.hpp"
 
-#include "Chicane/Runtime/Game/Transformable/Instance.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/View.hpp"
+#include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/View.hpp"
 
 namespace Chicane
 {

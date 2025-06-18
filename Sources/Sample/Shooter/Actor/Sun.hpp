@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene/Actor/Light.hpp"
 
 class Sun : public Chicane::ALight
 {

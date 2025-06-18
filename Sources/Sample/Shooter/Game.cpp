@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 
 std::uint32_t m_score = 0;
 std::uint32_t m_maxScore = 0;

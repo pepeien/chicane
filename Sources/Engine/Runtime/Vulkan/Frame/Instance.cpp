@@ -1,8 +1,8 @@
 #include "Chicane/Runtime/Vulkan/Frame/Instance.hpp"
 
-#include "Chicane/Runtime/Game/Transformable/Component/Camera.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Vulkan/GraphicsPipeline.hpp"

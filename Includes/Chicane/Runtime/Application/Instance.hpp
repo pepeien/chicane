@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
+#include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Essential.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Renderer.hpp"
 
 namespace Chicane
@@ -12,8 +13,8 @@ namespace Chicane
         using ControllerObservable   = Observable<Controller*>;
         using ControllerSubscription = Subscription<Controller*>;
 
-        using LevelObservable   = Observable<Level*>;
-        using LevelSubscription = Subscription<Level*>;
+        using SceneObservable   = Observable<Scene*>;
+        using SceneSubscription = Subscription<Scene*>;
 
         using ViewObservable   = Observable<Grid::View*>;
         using ViewSubscription = Subscription<Grid::View*>;
@@ -40,13 +41,13 @@ namespace Chicane
                 ControllerSubscription::CompleteCallback inComplete = nullptr
             );
 
-            bool hasLevel() const;
-            Level* getLevel() const;
-            void setLevel(Level* inLevel);
-            LevelSubscription watchLevel(
-                LevelSubscription::NextCallback inNext,
-                LevelSubscription::ErrorCallback inError = nullptr,
-                LevelSubscription::CompleteCallback inComplete = nullptr
+            bool hasScene() const;
+            Scene* getScene() const;
+            void setScene(Scene* inScene);
+            SceneSubscription watchScene(
+                SceneSubscription::NextCallback inNext,
+                SceneSubscription::ErrorCallback inError = nullptr,
+                SceneSubscription::CompleteCallback inComplete = nullptr
             );
 
             // UI
@@ -105,15 +106,14 @@ namespace Chicane
             void render();
 
         private:
-            // Telemetry
+            // Runtime
             Telemetry                           m_telemetry;
 
-            // Game
             Controller*                         m_controller;
             ControllerObservable                m_controllerObservable;
 
-            Level*                              m_level;
-            LevelObservable                     m_levelObservable;
+            Scene*                              m_scene;
+            SceneObservable                     m_sceneObservable;
 
             // Grid
             Grid::View*                         m_view;

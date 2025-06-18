@@ -2,7 +2,7 @@
 
 #include "Essential.hpp"
 
-class Level : public Chicane::Level
+class Level : public Chicane::Scene
 {
 public:
     Level();

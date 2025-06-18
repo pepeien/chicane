@@ -1,7 +1,8 @@
 #include "Chicane/Runtime/Vulkan/Layer/Sky.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 
 namespace Chicane
 {
@@ -139,8 +140,8 @@ namespace Chicane
                 return;
             }
 
-            Application::watchLevel(
-                [this](Level* inLevel) {
+            Application::watchScene(
+                [this](Scene* inLevel) {
                     if (!inLevel)
                     {
                         return;
@@ -149,7 +150,7 @@ namespace Chicane
                     inLevel->watchActors(
                         [this](const std::vector<Actor*>& inActors)
                         {
-                            const std::vector<ASky*> skies = Application::getLevel()->getActors<ASky>();
+                            const std::vector<ASky*> skies = Application::getScene()->getActors<ASky>();
 
                             if (skies.empty())
                             {

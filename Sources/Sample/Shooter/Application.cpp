@@ -32,7 +32,7 @@ void Application::initLevel()
 {
     m_level = std::make_unique<Level>();
 
-    Chicane::Application::setLevel(m_level.get());
+    Chicane::Application::setScene(m_level.get());
 }
 
 void Application::initCharacter()

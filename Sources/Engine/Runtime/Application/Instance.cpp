@@ -10,8 +10,8 @@ namespace Chicane
             : m_telemetry({}),
             m_controller(nullptr),
             m_controllerObservable({}),
-            m_level(nullptr),
-            m_levelObservable({}),
+            m_scene(nullptr),
+            m_sceneObservable({}),
             m_view(nullptr),
             m_viewObservable({})
         {}
@@ -77,43 +77,43 @@ namespace Chicane
                 .next(m_controller);
         }
 
-        bool Instance::hasLevel() const
+        bool Instance::hasScene() const
         {
-            return m_level != nullptr;
+            return m_scene != nullptr;
         }
 
-        Level* Instance::getLevel() const
+        Scene* Instance::getScene() const
         {
-            return m_level;
+            return m_scene;
         }
 
-        void Instance::setLevel(Level* inLevel)
+        void Instance::setScene(Scene* inScene)
         {
-            if (inLevel == m_level)
+            if (inScene == m_scene)
             {
                 return;
             }
 
-            if (hasLevel())
+            if (hasScene())
             {
-                m_level->deactivate();
+                m_scene->deactivate();
             }
 
-            m_level = inLevel;
-            m_level->activate();
+            m_scene = inScene;
+            m_scene->activate();
 
-            m_levelObservable.next(inLevel);
+            m_sceneObservable.next(inScene);
         }
 
-        LevelSubscription Instance::watchLevel(
-            LevelSubscription::NextCallback inNext,
-            LevelSubscription::ErrorCallback inError,
-            LevelSubscription::CompleteCallback inComplete
+        SceneSubscription Instance::watchScene(
+            SceneSubscription::NextCallback inNext,
+            SceneSubscription::ErrorCallback inError,
+            SceneSubscription::CompleteCallback inComplete
         )
         {
-            return m_levelObservable
+            return m_sceneObservable
                 .subscribe(inNext, inError, inComplete)
-                .next(m_level);
+                .next(m_scene);
         }
 
         bool Instance::hasView() const
@@ -254,9 +254,9 @@ namespace Chicane
                 m_view->tick(m_telemetry.delta);
             }
 
-            if (hasLevel())
+            if (hasScene())
             {
-                m_level->tick(m_telemetry.delta);
+                m_scene->tick(m_telemetry.delta);
             }
         }
     }

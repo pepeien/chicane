@@ -15,12 +15,12 @@ Character::Character()
     m_hitAudio(nullptr),
     m_victoryAudio(nullptr)
 {
-    m_camera = Chicane::Application::getLevel()->createComponent<Chicane::CCamera>();
+    m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
     m_camera->attachTo(this);
     m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
     m_camera->activate();
 
-    m_wand = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
+    m_wand = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);
     m_wand->setMesh("Contents/Engine/Meshes/Cube.bmsh");
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
@@ -28,19 +28,19 @@ Character::Character()
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
     m_wand->activate();
 
-    m_body = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
+    m_body = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
     m_body->setMesh("Contents/Engine/Meshes/Cube.bmsh");
     m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
-    m_hitAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
+    m_hitAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
     m_hitAudio->attachTo(this);
     m_hitAudio->load("Hit");
     m_hitAudio->activate();
 
-    m_victoryAudio = Chicane::Application::getLevel()->createComponent<Chicane::CAudio>();
+    m_victoryAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
     m_victoryAudio->attachTo(this);
     m_victoryAudio->load("Victory");
     m_victoryAudio->activate();
@@ -238,7 +238,7 @@ void Character::onShoot()
     const Chicane::Vec3& origin     = m_camera->getTranslation();
     const Chicane::Vec3 destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples = Chicane::Application::getLevel()->traceLine<Apple>(
+    std::vector<Apple*> hitApples = Chicane::Application::getScene()->traceLine<Apple>(
         origin,
         destination,
         { this }

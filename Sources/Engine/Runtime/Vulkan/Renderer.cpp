@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Vulkan/Layer.hpp"
 
 namespace Chicane
@@ -72,7 +72,7 @@ namespace Chicane
         {
             pushLayer(new LSky());
             pushLayer(new LShadow());
-            pushLayer(new LLevel());
+            pushLayer(new LScene());
             pushLayer(new LGrid());
         }
 

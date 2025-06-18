@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene/Actor.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Physics.hpp"
 
 class Apple : public Chicane::Actor
 {
@@ -18,10 +20,10 @@ public:
     void setInitialPosition(const Chicane::Vec3& inPosition);
 
 private:
-    float                  m_fallingRate;
+    float              m_fallingRate;
 
-    Chicane::Vec3 m_startPosition;
+    Chicane::Vec3      m_startPosition;
 
-    Chicane::CMesh*        m_meshComponent;
-    Chicane::CPhysics*     m_physicsComponent;
+    Chicane::CMesh*    m_meshComponent;
+    Chicane::CPhysics* m_physicsComponent;
 };

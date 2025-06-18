@@ -25,13 +25,13 @@ namespace Chicane
             ControllerSubscription::CompleteCallback inComplete = nullptr
         );
 
-        CHICANE_RUNTIME bool hasLevel();
-        CHICANE_RUNTIME Level* getLevel();
-        CHICANE_RUNTIME void setLevel(Level* inLevel);
-        CHICANE_RUNTIME LevelSubscription watchLevel(
-            LevelSubscription::NextCallback inNext,
-            LevelSubscription::ErrorCallback inError = nullptr,
-            LevelSubscription::CompleteCallback inComplete = nullptr
+        CHICANE_RUNTIME bool hasScene();
+        CHICANE_RUNTIME Scene* getScene();
+        CHICANE_RUNTIME void setScene(Scene* inScene);
+        CHICANE_RUNTIME SceneSubscription watchScene(
+            SceneSubscription::NextCallback inNext,
+            SceneSubscription::ErrorCallback inError = nullptr,
+            SceneSubscription::CompleteCallback inComplete = nullptr
         );
 
         // UI

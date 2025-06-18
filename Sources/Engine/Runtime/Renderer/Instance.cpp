@@ -1,7 +1,10 @@
 #include "Chicane/Runtime/Renderer/Instance.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Game.hpp"
+#include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -307,8 +310,8 @@ namespace Chicane
                 }
             );
 
-            Application::watchLevel(
-                [this](Level* inLevel) {
+            Application::watchScene(
+                [this](Scene* inLevel) {
                     if (!inLevel)
                     {
                         return;

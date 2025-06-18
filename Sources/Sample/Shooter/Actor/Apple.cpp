@@ -20,12 +20,12 @@ Apple::Apple()
     setCanCollide(true);
     setAbsoluteScale(1.5f);
 
-    m_meshComponent = Chicane::Application::getLevel()->createComponent<Chicane::CMesh>();
+    m_meshComponent = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
-    m_physicsComponent = Chicane::Application::getLevel()->createComponent<Chicane::CPhysics>();
+    m_physicsComponent = Chicane::Application::getScene()->createComponent<Chicane::CPhysics>();
     m_physicsComponent->attachTo(this);
     m_physicsComponent->activate();
 }

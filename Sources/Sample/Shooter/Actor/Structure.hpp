@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
-#include "Chicane/Runtime/Game.hpp"
-#include "Chicane/Runtime/Game/Transformable/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 class Strcuture : public Chicane::Actor
 {

@@ -25,7 +25,7 @@ namespace Chicane
             void initFrameResources();
             void destroyFrameResources();
 
-            // Level
+            // Render
             void initGraphicsPipeline();
             void initFramebuffers();
 

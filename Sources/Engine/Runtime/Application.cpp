@@ -83,40 +83,40 @@ namespace Chicane
             return m_application->watchController(inNext, inError, inComplete);
         }
 
-        bool hasLevel()
+        bool hasScene()
         {
             if (!m_application)
             {
                 return false;
             }
 
-            return m_application->hasLevel();
+            return m_application->hasScene();
         }
 
-        Level* getLevel()
+        Scene* getScene()
         {
             if (!m_application)
             {
                 return nullptr;
             }
 
-            return m_application->getLevel();
+            return m_application->getScene();
         }
 
-        void setLevel(Level* inLevel)
+        void setScene(Scene* inScene)
         {
             if (!m_application)
             {
                 return;
             }
 
-            m_application->setLevel(inLevel);
+            m_application->setScene(inScene);
         }
 
-        LevelSubscription watchLevel(
-            LevelSubscription::NextCallback inNext,
-            LevelSubscription::ErrorCallback inError,
-            LevelSubscription::CompleteCallback inComplete 
+        SceneSubscription watchScene(
+            SceneSubscription::NextCallback inNext,
+            SceneSubscription::ErrorCallback inError,
+            SceneSubscription::CompleteCallback inComplete 
         )
         {
             if (!m_application)
@@ -124,7 +124,7 @@ namespace Chicane
                 return {};
             }
 
-            return m_application->watchLevel(inNext, inError, inComplete);
+            return m_application->watchScene(inNext, inError, inComplete);
         }
 
         bool hasView()

@@ -1,5 +1,7 @@
 #include "Level.hpp"
 
+#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
+
 #include "Actor.hpp"
 #include "Game.hpp"
 
@@ -9,7 +11,7 @@ static inline constexpr const std::uint32_t APPLE_ROW_COUNT    = 2;
 static inline constexpr const float         APPLE_STEP         = 20.0f;
 
 Level::Level()
-    : Chicane::Level()
+    : Chicane::Scene()
 {}
 
 void Level::onActivation()
