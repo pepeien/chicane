@@ -50,6 +50,32 @@
                     ]
                 },
                 "description": "CHICANE_GRID_FUNCTIONS_DESCRIPTION"
+            },
+            {
+                "name": "StyleProperties",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEPROPERTIES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -63,7 +89,7 @@
                     "prefix": "",
                     "name": "Component",
                     "suffix": "*",
-                    "path": "Grid/Component/Instance",
+                    "path": "Grid/Component",
                     "templates": []
                 },
                 "name": "createComponent",
@@ -109,7 +135,7 @@
                             "prefix": "",
                             "name": "Component::Compiler",
                             "suffix": "",
-                            "path": "Grid/Component/Instance",
+                            "path": "Grid/Component",
                             "templates": []
                         },
                         "name": "inCompiler"
@@ -128,7 +154,7 @@
                     "path": "Core/String",
                     "templates": []
                 },
-                "name": "extractParams",
+                "name": "variableToReference",
                 "parameters": [
                     {
                         "type": {
@@ -142,7 +168,93 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_EXTRACTPARAMS_DESCRIPTION"
+                "description": "CHICANE_GRID_VARIABLETOREFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "colorToReference",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COLORTOREFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "splitOneliner",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_SPLITONELINER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "StyleAlignment",
+                    "suffix": "",
+                    "path": "Grid/Style/Alignment",
+                    "templates": []
+                },
+                "name": "toAlignment",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inText"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_TOALIGNMENT_DESCRIPTION"
             }
         ],
         "members": [

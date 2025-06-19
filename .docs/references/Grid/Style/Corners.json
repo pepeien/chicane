@@ -1,10 +1,10 @@
 {
-    "title": "Corners",
+    "title": "Style Corners",
     "filename": "Corners",
     "path": "Grid/Style/Corners",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Corners.hpp",
-        "namespace": "Chicane::Grid::Style::Corners",
+        "namespace": "Chicane::Grid::StyleCorners",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Corners",
+                "name": "StyleCorners",
                 "parameters": [
                     {
                         "type": {
@@ -72,7 +72,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLE_CORNERS_CORNERS_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_STYLECORNERS_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -92,9 +92,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Properties",
+                            "name": "StyleProperties",
                             "suffix": "&",
-                            "path": "Grid/Style",
+                            "path": "Grid",
                             "templates": []
                         },
                         "name": "inSource"
@@ -115,7 +115,7 @@
                                 },
                                 {
                                     "prefix": "",
-                                    "name": "Direction)",
+                                    "name": "StyleDirection)",
                                     "suffix": "",
                                     "path": "",
                                     "templates": []
@@ -126,7 +126,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLE_CORNERS_REFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -143,7 +143,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Corners",
+                            "name": "StyleCorners",
                             "suffix": "&",
                             "path": "Grid/Style/Corners",
                             "templates": []
@@ -153,7 +153,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Corners",
+                            "name": "StyleCorners",
                             "suffix": "&",
                             "path": "Grid/Style/Corners",
                             "templates": []
@@ -164,7 +164,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_GRID_STYLE_CORNERS_OPERATOR==_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_OPERATOR==_DESCRIPTION"
             }
         ],
         "members": [
@@ -179,7 +179,7 @@
                     "templates": []
                 },
                 "name": "top",
-                "description": "CHICANE_GRID_STYLE_CORNERS_TOP_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_TOP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -192,7 +192,7 @@
                     "templates": []
                 },
                 "name": "bottom",
-                "description": "CHICANE_GRID_STYLE_CORNERS_BOTTOM_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_BOTTOM_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -205,7 +205,7 @@
                     "templates": []
                 },
                 "name": "left",
-                "description": "CHICANE_GRID_STYLE_CORNERS_LEFT_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_LEFT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -218,7 +218,7 @@
                     "templates": []
                 },
                 "name": "right",
-                "description": "CHICANE_GRID_STYLE_CORNERS_RIGHT_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_RIGHT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -231,7 +231,7 @@
                     "templates": []
                 },
                 "name": "m_onelineAttributeName",
-                "description": "CHICANE_GRID_STYLE_CORNERS_M_ONELINEATTRIBUTENAME_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_M_ONELINEATTRIBUTENAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -244,7 +244,7 @@
                     "templates": []
                 },
                 "name": "m_topAttributeName",
-                "description": "CHICANE_GRID_STYLE_CORNERS_M_TOPATTRIBUTENAME_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_M_TOPATTRIBUTENAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -257,7 +257,7 @@
                     "templates": []
                 },
                 "name": "m_bottomAttributeName",
-                "description": "CHICANE_GRID_STYLE_CORNERS_M_BOTTOMATTRIBUTENAME_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_M_BOTTOMATTRIBUTENAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -270,7 +270,7 @@
                     "templates": []
                 },
                 "name": "m_leftAttributeName",
-                "description": "CHICANE_GRID_STYLE_CORNERS_M_LEFTATTRIBUTENAME_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_M_LEFTATTRIBUTENAME_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -283,10 +283,10 @@
                     "templates": []
                 },
                 "name": "m_rightAttributeName",
-                "description": "CHICANE_GRID_STYLE_CORNERS_M_RIGHTATTRIBUTENAME_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLECORNERS_M_RIGHTATTRIBUTENAME_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLE_CORNERS_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLECORNERS_DESCRIPTION"
     },
     "children": []
 }

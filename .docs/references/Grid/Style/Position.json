@@ -1,10 +1,10 @@
 {
-    "title": "Position",
+    "title": "Style Position",
     "filename": "Position",
     "path": "Grid/Style/Position",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Position.hpp",
-        "namespace": "Chicane::Grid::Style::Position",
+        "namespace": "Chicane::Grid::StylePosition",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Absolute",
-                "description": "CHICANE_GRID_STYLE_POSITION_ABSOLUTE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEPOSITION_ABSOLUTE_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,14 +27,14 @@
                     "templates": []
                 },
                 "name": "Relative",
-                "description": "CHICANE_GRID_STYLE_POSITION_RELATIVE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEPOSITION_RELATIVE_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GRID_STYLE_POSITION_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEPOSITION_DESCRIPTION"
     },
     "children": []
 }

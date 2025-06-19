@@ -1,10 +1,10 @@
 {
-    "title": "Source",
+    "title": "Style Source",
     "filename": "Source",
     "path": "Grid/Style/Source",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Source.hpp",
-        "namespace": "Chicane::Grid::Style::Source",
+        "namespace": "Chicane::Grid::StyleSource",
         "types": [
             {
                 "name": "List",
@@ -16,14 +16,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Source",
+                            "name": "StyleSource",
                             "suffix": "",
                             "path": "Grid/Style/Source",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_GRID_STYLE_SOURCE_LIST_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_LIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -38,7 +38,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Source",
+                "name": "StyleSource",
                 "parameters": [
                     {
                         "type": {
@@ -61,16 +61,16 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Properties",
+                            "name": "StyleProperties",
                             "suffix": "&",
-                            "path": "Grid/Style",
+                            "path": "Grid",
                             "templates": []
                         },
                         "name": "inProperties"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLE_SOURCE_SOURCE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_STYLESOURCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -82,10 +82,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Source",
+                "name": "StyleSource",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLE_SOURCE_SOURCE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_STYLESOURCE_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -105,7 +105,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_STYLE_SOURCE_ISEMPTY_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_ISEMPTY_DESCRIPTION"
             }
         ],
         "members": [
@@ -128,23 +128,23 @@
                     ]
                 },
                 "name": "selectors",
-                "description": "CHICANE_GRID_STYLE_SOURCE_SELECTORS_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_SELECTORS_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Properties",
+                    "name": "StyleProperties",
                     "suffix": "",
-                    "path": "Grid/Style",
+                    "path": "Grid",
                     "templates": []
                 },
                 "name": "properties",
-                "description": "CHICANE_GRID_STYLE_SOURCE_PROPERTIES_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLESOURCE_PROPERTIES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLE_SOURCE_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLESOURCE_DESCRIPTION"
     },
     "children": []
 }

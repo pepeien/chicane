@@ -1,10 +1,10 @@
 {
-    "title": "Alignment",
+    "title": "Style Alignment",
     "filename": "Alignment",
     "path": "Grid/Style/Alignment",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-        "namespace": "Chicane::Grid::Style::Alignment",
+        "namespace": "Chicane::Grid::StyleAlignment",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Start",
-                "description": "CHICANE_GRID_STYLE_ALIGNMENT_START_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEALIGNMENT_START_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Center",
-                "description": "CHICANE_GRID_STYLE_ALIGNMENT_CENTER_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEALIGNMENT_CENTER_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,14 +38,14 @@
                     "templates": []
                 },
                 "name": "End",
-                "description": "CHICANE_GRID_STYLE_ALIGNMENT_END_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEALIGNMENT_END_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GRID_STYLE_ALIGNMENT_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEALIGNMENT_DESCRIPTION"
     },
     "children": []
 }

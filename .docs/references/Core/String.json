@@ -1025,6 +1025,82 @@
                     "path": "Core/String",
                     "templates": []
                 },
+                "name": "getBetween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOpening"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inClosing"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_STRING_GETBETWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getBetween",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inOpening"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inClosing"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_STRING_GETBETWEEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
                 "name": "trim",
                 "parameters": [],
                 "modifiers": [

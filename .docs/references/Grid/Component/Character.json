@@ -244,8 +244,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_canUpdate",
-                "description": "CHICANE_GRID_CHARACTER_M_CANUPDATE_DESCRIPTION"
+                "name": "m_bCanUpdate",
+                "description": "CHICANE_GRID_CHARACTER_M_BCANUPDATE_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -1050,8 +1050,8 @@
                 "filename": "Component",
                 "path": "Grid/Component",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Grid/Component.hpp",
+                    "namespace": "Chicane::Grid::Component"
                 },
                 "children": [
                     {
@@ -1071,16 +1071,6 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Component/Character.hpp",
                             "namespace": "Chicane::Grid::Character"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Component",
-                        "filename": "Instance",
-                        "path": "Grid/Component/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/Instance.hpp",
-                            "namespace": "Chicane::Grid::Component"
                         },
                         "children": []
                     },
@@ -1196,92 +1186,82 @@
                 },
                 "children": [
                     {
-                        "title": "Alignment",
+                        "title": "Style Alignment",
                         "filename": "Alignment",
                         "path": "Grid/Style/Alignment",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Alignment.hpp",
-                            "namespace": "Chicane::Grid::Style::Alignment"
+                            "namespace": "Chicane::Grid::StyleAlignment"
                         },
                         "children": []
                     },
                     {
-                        "title": "Corners",
+                        "title": "Style Corners",
                         "filename": "Corners",
                         "path": "Grid/Style/Corners",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Corners.hpp",
-                            "namespace": "Chicane::Grid::Style::Corners"
+                            "namespace": "Chicane::Grid::StyleCorners"
                         },
                         "children": []
                     },
                     {
-                        "title": "Direction",
+                        "title": "Style Direction",
                         "filename": "Direction",
                         "path": "Grid/Style/Direction",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Direction.hpp",
-                            "namespace": "Chicane::Grid::Style::Direction"
+                            "namespace": "Chicane::Grid::StyleDirection"
                         },
                         "children": []
                     },
                     {
-                        "title": "Display",
+                        "title": "Style Display",
                         "filename": "Display",
                         "path": "Grid/Style/Display",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Display.hpp",
-                            "namespace": "Chicane::Grid::Style::Display"
+                            "namespace": "Chicane::Grid::StyleDisplay"
                         },
                         "children": []
                     },
                     {
-                        "title": "Flex",
+                        "title": "Style Flex",
                         "filename": "Flex",
                         "path": "Grid/Style/Flex",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Flex.hpp",
-                            "namespace": "Chicane::Grid::Style::Flex"
+                            "namespace": "Chicane::Grid::StyleFlex"
                         },
                         "children": []
                     },
                     {
-                        "title": "Font",
+                        "title": "Style Font",
                         "filename": "Font",
                         "path": "Grid/Style/Font",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Font.hpp",
-                            "namespace": "Chicane::Grid::Style::Font"
+                            "namespace": "Chicane::Grid::StyleFont"
                         },
                         "children": []
                     },
                     {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Grid/Style/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Style/Instance.hpp",
-                            "namespace": "Chicane::Grid::Style::Instance"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Position",
+                        "title": "Style Position",
                         "filename": "Position",
                         "path": "Grid/Style/Position",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Position.hpp",
-                            "namespace": "Chicane::Grid::Style::Position"
+                            "namespace": "Chicane::Grid::StylePosition"
                         },
                         "children": []
                     },
                     {
-                        "title": "Source",
+                        "title": "Style Source",
                         "filename": "Source",
                         "path": "Grid/Style/Source",
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Source.hpp",
-                            "namespace": "Chicane::Grid::Style::Source"
+                            "namespace": "Chicane::Grid::StyleSource"
                         },
                         "children": []
                     }

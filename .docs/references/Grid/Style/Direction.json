@@ -1,10 +1,10 @@
 {
-    "title": "Direction",
+    "title": "Style Direction",
     "filename": "Direction",
     "path": "Grid/Style/Direction",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Direction.hpp",
-        "namespace": "Chicane::Grid::Style::Direction",
+        "namespace": "Chicane::Grid::StyleDirection",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Vertical",
-                "description": "CHICANE_GRID_STYLE_DIRECTION_VERTICAL_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDIRECTION_VERTICAL_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,14 +27,14 @@
                     "templates": []
                 },
                 "name": "Horizontal",
-                "description": "CHICANE_GRID_STYLE_DIRECTION_HORIZONTAL_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDIRECTION_HORIZONTAL_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GRID_STYLE_DIRECTION_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEDIRECTION_DESCRIPTION"
     },
     "children": []
 }

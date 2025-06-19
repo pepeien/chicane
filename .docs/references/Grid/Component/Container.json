@@ -110,8 +110,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_canUpdate",
-                "description": "CHICANE_GRID_CONTAINER_M_CANUPDATE_DESCRIPTION"
+                "name": "m_bCanUpdate",
+                "description": "CHICANE_GRID_CONTAINER_M_BCANUPDATE_DESCRIPTION"
             },
             {
                 "accessor": "protected",

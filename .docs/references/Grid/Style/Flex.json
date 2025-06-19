@@ -1,10 +1,10 @@
 {
-    "title": "Flex",
+    "title": "Style Flex",
     "filename": "Flex",
     "path": "Grid/Style/Flex",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Flex.hpp",
-        "namespace": "Chicane::Grid::Style::Flex",
+        "namespace": "Chicane::Grid::StyleFlex",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -22,10 +22,10 @@
                     "templates": []
                 },
                 "name": "direction",
-                "description": "CHICANE_GRID_STYLE_FLEX_DIRECTION_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEFLEX_DIRECTION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLE_FLEX_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEFLEX_DESCRIPTION"
     },
     "children": []
 }

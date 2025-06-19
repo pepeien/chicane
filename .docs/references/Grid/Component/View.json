@@ -151,7 +151,7 @@
                             "prefix": "",
                             "name": "Component",
                             "suffix": "*",
-                            "path": "Grid/Component/Instance",
+                            "path": "Grid/Component",
                             "templates": []
                         },
                         "name": "inChild"
@@ -212,7 +212,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Style::Source::List",
+                    "name": "StyleSource::List",
                     "suffix": "",
                     "path": "Grid/Style/Source",
                     "templates": []

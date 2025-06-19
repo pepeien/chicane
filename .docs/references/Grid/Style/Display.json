@@ -1,10 +1,10 @@
 {
-    "title": "Display",
+    "title": "Style Display",
     "filename": "Display",
     "path": "Grid/Style/Display",
     "source": {
         "header": "Includes/Chicane/Grid/Style/Display.hpp",
-        "namespace": "Chicane::Grid::Style::Display",
+        "namespace": "Chicane::Grid::StyleDisplay",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Flex",
-                "description": "CHICANE_GRID_STYLE_DISPLAY_FLEX_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDISPLAY_FLEX_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Block",
-                "description": "CHICANE_GRID_STYLE_DISPLAY_BLOCK_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDISPLAY_BLOCK_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "Hidden",
-                "description": "CHICANE_GRID_STYLE_DISPLAY_HIDDEN_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDISPLAY_HIDDEN_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,14 +49,14 @@
                     "templates": []
                 },
                 "name": "None",
-                "description": "CHICANE_GRID_STYLE_DISPLAY_NONE_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEDISPLAY_NONE_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_GRID_STYLE_DISPLAY_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEDISPLAY_DESCRIPTION"
     },
     "children": []
 }
