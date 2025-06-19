@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
 #include "Chicane/Grid/Component.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -34,9 +34,9 @@ namespace Chicane
             const String& getPath() const;
 
         protected:
-            String         m_path;
+            String              m_path;
 
-            Style::Source::List m_styles;
+            StyleSource::List m_styles;
         };
     }
 }

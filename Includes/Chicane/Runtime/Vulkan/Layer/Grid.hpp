@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Grid/Component/View.hpp"
 #include "Chicane/Runtime/Vulkan/Renderer.hpp"
 
 namespace Chicane

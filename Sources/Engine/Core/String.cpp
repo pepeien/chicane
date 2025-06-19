@@ -237,6 +237,22 @@ namespace Chicane
         return result;
     }
 
+    String String::getBetween(char inOpening, char inClosing) const
+    {
+        const std::size_t start = firstOf(inOpening) + 1;
+        const std::size_t end   = lastOf(inClosing);
+
+        return substr(start, end - start).trim();
+    }
+
+    String String::getBetween(const String& inOpening, const String& inClosing) const
+    {
+        const std::size_t start = firstOf(inOpening) + 1;
+        const std::size_t end   = lastOf(inClosing);
+
+        return substr(start, end - start);
+    }
+
     String String::trim() const
     {
         std::string result = m_value;

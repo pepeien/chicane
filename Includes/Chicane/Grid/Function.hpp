@@ -10,7 +10,7 @@ namespace Chicane
         struct CHICANE_GRID FunctionData
         {
         public:
-            String            name   = "";
+            String                 name   = "";
             std::vector<Reference> params = {};
         };
 

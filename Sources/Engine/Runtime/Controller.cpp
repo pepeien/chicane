@@ -345,18 +345,18 @@ namespace Chicane
 
         for (int i = 0; i < keyboardCount; i++)
         {
-            bool isDefault = false;
+            bool bIsDefault = false;
             for (const String& defaultName : DEFAULT_KEYBOARDS)
             {
                 if (defaultName.equals(SDL_GetKeyboardNameForID(*keyboardId)))
                 {
-                    isDefault = true;
+                    bIsDefault = true;
 
                     break;
                 }
             }
 
-            if (!isDefault)
+            if (!bIsDefault)
             {
                 break;
             }

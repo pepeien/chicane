@@ -1,22 +1,19 @@
 #pragma once
 
-#include "Chicane/Grid/Style/Essential.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        struct CHICANE_GRID StyleFont
         {
-            struct CHICANE_GRID Font
-            {
-            public:
-                Font();
+        public:
+            StyleFont();
 
-            public:
-                String family;
-                float       size;
-            };
-        }
+        public:
+            String family;
+            float       size;
+        };
     }
 }

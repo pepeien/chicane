@@ -54,13 +54,13 @@ namespace Chicane
                 const std::vector<vk::PresentModeKHR>& inPresentModes
             )
             {
-                bool doesSupportMailBox = std::find(
+                bool bDoesSupportMailBox = std::find(
                     inPresentModes.begin(),
                     inPresentModes.end(),
                     vk::PresentModeKHR::eMailbox
                 ) != inPresentModes.end();
 
-                if (doesSupportMailBox)
+                if (bDoesSupportMailBox)
                 {
                     outPresentMode = vk::PresentModeKHR::eMailbox;
 
@@ -68,13 +68,13 @@ namespace Chicane
                 }
 
                 // Due to AMD's lack of support to mailbox mode I will use Immediate as a alternative
-                bool doesSupportImmediate = std::find(
+                bool bDoesSupportImmediate = std::find(
                     inPresentModes.begin(),
                     inPresentModes.end(),
                     vk::PresentModeKHR::eImmediate
                 ) != inPresentModes.end();
 
-                if (doesSupportImmediate)
+                if (bDoesSupportImmediate)
                 {
                     outPresentMode = vk::PresentModeKHR::eImmediate;
 

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Chicane/Grid/Component.hpp"
 #include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
@@ -25,7 +25,7 @@ namespace Chicane
             void refreshColor();
 
         protected:
-            bool m_canUpdate;
+            bool        m_bCanUpdate;
 
             Color::Rgba m_color;
         };

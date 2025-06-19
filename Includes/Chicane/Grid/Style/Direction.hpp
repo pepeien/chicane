@@ -6,13 +6,10 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        enum class StyleDirection : std::uint8_t
         {
-            enum class Direction : std::uint8_t
-            {
-                Vertical,
-                Horizontal
-            };
-        }
+            Vertical,
+            Horizontal
+        };
     }
 }

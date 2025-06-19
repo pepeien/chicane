@@ -6,12 +6,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
-        {
-            Font::Font()
-                : family(FONT_FAMILY_DEFAULT_VALUE),
-                size(16.0f)
-            {}
-        }
+        StyleFont::StyleFont()
+            : family(Style::FONT_FAMILY_DEFAULT_VALUE),
+            size(16.0f)
+        {}
     }
 }

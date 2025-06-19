@@ -11,7 +11,7 @@ namespace Chicane
 
         Character::Character()
             : Super(TAG_ID),
-            m_canUpdate(false),
+            m_bCanUpdate(false),
             m_character(NULL_CHARACTER)
         {
             Box::getFontManager()->watchChanges(
@@ -29,7 +29,7 @@ namespace Chicane
 
         void Character::refreshPrimitive()
         {
-            if (!m_canUpdate)
+            if (!m_bCanUpdate)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Chicane
                 return;
             }
 
-            m_canUpdate = false;
+            m_bCanUpdate = false;
 
             const Box::FontGlyph& glyph = getGlyph();
 
@@ -125,7 +125,7 @@ namespace Chicane
                 return;
             }
 
-            const Style::Instance& parentStyle = m_parent->getStyle();
+            const Style& parentStyle = m_parent->getStyle();
 
             m_style.foregroundColor = parentStyle.foregroundColor;
             m_style.font            = parentStyle.font;
@@ -142,7 +142,7 @@ namespace Chicane
             m_style.margin.right  = glyph.bearing.x;
             m_style.margin.bottom = glyph.bearing.y;
 
-            m_canUpdate = true;
+            m_bCanUpdate = true;
         }
     }
 }

@@ -114,12 +114,12 @@ namespace Chicane
 
                 for (std::uint32_t i = 0; i < memoryProperties.memoryTypeCount; i++)
                 {
-                    bool isSupported{ static_cast<bool>(inSupportedMemoryIndices & (1 << i)) };
-                    bool isSufficient{
+                    bool bIsSupported = static_cast<bool>(inSupportedMemoryIndices & (1 << i));
+                    bool bIsSufficient = static_cast<bool>(
                         (memoryProperties.memoryTypes[i].propertyFlags & inRequestMemoryProperties) == inRequestMemoryProperties
-                    };
+                    );
 
-                    if (isSupported && isSufficient)
+                    if (bIsSupported && bIsSufficient)
                     {
                         return i;
                     }

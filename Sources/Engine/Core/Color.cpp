@@ -51,8 +51,8 @@ namespace Chicane
             {
                 String color = inValue.trim().toUpper();
     
-                bool bIsTransparent = color.equals(HEX_COLOR_TRANSPARENT);
-                bool bIsNotHex      = color.size() < 7 || color.size() > 9;
+                const bool bIsTransparent = color.equals(HEX_COLOR_TRANSPARENT);
+                const bool bIsNotHex      = color.size() < 7 || color.size() > 9;
     
                 if (bIsTransparent || bIsNotHex)
                 {

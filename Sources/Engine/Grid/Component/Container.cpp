@@ -6,7 +6,7 @@ namespace Chicane
     {
         Container::Container(const pugi::xml_node& inNode)
             : Super(inNode),
-            m_canUpdate(false)
+            m_bCanUpdate(false)
         {}
 
         void Container::onRefresh()
@@ -16,7 +16,7 @@ namespace Chicane
 
         void Container::refreshPrimitive()
         {
-            if (!m_canUpdate)
+            if (!m_bCanUpdate)
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace Chicane
                 return;
             }
 
-            m_canUpdate = false;
+            m_bCanUpdate = false;
 
             Primitive primitive = {};
             primitive.indices = { 0, 1, 2, 2, 3, 0 };
@@ -67,7 +67,7 @@ namespace Chicane
 
             m_color = m_style.backgroundColor;
 
-            m_canUpdate = true;
+            m_bCanUpdate = true;
         }
     }
 }

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Chicane/Grid/Component.hpp"
 #include "Chicane/Grid/Essential.hpp"
-#include "Chicane/Grid/Component/Instance.hpp"
 
 namespace Chicane
 {
@@ -39,7 +39,7 @@ namespace Chicane
             void refreshFont();
 
         private:
-            bool m_canUpdate;
+            bool m_bCanUpdate;
 
             char m_character;
         };

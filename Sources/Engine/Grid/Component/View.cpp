@@ -27,7 +27,7 @@ namespace Chicane
 
             const pugi::xml_node& node = document.first_child();
 
-            bool bIsRoot = node.parent() == node.root() && !node.next_sibling();
+            const bool bIsRoot = node.parent() == node.root() && !node.next_sibling();
 
             if (!bIsRoot)
             {
@@ -43,7 +43,7 @@ namespace Chicane
 
             m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();
 
-            m_styles = Style::Instance::parseSources(node);
+            m_styles = Style::parseSources(node);
 
             m_root   = this;
             m_parent = this;

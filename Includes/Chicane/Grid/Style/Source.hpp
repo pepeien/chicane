@@ -6,26 +6,23 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        using StyleProperties = std::unordered_map<String, String>;
+
+        struct CHICANE_GRID StyleSource
         {
-            using Properties = std::unordered_map<String, String>;
+        public:
+            using List = std::vector<StyleSource>;
 
-            struct CHICANE_GRID Source
-            {
-            public:
-                using List = std::vector<Source>;
+        public:
+            StyleSource(const std::vector<String>& inSelectors, const StyleProperties& inProperties);
+            StyleSource();
 
-            public:
-                Source(const std::vector<String>& inSelectors, const Properties& inProperties);
-                Source();
+        public:
+            bool isEmpty() const;
 
-            public:
-                bool isEmpty() const;
-
-            public:
-                std::vector<String> selectors;
-                Properties               properties;
-            };
-        }
+        public:
+            std::vector<String> selectors;
+            StyleProperties     properties;
+        };
     }
 }

@@ -6,22 +6,19 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        StyleAlignment toAlignment(const String& inValue)
         {
-            Alignment toAlignment(const String& inValue)
+            if (inValue.equals(Style::ALIGNMENT_TYPE_CENTER))
             {
-                if (inValue.equals(ALIGNMENT_TYPE_CENTER))
-                {
-                    return Alignment::Center;
-                }
-
-                if (inValue.equals(ALIGNMENT_TYPE_START))
-                {
-                    return Alignment::Start;
-                }
-
-                return Alignment::End;
+                return StyleAlignment::Center;
             }
+
+            if (inValue.equals(Style::ALIGNMENT_TYPE_START))
+            {
+                return StyleAlignment::Start;
+            }
+
+            return StyleAlignment::End;
         }
     }
 }

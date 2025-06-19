@@ -42,7 +42,5 @@ namespace Chicane
         // List
         static inline constexpr const char* ITEMS_ATTRIBUTE_NAME       = "items";
         static inline constexpr const char* ITEM_GETTER_ATTRIBUTE_NAME = "itemGetter";
-
-        CHICANE_GRID String extractParams(const String& inValue);
     }
 }

@@ -30,8 +30,8 @@ namespace Chicane
             }
 
         public:
-            std::vector<Vertex>       vertices = {};
-            std::vector<std::uint32_t> indices = {};
+            std::vector<Vertex>        vertices = {};
+            std::vector<std::uint32_t> indices  = {};
         };
     }
 }

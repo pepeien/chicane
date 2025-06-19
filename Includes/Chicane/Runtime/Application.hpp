@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Chicane/Grid/Component/View.hpp"
 #include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Application/Instance.hpp"

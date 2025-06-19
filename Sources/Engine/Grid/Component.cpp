@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Instance.hpp"
+#include "Chicane/Grid/Component.hpp"
 
 #include "Chicane/Grid.hpp"
 
@@ -19,7 +19,7 @@ namespace Chicane
             : m_tag(inTag),
             m_id(""),
             m_class(""),
-            m_style(Style::Instance()),
+            m_style(Style()),
             m_functions({}),
             m_root(nullptr),
             m_parent(nullptr),
@@ -82,8 +82,8 @@ namespace Chicane
         bool Component::isVisible() const
         {
             const bool isParentVisible = isRoot() ? true : m_parent->isVisible();
-            const bool isDisplayable   = !m_style.isDisplay(Style::Display::None) &&
-                                         !m_style.isDisplay(Style::Display::Hidden);
+            const bool isDisplayable   = !m_style.isDisplay(StyleDisplay::None) &&
+                                         !m_style.isDisplay(StyleDisplay::Hidden);
 
             return isParentVisible && isDisplayable;
         }
@@ -128,19 +128,19 @@ namespace Chicane
             m_class = inClass;
         }
         
-        const Style::Instance& Component::getStyle() const
+        const Style& Component::getStyle() const
         {
             return m_style;
         }
 
-        void Component::setStyle(const Style::Source::List& inSources)
+        void Component::setStyle(const StyleSource::List& inSources)
         {
             if (inSources.empty())
             {
                 return;
             }
 
-            for (const Style::Source& source : inSources)
+            for (const StyleSource& source : inSources)
             {
                 if (source.isEmpty())
                 {
@@ -205,22 +205,22 @@ namespace Chicane
             }
         }
 
-        void Component::setStyle(const Style::Properties& inSource)
+        void Component::setStyle(const StyleProperties& inSource)
         {
             m_style.setProperties(inSource);
         }
 
         bool Component::hasReference(const String& inId, bool isLocalOnly) const
         {
-            bool wasFoundLocally = m_references.find(inId) != m_references.end() &&
-                                   m_references.at(inId) && !m_references.at(inId)->isEmpty();
+            bool bWasFoundLocally = m_references.find(inId) != m_references.end() &&
+                                    m_references.at(inId) && !m_references.at(inId)->isEmpty();
 
             if (isRoot() || !hasParent() || isLocalOnly)
             {
-                return wasFoundLocally;
+                return bWasFoundLocally;
             }
 
-            return wasFoundLocally || m_parent->hasReference(inId);
+            return bWasFoundLocally || m_parent->hasReference(inId);
         }
 
         Reference* Component::getReference(const String& inId) const
@@ -274,20 +274,20 @@ namespace Chicane
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
 
-            bool hasLocally = m_functions.find(id) != m_functions.end() &&
-                              m_functions.at(id) && m_functions.at(id) != nullptr;
+            const bool bHasLocally = m_functions.find(id) != m_functions.end() &&
+                                     m_functions.at(id) && m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
-                return hasLocally;
+                return bHasLocally;
             }
 
-            return hasLocally || m_parent->hasFunction(id);
+            return bHasLocally || m_parent->hasFunction(id);
         }
 
         const Function Component::getFunction(const String& inId) const
         {
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
+            const String& id = inId.split(FUNCTION_PARAMS_OPENING).front();
 
             if (!hasParent() || isRoot())
             {
@@ -575,7 +575,7 @@ namespace Chicane
                 m_style.margin.top - m_style.margin.bottom
             );
 
-            if (isRoot() || m_style.isPosition(Style::Position::Absolute))
+            if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
                 setPosition(margin);
 
@@ -693,17 +693,10 @@ namespace Chicane
                 return {};
             }
 
-            std::size_t paramsStart = trimmedValue.firstOf(FUNCTION_PARAMS_OPENING);
-            std::size_t paramsEnd   = trimmedValue.lastOf(FUNCTION_PARAMS_CLOSING);
-            String name             = trimmedValue.substr(0, paramsStart);
-
-            paramsStart += 1;
-            paramsEnd   -= paramsStart;
-
-            const String params = inRefValue.substr(paramsStart, paramsEnd).trim();
+            const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
 
             FunctionData data = {};
-            data.name = name;
+            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
 
             for (String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {

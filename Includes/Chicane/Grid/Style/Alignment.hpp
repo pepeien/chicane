@@ -1,21 +1,18 @@
 #pragma once
 
-#include "Chicane/Grid/Style/Essential.hpp"
+#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        enum class StyleAlignment : std::uint8_t
         {
-            enum class Alignment : std::uint8_t
-            {
-                Start,
-                Center,
-                End
-            };
+            Start,
+            Center,
+            End
+        };
 
-            Alignment toAlignment(const String& inText);
-        }
+        StyleAlignment toAlignment(const String& inText);
     }
 }

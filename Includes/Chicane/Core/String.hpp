@@ -170,6 +170,9 @@ namespace Chicane
         std::vector<String> split(char inDelimeter) const;
         std::vector<String> split(const String& inDelimeter) const;
 
+        String getBetween(char inOpening, char inClosing) const;
+        String getBetween(const String& inOpening, const String& inClosing) const;
+
         String trim() const;
 
         std::size_t size() const;

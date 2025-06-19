@@ -4,22 +4,19 @@ namespace Chicane
 {
     namespace Grid
     {
-        namespace Style
+        StyleSource::StyleSource(const std::vector<String>& inSelectors, const StyleProperties& inProperties)
+            : selectors(inSelectors),
+            properties(inProperties)
+        {}
+
+        StyleSource::StyleSource()
+            : selectors({}),
+            properties({})
+        {}
+
+        bool StyleSource::isEmpty() const
         {
-            Source::Source(const std::vector<String>& inSelectors, const Properties& inProperties)
-                : selectors(inSelectors),
-                properties(inProperties)
-            {}
-
-            Source::Source()
-                : selectors({}),
-                properties({})
-            {}
-
-            bool Source::isEmpty() const
-            {
-                return selectors.empty() || properties.empty();
-            }
+            return selectors.empty() || properties.empty();
         }
     }
 }
