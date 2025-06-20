@@ -51,7 +51,7 @@
                     "prefix": "const ",
                     "name": "Mat",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Base",
+                    "path": "Core/Math/Mat",
                     "templates": [
                         {
                             "prefix": "",
@@ -82,7 +82,7 @@
                     "prefix": "const ",
                     "name": "Mat",
                     "suffix": "",
-                    "path": "Core/Math/Mat/Base",
+                    "path": "Core/Math/Mat",
                     "templates": [
                         {
                             "prefix": "",

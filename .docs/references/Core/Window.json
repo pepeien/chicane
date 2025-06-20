@@ -56,7 +56,7 @@
                             "prefix": "",
                             "name": "Vec",
                             "suffix": "",
-                            "path": "Core/Math/Vec/Base",
+                            "path": "Core/Math/Vec",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -90,7 +90,7 @@
                             "prefix": "",
                             "name": "Vec",
                             "suffix": "",
-                            "path": "Core/Math/Vec/Base",
+                            "path": "Core/Math/Vec",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -249,7 +249,7 @@
                     "prefix": "const ",
                     "name": "Vec",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Base",
+                    "path": "Core/Math/Vec",
                     "templates": [
                         {
                             "prefix": "",
@@ -291,7 +291,7 @@
                             "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base",
+                            "path": "Core/Math/Vec",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -358,7 +358,7 @@
                     "prefix": "const ",
                     "name": "Vec",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Base",
+                    "path": "Core/Math/Vec",
                     "templates": [
                         {
                             "prefix": "",
@@ -400,7 +400,7 @@
                             "prefix": "const ",
                             "name": "Vec",
                             "suffix": "&",
-                            "path": "Core/Math/Vec/Base",
+                            "path": "Core/Math/Vec",
                             "templates": [
                                 {
                                     "prefix": "",
@@ -922,7 +922,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base",
+                    "path": "Core/Math/Vec",
                     "templates": [
                         {
                             "prefix": "",
@@ -976,7 +976,7 @@
                     "prefix": "",
                     "name": "Vec",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Base",
+                    "path": "Core/Math/Vec",
                     "templates": [
                         {
                             "prefix": "",

@@ -732,20 +732,10 @@
                         "filename": "Mat",
                         "path": "Core/Math/Mat",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Core/Math/Mat.hpp",
+                            "namespace": "Chicane::Mat"
                         },
                         "children": [
-                            {
-                                "title": "Mat",
-                                "filename": "Base",
-                                "path": "Core/Math/Mat/Base",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Math/Mat/Base.hpp",
-                                    "namespace": "Chicane::Mat"
-                                },
-                                "children": []
-                            },
                             {
                                 "title": "Mat4",
                                 "filename": "Mat4",
@@ -763,20 +753,10 @@
                         "filename": "Quat",
                         "path": "Core/Math/Quat",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Core/Math/Quat.hpp",
+                            "namespace": "Chicane::Quat"
                         },
                         "children": [
-                            {
-                                "title": "Quat",
-                                "filename": "Base",
-                                "path": "Core/Math/Quat/Base",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Math/Quat/Base.hpp",
-                                    "namespace": "Chicane::Quat"
-                                },
-                                "children": []
-                            },
                             {
                                 "title": "Quat Float",
                                 "filename": "Quat Float",
@@ -815,20 +795,10 @@
                         "filename": "Vec",
                         "path": "Core/Math/Vec",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Core/Math/Vec.hpp",
+                            "namespace": "Chicane::Vec"
                         },
                         "children": [
-                            {
-                                "title": "Vec",
-                                "filename": "Base",
-                                "path": "Core/Math/Vec/Base",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Math/Vec/Base.hpp",
-                                    "namespace": "Chicane::Vec"
-                                },
-                                "children": []
-                            },
                             {
                                 "title": "Vec2",
                                 "filename": "Vec2",

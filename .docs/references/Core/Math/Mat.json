@@ -3,14 +3,45 @@
     "filename": "Mat",
     "path": "Core/Math/Mat",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Core/Math/Mat.hpp",
+        "namespace": "Chicane::Mat",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "constexpr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "A ...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "args"
+                    }
+                ],
+                "modifiers": [
+                    "inline",
+                    "constexpr"
+                ],
+                "description": "CHICANE_MAT_MAT_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [],
-        "members": []
+        "members": [],
+        "description": "CHICANE_MAT_DESCRIPTION"
     },
     "children": []
 }
