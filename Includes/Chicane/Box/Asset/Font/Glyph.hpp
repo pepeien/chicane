@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Box
     {
-         struct CHICANE_BOX FontGlyph
+        struct CHICANE_BOX FontGlyph
         {
         public:
             using Map = std::unordered_map<std::uint32_t, FontGlyph>;

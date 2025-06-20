@@ -4,13 +4,10 @@
 
 namespace Chicane
 {
-    namespace Window
+    enum class WindowRenderer : std::uint8_t
     {
-        enum class Renderer : std::uint8_t
-        {
-            Undefined,
-            OpenGL,
-            Vulkan
-        };
-    }
+        Undefined,
+        OpenGL,
+        Vulkan
+    };
 }

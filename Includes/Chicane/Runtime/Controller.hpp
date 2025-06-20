@@ -18,7 +18,7 @@ namespace Chicane
 
     protected:
         virtual void onActivation() { return; }
-        virtual void onEvent(const Window::Event& inEvent) { return; }
+        virtual void onEvent(const WindowEvent& inEvent) { return; }
 
     public:
         // Lifecycle

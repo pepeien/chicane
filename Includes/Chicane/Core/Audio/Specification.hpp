@@ -4,14 +4,11 @@
 
 namespace Chicane
 {
-    namespace Audio
+    struct CHICANE_CORE AudioSpecification
     {
-        struct CHICANE_CORE Specification
-        {
-        public:
-            int format    = 0;
-            int channels  = 0;
-            int frequency = 0;
-        };
-    }
+    public:
+        int format    = 0;
+        int channels  = 0;
+        int frequency = 0;
+    };
 }

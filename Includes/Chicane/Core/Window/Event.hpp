@@ -1,17 +1,14 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Window/EventType.hpp"
+#include "Chicane/Core/Window/Event/Type.hpp"
 
 namespace Chicane
 {
-    namespace Window
+    struct CHICANE_CORE WindowEvent
     {
-        struct CHICANE_CORE Event
-        {
-        public:
-            EventType type = EventType::First;
-            void*     data = nullptr; // SDL_Event
-        };
-    }
+    public:
+        WindowEventType type = WindowEventType::First;
+        void*           data = nullptr; // SDL_Event
+    };
 }

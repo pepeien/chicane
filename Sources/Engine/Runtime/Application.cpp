@@ -181,7 +181,7 @@ namespace Chicane
             return m_application->hasWindow();
         }
 
-        Window::Instance* getWindow()
+        Window* getWindow()
         {
             if (!m_application)
             {
@@ -201,7 +201,7 @@ namespace Chicane
             return m_application->hasRenderer();
         }
 
-        void setRenderer(Window::Renderer inType)
+        void setRenderer(WindowRenderer inType)
         {
             if (!m_application)
             {

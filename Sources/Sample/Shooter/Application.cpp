@@ -10,8 +10,8 @@ Application::Application()
     createInfo.window.title    = "Shooter Sample";
     createInfo.window.size     = Chicane::Vec<2, int>(1600, 900);
     createInfo.window.display  = 0;
-    createInfo.window.type     = Chicane::Window::Type::Windowed;
-    createInfo.window.renderer = Chicane::Window::Renderer::Vulkan;
+    createInfo.window.type     = Chicane::WindowType::Windowed;
+    createInfo.window.renderer = Chicane::WindowRenderer::Vulkan;
 
     // Setup
     createInfo.onSetup = [this]() {

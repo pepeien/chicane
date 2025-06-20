@@ -56,7 +56,7 @@ namespace Chicane
             // Lifecycle
             void onInit() override;
             void onRender() override;
-            void onEvent(const Window::Event& inEvent) override;
+            void onEvent(const WindowEvent& inEvent) override;
             void onResizing() override;
             void onRepositioning() override;
 

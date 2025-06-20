@@ -7,7 +7,7 @@ namespace Chicane
         m_bounds()
     {}
 
-    const Transform::Combined& Transformable::getTransform() const
+    const TransformCombined& Transformable::getTransform() const
     {
         return m_transform;
     }
@@ -42,12 +42,12 @@ namespace Chicane
         return m_transform.getUp();
     }
 
-    const Transform::Instance& Transformable::getRelative() const
+    const Transform& Transformable::getRelative() const
     {
         return m_transform.getRelativeTransform();
     }
 
-    void Transformable::setRelative(const Transform::Instance& inTransform)
+    void Transformable::setRelative(const Transform& inTransform)
     {
         m_transform.setRelativeTransform(inTransform);
 
@@ -171,12 +171,12 @@ namespace Chicane
         refresh();
     }
 
-    const Transform::Instance& Transformable::getAbsolute() const
+    const Transform& Transformable::getAbsolute() const
     {
         return m_transform.getAbsoluteTransform();
     }
 
-    void Transformable::setAbsolute(const Transform::Instance& inTransform)
+    void Transformable::setAbsolute(const Transform& inTransform)
     {
         m_transform.setAbsoluteTransform(inTransform);
 

@@ -63,7 +63,7 @@ namespace Chicane
 
             // Render
             bool hasWindow() const;
-            template<class T = Window::Instance>
+            template<class T = Window>
             T* getWindow() const
             {
                 if (!hasWindow())
@@ -71,7 +71,7 @@ namespace Chicane
                     return nullptr;
                 }
 
-                if (typeid(T) == typeid(Window::Instance))
+                if (typeid(T) == typeid(Window))
                 {
                     return m_window.get();
                 }
@@ -80,7 +80,7 @@ namespace Chicane
             }
 
             bool hasRenderer() const;
-            void setRenderer(Window::Renderer inType);
+            void setRenderer(WindowRenderer inType);
             template<class T = Renderer::Instance>
             T* getRenderer() const
             {
@@ -121,8 +121,8 @@ namespace Chicane
             ViewObservable                      m_viewObservable;
 
             // Window
-            Window::CreateInfo                  m_windowInfo;
-            std::unique_ptr<Window::Instance>   m_window;
+            WindowCreateInfo                  m_windowInfo;
+            std::unique_ptr<Window>   m_window;
 
             // Renderer
             Renderer::CreateInfo                m_rendererInfo;

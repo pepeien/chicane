@@ -294,7 +294,7 @@ namespace Chicane
         void Instance::loadEvents()
         {
             Application::getWindow()->watchEvent(
-                [this](Window::Event inEvent)
+                [this](WindowEvent inEvent)
                 {
                     onEvent(inEvent);
 

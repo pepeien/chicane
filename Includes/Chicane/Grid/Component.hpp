@@ -32,7 +32,7 @@ namespace Chicane
 
         protected:
             // Events
-            virtual void onEvent(const Window::Event& inEvent) { return; }
+            virtual void onEvent(const WindowEvent& inEvent) { return; }
             virtual void onTick(float inDelta) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
@@ -130,10 +130,10 @@ namespace Chicane
             FunctionData parseFunction(const String& inRefValue) const;
 
         protected:
-            String             m_tag;
-            String             m_id;
-            String             m_class;
-            Style         m_style;
+            String                  m_tag;
+            String                  m_id;
+            String                  m_class;
+            Style                   m_style;
 
             Reference::Map          m_references;
             Functions               m_functions;

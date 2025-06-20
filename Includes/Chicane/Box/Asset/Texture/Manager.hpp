@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX TextureManager : public Box::Manager<Image::Raw, Image::Instance>
+        class CHICANE_BOX TextureManager : public Box::Manager<Image::Raw, Image>
         {
         public:
             TextureManager();
@@ -24,7 +24,7 @@ namespace Chicane
 
             // Data
             const Image::Raw& getInstance(const String& inId) const;
-            const Image::Instance& getData(const String& inId) const;
+            const Image& getData(const String& inId) const;
             std::uint32_t getIndex(const String& inId) const;
         };
     }

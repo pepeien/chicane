@@ -4,12 +4,9 @@
 
 namespace Chicane
 {
-    namespace Audio
+    enum class AudioVendor : std::uint8_t
     {
-        enum class Vendor : std::uint8_t
-        {
-            Undefined, // N/A
-            Wave       // .wav
-        };
-    }
+        Undefined, // N/A
+        Wave       // .wav
+    };
 }

@@ -166,7 +166,7 @@ namespace Chicane
             return m_renderer.get() != nullptr;
         }
 
-        void Instance::setRenderer(Window::Renderer inRenderer)
+        void Instance::setRenderer(WindowRenderer inRenderer)
         {
             m_windowInfo.renderer = inRenderer;
 
@@ -178,7 +178,7 @@ namespace Chicane
         {
             if (!hasWindow())
             {
-                m_window = std::make_unique<Window::Instance>();
+                m_window = std::make_unique<Window>();
                 m_window->watchSize(
                     [this](const Vec<2, int>& inSize)
                     {
@@ -208,7 +208,7 @@ namespace Chicane
 
             switch (m_windowInfo.renderer)
             {
-            case Window::Renderer::Vulkan:
+            case WindowRenderer::Vulkan:
                 m_renderer = std::make_unique<Vulkan::Renderer>();
 
                 break;

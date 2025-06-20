@@ -14,7 +14,7 @@ namespace Chicane
             Renderer::CreateInfo   renderer = {};
 
             // Window
-            Window::CreateInfo     window   = {};
+            WindowCreateInfo     window   = {};
 
             // Callbacks
             std::function<void ()> onSetup  = nullptr;

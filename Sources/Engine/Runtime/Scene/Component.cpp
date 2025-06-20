@@ -83,7 +83,7 @@ namespace Chicane
             m_attachmentTransformSubscription = m_attachment->watchChanges(
                 [&]()
                 {
-                    Transform::Instance transform = {};
+                    Transform transform = {};
                     transform.setTranslation(m_attachment->getTranslation());
                     transform.setRotation(m_attachment->getRotation());
                     transform.setScale(m_attachment->getScale());

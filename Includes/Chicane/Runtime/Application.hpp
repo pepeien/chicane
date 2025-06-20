@@ -47,10 +47,10 @@ namespace Chicane
 
         // Render
         CHICANE_RUNTIME bool hasWindow();
-        CHICANE_RUNTIME Window::Instance* getWindow();
+        CHICANE_RUNTIME Window* getWindow();
 
         CHICANE_RUNTIME bool hasRenderer();
-        CHICANE_RUNTIME void setRenderer(Window::Renderer inType);
+        CHICANE_RUNTIME void setRenderer(WindowRenderer inType);
         CHICANE_RUNTIME Renderer::Instance* getRenderer();
         template<class T>
         T* getRenderer()

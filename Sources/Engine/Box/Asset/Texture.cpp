@@ -4,24 +4,24 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, Image::Vendor> VENDOR_MAP {
-            { "PNG", Image::Vendor::Png }
+        static const std::unordered_map<String, ImageVendor> VENDOR_MAP {
+            { "PNG", ImageVendor::Png }
         };
 
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-            m_vendor(Image::Vendor::Undefined)
+            m_vendor(ImageVendor::Undefined)
         {
             fetchVendor();
             fetchData();
         }
 
-        Image::Vendor Texture::getVendor() const
+        ImageVendor Texture::getVendor() const
         {
             return m_vendor;
         }
 
-        void Texture::setVendor(Image::Vendor inVendor)
+        void Texture::setVendor(ImageVendor inVendor)
         {
             m_vendor = inVendor;
 
@@ -91,7 +91,7 @@ namespace Chicane
 
             if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
             {
-                m_vendor = Image::Vendor::Undefined;
+                m_vendor = ImageVendor::Undefined;
 
                 return;
             }

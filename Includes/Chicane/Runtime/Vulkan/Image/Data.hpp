@@ -8,10 +8,10 @@ namespace Chicane
     {
         namespace Image
         {
-	    	struct CHICANE_RUNTIME Data : public Chicane::Image::Instance
+	    	struct CHICANE_RUNTIME Data : public Chicane::Image
 	    	{
             public:
-                Data(const Chicane::Image::Instance& inImage)
+                Data(const Chicane::Image& inImage)
                     : Super()
                 {
                     m_width   = inImage.getWidth();

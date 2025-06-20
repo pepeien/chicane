@@ -10,7 +10,7 @@ namespace Chicane
         using SkyRawSide  = String;
         using SkyRawSides = std::unordered_map<SkySide, SkyRawSide>;
 
-        using SkyParsedSide  = Image::Instance;
+        using SkyParsedSide  = Image;
         using SkyParsedSides = std::unordered_map<SkySide, SkyParsedSide>;
     }
 }

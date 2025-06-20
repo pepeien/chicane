@@ -234,7 +234,7 @@ namespace Chicane
     void Controller::setupEvents()
     {
         Application::getWindow()->watchEvent(
-            [this](Window::Event inEvent)
+            [this](WindowEvent inEvent)
             {
                 m_mouseButtonEvents.repeat();
                 m_keyboardKeyEvents.repeat();
@@ -243,50 +243,50 @@ namespace Chicane
                 switch (inEvent.type)
                 {
                 // Gamepad
-                case Window::EventType::GamepadAdded:
-                case Window::EventType::GamepadRemoved:
+                case WindowEventType::GamepadAdded:
+                case WindowEventType::GamepadRemoved:
                     setupDefaultGamepad();
 
                     break;
 
-                case Window::EventType::GamepadAxisMotion:
+                case WindowEventType::GamepadAxisMotion:
                     onGamepadMotionEvent(inEvent.data);
 
                     break;
 
-                case Window::EventType::GamepadButtonDown:
-                case Window::EventType::GamepadButtonUp:
+                case WindowEventType::GamepadButtonDown:
+                case WindowEventType::GamepadButtonUp:
                     onGamepadButtonEvent(inEvent.data);
 
                     break;
 
                 // Keyboard
-                case Window::EventType::KeyboardAdded:
-                case Window::EventType::KeyboardRemoved:
+                case WindowEventType::KeyboardAdded:
+                case WindowEventType::KeyboardRemoved:
                     setupDefaultKeyboard();
 
                     break;
 
-                case Window::EventType::KeyDown:
-                case Window::EventType::KeyUp:
+                case WindowEventType::KeyDown:
+                case WindowEventType::KeyUp:
                     onKeyboardButtonEvent(inEvent.data);
 
                     break;
 
                 // Mouse
-                case Window::EventType::MouseAdded:
-                case Window::EventType::MouseRemoved:
+                case WindowEventType::MouseAdded:
+                case WindowEventType::MouseRemoved:
                     setupDefaultMouse();
 
                     break;
 
-                case Window::EventType::MouseMotion:
+                case WindowEventType::MouseMotion:
                     onMouseMotionEvent(inEvent.data);
 
                     break;
 
-                case Window::EventType::MouseButtonDown:
-                case Window::EventType::MouseButtonUp:
+                case WindowEventType::MouseButtonDown:
+                case WindowEventType::MouseButtonUp:
                     onMouseButtonEvent(inEvent.data);
 
                     break;

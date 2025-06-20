@@ -8,17 +8,14 @@
 
 namespace Chicane
 {
-    namespace Window
+    struct CHICANE_CORE WindowCreateInfo
     {
-        struct CHICANE_CORE CreateInfo
-        {
-        public:
-            String      title    = "";
-            FileSystem::Path icon     = "";
-            Vec<2, int>      size     = Vec<2, int>(0);
-            int              display  = 0;
-            Type             type     = Type::Windowed;
-            Renderer         renderer = Renderer::Undefined;
-        };
-    }
+    public:
+        String           title    = "";
+        FileSystem::Path icon     = "";
+        Vec<2, int>      size     = Vec<2, int>(0);
+        int              display  = 0;
+        WindowType       type     = WindowType::Windowed;
+        WindowRenderer   renderer = WindowRenderer::Undefined;
+    };
 }

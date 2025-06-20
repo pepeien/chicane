@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX SoundManager : public Box::Manager<Audio::Raw, Audio::Instance>
+        class CHICANE_BOX SoundManager : public Box::Manager<Audio::Raw, Audio>
         {
         public:
             SoundManager();
@@ -24,7 +24,7 @@ namespace Chicane
 
             // Data
             const Audio::Raw& getInstance(const String& inId) const;
-            Audio::Instance getData(const String& inId) const;
+            Audio getData(const String& inId) const;
         };
     }
 }

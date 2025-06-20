@@ -4,24 +4,24 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, Audio::Vendor> VENDOR_MAP {
-            { "WAVE", Audio::Vendor::Wave }
+        static const std::unordered_map<String, AudioVendor> VENDOR_MAP {
+            { "WAVE", AudioVendor::Wave }
         };
 
         Sound::Sound(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-            m_vendor(Audio::Vendor::Undefined)
+            m_vendor(AudioVendor::Undefined)
         {
             fetchVendor();
             fetchData();
         }
 
-        Audio::Vendor Sound::getVendor() const
+        AudioVendor Sound::getVendor() const
         {
             return m_vendor;
         }
 
-        void Sound::setVendor(Audio::Vendor inVendor)
+        void Sound::setVendor(AudioVendor inVendor)
         {
             m_vendor = inVendor;
 
@@ -91,7 +91,7 @@ namespace Chicane
 
             if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
             {
-                m_vendor = Audio::Vendor::Undefined;
+                m_vendor = AudioVendor::Undefined;
 
                 return;
             }

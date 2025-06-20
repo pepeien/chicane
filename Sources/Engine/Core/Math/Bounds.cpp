@@ -110,7 +110,7 @@ namespace Chicane
         refresh();
     }
 
-    void Bounds::update(const Transform::Combined& inTransform)
+    void Bounds::update(const TransformCombined& inTransform)
     {
         const Vec3& scale       = inTransform.getScale();
         const Vec3& translation = inTransform.getTranslation();

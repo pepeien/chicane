@@ -30,7 +30,7 @@ namespace Chicane
         protected:
             virtual void onInit() { return; }
             virtual void onRender() { return; }
-            virtual void onEvent(const Window::Event& inEvent) { return; }
+            virtual void onEvent(const WindowEvent& inEvent) { return; }
             virtual void onResizing() { return; }
             virtual void onRepositioning() { return; }
 

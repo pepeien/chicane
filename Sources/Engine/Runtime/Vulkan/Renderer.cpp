@@ -76,9 +76,9 @@ namespace Chicane
             pushLayer(new LGrid());
         }
 
-        void Renderer::onEvent(const Window::Event& inEvent)
+        void Renderer::onEvent(const WindowEvent& inEvent)
         {
-            if (inEvent.type == Window::EventType::WindowResized)
+            if (inEvent.type == WindowEventType::WindowResized)
             {
                 rebuildSwapChain();
             }

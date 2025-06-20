@@ -6,8 +6,8 @@ namespace Chicane
 {
     namespace Box
     {
-        static const Image::Raw      EMPTY_RAW_DATA      = {};
-        static const Image::Instance EMPTY_COMPILED_DATA = {};
+        static const Image::Raw EMPTY_RAW_DATA      = {};
+        static const Image      EMPTY_COMPILED_DATA = {};
 
         TextureManager::TextureManager()
             : Super()
@@ -15,7 +15,7 @@ namespace Chicane
 
         void TextureManager::onActivation(const String& inId)
         {
-            Super::allocate(inId, Image::Instance(getInstance(inId)));
+            Super::allocate(inId, Image(getInstance(inId)));
         }
 
         void TextureManager::onDeactivation(const String& inId)
@@ -43,7 +43,7 @@ namespace Chicane
             return m_instances.at(inId);
         }
 
-        const Image::Instance& TextureManager::getData(const String& inId) const
+        const Image& TextureManager::getData(const String& inId) const
         {
             if (!isLoaded(inId) || !isAllocated(inId))
             {

@@ -20,8 +20,8 @@ namespace Chicane
             virtual ~Sound() = default;
 
         public:
-            Audio::Vendor getVendor() const;
-            void setVendor(Audio::Vendor inVendor);
+            AudioVendor getVendor() const;
+            void setVendor(AudioVendor inVendor);
 
             const Audio::Raw& getData() const;
             void setData(const FileSystem::Path& inFilepath);
@@ -32,8 +32,8 @@ namespace Chicane
             void fetchData();
 
         private:
-            Audio::Vendor m_vendor;
-            Audio::Raw    m_data;
+            AudioVendor m_vendor;
+            Audio::Raw  m_data;
         };
     }
 }

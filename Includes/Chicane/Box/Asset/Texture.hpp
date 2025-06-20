@@ -22,8 +22,8 @@ namespace Chicane
             virtual ~Texture() = default;
 
         public:
-            Image::Vendor getVendor() const;
-            void setVendor(Image::Vendor inVendor);
+            ImageVendor getVendor() const;
+            void setVendor(ImageVendor inVendor);
 
             const Image::Raw& getData() const;
             void setData(const String& inFilepath);
@@ -34,8 +34,8 @@ namespace Chicane
             void fetchData();
 
         private:
-            Image::Vendor m_vendor;
-            Image::Raw    m_data;
+            ImageVendor m_vendor;
+            Image::Raw  m_data;
         };
     }
 }

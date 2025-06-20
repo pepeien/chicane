@@ -4,12 +4,9 @@
 
 namespace Chicane
 {
-    namespace Image
+    enum class ImageVendor : std::uint8_t
     {
-        enum class Vendor : std::uint8_t
-        {
-            Undefined, // N/A
-            Png        // .png
-        };
-    }
+        Undefined, // N/A
+        Png        // .png
+    };
 }

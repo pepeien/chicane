@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Math/Transform.hpp"
+#include "Chicane/Core/Math/Transform/Combined.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
@@ -17,7 +17,7 @@ namespace Chicane
         void set(const Bounds& inBounds);
         void add(const Bounds& inBounds);
 
-        void update(const Transform::Combined& inTransform);
+        void update(const TransformCombined& inTransform);
 
         bool contains(const Bounds& inBounds) const;
         bool contains(const Vec3& inPoint) const;

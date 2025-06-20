@@ -11,7 +11,7 @@ namespace Chicane
 
     public:
         // Transform
-        const Transform::Combined& getTransform() const;
+        const TransformCombined& getTransform() const;
 
         const Vec3& getTranslation() const;
         const Vec3& getRotation() const;
@@ -22,8 +22,8 @@ namespace Chicane
         const Vec3& getUp() const;
 
         // Relative
-        const Transform::Instance& getRelative() const;
-        void setRelative(const Transform::Instance& inTransform);
+        const Transform& getRelative() const;
+        void setRelative(const Transform& inTransform);
 
         const Vec3& getRelativeTranslation() const;
         void addRelativeTranslation(float inValue);
@@ -50,8 +50,8 @@ namespace Chicane
         void setRelativeScale(const Vec3& inScale);
 
         // Absolute
-        const Transform::Instance& getAbsolute() const;
-        void setAbsolute(const Transform::Instance& inTransform);
+        const Transform& getAbsolute() const;
+        void setAbsolute(const Transform& inTransform);
 
         const Vec3& getAbsoluteTranslation() const;
         void addAbsoluteTranslation(float inValue);
@@ -91,7 +91,7 @@ namespace Chicane
 
     private:
         // Transform
-        Transform::Combined m_transform;
+        TransformCombined m_transform;
 
         // Bounds
         Bounds              m_bounds;
