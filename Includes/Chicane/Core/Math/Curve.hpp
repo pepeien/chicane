@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Line.hpp"
 
 namespace Chicane

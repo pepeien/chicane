@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
-#include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 namespace Chicane
 {
