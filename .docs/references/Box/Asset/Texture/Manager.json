@@ -85,7 +85,7 @@
                     "prefix": "const ",
                     "name": "Image::Raw",
                     "suffix": "&",
-                    "path": "Core/Image/Instance",
+                    "path": "Core/Image",
                     "templates": []
                 },
                 "name": "getInstance",
@@ -111,9 +111,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Image::Instance",
+                    "name": "Image",
                     "suffix": "&",
-                    "path": "Core/Image/Instance",
+                    "path": "Core/Image",
                     "templates": []
                 },
                 "name": "getData",

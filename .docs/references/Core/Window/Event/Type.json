@@ -1,10 +1,10 @@
 {
-    "title": "Event Type",
-    "filename": "Event Type",
-    "path": "Core/Window/EventType",
+    "title": "Window Event Type",
+    "filename": "Type",
+    "path": "Core/Window/Event/Type",
     "source": {
-        "header": "Includes/Chicane/Core/Window/EventType.hpp",
-        "namespace": "Chicane::Window::EventType",
+        "header": "Includes/Chicane/Core/Window/Event/Type.hpp",
+        "namespace": "Chicane::WindowEventType",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "First",
-                "description": "CHICANE_WINDOW_EVENTTYPE_FIRST_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_FIRST_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Quit",
-                "description": "CHICANE_WINDOW_EVENTTYPE_QUIT_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_QUIT_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "Terminating",
-                "description": "CHICANE_WINDOW_EVENTTYPE_TERMINATING_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_TERMINATING_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,7 +49,7 @@
                     "templates": []
                 },
                 "name": "LowMemory",
-                "description": "CHICANE_WINDOW_EVENTTYPE_LOWMEMORY_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_LOWMEMORY_DESCRIPTION"
             },
             {
                 "type": {
@@ -60,7 +60,7 @@
                     "templates": []
                 },
                 "name": "WillEnterBackground",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WILLENTERBACKGROUND_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WILLENTERBACKGROUND_DESCRIPTION"
             },
             {
                 "type": {
@@ -71,7 +71,7 @@
                     "templates": []
                 },
                 "name": "DidEnterBackground",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DIDENTERBACKGROUND_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DIDENTERBACKGROUND_DESCRIPTION"
             },
             {
                 "type": {
@@ -82,7 +82,7 @@
                     "templates": []
                 },
                 "name": "WillEnterForeground",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WILLENTERFOREGROUND_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WILLENTERFOREGROUND_DESCRIPTION"
             },
             {
                 "type": {
@@ -93,7 +93,7 @@
                     "templates": []
                 },
                 "name": "DidEnterForeground",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DIDENTERFOREGROUND_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DIDENTERFOREGROUND_DESCRIPTION"
             },
             {
                 "type": {
@@ -104,7 +104,7 @@
                     "templates": []
                 },
                 "name": "LocaleChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_LOCALECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_LOCALECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -115,7 +115,7 @@
                     "templates": []
                 },
                 "name": "SystemThemeChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_SYSTEMTHEMECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_SYSTEMTHEMECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -126,7 +126,7 @@
                     "templates": []
                 },
                 "name": "DisplayOrientation",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYORIENTATION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYORIENTATION_DESCRIPTION"
             },
             {
                 "type": {
@@ -137,7 +137,7 @@
                     "templates": []
                 },
                 "name": "DisplayAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -148,7 +148,7 @@
                     "templates": []
                 },
                 "name": "DisplayRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -159,7 +159,7 @@
                     "templates": []
                 },
                 "name": "DisplayMoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -170,7 +170,7 @@
                     "templates": []
                 },
                 "name": "DisplayDesktopModeChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYDESKTOPMODECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYDESKTOPMODECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -181,7 +181,7 @@
                     "templates": []
                 },
                 "name": "DisplayCurrentModeChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYCURRENTMODECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYCURRENTMODECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -192,7 +192,7 @@
                     "templates": []
                 },
                 "name": "DisplayContentScaleChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DISPLAYCONTENTSCALECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DISPLAYCONTENTSCALECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -203,7 +203,7 @@
                     "templates": []
                 },
                 "name": "WindowShown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWSHOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWSHOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -214,7 +214,7 @@
                     "templates": []
                 },
                 "name": "WindowHidden",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWHIDDEN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWHIDDEN_DESCRIPTION"
             },
             {
                 "type": {
@@ -225,7 +225,7 @@
                     "templates": []
                 },
                 "name": "WindowExposed",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWEXPOSED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWEXPOSED_DESCRIPTION"
             },
             {
                 "type": {
@@ -236,7 +236,7 @@
                     "templates": []
                 },
                 "name": "WindowMoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -247,7 +247,7 @@
                     "templates": []
                 },
                 "name": "WindowResized",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWRESIZED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWRESIZED_DESCRIPTION"
             },
             {
                 "type": {
@@ -258,7 +258,7 @@
                     "templates": []
                 },
                 "name": "WindowPixelSizeChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWPIXELSIZECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWPIXELSIZECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -269,7 +269,7 @@
                     "templates": []
                 },
                 "name": "WindowMetalViewResized",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMETALVIEWRESIZED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMETALVIEWRESIZED_DESCRIPTION"
             },
             {
                 "type": {
@@ -280,7 +280,7 @@
                     "templates": []
                 },
                 "name": "WindowMinimized",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMINIMIZED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMINIMIZED_DESCRIPTION"
             },
             {
                 "type": {
@@ -291,7 +291,7 @@
                     "templates": []
                 },
                 "name": "WindowMaximized",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMAXIMIZED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMAXIMIZED_DESCRIPTION"
             },
             {
                 "type": {
@@ -302,7 +302,7 @@
                     "templates": []
                 },
                 "name": "WindowRestored",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWRESTORED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWRESTORED_DESCRIPTION"
             },
             {
                 "type": {
@@ -313,7 +313,7 @@
                     "templates": []
                 },
                 "name": "WindowMouseEnter",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMOUSEENTER_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMOUSEENTER_DESCRIPTION"
             },
             {
                 "type": {
@@ -324,7 +324,7 @@
                     "templates": []
                 },
                 "name": "WindowMouseLeave",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWMOUSELEAVE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWMOUSELEAVE_DESCRIPTION"
             },
             {
                 "type": {
@@ -335,7 +335,7 @@
                     "templates": []
                 },
                 "name": "WindowFocusGained",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWFOCUSGAINED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWFOCUSGAINED_DESCRIPTION"
             },
             {
                 "type": {
@@ -346,7 +346,7 @@
                     "templates": []
                 },
                 "name": "WindowFocusLost",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWFOCUSLOST_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWFOCUSLOST_DESCRIPTION"
             },
             {
                 "type": {
@@ -357,7 +357,7 @@
                     "templates": []
                 },
                 "name": "WindowCloseRequested",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWCLOSEREQUESTED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWCLOSEREQUESTED_DESCRIPTION"
             },
             {
                 "type": {
@@ -368,7 +368,7 @@
                     "templates": []
                 },
                 "name": "WindowHitTest",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWHITTEST_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWHITTEST_DESCRIPTION"
             },
             {
                 "type": {
@@ -379,7 +379,7 @@
                     "templates": []
                 },
                 "name": "WindowIccProfChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWICCPROFCHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWICCPROFCHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -390,7 +390,7 @@
                     "templates": []
                 },
                 "name": "WindowDisplayChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWDISPLAYCHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWDISPLAYCHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -401,7 +401,7 @@
                     "templates": []
                 },
                 "name": "WindowDisplayScaleChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWDISPLAYSCALECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWDISPLAYSCALECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -412,7 +412,7 @@
                     "templates": []
                 },
                 "name": "WindowSafeAreaChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWSAFEAREACHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWSAFEAREACHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -423,7 +423,7 @@
                     "templates": []
                 },
                 "name": "WindowOccluded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWOCCLUDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWOCCLUDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -434,7 +434,7 @@
                     "templates": []
                 },
                 "name": "WindowEnterFullscreen",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWENTERFULLSCREEN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWENTERFULLSCREEN_DESCRIPTION"
             },
             {
                 "type": {
@@ -445,7 +445,7 @@
                     "templates": []
                 },
                 "name": "WindowLeaveFullscreen",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWLEAVEFULLSCREEN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWLEAVEFULLSCREEN_DESCRIPTION"
             },
             {
                 "type": {
@@ -456,7 +456,7 @@
                     "templates": []
                 },
                 "name": "WindowDestroyed",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWDESTROYED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWDESTROYED_DESCRIPTION"
             },
             {
                 "type": {
@@ -467,7 +467,7 @@
                     "templates": []
                 },
                 "name": "WindowHdrStateChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_WINDOWHDRSTATECHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_WINDOWHDRSTATECHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -478,7 +478,7 @@
                     "templates": []
                 },
                 "name": "KeyDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_KEYDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_KEYDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -489,7 +489,7 @@
                     "templates": []
                 },
                 "name": "KeyUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_KEYUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_KEYUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -500,7 +500,7 @@
                     "templates": []
                 },
                 "name": "TextEditing",
-                "description": "CHICANE_WINDOW_EVENTTYPE_TEXTEDITING_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_TEXTEDITING_DESCRIPTION"
             },
             {
                 "type": {
@@ -511,7 +511,7 @@
                     "templates": []
                 },
                 "name": "TextInput",
-                "description": "CHICANE_WINDOW_EVENTTYPE_TEXTINPUT_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_TEXTINPUT_DESCRIPTION"
             },
             {
                 "type": {
@@ -522,7 +522,7 @@
                     "templates": []
                 },
                 "name": "KeymapChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_KEYMAPCHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_KEYMAPCHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -533,7 +533,7 @@
                     "templates": []
                 },
                 "name": "KeyboardAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_KEYBOARDADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_KEYBOARDADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -544,7 +544,7 @@
                     "templates": []
                 },
                 "name": "KeyboardRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_KEYBOARDREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_KEYBOARDREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -555,7 +555,7 @@
                     "templates": []
                 },
                 "name": "TextEditingCandidates",
-                "description": "CHICANE_WINDOW_EVENTTYPE_TEXTEDITINGCANDIDATES_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_TEXTEDITINGCANDIDATES_DESCRIPTION"
             },
             {
                 "type": {
@@ -566,7 +566,7 @@
                     "templates": []
                 },
                 "name": "MouseMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -577,7 +577,7 @@
                     "templates": []
                 },
                 "name": "MouseButtonDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEBUTTONDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEBUTTONDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -588,7 +588,7 @@
                     "templates": []
                 },
                 "name": "MouseButtonUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEBUTTONUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEBUTTONUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -599,7 +599,7 @@
                     "templates": []
                 },
                 "name": "MouseWheel",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEWHEEL_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEWHEEL_DESCRIPTION"
             },
             {
                 "type": {
@@ -610,7 +610,7 @@
                     "templates": []
                 },
                 "name": "MouseAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -621,7 +621,7 @@
                     "templates": []
                 },
                 "name": "MouseRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_MOUSEREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_MOUSEREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -632,7 +632,7 @@
                     "templates": []
                 },
                 "name": "JoystickAxisMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKAXISMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKAXISMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -643,7 +643,7 @@
                     "templates": []
                 },
                 "name": "JoystickBallMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKBALLMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKBALLMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -654,7 +654,7 @@
                     "templates": []
                 },
                 "name": "JoystickHatMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKHATMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKHATMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -665,7 +665,7 @@
                     "templates": []
                 },
                 "name": "JoystickButtonDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKBUTTONDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKBUTTONDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -676,7 +676,7 @@
                     "templates": []
                 },
                 "name": "JoystickButtonUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKBUTTONUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKBUTTONUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -687,7 +687,7 @@
                     "templates": []
                 },
                 "name": "JoystickAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -698,7 +698,7 @@
                     "templates": []
                 },
                 "name": "JoystickRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -709,7 +709,7 @@
                     "templates": []
                 },
                 "name": "JoystickBatteryUpdated",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKBATTERYUPDATED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKBATTERYUPDATED_DESCRIPTION"
             },
             {
                 "type": {
@@ -720,7 +720,7 @@
                     "templates": []
                 },
                 "name": "JoystickUpdateComplete",
-                "description": "CHICANE_WINDOW_EVENTTYPE_JOYSTICKUPDATECOMPLETE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_JOYSTICKUPDATECOMPLETE_DESCRIPTION"
             },
             {
                 "type": {
@@ -731,7 +731,7 @@
                     "templates": []
                 },
                 "name": "GamepadAxisMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADAXISMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADAXISMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -742,7 +742,7 @@
                     "templates": []
                 },
                 "name": "GamepadButtonDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADBUTTONDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADBUTTONDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -753,7 +753,7 @@
                     "templates": []
                 },
                 "name": "GamepadButtonUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADBUTTONUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADBUTTONUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -764,7 +764,7 @@
                     "templates": []
                 },
                 "name": "GamepadAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -775,7 +775,7 @@
                     "templates": []
                 },
                 "name": "GamepadRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -786,7 +786,7 @@
                     "templates": []
                 },
                 "name": "GamepadRemapped",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADREMAPPED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADREMAPPED_DESCRIPTION"
             },
             {
                 "type": {
@@ -797,7 +797,7 @@
                     "templates": []
                 },
                 "name": "GamepadTouchpadDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADTOUCHPADDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADTOUCHPADDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -808,7 +808,7 @@
                     "templates": []
                 },
                 "name": "GamepadTouchpadMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADTOUCHPADMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADTOUCHPADMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -819,7 +819,7 @@
                     "templates": []
                 },
                 "name": "GamepadTouchpadUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADTOUCHPADUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADTOUCHPADUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -830,7 +830,7 @@
                     "templates": []
                 },
                 "name": "GamepadSensorUpdate",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADSENSORUPDATE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADSENSORUPDATE_DESCRIPTION"
             },
             {
                 "type": {
@@ -841,7 +841,7 @@
                     "templates": []
                 },
                 "name": "GamepadUpdateComplete",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADUPDATECOMPLETE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADUPDATECOMPLETE_DESCRIPTION"
             },
             {
                 "type": {
@@ -852,7 +852,7 @@
                     "templates": []
                 },
                 "name": "GamepadSteamHandleUpdated",
-                "description": "CHICANE_WINDOW_EVENTTYPE_GAMEPADSTEAMHANDLEUPDATED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_GAMEPADSTEAMHANDLEUPDATED_DESCRIPTION"
             },
             {
                 "type": {
@@ -863,7 +863,7 @@
                     "templates": []
                 },
                 "name": "FingerDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_FINGERDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_FINGERDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -874,7 +874,7 @@
                     "templates": []
                 },
                 "name": "FingerUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_FINGERUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_FINGERUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -885,7 +885,7 @@
                     "templates": []
                 },
                 "name": "FingerMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_FINGERMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_FINGERMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -896,7 +896,7 @@
                     "templates": []
                 },
                 "name": "FingerCanceled",
-                "description": "CHICANE_WINDOW_EVENTTYPE_FINGERCANCELED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_FINGERCANCELED_DESCRIPTION"
             },
             {
                 "type": {
@@ -907,7 +907,7 @@
                     "templates": []
                 },
                 "name": "ClipboardUpdate",
-                "description": "CHICANE_WINDOW_EVENTTYPE_CLIPBOARDUPDATE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_CLIPBOARDUPDATE_DESCRIPTION"
             },
             {
                 "type": {
@@ -918,7 +918,7 @@
                     "templates": []
                 },
                 "name": "DropFile",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DROPFILE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DROPFILE_DESCRIPTION"
             },
             {
                 "type": {
@@ -929,7 +929,7 @@
                     "templates": []
                 },
                 "name": "DropText",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DROPTEXT_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DROPTEXT_DESCRIPTION"
             },
             {
                 "type": {
@@ -940,7 +940,7 @@
                     "templates": []
                 },
                 "name": "DropBegin",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DROPBEGIN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DROPBEGIN_DESCRIPTION"
             },
             {
                 "type": {
@@ -951,7 +951,7 @@
                     "templates": []
                 },
                 "name": "DropComplete",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DROPCOMPLETE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DROPCOMPLETE_DESCRIPTION"
             },
             {
                 "type": {
@@ -962,7 +962,7 @@
                     "templates": []
                 },
                 "name": "DropPosition",
-                "description": "CHICANE_WINDOW_EVENTTYPE_DROPPOSITION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_DROPPOSITION_DESCRIPTION"
             },
             {
                 "type": {
@@ -973,7 +973,7 @@
                     "templates": []
                 },
                 "name": "AudioDeviceAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_AUDIODEVICEADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_AUDIODEVICEADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -984,7 +984,7 @@
                     "templates": []
                 },
                 "name": "AudioDeviceRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_AUDIODEVICEREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_AUDIODEVICEREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -995,7 +995,7 @@
                     "templates": []
                 },
                 "name": "AudioDeviceFormatChanged",
-                "description": "CHICANE_WINDOW_EVENTTYPE_AUDIODEVICEFORMATCHANGED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_AUDIODEVICEFORMATCHANGED_DESCRIPTION"
             },
             {
                 "type": {
@@ -1006,7 +1006,7 @@
                     "templates": []
                 },
                 "name": "SensorUpdate",
-                "description": "CHICANE_WINDOW_EVENTTYPE_SENSORUPDATE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_SENSORUPDATE_DESCRIPTION"
             },
             {
                 "type": {
@@ -1017,7 +1017,7 @@
                     "templates": []
                 },
                 "name": "PenProximityIn",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENPROXIMITYIN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENPROXIMITYIN_DESCRIPTION"
             },
             {
                 "type": {
@@ -1028,7 +1028,7 @@
                     "templates": []
                 },
                 "name": "PenProximityOut",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENPROXIMITYOUT_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENPROXIMITYOUT_DESCRIPTION"
             },
             {
                 "type": {
@@ -1039,7 +1039,7 @@
                     "templates": []
                 },
                 "name": "PenDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -1050,7 +1050,7 @@
                     "templates": []
                 },
                 "name": "PenUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -1061,7 +1061,7 @@
                     "templates": []
                 },
                 "name": "PenButtonDown",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENBUTTONDOWN_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENBUTTONDOWN_DESCRIPTION"
             },
             {
                 "type": {
@@ -1072,7 +1072,7 @@
                     "templates": []
                 },
                 "name": "PenButtonUp",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENBUTTONUP_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENBUTTONUP_DESCRIPTION"
             },
             {
                 "type": {
@@ -1083,7 +1083,7 @@
                     "templates": []
                 },
                 "name": "PenMotion",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENMOTION_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENMOTION_DESCRIPTION"
             },
             {
                 "type": {
@@ -1094,7 +1094,7 @@
                     "templates": []
                 },
                 "name": "PenAxis",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PENAXIS_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PENAXIS_DESCRIPTION"
             },
             {
                 "type": {
@@ -1105,7 +1105,7 @@
                     "templates": []
                 },
                 "name": "CameraDeviceAdded",
-                "description": "CHICANE_WINDOW_EVENTTYPE_CAMERADEVICEADDED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_CAMERADEVICEADDED_DESCRIPTION"
             },
             {
                 "type": {
@@ -1116,7 +1116,7 @@
                     "templates": []
                 },
                 "name": "CameraDeviceRemoved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_CAMERADEVICEREMOVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_CAMERADEVICEREMOVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -1127,7 +1127,7 @@
                     "templates": []
                 },
                 "name": "CameraDeviceApproved",
-                "description": "CHICANE_WINDOW_EVENTTYPE_CAMERADEVICEAPPROVED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_CAMERADEVICEAPPROVED_DESCRIPTION"
             },
             {
                 "type": {
@@ -1138,7 +1138,7 @@
                     "templates": []
                 },
                 "name": "CameraDeviceDenied",
-                "description": "CHICANE_WINDOW_EVENTTYPE_CAMERADEVICEDENIED_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_CAMERADEVICEDENIED_DESCRIPTION"
             },
             {
                 "type": {
@@ -1149,7 +1149,7 @@
                     "templates": []
                 },
                 "name": "RenderTargetsReset",
-                "description": "CHICANE_WINDOW_EVENTTYPE_RENDERTARGETSRESET_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_RENDERTARGETSRESET_DESCRIPTION"
             },
             {
                 "type": {
@@ -1160,7 +1160,7 @@
                     "templates": []
                 },
                 "name": "RenderDeviceReset",
-                "description": "CHICANE_WINDOW_EVENTTYPE_RENDERDEVICERESET_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_RENDERDEVICERESET_DESCRIPTION"
             },
             {
                 "type": {
@@ -1171,7 +1171,7 @@
                     "templates": []
                 },
                 "name": "RenderDeviceLost",
-                "description": "CHICANE_WINDOW_EVENTTYPE_RENDERDEVICELOST_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_RENDERDEVICELOST_DESCRIPTION"
             },
             {
                 "type": {
@@ -1182,7 +1182,7 @@
                     "templates": []
                 },
                 "name": "Private0",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PRIVATE0_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PRIVATE0_DESCRIPTION"
             },
             {
                 "type": {
@@ -1193,7 +1193,7 @@
                     "templates": []
                 },
                 "name": "Private1",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PRIVATE1_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PRIVATE1_DESCRIPTION"
             },
             {
                 "type": {
@@ -1204,7 +1204,7 @@
                     "templates": []
                 },
                 "name": "Private2",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PRIVATE2_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PRIVATE2_DESCRIPTION"
             },
             {
                 "type": {
@@ -1215,7 +1215,7 @@
                     "templates": []
                 },
                 "name": "Private3",
-                "description": "CHICANE_WINDOW_EVENTTYPE_PRIVATE3_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_PRIVATE3_DESCRIPTION"
             },
             {
                 "type": {
@@ -1226,7 +1226,7 @@
                     "templates": []
                 },
                 "name": "PollSentinel",
-                "description": "CHICANE_WINDOW_EVENTTYPE_POLLSENTINEL_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_POLLSENTINEL_DESCRIPTION"
             },
             {
                 "type": {
@@ -1237,7 +1237,7 @@
                     "templates": []
                 },
                 "name": "User",
-                "description": "CHICANE_WINDOW_EVENTTYPE_USER_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_USER_DESCRIPTION"
             },
             {
                 "type": {
@@ -1248,14 +1248,14 @@
                     "templates": []
                 },
                 "name": "Last",
-                "description": "CHICANE_WINDOW_EVENTTYPE_LAST_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENTTYPE_LAST_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_WINDOW_EVENTTYPE_DESCRIPTION"
+        "description": "CHICANE_WINDOWEVENTTYPE_DESCRIPTION"
     },
     "children": []
 }

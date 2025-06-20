@@ -454,7 +454,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Window::Renderer",
+                            "name": "WindowRenderer",
                             "suffix": "",
                             "path": "Core/Window/Renderer",
                             "templates": []
@@ -652,7 +652,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Window::CreateInfo",
+                    "name": "WindowCreateInfo",
                     "suffix": "",
                     "path": "Core/Window/CreateInfo",
                     "templates": []
@@ -671,9 +671,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Window::Instance",
+                            "name": "Window",
                             "suffix": "",
-                            "path": "Core/Window/Instance",
+                            "path": "Core/Window",
                             "templates": []
                         }
                     ]

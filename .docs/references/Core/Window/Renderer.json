@@ -1,10 +1,10 @@
 {
-    "title": "Renderer",
+    "title": "Window Renderer",
     "filename": "Renderer",
     "path": "Core/Window/Renderer",
     "source": {
         "header": "Includes/Chicane/Core/Window/Renderer.hpp",
-        "namespace": "Chicane::Window::Renderer",
+        "namespace": "Chicane::WindowRenderer",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Undefined",
-                "description": "CHICANE_WINDOW_RENDERER_UNDEFINED_DESCRIPTION"
+                "description": "CHICANE_WINDOWRENDERER_UNDEFINED_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "OpenGL",
-                "description": "CHICANE_WINDOW_RENDERER_OPENGL_DESCRIPTION"
+                "description": "CHICANE_WINDOWRENDERER_OPENGL_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,14 +38,14 @@
                     "templates": []
                 },
                 "name": "Vulkan",
-                "description": "CHICANE_WINDOW_RENDERER_VULKAN_DESCRIPTION"
+                "description": "CHICANE_WINDOWRENDERER_VULKAN_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_WINDOW_RENDERER_DESCRIPTION"
+        "description": "CHICANE_WINDOWRENDERER_DESCRIPTION"
     },
     "children": []
 }

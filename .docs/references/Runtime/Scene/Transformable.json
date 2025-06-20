@@ -31,7 +31,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Transform::Combined",
+                    "name": "TransformCombined",
                     "suffix": "&",
                     "path": "Core/Math/Transform/Combined",
                     "templates": []
@@ -150,9 +150,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Transform::Instance",
+                    "name": "Transform",
                     "suffix": "&",
-                    "path": "Core/Math/Transform/Instance",
+                    "path": "Core/Math/Transform",
                     "templates": []
                 },
                 "name": "getRelative",
@@ -177,9 +177,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Transform::Instance",
+                            "name": "Transform",
                             "suffix": "&",
-                            "path": "Core/Math/Transform/Instance",
+                            "path": "Core/Math/Transform",
                             "templates": []
                         },
                         "name": "inTransform"
@@ -832,9 +832,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Transform::Instance",
+                    "name": "Transform",
                     "suffix": "&",
-                    "path": "Core/Math/Transform/Instance",
+                    "path": "Core/Math/Transform",
                     "templates": []
                 },
                 "name": "getAbsolute",
@@ -859,9 +859,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Transform::Instance",
+                            "name": "Transform",
                             "suffix": "&",
-                            "path": "Core/Math/Transform/Instance",
+                            "path": "Core/Math/Transform",
                             "templates": []
                         },
                         "name": "inTransform"
@@ -1651,7 +1651,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Transform::Combined",
+                    "name": "TransformCombined",
                     "suffix": "",
                     "path": "Core/Math/Transform/Combined",
                     "templates": []

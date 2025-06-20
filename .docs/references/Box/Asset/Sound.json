@@ -58,7 +58,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Audio::Vendor",
+                    "name": "AudioVendor",
                     "suffix": "",
                     "path": "Core/Audio/Vendor",
                     "templates": []
@@ -85,7 +85,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Audio::Vendor",
+                            "name": "AudioVendor",
                             "suffix": "",
                             "path": "Core/Audio/Vendor",
                             "templates": []
@@ -103,7 +103,7 @@
                     "prefix": "const ",
                     "name": "Audio::Raw",
                     "suffix": "&",
-                    "path": "Core/Audio/Instance",
+                    "path": "Core/Audio",
                     "templates": []
                 },
                 "name": "getData",
@@ -156,7 +156,7 @@
                             "prefix": "const ",
                             "name": "Audio::Raw",
                             "suffix": "&",
-                            "path": "Core/Audio/Instance",
+                            "path": "Core/Audio",
                             "templates": []
                         },
                         "name": "inData"
@@ -250,7 +250,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Audio::Vendor",
+                    "name": "AudioVendor",
                     "suffix": "",
                     "path": "Core/Audio/Vendor",
                     "templates": []
@@ -265,7 +265,7 @@
                     "prefix": "",
                     "name": "Audio::Raw",
                     "suffix": "",
-                    "path": "Core/Audio/Instance",
+                    "path": "Core/Audio",
                     "templates": []
                 },
                 "name": "m_data",

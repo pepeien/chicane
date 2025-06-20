@@ -1493,7 +1493,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Window::Event",
+                            "name": "WindowEvent",
                             "suffix": "&",
                             "path": "Core/Window/Event",
                             "templates": []

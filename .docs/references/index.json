@@ -302,37 +302,27 @@
                 "filename": "Audio",
                 "path": "Core/Audio",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Core/Audio.hpp",
+                    "namespace": "Chicane::Audio"
                 },
                 "children": [
                     {
-                        "title": "Audio",
-                        "filename": "Instance",
-                        "path": "Core/Audio/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Audio/Instance.hpp",
-                            "namespace": "Chicane::Audio"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Specification",
+                        "title": "Audio Specification",
                         "filename": "Specification",
                         "path": "Core/Audio/Specification",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Specification.hpp",
-                            "namespace": "Chicane::Audio::Specification"
+                            "namespace": "Chicane::AudioSpecification"
                         },
                         "children": []
                     },
                     {
-                        "title": "Vendor",
+                        "title": "Audio Vendor",
                         "filename": "Vendor",
                         "path": "Core/Audio/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Core/Audio/Vendor.hpp",
-                            "namespace": "Chicane::Audio::Vendor"
+                            "namespace": "Chicane::AudioVendor"
                         },
                         "children": []
                     }
@@ -445,27 +435,17 @@
                 "filename": "Image",
                 "path": "Core/Image",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Core/Image.hpp",
+                    "namespace": "Chicane::Image"
                 },
                 "children": [
                     {
-                        "title": "Image",
-                        "filename": "Instance",
-                        "path": "Core/Image/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Image/Instance.hpp",
-                            "namespace": "Chicane::Image"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Vendor",
+                        "title": "Image Vendor",
                         "filename": "Vendor",
                         "path": "Core/Image/Vendor",
                         "source": {
                             "header": "Includes/Chicane/Core/Image/Vendor.hpp",
-                            "namespace": "Chicane::Image::Vendor"
+                            "namespace": "Chicane::ImageVendor"
                         },
                         "children": []
                     }
@@ -814,27 +794,17 @@
                         "filename": "Transform",
                         "path": "Core/Math/Transform",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Core/Math/Transform.hpp",
+                            "namespace": "Chicane::Transform"
                         },
                         "children": [
                             {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Core/Math/Transform/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Math/Transform/Instance.hpp",
-                                    "namespace": "Chicane::Transform::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Transform",
+                                "title": "Transform Combined",
                                 "filename": "Combined",
                                 "path": "Core/Math/Transform/Combined",
                                 "source": {
                                     "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",
-                                    "namespace": "Chicane::Transform"
+                                    "namespace": "Chicane::TransformCombined"
                                 },
                                 "children": []
                             }
@@ -958,67 +928,58 @@
                 "filename": "Window",
                 "path": "Core/Window",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Core/Window.hpp",
+                    "namespace": "Chicane::Window"
                 },
                 "children": [
                     {
-                        "title": "Event",
-                        "filename": "Event",
-                        "path": "Core/Window/Event",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Event.hpp",
-                            "namespace": "Chicane::Window::Event"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Event Type",
-                        "filename": "Event Type",
-                        "path": "Core/Window/EventType",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/EventType.hpp",
-                            "namespace": "Chicane::Window::EventType"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Core/Window/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Instance.hpp",
-                            "namespace": "Chicane::Window::Instance"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Renderer",
-                        "filename": "Renderer",
-                        "path": "Core/Window/Renderer",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Renderer.hpp",
-                            "namespace": "Chicane::Window::Renderer"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Type",
-                        "filename": "Type",
-                        "path": "Core/Window/Type",
-                        "source": {
-                            "header": "Includes/Chicane/Core/Window/Type.hpp",
-                            "namespace": "Chicane::Window::Type"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Window",
+                        "title": "Window Create Info",
                         "filename": "Create Info",
                         "path": "Core/Window/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Core/Window/CreateInfo.hpp",
-                            "namespace": "Chicane::Window"
+                            "namespace": "Chicane::WindowCreateInfo"
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Window Event",
+                        "filename": "Event",
+                        "path": "Core/Window/Event",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Window/Event.hpp",
+                            "namespace": "Chicane::WindowEvent"
+                        },
+                        "children": [
+                            {
+                                "title": "Window Event Type",
+                                "filename": "Type",
+                                "path": "Core/Window/Event/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Window/Event/Type.hpp",
+                                    "namespace": "Chicane::WindowEventType"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Window Renderer",
+                        "filename": "Renderer",
+                        "path": "Core/Window/Renderer",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Window/Renderer.hpp",
+                            "namespace": "Chicane::WindowRenderer"
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "Window Type",
+                        "filename": "Type",
+                        "path": "Core/Window/Type",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Window/Type.hpp",
+                            "namespace": "Chicane::WindowType"
                         },
                         "children": []
                     }

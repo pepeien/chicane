@@ -1,10 +1,10 @@
 {
-    "title": "Specification",
+    "title": "Audio Specification",
     "filename": "Specification",
     "path": "Core/Audio/Specification",
     "source": {
         "header": "Includes/Chicane/Core/Audio/Specification.hpp",
-        "namespace": "Chicane::Audio::Specification",
+        "namespace": "Chicane::AudioSpecification",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -22,7 +22,7 @@
                     "templates": []
                 },
                 "name": "format",
-                "description": "CHICANE_AUDIO_SPECIFICATION_FORMAT_DESCRIPTION"
+                "description": "CHICANE_AUDIOSPECIFICATION_FORMAT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,7 +35,7 @@
                     "templates": []
                 },
                 "name": "channels",
-                "description": "CHICANE_AUDIO_SPECIFICATION_CHANNELS_DESCRIPTION"
+                "description": "CHICANE_AUDIOSPECIFICATION_CHANNELS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -48,10 +48,10 @@
                     "templates": []
                 },
                 "name": "frequency",
-                "description": "CHICANE_AUDIO_SPECIFICATION_FREQUENCY_DESCRIPTION"
+                "description": "CHICANE_AUDIOSPECIFICATION_FREQUENCY_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_AUDIO_SPECIFICATION_DESCRIPTION"
+        "description": "CHICANE_AUDIOSPECIFICATION_DESCRIPTION"
     },
     "children": []
 }

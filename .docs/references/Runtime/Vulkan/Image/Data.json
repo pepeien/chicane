@@ -23,9 +23,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Chicane::Image::Instance",
+                            "name": "Chicane::Image",
                             "suffix": "&",
-                            "path": "Core/Image/Instance",
+                            "path": "Core/Image",
                             "templates": []
                         },
                         "name": "inImage"

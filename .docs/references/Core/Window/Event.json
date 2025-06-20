@@ -1,10 +1,10 @@
 {
-    "title": "Event",
+    "title": "Window Event",
     "filename": "Event",
     "path": "Core/Window/Event",
     "source": {
         "header": "Includes/Chicane/Core/Window/Event.hpp",
-        "namespace": "Chicane::Window::Event",
+        "namespace": "Chicane::WindowEvent",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,13 +16,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "EventType",
+                    "name": "WindowEventType",
                     "suffix": "",
-                    "path": "Core/Window/EventType",
+                    "path": "Core/Window/Event/Type",
                     "templates": []
                 },
                 "name": "type",
-                "description": "CHICANE_WINDOW_EVENT_TYPE_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENT_TYPE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,10 +35,10 @@
                     "templates": []
                 },
                 "name": "data",
-                "description": "CHICANE_WINDOW_EVENT_DATA_DESCRIPTION"
+                "description": "CHICANE_WINDOWEVENT_DATA_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_WINDOW_EVENT_DESCRIPTION"
+        "description": "CHICANE_WINDOWEVENT_DESCRIPTION"
     },
     "children": []
 }

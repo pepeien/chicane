@@ -1,10 +1,10 @@
 {
-    "title": "Vendor",
+    "title": "Image Vendor",
     "filename": "Vendor",
     "path": "Core/Image/Vendor",
     "source": {
         "header": "Includes/Chicane/Core/Image/Vendor.hpp",
-        "namespace": "Chicane::Image::Vendor",
+        "namespace": "Chicane::ImageVendor",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Undefined",
-                "description": "CHICANE_IMAGE_VENDOR_UNDEFINED_DESCRIPTION"
+                "description": "CHICANE_IMAGEVENDOR_UNDEFINED_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,14 +27,14 @@
                     "templates": []
                 },
                 "name": "Png",
-                "description": "CHICANE_IMAGE_VENDOR_PNG_DESCRIPTION"
+                "description": "CHICANE_IMAGEVENDOR_PNG_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_IMAGE_VENDOR_DESCRIPTION"
+        "description": "CHICANE_IMAGEVENDOR_DESCRIPTION"
     },
     "children": []
 }

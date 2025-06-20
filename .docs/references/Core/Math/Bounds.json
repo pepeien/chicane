@@ -127,7 +127,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Transform::Combined",
+                            "name": "TransformCombined",
                             "suffix": "&",
                             "path": "Core/Math/Transform/Combined",
                             "templates": []

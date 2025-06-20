@@ -58,7 +58,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Image::Vendor",
+                    "name": "ImageVendor",
                     "suffix": "",
                     "path": "Core/Image/Vendor",
                     "templates": []
@@ -85,7 +85,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Image::Vendor",
+                            "name": "ImageVendor",
                             "suffix": "",
                             "path": "Core/Image/Vendor",
                             "templates": []
@@ -103,7 +103,7 @@
                     "prefix": "const ",
                     "name": "Image::Raw",
                     "suffix": "&",
-                    "path": "Core/Image/Instance",
+                    "path": "Core/Image",
                     "templates": []
                 },
                 "name": "getData",
@@ -156,7 +156,7 @@
                             "prefix": "const ",
                             "name": "Image::Raw",
                             "suffix": "&",
-                            "path": "Core/Image/Instance",
+                            "path": "Core/Image",
                             "templates": []
                         },
                         "name": "inData"
@@ -266,7 +266,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Image::Vendor",
+                    "name": "ImageVendor",
                     "suffix": "",
                     "path": "Core/Image/Vendor",
                     "templates": []
@@ -281,7 +281,7 @@
                     "prefix": "",
                     "name": "Image::Raw",
                     "suffix": "",
-                    "path": "Core/Image/Instance",
+                    "path": "Core/Image",
                     "templates": []
                 },
                 "name": "m_data",

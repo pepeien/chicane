@@ -85,9 +85,9 @@
                 "name": "SkyParsedSide",
                 "type": {
                     "prefix": "",
-                    "name": "Image::Instance",
+                    "name": "Image",
                     "suffix": "",
-                    "path": "Core/Image/Instance",
+                    "path": "Core/Image",
                     "templates": []
                 },
                 "description": "CHICANE_BOX_SKYPARSEDSIDE_DESCRIPTION"

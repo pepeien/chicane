@@ -1,10 +1,10 @@
 {
-    "title": "Type",
+    "title": "Window Type",
     "filename": "Type",
     "path": "Core/Window/Type",
     "source": {
         "header": "Includes/Chicane/Core/Window/Type.hpp",
-        "namespace": "Chicane::Window::Type",
+        "namespace": "Chicane::WindowType",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Windowed",
-                "description": "CHICANE_WINDOW_TYPE_WINDOWED_DESCRIPTION"
+                "description": "CHICANE_WINDOWTYPE_WINDOWED_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "WindowedBorderless",
-                "description": "CHICANE_WINDOW_TYPE_WINDOWEDBORDERLESS_DESCRIPTION"
+                "description": "CHICANE_WINDOWTYPE_WINDOWEDBORDERLESS_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,14 +38,14 @@
                     "templates": []
                 },
                 "name": "Fullscreen",
-                "description": "CHICANE_WINDOW_TYPE_FULLSCREEN_DESCRIPTION"
+                "description": "CHICANE_WINDOWTYPE_FULLSCREEN_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_WINDOW_TYPE_DESCRIPTION"
+        "description": "CHICANE_WINDOWTYPE_DESCRIPTION"
     },
     "children": []
 }

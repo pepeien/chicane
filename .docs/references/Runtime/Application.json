@@ -507,9 +507,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Window::Instance",
+                    "name": "Window",
                     "suffix": "*",
-                    "path": "Core/Window/Instance",
+                    "path": "Core/Window",
                     "templates": []
                 },
                 "name": "getWindow",
@@ -547,7 +547,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Window::Renderer",
+                            "name": "WindowRenderer",
                             "suffix": "",
                             "path": "Core/Window/Renderer",
                             "templates": []
