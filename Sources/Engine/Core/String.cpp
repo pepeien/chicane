@@ -26,9 +26,7 @@ namespace Chicane
 
     bool String::isEmpty() const
     {
-        const std::string& result = trim().toStandard();
-
-        return result.empty();
+        return trim().toStandard().empty();
     }
 
     bool String::isNaN() const
@@ -57,7 +55,7 @@ namespace Chicane
     
     bool String::contains(const String& inValue) const
     {
-        return contains(inValue.toChar());
+        return m_value.find(inValue.toChar()) != std::string::npos;
     }
 
     bool String::contains(char inValue) const
@@ -87,7 +85,7 @@ namespace Chicane
             return false;
         }
 
-        return *m_value.substr(0, 1).c_str() == inValue;
+        return m_value.at(0) == inValue;
     }
 
     bool String::endsWith(const String& inValue) const
@@ -112,7 +110,7 @@ namespace Chicane
             return false;
         }
 
-        return *m_value.substr(size() - 1).c_str() == inValue;
+        return m_value.at(size() - 1) == inValue;
     }
 
     bool String::toBool() const

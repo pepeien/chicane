@@ -14,7 +14,7 @@ namespace Chicane
 
                 for (vk::ExtensionProperties& extension : vk::enumerateInstanceExtensionProperties())
                 {
-                    extensions.erase(extension.extensionName);
+                    extensions.erase(extension.extensionName.data());
                 }
 
                 for (const String& unsupportedExtension : extensions)
@@ -34,7 +34,7 @@ namespace Chicane
 
                 for (vk::LayerProperties& layer : vk::enumerateInstanceLayerProperties())
                 {
-                    layers.erase(layer.layerName);
+                    layers.erase(layer.layerName.data());
                 }
 
                 for (const String& unsupportedLayer : layers)

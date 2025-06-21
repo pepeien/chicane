@@ -14,7 +14,7 @@ namespace Chicane
 
                 for (vk::ExtensionProperties& extension : inDevice.enumerateDeviceExtensionProperties())
                 {
-                    extensions.erase(extension.extensionName);
+                    extensions.erase(extension.extensionName.data());
                 }
 
                 for (const String& unsupportedExtension : extensions)

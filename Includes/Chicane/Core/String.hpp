@@ -44,6 +44,10 @@ namespace Chicane
             : m_value(inParams...)
         {}
 
+        String(char inValue)
+            : m_value(1, inValue)
+        {}
+
         String(const String& inValue)
             : m_value(inValue.m_value)
         {}

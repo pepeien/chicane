@@ -18,12 +18,12 @@ namespace Chicane
             };
 
         public:
-            Type   type       = Type::Undefined;
-            String name       = "";
-            String path       = "";
+            Type          type       = Type::Undefined;
+            String        name       = "";
+            String        path       = "";
 
             // File only
-            String extension  = "";
+            String        extension  = "";
 
             // Folder only
             std::uint32_t childCount = 0;
