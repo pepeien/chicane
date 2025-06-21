@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <span>Chicane is a C++17 cross plataform and multi graphics API graphics engine.</span>
+    <span>Chicane is a lightweight, cross-platform C++17 graphics engine with a focus on modularity and flexibility</span>
 </p>
 
 ## Features
@@ -11,10 +11,14 @@
     - Windows (^=10);
     - Linux.
 - Asset system: 
-    - Audio (.wav);
-    - Fonts (.ttf);
-    - 3D Models (.obj);
-    - Textures (.png).
+    - Audio:
+        - Waves Audio (.wav).
+    - Fonts:
+        - TrueType Font (.ttf).
+    - 3D Models:
+        - Wavefront (.obj).
+    - Textures:
+        - PNG (.png).
 - UI system:
     - Button;
     - Container;
@@ -39,7 +43,7 @@ This project uses CMake to generate and build files, it should pretty straight f
 
 ### Requeriments
 - Build:
-    - [CMake](https://cmake.org/download) (^=3.16.0);
+    - [CMake](https://cmake.org/download) (^=3.16.0).
 - Script:
     - [Python](https://www.python.org/downloads) (^=3.12.0).
 - Renderer:
