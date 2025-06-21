@@ -1,10 +1,10 @@
 {
-    "title": "Create Info",
+    "title": "Application Create Info",
     "filename": "Create Info",
     "path": "Runtime/Application/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
-        "namespace": "Chicane::Application::CreateInfo",
+        "namespace": "Chicane::ApplicationCreateInfo",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,13 +16,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Renderer::CreateInfo",
+                    "name": "RendererCreateInfo",
                     "suffix": "",
                     "path": "Runtime/Renderer/CreateInfo",
                     "templates": []
                 },
                 "name": "renderer",
-                "description": "CHICANE_APPLICATION_CREATEINFO_RENDERER_DESCRIPTION"
+                "description": "CHICANE_APPLICATIONCREATEINFO_RENDERER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,7 +35,7 @@
                     "templates": []
                 },
                 "name": "window",
-                "description": "CHICANE_APPLICATION_CREATEINFO_WINDOW_DESCRIPTION"
+                "description": "CHICANE_APPLICATIONCREATEINFO_WINDOW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -56,10 +56,10 @@
                     ]
                 },
                 "name": "onSetup",
-                "description": "CHICANE_APPLICATION_CREATEINFO_ONSETUP_DESCRIPTION"
+                "description": "CHICANE_APPLICATIONCREATEINFO_ONSETUP_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_APPLICATION_CREATEINFO_DESCRIPTION"
+        "description": "CHICANE_APPLICATIONCREATEINFO_DESCRIPTION"
     },
     "children": []
 }

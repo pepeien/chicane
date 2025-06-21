@@ -1,10 +1,10 @@
 {
-    "title": "Push Strategy",
+    "title": "Renderer Layer Push Strategy",
     "filename": "Push Strategy",
     "path": "Runtime/Renderer/Layer/PushStrategy",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Layer/PushStrategy.hpp",
-        "namespace": "Chicane::Layer::PushStrategy",
+        "namespace": "Chicane::RendererLayerPushStrategy",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Front",
-                "description": "CHICANE_LAYER_PUSHSTRATEGY_FRONT_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_FRONT_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Back",
-                "description": "CHICANE_LAYER_PUSHSTRATEGY_BACK_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_BACK_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,7 +38,7 @@
                     "templates": []
                 },
                 "name": "BeforeLayer",
-                "description": "CHICANE_LAYER_PUSHSTRATEGY_BEFORELAYER_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_BEFORELAYER_DESCRIPTION"
             },
             {
                 "type": {
@@ -49,14 +49,14 @@
                     "templates": []
                 },
                 "name": "AfterLayer",
-                "description": "CHICANE_LAYER_PUSHSTRATEGY_AFTERLAYER_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_AFTERLAYER_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_LAYER_PUSHSTRATEGY_DESCRIPTION"
+        "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_DESCRIPTION"
     },
     "children": []
 }

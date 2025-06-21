@@ -1,10 +1,10 @@
 {
-    "title": "Viewport",
+    "title": "Renderer Viewport",
     "filename": "Viewport",
     "path": "Runtime/Renderer/Viewport",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",
-        "namespace": "Chicane::Renderer::Viewport",
+        "namespace": "Chicane::RendererViewport",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -22,7 +22,7 @@
                     "templates": []
                 },
                 "name": "size",
-                "description": "CHICANE_RENDERER_VIEWPORT_SIZE_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPORT_SIZE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -35,10 +35,10 @@
                     "templates": []
                 },
                 "name": "position",
-                "description": "CHICANE_RENDERER_VIEWPORT_POSITION_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPORT_POSITION_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_RENDERER_VIEWPORT_DESCRIPTION"
+        "description": "CHICANE_RENDERERVIEWPORT_DESCRIPTION"
     },
     "children": []
 }

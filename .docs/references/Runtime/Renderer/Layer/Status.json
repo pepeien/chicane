@@ -1,10 +1,10 @@
 {
-    "title": "Status",
+    "title": "Renderer Layer Status",
     "filename": "Status",
     "path": "Runtime/Renderer/Layer/Status",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Layer/Status.hpp",
-        "namespace": "Chicane::Layer::Status",
+        "namespace": "Chicane::RendererLayerStatus",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Offline",
-                "description": "CHICANE_LAYER_STATUS_OFFLINE_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERSTATUS_OFFLINE_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Initialized",
-                "description": "CHICANE_LAYER_STATUS_INITIALIZED_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERSTATUS_INITIALIZED_DESCRIPTION"
             },
             {
                 "type": {
@@ -38,14 +38,14 @@
                     "templates": []
                 },
                 "name": "Running",
-                "description": "CHICANE_LAYER_STATUS_RUNNING_DESCRIPTION"
+                "description": "CHICANE_RENDERERLAYERSTATUS_RUNNING_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_LAYER_STATUS_DESCRIPTION"
+        "description": "CHICANE_RENDERERLAYERSTATUS_DESCRIPTION"
     },
     "children": []
 }

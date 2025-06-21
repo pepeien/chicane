@@ -1,10 +1,10 @@
 {
-    "title": "Settings",
+    "title": "Renderer View Settings",
     "filename": "Settings",
     "path": "Runtime/Renderer/View/Settings",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",
-        "namespace": "Chicane::View::Settings",
+        "namespace": "Chicane::RendererViewSettings",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -37,7 +37,7 @@
                     ]
                 },
                 "name": "viewport",
-                "description": "CHICANE_VIEW_SETTINGS_VIEWPORT_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWSETTINGS_VIEWPORT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -50,7 +50,7 @@
                     "templates": []
                 },
                 "name": "aspectRatio",
-                "description": "CHICANE_VIEW_SETTINGS_ASPECTRATIO_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWSETTINGS_ASPECTRATIO_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -63,7 +63,7 @@
                     "templates": []
                 },
                 "name": "fieldOfView",
-                "description": "CHICANE_VIEW_SETTINGS_FIELDOFVIEW_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWSETTINGS_FIELDOFVIEW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -76,7 +76,7 @@
                     "templates": []
                 },
                 "name": "nearClip",
-                "description": "CHICANE_VIEW_SETTINGS_NEARCLIP_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWSETTINGS_NEARCLIP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -89,10 +89,10 @@
                     "templates": []
                 },
                 "name": "farClip",
-                "description": "CHICANE_VIEW_SETTINGS_FARCLIP_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWSETTINGS_FARCLIP_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_VIEW_SETTINGS_DESCRIPTION"
+        "description": "CHICANE_RENDERERVIEWSETTINGS_DESCRIPTION"
     },
     "children": []
 }

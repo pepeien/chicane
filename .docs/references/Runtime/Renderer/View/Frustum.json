@@ -1,10 +1,10 @@
 {
-    "title": "Frustum",
+    "title": "Renderer View Frustum",
     "filename": "Frustum",
     "path": "Runtime/Renderer/View/Frustum",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
-        "namespace": "Chicane::View::Frustum",
+        "namespace": "Chicane::RendererViewFrustum",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -36,7 +36,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_VIEW_FRUSTUM_CONTAINS_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_CONTAINS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -62,7 +62,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VIEW_FRUSTUM_UPDATE_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_UPDATE_DESCRIPTION"
             }
         ],
         "members": [
@@ -71,81 +71,81 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_top",
-                "description": "CHICANE_VIEW_FRUSTUM_M_TOP_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_TOP_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_bottom",
-                "description": "CHICANE_VIEW_FRUSTUM_M_BOTTOM_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_BOTTOM_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_left",
-                "description": "CHICANE_VIEW_FRUSTUM_M_LEFT_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_LEFT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_right",
-                "description": "CHICANE_VIEW_FRUSTUM_M_RIGHT_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_RIGHT_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_near",
-                "description": "CHICANE_VIEW_FRUSTUM_M_NEAR_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_NEAR_DESCRIPTION"
             },
             {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Plane",
+                    "name": "RendererViewPlane",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Plane",
                     "templates": []
                 },
                 "name": "m_far",
-                "description": "CHICANE_VIEW_FRUSTUM_M_FAR_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWFRUSTUM_M_FAR_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_VIEW_FRUSTUM_DESCRIPTION"
+        "description": "CHICANE_RENDERERVIEWFRUSTUM_DESCRIPTION"
     },
     "children": []
 }

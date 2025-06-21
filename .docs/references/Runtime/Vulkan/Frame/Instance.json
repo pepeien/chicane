@@ -683,9 +683,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "View::Data",
+                    "name": "RendererView",
                     "suffix": "",
-                    "path": "Runtime/Renderer/View/Data",
+                    "path": "Runtime/Renderer/View",
                     "templates": []
                 },
                 "name": "normalizeViewData",
@@ -693,9 +693,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "View::Data",
+                            "name": "RendererView",
                             "suffix": "&",
-                            "path": "Runtime/Renderer/View/Data",
+                            "path": "Runtime/Renderer/View",
                             "templates": []
                         },
                         "name": "outData"
@@ -909,9 +909,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "View::Data",
+                            "name": "RendererView",
                             "suffix": "",
-                            "path": "Runtime/Renderer/View/Data",
+                            "path": "Runtime/Renderer/View",
                             "templates": []
                         }
                     ]
@@ -930,9 +930,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "View::Data",
+                            "name": "RendererView",
                             "suffix": "",
-                            "path": "Runtime/Renderer/View/Data",
+                            "path": "Runtime/Renderer/View",
                             "templates": []
                         }
                     ]

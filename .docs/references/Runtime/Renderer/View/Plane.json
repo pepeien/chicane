@@ -1,10 +1,10 @@
 {
-    "title": "Plane",
+    "title": "Renderer View Plane",
     "filename": "Plane",
     "path": "Runtime/Renderer/View/Plane",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",
-        "namespace": "Chicane::View::Plane",
+        "namespace": "Chicane::RendererViewPlane",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -36,7 +36,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_VIEW_PLANE_CONTAINS_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPLANE_CONTAINS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -72,7 +72,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VIEW_PLANE_UPDATE_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPLANE_UPDATE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -100,7 +100,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_VIEW_PLANE_DISTANCETOPOINT_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPLANE_DISTANCETOPOINT_DESCRIPTION"
             }
         ],
         "members": [
@@ -115,7 +115,7 @@
                     "templates": []
                 },
                 "name": "m_distance",
-                "description": "CHICANE_VIEW_PLANE_M_DISTANCE_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPLANE_M_DISTANCE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -128,10 +128,10 @@
                     "templates": []
                 },
                 "name": "m_normal",
-                "description": "CHICANE_VIEW_PLANE_M_NORMAL_DESCRIPTION"
+                "description": "CHICANE_RENDERERVIEWPLANE_M_NORMAL_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_VIEW_PLANE_DESCRIPTION"
+        "description": "CHICANE_RENDERERVIEWPLANE_DESCRIPTION"
     },
     "children": []
 }

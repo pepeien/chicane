@@ -140,7 +140,7 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "CreateInfo",
+                            "name": "ApplicationCreateInfo",
                             "suffix": "&",
                             "path": "Runtime/Application/CreateInfo",
                             "templates": []
@@ -150,21 +150,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_RUN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "stop",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_STOP_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -522,6 +507,21 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "T",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getWindow",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -563,9 +563,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Renderer::Instance",
+                    "name": "Renderer",
                     "suffix": "*",
-                    "path": "Runtime/Renderer/Instance",
+                    "path": "Runtime/Renderer",
                     "templates": []
                 },
                 "name": "getRenderer",

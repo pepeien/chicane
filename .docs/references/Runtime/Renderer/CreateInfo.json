@@ -1,17 +1,44 @@
 {
-    "title": "Renderer",
+    "title": "Renderer Create Info",
     "filename": "Create Info",
     "path": "Runtime/Renderer/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/CreateInfo.hpp",
-        "namespace": "Chicane::Renderer",
+        "namespace": "Chicane::RendererCreateInfo",
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": [],
-        "description": "CHICANE_RENDERER_DESCRIPTION"
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "resolution",
+                "description": "CHICANE_RENDERERCREATEINFO_RESOLUTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_RENDERERCREATEINFO_POSITION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERERCREATEINFO_DESCRIPTION"
     },
     "children": []
 }

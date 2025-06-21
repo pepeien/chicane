@@ -1219,22 +1219,12 @@
                 },
                 "children": [
                     {
-                        "title": "Create Info",
+                        "title": "Application Create Info",
                         "filename": "Create Info",
                         "path": "Runtime/Application/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
-                            "namespace": "Chicane::Application::CreateInfo"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Runtime/Application/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Application/Instance.hpp",
-                            "namespace": "Chicane::Application::Instance"
+                            "namespace": "Chicane::ApplicationCreateInfo"
                         },
                         "children": []
                     }
@@ -1255,129 +1245,99 @@
                 "filename": "Renderer",
                 "path": "Runtime/Renderer",
                 "source": {
-                    "header": null,
-                    "namespace": null
+                    "header": "Includes/Chicane/Runtime/Renderer.hpp",
+                    "namespace": "Chicane::Renderer"
                 },
                 "children": [
                     {
-                        "title": "Instance",
-                        "filename": "Instance",
-                        "path": "Runtime/Renderer/Instance",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Renderer/Instance.hpp",
-                            "namespace": "Chicane::Renderer::Instance"
-                        },
-                        "children": []
-                    },
-                    {
-                        "title": "Layer",
-                        "filename": "Layer",
-                        "path": "Runtime/Renderer/Layer",
-                        "source": {
-                            "header": null,
-                            "namespace": null
-                        },
-                        "children": [
-                            {
-                                "title": "Layer",
-                                "filename": "Instance",
-                                "path": "Runtime/Renderer/Layer/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Layer/Instance.hpp",
-                                    "namespace": "Chicane::Layer"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Push Strategy",
-                                "filename": "Push Strategy",
-                                "path": "Runtime/Renderer/Layer/PushStrategy",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Layer/PushStrategy.hpp",
-                                    "namespace": "Chicane::Layer::PushStrategy"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Status",
-                                "filename": "Status",
-                                "path": "Runtime/Renderer/Layer/Status",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Layer/Status.hpp",
-                                    "namespace": "Chicane::Layer::Status"
-                                },
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Renderer",
+                        "title": "Renderer Create Info",
                         "filename": "Create Info",
                         "path": "Runtime/Renderer/CreateInfo",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/CreateInfo.hpp",
-                            "namespace": "Chicane::Renderer"
+                            "namespace": "Chicane::RendererCreateInfo"
                         },
                         "children": []
                     },
                     {
-                        "title": "View",
-                        "filename": "View",
-                        "path": "Runtime/Renderer/View",
+                        "title": "Renderer Layer",
+                        "filename": "Layer",
+                        "path": "Runtime/Renderer/Layer",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Runtime/Renderer/Layer.hpp",
+                            "namespace": "Chicane::RendererLayer"
                         },
                         "children": [
                             {
-                                "title": "Frustum",
-                                "filename": "Frustum",
-                                "path": "Runtime/Renderer/View/Frustum",
+                                "title": "Renderer Layer Push Strategy",
+                                "filename": "Push Strategy",
+                                "path": "Runtime/Renderer/Layer/PushStrategy",
                                 "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
-                                    "namespace": "Chicane::View::Frustum"
+                                    "header": "Includes/Chicane/Runtime/Renderer/Layer/PushStrategy.hpp",
+                                    "namespace": "Chicane::RendererLayerPushStrategy"
                                 },
                                 "children": []
                             },
                             {
-                                "title": "Plane",
-                                "filename": "Plane",
-                                "path": "Runtime/Renderer/View/Plane",
+                                "title": "Renderer Layer Status",
+                                "filename": "Status",
+                                "path": "Runtime/Renderer/Layer/Status",
                                 "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",
-                                    "namespace": "Chicane::View::Plane"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Settings",
-                                "filename": "Settings",
-                                "path": "Runtime/Renderer/View/Settings",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",
-                                    "namespace": "Chicane::View::Settings"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "View",
-                                "filename": "Data",
-                                "path": "Runtime/Renderer/View/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/View/Data.hpp",
-                                    "namespace": "Chicane::View"
+                                    "header": "Includes/Chicane/Runtime/Renderer/Layer/Status.hpp",
+                                    "namespace": "Chicane::RendererLayerStatus"
                                 },
                                 "children": []
                             }
                         ]
                     },
                     {
-                        "title": "Viewport",
+                        "title": "Renderer View",
+                        "filename": "View",
+                        "path": "Runtime/Renderer/View",
+                        "source": {
+                            "header": "Includes/Chicane/Runtime/Renderer/View.hpp",
+                            "namespace": "Chicane::RendererView"
+                        },
+                        "children": [
+                            {
+                                "title": "Renderer View Frustum",
+                                "filename": "Frustum",
+                                "path": "Runtime/Renderer/View/Frustum",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Renderer/View/Frustum.hpp",
+                                    "namespace": "Chicane::RendererViewFrustum"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Renderer View Plane",
+                                "filename": "Plane",
+                                "path": "Runtime/Renderer/View/Plane",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Renderer/View/Plane.hpp",
+                                    "namespace": "Chicane::RendererViewPlane"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Renderer View Settings",
+                                "filename": "Settings",
+                                "path": "Runtime/Renderer/View/Settings",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Renderer/View/Settings.hpp",
+                                    "namespace": "Chicane::RendererViewSettings"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Renderer Viewport",
                         "filename": "Viewport",
                         "path": "Runtime/Renderer/Viewport",
                         "source": {
                             "header": "Includes/Chicane/Runtime/Renderer/Viewport.hpp",
-                            "namespace": "Chicane::Renderer::Viewport"
+                            "namespace": "Chicane::RendererViewport"
                         },
                         "children": []
                     }

@@ -366,9 +366,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "View::Data",
+                    "name": "RendererView",
                     "suffix": "&",
-                    "path": "Runtime/Renderer/View/Data",
+                    "path": "Runtime/Renderer/View",
                     "templates": []
                 },
                 "name": "getData",
@@ -473,7 +473,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View::Settings",
+                    "name": "RendererViewSettings",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Settings",
                     "templates": []
@@ -486,7 +486,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View::Frustum",
+                    "name": "RendererViewFrustum",
                     "suffix": "",
                     "path": "Runtime/Renderer/View/Frustum",
                     "templates": []
@@ -499,9 +499,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "View::Data",
+                    "name": "RendererView",
                     "suffix": "",
-                    "path": "Runtime/Renderer/View/Data",
+                    "path": "Runtime/Renderer/View",
                     "templates": []
                 },
                 "name": "m_data",
