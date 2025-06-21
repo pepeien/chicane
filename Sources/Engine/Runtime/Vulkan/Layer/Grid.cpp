@@ -7,7 +7,7 @@ namespace Chicane
     namespace Vulkan
     {
         LGrid::LGrid()
-            : Layer::Instance("UI"),
+            : Super("UI"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
             m_clearValues({}),

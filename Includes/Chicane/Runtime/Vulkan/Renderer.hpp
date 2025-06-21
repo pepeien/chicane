@@ -24,7 +24,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME Renderer : public Chicane::Renderer::Instance
+        class CHICANE_RUNTIME Renderer : public Chicane::Renderer
         {
         public:
             struct CHICANE_RUNTIME Internals
@@ -50,7 +50,7 @@ namespace Chicane
 
         public:
             Renderer();
-            ~Renderer();
+            virtual ~Renderer();
 
         public:
             // Lifecycle

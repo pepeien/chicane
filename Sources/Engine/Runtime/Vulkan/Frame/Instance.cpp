@@ -91,14 +91,14 @@ namespace Chicane
                     return;
                 }
 
-                const View::Data data = normalizeViewData(inCameras.at(0)->getData());
+                const RendererView data = normalizeViewData(inCameras.at(0)->getData());
 
                 Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(View::Data);
+                bufferCreateInfo.size             = sizeof(RendererView);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 cameraResource.setup(bufferCreateInfo);
@@ -121,7 +121,7 @@ namespace Chicane
                     return;
                 }
 
-                const View::Data data = normalizeViewData(inCameras.at(0)->getData());
+                const RendererView data = normalizeViewData(inCameras.at(0)->getData());
                 cameraResource.copyToBuffer(&data);
             }
 
@@ -139,14 +139,14 @@ namespace Chicane
                     return;
                 }
 
-                const View::Data data = normalizeViewData(inLights.at(0)->getData());
+                const RendererView data = normalizeViewData(inLights.at(0)->getData());
     
                 Buffer::CreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
                 bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(View::Data);
+                bufferCreateInfo.size             = sizeof(RendererView);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
 
                 lightResource.setup(bufferCreateInfo);
@@ -169,7 +169,7 @@ namespace Chicane
                     return;
                 }
 
-                const View::Data data = normalizeViewData(inLights.at(0)->getData());
+                const RendererView data = normalizeViewData(inLights.at(0)->getData());
 
                 lightResource.copyToBuffer(&data);
             }
@@ -426,9 +426,9 @@ namespace Chicane
                 );
             }
 
-            View::Data Instance::normalizeViewData(const View::Data& outData)
+            RendererView Instance::normalizeViewData(const RendererView& outData)
             {
-                View::Data result = outData;
+                RendererView result = outData;
                 result.projection [1][1] *= -1;
                 result.viewProjection = result.projection * result.view;
 

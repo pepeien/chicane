@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME LShadow : public Layer::Instance
+        class CHICANE_RUNTIME LShadow : public RendererLayer
         {
         public:
             LShadow();

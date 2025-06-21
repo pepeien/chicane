@@ -9,7 +9,7 @@ namespace Chicane
     namespace Vulkan
     {
         LSky::LSky()
-            : Layer::Instance("Engine_Sky"),
+            : Super("Engine_Sky"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
             m_frameDescriptor({}),
@@ -78,7 +78,7 @@ namespace Chicane
 
         void LSky::onRender(void* outData)
         {
-            if (!is(Layer::Status::Running))
+            if (!is(RendererLayerStatus::Running))
             {
                 return;
             }
@@ -135,7 +135,7 @@ namespace Chicane
 
         void LSky::loadEvents()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -162,7 +162,7 @@ namespace Chicane
                             skies.front()->watchSky(
                                 [this](const Chicane::Box::Sky* inSky)
                                 {
-                                    if (!is(Layer::Status::Offline) || !inSky)
+                                    if (!is(RendererLayerStatus::Offline) || !inSky)
                                     {
                                         return;
                                     }
@@ -180,7 +180,7 @@ namespace Chicane
 
         void LSky::initFrameResources()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }
@@ -246,7 +246,7 @@ namespace Chicane
 
         void LSky::initTextureResources()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -289,7 +289,7 @@ namespace Chicane
 
         void LSky::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -336,7 +336,7 @@ namespace Chicane
 
         void LSky::initFramebuffers()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }
@@ -444,7 +444,8 @@ namespace Chicane
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(std::uint32_t) * indices.size();
             createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
+                                          vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer::Instance stagingBuffer;
             Buffer::init(stagingBuffer, createInfo);
@@ -457,7 +458,8 @@ namespace Chicane
             memcpy(writeLocation, indices.data(), createInfo.size);
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
+                                          vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             Buffer::init(m_modelIndexBuffer, createInfo);

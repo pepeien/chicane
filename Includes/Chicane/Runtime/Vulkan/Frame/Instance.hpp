@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Mesh/Parsed.hpp"
-#include "Chicane/Runtime/Renderer/View/Data.hpp"
+#include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Vulkan/Image/Data.hpp"
 #include "Chicane/Runtime/Vulkan/Frame/Resource.hpp"
@@ -62,7 +62,7 @@ namespace Chicane
                 void updateDescriptorSets();
 
             private:
-                View::Data normalizeViewData(const View::Data& outData);
+                RendererView normalizeViewData(const RendererView& outData);
 
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
@@ -86,8 +86,8 @@ namespace Chicane
                 vk::Semaphore                                renderSemaphore;
 
                 // Resources
-                Resource<View::Data>                         cameraResource;
-                Resource<View::Data>                         lightResource;
+                Resource<RendererView>                       cameraResource;
+                Resource<RendererView>                       lightResource;
                 Resource<Box::MeshParsed>                    meshResource;
 
                 std::unordered_map<String,vk::DescriptorSet> descriptorSets;

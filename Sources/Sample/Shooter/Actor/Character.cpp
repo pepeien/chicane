@@ -1,8 +1,8 @@
 #include "Actor/Character.hpp"
 
 #include "Actor/Apple.hpp"
-#include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Core.hpp"
+#include "Chicane/Runtime/Application.hpp"
 #include "Game.hpp"
 
 static inline constexpr const float MOVE_COEFFICIENT = 3.0f;

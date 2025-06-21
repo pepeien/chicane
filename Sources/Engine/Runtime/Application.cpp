@@ -1,72 +1,166 @@
 #include "Chicane/Runtime/Application.hpp"
 
+#include "Chicane/Runtime/Vulkan/Renderer.hpp"
+
 namespace Chicane
 {
-    static const Telemetry EMPTY_TELEMETRY = {};
-
     namespace Application
     {
-        std::unique_ptr<Instance> m_application = nullptr;
+        // Runtime
+        static Telemetry                 g_telemetry            = {};
 
-        void run(const CreateInfo& inCreateInfo)
+        static Controller*               g_controller           = nullptr;
+        static ControllerObservable      g_controllerObservable = {};
+
+        static Scene*                    g_scene                = nullptr;
+        static SceneObservable           g_sceneObservable      = {};
+
+        // Grid
+        static Grid::View*               g_view                 = nullptr;
+        static ViewObservable            g_viewObservable       = {};
+
+        // Window
+        static WindowCreateInfo          g_windowInfo           = {};
+        static std::unique_ptr<Window>   g_window               = nullptr;
+
+        // Renderer
+        static RendererCreateInfo        g_rendererInfo         = {};
+        static std::unique_ptr<Renderer> g_renderer             = nullptr;
+
+        void initWindow()
         {
-            if (m_application)
+            if (!hasWindow())
             {
-                return;
+                g_window = std::make_unique<Window>();
+                g_window->watchSize(
+                    [&](const Vec<2, int>& inSize)
+                    {
+                        if (!g_view)
+                        {
+                            return;
+                        }
+
+                        g_view->setSize(inSize.x, inSize.y);
+                    }
+                );
+            }
+            else
+            {
+                g_window->destroy();
             }
 
-            m_application = std::make_unique<Instance>();
-            m_application->init(inCreateInfo);
+            g_window->init(g_windowInfo);
         }
 
-        void stop()
+        void initRenderer()
         {
-            if (!m_application)
+            if (!hasRenderer())
             {
-                return;
+                g_renderer.release();
             }
 
-            m_application.reset();
+            switch (g_windowInfo.renderer)
+            {
+            case WindowRenderer::Vulkan:
+                g_renderer = std::make_unique<Vulkan::Renderer>();
+
+                break;
+
+            default:
+                g_renderer = std::make_unique<Renderer>();
+
+                break;
+            }
+
+            g_renderer->init(g_rendererInfo);
+        }
+
+        void initAssets(const String& inPath)
+        {
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            {
+                if (item.type != FileSystem::Item::Type::File)
+                {
+                    initAssets(item.path);
+
+                    continue;
+                }
+
+                if (!Box::AssetHeader::isFileAsset(item.path.toStandard()))
+                {
+                    continue;
+                }
+
+                Box::load(item.path.toStandard());
+            }
+        }
+
+        void render()
+        {
+            if (hasRenderer())
+            {
+                g_renderer->render();
+            }
+
+            if (hasView())
+            {
+                g_view->tick(g_telemetry.delta);
+            }
+
+            if (hasScene())
+            {
+                g_scene->tick(g_telemetry.delta);
+            }
+        }
+
+        void run(const ApplicationCreateInfo& inCreateInfo)
+        {
+            g_windowInfo = inCreateInfo.window;
+            initWindow();
+
+            g_rendererInfo = inCreateInfo.renderer;
+            initRenderer();
+
+            initAssets(".");
+
+            if (inCreateInfo.onSetup)
+            {
+                inCreateInfo.onSetup();
+            }
+
+            while (g_window->run())
+            {
+                g_telemetry.start();
+                    render();
+                g_telemetry.end();
+            }
         }
 
         const Telemetry& getTelemetry()
         {
-            if (!m_application)
-            {
-                return EMPTY_TELEMETRY;
-            }
-
-            return m_application->getTelemetry();
+            return g_telemetry;
         }
 
         bool hasController()
         {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return  m_application->hasController();
+            return  g_controller != nullptr;
         }
 
         Controller* getController()
         {
-            if (!m_application)
-            {
-                return nullptr;
-            }
-
-            return  m_application->getController();
+            return  g_controller;
         }
 
         void setController(Controller* inController)
         {
-            if (!m_application)
+            if (inController == g_controller)
             {
                 return;
             }
 
-            m_application->setController(inController);
+            g_controller = inController;
+
+            g_controllerObservable.next(g_controller);
         }
 
         ControllerSubscription watchController(
@@ -75,86 +169,77 @@ namespace Chicane
             ControllerSubscription::CompleteCallback inComplete
         )
         {
-            if (!m_application)
-            {
-                return {};
-            }
-
-            return m_application->watchController(inNext, inError, inComplete);
+            return g_controllerObservable
+                .subscribe(inNext, inError, inComplete)
+                .next(g_controller);
         }
 
         bool hasScene()
         {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return m_application->hasScene();
+            return g_scene != nullptr;
         }
 
         Scene* getScene()
         {
-            if (!m_application)
-            {
-                return nullptr;
-            }
-
-            return m_application->getScene();
+            return g_scene;
         }
 
         void setScene(Scene* inScene)
         {
-            if (!m_application)
+            if (inScene == g_scene)
             {
                 return;
             }
 
-            m_application->setScene(inScene);
+            if (hasScene())
+            {
+                g_scene->deactivate();
+            }
+
+            g_scene = inScene;
+            g_scene->activate();
+
+            g_sceneObservable.next(inScene);
         }
 
         SceneSubscription watchScene(
             SceneSubscription::NextCallback inNext,
             SceneSubscription::ErrorCallback inError,
-            SceneSubscription::CompleteCallback inComplete 
+            SceneSubscription::CompleteCallback inComplete
         )
         {
-            if (!m_application)
-            {
-                return {};
-            }
-
-            return m_application->watchScene(inNext, inError, inComplete);
+            return g_sceneObservable
+                .subscribe(inNext, inError, inComplete)
+                .next(g_scene);
         }
 
         bool hasView()
         {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return m_application->hasView();
+            return g_view != nullptr;
         }
 
         Grid::View* getView()
         {
-            if (!m_application)
-            {
-                return nullptr;
-            }
-
-            return m_application->getView();
+            return g_view;
         }
 
         void setView(Grid::View* inView)
         {
-            if (!m_application)
+            if (inView == g_view)
             {
                 return;
             }
-    
-            m_application->setView(inView);
+
+            if (hasView())
+            {
+                g_view->deactivate();
+            }
+
+            g_view = inView;
+            g_view->setSize(g_window->getSize());
+            g_view->activate();
+
+            g_viewObservable.next(g_view);
         }
 
         ViewSubscription watchView(
@@ -163,62 +248,47 @@ namespace Chicane
             ViewSubscription::CompleteCallback inComplete
         )
         {
-            if (!m_application)
-            {
-                return {};
-            }
-
-            return m_application->watchView(inNext, inError, inComplete);
+            return g_viewObservable
+                .subscribe(inNext, inError, inComplete)
+                .next(g_view);
         }
 
         bool hasWindow()
         {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return m_application->hasWindow();
+            return g_window && g_window.get() != nullptr;
         }
 
         Window* getWindow()
         {
-            if (!m_application)
+            if (!hasWindow())
             {
                 return nullptr;
             }
 
-            return m_application->getWindow();
+            return g_window.get();
         }
 
         bool hasRenderer()
         {
-            if (!m_application)
-            {
-                return false;
-            }
-
-            return m_application->hasRenderer();
+            return g_renderer && g_renderer.get() != nullptr;
         }
 
-        void setRenderer(WindowRenderer inType)
+        Renderer* getRenderer()
         {
-            if (!m_application)
-            {
-                return;
-            }
-
-            m_application->setRenderer(inType);
-        }
-
-        Renderer::Instance* getRenderer()
-        {
-            if (!m_application)
+            if (!hasRenderer())
             {
                 return nullptr;
             }
 
-            return m_application->getRenderer();
+            return g_renderer.get();
+        }
+
+        void setRenderer(WindowRenderer inRenderer)
+        {
+            g_windowInfo.renderer = inRenderer;
+
+            initWindow();
+            initRenderer();
         }
     }
 }

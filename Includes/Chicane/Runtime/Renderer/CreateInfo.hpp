@@ -4,13 +4,10 @@
 
 namespace Chicane
 {
-    namespace Renderer
+    struct CHICANE_RUNTIME RendererCreateInfo
     {
-        struct CreateInfo
-        {
-        public:
-            Vec2 resolution = Vec2::Zero;
-            Vec2 position   = Vec2::Zero;
-        };
-    }
+    public:
+        Vec2 resolution = Vec2::Zero;
+        Vec2 position   = Vec2::Zero;
+    };
 }

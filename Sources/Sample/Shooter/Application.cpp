@@ -4,7 +4,7 @@
 
 Application::Application()
 {
-    Chicane::Application::CreateInfo createInfo = {};
+    Chicane::ApplicationCreateInfo createInfo = {};
 
     // Window
     createInfo.window.title    = "Shooter Sample";
@@ -21,11 +21,6 @@ Application::Application()
     };
 
     Chicane::Application::run(createInfo);
-}
-
-Application::~Application()
-{
-    Chicane::Application::stop();
 }
 
 void Application::initLevel()

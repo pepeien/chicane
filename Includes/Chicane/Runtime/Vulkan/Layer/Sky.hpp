@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME LSky : public Layer::Instance
+        class CHICANE_RUNTIME LSky : public RendererLayer
         {
         public:
             LSky();

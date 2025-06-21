@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME LGrid : public Layer::Instance
+        class CHICANE_RUNTIME LGrid : public RendererLayer
         {
         public:
             struct PushConstant

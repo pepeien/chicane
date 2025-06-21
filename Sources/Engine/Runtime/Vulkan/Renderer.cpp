@@ -347,7 +347,7 @@ namespace Chicane
             data.frame           = outFrame;
             data.swapChainExtent = m_swapChain.extent;
 
-            for (Layer::Instance* layer : m_layers)
+            for (RendererLayer* layer : m_layers)
             {
                 layer->render(&data);
             }

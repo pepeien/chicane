@@ -132,7 +132,7 @@ namespace Chicane
         updateView();
     }
 
-    const View::Data& CView::getData() const
+    const RendererView& CView::getData() const
     {
         return m_data;
     }

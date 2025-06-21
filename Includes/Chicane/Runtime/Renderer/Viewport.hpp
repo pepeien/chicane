@@ -4,13 +4,10 @@
 
 namespace Chicane
 {
-    namespace Renderer
+    struct RendererViewport
     {
-        struct Viewport
-        {
-        public:
-            Vec2 size     = Vec2::Zero;
-            Vec2 position = Vec2::Zero;
-        };
-    }
+    public:
+        Vec2 size     = Vec2::Zero;
+        Vec2 position = Vec2::Zero;
+    };
 }

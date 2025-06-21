@@ -8,7 +8,7 @@ namespace Chicane
     namespace Vulkan
     {
         LScene::LScene()
-            : Layer::Instance("Engine_Scene"),
+            : Super("Engine_Scene"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_clearValues({}),
             m_textureManager(Box::getTextureManager()),
@@ -51,7 +51,7 @@ namespace Chicane
 
         bool LScene::onDestroy()
         {
-            if (is(Layer::Status::Offline))
+            if (is(RendererLayerStatus::Offline))
             {
                 return false;
             }
@@ -76,7 +76,7 @@ namespace Chicane
 
         void LScene::onRender(void* outData)
         {
-            if (!is(Layer::Status::Running))
+            if (!is(RendererLayerStatus::Running))
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Chicane
 
         void LScene::loadEvents()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Offline))
+                    if (is(RendererLayerStatus::Offline))
                     {
                         init();
 
@@ -143,7 +143,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Offline))
+                    if (is(RendererLayerStatus::Offline))
                     {
                         init();
 
@@ -157,7 +157,7 @@ namespace Chicane
 
         void LScene::initFrameResources()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }
@@ -274,7 +274,7 @@ namespace Chicane
 
         void LScene::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -332,7 +332,7 @@ namespace Chicane
 
         void LScene::initFramebuffers()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }
@@ -353,7 +353,7 @@ namespace Chicane
 
         void LScene::initTextureResources()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }

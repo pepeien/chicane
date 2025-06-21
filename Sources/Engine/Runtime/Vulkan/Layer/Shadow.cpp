@@ -7,7 +7,7 @@ namespace Chicane
     namespace Vulkan
     {
         LShadow::LShadow()
-            : Layer::Instance("Engine_Shadow"),
+            : Super("Engine_Shadow"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
             m_frameDescriptor({}),
@@ -69,7 +69,7 @@ namespace Chicane
 
         void LShadow::onRender(void* outData)
         {
-            if (!is(Layer::Status::Running))
+            if (!is(RendererLayerStatus::Running))
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace Chicane
 
         void LShadow::loadEvents()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace Chicane
                         return;
                     }
 
-                    if (is(Layer::Status::Offline))
+                    if (is(RendererLayerStatus::Offline))
                     {
                         init();
 
@@ -128,7 +128,7 @@ namespace Chicane
 
         void LShadow::initFrameResources()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }
@@ -213,7 +213,7 @@ namespace Chicane
 
         void LShadow::initGraphicsPipeline()
         {
-            if (!is(Layer::Status::Offline))
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
@@ -271,7 +271,7 @@ namespace Chicane
 
         void LShadow::initFramebuffers()
         {
-            if (!is(Layer::Status::Offline) && !is(Layer::Status::Initialized))
+            if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
                 return;
             }

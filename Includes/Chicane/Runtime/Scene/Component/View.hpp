@@ -2,6 +2,8 @@
 
 #include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
+#include "Chicane/Runtime/Renderer/View/Frustum.hpp"
+#include "Chicane/Runtime/Renderer/View/Settings.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
 namespace Chicane
@@ -40,7 +42,7 @@ namespace Chicane
         void setClip(float inNearClip, float inFarClip);
 
         // Data
-        const View::Data& getData() const;
+        const RendererView& getData() const;
 
         // Focus
         const Vec3& getFocusPoint() const;
@@ -51,9 +53,9 @@ namespace Chicane
         void updateView();
 
     protected:
-        View::Settings m_settings;
-        View::Frustum  m_frustum;
-        View::Data     m_data;
-        Vec3           m_focusPoint;
+        RendererViewSettings m_settings;
+        RendererViewFrustum  m_frustum;
+        RendererView         m_data;
+        Vec3                 m_focusPoint;
     }; 
 }

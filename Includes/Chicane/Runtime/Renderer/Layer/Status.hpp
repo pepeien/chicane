@@ -4,13 +4,10 @@
 
 namespace Chicane
 {
-    namespace Layer
+    enum class RendererLayerStatus : std::uint8_t
     {
-        enum class Status : std::uint8_t
-        {
-            Offline,
-            Initialized,
-            Running
-        };
-    }
+        Offline,
+        Initialized,
+        Running
+    };
 }

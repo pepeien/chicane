@@ -5,19 +5,16 @@
 
 namespace Chicane
 {
-    namespace Application
+    struct CHICANE_RUNTIME ApplicationCreateInfo
     {
-        struct CHICANE_RUNTIME CreateInfo
-        {
-        public:
-            // Renderer
-            Renderer::CreateInfo   renderer = {};
+    public:
+        // Renderer
+        RendererCreateInfo     renderer = {};
 
-            // Window
-            WindowCreateInfo     window   = {};
+        // Window
+        WindowCreateInfo       window   = {};
 
-            // Callbacks
-            std::function<void ()> onSetup  = nullptr;
-        };
-    }
+        // Callbacks
+        std::function<void ()> onSetup  = nullptr;
+    };
 }

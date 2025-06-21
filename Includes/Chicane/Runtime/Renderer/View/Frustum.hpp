@@ -8,21 +8,18 @@ namespace Chicane
     class CView;
     class Transformable;
 
-    namespace View
+    struct CHICANE_RUNTIME RendererViewFrustum
     {
-        struct CHICANE_RUNTIME Frustum
-        {
-        public:
-        	virtual bool contains(const Transformable* inSubject) const;
-            virtual void update(const CView* inView);
+    public:
+    	virtual bool contains(const Transformable* inSubject) const;
+        virtual void update(const CView* inView);
 
-        protected:
-            Plane m_top    = {};
-            Plane m_bottom = {};
-            Plane m_left   = {};
-            Plane m_right  = {};
-            Plane m_near   = {};
-            Plane m_far    = {};
-        };
-    }
+    protected:
+        RendererViewPlane m_top    = {};
+        RendererViewPlane m_bottom = {};
+        RendererViewPlane m_left   = {};
+        RendererViewPlane m_right  = {};
+        RendererViewPlane m_near   = {};
+        RendererViewPlane m_far    = {};
+    };
 }
