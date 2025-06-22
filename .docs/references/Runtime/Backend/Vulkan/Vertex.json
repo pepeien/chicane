@@ -1,0 +1,56 @@
+{
+    "title": "Vertex",
+    "filename": "Vertex",
+    "path": "Runtime/Backend/Vulkan/Vertex",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Backend/Vulkan/Vertex.hpp",
+        "namespace": "Chicane::Vulkan::Vertex",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::VertexInputBindingDescription",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getBindingDescription",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_VERTEX_GETBINDINGDESCRIPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::VertexInputAttributeDescription",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getAttributeDescriptions",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_VERTEX_GETATTRIBUTEDESCRIPTIONS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_VULKAN_VERTEX_DESCRIPTION"
+    },
+    "children": []
+}

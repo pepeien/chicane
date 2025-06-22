@@ -1231,6 +1231,616 @@
                 ]
             },
             {
+                "title": "Backend",
+                "filename": "Backend",
+                "path": "Runtime/Backend",
+                "source": {
+                    "header": null,
+                    "namespace": null
+                },
+                "children": [
+                    {
+                        "title": "Vulkan",
+                        "filename": "Vulkan",
+                        "path": "Runtime/Backend/Vulkan",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "Command Buffer",
+                                "filename": "Command Buffer",
+                                "path": "Runtime/Backend/Vulkan/CommandBuffer",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/CommandBuffer.hpp",
+                                    "namespace": "Chicane::Vulkan::CommandBuffer"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Create Info",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/CommandBuffer/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/CommandBuffer/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::CommandBuffer::CreateInfo"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Pool",
+                                        "filename": "Pool",
+                                        "path": "Runtime/Backend/Vulkan/CommandBuffer/Pool",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/CommandBuffer/Pool.hpp",
+                                            "namespace": "Chicane::Vulkan::CommandBuffer::Pool"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Worker",
+                                        "filename": "Worker",
+                                        "path": "Runtime/Backend/Vulkan/CommandBuffer/Worker",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/CommandBuffer/Worker.hpp",
+                                            "namespace": "Chicane::Vulkan::CommandBuffer::Worker"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Debug",
+                                "filename": "Debug",
+                                "path": "Runtime/Backend/Vulkan/Debug",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Debug.hpp",
+                                    "namespace": "Chicane::Vulkan::Debug"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Descriptor",
+                                "filename": "Descriptor",
+                                "path": "Runtime/Backend/Vulkan/Descriptor",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Descriptor.hpp",
+                                    "namespace": "Chicane::Vulkan::Descriptor"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Bundle",
+                                        "filename": "Bundle",
+                                        "path": "Runtime/Backend/Vulkan/Descriptor/Bundle",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Descriptor/Bundle.hpp",
+                                            "namespace": "Chicane::Vulkan::Descriptor::Bundle"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Pool Create Info",
+                                        "filename": "Pool Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Descriptor/PoolCreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Descriptor/PoolCreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Descriptor::PoolCreateInfo"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Pool Size Create Info",
+                                        "filename": "Pool Size Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Descriptor/PoolSizeCreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Descriptor::PoolSizeCreateInfo"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Set Layout Bidings Create Info",
+                                        "filename": "Set Layout Bidings Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Descriptor::SetLayoutBidingsCreateInfo"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Device",
+                                "filename": "Device",
+                                "path": "Runtime/Backend/Vulkan/Device",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Device.hpp",
+                                    "namespace": "Chicane::Vulkan::Device"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Frame",
+                                "filename": "Frame",
+                                "path": "Runtime/Backend/Vulkan/Frame",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Buffer",
+                                        "filename": "Buffer",
+                                        "path": "Runtime/Backend/Vulkan/Frame/Buffer",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Frame/Buffer.hpp",
+                                            "namespace": "Chicane::Vulkan::Frame::Buffer"
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "Create Info",
+                                                "filename": "Create Info",
+                                                "path": "Runtime/Backend/Vulkan/Frame/Buffer/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Frame/Buffer/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Vulkan::Frame::Buffer::CreateInfo"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Instance",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Backend/Vulkan/Frame/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Frame/Instance.hpp",
+                                            "namespace": "Chicane::Vulkan::Frame::Instance"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Resource",
+                                        "filename": "Resource",
+                                        "path": "Runtime/Backend/Vulkan/Frame/Resource",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Frame/Resource.hpp",
+                                            "namespace": "Chicane::Vulkan::Frame::Resource"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Graphics Pipeline",
+                                "filename": "Graphics Pipeline",
+                                "path": "Runtime/Backend/Vulkan/GraphicsPipeline",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/GraphicsPipeline.hpp",
+                                    "namespace": "Chicane::Vulkan::GraphicsPipeline"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Attachment",
+                                        "filename": "Attachment",
+                                        "path": "Runtime/Backend/Vulkan/GraphicsPipeline/Attachment",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/GraphicsPipeline/Attachment.hpp",
+                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::Attachment"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Create Info",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/GraphicsPipeline/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/GraphicsPipeline/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::CreateInfo"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Instance",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Backend/Vulkan/GraphicsPipeline/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/GraphicsPipeline/Instance.hpp",
+                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::Instance"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Image",
+                                "filename": "Image",
+                                "path": "Runtime/Backend/Vulkan/Image",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image.hpp",
+                                    "namespace": "Chicane::Vulkan::Image"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Data",
+                                        "filename": "Data",
+                                        "path": "Runtime/Backend/Vulkan/Image/Data",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/Data.hpp",
+                                            "namespace": "Chicane::Vulkan::Image::Data"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Instance",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Backend/Vulkan/Image/Instance",
+                                        "source": {
+                                            "header": null,
+                                            "namespace": null
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "Instance",
+                                                "filename": "Create Info",
+                                                "path": "Runtime/Backend/Vulkan/Image/Instance/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/Instance/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Vulkan::Image::Instance"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Memory",
+                                        "filename": "Memory",
+                                        "path": "Runtime/Backend/Vulkan/Image/Memory",
+                                        "source": {
+                                            "header": null,
+                                            "namespace": null
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "Memory",
+                                                "filename": "Create Info",
+                                                "path": "Runtime/Backend/Vulkan/Image/Memory/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/Memory/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Vulkan::Image::Memory"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "Sampler",
+                                        "filename": "Sampler",
+                                        "path": "Runtime/Backend/Vulkan/Image/Sampler",
+                                        "source": {
+                                            "header": null,
+                                            "namespace": null
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "Sampler",
+                                                "filename": "Create Info",
+                                                "path": "Runtime/Backend/Vulkan/Image/Sampler/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/Sampler/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Vulkan::Image::Sampler"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "title": "View",
+                                        "filename": "View",
+                                        "path": "Runtime/Backend/Vulkan/Image/View",
+                                        "source": {
+                                            "header": null,
+                                            "namespace": null
+                                        },
+                                        "children": [
+                                            {
+                                                "title": "View",
+                                                "filename": "Create Info",
+                                                "path": "Runtime/Backend/Vulkan/Image/View/CreateInfo",
+                                                "source": {
+                                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/View/CreateInfo.hpp",
+                                                    "namespace": "Chicane::Vulkan::Image::View"
+                                                },
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Instance",
+                                "filename": "Instance",
+                                "path": "Runtime/Backend/Vulkan/Instance",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Instance.hpp",
+                                    "namespace": "Chicane::Vulkan::Instance"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Layer",
+                                "filename": "Layer",
+                                "path": "Runtime/Backend/Vulkan/Layer",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "LScene",
+                                        "filename": "Scene",
+                                        "path": "Runtime/Backend/Vulkan/Layer/Scene",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Scene.hpp",
+                                            "namespace": "Chicane::Vulkan::LScene"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "LShadow",
+                                        "filename": "Shadow",
+                                        "path": "Runtime/Backend/Vulkan/Layer/Shadow",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Shadow.hpp",
+                                            "namespace": "Chicane::Vulkan::LShadow"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "LSky",
+                                        "filename": "Sky",
+                                        "path": "Runtime/Backend/Vulkan/Layer/Sky",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Sky.hpp",
+                                            "namespace": "Chicane::Vulkan::LSky"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Push Constant",
+                                        "filename": "Grid",
+                                        "path": "Runtime/Backend/Vulkan/Layer/Grid",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Grid.hpp",
+                                            "namespace": "Chicane::Vulkan::LGrid::PushConstant"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Queue",
+                                "filename": "Queue",
+                                "path": "Runtime/Backend/Vulkan/Queue",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Queue.hpp",
+                                    "namespace": "Chicane::Vulkan::Queue"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Family Indices",
+                                        "filename": "Family Indices",
+                                        "path": "Runtime/Backend/Vulkan/Queue/FamilyIndices",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Queue/FamilyIndices.hpp",
+                                            "namespace": "Chicane::Vulkan::Queue::FamilyIndices"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Renderer",
+                                "filename": "Renderer",
+                                "path": "Runtime/Backend/Vulkan/Renderer",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Renderer.hpp",
+                                    "namespace": "Chicane::Vulkan::Renderer"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Renderer Data",
+                                        "filename": "Data",
+                                        "path": "Runtime/Backend/Vulkan/Renderer/Data",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Renderer/Data.hpp",
+                                            "namespace": "Chicane::Vulkan::RendererData"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Renderer Internals",
+                                        "filename": "Internals",
+                                        "path": "Runtime/Backend/Vulkan/Renderer/Internals",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Renderer/Internals.hpp",
+                                            "namespace": "Chicane::Vulkan::RendererInternals"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Shader",
+                                "filename": "Shader",
+                                "path": "Runtime/Backend/Vulkan/Shader",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Shader.hpp",
+                                    "namespace": "Chicane::Vulkan::Shader"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Stage Create Info",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Shader/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Shader/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Shader::StageCreateInfo"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Sky",
+                                "filename": "Sky",
+                                "path": "Runtime/Backend/Vulkan/Sky",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Instance",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Backend/Vulkan/Sky/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Sky/Instance.hpp",
+                                            "namespace": "Chicane::Vulkan::Sky::Instance"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Sky",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Sky/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Sky/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Sky"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Surface",
+                                "filename": "Surface",
+                                "path": "Runtime/Backend/Vulkan/Surface",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Surface.hpp",
+                                    "namespace": "Chicane::Vulkan::Surface"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Swap Chain",
+                                "filename": "Swap Chain",
+                                "path": "Runtime/Backend/Vulkan/SwapChain",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/SwapChain.hpp",
+                                    "namespace": "Chicane::Vulkan::SwapChain"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Bundle",
+                                        "filename": "Bundle",
+                                        "path": "Runtime/Backend/Vulkan/SwapChain/Bundle",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/SwapChain/Bundle.hpp",
+                                            "namespace": "Chicane::Vulkan::SwapChain::Bundle"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Support Details",
+                                        "filename": "Support Details",
+                                        "path": "Runtime/Backend/Vulkan/SwapChain/SupportDetails",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/SwapChain/SupportDetails.hpp",
+                                            "namespace": "Chicane::Vulkan::SwapChain::SupportDetails"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Sync",
+                                "filename": "Sync",
+                                "path": "Runtime/Backend/Vulkan/Sync",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Sync.hpp",
+                                    "namespace": "Chicane::Vulkan::Sync"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Texture",
+                                "filename": "Texture",
+                                "path": "Runtime/Backend/Vulkan/Texture",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "Instance",
+                                        "filename": "Instance",
+                                        "path": "Runtime/Backend/Vulkan/Texture/Instance",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Texture/Instance.hpp",
+                                            "namespace": "Chicane::Vulkan::Texture::Instance"
+                                        },
+                                        "children": []
+                                    },
+                                    {
+                                        "title": "Texture",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Texture/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Texture/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::Texture"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Vertex",
+                                "filename": "Vertex",
+                                "path": "Runtime/Backend/Vulkan/Vertex",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Vertex.hpp",
+                                    "namespace": "Chicane::Vulkan::Vertex"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Vulkan",
+                                "filename": "Buffer",
+                                "path": "Runtime/Backend/Vulkan/Buffer",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Backend/Vulkan/Buffer.hpp",
+                                    "namespace": "Chicane::Vulkan"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Buffer Create Info",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Backend/Vulkan/Buffer/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Backend/Vulkan/Buffer/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::BufferCreateInfo"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "title": "Controller",
                 "filename": "Controller",
                 "path": "Runtime/Controller",
@@ -1340,594 +1950,6 @@
                             "namespace": "Chicane::RendererViewport"
                         },
                         "children": []
-                    },
-                    {
-                        "title": "Vulkan",
-                        "filename": "Vulkan",
-                        "path": "Runtime/Renderer/Vulkan",
-                        "source": {
-                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan.hpp",
-                            "namespace": "Chicane::Vulkan"
-                        },
-                        "children": [
-                            {
-                                "title": "Buffer",
-                                "filename": "Buffer",
-                                "path": "Runtime/Renderer/Vulkan/Buffer",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer.hpp",
-                                    "namespace": "Chicane::Vulkan::Buffer"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Buffer Create Info",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Buffer/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::BufferCreateInfo"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Command Buffer",
-                                "filename": "Command Buffer",
-                                "path": "Runtime/Renderer/Vulkan/CommandBuffer",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp",
-                                    "namespace": "Chicane::Vulkan::CommandBuffer"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Create Info",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/CommandBuffer/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/CommandBuffer/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::CommandBuffer::CreateInfo"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Pool",
-                                        "filename": "Pool",
-                                        "path": "Runtime/Renderer/Vulkan/CommandBuffer/Pool",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Pool.hpp",
-                                            "namespace": "Chicane::Vulkan::CommandBuffer::Pool"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Worker",
-                                        "filename": "Worker",
-                                        "path": "Runtime/Renderer/Vulkan/CommandBuffer/Worker",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Worker.hpp",
-                                            "namespace": "Chicane::Vulkan::CommandBuffer::Worker"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Debug",
-                                "filename": "Debug",
-                                "path": "Runtime/Renderer/Vulkan/Debug",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Debug.hpp",
-                                    "namespace": "Chicane::Vulkan::Debug"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Descriptor",
-                                "filename": "Descriptor",
-                                "path": "Runtime/Renderer/Vulkan/Descriptor",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp",
-                                    "namespace": "Chicane::Vulkan::Descriptor"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Bundle",
-                                        "filename": "Bundle",
-                                        "path": "Runtime/Renderer/Vulkan/Descriptor/Bundle",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Descriptor/Bundle.hpp",
-                                            "namespace": "Chicane::Vulkan::Descriptor::Bundle"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Pool Create Info",
-                                        "filename": "Pool Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Descriptor/PoolCreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolCreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Descriptor::PoolCreateInfo"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Pool Size Create Info",
-                                        "filename": "Pool Size Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Descriptor/PoolSizeCreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolSizeCreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Descriptor::PoolSizeCreateInfo"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Set Layout Bidings Create Info",
-                                        "filename": "Set Layout Bidings Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Descriptor/SetLayoutBidingsCreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Descriptor::SetLayoutBidingsCreateInfo"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Device",
-                                "filename": "Device",
-                                "path": "Runtime/Renderer/Vulkan/Device",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Device.hpp",
-                                    "namespace": "Chicane::Vulkan::Device"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Frame",
-                                "filename": "Frame",
-                                "path": "Runtime/Renderer/Vulkan/Frame",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Buffer",
-                                        "filename": "Buffer",
-                                        "path": "Runtime/Renderer/Vulkan/Frame/Buffer",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp",
-                                            "namespace": "Chicane::Vulkan::Frame::Buffer"
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "Create Info",
-                                                "filename": "Create Info",
-                                                "path": "Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Vulkan::Frame::Buffer::CreateInfo"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Instance",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Renderer/Vulkan/Frame/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp",
-                                            "namespace": "Chicane::Vulkan::Frame::Instance"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Resource",
-                                        "filename": "Resource",
-                                        "path": "Runtime/Renderer/Vulkan/Frame/Resource",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp",
-                                            "namespace": "Chicane::Vulkan::Frame::Resource"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Graphics Pipeline",
-                                "filename": "Graphics Pipeline",
-                                "path": "Runtime/Renderer/Vulkan/GraphicsPipeline",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp",
-                                    "namespace": "Chicane::Vulkan::GraphicsPipeline"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Attachment",
-                                        "filename": "Attachment",
-                                        "path": "Runtime/Renderer/Vulkan/GraphicsPipeline/Attachment",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp",
-                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::Attachment"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Create Info",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/GraphicsPipeline/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::CreateInfo"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Instance",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Renderer/Vulkan/GraphicsPipeline/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Instance.hpp",
-                                            "namespace": "Chicane::Vulkan::GraphicsPipeline::Instance"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Image",
-                                "filename": "Image",
-                                "path": "Runtime/Renderer/Vulkan/Image",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image.hpp",
-                                    "namespace": "Chicane::Vulkan::Image"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Data",
-                                        "filename": "Data",
-                                        "path": "Runtime/Renderer/Vulkan/Image/Data",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp",
-                                            "namespace": "Chicane::Vulkan::Image::Data"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Instance",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Renderer/Vulkan/Image/Instance",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "Instance",
-                                                "filename": "Create Info",
-                                                "path": "Runtime/Renderer/Vulkan/Image/Instance/CreateInfo",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/Instance/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Vulkan::Image::Instance"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Memory",
-                                        "filename": "Memory",
-                                        "path": "Runtime/Renderer/Vulkan/Image/Memory",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "Memory",
-                                                "filename": "Create Info",
-                                                "path": "Runtime/Renderer/Vulkan/Image/Memory/CreateInfo",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/Memory/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Vulkan::Image::Memory"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "Sampler",
-                                        "filename": "Sampler",
-                                        "path": "Runtime/Renderer/Vulkan/Image/Sampler",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "Sampler",
-                                                "filename": "Create Info",
-                                                "path": "Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Vulkan::Image::Sampler"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "title": "View",
-                                        "filename": "View",
-                                        "path": "Runtime/Renderer/Vulkan/Image/View",
-                                        "source": {
-                                            "header": null,
-                                            "namespace": null
-                                        },
-                                        "children": [
-                                            {
-                                                "title": "View",
-                                                "filename": "Create Info",
-                                                "path": "Runtime/Renderer/Vulkan/Image/View/CreateInfo",
-                                                "source": {
-                                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/View/CreateInfo.hpp",
-                                                    "namespace": "Chicane::Vulkan::Image::View"
-                                                },
-                                                "children": []
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Instance",
-                                "filename": "Instance",
-                                "path": "Runtime/Renderer/Vulkan/Instance",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Instance.hpp",
-                                    "namespace": "Chicane::Vulkan::Instance"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Layer",
-                                "filename": "Layer",
-                                "path": "Runtime/Renderer/Vulkan/Layer",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "LScene",
-                                        "filename": "Scene",
-                                        "path": "Runtime/Renderer/Vulkan/Layer/Scene",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Layer/Scene.hpp",
-                                            "namespace": "Chicane::Vulkan::LScene"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "LShadow",
-                                        "filename": "Shadow",
-                                        "path": "Runtime/Renderer/Vulkan/Layer/Shadow",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Layer/Shadow.hpp",
-                                            "namespace": "Chicane::Vulkan::LShadow"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "LSky",
-                                        "filename": "Sky",
-                                        "path": "Runtime/Renderer/Vulkan/Layer/Sky",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Layer/Sky.hpp",
-                                            "namespace": "Chicane::Vulkan::LSky"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Push Constant",
-                                        "filename": "Grid",
-                                        "path": "Runtime/Renderer/Vulkan/Layer/Grid",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp",
-                                            "namespace": "Chicane::Vulkan::LGrid::PushConstant"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Queue",
-                                "filename": "Queue",
-                                "path": "Runtime/Renderer/Vulkan/Queue",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Queue.hpp",
-                                    "namespace": "Chicane::Vulkan::Queue"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Family Indices",
-                                        "filename": "Family Indices",
-                                        "path": "Runtime/Renderer/Vulkan/Queue/FamilyIndices",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Queue/FamilyIndices.hpp",
-                                            "namespace": "Chicane::Vulkan::Queue::FamilyIndices"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Renderer Data",
-                                "filename": "Data",
-                                "path": "Runtime/Renderer/Vulkan/Data",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Data.hpp",
-                                    "namespace": "Chicane::Vulkan::RendererData"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Renderer Internals",
-                                "filename": "Internals",
-                                "path": "Runtime/Renderer/Vulkan/Internals",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Internals.hpp",
-                                    "namespace": "Chicane::Vulkan::RendererInternals"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Shader",
-                                "filename": "Shader",
-                                "path": "Runtime/Renderer/Vulkan/Shader",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Shader.hpp",
-                                    "namespace": "Chicane::Vulkan::Shader"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Stage Create Info",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Shader/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Shader/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Shader::StageCreateInfo"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Sky",
-                                "filename": "Sky",
-                                "path": "Runtime/Renderer/Vulkan/Sky",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Instance",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Renderer/Vulkan/Sky/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Sky/Instance.hpp",
-                                            "namespace": "Chicane::Vulkan::Sky::Instance"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Sky",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Sky/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Sky"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Surface",
-                                "filename": "Surface",
-                                "path": "Runtime/Renderer/Vulkan/Surface",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Surface.hpp",
-                                    "namespace": "Chicane::Vulkan::Surface"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Swap Chain",
-                                "filename": "Swap Chain",
-                                "path": "Runtime/Renderer/Vulkan/SwapChain",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/SwapChain.hpp",
-                                    "namespace": "Chicane::Vulkan::SwapChain"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Bundle",
-                                        "filename": "Bundle",
-                                        "path": "Runtime/Renderer/Vulkan/SwapChain/Bundle",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/SwapChain/Bundle.hpp",
-                                            "namespace": "Chicane::Vulkan::SwapChain::Bundle"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Support Details",
-                                        "filename": "Support Details",
-                                        "path": "Runtime/Renderer/Vulkan/SwapChain/SupportDetails",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/SwapChain/SupportDetails.hpp",
-                                            "namespace": "Chicane::Vulkan::SwapChain::SupportDetails"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Sync",
-                                "filename": "Sync",
-                                "path": "Runtime/Renderer/Vulkan/Sync",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Sync.hpp",
-                                    "namespace": "Chicane::Vulkan::Sync"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "Texture",
-                                "filename": "Texture",
-                                "path": "Runtime/Renderer/Vulkan/Texture",
-                                "source": {
-                                    "header": null,
-                                    "namespace": null
-                                },
-                                "children": [
-                                    {
-                                        "title": "Instance",
-                                        "filename": "Instance",
-                                        "path": "Runtime/Renderer/Vulkan/Texture/Instance",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp",
-                                            "namespace": "Chicane::Vulkan::Texture::Instance"
-                                        },
-                                        "children": []
-                                    },
-                                    {
-                                        "title": "Texture",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Texture/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::Texture"
-                                        },
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
-                                "title": "Vertex",
-                                "filename": "Vertex",
-                                "path": "Runtime/Renderer/Vulkan/Vertex",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Vertex.hpp",
-                                    "namespace": "Chicane::Vulkan::Vertex"
-                                },
-                                "children": []
-                            }
-                        ]
                     }
                 ]
             },

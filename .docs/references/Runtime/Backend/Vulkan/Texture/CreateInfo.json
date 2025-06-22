@@ -1,0 +1,17 @@
+{
+    "title": "Texture",
+    "filename": "Create Info",
+    "path": "Runtime/Backend/Vulkan/Texture/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Backend/Vulkan/Texture/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Texture",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_TEXTURE_DESCRIPTION"
+    },
+    "children": []
+}

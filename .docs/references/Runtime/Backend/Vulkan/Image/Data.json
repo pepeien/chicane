@@ -1,0 +1,158 @@
+{
+    "title": "Data",
+    "filename": "Data",
+    "path": "Runtime/Backend/Vulkan/Image/Data",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Backend/Vulkan/Image/Data.hpp",
+        "namespace": "Chicane::Vulkan::Image::Data",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Data",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Chicane::Image",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_VULKAN_IMAGE_DATA_DATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Data",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_VULKAN_IMAGE_DATA_DATA_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Data",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_DATA_~DATA_DESCRIPTION"
+            }
+        ],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Image",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageView",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "view",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DeviceMemory",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "memory",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_MEMORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Sampler",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampler",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_SAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extent",
+                "description": "CHICANE_VULKAN_IMAGE_DATA_EXTENT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_IMAGE_DATA_DESCRIPTION"
+    },
+    "children": []
+}
