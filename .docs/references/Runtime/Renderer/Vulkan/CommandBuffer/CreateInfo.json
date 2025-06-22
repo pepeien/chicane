@@ -1,0 +1,44 @@
+{
+    "title": "Create Info",
+    "filename": "Create Info",
+    "path": "Runtime/Renderer/Vulkan/CommandBuffer/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/CommandBuffer/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::CommandBuffer::CreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_VULKAN_COMMANDBUFFER_CREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandPool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commandPool",
+                "description": "CHICANE_VULKAN_COMMANDBUFFER_CREATEINFO_COMMANDPOOL_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_COMMANDBUFFER_CREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

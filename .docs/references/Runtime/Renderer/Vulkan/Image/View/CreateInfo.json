@@ -1,0 +1,17 @@
+{
+    "title": "View",
+    "filename": "Create Info",
+    "path": "Runtime/Renderer/Vulkan/Image/View/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/View/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Image::View",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_IMAGE_VIEW_DESCRIPTION"
+    },
+    "children": []
+}
