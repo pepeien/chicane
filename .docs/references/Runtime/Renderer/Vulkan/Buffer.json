@@ -1,17 +1,195 @@
 {
-    "title": "Vulkan",
+    "title": "Buffer",
     "filename": "Buffer",
     "path": "Runtime/Renderer/Vulkan/Buffer",
     "source": {
         "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer.hpp",
-        "namespace": "Chicane::Vulkan",
+        "namespace": "Chicane::Vulkan::Buffer",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Buffer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_BUFFER_BUFFER_DESCRIPTION"
+            }
+        ],
         "destructors": [],
-        "functions": [],
-        "members": [],
-        "description": "CHICANE_VULKAN_DESCRIPTION"
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "BufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Buffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_BUFFER_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "allocate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "BufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Buffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_BUFFER_ALLOCATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Buffer",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Buffer",
+                            "templates": []
+                        },
+                        "name": "inDestination"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DeviceSize",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAllocationSize"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Queue",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inQueue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_BUFFER_COPY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_BUFFER_DESTROY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Buffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_VULKAN_BUFFER_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DeviceMemory",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "memory",
+                "description": "CHICANE_VULKAN_BUFFER_MEMORY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_BUFFER_DESCRIPTION"
     },
     "children": []
 }

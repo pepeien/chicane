@@ -3,14 +3,15 @@
     "filename": "Vulkan",
     "path": "Runtime/Renderer/Vulkan",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan.hpp",
+        "namespace": "Chicane::Vulkan",
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
         "functions": [],
-        "members": []
+        "members": [],
+        "description": "CHICANE_VULKAN_DESCRIPTION"
     },
     "children": []
 }

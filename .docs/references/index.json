@@ -1346,10 +1346,31 @@
                         "filename": "Vulkan",
                         "path": "Runtime/Renderer/Vulkan",
                         "source": {
-                            "header": null,
-                            "namespace": null
+                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan.hpp",
+                            "namespace": "Chicane::Vulkan"
                         },
                         "children": [
+                            {
+                                "title": "Buffer",
+                                "filename": "Buffer",
+                                "path": "Runtime/Renderer/Vulkan/Buffer",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer.hpp",
+                                    "namespace": "Chicane::Vulkan::Buffer"
+                                },
+                                "children": [
+                                    {
+                                        "title": "Buffer Create Info",
+                                        "filename": "Create Info",
+                                        "path": "Runtime/Renderer/Vulkan/Buffer/CreateInfo",
+                                        "source": {
+                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp",
+                                            "namespace": "Chicane::Vulkan::BufferCreateInfo"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
                             {
                                 "title": "Command Buffer",
                                 "filename": "Command Buffer",
@@ -1743,12 +1764,22 @@
                                 ]
                             },
                             {
-                                "title": "Renderer",
-                                "filename": "Renderer",
-                                "path": "Runtime/Renderer/Vulkan/Renderer",
+                                "title": "Renderer Data",
+                                "filename": "Data",
+                                "path": "Runtime/Renderer/Vulkan/Data",
                                 "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Renderer.hpp",
-                                    "namespace": "Chicane::Vulkan::Renderer"
+                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Data.hpp",
+                                    "namespace": "Chicane::Vulkan::RendererData"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Renderer Internals",
+                                "filename": "Internals",
+                                "path": "Runtime/Renderer/Vulkan/Internals",
+                                "source": {
+                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Internals.hpp",
+                                    "namespace": "Chicane::Vulkan::RendererInternals"
                                 },
                                 "children": []
                             },
@@ -1895,27 +1926,6 @@
                                     "namespace": "Chicane::Vulkan::Vertex"
                                 },
                                 "children": []
-                            },
-                            {
-                                "title": "Vulkan",
-                                "filename": "Buffer",
-                                "path": "Runtime/Renderer/Vulkan/Buffer",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer.hpp",
-                                    "namespace": "Chicane::Vulkan"
-                                },
-                                "children": [
-                                    {
-                                        "title": "Buffer Create Info",
-                                        "filename": "Create Info",
-                                        "path": "Runtime/Renderer/Vulkan/Buffer/CreateInfo",
-                                        "source": {
-                                            "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp",
-                                            "namespace": "Chicane::Vulkan::BufferCreateInfo"
-                                        },
-                                        "children": []
-                                    }
-                                ]
                             }
                         ]
                     }

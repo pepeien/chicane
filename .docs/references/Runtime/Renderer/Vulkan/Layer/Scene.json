@@ -341,9 +341,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Renderer::Internals",
+                    "name": "RendererInternals",
                     "suffix": "",
-                    "path": "Runtime/Renderer/Vulkan/Renderer",
+                    "path": "Runtime/Renderer/Vulkan/Internals",
                     "templates": []
                 },
                 "name": "m_internals",
