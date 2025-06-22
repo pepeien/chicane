@@ -74,9 +74,9 @@ namespace Chicane
                 return;
             }
 
-            Renderer::Data* data             = (Renderer::Data*) outData;
+            RendererData* data = (RendererData*) outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
-            Frame::Instance& frame           = data->frame;
+            Frame::Instance& frame = data->frame;
 
             vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass          = m_graphicsPipeline->renderPass;

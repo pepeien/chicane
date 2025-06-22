@@ -1,24 +1,11 @@
 #pragma once
 
 #include "Chicane/Runtime/Renderer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Sky.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Shader.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Surface.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/SwapChain.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Sync.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Texture.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {
@@ -26,28 +13,6 @@ namespace Chicane
     {
         class CHICANE_RUNTIME Renderer : public Chicane::Renderer
         {
-        public:
-            struct CHICANE_RUNTIME Internals
-            {
-            public:
-                vk::PhysicalDevice physicalDevice;
-                vk::Device         logicalDevice;
-                vk::SurfaceKHR     sufrace;
-                vk::Instance       instance;
-                vk::Queue          graphicsQueue;
-                vk::CommandBuffer  mainCommandBuffer;
-                SwapChain::Bundle* swapchain;
-                int                imageCount;
-            };
-
-            struct CHICANE_RUNTIME Data
-            {
-            public:
-                Vulkan::Frame::Instance frame;
-                vk::CommandBuffer       commandBuffer;
-                vk::Extent2D            swapChainExtent;
-            };
-
         public:
             Renderer();
             virtual ~Renderer();
@@ -61,7 +26,7 @@ namespace Chicane
             void onRepositioning() override;
 
         public:
-            Internals getInternals();
+            RendererInternals getInternals();
 
         private:
             void buildInstance();

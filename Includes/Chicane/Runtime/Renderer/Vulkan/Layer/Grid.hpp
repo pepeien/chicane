@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Chicane/Grid/Component/View.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 
 namespace Chicane
 {
@@ -67,7 +68,7 @@ namespace Chicane
             void destroyDraws();
 
         private:
-            Renderer::Internals                         m_internals;
+            RendererInternals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

@@ -1,7 +1,13 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Box/Asset/Sky.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sky.hpp"
 
 namespace Chicane
 {
@@ -44,7 +50,7 @@ namespace Chicane
             void rebuildModelData();
 
         private:
-            Renderer::Internals                         m_internals;
+            RendererInternals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
@@ -54,8 +60,8 @@ namespace Chicane
             std::unique_ptr<Sky::Instance>              m_sky;
             const Box::Sky*                             m_asset;
 
-            Buffer                            m_modelVertexBuffer;
-            Buffer                            m_modelIndexBuffer;
+            Buffer                                      m_modelVertexBuffer;
+            Buffer                                      m_modelIndexBuffer;
 
             std::vector<vk::ClearValue>                 m_clearValues;
 

@@ -1,8 +1,13 @@
-#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Scene.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Layer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Surface.hpp"
+#include "Chicane/Runtime/Scene.hpp"
 
 namespace Chicane
 {
@@ -53,9 +58,9 @@ namespace Chicane
             destroyInstance();
         }
 
-        Renderer::Internals Renderer::getInternals()
+        RendererInternals Renderer::getInternals()
         {
-            Internals internals {};
+            RendererInternals internals {};
             internals.physicalDevice    = m_physicalDevice;
             internals.logicalDevice     = m_logicalDevice;
             internals.sufrace           = m_surface;
@@ -104,7 +109,7 @@ namespace Chicane
 
         void Renderer::onRender()
         {
-            Frame::Instance& currentImage           = m_swapChain.frames.at(m_currentImageIndex);
+            Frame::Instance& currentImage   = m_swapChain.frames.at(m_currentImageIndex);
             vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
 
             currentImage.wait(m_logicalDevice);
@@ -194,7 +199,7 @@ namespace Chicane
 
         void Renderer::buildInstance()
         {
-            Vulkan::Instance::init(m_instance, m_dispatcher);
+            Instance::init(m_instance, m_dispatcher);
         }
 
         void Renderer::destroyInstance()
@@ -237,7 +242,7 @@ namespace Chicane
             Device::pickPhysicalDevice(m_physicalDevice, m_instance);
             Device::initLogicalDevice(m_logicalDevice, m_physicalDevice, m_surface);
         }
-                    
+
         void Renderer::destroyDevices()
         {
             m_logicalDevice.destroy();
@@ -342,7 +347,7 @@ namespace Chicane
 
         void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)
         {
-            Data data = {};
+            RendererData data = {};
             data.commandBuffer   = inCommandBuffer;
             data.frame           = outFrame;
             data.swapChainExtent = m_swapChain.extent;

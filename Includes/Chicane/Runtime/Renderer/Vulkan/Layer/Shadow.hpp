@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
+#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 
 namespace Chicane
 {
@@ -40,14 +44,14 @@ namespace Chicane
             void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
         private:
-            Renderer::Internals                         m_internals;
+            RendererInternals                         m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
             Descriptor::Bundle                          m_frameDescriptor;
 
-            Buffer                            m_modelVertexBuffer;
-            Buffer                            m_modelIndexBuffer;
+            Buffer                                      m_modelVertexBuffer;
+            Buffer                                      m_modelIndexBuffer;
             Box::ModelManager*                          m_modelManager;
 
             std::vector<vk::ClearValue>                 m_clearValues;
