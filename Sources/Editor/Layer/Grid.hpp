@@ -35,7 +35,7 @@ namespace Chicane
             std::unique_ptr<Vulkan::GraphicsPipeline::Instance> m_graphicsPipeline;
 
             Vulkan::Descriptor::Bundle                          m_frameDescriptor;
-            Vulkan::Buffer::Instance                            m_vertexBuffer;
+            Vulkan::Instance                            m_vertexBuffer;
 
             std::vector<vk::ClearValue>                         m_clearValues;
         };

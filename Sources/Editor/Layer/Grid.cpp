@@ -40,7 +40,7 @@ namespace Chicane
             );
 
             // Buffers
-            Vulkan::Buffer::destroy(
+            Vulkan::destroy(
                 m_internals.logicalDevice,
                 m_vertexBuffer
             );
@@ -278,7 +278,7 @@ namespace Chicane
                 0.0f, 0.0f
             };
 
-            Vulkan::Buffer::CreateInfo stagingBufferCreateInfo;
+            Vulkan::CreateInfo stagingBufferCreateInfo;
             stagingBufferCreateInfo.physicalDevice   = m_internals.physicalDevice;
             stagingBufferCreateInfo.logicalDevice    = m_internals.logicalDevice;
             stagingBufferCreateInfo.size             = sizeof(float) * vertices.size();
@@ -286,8 +286,8 @@ namespace Chicane
             stagingBufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
                                                        vk::MemoryPropertyFlagBits::eHostCoherent;
 
-            Vulkan::Buffer::Instance stagingBuffer;
-            Vulkan::Buffer::init(stagingBuffer, stagingBufferCreateInfo);
+            Vulkan::Instance stagingBuffer;
+            Vulkan::init(stagingBuffer, stagingBufferCreateInfo);
 
             void* writeLocation = m_internals.logicalDevice.mapMemory(
                 stagingBuffer.memory,
@@ -301,7 +301,7 @@ namespace Chicane
             );
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            Vulkan::Buffer::CreateInfo bufferCreateInfo;
+            Vulkan::CreateInfo bufferCreateInfo;
             bufferCreateInfo.physicalDevice   = m_internals.physicalDevice;
             bufferCreateInfo.logicalDevice    = m_internals.logicalDevice;;
             bufferCreateInfo.size             = stagingBufferCreateInfo.size;
@@ -309,9 +309,9 @@ namespace Chicane
                                                 vk::BufferUsageFlagBits::eVertexBuffer;
             bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
-            Vulkan::Buffer::init(m_vertexBuffer, bufferCreateInfo);
+            Vulkan::init(m_vertexBuffer, bufferCreateInfo);
 
-            Vulkan::Buffer::copy(
+            Vulkan::copy(
                 stagingBuffer,
                 m_vertexBuffer,
                 bufferCreateInfo.size,
@@ -319,7 +319,7 @@ namespace Chicane
                 m_internals.mainCommandBuffer
             );
 
-            Vulkan::Buffer::destroy(
+            Vulkan::destroy(
                 m_internals.logicalDevice,
                 stagingBuffer
             );

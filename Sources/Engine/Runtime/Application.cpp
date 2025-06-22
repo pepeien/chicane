@@ -1,6 +1,6 @@
 #include "Chicane/Runtime/Application.hpp"
 
-#include "Chicane/Runtime/Vulkan/Renderer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 
 namespace Chicane
 {

@@ -134,10 +134,7 @@ namespace Chicane
             return;
         }
 
-        m_layers.insert(
-            m_layers.begin(),
-            inLayer
-        );
+        m_layers.insert(m_layers.begin(), inLayer);
 
         inLayer->init();
     }
