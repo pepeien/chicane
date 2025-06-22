@@ -105,6 +105,12 @@ void Character::onControlAttachment()
 
     // Gamepad
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
+
+    m_controller->bindEvent(
+        Chicane::Input::GamepadButton::South,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onJump, this)
+    );
 }
 
 void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
