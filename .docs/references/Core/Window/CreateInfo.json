@@ -70,7 +70,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "int",
+                    "name": "std::uint32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

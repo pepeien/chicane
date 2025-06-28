@@ -31,9 +31,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "Vec2",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
@@ -48,9 +48,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "Vec2",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },

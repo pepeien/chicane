@@ -45,6 +45,46 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "O",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Q",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "normalize",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_VEC_NORMALIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "T",
                     "suffix": "",
                     "path": "",
