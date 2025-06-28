@@ -581,7 +581,7 @@ namespace Chicane
             {
                 return 0.0f;
             }
-    
+
             return parseViewportWidth(parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
         }
 
@@ -601,7 +601,7 @@ namespace Chicane
             {
                 return 0.0f;
             }
-        
+
             return parseNumber(inValue, PIXEL_SIZE_UNIT);
         }
 

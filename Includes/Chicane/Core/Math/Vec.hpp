@@ -14,6 +14,11 @@ namespace Chicane
         {}
 
     public:
+        Vec<O, T, Q> normalize() const
+        {
+            return glm::normalize<O, T, Q>(*this);
+        }
+
         T dot(const Vec<O, T, Q>& inValue) const
         {
             return glm::dot<O, T, Q>(*this, inValue);

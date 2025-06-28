@@ -17,8 +17,8 @@ namespace Chicane
             const FontGlyph& getGlyph(std::uint32_t inCode) const;
 
         public:
-            String          name   = "";
-            FontGlyph::Map  glyphs = {};
+            String         name   = "";
+            FontGlyph::Map glyphs = {};
         };
     }
 }

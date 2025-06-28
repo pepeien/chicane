@@ -2,8 +2,6 @@
 
 #include "Game.hpp"
 
-int switchCrosshair = 1;
-
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
     m_didPlayerWin(true),
@@ -14,20 +12,20 @@ View::View()
     m_uiVictoryVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_victoryVisibility)),
     m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
     m_uiCrosshairDotVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_crosshairDotVisibility)),
-    m_crosshairSize(1),
-    m_uiCrosshairSize(Chicane::Reference::fromValue<int>(&m_crosshairSize)),
+    m_crosshairSize(1.35f),
+    m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
     m_uiCrosshairThickness(Chicane::Reference::fromValue<float>(&m_crosshairThickness)),
-    m_crosshairGap(0.0f),
+    m_crosshairGap(0.5f),
     m_uiCrosshairGap(Chicane::Reference::fromValue<float>(&m_crosshairGap)),
     m_crosshairColorR(255),
-    m_uiCrosshairColorR(Chicane::Reference::fromValue<int>(&m_crosshairColorR)),
+    m_uiCrosshairColorR(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorR)),
     m_crosshairColorG(255),
-    m_uiCrosshairColorG(Chicane::Reference::fromValue<int>(&m_crosshairColorG)),
+    m_uiCrosshairColorG(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorG)),
     m_crosshairColorB(255),
-    m_uiCrosshairColorB(Chicane::Reference::fromValue<int>(&m_crosshairColorB)),
+    m_uiCrosshairColorB(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorB)),
     m_crosshairColorA(255),
-    m_uiCrosshairColorA(Chicane::Reference::fromValue<int>(&m_crosshairColorA))
+    m_uiCrosshairColorA(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorA))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)

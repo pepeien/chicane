@@ -53,10 +53,10 @@ namespace Chicane
 
             const String& terminalColor = g_colors.at(color);
 
-            if (IS_DEBUGGING)
-            {
+            //if (IS_DEBUGGING)
+            //{
                 std::cout << LOG_COLOR_START << terminalColor << message << LOG_COLOR_END;
-            }
+            //}
 
             // History
             if (g_logs.size() > MAX_LOG_COUNT)

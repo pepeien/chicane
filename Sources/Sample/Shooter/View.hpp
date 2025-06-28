@@ -24,18 +24,18 @@ private:
     // Crosshair
     Chicane::String           m_crosshairDotVisibility;
     Chicane::Reference        m_uiCrosshairDotVisibility;
-    int                       m_crosshairSize;
+    float                     m_crosshairSize;
     Chicane::Reference        m_uiCrosshairSize;
     float                     m_crosshairThickness;
     Chicane::Reference        m_uiCrosshairThickness;
     float                     m_crosshairGap;
     Chicane::Reference        m_uiCrosshairGap;
-    int                       m_crosshairColorR;
+    std::uint8_t              m_crosshairColorR;
     Chicane::Reference        m_uiCrosshairColorR;
-    int                       m_crosshairColorG;
+    std::uint8_t              m_crosshairColorG;
     Chicane::Reference        m_uiCrosshairColorG;
-    int                       m_crosshairColorB;
+    std::uint8_t              m_crosshairColorB;
     Chicane::Reference        m_uiCrosshairColorB;
-    int                       m_crosshairColorA;
+    std::uint8_t              m_crosshairColorA;
     Chicane::Reference        m_uiCrosshairColorA;
 };

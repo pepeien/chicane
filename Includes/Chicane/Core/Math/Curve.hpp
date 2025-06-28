@@ -1,18 +1,19 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Math/Vec/Vec3.hpp"
 #include "Chicane/Core/Math/Line.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
 
 namespace Chicane
 {
     struct CHICANE_CORE Curve : public Line
     {
     public:
-        static std::vector<Vec3> getTriangleVertices(
-            const std::vector<Curve>& inContours,
-            float inPixelSize = 1.0f
-        );
+        using Polygon = std::vector<std::array<float, 2>>;
+
+    public:
+        static std::vector<Polygon> getPolygons(const std::vector<Curve>& inContours);
+        static std::vector<Vec3> getTriangleVertices(const std::vector<Curve>& inContours);
         static std::vector<std::uint32_t> getTriangleIndices(const std::vector<Curve>& inContours);
 
     public:

@@ -9,7 +9,7 @@ namespace Chicane
 
     void RendererViewPlane::update(const Vec3& inNormal, const Vec3& inPoint)
     {
-        m_normal   = glm::normalize(inNormal);
+        m_normal   = inNormal.normalize();
         m_distance = -m_normal.dot(inPoint);
     }
 

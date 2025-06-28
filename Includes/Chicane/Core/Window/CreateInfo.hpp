@@ -14,7 +14,7 @@ namespace Chicane
         String           title    = "";
         FileSystem::Path icon     = "";
         Vec<2, int>      size     = Vec<2, int>(0);
-        int              display  = 0;
+        std::uint32_t    display  = 1;
         WindowType       type     = WindowType::Windowed;
         WindowRenderer   renderer = WindowRenderer::Undefined;
     };

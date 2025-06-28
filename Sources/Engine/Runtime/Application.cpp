@@ -97,9 +97,9 @@ namespace Chicane
 
         void render()
         {
-            if (hasRenderer())
+            if (hasScene())
             {
-                g_renderer->render();
+                g_scene->tick(g_telemetry.delta);
             }
 
             if (hasView())
@@ -107,9 +107,9 @@ namespace Chicane
                 g_view->tick(g_telemetry.delta);
             }
 
-            if (hasScene())
+            if (hasRenderer())
             {
-                g_scene->tick(g_telemetry.delta);
+                g_renderer->render();
             }
         }
 

@@ -14,11 +14,18 @@ namespace Chicane
 
     String Reference::toString() const
     {
+        // String
         if (isType<String>())
         {
             return *getValue<String>();
         }
 
+        if (isType<char>())
+        {
+            return *getValue<char>();
+        }
+
+        // Primitive
         if (isType<bool>())
         {
             return std::to_string(*getValue<bool>());
@@ -29,6 +36,17 @@ namespace Chicane
             return std::to_string(*getValue<int>());
         }
 
+        if (isType<long>())
+        {
+            return std::to_string(*getValue<long>());
+        }
+
+        if (isType<float>())
+        {
+            return std::to_string(*getValue<float>());
+        }
+
+        // Unsigned Integer
         if (isType<std::uint64_t>())
         {
             return std::to_string(*getValue<std::uint64_t>());
@@ -39,9 +57,14 @@ namespace Chicane
             return std::to_string(*getValue<std::uint32_t>());
         }
 
-        if (isType<float>())
+        if (isType<std::uint16_t>())
         {
-            return std::to_string(*getValue<float>());
+            return std::to_string(*getValue<std::uint16_t>());
+        }
+
+        if (isType<std::uint8_t>())
+        {
+            return std::to_string(*getValue<std::uint8_t>());
         }
 
         return "";

@@ -383,11 +383,12 @@ namespace Chicane
         SDL_DestroySurface(icon);
     }
 
-    void Window::setDisplay(int inIndex)
+    void Window::setDisplay(std::uint32_t inIndex)
     {
         int displayCount = 0;
         SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
-        int display = SDL_GetDisplays(&displayCount)[std::min(inIndex, displayCount)];
+
+        int display = displays[std::min(static_cast<int>(inIndex), displayCount - 1)];
 
         const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(display);
 
@@ -404,8 +405,8 @@ namespace Chicane
         );
 
         setPosition(
-            SDL_WINDOWPOS_CENTERED_DISPLAY(inIndex),
-            SDL_WINDOWPOS_CENTERED_DISPLAY(inIndex)
+            SDL_WINDOWPOS_CENTERED_DISPLAY(display),
+            SDL_WINDOWPOS_CENTERED_DISPLAY(display)
         );
     }
 

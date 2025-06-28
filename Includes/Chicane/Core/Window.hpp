@@ -40,7 +40,7 @@ namespace Chicane
         void setPosition(const Vec<2, int>& inValue);
         void setPosition(int inX, int inY);
 
-        void setDisplay(int inIndex);
+        void setDisplay(std::uint32_t inIndex);
 
         void setType(WindowType inType);
         WindowType getType() const;

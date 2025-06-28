@@ -15,7 +15,7 @@
 Text {
     width: 100%;
     color: #24f51d;
-    font-size: 4px;
+    font-size: 16px;
 }
 
 .telemetry__fps {
@@ -50,23 +50,21 @@ Text {
 }
 
 .crosshair__top {
-    margin-top: 50%;
-    margin-bottom: calc(var(crosshairSize)vh + var(crosshairGap)vh);
+    margin-top: calc(50% - calc(calc(var(crosshairSize)vh * 0.5) + var(crosshairGap)vh));
     margin-left: 50%;
 }
 
 .crosshair__bottom {
-    margin-top: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
+    margin-top: calc(50% + calc(calc(var(crosshairSize)vh * 0.5) + var(crosshairGap)vh));
     margin-left: 50%;
 }
 
 .crosshair__left {
     margin-top: 50%;
-    margin-right: calc(var(crosshairSize)vh + var(crosshairGap)vh);
-    margin-left: 50%;
+    margin-left: calc(50% - calc(calc(var(crosshairSize)vh * 0.5) + var(crosshairGap)vh));
 }
 
 .crosshair__right {
     margin-top: 50%;
-    margin-left: calc(50% + calc(var(crosshairSize)vh + var(crosshairGap)vh));
+    margin-left: calc(50% + calc(calc(var(crosshairSize)vh * 0.5) + var(crosshairGap)vh));
 }

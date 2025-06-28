@@ -2,11 +2,13 @@
 
 #include <mapbox/earcut.hpp>
 
+static constexpr const float FIXED_POINT = 64.0f;
+
 namespace Chicane
 {
-    std::vector<std::vector<std::array<float, 2>>> getPolygons(const std::vector<Curve>& inContours)
+    std::vector<Curve::Polygon> Curve::getPolygons(const std::vector<Curve>& inContours)
     {
-        std::vector<std::vector<std::array<float, 2>>> result = {};
+        std::vector<Polygon> result = {};
 
         for (const Curve& curve : inContours)
         {
@@ -15,30 +17,25 @@ namespace Chicane
                 continue;
             }
 
-            std::vector<std::array<float, 2>> contour = {};
+            Polygon polygon = {};
 
             for (const Vec2& point : curve.getPoints())
             {
-                contour.push_back({ point.x, point.y });
+                polygon.push_back({ point.x, point.y });
             }
 
-            result.push_back(contour);
+            result.push_back(polygon);
         }
 
         return result;
     }
 
-    std::vector<Vec3> Curve::getTriangleVertices(
-        const std::vector<Curve>& inContours,
-        float inPixelSize
-    )
+    std::vector<Vec3> Curve::getTriangleVertices(const std::vector<Curve>& inContours)
     {
         if (inContours.empty())
         {
             return {};
         }
-
-        const float fixedPoint = inPixelSize * 64.0f;
 
         std::vector<Vec3> result = {};
 
@@ -51,7 +48,7 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                result.push_back({ point.x / fixedPoint, point.y / fixedPoint, 0.0f });
+                result.push_back({ point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f });
             }
         }
 
@@ -85,16 +82,16 @@ namespace Chicane
             return {};
         }
 
-        std::vector<std::vector<std::array<float, 2>>> polygons = {};
+        std::vector<Polygon> polygons = {};
 
-        const auto outerPolygons = getPolygons(outerContours);
+        const std::vector<Polygon> outerPolygons = getPolygons(outerContours);
         polygons.insert(
             polygons.end(),
             outerPolygons.begin(),
             outerPolygons.end()
         );
 
-        const auto holePolygons = getPolygons(holeContours);
+        const std::vector<Polygon> holePolygons = getPolygons(holeContours);
         polygons.insert(
             polygons.end(),
             holePolygons.begin(),
@@ -116,16 +113,16 @@ namespace Chicane
             return;
         }
 
-        const Vec2& startPoint = getEndPoint();
+        const Vec2& start = getEndPoint();
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
-            float t = static_cast<float>(i) / m_segmentCount;
-            float mt = 1.0f - t;
+            const float t = static_cast<float>(i) / m_segmentCount;
+            const float mt = 1.0f - t;
 
             // Quadratic bezier formula: B(t) = (1-t)²P₀ + 2(1-t)tP₁ + t²P₂
             Vec2 point = {};
-            point += mt * mt * startPoint;
+            point += mt * mt * start;
             point += 2.0f * mt * t * inControl;
             point += t * t * inPoint;
 
@@ -140,16 +137,16 @@ namespace Chicane
             return;
         }
 
-        const Vec2& startPoint = getEndPoint();
+        const Vec2& start = getEndPoint();
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
-            float t = static_cast<float>(i) / m_segmentCount;
-            float mt = 1.0f - t;
+            const float t = static_cast<float>(i) / m_segmentCount;
+            const float mt = 1.0f - t;
 
             // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ + t³P₃
             Vec2 point = {};
-            point += mt * mt * mt * startPoint;
+            point += mt * mt * mt * start;
             point += 3.0f * mt * mt * t * inControlA;
             point += 3.0f * mt * t * t * inControlB;
             point += t * t * t * inPoint;
@@ -161,20 +158,18 @@ namespace Chicane
     bool Curve::isHole() const
     {
         if (m_points.size() < 3) {
-            return true;
+            return false;
         }
-
-        std::size_t pointCount = m_points.size();
 
         double area = 0.0;
 
-        for (std::size_t i = 0; i < pointCount; ++i) {
-            const Vec2& point        = m_points.at(i);
-            const Vec2& nearestPoint = m_points.at((i + 1) % pointCount);
+        const std::size_t count = m_points.size();
 
-            area += static_cast<double>(
-                (point.x - nearestPoint.y) * (nearestPoint.x - point.y)
-            );
+        for (std::size_t i = 0; i < count; ++i) {
+            const Vec2& current = m_points.at(i);
+            const Vec2& nearest = m_points.at((i + 1) % count);
+
+            area += static_cast<double>((current.x - nearest.y) * (nearest.x - current.y));
         }
 
         return (area / 2.0) < 0;

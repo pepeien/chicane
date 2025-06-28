@@ -38,7 +38,7 @@ set_target_properties(
 
     PROPERTIES
         OUTPUT_NAME
-            "${NAME}Runtime"
+            "${NAME}"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
         DEFINE_SYMBOL

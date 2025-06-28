@@ -7,7 +7,7 @@ namespace Chicane
         return m_points.empty();
     }
 
-    const Vec2& Line::getStartPoint() const
+    Vec2 Line::getStartPoint() const
     {
         if (isEmpty())
         {
@@ -17,7 +17,7 @@ namespace Chicane
         return m_points.front();
     }
 
-    const Vec2& Line::getEndPoint() const
+    Vec2 Line::getEndPoint() const
     {
         if (isEmpty())
         {
