@@ -13,7 +13,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(NAME "Chicane")
 
-project(${NAME} VERSION 0.1.0)
+project(
+    ${NAME}
+
+    LANGUAGES
+        CXX
+    VERSION
+        0.1.0
+)
 
 ##################### Options #######################
 option(CHICANE_SHARED "Build a shared version of the library" ON)
