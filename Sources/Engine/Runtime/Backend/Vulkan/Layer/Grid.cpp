@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Grid.hpp"
 
+#include "Chicane/Grid/Component/Character.hpp"
 #include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
@@ -383,13 +384,22 @@ namespace Chicane
                 {
                     if (inComponent->isDrawable())
                     {
-                        const Grid::Primitive primitive = inComponent->getPrimitive();
+                        Grid::Primitive primitive = inComponent->getPrimitive();
+
+                        if (typeid(*inComponent) == typeid(Grid::Character))
+                        {
+                            for (Vertex& vertex : primitive.vertices)
+                            {
+                                vertex.position.y = -vertex.position.y;
+                            }
+                        }
 
                         draw.size        = inComponent->getSize();
                         draw.position    = inComponent->getPosition();
                         draw.vertexCount = primitive.vertices.size();
                         draw.indexCount  = primitive.indices.size();
                         draw.bIsDrawable = true;
+
                         setDrawVertexBuffer(draw, primitive.vertices);
                         setDrawIndexBuffer(draw, primitive.indices);
                     }
