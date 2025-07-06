@@ -23,7 +23,7 @@ project(
 )
 
 ##################### Options #######################
-option(CHICANE_SHARED "Build a shared version of the library" ON)
+option(CHICANE_SHARED "Build a shared version of the library" OFF)
 
 ##################### Values #######################
 if (CHICANE_SHARED)

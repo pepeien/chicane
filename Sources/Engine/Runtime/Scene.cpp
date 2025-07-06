@@ -1,8 +1,5 @@
 #include "Chicane/Runtime/Scene.hpp"
 
-static inline constexpr const std::uint32_t MAX_ACTOR_COUNT     = 10000;
-static inline constexpr const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
-
 namespace Chicane
 {
     Scene::Scene()
@@ -11,10 +8,7 @@ namespace Chicane
         m_components({}),
         m_componentObservable({}),
         m_defaultCamera(nullptr)
-    {
-        m_actors.reserve(MAX_ACTOR_COUNT);
-        m_components.reserve(MAX_COMPONENT_COUNT);
-    }
+    {}
 
     Scene::~Scene()
     {

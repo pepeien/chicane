@@ -26,16 +26,6 @@ namespace Chicane
 
             m_vkScissor.offset.x = 0;
             m_vkScissor.offset.y = 0;
-
-            buildInstance();
-            buildDebugMessenger();
-            buildSurface();
-            buildDevices();
-            buildQueues();
-            buildSwapChain();
-            buildCommandPool();
-            buildMainCommandBuffer();
-            buildFramesCommandBuffers();
         }
 
         Renderer::~Renderer()
@@ -75,6 +65,16 @@ namespace Chicane
 
         void Renderer::onInit()
         {
+            buildInstance();
+            buildDebugMessenger();
+            buildSurface();
+            buildDevices();
+            buildQueues();
+            buildSwapChain();
+            buildCommandPool();
+            buildMainCommandBuffer();
+            buildFramesCommandBuffers();
+
             pushLayer(new LSky());
             pushLayer(new LShadow());
             pushLayer(new LScene());
@@ -222,7 +222,7 @@ namespace Chicane
             Surface::init(
                 m_surface,
                 m_instance,
-                Application::getWindow()->getInstance()
+                m_window->getInstance()
             );
         }
 
@@ -284,7 +284,7 @@ namespace Chicane
 
         void Renderer::rebuildSwapChain()
         {
-            if (Application::getWindow()->isMinimized())
+            if (m_window->isMinimized())
             {
                 return;
             }

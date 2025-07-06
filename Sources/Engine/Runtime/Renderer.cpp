@@ -11,6 +11,7 @@ namespace Chicane
     Renderer::Renderer()
         : m_size(Vec2::Zero),
         m_position(Vec2::Zero),
+        m_window(nullptr),
         m_layers({}),
         m_cameras({}),
         m_lights({}),
@@ -34,10 +35,11 @@ namespace Chicane
         return false;
     }
 
-    void Renderer::init(const RendererCreateInfo& inCreateInfo)
+    void Renderer::init(Window* inWindow)
     {
-        setSize(inCreateInfo.resolution);
-        setPosition(inCreateInfo.position);
+        setSize(Vec2::Zero);
+        setPosition(Vec2::Zero);
+        setWindow(inWindow);
 
         onInit();
     }
@@ -106,6 +108,21 @@ namespace Chicane
         m_position.y = inY;
 
         onRepositioning();
+    }
+
+    Window* Renderer::getWindow() const
+    {
+        return m_window;
+    }
+
+    void Renderer::setWindow(Window* inWindow)
+    {
+        if (inWindow == m_window)
+        {
+            return;
+        }
+
+        m_window = inWindow;
     }
 
     bool Renderer::hasLayer(RendererLayer* inLayer) const

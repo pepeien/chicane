@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Runtime/Essential.hpp"
-#include "Chicane/Runtime/Renderer/CreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Layer/PushStrategy.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
@@ -38,7 +37,7 @@ namespace Chicane
         bool canRender() const;
 
         // Lifecycle
-        void init(const RendererCreateInfo& inCreateInfo);
+        void init(Window* inWindow);
         void render();
 
         // Settings
@@ -49,6 +48,10 @@ namespace Chicane
         const Vec2& getPosition() const;
         void setPosition(const Vec2& inValue);
         void setPosition(float inX, float inY);
+
+        // Window
+        Window* getWindow() const;
+        void setWindow(Window* inWindow);
 
         // Layers
         bool hasLayer(RendererLayer* inLayer) const;
@@ -80,6 +83,9 @@ namespace Chicane
         // Settings
         Vec2                        m_size;
         Vec2                        m_position;
+
+        // Window
+        Window*                     m_window;
 
         // Layer
         std::vector<RendererLayer*> m_layers;

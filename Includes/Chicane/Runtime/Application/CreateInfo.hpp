@@ -8,9 +8,6 @@ namespace Chicane
     struct CHICANE_RUNTIME ApplicationCreateInfo
     {
     public:
-        // Renderer
-        RendererCreateInfo     renderer = {};
-
         // Window
         WindowCreateInfo       window   = {};
 
