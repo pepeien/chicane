@@ -256,6 +256,9 @@ namespace Chicane
                 event.data = &mouseButtonEvent;
 
                 break;
+            
+            default:
+                break;
             }
 
             m_eventObservable.next(event);

@@ -1,6 +1,18 @@
 #pragma once
 
 // Macros
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+#   define IS_WINDOWS true
+#else
+#   define IS_WINDOWS false
+#endif
+
+#if defined(__linux__) || (defined(__GNUC__) && __GNUC__ >= 4)
+#   define IS_LINUX true
+#else
+#   define IS_LINUX false
+#endif
+
 #ifdef NDEBUG
 #   define IS_DEBUGGING false
 #else
@@ -8,13 +20,13 @@
 #endif
 
 #if defined(BUILD_SHARED)
-#   if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+#   if IS_WINDOWS
 #      if defined(BUILD_EXPORT)
 #          define CHICANE_CORE __declspec(dllexport)
 #      else
 #          define CHICANE_CORE __declspec(dllimport)
 #      endif
-#   elif defined(__GNUC__) && __GNUC__ >= 4
+#   elif IS_LINUX
 #       define CHICANE_CORE __attribute__((visibility("default")))
 #   else
 #       define CHICANE_CORE
