@@ -43,9 +43,11 @@
 #include <cstdlib>
 #include <cstring>
 #include <chrono>
+#include <execution>
 #include <filesystem>
 #include <fstream>
 #include <functional>
+#include <future>
 #include <iostream>
 #include <map>
 #include <math.h>

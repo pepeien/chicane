@@ -33,7 +33,7 @@ namespace Chicane
         protected:
             // Events
             virtual void onEvent(const WindowEvent& inEvent) { return; }
-            virtual void onTick(float inDelta) { return; }
+            virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
             virtual void onAdopted(Component* inParent) { return; }
@@ -148,6 +148,8 @@ namespace Chicane
             Vec2                    m_cursor;
 
             Primitive               m_primitive;
+
+            std::mutex m_mutex;
         };
     }
 }

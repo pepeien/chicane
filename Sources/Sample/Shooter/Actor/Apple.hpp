@@ -20,7 +20,8 @@ public:
     void setInitialPosition(const Chicane::Vec3& inPosition);
 
 private:
-    float              m_fallingRate;
+    float              m_rotateRate;
+    float              m_fallRate;
 
     Chicane::Vec3      m_startPosition;
 

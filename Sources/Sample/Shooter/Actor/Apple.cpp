@@ -6,10 +6,16 @@
 
 Apple::Apple()
     : Chicane::Actor(),
-    m_fallingRate(
+    m_rotateRate(
+        std::max(
+            0.1f,
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f
+        )
+    ),
+    m_fallRate(
         std::max(
             0.001f,
-            (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 0.01f
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f
         )
     ),
     m_startPosition(Chicane::Vec3::Zero),
@@ -32,8 +38,8 @@ Apple::Apple()
 
 void Apple::onTick(float inDeltaTime)
 {
-    addAbsoluteRotation(0.0f, 0.0f, 0.1f);
-    addAbsoluteTranslation(0.0f, 0.0f, -m_fallingRate);
+    addAbsoluteRotation(0.0f, 0.0f, m_rotateRate * inDeltaTime);
+    addAbsoluteTranslation(0.0f, 0.0f, -(m_fallRate * inDeltaTime));
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)

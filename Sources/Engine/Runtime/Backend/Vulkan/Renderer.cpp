@@ -74,11 +74,7 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-
-            pushLayer(new LSky());
-            pushLayer(new LShadow());
-            pushLayer(new LScene());
-            pushLayer(new LGrid());
+            buildLayers();
         }
 
         void Renderer::onEvent(const WindowEvent& inEvent)
@@ -163,11 +159,7 @@ namespace Chicane
             submitInfo.pSignalSemaphores    = &currentImage.renderSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
 
-            vk::Result submitResult = m_graphicsQueue.submit(
-                1,
-                &submitInfo,
-                currentImage.renderFence
-            );
+            vk::Result submitResult = m_graphicsQueue.submit(1, &submitInfo, currentImage.renderFence);
 
             if (submitResult != vk::Result::eSuccess)
             {
@@ -343,6 +335,14 @@ namespace Chicane
             outFrame.updateCameraData(m_cameras);
             outFrame.updateLightData(m_lights);
             outFrame.updateMeshData(m_meshes);
+        }
+
+        void Renderer::buildLayers()
+        {
+            pushLayer(new LSky());
+            pushLayer(new LShadow());
+            pushLayer(new LScene());
+            pushLayer(new LGrid());
         }
 
         void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)

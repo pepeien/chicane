@@ -175,18 +175,12 @@ namespace Chicane
             return;
 
         case RendererLayerPushStrategy::BeforeLayer:
-            pushLayerBefore(
-                inId,
-                inLayer
-            );
+            pushLayerBefore(inId, inLayer);
 
             return;
 
         case RendererLayerPushStrategy::AfterLayer:
-            pushLayerAfter(
-                inId,
-                inLayer
-            );
+            pushLayerAfter(inId, inLayer);
 
             return;
 
@@ -340,16 +334,22 @@ namespace Chicane
                             if (component->isType<CCamera>())
                             {
                                 m_cameras.push_back(static_cast<CCamera*>(component));
-                            }
 
-                            if (component->isType<CLight>())
-                            {
-                                m_lights.push_back(static_cast<CLight*>(component));
+                                continue;
                             }
 
                             if (component->isType<CMesh>())
                             {
                                 m_meshes.push_back(static_cast<CMesh*>(component));
+
+                                continue;
+                            }
+
+                            if (component->isType<CLight>())
+                            {
+                                m_lights.push_back(static_cast<CLight*>(component));
+
+                                continue;
                             }
                         }
 

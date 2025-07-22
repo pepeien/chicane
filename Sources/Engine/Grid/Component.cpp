@@ -28,7 +28,8 @@ namespace Chicane
             m_size({}),
             m_position({}),
             m_cursor({}),
-            m_primitive({})
+            m_primitive({}),
+            m_mutex({})
         {
             m_style.setParent(this);
         }
@@ -49,15 +50,15 @@ namespace Chicane
             return isVisible() && hasPrimitive();
         }
 
-        void Component::tick(float inDelta)
+        void Component::tick(float inDeltaTime)
         {
-            refresh();
+            //refresh();
 
-            onTick(inDelta);
+            onTick(inDeltaTime);
 
             for (Component* child : m_children)
             {
-                child->tick(inDelta);
+                child->tick(inDeltaTime);
             }
         }
 
@@ -248,12 +249,7 @@ namespace Chicane
                 return;
             }
 
-            m_references.insert(
-                std::make_pair(
-                    inId,
-                    inReference
-                )
-            );
+            m_references.insert(std::make_pair(inId, inReference));
 
             emmitChanges();
         }
@@ -312,12 +308,7 @@ namespace Chicane
                 return;
             }
 
-            m_functions.insert(
-                std::make_pair(
-                    inId,
-                    inFunction
-                )
-            );
+            m_functions.insert(std::make_pair(inId, inFunction));
 
             emmitChanges();
         }
@@ -413,18 +404,18 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
-            inComponent->watchChanges(
-                [this, inComponent]()
-                {
-                    m_childrenObservable.next(inComponent);
-                }
-            );
-            inComponent->watchChildren(
-                [this](Grid::Component* component)
-                {
-                    m_childrenObservable.next(component);
-                }
-            );
+            //inComponent->watchChanges(
+            //    [this, inComponent]()
+            //    {
+            //        m_childrenObservable.next(inComponent);
+            //    }
+            //);
+            //inComponent->watchChildren(
+            //    [this](Grid::Component* component)
+            //    {
+            //        m_childrenObservable.next(component);
+            //    }
+            //);
 
             m_children.push_back(inComponent);
 
