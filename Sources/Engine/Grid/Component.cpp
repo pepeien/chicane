@@ -28,8 +28,7 @@ namespace Chicane
             m_size({}),
             m_position({}),
             m_cursor({}),
-            m_primitive({}),
-            m_mutex({})
+            m_primitive({})
         {
             m_style.setParent(this);
         }
@@ -283,7 +282,7 @@ namespace Chicane
 
         const Function Component::getFunction(const String& inId) const
         {
-            const String& id = inId.split(FUNCTION_PARAMS_OPENING).front();
+            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
 
             if (!hasParent() || isRoot())
             {

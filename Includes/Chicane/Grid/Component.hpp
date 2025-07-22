@@ -148,8 +148,6 @@ namespace Chicane
             Vec2                    m_cursor;
 
             Primitive               m_primitive;
-
-            std::mutex m_mutex;
         };
     }
 }

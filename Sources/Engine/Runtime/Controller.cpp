@@ -130,7 +130,12 @@ namespace Chicane
 
     bool Controller::isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const
     {
-        return inId == 0U || (isConnectedTo(inType) && m_devices.at(inType) == inId);
+        if (!isConnectedTo(inType))
+        {
+            return true;
+        }
+
+        return m_devices.at(inType) == inId;
     }
 
     bool Controller::isConnectedTo(Input::DeviceType inType) const
