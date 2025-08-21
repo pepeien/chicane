@@ -17,7 +17,7 @@ namespace Chicane
     protected:
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
-        virtual void onAttachment(Transformable* inRoot) { return; }
+        virtual void onAttachment(Transformable* inParent) { return; }
         virtual void onTransform() { return; }
         virtual void onTick(float inDeltaTime) { return; }
 
@@ -38,16 +38,16 @@ namespace Chicane
 
         bool isAttached() const;
         template<class T = Transformable>
-        T* getAttachment() const {
-            return static_cast<T*>(m_attachment);
+        T* getParent() const {
+            return static_cast<T*>(m_parent);
         }
-        void attachTo(Transformable* inRoot);
+        void attachTo(Transformable* inParent);
 
     public:
         bool            m_bCanTick;
         bool            m_bIsActive;
 
-        Transformable*  m_attachment;
-        Subscription<>  m_attachmentTransformSubscription;
+        Transformable*  m_parent;
+        Subscription<>  m_parentSubscription;
     };
 }

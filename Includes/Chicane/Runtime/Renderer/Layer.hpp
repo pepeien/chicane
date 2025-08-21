@@ -11,13 +11,12 @@ namespace Chicane
         using Super = RendererLayer;
 
     public:
-        RendererLayer();
         RendererLayer(const String& inId);
 
-        virtual ~RendererLayer() = default;
+        virtual ~RendererLayer();
 
     protected:
-        virtual bool onInit() { return false; }
+        virtual bool onInit() { return true; }
         virtual bool onDestroy() { return true; }
         virtual bool onRebuild() { return true; }
         virtual bool onSetup() { return true; }
@@ -42,7 +41,8 @@ namespace Chicane
         void setStatus(RendererLayerStatus inStatus);
 
     protected:
-        String              m_id;
-        RendererLayerStatus m_status;
+        String                      m_id;
+        RendererLayerStatus         m_status;
+        std::vector<RendererLayer*> m_children;
     };
 }

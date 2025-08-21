@@ -5,7 +5,8 @@
 #include "Chicane/Runtime/Backend/Vulkan/Debug.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Device.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Instance.hpp"
-#include "Chicane/Runtime/Backend/Vulkan/Layer.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 
@@ -339,8 +340,6 @@ namespace Chicane
 
         void Renderer::buildLayers()
         {
-            pushLayer(new LSky());
-            pushLayer(new LShadow());
             pushLayer(new LScene());
             pushLayer(new LGrid());
         }

@@ -7,7 +7,7 @@ namespace Chicane
         m_bounds()
     {}
 
-    const TransformCombined& Transformable::getTransform() const
+    const SpatialTransform& Transformable::getTransform() const
     {
         return m_transform;
     }

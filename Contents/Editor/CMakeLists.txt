@@ -9,7 +9,7 @@ CH_COPY_FILES(
     ".:*CMakeLists.txt|.frag|.vert$"
 )
 
-CH_COMPILE_VK_SHADERS(
+CH_COMPILE_SHADERS(
     ${EDITOR_CONTENTS_TARGET_NAME}
     ${EDITOR_CONTENTS_SOURCE_DIR}
     ${BUILD_DIR}/Contents/Editor

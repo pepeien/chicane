@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Math/Transform/Combined.hpp"
+#include "Chicane/Core/Math/Transform/Spatial.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 
@@ -17,7 +17,7 @@ namespace Chicane
         void set(const Bounds& inBounds);
         void add(const Bounds& inBounds);
 
-        void update(const TransformCombined& inTransform);
+        void update(const SpatialTransform& inTransform);
 
         bool contains(const Bounds& inBounds) const;
         bool contains(const Vec3& inPoint) const;
@@ -39,27 +39,29 @@ namespace Chicane
         const Vec3& getBottom() const;
         const Vec3& getBaseBottom() const;
 
-        const std::vector<Vec3>& getCorners() const;
+        const std::vector<Vec3>& getVertices() const;
+        const std::vector<std::uint32_t>& getIndices() const;
 
     private:
         void refresh();
 
     private:
-        Vec3              m_min        = Vec3::Zero;
-        Vec3              m_baseMin    = Vec3::Zero;
+        Vec3                       m_min        = Vec3::Zero;
+        Vec3                       m_baseMin    = Vec3::Zero;
 
-        Vec3              m_max        = Vec3::Zero;
-        Vec3              m_baseMax    = Vec3::Zero;
+        Vec3                       m_max        = Vec3::Zero;
+        Vec3                       m_baseMax    = Vec3::Zero;
 
-        Vec3              m_top        = Vec3::Zero;
-        Vec3              m_baseTop    = Vec3::Zero;
+        Vec3                       m_top        = Vec3::Zero;
+        Vec3                       m_baseTop    = Vec3::Zero;
 
-        Vec3              m_center     = Vec3::Zero;
-        Vec3              m_baseCenter = Vec3::Zero;
+        Vec3                       m_center     = Vec3::Zero;
+        Vec3                       m_baseCenter = Vec3::Zero;
 
-        Vec3              m_bottom     = Vec3::Zero;
-        Vec3              m_baseBottom = Vec3::Zero;
+        Vec3                       m_bottom     = Vec3::Zero;
+        Vec3                       m_baseBottom = Vec3::Zero;
 
-        std::vector<Vec3> m_corners    = {};
+        std::vector<Vec3>          m_vertices   = {};
+        std::vector<std::uint32_t> m_indices    = {};
     };
 }

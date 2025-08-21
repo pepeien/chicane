@@ -63,6 +63,8 @@ namespace Chicane
             const String& inId = ""
         );
 
+        const std::vector<CMesh*>& getMeshes() const;
+
     protected:
         void pushLayerStart(RendererLayer* inLayer);
         void pushLayerBack(RendererLayer* inLayer);

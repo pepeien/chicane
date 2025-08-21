@@ -118,7 +118,7 @@ namespace Chicane
 
         void Asset::saveXML()
         {
-            Xml::save(m_xml, getFilepath().string());
+            //Xml::save(m_xml, getFilepath().string());
         }
 
         pugi::xml_node Asset::getXML() const

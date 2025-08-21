@@ -68,7 +68,7 @@ namespace Chicane
             void destroyDraws();
 
         private:
-            RendererInternals                         m_internals;
+            RendererInternals                           m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

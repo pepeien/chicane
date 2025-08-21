@@ -150,7 +150,7 @@ namespace Chicane
 
         if (isAttached())
         {
-            m_attachment->setBounds(bounds);
+            m_parent->setBounds(bounds);
         }
     }
 }

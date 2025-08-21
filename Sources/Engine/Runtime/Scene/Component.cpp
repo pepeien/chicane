@@ -8,8 +8,8 @@ namespace Chicane
         : Transformable(),
         m_bCanTick(true),
         m_bIsActive(false),
-        m_attachment(nullptr),
-        m_attachmentTransformSubscription({})
+        m_parent(nullptr),
+        m_parentSubscription({})
     {}
 
     bool Component::isActive() const
@@ -65,28 +65,28 @@ namespace Chicane
 
     bool Component::isAttached() const
     {
-        return m_attachment != nullptr;
+        return m_parent != nullptr;
     }
 
-    void Component::attachTo(Transformable* inRoot)
+    void Component::attachTo(Transformable* inParent)
     {
-        if (inRoot == this)
+        if (inParent == this)
         {
             return;
         }
 
-        m_attachment = inRoot;
+        m_parent = inParent;
 
         if (isAttached())
         {  
-            m_attachmentTransformSubscription.complete();
-            m_attachmentTransformSubscription = m_attachment->watchChanges(
+            m_parentSubscription.complete();
+            m_parentSubscription = m_parent->watchChanges(
                 [&]()
                 {
                     Transform transform = {};
-                    transform.setTranslation(m_attachment->getTranslation());
-                    transform.setRotation(m_attachment->getRotation());
-                    transform.setScale(m_attachment->getScale());
+                    transform.setTranslation(m_parent->getTranslation());
+                    transform.setRotation(m_parent->getRotation());
+                    transform.setScale(m_parent->getScale());
 
                     setAbsolute(transform);
 
@@ -95,6 +95,6 @@ namespace Chicane
             );
         }
 
-        onAttachment(inRoot);
+        onAttachment(inParent);
     }
 }

@@ -2,14 +2,22 @@
 
 namespace Chicane
 {
-    RendererLayer::RendererLayer()
-        : RendererLayer("Unamed")
-    {}
-
     RendererLayer::RendererLayer(const String& inId)
         : m_id(inId),
-          m_status(RendererLayerStatus::Offline)
+          m_status(RendererLayerStatus::Offline),
+          m_children({})
     {}
+
+    RendererLayer::~RendererLayer()
+    {
+        for (RendererLayer* child : m_children)
+        {
+            delete child;
+            child = nullptr;
+        }
+
+        m_children.clear();
+    }
 
     void RendererLayer::init()
     {
@@ -24,6 +32,11 @@ namespace Chicane
         }
 
         setStatus(RendererLayerStatus::Initialized);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->init();
+        }
     }
 
     void RendererLayer::destroy()
@@ -39,6 +52,11 @@ namespace Chicane
         }
 
         setStatus(RendererLayerStatus::Offline);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->destroy();
+        }
     }
 
     void RendererLayer::rebuild()
@@ -54,6 +72,11 @@ namespace Chicane
         }
 
         setStatus(RendererLayerStatus::Initialized);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->rebuild();
+        }
     }
 
     void RendererLayer::setup()
@@ -69,6 +92,11 @@ namespace Chicane
         }
 
         setStatus(RendererLayerStatus::Running);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->setup();
+        }
     }
 
     void RendererLayer::render(void* outData)
@@ -79,11 +107,21 @@ namespace Chicane
         }
 
         onRender(outData);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->render(outData);
+        }
     }
 
     void RendererLayer::handle(const WindowEvent& inEvent)
     {
         onEvent(inEvent);
+
+        for (RendererLayer* child : m_children)
+        {
+            child->onEvent(inEvent);
+        }
     }
 
     bool RendererLayer::is(RendererLayerStatus inStatus) const

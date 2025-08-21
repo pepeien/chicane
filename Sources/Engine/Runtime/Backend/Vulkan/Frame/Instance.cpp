@@ -460,7 +460,8 @@ namespace Chicane
                 for (const CMesh* mesh : components)
                 {
                     Box::MeshParsed data = {};
-                    data.matrix       = mesh->getTransform().getMatrix();
+                    data.modelMatrix  = mesh->getTransform().getMatrix();
+                    data.boundsMatrix = mesh->getTransform().getMatrix();
                     data.textureIndex = textureManager->getIndex(mesh->getTexture());
 
                     meshes.push_back(data);

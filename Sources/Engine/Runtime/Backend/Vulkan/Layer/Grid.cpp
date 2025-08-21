@@ -118,11 +118,11 @@ namespace Chicane
         {
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/grid.vert.spv";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Grid.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/grid.frag.spv";
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Grid.frag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

@@ -29,7 +29,7 @@ namespace Chicane
 
     bool Bounds::contains(const Bounds& inBounds) const
     {
-        for (const Vec3& corner : inBounds.getCorners())
+        for (const Vec3& corner : inBounds.getVertices())
         {
             if (contains(corner))
             {
@@ -110,7 +110,7 @@ namespace Chicane
         refresh();
     }
 
-    void Bounds::update(const TransformCombined& inTransform)
+    void Bounds::update(const SpatialTransform& inTransform)
     {
         const Vec3& scale       = inTransform.getScale();
         const Vec3& translation = inTransform.getTranslation();
@@ -140,9 +140,9 @@ namespace Chicane
         m_bottom.y = m_center.y;
         m_bottom.z = m_min.z;
 
-        if (m_corners.empty())
+        if (m_vertices.empty())
         {
-            m_corners.resize(8);
+            m_vertices.resize(8);
         }
 
         //   7+------+6
@@ -153,37 +153,42 @@ namespace Chicane
         //  |/     |/
         // 0+------+1
 
-        m_corners[0].x = m_min.x;
-        m_corners[0].y = m_min.y;
-        m_corners[0].z = m_min.z;
+        m_vertices = {
+            { m_baseMin.x, m_baseMin.y, m_baseMin.z }, // 0
+            { m_baseMax.x, m_baseMin.y, m_baseMin.z }, // 1
+            { m_baseMin.x, m_baseMax.y, m_baseMin.z }, // 2
+            { m_baseMax.x, m_baseMax.y, m_baseMin.z }, // 3
+            { m_baseMin.x, m_baseMin.y, m_baseMax.z }, // 4
+            { m_baseMax.x, m_baseMin.y, m_baseMax.z }, // 5
+            { m_baseMin.x, m_baseMax.y, m_baseMax.z }, // 6
+            { m_baseMax.x, m_baseMax.y, m_baseMax.z }  // 7
+        };
 
-        m_corners[1].x = m_max.x;
-        m_corners[1].y = m_min.y;
-        m_corners[1].z = m_min.z;
+        m_indices = {
+            // Front face  (z = m_min.z): 0, 1, 2, 2, 3, 0
+            0, 1, 2,
+            2, 3, 0,
 
-        m_corners[2].x = m_min.x;
-        m_corners[2].y = m_max.y;
-        m_corners[2].z = m_min.z;
+            // Back face   (z = m_max.z): 4, 5, 6, 6, 7, 4
+            4, 5, 6,
+            6, 7, 4,
 
-        m_corners[3].x = m_max.x;
-        m_corners[3].y = m_max.y;
-        m_corners[3].z = m_min.z;
+            // Left face   (x = m_min.x): 0, 4, 6, 6, 2, 0
+            0, 4, 6,
+            6, 2, 0,
 
-        m_corners[4].x = m_min.x;
-        m_corners[4].y = m_min.y;
-        m_corners[4].z = m_max.z;
+            // Right face  (x = m_max.x): 1, 5, 7, 7, 3, 1
+            1, 5, 7,
+            7, 3, 1,
 
-        m_corners[5].x = m_max.x;
-        m_corners[5].y = m_min.y;
-        m_corners[5].z = m_max.z;
+            // Top face    (y = m_max.y): 2, 6, 7, 7, 3, 2
+            2, 6, 7,
+            7, 3, 2,
 
-        m_corners[6].x = m_min.x;
-        m_corners[6].y = m_max.y;
-        m_corners[6].z = m_max.z;
-
-        m_corners[7].x = m_max.x;
-        m_corners[7].y = m_max.y;
-        m_corners[7].z = m_max.z;
+            // Bottom face (y = m_min.y): 0, 1, 5, 5, 4, 0
+            0, 1, 5,
+            5, 4, 0
+        };
     }
 
     const Vec3& Bounds::getMin() const
@@ -236,9 +241,14 @@ namespace Chicane
         return m_baseBottom;
     }
 
-    const std::vector<Vec3>& Bounds::getCorners() const
+    const std::vector<Vec3>& Bounds::getVertices() const
     {
-        return m_corners;
+        return m_vertices;
+    }
+
+    const std::vector<std::uint32_t>& Bounds::getIndices() const
+    {
+        return m_indices;
     }
 
     void Bounds::refresh()

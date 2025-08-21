@@ -52,7 +52,7 @@ namespace Chicane
             return;
         }
 
-        Actor* attachment = getAttachment<Actor>();
+        Actor* attachment = getParent<Actor>();
 
         if (!attachment)
         {
@@ -82,9 +82,9 @@ namespace Chicane
 
         resetForce();
 
-        Vec3 overlap = inSubject->getBounds().getOverlap(m_attachment->getBounds());
+        Vec3 overlap = inSubject->getBounds().getOverlap(m_parent->getBounds());
 
-        m_attachment->addAbsoluteTranslation(overlap * 1.1f);
+        m_parent->addAbsoluteTranslation(overlap * 1.1f);
     }
 
     void CPhysics::updateForce()
@@ -94,7 +94,7 @@ namespace Chicane
             return;
         }
 
-        Actor* attachment = getAttachment<Actor>();
+        Actor* attachment = getParent<Actor>();
 
         if (!attachment)
         {

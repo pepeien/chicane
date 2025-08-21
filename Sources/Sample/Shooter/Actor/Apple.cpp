@@ -24,7 +24,6 @@ Apple::Apple()
 {
     setCanTick(true);
     setCanCollide(true);
-    setAbsoluteScale(1.5f);
 
     m_meshComponent = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");

@@ -191,6 +191,11 @@ namespace Chicane
         }
     }
 
+    const std::vector<CMesh*>& Renderer::getMeshes() const
+    {
+        return m_meshes;
+    }
+
     void Renderer::pushLayerBack(RendererLayer* inLayer)
     {
         if (hasLayer(inLayer))

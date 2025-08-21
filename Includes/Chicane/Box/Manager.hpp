@@ -95,7 +95,7 @@ namespace Chicane
                     return 0;
                 }
 
-                return static_cast<std::uint32_t>(std::count(m_usedIds.begin(),  m_usedIds.end(), inId));
+                return static_cast<std::uint32_t>(std::count(m_usedIds.begin(), m_usedIds.end(), inId));
             }
 
             // Lifecycle

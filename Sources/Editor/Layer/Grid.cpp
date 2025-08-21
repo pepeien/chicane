@@ -155,11 +155,11 @@ namespace Chicane
         std::vector<Vulkan::Shader::StageCreateInfo> LGrid::getGraphicsPipelineShaders()
         {
             Vulkan::Shader::StageCreateInfo vertexShader {};
-            vertexShader.path = "Content/Shaders/grid.vert.spv";
+            vertexShader.path = "Content/Shaders/grid.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Vulkan::Shader::StageCreateInfo fragmentShader {};
-            fragmentShader.path = "Content/Shaders/grid.frag.spv";
+            fragmentShader.path = "Content/Shaders/grid.frag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Vulkan::Shader::StageCreateInfo> result {};

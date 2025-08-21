@@ -1,5 +1,7 @@
 #include "Chicane/Core/Xml.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Xml
@@ -18,7 +20,7 @@ namespace Chicane
         {
             if (inFilepath.empty())
             {
-                throw std::runtime_error("The document filepath is invalid");
+                throw std::runtime_error("The XML document path is empty");
             }
 
             inDocument.save_file(
@@ -32,13 +34,15 @@ namespace Chicane
         {
             if (inFilepath.empty())
             {
-                throw std::runtime_error("The document filepath is invalid");
+                throw std::runtime_error("The XML document path is empty");
             }
 
             pugi::xml_document result;
             if (!result.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
             {
-                throw std::runtime_error("Failed to read " + inFilepath.string());
+                throw std::runtime_error(
+                    "Failed to read the XML document [" + inFilepath.string() + "]"
+                );
             }
 
             return result;

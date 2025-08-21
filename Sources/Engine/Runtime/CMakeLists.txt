@@ -67,6 +67,7 @@ target_link_libraries(
         Chicane::Box
         Chicane::Core
         Chicane::Grid
+        Chicane::Spring
 
         # Vendors
         Vulkan::Vulkan
