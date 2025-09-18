@@ -18,6 +18,8 @@ namespace Chicane
             m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
             loadEvents();
+
+            init();
         }
 
         LGrid::~LGrid()

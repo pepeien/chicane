@@ -12,6 +12,7 @@ namespace Chicane
 
     public:
         RendererLayer(const String& inId);
+        RendererLayer();
 
         virtual ~RendererLayer();
 
@@ -40,9 +41,34 @@ namespace Chicane
     protected:
         void setStatus(RendererLayerStatus inStatus);
 
+        template<typename T>
+        bool hasLayer() const
+        {
+            for (const RendererLayer* layer : m_children)
+            {
+                if (typeid(T) != typeid(*layer))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        template<typename Target, typename Anchor = RendererLayer, typename... Params>
+        void pushLayer(
+            ListPushStrategy inStrategy = ListPushStrategy::Back,
+            Params ...inParams
+        )
+        {
+            m_children.add(new Target(inParams...), inStrategy);
+        }
+
     protected:
-        String                      m_id;
-        RendererLayerStatus         m_status;
-        std::vector<RendererLayer*> m_children;
+        String               m_id;
+        RendererLayerStatus  m_status;
+        List<RendererLayer*> m_children;
     };
 }

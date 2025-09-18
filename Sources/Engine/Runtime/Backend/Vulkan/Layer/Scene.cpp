@@ -12,10 +12,12 @@ namespace Chicane
         LScene::LScene()
             : Super("Engine_Scene")
         {
-            m_children.push_back(new LSceneSky());
-            m_children.push_back(new LSceneShadow());
-            m_children.push_back(new LSceneMesh());
-            m_children.push_back(new LSceneCollision());
+            pushLayer<LSceneSky>();
+            pushLayer<LSceneShadow>();
+            pushLayer<LSceneMesh>();
+            //pushLayer<LSceneCollision>();
+
+            init();
         }
     }
 }

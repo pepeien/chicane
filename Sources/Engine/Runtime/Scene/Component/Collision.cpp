@@ -107,5 +107,7 @@ namespace Chicane
                 //const bool bIsWithinZ = otherPoint.z >= min.z && otherPoint.z <= max.z;
             }
         }
+
+        return false;
     }
 }

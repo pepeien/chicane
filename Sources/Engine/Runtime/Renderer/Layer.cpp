@@ -8,6 +8,12 @@ namespace Chicane
           m_children({})
     {}
 
+    RendererLayer::RendererLayer()
+        : m_id("Undefined"),
+          m_status(RendererLayerStatus::Offline),
+          m_children({})
+    {}
+
     RendererLayer::~RendererLayer()
     {
         for (RendererLayer* child : m_children)
@@ -35,6 +41,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->init();
         }
     }
@@ -55,6 +66,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->destroy();
         }
     }
@@ -75,6 +91,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->rebuild();
         }
     }
@@ -95,6 +116,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->setup();
         }
     }
@@ -110,6 +136,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->render(outData);
         }
     }
@@ -120,6 +151,11 @@ namespace Chicane
 
         for (RendererLayer* child : m_children)
         {
+            if (!child)
+            {
+                continue;
+            }
+
             child->onEvent(inEvent);
         }
     }

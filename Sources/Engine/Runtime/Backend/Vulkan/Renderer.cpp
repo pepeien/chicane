@@ -340,8 +340,8 @@ namespace Chicane
 
         void Renderer::buildLayers()
         {
-            pushLayer(new LScene());
-            pushLayer(new LGrid());
+            pushLayer<LScene>();
+            pushLayer<LGrid>();
         }
 
         void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)
@@ -353,6 +353,11 @@ namespace Chicane
 
             for (RendererLayer* layer : m_layers)
             {
+                if (!layer)
+                {
+                    continue;
+                }
+
                 layer->render(&data);
             }
         }

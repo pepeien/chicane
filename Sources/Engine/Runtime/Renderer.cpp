@@ -22,8 +22,13 @@ namespace Chicane
 
     bool Renderer::canRender() const
     {
-        for (RendererLayer* layer : m_layers)
+        for (const RendererLayer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             if (!layer->is(RendererLayerStatus::Running))
             {
                 continue;
@@ -125,142 +130,20 @@ namespace Chicane
         m_window = inWindow;
     }
 
-    bool Renderer::hasLayer(RendererLayer* inLayer) const
-    {
-        if (!inLayer)
-        {
-            return false;
-        }
-
-        return hasLayer(inLayer->getId());
-    }
-
-    bool Renderer::hasLayer(const String& inId) const
-    {
-        return std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        ) != m_layers.end();
-    }
-
-    void Renderer::pushLayerStart(RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        m_layers.insert(m_layers.begin(), inLayer);
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayer(
-        RendererLayer* inLayer,
-        RendererLayerPushStrategy inPushStrategy,
-        const String& inId
-    )
-    {
-        if (!inLayer)
-        {
-            return;
-        }
-
-        switch (inPushStrategy)
-        {
-        case RendererLayerPushStrategy::Front:
-            pushLayerStart(inLayer);
-
-            return;
-
-        case RendererLayerPushStrategy::BeforeLayer:
-            pushLayerBefore(inId, inLayer);
-
-            return;
-
-        case RendererLayerPushStrategy::AfterLayer:
-            pushLayerAfter(inId, inLayer);
-
-            return;
-
-        default:
-            pushLayerBack(inLayer);
-
-            return;
-        }
-    }
-
     const std::vector<CMesh*>& Renderer::getMeshes() const
     {
         return m_meshes;
-    }
-
-    void Renderer::pushLayerBack(RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        m_layers.push_back(inLayer);
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayerBefore(const String& inId, RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        auto foundLayer = std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        );
-
-        if (foundLayer == m_layers.end())
-        {
-            return;
-        }
-
-        m_layers.insert(
-            foundLayer,
-            inLayer
-        );
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayerAfter(const String& inId, RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        auto foundLayer = std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        );
-
-        if (foundLayer == m_layers.end())
-        {
-            return;
-        }
-
-        m_layers.insert(foundLayer + 1, inLayer);
-
-        inLayer->init();
     }
 
     void Renderer::setupLayers()
     {
         for (RendererLayer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             layer->setup();
         }
     }
