@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core/List/PushStrategy.hpp"
 
 namespace Chicane
 {
@@ -74,12 +75,33 @@ namespace Chicane
 
         T& back()
         {
-            return m_data.front();
+            return m_data.back();
         }
 
         const T& back() const
         {
-            return m_data.front();
+            return m_data.back();
+        }
+
+        void add(T inData, ListPushStrategy inStrategy = ListPushStrategy::Back)
+        {
+            switch (inStrategy)
+            {
+            case ListPushStrategy::Back:
+                addBack(inData);
+
+                break;
+
+            case ListPushStrategy::Front:
+                addFront(inData);
+
+                break;
+
+            default:
+                addBack(inData);
+
+                break;
+            }
         }
 
         void addFront(T inData)
