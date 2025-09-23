@@ -120,20 +120,15 @@ namespace Chicane
 
     void Scene::tickActors(float inDeltaTime)
     {
-        //std::for_each(
-        //    std::execution::par,
-        //    m_actors.begin(),
-        //    m_actors.end(),
-        //    [inDeltaTime](Actor* actor)
-        //    {
-        //        actor->tick(inDeltaTime);
-        //    }
-        //);
-
-        for (Actor* actor : m_actors)
-        {
-            actor->tick(inDeltaTime);
-        }
+        std::for_each(
+            std::execution::par,
+            m_actors.begin(),
+            m_actors.end(),
+            [inDeltaTime](Actor* actor)
+            {
+                actor->tick(inDeltaTime);
+            }
+        );
     }
 
     void Scene::deleteActors()
@@ -148,20 +143,15 @@ namespace Chicane
 
     void Scene::tickComponents(float inDeltaTime)
     {
-        //std::for_each(
-        //    std::execution::par,
-        //    m_components.begin(),
-        //    m_components.end(),
-        //    [inDeltaTime](Component* component)
-        //    {
-        //        component->tick(inDeltaTime);
-        //    }
-        //);
-
-        for (Component* component : m_components)
-        {
-            component->tick(inDeltaTime);
-        }
+        std::for_each(
+            std::execution::par,
+            m_components.begin(),
+            m_components.end(),
+            [inDeltaTime](Component* component)
+            {
+                component->tick(inDeltaTime);
+            }
+        );
     }
 
     void Scene::deleteComponents()
