@@ -1,5 +1,6 @@
 # User-specific files
 *.env.*
+.[Cc]ache/*
 
 # Build results
 [Bb]in/*
