@@ -17,6 +17,6 @@
 [submodule "Sources/Engine/Core/Vendor/pugixml"]
 	path = Sources/Engine/Core/Vendor/pugixml
 	url = https://github.com/pepeien/pugixml.git
-[submodule "Sources/Vendor/SDL3"]
-	path = Sources/Vendor/SDL3
+[submodule "Sources/Engine/Runtime/Vendor/SDL"]
+	path = Sources/Engine/Runtime/Vendor/SDL
 	url = https://github.com/pepeien/SDL.git

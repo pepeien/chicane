@@ -1,5 +1,5 @@
 ##############  Add subdirectories  #######################
-# SDL3
+# SDL
 set(SDL_AUDIO ON CACHE BOOL "")
 
 set(SDL_VIDEO ON CACHE BOOL "")
@@ -31,4 +31,4 @@ set(SDL_TEST_LIBRARY OFF CACHE BOOL "")
 
 set(SDL_INSTALL OFF CACHE BOOL "")
 
-add_subdirectory(SDL3 EXCLUDE_FROM_ALL)
+add_subdirectory(SDL EXCLUDE_FROM_ALL)

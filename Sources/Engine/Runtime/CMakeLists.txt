@@ -79,3 +79,6 @@ target_link_libraries(
 add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
+
+##################### Directories #######################
+add_subdirectory(Vendor)
