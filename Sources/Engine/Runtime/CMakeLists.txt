@@ -10,6 +10,7 @@ file(
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
+list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
@@ -18,6 +19,7 @@ file(
     # Sources
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
+list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)
