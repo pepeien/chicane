@@ -39,8 +39,6 @@ namespace Chicane
         m_bIsActive = false;
 
         onDeactivation();
-
-        Application::getScene()->removeComponent(this);
     }
 
     bool Component::canTick() const
