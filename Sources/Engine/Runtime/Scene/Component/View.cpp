@@ -109,7 +109,7 @@ namespace Chicane
             return;
         }
 
-        m_settings.nearClip = inFarClip;
+        m_settings.farClip = inFarClip;
 
         updateProjection();
     }
