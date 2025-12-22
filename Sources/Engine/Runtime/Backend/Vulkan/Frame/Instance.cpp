@@ -91,8 +91,6 @@ namespace Chicane
                     return;
                 }
 
-                const RendererView data = normalizeViewData(inCameras.at(0)->getData());
-
                 BufferCreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
@@ -100,8 +98,9 @@ namespace Chicane
                                                     vk::MemoryPropertyFlagBits::eHostCoherent;
                 bufferCreateInfo.size             = sizeof(RendererView);
                 bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
-
                 cameraResource.setup(bufferCreateInfo);
+
+                const RendererView data = getActiveCameraData(inCameras);
                 cameraResource.copyToBuffer(&data);
             }
 
@@ -121,7 +120,7 @@ namespace Chicane
                     return;
                 }
 
-                const RendererView data = normalizeViewData(inCameras.at(0)->getData());
+                const RendererView data = getActiveCameraData(inCameras);
                 cameraResource.copyToBuffer(&data);
             }
 
@@ -426,9 +425,24 @@ namespace Chicane
                 );
             }
 
-            RendererView Instance::normalizeViewData(const RendererView& outData)
+            RendererView Instance::getActiveCameraData(const std::vector<CCamera*>& inCameras)
             {
-                RendererView result = outData;
+                for (const Chicane::CCamera* camera : inCameras)
+                {
+                    if (!camera->isActive())
+                    {
+                        continue;
+                    }
+
+                    return normalizeViewData(camera->getData());
+                }
+
+                return normalizeViewData(inCameras.at(0)->getData());
+            }
+
+            RendererView Instance::normalizeViewData(const RendererView& inData)
+            {
+                RendererView result = inData;
                 result.projection [1][1] *= -1;
                 result.viewProjection = result.projection * result.view;
 
