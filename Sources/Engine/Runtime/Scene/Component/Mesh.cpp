@@ -82,7 +82,7 @@ namespace Chicane
 
     bool CMesh::hasMesh() const
     {
-        return m_mesh && !m_mesh->getFilepath().empty();
+        return m_mesh != nullptr;
     }
 
     void CMesh::setMesh(const String& inMesh)
