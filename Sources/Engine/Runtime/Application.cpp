@@ -98,16 +98,19 @@ namespace Chicane
         {
             if (hasScene())
             {
-                std::thread(&Scene::tick, g_scene, g_telemetry.delta).detach();
+                //std::thread(&Scene::tick, g_scene, g_telemetry.delta).detach();
+                g_scene->tick(g_telemetry.delta);
             }
 
             if (hasView())
             {
-                std::thread(&Grid::View::tick, g_view, g_telemetry.delta).detach();
+                //std::thread(&Grid::View::tick, g_view, g_telemetry.delta).detach();
+                g_view->tick(g_telemetry.delta);
             }
 
             if (hasRenderer())
             {
+                //std::thread(&Renderer::render, g_renderer).detach();
                 g_renderer->render();
             }
         }
