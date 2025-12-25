@@ -57,6 +57,8 @@ void Apple::onHit(const Chicane::Actor* inSubject)
 
     m_meshComponent->deactivate();
 
+    Chicane::Application::getScene()->removeComponent(m_meshComponent);
+
     Game::incrementScore(1);
 }
 

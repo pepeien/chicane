@@ -456,6 +456,9 @@ namespace Chicane
                     return;
                 }
 
+                std::vector<Box::MeshParsed> meshes = {};
+                meshes.reserve(inMeshes.size());
+
                 std::vector<CMesh*> components = inMeshes;
                 std::sort(
                     components.begin(),
@@ -467,9 +470,6 @@ namespace Chicane
                 );
 
                 Box::TextureManager* textureManager = Box::getTextureManager();
-
-                std::vector<Box::MeshParsed> meshes = {};
-                meshes.reserve(components.size());
 
                 for (const CMesh* mesh : components)
                 {
