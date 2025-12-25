@@ -120,11 +120,11 @@ namespace Chicane
         {
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/grid.vert";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Grid.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/grid.frag";
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Grid.frag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};
@@ -348,22 +348,26 @@ namespace Chicane
             {
                 return;
             }
-
-            if (!inComponent->isRoot())
-            {
-                if (!hasDraw(inComponent))
-                {
-                    Draw draw = {};
-                    draw.component = inComponent;
-
-                    m_draws.push_back(draw);
-                }
-            }
     
             for (Grid::Component* component : inComponent->getChildren())
             {
                 buildDraw(component);
             }
+
+            if (inComponent->isRoot())
+            {
+                return;
+            }
+
+            if (hasDraw(inComponent))
+            {
+                return;
+            }
+
+            Draw draw = {};
+            draw.component = inComponent;
+
+            m_draws.push_back(draw);
         }
 
         void LGrid::refreshDraw(Grid::Component* inComponent)
@@ -373,68 +377,77 @@ namespace Chicane
                 return;
             }
 
-            if (!inComponent->isRoot())
-            {
-                if (!hasDraw(inComponent))
-                {
-                    buildDraw(inComponent);
-                }
-
-                Draw& draw = getDraw(inComponent);
-
-                if (draw.bIsOutdated)
-                {
-                    if (inComponent->isDrawable())
-                    {
-                        Grid::Primitive primitive = inComponent->getPrimitive();
-
-                        if (typeid(*inComponent) == typeid(Grid::Character))
-                        {
-                            for (Vertex& vertex : primitive.vertices)
-                            {
-                                vertex.position.y = -vertex.position.y;
-                            }
-                        }
-
-                        draw.size        = inComponent->getSize();
-                        draw.position    = inComponent->getPosition();
-                        draw.vertexCount = primitive.vertices.size();
-                        draw.indexCount  = primitive.indices.size();
-                        draw.bIsDrawable = true;
-
-                        setDrawVertexBuffer(draw, primitive.vertices);
-                        setDrawIndexBuffer(draw, primitive.indices);
-                    }
-                    else
-                    {
-                        draw.size        = Vec2::Zero;
-                        draw.position    = Vec2::Zero;
-                        draw.vertexCount = 0;
-                        draw.indexCount  = 0;
-                        draw.bIsDrawable = false;
-                        destroyDrawVertexBuffer(draw);
-                        destroyDrawIndexBuffer(draw);
-                    }
-
-                    draw.bIsOutdated = false;
-                }
-            }
-
             for (Grid::Component* component : inComponent->getChildren())
             {
                 refreshDraw(component);
             }
+
+            if (inComponent->isRoot())
+            {
+                return;
+            }
+
+            if (!hasDraw(inComponent))
+            {
+                buildDraw(inComponent);
+            }
+
+            Draw& draw = getDraw(inComponent);
+
+            if (!draw.bIsOutdated)
+            {
+                //return;
+            }
+
+            draw.bIsOutdated = false;
+
+            if (!inComponent->isDrawable())
+            {
+                draw.size        = Vec2::Zero;
+                draw.position    = Vec2::Zero;
+                draw.vertexCount = 0;
+                draw.indexCount  = 0;
+                draw.bIsDrawable = false;
+
+                destroyDraw(draw);
+
+                return;
+            }
+
+            Grid::Primitive primitive = inComponent->getPrimitive();
+
+            if (typeid(*inComponent) == typeid(Grid::Character))
+            {
+                for (Vertex& vertex : primitive.vertices)
+                {
+                    vertex.position.y = -vertex.position.y;
+                }
+            }
+
+            draw.size        = inComponent->getSize();
+            draw.position    = inComponent->getPosition();
+            draw.vertexCount = primitive.vertices.size();
+            draw.indexCount  = primitive.indices.size();
+            draw.bIsDrawable = true;
+
+            setDrawVertexBuffer(draw, primitive.vertices);
+            setDrawIndexBuffer(draw, primitive.indices);
         }
 
         void LGrid::destroyDraws()
         {
             for (Draw& draw : m_draws)
             {
-                destroyDrawVertexBuffer(draw);
-                destroyDrawIndexBuffer(draw);
+                destroyDraw(draw);
             }
 
             m_draws.clear();
+        }
+
+        void LGrid::destroyDraw(Draw& outDraw)
+        {
+            destroyDrawVertexBuffer(outDraw);
+            destroyDrawIndexBuffer(outDraw);
         }
     }
 }

@@ -66,6 +66,7 @@ namespace Chicane
             void buildDraw(Grid::Component* inComponent);
             void refreshDraw(Grid::Component* inComponent);
             void destroyDraws();
+            void destroyDraw(Draw& outDraw);
 
         private:
             RendererInternals                           m_internals;
