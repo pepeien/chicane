@@ -51,7 +51,7 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            //refresh();
+            refresh();
 
             onTick(inDeltaTime);
 
@@ -73,10 +73,7 @@ namespace Chicane
 
         bool Component::isRoot() const
         {
-            return (
-                (!m_parent && !m_root) ||
-                (m_parent == this && m_root == this)
-            );
+            return (!m_parent && !m_root) || (m_parent == this && m_root == this);
         }
 
         bool Component::isVisible() const
