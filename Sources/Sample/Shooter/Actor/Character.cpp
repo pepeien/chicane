@@ -19,6 +19,7 @@ Character::Character()
     m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
     m_camera->attachTo(this);
     m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
+    m_camera->activate();
 
     m_wand = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);

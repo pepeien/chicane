@@ -25,8 +25,6 @@ void Level::onActivation()
     spawnCameras();
     spawnStructures();
     spawnApples();
-
-    activateCenterCamera();
 }
 
 void Level::activateLeftCamera()
