@@ -420,7 +420,7 @@ namespace Chicane
             {
                 for (Vertex& vertex : primitive.vertices)
                 {
-                    vertex.position.y = -vertex.position.y;
+                    vertex.position.y = 1.0f - vertex.position.y;
                 }
             }
 

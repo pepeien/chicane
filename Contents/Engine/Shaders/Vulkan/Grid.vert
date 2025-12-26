@@ -17,7 +17,7 @@ void main() {
     const vec2 scaledPos = inPosition.xy * PushConstants.size;
     const vec2 finalPos  = scaledPos + PushConstants.position;
 
-    outColor = inColor;
+    outColor = inColor / 255.0f;
 
     gl_Position = vec4(finalPos, 0.0, 1.0);
 }
