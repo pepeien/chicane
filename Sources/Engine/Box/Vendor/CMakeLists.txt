@@ -19,3 +19,11 @@ set(FT_DISABLE_CID      ON CACHE BOOL "" FORCE)
 set(FT_DISABLE_WINFONTS ON CACHE BOOL "" FORCE)
 
 add_subdirectory(freetype)
+
+set_target_properties(
+    freetype
+
+    PROPERTIES
+        POSITION_INDEPENDENT_CODE
+            TRUE
+)

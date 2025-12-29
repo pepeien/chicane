@@ -7,7 +7,7 @@
 #   define IS_WINDOWS false
 #endif
 
-#if defined(__linux__) || (defined(__GNUC__) && __GNUC__ >= 4)
+#if defined(__linux__) || (defined(__GNUC__) || defined(__clang__))
 #   define IS_LINUX true
 #else
 #   define IS_LINUX false

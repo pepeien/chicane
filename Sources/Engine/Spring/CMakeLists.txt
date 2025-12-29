@@ -35,7 +35,7 @@ set_target_properties(
 
     PROPERTIES
         OUTPUT_NAME
-            "${NAME}"
+            "${NAME}Spring"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
         DEFINE_SYMBOL
