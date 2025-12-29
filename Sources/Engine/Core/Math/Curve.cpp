@@ -2,8 +2,6 @@
 
 #include <mapbox/earcut.hpp>
 
-static constexpr const float FIXED_POINT = 64.0f;
-
 namespace Chicane
 {
     std::vector<Curve::Polygon> Curve::getPolygons(const std::vector<Curve>& inContours)
@@ -67,6 +65,11 @@ namespace Chicane
 
         for (const Curve& curve : inContours)
         {
+            if (curve.isEmpty())
+            {
+                continue;
+            }
+
             if (curve.isHole())
             {
                 holeContours.push_back(curve);
@@ -157,7 +160,8 @@ namespace Chicane
 
     bool Curve::isHole() const
     {
-        if (m_points.size() < 3) {
+        if (m_points.size() < 3)
+        {
             return false;
         }
 
@@ -165,13 +169,14 @@ namespace Chicane
 
         const std::size_t count = m_points.size();
 
-        for (std::size_t i = 0; i < count; ++i) {
+        for (std::size_t i = 0; i < count; ++i)
+        {
             const Vec2& current = m_points.at(i);
             const Vec2& nearest = m_points.at((i + 1) % count);
 
-            area += static_cast<double>((current.x - nearest.y) * (nearest.x - current.y));
+            area += (static_cast<double>(current.x) * static_cast<double>(nearest.y)) - (static_cast<double>(nearest.x) * static_cast<double>(current.y));
         }
 
-        return (area / 2.0) < 0;
+        return area > -(1e-6);
     }
 }
