@@ -115,6 +115,7 @@ namespace Chicane
 
         Style::Style()
             : display(StyleDisplay::Block),
+            zIndex(0.0f),
             width(0.0f),
             height(0.0f),
             flex({}),
@@ -127,6 +128,20 @@ namespace Chicane
                 Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
                 Style::MARGIN_LEFT_ATTRIBUTE_NAME,
                 Style::MARGIN_RIGHT_ATTRIBUTE_NAME
+            ),
+            padding(
+                Style::PADDING_ATTRIBUTE_NAME,
+                Style::PADDING_TOP_ATTRIBUTE_NAME,
+                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                Style::PADDING_RIGHT_ATTRIBUTE_NAME
+            ),
+            gap(
+                Style::GAP_ATTRIBUTE_NAME,
+                Style::GAP_TOP_ATTRIBUTE_NAME,
+                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                Style::GAP_LEFT_ATTRIBUTE_NAME,
+                Style::GAP_RIGHT_ATTRIBUTE_NAME
             ),
             backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
             foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
@@ -180,9 +195,13 @@ namespace Chicane
         void Style::refresh()
         {
             refreshDisplay();
+            refreshFlex();
+            refreshZIndex();
             refreshSize();
             refreshPosition();
             refreshMargin();
+            refreshPadding();
+            refreshGap();
             refreshAlignment();
             refreshForegroundColor();
             refreshBackgroundColor();
@@ -212,6 +231,34 @@ namespace Chicane
             {
                 setProperty(display, StyleDisplay::Hidden);
             }
+        }
+
+        void Style::refreshFlex()
+        {
+            if (m_properties.find(FLEX_DIRECTION_ATTRIBUTE_NAME) != m_properties.end())
+            {
+                const String value = parseText(m_properties.at(FLEX_DIRECTION_ATTRIBUTE_NAME));
+
+                if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
+                {
+                    setProperty(flex.direction, StyleFlex::Direction::Column);
+                }
+
+                if (value.equals(FLEX_DIRECTION_TYPE_ROW))
+                {
+                    setProperty(flex.direction, StyleFlex::Direction::Row);
+                }
+            }
+        }
+
+        void Style::refreshZIndex()
+        {
+            if (m_properties.find(Z_INDEX_ATTRIBUTE_NAME) == m_properties.end())
+            {
+                return;
+            }
+
+            setProperty(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshSize()
@@ -279,6 +326,42 @@ namespace Chicane
         {
             if (
                 !margin.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    {
+                        return parseSize(inValue, inDirection);
+                    }
+                )
+            )
+            {
+                return;
+            }
+
+            emmitChanges();
+        }
+
+        void Style::refreshPadding()
+        {
+            if (
+                !padding.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    {
+                        return parseSize(inValue, inDirection);
+                    }
+                )
+            )
+            {
+                return;
+            }
+
+            emmitChanges();
+        }
+
+        void Style::refreshGap()
+        {
+            if (
+                !gap.refresh(
                     m_properties,
                     [this](const String& inValue, StyleDirection inDirection)
                     {

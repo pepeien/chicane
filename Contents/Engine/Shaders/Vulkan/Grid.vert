@@ -9,15 +9,16 @@ layout(location = 3) in vec3 inNormal;
 
 layout(push_constant) uniform constants
 {
-    vec2 size;
-    vec2 position;
+    vec2  size;
+    vec2  position;
+    float zIndex;
 } PushConstants;
 
 void main() {
-    const vec2 scaledPos = inPosition.xy * PushConstants.size;
-    const vec2 finalPos  = scaledPos + PushConstants.position;
+    const vec2  position = (inPosition.xy * PushConstants.size) + PushConstants.position;
+    const float zIndex   = clamp(abs((PushConstants.zIndex / 999.9) - 1.0), 0.0, 0.9999);
 
     outColor = inColor / 255.0f;
 
-    gl_Position = vec4(finalPos, 0.0, 1.0);
+    gl_Position  = vec4(position, zIndex, 1.0);
 }

@@ -22,7 +22,7 @@ namespace Chicane
             m_modelManager(Box::getModelManager()),
             m_textureManager(Box::getTextureManager())
         {
-            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
             loadEvents();
         }

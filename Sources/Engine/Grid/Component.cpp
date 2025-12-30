@@ -2,6 +2,8 @@
 
 #include "Chicane/Grid.hpp"
 
+#include "Chicane/Grid/Component/Container.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -67,6 +69,7 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshPrimitive();
+            refreshZIndex();
 
             onRefresh();
         }
@@ -368,6 +371,49 @@ namespace Chicane
             onAdoption(inComponent);
         }
 
+        bool Component::hasNeighbours() const
+        {
+            if (isRoot())
+            {
+                return false;
+            }
+
+            std::vector<const Component*> neighbours = {};
+
+            for (const Component* children : m_parent->getChildren())
+            {
+                if (this == children)
+                {
+                    continue;
+                }
+
+                neighbours.push_back(children);
+            }
+
+            return neighbours.size() > 0;
+        }
+
+        Component* Component::getNeighbour(int inJumps) const
+        {
+            if (isRoot())
+            {
+                return nullptr;
+            }
+
+            const std::vector<Component*>& neighbours = m_parent->getChildren();
+
+            std::uint32_t location = std::find_if(
+                neighbours.begin(),
+                neighbours.end(),
+                [&](Component* children)
+                {
+                    return children == this;
+                }
+            ) - neighbours.begin();
+
+            return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
+        }
+
         bool Component::hasChildren() const
         {
             return !m_children.empty();
@@ -400,18 +446,6 @@ namespace Chicane
 
             inComponent->setRoot(m_root);
             inComponent->setParent(this);
-            //inComponent->watchChanges(
-            //    [this, inComponent]()
-            //    {
-            //        m_childrenObservable.next(inComponent);
-            //    }
-            //);
-            //inComponent->watchChildren(
-            //    [this](Grid::Component* component)
-            //    {
-            //        m_childrenObservable.next(component);
-            //    }
-            //);
 
             m_children.push_back(inComponent);
 
@@ -441,16 +475,7 @@ namespace Chicane
 
         void Component::addCursor(float inX, float inY)
         {
-            Vec2 cursor = m_cursor;
-            cursor.x += inX;
-
-            if (cursor.x >= m_size.x)
-            {
-                cursor.x = 0;
-                cursor.y = inY;
-            }
-
-            setCursor(cursor);
+            setCursor(m_cursor.x + inX, m_cursor.y + inY);
         }
 
         void Component::setCursor(const Vec2& inCursor)
@@ -474,7 +499,7 @@ namespace Chicane
 
         Vec2 Component::getAvailableSize() const
         {
-            return m_size;
+            return m_size - m_cursor;
         }
 
         const Vec2& Component::getSize() const
@@ -497,6 +522,17 @@ namespace Chicane
             return m_position;
         }
 
+
+        void Component::addPosition(const Vec2& inPosition)
+        {
+            addPosition(inPosition.x, inPosition.y);
+        }
+
+        void Component::addPosition(float inX, float inY)
+        {
+            setPosition(m_position.x + inX, m_position.y + inY);
+        }
+
         void Component::setPosition(const Vec2& inPosition)
         {
             setPosition(inPosition.x, inPosition.y);
@@ -516,6 +552,11 @@ namespace Chicane
             m_position.y = inY;
 
             setCursor(m_position);
+        }
+
+        Vec2 Component::getCenter() const
+        {
+            return m_size * 0.5f;
         }
 
         bool Component::hasPrimitive() const
@@ -559,42 +600,57 @@ namespace Chicane
 
             Vec2 margin = Vec2(
                 m_style.margin.left - m_style.margin.right,
-                m_style.margin.top - m_style.margin.bottom
+                m_style.margin.top  - m_style.margin.bottom
+            );
+            Vec2 padding = Vec2(
+                m_style.padding.left - m_style.padding.right,
+                m_style.padding.top  - m_style.padding.bottom
             );
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(margin);
+                setPosition(margin + padding);
 
                 return;
             }
 
-            const Vec2 cursor = m_parent->getCursor();
+            const Style& parentStyle = m_parent->getStyle();
+            const Vec2& parentCursor = m_parent->getCursor();
+            const Vec2 parentCenter = m_parent->getCenter();
 
-            const Vec2 parentCenter = m_parent->getSize() * 0.5f;
-  
-            const Vec2 position = cursor + margin;
+            const Vec2 addedSpacing  = margin + padding;
+            const Vec2 occupiedSpace = m_size + addedSpacing;
 
-            Vec2 offset = { m_size.x * 0.5f, m_size.y * 0.5f };
+            setPosition(parentCursor + addedSpacing);
 
-            if (position.x >= parentCenter.x)
+            if (parentStyle.isDisplay(StyleDisplay::Flex))
             {
-                offset.x *= -1.0f;
+                if (parentStyle.flex.direction == StyleFlex::Direction::Row)
+                {
+                    m_parent->addCursor(occupiedSpace.x + parentStyle.gap.left, 0.0f);
+                }
+
+                if (parentStyle.flex.direction == StyleFlex::Direction::Column)
+                {
+                    m_parent->addCursor(0.0f, occupiedSpace.y + parentStyle.gap.top);
+                }
+
+                return;
             }
 
-            if (position.y >= parentCenter.y)
+            m_parent->addCursor(0.0f, occupiedSpace.y);
+        }
+
+        void Component::refreshZIndex()
+        {
+            const Style& parentStyle = getParent()->getStyle();
+
+            if (m_style.zIndex > 0.0f || parentStyle.zIndex <= 0.0f)
             {
-                offset.y *= -1.0f;
+                return;
             }
 
-            margin.x += offset.x;
-            margin.y += offset.y;
-
-            const Vec2 occupiedSpace = m_size + margin;
-
-            m_parent->addCursor(occupiedSpace.x, 0.0f);
-
-            setPosition(cursor + margin);
+            m_style.zIndex = parentStyle.zIndex + 0.001f;
         }
 
         String Component::parseText(const String& inValue) const

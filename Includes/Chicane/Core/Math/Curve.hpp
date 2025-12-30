@@ -16,6 +16,7 @@ namespace Chicane
         static constexpr const float FIXED_SCALE = 1.0f / FIXED_POINT;
 
     public:
+        static Polygon getPolygon(const std::vector<Curve>& inContours);
         static std::vector<Polygon> getPolygons(const std::vector<Curve>& inContours);
         static std::vector<Vec3> getTriangleVertices(const std::vector<Curve>& inContours);
         static std::vector<std::uint32_t> getTriangleIndices(const std::vector<Curve>& inContours);

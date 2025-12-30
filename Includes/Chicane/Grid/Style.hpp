@@ -68,6 +68,9 @@ namespace Chicane
             static inline constexpr const char* DISPLAY_TYPE_HIDDEN    = "hidden";
             static inline constexpr const char* DISPLAY_TYPE_NONE      = "none";
 
+            // Z-Index
+            static inline constexpr const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
+
             // Flex
             static inline constexpr const char* FLEX_DIRECTION_ATTRIBUTE_NAME = "flex-direction";
             static inline constexpr const char* FLEX_DIRECTION_TYPE_ROW       = "row";
@@ -110,6 +113,18 @@ namespace Chicane
             static inline constexpr const char* MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
             static inline constexpr const char* MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
             static inline constexpr const char* MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
+
+            /*
+            * Template 1: "`SINGLE_PADDING`"
+            * Template 2: "`VERTICAL_PADDING` `HORIZONTAL_PADDING`"
+            * Template 3: "`TOP_PADDING` `BOTTOM_PADDING` `HORIZONTAL_PADDING`"
+            * Template 4: "`TOP_PADDING` `RIGHT_PADDING` `BOTTOM_PADDING` `LEFT_PADDING`"
+            */
+            static inline constexpr const char* PADDING_ATTRIBUTE_NAME        = "padding";
+            static inline constexpr const char* PADDING_TOP_ATTRIBUTE_NAME    = "padding-top";
+            static inline constexpr const char* PADDING_BOTTOM_ATTRIBUTE_NAME = "padding-bottom";
+            static inline constexpr const char* PADDING_LEFT_ATTRIBUTE_NAME   = "padding-left";
+            static inline constexpr const char* PADDING_RIGHT_ATTRIBUTE_NAME  = "padding-right";
 
             /*
             * Template 1: "`SINGLE_GAP`"
@@ -157,10 +172,14 @@ namespace Chicane
 
         private:
             void refreshDisplay();
+            void refreshFlex();
+            void refreshZIndex();
             void refreshSize();
             void refreshPosition();
             void refreshAlignment();
             void refreshMargin();
+            void refreshPadding();
+            void refreshGap();
             void refreshForegroundColor();
             void refreshBackgroundColor();
             void refreshFont();
@@ -188,6 +207,7 @@ namespace Chicane
         public:
             // Visiblity
             StyleDisplay     display;
+            float            zIndex; // [0.0f, 999.9f]
 
             // Size
             float            width;
@@ -201,6 +221,8 @@ namespace Chicane
             StyleAlignment   align;
             StyleAlignment   justify;
             StyleCorners     margin;
+            StyleCorners     padding;
+            StyleCorners     gap;
 
             // Color
             Color::Rgba      backgroundColor;

@@ -16,6 +16,7 @@ namespace Chicane
             m_draws({})
         {
             m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
             loadEvents();
 
@@ -148,12 +149,20 @@ namespace Chicane
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
+            GraphicsPipeline::Attachment depthAttachment = {};
+            depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
+            depthAttachment.format        = m_internals.swapchain->depthFormat;
+            depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+
             std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(colorAttachment);
+            attachments.push_back(depthAttachment);
 
             GraphicsPipeline::CreateInfo createInfo = {};
             createInfo.bHasVertices             = true;
-            createInfo.bHasDepthWrite           = false;
+            createInfo.bHasDepthWrite           = true;
             createInfo.bHasBlending             = true;
             createInfo.logicalDevice            = m_internals.logicalDevice;
             createInfo.shaders                  = shaders;
@@ -175,6 +184,7 @@ namespace Chicane
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
                 createInfo.extent          = m_internals.swapchain->extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.push_back(frame.depthImage.view);
 
                 Frame::Buffer::init(frame, createInfo);
             }
@@ -191,13 +201,16 @@ namespace Chicane
                     continue;
                 }
 
-                const Vec2& size     = draw.size;
-                const Vec2& position = draw.position;
+                Grid::Component* component = draw.component;
+
+                const Vec2&        size     = component->getSize();
+                const Vec2&        position = component->getPosition();
+                const Grid::Style& style    = component->getStyle();
 
                 PushConstant pushConstant = {};
-                pushConstant.size       = size / rootSize;
-                pushConstant.position.x = ((2.0f * position.x) / rootSize.x) - 1.0f;
-                pushConstant.position.y = ((2.0f * position.y) / rootSize.y) - 1.0f;
+                pushConstant.size     = size / rootSize;
+                pushConstant.position = { (position.x / rootSize.x) * 2.0f - 1.0f, (position.y / rootSize.y) * 2.0f - 1.0f };
+                pushConstant.zIndex   = style.zIndex;
 
                 vk::DeviceSize offset = 0;
 
@@ -403,8 +416,6 @@ namespace Chicane
 
             if (!inComponent->isDrawable())
             {
-                draw.size        = Vec2::Zero;
-                draw.position    = Vec2::Zero;
                 draw.vertexCount = 0;
                 draw.indexCount  = 0;
                 draw.bIsDrawable = false;
@@ -424,8 +435,6 @@ namespace Chicane
                 }
             }
 
-            draw.size        = inComponent->getSize();
-            draw.position    = inComponent->getPosition();
             draw.vertexCount = primitive.vertices.size();
             draw.indexCount  = primitive.indices.size();
             draw.bIsDrawable = true;

@@ -9,11 +9,14 @@ namespace Chicane
         struct CHICANE_GRID StyleFont
         {
         public:
+            static constexpr const float DEFAULT_SIZE = 16.0f;
+
+        public:
             StyleFont();
 
         public:
             String family;
-            float       size;
+            float  size;
         };
     }
 }

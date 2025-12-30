@@ -67,7 +67,7 @@ namespace Chicane
 
                 // Depthning
                 vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
-                depthStencilState.depthTestEnable  = VK_TRUE;
+                depthStencilState.depthTestEnable  = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
                 depthStencilState.depthWriteEnable = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
 
                 // Attachment

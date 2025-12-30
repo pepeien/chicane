@@ -14,21 +14,19 @@ namespace Chicane
             struct PushConstant
             {
             public:
-                Vec2 size     = Vec2::Zero;
-                Vec2 position = Vec2::Zero;
+                Vec2  size     = Vec2::Zero;
+                Vec2  position = Vec2::Zero;
+                float zIndex   = 0.0f;
             };
 
             struct Draw
             {
             public:
-                Vec2             size         = Vec2::Zero;
-                Vec2             position     = Vec2::Zero;
+                Grid::Component* component    = nullptr;
                 std::uint32_t    vertexCount  = 0;
                 Buffer           vertexBuffer = {};
                 std::uint32_t    indexCount   = 0;
                 Buffer           indexBuffer  = {};
-
-                Grid::Component* component    = nullptr;
 
                 bool             bIsOutdated  = true;
                 bool             bIsDrawable  = false;

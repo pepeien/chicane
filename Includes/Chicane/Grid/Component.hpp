@@ -85,6 +85,9 @@ namespace Chicane
             Component* getParent() const;
             void setParent(Component* inComponent);
 
+            bool hasNeighbours() const;
+            Component* getNeighbour(int inJumps) const;
+
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
             void addChildren(const pugi::xml_node& inNode);
@@ -108,20 +111,27 @@ namespace Chicane
             void setSize(float inWidth, float inHeight);
 
             const Vec2& getPosition() const;
+            void addPosition(const Vec2& inPosition);
+            void addPosition(float inX, float inY);
             void setPosition(const Vec2& inPosition);
             void setPosition(float inX, float inY);
 
+            Vec2 getCenter() const;
+
+            // Draw
             bool hasPrimitive() const;
             const Primitive& getPrimitive() const;
             void clearPrimitive();
             void setPrimitive(const Primitive& inPrimitive);
 
+            // Parsing
             String parseText(const String& inValue) const;
 
         protected:
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
+            void refreshZIndex();
 
             bool isReference(const String& inValue) const;
             Reference parseReference(const String& inValue) const;

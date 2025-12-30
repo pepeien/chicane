@@ -1,6 +1,5 @@
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Scene.hpp"
 
-#include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Collision.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Shadow.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Sky.hpp"
@@ -15,7 +14,6 @@ namespace Chicane
             pushLayer<LSceneSky>();
             pushLayer<LSceneShadow>();
             pushLayer<LSceneMesh>();
-            //pushLayer<LSceneCollision>();
 
             init();
         }

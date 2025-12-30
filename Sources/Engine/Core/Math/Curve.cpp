@@ -4,6 +4,26 @@
 
 namespace Chicane
 {
+    Curve::Polygon Curve::getPolygon(const std::vector<Curve>& inContours)
+    {
+        Polygon result = {};
+
+        for (const Curve& curve : inContours)
+        {
+            if (curve.isEmpty())
+            {
+                continue;
+            }
+
+            for (const Vec2& point : curve.getPoints())
+            {
+                result.push_back({ point.x, point.y });
+            }
+        }
+
+        return result;
+    }
+
     std::vector<Curve::Polygon> Curve::getPolygons(const std::vector<Curve>& inContours)
     {
         std::vector<Polygon> result = {};
@@ -85,14 +105,8 @@ namespace Chicane
             return {};
         }
 
-        std::vector<Polygon> polygons = {};
-
-        const std::vector<Polygon> outerPolygons = getPolygons(outerContours);
-        polygons.insert(
-            polygons.end(),
-            outerPolygons.begin(),
-            outerPolygons.end()
-        );
+        std::vector<Polygon> polygons = {};        
+        polygons.push_back(getPolygon(outerContours));
 
         const std::vector<Polygon> holePolygons = getPolygons(holeContours);
         polygons.insert(
