@@ -480,9 +480,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleProperties",
+                            "name": "StyleSource::Map",
                             "suffix": "&",
-                            "path": "Grid",
+                            "path": "Grid/Style/Source",
                             "templates": []
                         },
                         "name": "inSource"
@@ -929,6 +929,51 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "hasNeighbours",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_HASNEIGHBOURS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Component",
+                    "suffix": "*",
+                    "path": "Grid/Component",
+                    "templates": []
+                },
+                "name": "getNeighbour",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inJumps"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETNEIGHBOUR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "hasChildren",
                 "parameters": [],
                 "modifiers": [
@@ -1323,6 +1368,68 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "addPosition",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inPosition"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addPosition",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "setPosition",
                 "parameters": [
                     {
@@ -1374,6 +1481,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_SETPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "getCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCENTER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1526,7 +1650,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inDelta"
+                        "name": "inDeltaTime"
                     }
                 ],
                 "modifiers": [
@@ -1668,6 +1792,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFRESHPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshZIndex",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHZINDEX_DESCRIPTION"
             },
             {
                 "accessor": "protected",

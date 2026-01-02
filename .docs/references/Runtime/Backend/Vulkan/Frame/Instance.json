@@ -688,6 +688,40 @@
                     "path": "Runtime/Renderer/View",
                     "templates": []
                 },
+                "name": "getActiveCameraData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CCamera",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Camera",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCameras"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_GETACTIVECAMERADATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RendererView",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View",
+                    "templates": []
+                },
                 "name": "normalizeViewData",
                 "parameters": [
                     {
@@ -698,7 +732,7 @@
                             "path": "Runtime/Renderer/View",
                             "templates": []
                         },
-                        "name": "outData"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [],

@@ -1,0 +1,94 @@
+{
+    "title": "ACamera",
+    "filename": "Camera",
+    "path": "Runtime/Scene/Actor/Camera",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/Actor/Camera.hpp",
+        "namespace": "Chicane::ACamera",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ACamera",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ACAMERA_ACAMERA_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ACamera",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ACAMERA_~ACAMERA_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "activate",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ACAMERA_ACTIVATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "deactivate",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ACAMERA_DEACTIVATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "CCamera",
+                    "suffix": "*",
+                    "path": "Runtime/Scene/Component/Camera",
+                    "templates": []
+                },
+                "name": "m_camera",
+                "description": "CHICANE_ACAMERA_M_CAMERA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_ACAMERA_DESCRIPTION"
+    },
+    "children": []
+}

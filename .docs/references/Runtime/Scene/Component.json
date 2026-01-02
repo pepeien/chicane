@@ -215,13 +215,13 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "getAttachment",
+                "name": "getParent",
                 "parameters": [],
                 "modifiers": [
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_COMPONENT_GETATTACHMENT_DESCRIPTION"
+                "description": "CHICANE_COMPONENT_GETPARENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -243,7 +243,7 @@
                             "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
-                        "name": "inRoot"
+                        "name": "inParent"
                     }
                 ],
                 "modifiers": [],
@@ -303,7 +303,7 @@
                             "path": "Runtime/Scene/Transformable",
                             "templates": []
                         },
-                        "name": "inRoot"
+                        "name": "inParent"
                     }
                 ],
                 "modifiers": [
@@ -394,8 +394,8 @@
                     "path": "Runtime/Scene/Transformable",
                     "templates": []
                 },
-                "name": "m_attachment",
-                "description": "CHICANE_COMPONENT_M_ATTACHMENT_DESCRIPTION"
+                "name": "m_parent",
+                "description": "CHICANE_COMPONENT_M_PARENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -407,8 +407,8 @@
                     "path": "Core/Event/Subscription",
                     "templates": []
                 },
-                "name": "m_attachmentTransformSubscription",
-                "description": "CHICANE_COMPONENT_M_ATTACHMENTTRANSFORMSUBSCRIPTION_DESCRIPTION"
+                "name": "m_parentSubscription",
+                "description": "CHICANE_COMPONENT_M_PARENTSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "description": "CHICANE_COMPONENT_DESCRIPTION"

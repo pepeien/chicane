@@ -1,10 +1,10 @@
 {
-    "title": "Transform Combined",
-    "filename": "Combined",
-    "path": "Core/Math/Transform/Combined",
+    "title": "Spatial Transform",
+    "filename": "Spatial",
+    "path": "Core/Math/Transform/Spatial",
     "source": {
-        "header": "Includes/Chicane/Core/Math/Transform/Combined.hpp",
-        "namespace": "Chicane::TransformCombined",
+        "header": "Includes/Chicane/Core/Math/Transform/Spatial.hpp",
+        "namespace": "Chicane::SpatialTransform",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -25,7 +25,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETMATRIX_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETMATRIX_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -42,7 +42,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETTRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETTRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -59,7 +59,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -76,7 +76,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETSCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETSCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -93,7 +93,33 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETRELATIVETRANSFORM_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETRELATIVETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Transform",
+                            "suffix": "&",
+                            "path": "Core/Math/Transform",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVETRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -119,7 +145,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETRELATIVETRANSFORM_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVETRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -136,7 +162,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETRELATIVETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETRELATIVETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -162,7 +188,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDRELATIVETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -188,7 +214,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETRELATIVETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -205,7 +231,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETRELATIVEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETRELATIVEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -231,7 +257,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDRELATIVEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -257,7 +283,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETRELATIVEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -274,7 +300,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETRELATIVESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETRELATIVESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -300,7 +326,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDRELATIVESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDRELATIVESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -326,7 +352,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETRELATIVESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETRELATIVESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -343,7 +369,33 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETABSOLUTETRANSFORM_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETABSOLUTETRANSFORM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteTransform",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Transform",
+                            "suffix": "&",
+                            "path": "Core/Math/Transform",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTETRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -369,7 +421,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETABSOLUTETRANSFORM_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTETRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -386,7 +438,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETABSOLUTETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETABSOLUTETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -412,7 +464,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDABSOLUTETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -438,7 +490,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETABSOLUTETRANSLATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTETRANSLATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -455,7 +507,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETABSOLUTEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETABSOLUTEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -481,7 +533,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDABSOLUTEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -507,7 +559,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETABSOLUTEROTATION_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTEROTATION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -524,7 +576,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETABSOLUTESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETABSOLUTESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -550,7 +602,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_ADDABSOLUTESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_ADDABSOLUTESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -576,7 +628,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_SETABSOLUTESCALE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_SETABSOLUTESCALE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -593,7 +645,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETRIGHT_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETRIGHT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -610,7 +662,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETFORWARD_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETFORWARD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -627,7 +679,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_TRANSFORMCOMBINED_GETUP_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_GETUP_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -642,7 +694,7 @@
                 "name": "refresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_TRANSFORMCOMBINED_REFRESH_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_REFRESH_DESCRIPTION"
             }
         ],
         "members": [
@@ -657,7 +709,7 @@
                     "templates": []
                 },
                 "name": "m_relative",
-                "description": "CHICANE_TRANSFORMCOMBINED_M_RELATIVE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_M_RELATIVE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -670,10 +722,10 @@
                     "templates": []
                 },
                 "name": "m_absolute",
-                "description": "CHICANE_TRANSFORMCOMBINED_M_ABSOLUTE_DESCRIPTION"
+                "description": "CHICANE_SPATIALTRANSFORM_M_ABSOLUTE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_TRANSFORMCOMBINED_DESCRIPTION"
+        "description": "CHICANE_SPATIALTRANSFORM_DESCRIPTION"
     },
     "children": []
 }

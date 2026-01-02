@@ -127,9 +127,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "TransformCombined",
+                            "name": "SpatialTransform",
                             "suffix": "&",
-                            "path": "Core/Math/Transform/Combined",
+                            "path": "Core/Math/Transform/Spatial",
                             "templates": []
                         },
                         "name": "inTransform"
@@ -410,12 +410,37 @@
                         }
                     ]
                 },
-                "name": "getCorners",
+                "name": "getVertices",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOUNDS_GETCORNERS_DESCRIPTION"
+                "description": "CHICANE_BOUNDS_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS_GETINDICES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -582,8 +607,29 @@
                         }
                     ]
                 },
-                "name": "m_corners",
-                "description": "CHICANE_BOUNDS_M_CORNERS_DESCRIPTION"
+                "name": "m_vertices",
+                "description": "CHICANE_BOUNDS_M_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_indices",
+                "description": "CHICANE_BOUNDS_M_INDICES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOUNDS_DESCRIPTION"

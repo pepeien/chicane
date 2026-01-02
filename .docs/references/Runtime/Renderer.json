@@ -123,13 +123,13 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "RendererCreateInfo",
-                            "suffix": "&",
-                            "path": "Runtime/Renderer/CreateInfo",
+                            "prefix": "",
+                            "name": "Window",
+                            "suffix": "*",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inCreateInfo"
+                        "name": "inWindow"
                     }
                 ],
                 "modifiers": [],
@@ -313,28 +313,43 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "getWindow",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_GETWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "hasLayer",
+                "name": "setWindow",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "RendererLayer",
+                            "name": "Window",
                             "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inLayer"
+                        "name": "inWindow"
                     }
                 ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_RENDERER_HASLAYER_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_SETWINDOW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -347,19 +362,9 @@
                     "templates": []
                 },
                 "name": "hasLayer",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [
+                    "inline",
                     "const"
                 ],
                 "description": "CHICANE_RENDERER_HASLAYER_DESCRIPTION"
@@ -379,36 +384,53 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "RendererLayer",
-                            "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
+                            "name": "ListPushStrategy",
+                            "suffix": "",
+                            "path": "Core/List/PushStrategy",
                             "templates": []
                         },
-                        "name": "inLayer"
+                        "name": "inStrategy"
                     },
                     {
                         "type": {
                             "prefix": "",
-                            "name": "RendererLayerPushStrategy",
+                            "name": "Params ...",
                             "suffix": "",
-                            "path": "Runtime/Renderer/Layer/PushStrategy",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inPushStrategy"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
+                        "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_RENDERER_PUSHLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "CMesh",
+                            "suffix": "*",
+                            "path": "Runtime/Scene/Component/Mesh",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getMeshes",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_GETMESHES_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -505,130 +527,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_RENDERER_ONREPOSITIONING_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pushLayerStart",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "RendererLayer",
-                            "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
-                            "templates": []
-                        },
-                        "name": "inLayer"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_PUSHLAYERSTART_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pushLayerBack",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "RendererLayer",
-                            "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
-                            "templates": []
-                        },
-                        "name": "inLayer"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_PUSHLAYERBACK_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pushLayerBefore",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "RendererLayer",
-                            "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
-                            "templates": []
-                        },
-                        "name": "inLayer"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_PUSHLAYERBEFORE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "pushLayerAfter",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "RendererLayer",
-                            "suffix": "*",
-                            "path": "Runtime/Renderer/Layer",
-                            "templates": []
-                        },
-                        "name": "inLayer"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_PUSHLAYERAFTER_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -753,9 +651,22 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Window",
+                    "suffix": "*",
+                    "path": "Core/Window",
+                    "templates": []
+                },
+                "name": "m_window",
+                "description": "CHICANE_RENDERER_M_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "List",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/List",
                     "templates": [
                         {
                             "prefix": "",

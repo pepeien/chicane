@@ -694,6 +694,88 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "tickActors",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_TICKACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "deleteActors",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_DELETEACTORS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "tickComponents",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDeltaTime"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_TICKCOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "deleteComponents",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCENE_DELETECOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "createDefaultCamera",
                 "parameters": [],
                 "modifiers": [],
@@ -762,8 +844,8 @@
                     "path": "Runtime/Scene",
                     "templates": []
                 },
-                "name": "m_actorObservable",
-                "description": "CHICANE_SCENE_M_ACTOROBSERVABLE_DESCRIPTION"
+                "name": "m_actorsObservable",
+                "description": "CHICANE_SCENE_M_ACTORSOBSERVABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -796,8 +878,8 @@
                     "path": "Runtime/Scene",
                     "templates": []
                 },
-                "name": "m_componentObservable",
-                "description": "CHICANE_SCENE_M_COMPONENTOBSERVABLE_DESCRIPTION"
+                "name": "m_componentsObservable",
+                "description": "CHICANE_SCENE_M_COMPONENTSOBSERVABLE_DESCRIPTION"
             },
             {
                 "accessor": "private",

@@ -16,19 +16,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "RendererCreateInfo",
-                    "suffix": "",
-                    "path": "Runtime/Renderer/CreateInfo",
-                    "templates": []
-                },
-                "name": "renderer",
-                "description": "CHICANE_APPLICATIONCREATEINFO_RENDERER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "WindowCreateInfo",
                     "suffix": "",
                     "path": "Core/Window/CreateInfo",

@@ -31,7 +31,18 @@
                     "templates": []
                 },
                 "name": "RendererLayer",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERERLAYER_RENDERERLAYER_DESCRIPTION"
             },
@@ -46,18 +57,7 @@
                     "templates": []
                 },
                 "name": "RendererLayer",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERERLAYER_RENDERERLAYER_DESCRIPTION"
             }
@@ -403,6 +403,62 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERERLAYER_SETSTATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasLayer",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERERLAYER_HASLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pushLayer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ListPushStrategy",
+                            "suffix": "",
+                            "path": "Core/List/PushStrategy",
+                            "templates": []
+                        },
+                        "name": "inStrategy"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Params ...",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inParams"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERERLAYER_PUSHLAYER_DESCRIPTION"
             }
         ],
         "members": [
@@ -431,6 +487,27 @@
                 },
                 "name": "m_status",
                 "description": "CHICANE_RENDERERLAYER_M_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "List",
+                    "suffix": "",
+                    "path": "Core/List",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RendererLayer",
+                            "suffix": "*",
+                            "path": "Runtime/Renderer/Layer",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_children",
+                "description": "CHICANE_RENDERERLAYER_M_CHILDREN_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERERLAYER_DESCRIPTION"

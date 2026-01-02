@@ -29,6 +29,22 @@
         "members": [
             {
                 "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BASE_SIZE",
+                "description": "CHICANE_GRID_STYLEFONT_BASE_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",

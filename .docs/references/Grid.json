@@ -50,32 +50,6 @@
                     ]
                 },
                 "description": "CHICANE_GRID_FUNCTIONS_DESCRIPTION"
-            },
-            {
-                "name": "StyleProperties",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_STYLEPROPERTIES_DESCRIPTION"
             }
         ],
         "enums": [],

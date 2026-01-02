@@ -7,6 +7,32 @@
         "namespace": "Chicane::Grid::StyleSource",
         "types": [
             {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLESOURCE_MAP_DESCRIPTION"
+            },
+            {
                 "name": "List",
                 "type": {
                     "prefix": "",
@@ -61,9 +87,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleProperties",
+                            "name": "Map",
                             "suffix": "&",
-                            "path": "Grid",
+                            "path": "Grid/Style/Source",
                             "templates": []
                         },
                         "name": "inProperties"
@@ -135,9 +161,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleProperties",
+                    "name": "Map",
                     "suffix": "",
-                    "path": "Grid",
+                    "path": "Grid/Style/Source",
                     "templates": []
                 },
                 "name": "properties",

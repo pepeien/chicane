@@ -31,9 +31,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "TransformCombined",
+                    "name": "SpatialTransform",
                     "suffix": "&",
-                    "path": "Core/Math/Transform/Combined",
+                    "path": "Core/Math/Transform/Spatial",
                     "templates": []
                 },
                 "name": "getTransform",
@@ -1651,9 +1651,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "TransformCombined",
+                    "name": "SpatialTransform",
                     "suffix": "",
-                    "path": "Core/Math/Transform/Combined",
+                    "path": "Core/Math/Transform/Spatial",
                     "templates": []
                 },
                 "name": "m_transform",

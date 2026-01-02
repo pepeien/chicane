@@ -460,6 +460,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "buildLayers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_RENDERER_BUILDLAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "setupLayers",
                 "parameters": [],
                 "modifiers": [],

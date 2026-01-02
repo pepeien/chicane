@@ -1,0 +1,17 @@
+{
+    "title": "Spring",
+    "filename": "Collider",
+    "path": "Spring/Collider",
+    "source": {
+        "header": "Includes/Chicane/Spring/Collider.hpp",
+        "namespace": "Chicane::Spring",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SPRING_DESCRIPTION"
+    },
+    "children": []
+}

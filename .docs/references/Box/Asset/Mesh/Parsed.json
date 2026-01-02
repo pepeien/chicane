@@ -21,8 +21,21 @@
                     "path": "Core/Math/Mat/Mat4",
                     "templates": []
                 },
-                "name": "matrix",
-                "description": "CHICANE_BOX_MESHPARSED_MATRIX_DESCRIPTION"
+                "name": "modelMatrix",
+                "description": "CHICANE_BOX_MESHPARSED_MODELMATRIX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "boundsMatrix",
+                "description": "CHICANE_BOX_MESHPARSED_BOUNDSMATRIX_DESCRIPTION"
             },
             {
                 "accessor": "public",

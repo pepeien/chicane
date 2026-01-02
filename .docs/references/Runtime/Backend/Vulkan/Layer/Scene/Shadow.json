@@ -1,10 +1,10 @@
 {
-    "title": "LSky",
-    "filename": "Sky",
-    "path": "Runtime/Backend/Vulkan/Layer/Sky",
+    "title": "LScene Shadow",
+    "filename": "Shadow",
+    "path": "Runtime/Backend/Vulkan/Layer/Scene/Shadow",
     "source": {
-        "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Sky.hpp",
-        "namespace": "Chicane::Vulkan::LSky",
+        "header": "Includes/Chicane/Runtime/Backend/Vulkan/Layer/Scene/Shadow.hpp",
+        "namespace": "Chicane::Vulkan::LSceneShadow",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "LSky",
+                "name": "LSceneShadow",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_LSKY_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_LSCENESHADOW_DESCRIPTION"
             }
         ],
         "destructors": [
@@ -35,10 +35,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~LSky",
+                "name": "~LSceneShadow",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_~LSKY_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_~LSCENESHADOW_DESCRIPTION"
             }
         ],
         "functions": [
@@ -55,7 +55,7 @@
                 "name": "onInit",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_ONINIT_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_ONINIT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -70,7 +70,7 @@
                 "name": "onDestroy",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_ONDESTROY_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_ONDESTROY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -85,7 +85,7 @@
                 "name": "onRebuild",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_ONREBUILD_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_ONREBUILD_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -111,7 +111,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_ONRENDER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_ONRENDER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -126,7 +126,7 @@
                 "name": "loadEvents",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_LOADEVENTS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_LOADEVENTS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -141,7 +141,7 @@
                 "name": "initFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_INITFRAMERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_INITFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -156,37 +156,7 @@
                 "name": "destroyFrameResources",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_DESTROYFRAMERESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "initTextureResources",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_INITTEXTURERESOURCES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroyTextureResources",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_DESTROYTEXTURERESOURCES_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_DESTROYFRAMERESOURCES_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -201,7 +171,7 @@
                 "name": "initGraphicsPipeline",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_INITGRAPHICSPIPELINE_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_INITGRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -216,22 +186,7 @@
                 "name": "initFramebuffers",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_INITFRAMEBUFFERS_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "buildTextureData",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_BUILDTEXTUREDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_INITFRAMEBUFFERS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -246,7 +201,7 @@
                 "name": "buildModelVertexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_BUILDMODELVERTEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_BUILDMODELVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -261,7 +216,7 @@
                 "name": "buildModelIndexBuffer",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_BUILDMODELINDEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_BUILDMODELINDEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -276,7 +231,7 @@
                 "name": "buildModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_BUILDMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_BUILDMODELDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -291,7 +246,7 @@
                 "name": "destroyModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_DESTROYMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_DESTROYMODELDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -306,7 +261,33 @@
                 "name": "rebuildModelData",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_VULKAN_LSKY_REBUILDMODELDATA_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_REBUILDMODELDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderModels",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSCENESHADOW_RENDERMODELS_DESCRIPTION"
             }
         ],
         "members": [
@@ -321,7 +302,7 @@
                     "templates": []
                 },
                 "name": "m_internals",
-                "description": "CHICANE_VULKAN_LSKY_M_INTERNALS_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_INTERNALS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -342,7 +323,7 @@
                     ]
                 },
                 "name": "m_graphicsPipeline",
-                "description": "CHICANE_VULKAN_LSKY_M_GRAPHICSPIPELINE_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_GRAPHICSPIPELINE_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -355,54 +336,7 @@
                     "templates": []
                 },
                 "name": "m_frameDescriptor",
-                "description": "CHICANE_VULKAN_LSKY_M_FRAMEDESCRIPTOR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Descriptor::Bundle",
-                    "suffix": "",
-                    "path": "Runtime/Backend/Vulkan/Descriptor/Bundle",
-                    "templates": []
-                },
-                "name": "m_textureDescriptor",
-                "description": "CHICANE_VULKAN_LSKY_M_TEXTUREDESCRIPTOR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::unique_ptr",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Sky::Instance",
-                            "suffix": "",
-                            "path": "Runtime/Backend/Vulkan/Sky/Instance",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_sky",
-                "description": "CHICANE_VULKAN_LSKY_M_SKY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "const ",
-                    "name": "Box::Sky",
-                    "suffix": "*",
-                    "path": "Box/Asset/Sky",
-                    "templates": []
-                },
-                "name": "m_asset",
-                "description": "CHICANE_VULKAN_LSKY_M_ASSET_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_FRAMEDESCRIPTOR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -415,7 +349,7 @@
                     "templates": []
                 },
                 "name": "m_modelVertexBuffer",
-                "description": "CHICANE_VULKAN_LSKY_M_MODELVERTEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_MODELVERTEXBUFFER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -428,7 +362,20 @@
                     "templates": []
                 },
                 "name": "m_modelIndexBuffer",
-                "description": "CHICANE_VULKAN_LSKY_M_MODELINDEXBUFFER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_MODELINDEXBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::ModelManager",
+                    "suffix": "*",
+                    "path": "Box/Asset/Model/Manager",
+                    "templates": []
+                },
+                "name": "m_modelManager",
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_MODELMANAGER_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -449,36 +396,10 @@
                     ]
                 },
                 "name": "m_clearValues",
-                "description": "CHICANE_VULKAN_LSKY_M_CLEARVALUES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Box::ModelManager",
-                    "suffix": "*",
-                    "path": "Box/Asset/Model/Manager",
-                    "templates": []
-                },
-                "name": "m_modelManager",
-                "description": "CHICANE_VULKAN_LSKY_M_MODELMANAGER_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Box::TextureManager",
-                    "suffix": "*",
-                    "path": "Box/Asset/Texture/Manager",
-                    "templates": []
-                },
-                "name": "m_textureManager",
-                "description": "CHICANE_VULKAN_LSKY_M_TEXTUREMANAGER_DESCRIPTION"
+                "description": "CHICANE_VULKAN_LSCENESHADOW_M_CLEARVALUES_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_VULKAN_LSKY_DESCRIPTION"
+        "description": "CHICANE_VULKAN_LSCENESHADOW_DESCRIPTION"
     },
     "children": []
 }

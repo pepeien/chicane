@@ -82,6 +82,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAll",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLECORNERS_SETALL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -92,9 +118,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "StyleProperties",
+                            "name": "StyleSource::Map",
                             "suffix": "&",
-                            "path": "Grid",
+                            "path": "Grid/Style/Source",
                             "templates": []
                         },
                         "name": "inSource"

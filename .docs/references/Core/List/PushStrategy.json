@@ -1,10 +1,10 @@
 {
-    "title": "Renderer Layer Push Strategy",
+    "title": "List Push Strategy",
     "filename": "Push Strategy",
-    "path": "Runtime/Renderer/Layer/PushStrategy",
+    "path": "Core/List/PushStrategy",
     "source": {
-        "header": "Includes/Chicane/Runtime/Renderer/Layer/PushStrategy.hpp",
-        "namespace": "Chicane::RendererLayerPushStrategy",
+        "header": "Includes/Chicane/Core/List/PushStrategy.hpp",
+        "namespace": "Chicane::ListPushStrategy",
         "types": [],
         "enums": [
             {
@@ -16,7 +16,7 @@
                     "templates": []
                 },
                 "name": "Front",
-                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_FRONT_DESCRIPTION"
+                "description": "CHICANE_LISTPUSHSTRATEGY_FRONT_DESCRIPTION"
             },
             {
                 "type": {
@@ -27,7 +27,7 @@
                     "templates": []
                 },
                 "name": "Back",
-                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_BACK_DESCRIPTION"
+                "description": "CHICANE_LISTPUSHSTRATEGY_BACK_DESCRIPTION"
             },
             {
                 "type": {
@@ -37,8 +37,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "BeforeLayer",
-                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_BEFORELAYER_DESCRIPTION"
+                "name": "Before",
+                "description": "CHICANE_LISTPUSHSTRATEGY_BEFORE_DESCRIPTION"
             },
             {
                 "type": {
@@ -48,15 +48,15 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "AfterLayer",
-                "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_AFTERLAYER_DESCRIPTION"
+                "name": "After",
+                "description": "CHICANE_LISTPUSHSTRATEGY_AFTER_DESCRIPTION"
             }
         ],
         "constructors": [],
         "destructors": [],
         "functions": [],
         "members": [],
-        "description": "CHICANE_RENDERERLAYERPUSHSTRATEGY_DESCRIPTION"
+        "description": "CHICANE_LISTPUSHSTRATEGY_DESCRIPTION"
     },
     "children": []
 }
