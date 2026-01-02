@@ -152,10 +152,10 @@ namespace Chicane
             static StyleSource::List parseSources(const FileSystem::Path& inPath);
             static StyleSource::List parseSources(const String& inData);
 
-            static StyleProperties parseSource(const String& inData);
+            static StyleSource::Map parseSource(const String& inData);
 
         public:
-            Style(const StyleProperties& inProperties, Component* inParent);
+            Style(const StyleSource::Map& inProperties, Component* inParent);
             Style();
 
         public:
@@ -163,7 +163,7 @@ namespace Chicane
             bool isPosition(StylePosition inValue) const;
 
             bool hasProperties() const;
-            void setProperties(const StyleProperties& inProperties);
+            void setProperties(const StyleSource::Map& inProperties);
 
             bool hasParent() const;
             void setParent(Component* inComponent);
@@ -232,7 +232,7 @@ namespace Chicane
             StyleFont        font;
 
         private:
-            StyleProperties  m_properties;
+            StyleSource::Map m_properties;
 
             Component*       m_parent;
         };

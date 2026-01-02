@@ -192,8 +192,6 @@ namespace Chicane
 
         void LGrid::renderComponents(const vk::CommandBuffer& inCommandBuffer)
         {
-            const Vec2& rootSize = m_view->getSize();
-
             for (const Draw& draw : m_draws)
             {
                 if (!draw.bIsDrawable)
@@ -203,14 +201,11 @@ namespace Chicane
 
                 Grid::Component* component = draw.component;
 
-                const Vec2&        size     = component->getSize();
-                const Vec2&        position = component->getPosition();
-                const Grid::Style& style    = component->getStyle();
-
                 PushConstant pushConstant = {};
-                pushConstant.size     = size / rootSize;
-                pushConstant.position = { (position.x / rootSize.x) * 2.0f - 1.0f, (position.y / rootSize.y) * 2.0f - 1.0f };
-                pushConstant.zIndex   = style.zIndex;
+                pushConstant.screen   = m_view->getSize();
+                pushConstant.size     = component->getSize();
+                pushConstant.position = component->getPosition();
+                pushConstant.zIndex   = component->getStyle().zIndex;
 
                 vk::DeviceSize offset = 0;
 

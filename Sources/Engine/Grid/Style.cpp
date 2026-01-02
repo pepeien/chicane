@@ -75,11 +75,11 @@ namespace Chicane
             return result;
         }
 
-        StyleProperties Style::parseSource(const String &inData)
+        StyleSource::Map Style::parseSource(const String &inData)
         {
             std::vector<String> blocks = inData.split(';');
 
-            StyleProperties result = {};
+            StyleSource::Map result = {};
 
             for (const String &block : blocks)
             {
@@ -106,7 +106,7 @@ namespace Chicane
             return result;
         }
 
-        Style::Style(const StyleProperties& inProperties, Component* inParent)
+        Style::Style(const StyleSource::Map& inProperties, Component* inParent)
             : Style()
         {
             setProperties(inProperties);
@@ -128,7 +128,7 @@ namespace Chicane
                 Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
                 Style::MARGIN_LEFT_ATTRIBUTE_NAME,
                 Style::MARGIN_RIGHT_ATTRIBUTE_NAME
-            ),
+            ), 
             padding(
                 Style::PADDING_ATTRIBUTE_NAME,
                 Style::PADDING_TOP_ATTRIBUTE_NAME,
@@ -165,7 +165,7 @@ namespace Chicane
             return !m_properties.empty();
         }
 
-        void Style::setProperties(const StyleProperties& inProperties)
+        void Style::setProperties(const StyleSource::Map& inProperties)
         {
             for (const auto& [name, value] : inProperties)
             {

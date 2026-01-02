@@ -14,6 +14,7 @@ namespace Chicane
             struct PushConstant
             {
             public:
+                Vec2  screen   = Vec2::Zero;
                 Vec2  size     = Vec2::Zero;
                 Vec2  position = Vec2::Zero;
                 float zIndex   = 0.0f;

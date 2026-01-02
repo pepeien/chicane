@@ -106,12 +106,11 @@ namespace Chicane
                 FontGlyph result = {};
                 result.code     = inCode;
                 result.units    = inGlyph->face->units_per_EM;
-                result.width    = inGlyph->advance.x;
-                result.height   = inGlyph->face->ascender + inGlyph->face->descender;
-                result.advance  = { inGlyph->advance.x, inGlyph->advance.y };
-                result.bearing  = { inGlyph->metrics.horiBearingX, inGlyph->metrics.horiBearingY };
+                result.scale    = { inGlyph->face->size->metrics.x_scale, inGlyph->face->size->metrics.y_scale };
+                result.box      = { inGlyph->metrics.width, inGlyph->metrics.height };
+                result.line     = { inGlyph->advance.x, (inGlyph->face->ascender + inGlyph->face->descender) };
                 result.vertices = Curve::getTriangleVertices(contours);
-                result.indices  = Curve::getTriangleIndices(contours);
+                result.indices  = Curve::getTriangleIndices(contours);                
 
                 return result;
             }

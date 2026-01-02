@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleSource::StyleSource(const std::vector<String>& inSelectors, const StyleProperties& inProperties)
+        StyleSource::StyleSource(const std::vector<String>& inSelectors, const Map& inProperties)
             : selectors(inSelectors),
             properties(inProperties)
         {}

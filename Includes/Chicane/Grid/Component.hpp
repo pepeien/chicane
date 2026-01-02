@@ -63,7 +63,7 @@ namespace Chicane
 
             const Style& getStyle() const;
             void setStyle(const StyleSource::List& inSources);
-            void setStyle(const StyleProperties& inSource);
+            void setStyle(const StyleSource::Map& inSource);
 
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
             Reference* getReference(const String& inId) const;

@@ -16,7 +16,7 @@ View::View()
     m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
     m_uiCrosshairThickness(Chicane::Reference::fromValue<float>(&m_crosshairThickness)),
-    m_crosshairGap(0.5f),
+    m_crosshairGap(1.0f),
     m_uiCrosshairGap(Chicane::Reference::fromValue<float>(&m_crosshairGap)),
     m_crosshairColorR(255),
     m_uiCrosshairColorR(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorR)),

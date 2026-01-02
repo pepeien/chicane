@@ -2,7 +2,7 @@
 
 #include "Chicane/Grid.hpp"
 
-#include "Chicane/Grid/Component/Container.hpp"
+#include "Chicane/Grid/Component/Text.hpp"
 
 namespace Chicane
 {
@@ -53,9 +53,9 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            refresh();
-
             onTick(inDeltaTime);
+
+            refresh();
 
             for (Component* child : m_children)
             {
@@ -205,7 +205,7 @@ namespace Chicane
             }
         }
 
-        void Component::setStyle(const StyleProperties& inSource)
+        void Component::setStyle(const StyleSource::Map& inSource)
         {
             m_style.setProperties(inSource);
         }
@@ -522,7 +522,6 @@ namespace Chicane
             return m_position;
         }
 
-
         void Component::addPosition(const Vec2& inPosition)
         {
             addPosition(inPosition.x, inPosition.y);
@@ -540,14 +539,6 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            if (
-                std::fabs(m_position.x - inX) < FLT_EPSILON &&
-                std::fabs(m_position.y - inY) < FLT_EPSILON
-            )
-            {
-                return;
-            }
-
             m_position.x = inX;
             m_position.y = inY;
 
@@ -599,12 +590,12 @@ namespace Chicane
             setCursor(0.0f, 0.0f);
 
             Vec2 margin = Vec2(
-                m_style.margin.left - m_style.margin.right,
-                m_style.margin.top  - m_style.margin.bottom
+                m_style.margin.left == m_style.margin.right  ? m_style.margin.left : (m_style.margin.left - m_style.margin.right),
+                m_style.margin.top  == m_style.margin.bottom ? m_style.margin.top  : (m_style.margin.top  - m_style.margin.bottom)
             );
             Vec2 padding = Vec2(
-                m_style.padding.left - m_style.padding.right,
-                m_style.padding.top  - m_style.padding.bottom
+                m_style.padding.left == m_style.padding.right  ? m_style.padding.left : (m_style.padding.left - m_style.padding.right),
+                m_style.padding.top  == m_style.padding.bottom ? m_style.padding.top  : (m_style.padding.top  - m_style.padding.bottom)
             );
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
@@ -616,10 +607,9 @@ namespace Chicane
 
             const Style& parentStyle = m_parent->getStyle();
             const Vec2& parentCursor = m_parent->getCursor();
-            const Vec2 parentCenter = m_parent->getCenter();
 
-            const Vec2 addedSpacing  = margin + padding;
-            const Vec2 occupiedSpace = m_size + addedSpacing;
+            const Vec2 addedSpacing  = margin + padding + (m_size * 0.5f);
+            const Vec2 occupiedSpace = m_size + margin;
 
             setPosition(parentCursor + addedSpacing);
 
