@@ -6,10 +6,16 @@
 
 Apple::Apple()
     : Chicane::Actor(),
-    m_fallingRate(
+    m_rotateRate(
+        std::max(
+            0.1f,
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f
+        )
+    ),
+    m_fallRate(
         std::max(
             0.001f,
-            (static_cast <float> (rand()) / static_cast <float> (RAND_MAX)) * 0.01f
+            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f
         )
     ),
     m_startPosition(Chicane::Vec3::Zero),
@@ -18,7 +24,6 @@ Apple::Apple()
 {
     setCanTick(true);
     setCanCollide(true);
-    setAbsoluteScale(1.5f);
 
     m_meshComponent = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
@@ -32,8 +37,8 @@ Apple::Apple()
 
 void Apple::onTick(float inDeltaTime)
 {
-    addAbsoluteRotation(0.0f, 0.0f, 0.1f);
-    addAbsoluteTranslation(0.0f, 0.0f, -m_fallingRate);
+    addAbsoluteRotation(0.0f, 0.0f, m_rotateRate * inDeltaTime);
+    addAbsoluteTranslation(0.0f, 0.0f, -(m_fallRate * inDeltaTime));
 }
 
 void Apple::onCollision(const Chicane::Actor* inSubject)
@@ -51,6 +56,8 @@ void Apple::onHit(const Chicane::Actor* inSubject)
     setCanTick(false);
 
     m_meshComponent->deactivate();
+
+    Chicane::Application::getScene()->removeComponent(m_meshComponent);
 
     Game::incrementScore(1);
 }

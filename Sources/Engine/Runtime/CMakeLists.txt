@@ -10,6 +10,7 @@ file(
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
+list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
@@ -18,6 +19,7 @@ file(
     # Sources
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
+list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)
@@ -67,6 +69,7 @@ target_link_libraries(
         Chicane::Box
         Chicane::Core
         Chicane::Grid
+        Chicane::Spring
 
         # Vendors
         Vulkan::Vulkan
@@ -78,3 +81,6 @@ target_link_libraries(
 add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
+
+##################### Directories #######################
+add_subdirectory(Vendor)

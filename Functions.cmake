@@ -70,7 +70,7 @@ function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
     endforeach(ITEM)
 endfunction()
 
-function(CH_COMPILE_VK_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
+function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
     file(
         GLOB_RECURSE
 
@@ -93,7 +93,7 @@ function(CH_COMPILE_VK_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
 
         file(MAKE_DIRECTORY "${SPIRV_DIR}")
 
-        set(SPIRV "${SPIRV_DIR}/${FILE_NAME}.spv")
+        set(SPIRV "${SPIRV_DIR}/${FILE_NAME}")
         string(REPLACE "//" "/" SPIRV ${SPIRV})
 
         add_custom_command(

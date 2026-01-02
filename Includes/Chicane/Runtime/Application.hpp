@@ -28,7 +28,7 @@ namespace Chicane
 
         // Game
         bool CHICANE_RUNTIME hasController();
-        Controller* CHICANE_RUNTIME getController();
+        Controller* getController();
         void CHICANE_RUNTIME setController(Controller* inController);
         ControllerSubscription CHICANE_RUNTIME watchController(
             ControllerSubscription::NextCallback inNext,
@@ -37,7 +37,7 @@ namespace Chicane
         );
 
         bool CHICANE_RUNTIME hasScene();
-        Scene* CHICANE_RUNTIME getScene();
+        Scene* getScene();
         void CHICANE_RUNTIME setScene(Scene* inScene);
         SceneSubscription CHICANE_RUNTIME watchScene(
             SceneSubscription::NextCallback inNext,
@@ -47,7 +47,7 @@ namespace Chicane
 
         // UI
         bool CHICANE_RUNTIME hasView();
-        Grid::View* CHICANE_RUNTIME getView();
+        Grid::View* getView();
         void CHICANE_RUNTIME setView(Grid::View* inView);
         ViewSubscription CHICANE_RUNTIME watchView(
             ViewSubscription::NextCallback inNext,
@@ -57,7 +57,7 @@ namespace Chicane
 
         // Render
         bool CHICANE_RUNTIME hasWindow();
-        Window* CHICANE_RUNTIME getWindow();
+        Window* getWindow();
         template<class T>
         T* getWindow()
         {
@@ -71,7 +71,7 @@ namespace Chicane
 
         bool CHICANE_RUNTIME hasRenderer();
         void CHICANE_RUNTIME setRenderer(WindowRenderer inType);
-        Renderer* CHICANE_RUNTIME getRenderer();
+        Renderer* getRenderer();
         template<class T>
         T* getRenderer()
         {

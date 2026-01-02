@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Backend/Vulkan/Layer/Grid.hpp"
 
+#include "Chicane/Grid/Component/Character.hpp"
 #include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
@@ -15,8 +16,11 @@ namespace Chicane
             m_draws({})
         {
             m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
             loadEvents();
+
+            init();
         }
 
         LGrid::~LGrid()
@@ -117,11 +121,11 @@ namespace Chicane
         {
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/grid.vert.spv";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Grid.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/grid.frag.spv";
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Grid.frag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};
@@ -145,12 +149,20 @@ namespace Chicane
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
+            GraphicsPipeline::Attachment depthAttachment = {};
+            depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
+            depthAttachment.format        = m_internals.swapchain->depthFormat;
+            depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+
             std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(colorAttachment);
+            attachments.push_back(depthAttachment);
 
             GraphicsPipeline::CreateInfo createInfo = {};
             createInfo.bHasVertices             = true;
-            createInfo.bHasDepthWrite           = false;
+            createInfo.bHasDepthWrite           = true;
             createInfo.bHasBlending             = true;
             createInfo.logicalDevice            = m_internals.logicalDevice;
             createInfo.shaders                  = shaders;
@@ -172,6 +184,7 @@ namespace Chicane
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
                 createInfo.extent          = m_internals.swapchain->extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.push_back(frame.depthImage.view);
 
                 Frame::Buffer::init(frame, createInfo);
             }
@@ -179,8 +192,6 @@ namespace Chicane
 
         void LGrid::renderComponents(const vk::CommandBuffer& inCommandBuffer)
         {
-            const Vec2& rootSize = m_view->getSize();
-
             for (const Draw& draw : m_draws)
             {
                 if (!draw.bIsDrawable)
@@ -188,13 +199,13 @@ namespace Chicane
                     continue;
                 }
 
-                const Vec2& size     = draw.size;
-                const Vec2& position = draw.position;
+                Grid::Component* component = draw.component;
 
                 PushConstant pushConstant = {};
-                pushConstant.size       = size / rootSize;
-                pushConstant.position.x = ((2.0f * position.x) / rootSize.x) - 1.0f;
-                pushConstant.position.y = ((2.0f * position.y) / rootSize.y) - 1.0f;
+                pushConstant.screen   = m_view->getSize();
+                pushConstant.size     = component->getSize();
+                pushConstant.position = component->getPosition();
+                pushConstant.zIndex   = component->getStyle().zIndex;
 
                 vk::DeviceSize offset = 0;
 
@@ -345,22 +356,26 @@ namespace Chicane
             {
                 return;
             }
-
-            if (!inComponent->isRoot())
-            {
-                if (!hasDraw(inComponent))
-                {
-                    Draw draw = {};
-                    draw.component = inComponent;
-
-                    m_draws.push_back(draw);
-                }
-            }
     
             for (Grid::Component* component : inComponent->getChildren())
             {
                 buildDraw(component);
             }
+
+            if (inComponent->isRoot())
+            {
+                return;
+            }
+
+            if (hasDraw(inComponent))
+            {
+                return;
+            }
+
+            Draw draw = {};
+            draw.component = inComponent;
+
+            m_draws.push_back(draw);
         }
 
         void LGrid::refreshDraw(Grid::Component* inComponent)
@@ -370,59 +385,73 @@ namespace Chicane
                 return;
             }
 
-            if (!inComponent->isRoot())
-            {
-                if (!hasDraw(inComponent))
-                {
-                    buildDraw(inComponent);
-                }
-
-                Draw& draw = getDraw(inComponent);
-
-                if (draw.bIsOutdated)
-                {
-                    if (inComponent->isDrawable())
-                    {
-                        const Grid::Primitive primitive = inComponent->getPrimitive();
-
-                        draw.size        = inComponent->getSize();
-                        draw.position    = inComponent->getPosition();
-                        draw.vertexCount = primitive.vertices.size();
-                        draw.indexCount  = primitive.indices.size();
-                        draw.bIsDrawable = true;
-                        setDrawVertexBuffer(draw, primitive.vertices);
-                        setDrawIndexBuffer(draw, primitive.indices);
-                    }
-                    else
-                    {
-                        draw.size        = Vec2::Zero;
-                        draw.position    = Vec2::Zero;
-                        draw.vertexCount = 0;
-                        draw.indexCount  = 0;
-                        draw.bIsDrawable = false;
-                        destroyDrawVertexBuffer(draw);
-                        destroyDrawIndexBuffer(draw);
-                    }
-
-                    draw.bIsOutdated = false;
-                }
-            }
-
             for (Grid::Component* component : inComponent->getChildren())
             {
                 refreshDraw(component);
             }
+
+            if (inComponent->isRoot())
+            {
+                return;
+            }
+
+            if (!hasDraw(inComponent))
+            {
+                buildDraw(inComponent);
+            }
+
+            Draw& draw = getDraw(inComponent);
+
+            if (!draw.bIsOutdated)
+            {
+                //return;
+            }
+
+            draw.bIsOutdated = false;
+
+            if (!inComponent->isDrawable())
+            {
+                draw.vertexCount = 0;
+                draw.indexCount  = 0;
+                draw.bIsDrawable = false;
+
+                destroyDraw(draw);
+
+                return;
+            }
+
+            Grid::Primitive primitive = inComponent->getPrimitive();
+
+            if (typeid(*inComponent) == typeid(Grid::Character))
+            {
+                for (Vertex& vertex : primitive.vertices)
+                {
+                    vertex.position.y = 1.0f - vertex.position.y;
+                }
+            }
+
+            draw.vertexCount = primitive.vertices.size();
+            draw.indexCount  = primitive.indices.size();
+            draw.bIsDrawable = true;
+
+            setDrawVertexBuffer(draw, primitive.vertices);
+            setDrawIndexBuffer(draw, primitive.indices);
         }
 
         void LGrid::destroyDraws()
         {
             for (Draw& draw : m_draws)
             {
-                destroyDrawVertexBuffer(draw);
-                destroyDrawIndexBuffer(draw);
+                destroyDraw(draw);
             }
 
             m_draws.clear();
+        }
+
+        void LGrid::destroyDraw(Draw& outDraw)
+        {
+            destroyDrawVertexBuffer(outDraw);
+            destroyDrawIndexBuffer(outDraw);
         }
     }
 }

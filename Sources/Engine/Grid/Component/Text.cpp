@@ -7,15 +7,28 @@ namespace Chicane
     namespace Grid
     {
         Text::Text(const pugi::xml_node& inNode)
-            : Super(inNode),
+            : Container(inNode),
             m_parsedText("")
         {
             setText(inNode.text().as_string());
+
+            setStyle(
+                {
+                    { Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX },
+                    { Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW },
+                    { Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT },
+                    { Style::HEIGHT_ATTRIBUTE_NAME,         Style::AUTO_SIZE_UNIT }
+                }
+            );
         }
 
         void Text::onRefresh()
         {
+            Container::onRefresh();
+
             refreshText();
+
+            m_style.gap.setAll(m_style.letterSpacing);
         }
 
         const String& Text::getText() const

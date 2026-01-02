@@ -11,13 +11,13 @@ namespace Chicane
         using Super = RendererLayer;
 
     public:
-        RendererLayer();
         RendererLayer(const String& inId);
+        RendererLayer();
 
-        virtual ~RendererLayer() = default;
+        virtual ~RendererLayer();
 
     protected:
-        virtual bool onInit() { return false; }
+        virtual bool onInit() { return true; }
         virtual bool onDestroy() { return true; }
         virtual bool onRebuild() { return true; }
         virtual bool onSetup() { return true; }
@@ -41,8 +41,34 @@ namespace Chicane
     protected:
         void setStatus(RendererLayerStatus inStatus);
 
+        template<typename T>
+        bool hasLayer() const
+        {
+            for (const RendererLayer* layer : m_children)
+            {
+                if (typeid(T) != typeid(*layer))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        template<typename Target, typename Anchor = RendererLayer, typename... Params>
+        void pushLayer(
+            ListPushStrategy inStrategy = ListPushStrategy::Back,
+            Params ...inParams
+        )
+        {
+            m_children.add(new Target(inParams...), inStrategy);
+        }
+
     protected:
-        String              m_id;
-        RendererLayerStatus m_status;
+        String               m_id;
+        RendererLayerStatus  m_status;
+        List<RendererLayer*> m_children;
     };
 }

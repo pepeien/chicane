@@ -77,7 +77,7 @@ namespace Chicane
         {
             m_actors.push_back(new T());
 
-            m_actorObservable.next(m_actors);
+            m_actorsObservable.next(m_actors);
 
             refreshDefaultCamera();
 
@@ -136,7 +136,7 @@ namespace Chicane
         {
             m_components.push_back(new T());
 
-            m_componentObservable.next(m_components);
+            m_componentsObservable.next(m_components);
 
             refreshDefaultCamera();
 
@@ -232,16 +232,22 @@ namespace Chicane
         }
 
     protected:
+        void tickActors(float inDeltaTime);
+        void deleteActors();
+
+        void tickComponents(float inDeltaTime);
+        void deleteComponents();
+
         void createDefaultCamera();
         void removeDefaultCamera();
         void refreshDefaultCamera();
 
     private:
         std::vector<Actor*>     m_actors;
-        ActorsObservable        m_actorObservable;
+        ActorsObservable        m_actorsObservable;
 
         std::vector<Component*> m_components;
-        ComponentsObservable    m_componentObservable;
+        ComponentsObservable    m_componentsObservable;
 
         CCamera*                m_defaultCamera;
     };

@@ -190,6 +190,38 @@ namespace Chicane
         return m_value.find_last_of(inValue.toStandard());
     }
 
+    String String::filter(char inValue) const
+    {
+        return filter(String(1, inValue));
+    }
+
+    String String::filter(const String& inValue) const
+    {
+        if (size() == 0 || inValue.size() == 0)
+        {
+            return *this;
+        }
+
+        String result = "";
+
+        for (const String& block : split(inValue))
+        {
+            result.append(block);
+        }
+
+        return result;
+    }
+
+    std::size_t String::find(char inValue) const
+    {
+        return find(String(1, inValue));
+    }
+
+    std::size_t String::find(const String& inValue) const
+    {
+        return m_value.find(inValue.toStandard());
+    }
+
     std::vector<String> String::split(char inDelimeter) const
     {
         return split(String(1, inDelimeter));
@@ -197,39 +229,31 @@ namespace Chicane
 
     std::vector<String> String::split(const String& inDelimeter) const
     {
-        if (isEmpty())
+        if (size() == 0 || inDelimeter.size() == 0)
         {
             return {};
         }
 
-        int start = 0;
-
         std::vector<String> result = {};
 
-        for (int i = 0; i < size(); i += inDelimeter.size())
+        String value = *this;
+
+        size_t position = 0;
+
+        String block = "";
+
+        while ((position = value.find(inDelimeter)) != std::string::npos)
         {
-            if (!substr(i, inDelimeter.size()).equals(inDelimeter.toChar()))
-            {
-                continue;
-            }
-
-            const String block = formatSplittedBlock(substr(start, i - start), inDelimeter);
-
-            start = i;
-
-            if (block.isEmpty())
-            {
-                continue;
-            }
+            block = value.substr(0, position);
 
             result.push_back(block);
+
+            value.erase(0, position + inDelimeter.size());
         }
 
-        const String block = formatSplittedBlock(substr(start), inDelimeter);
-
-        if (!block.isEmpty())
+        if (value.size() > 0)
         {
-            result.push_back(block);
+            result.push_back(value);
         }
 
         return result;

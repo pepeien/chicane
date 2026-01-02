@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Backend/Vulkan/Layer/Shadow.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Mesh.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 
@@ -6,57 +6,63 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        LShadow::LShadow()
-            : Super("Engine_Shadow"),
+        LSceneMesh::LSceneMesh()
+            : Super("Engine_Scene_Mesh"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
-            m_graphicsPipeline(nullptr),
-            m_frameDescriptor({}),
-            m_modelVertexBuffer({}),
-            m_modelIndexBuffer({}),
-            m_modelManager(Box::getModelManager()),
-            m_clearValues({})
+            m_clearValues({}),
+            m_textureManager(Box::getTextureManager()),
+            m_modelManager(Box::getModelManager())
         {
+            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
             m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
             loadEvents();
         }
 
-        LShadow::~LShadow()
+        LSceneMesh::~LSceneMesh()
         {
             m_internals.logicalDevice.waitIdle();
 
+            destroyTextureResources();
             destroyModelData();
 
             m_graphicsPipeline.reset();
         }
 
-        bool LShadow::onInit()
+        bool LSceneMesh::onInit()
         {
-            if (m_modelManager->isEmpty())
+            if (m_modelManager->isEmpty() || m_textureManager->isEmpty())
             {
                 return false;
             }
 
             initFrameResources();
+            initTextureResources();
 
             initGraphicsPipeline();
             initFramebuffers();
 
+            buildTextureData();
             buildModelData();
 
             return true;
         }
 
-        bool LShadow::onDestroy()
+        bool LSceneMesh::onDestroy()
         {
+            if (is(RendererLayerStatus::Offline))
+            {
+                return false;
+            }
+
             destroyFrameResources();
 
             return true;
         }
 
-        bool LShadow::onRebuild()
+        bool LSceneMesh::onRebuild()
         {
-            if (m_modelManager->isEmpty())
+            if (m_modelManager->isEmpty() || m_textureManager->isEmpty())
             {
                 return false;
             }
@@ -67,7 +73,7 @@ namespace Chicane
             return true;
         }
 
-        void LShadow::onRender(void* outData)
+        void LSceneMesh::onRender(void* outData)
         {
             if (!is(RendererLayerStatus::Running))
             {
@@ -94,22 +100,44 @@ namespace Chicane
                 // Frame
                 m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
+                // Texture
+                m_graphicsPipeline->bindDescriptorSet(commandBuffer, 1, m_textureDescriptor.set);
+
                 // Model
                 renderModels(commandBuffer);
             commandBuffer.endRenderPass();
         }
 
-        void LShadow::loadEvents()
+        void LSceneMesh::loadEvents()
         {
             if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
 
-            m_modelManager->watchChanges(
+            m_textureManager->watchChanges(
                 [&](Box::ManagerEventType inEvent)
                 {
                     if (inEvent != Box::ManagerEventType::Activation)
+                    {
+                        return;
+                    }
+
+                    if (is(RendererLayerStatus::Offline))
+                    {
+                        init();
+
+                        return;
+                    }
+
+                    buildTextureData();
+                }
+            );
+
+            m_modelManager->watchChanges(
+                [&](Box::ManagerEventType inEvent)
+                {
+                    if (inEvent != Box::ManagerEventType::Use)
                     {
                         return;
                     }
@@ -126,7 +154,7 @@ namespace Chicane
             );
         }
 
-        void LShadow::initFrameResources()
+        void LSceneMesh::initFrameResources()
         {
             if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
@@ -134,19 +162,31 @@ namespace Chicane
             }
 
             Descriptor::SetLayoutBidingsCreateInfo bidings = {};
-            bidings.count = 2;
+            bidings.count = 4;
 
-            /// Light
+            /// Camera
             bidings.indices.push_back(0);
             bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            /// Model
+            /// Light
             bidings.indices.push_back(1);
+            bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            /// Model
+            bidings.indices.push_back(2);
             bidings.types.push_back(vk::DescriptorType::eStorageBuffer);
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            // Shadow
+            bidings.indices.push_back(3);
+            bidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
 
             Descriptor::initSetLayout(
                 m_frameDescriptor.setLayout,
@@ -160,7 +200,13 @@ namespace Chicane
                 { vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets }
             );
             descriptorPoolCreateInfo.sizes.push_back(
+                { vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets }
+            );
+            descriptorPoolCreateInfo.sizes.push_back(
                 { vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets }
+            );
+            descriptorPoolCreateInfo.sizes.push_back(
+                { vk::DescriptorType::eCombinedImageSampler, descriptorPoolCreateInfo.maxSets }
             );
 
             Descriptor::initPool(
@@ -180,79 +226,93 @@ namespace Chicane
                     m_frameDescriptor.pool
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
-
+        
+                vk::WriteDescriptorSet cameraWriteInfo = {};
+                cameraWriteInfo.dstSet          = descriptorSet;
+                cameraWriteInfo.dstBinding      = 0;
+                cameraWriteInfo.dstArrayElement = 0;
+                cameraWriteInfo.descriptorCount = 1;
+                cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
+        
                 vk::WriteDescriptorSet lightWriteInfo = {};
                 lightWriteInfo.dstSet          = descriptorSet;
-                lightWriteInfo.dstBinding      = 0;
+                lightWriteInfo.dstBinding      = 1;
                 lightWriteInfo.dstArrayElement = 0;
                 lightWriteInfo.descriptorCount = 1;
                 lightWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
                 lightWriteInfo.pBufferInfo     = &frame.lightResource.bufferInfo;
                 frame.addWriteDescriptorSet(lightWriteInfo);
 
-                vk::WriteDescriptorSet modelWriteInfo = {};
-                modelWriteInfo.dstSet          = descriptorSet;
-                modelWriteInfo.dstBinding      = 1;
-                modelWriteInfo.dstArrayElement = 0;
-                modelWriteInfo.descriptorCount = 1;
-                modelWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
-                modelWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
-                frame.addWriteDescriptorSet(modelWriteInfo);
+                vk::WriteDescriptorSet meshWriteInfo = {};
+                meshWriteInfo.dstSet          = descriptorSet;
+                meshWriteInfo.dstBinding      = 2;
+                meshWriteInfo.dstArrayElement = 0;
+                meshWriteInfo.descriptorCount = 1;
+                meshWriteInfo.descriptorType  = vk::DescriptorType::eStorageBuffer;
+                meshWriteInfo.pBufferInfo     = &frame.meshResource.bufferInfo;
+                frame.addWriteDescriptorSet(meshWriteInfo);
+
+                vk::WriteDescriptorSet shadowWriteInfo = {};
+                shadowWriteInfo.dstSet          = descriptorSet;
+                shadowWriteInfo.dstBinding      = 3;
+                shadowWriteInfo.dstArrayElement = 0;
+                shadowWriteInfo.descriptorCount = 1;
+                shadowWriteInfo.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+                shadowWriteInfo.pImageInfo      = &frame.shadowImageInfo;
+                frame.addWriteDescriptorSet(shadowWriteInfo);
             }
         }
 
-        void LShadow::destroyFrameResources()
+        void LSceneMesh::destroyFrameResources()
         {
-            m_internals.logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
-            m_internals.logicalDevice.destroyDescriptorPool(
-                m_frameDescriptor.pool
-            );
+            m_internals.logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
+            m_internals.logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
-        void LShadow::initGraphicsPipeline()
+        void LSceneMesh::initGraphicsPipeline()
         {
             if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
 
-            // Rasterizer
-            vk::PipelineRasterizationStateCreateInfo rasterizeCreateInfo = {};
-            rasterizeCreateInfo.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterizeCreateInfo.depthClampEnable        = VK_FALSE;
-            rasterizeCreateInfo.rasterizerDiscardEnable = VK_FALSE;
-            rasterizeCreateInfo.depthBiasEnable         = VK_TRUE;
-            rasterizeCreateInfo.depthBiasClamp          = 0.0f;
-            rasterizeCreateInfo.polygonMode             = vk::PolygonMode::eFill;
-            rasterizeCreateInfo.cullMode                = vk::CullModeFlagBits::eBack;
-            rasterizeCreateInfo.frontFace               = vk::FrontFace::eClockwise;
-            rasterizeCreateInfo.lineWidth               = 1.0f;
-            rasterizeCreateInfo.depthBiasConstantFactor = 1.25f;
-            rasterizeCreateInfo.depthBiasSlopeFactor    = 1.75f;
-
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/shadow.vert.spv";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            Shader::StageCreateInfo fragmentShader = {};
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Mesh.frag";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};
             shaders.push_back(vertexShader);
+            shaders.push_back(fragmentShader);
 
             // Set Layouts
             std::vector<vk::DescriptorSetLayout> setLayouts = {};
             setLayouts.push_back(m_frameDescriptor.setLayout);
+            setLayouts.push_back(m_textureDescriptor.setLayout);
 
             // Attachments
+            GraphicsPipeline::Attachment colorAttachment = {};
+            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
+            colorAttachment.format        = m_internals.swapchain->colorFormat;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+
             GraphicsPipeline::Attachment depthAttachment = {};
             depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            depthAttachment.finalLayout   = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             std::vector<GraphicsPipeline::Attachment> attachments = {};
+            attachments.push_back(colorAttachment);
             attachments.push_back(depthAttachment);
 
             GraphicsPipeline::CreateInfo createInfo = {};
@@ -264,12 +324,12 @@ namespace Chicane
             createInfo.extent                   = m_internals.swapchain->extent;
             createInfo.descriptorSetLayouts     = setLayouts;
             createInfo.attachments              = attachments;
-            createInfo.rasterizaterizationState = rasterizeCreateInfo;
+            createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
 
             m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
-        void LShadow::initFramebuffers()
+        void LSceneMesh::initFramebuffers()
         {
             if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
@@ -283,22 +343,108 @@ namespace Chicane
                 createInfo.logicalDevice   = m_internals.logicalDevice;
                 createInfo.renderPass      = m_graphicsPipeline->renderPass;
                 createInfo.extent          = m_internals.swapchain->extent;
-                createInfo.attachments.push_back(frame.shadowImage.view);
+                createInfo.attachments.push_back(frame.colorImage.view);
+                createInfo.attachments.push_back(frame.depthImage.view);
 
                 Frame::Buffer::init(frame, createInfo);
             }
         }
 
-        void LShadow::buildModelVertexBuffer()
+        void LSceneMesh::initTextureResources()
         {
-            if (m_modelManager->isEmpty())
+            if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
 
+            Descriptor::SetLayoutBidingsCreateInfo layoutBidings;
+            layoutBidings.count = 1;
+
+            layoutBidings.indices.push_back(0);
+            layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            layoutBidings.counts.push_back(Box::Texture::MAX_COUNT);
+            layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            Descriptor::initSetLayout(
+                m_textureDescriptor.setLayout,
+                m_internals.logicalDevice,
+                layoutBidings
+            );
+
+            Descriptor::PoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets = 1;
+            descriptorPoolCreateInfo.sizes.push_back(
+                { vk::DescriptorType::eCombinedImageSampler, Box::Texture::MAX_COUNT }
+            );
+
+            Descriptor::initPool(
+                m_textureDescriptor.pool,
+                m_internals.logicalDevice,
+                descriptorPoolCreateInfo
+            ); 
+
+            Descriptor::allocalteSet(
+                m_textureDescriptor.set,
+                m_internals.logicalDevice,
+                m_textureDescriptor.setLayout,
+                m_textureDescriptor.pool
+            );
+        }
+
+        void LSceneMesh::destroyTextureResources()
+        {
+            m_internals.logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
+            m_internals.logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
+        }
+
+        void LSceneMesh::buildTextureData()
+        {
+            if (m_textureManager->isEmpty())
+            {
+                return;
+            }
+
+            // Textures
+            Texture::CreateInfo createInfo = {};
+            createInfo.logicalDevice  = m_internals.logicalDevice;
+            createInfo.physicalDevice = m_internals.physicalDevice;
+            createInfo.commandBuffer  = m_internals.mainCommandBuffer;
+            createInfo.queue          = m_internals.graphicsQueue;
+
+            std::vector<vk::DescriptorImageInfo> imageInfos = {};
+
+            for (const String& id : m_textureManager->getActiveIds())
+            {
+                createInfo.image = m_textureManager->getData(id);
+
+                m_textures[id] = std::make_unique<Texture::Instance>(createInfo);
+
+                Image::Data image = m_textures.at(id)->getImage();
+
+                vk::DescriptorImageInfo info = {};
+                info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+                info.imageView   = image.view;
+                info.sampler     = image.sampler;
+
+                imageInfos.push_back(info);
+            }
+
+            vk::WriteDescriptorSet set = {};
+            set.dstSet          = m_textureDescriptor.set;
+            set.dstBinding      = 0;
+            set.dstArrayElement = 0;
+            set.descriptorCount = static_cast<std::uint32_t>(imageInfos.size());
+            set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            set.pImageInfo      = imageInfos.data();
+
+            m_internals.logicalDevice.updateDescriptorSets(set, nullptr);
+        }
+
+        void LSceneMesh::buildModelVertexBuffer()
+        {
             const auto& vertices = m_modelManager->getVertices();
 
-            BufferCreateInfo createInfo = {};
+            BufferCreateInfo createInfo;
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
             createInfo.size             = sizeof(Chicane::Vertex) * vertices.size();
@@ -332,13 +478,8 @@ namespace Chicane
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LShadow::buildModelIndexBuffer()
+        void LSceneMesh::buildModelIndexBuffer()
         {
-            if (m_modelManager->isEmpty())
-            {
-                return;
-            }
-
             const auto& indices = m_modelManager->getIndices();
 
             BufferCreateInfo createInfo;
@@ -375,13 +516,13 @@ namespace Chicane
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LShadow::buildModelData()
+        void LSceneMesh::buildModelData()
         {
             buildModelVertexBuffer();
             buildModelIndexBuffer();
         }
 
-        void LShadow::destroyModelData()
+        void LSceneMesh::destroyModelData()
         {
             m_internals.logicalDevice.waitIdle();
 
@@ -389,7 +530,7 @@ namespace Chicane
             m_modelIndexBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LShadow::rebuildModelData()
+        void LSceneMesh::rebuildModelData()
         {
             destroyModelData();
 
@@ -401,23 +542,14 @@ namespace Chicane
             buildModelData();
         }
 
-        void LShadow::renderModels(const vk::CommandBuffer& inCommandBuffer)
+        void LSceneMesh::renderModels(const vk::CommandBuffer& inCommandBuffer)
         {
             vk::Buffer vertexBuffers[] = { m_modelVertexBuffer.instance };
             vk::DeviceSize offsets[]   = { 0 };
 
-            inCommandBuffer.bindVertexBuffers(
-                0,
-                1,
-                vertexBuffers,
-                offsets
-            );
+            inCommandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            inCommandBuffer.bindIndexBuffer(
-                m_modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            inCommandBuffer.bindIndexBuffer(m_modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             for (const String& id : m_modelManager->getActiveIds())
             {

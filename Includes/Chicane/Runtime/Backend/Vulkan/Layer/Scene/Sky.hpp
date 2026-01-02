@@ -13,11 +13,11 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME LSky : public RendererLayer
+        class CHICANE_RUNTIME LSceneSky : public RendererLayer
         {
         public:
-            LSky();
-            ~LSky();
+            LSceneSky();
+            ~LSceneSky();
 
         public:
             bool onInit() override;
@@ -50,7 +50,7 @@ namespace Chicane
             void rebuildModelData();
 
         private:
-            RendererInternals                         m_internals;
+            RendererInternals                           m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

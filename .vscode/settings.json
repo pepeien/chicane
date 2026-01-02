@@ -107,6 +107,8 @@
         "complex": "cpp",
         "fast_obj.h": "c",
         "ciso646": "cpp",
-        "xstddef": "cpp"
+        "xstddef": "cpp",
+        "execution": "cpp",
+        "resumable": "cpp"
     }
 }

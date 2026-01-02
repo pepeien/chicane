@@ -34,10 +34,10 @@ namespace Chicane
             primitive.indices = { 0, 1, 2, 2, 3, 0 };
 
             Vertex vertex = {};
-            vertex.color.r = m_color.r / 255.0f;
-            vertex.color.g = m_color.g / 255.0f;
-            vertex.color.b = m_color.b / 255.0f;
-            vertex.color.a = m_color.a / 255.0f;
+            vertex.color.r = m_color.r;
+            vertex.color.g = m_color.g;
+            vertex.color.b = m_color.b;
+            vertex.color.a = m_color.a;
 
             vertex.position.x = -1.0f;
             vertex.position.y = -1.0f;

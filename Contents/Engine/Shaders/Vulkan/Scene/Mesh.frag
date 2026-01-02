@@ -51,7 +51,7 @@ float filterPCF(vec4 sc)
 	{
 		for (int y = -range; y <= range; y++)
 		{
-			shadowFactor += textureProj(sc, vec2(dx*x, dy*y));
+			shadowFactor += textureProj(sc, vec2(dx * x, dy * y));
 
 			count++;
 		}

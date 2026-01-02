@@ -8,6 +8,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Input.hpp"
 #include "Chicane/Core/Image.hpp"
+#include "Chicane/Core/List.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math.hpp"
 #include "Chicane/Core/Recorder.hpp"

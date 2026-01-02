@@ -33,7 +33,7 @@ namespace Chicane
         protected:
             // Events
             virtual void onEvent(const WindowEvent& inEvent) { return; }
-            virtual void onTick(float inDelta) { return; }
+            virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
             virtual void onAdopted(Component* inParent) { return; }
@@ -63,7 +63,7 @@ namespace Chicane
 
             const Style& getStyle() const;
             void setStyle(const StyleSource::List& inSources);
-            void setStyle(const StyleProperties& inSource);
+            void setStyle(const StyleSource::Map& inSource);
 
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
             Reference* getReference(const String& inId) const;
@@ -84,6 +84,9 @@ namespace Chicane
             bool hasParent() const;
             Component* getParent() const;
             void setParent(Component* inComponent);
+
+            bool hasNeighbours() const;
+            Component* getNeighbour(int inJumps) const;
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
@@ -108,20 +111,27 @@ namespace Chicane
             void setSize(float inWidth, float inHeight);
 
             const Vec2& getPosition() const;
+            void addPosition(const Vec2& inPosition);
+            void addPosition(float inX, float inY);
             void setPosition(const Vec2& inPosition);
             void setPosition(float inX, float inY);
 
+            Vec2 getCenter() const;
+
+            // Draw
             bool hasPrimitive() const;
             const Primitive& getPrimitive() const;
             void clearPrimitive();
             void setPrimitive(const Primitive& inPrimitive);
 
+            // Parsing
             String parseText(const String& inValue) const;
 
         protected:
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
+            void refreshZIndex();
 
             bool isReference(const String& inValue) const;
             Reference parseReference(const String& inValue) const;

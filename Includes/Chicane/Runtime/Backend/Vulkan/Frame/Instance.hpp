@@ -62,7 +62,8 @@ namespace Chicane
                 void updateDescriptorSets();
 
             private:
-                RendererView normalizeViewData(const RendererView& outData);
+                RendererView getActiveCameraData(const std::vector<CCamera*>& inCameras);
+                RendererView normalizeViewData(const RendererView& inData);
 
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 

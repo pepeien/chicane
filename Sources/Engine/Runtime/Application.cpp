@@ -24,7 +24,6 @@ namespace Chicane
         static std::unique_ptr<Window>   g_window               = nullptr;
 
         // Renderer
-        static RendererCreateInfo        g_rendererInfo         = {};
         static std::unique_ptr<Renderer> g_renderer             = nullptr;
 
         void initWindow()
@@ -72,7 +71,7 @@ namespace Chicane
                 break;
             }
 
-            g_renderer->init(g_rendererInfo);
+            g_renderer->init(g_window.get());
         }
 
         void initAssets(const String& inPath)
@@ -116,9 +115,8 @@ namespace Chicane
         void run(const ApplicationCreateInfo& inCreateInfo)
         {
             g_windowInfo = inCreateInfo.window;
-            initWindow();
 
-            g_rendererInfo = inCreateInfo.renderer;
+            initWindow();
             initRenderer();
 
             initAssets(".");

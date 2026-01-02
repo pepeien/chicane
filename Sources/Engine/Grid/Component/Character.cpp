@@ -137,10 +137,15 @@ namespace Chicane
 
             const Box::FontGlyph& glyph = getGlyph();
 
-            m_style.width         = m_style.font.size / 8.0f;
-            m_style.height        = m_style.font.size / 8.0f;
-            m_style.margin.right  = glyph.bearing.x * -1.0f;
-            //m_style.margin.bottom = glyph.bearing.y * -1.0f;
+            const float scale = (m_style.font.size / glyph.units) / 6.0f;
+
+            m_style.width  = glyph.line.x * scale;
+            m_style.height = glyph.line.y * scale;
+
+            //m_style.margin.left = glyph.box.x * scale;
+
+            //m_style.padding.left = glyph.box.x * scale;
+            //m_style.padding.top  = glyph.line.y * scale;
 
             m_bCanUpdate = true;
         }

@@ -5,7 +5,8 @@
 #include "Chicane/Runtime/Backend/Vulkan/Debug.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Device.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Instance.hpp"
-#include "Chicane/Runtime/Backend/Vulkan/Layer.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Runtime/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 
@@ -26,16 +27,6 @@ namespace Chicane
 
             m_vkScissor.offset.x = 0;
             m_vkScissor.offset.y = 0;
-
-            buildInstance();
-            buildDebugMessenger();
-            buildSurface();
-            buildDevices();
-            buildQueues();
-            buildSwapChain();
-            buildCommandPool();
-            buildMainCommandBuffer();
-            buildFramesCommandBuffers();
         }
 
         Renderer::~Renderer()
@@ -75,10 +66,16 @@ namespace Chicane
 
         void Renderer::onInit()
         {
-            pushLayer(new LSky());
-            pushLayer(new LShadow());
-            pushLayer(new LScene());
-            pushLayer(new LGrid());
+            buildInstance();
+            buildDebugMessenger();
+            buildSurface();
+            buildDevices();
+            buildQueues();
+            buildSwapChain();
+            buildCommandPool();
+            buildMainCommandBuffer();
+            buildFramesCommandBuffers();
+            buildLayers();
         }
 
         void Renderer::onEvent(const WindowEvent& inEvent)
@@ -163,11 +160,7 @@ namespace Chicane
             submitInfo.pSignalSemaphores    = &currentImage.renderSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
 
-            vk::Result submitResult = m_graphicsQueue.submit(
-                1,
-                &submitInfo,
-                currentImage.renderFence
-            );
+            vk::Result submitResult = m_graphicsQueue.submit(1, &submitInfo, currentImage.renderFence);
 
             if (submitResult != vk::Result::eSuccess)
             {
@@ -222,7 +215,7 @@ namespace Chicane
             Surface::init(
                 m_surface,
                 m_instance,
-                Application::getWindow()->getInstance()
+                m_window->getInstance()
             );
         }
 
@@ -284,7 +277,7 @@ namespace Chicane
 
         void Renderer::rebuildSwapChain()
         {
-            if (Application::getWindow()->isMinimized())
+            if (m_window->isMinimized())
             {
                 return;
             }
@@ -345,6 +338,12 @@ namespace Chicane
             outFrame.updateMeshData(m_meshes);
         }
 
+        void Renderer::buildLayers()
+        {
+            pushLayer<LScene>();
+            pushLayer<LGrid>();
+        }
+
         void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)
         {
             RendererData data = {};
@@ -354,6 +353,11 @@ namespace Chicane
 
             for (RendererLayer* layer : m_layers)
             {
+                if (!layer)
+                {
+                    continue;
+                }
+
                 layer->render(&data);
             }
         }

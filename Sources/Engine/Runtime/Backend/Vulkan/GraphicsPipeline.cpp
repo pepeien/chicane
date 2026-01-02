@@ -54,10 +54,7 @@ namespace Chicane
                 return createInfo;
             }
 
-            vk::PipelineViewportStateCreateInfo createViewportState(
-                const vk::Viewport& inViewport,
-                const vk::Rect2D& inScissor
-            )
+            vk::PipelineViewportStateCreateInfo createViewportState(const vk::Viewport& inViewport, const vk::Rect2D& inScissor)
             {
                 vk::PipelineViewportStateCreateInfo createInfo = {};
                 createInfo.flags         = vk::PipelineViewportStateCreateFlags();

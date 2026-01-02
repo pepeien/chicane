@@ -10,11 +10,11 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        class CHICANE_RUNTIME LShadow : public RendererLayer
+        class CHICANE_RUNTIME LSceneShadow : public RendererLayer
         {
         public:
-            LShadow();
-            ~LShadow();
+            LSceneShadow();
+            ~LSceneShadow();
 
         public:
             bool onInit() override;
@@ -44,7 +44,7 @@ namespace Chicane
             void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
         private:
-            RendererInternals                         m_internals;
+            RendererInternals                           m_internals;
 
             std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 

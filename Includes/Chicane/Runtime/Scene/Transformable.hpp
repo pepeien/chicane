@@ -11,7 +11,7 @@ namespace Chicane
 
     public:
         // Transform
-        const TransformCombined& getTransform() const;
+        const SpatialTransform& getTransform() const;
 
         const Vec3& getTranslation() const;
         const Vec3& getRotation() const;
@@ -91,9 +91,9 @@ namespace Chicane
 
     private:
         // Transform
-        TransformCombined m_transform;
+        SpatialTransform m_transform;
 
         // Bounds
-        Bounds              m_bounds;
+        Bounds           m_bounds;
     };
 }

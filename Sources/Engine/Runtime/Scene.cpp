@@ -1,36 +1,19 @@
 #include "Chicane/Runtime/Scene.hpp"
 
-static inline constexpr const std::uint32_t MAX_ACTOR_COUNT     = 10000;
-static inline constexpr const std::uint32_t MAX_COMPONENT_COUNT = MAX_ACTOR_COUNT * 4;
-
 namespace Chicane
 {
     Scene::Scene()
         : m_actors({}),
-        m_actorObservable({}),
+        m_actorsObservable({}),
         m_components({}),
-        m_componentObservable({}),
+        m_componentsObservable({}),
         m_defaultCamera(nullptr)
-    {
-        m_actors.reserve(MAX_ACTOR_COUNT);
-        m_components.reserve(MAX_COMPONENT_COUNT);
-    }
+    {}
 
     Scene::~Scene()
     {
-        for (Component* component : m_components)
-        {
-            delete component;
-            component = nullptr;
-        }
-        m_components.clear();
-
-        for (Actor* actor : m_actors)
-        {
-            delete actor;
-            actor = nullptr;
-        }
-        m_actors.clear();
+        deleteComponents();
+        deleteActors();
     }
 
     void Scene::activate()
@@ -40,15 +23,8 @@ namespace Chicane
 
     void Scene::tick(float inDeltaTime)
     {
-        for (Actor* actor : m_actors)
-        {
-            actor->tick(inDeltaTime);
-        }
-
-        for (Component* component : m_components)
-        {
-            component->tick(inDeltaTime);
-        }
+        tickActors(inDeltaTime);
+        tickComponents(inDeltaTime);
 
         onTick(inDeltaTime);
     }
@@ -84,7 +60,7 @@ namespace Chicane
 
         m_actors.erase(found);
 
-        m_actorObservable.next(m_actors);
+        m_actorsObservable.next(m_actors);
 
         refreshDefaultCamera();
     }
@@ -95,7 +71,7 @@ namespace Chicane
         ActorsSubscription::CompleteCallback inComplete
     )
     {
-        return m_actorObservable
+        return m_actorsObservable
             .subscribe(inNext, inError, inComplete)
             .next(m_actors);
     }
@@ -126,7 +102,7 @@ namespace Chicane
 
         m_components.erase(found);
 
-        m_componentObservable.next(m_components);
+        m_componentsObservable.next(m_components);
 
         refreshDefaultCamera();
     }
@@ -137,9 +113,45 @@ namespace Chicane
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
-        return m_componentObservable
+        return m_componentsObservable
            .subscribe(inNext, inError, inComplete)
            .next(m_components);
+    }
+
+    void Scene::tickActors(float inDeltaTime)
+    {
+        for (Actor* actor : m_actors)
+        {
+            actor->tick(inDeltaTime);
+        }
+    }
+
+    void Scene::deleteActors()
+    {
+        for (Actor* actor : m_actors)
+        {
+            delete actor;
+            actor = nullptr;
+        }
+        m_actors.clear();
+    }
+
+    void Scene::tickComponents(float inDeltaTime)
+    {
+        for (Component* component : m_components)
+        {
+            component->tick(inDeltaTime);
+        }
+    }
+
+    void Scene::deleteComponents()
+    {
+        for (Component* component : m_components)
+        {
+            delete component;
+            component = nullptr;
+        }
+        m_components.clear();
     }
 
     void Scene::createDefaultCamera()
@@ -154,7 +166,7 @@ namespace Chicane
 
         m_components.push_back(m_defaultCamera);
 
-        m_componentObservable.next(m_components);
+        m_componentsObservable.next(m_components);
     }
 
     void Scene::removeDefaultCamera()

@@ -29,7 +29,7 @@ namespace Chicane
                     }
 
                     Curve curve = {};
-                    curve.setSegmentCount(5);
+                    curve.setSegmentCount(4);
                     curve.addPoint(Vec2(inPoint->x, inPoint->y));
 
                     contours->push_back(curve);
@@ -104,13 +104,13 @@ namespace Chicane
                 const std::vector<Curve> contours = parseGlyphContours(inGlyph);
 
                 FontGlyph result = {};
-                result.code      = inCode;
-                result.advance.x = inGlyph->advance.x;
-                result.advance.y = inGlyph->advance.y;
-                result.bearing.x = inGlyph->metrics.horiBearingX;
-                result.bearing.y = inGlyph->metrics.horiBearingY;
-                result.vertices  = Curve::getTriangleVertices(contours);
-                result.indices   = Curve::getTriangleIndices(contours);
+                result.code     = inCode;
+                result.units    = inGlyph->face->units_per_EM;
+                result.scale    = { inGlyph->face->size->metrics.x_scale, inGlyph->face->size->metrics.y_scale };
+                result.box      = { inGlyph->metrics.width, inGlyph->metrics.height };
+                result.line     = { inGlyph->advance.x, (inGlyph->face->ascender + inGlyph->face->descender) };
+                result.vertices = Curve::getTriangleVertices(contours);
+                result.indices  = Curve::getTriangleIndices(contours);                
 
                 return result;
             }
@@ -148,36 +148,35 @@ namespace Chicane
                     }
                 }
 
-                if (!charmap) {
+                if (!charmap)
+                {
                     FT_Done_Face(face);
                     FT_Done_FreeType(library);
 
                     throw std::runtime_error("Failed to load the font char map");
                 }
 
+                if (FT_Set_Pixel_Sizes(face, 0, 16))
+                {
+                    FT_Done_Face(face);
+                    FT_Done_FreeType(library);
+
+                    throw std::runtime_error("Failed to set the face pixel size");
+                }
+
                 FontParsed result = {};
                 result.name = face->family_name;
 
-                for (FT_ULong code = 0; code < 0x10FFFF; code++)
+                FT_UInt glyphIndex;
+                FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
+                while (glyphIndex != 0)
                 {
-                    std::uint32_t index = FT_Get_Char_Index(face, code);
-
-                    if (index <= 0)
+                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING) == 0)
                     {
-                        continue;
+                        result.glyphs.emplace(code, parseGlyph(code, face->glyph));
                     }
 
-                    if (FT_Load_Glyph(face, index, FT_LOAD_NO_SCALE | FT_LOAD_NO_HINTING))
-                    {
-                        continue;
-                    }
-
-                    result.glyphs.insert(
-                        std::make_pair(
-                            code,
-                            parseGlyph(code, face->glyph)
-                        )
-                    );
+                    code = FT_Get_Next_Char(face, code, &glyphIndex);
                 }
 
                 FT_Done_Face(face);

@@ -8,7 +8,7 @@
 #      else
 #          define CHICANE_GRID __declspec(dllimport)
 #      endif
-#   elif defined(__GNUC__) && __GNUC__ >= 4
+#   elif defined(__GNUC__) || defined(__clang__)
 #       define CHICANE_GRID __attribute__((visibility("default")))
 #   else
 #       define CHICANE_GRID

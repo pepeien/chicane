@@ -32,7 +32,7 @@ namespace Chicane
             return parseSources(FileSystem::readString(inFilePath));
         }
 
-        StyleSource::List Style::parseSources(const String &inData)
+        StyleSource::List Style::parseSources(const String& inData)
         {
             String data = inData;
             data.erase(
@@ -56,34 +56,37 @@ namespace Chicane
 
             StyleSource::List result = {};
 
-            for (const String &style : styles)
+            for (const String& style : styles)
             {
-                const std::vector<String> splittedStyle = style.split('{');
+                const std::vector<String> splittedStyle = style.trim().split('{');
 
                 if (splittedStyle.size() < 2)
                 {
                     continue;
                 }
 
-                const String& selector = splittedStyle.at(0);
-                result.emplace_back(
-                    selector.split(Style::SELECTOR_SEPARATOR),
-                    parseSource(splittedStyle.at(1))
-                );
+                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
+
+                for (String& selector : selectors)
+                {
+                    selector = selector.trim();
+                }
+
+                result.emplace_back(selectors, parseSource(splittedStyle.at(1).trim()));
             }
 
             return result;
         }
 
-        StyleProperties Style::parseSource(const String &inData)
+        StyleSource::Map Style::parseSource(const String& inData)
         {
             std::vector<String> blocks = inData.split(';');
 
-            StyleProperties result = {};
+            StyleSource::Map result = {};
 
-            for (const String &block : blocks)
+            for (const String& block : blocks)
             {
-                const std::vector<String> splittedBlock = block.split(':');
+                const std::vector<String> splittedBlock = block.trim().split(':');
 
                 if (splittedBlock.size() < 2)
                 {
@@ -106,7 +109,7 @@ namespace Chicane
             return result;
         }
 
-        Style::Style(const StyleProperties& inProperties, Component* inParent)
+        Style::Style(const StyleSource::Map& inProperties, Component* inParent)
             : Style()
         {
             setProperties(inProperties);
@@ -115,6 +118,7 @@ namespace Chicane
 
         Style::Style()
             : display(StyleDisplay::Block),
+            zIndex(0.0f),
             width(0.0f),
             height(0.0f),
             flex({}),
@@ -127,10 +131,25 @@ namespace Chicane
                 Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
                 Style::MARGIN_LEFT_ATTRIBUTE_NAME,
                 Style::MARGIN_RIGHT_ATTRIBUTE_NAME
+            ), 
+            padding(
+                Style::PADDING_ATTRIBUTE_NAME,
+                Style::PADDING_TOP_ATTRIBUTE_NAME,
+                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                Style::PADDING_RIGHT_ATTRIBUTE_NAME
+            ),
+            gap(
+                Style::GAP_ATTRIBUTE_NAME,
+                Style::GAP_TOP_ATTRIBUTE_NAME,
+                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                Style::GAP_LEFT_ATTRIBUTE_NAME,
+                Style::GAP_RIGHT_ATTRIBUTE_NAME
             ),
             backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
             foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
             font(StyleFont()),
+            letterSpacing(0.0f),
             m_properties({}),
             m_parent(nullptr)
         {}
@@ -150,7 +169,7 @@ namespace Chicane
             return !m_properties.empty();
         }
 
-        void Style::setProperties(const StyleProperties& inProperties)
+        void Style::setProperties(const StyleSource::Map& inProperties)
         {
             for (const auto& [name, value] : inProperties)
             {
@@ -180,13 +199,18 @@ namespace Chicane
         void Style::refresh()
         {
             refreshDisplay();
+            refreshFlex();
+            refreshZIndex();
             refreshSize();
             refreshPosition();
             refreshMargin();
+            refreshPadding();
+            refreshGap();
             refreshAlignment();
             refreshForegroundColor();
             refreshBackgroundColor();
             refreshFont();
+            refreshLetterSpacing();
         }
 
         void Style::refreshDisplay()
@@ -212,6 +236,34 @@ namespace Chicane
             {
                 setProperty(display, StyleDisplay::Hidden);
             }
+        }
+
+        void Style::refreshFlex()
+        {
+            if (m_properties.find(FLEX_DIRECTION_ATTRIBUTE_NAME) != m_properties.end())
+            {
+                const String value = parseText(m_properties.at(FLEX_DIRECTION_ATTRIBUTE_NAME));
+
+                if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
+                {
+                    setProperty(flex.direction, StyleFlex::Direction::Column);
+                }
+
+                if (value.equals(FLEX_DIRECTION_TYPE_ROW))
+                {
+                    setProperty(flex.direction, StyleFlex::Direction::Row);
+                }
+            }
+        }
+
+        void Style::refreshZIndex()
+        {
+            if (m_properties.find(Z_INDEX_ATTRIBUTE_NAME) == m_properties.end())
+            {
+                return;
+            }
+
+            setProperty(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshSize()
@@ -293,6 +345,42 @@ namespace Chicane
             emmitChanges();
         }
 
+        void Style::refreshPadding()
+        {
+            if (
+                !padding.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    {
+                        return parseSize(inValue, inDirection);
+                    }
+                )
+            )
+            {
+                return;
+            }
+
+            emmitChanges();
+        }
+
+        void Style::refreshGap()
+        {
+            if (
+                !gap.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    {
+                        return parseSize(inValue, inDirection);
+                    }
+                )
+            )
+            {
+                return;
+            }
+
+            emmitChanges();
+        }
+
         void Style::refreshForegroundColor()
         {
             if (m_properties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
@@ -354,6 +442,19 @@ namespace Chicane
             }
         }
 
+        void Style::refreshLetterSpacing()
+        {
+            if (m_properties.find(LETTER_SPACING_ATTRIBUTE_NAME) == m_properties.end())
+            {
+                return;
+            }
+
+            setProperty(
+                letterSpacing,
+                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+            );
+        }
+
         Color::Rgba Style::parseColor(const String& inValue) const
         {
             String result = "";
@@ -379,7 +480,7 @@ namespace Chicane
 
                 for (const String& param : params)
                 {
-                    result.append(parseText(param));
+                    result.append(parseText(param.trim()));
                     result.append(",");
                 }
 
@@ -410,6 +511,11 @@ namespace Chicane
             if (value.equals(AUTO_SIZE_UNIT))
             {
                 return parsePercentage("100%", inDirection);
+            }
+
+            if (value.endsWith(EM_SIZE_UNIT))
+            {
+                return parseEM(value);
             }
 
             if (value.endsWith(PERCENTAGE_SIZE_UNIT))
@@ -519,6 +625,22 @@ namespace Chicane
             }
 
             return 0.0f;
+        }
+
+
+        float Style::parseEM(const String& inValue) const
+        {
+            if (!inValue.endsWith(EM_SIZE_UNIT))
+            {
+                return 0.0f;
+            }
+
+            return parseEM(parseNumber(inValue, EM_SIZE_UNIT));
+        }
+
+        float Style::parseEM(float inValue) const
+        {
+            return inValue * StyleFont::BASE_SIZE;
         }
 
         float Style::parsePercentage(const String& inValue, StyleDirection inDirection) const

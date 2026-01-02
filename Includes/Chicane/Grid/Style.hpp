@@ -28,6 +28,7 @@ namespace Chicane
             // Size units
             static inline constexpr const char* AUTO_SIZE_UNIT            = "auto";
             static inline constexpr const char* PIXEL_SIZE_UNIT           = "px";
+            static inline constexpr const char* EM_SIZE_UNIT              = "em";
             static inline constexpr const char* PERCENTAGE_SIZE_UNIT      = "%";
             static inline constexpr const char* VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
             static inline constexpr const char* VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
@@ -68,6 +69,9 @@ namespace Chicane
             static inline constexpr const char* DISPLAY_TYPE_HIDDEN    = "hidden";
             static inline constexpr const char* DISPLAY_TYPE_NONE      = "none";
 
+            // Z-Index
+            static inline constexpr const char* Z_INDEX_ATTRIBUTE_NAME = "z-index";
+
             // Flex
             static inline constexpr const char* FLEX_DIRECTION_ATTRIBUTE_NAME = "flex-direction";
             static inline constexpr const char* FLEX_DIRECTION_TYPE_ROW       = "row";
@@ -99,6 +103,8 @@ namespace Chicane
             static inline constexpr const char* FONT_SIZE_ATTRIBUTE_NAME = "font-size";
             static inline constexpr const char* FONT_SIZE_DEFAULT_VALUE  = "16px";
 
+            static inline constexpr const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
+
             /*
             * Template 1: "`SINGLE_MARGIN`"
             * Template 2: "`VERTICAL_MARGIN` `HORIZONTAL_MARGIN`"
@@ -110,6 +116,18 @@ namespace Chicane
             static inline constexpr const char* MARGIN_BOTTOM_ATTRIBUTE_NAME = "margin-bottom";
             static inline constexpr const char* MARGIN_LEFT_ATTRIBUTE_NAME   = "margin-left";
             static inline constexpr const char* MARGIN_RIGHT_ATTRIBUTE_NAME  = "margin-right";
+
+            /*
+            * Template 1: "`SINGLE_PADDING`"
+            * Template 2: "`VERTICAL_PADDING` `HORIZONTAL_PADDING`"
+            * Template 3: "`TOP_PADDING` `BOTTOM_PADDING` `HORIZONTAL_PADDING`"
+            * Template 4: "`TOP_PADDING` `RIGHT_PADDING` `BOTTOM_PADDING` `LEFT_PADDING`"
+            */
+            static inline constexpr const char* PADDING_ATTRIBUTE_NAME        = "padding";
+            static inline constexpr const char* PADDING_TOP_ATTRIBUTE_NAME    = "padding-top";
+            static inline constexpr const char* PADDING_BOTTOM_ATTRIBUTE_NAME = "padding-bottom";
+            static inline constexpr const char* PADDING_LEFT_ATTRIBUTE_NAME   = "padding-left";
+            static inline constexpr const char* PADDING_RIGHT_ATTRIBUTE_NAME  = "padding-right";
 
             /*
             * Template 1: "`SINGLE_GAP`"
@@ -137,10 +155,10 @@ namespace Chicane
             static StyleSource::List parseSources(const FileSystem::Path& inPath);
             static StyleSource::List parseSources(const String& inData);
 
-            static StyleProperties parseSource(const String& inData);
+            static StyleSource::Map parseSource(const String& inData);
 
         public:
-            Style(const StyleProperties& inProperties, Component* inParent);
+            Style(const StyleSource::Map& inProperties, Component* inParent);
             Style();
 
         public:
@@ -148,7 +166,7 @@ namespace Chicane
             bool isPosition(StylePosition inValue) const;
 
             bool hasProperties() const;
-            void setProperties(const StyleProperties& inProperties);
+            void setProperties(const StyleSource::Map& inProperties);
 
             bool hasParent() const;
             void setParent(Component* inComponent);
@@ -157,19 +175,27 @@ namespace Chicane
 
         private:
             void refreshDisplay();
+            void refreshFlex();
+            void refreshZIndex();
             void refreshSize();
             void refreshPosition();
             void refreshAlignment();
             void refreshMargin();
+            void refreshPadding();
+            void refreshGap();
             void refreshForegroundColor();
             void refreshBackgroundColor();
             void refreshFont();
+            void refreshLetterSpacing();
 
             Color::Rgba parseColor(const String& inValue) const;
             float parseSize(const String& inValue, StyleDirection inDirection) const;
             String parseText(const String& inValue) const;
 
             float parseCalculation(const String& inValue, StyleDirection inDirection) const;
+
+            float parseEM(const String& inValue) const;
+            float parseEM(float inValue) const;
 
             float parsePercentage(const String& inValue, StyleDirection inDirection) const;
             float parsePercentage(float inValue, StyleDirection inDirection) const;
@@ -188,6 +214,7 @@ namespace Chicane
         public:
             // Visiblity
             StyleDisplay     display;
+            float            zIndex; // [0.0f, 999.9f]
 
             // Size
             float            width;
@@ -201,6 +228,8 @@ namespace Chicane
             StyleAlignment   align;
             StyleAlignment   justify;
             StyleCorners     margin;
+            StyleCorners     padding;
+            StyleCorners     gap;
 
             // Color
             Color::Rgba      backgroundColor;
@@ -208,9 +237,10 @@ namespace Chicane
 
             // Text
             StyleFont        font;
+            float            letterSpacing;
 
         private:
-            StyleProperties  m_properties;
+            StyleSource::Map m_properties;
 
             Component*       m_parent;
         };

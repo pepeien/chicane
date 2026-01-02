@@ -7,7 +7,7 @@
 
 namespace Chicane
 {
-    struct CHICANE_CORE TransformCombined : protected Transform
+    struct CHICANE_CORE SpatialTransform : protected Transform
     {
     public:
         // Transformation
@@ -18,6 +18,7 @@ namespace Chicane
         const Vec3& getScale() const;
 
         const Transform& getRelativeTransform() const;
+        void addRelativeTransform(const Transform& inTransform);
         void setRelativeTransform(const Transform& inTransform);
 
         const Vec3& getRelativeTranslation() const;
@@ -33,6 +34,7 @@ namespace Chicane
         void setRelativeScale(const Vec3& inScale);
 
         const Transform& getAbsoluteTransform() const;
+        void addAbsoluteTransform(const Transform& inTransform);
         void setAbsoluteTransform(const Transform& inTransform);
 
         const Vec3& getAbsoluteTranslation() const;

@@ -1,7 +1,8 @@
 #version 450
 
 struct MeshData {
-    mat4 matrix;
+    mat4 modelMatrix;
+    mat4 boundsMatrix;
     uint textureIndex;
 };
 
@@ -64,11 +65,11 @@ void main() {
 
     outTextureIndex   = mesh.textureIndex;
     outUV             = inUV;
-    outNormal         = mat3(mesh.matrix) * inNormal;
+    outNormal         = mat3(mesh.modelMatrix) * inNormal;
     outColor          = inColor;
     outViewPosition   = -inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.viewProjection * mesh.matrix) * position;
+    outShadowPosition = (biasMat * light.viewProjection * mesh.modelMatrix) * position;
 
-    gl_Position = camera.viewProjection * mesh.matrix * position;
+    gl_Position = camera.viewProjection * mesh.modelMatrix * position;
 }

@@ -34,7 +34,7 @@ namespace Chicane
             const String& getPath() const;
 
         protected:
-            String              m_path;
+            String            m_path;
 
             StyleSource::List m_styles;
         };

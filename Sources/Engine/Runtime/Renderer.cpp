@@ -11,6 +11,7 @@ namespace Chicane
     Renderer::Renderer()
         : m_size(Vec2::Zero),
         m_position(Vec2::Zero),
+        m_window(nullptr),
         m_layers({}),
         m_cameras({}),
         m_lights({}),
@@ -21,8 +22,13 @@ namespace Chicane
 
     bool Renderer::canRender() const
     {
-        for (RendererLayer* layer : m_layers)
+        for (const RendererLayer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             if (!layer->is(RendererLayerStatus::Running))
             {
                 continue;
@@ -34,10 +40,11 @@ namespace Chicane
         return false;
     }
 
-    void Renderer::init(const RendererCreateInfo& inCreateInfo)
+    void Renderer::init(Window* inWindow)
     {
-        setSize(inCreateInfo.resolution);
-        setPosition(inCreateInfo.position);
+        setSize(Vec2::Zero);
+        setPosition(Vec2::Zero);
+        setWindow(inWindow);
 
         onInit();
     }
@@ -108,143 +115,35 @@ namespace Chicane
         onRepositioning();
     }
 
-    bool Renderer::hasLayer(RendererLayer* inLayer) const
+    Window* Renderer::getWindow() const
     {
-        if (!inLayer)
-        {
-            return false;
-        }
-
-        return hasLayer(inLayer->getId());
+        return m_window;
     }
 
-    bool Renderer::hasLayer(const String& inId) const
+    void Renderer::setWindow(Window* inWindow)
     {
-        return std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        ) != m_layers.end();
+        if (inWindow == m_window)
+        {
+            return;
+        }
+
+        m_window = inWindow;
     }
 
-    void Renderer::pushLayerStart(RendererLayer* inLayer)
+    const std::vector<CMesh*>& Renderer::getMeshes() const
     {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        m_layers.insert(m_layers.begin(), inLayer);
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayer(
-        RendererLayer* inLayer,
-        RendererLayerPushStrategy inPushStrategy,
-        const String& inId
-    )
-    {
-        if (!inLayer)
-        {
-            return;
-        }
-
-        switch (inPushStrategy)
-        {
-        case RendererLayerPushStrategy::Front:
-            pushLayerStart(inLayer);
-
-            return;
-
-        case RendererLayerPushStrategy::BeforeLayer:
-            pushLayerBefore(
-                inId,
-                inLayer
-            );
-
-            return;
-
-        case RendererLayerPushStrategy::AfterLayer:
-            pushLayerAfter(
-                inId,
-                inLayer
-            );
-
-            return;
-
-        default:
-            pushLayerBack(inLayer);
-
-            return;
-        }
-    }
-
-    void Renderer::pushLayerBack(RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        m_layers.push_back(inLayer);
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayerBefore(const String& inId, RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        auto foundLayer = std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        );
-
-        if (foundLayer == m_layers.end())
-        {
-            return;
-        }
-
-        m_layers.insert(
-            foundLayer,
-            inLayer
-        );
-
-        inLayer->init();
-    }
-
-    void Renderer::pushLayerAfter(const String& inId, RendererLayer* inLayer)
-    {
-        if (hasLayer(inLayer))
-        {
-            return;
-        }
-
-        auto foundLayer = std::find_if(
-            m_layers.begin(),
-            m_layers.end(),
-            [inId](RendererLayer* _) { return _->getId() == inId; }
-        );
-
-        if (foundLayer == m_layers.end())
-        {
-            return;
-        }
-
-        m_layers.insert(foundLayer + 1, inLayer);
-
-        inLayer->init();
+        return m_meshes;
     }
 
     void Renderer::setupLayers()
     {
         for (RendererLayer* layer : m_layers)
         {
+            if (!layer)
+            {
+                continue;
+            }
+
             layer->setup();
         }
     }
@@ -323,16 +222,22 @@ namespace Chicane
                             if (component->isType<CCamera>())
                             {
                                 m_cameras.push_back(static_cast<CCamera*>(component));
-                            }
 
-                            if (component->isType<CLight>())
-                            {
-                                m_lights.push_back(static_cast<CLight*>(component));
+                                continue;
                             }
 
                             if (component->isType<CMesh>())
                             {
                                 m_meshes.push_back(static_cast<CMesh*>(component));
+
+                                continue;
+                            }
+
+                            if (component->isType<CLight>())
+                            {
+                                m_lights.push_back(static_cast<CLight*>(component));
+
+                                continue;
                             }
                         }
 

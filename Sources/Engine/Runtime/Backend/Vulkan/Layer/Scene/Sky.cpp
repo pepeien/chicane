@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Backend/Vulkan/Layer/Sky.hpp"
+#include "Chicane/Runtime/Backend/Vulkan/Layer/Scene/Sky.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Scene.hpp"
@@ -8,8 +8,8 @@ namespace Chicane
 {
     namespace Vulkan
     {
-        LSky::LSky()
-            : Super("Engine_Sky"),
+        LSceneSky::LSceneSky()
+            : Super("Engine_Scene_Sky"),
             m_internals(Application::getRenderer<Renderer>()->getInternals()),
             m_graphicsPipeline(nullptr),
             m_frameDescriptor({}),
@@ -22,12 +22,12 @@ namespace Chicane
             m_modelManager(Box::getModelManager()),
             m_textureManager(Box::getTextureManager())
         {
-            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f));
+            m_clearValues.push_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
 
             loadEvents();
         }
 
-        LSky::~LSky()
+        LSceneSky::~LSceneSky()
         {
             m_internals.logicalDevice.waitIdle();
 
@@ -37,7 +37,7 @@ namespace Chicane
             m_graphicsPipeline.reset();
         }
 
-        bool LSky::onInit()
+        bool LSceneSky::onInit()
         {
             if (!m_asset)
             {
@@ -56,14 +56,14 @@ namespace Chicane
             return true;
         }
 
-        bool LSky::onDestroy()
+        bool LSceneSky::onDestroy()
         {
             destroyFrameResources();
 
             return true;
         }
 
-        bool LSky::onRebuild()
+        bool LSceneSky::onRebuild()
         {
             if (!m_asset)
             {
@@ -76,7 +76,7 @@ namespace Chicane
             return true;
         }
 
-        void LSky::onRender(void* outData)
+        void LSceneSky::onRender(void* outData)
         {
             if (!is(RendererLayerStatus::Running))
             {
@@ -133,7 +133,7 @@ namespace Chicane
             commandBuffer.endRenderPass();
         }
 
-        void LSky::loadEvents()
+        void LSceneSky::loadEvents()
         {
             if (!is(RendererLayerStatus::Offline))
             {
@@ -178,7 +178,7 @@ namespace Chicane
             );
         }
 
-        void LSky::initFrameResources()
+        void LSceneSky::initFrameResources()
         {
             if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
@@ -234,7 +234,7 @@ namespace Chicane
             }
         }
 
-        void LSky::destroyFrameResources()
+        void LSceneSky::destroyFrameResources()
         {
             m_internals.logicalDevice.destroyDescriptorSetLayout(
                 m_frameDescriptor.setLayout
@@ -244,7 +244,7 @@ namespace Chicane
             );
         }
 
-        void LSky::initTextureResources()
+        void LSceneSky::initTextureResources()
         {
             if (!is(RendererLayerStatus::Offline))
             {
@@ -277,7 +277,7 @@ namespace Chicane
             );
         }
 
-        void LSky::destroyTextureResources()
+        void LSceneSky::destroyTextureResources()
         {
             m_internals.logicalDevice.destroyDescriptorSetLayout(
                 m_textureDescriptor.setLayout
@@ -287,7 +287,7 @@ namespace Chicane
             );
         }
 
-        void LSky::initGraphicsPipeline()
+        void LSceneSky::initGraphicsPipeline()
         {
             if (!is(RendererLayerStatus::Offline))
             {
@@ -295,11 +295,11 @@ namespace Chicane
             }
 
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path = "Contents/Engine/Shaders/Vulkan/sky.vert.spv";
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/sky.frag.spv";
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.frag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};
@@ -334,7 +334,7 @@ namespace Chicane
             m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
-        void LSky::initFramebuffers()
+        void LSceneSky::initFramebuffers()
         {
             if (!is(RendererLayerStatus::Offline) && !is(RendererLayerStatus::Initialized))
             {
@@ -354,7 +354,7 @@ namespace Chicane
             }
         }
 
-        void LSky::buildTextureData()
+        void LSceneSky::buildTextureData()
         {
             if (!m_asset)
             {
@@ -388,7 +388,7 @@ namespace Chicane
             m_sky = std::make_unique<Sky::Instance>(createInfo);
         }
 
-        void LSky::buildModelVertexBuffer()
+        void LSceneSky::buildModelVertexBuffer()
         {
             if (!m_asset)
             {
@@ -429,7 +429,7 @@ namespace Chicane
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LSky::buildModelIndexBuffer()
+        void LSceneSky::buildModelIndexBuffer()
         {
             if (!m_asset)
             {
@@ -472,13 +472,13 @@ namespace Chicane
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LSky::buildModelData()
+        void LSceneSky::buildModelData()
         {
             buildModelVertexBuffer();
             buildModelIndexBuffer();
         }
 
-        void LSky::destroyModelData()
+        void LSceneSky::destroyModelData()
         {
             m_internals.logicalDevice.waitIdle();
 
@@ -486,7 +486,7 @@ namespace Chicane
             m_modelIndexBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LSky::rebuildModelData()
+        void LSceneSky::rebuildModelData()
         {
             destroyModelData();
             buildModelData();

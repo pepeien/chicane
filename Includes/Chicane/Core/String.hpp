@@ -171,6 +171,12 @@ namespace Chicane
         std::size_t lastOf(char inValue) const;
         std::size_t lastOf(const String& inValue) const;
 
+        String filter(char inValue) const;
+        String filter(const String& inValue) const;
+
+        std::size_t find(char inValue) const;
+        std::size_t find(const String& inValue) const;
+
         std::vector<String> split(char inDelimeter) const;
         std::vector<String> split(const String& inDelimeter) const;
 

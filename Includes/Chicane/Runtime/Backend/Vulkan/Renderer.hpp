@@ -58,6 +58,7 @@ namespace Chicane
             void rebuildFrames();
             void setupFrame(Frame::Instance& outFrame);
 
+            void buildLayers();
             void setupLayers();
             void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 

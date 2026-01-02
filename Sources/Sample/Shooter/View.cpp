@@ -12,7 +12,7 @@ View::View()
     m_uiVictoryVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_victoryVisibility)),
     m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
     m_uiCrosshairDotVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_crosshairDotVisibility)),
-    m_crosshairSize(1.35f),
+    m_crosshairSize(1.0f),
     m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
     m_crosshairThickness(0.25f),
     m_uiCrosshairThickness(Chicane::Reference::fromValue<float>(&m_crosshairThickness)),

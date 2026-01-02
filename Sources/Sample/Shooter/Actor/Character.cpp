@@ -4,6 +4,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Application.hpp"
 #include "Game.hpp"
+#include "Level.hpp"
 
 static inline constexpr const float MOVE_COEFFICIENT = 3.0f;
 
@@ -101,6 +102,45 @@ void Character::onControlAttachment()
         Chicane::Input::KeyboardButton::Space,
         Chicane::Input::Status::Pressed,
         std::bind(&Character::onJump, this)
+    );
+
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F1,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            m_camera->activate();
+
+            static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F2,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
+
+            m_camera->deactivate();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F3,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
+
+            m_camera->deactivate();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F4,
+        Chicane::Input::Status::Pressed,
+        []()
+        {
+            static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera();
+        }
     );
 
     // Gamepad
