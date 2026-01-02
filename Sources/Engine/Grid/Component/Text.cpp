@@ -16,7 +16,6 @@ namespace Chicane
                 {
                     { Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX },
                     { Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW },
-                    { Style::GAP_ATTRIBUTE_NAME,            "2px" },
                     { Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT },
                     { Style::HEIGHT_ATTRIBUTE_NAME,         Style::AUTO_SIZE_UNIT }
                 }

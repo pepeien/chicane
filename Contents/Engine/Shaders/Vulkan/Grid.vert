@@ -16,7 +16,7 @@ layout(push_constant) uniform constants
 } PushConstants;
 
 void main() {
-    vec2 position = PushConstants.position / PushConstants.screen;
+    vec2 position = (PushConstants.position + (PushConstants.size * 0.5)) / PushConstants.screen;
     position *= 2.0;
     position -= 1.0;
     position += inPosition.xy * (PushConstants.size / PushConstants.screen);

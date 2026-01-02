@@ -28,6 +28,7 @@ namespace Chicane
             // Size units
             static inline constexpr const char* AUTO_SIZE_UNIT            = "auto";
             static inline constexpr const char* PIXEL_SIZE_UNIT           = "px";
+            static inline constexpr const char* EM_SIZE_UNIT              = "em";
             static inline constexpr const char* PERCENTAGE_SIZE_UNIT      = "%";
             static inline constexpr const char* VIEWPORT_HEIGHT_SIZE_UNIT = "vh";
             static inline constexpr const char* VIEWPORT_WIDTH_SIZE_UNIT  = "vw";
@@ -189,6 +190,9 @@ namespace Chicane
             String parseText(const String& inValue) const;
 
             float parseCalculation(const String& inValue, StyleDirection inDirection) const;
+
+            float parseEM(const String& inValue) const;
+            float parseEM(float inValue) const;
 
             float parsePercentage(const String& inValue, StyleDirection inDirection) const;
             float parsePercentage(float inValue, StyleDirection inDirection) const;

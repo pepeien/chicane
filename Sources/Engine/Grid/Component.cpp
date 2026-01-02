@@ -593,7 +593,7 @@ namespace Chicane
 
         void Component::refreshPosition()
         {
-            setCursor(0.0f, 0.0f);
+            setPosition(0.0f, 0.0f);
 
             Vec2 margin = Vec2(
                 m_style.margin.left == m_style.margin.right  ? m_style.margin.left : (m_style.margin.left - m_style.margin.right),
@@ -614,10 +614,11 @@ namespace Chicane
             const Style& parentStyle = m_parent->getStyle();
             const Vec2& parentCursor = m_parent->getCursor();
 
-            const Vec2 addedSpacing  = margin + padding + (m_size * 0.5f);
+            const Vec2 addedSpacing  = margin;
             const Vec2 occupiedSpace = m_size + margin;
 
             setPosition(parentCursor + addedSpacing);
+            addCursor(padding);
 
             if (parentStyle.isDisplay(StyleDisplay::Flex))
             {

@@ -495,6 +495,11 @@ namespace Chicane
                 return parsePercentage("100%", inDirection);
             }
 
+            if (value.endsWith(EM_SIZE_UNIT))
+            {
+                return parseEM(value);
+            }
+
             if (value.endsWith(PERCENTAGE_SIZE_UNIT))
             {
                 return parsePercentage(value, inDirection);
@@ -602,6 +607,22 @@ namespace Chicane
             }
 
             return 0.0f;
+        }
+
+
+        float Style::parseEM(const String& inValue) const
+        {
+            if (!inValue.endsWith(EM_SIZE_UNIT))
+            {
+                return 0.0f;
+            }
+
+            return parseEM(parseNumber(inValue, EM_SIZE_UNIT));
+        }
+
+        float Style::parseEM(float inValue) const
+        {
+            return inValue * StyleFont::BASE_SIZE;
         }
 
         float Style::parsePercentage(const String& inValue, StyleDirection inDirection) const

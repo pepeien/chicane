@@ -116,7 +116,12 @@ namespace Chicane
                 return g_colors.at(color);
             }
 
-            return g_colors.at(HEX_COLOR_TRANSPARENT);
+            if (g_colors.find(inValue) == g_colors.end())
+            {
+                return g_colors.at(HEX_COLOR_TRANSPARENT);
+            }
+
+            return g_colors.at(inValue);
         }
     }
 }

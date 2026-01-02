@@ -9,9 +9,10 @@
 
 .fps, .frametime {
     width: 100%;
-    height: 5vh;
+    height: 1.2em;
     color: #24f51d;
     z-index: 999;
+    padding-top: 0.6em;
 }
 
 .crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
@@ -31,27 +32,35 @@
 
 .crosshair__dot {
     display: var(crosshairGapDisplay);
-    margin: 50% 0 0 50%;
+    margin: 50% calc(var(crosshairThickness)vh * 0.5) calc(var(crosshairThickness)vh * 0.5) 50%;
     height: var(crosshairThickness)vh;
     width: var(crosshairThickness)vh;
 }
 
 .crosshair__top {
-    margin-top: calc(50% - calc(var(crosshairGap)vh + var(crosshairThickness)vh));
-    margin-left: 50%;
+    margin-top:    50%;
+    margin-right:  calc(var(crosshairThickness)vh * 0.5);
+    margin-bottom: calc(var(crosshairGap)vh + var(crosshairSize)vh);
+    margin-left:   50%;
 }
 
 .crosshair__bottom {
-    margin-top: calc(50% + calc(var(crosshairGap)vh + var(crosshairThickness)vh));
-    margin-left: 50%;
+    margin-top:    calc(50% + var(crosshairGap)vh);
+    margin-right:  calc(var(crosshairThickness)vh * 0.5);
+    margin-bottom: 0;
+    margin-left:   50%;
 }
 
 .crosshair__left {
-    margin-top: 50%;
-    margin-left: calc(50% - calc(var(crosshairGap)vh + var(crosshairThickness)vh));
+    margin-top:    50%;
+    margin-right:  calc(var(crosshairGap)vh + var(crosshairSize)vh);
+    margin-bottom: calc(var(crosshairThickness)vh * 0.5);
+    margin-left:   50%;
 }
 
 .crosshair__right {
-    margin-top: 50%;
-    margin-left: calc(50% + calc(var(crosshairGap)vh + var(crosshairThickness)vh));
+    margin-top:    50%;
+    margin-right:  0;
+    margin-bottom: calc(var(crosshairThickness)vh * 0.5);
+    margin-left:   calc(50% + var(crosshairGap)vh);
 }
