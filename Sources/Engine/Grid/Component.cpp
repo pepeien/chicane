@@ -66,6 +66,12 @@ namespace Chicane
         void Component::refresh()
         {
             refreshStyle();
+
+            if (!isVisible())
+            {
+                return;
+            }
+
             refreshSize();
             refreshPosition();
             refreshPrimitive();
