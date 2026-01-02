@@ -2,8 +2,6 @@
 
 #include "Chicane/Grid.hpp"
 
-#include "Chicane/Grid/Component/Text.hpp"
-
 namespace Chicane
 {
     namespace Grid
@@ -273,7 +271,7 @@ namespace Chicane
 
         bool Component::hasFunction(const String& inId, bool isLocalOnly) const
         {
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
+            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
             const bool bHasLocally = m_functions.find(id) != m_functions.end() &&
                                      m_functions.at(id) && m_functions.at(id) != nullptr;
@@ -288,7 +286,7 @@ namespace Chicane
 
         const Function Component::getFunction(const String& inId) const
         {
-            const String id = inId.split(FUNCTION_PARAMS_OPENING).front();
+            const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
             if (!hasParent() || isRoot())
             {
@@ -738,7 +736,7 @@ namespace Chicane
             FunctionData data = {};
             data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
 
-            for (String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
+            for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {
                 data.params.push_back(parseReference(value.trim()));
             }

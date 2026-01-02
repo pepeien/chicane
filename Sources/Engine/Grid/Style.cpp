@@ -32,7 +32,7 @@ namespace Chicane
             return parseSources(FileSystem::readString(inFilePath));
         }
 
-        StyleSource::List Style::parseSources(const String &inData)
+        StyleSource::List Style::parseSources(const String& inData)
         {
             String data = inData;
             data.erase(
@@ -56,34 +56,37 @@ namespace Chicane
 
             StyleSource::List result = {};
 
-            for (const String &style : styles)
+            for (const String& style : styles)
             {
-                const std::vector<String> splittedStyle = style.split('{');
+                const std::vector<String> splittedStyle = style.trim().split('{');
 
                 if (splittedStyle.size() < 2)
                 {
                     continue;
                 }
 
-                const String& selector = splittedStyle.at(0);
-                result.emplace_back(
-                    selector.split(Style::SELECTOR_SEPARATOR),
-                    parseSource(splittedStyle.at(1))
-                );
+                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
+
+                for (String& selector : selectors)
+                {
+                    selector = selector.trim();
+                }
+
+                result.emplace_back(selectors, parseSource(splittedStyle.at(1).trim()));
             }
 
             return result;
         }
 
-        StyleSource::Map Style::parseSource(const String &inData)
+        StyleSource::Map Style::parseSource(const String& inData)
         {
             std::vector<String> blocks = inData.split(';');
 
             StyleSource::Map result = {};
 
-            for (const String &block : blocks)
+            for (const String& block : blocks)
             {
-                const std::vector<String> splittedBlock = block.split(':');
+                const std::vector<String> splittedBlock = block.trim().split(':');
 
                 if (splittedBlock.size() < 2)
                 {
@@ -146,6 +149,7 @@ namespace Chicane
             backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
             foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
             font(StyleFont()),
+            letterSpacing(0.0f),
             m_properties({}),
             m_parent(nullptr)
         {}
@@ -206,6 +210,7 @@ namespace Chicane
             refreshForegroundColor();
             refreshBackgroundColor();
             refreshFont();
+            refreshLetterSpacing();
         }
 
         void Style::refreshDisplay()
@@ -437,6 +442,19 @@ namespace Chicane
             }
         }
 
+        void Style::refreshLetterSpacing()
+        {
+            if (m_properties.find(LETTER_SPACING_ATTRIBUTE_NAME) == m_properties.end())
+            {
+                return;
+            }
+
+            setProperty(
+                letterSpacing,
+                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+            );
+        }
+
         Color::Rgba Style::parseColor(const String& inValue) const
         {
             String result = "";
@@ -462,7 +480,7 @@ namespace Chicane
 
                 for (const String& param : params)
                 {
-                    result.append(parseText(param));
+                    result.append(parseText(param.trim()));
                     result.append(",");
                 }
 

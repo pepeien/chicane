@@ -31,6 +31,8 @@ namespace Chicane
             }
 
         public:
+            void setAll(float inValue);
+
             bool refresh(
                 const StyleSource::Map &inSource,
                 std::function<float (const String&, StyleDirection)> inCalculator

@@ -103,6 +103,8 @@ namespace Chicane
             static inline constexpr const char* FONT_SIZE_ATTRIBUTE_NAME = "font-size";
             static inline constexpr const char* FONT_SIZE_DEFAULT_VALUE  = "16px";
 
+            static inline constexpr const char* LETTER_SPACING_ATTRIBUTE_NAME = "letter-spacing";
+
             /*
             * Template 1: "`SINGLE_MARGIN`"
             * Template 2: "`VERTICAL_MARGIN` `HORIZONTAL_MARGIN`"
@@ -184,6 +186,7 @@ namespace Chicane
             void refreshForegroundColor();
             void refreshBackgroundColor();
             void refreshFont();
+            void refreshLetterSpacing();
 
             Color::Rgba parseColor(const String& inValue) const;
             float parseSize(const String& inValue, StyleDirection inDirection) const;
@@ -234,6 +237,7 @@ namespace Chicane
 
             // Text
             StyleFont        font;
+            float            letterSpacing;
 
         private:
             StyleSource::Map m_properties;

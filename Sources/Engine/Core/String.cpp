@@ -1,7 +1,5 @@
 #include "Chicane/Core/String.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     String formatSplittedBlock(const String& inValue, const String inDelimeter)

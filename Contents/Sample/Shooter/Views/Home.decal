@@ -13,6 +13,7 @@
     color: #24f51d;
     z-index: 999;
     padding-top: 0.6em;
+    letter-spacing: 1.2em;
 }
 
 .crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {

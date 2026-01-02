@@ -1,7 +1,5 @@
 #include "Chicane/Core/Xml.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Xml

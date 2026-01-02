@@ -27,6 +27,8 @@ namespace Chicane
             Container::onRefresh();
 
             refreshText();
+
+            m_style.gap.setAll(m_style.letterSpacing);
         }
 
         const String& Text::getText() const
