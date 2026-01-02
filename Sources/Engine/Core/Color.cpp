@@ -94,7 +94,7 @@ namespace Chicane
 
                     for (const String& value : values)
                     {
-                        if (!color.isNaN())
+                        if (!value.isNaN())
                         {
                             continue;
                         }
