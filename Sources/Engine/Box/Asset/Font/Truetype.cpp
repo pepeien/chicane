@@ -108,7 +108,7 @@ namespace Chicane
                 result.units    = inGlyph->face->units_per_EM;
                 result.scale    = { inGlyph->face->size->metrics.x_scale, inGlyph->face->size->metrics.y_scale };
                 result.box      = { inGlyph->metrics.width, inGlyph->metrics.height };
-                result.line     = { inGlyph->advance.x, (inGlyph->face->ascender + inGlyph->face->descender) };
+                result.line     = { inGlyph->advance.x, (inGlyph->face->ascender - inGlyph->face->descender) };
                 result.vertices = Curve::getTriangleVertices(contours);
                 result.indices  = Curve::getTriangleIndices(contours);                
 
@@ -156,13 +156,13 @@ namespace Chicane
                     throw std::runtime_error("Failed to load the font char map");
                 }
 
-                if (FT_Set_Pixel_Sizes(face, 0, 16))
-                {
-                    FT_Done_Face(face);
-                    FT_Done_FreeType(library);
+                //if (FT_Set_Pixel_Sizes(face, 0, 16))
+                //{
+                //    FT_Done_Face(face);
+                //    FT_Done_FreeType(library);
 
-                    throw std::runtime_error("Failed to set the face pixel size");
-                }
+                //    throw std::runtime_error("Failed to set the face pixel size");
+                //}
 
                 FontParsed result = {};
                 result.name = face->family_name;
