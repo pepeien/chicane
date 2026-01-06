@@ -37,8 +37,18 @@ namespace Chicane
         );
 
         bool CHICANE_RUNTIME hasScene();
-        Scene* getScene();
         void CHICANE_RUNTIME setScene(Scene* inScene);
+        Scene* getScene();
+        template<class T>
+        T* getScene()
+        {
+            if (!hasScene())
+            {
+                return nullptr;
+            }
+
+            return static_cast<T*>(getScene());
+        }
         SceneSubscription CHICANE_RUNTIME watchScene(
             SceneSubscription::NextCallback inNext,
             SceneSubscription::ErrorCallback inError = nullptr,

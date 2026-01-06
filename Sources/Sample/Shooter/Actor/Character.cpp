@@ -17,6 +17,7 @@ Character::Character()
     m_victoryAudio(nullptr)
 {
     m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
+    m_camera->setId("First Person");
     m_camera->attachTo(this);
     m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
     m_camera->activate();

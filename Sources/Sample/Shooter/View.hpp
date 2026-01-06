@@ -21,6 +21,10 @@ private:
     Chicane::String           m_victoryVisibility;
     Chicane::Reference        m_uiVictoryVisibility;
 
+    // Camera
+    Chicane::String           m_currentCamera;
+    Chicane::Reference        m_uiCurrentCamera;
+
     // Crosshair
     Chicane::String           m_crosshairDotVisibility;
     Chicane::Reference        m_uiCrosshairDotVisibility;

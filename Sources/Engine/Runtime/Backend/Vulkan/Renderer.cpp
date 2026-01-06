@@ -106,10 +106,8 @@ namespace Chicane
 
         void Renderer::onRender()
         {
-            Frame::Instance& currentImage   = m_swapChain.frames.at(m_currentImageIndex);
+            Frame::Instance&   currentImage         = m_swapChain.frames.at(m_currentImageIndex);
             vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
-
-            currentImage.wait(m_logicalDevice);
 
             vk::ResultValue<std::uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
                 m_swapChain.instance,

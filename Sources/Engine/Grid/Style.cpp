@@ -1,5 +1,6 @@
 #include "Chicane/Grid/Style.hpp"
 
+#include "Chicane/Box/Asset/Font.hpp"
 #include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
@@ -640,7 +641,7 @@ namespace Chicane
 
         float Style::parseEM(float inValue) const
         {
-            return inValue * StyleFont::BASE_SIZE;
+            return inValue * Box::Font::BASE_SIZE;
         }
 
         float Style::parsePercentage(const String& inValue, StyleDirection inDirection) const

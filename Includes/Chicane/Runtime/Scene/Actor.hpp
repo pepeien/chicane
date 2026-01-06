@@ -30,8 +30,13 @@ namespace Chicane
         bool isCollidingWith(const Vec3& inPoint) const;
         void collideWith(const Actor* inSubject);
 
+        const String& getId() const;
+        void setId(const String& inId);
+
     protected:
-        bool m_bCanTick;
-        bool m_bCanCollide;
+        bool   m_bCanTick;
+        bool   m_bCanCollide;
+
+        String m_id;
     };
 } 
