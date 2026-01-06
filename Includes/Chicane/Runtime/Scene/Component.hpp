@@ -36,6 +36,9 @@ namespace Chicane
         void setCanTick(bool inCanTick);
         void tick(float inDeltaTime);
 
+        const String& getId() const;
+        void setId(const String& inId);
+
         bool isAttached() const;
         template<class T = Transformable>
         T* getParent() const {
@@ -46,6 +49,8 @@ namespace Chicane
     public:
         bool            m_bCanTick;
         bool            m_bIsActive;
+
+        String          m_id;
 
         Transformable*  m_parent;
         Subscription<>  m_parentSubscription;

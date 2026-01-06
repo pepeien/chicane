@@ -22,6 +22,8 @@ namespace Chicane
         protected:
             void refreshPrimitive() override;
 
+            void onRefresh() override;
+
         public:
             void disable();
 

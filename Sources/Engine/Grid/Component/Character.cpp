@@ -13,14 +13,7 @@ namespace Chicane
             : Super(TAG_ID),
             m_bCanUpdate(false),
             m_character(NULL_CHARACTER)
-        {
-            Box::getFontManager()->watchChanges(
-                [this](Box::ManagerEventType event)
-                {
-                    refreshFont();
-                }
-            );
-        }
+        {}
 
         bool Character::isDrawable() const
         {
@@ -61,6 +54,11 @@ namespace Chicane
             setPrimitive(primitive);
         }
 
+        void Character::onRefresh()
+        {
+            refreshFont();
+        }
+
         void Character::disable()
         {
             setCharacter(NULL_CHARACTER);
@@ -84,8 +82,6 @@ namespace Chicane
             }
 
             setProperty(m_character, inValue);
-
-            refreshFont();
         }
 
         bool Character::hasFont() const
@@ -130,22 +126,22 @@ namespace Chicane
             m_style.foregroundColor = parentStyle.foregroundColor;
             m_style.font            = parentStyle.font;
 
-            if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
+            if (!hasGlyph())
             {
                 return;
             }
 
             const Box::FontGlyph& glyph = getGlyph();
 
-            const float scale = (m_style.font.size / glyph.units) / 6.0f;
+            const float scale = m_style.font.size / Curve::FIXED_POINT / 2.0f;
+            const float units = (m_style.font.size / glyph.units) * 1.25f;
 
             m_style.width  = glyph.line.x * scale;
             m_style.height = glyph.line.y * scale;
 
-            //m_style.margin.left = glyph.box.x * scale;
+            m_style.margin.top = glyph.box.y * units;
 
-            //m_style.padding.left = glyph.box.x * scale;
-            //m_style.padding.top  = glyph.line.y * scale;
+            m_parent->addCursor(glyph.box.x * units, 0.0f);
 
             m_bCanUpdate = true;
         }

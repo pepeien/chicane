@@ -5,7 +5,8 @@ namespace Chicane
     Actor::Actor()
         : Transformable(),
         m_bCanCollide(false),
-        m_bCanTick(false)
+        m_bCanTick(false),
+        m_id("")
     {}
 
     bool Actor::canTick() const
@@ -66,5 +67,15 @@ namespace Chicane
         }
 
         onCollision(inSubject);
+    }
+
+    const String& Actor::getId() const
+    {
+        return m_id;
+    }
+
+    void Actor::setId(const String& inId)
+    {
+        m_id = inId;
     }
 }

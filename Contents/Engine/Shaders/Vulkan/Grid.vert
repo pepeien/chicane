@@ -16,14 +16,21 @@ layout(push_constant) uniform constants
 } PushConstants;
 
 void main() {
-    vec2 position = (PushConstants.position + (PushConstants.size * 0.5)) / PushConstants.screen;
-    position *= 2.0;
-    position -= 1.0;
-    position += inPosition.xy * (PushConstants.size / PushConstants.screen);
+    vec2 vertex = inPosition.xy;
+    vertex *= PushConstants.size;   // Scale vertex to UI size
+    vertex /= PushConstants.screen; // Normalize to screen size
 
-    const float zIndex = clamp(abs((PushConstants.zIndex / 999.9) - 1.0), 0.0, 0.9999);
+    vec2 position = PushConstants.position;
+    position += PushConstants.size * 0.5; // Account for component offset
+    position /= PushConstants.screen;     // Normalize to screen size
+    position *= 2.0;                      // Normalize to NDC
+    position -= 1.0;                      // Normalize to NDC
+
+    float zIndex = PushConstants.zIndex / 999.9;
+    zIndex = abs(zIndex - 1.0);
+    zIndex = clamp(zIndex, 0.0, 0.9999);
 
     outColor = inColor / 255.0;
 
-    gl_Position  = vec4(position, zIndex, 1.0);
+    gl_Position  = vec4(vertex + position, zIndex, 1.0);
 }

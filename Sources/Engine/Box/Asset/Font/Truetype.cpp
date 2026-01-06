@@ -5,6 +5,7 @@
 #include FT_OUTLINE_H
 
 #include "Chicane/Box/Asset.hpp"
+#include "Chicane/Box/Asset/Font.hpp"
 
 namespace Chicane
 {
@@ -106,9 +107,8 @@ namespace Chicane
                 FontGlyph result = {};
                 result.code     = inCode;
                 result.units    = inGlyph->face->units_per_EM;
-                result.scale    = { inGlyph->face->size->metrics.x_scale, inGlyph->face->size->metrics.y_scale };
-                result.box      = { inGlyph->metrics.width, inGlyph->metrics.height };
-                result.line     = { inGlyph->advance.x, (inGlyph->face->ascender + inGlyph->face->descender) };
+                result.box      = { inGlyph->advance.x, inGlyph->face->ascender + inGlyph->face->descender };
+                result.line     = { inGlyph->face->size->metrics.x_ppem, inGlyph->face->size->metrics.y_ppem };
                 result.vertices = Curve::getTriangleVertices(contours);
                 result.indices  = Curve::getTriangleIndices(contours);                
 
@@ -156,7 +156,7 @@ namespace Chicane
                     throw std::runtime_error("Failed to load the font char map");
                 }
 
-                if (FT_Set_Pixel_Sizes(face, 0, 16))
+                if (FT_Set_Pixel_Sizes(face, 0, Font::BASE_SIZE))
                 {
                     FT_Done_Face(face);
                     FT_Done_FreeType(library);
@@ -171,7 +171,7 @@ namespace Chicane
                 FT_ULong code = FT_Get_First_Char(face, &glyphIndex);
                 while (glyphIndex != 0)
                 {
-                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING) == 0)
+                    if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP) == 0)
                     {
                         result.glyphs.emplace(code, parseGlyph(code, face->glyph));
                     }

@@ -8,6 +8,7 @@ namespace Chicane
         : Transformable(),
         m_bCanTick(true),
         m_bIsActive(false),
+        m_id(""),
         m_parent(nullptr),
         m_parentSubscription({})
     {}
@@ -59,6 +60,16 @@ namespace Chicane
         }
 
         onTick(inDeltaTime);
+    }
+
+    const String& Component::getId() const
+    {
+        return m_id;
+    }
+
+    void Component::setId(const String& inId)
+    {
+        m_id = inId;
     }
 
     bool Component::isAttached() const

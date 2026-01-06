@@ -9,9 +9,6 @@ namespace Chicane
         struct CHICANE_GRID StyleFont
         {
         public:
-            static constexpr const float BASE_SIZE = 16.0f;
-
-        public:
             StyleFont();
 
         public:

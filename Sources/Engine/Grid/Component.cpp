@@ -104,7 +104,7 @@ namespace Chicane
 
         void Component::setTag(const String& inTag)
         {
-            m_tag = inTag;
+            setProperty(m_tag, inTag);
         }
 
         const String& Component::getId() const
@@ -114,7 +114,7 @@ namespace Chicane
 
         void Component::setId(const String& inId)
         {
-            m_id = inId;
+            setProperty(m_id, inId);
         }
 
         const std::vector<String> Component::getClasses() const
@@ -129,7 +129,7 @@ namespace Chicane
 
         void Component::setClass(const String& inClass)
         {
-            m_class = inClass;
+            setProperty(m_class, inClass);
         }
         
         const Style& Component::getStyle() const
@@ -345,7 +345,7 @@ namespace Chicane
                 return;
             }
 
-            m_root = inComponent;
+            setProperty(m_root, inComponent);
 
             for (Component* child : m_children)
             {
@@ -489,16 +489,7 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            if (
-                std::fabs(m_cursor.x - inX) < FLT_EPSILON &&
-                std::fabs(m_cursor.y - inY) < FLT_EPSILON
-            )
-            {
-                return;
-            }
-
-            m_cursor.x = inX;
-            m_cursor.y = inY;
+            setProperty(m_cursor, { inX, inY });
         }
 
         Vec2 Component::getAvailableSize() const
@@ -543,8 +534,7 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            m_position.x = inX;
-            m_position.y = inY;
+            setProperty(m_position, { inX, inY });
 
             setCursor(m_position);
         }
@@ -604,7 +594,8 @@ namespace Chicane
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
             {
-                setPosition(margin + padding);
+                setPosition(margin);
+                addCursor(padding);
 
                 return;
             }
@@ -618,22 +609,26 @@ namespace Chicane
             setPosition(parentCursor + addedSpacing);
             addCursor(padding);
 
-            if (parentStyle.isDisplay(StyleDisplay::Flex))
+            switch (parentStyle.display)
             {
+            case StyleDisplay::Flex:
                 if (parentStyle.flex.direction == StyleFlex::Direction::Row)
                 {
-                    m_parent->addCursor(occupiedSpace.x + parentStyle.gap.left, 0.0f);
+                    m_parent->addCursor(parentStyle.gap.left + occupiedSpace.x, 0.0f);
                 }
 
                 if (parentStyle.flex.direction == StyleFlex::Direction::Column)
                 {
-                    m_parent->addCursor(0.0f, occupiedSpace.y + parentStyle.gap.top);
+                    m_parent->addCursor(0.0f, parentStyle.gap.top + occupiedSpace.y);
                 }
 
-                return;
-            }
+                break;
 
-            m_parent->addCursor(0.0f, occupiedSpace.y);
+            default:
+                m_parent->addCursor(0.0f, occupiedSpace.y);
+
+                break;
+            }
         }
 
         void Component::refreshZIndex()
@@ -663,19 +658,25 @@ namespace Chicane
             const std::uint32_t start = inValue.firstOf(REFERENCE_VALUE_OPENING) + 1;
             const std::uint32_t end   = inValue.lastOf(REFERENCE_VALUE_CLOSING) - 1;
 
-            const String value     = inValue.substr(start + 1, end - start - 1).trim();
-            const String remainder = inValue.substr(end + 2);
+            const String prefix = inValue.substr(0, start - 1);
+            const String value  = inValue.substr(start + 1, end - start - 1).trim();
+            const String suffix = inValue.substr(end + 2);
 
             String result = "";
 
-            if (!value.isEmpty())
+            if (!prefix.isEmpty())
             {
-                result += parseReference(value).toString();
+                result.append(parseText(prefix));
             }
 
-            if (!remainder.isEmpty())
+            if (!value.isEmpty())
             {
-                result += parseText(remainder);
+                result.append(parseReference(value).toString());
+            }
+
+            if (!suffix.isEmpty())
+            {
+                result.append(parseText(suffix));
             }
 
             return result;
