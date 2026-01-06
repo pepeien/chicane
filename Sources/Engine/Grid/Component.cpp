@@ -658,19 +658,25 @@ namespace Chicane
             const std::uint32_t start = inValue.firstOf(REFERENCE_VALUE_OPENING) + 1;
             const std::uint32_t end   = inValue.lastOf(REFERENCE_VALUE_CLOSING) - 1;
 
-            const String value     = inValue.substr(start + 1, end - start - 1).trim();
-            const String remainder = inValue.substr(end + 2);
+            const String prefix = inValue.substr(0, start - 1);
+            const String value  = inValue.substr(start + 1, end - start - 1).trim();
+            const String suffix = inValue.substr(end + 2);
 
             String result = "";
 
-            if (!value.isEmpty())
+            if (!prefix.isEmpty())
             {
-                result += parseReference(value).toString();
+                result.append(parseText(prefix));
             }
 
-            if (!remainder.isEmpty())
+            if (!value.isEmpty())
             {
-                result += parseText(remainder);
+                result.append(parseReference(value).toString());
+            }
+
+            if (!suffix.isEmpty())
+            {
+                result.append(parseText(suffix));
             }
 
             return result;
