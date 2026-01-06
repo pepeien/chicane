@@ -1,10 +1,12 @@
 .victory {
     position: absolute;
     display: var(victoryDisplay);
-    height: 30vh;
-    width: 100%;
-    margin: 50% 0 0 50%;
+    height: 6vw;
+    width: 32vw;
+    margin: 50% 16vw 3vw 50%;
     background-color: #333333;
+    font-size: 5vw;
+    padding-left: 0.5em;
 }
 
 .telemetry, .camera {
