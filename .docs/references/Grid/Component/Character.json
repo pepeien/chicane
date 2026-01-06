@@ -203,6 +203,21 @@
             },
             {
                 "accessor": "protected",
+                "type": "override",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onRefresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_CHARACTER_ONREFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
                 "type": "standard",
                 "return": {
                     "prefix": "",

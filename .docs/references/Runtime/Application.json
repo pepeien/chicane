@@ -288,21 +288,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Scene",
-                    "suffix": "*",
-                    "path": "Runtime/Scene",
-                    "templates": []
-                },
-                "name": "getScene",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -323,6 +308,36 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_SETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Scene",
+                    "suffix": "*",
+                    "path": "Runtime/Scene",
+                    "templates": []
+                },
+                "name": "getScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "T",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",

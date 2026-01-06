@@ -246,6 +246,22 @@
                 "description": "CHICANE_BOX_FONT_VENDOR_ATTRIBUTE_NAME_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BASE_SIZE",
+                "description": "CHICANE_BOX_FONT_BASE_SIZE_DESCRIPTION"
+            },
+            {
                 "accessor": "private",
                 "modifiers": [],
                 "type": {

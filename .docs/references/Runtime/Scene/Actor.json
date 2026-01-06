@@ -277,6 +277,49 @@
                 "description": "CHICANE_ACTOR_COLLIDEWITH_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "getId",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ACTOR_GETID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ACTOR_SETID_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "virtual",
                 "return": {
@@ -359,6 +402,19 @@
                 },
                 "name": "m_bCanCollide",
                 "description": "CHICANE_ACTOR_M_BCANCOLLIDE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_id",
+                "description": "CHICANE_ACTOR_M_ID_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ACTOR_DESCRIPTION"
