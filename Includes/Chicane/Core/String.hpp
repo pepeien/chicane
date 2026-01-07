@@ -44,6 +44,17 @@ namespace Chicane
             : m_value(inParams...)
         {}
 
+        String(const short unsigned int* inValue)
+            : String()
+        {
+            if (inValue == nullptr)
+            {
+                return;
+            }
+
+            m_value = std::to_string(*inValue);
+        }
+
         String(char inValue)
             : m_value(1, inValue)
         {}

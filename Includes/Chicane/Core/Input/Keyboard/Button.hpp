@@ -6,6 +6,7 @@ namespace Chicane
 {
     namespace Input
     {
+        // Extracted from `SDL3/SDL_Scancode`
         enum class KeyboardButton
         {
             A = 4,

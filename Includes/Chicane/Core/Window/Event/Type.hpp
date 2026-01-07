@@ -4,6 +4,7 @@
 
 namespace Chicane
 {
+    // Extracted from `SDL3/SDL_EventType`
     enum class WindowEventType : std::uint16_t
     {
         First = 0,

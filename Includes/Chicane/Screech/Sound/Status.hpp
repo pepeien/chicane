@@ -6,10 +6,11 @@ namespace Chicane
 {
     namespace Screech
     {
-        class CHICANE_SCREECH Player
+        enum class SoundStatus : std::uint8_t
         {
-        public:
-            Player();
+            Playing,
+            Paused,
+            Stopped
         };
     }
 }

@@ -60,6 +60,7 @@ target_link_libraries(
 
     PUBLIC
         Chicane::Core
+        Chicane::Box
     PRIVATE
         miniaudio
 )

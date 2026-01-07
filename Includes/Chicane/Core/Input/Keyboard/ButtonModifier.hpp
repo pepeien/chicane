@@ -6,6 +6,7 @@ namespace Chicane
 {
     namespace Input
     {
+        // Extracted from `SDL3/SDL_Keymod`
         enum class KeyboardButtonModifier
         {
             None       = 0x0000u,                  /**< no modifier is applicable. */
