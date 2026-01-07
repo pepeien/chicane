@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Chicane/Spring/Essential.hpp"
+#include "Chicane/Kerb/Essential.hpp"
 
 namespace Chicane
 {
-    namespace Spring
+    namespace Kerb
     {
-        class CHICANE_SPRING Collider
+        class CHICANE_KERB Collider
         {
         public:
             Collider(const std::vector<Vec3>& inVertices, const std::vector<std::uint32_t>& inIndices);

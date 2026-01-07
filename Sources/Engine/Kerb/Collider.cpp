@@ -1,8 +1,8 @@
-#include "Chicane/Spring/Collider.hpp"
+#include "Chicane/Kerb/Collider.hpp"
 
 namespace Chicane
 {
-    namespace Spring
+    namespace Kerb
     {
         Collider::Collider(
             const std::vector<Vec3>& inVertices,

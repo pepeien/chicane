@@ -20,3 +20,4 @@
 #include "Chicane/Box.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Grid.hpp"
+#include "Chicane/Screech.hpp"
