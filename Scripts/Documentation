@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd .. && doxygen -q Doxyfile
+python3 Scripts/Documentation.py -i .docs/xml -o .docs/references -d Includes/Chicane/ -n Chicane -s CHICANE_BOX,CHICANE_CORE,CHICANE_GRID,CHICANE_KERB,CHICANE_RUNTIME,CHICANE_SCREECH

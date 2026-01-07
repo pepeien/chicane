@@ -4,38 +4,40 @@ file(
     HEADERS
 
     # Headers
-    ${SPRING_HEADER_DIR}/*.hpp
+    ${SCREECH_HEADER_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Spring.hpp)
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Screech.hpp)
+list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
 
     # Sources
-    ${SPRING_SOURCE_DIR}/*.cpp
+    ${SCREECH_SOURCE_DIR}/*.cpp
 )
+list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)
-    add_library(${SPRING_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${SCREECH_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${SPRING_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${SCREECH_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
-    "${NAME}::Spring"
+    "${NAME}::Screech"
 
     ALIAS
-        ${SPRING_TARGET_NAME}
+        ${SCREECH_TARGET_NAME}
 )
 
 set_target_properties(
-    ${SPRING_TARGET_NAME}
+    ${SCREECH_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
-            "${NAME}Spring"
+            "${NAME}Screech"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
         DEFINE_SYMBOL
@@ -45,7 +47,7 @@ set_target_properties(
 )
 
 target_include_directories(
-    ${SPRING_TARGET_NAME}
+    ${SCREECH_TARGET_NAME}
 
     PUBLIC
         # Alias
@@ -54,11 +56,16 @@ target_include_directories(
 )
 
 target_link_libraries(
-    ${SPRING_TARGET_NAME}
+    ${SCREECH_TARGET_NAME}
 
     PUBLIC
         # Systems
         Chicane::Core
+    PRIVATE
+        miniaudio
 )
 
-CH_ADD_COMPILER(${SPRING_TARGET_NAME})
+CH_ADD_COMPILER(${SCREECH_TARGET_NAME})
+
+##################### Directories #######################
+add_subdirectory(Vendor)

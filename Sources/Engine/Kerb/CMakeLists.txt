@@ -1,15 +1,12 @@
-##################### Vendors #######################
-find_package(Vulkan REQUIRED)
-
 ##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
 
     # Headers
-    ${RUNTIME_HEADER_DIR}/*.hpp
+    ${KERB_HEADER_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
+list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Kerb.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
@@ -17,30 +14,30 @@ file(
     SOURCES
 
     # Sources
-    ${RUNTIME_SOURCE_DIR}/*.cpp
+    ${KERB_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
 if (CHICANE_SHARED)
-    add_library(${RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
+    add_library(${KERB_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
-    add_library(${RUNTIME_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+    add_library(${KERB_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
 endif()
 
 add_library(
-    "${NAME}::Runtime"
+    "${NAME}::Kerb"
 
     ALIAS
-        ${RUNTIME_TARGET_NAME}
+        ${KERB_TARGET_NAME}
 )
 
 set_target_properties(
-    ${RUNTIME_TARGET_NAME}
+    ${KERB_TARGET_NAME}
 
     PROPERTIES
         OUTPUT_NAME
-            "${NAME}"
+            "${NAME}Kerb"
         VS_DEBUGGER_WORKING_DIRECTORY
             "${BUILD_DIR}"
         DEFINE_SYMBOL
@@ -50,38 +47,25 @@ set_target_properties(
 )
 
 target_include_directories(
-    ${RUNTIME_TARGET_NAME}
+    ${KERB_TARGET_NAME}
 
     PUBLIC
         # Alias
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-        # Vendors
-        ${Vulkan_INCLUDE_DIRS}
 )
 
 target_link_libraries(
-    ${RUNTIME_TARGET_NAME}
+    ${KERB_TARGET_NAME}
 
     PUBLIC
         # Systems
-        Chicane::Box
         Chicane::Core
-        Chicane::Grid
-        Chicane::Kerb
-        Chicane::Screech
-
-        # Vendors
-        Vulkan::Vulkan
-
     PRIVATE
-        SDL3::SDL3
+        Jolt::Jolt
 )
 
-add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
-
-CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
+CH_ADD_COMPILER(${KERB_TARGET_NAME})
 
 ##################### Directories #######################
 add_subdirectory(Vendor)
