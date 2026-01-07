@@ -1233,6 +1233,27 @@
         ]
     },
     {
+        "title": "Kerb",
+        "filename": "Kerb",
+        "path": "Kerb",
+        "source": {
+            "header": null,
+            "namespace": null
+        },
+        "children": [
+            {
+                "title": "Kerb",
+                "filename": "Collider",
+                "path": "Kerb/Collider",
+                "source": {
+                    "header": "Includes/Chicane/Kerb/Collider.hpp",
+                    "namespace": "Chicane::Kerb"
+                },
+                "children": []
+            }
+        ]
+    },
+    {
         "title": "Runtime",
         "filename": "Runtime",
         "path": "Runtime",
@@ -2149,27 +2170,6 @@
                         "children": []
                     }
                 ]
-            }
-        ]
-    },
-    {
-        "title": "Spring",
-        "filename": "Spring",
-        "path": "Spring",
-        "source": {
-            "header": null,
-            "namespace": null
-        },
-        "children": [
-            {
-                "title": "Spring",
-                "filename": "Collider",
-                "path": "Spring/Collider",
-                "source": {
-                    "header": "Includes/Chicane/Spring/Collider.hpp",
-                    "namespace": "Chicane::Spring"
-                },
-                "children": []
             }
         ]
     }
