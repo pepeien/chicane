@@ -59,7 +59,6 @@ target_link_libraries(
     ${SCREECH_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Core
     PRIVATE
         miniaudio

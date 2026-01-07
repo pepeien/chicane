@@ -4,7 +4,7 @@
 
 namespace Chicane
 {
-    struct RendererViewport
+    struct CHICANE_RUNTIME RendererViewport
     {
     public:
         Vec2 size     = Vec2::Zero;

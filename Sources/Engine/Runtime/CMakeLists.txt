@@ -65,14 +65,12 @@ target_link_libraries(
     ${RUNTIME_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Box
         Chicane::Core
         Chicane::Grid
         Chicane::Kerb
         Chicane::Screech
 
-        # Vendors
         Vulkan::Vulkan
 
     PRIVATE

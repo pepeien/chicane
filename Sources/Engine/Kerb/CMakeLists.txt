@@ -59,7 +59,6 @@ target_link_libraries(
     ${KERB_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Core
     PRIVATE
         Jolt::Jolt
