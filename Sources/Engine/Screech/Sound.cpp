@@ -1,10 +1,5 @@
 #include "Chicane/Screech/Sound.hpp"
 
-#define MINIAUDIO_IMPLEMENTATION
-#include <miniaudio.h>
-
-#include "Chicane/Screech/Device.hpp"
-
 namespace Chicane
 {
     namespace Screech

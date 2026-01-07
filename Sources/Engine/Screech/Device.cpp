@@ -6,9 +6,14 @@ namespace Chicane
 {
     namespace Screech
     {
-        Device::Device(void* inData)
+        Device::Device(void* inData, DeviceType inType)
             : Device()
         {
+            if (!inData)
+            {
+                return;
+            }
+
             ma_device_info* data = (ma_device_info*)(inData);
 
             m_bIsSystemDefault = data->isDefault;
@@ -25,13 +30,16 @@ namespace Chicane
 
                 m_formats.push_back(format);
             }
+
+            m_type = inType;
         }
 
         Device::Device()
             : m_bIsSystemDefault(false),
             m_id(),
             m_name(""),
-            m_formats()
+            m_formats(),
+            m_type(DeviceType::Unknown)
         {}
     }
 }

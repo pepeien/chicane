@@ -118,7 +118,6 @@ namespace Chicane
 
             initWindow();
             initRenderer();
-
             initAssets(".");
 
             if (inCreateInfo.onSetup)

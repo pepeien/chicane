@@ -16,6 +16,7 @@ file(
     # Sources
     ${SCREECH_SOURCE_DIR}/*.cpp
 )
+list(APPEND HEADERS ${CHICANE_SOURCES_DIR}/Screech.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################

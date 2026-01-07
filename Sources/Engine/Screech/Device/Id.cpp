@@ -9,6 +9,11 @@ namespace Chicane
         DeviceId::DeviceId(void* inData)
             : DeviceId()
         {
+            if (!inData)
+            {
+                return;
+            }
+
             const ma_device_id* data = (ma_device_id*)(inData);
 
             std::copy(std::begin(data->dsound), std::end(data->dsound), dsound.begin());
