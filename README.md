@@ -45,7 +45,7 @@ This project uses CMake to generate and build files, it should pretty straight f
 - Build:
     - [CMake](https://cmake.org/download) (^=3.16.0).
 - Script:
-    - [Doxygen](https://www.doxygen.nl/download.html) (^=1.9.8).
+    - [Doxygen](https://www.doxygen.nl/download.html) (1.12.0).
     - [Python](https://www.python.org/downloads) (^=3.12.0).
 - Renderer:
     - [Vulkan](https://www.lunarg.com/vulkan-sdk) (^=1.4.313.2).
