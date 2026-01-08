@@ -6,7 +6,6 @@ namespace Chicane
 {
     namespace Screech
     {
-        class Context;
         class Device;
 
         class CHICANE_SCREECH Manager
@@ -17,6 +16,10 @@ namespace Chicane
             virtual ~Manager();
 
         public:
+            void* getContext();
+
+            void* getEngine();
+
             std::vector<Device> getDevices() const;
 
         private:

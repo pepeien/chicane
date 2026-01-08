@@ -19,16 +19,20 @@ namespace Chicane
             Device(void* inData, DeviceType inType);
             Device();
 
-        private:
-            bool       m_bIsSystemDefault;
+        public:
+            void* getInstance() const;
 
-            DeviceId   m_id;
+        private:
+            void*      m_instance;
+
+            bool       m_bIsSystemDefault;
 
             String     m_name;
 
-            Formats    m_formats;
-
+            DeviceId   m_id;
             DeviceType m_type;
+
+            Formats    m_formats;
         };
     }
 }

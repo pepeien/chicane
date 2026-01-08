@@ -84,7 +84,6 @@ namespace Chicane
         SDL_InitFlags initFlags = 0;
         initFlags |= SDL_INIT_GAMEPAD;
         initFlags |= SDL_INIT_HAPTIC;
-        initFlags |= SDL_INIT_AUDIO;
         initFlags |= SDL_INIT_VIDEO;
 
         if (!SDL_Init(initFlags))

@@ -13,8 +13,8 @@ Character::Character()
     m_camera(nullptr),
     m_wand(nullptr),
     m_body(nullptr),
-    m_hitAudio(nullptr),
-    m_victoryAudio(nullptr)
+    m_hitSound(nullptr),
+    m_victorySound(nullptr)
 {
     m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
     m_camera->setId("First Person");
@@ -37,27 +37,27 @@ Character::Character()
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
-    m_hitAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
-    m_hitAudio->attachTo(this);
-    m_hitAudio->load("Hit");
-    m_hitAudio->activate();
+    m_hitSound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_hitSound->attachTo(this);
+    m_hitSound->load("Hit");
+    m_hitSound->activate();
 
-    m_victoryAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
-    m_victoryAudio->attachTo(this);
-    m_victoryAudio->load("Victory");
-    m_victoryAudio->activate();
+    m_victorySound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_victorySound->attachTo(this);
+    m_victorySound->load("Victory");
+    m_victorySound->activate();
 
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
             if (Game::didReachMaxScore())
             {
-                m_victoryAudio->play();
+                m_victorySound->play();
 
                 return;
             }
 
-            m_hitAudio->play();
+            m_hitSound->play();
         }
     );
 }

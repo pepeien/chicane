@@ -4,8 +4,7 @@ namespace Chicane
 {
     namespace Box
     {
-        static const Audio::Raw EMPTY_RAW_DATA      = {};
-        static const Audio      EMPTY_COMPILED_DATA = {};
+        static const Sound::Raw EMPTY_RAW_DATA = {};
 
         SoundManager::SoundManager()
             : Super()
@@ -13,7 +12,7 @@ namespace Chicane
 
         void SoundManager::onActivation(const String& inId)
         {
-            Super::allocate(inId, Audio(getInstance(inId)));
+            Super::allocate(inId, getInstance(inId));
         }
 
         void SoundManager::onDeactivation(const String& inId)
@@ -33,7 +32,7 @@ namespace Chicane
             Super::load(id, inAsset.getData());
         }
 
-        const Audio::Raw& SoundManager::getInstance(const String& inId) const
+        const Sound::Raw& SoundManager::getInstance(const String& inId) const
         {
             if (!isLoaded(inId))
             {
@@ -43,11 +42,11 @@ namespace Chicane
             return m_instances.at(inId);
         }
 
-        Audio SoundManager::getData(const String& inId) const
+        const Sound::Raw& SoundManager::getData(const String& inId) const
         {
             if (!isLoaded(inId) || !isAllocated(inId))
             {
-                return EMPTY_COMPILED_DATA;
+                return EMPTY_RAW_DATA;
             }
 
             return m_datum.at(inId);

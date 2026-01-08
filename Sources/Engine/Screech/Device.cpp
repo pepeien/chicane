@@ -35,11 +35,17 @@ namespace Chicane
         }
 
         Device::Device()
-            : m_bIsSystemDefault(false),
+            : m_instance(nullptr),
+            m_bIsSystemDefault(false),
             m_id(),
             m_name(""),
-            m_formats(),
-            m_type(DeviceType::Unknown)
+            m_type(DeviceType::Unknown),
+            m_formats()
         {}
+
+        void* Device::getInstance() const
+        {
+            return m_instance;
+        }
     }
 }

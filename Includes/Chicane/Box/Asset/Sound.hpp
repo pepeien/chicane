@@ -10,30 +10,27 @@ namespace Chicane
         class CHICANE_BOX Sound : public Asset
         {
         public:
+            using Raw = std::vector<unsigned char>;
+
+        public:
             static inline constexpr const char* EXTENSION = ".bsnd";
             static inline constexpr const char* TAG       = "Sound";
 
-            static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
-
         public:
+            Sound(const Raw& inData);
             Sound(const FileSystem::Path& inFilepath);
             virtual ~Sound() = default;
 
         public:
-            AudioVendor getVendor() const;
-            void setVendor(AudioVendor inVendor);
-
-            const Audio::Raw& getData() const;
+            const Raw& getData() const;
             void setData(const FileSystem::Path& inFilepath);
-            void setData(const Audio::Raw& inData);
+            void setData(const Raw& inData);
 
         private:
-            void fetchVendor();
             void fetchData();
 
         private:
-            AudioVendor m_vendor;
-            Audio::Raw  m_data;
+            Raw m_data;
         };
     }
 }

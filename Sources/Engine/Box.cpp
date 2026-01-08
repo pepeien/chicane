@@ -66,7 +66,7 @@ namespace Chicane
             return getAsset<T>(inSource);
         }
 
-        const Sound* loadAudio(const FileSystem::Path& inFilePath)
+        const Sound* loadSound(const FileSystem::Path& inFilePath)
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Sound)
             {
@@ -218,7 +218,7 @@ namespace Chicane
                 return loadMesh(inFilePath);
 
             case AssetType::Sound:
-                return loadAudio(inFilePath);
+                return loadSound(inFilePath);
 
             case AssetType::Sky:
                 return loadSky(inFilePath);

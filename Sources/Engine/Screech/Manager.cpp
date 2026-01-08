@@ -1,9 +1,9 @@
 #include "Chicane/Screech/Manager.hpp"
 
-#define MINIAUDIO_IMPLEMENTATION
 #include <miniaudio.h>
 
 #include "Chicane/Screech/Device.hpp"
+#include "Chicane/Screech/Sound.hpp"
 
 namespace Chicane
 {
@@ -27,11 +27,21 @@ namespace Chicane
             destroyContext();
         }
 
+        void* Manager::getContext()
+        {
+            return &g_context;
+        }
+
+        void* Manager::getEngine()
+        {
+            return &g_engine;
+        }
+
         std::vector<Device> Manager::getDevices() const
         {
             if (!g_bWasContextInitialized)
             {
-                throw std::runtime_error("Audio context wasn't initialized");
+                throw std::runtime_error("Sound context wasn't initialized");
             }
 
             ma_device_info* outputs     = nullptr;

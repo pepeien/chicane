@@ -9,7 +9,7 @@ namespace Chicane
         enum class AssetType : std::uint8_t
         {
             Undefined, // N/A
-            Sound,     // Audio
+            Sound,     // Sound
             Font,      // Text Font
             Mesh,      // Two entries [Model, Texture] both being refNames
             Model,     // 3D Model

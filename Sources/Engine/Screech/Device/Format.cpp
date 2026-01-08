@@ -1,7 +1,5 @@
 #include "Chicane/Screech/Device/Format.hpp"
 
-#include <miniaudio.h>
-
 namespace Chicane
 {
     namespace Screech
