@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid.hpp"
 
 namespace Chicane
 {

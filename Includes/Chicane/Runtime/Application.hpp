@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Chicane/Core/Telemetry.hpp"
+#include "Chicane/Core/Window.hpp"
 #include "Chicane/Grid/Component/View.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Controller.hpp"
-#include "Chicane/Runtime/Essential.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Renderer.hpp"
 

@@ -1,5 +1,8 @@
 #include "Chicane/Grid/Component/Character.hpp"
 
+#include "Chicane/Box/Asset/Font/Manager.hpp"
+#include "Chicane/Core/Math/Curve.hpp"
+
 namespace Chicane
 {
     namespace Grid

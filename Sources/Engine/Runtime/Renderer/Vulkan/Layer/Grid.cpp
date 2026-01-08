@@ -2,6 +2,11 @@
 
 #include "Chicane/Grid/Component/Character.hpp"
 #include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
 
 namespace Chicane
 {
@@ -143,14 +148,14 @@ namespace Chicane
 
             // Attachments
             GraphicsPipeline::Attachment colorAttachment = {};
-            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
+            colorAttachment.type          = GraphicsPipeline::AttachmentType::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             GraphicsPipeline::Attachment depthAttachment = {};
-            depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
+            depthAttachment.type          = GraphicsPipeline::AttachmentType::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;

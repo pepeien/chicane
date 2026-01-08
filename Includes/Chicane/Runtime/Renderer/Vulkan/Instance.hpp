@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
@@ -23,10 +25,7 @@ namespace Chicane
             CHICANE_RUNTIME bool areExtensionsSupported(const std::vector<const char*>& inExtensions);
             CHICANE_RUNTIME bool areLayersSupported(const std::vector<const char*>& inLayers);
 
-            CHICANE_RUNTIME void init(
-                vk::Instance& outInstance,
-                vk::detail::DispatchLoaderDynamic& outDldi
-            );
+            CHICANE_RUNTIME void init(vk::Instance& outInstance, vk::detail::DispatchLoaderDynamic& outDldi);
         }
     }
 }

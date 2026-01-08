@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Quat.hpp"
 
 namespace Chicane

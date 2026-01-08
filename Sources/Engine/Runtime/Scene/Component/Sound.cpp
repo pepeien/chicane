@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Scene/Component/Sound.hpp"
 
+#include "Chicane/Box/Asset/Sound/Manager.hpp"
+
 namespace Chicane
 {
     CSound::CSound()

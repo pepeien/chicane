@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
@@ -13,7 +16,7 @@ namespace Chicane
                 struct CHICANE_RUNTIME CreateInfo
                 {
                 public:
-                    String                id;
+                    String                     id;
                     vk::Device                 logicalDevice;
                     vk::RenderPass             renderPass;
                     vk::Extent2D               extent;

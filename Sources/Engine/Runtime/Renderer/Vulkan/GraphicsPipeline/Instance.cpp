@@ -74,12 +74,12 @@ namespace Chicane
                 std::vector<vk::AttachmentDescription> attachments = {};
                 for (const Attachment& attachment : inCreateInfo.attachments)
                 {
-                    if (attachment.type == Attachment::Type::Color)
+                    if (attachment.type == AttachmentType::Color)
                     {
                         attachments.push_back(createColorAttachment(attachment));
                     }
 
-                    if (attachment.type == Attachment::Type::Depth)
+                    if (attachment.type == AttachmentType::Depth)
                     {
                         attachments.push_back(createDepthAttachment(attachment));
                     }
@@ -110,7 +110,7 @@ namespace Chicane
                         inCreateInfo.attachments.end(),
                         [](const auto& inAttachment)
                         {
-                            return inAttachment.type == Attachment::Type::Color;
+                            return inAttachment.type == AttachmentType::Color;
                         }
                     ) != inCreateInfo.attachments.end(),
                     std::find_if(
@@ -118,7 +118,7 @@ namespace Chicane
                         inCreateInfo.attachments.end(),
                         [](const auto& inAttachment)
                         {
-                            return inAttachment.type == Attachment::Type::Depth;
+                            return inAttachment.type == AttachmentType::Depth;
                         }
                     ) != inCreateInfo.attachments.end()
                 );

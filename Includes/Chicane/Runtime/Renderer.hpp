@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Window.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Renderer/Viewport.hpp"

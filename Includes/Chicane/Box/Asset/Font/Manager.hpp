@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Font.hpp"
 #include "Chicane/Box/Asset/Font/Extracted.hpp"
 #include "Chicane/Box/Asset/Font/Parsed.hpp"
-#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {

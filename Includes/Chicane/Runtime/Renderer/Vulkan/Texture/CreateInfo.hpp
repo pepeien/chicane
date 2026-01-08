@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Core/Image.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
@@ -11,12 +14,12 @@ namespace Chicane
             struct CHICANE_RUNTIME CreateInfo
             {
             public:
-                Chicane::Image           image;
+                Chicane::Image     image;
 
-                vk::Device               logicalDevice;
-                vk::PhysicalDevice       physicalDevice;
-                vk::CommandBuffer        commandBuffer;
-                vk::Queue                queue;
+                vk::Device         logicalDevice;
+                vk::PhysicalDevice physicalDevice;
+                vk::CommandBuffer  commandBuffer;
+                vk::Queue          queue;
             };
         }
     }

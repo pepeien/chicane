@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Vertex.hpp"
 
+#include "Chicane/Core/Math/Vertex.hpp"
+
 namespace Chicane
 {
     namespace Vulkan

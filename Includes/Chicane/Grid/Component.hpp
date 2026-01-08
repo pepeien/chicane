@@ -1,7 +1,14 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Core/Event/Changeable.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Function.hpp"
+#include "Chicane/Grid/Function/Data.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 

@@ -1,5 +1,9 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
 
+#include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/String.hpp"
+
 namespace Chicane
 {
     namespace Vulkan

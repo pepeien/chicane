@@ -247,12 +247,12 @@ namespace Chicane
 
                 if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
                 {
-                    setProperty(flex.direction, StyleFlex::Direction::Column);
+                    setProperty(flex.direction, StyleFlexDirection::Column);
                 }
 
                 if (value.equals(FLEX_DIRECTION_TYPE_ROW))
                 {
-                    setProperty(flex.direction, StyleFlex::Direction::Row);
+                    setProperty(flex.direction, StyleFlexDirection::Row);
                 }
             }
         }

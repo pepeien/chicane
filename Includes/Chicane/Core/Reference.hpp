@@ -2,7 +2,7 @@
 
 #include <typeindex>
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane

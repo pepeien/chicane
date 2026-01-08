@@ -1,5 +1,7 @@
 #include "Chicane/Box/Asset/Sound.hpp"
 
+#include "Chicane/Core/Base64.hpp"
+
 namespace Chicane
 {
     namespace Box

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
-#include "Chicane/Runtime/Renderer.hpp"
+#include "Chicane/Core/Window/CreateInfo.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {

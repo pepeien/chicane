@@ -2,8 +2,10 @@
 
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Pool.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Debug.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Scene.hpp"

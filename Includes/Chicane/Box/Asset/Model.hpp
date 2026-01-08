@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
-#include "Chicane/Box/Asset/Model/Types.hpp"
+#include "Chicane/Box/Asset/Model/Raw.hpp"
 #include "Chicane/Box/Asset/Model/Vendor.hpp"
-#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {

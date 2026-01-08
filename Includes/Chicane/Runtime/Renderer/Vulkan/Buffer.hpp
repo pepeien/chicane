@@ -1,7 +1,9 @@
 #pragma once
 
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 
 namespace Chicane
 {

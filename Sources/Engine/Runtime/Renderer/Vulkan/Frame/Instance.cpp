@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 #include "Chicane/Runtime/Scene/Component/Light.hpp"

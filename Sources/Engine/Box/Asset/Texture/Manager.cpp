@@ -1,7 +1,5 @@
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
 
-#include "Chicane/Core/FileSystem.hpp"
-
 namespace Chicane
 {
     namespace Box

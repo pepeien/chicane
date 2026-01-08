@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Frame.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/SwapChain/Bundle.hpp"

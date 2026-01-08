@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Kerb/Essential.hpp"
+#include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Kerb.hpp"
 
 namespace Chicane
 {

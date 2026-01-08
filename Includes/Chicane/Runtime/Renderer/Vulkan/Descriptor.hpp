@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolCreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp"

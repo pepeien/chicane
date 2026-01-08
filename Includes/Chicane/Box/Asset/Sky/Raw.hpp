@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Chicane/Box/Essential.hpp"
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Sky/Side.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -9,8 +10,5 @@ namespace Chicane
     {
         using SkyRawSide  = String;
         using SkyRawSides = std::unordered_map<SkySide, SkyRawSide>;
-
-        using SkyParsedSide  = Image;
-        using SkyParsedSides = std::unordered_map<SkySide, SkyParsedSide>;
     }
 }

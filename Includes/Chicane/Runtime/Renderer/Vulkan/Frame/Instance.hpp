@@ -1,8 +1,10 @@
 #pragma once
 
+#include <vulkan/vulkan.hpp>
+
 #include "Chicane/Box/Asset/Mesh/Parsed.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"
 

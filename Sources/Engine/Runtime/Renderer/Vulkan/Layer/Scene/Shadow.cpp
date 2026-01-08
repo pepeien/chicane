@@ -3,6 +3,8 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -248,7 +250,7 @@ namespace Chicane
 
             // Attachments
             GraphicsPipeline::Attachment depthAttachment = {};
-            depthAttachment.type          = GraphicsPipeline::Attachment::Type::Depth;
+            depthAttachment.type          = GraphicsPipeline::AttachmentType::Depth;
             depthAttachment.format        = m_internals.swapchain->depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;

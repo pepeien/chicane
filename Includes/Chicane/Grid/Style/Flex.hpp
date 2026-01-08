@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Style/Flex/Direction.hpp"
 
 namespace Chicane
 {
@@ -9,14 +10,7 @@ namespace Chicane
         struct CHICANE_GRID StyleFlex
         {
         public:
-            enum class Direction : std::uint8_t
-            {
-                Column,
-                Row
-            };
-
-        public:
-            Direction direction = Direction::Row;
+            StyleFlexDirection direction = StyleFlexDirection::Row;
         };
     }
 }

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Model.hpp"
 #include "Chicane/Box/Asset/Model/Extracted.hpp"
 #include "Chicane/Box/Asset/Model/Parsed.hpp"
-#include "Chicane/Box/Essential.hpp"
 #include "Chicane/Box/Manager.hpp"
+#include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {

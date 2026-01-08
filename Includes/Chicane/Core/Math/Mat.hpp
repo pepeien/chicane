@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {

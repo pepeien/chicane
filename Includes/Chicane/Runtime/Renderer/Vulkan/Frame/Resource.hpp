@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 
 namespace Chicane
@@ -59,16 +61,16 @@ namespace Chicane
                 }
 
             public: 
-                vk::DescriptorBufferInfo bufferInfo       = {};
+                vk::DescriptorBufferInfo bufferInfo = {};
 
             private:
                 // Status
-                bool                     m_bIsDirty       = true;
+                bool           m_bIsDirty       = true;
 
                 // Memory
-                size_t                   m_allocationSize = 0;
-                void*                    m_writeLocation  = nullptr;
-                Vulkan::Buffer           m_buffer         = {};
+                size_t         m_allocationSize = 0;
+                void*          m_writeLocation  = nullptr;
+                Vulkan::Buffer m_buffer         = {};
             };
         }
     }

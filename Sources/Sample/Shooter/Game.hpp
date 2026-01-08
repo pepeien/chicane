@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Essential.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Game
 {

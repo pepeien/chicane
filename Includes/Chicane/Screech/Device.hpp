@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Screech/Essential.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Device/Format.hpp"
 #include "Chicane/Screech/Device/Id.hpp"
 #include "Chicane/Screech/Device/Type.hpp"

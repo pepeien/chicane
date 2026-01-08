@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 

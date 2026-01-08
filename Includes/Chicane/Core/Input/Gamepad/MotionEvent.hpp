@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Input/Device.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Core/Input/Device/Event.hpp"
 #include "Chicane/Core/Input/Gamepad/Axis.hpp"
 
 namespace Chicane

@@ -1,5 +1,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Core/FileSystem/Item/Type.hpp"
+
 namespace Chicane
 {
     namespace FileSystem
@@ -33,12 +35,12 @@ namespace Chicane
                 const auto& path = entry.path();
 
                 Item item = {};
-                item.type      = entry.is_directory() ? Item::Type::Folder : Item::Type::File;
+                item.type      = entry.is_directory() ? ItemType::Folder : ItemType::File;
                 item.name      = path.filename().string();
                 item.extension = path.extension().string();
                 item.path      = path.string();
 
-                if (item.type == Item::Type::Folder)
+                if (item.type == ItemType::Folder)
                 {
                     item.childCount = static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
                 }

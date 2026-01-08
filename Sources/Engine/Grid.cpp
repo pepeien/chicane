@@ -33,15 +33,5 @@ namespace Chicane
 
             return g_components.at(tag)(inNode);
         }
-
-        void registerComponent(const String& inTag, Component::Compiler inCompiler)
-        {
-            if (g_components.find(inTag) != g_components.end())
-            {
-                return;
-            }
-
-            g_components.insert(std::make_pair(inTag, inCompiler));
-        }
     }
 }

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
-#include "Chicane/Box/Asset/Font/Types.hpp"
+#include "Chicane/Box/Asset/Font/Raw.hpp"
 #include "Chicane/Box/Asset/Font/Vendor.hpp"
-#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {

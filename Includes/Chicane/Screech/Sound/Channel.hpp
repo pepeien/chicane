@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Screech/Essential.hpp"
+#include "Chicane/Screech.hpp"
 
 namespace Chicane
 {

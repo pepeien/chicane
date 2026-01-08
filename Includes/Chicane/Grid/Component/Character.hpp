@@ -1,7 +1,9 @@
 #pragma once
 
+#include "Chicane/Box/Asset/Font/Extracted.hpp"
+#include "Chicane/Box/Asset/Font/Parsed.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"

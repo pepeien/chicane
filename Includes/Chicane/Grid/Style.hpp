@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Core/Color.hpp"
+#include "Chicane/Core/Event/Changeable.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Xml.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"

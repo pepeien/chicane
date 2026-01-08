@@ -1,8 +1,13 @@
 #pragma once
 
+#include <vulkan/vulkan.hpp>
+
 #include "Chicane/Grid/Component/View.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Renderer/Layer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
 
 namespace Chicane
 {

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Type.hpp"
 #include "Chicane/Core/Window/Renderer.hpp"
 

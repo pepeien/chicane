@@ -1,6 +1,5 @@
 #include "Chicane/Box/Asset/Font/Manager.hpp"
 
-#include "Chicane/Box/Asset/Font.hpp"
 #include "Chicane/Box/Asset/Font/TrueType.hpp"
 
 namespace Chicane

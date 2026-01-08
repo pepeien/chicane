@@ -1,5 +1,8 @@
 #include "Chicane/Box/Asset/Model.hpp"
 
+#include "Chicane/Core/Base64.hpp"
+#include "Chicane/Core/Xml.hpp"
+
 namespace Chicane
 {
     namespace Box

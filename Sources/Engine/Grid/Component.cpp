@@ -612,12 +612,12 @@ namespace Chicane
             switch (parentStyle.display)
             {
             case StyleDisplay::Flex:
-                if (parentStyle.flex.direction == StyleFlex::Direction::Row)
+                if (parentStyle.flex.direction == StyleFlexDirection::Row)
                 {
                     m_parent->addCursor(parentStyle.gap.left + occupiedSpace.x, 0.0f);
                 }
 
-                if (parentStyle.flex.direction == StyleFlex::Direction::Column)
+                if (parentStyle.flex.direction == StyleFlexDirection::Column)
                 {
                     m_parent->addCursor(0.0f, parentStyle.gap.top + occupiedSpace.y);
                 }

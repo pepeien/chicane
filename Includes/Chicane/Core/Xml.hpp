@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include <pugixml.hpp>
+
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 
 namespace Chicane

@@ -1,5 +1,8 @@
 #include "View.hpp"
 
+#include "Chicane/Runtime/Application.hpp"
+#include "Chicane/Runtime/Scene.hpp"
+
 #include "Game.hpp"
 #include "Level.hpp"
 
@@ -28,11 +31,15 @@ View::View()
     m_crosshairColorB(255),
     m_uiCrosshairColorB(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorB)),
     m_crosshairColorA(255),
-    m_uiCrosshairColorA(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorA))
+    m_uiCrosshairColorA(Chicane::Reference::fromValue<std::uint8_t>(&m_crosshairColorA)),
+    m_playerScore(0U),
+    m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore))
 {
     Game::watchScore(
         [this](std::uint32_t inScore)
         {
+            m_playerScore++;
+
             if (Game::didReachMaxScore())
             {
                 m_didPlayerWin = true;
@@ -72,4 +79,5 @@ View::View()
     addReference("crosshairColorG",     &m_uiCrosshairColorG);
     addReference("crosshairColorB",     &m_uiCrosshairColorB);
     addReference("crosshairColorA",     &m_uiCrosshairColorA);
+    addReference("playerScore",         &m_uiPlayerScore);
 }

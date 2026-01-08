@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Application.hpp"
 
+#include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
 namespace Chicane
@@ -78,7 +79,7 @@ namespace Chicane
         {
             for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
             {
-                if (item.type != FileSystem::Item::Type::File)
+                if (item.type != FileSystem::ItemType::File)
                 {
                     initAssets(item.path);
 

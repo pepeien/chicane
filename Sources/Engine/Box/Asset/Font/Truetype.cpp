@@ -6,6 +6,8 @@
 
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Asset/Font.hpp"
+#include "Chicane/Core/Math/Curve.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
 
 namespace Chicane
 {

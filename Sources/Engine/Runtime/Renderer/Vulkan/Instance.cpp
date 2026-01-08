@@ -2,6 +2,9 @@
 
 #include <SDL3/SDL_vulkan.h>
 
+#include "Chicane/Core/Log.hpp"
+#include "Chicane/Core/String.hpp"
+
 namespace Chicane
 {
     namespace Vulkan

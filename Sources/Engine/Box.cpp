@@ -1,12 +1,17 @@
 #include "Chicane/Box.hpp"
 
 #include "Chicane/Box/Asset/Font.hpp"
+#include "Chicane/Box/Asset/Font/Manager.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Mesh.hpp"
 #include "Chicane/Box/Asset/Model.hpp"
+#include "Chicane/Box/Asset/Model/Manager.hpp"
 #include "Chicane/Box/Asset/Sound.hpp"
+#include "Chicane/Box/Asset/Sound/Manager.hpp"
 #include "Chicane/Box/Asset/Sky.hpp"
 #include "Chicane/Box/Asset/Texture.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {

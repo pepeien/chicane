@@ -1,5 +1,7 @@
 #include "Chicane/Kerb/Collider.hpp"
 
+#include <Jolt/Jolt.h>
+
 namespace Chicane
 {
     namespace Kerb

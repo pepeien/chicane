@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/FileSystem/FolderDialog.hpp"
-#include "Chicane/Core/FileSystem/FileDialog.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/String.hpp"
 

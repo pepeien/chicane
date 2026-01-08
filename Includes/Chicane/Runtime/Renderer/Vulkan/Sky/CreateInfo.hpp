@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Sky/Types.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Box/Asset/Sky/Parsed.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {

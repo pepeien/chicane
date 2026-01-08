@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/List.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer/Status.hpp"
 
 namespace Chicane

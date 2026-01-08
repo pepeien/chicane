@@ -1,5 +1,6 @@
 #include "Chicane/Screech.hpp"
 
+#include "Chicane/Screech/Device.hpp"
 #include "Chicane/Screech/Manager.hpp"
 
 namespace Chicane

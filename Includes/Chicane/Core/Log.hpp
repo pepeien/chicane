@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Color.hpp"
-#include "Chicane/Core/Event.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Log/Entry.hpp"
 #include "Chicane/Core/String.hpp"
 

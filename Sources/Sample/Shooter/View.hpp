@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Essential.hpp"
+#include "Chicane/Core/Telemetry.hpp"
+#include "Chicane/Grid/Component/View.hpp"
 
 class View : public Chicane::Grid::View
 {
@@ -42,4 +43,8 @@ private:
     Chicane::Reference        m_uiCrosshairColorB;
     std::uint8_t              m_crosshairColorA;
     Chicane::Reference        m_uiCrosshairColorA;
+
+    // Score
+    std::uint32_t             m_playerScore;
+    Chicane::Reference        m_uiPlayerScore;
 };

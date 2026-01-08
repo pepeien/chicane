@@ -3,12 +3,13 @@
 #include "Chicane/Box/Asset/Model/Manager.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Sky.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sky/Instance.hpp"
 
 namespace Chicane
 {

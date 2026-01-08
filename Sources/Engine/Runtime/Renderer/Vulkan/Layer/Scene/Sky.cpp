@@ -3,6 +3,8 @@
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 
@@ -313,7 +315,7 @@ namespace Chicane
             descriptorSetLayouts.push_back(m_textureDescriptor.setLayout);
 
             GraphicsPipeline::Attachment colorAttachment = {};
-            colorAttachment.type          = GraphicsPipeline::Attachment::Type::Color;
+            colorAttachment.type          = GraphicsPipeline::AttachmentType::Color;
             colorAttachment.format        = m_internals.swapchain->colorFormat;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;

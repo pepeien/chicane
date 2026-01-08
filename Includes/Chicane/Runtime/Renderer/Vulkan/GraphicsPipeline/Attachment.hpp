@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Attachment/Type.hpp"
 
 namespace Chicane
 {
@@ -11,14 +14,7 @@ namespace Chicane
             struct CHICANE_RUNTIME Attachment
             {
             public:
-                enum class Type : std::uint8_t
-                {
-                    Color,
-                    Depth
-                };
-
-            public:
-                Type                 type;
+                AttachmentType       type;
                 vk::Format           format;
                 vk::AttachmentLoadOp loadOp;
                 vk::ImageLayout      initialLayout;

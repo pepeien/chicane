@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Renderer/Vulkan/Essential.hpp"
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
@@ -11,7 +14,7 @@ namespace Chicane
             struct CHICANE_RUNTIME StageCreateInfo
             {
             public:
-                String             path;
+                String                  path;
                 vk::ShaderStageFlagBits type;
             };
         }

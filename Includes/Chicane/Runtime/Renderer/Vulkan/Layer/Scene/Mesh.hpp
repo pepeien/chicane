@@ -2,12 +2,13 @@
 
 #include "Chicane/Box/Asset/Model/Manager.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Texture.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp"
 
 namespace Chicane
 {

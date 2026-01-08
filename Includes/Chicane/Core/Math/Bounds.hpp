@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Transform/Spatial.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
