@@ -14,19 +14,26 @@ namespace Chicane
                 void init(Instance& outFrame, const CreateInfo& inCreateInfo)
                 {
                     vk::FramebufferCreateInfo framebufferInfo = {};
-                    framebufferInfo.renderPass      = inCreateInfo.renderPass;
-                    framebufferInfo.attachmentCount = static_cast<std::uint32_t>(inCreateInfo.attachments.size());
-                    framebufferInfo.pAttachments    = inCreateInfo.attachments.data();
-                    framebufferInfo.width           = inCreateInfo.extent.width;
-                    framebufferInfo.height          = inCreateInfo.extent.height;
-                    framebufferInfo.layers          = 1;
+                    framebufferInfo.renderPass = inCreateInfo.renderPass;
+                    framebufferInfo.attachmentCount =
+                        static_cast<std::uint32_t>(
+                            inCreateInfo.attachments.size()
+                        );
+                    framebufferInfo.pAttachments =
+                        inCreateInfo.attachments.data();
+                    framebufferInfo.width  = inCreateInfo.extent.width;
+                    framebufferInfo.height = inCreateInfo.extent.height;
+                    framebufferInfo.layers = 1;
 
-                    vk::Framebuffer frameBuffer = inCreateInfo.logicalDevice.createFramebuffer(framebufferInfo);
+                    vk::Framebuffer frameBuffer =
+                        inCreateInfo.logicalDevice.createFramebuffer(
+                            framebufferInfo
+                        );
                     outFrame.addFrameBuffer(inCreateInfo.id, frameBuffer);
                 }
 
                 void initCommand(
-                    std::vector<Instance>& outFrames,
+                    std::vector<Instance>&           outFrames,
                     const CommandBuffer::CreateInfo& inCreateInfo
                 )
                 {
@@ -37,7 +44,7 @@ namespace Chicane
                 }
 
                 void initCommand(
-                    Instance& outFrame,
+                    Instance&                        outFrame,
                     const CommandBuffer::CreateInfo& inCreateInfo
                 )
                 {

@@ -22,5 +22,5 @@ namespace Chicane
 
     private:
         Box::SoundManager* m_manager;
-    }; 
+    };
 }

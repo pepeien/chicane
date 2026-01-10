@@ -124,7 +124,8 @@ namespace Chicane
             Printscreen,
             Scrolllock,
             Pause,
-            Insert, /**< insert on PC, help on some Mac keyboards (but does send code 73, not 117) */
+            Insert, /**< insert on PC, help on some Mac keyboards (but does send
+                       code 73, not 117) */
 
             Home,
             Pageup,
@@ -156,21 +157,21 @@ namespace Chicane
             KpPeriod,
 
             Nonusbackslash, /**< This is the additional key that ISO
-                            *   keyboards have over ANSI ones,
-                            *   located between left shift and Y.
-                            *   Produces GRAVE ACCENT and TILDE in a
-                            *   US or UK Mac layout, REVERSE SOLIDUS
-                            *   (backslash) and VERTICAL LINE in a
-                            *   US or UK Windows layout, and
-                            *   LESS-THAN SIGN and GREATER-THAN SIGN
-                            *   in a Swiss German, German, or French
-                            *   layout.
-                            */
-            Application, /**< windows contextual menu, compose */
-            Power, /**< The USB document says this is a status flag,
-                    *   not a physical key - but some Mac keyboards
-                    *   do have a power key.
-                    */
+                             *   keyboards have over ANSI ones,
+                             *   located between left shift and Y.
+                             *   Produces GRAVE ACCENT and TILDE in a
+                             *   US or UK Mac layout, REVERSE SOLIDUS
+                             *   (backslash) and VERTICAL LINE in a
+                             *   US or UK Windows layout, and
+                             *   LESS-THAN SIGN and GREATER-THAN SIGN
+                             *   in a Swiss German, German, or French
+                             *   layout.
+                             */
+            Application,    /**< windows contextual menu, compose */
+            Power,          /**< The USB document says this is a status flag,
+                             *   not a physical key - but some Mac keyboards
+                             *   do have a power key.
+                             */
 
             KpEquals,
             F13,
@@ -189,13 +190,13 @@ namespace Chicane
             Help, /**< AL Integrated Help Center */
             Menu, /**< Menu (show menu) */
             Select,
-            Stop, /**< AC Stop */
+            Stop,  /**< AC Stop */
             Again, /**< AC Redo/Repeat */
-            Undo, /**< AC Undo */
-            Cut, /**< AC Cut */
-            Copy, /**< AC Copy */
+            Undo,  /**< AC Undo */
+            Cut,   /**< AC Cut */
+            Copy,  /**< AC Copy */
             Paste, /**< AC Paste */
-            Find, /**< AC Find */
+            Find,  /**< AC Find */
             Mute,
             Volumeup,
             Volumedown,
@@ -203,7 +204,8 @@ namespace Chicane
             KpComma = 133,
             KpEqualsas400,
 
-            International1, /**< used on Asian keyboards, see footnotes in USB doc */
+            International1, /**< used on Asian keyboards, see footnotes in USB
+                               doc */
             International2,
             International3, /**< Yen */
             International4,
@@ -292,9 +294,9 @@ namespace Chicane
             RGui, /**< windows, command (apple), meta */
 
             Mode = 257, /**< I'm not sure if this is really not covered
-                        *   by any of the above, but since there's a
-                        *   special SDL_KMOD_MODE for it I'm adding it here
-                        */
+                         *   by any of the above, but since there's a
+                         *   special SDL_KMOD_MODE for it I'm adding it here
+                         */
 
             Sleep, /**< Sleep */
             Wake,  /**< Wake */
@@ -322,26 +324,26 @@ namespace Chicane
             AcPrint,      /**< AC Print */
             AcProperties, /**< AC Properties */
 
-            AcSearch,     /**< AC Search */
-            AcHome,       /**< AC Home */
-            AcBack,       /**< AC Back */
-            AcForward,    /**< AC Forward */
-            AcStop,       /**< AC Stop */
-            AcRefresh,    /**< AC Refresh */
-            AcBookmarks,  /**< AC Bookmarks */
+            AcSearch,    /**< AC Search */
+            AcHome,      /**< AC Home */
+            AcBack,      /**< AC Back */
+            AcForward,   /**< AC Forward */
+            AcStop,      /**< AC Stop */
+            AcRefresh,   /**< AC Refresh */
+            AcBookmarks, /**< AC Bookmarks */
 
-            Softleft, /**< Usually situated below the display on phones and
-                    * used as a multi-function feature key for selecting
-                    * a software defined function shown on the bottom left
-                    * of the display.
-                    */
+            Softleft,  /**< Usually situated below the display on phones and
+                        * used as a multi-function feature key for selecting
+                        * a software defined function shown on the bottom left
+                        * of the display.
+                        */
             Softright, /**< Usually situated below the display on phones and
                         * used as a multi-function feature key for selecting
                         * a software defined function shown on the bottom right
                         * of the display.
                         */
-            Call, /**< Used for accepting phone calls. */
-            Endcall /**< Used for rejecting phone calls. */
+            Call,      /**< Used for accepting phone calls. */
+            Endcall    /**< Used for rejecting phone calls. */
         };
     }
 }

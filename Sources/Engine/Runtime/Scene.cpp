@@ -4,10 +4,10 @@ namespace Chicane
 {
     Scene::Scene()
         : m_actors({}),
-        m_actorsObservable({}),
-        m_components({}),
-        m_componentsObservable({}),
-        m_defaultCamera(nullptr)
+          m_actorsObservable({}),
+          m_components({}),
+          m_componentsObservable({}),
+          m_defaultCamera(nullptr)
     {}
 
     Scene::~Scene()
@@ -66,13 +66,12 @@ namespace Chicane
     }
 
     Scene::ActorsSubscription Scene::watchActors(
-        ActorsSubscription::NextCallback inNext,
-        ActorsSubscription::ErrorCallback inError,
+        ActorsSubscription::NextCallback     inNext,
+        ActorsSubscription::ErrorCallback    inError,
         ActorsSubscription::CompleteCallback inComplete
     )
     {
-        return m_actorsObservable
-            .subscribe(inNext, inError, inComplete)
+        return m_actorsObservable.subscribe(inNext, inError, inComplete)
             .next(m_actors);
     }
 
@@ -93,7 +92,8 @@ namespace Chicane
             return;
         }
 
-        auto found = std::find(m_components.begin(), m_components.end(), inComponent);
+        auto found =
+            std::find(m_components.begin(), m_components.end(), inComponent);
 
         if (found == m_components.end())
         {
@@ -108,14 +108,13 @@ namespace Chicane
     }
 
     Scene::ComponentsSubscription Scene::watchComponents(
-        ComponentsSubscription::NextCallback inNext,
-        ComponentsSubscription::ErrorCallback inError,
+        ComponentsSubscription::NextCallback     inNext,
+        ComponentsSubscription::ErrorCallback    inError,
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
-        return m_componentsObservable
-           .subscribe(inNext, inError, inComplete)
-           .next(m_components);
+        return m_componentsObservable.subscribe(inNext, inError, inComplete)
+            .next(m_components);
     }
 
     void Scene::tickActors(float inDeltaTime)

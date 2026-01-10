@@ -13,9 +13,16 @@ namespace Chicane
         {
             namespace Buffer
             {
-                CHICANE_RUNTIME void init(Instance& outFrame, const CreateInfo& inCreateInfo);
-                CHICANE_RUNTIME void initCommand(std::vector<Instance>& outFrames, const CommandBuffer::CreateInfo& inCreateInfo);
-                CHICANE_RUNTIME void initCommand(Instance& outFrame, const CommandBuffer::CreateInfo& inCreateInfo);
+                CHICANE_RUNTIME void
+                init(Instance& outFrame, const CreateInfo& inCreateInfo);
+                CHICANE_RUNTIME void initCommand(
+                    std::vector<Instance>&           outFrames,
+                    const CommandBuffer::CreateInfo& inCreateInfo
+                );
+                CHICANE_RUNTIME void initCommand(
+                    Instance&                        outFrame,
+                    const CommandBuffer::CreateInfo& inCreateInfo
+                );
             }
         }
     }

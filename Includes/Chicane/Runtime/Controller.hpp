@@ -38,15 +38,15 @@ namespace Chicane
         // Lifecycle
         void activate();
 
-        template<class T = APawn>
+        template <class T = APawn>
         const T* getPawn() const
         {
             return dynamic_cast<T*>(m_pawn);
         }
 
         PawnSubscription watchAttachment(
-            PawnSubscription::NextCallback inNext,
-            PawnSubscription::ErrorCallback inError = nullptr,
+            PawnSubscription::NextCallback     inNext,
+            PawnSubscription::ErrorCallback    inError    = nullptr,
             PawnSubscription::CompleteCallback inComplete = nullptr
         );
 
@@ -57,28 +57,29 @@ namespace Chicane
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
         void bindEvent(
-            Input::MouseButton inButton,
-            Input::Status inStatus,
+            Input::MouseButton              inButton,
+            Input::Status                   inStatus,
             Input::MouseButtonEventCallback inCallback
         );
 
         // Keyboard Events
         void bindEvent(
-            Input::KeyboardButton inButton,
-            Input::Status inStatus,
+            Input::KeyboardButton        inButton,
+            Input::Status                inStatus,
             Input::KeyboardEventCallback inCallback
         );
 
         // Controller Events
         void bindEvent(Input::GamepadMotionEventCallback inCallback);
         void bindEvent(
-            Input::GamepadButton inButton,
-            Input::Status inStatus,
+            Input::GamepadButton              inButton,
+            Input::Status                     inStatus,
             Input::GamepadButtonEventCallback inCallback
         );
 
         // Device
-        bool isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const;
+        bool
+        isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const;
         bool isConnectedTo(Input::DeviceType inType) const;
         void connectTo(Input::DeviceType inType, Input::DeviceID inId);
         void disconnectFrom(Input::DeviceType inType);
@@ -112,7 +113,7 @@ namespace Chicane
 
         // Mouse Events
         Input::Events<Input::MouseMotionEvent>        m_mouseMotionEvents;
-        Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;   
+        Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;
 
         // Keyboard Events
         Input::PressableEvents<Input::KeyboardButton> m_keyboardKeyEvents;

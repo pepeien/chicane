@@ -8,41 +8,38 @@ namespace Chicane
     namespace Application
     {
         // Runtime
-        static Telemetry                 g_telemetry            = {};
+        static Telemetry g_telemetry = {};
 
-        static Controller*               g_controller           = nullptr;
-        static ControllerObservable      g_controllerObservable = {};
+        static Controller*          g_controller           = nullptr;
+        static ControllerObservable g_controllerObservable = {};
 
-        static Scene*                    g_scene                = nullptr;
-        static SceneObservable           g_sceneObservable      = {};
+        static Scene*          g_scene           = nullptr;
+        static SceneObservable g_sceneObservable = {};
 
         // Grid
-        static Grid::View*               g_view                 = nullptr;
-        static ViewObservable            g_viewObservable       = {};
+        static Grid::View*    g_view           = nullptr;
+        static ViewObservable g_viewObservable = {};
 
         // Window
-        static WindowCreateInfo          g_windowInfo           = {};
-        static std::unique_ptr<Window>   g_window               = nullptr;
+        static WindowCreateInfo        g_windowInfo = {};
+        static std::unique_ptr<Window> g_window     = nullptr;
 
         // Renderer
-        static std::unique_ptr<Renderer> g_renderer             = nullptr;
+        static std::unique_ptr<Renderer> g_renderer = nullptr;
 
         void initWindow()
         {
             if (!hasWindow())
             {
                 g_window = std::make_unique<Window>();
-                g_window->watchSize(
-                    [&](const Vec<2, int>& inSize)
+                g_window->watchSize([&](const Vec<2, int>& inSize) {
+                    if (!g_view)
                     {
-                        if (!g_view)
-                        {
-                            return;
-                        }
-
-                        g_view->setSize(inSize.x, inSize.y);
+                        return;
                     }
-                );
+
+                    g_view->setSize(inSize.x, inSize.y);
+                });
             }
             else
             {
@@ -77,7 +74,8 @@ namespace Chicane
 
         void initAssets(const String& inPath)
         {
-            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            for (const FileSystem::Item item :
+                 FileSystem::ls(inPath.toStandard()))
             {
                 if (item.type != FileSystem::ItemType::File)
                 {
@@ -129,7 +127,7 @@ namespace Chicane
             while (g_window->run())
             {
                 g_telemetry.start();
-                    render();
+                render();
                 g_telemetry.end();
             }
         }
@@ -141,12 +139,12 @@ namespace Chicane
 
         bool hasController()
         {
-            return  g_controller != nullptr;
+            return g_controller != nullptr;
         }
 
         Controller* getController()
         {
-            return  g_controller;
+            return g_controller;
         }
 
         void setController(Controller* inController)
@@ -162,13 +160,12 @@ namespace Chicane
         }
 
         ControllerSubscription watchController(
-            ControllerSubscription::NextCallback inNext,
-            ControllerSubscription::ErrorCallback inError,
+            ControllerSubscription::NextCallback     inNext,
+            ControllerSubscription::ErrorCallback    inError,
             ControllerSubscription::CompleteCallback inComplete
         )
         {
-            return g_controllerObservable
-                .subscribe(inNext, inError, inComplete)
+            return g_controllerObservable.subscribe(inNext, inError, inComplete)
                 .next(g_controller);
         }
 
@@ -201,13 +198,12 @@ namespace Chicane
         }
 
         SceneSubscription watchScene(
-            SceneSubscription::NextCallback inNext,
-            SceneSubscription::ErrorCallback inError,
+            SceneSubscription::NextCallback     inNext,
+            SceneSubscription::ErrorCallback    inError,
             SceneSubscription::CompleteCallback inComplete
         )
         {
-            return g_sceneObservable
-                .subscribe(inNext, inError, inComplete)
+            return g_sceneObservable.subscribe(inNext, inError, inComplete)
                 .next(g_scene);
         }
 
@@ -241,13 +237,12 @@ namespace Chicane
         }
 
         ViewSubscription watchView(
-            ViewSubscription::NextCallback inNext,
-            ViewSubscription::ErrorCallback inError,
+            ViewSubscription::NextCallback     inNext,
+            ViewSubscription::ErrorCallback    inError,
             ViewSubscription::CompleteCallback inComplete
         )
         {
-            return g_viewObservable
-                .subscribe(inNext, inError, inComplete)
+            return g_viewObservable.subscribe(inNext, inError, inComplete)
                 .next(g_view);
         }
 

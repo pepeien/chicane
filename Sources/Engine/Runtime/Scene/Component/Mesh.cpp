@@ -12,8 +12,8 @@ namespace Chicane
 
     CMesh::CMesh()
         : Super(),
-        m_bIsVisible(false),
-        m_mesh(nullptr)
+          m_bIsVisible(false),
+          m_mesh(nullptr)
     {}
 
     void CMesh::onActivation()
@@ -53,7 +53,7 @@ namespace Chicane
             return;
         }
 
-        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::ModelManager*   modelManager   = Box::getModelManager();
         Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
@@ -67,12 +67,12 @@ namespace Chicane
 
     void CMesh::hide()
     {
-        if (!m_bIsVisible  || !hasMesh())
+        if (!m_bIsVisible || !hasMesh())
         {
             return;
         }
 
-        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::ModelManager*   modelManager   = Box::getModelManager();
         Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
@@ -137,7 +137,8 @@ namespace Chicane
 
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::ModelExtracted& model = manager->getInstance(group.getModel());
+            const Box::ModelExtracted& model =
+                manager->getInstance(group.getModel());
 
             const Bounds bounds = Bounds(model.vertices, model.indices);
 
@@ -145,7 +146,8 @@ namespace Chicane
 
             if (!isAttached())
             {
-                continue;;
+                continue;
+                ;
             }
 
             m_parent->addBounds(bounds);

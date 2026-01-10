@@ -6,7 +6,7 @@ namespace Chicane
 {
     ACamera::ACamera()
         : Super(),
-        m_camera(nullptr)
+          m_camera(nullptr)
     {
         m_camera = Application::getScene()->createComponent<CCamera>();
         m_camera->setFarClip(2500.0f);

@@ -10,10 +10,10 @@ namespace Chicane
         namespace ModelWavefront
         {
             void parseDataset(
-                ModelExtracted& outResult,
+                ModelExtracted&                            outResult,
                 std::unordered_map<String, std::uint32_t>& outMap,
-                const fastObjMesh* inMesh,
-                std::uint32_t inIndex
+                const fastObjMesh*                         inMesh,
+                std::uint32_t                              inIndex
             )
             {
                 const fastObjIndex& index = inMesh->indices[inIndex];
@@ -47,7 +47,8 @@ namespace Chicane
                 vertex.uv.x = inMesh->texcoords[index.t * 2 + 0];
                 vertex.uv.y = inMesh->texcoords[index.t * 2 + 1];
 
-                std::uint32_t currentIndex = static_cast<std::uint32_t>(outResult.vertices.size());
+                std::uint32_t currentIndex =
+                    static_cast<std::uint32_t>(outResult.vertices.size());
 
                 outResult.indices.push_back(currentIndex);
                 outResult.vertices.push_back(vertex);
@@ -62,20 +63,22 @@ namespace Chicane
                 String data = String(inData.begin(), inData.end());
                 data.append('\n');
 
-                fastObjMesh* mesh = fast_obj_read_memory(&data.front(), &data.back());
+                fastObjMesh* mesh =
+                    fast_obj_read_memory(&data.front(), &data.back());
 
                 std::uint32_t indexPerFace = *mesh->face_vertices;
 
-                std::vector<std::uint32_t> vertexLayout = { 0, 1, 2 };
+                std::vector<std::uint32_t> vertexLayout = {0, 1, 2};
 
                 if (indexPerFace > 3) // is quad
                 {
-                    vertexLayout = { 0, 1, 2, 2, 3, 0 };
+                    vertexLayout = {0, 1, 2, 2, 3, 0};
                 }
 
                 std::unordered_map<String, std::uint32_t> map = {};
 
-                for (std::uint32_t i = 0; i < mesh->index_count; i += indexPerFace)
+                for (std::uint32_t i = 0; i < mesh->index_count;
+                     i += indexPerFace)
                 {
                     for (std::uint32_t index : vertexLayout)
                     {

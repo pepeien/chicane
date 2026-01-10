@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -18,8 +18,8 @@ namespace Chicane
                     vk::MemoryPropertyFlags properties;
 
                     // Devices
-		    	    vk::Device           logicalDevice;
-		    	    vk::PhysicalDevice   physicalDevice;
+                    vk::Device              logicalDevice;
+                    vk::PhysicalDevice      physicalDevice;
                 };
             }
         }

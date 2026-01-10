@@ -11,10 +11,10 @@ namespace Chicane
         namespace Debug
         {
             vk::Bool32 debugCallback(
-                vk::DebugUtilsMessageSeverityFlagBitsEXT inMessageSeverity,
-                vk::DebugUtilsMessageTypeFlagsEXT inMessageType,
+                vk::DebugUtilsMessageSeverityFlagBitsEXT      inMessageSeverity,
+                vk::DebugUtilsMessageTypeFlagsEXT             inMessageType,
                 const vk::DebugUtilsMessengerCallbackDataEXT* inData,
-                void* outUserData
+                void*                                         outUserData
             )
             {
                 if (!inData->pMessage)
@@ -23,25 +23,30 @@ namespace Chicane
                 }
 
                 String prefix = "General";
-                if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance)
+                if (inMessageType ==
+                    vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance)
                 {
                     prefix = "Performance";
                 }
-                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation)
+                else if (inMessageType ==
+                         vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation)
                 {
                     prefix = "Validation";
                 }
-                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::eDeviceAddressBinding)
+                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::
+                                              eDeviceAddressBinding)
                 {
                     prefix = "Device";
                 }
 
                 String color = Color::HEX_COLOR_WHITE;
-                if (inMessageSeverity == vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning)
+                if (inMessageSeverity ==
+                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning)
                 {
                     color = Color::HEX_COLOR_YELLOW;
                 }
-                else if (inMessageSeverity == vk::DebugUtilsMessageSeverityFlagBitsEXT::eError)
+                else if (inMessageSeverity ==
+                         vk::DebugUtilsMessageSeverityFlagBitsEXT::eError)
                 {
                     color = Color::HEX_COLOR_ORANGE;
                 }
@@ -52,8 +57,8 @@ namespace Chicane
             }
 
             void initMessenger(
-                vk::DebugUtilsMessengerEXT& outDebugMessenger,
-                const vk::Instance& inInstance,
+                vk::DebugUtilsMessengerEXT&              outDebugMessenger,
+                const vk::Instance&                      inInstance,
                 const vk::detail::DispatchLoaderDynamic& inDispatcher
             )
             {
@@ -62,30 +67,33 @@ namespace Chicane
                     return;
                 }
 
-                vk::DebugUtilsMessengerCreateInfoEXT createInfo = vk::DebugUtilsMessengerCreateInfoEXT(
-                    vk::DebugUtilsMessengerCreateFlagsEXT(),
+                vk::DebugUtilsMessengerCreateInfoEXT createInfo =
+                    vk::DebugUtilsMessengerCreateInfoEXT(
+                        vk::DebugUtilsMessengerCreateFlagsEXT(),
 
-                    // Severity
-                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
-                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo    |
-                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
+                        // Severity
+                        vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
 
-                    // Type
-                    vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral     |
-                    vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation  |
-                    vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
+                        // Type
+                        vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+                            vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+                            vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
 
-                    // Callback
-                    debugCallback
+                        // Callback
+                        debugCallback
+                    );
+
+                outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(
+                    createInfo, nullptr, inDispatcher
                 );
-
-                outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDispatcher);
             }
 
             void destroyMessenger(
-                vk::DebugUtilsMessengerEXT& outDebugMessenger,
-                const vk::Instance& inInstance,
+                vk::DebugUtilsMessengerEXT&              outDebugMessenger,
+                const vk::Instance&                      inInstance,
                 const vk::detail::DispatchLoaderDynamic& inDispatcher
             )
             {
@@ -94,7 +102,9 @@ namespace Chicane
                     return;
                 }
 
-                inInstance.destroyDebugUtilsMessengerEXT(outDebugMessenger, nullptr, inDispatcher);
+                inInstance.destroyDebugUtilsMessengerEXT(
+                    outDebugMessenger, nullptr, inDispatcher
+                );
             }
         }
     }

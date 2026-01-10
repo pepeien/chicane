@@ -1,12 +1,12 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/SwapChain/Bundle.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/SwapChain/SupportDetails.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -17,25 +17,25 @@ namespace Chicane
             static inline constexpr const std::uint32_t MAX_IMAGE_COUNT = 3;
 
             CHICANE_RUNTIME void querySupport(
-                SupportDetails& outSupportDetails,
+                SupportDetails&           outSupportDetails,
                 const vk::PhysicalDevice& inPhysicalDevice,
-                const vk::SurfaceKHR& inSurface
+                const vk::SurfaceKHR&     inSurface
             );
-        
+
             CHICANE_RUNTIME void pickSurfaceFormat(
-                vk::SurfaceFormatKHR& outSurfaceFormat,
+                vk::SurfaceFormatKHR&                    outSurfaceFormat,
                 const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             );
             CHICANE_RUNTIME void pickPresentMode(
-                vk::PresentModeKHR& outPresentMode,
+                vk::PresentModeKHR&                    outPresentMode,
                 const std::vector<vk::PresentModeKHR>& inPresentModes
             );
 
             CHICANE_RUNTIME void init(
-                Bundle& outSwapChain,
+                Bundle&                   outSwapChain,
                 const vk::PhysicalDevice& inPhysicalDevice,
-                const vk::Device& inLogicalDevice,
-                const vk::SurfaceKHR& inSurface
+                const vk::Device&         inLogicalDevice,
+                const vk::SurfaceKHR&     inSurface
             );
         }
     }

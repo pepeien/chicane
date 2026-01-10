@@ -6,7 +6,7 @@ namespace Chicane
 {
     ASound::ASound()
         : Super(),
-        m_sound(nullptr)
+          m_sound(nullptr)
     {
         m_sound = Application::getScene()->createComponent<CSound>();
         m_sound->attachTo(this);

@@ -16,8 +16,8 @@ namespace Chicane
         using ListSubscription = Subscription<List>;
 
         CHICANE_CORE ListSubscription watchLogs(
-            ListSubscription::NextCallback inNext,
-            ListSubscription::ErrorCallback inError = nullptr,
+            ListSubscription::NextCallback     inNext,
+            ListSubscription::ErrorCallback    inError    = nullptr,
             ListSubscription::CompleteCallback inComplete = nullptr
         );
 
@@ -26,44 +26,42 @@ namespace Chicane
             const String& inIdentifier,
             const String& inMessage
         );
-        template<typename... T>
+        template <typename... T>
         void emmit(
             const String& inHexColor,
             const String& inIdentifier,
-            String inMessage,
+            String        inMessage,
             T... inParams
         )
         {
             emmit(
-                inHexColor,
-                inIdentifier,
-                String::sprint(inMessage, inParams...)
+                inHexColor, inIdentifier, String::sprint(inMessage, inParams...)
             );
         }
 
         CHICANE_CORE void info(const String& inMessage);
-        template<typename... T>
+        template <typename... T>
         void info(String inMessage, T... inParams)
         {
             info(String::sprint(inMessage, inParams...));
         }
 
         CHICANE_CORE void warning(const String& inMessage);
-        template<typename... T>
+        template <typename... T>
         void warning(String inMessage, T... inParams)
         {
             warning(String::sprint(inMessage, inParams...));
         }
 
         CHICANE_CORE void error(const String& inMessage);
-        template<typename... T>
+        template <typename... T>
         void error(String inMessage, T... inParams)
         {
             error(String::sprint(inMessage, inParams...));
         }
 
         CHICANE_CORE void critical(const String& inMessage);
-        template<typename... T>
+        template <typename... T>
         void critical(String inMessage, T... inParams)
         {
             critical(String::sprint(inMessage, inParams...));

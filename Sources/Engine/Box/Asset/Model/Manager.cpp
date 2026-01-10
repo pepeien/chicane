@@ -13,7 +13,9 @@ namespace Chicane
             : Super()
         {}
 
-        void ModelManager::onAllocation(const String& inId, const ModelParsed& inData)
+        void ModelManager::onAllocation(
+            const String& inId, const ModelParsed& inData
+        )
         {
             const ModelExtracted& instance = getInstance(inId);
 
@@ -40,7 +42,7 @@ namespace Chicane
                 data.firstIndex  = firstIndex;
 
                 firstVertex += data.vertexCount;
-                firstIndex  += data.indexCount;
+                firstIndex += data.indexCount;
             }
         }
 
@@ -49,10 +51,12 @@ namespace Chicane
             const ModelExtracted& instance = getInstance(inId);
 
             ModelParsed data = {};
-            data.vertexCount = static_cast<std::uint32_t>(instance.vertices.size());
+            data.vertexCount =
+                static_cast<std::uint32_t>(instance.vertices.size());
             data.firstVertex = static_cast<std::uint32_t>(m_vertices.size());
-            data.indexCount  = static_cast<std::uint32_t>(instance.indices.size());
-            data.firstIndex  = static_cast<std::uint32_t>(m_indices.size());
+            data.indexCount =
+                static_cast<std::uint32_t>(instance.indices.size());
+            data.firstIndex = static_cast<std::uint32_t>(m_indices.size());
 
             Super::allocate(inId, data);
         }
@@ -87,11 +91,14 @@ namespace Chicane
                 break;
 
             default:
-                throw std::runtime_error("Failed to import Model due to invalid type");
+                throw std::runtime_error(
+                    "Failed to import Model due to invalid type"
+                );
             }
         }
 
-        const ModelExtracted& ModelManager::getInstance(const String& inId) const
+        const ModelExtracted&
+        ModelManager::getInstance(const String& inId) const
         {
             if (!isLoaded(inId))
             {
@@ -125,15 +132,14 @@ namespace Chicane
         {
             if (!isLoaded(inId))
             {
-                throw std::runtime_error("The Model [" + inId + "] does not exist");
+                throw std::runtime_error(
+                    "The Model [" + inId + "] does not exist"
+                );
             }
 
             std::uint32_t result = static_cast<std::uint32_t>(
-                std::find(
-                    m_usedIds.begin(),
-                    m_usedIds.end(),
-                    inId
-                ) - m_usedIds.begin()
+                std::find(m_usedIds.begin(), m_usedIds.end(), inId) -
+                m_usedIds.begin()
             );
 
             return result;

@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Box
     {
-        template<typename I, typename E>
+        template <typename I, typename E>
         class CHICANE_BOX Manager
         {
         public:
@@ -28,8 +28,14 @@ namespace Chicane
 
         protected:
             // Event
-            virtual void onLoad(const String& inId, const I& inInstance) { return; }
-            virtual void onAllocation(const String& inId, const E& inData) { return; }
+            virtual void onLoad(const String& inId, const I& inInstance)
+            {
+                return;
+            }
+            virtual void onAllocation(const String& inId, const E& inData)
+            {
+                return;
+            }
             virtual void onDeallocation(const String& inId) { return; }
             virtual void onActivation(const String& inId) { return; }
             virtual void onDeactivation(const String& inId) { return; }
@@ -54,19 +60,14 @@ namespace Chicane
             bool isActive(const String& inId) const
             {
                 return std::find(
-                    m_activeIds.begin(),
-                    m_activeIds.end(),
-                    inId
-                ) != m_activeIds.end();
+                           m_activeIds.begin(), m_activeIds.end(), inId
+                       ) != m_activeIds.end();
             }
 
             bool isUsing(const String& inId) const
             {
-                return std::find(
-                    m_usedIds.begin(),
-                    m_usedIds.end(),
-                    inId
-                ) != m_usedIds.end();
+                return std::find(m_usedIds.begin(), m_usedIds.end(), inId) !=
+                       m_usedIds.end();
             }
 
             // Data
@@ -75,20 +76,14 @@ namespace Chicane
                 return m_activeIds;
             }
 
-            const std::vector<String>& getUsedIds() const
-            {
-                return m_usedIds;
-            }
+            const std::vector<String>& getUsedIds() const { return m_usedIds; }
 
             std::uint32_t getActiveCount() const
             {
                 return static_cast<std::uint32_t>(m_activeIds.size());
             }
 
-            std::uint32_t getUsedCount() const
-            {
-                return m_usedIds.size();
-            }
+            std::uint32_t getUsedCount() const { return m_usedIds.size(); }
 
             std::uint32_t getUseCount(const String& inId) const
             {
@@ -97,7 +92,9 @@ namespace Chicane
                     return 0;
                 }
 
-                return static_cast<std::uint32_t>(std::count(m_usedIds.begin(), m_usedIds.end(), inId));
+                return static_cast<std::uint32_t>(
+                    std::count(m_usedIds.begin(), m_usedIds.end(), inId)
+                );
             }
 
             // Lifecycle
@@ -154,8 +151,7 @@ namespace Chicane
                 std::sort(
                     m_usedIds.begin(),
                     m_usedIds.end(),
-                    [](const String& inA, const String& inB)
-                    {
+                    [](const String& inA, const String& inB) {
                         return inA.compare(inB) > 0;
                     }
                 );
@@ -168,8 +164,7 @@ namespace Chicane
                     std::sort(
                         m_activeIds.begin(),
                         m_activeIds.end(),
-                        [](const String& inA, const String& inB)
-                        {
+                        [](const String& inA, const String& inB) {
                             return inA.compare(inB) > 0;
                         }
                     );
@@ -188,18 +183,13 @@ namespace Chicane
                 }
 
                 m_usedIds.erase(
-                    std::find(
-                        m_usedIds.begin(),
-                        m_usedIds.end(),
-                        inId
-                    )
+                    std::find(m_usedIds.begin(), m_usedIds.end(), inId)
                 );
                 m_usedIds.shrink_to_fit();
                 std::sort(
                     m_usedIds.begin(),
                     m_usedIds.end(),
-                    [](const String& inA, const String& inB)
-                    {
+                    [](const String& inA, const String& inB) {
                         return inA.compare(inB) > 0;
                     }
                 );
@@ -212,18 +202,13 @@ namespace Chicane
                 }
 
                 m_activeIds.erase(
-                    std::find(
-                        m_activeIds.begin(),
-                        m_activeIds.end(),
-                        inId
-                    )
+                    std::find(m_activeIds.begin(), m_activeIds.end(), inId)
                 );
                 m_activeIds.shrink_to_fit();
                 std::sort(
                     m_activeIds.begin(),
                     m_activeIds.end(),
-                    [](const String& inA, const String& inB)
-                    {
+                    [](const String& inA, const String& inB) {
                         return inA.compare(inB) > 0;
                     }
                 );
@@ -233,8 +218,8 @@ namespace Chicane
 
             // Events
             EventSubscription watchChanges(
-                EventSubscription::NextCallback inNext,
-                EventSubscription::ErrorCallback inError = nullptr,
+                EventSubscription::NextCallback     inNext,
+                EventSubscription::ErrorCallback    inError    = nullptr,
                 EventSubscription::CompleteCallback inComplete = nullptr
             )
             {
@@ -246,7 +231,7 @@ namespace Chicane
             std::map<String, E> m_datum;
             std::vector<String> m_activeIds;
             std::vector<String> m_usedIds;
-            EventObservable          m_observable;
+            EventObservable     m_observable;
         };
     }
 }

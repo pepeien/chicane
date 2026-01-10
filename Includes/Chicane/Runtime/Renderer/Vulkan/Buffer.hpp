@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer/CreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -18,9 +18,9 @@ namespace Chicane
             void init(const BufferCreateInfo& inCreateInfo);
             void allocate(const BufferCreateInfo& inCreateInfo);
             void copy(
-                const Buffer& inDestination,
-                const vk::DeviceSize& inAllocationSize,
-                const vk::Queue& inQueue,
+                const Buffer&            inDestination,
+                const vk::DeviceSize&    inAllocationSize,
+                const vk::Queue&         inQueue,
                 const vk::CommandBuffer& inCommandBuffer
             );
             void destroy(const vk::Device& inLogicalDevice);

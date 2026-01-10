@@ -10,7 +10,10 @@ namespace Chicane
     struct CHICANE_CORE Bounds
     {
     public:
-        Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices);
+        Bounds(
+            const std::vector<Vertex>&        inVertices,
+            const std::vector<std::uint32_t>& inIndices
+        );
         Bounds();
 
     public:

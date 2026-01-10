@@ -4,9 +4,9 @@ namespace Chicane
 {
     Actor::Actor()
         : Transformable(),
-        m_bCanCollide(false),
-        m_bCanTick(false),
-        m_id("")
+          m_bCanCollide(false),
+          m_bCanTick(false),
+          m_id("")
     {}
 
     bool Actor::canTick() const

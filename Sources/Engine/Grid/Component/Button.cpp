@@ -7,15 +7,11 @@ namespace Chicane
         Button::Button(const pugi::xml_node& inNode)
             : Super(inNode)
         {
-            addFunction(
-                ON_CLICK_ATTRIBUTE_NAME,
-                [this](const Event& inEvent)
-                {
-                    onClick(inEvent);
+            addFunction(ON_CLICK_ATTRIBUTE_NAME, [this](const Event& inEvent) {
+                onClick(inEvent);
 
-                    return Reference();
-                }
-            );
+                return Reference();
+            });
         }
     }
 }

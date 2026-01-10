@@ -41,19 +41,19 @@ namespace Chicane
 
             pugi::xml_node root = getXML();
 
-            if (
-                !Xml::isEmpty(
-                    root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar())
-                )
-            )
+            if (!Xml::isEmpty(root.find_child_by_attribute(
+                    GROUP_ID_ATTRIBUTE_NAME, id.toChar()
+                )))
             {
                 throw std::runtime_error(
-                    "A group with the ID " + inGroup.getId().toStandard() + " already exists"
+                    "A group with the ID " + inGroup.getId().toStandard() +
+                    " already exists"
                 );
             }
 
             pugi::xml_node groupNode = root.append_child(GROUP_TAG);
-            groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME).set_value(id.toStandard());
+            groupNode.append_attribute(GROUP_ID_ATTRIBUTE_NAME)
+                .set_value(id.toStandard());
 
             pugi::xml_node modelNode = groupNode.append_child(Model::TAG);
             Xml::addText(modelNode, inGroup.getModel());
@@ -72,8 +72,7 @@ namespace Chicane
             auto foundGroupEntry = std::find_if(
                 m_groups.begin(),
                 m_groups.end(),
-                [inGroup](const MeshGroup& inValue)
-                {
+                [inGroup](const MeshGroup& inValue) {
                     return inGroup.getId().equals(inValue.getId());
                 }
             );
@@ -81,7 +80,8 @@ namespace Chicane
             if (foundGroupEntry == m_groups.end())
             {
                 throw std::runtime_error(
-                    "The group " + inGroup.getId().toStandard() + " wasn't found"
+                    "The group " + inGroup.getId().toStandard() +
+                    " wasn't found"
                 );
             }
 
@@ -91,8 +91,7 @@ namespace Chicane
 
             pugi::xml_node root           = getXML();
             pugi::xml_node foundGroupNode = root.find_child_by_attribute(
-                GROUP_ID_ATTRIBUTE_NAME,
-                id.toChar()
+                GROUP_ID_ATTRIBUTE_NAME, id.toChar()
             );
 
             if (Xml::isEmpty(foundGroupNode))

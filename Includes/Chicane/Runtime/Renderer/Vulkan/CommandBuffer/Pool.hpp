@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -13,10 +13,10 @@ namespace Chicane
             namespace Pool
             {
                 CHICANE_RUNTIME void init(
-                    vk::CommandPool& outCommandPool,
-                    const vk::Device& inLogicalDevice,
+                    vk::CommandPool&          outCommandPool,
+                    const vk::Device&         inLogicalDevice,
                     const vk::PhysicalDevice& inPhysicalDevice,
-                    const vk::SurfaceKHR& inSurface
+                    const vk::SurfaceKHR&     inSurface
                 );
             }
         }

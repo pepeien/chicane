@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Shader/CreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -12,7 +12,7 @@ namespace Chicane
         namespace Shader
         {
             CHICANE_RUNTIME vk::PipelineShaderStageCreateInfo initShaderStage(
-                const vk::Device& inLogicalDevice,
+                const vk::Device&      inLogicalDevice,
                 const StageCreateInfo& inCreateInfo
             );
         }

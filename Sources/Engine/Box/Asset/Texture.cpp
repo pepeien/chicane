@@ -7,13 +7,13 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, ImageVendor> VENDOR_MAP {
-            { "PNG", ImageVendor::Png }
+        static const std::unordered_map<String, ImageVendor> VENDOR_MAP{
+            {"PNG", ImageVendor::Png}
         };
 
         Texture::Texture(const FileSystem::Path& inFilepath)
             : Asset(inFilepath),
-            m_vendor(ImageVendor::Undefined)
+              m_vendor(ImageVendor::Undefined)
         {
             fetchVendor();
             fetchData();
@@ -31,7 +31,9 @@ namespace Chicane
             auto vendor = std::find_if(
                 VENDOR_MAP.begin(),
                 VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
+                [inVendor](const auto& inPair) {
+                    return inPair.second == inVendor;
+                }
             );
 
             if (vendor == VENDOR_MAP.end())
@@ -45,7 +47,8 @@ namespace Chicane
 
             if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
             {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
+                root.append_attribute(VENDOR_ATTRIBUTE_NAME)
+                    .set_value(vendorID.toChar());
 
                 return;
             }
@@ -87,10 +90,8 @@ namespace Chicane
                 return;
             }
 
-            String vendor = Xml::getAttribute(
-                VENDOR_ATTRIBUTE_NAME,
-                getXML()
-            ).as_string();
+            String vendor =
+                Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
 
             if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
             {

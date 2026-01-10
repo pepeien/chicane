@@ -9,9 +9,9 @@ namespace Chicane
     {
     public:
         // Window
-        WindowCreateInfo       window   = {};
+        WindowCreateInfo      window  = {};
 
         // Callbacks
-        std::function<void ()> onSetup  = nullptr;
+        std::function<void()> onSetup = nullptr;
     };
 }

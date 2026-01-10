@@ -13,5 +13,5 @@ namespace Chicane
 
     protected:
         void onTransform() override;
-    }; 
+    };
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolCreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/SetLayoutBidingsCreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -14,22 +14,22 @@ namespace Chicane
         namespace Descriptor
         {
             CHICANE_RUNTIME void initPool(
-                vk::DescriptorPool& outDescriptorPool,
-                const vk::Device& inLogicalDevice,
+                vk::DescriptorPool&   outDescriptorPool,
+                const vk::Device&     inLogicalDevice,
                 const PoolCreateInfo& inCreateInfo
             );
 
             CHICANE_RUNTIME void initSetLayout(
-                vk::DescriptorSetLayout& outDescriptorSetLayout,
-                const vk::Device& inLogicalDevice,
+                vk::DescriptorSetLayout&          outDescriptorSetLayout,
+                const vk::Device&                 inLogicalDevice,
                 const SetLayoutBidingsCreateInfo& inBidingsCreateInfo
             );
 
             CHICANE_RUNTIME void allocalteSet(
-                vk::DescriptorSet& outDescriptorSet,
-                const vk::Device& inLogicalDevice,
+                vk::DescriptorSet&             outDescriptorSet,
+                const vk::Device&              inLogicalDevice,
                 const vk::DescriptorSetLayout& inLayout,
-                const vk::DescriptorPool& inPool
+                const vk::DescriptorPool&      inPool
             );
         }
     }

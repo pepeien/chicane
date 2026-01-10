@@ -1,12 +1,12 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Box/Asset/Mesh/Parsed.hpp"
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -44,58 +44,71 @@ namespace Chicane
                 void destroyMeshData();
 
                 // Image
-                void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
+                void setupColorImage(
+                    vk::Format inFormat, const vk::Extent2D& inExtent
+                );
                 void destroyColorImage();
 
-                void setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent);
+                void setupDepthImage(
+                    vk::Format inFormat, const vk::Extent2D& inExtent
+                );
                 void destroyDepthImage();
 
-                void setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent);
+                void setupShadowImage(
+                    vk::Format inFormat, const vk::Extent2D& inExtent
+                );
                 void destroyShadowImage();
 
                 // Vulkan
-                void addFrameBuffer(const String& inId, const vk::Framebuffer& inFramebuffer);
+                void addFrameBuffer(
+                    const String& inId, const vk::Framebuffer& inFramebuffer
+                );
                 vk::Framebuffer getFramebuffer(const String& inId) const;
 
-                void addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet);
+                void addDescriptorSet(
+                    const String& inId, const vk::DescriptorSet& inDescriptorSet
+                );
                 vk::DescriptorSet getDescriptorSet(const String& inId) const;
 
-                void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
+                void addWriteDescriptorSet(
+                    const vk::WriteDescriptorSet& inWriteDescriptorSet
+                );
                 void updateDescriptorSets();
 
             private:
-                RendererView getActiveCameraData(const std::vector<CCamera*>& inCameras);
+                RendererView
+                getActiveCameraData(const std::vector<CCamera*>& inCameras);
                 RendererView normalizeViewData(const RendererView& inData);
 
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);
 
             public:
-                vk::Device                                   logicalDevice;
-                vk::PhysicalDevice                           physicalDevice;
+                vk::Device                                    logicalDevice;
+                vk::PhysicalDevice                            physicalDevice;
 
                 // Image
-                Image::Data                                  colorImage;
-                Image::Data                                  depthImage;
-                Image::Data                                  shadowImage;
-                vk::DescriptorImageInfo                      shadowImageInfo;
+                Image::Data                                   colorImage;
+                Image::Data                                   depthImage;
+                Image::Data                                   shadowImage;
+                vk::DescriptorImageInfo                       shadowImageInfo;
 
                 // Buffer
-                std::unordered_map<String, vk::Framebuffer>  framebuffers;
+                std::unordered_map<String, vk::Framebuffer>   framebuffers;
 
                 // Sychronization
-                vk::CommandBuffer                            commandBuffer;
-                vk::Fence                                    renderFence;
-                vk::Semaphore                                presentSemaphore;
-                vk::Semaphore                                renderSemaphore;
+                vk::CommandBuffer                             commandBuffer;
+                vk::Fence                                     renderFence;
+                vk::Semaphore                                 presentSemaphore;
+                vk::Semaphore                                 renderSemaphore;
 
                 // Resources
-                Resource<RendererView>                       cameraResource;
-                Resource<RendererView>                       lightResource;
-                Resource<Box::MeshParsed>                    meshResource;
-                Resource<Box::MeshParsed>                    collisionResource;
+                Resource<RendererView>                        cameraResource;
+                Resource<RendererView>                        lightResource;
+                Resource<Box::MeshParsed>                     meshResource;
+                Resource<Box::MeshParsed>                     collisionResource;
 
-                std::unordered_map<String,vk::DescriptorSet> descriptorSets;
-                std::vector<vk::WriteDescriptorSet>          descriptorSetWrites;
+                std::unordered_map<String, vk::DescriptorSet> descriptorSets;
+                std::vector<vk::WriteDescriptorSet> descriptorSetWrites;
             };
         }
     }

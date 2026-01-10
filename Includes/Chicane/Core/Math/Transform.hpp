@@ -12,7 +12,7 @@ namespace Chicane
     public:
         // Transformation
         const Mat4& getMatrix() const;
-        void setMatrix(const Mat4&  inMatrix);
+        void setMatrix(const Mat4& inMatrix);
 
         void setTransform(const Transform& inTransform);
 

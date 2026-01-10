@@ -12,12 +12,14 @@ namespace Chicane
         static inline constexpr const Vec<2, float> Zero = Vec<2, float>(0.0f);
         static inline constexpr const Vec<2, float> One  = Vec<2, float>(1.0f);
 
-        static inline constexpr const Vec<2, float> Up    = Vec<2, float>(Vec3::Up.x,    Vec3::Up.y);
-        static inline constexpr const Vec<2, float> Right = Vec<2, float>(Vec3::Right.x, Vec3::Right.y);
+        static inline constexpr const Vec<2, float> Up =
+            Vec<2, float>(Vec3::Up.x, Vec3::Up.y);
+        static inline constexpr const Vec<2, float> Right =
+            Vec<2, float>(Vec3::Right.x, Vec3::Right.y);
 
     public:
-        template<typename... A>
-        constexpr Vec2(A ...args)
+        template <typename... A>
+        constexpr Vec2(A... args)
             : Vec<2, float>(args...)
         {}
 

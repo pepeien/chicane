@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -10,7 +10,11 @@ namespace Chicane
     {
         namespace Surface
         {
-            CHICANE_RUNTIME void init(vk::SurfaceKHR& outSurface, const vk::Instance& inInstance, void* inWindow);
+            CHICANE_RUNTIME void init(
+                vk::SurfaceKHR&     outSurface,
+                const vk::Instance& inInstance,
+                void*               inWindow
+            );
         }
     }
 }

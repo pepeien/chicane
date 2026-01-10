@@ -4,8 +4,8 @@ namespace Chicane
 {
     Telemetry::Telemetry()
         : Recorder(0.0f),
-        delta(0.0f),
-        rate(0U)
+          delta(0.0f),
+          rate(0U)
     {}
 
     void Telemetry::onTime()

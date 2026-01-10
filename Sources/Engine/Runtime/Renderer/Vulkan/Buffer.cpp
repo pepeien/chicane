@@ -1,7 +1,7 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 
-#include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer/Worker.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Device.hpp"
 
 namespace Chicane
 {
@@ -9,15 +9,15 @@ namespace Chicane
     {
         Buffer::Buffer()
             : instance(nullptr),
-            memory(nullptr)
+              memory(nullptr)
         {}
 
         void Buffer::init(const BufferCreateInfo& inCreateInfo)
         {
             vk::BufferCreateInfo bufferInfo = {};
-            bufferInfo.size        = inCreateInfo.size;
-            bufferInfo.usage       = inCreateInfo.usage;
-            bufferInfo.sharingMode = vk::SharingMode::eExclusive;
+            bufferInfo.size                 = inCreateInfo.size;
+            bufferInfo.usage                = inCreateInfo.usage;
+            bufferInfo.sharingMode          = vk::SharingMode::eExclusive;
 
             instance = inCreateInfo.logicalDevice.createBuffer(bufferInfo);
 
@@ -26,45 +26,46 @@ namespace Chicane
 
         void Buffer::allocate(const BufferCreateInfo& inCreateInfo)
         {
-            vk::MemoryRequirements memoryRequirements = inCreateInfo
-                .logicalDevice
-                .getBufferMemoryRequirements(instance);
+            vk::MemoryRequirements memoryRequirements =
+                inCreateInfo.logicalDevice.getBufferMemoryRequirements(
+                    instance
+                );
 
             vk::MemoryAllocateInfo memoryAlocateInfo = {};
-            memoryAlocateInfo.allocationSize  = memoryRequirements.size;
+            memoryAlocateInfo.allocationSize         = memoryRequirements.size;
             memoryAlocateInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
                 inCreateInfo.physicalDevice,
                 memoryRequirements.memoryTypeBits,
                 inCreateInfo.memoryProperties
             );
 
-            memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
+            memory =
+                inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
 
             inCreateInfo.logicalDevice.bindBufferMemory(instance, memory, 0);
         }
 
         void Buffer::copy(
-            const Buffer& inDestination,
-            const vk::DeviceSize& inAllocationSize,
-            const vk::Queue& inQueue,
+            const Buffer&            inDestination,
+            const vk::DeviceSize&    inAllocationSize,
+            const vk::Queue&         inQueue,
             const vk::CommandBuffer& inCommandBuffer
         )
         {
             CommandBuffer::Worker::startJob(inCommandBuffer);
 
             vk::BufferCopy copyRegion = {};
-            copyRegion.srcOffset = 0;
-            copyRegion.dstOffset = 0;
-            copyRegion.size      = inAllocationSize;
+            copyRegion.srcOffset      = 0;
+            copyRegion.dstOffset      = 0;
+            copyRegion.size           = inAllocationSize;
 
             inCommandBuffer.copyBuffer(
-                instance,
-                inDestination.instance,
-                1,
-                &copyRegion
+                instance, inDestination.instance, 1, &copyRegion
             );
 
-            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
+            CommandBuffer::Worker::endJob(
+                inCommandBuffer, inQueue, "Copy The Buffer"
+            );
         }
 
         void Buffer::destroy(const vk::Device& inLogicalDevice)

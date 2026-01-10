@@ -24,10 +24,10 @@ namespace Chicane
 
     BoundsPoints::BoundsPoints()
         : m_min(Vec3::Zero),
-        m_max(Vec3::Zero),
-        m_top(Vec3::Zero),
-        m_center(Vec3::Zero),
-        m_bottom(Vec3::Zero)
+          m_max(Vec3::Zero),
+          m_top(Vec3::Zero),
+          m_center(Vec3::Zero),
+          m_bottom(Vec3::Zero)
     {}
 
     void BoundsPoints::add(const Vec3& inMin, const Vec3& inMax)

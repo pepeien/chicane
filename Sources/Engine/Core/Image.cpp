@@ -47,18 +47,18 @@ namespace Chicane
 
     Image::Image()
         : m_width(0),
-        m_height(0),
-        m_channel(0),
-        m_format(0),
-        m_pixels(nullptr)
+          m_height(0),
+          m_channel(0),
+          m_format(0),
+          m_pixels(nullptr)
     {}
 
     Image::Image(const Image& inImage)
         : m_width(inImage.m_width),
-        m_height(inImage.m_height),
-        m_channel(inImage.m_channel),
-        m_format(inImage.m_format),
-        m_pixels(inImage.m_pixels)
+          m_height(inImage.m_height),
+          m_channel(inImage.m_channel),
+          m_format(inImage.m_format),
+          m_pixels(inImage.m_pixels)
     {}
 
     Image::~Image()
@@ -73,7 +73,6 @@ namespace Chicane
         m_pixels = nullptr;
     }
 
-    
     int Image::getWidth() const
     {
         return m_width;

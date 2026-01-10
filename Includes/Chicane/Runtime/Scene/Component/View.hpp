@@ -57,5 +57,5 @@ namespace Chicane
         RendererViewFrustum  m_frustum;
         RendererView         m_data;
         Vec3                 m_focusPoint;
-    }; 
+    };
 }

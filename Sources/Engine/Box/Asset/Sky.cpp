@@ -41,15 +41,17 @@ namespace Chicane
 
             if (!FileSystem::exists(filepath.toStandard()))
             {
-                throw std::runtime_error("The texture " + filepath + " doesn't exist");
+                throw std::runtime_error(
+                    "The texture " + filepath + " doesn't exist"
+                );
             }
 
             m_sides[inSide] = filepath;
 
             auto side = std::find_if(
-                SIDE_MAP.begin(),
-                SIDE_MAP.end(),
-                [inSide](const auto& inPair) { return inPair.second == inSide; }
+                SIDE_MAP.begin(), SIDE_MAP.end(), [inSide](const auto& inPair) {
+                    return inPair.second == inSide;
+                }
             );
 
             if (side == SIDE_MAP.end())
@@ -60,14 +62,14 @@ namespace Chicane
             String sideID = side->first;
 
             pugi::xml_node sideNode = getXML().find_child_by_attribute(
-                TEXTURE_SIDE_ATTRIBUTE_NAME,
-                sideID.toChar()
+                TEXTURE_SIDE_ATTRIBUTE_NAME, sideID.toChar()
             );
 
             if (Xml::isEmpty(sideNode))
             {
                 sideNode = getXML().append_child(Texture::TAG);
-                sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME).set_value(sideID.toChar());
+                sideNode.append_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME)
+                    .set_value(sideID.toChar());
             }
 
             sideNode.text().set(filepath);
@@ -86,7 +88,9 @@ namespace Chicane
         SkySide Sky::getSideFromString(const String& inValue) const
         {
             String value = inValue;
-            std::transform(value.begin(), value.end(), value.begin(), ::toupper);
+            std::transform(
+                value.begin(), value.end(), value.begin(), ::toupper
+            );
 
             if (SIDE_MAP.find(value) == SIDE_MAP.end())
             {
@@ -107,19 +111,19 @@ namespace Chicane
 
             const auto& root = getXML();
 
-            for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
+            for (const auto& texture :
+                 root.child(SIDES_TAG_NAME).children(Texture::TAG))
             {
                 SkySide side = getSideFromString(
-                    Xml::getAttribute(
-                        TEXTURE_SIDE_ATTRIBUTE_NAME,
-                        texture
-                    ).as_string()
+                    Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture)
+                        .as_string()
                 );
 
                 if (m_sides.find(side) != m_sides.end())
                 {
                     throw std::runtime_error(
-                        "There are duplicated sides inside the " + m_header.id + " cube map"
+                        "There are duplicated sides inside the " + m_header.id +
+                        " cube map"
                     );
                 }
 
@@ -130,7 +134,9 @@ namespace Chicane
 
             if (m_sides.size() < SIDE_MAP.size())
             {
-                throw std::runtime_error("The sky " + m_header.id + " have insuficient sides");
+                throw std::runtime_error(
+                    "The sky " + m_header.id + " have insuficient sides"
+                );
             }
         }
 

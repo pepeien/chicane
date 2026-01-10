@@ -12,8 +12,8 @@ namespace Chicane
     class CHICANE_RUNTIME Scene
     {
     public:
-        using ActorsObservable   = Observable<std::vector<Actor*>>;
-        using ActorsSubscription = Subscription<std::vector<Actor*>>;
+        using ActorsObservable       = Observable<std::vector<Actor*>>;
+        using ActorsSubscription     = Subscription<std::vector<Actor*>>;
 
         using ComponentsObservable   = Observable<std::vector<Component*>>;
         using ComponentsSubscription = Subscription<std::vector<Component*>>;
@@ -36,7 +36,7 @@ namespace Chicane
         // Actors
         bool hasActors() const;
 
-        template<class T>
+        template <class T>
         bool hasActors() const
         {
             for (Actor* actor : getActors())
@@ -54,10 +54,10 @@ namespace Chicane
 
         const std::vector<Actor*>& getActors() const;
 
-        template<class T>
+        template <class T>
         std::vector<T*> getActors() const
         {
-            std::vector<T*> result {};
+            std::vector<T*> result{};
 
             for (Actor* actor : getActors())
             {
@@ -72,7 +72,7 @@ namespace Chicane
             return result;
         }
 
-        template<class T = Actor>
+        template <class T = Actor>
         T* createActor()
         {
             m_actors.push_back(new T());
@@ -87,15 +87,15 @@ namespace Chicane
         void removeActor(Actor* inActor);
 
         ActorsSubscription watchActors(
-            ActorsSubscription::NextCallback inNext,
-            ActorsSubscription::ErrorCallback inError = nullptr,
+            ActorsSubscription::NextCallback     inNext,
+            ActorsSubscription::ErrorCallback    inError    = nullptr,
             ActorsSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Components
         bool hasComponents() const;
 
-        template<class T>
+        template <class T>
         bool hasComponents() const
         {
             for (Component* component : getComponents())
@@ -113,10 +113,10 @@ namespace Chicane
 
         const std::vector<Component*>& getComponents() const;
 
-        template<class T>
+        template <class T>
         std::vector<T*> getComponents() const
         {
-            std::vector<T*> result {};
+            std::vector<T*> result{};
 
             for (Component* component : getComponents())
             {
@@ -131,7 +131,7 @@ namespace Chicane
             return result;
         }
 
-        template<class T = Component>
+        template <class T = Component>
         T* createComponent()
         {
             m_components.push_back(new T());
@@ -146,16 +146,16 @@ namespace Chicane
         void removeComponent(Component* inComponent);
 
         ComponentsSubscription watchComponents(
-            ComponentsSubscription::NextCallback inNext,
-            ComponentsSubscription::ErrorCallback inError = nullptr,
+            ComponentsSubscription::NextCallback     inNext,
+            ComponentsSubscription::ErrorCallback    inError    = nullptr,
             ComponentsSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Helper
-        template<typename T = Actor>
+        template <typename T = Actor>
         std::vector<T*> traceLine(
-            const Vec3& inOrigin,
-            const Vec3& inDestination,
+            const Vec3&                inOrigin,
+            const Vec3&                inDestination,
             const std::vector<Actor*>& inIgnoredActors
         ) const
         {
@@ -164,22 +164,21 @@ namespace Chicane
                 return {};
             }
 
-            Vec3 point = inOrigin;
+            Vec3       point        = inOrigin;
 
-            const Vec3 direction = glm::normalize(
-                inDestination - inOrigin
-            );
+            const Vec3 direction    = glm::normalize(inDestination - inOrigin);
 
             const bool bIsXPositive = inDestination.x >= inOrigin.x;
             const bool bIsYPositive = inDestination.y >= inOrigin.y;
             const bool bIsZPositive = inDestination.z >= inOrigin.z;
 
-            bool bHasXReachedDestination = false;
-            bool bHasYReachedDestination = false;
-            bool bHasZReachedDestination = false;
+            bool       bHasXReachedDestination = false;
+            bool       bHasYReachedDestination = false;
+            bool       bHasZReachedDestination = false;
 
-            std::vector<T*> result {};
-            while (!bHasXReachedDestination || !bHasYReachedDestination || !bHasZReachedDestination)
+            std::vector<T*> result{};
+            while (!bHasXReachedDestination || !bHasYReachedDestination ||
+                   !bHasZReachedDestination)
             {
                 for (Actor* actor : m_actors)
                 {
@@ -188,22 +187,21 @@ namespace Chicane
                         continue;
                     }
 
-                    // Checking collision first is more computational cost effective
+                    // Checking collision first is more computational cost
+                    // effective
                     if (!actor->isCollidingWith(point))
                     {
                         continue;
                     }
 
                     bool bWillIgnored = std::find(
-                        inIgnoredActors.begin(),
-                        inIgnoredActors.end(),
-                        actor
-                    ) != inIgnoredActors.end();
-                    bool bWasTraced = std::find(
-                        result.begin(),
-                        result.end(),
-                        actor
-                    ) != result.end();
+                                            inIgnoredActors.begin(),
+                                            inIgnoredActors.end(),
+                                            actor
+                                        ) != inIgnoredActors.end();
+                    bool bWasTraced =
+                        std::find(result.begin(), result.end(), actor) !=
+                        result.end();
 
                     if (bWillIgnored || bWasTraced)
                     {
@@ -213,19 +211,25 @@ namespace Chicane
                     result.push_back(static_cast<T*>(actor));
                 }
 
-                point.x += bHasXReachedDestination ? 0.0f : direction.x * LINE_TRACE_STEP_SIZE;
-                point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
-                point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
+                point.x += bHasXReachedDestination
+                               ? 0.0f
+                               : direction.x * LINE_TRACE_STEP_SIZE;
+                point.y += bHasYReachedDestination
+                               ? 0.0f
+                               : direction.y * LINE_TRACE_STEP_SIZE;
+                point.z += bHasZReachedDestination
+                               ? 0.0f
+                               : direction.z * LINE_TRACE_STEP_SIZE;
 
-                bHasXReachedDestination = bIsXPositive ?
-                    point.x >= inDestination.x :
-                    point.x <= inDestination.x;
-                bHasYReachedDestination = bIsYPositive ?
-                    point.y >= inDestination.y :
-                    point.y <= inDestination.y;
-                bHasZReachedDestination = bIsZPositive ?
-                    point.z >= inDestination.z :
-                    point.z <= inDestination.z;
+                bHasXReachedDestination = bIsXPositive
+                                              ? point.x >= inDestination.x
+                                              : point.x <= inDestination.x;
+                bHasYReachedDestination = bIsYPositive
+                                              ? point.y >= inDestination.y
+                                              : point.y <= inDestination.y;
+                bHasZReachedDestination = bIsZPositive
+                                              ? point.z >= inDestination.z
+                                              : point.z <= inDestination.z;
             }
 
             return result;

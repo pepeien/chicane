@@ -2,19 +2,19 @@
 
 // Macros
 #if defined(BUILD_SHARED)
-#   if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#      if defined(BUILD_EXPORT)
-#          define CHICANE_BOX __declspec(dllexport)
-#      else
-#          define CHICANE_BOX __declspec(dllimport)
-#      endif
-#   elif defined(__GNUC__) || defined(__clang__)
-#       define CHICANE_BOX __attribute__((visibility("default")))
-#   else
-#       define CHICANE_BOX
-#   endif
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+#if defined(BUILD_EXPORT)
+#define CHICANE_BOX __declspec(dllexport)
 #else
-#   define CHICANE_BOX
+#define CHICANE_BOX __declspec(dllimport)
+#endif
+#elif defined(__GNUC__) || defined(__clang__)
+#define CHICANE_BOX __attribute__((visibility("default")))
+#else
+#define CHICANE_BOX
+#endif
+#else
+#define CHICANE_BOX
 #endif
 
 #include "Chicane/Core/FileSystem.hpp"
@@ -29,7 +29,7 @@ namespace Chicane
         CHICANE_BOX class TextureManager* getTextureManager();
 
         CHICANE_BOX const class Asset* load(const FileSystem::Path& inFilePath);
-        template<typename T>
+        template <typename T>
         const T* load(const FileSystem::Path& inFilePath)
         {
             return static_cast<const T*>(load(inFilePath));

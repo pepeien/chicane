@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -10,29 +10,29 @@ namespace Chicane
     {
         namespace Device
         {
-            static const std::vector<const char*> LAYERS = {};
+            static const std::vector<const char*> LAYERS     = {};
 
             static const std::vector<const char*> EXTENSIONS = {
                 VK_KHR_SWAPCHAIN_EXTENSION_NAME
             };
 
-            CHICANE_RUNTIME bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inDevice);
+            CHICANE_RUNTIME bool
+            isPhysicalDeviceSuitable(const vk::PhysicalDevice& inDevice);
 
             CHICANE_RUNTIME void pickPhysicalDevice(
-                vk::PhysicalDevice& outDevice,
-                const vk::Instance& inInstance
+                vk::PhysicalDevice& outDevice, const vk::Instance& inInstance
             );
 
             CHICANE_RUNTIME void initLogicalDevice(
-                vk::Device& outDevice,
+                vk::Device&               outDevice,
                 const vk::PhysicalDevice& inDevice,
-                const vk::SurfaceKHR& inSurface
+                const vk::SurfaceKHR&     inSurface
             );
 
             CHICANE_RUNTIME std::uint32_t findMemoryTypeIndex(
                 const vk::PhysicalDevice& inDevice,
-                std::uint32_t inSupportedMemoryIndices,
-                vk::MemoryPropertyFlags inRequestMemoryProperties
+                std::uint32_t             inSupportedMemoryIndices,
+                vk::MemoryPropertyFlags   inRequestMemoryProperties
             );
         }
     }

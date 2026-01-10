@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleSource::List Style::parseSources(const pugi::xml_node &inNode)
+        StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
         {
             return parseSources(
                 FileSystem::Path(
@@ -16,14 +16,16 @@ namespace Chicane
             );
         }
 
-        StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
+        StyleSource::List
+        Style::parseSources(const FileSystem::Path& inFilePath)
         {
             if (inFilePath.empty())
             {
                 return {};
             }
 
-            const String fileExtension = inFilePath.filename().extension().string();
+            const String fileExtension =
+                inFilePath.filename().extension().string();
 
             if (!fileExtension.endsWith(Style::FILE_EXTENSION_NAME))
             {
@@ -37,20 +39,10 @@ namespace Chicane
         {
             String data = inData;
             data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\n'
-                ),
-                data.cend()
+                std::remove(data.begin(), data.end(), '\n'), data.cend()
             );
             data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\r'
-                ),
-                data.cend()
+                std::remove(data.begin(), data.end(), '\r'), data.cend()
             );
 
             const std::vector<String> styles = data.split('}');
@@ -59,21 +51,25 @@ namespace Chicane
 
             for (const String& style : styles)
             {
-                const std::vector<String> splittedStyle = style.trim().split('{');
+                const std::vector<String> splittedStyle =
+                    style.trim().split('{');
 
                 if (splittedStyle.size() < 2)
                 {
                     continue;
                 }
 
-                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
+                std::vector<String> selectors =
+                    splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
 
                 for (String& selector : selectors)
                 {
                     selector = selector.trim();
                 }
 
-                result.emplace_back(selectors, parseSource(splittedStyle.at(1).trim()));
+                result.emplace_back(
+                    selectors, parseSource(splittedStyle.at(1).trim())
+                );
             }
 
             return result;
@@ -87,7 +83,8 @@ namespace Chicane
 
             for (const String& block : blocks)
             {
-                const std::vector<String> splittedBlock = block.trim().split(':');
+                const std::vector<String> splittedBlock =
+                    block.trim().split(':');
 
                 if (splittedBlock.size() < 2)
                 {
@@ -119,40 +116,38 @@ namespace Chicane
 
         Style::Style()
             : display(StyleDisplay::Block),
-            zIndex(0.0f),
-            width(0.0f),
-            height(0.0f),
-            flex({}),
-            position(StylePosition::Relative),
-            align(StyleAlignment::Start),
-            justify(StyleAlignment::Start),
-            margin(
-                Style::MARGIN_ATTRIBUTE_NAME,
-                Style::MARGIN_TOP_ATTRIBUTE_NAME,
-                Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                Style::MARGIN_LEFT_ATTRIBUTE_NAME,
-                Style::MARGIN_RIGHT_ATTRIBUTE_NAME
-            ), 
-            padding(
-                Style::PADDING_ATTRIBUTE_NAME,
-                Style::PADDING_TOP_ATTRIBUTE_NAME,
-                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
-                Style::PADDING_LEFT_ATTRIBUTE_NAME,
-                Style::PADDING_RIGHT_ATTRIBUTE_NAME
-            ),
-            gap(
-                Style::GAP_ATTRIBUTE_NAME,
-                Style::GAP_TOP_ATTRIBUTE_NAME,
-                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
-                Style::GAP_LEFT_ATTRIBUTE_NAME,
-                Style::GAP_RIGHT_ATTRIBUTE_NAME
-            ),
-            backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
-            foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
-            font(StyleFont()),
-            letterSpacing(0.0f),
-            m_properties({}),
-            m_parent(nullptr)
+              zIndex(0.0f),
+              width(0.0f),
+              height(0.0f),
+              flex({}),
+              position(StylePosition::Relative),
+              align(StyleAlignment::Start),
+              justify(StyleAlignment::Start),
+              margin(
+                  Style::MARGIN_ATTRIBUTE_NAME,
+                  Style::MARGIN_TOP_ATTRIBUTE_NAME,
+                  Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                  Style::MARGIN_LEFT_ATTRIBUTE_NAME,
+                  Style::MARGIN_RIGHT_ATTRIBUTE_NAME
+              ),
+              padding(
+                  Style::PADDING_ATTRIBUTE_NAME,
+                  Style::PADDING_TOP_ATTRIBUTE_NAME,
+                  Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                  Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                  Style::PADDING_RIGHT_ATTRIBUTE_NAME
+              ),
+              gap(Style::GAP_ATTRIBUTE_NAME,
+                  Style::GAP_TOP_ATTRIBUTE_NAME,
+                  Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                  Style::GAP_LEFT_ATTRIBUTE_NAME,
+                  Style::GAP_RIGHT_ATTRIBUTE_NAME),
+              backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
+              foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
+              font(StyleFont()),
+              letterSpacing(0.0f),
+              m_properties({}),
+              m_parent(nullptr)
         {}
 
         bool Style::isDisplay(StyleDisplay inValue) const
@@ -221,7 +216,8 @@ namespace Chicane
                 return;
             }
 
-            const String value = parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
+            const String value =
+                parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
 
             if (value.equals(DISPLAY_TYPE_BLOCK))
             {
@@ -241,9 +237,11 @@ namespace Chicane
 
         void Style::refreshFlex()
         {
-            if (m_properties.find(FLEX_DIRECTION_ATTRIBUTE_NAME) != m_properties.end())
+            if (m_properties.find(FLEX_DIRECTION_ATTRIBUTE_NAME) !=
+                m_properties.end())
             {
-                const String value = parseText(m_properties.at(FLEX_DIRECTION_ATTRIBUTE_NAME));
+                const String value =
+                    parseText(m_properties.at(FLEX_DIRECTION_ATTRIBUTE_NAME));
 
                 if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
                 {
@@ -264,7 +262,9 @@ namespace Chicane
                 return;
             }
 
-            setProperty(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
+            setProperty(
+                zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME))
+            );
         }
 
         void Style::refreshSize()
@@ -273,7 +273,10 @@ namespace Chicane
             {
                 setProperty(
                     height,
-                    parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                    parseSize(
+                        m_properties.at(HEIGHT_ATTRIBUTE_NAME),
+                        StyleDirection::Vertical
+                    )
                 );
             }
 
@@ -281,19 +284,24 @@ namespace Chicane
             {
                 setProperty(
                     width,
-                    parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                    parseSize(
+                        m_properties.at(WIDTH_ATTRIBUTE_NAME),
+                        StyleDirection::Horizontal
+                    )
                 );
             }
         }
 
         void Style::refreshPosition()
         {
-            if (m_properties.find(POSITION_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(POSITION_ATTRIBUTE_NAME) ==
+                m_properties.end())
             {
                 return;
             }
 
-            const String value = parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
+            const String value =
+                parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
 
             if (value.startsWith(POSITION_TYPE_ABSOLUTE))
             {
@@ -307,14 +315,16 @@ namespace Chicane
 
         void Style::refreshAlignment()
         {
-            if (m_properties.find(ALIGNMENT_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(ALIGNMENT_ATTRIBUTE_NAME) ==
+                m_properties.end())
             {
                 return;
             }
 
             std::vector<String> values = {};
 
-            for (const String& block : splitOneliner(m_properties.at(ALIGNMENT_ATTRIBUTE_NAME)))
+            for (const String& block :
+                 splitOneliner(m_properties.at(ALIGNMENT_ATTRIBUTE_NAME)))
             {
                 values.push_back(parseText(block));
             }
@@ -325,20 +335,19 @@ namespace Chicane
             }
 
             setProperty(align, toAlignment(values.at(0)));
-            setProperty(justify, values.size() == 1 ? align : toAlignment(values.at(1)));
+            setProperty(
+                justify, values.size() == 1 ? align : toAlignment(values.at(1))
+            );
         }
 
         void Style::refreshMargin()
         {
-            if (
-                !margin.refresh(
+            if (!margin.refresh(
                     m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
+                    [this](const String& inValue, StyleDirection inDirection) {
                         return parseSize(inValue, inDirection);
                     }
-                )
-            )
+                ))
             {
                 return;
             }
@@ -348,15 +357,12 @@ namespace Chicane
 
         void Style::refreshPadding()
         {
-            if (
-                !padding.refresh(
+            if (!padding.refresh(
                     m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
+                    [this](const String& inValue, StyleDirection inDirection) {
                         return parseSize(inValue, inDirection);
                     }
-                )
-            )
+                ))
             {
                 return;
             }
@@ -366,15 +372,12 @@ namespace Chicane
 
         void Style::refreshGap()
         {
-            if (
-                !gap.refresh(
+            if (!gap.refresh(
                     m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
+                    [this](const String& inValue, StyleDirection inDirection) {
                         return parseSize(inValue, inDirection);
                     }
-                )
-            )
+                ))
             {
                 return;
             }
@@ -384,14 +387,14 @@ namespace Chicane
 
         void Style::refreshForegroundColor()
         {
-            if (m_properties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) ==
+                m_properties.end())
             {
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(
-                m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)
-            );
+            const Vec<4, std::uint32_t> color =
+                parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(foregroundColor, color))
             {
@@ -405,14 +408,14 @@ namespace Chicane
 
         void Style::refreshBackgroundColor()
         {
-            if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) ==
+                m_properties.end())
             {
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(
-                m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)
-            );
+            const Vec<4, std::uint32_t> color =
+                parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(backgroundColor, color))
             {
@@ -426,7 +429,8 @@ namespace Chicane
 
         void Style::refreshFont()
         {
-            if (m_properties.find(FONT_FAMILY_ATTRIBUTE_NAME) != m_properties.end())
+            if (m_properties.find(FONT_FAMILY_ATTRIBUTE_NAME) !=
+                m_properties.end())
             {
                 setProperty(
                     font.family,
@@ -434,25 +438,33 @@ namespace Chicane
                 );
             }
 
-            if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
+            if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) !=
+                m_properties.end())
             {
                 setProperty(
                     font.size,
-                    parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                    parseSize(
+                        m_properties.at(FONT_SIZE_ATTRIBUTE_NAME),
+                        StyleDirection::Vertical
+                    )
                 );
             }
         }
 
         void Style::refreshLetterSpacing()
         {
-            if (m_properties.find(LETTER_SPACING_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(LETTER_SPACING_ATTRIBUTE_NAME) ==
+                m_properties.end())
             {
                 return;
             }
 
             setProperty(
                 letterSpacing,
-                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                parseSize(
+                    m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME),
+                    StyleDirection::Horizontal
+                )
             );
         }
 
@@ -460,20 +472,25 @@ namespace Chicane
         {
             String result = "";
 
-            if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
+            if (inValue.startsWith(RGB_KEYWORD) ||
+                inValue.startsWith(RGBA_KEYWORD))
             {
-                const String keyword = inValue.startsWith(RGBA_KEYWORD) ?
-                    RGBA_KEYWORD :
-                    RGB_KEYWORD;
+                const String keyword = inValue.startsWith(RGBA_KEYWORD)
+                                           ? RGBA_KEYWORD
+                                           : RGB_KEYWORD;
 
-                const std::vector<String> params = inValue.getBetween(
-                    FUNCTION_PARAMS_OPENING,
-                    FUNCTION_PARAMS_CLOSING
-                ).split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params =
+                    inValue
+                        .getBetween(
+                            FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING
+                        )
+                        .split(FUNCTION_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
-                    throw std::runtime_error("Invalid " + keyword + " parameters");
+                    throw std::runtime_error(
+                        "Invalid " + keyword + " parameters"
+                    );
                 }
 
                 result.append(keyword);
@@ -500,7 +517,9 @@ namespace Chicane
             return Color::toRgba(result);
         }
 
-        float Style::parseSize(const String& inValue, StyleDirection inDirection) const
+        float Style::parseSize(
+            const String& inValue, StyleDirection inDirection
+        ) const
         {
             const String value = parseText(inValue);
 
@@ -559,14 +578,18 @@ namespace Chicane
             return m_parent->parseText(value);
         }
 
-        float Style::parseCalculation(const String& inValue, StyleDirection inDirection) const
+        float Style::parseCalculation(
+            const String& inValue, StyleDirection inDirection
+        ) const
         {
             if (!inValue.startsWith(CALCULATION_KEYWORD))
             {
                 return 0.0f;
             }
 
-            const String operation = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
+            const String operation = inValue.getBetween(
+                FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING
+            );
 
             std::uint32_t parathesisCount = 0;
 
@@ -577,14 +600,14 @@ namespace Chicane
                 if (character == FUNCTION_PARAMS_OPENING)
                 {
                     parathesisCount++;
-    
+
                     continue;
                 }
 
                 if (character == FUNCTION_PARAMS_CLOSING)
                 {
                     parathesisCount--;
-    
+
                     continue;
                 }
 
@@ -594,13 +617,16 @@ namespace Chicane
                     character
                 );
 
-                if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
+                if (iterator == CALCULATION_OPERATORS.end() ||
+                    parathesisCount > 0)
                 {
                     continue;
                 }
 
-                const float left  = parseSize(operation.substr(0, i), inDirection);
-                const float right = parseSize(operation.substr(i + 1), inDirection);
+                const float left =
+                    parseSize(operation.substr(0, i), inDirection);
+                const float right =
+                    parseSize(operation.substr(i + 1), inDirection);
 
                 if (character == CALCULATION_OPERATOR_SUM)
                 {
@@ -628,7 +654,6 @@ namespace Chicane
             return 0.0f;
         }
 
-
         float Style::parseEM(const String& inValue) const
         {
             if (!inValue.endsWith(EM_SIZE_UNIT))
@@ -644,31 +669,33 @@ namespace Chicane
             return inValue * Box::Font::BASE_SIZE;
         }
 
-        float Style::parsePercentage(const String& inValue, StyleDirection inDirection) const
+        float Style::parsePercentage(
+            const String& inValue, StyleDirection inDirection
+        ) const
         {
             if (!inValue.endsWith(PERCENTAGE_SIZE_UNIT))
             {
                 return 0.0f;
             }
 
-            return parsePercentage(parseNumber(inValue, PERCENTAGE_SIZE_UNIT), inDirection);
+            return parsePercentage(
+                parseNumber(inValue, PERCENTAGE_SIZE_UNIT), inDirection
+            );
         }
 
-        float Style::parsePercentage(float inValue, StyleDirection inDirection) const
+        float
+        Style::parsePercentage(float inValue, StyleDirection inDirection) const
         {
             const float value = inValue / 100;
 
-            if (
-                !hasParent() ||
-                !m_parent->hasRoot() || !m_parent->hasParent()
-            )
+            if (!hasParent() || !m_parent->hasRoot() || !m_parent->hasParent())
             {
                 return value;
             }
 
-            const Vec2& size = isPosition(StylePosition::Absolute) ?
-                m_parent->getRoot()->getSize() :
-                m_parent->getParent()->getAvailableSize();
+            const Vec2& size = isPosition(StylePosition::Absolute)
+                                   ? m_parent->getRoot()->getSize()
+                                   : m_parent->getParent()->getAvailableSize();
 
             if (inDirection == StyleDirection::Horizontal)
             {
@@ -685,7 +712,9 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseViewportHeight(parseNumber(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
+            return parseViewportHeight(
+                parseNumber(inValue, VIEWPORT_HEIGHT_SIZE_UNIT)
+            );
         }
 
         float Style::parseViewportHeight(float inValue) const
@@ -705,7 +734,9 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseViewportWidth(parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
+            return parseViewportWidth(
+                parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT)
+            );
         }
 
         float Style::parseViewportWidth(float inValue) const
@@ -728,14 +759,17 @@ namespace Chicane
             return parseNumber(inValue, PIXEL_SIZE_UNIT);
         }
 
-        float Style::parseNumber(const String& inValue, const String& inUnit) const
+        float
+        Style::parseNumber(const String& inValue, const String& inUnit) const
         {
             if (inValue.isEmpty() || inValue.size() < inUnit.size())
             {
                 return 0.0f;
             }
 
-            return parseNumber(inValue.substr(0, inValue.size() - inUnit.size()));
+            return parseNumber(
+                inValue.substr(0, inValue.size() - inUnit.size())
+            );
         }
 
         float Style::parseNumber(const String& inValue) const
@@ -752,7 +786,7 @@ namespace Chicane
                 char* end;
                 return std::strtod(value.toChar(), &end);
             }
-            catch(...)
+            catch (...)
             {
                 return 0.0f;
             }
@@ -760,8 +794,9 @@ namespace Chicane
 
         String variableToReference(const String& inValue)
         {
-            const std::uint32_t start = inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
-            const std::uint32_t end   = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
+            const std::uint32_t start =
+                inValue.firstOf(FUNCTION_PARAMS_OPENING) + 1;
+            const std::uint32_t end = inValue.lastOf(FUNCTION_PARAMS_CLOSING);
 
             String reference = "";
             reference.append(REFERENCE_VALUE_OPENING);
@@ -811,7 +846,8 @@ namespace Chicane
                     continue;
                 }
 
-                if (character != Style::ONELINE_SEPARATOR || parathesisCount > 0)
+                if (character != Style::ONELINE_SEPARATOR ||
+                    parathesisCount > 0)
                 {
                     continue;
                 }

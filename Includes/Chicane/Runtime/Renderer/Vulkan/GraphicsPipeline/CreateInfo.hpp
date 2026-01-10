@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/Attachment.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Shader/CreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -16,28 +16,29 @@ namespace Chicane
             {
             public:
                 // Modifiers
-                bool                                     bHasVertices;
-                bool                                     bHasDepthWrite;
-                bool                                     bHasBlending;
+                bool                                 bHasVertices;
+                bool                                 bHasDepthWrite;
+                bool                                 bHasBlending;
 
                 // Shader
-                std::vector<Shader::StageCreateInfo>     shaders;
+                std::vector<Shader::StageCreateInfo> shaders;
 
                 // Viewport
-                vk::Extent2D                             extent;
+                vk::Extent2D                         extent;
 
                 // Attachment
-                std::vector<Attachment>                  attachments;
+                std::vector<Attachment>              attachments;
 
                 // Rasterize
-                vk::PipelineRasterizationStateCreateInfo rasterizaterizationState;
+                vk::PipelineRasterizationStateCreateInfo
+                                                     rasterizaterizationState;
 
                 // Pipeline Layout
-                std::vector<vk::DescriptorSetLayout>     descriptorSetLayouts;
-                std::vector<vk::PushConstantRange>       pushConstantRanges;
+                std::vector<vk::DescriptorSetLayout> descriptorSetLayouts;
+                std::vector<vk::PushConstantRange>   pushConstantRanges;
 
                 // Vulkan
-                vk::Device                               logicalDevice;
+                vk::Device                           logicalDevice;
             };
         }
     }

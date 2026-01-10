@@ -1,14 +1,14 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
-#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
-#include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Sync.hpp"
+#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -19,13 +19,11 @@ namespace Chicane
             void Instance::wait(const vk::Device& inLogicalDevice)
             {
                 vk::Result result = inLogicalDevice.waitForFences(
-                    1,
-                    &renderFence,
-                    VK_TRUE,
-                    UINT64_MAX
+                    1, &renderFence, VK_TRUE, UINT64_MAX
                 );
 
-                if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
+                if (result != vk::Result::eSuccess &&
+                    result != vk::Result::eTimeout)
                 {
                     throw std::runtime_error("Error while waiting the fences");
                 }
@@ -33,15 +31,15 @@ namespace Chicane
 
             void Instance::reset(const vk::Device& inLogicalDevice)
             {
-                vk::Result result = inLogicalDevice.resetFences(
-                    1,
-                    &renderFence
-                );
+                vk::Result result =
+                    inLogicalDevice.resetFences(1, &renderFence);
 
                 if (result != vk::Result::eSuccess)
                 {
-                    throw std::runtime_error("Error while resetting the fences");
-                } 
+                    throw std::runtime_error(
+                        "Error while resetting the fences"
+                    );
+                }
             }
 
             void Instance::destroy()
@@ -62,18 +60,9 @@ namespace Chicane
 
             void Instance::setupSync()
             {
-                Sync::initSempahore(
-                    presentSemaphore,
-                    logicalDevice
-                );
-                Sync::initSempahore(
-                    renderSemaphore,
-                    logicalDevice
-                );
-                Sync::initFence(
-                    renderFence,
-                    logicalDevice
-                );
+                Sync::initSempahore(presentSemaphore, logicalDevice);
+                Sync::initSempahore(renderSemaphore, logicalDevice);
+                Sync::initFence(renderFence, logicalDevice);
             }
 
             void Instance::destroySync()
@@ -83,7 +72,8 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            void Instance::setupCameraData(const std::vector<CCamera*>& inCameras)
+            void
+            Instance::setupCameraData(const std::vector<CCamera*>& inCameras)
             {
                 destroyCameraData();
 
@@ -95,17 +85,20 @@ namespace Chicane
                 BufferCreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
-                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                                    vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(RendererView);
-                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
+                bufferCreateInfo.memoryProperties =
+                    vk::MemoryPropertyFlagBits::eHostVisible |
+                    vk::MemoryPropertyFlagBits::eHostCoherent;
+                bufferCreateInfo.size = sizeof(RendererView);
+                bufferCreateInfo.usage =
+                    vk::BufferUsageFlagBits::eUniformBuffer;
                 cameraResource.setup(bufferCreateInfo);
 
                 const RendererView data = getActiveCameraData(inCameras);
                 cameraResource.copyToBuffer(&data);
             }
 
-            void Instance::updateCameraData(const std::vector<CCamera*>& inCameras)
+            void
+            Instance::updateCameraData(const std::vector<CCamera*>& inCameras)
             {
                 if (inCameras.empty())
                 {
@@ -139,15 +132,18 @@ namespace Chicane
                     return;
                 }
 
-                const RendererView data = normalizeViewData(inLights.at(0)->getData());
-    
+                const RendererView data =
+                    normalizeViewData(inLights.at(0)->getData());
+
                 BufferCreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
-                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                                    vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(RendererView);
-                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eUniformBuffer;
+                bufferCreateInfo.memoryProperties =
+                    vk::MemoryPropertyFlagBits::eHostVisible |
+                    vk::MemoryPropertyFlagBits::eHostCoherent;
+                bufferCreateInfo.size = sizeof(RendererView);
+                bufferCreateInfo.usage =
+                    vk::BufferUsageFlagBits::eUniformBuffer;
 
                 lightResource.setup(bufferCreateInfo);
                 lightResource.copyToBuffer(&data);
@@ -169,7 +165,8 @@ namespace Chicane
                     return;
                 }
 
-                const RendererView data = normalizeViewData(inLights.at(0)->getData());
+                const RendererView data =
+                    normalizeViewData(inLights.at(0)->getData());
 
                 lightResource.copyToBuffer(&data);
             }
@@ -191,10 +188,13 @@ namespace Chicane
                 BufferCreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
                 bufferCreateInfo.physicalDevice   = physicalDevice;
-                bufferCreateInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                                    vk::MemoryPropertyFlagBits::eHostCoherent;
-                bufferCreateInfo.size             = sizeof(Box::MeshParsed) * inMeshes.size();
-                bufferCreateInfo.usage            = vk::BufferUsageFlagBits::eStorageBuffer;
+                bufferCreateInfo.memoryProperties =
+                    vk::MemoryPropertyFlagBits::eHostVisible |
+                    vk::MemoryPropertyFlagBits::eHostCoherent;
+                bufferCreateInfo.size =
+                    sizeof(Box::MeshParsed) * inMeshes.size();
+                bufferCreateInfo.usage =
+                    vk::BufferUsageFlagBits::eStorageBuffer;
 
                 meshResource.setup(bufferCreateInfo);
 
@@ -231,24 +231,28 @@ namespace Chicane
 
                 refreshMeshData(meshes);
             }
-        
+
             void Instance::destroyMeshData()
             {
                 meshResource.destroy(logicalDevice);
             }
 
-            void Instance::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+            void Instance::setupColorImage(
+                vk::Format inFormat, const vk::Extent2D& inExtent
+            )
             {
                 colorImage.format = inFormat;
                 colorImage.extent = inExtent;
 
                 Image::View::CreateInfo viewCreateInfo = {};
-                viewCreateInfo.count         = 1;
-                viewCreateInfo.type          = vk::ImageViewType::e2D;
+                viewCreateInfo.count                   = 1;
+                viewCreateInfo.type                    = vk::ImageViewType::e2D;
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eColor;
                 viewCreateInfo.format        = inFormat;
                 viewCreateInfo.logicalDevice = logicalDevice;
-                Image::initView(colorImage.view, colorImage.instance, viewCreateInfo);
+                Image::initView(
+                    colorImage.view, colorImage.instance, viewCreateInfo
+                );
             }
 
             void Instance::destroyColorImage()
@@ -256,47 +260,59 @@ namespace Chicane
                 logicalDevice.destroyImageView(colorImage.view);
             }
 
-            void Instance::setupDepthImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+            void Instance::setupDepthImage(
+                vk::Format inFormat, const vk::Extent2D& inExtent
+            )
             {
                 depthImage.format = inFormat;
                 depthImage.extent = inExtent;
 
                 Image::Instance::CreateInfo instanceCreateInfo = {};
-                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
-                instanceCreateInfo.width         = depthImage.extent.width;
-                instanceCreateInfo.height        = depthImage.extent.height;
-                instanceCreateInfo.count         = 1;
-                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
-                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
+                instanceCreateInfo.width  = depthImage.extent.width;
+                instanceCreateInfo.height = depthImage.extent.height;
+                instanceCreateInfo.count  = 1;
+                instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.usage =
+                    vk::ImageUsageFlagBits::eDepthStencilAttachment |
+                    vk::ImageUsageFlagBits::eSampled;
                 instanceCreateInfo.format        = inFormat;
                 instanceCreateInfo.logicalDevice = logicalDevice;
                 Image::initInstance(depthImage.instance, instanceCreateInfo);
 
                 vk::SamplerCreateInfo samplerCreateInfo = {};
-                samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
-                samplerCreateInfo.minFilter               = vk::Filter::eLinear;
-                samplerCreateInfo.magFilter               = vk::Filter::eLinear;
-                samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-                samplerCreateInfo.mipLodBias              = 0.0f;
-                samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.anisotropyEnable        = false;
-                samplerCreateInfo.maxAnisotropy           = 1.0f;
-                samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
+                samplerCreateInfo.flags      = vk::SamplerCreateFlags();
+                samplerCreateInfo.minFilter  = vk::Filter::eLinear;
+                samplerCreateInfo.magFilter  = vk::Filter::eLinear;
+                samplerCreateInfo.mipmapMode = vk::SamplerMipmapMode::eLinear;
+                samplerCreateInfo.mipLodBias = 0.0f;
+                samplerCreateInfo.addressModeU =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeV =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeW =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.anisotropyEnable = false;
+                samplerCreateInfo.maxAnisotropy    = 1.0f;
+                samplerCreateInfo.borderColor =
+                    vk::BorderColor::eFloatOpaqueWhite;
                 samplerCreateInfo.unnormalizedCoordinates = false;
                 samplerCreateInfo.compareEnable           = true;
-                samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
-                samplerCreateInfo.minLod                  = 0.0f;
-                samplerCreateInfo.maxLod                  = 1.0f;
+                samplerCreateInfo.compareOp = vk::CompareOp::eLess;
+                samplerCreateInfo.minLod    = 0.0f;
+                samplerCreateInfo.maxLod    = 1.0f;
                 samplerCreateInfo.unnormalizedCoordinates = false;
-                depthImage.sampler = logicalDevice.createSampler(samplerCreateInfo);
+                depthImage.sampler =
+                    logicalDevice.createSampler(samplerCreateInfo);
 
                 Image::Memory::CreateInfo memoryCreateInfo = {};
-                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.properties =
+                    vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = logicalDevice;
                 memoryCreateInfo.physicalDevice = physicalDevice;
-                Image::initMemory(depthImage.memory, depthImage.instance, memoryCreateInfo);
+                Image::initMemory(
+                    depthImage.memory, depthImage.instance, memoryCreateInfo
+                );
 
                 Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
@@ -304,7 +320,9 @@ namespace Chicane
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
                 viewCreateInfo.format        = instanceCreateInfo.format;
                 viewCreateInfo.logicalDevice = logicalDevice;
-                Image::initView(depthImage.view, depthImage.instance, viewCreateInfo);
+                Image::initView(
+                    depthImage.view, depthImage.instance, viewCreateInfo
+                );
             }
 
             void Instance::destroyDepthImage()
@@ -315,47 +333,59 @@ namespace Chicane
                 logicalDevice.destroySampler(depthImage.sampler);
             }
 
-            void Instance::setupShadowImage(vk::Format inFormat, const vk::Extent2D& inExtent)
+            void Instance::setupShadowImage(
+                vk::Format inFormat, const vk::Extent2D& inExtent
+            )
             {
                 shadowImage.format = inFormat;
                 shadowImage.extent = inExtent;
 
                 Image::Instance::CreateInfo instanceCreateInfo = {};
-                instanceCreateInfo.width         = shadowImage.extent.width;
-                instanceCreateInfo.height        = shadowImage.extent.height;
-                instanceCreateInfo.count         = 1;
-                instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
-                instanceCreateInfo.flags         = vk::ImageCreateFlagBits();
-                instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled;
+                instanceCreateInfo.width  = shadowImage.extent.width;
+                instanceCreateInfo.height = shadowImage.extent.height;
+                instanceCreateInfo.count  = 1;
+                instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
+                instanceCreateInfo.flags  = vk::ImageCreateFlagBits();
+                instanceCreateInfo.usage =
+                    vk::ImageUsageFlagBits::eDepthStencilAttachment |
+                    vk::ImageUsageFlagBits::eSampled;
                 instanceCreateInfo.format        = inFormat;
                 instanceCreateInfo.logicalDevice = logicalDevice;
                 Image::initInstance(shadowImage.instance, instanceCreateInfo);
 
                 vk::SamplerCreateInfo samplerCreateInfo = {};
-                samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
-                samplerCreateInfo.minFilter               = vk::Filter::eLinear;
-                samplerCreateInfo.magFilter               = vk::Filter::eLinear;
-                samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-                samplerCreateInfo.mipLodBias              = 0.0f;
-                samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
-                samplerCreateInfo.anisotropyEnable        = false;
-                samplerCreateInfo.maxAnisotropy           = 1.0f;
-                samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
+                samplerCreateInfo.flags      = vk::SamplerCreateFlags();
+                samplerCreateInfo.minFilter  = vk::Filter::eLinear;
+                samplerCreateInfo.magFilter  = vk::Filter::eLinear;
+                samplerCreateInfo.mipmapMode = vk::SamplerMipmapMode::eLinear;
+                samplerCreateInfo.mipLodBias = 0.0f;
+                samplerCreateInfo.addressModeU =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeV =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeW =
+                    vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.anisotropyEnable = false;
+                samplerCreateInfo.maxAnisotropy    = 1.0f;
+                samplerCreateInfo.borderColor =
+                    vk::BorderColor::eFloatOpaqueWhite;
                 samplerCreateInfo.unnormalizedCoordinates = false;
                 samplerCreateInfo.compareEnable           = true;
-                samplerCreateInfo.compareOp               = vk::CompareOp::eLessOrEqual;
-                samplerCreateInfo.minLod                  = 0.0f;
-                samplerCreateInfo.maxLod                  = 1.0f;
+                samplerCreateInfo.compareOp = vk::CompareOp::eLessOrEqual;
+                samplerCreateInfo.minLod    = 0.0f;
+                samplerCreateInfo.maxLod    = 1.0f;
                 samplerCreateInfo.unnormalizedCoordinates = false;
-                shadowImage.sampler = logicalDevice.createSampler(samplerCreateInfo);
+                shadowImage.sampler =
+                    logicalDevice.createSampler(samplerCreateInfo);
 
                 Image::Memory::CreateInfo memoryCreateInfo = {};
-                memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
+                memoryCreateInfo.properties =
+                    vk::MemoryPropertyFlagBits::eDeviceLocal;
                 memoryCreateInfo.logicalDevice  = logicalDevice;
                 memoryCreateInfo.physicalDevice = physicalDevice;
-                Image::initMemory(shadowImage.memory, shadowImage.instance, memoryCreateInfo);
+                Image::initMemory(
+                    shadowImage.memory, shadowImage.instance, memoryCreateInfo
+                );
 
                 Image::View::CreateInfo viewCreateInfo = {};
                 viewCreateInfo.count         = instanceCreateInfo.count;
@@ -363,11 +393,14 @@ namespace Chicane
                 viewCreateInfo.aspect        = vk::ImageAspectFlagBits::eDepth;
                 viewCreateInfo.format        = instanceCreateInfo.format;
                 viewCreateInfo.logicalDevice = logicalDevice;
-                Image::initView(shadowImage.view, shadowImage.instance, viewCreateInfo);
+                Image::initView(
+                    shadowImage.view, shadowImage.instance, viewCreateInfo
+                );
 
-                shadowImageInfo.imageLayout = vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
-                shadowImageInfo.imageView   = shadowImage.view;
-                shadowImageInfo.sampler     = shadowImage.sampler;
+                shadowImageInfo.imageLayout =
+                    vk::ImageLayout::eDepthAttachmentStencilReadOnlyOptimal;
+                shadowImageInfo.imageView = shadowImage.view;
+                shadowImageInfo.sampler   = shadowImage.sampler;
             }
 
             void Instance::destroyShadowImage()
@@ -378,11 +411,15 @@ namespace Chicane
                 logicalDevice.destroySampler(shadowImage.sampler);
             }
 
-            void Instance::addFrameBuffer(const String& inId, const vk::Framebuffer& inFramebuffer)
+            void Instance::addFrameBuffer(
+                const String& inId, const vk::Framebuffer& inFramebuffer
+            )
             {
                 if (framebuffers.find(inId) != framebuffers.end())
                 {
-                    throw std::runtime_error("Framebuffer " + inId + " already exists");
+                    throw std::runtime_error(
+                        "Framebuffer " + inId + " already exists"
+                    );
                 }
 
                 framebuffers.insert(std::make_pair(inId, inFramebuffer));
@@ -393,22 +430,29 @@ namespace Chicane
                 return framebuffers.at(inId);
             }
 
-            void Instance::addDescriptorSet(const String& inId, const vk::DescriptorSet& inDescriptorSet)
+            void Instance::addDescriptorSet(
+                const String& inId, const vk::DescriptorSet& inDescriptorSet
+            )
             {
                 if (descriptorSets.find(inId) != descriptorSets.end())
                 {
-                    throw std::runtime_error("Descriptor set " + inId + " already exists");
+                    throw std::runtime_error(
+                        "Descriptor set " + inId + " already exists"
+                    );
                 }
 
                 descriptorSets.insert(std::make_pair(inId, inDescriptorSet));
             }
 
-            vk::DescriptorSet Instance::getDescriptorSet(const String& inId) const
+            vk::DescriptorSet
+            Instance::getDescriptorSet(const String& inId) const
             {
                 return descriptorSets.at(inId);
             }
 
-            void Instance::addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet)
+            void Instance::addWriteDescriptorSet(
+                const vk::WriteDescriptorSet& inWriteDescriptorSet
+            )
             {
                 descriptorSetWrites.push_back(inWriteDescriptorSet);
             }
@@ -421,12 +465,13 @@ namespace Chicane
                 }
 
                 logicalDevice.updateDescriptorSets(
-                    descriptorSetWrites,
-                    nullptr
+                    descriptorSetWrites, nullptr
                 );
             }
 
-            RendererView Instance::getActiveCameraData(const std::vector<CCamera*>& inCameras)
+            RendererView Instance::getActiveCameraData(
+                const std::vector<CCamera*>& inCameras
+            )
             {
                 for (const Chicane::CCamera* camera : inCameras)
                 {
@@ -444,7 +489,7 @@ namespace Chicane
             RendererView Instance::normalizeViewData(const RendererView& inData)
             {
                 RendererView result = inData;
-                result.projection [1][1] *= -1;
+                result.projection[1][1] *= -1;
                 result.viewProjection = result.projection * result.view;
 
                 return result;
@@ -464,8 +509,7 @@ namespace Chicane
                 std::sort(
                     components.begin(),
                     components.end(),
-                    [](CMesh* inA, CMesh* inB)
-                    {
+                    [](CMesh* inA, CMesh* inB) {
                         return inA->getModel().compare(inB->getModel()) > 0;
                     }
                 );
@@ -475,8 +519,9 @@ namespace Chicane
                 for (const CMesh* mesh : components)
                 {
                     Box::MeshParsed data = {};
-                    data.modelMatrix  = mesh->getTransform().getMatrix();
-                    data.textureIndex = textureManager->getIndex(mesh->getTexture());
+                    data.modelMatrix     = mesh->getTransform().getMatrix();
+                    data.textureIndex =
+                        textureManager->getIndex(mesh->getTexture());
 
                     meshes.push_back(data);
                 }

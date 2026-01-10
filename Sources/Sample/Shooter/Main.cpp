@@ -1,10 +1,9 @@
 #include "Main.hpp"
 
+#include "Application.hpp"
 #include "Chicane/Core/Log.hpp"
 
-#include "Application.hpp"
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     try
     {

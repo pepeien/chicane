@@ -17,14 +17,15 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                result.push_back({ point.x, point.y });
+                result.push_back({point.x, point.y});
             }
         }
 
         return result;
     }
 
-    std::vector<Curve::Polygon> Curve::getPolygons(const std::vector<Curve>& inContours)
+    std::vector<Curve::Polygon>
+    Curve::getPolygons(const std::vector<Curve>& inContours)
     {
         std::vector<Polygon> result = {};
 
@@ -39,7 +40,7 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                polygon.push_back({ point.x, point.y });
+                polygon.push_back({point.x, point.y});
             }
 
             result.push_back(polygon);
@@ -48,7 +49,8 @@ namespace Chicane
         return result;
     }
 
-    std::vector<Vec3> Curve::getTriangleVertices(const std::vector<Curve>& inContours)
+    std::vector<Vec3>
+    Curve::getTriangleVertices(const std::vector<Curve>& inContours)
     {
         if (inContours.empty())
         {
@@ -66,14 +68,17 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                result.push_back({ point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f });
+                result.push_back(
+                    {point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f}
+                );
             }
         }
 
         return result;
     }
 
-    std::vector<std::uint32_t> Curve::getTriangleIndices(const std::vector<Curve>& inContours)
+    std::vector<std::uint32_t>
+    Curve::getTriangleIndices(const std::vector<Curve>& inContours)
     {
         if (inContours.empty())
         {
@@ -105,14 +110,12 @@ namespace Chicane
             return {};
         }
 
-        std::vector<Polygon> polygons = {};        
+        std::vector<Polygon> polygons = {};
         polygons.push_back(getPolygon(outerContours));
 
         const std::vector<Polygon> holePolygons = getPolygons(holeContours);
         polygons.insert(
-            polygons.end(),
-            holePolygons.begin(),
-            holePolygons.end()
+            polygons.end(), holePolygons.begin(), holePolygons.end()
         );
 
         return mapbox::earcut<std::uint32_t>(polygons);
@@ -134,7 +137,7 @@ namespace Chicane
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
-            const float t = static_cast<float>(i) / m_segmentCount;
+            const float t  = static_cast<float>(i) / m_segmentCount;
             const float mt = 1.0f - t;
 
             // Quadratic bezier formula: B(t) = (1-t)²P₀ + 2(1-t)tP₁ + t²P₂
@@ -147,7 +150,9 @@ namespace Chicane
         }
     }
 
-    void Curve::addBezierPoint(const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint)
+    void Curve::addBezierPoint(
+        const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint
+    )
     {
         if (isEmpty() || m_segmentCount <= 0)
         {
@@ -158,10 +163,11 @@ namespace Chicane
 
         for (int i = 1; i <= m_segmentCount; i++)
         {
-            const float t = static_cast<float>(i) / m_segmentCount;
+            const float t  = static_cast<float>(i) / m_segmentCount;
             const float mt = 1.0f - t;
 
-            // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ + t³P₃
+            // Cubic bezier formula: B(t) = (1-t)³P₀ + 3(1-t)²tP₁ + 3(1-t)t²P₂ +
+            // t³P₃
             Vec2 point = {};
             point += mt * mt * mt * start;
             point += 3.0f * mt * mt * t * inControlA;
@@ -188,7 +194,10 @@ namespace Chicane
             const Vec2& current = m_points.at(i);
             const Vec2& nearest = m_points.at((i + 1) % count);
 
-            area += (static_cast<double>(current.x) * static_cast<double>(nearest.y)) - (static_cast<double>(nearest.x) * static_cast<double>(current.y));
+            area += (static_cast<double>(current.x) *
+                     static_cast<double>(nearest.y)) -
+                    (static_cast<double>(nearest.x) *
+                     static_cast<double>(current.y));
         }
 
         return area > -(1e-6);

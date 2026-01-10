@@ -16,7 +16,9 @@ namespace Chicane
 
             const ma_device_id* data = (ma_device_id*)(inData);
 
-            std::copy(std::begin(data->dsound), std::end(data->dsound), dsound.begin());
+            std::copy(
+                std::begin(data->dsound), std::end(data->dsound), dsound.begin()
+            );
 
             wasapi    = data->wasapi;
             winmm     = data->winmm;
@@ -34,18 +36,18 @@ namespace Chicane
 
         DeviceId::DeviceId()
             : wasapi(""),
-            dsound({}),
-            winmm(0),
-            alsa(""),
-            pulse(""),
-            jack(0),
-            coreaudio(""),
-            sndio(""),
-            audio4(""),
-            oss(""),
-            aaudio(0),
-            opensl(0),
-            webaudio("")
+              dsound({}),
+              winmm(0),
+              alsa(""),
+              pulse(""),
+              jack(0),
+              coreaudio(""),
+              sndio(""),
+              audio4(""),
+              oss(""),
+              aaudio(0),
+              opensl(0),
+              webaudio("")
         {}
     }
 }

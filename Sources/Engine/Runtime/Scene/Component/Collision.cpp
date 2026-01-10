@@ -7,8 +7,8 @@ namespace Chicane
 {
     CCollision::CCollision()
         : Super(),
-        m_bCanCollide(true),
-        m_shape({})
+          m_bCanCollide(true),
+          m_shape({})
     {}
 
     void CCollision::onTick(float inDeltaTime)
@@ -25,7 +25,8 @@ namespace Chicane
             return;
         }
 
-        for (CCollision* collider : Application::getScene()->getComponents<CCollision>())
+        for (CCollision* collider :
+             Application::getScene()->getComponents<CCollision>())
         {
             if (!isColliding(collider))
             {
@@ -96,15 +97,16 @@ namespace Chicane
 
         for (std::uint32_t i = 0; i < otherShape.indices.size(); i++)
         {
-            //const Vec3& otherPoint = otherShape.vertices.at(i);
+            // const Vec3& otherPoint = otherShape.vertices.at(i);
 
             for (std::uint32_t j = 0; j < m_shape.indices.size(); j++)
             {
-                //const Vec3& point = m_shape.vertices.at(j);
+                // const Vec3& point = m_shape.vertices.at(j);
 
-                //const bool bIsWithinX = otherPoint.x >= min.x && otherPoint.x <= max.x;
-                //const bool bIsWithinY = otherPoint.y >= min.y && otherPoint.y <= max.y;
-                //const bool bIsWithinZ = otherPoint.z >= min.z && otherPoint.z <= max.z;
+                // const bool bIsWithinX = otherPoint.x >= min.x && otherPoint.x
+                // <= max.x; const bool bIsWithinY = otherPoint.y >= min.y &&
+                // otherPoint.y <= max.y; const bool bIsWithinZ = otherPoint.z
+                // >= min.z && otherPoint.z <= max.z;
             }
         }
 

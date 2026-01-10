@@ -12,8 +12,8 @@ namespace Chicane
 
     Recorder::Recorder()
         : m_begin(Time::Clock::now()),
-        m_end(Time::Clock::now()),
-        m_cooldown(COOLDOWN_IN_MS)
+          m_end(Time::Clock::now()),
+          m_cooldown(COOLDOWN_IN_MS)
     {}
 
     void Recorder::start()

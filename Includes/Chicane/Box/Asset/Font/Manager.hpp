@@ -11,7 +11,8 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX FontManager : public Box::Manager<FontExtracted, FontParsed>
+        class CHICANE_BOX FontManager
+            : public Box::Manager<FontExtracted, FontParsed>
         {
         public:
             FontManager();

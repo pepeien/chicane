@@ -41,4 +41,4 @@ namespace Chicane
 
         String m_id;
     };
-} 
+}

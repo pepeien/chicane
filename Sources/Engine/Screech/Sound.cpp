@@ -1,9 +1,9 @@
 #include "Chicane/Screech/Sound.hpp"
 
-#include <miniaudio.h>
-
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Flags.hpp"
+
+#include <miniaudio.h>
 
 namespace Chicane
 {
@@ -19,28 +19,30 @@ namespace Chicane
         Sound::Sound(const Raw& inData)
             : Sound()
         {
-            if (ma_decoder_init_memory(inData.data(), inData.size(), NULL, &m_data->decoder) != MA_SUCCESS)
+            if (ma_decoder_init_memory(
+                    inData.data(), inData.size(), NULL, &m_data->decoder
+                ) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to initialize sound decoder");
             }
 
-            if (
-                ma_sound_init_from_data_source(
-                    (ma_engine*) getEngine(),
+            if (ma_sound_init_from_data_source(
+                    (ma_engine*)getEngine(),
                     &m_data->decoder,
                     MA_SOUND_FLAG_DECODE | MA_SOUND_FLAG_ASYNC,
                     NULL,
                     &m_data->sound
-                ) != MA_SUCCESS
-            )
+                ) != MA_SUCCESS)
             {
-                throw std::runtime_error("Failed to initialize sound from decoder");
+                throw std::runtime_error(
+                    "Failed to initialize sound from decoder"
+                );
             }
         }
 
         Sound::Sound()
             : m_status(SoundStatus::Stopped),
-            m_data(new _Data())
+              m_data(new _Data())
         {}
 
         Sound::~Sound()
@@ -53,7 +55,9 @@ namespace Chicane
             return m_status == SoundStatus::Playing;
         }
 
-        bool Sound::play(float inVolume, float inSpeed, std::function<void ()> inCallback)
+        bool Sound::play(
+            float inVolume, float inSpeed, std::function<void()> inCallback
+        )
         {
             if (isPlaying())
             {
@@ -67,9 +71,8 @@ namespace Chicane
             ma_sound_set_pitch(&m_data->sound, inSpeed);
             ma_sound_set_end_callback(
                 &m_data->sound,
-                [](void* pUserData, ma_sound* pSound)
-                {
-                    Sound* context = (Sound*) pUserData;
+                [](void* pUserData, ma_sound* pSound) {
+                    Sound* context = (Sound*)pUserData;
                     context->stop();
                 },
                 this

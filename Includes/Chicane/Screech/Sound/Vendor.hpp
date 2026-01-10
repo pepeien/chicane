@@ -22,8 +22,10 @@ namespace Chicane
             AAudio,
             OpenSL,
             WebAudio,
-            Custom,  /* <-- Custom backend, with callbacks defined by the context config. */
-            Null     /* <-- Must always be the last item. Lowest priority, and used as the terminator for backend enumeration. */
+            Custom, /* <-- Custom backend, with callbacks defined by the context
+                       config. */
+            Null /* <-- Must always be the last item. Lowest priority, and used
+                    as the terminator for backend enumeration. */
         };
     }
 }

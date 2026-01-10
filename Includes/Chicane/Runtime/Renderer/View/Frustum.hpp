@@ -8,7 +8,7 @@ namespace Chicane
     struct CHICANE_RUNTIME RendererViewFrustum
     {
     public:
-    	virtual bool contains(const class Transformable* inSubject) const;
+        virtual bool contains(const class Transformable* inSubject) const;
         virtual void update(const class CView* inView);
 
     protected:

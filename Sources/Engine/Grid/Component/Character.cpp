@@ -14,8 +14,8 @@ namespace Chicane
 
         Character::Character()
             : Super(TAG_ID),
-            m_bCanUpdate(false),
-            m_character(NULL_CHARACTER)
+              m_bCanUpdate(false),
+              m_character(NULL_CHARACTER)
         {}
 
         bool Character::isDrawable() const
@@ -33,7 +33,7 @@ namespace Chicane
             if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
             {
                 clearPrimitive();
-    
+
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace Chicane
             const Box::FontGlyph& glyph = getGlyph();
 
             Primitive primitive = {};
-            primitive.indices = glyph.indices;
+            primitive.indices   = glyph.indices;
 
             Vertex vertex = {};
             vertex.color  = m_style.foregroundColor;
@@ -50,7 +50,7 @@ namespace Chicane
             for (const Vec3 position : glyph.vertices)
             {
                 vertex.position = position;
-    
+
                 primitive.vertices.push_back(vertex);
             }
 
@@ -89,7 +89,9 @@ namespace Chicane
 
         bool Character::hasFont() const
         {
-            return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
+            return Box::getFontManager()->isFamilyAllocated(
+                m_style.font.family
+            );
         }
 
         const Box::FontParsed& Character::getFont() const
@@ -104,7 +106,8 @@ namespace Chicane
 
         bool Character::hasGlyph() const
         {
-            return hasCharacter() && hasFont() && getFont().hasGlyph(m_character);
+            return hasCharacter() && hasFont() &&
+                   getFont().hasGlyph(m_character);
         }
 
         const Box::FontGlyph& Character::getGlyph() const

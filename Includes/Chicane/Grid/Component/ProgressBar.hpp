@@ -12,10 +12,12 @@ namespace Chicane
         public:
             // Tag
             static inline constexpr const char* TAG_ID = "ProgressBar";
-    
+
             // Attributes
-            static inline constexpr const char* PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`
-            static inline constexpr const char* OVERLAY_ATTRIBUTE_NAME    = "overlay"; // Text that goes inside
+            static inline constexpr const char* PERCENTAGE_ATTRIBUTE_NAME =
+                "percentage"; // Goes from `0.0` to `100.0`
+            static inline constexpr const char* OVERLAY_ATTRIBUTE_NAME =
+                "overlay"; // Text that goes inside
 
         public:
             ProgressBar(const pugi::xml_node& inNode)

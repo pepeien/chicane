@@ -6,7 +6,10 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices)
+    Bounds::Bounds(
+        const std::vector<Vertex>&        inVertices,
+        const std::vector<std::uint32_t>& inIndices
+    )
         : Bounds()
     {
         for (std::uint32_t index : inIndices)
@@ -29,17 +32,17 @@ namespace Chicane
 
     Bounds::Bounds()
         : m_min(Vec3::Zero),
-        m_baseMin(Vec3(FLT_MAX)),
-        m_max(Vec3::Zero),
-        m_baseMax(Vec3(-FLT_MAX)),
-        m_top(Vec3::Zero),
-        m_baseTop(Vec3::Zero),
-        m_center(Vec3::Zero),
-        m_baseCenter(Vec3::Zero),
-        m_bottom(Vec3::Zero),
-        m_baseBottom(Vec3::Zero),
-        m_vertices({}),
-        m_indices({})
+          m_baseMin(Vec3(FLT_MAX)),
+          m_max(Vec3::Zero),
+          m_baseMax(Vec3(-FLT_MAX)),
+          m_top(Vec3::Zero),
+          m_baseTop(Vec3::Zero),
+          m_center(Vec3::Zero),
+          m_baseCenter(Vec3::Zero),
+          m_bottom(Vec3::Zero),
+          m_baseBottom(Vec3::Zero),
+          m_vertices({}),
+          m_indices({})
     {}
 
     bool Bounds::intersects(const Bounds& inBounds) const
@@ -75,9 +78,12 @@ namespace Chicane
         const Vec3& otherMin = inOther.getMin();
         const Vec3& otherMax = inOther.getMax();
 
-        float overlapX = std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
-        float overlapY = std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
-        float overlapZ = std::min(max.z, otherMax.z) - std::max(min.z, otherMin.z);
+        float overlapX =
+            std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
+        float overlapY =
+            std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
+        float overlapZ =
+            std::min(max.z, otherMax.z) - std::max(min.z, otherMin.z);
 
         if (overlapX <= 0 || overlapY <= 0 || overlapZ <= 0)
         {
@@ -113,14 +119,14 @@ namespace Chicane
     void Bounds::add(const Bounds& inBounds)
     {
         const Vec3& min = inBounds.getBaseMin();
-        m_baseMin.x = std::min(m_baseMin.x, min.x);
-        m_baseMin.y = std::min(m_baseMin.y, min.y);
-        m_baseMin.z = std::min(m_baseMin.z, min.z);
+        m_baseMin.x     = std::min(m_baseMin.x, min.x);
+        m_baseMin.y     = std::min(m_baseMin.y, min.y);
+        m_baseMin.z     = std::min(m_baseMin.z, min.z);
 
         const Vec3& max = inBounds.getBaseMax();
-        m_baseMax.x = std::max(m_baseMax.x, max.x);
-        m_baseMax.y = std::max(m_baseMax.y, max.y);
-        m_baseMax.z = std::max(m_baseMax.z, max.z);
+        m_baseMax.x     = std::max(m_baseMax.x, max.x);
+        m_baseMax.y     = std::max(m_baseMax.y, max.y);
+        m_baseMax.z     = std::max(m_baseMax.z, max.z);
 
         refresh();
     }
@@ -169,40 +175,64 @@ namespace Chicane
         // 0+------+1
 
         m_vertices = {
-            { m_baseMin.x, m_baseMin.y, m_baseMin.z }, // 0
-            { m_baseMax.x, m_baseMin.y, m_baseMin.z }, // 1
-            { m_baseMin.x, m_baseMax.y, m_baseMin.z }, // 2
-            { m_baseMax.x, m_baseMax.y, m_baseMin.z }, // 3
-            { m_baseMin.x, m_baseMin.y, m_baseMax.z }, // 4
-            { m_baseMax.x, m_baseMin.y, m_baseMax.z }, // 5
-            { m_baseMin.x, m_baseMax.y, m_baseMax.z }, // 6
-            { m_baseMax.x, m_baseMax.y, m_baseMax.z }  // 7
+            {m_baseMin.x, m_baseMin.y, m_baseMin.z}, // 0
+            {m_baseMax.x, m_baseMin.y, m_baseMin.z}, // 1
+            {m_baseMin.x, m_baseMax.y, m_baseMin.z}, // 2
+            {m_baseMax.x, m_baseMax.y, m_baseMin.z}, // 3
+            {m_baseMin.x, m_baseMin.y, m_baseMax.z}, // 4
+            {m_baseMax.x, m_baseMin.y, m_baseMax.z}, // 5
+            {m_baseMin.x, m_baseMax.y, m_baseMax.z}, // 6
+            {m_baseMax.x, m_baseMax.y, m_baseMax.z}  // 7
         };
 
         m_indices = {
             // Front face  (z = m_min.z): 0, 1, 2, 2, 3, 0
-            0, 1, 2,
-            2, 3, 0,
+            0,
+            1,
+            2,
+            2,
+            3,
+            0,
 
             // Back face   (z = m_max.z): 4, 5, 6, 6, 7, 4
-            4, 5, 6,
-            6, 7, 4,
+            4,
+            5,
+            6,
+            6,
+            7,
+            4,
 
             // Left face   (x = m_min.x): 0, 4, 6, 6, 2, 0
-            0, 4, 6,
-            6, 2, 0,
+            0,
+            4,
+            6,
+            6,
+            2,
+            0,
 
             // Right face  (x = m_max.x): 1, 5, 7, 7, 3, 1
-            1, 5, 7,
-            7, 3, 1,
+            1,
+            5,
+            7,
+            7,
+            3,
+            1,
 
             // Top face    (y = m_max.y): 2, 6, 7, 7, 3, 2
-            2, 6, 7,
-            7, 3, 2,
+            2,
+            6,
+            7,
+            7,
+            3,
+            2,
 
             // Bottom face (y = m_min.y): 0, 1, 5, 5, 4, 0
-            0, 1, 5,
-            5, 4, 0
+            0,
+            1,
+            5,
+            5,
+            4,
+            0
         };
     }
 

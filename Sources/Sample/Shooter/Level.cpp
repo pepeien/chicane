@@ -1,9 +1,8 @@
 #include "Level.hpp"
 
+#include "Actor.hpp"
 #include "Chicane/Runtime/Scene/Actor/Camera.hpp"
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
-
-#include "Actor.hpp"
 #include "Game.hpp"
 
 static inline constexpr const std::uint32_t APPLE_DEPTH_COUNT  = 2;
@@ -13,10 +12,10 @@ static inline constexpr const float         APPLE_STEP         = 20.0f;
 
 Level::Level()
     : Chicane::Scene(),
-    m_leftCamera(nullptr),
-    m_centerCamera(nullptr),
-    m_rightCamera(nullptr),
-    m_cameraObservable({})
+      m_leftCamera(nullptr),
+      m_centerCamera(nullptr),
+      m_rightCamera(nullptr),
+      m_cameraObservable({})
 {}
 
 void Level::onActivation()
@@ -68,12 +67,13 @@ void Level::disableCameras()
 }
 
 Level::CameraSubscription Level::watchActiveCamera(
-    CameraSubscription::NextCallback inNext,
-    CameraSubscription::ErrorCallback inError,
+    CameraSubscription::NextCallback     inNext,
+    CameraSubscription::ErrorCallback    inError,
     CameraSubscription::CompleteCallback inComplete
 )
 {
-    return m_cameraObservable.subscribe(inNext, inError, inComplete).next(nullptr);
+    return m_cameraObservable.subscribe(inNext, inError, inComplete)
+        .next(nullptr);
 }
 
 void Level::spawnSky()
@@ -126,18 +126,19 @@ void Level::spawnApples()
     {
         for (std::uint32_t row = 0; row < APPLE_ROW_COUNT; row++)
         {
-            for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
+            for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT;
+                 column++)
             {
                 createActor<Apple>()->setInitialPosition(position);
 
                 position.x += APPLE_STEP;
             }
 
-            position.x  = startPosition.x;
+            position.x = startPosition.x;
             position.z += APPLE_STEP;
         }
 
         position.y += APPLE_STEP;
-        position.z  = startPosition.z;
+        position.z = startPosition.z;
     }
 }

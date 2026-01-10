@@ -6,13 +6,11 @@ namespace Chicane
     {
         FolderDialog::FolderDialog()
             : title(""),
-            location(""),
-            bCanSelectMany(false)
+              location(""),
+              bCanSelectMany(false)
         {}
 
         void FolderDialog::open(Callback inCallback) const
-        {
-
-        }
+        {}
     }
 }

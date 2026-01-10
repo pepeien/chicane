@@ -1,11 +1,10 @@
 #include "Application.hpp"
 
-#include "Chicane/Core/Window/Type.hpp"
+#include "Actor.hpp"
 #include "Chicane/Core/Window/Renderer.hpp"
+#include "Chicane/Core/Window/Type.hpp"
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
-
-#include "Actor.hpp"
 
 Application::Application()
 {

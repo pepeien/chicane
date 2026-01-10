@@ -16,13 +16,12 @@ namespace Chicane
         bool FontManager::isFamilyAllocated(const String& inFamily) const
         {
             return std::find_if(
-                m_datum.begin(),
-                m_datum.end(),
-                [inFamily](const std::pair<String, FontParsed>& pair)
-                {
-                    return inFamily.equals(pair.second.name);
-                }
-            ) != m_datum.end();
+                       m_datum.begin(),
+                       m_datum.end(),
+                       [inFamily](const std::pair<String, FontParsed>& pair) {
+                           return inFamily.equals(pair.second.name);
+                       }
+                   ) != m_datum.end();
         }
 
         void FontManager::load(const String& inId, const Font& inFont)
@@ -38,8 +37,8 @@ namespace Chicane
             }
 
             FontExtracted instance = {};
-            instance.vendor = inFont.getVendor();
-            instance.data   = inFont.getData();
+            instance.vendor        = inFont.getVendor();
+            instance.data          = inFont.getData();
 
             Super::load(inId, instance);
 
@@ -63,7 +62,9 @@ namespace Chicane
                 break;
 
             default:
-                throw std::runtime_error("Failed to import Model due to invalid type");
+                throw std::runtime_error(
+                    "Failed to import Model due to invalid type"
+                );
             }
         }
 
@@ -97,8 +98,7 @@ namespace Chicane
             auto found = std::find_if(
                 m_datum.begin(),
                 m_datum.end(),
-                [inFamily](const std::pair<String, FontParsed>& pair)
-                {
+                [inFamily](const std::pair<String, FontParsed>& pair) {
                     return inFamily.equals(pair.second.name);
                 }
             );

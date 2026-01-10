@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Texture/CreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {

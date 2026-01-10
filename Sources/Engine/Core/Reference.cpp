@@ -4,7 +4,7 @@ namespace Chicane
 {
     Reference::Reference()
         : m_value(nullptr),
-        m_type(std::type_index(typeid(int)))
+          m_type(std::type_index(typeid(int)))
     {}
 
     bool Reference::isEmpty() const

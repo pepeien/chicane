@@ -4,33 +4,33 @@ namespace Chicane
 {
     CView::CView()
         : Super(),
-        m_settings({}),
-        m_frustum({}),
-        m_data({}),
-        m_focusPoint(Vec3::Zero)
+          m_settings({}),
+          m_frustum({}),
+          m_data({}),
+          m_focusPoint(Vec3::Zero)
     {}
 
     void CView::onTransform()
     {
         const Vec3& forward = getForward();
-        m_data.forward.x = forward.x;
-        m_data.forward.y = forward.y;
-        m_data.forward.z = forward.z;
+        m_data.forward.x    = forward.x;
+        m_data.forward.y    = forward.y;
+        m_data.forward.z    = forward.z;
 
         const Vec3& right = getRight();
-        m_data.right.x = right.x;
-        m_data.right.y = right.y;
-        m_data.right.z = right.z;
+        m_data.right.x    = right.x;
+        m_data.right.y    = right.y;
+        m_data.right.z    = right.z;
 
         const Vec3& up = getUp();
-        m_data.up.x = up.x;
-        m_data.up.y = up.y;
-        m_data.up.z = up.z;
+        m_data.up.x    = up.x;
+        m_data.up.y    = up.y;
+        m_data.up.z    = up.z;
 
         const Vec3& translation = getTranslation();
-        m_data.translation.x = translation.x;
-        m_data.translation.y = translation.y;
-        m_data.translation.z = translation.z;
+        m_data.translation.x    = translation.x;
+        m_data.translation.y    = translation.y;
+        m_data.translation.z    = translation.z;
 
         updateView();
     }
@@ -57,7 +57,8 @@ namespace Chicane
 
         if (inViewport.x > 0 && inViewport.y > 0)
         {
-            m_settings.aspectRatio = (float) m_settings.viewport.x / m_settings.viewport.y;
+            m_settings.aspectRatio =
+                (float)m_settings.viewport.x / m_settings.viewport.y;
         }
 
         updateProjection();
@@ -154,11 +155,7 @@ namespace Chicane
 
     void CView::updateView()
     {
-        m_data.view = glm::lookAt(
-            getTranslation(),
-            m_focusPoint,
-            getUp()
-        );
+        m_data.view = glm::lookAt(getTranslation(), m_focusPoint, getUp());
 
         m_frustum.update(this);
     }

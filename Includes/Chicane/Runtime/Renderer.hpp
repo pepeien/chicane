@@ -57,7 +57,7 @@ namespace Chicane
         void setWindow(Window* inWindow);
 
         // Layers
-        template<typename T>
+        template <typename T>
         bool hasLayer() const
         {
             for (const RendererLayer* layer : m_layers)
@@ -73,10 +73,14 @@ namespace Chicane
             return false;
         }
 
-        template<typename Target, typename Anchor = RendererLayer, typename... Params>
+        template <
+            typename Target,
+            typename Anchor = RendererLayer,
+            typename... Params
+        >
         void pushLayer(
             ListPushStrategy inStrategy = ListPushStrategy::Back,
-            Params ...inParams
+            Params... inParams
         )
         {
             m_layers.add(new Target(inParams...), inStrategy);

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Core/Image.hpp"
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -11,8 +11,8 @@ namespace Chicane
     {
         namespace Image
         {
-	    	struct CHICANE_RUNTIME Data : public Chicane::Image
-	    	{
+            struct CHICANE_RUNTIME Data : public Chicane::Image
+            {
             public:
                 Data(const Chicane::Image& inImage)
                     : Super()
@@ -31,13 +31,13 @@ namespace Chicane
                 ~Data() = default;
 
             public:
-	    		vk::Image        instance;
-	    		vk::ImageView    view;
-	    		vk::DeviceMemory memory;
-	    		vk::Sampler      sampler;
+                vk::Image        instance;
+                vk::ImageView    view;
+                vk::DeviceMemory memory;
+                vk::Sampler      sampler;
                 vk::Format       format;
                 vk::Extent2D     extent;
-	    	};
+            };
         }
     }
 }

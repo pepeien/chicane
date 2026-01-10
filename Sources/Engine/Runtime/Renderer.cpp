@@ -10,12 +10,12 @@ namespace Chicane
 {
     Renderer::Renderer()
         : m_size(Vec2::Zero),
-        m_position(Vec2::Zero),
-        m_window(nullptr),
-        m_layers({}),
-        m_cameras({}),
-        m_lights({}),
-        m_meshes({})
+          m_position(Vec2::Zero),
+          m_window(nullptr),
+          m_layers({}),
+          m_cameras({}),
+          m_lights({}),
+          m_meshes({})
     {
         loadEvents();
     }
@@ -73,10 +73,8 @@ namespace Chicane
 
     void Renderer::setSize(float inWidth, float inHeight)
     {
-        if (
-            std::fabs(m_size.x - inWidth) < FLT_EPSILON &&
-            std::fabs(m_size.y - inHeight) < FLT_EPSILON
-        )
+        if (std::fabs(m_size.x - inWidth) < FLT_EPSILON &&
+            std::fabs(m_size.y - inHeight) < FLT_EPSILON)
         {
             return;
         }
@@ -101,10 +99,8 @@ namespace Chicane
 
     void Renderer::setPosition(float inX, float inY)
     {
-        if (
-            std::fabs(m_position.x - inX) < FLT_EPSILON &&
-            std::fabs(m_position.y - inY) < FLT_EPSILON
-        )
+        if (std::fabs(m_position.x - inX) < FLT_EPSILON &&
+            std::fabs(m_position.y - inY) < FLT_EPSILON)
         {
             return;
         }
@@ -187,74 +183,70 @@ namespace Chicane
 
     void Renderer::loadEvents()
     {
-        Application::getWindow()->watchEvent(
-            [this](WindowEvent inEvent)
+        Application::getWindow()->watchEvent([this](WindowEvent inEvent) {
+            onEvent(inEvent);
+
+            for (RendererLayer* layer : m_layers)
             {
-                onEvent(inEvent);
-
-                for (RendererLayer* layer : m_layers)
+                if (!layer)
                 {
-                    if (!layer)
-                    {
-                        continue;
-                    }
-
-                    layer->handle(inEvent);
+                    continue;
                 }
+
+                layer->handle(inEvent);
             }
-        );
+        });
 
-        Application::watchScene(
-            [this](Scene* inLevel) {
-                if (!inLevel)
-                {
-                    return;
-                }
+        Application::watchScene([this](Scene* inLevel) {
+            if (!inLevel)
+            {
+                return;
+            }
 
-                inLevel->watchComponents(
-                    [this](const std::vector<Component*>& inComponents) {
-                        m_cameras.clear();
-                        m_lights.clear();
-                        m_meshes.clear();
+            inLevel->watchComponents(
+                [this](const std::vector<Component*>& inComponents) {
+                    m_cameras.clear();
+                    m_lights.clear();
+                    m_meshes.clear();
 
-                        for (Component* component : inComponents)
+                    for (Component* component : inComponents)
+                    {
+                        if (component->isType<CCamera>())
                         {
-                            if (component->isType<CCamera>())
-                            {
-                                m_cameras.push_back(static_cast<CCamera*>(component));
+                            m_cameras.push_back(
+                                static_cast<CCamera*>(component)
+                            );
 
-                                continue;
-                            }
-
-                            if (component->isType<CMesh>())
-                            {
-                                m_meshes.push_back(static_cast<CMesh*>(component));
-
-                                continue;
-                            }
-
-                            if (component->isType<CLight>())
-                            {
-                                m_lights.push_back(static_cast<CLight*>(component));
-
-                                continue;
-                            }
+                            continue;
                         }
 
-                        std::sort(
-                            m_meshes.begin(),
-                            m_meshes.end(),
-                            [](CMesh* inA, CMesh* inB)
-                            {
-                                return inA->getModel().compare(inB->getModel()) > 0;
-                            }
-                        );
+                        if (component->isType<CMesh>())
+                        {
+                            m_meshes.push_back(static_cast<CMesh*>(component));
 
-                        updateViewComponents();
+                            continue;
+                        }
+
+                        if (component->isType<CLight>())
+                        {
+                            m_lights.push_back(static_cast<CLight*>(component));
+
+                            continue;
+                        }
                     }
-                );
-            }
-        );
+
+                    std::sort(
+                        m_meshes.begin(),
+                        m_meshes.end(),
+                        [](CMesh* inA, CMesh* inB) {
+                            return inA->getModel().compare(inB->getModel()) > 0;
+                        }
+                    );
+
+                    updateViewComponents();
+                }
+            );
+        });
     }
 
     void Renderer::updateViewComponents()

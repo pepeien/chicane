@@ -6,8 +6,8 @@ namespace Chicane
 {
     CSound::CSound()
         : Super(),
-        m_sound(),
-        m_manager(Box::getSoundManager())
+          m_sound(),
+          m_manager(Box::getSoundManager())
     {}
 
     void CSound::load(const String& inSound)

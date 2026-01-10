@@ -18,16 +18,19 @@ namespace Chicane
                 return bindingDescription;
             }
 
-            std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions()
+            std::vector<vk::VertexInputAttributeDescription>
+            getAttributeDescriptions()
             {
-                std::vector<vk::VertexInputAttributeDescription> attributeDescriptions;
+                std::vector<vk::VertexInputAttributeDescription>
+                    attributeDescriptions;
 
                 // Position
                 vk::VertexInputAttributeDescription positionDescription;
                 positionDescription.binding  = 0;
                 positionDescription.location = 0;
                 positionDescription.format   = vk::Format::eR32G32B32Sfloat;
-                positionDescription.offset   = offsetof(Chicane::Vertex, position);
+                positionDescription.offset =
+                    offsetof(Chicane::Vertex, position);
 
                 attributeDescriptions.push_back(positionDescription);
 

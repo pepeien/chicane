@@ -37,10 +37,10 @@ namespace Chicane
         }
 
         return std::find_if(
-            m_value.begin(), 
-            m_value.end(),
-            [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
-        ) != m_value.end();
+                   m_value.begin(), m_value.end(), [](unsigned char c) {
+                       return !std::isdigit(c) && c != '.' && c != ',';
+                   }
+               ) != m_value.end();
     }
 
     bool String::equals(const String& inValue) const
@@ -52,7 +52,7 @@ namespace Chicane
     {
         return strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
     }
-    
+
     bool String::contains(const String& inValue) const
     {
         return m_value.find(inValue.toChar()) != std::string::npos;
@@ -75,7 +75,9 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(m_value.substr(0, inValue.size()).c_str(), inValue.toChar()) == 0;
+        return strcmp(
+                   m_value.substr(0, inValue.size()).c_str(), inValue.toChar()
+               ) == 0;
     }
 
     bool String::startsWith(char inValue) const
@@ -100,7 +102,10 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(m_value.substr(size() - inValue.size()).c_str(), inValue.toChar()) == 0;
+        return strcmp(
+                   m_value.substr(size() - inValue.size()).c_str(),
+                   inValue.toChar()
+               ) == 0;
     }
 
     bool String::endsWith(char inValue) const
@@ -136,26 +141,15 @@ namespace Chicane
     String String::toUpper() const
     {
         std::string result = m_value;
-        std::transform(
-            result.begin(),
-            result.end(),
-            result.begin(),
-            ::toupper
-        );
+        std::transform(result.begin(), result.end(), result.begin(), ::toupper);
 
         return result;
-
     }
 
     String String::toLower() const
     {
         std::string result = m_value;
-        std::transform(
-            result.begin(),
-            result.end(),
-            result.begin(),
-            ::tolower
-        );
+        std::transform(result.begin(), result.end(), result.begin(), ::tolower);
 
         return result;
     }
@@ -267,7 +261,8 @@ namespace Chicane
         return substr(start, end - start).trim();
     }
 
-    String String::getBetween(const String& inOpening, const String& inClosing) const
+    String
+    String::getBetween(const String& inOpening, const String& inClosing) const
     {
         const std::size_t start = firstOf(inOpening) + 1;
         const std::size_t end   = lastOf(inClosing);
@@ -306,7 +301,7 @@ namespace Chicane
 
     std::string::const_iterator String::cbegin() const
     {
-        return m_value.cbegin(); 
+        return m_value.cbegin();
     }
 
     std::string::iterator String::end()
@@ -359,7 +354,9 @@ namespace Chicane
         m_value.push_back(inValue);
     }
 
-    void String::erase(std::string::const_iterator inStart, std::string::const_iterator inEnd)
+    void String::erase(
+        std::string::const_iterator inStart, std::string::const_iterator inEnd
+    )
     {
         m_value.erase(inStart, inEnd);
     }

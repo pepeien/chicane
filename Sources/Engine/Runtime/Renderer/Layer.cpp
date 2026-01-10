@@ -56,7 +56,7 @@ namespace Chicane
         {
             return;
         }
-    
+
         if (!onDestroy())
         {
             return;
@@ -171,7 +171,7 @@ namespace Chicane
     }
 
     const String& RendererLayer::getId() const
-    { 
+    {
         return m_id;
     }
 

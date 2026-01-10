@@ -13,12 +13,12 @@ namespace Chicane
     namespace Box
     {
         const std::unordered_map<String, AssetType> TYPES = {
-            { Sound::EXTENSION,   AssetType::Sound   },
-            { Font::EXTENSION,    AssetType::Font    },
-            { Mesh::EXTENSION,    AssetType::Mesh    },
-            { Model::EXTENSION,   AssetType::Model   },
-            { Sky::EXTENSION,     AssetType::Sky     },
-            { Texture::EXTENSION, AssetType::Texture }
+            {  Sound::EXTENSION,   AssetType::Sound},
+            {   Font::EXTENSION,    AssetType::Font},
+            {   Mesh::EXTENSION,    AssetType::Mesh},
+            {  Model::EXTENSION,   AssetType::Model},
+            {    Sky::EXTENSION,     AssetType::Sky},
+            {Texture::EXTENSION, AssetType::Texture}
         };
 
         bool AssetHeader::isFileAsset(const FileSystem::Path& inFilepath)
@@ -50,7 +50,7 @@ namespace Chicane
             }
 
             const pugi::xml_document document = Xml::load(inFilepath);
-            const pugi::xml_node root = document.first_child();
+            const pugi::xml_node     root     = document.first_child();
 
             filepath = inFilepath;
             fetchVersion(root);
@@ -60,9 +60,9 @@ namespace Chicane
 
         AssetHeader::AssetHeader()
             : filepath(""),
-            version(Asset::CURRENT_VERSION),
-            id(""),
-            type(AssetType::Undefined)
+              version(Asset::CURRENT_VERSION),
+              id(""),
+              type(AssetType::Undefined)
         {}
 
         void AssetHeader::fetchVersion(const pugi::xml_node& inRoot)
@@ -74,7 +74,8 @@ namespace Chicane
                 return;
             }
 
-            version = Xml::getAttribute(Asset::VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
+            version = Xml::getAttribute(Asset::VERSION_ATTRIBUTE_NAME, inRoot)
+                          .as_uint();
 
             if (version > 0)
             {
@@ -93,7 +94,8 @@ namespace Chicane
                 return;
             }
 
-            id = Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
+            id =
+                Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
 
             if (!id.isEmpty())
             {

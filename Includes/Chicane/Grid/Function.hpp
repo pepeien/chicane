@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        using Function  = std::function<Reference (const Event&)>;
+        using Function  = std::function<Reference(const Event&)>;
         using Functions = std::unordered_map<String, Function>;
     }
 }

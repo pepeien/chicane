@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -18,7 +18,7 @@ namespace Chicane
                     vk::SamplerAddressMode addressMode;
                     vk::BorderColor        borderColor;
 
-		    	    vk::Device             logicalDevice;
+                    vk::Device             logicalDevice;
                 };
             }
         }

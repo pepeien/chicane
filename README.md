@@ -47,8 +47,10 @@ This project uses CMake to generate and build files, it should pretty straight f
 - Script:
     - [Doxygen](https://www.doxygen.nl/download.html) (1.12.0).
     - [Python](https://www.python.org/downloads) (^=3.12.0).
-- Renderer:
+- API:
     - [Vulkan](https://www.lunarg.com/vulkan-sdk) (^=1.4.313.2).
+- Code:
+    - [clang-format](https://releases.llvm.org/download.html) (^=21)
 
 ## Examples
 If you desire to check some examplary code, this repository hosts a sample located at `Sources/Sample`.

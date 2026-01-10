@@ -6,9 +6,9 @@ namespace Chicane
     {
         DeviceFormat::DeviceFormat()
             : format(SoundFormat::Unknown),
-            channels(0),
-            sampleRate(0),
-            flags(0)
+              channels(0),
+              sampleRate(0),
+              flags(0)
         {}
     }
 }

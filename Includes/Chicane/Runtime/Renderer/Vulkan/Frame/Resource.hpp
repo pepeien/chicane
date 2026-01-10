@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -11,7 +11,7 @@ namespace Chicane
     {
         namespace Frame
         {
-            template<typename T>
+            template <typename T>
             struct CHICANE_RUNTIME Resource
             {
             public:
@@ -20,13 +20,16 @@ namespace Chicane
                     m_buffer.init(inBufferCreateInfo);
 
                     m_allocationSize = inBufferCreateInfo.size;
-                    m_writeLocation  = inBufferCreateInfo.logicalDevice.mapMemory(m_buffer.memory, 0, m_allocationSize);
+                    m_writeLocation =
+                        inBufferCreateInfo.logicalDevice.mapMemory(
+                            m_buffer.memory, 0, m_allocationSize
+                        );
 
                     bufferInfo.buffer = m_buffer.instance;
                     bufferInfo.offset = 0;
                     bufferInfo.range  = m_allocationSize;
 
-                    m_bIsDirty = false;
+                    m_bIsDirty        = false;
                 }
 
                 void destroy(const vk::Device& inLogicalDevice)
@@ -43,15 +46,9 @@ namespace Chicane
                     m_buffer.destroy(inLogicalDevice);
                 }
 
-                bool isDirty() const
-                {
-                    return m_bIsDirty;
-                }
+                bool isDirty() const { return m_bIsDirty; }
 
-                void setAsDirty()
-                {
-                    m_bIsDirty = true;
-                }
+                void setAsDirty() { m_bIsDirty = true; }
 
                 void copyToBuffer(const T* inData)
                 {
@@ -60,7 +57,7 @@ namespace Chicane
                     m_bIsDirty = false;
                 }
 
-            public: 
+            public:
                 vk::DescriptorBufferInfo bufferInfo = {};
 
             private:

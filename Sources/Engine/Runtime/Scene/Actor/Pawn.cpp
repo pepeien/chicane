@@ -7,12 +7,13 @@ namespace Chicane
 {
     APawn::APawn()
         : Super(),
-        m_controller(nullptr),
-        m_physicsComponent(nullptr)
+          m_controller(nullptr),
+          m_physicsComponent(nullptr)
     {
         setCanCollide(true);
 
-        m_physicsComponent = Application::getScene()->createComponent<CPhysics>();
+        m_physicsComponent =
+            Application::getScene()->createComponent<CPhysics>();
         m_physicsComponent->attachTo(this);
         m_physicsComponent->activate();
     }

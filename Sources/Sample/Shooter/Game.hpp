@@ -8,7 +8,7 @@ namespace Game
     void incrementScore(std::uint32_t inScore);
     void decrementScore(std::uint32_t inScore);
 
-    void watchScore(std::function<void (std::uint32_t)> inNext);
+    void watchScore(std::function<void(std::uint32_t)> inNext);
 
     bool didReachMaxScore();
     void setMaxScore(std::uint32_t inScore);

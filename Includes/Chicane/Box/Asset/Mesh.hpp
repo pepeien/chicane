@@ -14,7 +14,7 @@ namespace Chicane
             static inline constexpr const char* EXTENSION = ".bmsh";
             static inline constexpr const char* TAG       = "Mesh";
 
-            static inline constexpr const char* GROUP_TAG               = "Group";
+            static inline constexpr const char* GROUP_TAG = "Group";
             static inline constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";
 
         public:

@@ -21,8 +21,8 @@ public:
     void activateRightCamera();
     void disableCameras();
     CameraSubscription watchActiveCamera(
-        CameraSubscription::NextCallback inNext,
-        CameraSubscription::ErrorCallback inError = nullptr,
+        CameraSubscription::NextCallback     inNext,
+        CameraSubscription::ErrorCallback    inError    = nullptr,
         CameraSubscription::CompleteCallback inComplete = nullptr
     );
 

@@ -13,9 +13,8 @@ namespace Chicane
         {
             return (
                 inLeft.position == inRight.position &&
-                inLeft.color    == inRight.color &&
-                inLeft.uv       == inRight.uv &&
-                inLeft.normal   == inRight.normal
+                inLeft.color == inRight.color && inLeft.uv == inRight.uv &&
+                inLeft.normal == inRight.normal
             );
         }
 

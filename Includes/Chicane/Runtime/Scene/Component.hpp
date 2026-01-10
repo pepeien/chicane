@@ -6,7 +6,7 @@
 #include "Chicane/Runtime/Scene/Transformable.hpp"
 
 namespace Chicane
-{   
+{
     class CHICANE_RUNTIME Component : public Transformable
     {
     protected:
@@ -24,7 +24,7 @@ namespace Chicane
         virtual void onTick(float inDeltaTime) { return; }
 
     public:
-        template<class T>
+        template <class T>
         bool isType() const
         {
             return typeid(*this) == typeid(T);
@@ -42,19 +42,20 @@ namespace Chicane
         void setId(const String& inId);
 
         bool isAttached() const;
-        template<class T = Transformable>
-        T* getParent() const {
+        template <class T = Transformable>
+        T* getParent() const
+        {
             return static_cast<T*>(m_parent);
         }
         void attachTo(Transformable* inParent);
 
     public:
-        bool            m_bCanTick;
-        bool            m_bIsActive;
+        bool           m_bCanTick;
+        bool           m_bIsActive;
 
-        String          m_id;
+        String         m_id;
 
-        Transformable*  m_parent;
-        Subscription<>  m_parentSubscription;
+        Transformable* m_parent;
+        Subscription<> m_parentSubscription;
     };
 }

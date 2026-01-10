@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline/CreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -21,8 +21,8 @@ namespace Chicane
                 void bind(vk::CommandBuffer& inCommandBuffer);
                 void bindDescriptorSet(
                     vk::CommandBuffer& inCommandBuffer,
-                    std::uint32_t inIndex,
-                    vk::DescriptorSet inDescriptorSet
+                    std::uint32_t      inIndex,
+                    vk::DescriptorSet  inDescriptorSet
                 );
 
             public:
@@ -31,7 +31,7 @@ namespace Chicane
                 vk::Pipeline       instance;
 
             private:
-                vk::Device         m_logicalDevice;
+                vk::Device m_logicalDevice;
             };
         }
     }

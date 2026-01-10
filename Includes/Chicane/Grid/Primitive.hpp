@@ -10,19 +10,17 @@ namespace Chicane
         struct CHICANE_GRID Primitive
         {
         public:
-            friend bool operator==(const Primitive& inLeft, const Primitive& inRight)
+            friend bool
+            operator==(const Primitive& inLeft, const Primitive& inRight)
             {
                 return (
                     inLeft.vertices == inRight.vertices &&
-                    inLeft.indices  == inRight.indices
+                    inLeft.indices == inRight.indices
                 );
             }
 
         public:
-            bool isEmpty() const
-            {
-                return vertices.empty() || indices.empty();
-            }
+            bool isEmpty() const { return vertices.empty() || indices.empty(); }
 
             void clear()
             {

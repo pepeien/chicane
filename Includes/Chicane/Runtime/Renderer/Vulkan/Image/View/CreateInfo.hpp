@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -18,10 +18,10 @@ namespace Chicane
                     std::uint32_t        count;
                     vk::ImageViewType    type;
                     vk::ImageAspectFlags aspect;
-                    vk::Format           format;  
+                    vk::Format           format;
 
                     // Devices
-		    	    vk::Device           logicalDevice;
+                    vk::Device           logicalDevice;
                 };
             }
         }

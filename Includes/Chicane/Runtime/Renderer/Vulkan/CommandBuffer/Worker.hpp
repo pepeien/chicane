@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -13,16 +13,17 @@ namespace Chicane
         {
             namespace Worker
             {
-                CHICANE_RUNTIME void startJob(const vk::CommandBuffer& inCommandBuffer);
+                CHICANE_RUNTIME void
+                startJob(const vk::CommandBuffer& inCommandBuffer);
                 CHICANE_RUNTIME void endJob(
                     const vk::CommandBuffer& inCommandBuffer,
-                    const vk::Queue& inQueue,
-                    const String& inDescription = "Command Buffer"
+                    const vk::Queue&         inQueue,
+                    const String&            inDescription = "Command Buffer"
                 );
                 CHICANE_RUNTIME void endJob(
-                    const vk::Queue& inQueue,
+                    const vk::Queue&      inQueue,
                     const vk::SubmitInfo& inSubmitInfo,
-                    const String& inDescription = "Command Buffer"
+                    const String&         inDescription = "Command Buffer"
                 );
             }
         }

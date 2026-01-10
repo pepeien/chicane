@@ -54,21 +54,22 @@ namespace Chicane
             void renderModels(const vk::CommandBuffer& inCommandBuffer);
 
         private:
-            RendererInternals                                              m_internals;
+            RendererInternals                           m_internals;
 
-            std::unique_ptr<GraphicsPipeline::Instance>                    m_graphicsPipeline;
+            std::unique_ptr<GraphicsPipeline::Instance> m_graphicsPipeline;
 
-            Descriptor::Bundle                                             m_frameDescriptor;
+            Descriptor::Bundle                          m_frameDescriptor;
 
-            Descriptor::Bundle                                             m_textureDescriptor;
-            std::unordered_map<String, std::unique_ptr<Texture::Instance>> m_textures;
-            Box::TextureManager*                                           m_textureManager;
+            Descriptor::Bundle                          m_textureDescriptor;
+            std::unordered_map<String, std::unique_ptr<Texture::Instance>>
+                                        m_textures;
+            Box::TextureManager*        m_textureManager;
 
-            Buffer                                                         m_modelVertexBuffer;
-            Buffer                                                         m_modelIndexBuffer;
-            Box::ModelManager*                                             m_modelManager;
+            Buffer                      m_modelVertexBuffer;
+            Buffer                      m_modelIndexBuffer;
+            Box::ModelManager*          m_modelManager;
 
-            std::vector<vk::ClearValue>                                    m_clearValues;
+            std::vector<vk::ClearValue> m_clearValues;
         };
     }
 }

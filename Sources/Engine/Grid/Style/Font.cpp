@@ -8,7 +8,7 @@ namespace Chicane
     {
         StyleFont::StyleFont()
             : family(Style::FONT_FAMILY_DEFAULT_VALUE),
-            size(16.0f)
+              size(16.0f)
         {}
     }
 }

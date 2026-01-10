@@ -1,17 +1,17 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "Chicane/Core.hpp"
+
+#include <glm/glm.hpp>
 
 namespace Chicane
 {
-    template<std::uint32_t O, typename T, glm::qualifier Q = glm::packed_highp>
+    template <std::uint32_t O, typename T, glm::qualifier Q = glm::packed_highp>
     struct CHICANE_CORE Vec : glm::vec<O, T, Q>
     {
     public:
-        template<typename... A>
-        constexpr Vec(A ...args)
+        template <typename... A>
+        constexpr Vec(A... args)
             : glm::vec<O, T, Q>(args...)
         {}
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor/PoolSizeCreateInfo.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -14,7 +14,8 @@ namespace Chicane
             struct CHICANE_RUNTIME PoolCreateInfo
             {
             public:
-                vk::DescriptorPoolCreateFlags   flags   = vk::DescriptorPoolCreateFlags();
+                vk::DescriptorPoolCreateFlags flags =
+                    vk::DescriptorPoolCreateFlags();
                 std::uint32_t                   maxSets = 0;
                 std::vector<PoolSizeCreateInfo> sizes   = {};
             };

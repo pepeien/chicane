@@ -4,9 +4,9 @@
 #include "Chicane/Runtime/Controller.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn/Character.hpp"
-#include "Chicane/Runtime/Scene/Component/Sound.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
+#include "Chicane/Runtime/Scene/Component/Sound.hpp"
 
 class Character : public Chicane::ACharacter
 {
@@ -42,10 +42,10 @@ private:
     Chicane::CCamera* m_camera;
 
     // Mesh
-    Chicane::CMesh*   m_wand;
-    Chicane::CMesh*   m_body;
+    Chicane::CMesh* m_wand;
+    Chicane::CMesh* m_body;
 
     // Sound
-    Chicane::CSound*  m_hitSound;
-    Chicane::CSound*  m_victorySound;
+    Chicane::CSound* m_hitSound;
+    Chicane::CSound* m_victorySound;
 };

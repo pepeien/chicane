@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -16,7 +16,7 @@ namespace Chicane
                 {
                 public:
                     std::uint32_t        width;
-		    	    std::uint32_t        height;
+                    std::uint32_t        height;
                     std::uint32_t        count;
 
                     vk::ImageTiling      tiling;
@@ -24,7 +24,7 @@ namespace Chicane
                     vk::ImageUsageFlags  usage;
                     vk::Format           format;
 
-		    	    vk::Device           logicalDevice;
+                    vk::Device           logicalDevice;
                 };
             }
         }

@@ -11,7 +11,7 @@ namespace Chicane
         class CHICANE_GRID View : public Component
         {
         public:
-            static inline constexpr const char* TAG_ID = "View";
+            static inline constexpr const char* TAG_ID              = "View";
 
             static inline constexpr const char* PATH_ATTRIBUTE_NAME = "path";
 

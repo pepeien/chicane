@@ -2,9 +2,9 @@
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Image/Data.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Sky/CreateInfo.hpp"
 
 namespace Chicane
 {
@@ -20,7 +20,7 @@ namespace Chicane
 
             public:
                 void bind(
-                    const vk::CommandBuffer& inCommandBuffer,
+                    const vk::CommandBuffer&  inCommandBuffer,
                     const vk::PipelineLayout& inPipelineLayout
                 );
 

@@ -10,8 +10,8 @@ namespace Chicane
     public:
         CLight();
         virtual ~CLight() = default;
-    
+
     protected:
         void onTransform() override;
-    }; 
+    };
 }

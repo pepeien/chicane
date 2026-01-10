@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Runtime.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -10,8 +10,10 @@ namespace Chicane
     {
         namespace Vertex
         {
-            CHICANE_RUNTIME vk::VertexInputBindingDescription getBindingDescription();
-            CHICANE_RUNTIME std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
+            CHICANE_RUNTIME vk::VertexInputBindingDescription
+            getBindingDescription();
+            CHICANE_RUNTIME std::vector<vk::VertexInputAttributeDescription>
+            getAttributeDescriptions();
         }
     }
 }

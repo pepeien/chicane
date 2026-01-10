@@ -53,11 +53,8 @@ namespace Chicane
 
         std::uint32_t TextureManager::getIndex(const String& inId) const
         {
-            auto interator = std::find(
-                m_activeIds.begin(),
-                m_activeIds.end(),
-                inId
-            );
+            auto interator =
+                std::find(m_activeIds.begin(), m_activeIds.end(), inId);
 
             if (interator == m_activeIds.end())
             {

@@ -5,43 +5,46 @@
 
 namespace Chicane
 {
-    template<typename T = void*>
+    template <typename T = void*>
     class Subscription
     {
     public:
-        using EmptyCallback    = std::function<void ()>;
-        using NextCallback     = std::function<void (T)>;
-        using ErrorCallback    = std::function<void (const String&)>;
-        using CompleteCallback = std::function<void ()>;
+        using EmptyCallback    = std::function<void()>;
+        using NextCallback     = std::function<void(T)>;
+        using ErrorCallback    = std::function<void(const String&)>;
+        using CompleteCallback = std::function<void()>;
 
     public:
-        Subscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+        Subscription(
+            EmptyCallback    inNext,
+            ErrorCallback    inError,
+            CompleteCallback inComplete
+        )
             : Subscription(
-                [inNext](T inValue) { inNext(); },
-                inError,
-                inComplete
-            )
+                  [inNext](T inValue) { inNext(); }, inError, inComplete
+              )
         {}
 
-        Subscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+        Subscription(
+            NextCallback     inNext,
+            ErrorCallback    inError,
+            CompleteCallback inComplete
+        )
             : m_bIsCompleted(false),
-            m_next(inNext),
-            m_error(inError),
-            m_complete(inComplete)
+              m_next(inNext),
+              m_error(inError),
+              m_complete(inComplete)
         {}
 
         Subscription()
             : m_bIsCompleted(false),
-            m_next(nullptr),
-            m_error(nullptr),
-            m_complete(nullptr)
+              m_next(nullptr),
+              m_error(nullptr),
+              m_complete(nullptr)
         {}
 
     public:
-        Subscription<T> next()
-        {
-            return next(nullptr);
-        }
+        Subscription<T> next() { return next(nullptr); }
 
         Subscription<T> next(T inData)
         {
@@ -73,10 +76,7 @@ namespace Chicane
             return *this;
         }
 
-        bool isCompleted() const
-        {
-            return m_bIsCompleted;
-        }
+        bool isCompleted() const { return m_bIsCompleted; }
 
         Subscription<T> complete()
         {

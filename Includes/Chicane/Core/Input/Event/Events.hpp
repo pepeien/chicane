@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Input
     {
-        template<typename E>
+        template <typename E>
         struct CHICANE_CORE Events
         {
         public:
@@ -23,10 +23,7 @@ namespace Chicane
                 }
             }
 
-            void clear()
-            {
-                m_execs.clear();
-            }
+            void clear() { m_execs.clear(); }
 
         private:
             std::vector<std::function<void(const E&)>> m_execs = {};

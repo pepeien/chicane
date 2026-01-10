@@ -12,11 +12,12 @@ namespace Chicane
         class CHICANE_BOX Sky : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION = ".bsky";
-            static inline constexpr const char* TAG       = "Sky";
+            static inline constexpr const char* EXTENSION      = ".bsky";
+            static inline constexpr const char* TAG            = "Sky";
 
-            static inline constexpr const char* SIDES_TAG_NAME              = "Sides";
-            static inline constexpr const char* TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
+            static inline constexpr const char* SIDES_TAG_NAME = "Sides";
+            static inline constexpr const char* TEXTURE_SIDE_ATTRIBUTE_NAME =
+                "side";
 
             static inline const std::vector<SkySide> ORDER = {
                 SkySide::Left,
@@ -28,12 +29,12 @@ namespace Chicane
             };
 
             static inline const std::map<String, SkySide> SIDE_MAP = {
-                { "UP",    SkySide::Up },
-                { "DOWN",  SkySide::Down },
-                { "LEFT",  SkySide::Left },
-                { "RIGHT", SkySide::Right },
-                { "FRONT", SkySide::Front },
-                { "BACK",  SkySide::Back }
+                {   "UP",    SkySide::Up},
+                { "DOWN",  SkySide::Down},
+                { "LEFT",  SkySide::Left},
+                {"RIGHT", SkySide::Right},
+                {"FRONT", SkySide::Front},
+                { "BACK",  SkySide::Back}
             };
 
         public:

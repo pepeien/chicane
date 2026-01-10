@@ -14,13 +14,15 @@ namespace Chicane
     {
         LGrid::LGrid()
             : Super("Engine_UI"),
-            m_internals(Application::getRenderer<Renderer>()->getInternals()),
-            m_graphicsPipeline(nullptr),
-            m_clearValues({}),
-            m_view(nullptr),
-            m_draws({})
+              m_internals(Application::getRenderer<Renderer>()->getInternals()),
+              m_graphicsPipeline(nullptr),
+              m_clearValues({}),
+              m_view(nullptr),
+              m_draws({})
         {
-            m_clearValues.emplace_back(vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clearValues.emplace_back(
+                vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f)
+            );
             m_clearValues.push_back(vk::ClearDepthStencilValue(1.0f, 0));
 
             loadEvents();
@@ -65,61 +67,58 @@ namespace Chicane
             {
                 return false;
             }
-    
+
             return true;
         }
 
         void LGrid::onRender(void* outData)
         {
-            RendererData* data = (RendererData*) outData;
+            RendererData*      data          = (RendererData*)outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
-            Frame::Instance& frame = data->frame;
+            Frame::Instance&   frame         = data->frame;
 
             vk::RenderPassBeginInfo beginInfo = {};
-            beginInfo.renderPass          = m_graphicsPipeline->renderPass;
-            beginInfo.framebuffer         = frame.getFramebuffer(m_id);
-            beginInfo.renderArea.offset.x = 0;
-            beginInfo.renderArea.offset.y = 0;
-            beginInfo.renderArea.extent   = data->swapChainExtent;
-            beginInfo.clearValueCount     = static_cast<std::uint32_t>(m_clearValues.size());
-            beginInfo.pClearValues        = m_clearValues.data();
+            beginInfo.renderPass              = m_graphicsPipeline->renderPass;
+            beginInfo.framebuffer             = frame.getFramebuffer(m_id);
+            beginInfo.renderArea.offset.x     = 0;
+            beginInfo.renderArea.offset.y     = 0;
+            beginInfo.renderArea.extent       = data->swapChainExtent;
+            beginInfo.clearValueCount =
+                static_cast<std::uint32_t>(m_clearValues.size());
+            beginInfo.pClearValues = m_clearValues.data();
 
-            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
-                // Pipeline
-                m_graphicsPipeline->bind(commandBuffer);
+            commandBuffer.beginRenderPass(
+                &beginInfo, vk::SubpassContents::eInline
+            );
+            // Pipeline
+            m_graphicsPipeline->bind(commandBuffer);
 
-                // UI
-                renderComponents(commandBuffer);
+            // UI
+            renderComponents(commandBuffer);
             commandBuffer.endRenderPass();
         }
 
         void LGrid::loadEvents()
         {
-            Application::watchView(
-                [&](Grid::View* inView)
+            Application::watchView([&](Grid::View* inView) {
+                destroyDraws();
+
+                m_view = inView;
+
+                if (!m_view)
                 {
-                    destroyDraws();
+                    return;
+                }
 
-                    m_view = inView;
-
-                    if (!m_view)
+                m_view->watchChildren([this](Grid::Component* inChild) {
+                    if (!hasDraw(inChild))
                     {
                         return;
                     }
 
-                    m_view->watchChildren(
-                        [this](Grid::Component* inChild)
-                        {
-                            if (!hasDraw(inChild))
-                            {
-                                return;
-                            }
-
-                            getDraw(inChild).bIsOutdated = true;
-                        }
-                    );
-                }
-            );
+                    getDraw(inChild).bIsOutdated = true;
+                });
+            });
         }
 
         void LGrid::initGraphicsPipeline()
@@ -139,8 +138,8 @@ namespace Chicane
 
             // Push Constants
             vk::PushConstantRange pushConstantRange = {};
-            pushConstantRange.offset     = 0;
-            pushConstantRange.size       = sizeof(PushConstant);
+            pushConstantRange.offset                = 0;
+            pushConstantRange.size                  = sizeof(PushConstant);
             pushConstantRange.stageFlags = vk::ShaderStageFlagBits::eVertex;
 
             std::vector<vk::PushConstantRange> pushConstantRanges = {};
@@ -148,35 +147,40 @@ namespace Chicane
 
             // Attachments
             GraphicsPipeline::Attachment colorAttachment = {};
-            colorAttachment.type          = GraphicsPipeline::AttachmentType::Color;
-            colorAttachment.format        = m_internals.swapchain->colorFormat;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+            colorAttachment.type   = GraphicsPipeline::AttachmentType::Color;
+            colorAttachment.format = m_internals.swapchain->colorFormat;
+            colorAttachment.loadOp = vk::AttachmentLoadOp::eLoad;
             colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             GraphicsPipeline::Attachment depthAttachment = {};
-            depthAttachment.type          = GraphicsPipeline::AttachmentType::Depth;
-            depthAttachment.format        = m_internals.swapchain->depthFormat;
-            depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            depthAttachment.type   = GraphicsPipeline::AttachmentType::Depth;
+            depthAttachment.format = m_internals.swapchain->depthFormat;
+            depthAttachment.loadOp = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
+            depthAttachment.finalLayout =
+                vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
             std::vector<GraphicsPipeline::Attachment> attachments = {};
             attachments.push_back(colorAttachment);
             attachments.push_back(depthAttachment);
 
             GraphicsPipeline::CreateInfo createInfo = {};
-            createInfo.bHasVertices             = true;
-            createInfo.bHasDepthWrite           = true;
-            createInfo.bHasBlending             = true;
-            createInfo.logicalDevice            = m_internals.logicalDevice;
-            createInfo.shaders                  = shaders;
-            createInfo.extent                   = m_internals.swapchain->extent;
-            createInfo.pushConstantRanges       = pushConstantRanges;
-            createInfo.attachments              = attachments;
-            createInfo.rasterizaterizationState = GraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+            createInfo.bHasVertices                 = true;
+            createInfo.bHasDepthWrite               = true;
+            createInfo.bHasBlending                 = true;
+            createInfo.logicalDevice                = m_internals.logicalDevice;
+            createInfo.shaders                      = shaders;
+            createInfo.extent             = m_internals.swapchain->extent;
+            createInfo.pushConstantRanges = pushConstantRanges;
+            createInfo.attachments        = attachments;
+            createInfo.rasterizaterizationState =
+                GraphicsPipeline::createRasterizationState(
+                    vk::PolygonMode::eFill
+                );
 
-            m_graphicsPipeline = std::make_unique<GraphicsPipeline::Instance>(createInfo);
+            m_graphicsPipeline =
+                std::make_unique<GraphicsPipeline::Instance>(createInfo);
         }
 
         void LGrid::initFramebuffers()
@@ -184,10 +188,10 @@ namespace Chicane
             for (Frame::Instance& frame : m_internals.swapchain->frames)
             {
                 Frame::Buffer::CreateInfo createInfo = {};
-                createInfo.id              = m_id;
-                createInfo.logicalDevice   = m_internals.logicalDevice;
-                createInfo.renderPass      = m_graphicsPipeline->renderPass;
-                createInfo.extent          = m_internals.swapchain->extent;
+                createInfo.id                        = m_id;
+                createInfo.logicalDevice = m_internals.logicalDevice;
+                createInfo.renderPass    = m_graphicsPipeline->renderPass;
+                createInfo.extent        = m_internals.swapchain->extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
                 createInfo.attachments.push_back(frame.depthImage.view);
 
@@ -207,16 +211,20 @@ namespace Chicane
                 Grid::Component* component = draw.component;
 
                 PushConstant pushConstant = {};
-                pushConstant.screen   = m_view->getSize();
-                pushConstant.size     = component->getSize();
-                pushConstant.position = component->getPosition();
-                pushConstant.zIndex   = component->getStyle().zIndex;
+                pushConstant.screen       = m_view->getSize();
+                pushConstant.size         = component->getSize();
+                pushConstant.position     = component->getPosition();
+                pushConstant.zIndex       = component->getStyle().zIndex;
 
                 vk::DeviceSize offset = 0;
 
-                inCommandBuffer.bindVertexBuffers(0, 1, &draw.vertexBuffer.instance, &offset);
+                inCommandBuffer.bindVertexBuffers(
+                    0, 1, &draw.vertexBuffer.instance, &offset
+                );
 
-                inCommandBuffer.bindIndexBuffer(draw.indexBuffer.instance, 0, vk::IndexType::eUint32);
+                inCommandBuffer.bindIndexBuffer(
+                    draw.indexBuffer.instance, 0, vk::IndexType::eUint32
+                );
 
                 inCommandBuffer.pushConstants(
                     m_graphicsPipeline->layout,
@@ -230,7 +238,9 @@ namespace Chicane
             }
         }
 
-        void LGrid::setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices)
+        void LGrid::setDrawVertexBuffer(
+            Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices
+        )
         {
             destroyDrawVertexBuffer(outDraw);
 
@@ -242,28 +252,28 @@ namespace Chicane
             BufferCreateInfo createInfo = {};
             createInfo.physicalDevice   = m_internals.physicalDevice;
             createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(Chicane::Vertex) * inVertices.size();
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                          vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.size  = sizeof(Chicane::Vertex) * inVertices.size();
+            createInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible |
+                vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
             memcpy(
                 m_internals.logicalDevice.mapMemory(
-                    stagingBuffer.memory,
-                    0,
-                    createInfo.size
+                    stagingBuffer.memory, 0, createInfo.size
                 ),
                 inVertices.data(),
                 createInfo.size
             );
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
-                                          vk::BufferUsageFlagBits::eVertexBuffer;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            createInfo.usage = vk::BufferUsageFlagBits::eTransferDst |
+                               vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             outDraw.vertexBuffer.init(createInfo);
 
@@ -283,7 +293,9 @@ namespace Chicane
             outDraw.vertexBuffer.destroy(m_internals.logicalDevice);
         }
 
-        void LGrid::setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices)
+        void LGrid::setDrawIndexBuffer(
+            Draw& outDraw, const std::vector<std::uint32_t>& inIndices
+        )
         {
             destroyDrawIndexBuffer(outDraw);
 
@@ -293,26 +305,30 @@ namespace Chicane
             }
 
             BufferCreateInfo createInfo;
-            createInfo.physicalDevice   = m_internals.physicalDevice;
-            createInfo.logicalDevice    = m_internals.logicalDevice;
-            createInfo.size             = sizeof(std::uint32_t) * inIndices.size();
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eHostVisible |
-                                          vk::MemoryPropertyFlagBits::eHostCoherent;
+            createInfo.physicalDevice = m_internals.physicalDevice;
+            createInfo.logicalDevice  = m_internals.logicalDevice;
+            createInfo.size  = sizeof(std::uint32_t) * inIndices.size();
+            createInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible |
+                vk::MemoryPropertyFlagBits::eHostCoherent;
 
             Buffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
             memcpy(
-                m_internals.logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size),
+                m_internals.logicalDevice.mapMemory(
+                    stagingBuffer.memory, 0, createInfo.size
+                ),
                 inIndices.data(),
                 createInfo.size
             );
             m_internals.logicalDevice.unmapMemory(stagingBuffer.memory);
 
-            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst |
-                                          vk::BufferUsageFlagBits::eIndexBuffer;
-            createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
+            createInfo.usage = vk::BufferUsageFlagBits::eTransferDst |
+                               vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             outDraw.indexBuffer.init(createInfo);
 
@@ -340,10 +356,12 @@ namespace Chicane
             }
 
             return std::find_if(
-                m_draws.begin(),
-                m_draws.end(),
-                [inComponent](const Draw& draw) { return draw.component == inComponent; }
-            ) != m_draws.end();
+                       m_draws.begin(),
+                       m_draws.end(),
+                       [inComponent](const Draw& draw) {
+                           return draw.component == inComponent;
+                       }
+                   ) != m_draws.end();
         }
 
         LGrid::Draw& LGrid::getDraw(Grid::Component* inComponent)
@@ -351,7 +369,9 @@ namespace Chicane
             return *std::find_if(
                 m_draws.begin(),
                 m_draws.end(),
-                [inComponent](const Draw& draw) { return draw.component == inComponent; }
+                [inComponent](const Draw& draw) {
+                    return draw.component == inComponent;
+                }
             );
         }
 
@@ -361,7 +381,7 @@ namespace Chicane
             {
                 return;
             }
-    
+
             for (Grid::Component* component : inComponent->getChildren())
             {
                 buildDraw(component);
@@ -377,7 +397,7 @@ namespace Chicane
                 return;
             }
 
-            Draw draw = {};
+            Draw draw      = {};
             draw.component = inComponent;
 
             m_draws.push_back(draw);
@@ -409,7 +429,7 @@ namespace Chicane
 
             if (!draw.bIsOutdated)
             {
-                //return;
+                // return;
             }
 
             draw.bIsOutdated = false;

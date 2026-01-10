@@ -19,12 +19,12 @@ namespace Chicane
     public:
         void emmitChanges();
         ChangesSubscription watchChanges(
-            ChangesSubscription::EmptyCallback inNext,
-            ChangesSubscription::ErrorCallback inError = nullptr,
+            ChangesSubscription::EmptyCallback    inNext,
+            ChangesSubscription::ErrorCallback    inError    = nullptr,
             ChangesSubscription::CompleteCallback inComplete = nullptr
         );
 
-        template<typename T>
+        template <typename T>
         void setProperty(T& outProperty, T inNewValue)
         {
             if (outProperty == inNewValue)

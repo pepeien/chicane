@@ -1,9 +1,8 @@
 #pragma once
 
-#include "View.hpp"
-#include "Level.hpp"
-
 #include "Chicane/Runtime/Controller.hpp"
+#include "Level.hpp"
+#include "View.hpp"
 
 class Application
 {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <typeindex>
-
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
+
+#include <typeindex>
 
 namespace Chicane
 {
@@ -13,7 +13,7 @@ namespace Chicane
         using Map = std::unordered_map<String, Reference*>;
 
     public:
-        template<typename T>
+        template <typename T>
         static Reference fromValue(T* inValue)
         {
             Reference result = Reference();
@@ -31,7 +31,7 @@ namespace Chicane
 
         String toString() const;
 
-        template<typename T>
+        template <typename T>
         bool isType() const
         {
             if (isEmpty())
@@ -42,7 +42,7 @@ namespace Chicane
             return m_type == std::type_index(typeid(T));
         }
 
-        template<typename T>
+        template <typename T>
         void setValue(T* inValue)
         {
             if (!inValue)
@@ -54,7 +54,7 @@ namespace Chicane
             m_type  = std::type_index(typeid(T));
         }
 
-        template<typename T>
+        template <typename T>
         const T* getValue() const
         {
             if (!isType<T>())
@@ -64,7 +64,7 @@ namespace Chicane
 
             return static_cast<const T*>(m_value);
         }
-    
+
     private:
         const void*     m_value;
         std::type_index m_type;

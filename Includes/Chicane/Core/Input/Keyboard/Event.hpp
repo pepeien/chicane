@@ -17,6 +17,6 @@ namespace Chicane
             KeyboardButtonModifier modifier = KeyboardButtonModifier::None;
             Status                 status   = Status::Pressed;
         };
-        using KeyboardEventCallback = std::function<void ()>;
+        using KeyboardEventCallback = std::function<void()>;
     }
 }

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
-
 #include "Chicane/Grid/Component/View.hpp"
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
+
+#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {
@@ -61,9 +61,13 @@ namespace Chicane
             void renderComponents(const vk::CommandBuffer& inCommandBuffer);
 
             // Draw
-            void setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices);
+            void setDrawVertexBuffer(
+                Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices
+            );
             void destroyDrawVertexBuffer(Draw& outDraw);
-            void setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices);
+            void setDrawIndexBuffer(
+                Draw& outDraw, const std::vector<std::uint32_t>& inIndices
+            );
             void destroyDrawIndexBuffer(Draw& outDraw);
             bool hasDraw(Grid::Component* inComponent);
             Draw& getDraw(Grid::Component* inComponent);
