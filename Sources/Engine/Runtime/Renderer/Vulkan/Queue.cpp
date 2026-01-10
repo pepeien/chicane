@@ -14,8 +14,7 @@ namespace Chicane
             {
                 FamilyIndices nextFamilyIndices;
 
-                std::vector<vk::QueueFamilyProperties> queueFamilies =
-                    inPhysicalDevice.getQueueFamilyProperties();
+                std::vector<vk::QueueFamilyProperties> queueFamilies = inPhysicalDevice.getQueueFamilyProperties();
 
                 for (int i = 0; i < queueFamilies.size(); i++)
                 {
@@ -52,9 +51,7 @@ namespace Chicane
                 FamilyIndices familyIndices;
                 findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
-                outQueue = inLogicalDevice.getQueue(
-                    familyIndices.graphicsFamily.value(), 0
-                );
+                outQueue = inLogicalDevice.getQueue(familyIndices.graphicsFamily.value(), 0);
             }
 
             void initPresentQueue(
@@ -67,9 +64,7 @@ namespace Chicane
                 FamilyIndices familyIndices;
                 findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
-                outQueue = inLogicalDevice.getQueue(
-                    familyIndices.presentFamily.value(), 0
-                );
+                outQueue = inLogicalDevice.getQueue(familyIndices.presentFamily.value(), 0);
             }
         }
     }

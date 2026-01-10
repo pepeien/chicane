@@ -12,13 +12,9 @@ namespace Chicane
         namespace CommandBuffer
         {
             CHICANE_RUNTIME void init(
-                std::vector<vk::CommandBuffer>& outCommandBuffers,
-                const CreateInfo&               inCreateInfo
+                std::vector<vk::CommandBuffer>& outCommandBuffers, const CreateInfo& inCreateInfo
             );
-            CHICANE_RUNTIME void init(
-                vk::CommandBuffer& outCommandBuffer,
-                const CreateInfo&  inCreateInfo
-            );
+            CHICANE_RUNTIME void init(vk::CommandBuffer& outCommandBuffer, const CreateInfo& inCreateInfo);
         }
     }
 }

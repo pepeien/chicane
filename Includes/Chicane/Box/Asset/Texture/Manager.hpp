@@ -8,8 +8,7 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX TextureManager
-            : public Box::Manager<Image::Raw, Image>
+        class CHICANE_BOX TextureManager : public Box::Manager<Image::Raw, Image>
         {
         public:
             TextureManager();

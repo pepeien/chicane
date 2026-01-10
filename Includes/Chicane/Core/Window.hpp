@@ -58,8 +58,7 @@ namespace Chicane
         void blur();
 
         bool isResizable();
-        void
-        enableResizing(); // Only takes effect when the type is `Type::Windowed`
+        void enableResizing();  // Only takes effect when the type is `Type::Windowed`
         void disableResizing(); // Only takes effect when the type is
                                 // `Type::Windowed`
 

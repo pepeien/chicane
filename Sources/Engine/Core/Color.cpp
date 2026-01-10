@@ -7,33 +7,29 @@ namespace Chicane
     namespace Color
     {
         static std::unordered_map<String, Rgba> g_colors{
-            { HEX_COLOR_TRANSPARENT,   Rgba(0U,   0U,   0U,   0U)},
-            {         HEX_COLOR_RED, Rgba(255U,   0U,   0U, 255U)},
-            {       HEX_COLOR_GREEN,   Rgba(0U, 255U,   0U, 255U)},
-            {        HEX_COLOR_BLUE,   Rgba(0U,   0U, 255U, 255U)},
-            {       HEX_COLOR_BLACK,   Rgba(0U,   0U,   0U, 255U)},
-            {       HEX_COLOR_WHITE, Rgba(255U, 255U, 255U, 255U)},
+            {HEX_COLOR_TRANSPARENT,  Rgba(0U,   0U,   0U,   0U)  },
+            {HEX_COLOR_RED,          Rgba(255U, 0U,   0U,   255U)},
+            {HEX_COLOR_GREEN,        Rgba(0U,   255U, 0U,   255U)},
+            {HEX_COLOR_BLUE,         Rgba(0U,   0U,   255U, 255U)},
+            {HEX_COLOR_BLACK,        Rgba(0U,   0U,   0U,   255U)},
+            {HEX_COLOR_WHITE,        Rgba(255U, 255U, 255U, 255U)},
 
-            {TEXT_COLOR_TRANSPARENT,   Rgba(0U,   0U,   0U,   0U)},
-            {        TEXT_COLOR_RED, Rgba(255U,   0U,   0U, 255U)},
-            {      TEXT_COLOR_GREEN,   Rgba(0U, 255U,   0U, 255U)},
-            {       TEXT_COLOR_BLUE,   Rgba(0U,   0U, 255U, 255U)},
-            {      TEXT_COLOR_BLACK,   Rgba(0U,   0U,   0U, 255U)},
-            {      TEXT_COLOR_WHITE, Rgba(255U, 255U, 255U, 255U)}
+            {TEXT_COLOR_TRANSPARENT, Rgba(0U,   0U,   0U,   0U)  },
+            {TEXT_COLOR_RED,         Rgba(255U, 0U,   0U,   255U)},
+            {TEXT_COLOR_GREEN,       Rgba(0U,   255U, 0U,   255U)},
+            {TEXT_COLOR_BLUE,        Rgba(0U,   0U,   255U, 255U)},
+            {TEXT_COLOR_BLACK,       Rgba(0U,   0U,   0U,   255U)},
+            {TEXT_COLOR_WHITE,       Rgba(255U, 255U, 255U, 255U)}
         };
 
         bool areEquals(const Rgba& inA, const Rgba& inB)
         {
-            return (
-                inA.r == inB.r && inA.g == inB.g && inA.b == inB.b &&
-                inA.a == inB.a
-            );
+            return (inA.r == inB.r && inA.g == inB.g && inA.b == inB.b && inA.a == inB.a);
         }
 
         bool isVisible(const String& inValue)
         {
-            return !inValue.isEmpty() &&
-                   !inValue.equals(TEXT_COLOR_TRANSPARENT) &&
+            return !inValue.isEmpty() && !inValue.equals(TEXT_COLOR_TRANSPARENT) &&
                    !inValue.equals(HEX_COLOR_TRANSPARENT);
         }
 
@@ -49,7 +45,7 @@ namespace Chicane
                 String color = inValue.trim().toUpper();
 
                 const bool bIsTransparent = color.equals(HEX_COLOR_TRANSPARENT);
-                const bool bIsNotHex = color.size() < 7 || color.size() > 9;
+                const bool bIsNotHex      = color.size() < 7 || color.size() > 9;
 
                 if (bIsTransparent || bIsNotHex)
                 {
@@ -62,14 +58,7 @@ namespace Chicane
                 if (g_colors.find(color) == g_colors.end())
                 {
                     Rgba result = Rgba(0U);
-                    sscanf(
-                        color.toChar(),
-                        "%02hhx%02hhx%02hhx%02hhx",
-                        &result.r,
-                        &result.g,
-                        &result.b,
-                        &result.a
-                    );
+                    sscanf(color.toChar(), "%02hhx%02hhx%02hhx%02hhx", &result.r, &result.g, &result.b, &result.a);
                     g_colors.insert(std::make_pair(color, result));
 
                     return result;
@@ -78,8 +67,7 @@ namespace Chicane
                 return g_colors.at(color);
             }
 
-            if (inValue.startsWith(RGB_KEYWORD) ||
-                inValue.startsWith(RGBA_KEYWORD))
+            if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
             {
                 const std::uint32_t start = inValue.firstOf("(") + 1;
                 const std::uint32_t end   = inValue.lastOf(")");
@@ -104,8 +92,7 @@ namespace Chicane
                         std::stoi(values.at(0).toStandard()),
                         std::stoi(values.at(1).toStandard()),
                         std::stoi(values.at(2).toStandard()),
-                        values.size() < 4 ? 255U
-                                          : std::stoi(values.at(3).toStandard())
+                        values.size() < 4 ? 255U : std::stoi(values.at(3).toStandard())
                     );
                     g_colors.insert(std::make_pair(color, result));
 

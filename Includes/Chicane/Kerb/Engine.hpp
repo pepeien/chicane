@@ -30,8 +30,7 @@ namespace Chicane
 
         public:
             JPH::ShapeSettings::ShapeResult createShapeFromMesh(
-                const std::vector<Vertex>&        inVertices,
-                const std::vector<std::uint32_t>& inIndices
+                const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices
             ) const;
 
         private:

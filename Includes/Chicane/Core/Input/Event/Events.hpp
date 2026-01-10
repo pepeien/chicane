@@ -10,10 +10,7 @@ namespace Chicane
         struct CHICANE_CORE Events
         {
         public:
-            void bind(std::function<void(const E&)> inExec)
-            {
-                m_execs.push_back(inExec);
-            }
+            void bind(std::function<void(const E&)> inExec) { m_execs.push_back(inExec); }
 
             void exec(const E& inEvent)
             {

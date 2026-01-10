@@ -12,16 +12,13 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX ModelManager
-            : public Box::Manager<ModelExtracted, ModelParsed>
+        class CHICANE_BOX ModelManager : public Box::Manager<ModelExtracted, ModelParsed>
         {
         public:
             ModelManager();
 
         protected:
-            void onAllocation(
-                const String& inId, const ModelParsed& inData
-            ) override;
+            void onAllocation(const String& inId, const ModelParsed& inData) override;
             void onDeallocation(const String& inId) override;
             void onActivation(const String& inId) override;
             void onDeactivation(const String& inId) override;

@@ -7,9 +7,7 @@
 
 namespace Chicane
 {
-    static const std::vector<String> DEFAULT_KEYBOARDS = {
-        "Keyboard", "HID Keyboard Device (0x046d/0xc232)"
-    };
+    static const std::vector<String> DEFAULT_KEYBOARDS = {"Keyboard", "HID Keyboard Device (0x046d/0xc232)"};
 
     Controller::Controller()
         : m_pawn(nullptr),
@@ -38,8 +36,7 @@ namespace Chicane
         PawnSubscription::CompleteCallback inComplete
     )
     {
-        return m_pawnObservable.subscribe(inNext, inError, inComplete)
-            .next(m_pawn);
+        return m_pawnObservable.subscribe(inNext, inError, inComplete).next(m_pawn);
     }
 
     bool Controller::isAttached() const
@@ -95,18 +92,14 @@ namespace Chicane
     }
 
     void Controller::bindEvent(
-        Input::MouseButton              inButton,
-        Input::Status                   inStatus,
-        Input::MouseButtonEventCallback inEvent
+        Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inEvent
     )
     {
         m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
     void Controller::bindEvent(
-        Input::KeyboardButton        inButton,
-        Input::Status                inStatus,
-        Input::KeyboardEventCallback inEvent
+        Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inEvent
     )
     {
         m_keyboardKeyEvents.bind(inButton, inStatus, inEvent);
@@ -118,17 +111,13 @@ namespace Chicane
     }
 
     void Controller::bindEvent(
-        Input::GamepadButton              inButton,
-        Input::Status                     inStatus,
-        Input::GamepadButtonEventCallback inEvent
+        Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inEvent
     )
     {
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
-    bool Controller::isConnectedTo(
-        Input::DeviceType inType, Input::DeviceID inId
-    ) const
+    bool Controller::isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const
     {
         if (!isConnectedTo(inType))
         {
@@ -159,9 +148,7 @@ namespace Chicane
 
             if (!SDL_OpenGamepad(inId))
             {
-                throw std::runtime_error(
-                    String::sprint("Failed to open the [%d] gamepad", inId)
-                );
+                throw std::runtime_error(String::sprint("Failed to open the [%d] gamepad", inId));
             }
         }
 
@@ -180,8 +167,7 @@ namespace Chicane
 
     void Controller::onMouseMotionEvent(void* inEvent)
     {
-        Input::MouseMotionEvent event =
-            *static_cast<Input::MouseMotionEvent*>(inEvent);
+        Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
         {
@@ -193,8 +179,7 @@ namespace Chicane
 
     void Controller::onMouseButtonEvent(void* inEvent)
     {
-        Input::MouseButtonEvent event =
-            *static_cast<Input::MouseButtonEvent*>(inEvent);
+        Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Mouse, event.device))
         {
@@ -206,8 +191,7 @@ namespace Chicane
 
     void Controller::onKeyboardButtonEvent(void* inEvent)
     {
-        Input::KeyboardEvent event =
-            *static_cast<Input::KeyboardEvent*>(inEvent);
+        Input::KeyboardEvent event = *static_cast<Input::KeyboardEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Keyboard, event.device))
         {
@@ -219,8 +203,7 @@ namespace Chicane
 
     void Controller::onGamepadMotionEvent(void* inEvent)
     {
-        Input::GamepadMotionEvent event =
-            *static_cast<Input::GamepadMotionEvent*>(inEvent);
+        Input::GamepadMotionEvent event = *static_cast<Input::GamepadMotionEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
         {
@@ -232,8 +215,7 @@ namespace Chicane
 
     void Controller::onGamepadButtonEvent(void* inEvent)
     {
-        Input::GamepadButtonEvent event =
-            *static_cast<Input::GamepadButtonEvent*>(inEvent);
+        Input::GamepadButtonEvent event = *static_cast<Input::GamepadButtonEvent*>(inEvent);
 
         if (!isConnectedTo(Input::DeviceType::Gamepad, event.device))
         {

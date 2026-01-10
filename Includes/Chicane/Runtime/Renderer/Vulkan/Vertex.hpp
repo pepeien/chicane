@@ -10,10 +10,8 @@ namespace Chicane
     {
         namespace Vertex
         {
-            CHICANE_RUNTIME vk::VertexInputBindingDescription
-            getBindingDescription();
-            CHICANE_RUNTIME std::vector<vk::VertexInputAttributeDescription>
-            getAttributeDescriptions();
+            CHICANE_RUNTIME vk::VertexInputBindingDescription getBindingDescription();
+            CHICANE_RUNTIME std::vector<vk::VertexInputAttributeDescription> getAttributeDescriptions();
         }
     }
 }

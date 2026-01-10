@@ -60,15 +60,8 @@ namespace Chicane
             return false;
         }
 
-        template <
-            typename Target,
-            typename Anchor = RendererLayer,
-            typename... Params
-        >
-        void pushLayer(
-            ListPushStrategy inStrategy = ListPushStrategy::Back,
-            Params... inParams
-        )
+        template <typename Target, typename Anchor = RendererLayer, typename... Params>
+        void pushLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
         {
             m_children.add(new Target(inParams...), inStrategy);
         }

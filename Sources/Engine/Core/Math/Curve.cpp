@@ -24,8 +24,7 @@ namespace Chicane
         return result;
     }
 
-    std::vector<Curve::Polygon>
-    Curve::getPolygons(const std::vector<Curve>& inContours)
+    std::vector<Curve::Polygon> Curve::getPolygons(const std::vector<Curve>& inContours)
     {
         std::vector<Polygon> result = {};
 
@@ -49,8 +48,7 @@ namespace Chicane
         return result;
     }
 
-    std::vector<Vec3>
-    Curve::getTriangleVertices(const std::vector<Curve>& inContours)
+    std::vector<Vec3> Curve::getTriangleVertices(const std::vector<Curve>& inContours)
     {
         if (inContours.empty())
         {
@@ -68,17 +66,14 @@ namespace Chicane
 
             for (const Vec2& point : curve.getPoints())
             {
-                result.push_back(
-                    {point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f}
-                );
+                result.push_back({point.x / FIXED_POINT, point.y / FIXED_POINT, 0.0f});
             }
         }
 
         return result;
     }
 
-    std::vector<std::uint32_t>
-    Curve::getTriangleIndices(const std::vector<Curve>& inContours)
+    std::vector<std::uint32_t> Curve::getTriangleIndices(const std::vector<Curve>& inContours)
     {
         if (inContours.empty())
         {
@@ -114,9 +109,7 @@ namespace Chicane
         polygons.push_back(getPolygon(outerContours));
 
         const std::vector<Polygon> holePolygons = getPolygons(holeContours);
-        polygons.insert(
-            polygons.end(), holePolygons.begin(), holePolygons.end()
-        );
+        polygons.insert(polygons.end(), holePolygons.begin(), holePolygons.end());
 
         return mapbox::earcut<std::uint32_t>(polygons);
     }
@@ -150,9 +143,7 @@ namespace Chicane
         }
     }
 
-    void Curve::addBezierPoint(
-        const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint
-    )
+    void Curve::addBezierPoint(const Vec2& inControlA, const Vec2& inControlB, const Vec2& inPoint)
     {
         if (isEmpty() || m_segmentCount <= 0)
         {
@@ -194,10 +185,8 @@ namespace Chicane
             const Vec2& current = m_points.at(i);
             const Vec2& nearest = m_points.at((i + 1) % count);
 
-            area += (static_cast<double>(current.x) *
-                     static_cast<double>(nearest.y)) -
-                    (static_cast<double>(nearest.x) *
-                     static_cast<double>(current.y));
+            area += (static_cast<double>(current.x) * static_cast<double>(nearest.y)) -
+                    (static_cast<double>(nearest.x) * static_cast<double>(current.y));
         }
 
         return area > -(1e-6);

@@ -61,13 +61,9 @@ namespace Chicane
             void renderComponents(const vk::CommandBuffer& inCommandBuffer);
 
             // Draw
-            void setDrawVertexBuffer(
-                Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices
-            );
+            void setDrawVertexBuffer(Draw& outDraw, const std::vector<Chicane::Vertex>& inVertices);
             void destroyDrawVertexBuffer(Draw& outDraw);
-            void setDrawIndexBuffer(
-                Draw& outDraw, const std::vector<std::uint32_t>& inIndices
-            );
+            void setDrawIndexBuffer(Draw& outDraw, const std::vector<std::uint32_t>& inIndices);
             void destroyDrawIndexBuffer(Draw& outDraw);
             bool hasDraw(Grid::Component* inComponent);
             Draw& getDraw(Grid::Component* inComponent);

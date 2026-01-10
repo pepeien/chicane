@@ -61,8 +61,7 @@ namespace Chicane
 
         for (Actor* actor : Application::getScene()->getActors())
         {
-            if (actor == attachment || !actor->canCollide() ||
-                !actor->isCollidingWith(attachment))
+            if (actor == attachment || !actor->canCollide() || !actor->isCollidingWith(attachment))
             {
                 continue;
             }
@@ -102,9 +101,7 @@ namespace Chicane
             return;
         }
 
-        attachment->setAbsoluteTranslation(
-            attachment->getTranslation() + m_forceVelocity
-        );
+        attachment->setAbsoluteTranslation(attachment->getTranslation() + m_forceVelocity);
 
         m_forceVelocity -= m_forceDirection * FORCE_DEACCELERATION_COEFFICIENT;
         m_forceVelocity.x = std::max(m_forceVelocity.x, -FORCE_MAX_VELOCITY);

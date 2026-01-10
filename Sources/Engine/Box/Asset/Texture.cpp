@@ -28,13 +28,9 @@ namespace Chicane
         {
             m_vendor = inVendor;
 
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) {
-                    return inPair.second == inVendor;
-                }
-            );
+            auto vendor = std::find_if(VENDOR_MAP.begin(), VENDOR_MAP.end(), [inVendor](const auto& inPair) {
+                return inPair.second == inVendor;
+            });
 
             if (vendor == VENDOR_MAP.end())
             {
@@ -47,8 +43,7 @@ namespace Chicane
 
             if (root.attribute(VENDOR_ATTRIBUTE_NAME).empty())
             {
-                root.append_attribute(VENDOR_ATTRIBUTE_NAME)
-                    .set_value(vendorID.toChar());
+                root.append_attribute(VENDOR_ATTRIBUTE_NAME).set_value(vendorID.toChar());
 
                 return;
             }
@@ -90,8 +85,7 @@ namespace Chicane
                 return;
             }
 
-            String vendor =
-                Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
+            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
 
             if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
             {

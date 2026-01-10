@@ -23,30 +23,25 @@ namespace Chicane
                 }
 
                 String prefix = "General";
-                if (inMessageType ==
-                    vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance)
+                if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance)
                 {
                     prefix = "Performance";
                 }
-                else if (inMessageType ==
-                         vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation)
+                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation)
                 {
                     prefix = "Validation";
                 }
-                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::
-                                              eDeviceAddressBinding)
+                else if (inMessageType == vk::DebugUtilsMessageTypeFlagBitsEXT::eDeviceAddressBinding)
                 {
                     prefix = "Device";
                 }
 
                 String color = Color::HEX_COLOR_WHITE;
-                if (inMessageSeverity ==
-                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning)
+                if (inMessageSeverity == vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning)
                 {
                     color = Color::HEX_COLOR_YELLOW;
                 }
-                else if (inMessageSeverity ==
-                         vk::DebugUtilsMessageSeverityFlagBitsEXT::eError)
+                else if (inMessageSeverity == vk::DebugUtilsMessageSeverityFlagBitsEXT::eError)
                 {
                     color = Color::HEX_COLOR_ORANGE;
                 }
@@ -67,28 +62,24 @@ namespace Chicane
                     return;
                 }
 
-                vk::DebugUtilsMessengerCreateInfoEXT createInfo =
-                    vk::DebugUtilsMessengerCreateInfoEXT(
-                        vk::DebugUtilsMessengerCreateFlagsEXT(),
+                vk::DebugUtilsMessengerCreateInfoEXT createInfo = vk::DebugUtilsMessengerCreateInfoEXT(
+                    vk::DebugUtilsMessengerCreateFlagsEXT(),
 
-                        // Severity
-                        vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
-                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
-                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-                            vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
+                    // Severity
+                    vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+                        vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+                        vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+                        vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
 
-                        // Type
-                        vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
-                            vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
-                            vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
+                    // Type
+                    vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+                        vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
 
-                        // Callback
-                        debugCallback
-                    );
-
-                outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(
-                    createInfo, nullptr, inDispatcher
+                    // Callback
+                    debugCallback
                 );
+
+                outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDispatcher);
             }
 
             void destroyMessenger(
@@ -102,9 +93,7 @@ namespace Chicane
                     return;
                 }
 
-                inInstance.destroyDebugUtilsMessengerEXT(
-                    outDebugMessenger, nullptr, inDispatcher
-                );
+                inInstance.destroyDebugUtilsMessengerEXT(outDebugMessenger, nullptr, inDispatcher);
             }
         }
     }

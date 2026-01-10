@@ -26,7 +26,6 @@ namespace Chicane
         AssetSubscription::CompleteCallback inComplete
     )
     {
-        return m_assetObservable.subscribe(inNext, inError, inComplete)
-            .next(m_asset);
+        return m_assetObservable.subscribe(inNext, inError, inComplete).next(m_asset);
     }
 }

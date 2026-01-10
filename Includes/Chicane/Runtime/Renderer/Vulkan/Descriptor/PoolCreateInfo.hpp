@@ -14,8 +14,7 @@ namespace Chicane
             struct CHICANE_RUNTIME PoolCreateInfo
             {
             public:
-                vk::DescriptorPoolCreateFlags flags =
-                    vk::DescriptorPoolCreateFlags();
+                vk::DescriptorPoolCreateFlags   flags   = vk::DescriptorPoolCreateFlags();
                 std::uint32_t                   maxSets = 0;
                 std::vector<PoolSizeCreateInfo> sizes   = {};
             };

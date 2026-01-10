@@ -21,8 +21,7 @@ namespace Chicane
                 funcs.shift   = 0;
                 funcs.delta   = 0;
                 funcs.move_to = [](const FT_Vector* inPoint, void* inData) {
-                    std::vector<Curve>* contours =
-                        static_cast<std::vector<Curve>*>(inData);
+                    std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
                     if (!contours->empty() && contours->back().isEmpty())
                     {
@@ -40,8 +39,7 @@ namespace Chicane
                     return 0;
                 };
                 funcs.line_to = [](const FT_Vector* inPoint, void* inData) {
-                    Curve* curve =
-                        &static_cast<std::vector<Curve>*>(inData)->back();
+                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)
                     {
@@ -52,21 +50,15 @@ namespace Chicane
 
                     return 0;
                 };
-                funcs.conic_to = [](const FT_Vector* inControl,
-                                    const FT_Vector* inPoint,
-                                    void*            inData) {
-                    Curve* curve =
-                        &static_cast<std::vector<Curve>*>(inData)->back();
+                funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData) {
+                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)
                     {
                         return 0;
                     }
 
-                    curve->addQuadraticPoint(
-                        Vec2(inControl->x, inControl->y),
-                        Vec2(inPoint->x, inPoint->y)
-                    );
+                    curve->addQuadraticPoint(Vec2(inControl->x, inControl->y), Vec2(inPoint->x, inPoint->y));
 
                     return 0;
                 };
@@ -74,8 +66,7 @@ namespace Chicane
                                     const FT_Vector* inControlB,
                                     const FT_Vector* inPoint,
                                     void*            inData) {
-                    Curve* curve =
-                        &static_cast<std::vector<Curve>*>(inData)->back();
+                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)
                     {
@@ -105,16 +96,10 @@ namespace Chicane
                 FontGlyph result = {};
                 result.code      = inCode;
                 result.units     = inGlyph->face->units_per_EM;
-                result.box       = {
-                    inGlyph->advance.x,
-                    inGlyph->face->ascender + inGlyph->face->descender
-                };
-                result.line = {
-                    inGlyph->face->size->metrics.x_ppem,
-                    inGlyph->face->size->metrics.y_ppem
-                };
-                result.vertices = Curve::getTriangleVertices(contours);
-                result.indices  = Curve::getTriangleIndices(contours);
+                result.box       = {inGlyph->advance.x, inGlyph->face->ascender + inGlyph->face->descender};
+                result.line      = {inGlyph->face->size->metrics.x_ppem, inGlyph->face->size->metrics.y_ppem};
+                result.vertices  = Curve::getTriangleVertices(contours);
+                result.indices   = Curve::getTriangleIndices(contours);
 
                 return result;
             }
@@ -130,9 +115,7 @@ namespace Chicane
                 }
 
                 FT_Face face = nullptr;
-                FT_New_Memory_Face(
-                    library, inData.data(), inData.size(), 0, &face
-                );
+                FT_New_Memory_Face(library, inData.data(), inData.size(), 0, &face);
 
                 if (!face)
                 {
@@ -159,9 +142,7 @@ namespace Chicane
                     FT_Done_Face(face);
                     FT_Done_FreeType(library);
 
-                    throw std::runtime_error(
-                        "Failed to load the font char map"
-                    );
+                    throw std::runtime_error("Failed to load the font char map");
                 }
 
                 if (FT_Set_Pixel_Sizes(face, 0, Font::BASE_SIZE))
@@ -169,9 +150,7 @@ namespace Chicane
                     FT_Done_Face(face);
                     FT_Done_FreeType(library);
 
-                    throw std::runtime_error(
-                        "Failed to set the face pixel size"
-                    );
+                    throw std::runtime_error("Failed to set the face pixel size");
                 }
 
                 FontParsed result = {};
@@ -183,9 +162,7 @@ namespace Chicane
                 {
                     if (FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP) == 0)
                     {
-                        result.glyphs.emplace(
-                            code, parseGlyph(code, face->glyph)
-                        );
+                        result.glyphs.emplace(code, parseGlyph(code, face->glyph));
                     }
 
                     code = FT_Get_Next_Char(face, code, &glyphIndex);

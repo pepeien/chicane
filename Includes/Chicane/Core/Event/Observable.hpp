@@ -20,27 +20,19 @@ namespace Chicane
 
     public:
         Subscription<T> subscribe(
-            EmptyCallback    inNext,
-            ErrorCallback    inError    = nullptr,
-            CompleteCallback inComplete = nullptr
+            EmptyCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(
-                Subscription<T>(inNext, inError, inComplete)
-            );
+            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }
 
         Subscription<T> subscribe(
-            NextCallback     inNext,
-            ErrorCallback    inError    = nullptr,
-            CompleteCallback inComplete = nullptr
+            NextCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(
-                Subscription<T>(inNext, inError, inComplete)
-            );
+            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }

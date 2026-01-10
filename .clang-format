@@ -1,5 +1,6 @@
 BasedOnStyle: LLVM
 Language: Cpp
+Standard: c++17
 
 # Indentation
 IndentWidth: 4
@@ -10,7 +11,7 @@ AccessModifierOffset: -4
 NamespaceIndentation: All
 
 # Line length
-ColumnLimit: 80
+ColumnLimit: 120
 
 # Braces (Allman style)
 BreakBeforeBraces: Custom
@@ -26,6 +27,7 @@ BraceWrapping:
   BeforeElse: true
   IndentBraces: false
   SplitEmptyFunction: false
+InsertBraces: true
 
 # Parentheses spacing
 SpaceBeforeParens: ControlStatements
@@ -38,6 +40,8 @@ SpaceInEmptyParentheses: false
 # Templates
 SpacesInAngles: false
 IncludeBlocks: Regroup
+BreakTemplateDeclarations: true
+BreakBeforeTemplateCloser: true
 
 # Pointer / reference alignment
 PointerAlignment: Left
@@ -47,13 +51,19 @@ ReferenceAlignment: Left
 BinPackParameters: false
 BinPackArguments: false
 
-# Short functions
+# Functions
 AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortBlocksOnASingleLine: Never
+BreakAfterReturnType: Automatic
+PenaltyReturnTypeOnItsOwnLine: 1000
 AllowShortIfStatementsOnASingleLine: Never
 
 # Includes
 SortIncludes: true
+
+# Comments
+ReflowComments: false
+AlignTrailingComments: true
 
 # Misc
 KeepEmptyLines:
@@ -62,11 +72,8 @@ KeepEmptyLines:
   AtStartOfFile: false
 Cpp11BracedListStyle: true
 FixNamespaceComments: false
-AlignArrayOfStructures: Right
+AlignArrayOfStructures: Left
 PackConstructorInitializers: Never
 BreakStringLiterals: false
 AlignAfterOpenBracket: BlockIndent
-
-# Templates
-BreakTemplateDeclarations: true
-BreakBeforeTemplateCloser: true
+IndentPPDirectives: AfterHash

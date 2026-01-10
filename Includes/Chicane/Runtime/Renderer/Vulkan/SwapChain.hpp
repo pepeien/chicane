@@ -23,12 +23,10 @@ namespace Chicane
             );
 
             CHICANE_RUNTIME void pickSurfaceFormat(
-                vk::SurfaceFormatKHR&                    outSurfaceFormat,
-                const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                vk::SurfaceFormatKHR& outSurfaceFormat, const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             );
             CHICANE_RUNTIME void pickPresentMode(
-                vk::PresentModeKHR&                    outPresentMode,
-                const std::vector<vk::PresentModeKHR>& inPresentModes
+                vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes
             );
 
             CHICANE_RUNTIME void init(

@@ -15,14 +15,11 @@ namespace Chicane
             DeviceFormat();
 
         public:
-            SoundFormat format; /* Sample format. If set to ma_format_unknown,
-                                   all sample formats are supported. */
-            std::uint32_t
-                channels; /* If set to 0, all channels are supported. */
-            std::uint32_t
-                sampleRate; /* If set to 0, all sample rates are supported. */
-            std::uint32_t
-                flags; /* A combination of MA_DATA_FORMAT_FLAG_* flags. */
+            SoundFormat   format;     /* Sample format. If set to ma_format_unknown,
+                                         all sample formats are supported. */
+            std::uint32_t channels;   /* If set to 0, all channels are supported. */
+            std::uint32_t sampleRate; /* If set to 0, all sample rates are supported. */
+            std::uint32_t flags;      /* A combination of MA_DATA_FORMAT_FLAG_* flags. */
         };
     }
 }

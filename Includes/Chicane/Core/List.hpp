@@ -21,15 +21,9 @@ namespace Chicane
 
         const ConstIterator end() const { return m_data.end(); }
 
-        T& at(std::size_t inIndex)
-        {
-            return m_data.at(calculateIndex(inIndex));
-        }
+        T& at(std::size_t inIndex) { return m_data.at(calculateIndex(inIndex)); }
 
-        const T& at(std::size_t inIndex) const
-        {
-            return m_data.at(calculateIndex(inIndex));
-        }
+        const T& at(std::size_t inIndex) const { return m_data.at(calculateIndex(inIndex)); }
 
         T& find(std::function<bool(const T& inItem)> inPredicate)
         {
@@ -43,15 +37,12 @@ namespace Chicane
 
         std::size_t findIndex(std::function<bool(const T& inItem)> inPredicate)
         {
-            return std::find_if(m_data.begin(), m_data.end(), inPredicate) -
-                   m_data.begin();
+            return std::find_if(m_data.begin(), m_data.end(), inPredicate) - m_data.begin();
         }
 
-        std::size_t
-        findIndex(std::function<bool(const T& inItem)> inPredicate) const
+        std::size_t findIndex(std::function<bool(const T& inItem)> inPredicate) const
         {
-            return std::find_if(m_data.begin(), m_data.end(), inPredicate) -
-                   m_data.begin();
+            return std::find_if(m_data.begin(), m_data.end(), inPredicate) - m_data.begin();
         }
 
         T& front() { return m_data.front(); }
@@ -89,16 +80,12 @@ namespace Chicane
 
         void addBefore(std::size_t inIndex, T inData)
         {
-            m_data.insert(
-                (m_data.begin() + calculateIndex(inIndex)) - 1, inData
-            );
+            m_data.insert((m_data.begin() + calculateIndex(inIndex)) - 1, inData);
         }
 
         void addAfter(std::size_t inIndex, T inData)
         {
-            m_data.insert(
-                (m_data.begin() + calculateIndex(inIndex)) + 1, inData
-            );
+            m_data.insert((m_data.begin() + calculateIndex(inIndex)) + 1, inData);
         }
 
         void clear() { m_data.clear(); }
@@ -106,9 +93,7 @@ namespace Chicane
     private:
         std::size_t calculateIndex(std::size_t inIndex) const
         {
-            return std::max(
-                0, inIndex < 0 ? inIndex - (m_data.size() - 1) : inIndex
-            );
+            return std::max(0, inIndex < 0 ? inIndex - (m_data.size() - 1) : inIndex);
         }
 
     private:

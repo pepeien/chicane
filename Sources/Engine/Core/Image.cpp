@@ -11,13 +11,7 @@ namespace Chicane
     {
         m_format = STBI_rgb_alpha;
 
-        m_pixels = stbi_load(
-            inFilepath.string().c_str(),
-            &m_width,
-            &m_height,
-            &m_channel,
-            m_format
-        );
+        m_pixels = stbi_load(inFilepath.string().c_str(), &m_width, &m_height, &m_channel, m_format);
 
         if (!m_pixels)
         {
@@ -31,12 +25,7 @@ namespace Chicane
         m_format = STBI_rgb_alpha;
 
         m_pixels = stbi_load_from_memory(
-            &inData.at(0),
-            static_cast<int>(inData.size()),
-            &m_width,
-            &m_height,
-            &m_channel,
-            m_format
+            &inData.at(0), static_cast<int>(inData.size()), &m_width, &m_height, &m_channel, m_format
         );
 
         if (!m_pixels)

@@ -15,21 +15,11 @@ namespace Chicane
         using CompleteCallback = std::function<void()>;
 
     public:
-        Subscription(
-            EmptyCallback    inNext,
-            ErrorCallback    inError,
-            CompleteCallback inComplete
-        )
-            : Subscription(
-                  [inNext](T inValue) { inNext(); }, inError, inComplete
-              )
+        Subscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+            : Subscription([inNext](T inValue) { inNext(); }, inError, inComplete)
         {}
 
-        Subscription(
-            NextCallback     inNext,
-            ErrorCallback    inError,
-            CompleteCallback inComplete
-        )
+        Subscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
             : m_bIsCompleted(false),
               m_next(inNext),
               m_error(inError),

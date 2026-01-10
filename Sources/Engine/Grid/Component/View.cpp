@@ -22,30 +22,23 @@ namespace Chicane
 
             if (document.empty() || document.children().empty())
             {
-                throw std::runtime_error(
-                    "UI document " + inSource + " does not have any components"
-                );
+                throw std::runtime_error("UI document " + inSource + " does not have any components");
             }
 
             const pugi::xml_node& node = document.first_child();
 
-            const bool bIsRoot =
-                node.parent() == node.root() && !node.next_sibling();
+            const bool bIsRoot = node.parent() == node.root() && !node.next_sibling();
 
             if (!bIsRoot)
             {
-                throw std::runtime_error(
-                    "UI document root element must not have any siblings"
-                );
+                throw std::runtime_error("UI document root element must not have any siblings");
             }
 
             const String name = node.name();
 
             if (!name.equals(TAG_ID))
             {
-                throw std::runtime_error(
-                    "UI document root element must be a " + String(TAG_ID)
-                );
+                throw std::runtime_error("UI document root element must be a " + String(TAG_ID));
             }
 
             m_path = Xml::getAttribute(PATH_ATTRIBUTE_NAME, node).as_string();

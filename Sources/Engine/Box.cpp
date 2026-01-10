@@ -17,18 +17,12 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unique_ptr<SoundManager> g_soundManager =
-            std::make_unique<SoundManager>();
-        static const std::unique_ptr<FontManager> g_fontManager =
-            std::make_unique<FontManager>();
-        static const std::unique_ptr<ModelManager> g_modelManager =
-            std::make_unique<ModelManager>();
-        static const std::unique_ptr<TextureManager> g_textureManager =
-            std::make_unique<TextureManager>();
+        static const std::unique_ptr<SoundManager>   g_soundManager   = std::make_unique<SoundManager>();
+        static const std::unique_ptr<FontManager>    g_fontManager    = std::make_unique<FontManager>();
+        static const std::unique_ptr<ModelManager>   g_modelManager   = std::make_unique<ModelManager>();
+        static const std::unique_ptr<TextureManager> g_textureManager = std::make_unique<TextureManager>();
 
-        static std::
-            unordered_map<FileSystem::Path, std::unique_ptr<const Asset>>
-                g_cache = {};
+        static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache = {};
 
         SoundManager* getSoundManager()
         {
@@ -71,11 +65,7 @@ namespace Chicane
         {
             if (!hasAsset(inSource))
             {
-                g_cache.insert(
-                    std::make_pair(
-                        inSource, std::make_unique<const T>(inSource)
-                    )
-                );
+                g_cache.insert(std::make_pair(inSource, std::make_unique<const T>(inSource)));
             }
 
             return getAsset<T>(inSource);
@@ -85,9 +75,7 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Sound)
             {
-                throw std::runtime_error(
-                    inFilePath.string() + " is not a audio"
-                );
+                throw std::runtime_error(inFilePath.string() + " is not a audio");
             }
 
             if (!hasAsset(inFilePath))
@@ -106,9 +94,7 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Font)
             {
-                throw std::runtime_error(
-                    inFilePath.string() + " is not a font"
-                );
+                throw std::runtime_error(inFilePath.string() + " is not a font");
             }
 
             if (!hasAsset(inFilePath))
@@ -127,9 +113,7 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Model)
             {
-                throw std::runtime_error(
-                    inFilePath.string() + "is not a model"
-                );
+                throw std::runtime_error(inFilePath.string() + "is not a model");
             }
 
             if (!hasAsset(inFilePath))
@@ -148,9 +132,7 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Texture)
             {
-                throw std::runtime_error(
-                    inFilePath.string() + "is not a texture"
-                );
+                throw std::runtime_error(inFilePath.string() + "is not a texture");
             }
 
             if (!hasAsset(inFilePath))
@@ -201,9 +183,7 @@ namespace Chicane
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Sky)
             {
-                throw std::runtime_error(
-                    inFilePath.string() + " is not a skybox"
-                );
+                throw std::runtime_error(inFilePath.string() + " is not a skybox");
             }
 
             if (!hasAsset(inFilePath))
@@ -227,10 +207,7 @@ namespace Chicane
         {
             if (!AssetHeader::isFileAsset(inFilePath))
             {
-                Log::warning(
-                    "File [%s] is not a valid asset",
-                    inFilePath.string().c_str()
-                );
+                Log::warning("File [%s] is not a valid asset", inFilePath.string().c_str());
 
                 return nullptr;
             }

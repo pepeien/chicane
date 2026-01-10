@@ -21,8 +21,7 @@ namespace Chicane
             );
 
         public:
-            friend bool
-            operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
+            friend bool operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
             {
                 return (
                     std::fabs(inLeft.top - inRight.top) < FLT_EPSILON &&
@@ -36,8 +35,7 @@ namespace Chicane
             void setAll(float inValue);
 
             bool refresh(
-                const StyleSource::Map&                             inSource,
-                std::function<float(const String&, StyleDirection)> inCalculator
+                const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
             );
 
         public:

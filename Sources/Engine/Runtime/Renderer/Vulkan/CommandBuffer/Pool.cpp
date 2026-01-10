@@ -18,19 +18,13 @@ namespace Chicane
                 )
                 {
                     Queue::FamilyIndices queueFamilyIndices = {};
-                    Queue::findFamilyInidices(
-                        queueFamilyIndices, inPhysicalDevice, inSurface
-                    );
+                    Queue::findFamilyInidices(queueFamilyIndices, inPhysicalDevice, inSurface);
 
                     vk::CommandPoolCreateInfo poolInfo = {};
-                    poolInfo.flags =
-                        vk::CommandPoolCreateFlags() |
-                        vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
-                    poolInfo.queueFamilyIndex =
-                        queueFamilyIndices.graphicsFamily.value();
+                    poolInfo.flags = vk::CommandPoolCreateFlags() | vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
+                    poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
-                    outCommandPool =
-                        inLogicalDevice.createCommandPool(poolInfo);
+                    outCommandPool = inLogicalDevice.createCommandPool(poolInfo);
                 }
             }
         }

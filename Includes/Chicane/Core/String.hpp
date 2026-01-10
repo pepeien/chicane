@@ -17,17 +17,13 @@ namespace Chicane
 
             char*     buffer     = new char[bufferSize];
 
-            int       size       = std::snprintf(
-                buffer, bufferSize, inValue.toChar(), inParams...
-            );
+            int       size       = std::snprintf(buffer, bufferSize, inValue.toChar(), inParams...);
 
             if (size < 0 || size > bufferSize)
             {
                 delete[] buffer;
 
-                throw std::runtime_error(
-                    "Error while trying to sprint " + inValue.toStandard()
-                );
+                throw std::runtime_error("Error while trying to sprint " + inValue.toStandard());
             }
 
             std::string result = std::string(buffer);
@@ -73,10 +69,7 @@ namespace Chicane
     public:
         inline operator const char*() const { return m_value.c_str(); }
 
-        inline friend bool operator==(const String& inA, const String& inB)
-        {
-            return inA.equals(inB);
-        }
+        inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
 
         String& operator=(const String& other)
         {
@@ -138,10 +131,7 @@ namespace Chicane
             return lhs;
         }
 
-        inline bool operator<(const String& rhs) const
-        {
-            return m_value < rhs.m_value;
-        }
+        inline bool operator<(const String& rhs) const { return m_value < rhs.m_value; }
 
     public:
         bool isEmpty() const;
@@ -188,8 +178,7 @@ namespace Chicane
         std::vector<String> split(const String& inDelimeter) const;
 
         String getBetween(char inOpening, char inClosing) const;
-        String
-        getBetween(const String& inOpening, const String& inClosing) const;
+        String getBetween(const String& inOpening, const String& inClosing) const;
 
         String trim() const;
 
@@ -216,10 +205,7 @@ namespace Chicane
         void append(const String& inValue);
         void append(char inValue);
 
-        void erase(
-            std::string::const_iterator inStart,
-            std::string::const_iterator inEnd
-        );
+        void erase(std::string::const_iterator inStart, std::string::const_iterator inEnd);
         void erase(std::uint32_t inStart, std::uint32_t inEnd);
 
         void popBack();
@@ -234,9 +220,6 @@ namespace std
     template <>
     struct hash<Chicane::String>
     {
-        size_t operator()(const Chicane::String& s) const
-        {
-            return hash<string>()(s.toStandard());
-        }
+        size_t operator()(const Chicane::String& s) const { return hash<string>()(s.toStandard()); }
     };
 }

@@ -19,8 +19,7 @@ namespace Chicane
         class CHICANE_GRID Component : public Changeable
         {
         public:
-            using Compiler =
-                std::function<Component*(const pugi::xml_node& inNode)>;
+            using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
 
             using ChildrenObservable   = Observable<Component*>;
             using ChildrenSubscription = Subscription<Component*>;
@@ -73,15 +72,13 @@ namespace Chicane
             void setStyle(const StyleSource::List& inSources);
             void setStyle(const StyleSource::Map& inSource);
 
-            bool
-            hasReference(const String& inId, bool isLocalOnly = false) const;
+            bool hasReference(const String& inId, bool isLocalOnly = false) const;
             Reference* getReference(const String& inId) const;
             void addReference(const Reference::Map& inReference);
             void addReference(const String& inId, Reference* inReference);
             void removeReference(const String& inId);
 
-            bool
-            hasFunction(const String& inId, bool isLocalOnly = false) const;
+            bool hasFunction(const String& inId, bool isLocalOnly = false) const;
             const Function getFunction(const String& inId) const;
             void addFunction(const Functions& inFunctions);
             void addFunction(const String& inId, Function inFunction);

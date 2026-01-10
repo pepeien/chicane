@@ -23,10 +23,10 @@ namespace Chicane
             for (std::uint32_t i = 0; i <= data->nativeDataFormatCount; i++)
             {
                 DeviceFormat format = {};
-                format.format = (SoundFormat)data->nativeDataFormats[i].format;
-                format.channels   = data->nativeDataFormats[i].channels;
-                format.sampleRate = data->nativeDataFormats[i].sampleRate;
-                format.flags      = data->nativeDataFormats[i].flags;
+                format.format       = (SoundFormat)data->nativeDataFormats[i].format;
+                format.channels     = data->nativeDataFormats[i].channels;
+                format.sampleRate   = data->nativeDataFormats[i].sampleRate;
+                format.flags        = data->nativeDataFormats[i].flags;
 
                 m_formats.push_back(format);
             }

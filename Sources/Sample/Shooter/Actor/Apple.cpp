@@ -6,19 +6,8 @@
 
 Apple::Apple()
     : Chicane::Actor(),
-      m_rotateRate(
-          std::max(
-              0.1f,
-              (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f
-          )
-      ),
-      m_fallRate(
-          std::max(
-              0.001f,
-              (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) *
-                  0.02f
-          )
-      ),
+      m_rotateRate(std::max(0.1f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f)),
+      m_fallRate(std::max(0.001f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f)),
       m_startPosition(Chicane::Vec3::Zero),
       m_meshComponent(nullptr),
       m_physicsComponent(nullptr)
@@ -26,14 +15,12 @@ Apple::Apple()
     setCanTick(true);
     setCanCollide(true);
 
-    m_meshComponent =
-        Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
+    m_meshComponent = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
-    m_physicsComponent =
-        Chicane::Application::getScene()->createComponent<Chicane::CPhysics>();
+    m_physicsComponent = Chicane::Application::getScene()->createComponent<Chicane::CPhysics>();
     m_physicsComponent->attachTo(this);
     m_physicsComponent->activate();
 }

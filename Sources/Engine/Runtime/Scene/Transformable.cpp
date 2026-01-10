@@ -103,8 +103,7 @@ namespace Chicane
         addRelativeRotation(Vec3(inRotation));
     }
 
-    void
-    Transformable::addRelativeRotation(float inPitch, float inRoll, float inYaw)
+    void Transformable::addRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
         addRelativeRotation(Vec3(inPitch, inRoll, inYaw));
     }
@@ -121,8 +120,7 @@ namespace Chicane
         setRelativeRotation(Vec3(inRotation));
     }
 
-    void
-    Transformable::setRelativeRotation(float inPitch, float inRoll, float inYaw)
+    void Transformable::setRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
         setRelativeRotation(Vec3(inPitch, inRoll, inYaw));
     }
@@ -234,8 +232,7 @@ namespace Chicane
         addAbsoluteRotation(Vec3(inRotation));
     }
 
-    void
-    Transformable::addAbsoluteRotation(float inPitch, float inRoll, float inYaw)
+    void Transformable::addAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
         addAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
     }
@@ -252,8 +249,7 @@ namespace Chicane
         setAbsoluteRotation(Vec3(inRotation));
     }
 
-    void
-    Transformable::setAbsoluteRotation(float inPitch, float inRoll, float inYaw)
+    void Transformable::setAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
         setAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
     }

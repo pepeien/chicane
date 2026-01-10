@@ -21,22 +21,11 @@ namespace Chicane
             ListSubscription::CompleteCallback inComplete = nullptr
         );
 
-        CHICANE_CORE void emmit(
-            const String& inHexColor,
-            const String& inIdentifier,
-            const String& inMessage
-        );
+        CHICANE_CORE void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage);
         template <typename... T>
-        void emmit(
-            const String& inHexColor,
-            const String& inIdentifier,
-            String        inMessage,
-            T... inParams
-        )
+        void emmit(const String& inHexColor, const String& inIdentifier, String inMessage, T... inParams)
         {
-            emmit(
-                inHexColor, inIdentifier, String::sprint(inMessage, inParams...)
-            );
+            emmit(inHexColor, inIdentifier, String::sprint(inMessage, inParams...));
         }
 
         CHICANE_CORE void info(const String& inMessage);

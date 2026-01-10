@@ -25,8 +25,7 @@ namespace Chicane
         {}
 
         bool StyleCorners::refresh(
-            const StyleSource::Map&                             inSource,
-            std::function<float(const String&, StyleDirection)> inCalculator
+            const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
         )
         {
             if (inSource.empty())
@@ -64,8 +63,7 @@ namespace Chicane
             }
             else
             {
-                const std::vector<String> values =
-                    splitOneliner(inSource.at(m_onelineAttributeName));
+                const std::vector<String> values = splitOneliner(inSource.at(m_onelineAttributeName));
 
                 if (values.size() == 1) // SINGLE
                 {
@@ -113,31 +111,28 @@ namespace Chicane
             leftValue   = leftValue.trim();
 
             const float lastTop = top;
-            top = inCalculator(topValue, StyleDirection::Vertical);
+            top                 = inCalculator(topValue, StyleDirection::Vertical);
 
             const float lastRight = right;
-            right = inCalculator(rightValue, StyleDirection::Horizontal);
+            right                 = inCalculator(rightValue, StyleDirection::Horizontal);
 
             const float lastBottom = bottom;
-            bottom = inCalculator(bottomValue, StyleDirection::Vertical);
+            bottom                 = inCalculator(bottomValue, StyleDirection::Vertical);
 
             const float lastLeft = left;
-            left = inCalculator(leftValue, StyleDirection::Horizontal);
+            left                 = inCalculator(leftValue, StyleDirection::Horizontal);
 
-            if (leftValue.equals(Style::AUTO_SIZE_UNIT) &&
-                rightValue.equals(Style::AUTO_SIZE_UNIT))
+            if (leftValue.equals(Style::AUTO_SIZE_UNIT) && rightValue.equals(Style::AUTO_SIZE_UNIT))
             {
                 right *= 0.5f;
             }
 
-            if (topValue.equals(Style::AUTO_SIZE_UNIT) &&
-                bottomValue.equals(Style::AUTO_SIZE_UNIT))
+            if (topValue.equals(Style::AUTO_SIZE_UNIT) && bottomValue.equals(Style::AUTO_SIZE_UNIT))
             {
                 bottom *= 0.5f;
             }
 
-            if ((lastTop != top) || (lastRight != right) ||
-                (lastBottom != bottom) || (lastLeft != left))
+            if ((lastTop != top) || (lastRight != right) || (lastBottom != bottom) || (lastLeft != left))
             {
                 return true;
             }

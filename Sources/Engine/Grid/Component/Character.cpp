@@ -89,9 +89,7 @@ namespace Chicane
 
         bool Character::hasFont() const
         {
-            return Box::getFontManager()->isFamilyAllocated(
-                m_style.font.family
-            );
+            return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
         }
 
         const Box::FontParsed& Character::getFont() const
@@ -106,8 +104,7 @@ namespace Chicane
 
         bool Character::hasGlyph() const
         {
-            return hasCharacter() && hasFont() &&
-                   getFont().hasGlyph(m_character);
+            return hasCharacter() && hasFont() && getFont().hasGlyph(m_character);
         }
 
         const Box::FontGlyph& Character::getGlyph() const

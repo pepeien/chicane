@@ -22,21 +22,13 @@ namespace Chicane
                 const vk::FormatFeatureFlags&  inFeatures
             );
 
-            CHICANE_RUNTIME void initInstance(
-                vk::Image& outInstance, const Instance::CreateInfo& inCreateInfo
-            );
-            CHICANE_RUNTIME void initSampler(
-                vk::Sampler& outSampler, const Sampler::CreateInfo& inCreateInfo
-            );
+            CHICANE_RUNTIME void initInstance(vk::Image& outInstance, const Instance::CreateInfo& inCreateInfo);
+            CHICANE_RUNTIME void initSampler(vk::Sampler& outSampler, const Sampler::CreateInfo& inCreateInfo);
             CHICANE_RUNTIME void initMemory(
-                vk::DeviceMemory&         outMemory,
-                const vk::Image&          inInstance,
-                const Memory::CreateInfo& inCreateInfo
+                vk::DeviceMemory& outMemory, const vk::Image& inInstance, const Memory::CreateInfo& inCreateInfo
             );
             CHICANE_RUNTIME void initView(
-                vk::ImageView&          outImageView,
-                const vk::Image&        inInstance,
-                const View::CreateInfo& inCreateInfo
+                vk::ImageView& outImageView, const vk::Image& inInstance, const View::CreateInfo& inCreateInfo
             );
 
             CHICANE_RUNTIME void transitionLayout(

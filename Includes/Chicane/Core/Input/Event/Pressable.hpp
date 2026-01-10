@@ -15,10 +15,7 @@ namespace Chicane
         struct CHICANE_CORE PressableEvents : private Recorder
         {
         public:
-            using Events = std::unordered_map<
-                B,
-                std::unordered_map<Status, std::vector<std::function<void()>>>
-            >;
+            using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
             PressableEvents()
@@ -87,8 +84,7 @@ namespace Chicane
         private:
             void store(B inButton, Status inStatus)
             {
-                auto foundButton =
-                    std::find(m_pressed.begin(), m_pressed.end(), inButton);
+                auto foundButton = std::find(m_pressed.begin(), m_pressed.end(), inButton);
 
                 if (inStatus == Status::Pressed)
                 {

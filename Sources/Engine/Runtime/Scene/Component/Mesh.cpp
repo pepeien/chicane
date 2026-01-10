@@ -137,8 +137,7 @@ namespace Chicane
 
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::ModelExtracted& model =
-                manager->getInstance(group.getModel());
+            const Box::ModelExtracted& model = manager->getInstance(group.getModel());
 
             const Bounds bounds = Bounds(model.vertices, model.indices);
 

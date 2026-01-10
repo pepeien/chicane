@@ -13,11 +13,11 @@ namespace Chicane
     namespace Box
     {
         const std::unordered_map<String, AssetType> TYPES = {
-            {  Sound::EXTENSION,   AssetType::Sound},
-            {   Font::EXTENSION,    AssetType::Font},
-            {   Mesh::EXTENSION,    AssetType::Mesh},
-            {  Model::EXTENSION,   AssetType::Model},
-            {    Sky::EXTENSION,     AssetType::Sky},
+            {Sound::EXTENSION,   AssetType::Sound  },
+            {Font::EXTENSION,    AssetType::Font   },
+            {Mesh::EXTENSION,    AssetType::Mesh   },
+            {Model::EXTENSION,   AssetType::Model  },
+            {Sky::EXTENSION,     AssetType::Sky    },
             {Texture::EXTENSION, AssetType::Texture}
         };
 
@@ -74,8 +74,7 @@ namespace Chicane
                 return;
             }
 
-            version = Xml::getAttribute(Asset::VERSION_ATTRIBUTE_NAME, inRoot)
-                          .as_uint();
+            version = Xml::getAttribute(Asset::VERSION_ATTRIBUTE_NAME, inRoot).as_uint();
 
             if (version > 0)
             {
@@ -94,8 +93,7 @@ namespace Chicane
                 return;
             }
 
-            id =
-                Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
+            id = Xml::getAttribute(Asset::ID_ATTRIBUTE_NAME, inRoot).as_string();
 
             if (!id.isEmpty())
             {

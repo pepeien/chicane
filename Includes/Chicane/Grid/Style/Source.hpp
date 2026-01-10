@@ -14,9 +14,7 @@ namespace Chicane
             using List = std::vector<StyleSource>;
 
         public:
-            StyleSource(
-                const std::vector<String>& inSelectors, const Map& inProperties
-            );
+            StyleSource(const std::vector<String>& inSelectors, const Map& inProperties);
             StyleSource();
 
         public:

@@ -19,10 +19,7 @@ namespace Chicane
                 ~Instance();
 
             public:
-                void bind(
-                    const vk::CommandBuffer&  inCommandBuffer,
-                    const vk::PipelineLayout& inPipelineLayout
-                );
+                void bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout);
 
             private:
                 void initImage();

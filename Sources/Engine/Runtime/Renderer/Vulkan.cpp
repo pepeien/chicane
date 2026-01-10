@@ -108,20 +108,14 @@ namespace Chicane
 
         void Renderer::onRender()
         {
-            Frame::Instance& currentImage =
-                m_swapChain.frames.at(m_currentImageIndex);
-            vk::CommandBuffer& currentCommandBuffer =
-                currentImage.commandBuffer;
+            Frame::Instance&   currentImage         = m_swapChain.frames.at(m_currentImageIndex);
+            vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
 
             currentImage.wait(m_logicalDevice);
 
-            vk::ResultValue<std::uint32_t> acquireResult =
-                m_logicalDevice.acquireNextImageKHR(
-                    m_swapChain.instance,
-                    UINT64_MAX,
-                    currentImage.presentSemaphore,
-                    nullptr
-                );
+            vk::ResultValue<std::uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
+                m_swapChain.instance, UINT64_MAX, currentImage.presentSemaphore, nullptr
+            );
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
             {
@@ -129,22 +123,18 @@ namespace Chicane
 
                 return;
             }
-            else if (acquireResult.result != vk::Result::eSuccess &&
-                     acquireResult.result != vk::Result::eSuboptimalKHR)
+            else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
             {
-                throw std::runtime_error(
-                    "Error while acquiring the next image"
-                );
+                throw std::runtime_error("Error while acquiring the next image");
             }
 
             currentImage.reset(m_logicalDevice);
 
             std::uint32_t    nextImageIndex = acquireResult.value;
-            Frame::Instance& nextImage = m_swapChain.frames.at(nextImageIndex);
+            Frame::Instance& nextImage      = m_swapChain.frames.at(nextImageIndex);
 
             vk::CommandBufferBeginInfo commandBufferBegin = {};
-            commandBufferBegin.flags =
-                vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+            commandBufferBegin.flags                      = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
             currentCommandBuffer.reset();
 
             setupFrame(nextImage);
@@ -156,9 +146,7 @@ namespace Chicane
             renderLayers(nextImage, currentCommandBuffer);
             currentCommandBuffer.end();
 
-            vk::PipelineStageFlags waitStages[] = {
-                vk::PipelineStageFlagBits::eColorAttachmentOutput
-            };
+            vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
             vk::SubmitInfo submitInfo       = {};
             submitInfo.waitSemaphoreCount   = 1;
@@ -169,15 +157,11 @@ namespace Chicane
             submitInfo.pSignalSemaphores    = &currentImage.renderSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
 
-            vk::Result submitResult = m_graphicsQueue.submit(
-                1, &submitInfo, currentImage.renderFence
-            );
+            vk::Result submitResult = m_graphicsQueue.submit(1, &submitInfo, currentImage.renderFence);
 
             if (submitResult != vk::Result::eSuccess)
             {
-                throw std::runtime_error(
-                    "Error while submiting the next image"
-                );
+                throw std::runtime_error("Error while submiting the next image");
             }
 
             vk::PresentInfoKHR presentInfo = {};
@@ -189,8 +173,7 @@ namespace Chicane
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-            if (presentResult == vk::Result::eErrorOutOfDateKHR ||
-                presentResult == vk::Result::eSuboptimalKHR)
+            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapChain();
             }
@@ -234,20 +217,14 @@ namespace Chicane
 
         void Renderer::buildQueues()
         {
-            Queue::initGraphicsQueue(
-                m_graphicsQueue, m_physicalDevice, m_logicalDevice, m_surface
-            );
-            Queue::initPresentQueue(
-                m_presentQueue, m_physicalDevice, m_logicalDevice, m_surface
-            );
+            Queue::initGraphicsQueue(m_graphicsQueue, m_physicalDevice, m_logicalDevice, m_surface);
+            Queue::initPresentQueue(m_presentQueue, m_physicalDevice, m_logicalDevice, m_surface);
         }
 
         void Renderer::buildDevices()
         {
             Device::pickPhysicalDevice(m_physicalDevice, m_instance);
-            Device::initLogicalDevice(
-                m_logicalDevice, m_physicalDevice, m_surface
-            );
+            Device::initLogicalDevice(m_logicalDevice, m_physicalDevice, m_surface);
         }
 
         void Renderer::destroyDevices()
@@ -257,24 +234,16 @@ namespace Chicane
 
         void Renderer::buildSwapChain()
         {
-            SwapChain::init(
-                m_swapChain, m_physicalDevice, m_logicalDevice, m_surface
-            );
+            SwapChain::init(m_swapChain, m_physicalDevice, m_logicalDevice, m_surface);
 
             m_imageCount = static_cast<int>(m_swapChain.frames.size());
 
             for (Frame::Instance& frame : m_swapChain.frames)
             {
                 // Images
-                frame.setupColorImage(
-                    m_swapChain.colorFormat, m_swapChain.extent
-                );
-                frame.setupDepthImage(
-                    m_swapChain.depthFormat, m_swapChain.extent
-                );
-                frame.setupShadowImage(
-                    m_swapChain.depthFormat, m_swapChain.extent
-                );
+                frame.setupColorImage(m_swapChain.colorFormat, m_swapChain.extent);
+                frame.setupDepthImage(m_swapChain.depthFormat, m_swapChain.extent);
+                frame.setupShadowImage(m_swapChain.depthFormat, m_swapChain.extent);
 
                 // Sync
                 frame.setupSync();
@@ -317,9 +286,7 @@ namespace Chicane
 
         void Renderer::buildCommandPool()
         {
-            CommandBuffer::Pool::init(
-                m_mainCommandPool, m_logicalDevice, m_physicalDevice, m_surface
-            );
+            CommandBuffer::Pool::init(m_mainCommandPool, m_logicalDevice, m_physicalDevice, m_surface);
         }
 
         void Renderer::destroyCommandPool()
@@ -329,18 +296,14 @@ namespace Chicane
 
         void Renderer::buildMainCommandBuffer()
         {
-            CommandBuffer::CreateInfo createInfo = {
-                m_logicalDevice, m_mainCommandPool
-            };
+            CommandBuffer::CreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
 
             CommandBuffer::init(m_mainCommandBuffer, createInfo);
         }
 
         void Renderer::buildFramesCommandBuffers()
         {
-            CommandBuffer::CreateInfo createInfo = {
-                m_logicalDevice, m_mainCommandPool
-            };
+            CommandBuffer::CreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
 
             Frame::Buffer::initCommand(m_swapChain.frames, createInfo);
         }
@@ -372,9 +335,7 @@ namespace Chicane
             pushLayer<LGrid>();
         }
 
-        void Renderer::renderLayers(
-            Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer
-        )
+        void Renderer::renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer)
         {
             RendererData data    = {};
             data.commandBuffer   = inCommandBuffer;

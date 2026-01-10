@@ -56,30 +56,19 @@ namespace Chicane
 
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
-        void bindEvent(
-            Input::MouseButton              inButton,
-            Input::Status                   inStatus,
-            Input::MouseButtonEventCallback inCallback
-        );
+        void bindEvent(Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback);
 
         // Keyboard Events
-        void bindEvent(
-            Input::KeyboardButton        inButton,
-            Input::Status                inStatus,
-            Input::KeyboardEventCallback inCallback
-        );
+        void bindEvent(Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback);
 
         // Controller Events
         void bindEvent(Input::GamepadMotionEventCallback inCallback);
         void bindEvent(
-            Input::GamepadButton              inButton,
-            Input::Status                     inStatus,
-            Input::GamepadButtonEventCallback inCallback
+            Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inCallback
         );
 
         // Device
-        bool
-        isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const;
+        bool isConnectedTo(Input::DeviceType inType, Input::DeviceID inId) const;
         bool isConnectedTo(Input::DeviceType inType) const;
         void connectTo(Input::DeviceType inType, Input::DeviceID inId);
         void disconnectFrom(Input::DeviceType inType);

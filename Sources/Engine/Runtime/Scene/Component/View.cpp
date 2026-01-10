@@ -57,8 +57,7 @@ namespace Chicane
 
         if (inViewport.x > 0 && inViewport.y > 0)
         {
-            m_settings.aspectRatio =
-                (float)m_settings.viewport.x / m_settings.viewport.y;
+            m_settings.aspectRatio = (float)m_settings.viewport.x / m_settings.viewport.y;
         }
 
         updateProjection();
@@ -143,12 +142,8 @@ namespace Chicane
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
 
-        m_data.projection = glm::perspective(
-            glm::radians(getFieldOfView()),
-            m_settings.aspectRatio,
-            m_data.clip.x,
-            m_data.clip.y
-        );
+        m_data.projection =
+            glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
 
         m_frustum.update(this);
     }

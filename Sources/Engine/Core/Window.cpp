@@ -18,61 +18,44 @@ namespace Chicane
 {
     const Chicane::Vec<2, int> VEC2_ZERO(0);
 
-    void setupGamepadDeviceEvent(
-        Input::DeviceEvent& outEvent, const SDL_GamepadDeviceEvent& inData
-    )
+    void setupGamepadDeviceEvent(Input::DeviceEvent& outEvent, const SDL_GamepadDeviceEvent& inData)
     {
         outEvent.device = inData.which;
     }
 
-    void setupGamepadMotionEvent(
-        Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData
-    )
+    void setupGamepadMotionEvent(Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
     {
         outEvent.device = inData.which;
         outEvent.axis   = (Input::GamepadAxis)inData.axis;
         outEvent.value  = static_cast<float>(inData.value) / 32767.0f;
     }
 
-    void setupGamepadButtonEvent(
-        Input::GamepadButtonEvent&    outEvent,
-        const SDL_GamepadButtonEvent& inData
-    )
+    void setupGamepadButtonEvent(Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
     {
         outEvent.device = inData.which;
         outEvent.button = (Input::GamepadButton)inData.button;
-        outEvent.status =
-            inData.down ? Input::Status::Pressed : Input::Status::Released;
+        outEvent.status = inData.down ? Input::Status::Pressed : Input::Status::Released;
     }
 
-    void setupKeyboardDeviceEvent(
-        Input::DeviceEvent& outEvent, const SDL_KeyboardDeviceEvent& inData
-    )
+    void setupKeyboardDeviceEvent(Input::DeviceEvent& outEvent, const SDL_KeyboardDeviceEvent& inData)
     {
         outEvent.device = inData.which;
     }
 
-    void setupKeyboardEvent(
-        Input::KeyboardEvent& outEvent, const SDL_KeyboardEvent& inData
-    )
+    void setupKeyboardEvent(Input::KeyboardEvent& outEvent, const SDL_KeyboardEvent& inData)
     {
         outEvent.device   = inData.which;
         outEvent.button   = (Input::KeyboardButton)inData.scancode;
         outEvent.modifier = (Input::KeyboardButtonModifier)inData.mod;
-        outEvent.status =
-            inData.down ? Input::Status::Pressed : Input::Status::Released;
+        outEvent.status   = inData.down ? Input::Status::Pressed : Input::Status::Released;
     }
 
-    void setupMouseDeviceEvent(
-        Input::DeviceEvent& outEvent, const SDL_MouseDeviceEvent& inData
-    )
+    void setupMouseDeviceEvent(Input::DeviceEvent& outEvent, const SDL_MouseDeviceEvent& inData)
     {
         outEvent.device = inData.which;
     }
 
-    void setupMouseMotionEvent(
-        Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData
-    )
+    void setupMouseMotionEvent(Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
     {
         outEvent.device             = inData.which;
         outEvent.status             = (Input::Status)inData.state;
@@ -82,14 +65,11 @@ namespace Chicane
         outEvent.relativeLocation.y = inData.yrel;
     }
 
-    void setupMouseButtonEvent(
-        Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData
-    )
+    void setupMouseButtonEvent(Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
     {
-        outEvent.device = inData.which;
-        outEvent.button = (Input::MouseButton)inData.button;
-        outEvent.status =
-            inData.down ? Input::Status::Pressed : Input::Status::Released;
+        outEvent.device     = inData.which;
+        outEvent.button     = (Input::MouseButton)inData.button;
+        outEvent.status     = inData.down ? Input::Status::Pressed : Input::Status::Released;
         outEvent.clicks     = inData.clicks;
         outEvent.location.x = inData.x;
         outEvent.location.y = inData.y;
@@ -315,9 +295,7 @@ namespace Chicane
             return;
         }
 
-        if (!SDL_SetWindowSize(
-                static_cast<SDL_Window*>(m_instance), inWidth, inHeight
-            ))
+        if (!SDL_SetWindowSize(static_cast<SDL_Window*>(m_instance), inWidth, inHeight))
         {
             emmitWarning("Failed to set the window size");
 
@@ -347,9 +325,7 @@ namespace Chicane
             return;
         }
 
-        if (!SDL_SetWindowPosition(
-                static_cast<SDL_Window*>(m_instance), inX, inY
-            ))
+        if (!SDL_SetWindowPosition(static_cast<SDL_Window*>(m_instance), inX, inY))
         {
             emmitWarning("Failed to set the window position");
 
@@ -369,9 +345,7 @@ namespace Chicane
 
         const String title = inTitle.trim();
 
-        if (!SDL_SetWindowTitle(
-                static_cast<SDL_Window*>(m_instance), title.toChar()
-            ))
+        if (!SDL_SetWindowTitle(static_cast<SDL_Window*>(m_instance), title.toChar()))
         {
             emmitWarning("Failed to set the window title");
 
@@ -390,23 +364,16 @@ namespace Chicane
 
         if (!FileSystem::exists(inPath))
         {
-            emmitError(
-                "The window icon [ " + inPath.string() + " ] doesn't exists"
-            );
+            emmitError("The window icon [ " + inPath.string() + " ] doesn't exists");
         }
 
         const Image image = Image(inPath);
 
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
-            image.getWidth(),
-            image.getHeight(),
-            SDL_PIXELFORMAT_ARGB8888,
-            image.getPixels(),
-            image.getPitch()
+            image.getWidth(), image.getHeight(), SDL_PIXELFORMAT_ARGB8888, image.getPixels(), image.getPitch()
         );
 
-        if (!icon ||
-            !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon))
+        if (!icon || !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon))
         {
             emmitWarning("Failed to set the window icon");
 
@@ -423,11 +390,9 @@ namespace Chicane
         int            displayCount = 0;
         SDL_DisplayID* displays     = SDL_GetDisplays(&displayCount);
 
-        int display =
-            displays[std::min(static_cast<int>(inIndex), displayCount - 1)];
+        int display = displays[std::min(static_cast<int>(inIndex), displayCount - 1)];
 
-        const SDL_DisplayMode* displaySettings =
-            SDL_GetCurrentDisplayMode(display);
+        const SDL_DisplayMode* displaySettings = SDL_GetCurrentDisplayMode(display);
 
         SDL_free(displays);
 
@@ -436,15 +401,9 @@ namespace Chicane
             emmitError("Error while setting the window display");
         }
 
-        setSize(
-            std::min(m_size.x, displaySettings->w),
-            std::min(m_size.y, displaySettings->h)
-        );
+        setSize(std::min(m_size.x, displaySettings->w), std::min(m_size.y, displaySettings->h));
 
-        setPosition(
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display),
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display)
-        );
+        setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }
 
     void Window::setType(WindowType inType)
@@ -525,9 +484,7 @@ namespace Chicane
             return;
         }
 
-        if (!SDL_SetWindowRelativeMouseMode(
-                static_cast<SDL_Window*>(m_instance), true
-            ))
+        if (!SDL_SetWindowRelativeMouseMode(static_cast<SDL_Window*>(m_instance), true))
         {
             emmitWarning("Failed to focus the window");
 
@@ -561,9 +518,7 @@ namespace Chicane
             return;
         }
 
-        if (!SDL_SetWindowRelativeMouseMode(
-                static_cast<SDL_Window*>(m_instance), false
-            ))
+        if (!SDL_SetWindowRelativeMouseMode(static_cast<SDL_Window*>(m_instance), false))
         {
             emmitWarning("Failed to blur the window");
 
@@ -607,9 +562,7 @@ namespace Chicane
             return;
         }
 
-        if (!SDL_SetWindowResizable(
-                static_cast<SDL_Window*>(m_instance), false
-            ))
+        if (!SDL_SetWindowResizable(static_cast<SDL_Window*>(m_instance), false))
         {
             emmitWarning("Failed to disable window resizing");
 
@@ -628,8 +581,7 @@ namespace Chicane
 
         Vec<2, int> currentSize = getSize();
 
-        return m_bIsMinimized ||
-               (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
+        return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }
 
     Window::EventSubscription Window::watchEvent(
@@ -647,8 +599,7 @@ namespace Chicane
         SizeSubscription::CompleteCallback inComplete
     )
     {
-        return m_sizeObservable.subscribe(inNext, inError, inComplete)
-            .next(m_size);
+        return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_size);
     }
 
     void Window::refreshSize()
@@ -661,9 +612,7 @@ namespace Chicane
         int width  = 0;
         int height = 0;
 
-        if (!SDL_GetWindowSize(
-                static_cast<SDL_Window*>(m_instance), &width, &height
-            ))
+        if (!SDL_GetWindowSize(static_cast<SDL_Window*>(m_instance), &width, &height))
         {
             emmitWarning("Failed to refresh the window size");
 
@@ -691,9 +640,7 @@ namespace Chicane
         int x = 0;
         int y = 0;
 
-        if (!SDL_GetWindowPosition(
-                static_cast<SDL_Window*>(m_instance), &x, &y
-            ))
+        if (!SDL_GetWindowPosition(static_cast<SDL_Window*>(m_instance), &x, &y))
         {
             emmitWarning("Failed to refresh the window position");
 
@@ -727,8 +674,6 @@ namespace Chicane
         String message = inMessage.trim();
         message.append(" [%s]");
 
-        throw std::runtime_error(
-            String::sprint(message, SDL_GetError()).toChar()
-        );
+        throw std::runtime_error(String::sprint(message, SDL_GetError()).toChar());
     }
 }

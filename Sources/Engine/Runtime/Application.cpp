@@ -74,8 +74,7 @@ namespace Chicane
 
         void initAssets(const String& inPath)
         {
-            for (const FileSystem::Item item :
-                 FileSystem::ls(inPath.toStandard()))
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
             {
                 if (item.type != FileSystem::ItemType::File)
                 {
@@ -165,8 +164,7 @@ namespace Chicane
             ControllerSubscription::CompleteCallback inComplete
         )
         {
-            return g_controllerObservable.subscribe(inNext, inError, inComplete)
-                .next(g_controller);
+            return g_controllerObservable.subscribe(inNext, inError, inComplete).next(g_controller);
         }
 
         bool hasScene()
@@ -203,8 +201,7 @@ namespace Chicane
             SceneSubscription::CompleteCallback inComplete
         )
         {
-            return g_sceneObservable.subscribe(inNext, inError, inComplete)
-                .next(g_scene);
+            return g_sceneObservable.subscribe(inNext, inError, inComplete).next(g_scene);
         }
 
         bool hasView()
@@ -242,8 +239,7 @@ namespace Chicane
             ViewSubscription::CompleteCallback inComplete
         )
         {
-            return g_viewObservable.subscribe(inNext, inError, inComplete)
-                .next(g_view);
+            return g_viewObservable.subscribe(inNext, inError, inComplete).next(g_view);
         }
 
         bool hasWindow()

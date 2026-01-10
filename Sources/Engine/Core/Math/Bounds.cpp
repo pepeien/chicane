@@ -6,10 +6,7 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(
-        const std::vector<Vertex>&        inVertices,
-        const std::vector<std::uint32_t>& inIndices
-    )
+    Bounds::Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices)
         : Bounds()
     {
         for (std::uint32_t index : inIndices)
@@ -78,12 +75,9 @@ namespace Chicane
         const Vec3& otherMin = inOther.getMin();
         const Vec3& otherMax = inOther.getMax();
 
-        float overlapX =
-            std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
-        float overlapY =
-            std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
-        float overlapZ =
-            std::min(max.z, otherMax.z) - std::max(min.z, otherMin.z);
+        float overlapX = std::min(max.x, otherMax.x) - std::max(min.x, otherMin.x);
+        float overlapY = std::min(max.y, otherMax.y) - std::max(min.y, otherMin.y);
+        float overlapZ = std::min(max.z, otherMax.z) - std::max(min.z, otherMin.z);
 
         if (overlapX <= 0 || overlapY <= 0 || overlapZ <= 0)
         {

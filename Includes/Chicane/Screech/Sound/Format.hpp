@@ -15,14 +15,13 @@ namespace Chicane
             there are no gaps and that they're added to the lookup table in
             ma_get_bytes_per_sample().
             */
-            Unknown =
-                0, /* Mainly used for indicating an error, but also used as the
-                      default for the output format for decoders. */
-            U8  = 1,
-            S16 = 2, /* Seems to be the most widely supported format. */
-            S24 = 3, /* Tightly packed. 3 bytes per sample. */
-            S32 = 4,
-            F32 = 5,
+            Unknown = 0, /* Mainly used for indicating an error, but also used as the
+                            default for the output format for decoders. */
+            U8      = 1,
+            S16     = 2, /* Seems to be the most widely supported format. */
+            S24     = 3, /* Tightly packed. 3 bytes per sample. */
+            S32     = 4,
+            F32     = 5,
             Count
         };
     }

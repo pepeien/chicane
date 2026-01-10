@@ -7,10 +7,8 @@ namespace Chicane
 {
     bool RendererViewFrustum::contains(const Transformable* inSubject) const
     {
-        const std::vector<RendererViewPlane> planes = {
-            m_top, m_bottom, m_near, m_far, m_right, m_left
-        };
-        const std::vector<Vec3>& corners = inSubject->getBounds().getVertices();
+        const std::vector<RendererViewPlane> planes  = {m_top, m_bottom, m_near, m_far, m_right, m_left};
+        const std::vector<Vec3>&             corners = inSubject->getBounds().getVertices();
 
         for (const RendererViewPlane& plane : planes)
         {

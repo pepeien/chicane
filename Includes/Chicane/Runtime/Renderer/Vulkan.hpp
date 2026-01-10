@@ -62,10 +62,7 @@ namespace Chicane
 
             void buildLayers();
             void setupLayers();
-            void renderLayers(
-                Frame::Instance&         outFrame,
-                const vk::CommandBuffer& inCommandBuffer
-            );
+            void renderLayers(Frame::Instance& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
         private:
             // Instance

@@ -27,20 +27,15 @@ namespace Chicane
         void Buffer::allocate(const BufferCreateInfo& inCreateInfo)
         {
             vk::MemoryRequirements memoryRequirements =
-                inCreateInfo.logicalDevice.getBufferMemoryRequirements(
-                    instance
-                );
+                inCreateInfo.logicalDevice.getBufferMemoryRequirements(instance);
 
             vk::MemoryAllocateInfo memoryAlocateInfo = {};
             memoryAlocateInfo.allocationSize         = memoryRequirements.size;
-            memoryAlocateInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
-                inCreateInfo.physicalDevice,
-                memoryRequirements.memoryTypeBits,
-                inCreateInfo.memoryProperties
+            memoryAlocateInfo.memoryTypeIndex        = Device::findMemoryTypeIndex(
+                inCreateInfo.physicalDevice, memoryRequirements.memoryTypeBits, inCreateInfo.memoryProperties
             );
 
-            memory =
-                inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
+            memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);
 
             inCreateInfo.logicalDevice.bindBufferMemory(instance, memory, 0);
         }
@@ -59,13 +54,9 @@ namespace Chicane
             copyRegion.dstOffset      = 0;
             copyRegion.size           = inAllocationSize;
 
-            inCommandBuffer.copyBuffer(
-                instance, inDestination.instance, 1, &copyRegion
-            );
+            inCommandBuffer.copyBuffer(instance, inDestination.instance, 1, &copyRegion);
 
-            CommandBuffer::Worker::endJob(
-                inCommandBuffer, inQueue, "Copy The Buffer"
-            );
+            CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy The Buffer");
         }
 
         void Buffer::destroy(const vk::Device& inLogicalDevice)

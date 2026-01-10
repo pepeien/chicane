@@ -36,11 +36,9 @@ namespace Chicane
             return false;
         }
 
-        return std::find_if(
-                   m_value.begin(), m_value.end(), [](unsigned char c) {
-                       return !std::isdigit(c) && c != '.' && c != ',';
-                   }
-               ) != m_value.end();
+        return std::find_if(m_value.begin(), m_value.end(), [](unsigned char c) {
+                   return !std::isdigit(c) && c != '.' && c != ',';
+               }) != m_value.end();
     }
 
     bool String::equals(const String& inValue) const
@@ -75,9 +73,7 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(
-                   m_value.substr(0, inValue.size()).c_str(), inValue.toChar()
-               ) == 0;
+        return strcmp(m_value.substr(0, inValue.size()).c_str(), inValue.toChar()) == 0;
     }
 
     bool String::startsWith(char inValue) const
@@ -102,10 +98,7 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(
-                   m_value.substr(size() - inValue.size()).c_str(),
-                   inValue.toChar()
-               ) == 0;
+        return strcmp(m_value.substr(size() - inValue.size()).c_str(), inValue.toChar()) == 0;
     }
 
     bool String::endsWith(char inValue) const
@@ -261,8 +254,7 @@ namespace Chicane
         return substr(start, end - start).trim();
     }
 
-    String
-    String::getBetween(const String& inOpening, const String& inClosing) const
+    String String::getBetween(const String& inOpening, const String& inClosing) const
     {
         const std::size_t start = firstOf(inOpening) + 1;
         const std::size_t end   = lastOf(inClosing);
@@ -354,9 +346,7 @@ namespace Chicane
         m_value.push_back(inValue);
     }
 
-    void String::erase(
-        std::string::const_iterator inStart, std::string::const_iterator inEnd
-    )
+    void String::erase(std::string::const_iterator inStart, std::string::const_iterator inEnd)
     {
         m_value.erase(inStart, inEnd);
     }

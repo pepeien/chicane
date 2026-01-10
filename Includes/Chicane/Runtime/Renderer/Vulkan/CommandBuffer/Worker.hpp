@@ -13,8 +13,7 @@ namespace Chicane
         {
             namespace Worker
             {
-                CHICANE_RUNTIME void
-                startJob(const vk::CommandBuffer& inCommandBuffer);
+                CHICANE_RUNTIME void startJob(const vk::CommandBuffer& inCommandBuffer);
                 CHICANE_RUNTIME void endJob(
                     const vk::CommandBuffer& inCommandBuffer,
                     const vk::Queue&         inQueue,

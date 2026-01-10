@@ -20,21 +20,13 @@ namespace Chicane
             ListSubscription::CompleteCallback inComplete
         )
         {
-            return g_logsObservable.subscribe(inNext, inError, inComplete)
-                .next(g_logs);
+            return g_logsObservable.subscribe(inNext, inError, inComplete).next(g_logs);
         }
 
-        void emmit(
-            const String& inHexColor,
-            const String& inIdentifier,
-            const String& inMessage
-        )
+        void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
         {
-            const String message =
-                (inIdentifier.isEmpty() ? inMessage
-                                        : "[" + inIdentifier + "] " + inMessage)
-                    .trim();
-            const String color = inHexColor.toUpper();
+            const String message = (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
+            const String color   = inHexColor.toUpper();
 
             if (g_colors.find(color) == g_colors.end())
             {
@@ -43,8 +35,7 @@ namespace Chicane
                 g_colors.insert(
                     std::make_pair(
                         color,
-                        "38;2;" + std::to_string(rgbColor.r) + ";" +
-                            std::to_string(rgbColor.g) + ";" +
+                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) + ";" +
                             std::to_string(rgbColor.b) + "m"
                     )
                 );
@@ -54,8 +45,7 @@ namespace Chicane
 
             if (IS_DEBUGGING)
             {
-                std::cout << LOG_COLOR_START << terminalColor << message
-                          << LOG_COLOR_END;
+                std::cout << LOG_COLOR_START << terminalColor << message << LOG_COLOR_END;
             }
 
             // History

@@ -12,8 +12,7 @@ namespace Chicane
         namespace Shader
         {
             CHICANE_RUNTIME vk::PipelineShaderStageCreateInfo initShaderStage(
-                const vk::Device&      inLogicalDevice,
-                const StageCreateInfo& inCreateInfo
+                const vk::Device& inLogicalDevice, const StageCreateInfo& inCreateInfo
             );
         }
     }

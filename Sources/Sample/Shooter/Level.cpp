@@ -72,15 +72,12 @@ Level::CameraSubscription Level::watchActiveCamera(
     CameraSubscription::CompleteCallback inComplete
 )
 {
-    return m_cameraObservable.subscribe(inNext, inError, inComplete)
-        .next(nullptr);
+    return m_cameraObservable.subscribe(inNext, inError, inComplete).next(nullptr);
 }
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(
-        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky")
-    );
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky"));
 }
 
 void Level::spawnLights()
@@ -126,8 +123,7 @@ void Level::spawnApples()
     {
         for (std::uint32_t row = 0; row < APPLE_ROW_COUNT; row++)
         {
-            for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT;
-                 column++)
+            for (std::uint32_t column = 0; column < APPLE_COLUMN_COUNT; column++)
             {
                 createActor<Apple>()->setInitialPosition(position);
 

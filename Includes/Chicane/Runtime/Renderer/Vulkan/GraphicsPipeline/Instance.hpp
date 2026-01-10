@@ -20,9 +20,7 @@ namespace Chicane
             public:
                 void bind(vk::CommandBuffer& inCommandBuffer);
                 void bindDescriptorSet(
-                    vk::CommandBuffer& inCommandBuffer,
-                    std::uint32_t      inIndex,
-                    vk::DescriptorSet  inDescriptorSet
+                    vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
                 );
 
             public:

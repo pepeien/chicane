@@ -16,7 +16,6 @@ namespace Chicane
             Vec2   location         = Vec2::Zero;
             Vec2   relativeLocation = Vec2::Zero;
         };
-        using MouseMotionEventCallback =
-            std::function<void(const MouseMotionEvent&)>;
+        using MouseMotionEventCallback = std::function<void(const MouseMotionEvent&)>;
     }
 }

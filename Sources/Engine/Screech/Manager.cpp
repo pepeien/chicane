@@ -50,9 +50,7 @@ namespace Chicane
             ma_device_info* inputs     = nullptr;
             ma_uint32       inputCount = 0U;
 
-            if (ma_context_get_devices(
-                    &g_context, &outputs, &outputCount, &inputs, &inputCount
-                ) != MA_SUCCESS)
+            if (ma_context_get_devices(&g_context, &outputs, &outputCount, &inputs, &inputCount) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to fetch audio devices");
             }
@@ -61,16 +59,12 @@ namespace Chicane
 
             for (ma_uint32 i = 0; i < outputCount; i += 1)
             {
-                result.push_back(
-                    Device((void*)&outputs[i], DeviceType::Capture)
-                );
+                result.push_back(Device((void*)&outputs[i], DeviceType::Capture));
             }
 
             for (ma_uint32 i = 0; i < inputCount; i += 1)
             {
-                result.push_back(
-                    Device((void*)&inputs[i], DeviceType::Playback)
-                );
+                result.push_back(Device((void*)&inputs[i], DeviceType::Playback));
             }
 
             return result;

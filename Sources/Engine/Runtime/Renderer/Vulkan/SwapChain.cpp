@@ -12,31 +12,24 @@ namespace Chicane
                 const vk::SurfaceKHR&     inSurface
             )
             {
-                outSupportDetails.capabilities =
-                    inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
-                outSupportDetails.formats =
-                    inPhysicalDevice.getSurfaceFormatsKHR(inSurface);
-                outSupportDetails.presentModes =
-                    inPhysicalDevice.getSurfacePresentModesKHR(inSurface);
+                outSupportDetails.capabilities = inPhysicalDevice.getSurfaceCapabilitiesKHR(inSurface);
+                outSupportDetails.formats      = inPhysicalDevice.getSurfaceFormatsKHR(inSurface);
+                outSupportDetails.presentModes = inPhysicalDevice.getSurfacePresentModesKHR(inSurface);
             }
 
             void pickSurfaceFormat(
-                vk::SurfaceFormatKHR&                    outSurfaceFormat,
-                const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                vk::SurfaceFormatKHR& outSurfaceFormat, const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             )
             {
                 if (inSurfaceFormats.empty())
                 {
-                    throw std::runtime_error(
-                        "There is no surface formats available"
-                    );
+                    throw std::runtime_error("There is no surface formats available");
                 }
 
                 for (vk::SurfaceFormatKHR surfaceFormat : inSurfaceFormats)
                 {
                     if (surfaceFormat.format == vk::Format::eB8G8R8A8Unorm &&
-                        surfaceFormat.colorSpace ==
-                            vk::ColorSpaceKHR::eSrgbNonlinear)
+                        surfaceFormat.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear)
                     {
                         outSurfaceFormat = surfaceFormat;
 
@@ -48,15 +41,12 @@ namespace Chicane
             }
 
             void pickPresentMode(
-                vk::PresentModeKHR&                    outPresentMode,
-                const std::vector<vk::PresentModeKHR>& inPresentModes
+                vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes
             )
             {
-                bool bDoesSupportMailBox = std::find(
-                                               inPresentModes.begin(),
-                                               inPresentModes.end(),
-                                               vk::PresentModeKHR::eMailbox
-                                           ) != inPresentModes.end();
+                bool bDoesSupportMailBox =
+                    std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eMailbox) !=
+                    inPresentModes.end();
 
                 if (bDoesSupportMailBox)
                 {
@@ -67,11 +57,9 @@ namespace Chicane
 
                 // Due to AMD's lack of support to mailbox mode I will use
                 // Immediate as a alternative
-                bool bDoesSupportImmediate = std::find(
-                                                 inPresentModes.begin(),
-                                                 inPresentModes.end(),
-                                                 vk::PresentModeKHR::eImmediate
-                                             ) != inPresentModes.end();
+                bool bDoesSupportImmediate =
+                    std::find(inPresentModes.begin(), inPresentModes.end(), vk::PresentModeKHR::eImmediate) !=
+                    inPresentModes.end();
 
                 if (bDoesSupportImmediate)
                 {
@@ -108,8 +96,7 @@ namespace Chicane
 
                 vk::Extent2D extent = supportDetails.capabilities.currentExtent;
 
-                std::uint32_t imageCount =
-                    supportDetails.capabilities.minImageCount + 1;
+                std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
 
                 if (supportDetails.capabilities.maxImageCount > 0)
                 {
@@ -119,70 +106,53 @@ namespace Chicane
                     }
                     else
                     {
-                        imageCount = std::min(
-                            supportDetails.capabilities.maxImageCount,
-                            MAX_IMAGE_COUNT
-                        );
+                        imageCount = std::min(supportDetails.capabilities.maxImageCount, MAX_IMAGE_COUNT);
                     }
                 }
                 else
                 {
-                    imageCount = std::max(
-                        supportDetails.capabilities.minImageCount,
-                        MAX_IMAGE_COUNT
-                    );
+                    imageCount = std::max(supportDetails.capabilities.minImageCount, MAX_IMAGE_COUNT);
                 }
 
                 vk::SwapchainCreateInfoKHR createInfo = {};
                 createInfo.surface                    = inSurface;
                 createInfo.minImageCount              = imageCount;
                 createInfo.imageFormat                = surfaceFormat.format;
-                createInfo.imageColorSpace  = surfaceFormat.colorSpace;
-                createInfo.imageExtent      = extent;
-                createInfo.imageArrayLayers = 1;
-                createInfo.imageUsage =
-                    vk::ImageUsageFlagBits::eColorAttachment;
+                createInfo.imageColorSpace            = surfaceFormat.colorSpace;
+                createInfo.imageExtent                = extent;
+                createInfo.imageArrayLayers           = 1;
+                createInfo.imageUsage                 = vk::ImageUsageFlagBits::eColorAttachment;
 
                 Queue::FamilyIndices familyIndices;
-                Queue::findFamilyInidices(
-                    familyIndices, inPhysicalDevice, inSurface
-                );
+                Queue::findFamilyInidices(familyIndices, inPhysicalDevice, inSurface);
 
                 createInfo.imageSharingMode = vk::SharingMode::eExclusive;
 
-                if (familyIndices.graphicsFamily.value() !=
-                    familyIndices.presentFamily.value())
+                if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
                 {
                     std::uint32_t queueFamilyIndices[] = {
-                        familyIndices.graphicsFamily.value(),
-                        familyIndices.presentFamily.value()
+                        familyIndices.graphicsFamily.value(), familyIndices.presentFamily.value()
                     };
 
-                    createInfo.imageSharingMode = vk::SharingMode::eConcurrent;
+                    createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;
                     createInfo.queueFamilyIndexCount = 2;
                     createInfo.pQueueFamilyIndices   = queueFamilyIndices;
                 }
 
-                createInfo.preTransform =
-                    supportDetails.capabilities.currentTransform;
-                createInfo.compositeAlpha =
-                    vk::CompositeAlphaFlagBitsKHR::eOpaque;
-                createInfo.presentMode  = presentMode;
-                createInfo.clipped      = VK_TRUE;
-                createInfo.oldSwapchain = vk::SwapchainKHR(nullptr);
+                createInfo.preTransform   = supportDetails.capabilities.currentTransform;
+                createInfo.compositeAlpha = vk::CompositeAlphaFlagBitsKHR::eOpaque;
+                createInfo.presentMode    = presentMode;
+                createInfo.clipped        = VK_TRUE;
+                createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
 
-                outSwapChain.instance =
-                    inLogicalDevice.createSwapchainKHR(createInfo);
+                outSwapChain.instance         = inLogicalDevice.createSwapchainKHR(createInfo);
                 outSwapChain.colorFormat      = surfaceFormat.format;
                 outSwapChain.depthFormat      = depthFormat;
                 outSwapChain.extent           = extent;
                 outSwapChain.midPoints.width  = extent.width / 2;
                 outSwapChain.midPoints.height = extent.height / 2;
 
-                std::vector<vk::Image> images =
-                    inLogicalDevice.getSwapchainImagesKHR(
-                        outSwapChain.instance
-                    );
+                std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(outSwapChain.instance);
                 outSwapChain.frames.resize(images.size());
 
                 for (int i = 0; i < images.size(); i++)

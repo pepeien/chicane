@@ -154,9 +154,7 @@ namespace Chicane
         // Helper
         template <typename T = Actor>
         std::vector<T*> traceLine(
-            const Vec3&                inOrigin,
-            const Vec3&                inDestination,
-            const std::vector<Actor*>& inIgnoredActors
+            const Vec3& inOrigin, const Vec3& inDestination, const std::vector<Actor*>& inIgnoredActors
         ) const
         {
             if (!hasActors())
@@ -164,21 +162,20 @@ namespace Chicane
                 return {};
             }
 
-            Vec3       point        = inOrigin;
+            Vec3            point                   = inOrigin;
 
-            const Vec3 direction    = glm::normalize(inDestination - inOrigin);
+            const Vec3      direction               = glm::normalize(inDestination - inOrigin);
 
-            const bool bIsXPositive = inDestination.x >= inOrigin.x;
-            const bool bIsYPositive = inDestination.y >= inOrigin.y;
-            const bool bIsZPositive = inDestination.z >= inOrigin.z;
+            const bool      bIsXPositive            = inDestination.x >= inOrigin.x;
+            const bool      bIsYPositive            = inDestination.y >= inOrigin.y;
+            const bool      bIsZPositive            = inDestination.z >= inOrigin.z;
 
-            bool       bHasXReachedDestination = false;
-            bool       bHasYReachedDestination = false;
-            bool       bHasZReachedDestination = false;
+            bool            bHasXReachedDestination = false;
+            bool            bHasYReachedDestination = false;
+            bool            bHasZReachedDestination = false;
 
             std::vector<T*> result{};
-            while (!bHasXReachedDestination || !bHasYReachedDestination ||
-                   !bHasZReachedDestination)
+            while (!bHasXReachedDestination || !bHasYReachedDestination || !bHasZReachedDestination)
             {
                 for (Actor* actor : m_actors)
                 {
@@ -194,14 +191,9 @@ namespace Chicane
                         continue;
                     }
 
-                    bool bWillIgnored = std::find(
-                                            inIgnoredActors.begin(),
-                                            inIgnoredActors.end(),
-                                            actor
-                                        ) != inIgnoredActors.end();
-                    bool bWasTraced =
-                        std::find(result.begin(), result.end(), actor) !=
-                        result.end();
+                    bool bWillIgnored =
+                        std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) != inIgnoredActors.end();
+                    bool bWasTraced = std::find(result.begin(), result.end(), actor) != result.end();
 
                     if (bWillIgnored || bWasTraced)
                     {
@@ -211,25 +203,13 @@ namespace Chicane
                     result.push_back(static_cast<T*>(actor));
                 }
 
-                point.x += bHasXReachedDestination
-                               ? 0.0f
-                               : direction.x * LINE_TRACE_STEP_SIZE;
-                point.y += bHasYReachedDestination
-                               ? 0.0f
-                               : direction.y * LINE_TRACE_STEP_SIZE;
-                point.z += bHasZReachedDestination
-                               ? 0.0f
-                               : direction.z * LINE_TRACE_STEP_SIZE;
+                point.x += bHasXReachedDestination ? 0.0f : direction.x * LINE_TRACE_STEP_SIZE;
+                point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
+                point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
 
-                bHasXReachedDestination = bIsXPositive
-                                              ? point.x >= inDestination.x
-                                              : point.x <= inDestination.x;
-                bHasYReachedDestination = bIsYPositive
-                                              ? point.y >= inDestination.y
-                                              : point.y <= inDestination.y;
-                bHasZReachedDestination = bIsZPositive
-                                              ? point.z >= inDestination.z
-                                              : point.z <= inDestination.z;
+                bHasXReachedDestination = bIsXPositive ? point.x >= inDestination.x : point.x <= inDestination.x;
+                bHasYReachedDestination = bIsYPositive ? point.y >= inDestination.y : point.y <= inDestination.y;
+                bHasZReachedDestination = bIsZPositive ? point.z >= inDestination.z : point.z <= inDestination.z;
             }
 
             return result;

@@ -71,8 +71,7 @@ namespace Chicane
         ActorsSubscription::CompleteCallback inComplete
     )
     {
-        return m_actorsObservable.subscribe(inNext, inError, inComplete)
-            .next(m_actors);
+        return m_actorsObservable.subscribe(inNext, inError, inComplete).next(m_actors);
     }
 
     bool Scene::hasComponents() const
@@ -92,8 +91,7 @@ namespace Chicane
             return;
         }
 
-        auto found =
-            std::find(m_components.begin(), m_components.end(), inComponent);
+        auto found = std::find(m_components.begin(), m_components.end(), inComponent);
 
         if (found == m_components.end())
         {
@@ -113,8 +111,7 @@ namespace Chicane
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
-        return m_componentsObservable.subscribe(inNext, inError, inComplete)
-            .next(m_components);
+        return m_componentsObservable.subscribe(inNext, inError, inComplete).next(m_components);
     }
 
     void Scene::tickActors(float inDeltaTime)

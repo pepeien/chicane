@@ -14,80 +14,56 @@ namespace Chicane
                 : m_logicalDevice(inCreateInfo.logicalDevice)
             {
                 // Vertex Input
-                vk::PipelineVertexInputStateCreateInfo vertexInputState =
-                    createVertexInputState();
+                vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState();
 
-                vk::VertexInputBindingDescription bindingDescription =
-                    Vertex::getBindingDescription();
-                std::vector<vk::VertexInputAttributeDescription>
-                    attributeDescriptions = Vertex::getAttributeDescriptions();
+                vk::VertexInputBindingDescription                bindingDescription = Vertex::getBindingDescription();
+                std::vector<vk::VertexInputAttributeDescription> attributeDescriptions =
+                    Vertex::getAttributeDescriptions();
 
                 if (inCreateInfo.bHasVertices)
                 {
                     vertexInputState.vertexBindingDescriptionCount = 1;
-                    vertexInputState.pVertexBindingDescriptions =
-                        &bindingDescription;
+                    vertexInputState.pVertexBindingDescriptions    = &bindingDescription;
                     vertexInputState.vertexAttributeDescriptionCount =
-                        static_cast<std::uint32_t>(
-                            attributeDescriptions.size()
-                        );
-                    vertexInputState.pVertexAttributeDescriptions =
-                        attributeDescriptions.data();
+                        static_cast<std::uint32_t>(attributeDescriptions.size());
+                    vertexInputState.pVertexAttributeDescriptions = attributeDescriptions.data();
                 }
 
                 // Input Assembly
-                vk::PipelineInputAssemblyStateCreateInfo inputAsstembyState =
-                    createInputAssemblyState();
+                vk::PipelineInputAssemblyStateCreateInfo inputAsstembyState = createInputAssemblyState();
 
                 // Viewport
-                Vec<2, std::uint32_t> size(
-                    inCreateInfo.extent.width, inCreateInfo.extent.height
-                );
+                Vec<2, std::uint32_t> size(inCreateInfo.extent.width, inCreateInfo.extent.height);
 
                 vk::PipelineViewportStateCreateInfo viewportState =
-                    createViewportState(
-                        createViewport(size), createScissor(size)
-                    );
+                    createViewportState(createViewport(size), createScissor(size));
 
                 // Dynamic State
-                std::vector<vk::DynamicState> dynamicStates = {
-                    vk::DynamicState::eViewport, vk::DynamicState::eScissor
-                };
-                vk::PipelineDynamicStateCreateInfo dynamicState =
-                    createDynamicState(dynamicStates);
+                std::vector<vk::DynamicState> dynamicStates = {vk::DynamicState::eViewport, vk::DynamicState::eScissor};
+                vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
 
                 // Shader Stage
                 std::vector<vk::PipelineShaderStageCreateInfo> shaders = {};
-                for (const Shader::StageCreateInfo& shader :
-                     inCreateInfo.shaders)
+                for (const Shader::StageCreateInfo& shader : inCreateInfo.shaders)
                 {
-                    shaders.push_back(
-                        Shader::initShaderStage(m_logicalDevice, shader)
-                    );
+                    shaders.push_back(Shader::initShaderStage(m_logicalDevice, shader));
                 }
 
                 // Sampling
-                vk::PipelineMultisampleStateCreateInfo multisampleState =
-                    createMulitsampleState();
+                vk::PipelineMultisampleStateCreateInfo multisampleState = createMulitsampleState();
 
                 // Color Blending
-                vk::PipelineColorBlendAttachmentState
-                    colorBlendAttachmentState = createBlendAttachmentState();
-                colorBlendAttachmentState.blendEnable =
-                    inCreateInfo.bHasBlending ? VK_TRUE : VK_FALSE;
+                vk::PipelineColorBlendAttachmentState colorBlendAttachmentState = createBlendAttachmentState();
+                colorBlendAttachmentState.blendEnable = inCreateInfo.bHasBlending ? VK_TRUE : VK_FALSE;
 
-                vk::PipelineColorBlendStateCreateInfo colorBlendState =
-                    createColorBlendState();
-                colorBlendState.attachmentCount = 1;
-                colorBlendState.pAttachments    = &colorBlendAttachmentState;
+                vk::PipelineColorBlendStateCreateInfo colorBlendState = createColorBlendState();
+                colorBlendState.attachmentCount                       = 1;
+                colorBlendState.pAttachments                          = &colorBlendAttachmentState;
 
                 // Depthning
-                vk::PipelineDepthStencilStateCreateInfo depthStencilState =
-                    createDepthStencilState();
-                depthStencilState.depthTestEnable =
-                    inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
-                depthStencilState.depthWriteEnable =
-                    inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
+                vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
+                depthStencilState.depthTestEnable  = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
+                depthStencilState.depthWriteEnable = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
 
                 // Attachment
                 std::vector<vk::AttachmentDescription> attachments = {};
@@ -95,16 +71,12 @@ namespace Chicane
                 {
                     if (attachment.type == AttachmentType::Color)
                     {
-                        attachments.push_back(
-                            createColorAttachment(attachment)
-                        );
+                        attachments.push_back(createColorAttachment(attachment));
                     }
 
                     if (attachment.type == AttachmentType::Depth)
                     {
-                        attachments.push_back(
-                            createDepthAttachment(attachment)
-                        );
+                        attachments.push_back(createDepthAttachment(attachment));
                     }
                 }
 
@@ -114,33 +86,24 @@ namespace Chicane
                 pipelineInfo.pInputAssemblyState = &inputAsstembyState;
                 pipelineInfo.pViewportState      = &viewportState;
                 pipelineInfo.pDynamicState       = &dynamicState;
-                pipelineInfo.stageCount =
-                    static_cast<std::uint32_t>(shaders.size());
-                pipelineInfo.pStages = shaders.data();
-                pipelineInfo.pRasterizationState =
-                    &inCreateInfo.rasterizaterizationState;
-                pipelineInfo.pMultisampleState  = &multisampleState;
-                pipelineInfo.pColorBlendState   = &colorBlendState;
-                pipelineInfo.pDepthStencilState = &depthStencilState;
-                pipelineInfo.layout             = createLayout(
-                    inCreateInfo.descriptorSetLayouts,
-                    inCreateInfo.pushConstantRanges,
-                    m_logicalDevice
-                );
+                pipelineInfo.stageCount          = static_cast<std::uint32_t>(shaders.size());
+                pipelineInfo.pStages             = shaders.data();
+                pipelineInfo.pRasterizationState = &inCreateInfo.rasterizaterizationState;
+                pipelineInfo.pMultisampleState   = &multisampleState;
+                pipelineInfo.pColorBlendState    = &colorBlendState;
+                pipelineInfo.pDepthStencilState  = &depthStencilState;
+                pipelineInfo.layout =
+                    createLayout(inCreateInfo.descriptorSetLayouts, inCreateInfo.pushConstantRanges, m_logicalDevice);
                 pipelineInfo.renderPass = createRendepass(
                     attachments,
                     m_logicalDevice,
                     std::find_if(
                         inCreateInfo.attachments.begin(),
                         inCreateInfo.attachments.end(),
-                        [](const auto& inAttachment) {
-                            return inAttachment.type == AttachmentType::Color;
-                        }
+                        [](const auto& inAttachment) { return inAttachment.type == AttachmentType::Color; }
                     ) != inCreateInfo.attachments.end(),
                     std::find_if(
-                        inCreateInfo.attachments.begin(),
-                        inCreateInfo.attachments.end(),
-                        [](const auto& inAttachment) {
+                        inCreateInfo.attachments.begin(), inCreateInfo.attachments.end(), [](const auto& inAttachment) {
                             return inAttachment.type == AttachmentType::Depth;
                         }
                     ) != inCreateInfo.attachments.end()
@@ -150,9 +113,7 @@ namespace Chicane
 
                 layout     = pipelineInfo.layout;
                 renderPass = pipelineInfo.renderPass;
-                instance   = m_logicalDevice
-                               .createGraphicsPipeline(nullptr, pipelineInfo)
-                               .value;
+                instance   = m_logicalDevice.createGraphicsPipeline(nullptr, pipelineInfo).value;
 
                 for (vk::PipelineShaderStageCreateInfo& shader : shaders)
                 {
@@ -171,23 +132,15 @@ namespace Chicane
 
             void Instance::bind(vk::CommandBuffer& inCommandBuffer)
             {
-                inCommandBuffer.bindPipeline(
-                    vk::PipelineBindPoint::eGraphics, instance
-                );
+                inCommandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, instance);
             }
 
             void Instance::bindDescriptorSet(
-                vk::CommandBuffer& inCommandBuffer,
-                std::uint32_t      inIndex,
-                vk::DescriptorSet  inDescriptorSet
+                vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
             )
             {
                 inCommandBuffer.bindDescriptorSets(
-                    vk::PipelineBindPoint::eGraphics,
-                    layout,
-                    inIndex,
-                    inDescriptorSet,
-                    nullptr
+                    vk::PipelineBindPoint::eGraphics, layout, inIndex, inDescriptorSet, nullptr
                 );
             }
         }

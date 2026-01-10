@@ -14,7 +14,6 @@ namespace Chicane
             GamepadAxis axis  = GamepadAxis::Invalid;
             float       value = 0.0f;
         };
-        using GamepadMotionEventCallback =
-            std::function<void(const GamepadMotionEvent&)>;
+        using GamepadMotionEventCallback = std::function<void(const GamepadMotionEvent&)>;
     }
 }

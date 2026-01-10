@@ -20,10 +20,7 @@ namespace Chicane
                     m_buffer.init(inBufferCreateInfo);
 
                     m_allocationSize = inBufferCreateInfo.size;
-                    m_writeLocation =
-                        inBufferCreateInfo.logicalDevice.mapMemory(
-                            m_buffer.memory, 0, m_allocationSize
-                        );
+                    m_writeLocation  = inBufferCreateInfo.logicalDevice.mapMemory(m_buffer.memory, 0, m_allocationSize);
 
                     bufferInfo.buffer = m_buffer.instance;
                     bufferInfo.offset = 0;

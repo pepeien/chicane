@@ -6,8 +6,7 @@ namespace Chicane
     {
         bool MeshGroup::isValid() const
         {
-            return !m_id.isEmpty() &&
-                   FileSystem::exists(m_model.toStandard()) &&
+            return !m_id.isEmpty() && FileSystem::exists(m_model.toStandard()) &&
                    FileSystem::exists(m_texture.toStandard());
         }
 

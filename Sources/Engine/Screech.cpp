@@ -7,9 +7,8 @@ namespace Chicane
 {
     namespace Screech
     {
-        static const std::unique_ptr<Manager> g_manager =
-            std::make_unique<Manager>();
-        static Device g_device = {};
+        static const std::unique_ptr<Manager> g_manager = std::make_unique<Manager>();
+        static Device                         g_device  = {};
 
         void* getContext()
         {

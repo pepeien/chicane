@@ -19,9 +19,7 @@ namespace Chicane
         Sound::Sound(const Raw& inData)
             : Sound()
         {
-            if (ma_decoder_init_memory(
-                    inData.data(), inData.size(), NULL, &m_data->decoder
-                ) != MA_SUCCESS)
+            if (ma_decoder_init_memory(inData.data(), inData.size(), NULL, &m_data->decoder) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to initialize sound decoder");
             }
@@ -34,9 +32,7 @@ namespace Chicane
                     &m_data->sound
                 ) != MA_SUCCESS)
             {
-                throw std::runtime_error(
-                    "Failed to initialize sound from decoder"
-                );
+                throw std::runtime_error("Failed to initialize sound from decoder");
             }
         }
 
@@ -55,9 +51,7 @@ namespace Chicane
             return m_status == SoundStatus::Playing;
         }
 
-        bool Sound::play(
-            float inVolume, float inSpeed, std::function<void()> inCallback
-        )
+        bool Sound::play(float inVolume, float inSpeed, std::function<void()> inCallback)
         {
             if (isPlaying())
             {

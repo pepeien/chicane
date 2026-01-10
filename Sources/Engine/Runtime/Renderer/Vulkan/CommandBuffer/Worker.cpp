@@ -13,16 +13,13 @@ namespace Chicane
                     inCommandBuffer.reset();
 
                     vk::CommandBufferBeginInfo commandBufferBegin;
-                    commandBufferBegin.flags =
-                        vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
+                    commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
 
                     inCommandBuffer.begin(commandBufferBegin);
                 }
 
                 void endJob(
-                    const vk::CommandBuffer& inCommandBuffer,
-                    const vk::Queue&         inQueue,
-                    const String&            inDescription
+                    const vk::CommandBuffer& inCommandBuffer, const vk::Queue& inQueue, const String& inDescription
                 )
                 {
                     vk::SubmitInfo submitInfo;
@@ -32,29 +29,18 @@ namespace Chicane
                     endJob(inQueue, submitInfo, inDescription);
                 }
 
-                void endJob(
-                    const vk::Queue&      inQueue,
-                    const vk::SubmitInfo& inSubmitInfo,
-                    const String&         inDescription
-                )
+                void endJob(const vk::Queue& inQueue, const vk::SubmitInfo& inSubmitInfo, const String& inDescription)
                 {
-                    for (std::uint32_t i = 0;
-                         i < inSubmitInfo.commandBufferCount;
-                         i++)
+                    for (std::uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
                     {
-                        inSubmitInfo
-                            .pCommandBuffers[i * sizeof(vk::CommandBuffer)]
-                            .end();
+                        inSubmitInfo.pCommandBuffers[i * sizeof(vk::CommandBuffer)].end();
                     }
 
-                    vk::Result submitResult =
-                        inQueue.submit(1, &inSubmitInfo, nullptr);
+                    vk::Result submitResult = inQueue.submit(1, &inSubmitInfo, nullptr);
 
                     if (submitResult != vk::Result::eSuccess)
                     {
-                        throw std::runtime_error(
-                            "Error while ending [" + inDescription + "]"
-                        );
+                        throw std::runtime_error("Error while ending [" + inDescription + "]");
                     }
 
                     inQueue.waitIdle();

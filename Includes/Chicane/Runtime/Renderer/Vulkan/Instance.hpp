@@ -22,16 +22,10 @@ namespace Chicane
 #endif
             };
 
-            CHICANE_RUNTIME bool areExtensionsSupported(
-                const std::vector<const char*>& inExtensions
-            );
-            CHICANE_RUNTIME bool
-            areLayersSupported(const std::vector<const char*>& inLayers);
+            CHICANE_RUNTIME bool areExtensionsSupported(const std::vector<const char*>& inExtensions);
+            CHICANE_RUNTIME bool areLayersSupported(const std::vector<const char*>& inLayers);
 
-            CHICANE_RUNTIME void init(
-                vk::Instance&                      outInstance,
-                vk::detail::DispatchLoaderDynamic& outDldi
-            );
+            CHICANE_RUNTIME void init(vk::Instance& outInstance, vk::detail::DispatchLoaderDynamic& outDldi);
         }
     }
 }

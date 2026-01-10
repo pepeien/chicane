@@ -8,8 +8,7 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX SoundManager
-            : public Box::Manager<Sound::Raw, Sound::Raw>
+        class CHICANE_BOX SoundManager : public Box::Manager<Sound::Raw, Sound::Raw>
         {
         public:
             SoundManager();
