@@ -6,13 +6,13 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(const std::vector<Vertex>& inVertices)
+    Bounds::Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices)
+        : Bounds()
     {
-        m_baseMin = Vec3(FLT_MAX);
-        m_baseMax = Vec3(-FLT_MAX);
-
-        for (const Vertex& vertex : inVertices)
+        for (std::uint32_t index : inIndices)
         {
+            const Vertex& vertex = inVertices.at(index);
+
             const Vec3& position = vertex.position;
 
             m_baseMin.x = std::min(m_baseMin.x, position.x);
@@ -27,11 +27,26 @@ namespace Chicane
         refresh();
     }
 
-    bool Bounds::contains(const Bounds& inBounds) const
+    Bounds::Bounds()
+        : m_min(Vec3::Zero),
+        m_baseMin(Vec3(FLT_MAX)),
+        m_max(Vec3::Zero),
+        m_baseMax(Vec3(-FLT_MAX)),
+        m_top(Vec3::Zero),
+        m_baseTop(Vec3::Zero),
+        m_center(Vec3::Zero),
+        m_baseCenter(Vec3::Zero),
+        m_bottom(Vec3::Zero),
+        m_baseBottom(Vec3::Zero),
+        m_vertices({}),
+        m_indices({})
+    {}
+
+    bool Bounds::intersects(const Bounds& inBounds) const
     {
         for (const Vec3& corner : inBounds.getVertices())
         {
-            if (contains(corner))
+            if (intersects(corner))
             {
                 return true;
             }
@@ -40,7 +55,7 @@ namespace Chicane
         return false;
     }
 
-    bool Bounds::contains(const Vec3& inPoint) const
+    bool Bounds::intersects(const Vec3& inPoint) const
     {
         const Vec3& min = getMin();
         const Vec3& max = getMax();
@@ -218,17 +233,17 @@ namespace Chicane
 
     const Vec3& Bounds::getBaseTop() const
     {
-        return m_baseCenter;
-    }
-
-    const Vec3& Bounds::getBaseCenter() const
-    {
-        return m_baseCenter;
+        return m_baseTop;
     }
 
     const Vec3& Bounds::getCenter() const
     {
         return m_center;
+    }
+
+    const Vec3& Bounds::getBaseCenter() const
+    {
+        return m_baseCenter;
     }
 
     const Vec3& Bounds::getBottom() const

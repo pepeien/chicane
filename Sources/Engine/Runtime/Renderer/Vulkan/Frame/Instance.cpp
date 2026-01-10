@@ -272,25 +272,25 @@ namespace Chicane
                 instanceCreateInfo.logicalDevice = logicalDevice;
                 Image::initInstance(depthImage.instance, instanceCreateInfo);
 
-                vk::SamplerCreateInfo sampelrCreateInfo = {};
-                sampelrCreateInfo.flags                   = vk::SamplerCreateFlags();
-                sampelrCreateInfo.minFilter               = vk::Filter::eLinear;
-                sampelrCreateInfo.magFilter               = vk::Filter::eLinear;
-                sampelrCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
-                sampelrCreateInfo.mipLodBias              = 0.0f;
-                sampelrCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
-                sampelrCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
-                sampelrCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
-                sampelrCreateInfo.anisotropyEnable        = false;
-                sampelrCreateInfo.maxAnisotropy           = 1.0f;
-                sampelrCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
-                sampelrCreateInfo.unnormalizedCoordinates = false;
-                sampelrCreateInfo.compareEnable           = true;
-                sampelrCreateInfo.compareOp               = vk::CompareOp::eLess;
-                sampelrCreateInfo.minLod                  = 0.0f;
-                sampelrCreateInfo.maxLod                  = 1.0f;
-                sampelrCreateInfo.unnormalizedCoordinates = false;
-                depthImage.sampler = logicalDevice.createSampler(sampelrCreateInfo);
+                vk::SamplerCreateInfo samplerCreateInfo = {};
+                samplerCreateInfo.flags                   = vk::SamplerCreateFlags();
+                samplerCreateInfo.minFilter               = vk::Filter::eLinear;
+                samplerCreateInfo.magFilter               = vk::Filter::eLinear;
+                samplerCreateInfo.mipmapMode              = vk::SamplerMipmapMode::eLinear;
+                samplerCreateInfo.mipLodBias              = 0.0f;
+                samplerCreateInfo.addressModeU            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeV            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.addressModeW            = vk::SamplerAddressMode::eClampToEdge;
+                samplerCreateInfo.anisotropyEnable        = false;
+                samplerCreateInfo.maxAnisotropy           = 1.0f;
+                samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
+                samplerCreateInfo.unnormalizedCoordinates = false;
+                samplerCreateInfo.compareEnable           = true;
+                samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
+                samplerCreateInfo.minLod                  = 0.0f;
+                samplerCreateInfo.maxLod                  = 1.0f;
+                samplerCreateInfo.unnormalizedCoordinates = false;
+                depthImage.sampler = logicalDevice.createSampler(samplerCreateInfo);
 
                 Image::Memory::CreateInfo memoryCreateInfo = {};
                 memoryCreateInfo.properties     = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -476,7 +476,6 @@ namespace Chicane
                 {
                     Box::MeshParsed data = {};
                     data.modelMatrix  = mesh->getTransform().getMatrix();
-                    data.boundsMatrix = mesh->getTransform().getMatrix();
                     data.textureIndex = textureManager->getIndex(mesh->getTexture());
 
                     meshes.push_back(data);

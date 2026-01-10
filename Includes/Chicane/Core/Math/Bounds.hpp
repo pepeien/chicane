@@ -10,8 +10,8 @@ namespace Chicane
     struct CHICANE_CORE Bounds
     {
     public:
-        Bounds(const std::vector<Vertex>& inVertices);
-        Bounds() = default;
+        Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices);
+        Bounds();
 
     public:
         void set(const Bounds& inBounds);
@@ -19,8 +19,8 @@ namespace Chicane
 
         void update(const SpatialTransform& inTransform);
 
-        bool contains(const Bounds& inBounds) const;
-        bool contains(const Vec3& inPoint) const;
+        bool intersects(const Bounds& inBounds) const;
+        bool intersects(const Vec3& inPoint) const;
 
         Vec3 getOverlap(const Bounds& inBounds) const;
 
@@ -46,22 +46,22 @@ namespace Chicane
         void refresh();
 
     private:
-        Vec3                       m_min        = Vec3::Zero;
-        Vec3                       m_baseMin    = Vec3::Zero;
+        Vec3                       m_min;
+        Vec3                       m_baseMin;
 
-        Vec3                       m_max        = Vec3::Zero;
-        Vec3                       m_baseMax    = Vec3::Zero;
+        Vec3                       m_max;
+        Vec3                       m_baseMax;
 
-        Vec3                       m_top        = Vec3::Zero;
-        Vec3                       m_baseTop    = Vec3::Zero;
+        Vec3                       m_top;
+        Vec3                       m_baseTop;
 
-        Vec3                       m_center     = Vec3::Zero;
-        Vec3                       m_baseCenter = Vec3::Zero;
+        Vec3                       m_center;
+        Vec3                       m_baseCenter;
 
-        Vec3                       m_bottom     = Vec3::Zero;
-        Vec3                       m_baseBottom = Vec3::Zero;
+        Vec3                       m_bottom;
+        Vec3                       m_baseBottom;
 
-        std::vector<Vec3>          m_vertices   = {};
-        std::vector<std::uint32_t> m_indices    = {};
+        std::vector<Vec3>          m_vertices;
+        std::vector<std::uint32_t> m_indices;
     };
 }

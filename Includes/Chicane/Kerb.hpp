@@ -16,5 +16,3 @@
 #else
 #   define CHICANE_KERB
 #endif
-
-#include "Chicane/Core.hpp"

@@ -51,12 +51,12 @@ namespace Chicane
 
     bool Actor::isCollidingWith(const Bounds& inBounds) const
     {
-        return getBounds().contains(inBounds);
+        return getBounds().intersects(inBounds);
     }
 
     bool Actor::isCollidingWith(const Vec3& inPoint) const
     {
-        return getBounds().contains(inPoint);
+        return getBounds().intersects(inPoint);
     }
 
     void Actor::collideWith(const Actor* inSubject)

@@ -135,26 +135,20 @@ namespace Chicane
 
         const Box::ModelManager* manager = Box::getModelManager();
 
-        std::vector<Vertex> vertices = {};
-
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
             const Box::ModelExtracted& model = manager->getInstance(group.getModel());
 
-            vertices.insert(
-                vertices.end(),
-                model.vertices.begin(),
-                model.vertices.end()
-            );
-        }
+            const Bounds bounds = Bounds(model.vertices, model.indices);
 
-        Bounds bounds = Bounds(vertices);
+            addBounds(bounds);
 
-        setBounds(bounds);
+            if (!isAttached())
+            {
+                continue;;
+            }
 
-        if (isAttached())
-        {
-            m_parent->setBounds(bounds);
+            m_parent->addBounds(bounds);
         }
     }
 }

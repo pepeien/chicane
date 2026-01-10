@@ -60,7 +60,7 @@ target_link_libraries(
 
     PUBLIC
         Chicane::Core
-    PRIVATE
+
         Jolt::Jolt
 )
 

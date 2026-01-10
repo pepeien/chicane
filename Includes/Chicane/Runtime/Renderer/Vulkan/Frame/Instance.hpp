@@ -92,6 +92,7 @@ namespace Chicane
                 Resource<RendererView>                       cameraResource;
                 Resource<RendererView>                       lightResource;
                 Resource<Box::MeshParsed>                    meshResource;
+                Resource<Box::MeshParsed>                    collisionResource;
 
                 std::unordered_map<String,vk::DescriptorSet> descriptorSets;
                 std::vector<vk::WriteDescriptorSet>          descriptorSetWrites;
