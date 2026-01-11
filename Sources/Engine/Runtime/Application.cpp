@@ -2,7 +2,10 @@
 
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Kerb.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+
+#if defined(CHICANE_VULKAN)
+    #include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
+#endif
 
 namespace Chicane
 {
@@ -59,10 +62,12 @@ namespace Chicane
 
             switch (g_windowInfo.renderer)
             {
+#if defined(CHICANE_VULKAN)
             case WindowRenderer::Vulkan:
                 g_renderer = std::make_unique<Vulkan::Renderer>();
 
                 break;
+#endif
 
             default:
                 g_renderer = std::make_unique<Renderer>();

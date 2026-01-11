@@ -2,19 +2,19 @@
 
 // Macros
 #if defined(BUILD_SHARED)
-#    if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#        if defined(BUILD_EXPORT)
-#            define CHICANE_GRID __declspec(dllexport)
-#        else
-#            define CHICANE_GRID __declspec(dllimport)
-#        endif
-#    elif defined(__GNUC__) || defined(__clang__)
-#        define CHICANE_GRID __attribute__((visibility("default")))
-#    else
-#        define CHICANE_GRID
-#    endif
+    #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+        #if defined(BUILD_EXPORT)
+            #define CHICANE_GRID __declspec(dllexport)
+        #else
+            #define CHICANE_GRID __declspec(dllimport)
+        #endif
+    #elif defined(__GNUC__) || defined(__clang__)
+        #define CHICANE_GRID __attribute__((visibility("default")))
+    #else
+        #define CHICANE_GRID
+    #endif
 #else
-#    define CHICANE_GRID
+    #define CHICANE_GRID
 #endif
 
 #include "Chicane/Core/Xml.hpp"

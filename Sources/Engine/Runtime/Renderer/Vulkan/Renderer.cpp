@@ -1,4 +1,4 @@
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
+#include "Chicane/Runtime/Renderer/Renderer.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/CommandBuffer.hpp"

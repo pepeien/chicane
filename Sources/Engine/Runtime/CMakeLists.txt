@@ -1,31 +1,53 @@
-##################### Vendors #######################
-find_package(Vulkan REQUIRED)
-
 ##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
 
-    # Headers
+    ${CHICANE_INCLUDES_DIR}/Runtime.hpp
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    # Sources
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
+if (CHICANE_VULKAN)
+    find_package(Vulkan REQUIRED)
+
+    list(APPEND GRAPHICS_LIBS Vulkan::Vulkan)
+else()
+    list(FILTER HEADERS EXCLUDE REGEX "Renderer/Vulkan")
+    list(FILTER SOURCES EXCLUDE REGEX "Renderer/Vulkan")
+endif()
+
+if (CHICANE_OPENGL)
+    find_package(OpenGL REQUIRED)
+
+    list(APPEND GRAPHICS_LIBS OpenGL::GL)
+else()
+    list(FILTER HEADERS EXCLUDE REGEX "Renderer/OpenGL")
+    list(FILTER SOURCES EXCLUDE REGEX "Renderer/OpenGL")
+endif()
+
 if (CHICANE_SHARED)
     add_library(${RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
     add_library(${RUNTIME_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
+endif()
+
+if (CHICANE_VULKAN)
+    target_compile_definitions(
+        ${RUNTIME_TARGET_NAME}
+
+        PRIVATE
+            CHICANE_VULKAN
+    )
 endif()
 
 add_library(
@@ -56,9 +78,6 @@ target_include_directories(
         # Alias
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-        # Vendors
-        ${Vulkan_INCLUDE_DIRS}
 )
 
 target_link_libraries(
@@ -71,7 +90,7 @@ target_link_libraries(
         Chicane::Kerb
         Chicane::Screech
 
-        Vulkan::Vulkan
+        ${GRAPHICS_LIBS}
 
     PRIVATE
         SDL3::SDL3

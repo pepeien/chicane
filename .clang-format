@@ -79,4 +79,4 @@ FixNamespaceComments: false
 AlignArrayOfStructures: Left
 PackConstructorInitializers: Never
 BreakStringLiterals: false
-IndentPPDirectives: AfterHash
+IndentPPDirectives: BeforeHash
