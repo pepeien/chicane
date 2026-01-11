@@ -67,7 +67,10 @@ namespace Chicane
                 {
                     queueCreateInfos.push_back(
                         vk::DeviceQueueCreateInfo(
-                            vk::DeviceQueueCreateFlags(), familyIndices.graphicsFamily.value(), 1, &queuePriority
+                            vk::DeviceQueueCreateFlags(),
+                            familyIndices.graphicsFamily.value(),
+                            1,
+                            &queuePriority
                         )
                     );
                 }

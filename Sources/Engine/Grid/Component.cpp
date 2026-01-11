@@ -406,11 +406,12 @@ namespace Chicane
 
             const std::vector<Component*>& neighbours = m_parent->getChildren();
 
-            std::uint32_t location =
-                std::find_if(
-                    neighbours.begin(), neighbours.end(), [&](Component* children) { return children == this; }
-                ) -
-                neighbours.begin();
+            std::uint32_t location = std::find_if(
+                                         neighbours.begin(),
+                                         neighbours.end(),
+                                         [&](Component* children) { return children == this; }
+                                     ) -
+                                     neighbours.begin();
 
             return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
         }

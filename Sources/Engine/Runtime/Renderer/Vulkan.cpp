@@ -113,9 +113,9 @@ namespace Chicane
 
             currentImage.wait(m_logicalDevice);
 
-            vk::ResultValue<std::uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
-                m_swapChain.instance, UINT64_MAX, currentImage.presentSemaphore, nullptr
-            );
+            vk::ResultValue<std::uint32_t> acquireResult =
+                m_logicalDevice
+                    .acquireNextImageKHR(m_swapChain.instance, UINT64_MAX, currentImage.presentSemaphore, nullptr);
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
             {

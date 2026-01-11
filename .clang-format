@@ -8,6 +8,7 @@ TabWidth: 4
 UseTab: Never
 ContinuationIndentWidth: 4
 AccessModifierOffset: -4
+BracedInitializerIndentWidth: 4
 NamespaceIndentation: All
 
 # Line length
@@ -48,14 +49,17 @@ PointerAlignment: Left
 ReferenceAlignment: Left
 
 # Parameters & arguments
+AlignAfterOpenBracket: BlockIndent
 BinPackParameters: false
 BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+SpacesInContainerLiterals: true
 
 # Functions
 AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortBlocksOnASingleLine: Never
 BreakAfterReturnType: Automatic
-PenaltyReturnTypeOnItsOwnLine: 1000
+PenaltyReturnTypeOnItsOwnLine: 2000
 AllowShortIfStatementsOnASingleLine: Never
 
 # Includes
@@ -75,5 +79,4 @@ FixNamespaceComments: false
 AlignArrayOfStructures: Left
 PackConstructorInitializers: Never
 BreakStringLiterals: false
-AlignAfterOpenBracket: BlockIndent
 IndentPPDirectives: AfterHash

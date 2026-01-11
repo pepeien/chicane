@@ -16,3 +16,14 @@
 #else
 #    define CHICANE_KERB
 #endif
+
+#include <Jolt/Jolt.h>
+
+namespace Chicane
+{
+    namespace Kerb
+    {
+        CHICANE_KERB void init();
+        CHICANE_KERB void exit();
+    }
+}

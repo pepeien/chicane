@@ -3,9 +3,11 @@
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Kerb.hpp"
 
-#include <Jolt/Jolt.h>
-#include <Jolt/Physics/Collision/Shape/MeshShape.h>
-#include <Jolt/Physics/Collision/Shape/Shape.h>
+#include <Jolt/Core/JobSystemThreadPool.h>
+#include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayerInterfaceTable.h>
+#include <Jolt/Physics/Collision/BroadPhase/ObjectVsBroadPhaseLayerFilterTable.h>
+#include <Jolt/Physics/Collision/ObjectLayerPairFilterTable.h>
+#include <Jolt/Physics/PhysicsSystem.h>
 
 namespace Chicane
 {
@@ -29,14 +31,21 @@ namespace Chicane
             Engine& operator=(Engine&&)      = delete;
 
         public:
-            JPH::ShapeSettings::ShapeResult createShapeFromMesh(
+            JPH::Body* createBodyFromMesh(
                 const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices
-            ) const;
+            );
 
         private:
             Engine();
 
             ~Engine();
+
+        private:
+            JPH::JobSystemThreadPool                m_threadPool;
+            JPH::BroadPhaseLayerInterfaceTable      m_broadLayer;
+            JPH::ObjectLayerPairFilterTable         m_objectLayer;
+            JPH::ObjectVsBroadPhaseLayerFilterTable m_objectVsBroadPhaseLayer;
+            JPH::PhysicsSystem                      m_system;
         };
     }
 }

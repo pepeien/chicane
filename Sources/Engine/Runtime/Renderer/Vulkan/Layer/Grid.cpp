@@ -213,7 +213,11 @@ namespace Chicane
                 inCommandBuffer.bindIndexBuffer(draw.indexBuffer.instance, 0, vk::IndexType::eUint32);
 
                 inCommandBuffer.pushConstants(
-                    m_graphicsPipeline->layout, vk::ShaderStageFlagBits::eVertex, 0, sizeof(PushConstant), &pushConstant
+                    m_graphicsPipeline->layout,
+                    vk::ShaderStageFlagBits::eVertex,
+                    0,
+                    sizeof(PushConstant),
+                    &pushConstant
                 );
 
                 inCommandBuffer.drawIndexed(draw.indexCount, 1, 0, 0, 0);
@@ -252,9 +256,8 @@ namespace Chicane
 
             outDraw.vertexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                outDraw.vertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(outDraw.vertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
@@ -297,9 +300,8 @@ namespace Chicane
 
             outDraw.indexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                outDraw.indexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(outDraw.indexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 

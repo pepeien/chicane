@@ -167,7 +167,10 @@ namespace Chicane
                 vk::DescriptorSet descriptorSet;
 
                 Descriptor::allocalteSet(
-                    descriptorSet, m_internals.logicalDevice, m_frameDescriptor.setLayout, m_frameDescriptor.pool
+                    descriptorSet,
+                    m_internals.logicalDevice,
+                    m_frameDescriptor.setLayout,
+                    m_frameDescriptor.pool
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
 
@@ -304,9 +307,8 @@ namespace Chicane
 
             m_modelVertexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                m_modelVertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(m_modelVertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
@@ -339,9 +341,8 @@ namespace Chicane
 
             m_modelIndexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                m_modelIndexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(m_modelIndexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 

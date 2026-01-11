@@ -3,7 +3,7 @@ file(
     GLOB_RECURSE
     HEADERS
 
-    # Headers
+    ${CHICANE_INCLUDES_DIR}/Kerb.hpp
     ${KERB_HEADER_DIR}/*.hpp
 )
 list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Kerb.hpp)
@@ -13,7 +13,7 @@ file(
     GLOB_RECURSE
     SOURCES
 
-    # Sources
+    ${CHICANE_SOURCES_DIR}/Kerb.cpp
     ${KERB_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")

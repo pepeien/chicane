@@ -103,9 +103,9 @@ namespace Chicane
                         [](const auto& inAttachment) { return inAttachment.type == AttachmentType::Color; }
                     ) != inCreateInfo.attachments.end(),
                     std::find_if(
-                        inCreateInfo.attachments.begin(), inCreateInfo.attachments.end(), [](const auto& inAttachment) {
-                            return inAttachment.type == AttachmentType::Depth;
-                        }
+                        inCreateInfo.attachments.begin(),
+                        inCreateInfo.attachments.end(),
+                        [](const auto& inAttachment) { return inAttachment.type == AttachmentType::Depth; }
                     ) != inCreateInfo.attachments.end()
                 );
                 pipelineInfo.subpass            = 0;
@@ -139,9 +139,8 @@ namespace Chicane
                 vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
             )
             {
-                inCommandBuffer.bindDescriptorSets(
-                    vk::PipelineBindPoint::eGraphics, layout, inIndex, inDescriptorSet, nullptr
-                );
+                inCommandBuffer
+                    .bindDescriptorSets(vk::PipelineBindPoint::eGraphics, layout, inIndex, inDescriptorSet, nullptr);
             }
         }
     }

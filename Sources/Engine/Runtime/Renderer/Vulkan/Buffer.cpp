@@ -32,7 +32,9 @@ namespace Chicane
             vk::MemoryAllocateInfo memoryAlocateInfo = {};
             memoryAlocateInfo.allocationSize         = memoryRequirements.size;
             memoryAlocateInfo.memoryTypeIndex        = Device::findMemoryTypeIndex(
-                inCreateInfo.physicalDevice, memoryRequirements.memoryTypeBits, inCreateInfo.memoryProperties
+                inCreateInfo.physicalDevice,
+                memoryRequirements.memoryTypeBits,
+                inCreateInfo.memoryProperties
             );
 
             memory = inCreateInfo.logicalDevice.allocateMemory(memoryAlocateInfo);

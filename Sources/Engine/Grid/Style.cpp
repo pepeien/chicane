@@ -397,7 +397,8 @@ namespace Chicane
             }
 
             setProperty(
-                letterSpacing, parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                letterSpacing,
+                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
             );
         }
 

@@ -146,7 +146,6 @@ namespace Chicane
             if (!isAttached())
             {
                 continue;
-                ;
             }
 
             m_parent->addBounds(bounds);

@@ -34,5 +34,7 @@ namespace Chicane
         {
             return static_cast<const T*>(load(inFilePath));
         }
+
+        CHICANE_BOX void init(const String& inPath = ".");
     }
 }

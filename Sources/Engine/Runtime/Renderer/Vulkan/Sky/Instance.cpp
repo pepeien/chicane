@@ -48,7 +48,11 @@ namespace Chicane
             void Instance::bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
             {
                 inCommandBuffer.bindDescriptorSets(
-                    vk::PipelineBindPoint::eGraphics, inPipelineLayout, 1, m_descriptor.set, nullptr
+                    vk::PipelineBindPoint::eGraphics,
+                    inPipelineLayout,
+                    1,
+                    m_descriptor.set,
+                    nullptr
                 );
             }
 

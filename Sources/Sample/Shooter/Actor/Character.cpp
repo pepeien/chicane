@@ -65,27 +65,41 @@ void Character::onControlAttachment()
     m_controller->bindEvent(std::bind(&Character::onMouseMotion, this, std::placeholders::_1));
 
     m_controller->bindEvent(
-        Chicane::Input::MouseButton::Left, Chicane::Input::Status::Pressed, std::bind(&Character::onLeftClick, this)
+        Chicane::Input::MouseButton::Left,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onLeftClick, this)
     );
     m_controller->bindEvent(
-        Chicane::Input::MouseButton::Right, Chicane::Input::Status::Pressed, std::bind(&Character::onRightClick, this)
+        Chicane::Input::MouseButton::Right,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onRightClick, this)
     );
 
     // Keyboard
     m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::W, Chicane::Input::Status::Pressed, std::bind(&Character::onMoveForward, this)
+        Chicane::Input::KeyboardButton::W,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onMoveForward, this)
     );
     m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::S, Chicane::Input::Status::Pressed, std::bind(&Character::onMoveBackward, this)
+        Chicane::Input::KeyboardButton::S,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onMoveBackward, this)
     );
     m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::A, Chicane::Input::Status::Pressed, std::bind(&Character::onMoveLeft, this)
+        Chicane::Input::KeyboardButton::A,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onMoveLeft, this)
     );
     m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::D, Chicane::Input::Status::Pressed, std::bind(&Character::onMoveRight, this)
+        Chicane::Input::KeyboardButton::D,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onMoveRight, this)
     );
     m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::Space, Chicane::Input::Status::Pressed, std::bind(&Character::onJump, this)
+        Chicane::Input::KeyboardButton::Space,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onJump, this)
     );
 
     m_controller->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
@@ -111,7 +125,9 @@ void Character::onControlAttachment()
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
 
     m_controller->bindEvent(
-        Chicane::Input::GamepadButton::South, Chicane::Input::Status::Pressed, std::bind(&Character::onJump, this)
+        Chicane::Input::GamepadButton::South,
+        Chicane::Input::Status::Pressed,
+        std::bind(&Character::onJump, this)
     );
 }
 

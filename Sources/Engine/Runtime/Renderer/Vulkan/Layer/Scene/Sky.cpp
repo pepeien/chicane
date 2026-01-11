@@ -119,7 +119,11 @@ namespace Chicane
             commandBuffer.bindIndexBuffer(m_modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             commandBuffer.drawIndexed(
-                static_cast<std::uint32_t>(m_modelManager->getInstance(m_asset->getModel()).indices.size()), 1, 0, 0, 0
+                static_cast<std::uint32_t>(m_modelManager->getInstance(m_asset->getModel()).indices.size()),
+                1,
+                0,
+                0,
+                0
             );
             commandBuffer.endRenderPass();
         }
@@ -191,7 +195,10 @@ namespace Chicane
             {
                 vk::DescriptorSet descriptorSet;
                 Descriptor::allocalteSet(
-                    descriptorSet, m_internals.logicalDevice, m_frameDescriptor.setLayout, m_frameDescriptor.pool
+                    descriptorSet,
+                    m_internals.logicalDevice,
+                    m_frameDescriptor.setLayout,
+                    m_frameDescriptor.pool
                 );
                 frame.addDescriptorSet(m_id, descriptorSet);
 
@@ -366,9 +373,8 @@ namespace Chicane
 
             m_modelVertexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                m_modelVertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(m_modelVertexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 
@@ -401,9 +407,8 @@ namespace Chicane
 
             m_modelIndexBuffer.init(createInfo);
 
-            stagingBuffer.copy(
-                m_modelIndexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer
-            );
+            stagingBuffer
+                .copy(m_modelIndexBuffer, createInfo.size, m_internals.graphicsQueue, m_internals.mainCommandBuffer);
             stagingBuffer.destroy(m_internals.logicalDevice);
         }
 

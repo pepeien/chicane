@@ -370,7 +370,11 @@ namespace Chicane
         const Image image = Image(inPath);
 
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
-            image.getWidth(), image.getHeight(), SDL_PIXELFORMAT_ARGB8888, image.getPixels(), image.getPitch()
+            image.getWidth(),
+            image.getHeight(),
+            SDL_PIXELFORMAT_ARGB8888,
+            image.getPixels(),
+            image.getPitch()
         );
 
         if (!icon || !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon))

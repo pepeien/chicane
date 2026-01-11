@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Kerb.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan.hpp"
 
 namespace Chicane
@@ -72,26 +73,6 @@ namespace Chicane
             g_renderer->init(g_window.get());
         }
 
-        void initAssets(const String& inPath)
-        {
-            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
-            {
-                if (item.type != FileSystem::ItemType::File)
-                {
-                    initAssets(item.path);
-
-                    continue;
-                }
-
-                if (!Box::AssetHeader::isFileAsset(item.path.toStandard()))
-                {
-                    continue;
-                }
-
-                Box::load(item.path.toStandard());
-            }
-        }
-
         void render()
         {
             if (hasScene())
@@ -116,7 +97,8 @@ namespace Chicane
 
             initWindow();
             initRenderer();
-            initAssets(".");
+            Box::init();
+            Kerb::init();
 
             if (inCreateInfo.onSetup)
             {

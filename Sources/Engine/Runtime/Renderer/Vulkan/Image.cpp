@@ -91,7 +91,9 @@ namespace Chicane
                 vk::MemoryAllocateInfo allocationInfo;
                 allocationInfo.allocationSize  = requirements.size;
                 allocationInfo.memoryTypeIndex = Device::findMemoryTypeIndex(
-                    inCreateInfo.physicalDevice, requirements.memoryTypeBits, inCreateInfo.properties
+                    inCreateInfo.physicalDevice,
+                    requirements.memoryTypeBits,
+                    inCreateInfo.properties
                 );
 
                 outMemory = inCreateInfo.logicalDevice.allocateMemory(allocationInfo);
@@ -155,9 +157,8 @@ namespace Chicane
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
 
-                inCommandBuffer.pipelineBarrier(
-                    sourceStage, destinationStage, vk::DependencyFlags(), nullptr, nullptr, barrier
-                );
+                inCommandBuffer
+                    .pipelineBarrier(sourceStage, destinationStage, vk::DependencyFlags(), nullptr, nullptr, barrier);
 
                 CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
             }
@@ -189,7 +190,10 @@ namespace Chicane
                 bufferImageCopy.imageExtent         = vk::Extent3D(inWidth, inHeight, 1);
 
                 inCommandBuffer.copyBufferToImage(
-                    inSourceBuffer, inDestinationImage, vk::ImageLayout::eTransferDstOptimal, bufferImageCopy
+                    inSourceBuffer,
+                    inDestinationImage,
+                    vk::ImageLayout::eTransferDstOptimal,
+                    bufferImageCopy
                 );
 
                 CommandBuffer::Worker::endJob(inCommandBuffer, inQueue, "Copy Buffer To Image");

@@ -131,7 +131,8 @@ namespace Chicane
                 if (familyIndices.graphicsFamily.value() != familyIndices.presentFamily.value())
                 {
                     std::uint32_t queueFamilyIndices[] = {
-                        familyIndices.graphicsFamily.value(), familyIndices.presentFamily.value()
+                        familyIndices.graphicsFamily.value(),
+                        familyIndices.presentFamily.value()
                     };
 
                     createInfo.imageSharingMode      = vk::SharingMode::eConcurrent;

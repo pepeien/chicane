@@ -235,5 +235,25 @@ namespace Chicane
                 return nullptr;
             }
         }
+
+        void init(const String& inPath)
+        {
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            {
+                if (item.type != FileSystem::ItemType::File)
+                {
+                    init(item.path);
+
+                    continue;
+                }
+
+                if (!AssetHeader::isFileAsset(item.path.toStandard()))
+                {
+                    continue;
+                }
+
+                load(item.path.toStandard());
+            }
+        }
     }
 }
