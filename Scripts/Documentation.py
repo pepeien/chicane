@@ -358,12 +358,13 @@ def add_definition(result, compounddef, base_key = ""):
                         data["type"] = "override"
 
                 for parameter in memberdef.findall("param"):
-                    data["parameters"].append(
-                        {
-                            "type": get_type_def(parameter.find("type")),
-                            "name": parameter.find("declname").text
-                        }
-                    )
+                    if parameter.find("declname") is not None:
+                        data["parameters"].append(
+                            {
+                                "type": get_type_def(parameter.find("type")),
+                                "name": parameter.find("declname").text
+                            }
+                        )
 
                 if inner_name in (title, "~" + title):
                     if "~" in inner_name:
