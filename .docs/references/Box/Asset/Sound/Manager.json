@@ -62,7 +62,7 @@
                             "path": "Box/Asset/Sound",
                             "templates": []
                         },
-                        "name": "inAudio"
+                        "name": "inAsset"
                     }
                 ],
                 "modifiers": [],
@@ -73,9 +73,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Audio::Raw",
+                    "name": "Sound::Raw",
                     "suffix": "&",
-                    "path": "Core/Audio",
+                    "path": "Box/Asset/Sound",
                     "templates": []
                 },
                 "name": "getInstance",
@@ -100,10 +100,10 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "Audio",
-                    "suffix": "",
-                    "path": "Core/Audio",
+                    "prefix": "const ",
+                    "name": "Sound::Raw",
+                    "suffix": "&",
+                    "path": "Box/Asset/Sound",
                     "templates": []
                 },
                 "name": "getData",

@@ -1,0 +1,51 @@
+{
+    "title": "Item Type",
+    "filename": "Type",
+    "path": "Core/FileSystem/Item/Type",
+    "source": {
+        "header": "Includes/Chicane/Core/FileSystem/Item/Type.hpp",
+        "namespace": "Chicane::FileSystem::ItemType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_FILESYSTEM_ITEMTYPE_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Folder",
+                "description": "CHICANE_FILESYSTEM_ITEMTYPE_FOLDER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "File",
+                "description": "CHICANE_FILESYSTEM_ITEMTYPE_FILE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_FILESYSTEM_ITEMTYPE_DESCRIPTION"
+    },
+    "children": []
+}

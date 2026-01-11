@@ -16,9 +16,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Direction",
+                    "name": "StyleFlexDirection",
                     "suffix": "",
-                    "path": "Grid/Style/Flex",
+                    "path": "Grid/Style/Flex/Direction",
                     "templates": []
                 },
                 "name": "direction",

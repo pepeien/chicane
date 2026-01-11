@@ -1,0 +1,66 @@
+{
+    "title": "Object Layer",
+    "filename": "Object",
+    "path": "Kerb/Layer/Object",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Layer/Object.hpp",
+        "namespace": "Chicane::Kerb::ObjectLayer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NonMoving",
+                "description": "CHICANE_KERB_OBJECTLAYER_NONMOVING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Moving",
+                "description": "CHICANE_KERB_OBJECTLAYER_MOVING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_KERB_OBJECTLAYER_COUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_OBJECTLAYER_DESCRIPTION"
+    },
+    "children": []
+}

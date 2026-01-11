@@ -1,0 +1,40 @@
+{
+    "title": "Style Flex Direction",
+    "filename": "Direction",
+    "path": "Grid/Style/Flex/Direction",
+    "source": {
+        "header": "Includes/Chicane/Grid/Style/Flex/Direction.hpp",
+        "namespace": "Chicane::Grid::StyleFlexDirection",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Column",
+                "description": "CHICANE_GRID_STYLEFLEXDIRECTION_COLUMN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Row",
+                "description": "CHICANE_GRID_STYLEFLEXDIRECTION_ROW_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_GRID_STYLEFLEXDIRECTION_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,118 @@
+{
+    "title": "CSound",
+    "filename": "Sound",
+    "path": "Runtime/Scene/Component/Sound",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Scene/Component/Sound.hpp",
+        "namespace": "Chicane::CSound",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CSound",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CSOUND_CSOUND_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~CSound",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CSOUND_~CSOUND_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "load",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inSound"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CSOUND_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_CSOUND_PLAY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Screech::Sound",
+                    "suffix": "",
+                    "path": "Screech/Sound",
+                    "templates": []
+                },
+                "name": "m_sound",
+                "description": "CHICANE_CSOUND_M_SOUND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::SoundManager",
+                    "suffix": "*",
+                    "path": "Box/Asset/Sound/Manager",
+                    "templates": []
+                },
+                "name": "m_manager",
+                "description": "CHICANE_CSOUND_M_MANAGER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_CSOUND_DESCRIPTION"
+    },
+    "children": []
+}

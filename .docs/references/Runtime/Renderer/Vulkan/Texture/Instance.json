@@ -1,0 +1,159 @@
+{
+    "title": "Instance",
+    "filename": "Instance",
+    "path": "Runtime/Renderer/Vulkan/Texture/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Texture/Instance.hpp",
+        "namespace": "Chicane::Vulkan::Texture::Instance",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Instance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Texture/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_INSTANCE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Instance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_~INSTANCE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Image::Data",
+                    "suffix": "&",
+                    "path": "Runtime/Renderer/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "getImage",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_GETIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "populate",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_POPULATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Data",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "m_image",
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_M_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_logicalDevice",
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_M_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_physicalDevice",
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_M_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_commandBuffer",
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_M_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_queue",
+                "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_M_QUEUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_TEXTURE_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

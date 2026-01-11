@@ -1,0 +1,71 @@
+{
+    "title": "Screech",
+    "filename": "Screech",
+    "path": "Screech",
+    "source": {
+        "header": "Includes/Chicane/Screech.hpp",
+        "namespace": "Chicane::Screech",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getContext",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_GETCONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getEngine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_GETENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "class Device",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getDevices",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_GETDEVICES_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_SCREECH_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,183 @@
+{
+    "title": "Sound Vendor",
+    "filename": "Vendor",
+    "path": "Screech/Sound/Vendor",
+    "source": {
+        "header": "Includes/Chicane/Screech/Sound/Vendor.hpp",
+        "namespace": "Chicane::Screech::SoundVendor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WASAPI",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_WASAPI_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DirectSound",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_DIRECTSOUND_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WinMM",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_WINMM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "CoreAudio",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_COREAUDIO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sndio",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_SNDIO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Audio4",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_AUDIO4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OSS",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_OSS_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "PulseAudio",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_PULSEAUDIO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ALSA",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_ALSA_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "JACK",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_JACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "AAudio",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_AAUDIO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OpenSL",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_OPENSL_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WebAudio",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_WEBAUDIO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Custom",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_CUSTOM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Null",
+                "description": "CHICANE_SCREECH_SOUNDVENDOR_NULL_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SCREECH_SOUNDVENDOR_DESCRIPTION"
+    },
+    "children": []
+}

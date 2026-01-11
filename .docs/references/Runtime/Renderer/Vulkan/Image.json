@@ -1,0 +1,408 @@
+{
+    "title": "Image",
+    "filename": "Image",
+    "path": "Runtime/Renderer/Vulkan/Image",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image.hpp",
+        "namespace": "Chicane::Vulkan::Image",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findSupportedFormat",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPhysicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "vk::Format",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCandidates"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::ImageTiling",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inTiling"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::FormatFeatureFlags",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFeatures"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_FINDSUPPORTEDFORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initInstance",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Image",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Instance::CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Image/Instance/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_INITINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initSampler",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Sampler",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outSampler"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Sampler::CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_INITSAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initMemory",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DeviceMemory",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outMemory"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Image",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Memory::CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Image/Memory/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_INITMEMORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initView",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::ImageView",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outImageView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Image",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "View::CreateInfo",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/Vulkan/Image/View/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_INITVIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "transitionLayout",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Queue",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inQueue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Image",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::ImageLayout",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inOldLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::ImageLayout",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNewLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_TRANSITIONLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copyBufferToImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Queue",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inQueue"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Buffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSourceBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Image",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDestinationImage"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWidth"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inHeight"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inCount"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_IMAGE_COPYBUFFERTOIMAGE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_VULKAN_IMAGE_DESCRIPTION"
+    },
+    "children": []
+}

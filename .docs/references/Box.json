@@ -45,43 +45,6 @@
                 "description": "CHICANE_BOX_MODELRAW_DESCRIPTION"
             },
             {
-                "name": "SkyRawSide",
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "description": "CHICANE_BOX_SKYRAWSIDE_DESCRIPTION"
-            },
-            {
-                "name": "SkyRawSides",
-                "type": {
-                    "prefix": "",
-                    "name": "std::unordered_map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "SkySide",
-                            "suffix": "",
-                            "path": "Box/Asset/Sky/Side",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "SkyRawSide",
-                            "suffix": "",
-                            "path": "Box",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
-            },
-            {
                 "name": "SkyParsedSide",
                 "type": {
                     "prefix": "",
@@ -117,6 +80,43 @@
                     ]
                 },
                 "description": "CHICANE_BOX_SKYPARSEDSIDES_DESCRIPTION"
+            },
+            {
+                "name": "SkyRawSide",
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "description": "CHICANE_BOX_SKYRAWSIDE_DESCRIPTION"
+            },
+            {
+                "name": "SkyRawSides",
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "SkySide",
+                            "suffix": "",
+                            "path": "Box/Asset/Sky/Side",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "SkyRawSide",
+                            "suffix": "",
+                            "path": "Box",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_SKYRAWSIDES_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -128,9 +128,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "SoundManager",
+                    "name": "class SoundManager",
                     "suffix": "*",
-                    "path": "Box/Asset/Sound/Manager",
+                    "path": "",
                     "templates": []
                 },
                 "name": "getSoundManager",
@@ -143,9 +143,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "FontManager",
+                    "name": "class FontManager",
                     "suffix": "*",
-                    "path": "Box/Asset/Font/Manager",
+                    "path": "",
                     "templates": []
                 },
                 "name": "getFontManager",
@@ -158,9 +158,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ModelManager",
+                    "name": "class ModelManager",
                     "suffix": "*",
-                    "path": "Box/Asset/Model/Manager",
+                    "path": "",
                     "templates": []
                 },
                 "name": "getModelManager",
@@ -173,9 +173,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "TextureManager",
+                    "name": "class TextureManager",
                     "suffix": "*",
-                    "path": "Box/Asset/Texture/Manager",
+                    "path": "",
                     "templates": []
                 },
                 "name": "getTextureManager",
@@ -188,9 +188,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Asset",
+                    "name": "class Asset",
                     "suffix": "*",
-                    "path": "Box/Asset",
+                    "path": "",
                     "templates": []
                 },
                 "name": "load",
@@ -234,6 +234,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_BOX_LOAD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inPath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_INIT_DESCRIPTION"
             }
         ],
         "members": [],

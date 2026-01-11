@@ -25,9 +25,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Transformable",
+                            "name": "class Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Transformable",
+                            "path": "",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -53,9 +53,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "CView",
+                            "name": "class CView",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Component/View",
+                            "path": "",
                             "templates": []
                         },
                         "name": "inView"

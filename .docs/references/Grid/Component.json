@@ -1899,7 +1899,7 @@
                     "prefix": "",
                     "name": "FunctionData",
                     "suffix": "",
-                    "path": "Grid/Function",
+                    "path": "Grid/Function/Data",
                     "templates": []
                 },
                 "name": "parseFunction",

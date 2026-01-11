@@ -1,0 +1,258 @@
+{
+    "title": "Sound",
+    "filename": "Sound",
+    "path": "Screech/Sound",
+    "source": {
+        "header": "Includes/Chicane/Screech/Sound.hpp",
+        "namespace": "Chicane::Screech::Sound",
+        "types": [
+            {
+                "name": "Raw",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "unsigned char",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_SCREECH_SOUND_RAW_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sound",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Raw",
+                            "suffix": "&",
+                            "path": "Screech/Sound",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_SOUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Sound",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_SOUND_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Sound",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_~SOUND_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isPlaying",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCREECH_SOUND_ISPLAYING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "play",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inVolume"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSpeed"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "void()",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCallback"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_PLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isPaused",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCREECH_SOUND_ISPAUSED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pause",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_PAUSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isStopped",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCREECH_SOUND_ISSTOPPED_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "stop",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_STOP_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SoundStatus",
+                    "suffix": "",
+                    "path": "Screech/Sound/Status",
+                    "templates": []
+                },
+                "name": "m_status",
+                "description": "CHICANE_SCREECH_SOUND_M_STATUS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "struct _Data",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_data",
+                "description": "CHICANE_SCREECH_SOUND_M_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCREECH_SOUND_DESCRIPTION"
+    },
+    "children": []
+}

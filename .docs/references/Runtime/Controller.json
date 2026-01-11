@@ -235,7 +235,7 @@
                             "prefix": "",
                             "name": "Input::MouseMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -281,7 +281,7 @@
                             "prefix": "",
                             "name": "Input::MouseButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -327,7 +327,7 @@
                             "prefix": "",
                             "name": "Input::KeyboardEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -353,7 +353,7 @@
                             "prefix": "",
                             "name": "Input::GamepadMotionEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -399,7 +399,7 @@
                             "prefix": "",
                             "name": "Input::GamepadButtonEventCallback",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inCallback"
@@ -435,7 +435,7 @@
                             "prefix": "",
                             "name": "Input::DeviceID",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inId"
@@ -501,7 +501,7 @@
                             "prefix": "",
                             "name": "Input::DeviceID",
                             "suffix": "",
-                            "path": "Core/Input/Device/Event",
+                            "path": "Core/Input/Device",
                             "templates": []
                         },
                         "name": "inId"
@@ -941,7 +941,7 @@
                     "prefix": "",
                     "name": "Input::DeviceMap",
                     "suffix": "",
-                    "path": "Core/Input/Device/Event",
+                    "path": "Core/Input/Device",
                     "templates": []
                 },
                 "name": "m_devices",

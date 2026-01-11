@@ -1,0 +1,1072 @@
+{
+    "title": "Instance",
+    "filename": "Instance",
+    "path": "Runtime/Renderer/Vulkan/Frame/Instance",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp",
+        "namespace": "Chicane::Vulkan::Frame::Instance",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "wait",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_WAIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupSync",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPSYNC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroySync",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYSYNC_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupCameraData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CCamera",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Camera",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCameras"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPCAMERADATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateCameraData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CCamera",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Camera",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCameras"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_UPDATECAMERADATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyCameraData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYCAMERADATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupLightData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CLight",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Light",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inLights"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPLIGHTDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateLightData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CLight",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Light",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inLights"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_UPDATELIGHTDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyLightData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYLIGHTDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupMeshData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CMesh",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Mesh",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inMeshes"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPMESHDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateMeshData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CMesh",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Mesh",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inMeshes"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_UPDATEMESHDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyMeshData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYMESHDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupColorImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPCOLORIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyColorImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYCOLORIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupDepthImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPDEPTHIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyDepthImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYDEPTHIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setupShadowImage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Format",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFormat"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Extent2D",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inExtent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SETUPSHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyShadowImage",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESTROYSHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addFrameBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Framebuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inFramebuffer"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_ADDFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::Framebuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getFramebuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_GETFRAMEBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addDescriptorSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDescriptorSet"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_ADDDESCRIPTORSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSet",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDescriptorSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_GETDESCRIPTORSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addWriteDescriptorSet",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::WriteDescriptorSet",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWriteDescriptorSet"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_ADDWRITEDESCRIPTORSET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateDescriptorSets",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_UPDATEDESCRIPTORSETS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RendererView",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View",
+                    "templates": []
+                },
+                "name": "getActiveCameraData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CCamera",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Camera",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inCameras"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_GETACTIVECAMERADATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "RendererView",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/View",
+                    "templates": []
+                },
+                "name": "normalizeViewData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "RendererView",
+                            "suffix": "&",
+                            "path": "Runtime/Renderer/View",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_NORMALIZEVIEWDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshMeshData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "CMesh",
+                                    "suffix": "*",
+                                    "path": "Runtime/Scene/Component/Mesh",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inMeshes"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_REFRESHMESHDATA_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "physicalDevice",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Data",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "colorImage",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_COLORIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Data",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "depthImage",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DEPTHIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::Data",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "shadowImage",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SHADOWIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorImageInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "shadowImageInfo",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_SHADOWIMAGEINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "vk::Framebuffer",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "framebuffers",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_FRAMEBUFFERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commandBuffer",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Fence",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderFence",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_RENDERFENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Semaphore",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "presentSemaphore",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_PRESENTSEMAPHORE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Semaphore",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderSemaphore",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_RENDERSEMAPHORE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Resource",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Frame/Resource",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RendererView",
+                            "suffix": "",
+                            "path": "Runtime/Renderer/View",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "cameraResource",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_CAMERARESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Resource",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Frame/Resource",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "RendererView",
+                            "suffix": "",
+                            "path": "Runtime/Renderer/View",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "lightResource",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_LIGHTRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Resource",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Frame/Resource",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Box::MeshParsed",
+                            "suffix": "",
+                            "path": "Box/Asset/Mesh/Parsed",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "meshResource",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_MESHRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Resource",
+                    "suffix": "",
+                    "path": "Runtime/Renderer/Vulkan/Frame/Resource",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Box::MeshParsed",
+                            "suffix": "",
+                            "path": "Box/Asset/Mesh/Parsed",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "collisionResource",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_COLLISIONRESOURCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unordered_map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "descriptorSets",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESCRIPTORSETS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::WriteDescriptorSet",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "descriptorSetWrites",
+                "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESCRIPTORSETWRITES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_FRAME_INSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

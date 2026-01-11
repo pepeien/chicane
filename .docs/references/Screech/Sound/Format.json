@@ -1,0 +1,95 @@
+{
+    "title": "Sound Format",
+    "filename": "Format",
+    "path": "Screech/Sound/Format",
+    "source": {
+        "header": "Includes/Chicane/Screech/Sound/Format.hpp",
+        "namespace": "Chicane::Screech::SoundFormat",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Unknown",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_UNKNOWN_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "U8",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_U8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "S16",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_S16_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "S24",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_S24_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "S32",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_S32_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "F32",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_F32_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_SCREECH_SOUNDFORMAT_COUNT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SCREECH_SOUNDFORMAT_DESCRIPTION"
+    },
+    "children": []
+}

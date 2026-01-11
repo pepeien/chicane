@@ -1,0 +1,17 @@
+{
+    "title": "Sampler",
+    "filename": "Create Info",
+    "path": "Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Image/Sampler/CreateInfo.hpp",
+        "namespace": "Chicane::Vulkan::Image::Sampler",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_IMAGE_SAMPLER_DESCRIPTION"
+    },
+    "children": []
+}

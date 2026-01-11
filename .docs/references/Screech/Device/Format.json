@@ -1,0 +1,86 @@
+{
+    "title": "Device Format",
+    "filename": "Format",
+    "path": "Screech/Device/Format",
+    "source": {
+        "header": "Includes/Chicane/Screech/Device/Format.hpp",
+        "namespace": "Chicane::Screech::DeviceFormat",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DeviceFormat",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_DEVICEFORMAT_DEVICEFORMAT_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SoundFormat",
+                    "suffix": "",
+                    "path": "Screech/Sound/Format",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_SCREECH_DEVICEFORMAT_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "channels",
+                "description": "CHICANE_SCREECH_DEVICEFORMAT_CHANNELS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampleRate",
+                "description": "CHICANE_SCREECH_DEVICEFORMAT_SAMPLERATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flags",
+                "description": "CHICANE_SCREECH_DEVICEFORMAT_FLAGS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCREECH_DEVICEFORMAT_DESCRIPTION"
+    },
+    "children": []
+}

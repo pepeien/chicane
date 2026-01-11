@@ -50,6 +50,34 @@
                 "parameters": [
                     {
                         "type": {
+                            "prefix": "const ",
+                            "name": "short unsigned int",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_STRING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "String",
+                "parameters": [
+                    {
+                        "type": {
                             "prefix": "",
                             "name": "char",
                             "suffix": "",

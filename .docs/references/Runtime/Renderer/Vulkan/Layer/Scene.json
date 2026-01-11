@@ -1,0 +1,33 @@
+{
+    "title": "LScene",
+    "filename": "Scene",
+    "path": "Runtime/Renderer/Vulkan/Layer/Scene",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Layer/Scene.hpp",
+        "namespace": "Chicane::Vulkan::LScene",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_LSCENE_LSCENE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VULKAN_LSCENE_DESCRIPTION"
+    },
+    "children": []
+}

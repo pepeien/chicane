@@ -1,0 +1,76 @@
+{
+    "title": "Family Indices",
+    "filename": "Family Indices",
+    "path": "Runtime/Renderer/Vulkan/Queue/FamilyIndices",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Queue/FamilyIndices.hpp",
+        "namespace": "Chicane::Vulkan::Queue::FamilyIndices",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isComplete",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VULKAN_QUEUE_FAMILYINDICES_ISCOMPLETE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "graphicsFamily",
+                "description": "CHICANE_VULKAN_QUEUE_FAMILYINDICES_GRAPHICSFAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "presentFamily",
+                "description": "CHICANE_VULKAN_QUEUE_FAMILYINDICES_PRESENTFAMILY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_QUEUE_FAMILYINDICES_DESCRIPTION"
+    },
+    "children": []
+}

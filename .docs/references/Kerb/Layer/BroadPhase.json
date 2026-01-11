@@ -1,0 +1,66 @@
+{
+    "title": "Broad Phase Layer",
+    "filename": "Broad Phase",
+    "path": "Kerb/Layer/BroadPhase",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Layer/BroadPhase.hpp",
+        "namespace": "Chicane::Kerb::BroadPhaseLayer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NonMoving",
+                "description": "CHICANE_KERB_BROADPHASELAYER_NONMOVING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Moving",
+                "description": "CHICANE_KERB_BROADPHASELAYER_MOVING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_KERB_BROADPHASELAYER_COUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_BROADPHASELAYER_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,0 +1,165 @@
+{
+    "title": "Manager",
+    "filename": "Manager",
+    "path": "Screech/Manager",
+    "source": {
+        "header": "Includes/Chicane/Screech/Manager.hpp",
+        "namespace": "Chicane::Screech::Manager",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Manager",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_MANAGER_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Manager",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_~MANAGER_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getContext",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_GETCONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getEngine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_GETENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Device",
+                            "suffix": "",
+                            "path": "Screech/Device",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getDevices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCREECH_MANAGER_GETDEVICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initContext",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_INITCONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyContext",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_DESTROYCONTEXT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initEngine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_INITENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroyEngine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_MANAGER_DESTROYENGINE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_SCREECH_MANAGER_DESCRIPTION"
+    },
+    "children": []
+}

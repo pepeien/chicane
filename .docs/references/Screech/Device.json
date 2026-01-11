@@ -1,0 +1,186 @@
+{
+    "title": "Device",
+    "filename": "Device",
+    "path": "Screech/Device",
+    "source": {
+        "header": "Includes/Chicane/Screech/Device.hpp",
+        "namespace": "Chicane::Screech::Device",
+        "types": [
+            {
+                "name": "Formats",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DeviceFormat",
+                            "suffix": "",
+                            "path": "Screech/Device/Format",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_SCREECH_DEVICE_FORMATS_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Device",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DeviceType",
+                            "suffix": "",
+                            "path": "Screech/Device/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_DEVICE_DEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Device",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_DEVICE_DEVICE_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_SCREECH_DEVICE_GETINSTANCE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_instance",
+                "description": "CHICANE_SCREECH_DEVICE_M_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsSystemDefault",
+                "description": "CHICANE_SCREECH_DEVICE_M_BISSYSTEMDEFAULT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "m_name",
+                "description": "CHICANE_SCREECH_DEVICE_M_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DeviceId",
+                    "suffix": "",
+                    "path": "Screech/Device/Id",
+                    "templates": []
+                },
+                "name": "m_id",
+                "description": "CHICANE_SCREECH_DEVICE_M_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DeviceType",
+                    "suffix": "",
+                    "path": "Screech/Device/Type",
+                    "templates": []
+                },
+                "name": "m_type",
+                "description": "CHICANE_SCREECH_DEVICE_M_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Formats",
+                    "suffix": "",
+                    "path": "Screech/Device",
+                    "templates": []
+                },
+                "name": "m_formats",
+                "description": "CHICANE_SCREECH_DEVICE_M_FORMATS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCREECH_DEVICE_DESCRIPTION"
+    },
+    "children": []
+}

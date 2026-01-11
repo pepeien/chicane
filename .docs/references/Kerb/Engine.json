@@ -1,0 +1,246 @@
+{
+    "title": "Engine",
+    "filename": "Engine",
+    "path": "Kerb/Engine",
+    "source": {
+        "header": "Includes/Chicane/Kerb/Engine.hpp",
+        "namespace": "Chicane::Kerb::Engine",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_ENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_ENGINE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_ENGINE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Engine",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_~ENGINE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Kerb/Engine",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_KERB_ENGINE_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Kerb/Engine",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Engine",
+                    "suffix": "&",
+                    "path": "Kerb/Engine",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "JPH::Body",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "createBodyFromMesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "Vertex",
+                                    "suffix": "",
+                                    "path": "Core/Math/Vertex",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inIndices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_KERB_ENGINE_CREATEBODYFROMMESH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "JPH::JobSystemThreadPool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_threadPool",
+                "description": "CHICANE_KERB_ENGINE_M_THREADPOOL_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "JPH::BroadPhaseLayerInterfaceTable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_broadLayer",
+                "description": "CHICANE_KERB_ENGINE_M_BROADLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "JPH::ObjectLayerPairFilterTable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_objectLayer",
+                "description": "CHICANE_KERB_ENGINE_M_OBJECTLAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "JPH::ObjectVsBroadPhaseLayerFilterTable",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_objectVsBroadPhaseLayer",
+                "description": "CHICANE_KERB_ENGINE_M_OBJECTVSBROADPHASELAYER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "JPH::PhysicsSystem",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_system",
+                "description": "CHICANE_KERB_ENGINE_M_SYSTEM_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_KERB_ENGINE_DESCRIPTION"
+    },
+    "children": []
+}

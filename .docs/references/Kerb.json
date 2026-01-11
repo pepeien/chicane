@@ -3,14 +3,46 @@
     "filename": "Kerb",
     "path": "Kerb",
     "source": {
-        "header": null,
-        "namespace": null,
+        "header": "Includes/Chicane/Kerb.hpp",
+        "namespace": "Chicane::Kerb",
         "types": [],
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
-        "members": []
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "exit",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_KERB_EXIT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_KERB_DESCRIPTION"
     },
     "children": []
 }

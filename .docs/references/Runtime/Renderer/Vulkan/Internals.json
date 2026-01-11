@@ -1,0 +1,122 @@
+{
+    "title": "Renderer Internals",
+    "filename": "Internals",
+    "path": "Runtime/Renderer/Vulkan/Internals",
+    "source": {
+        "header": "Includes/Chicane/Runtime/Renderer/Vulkan/Internals.hpp",
+        "namespace": "Chicane::Vulkan::RendererInternals",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "physicalDevice",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::SurfaceKHR",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sufrace",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_SUFRACE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Instance",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "graphicsQueue",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_GRAPHICSQUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "mainCommandBuffer",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_MAINCOMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SwapChain::Bundle",
+                    "suffix": "*",
+                    "path": "Runtime/Renderer/Vulkan/SwapChain/Bundle",
+                    "templates": []
+                },
+                "name": "swapchain",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_SWAPCHAIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "imageCount",
+                "description": "CHICANE_VULKAN_RENDERERINTERNALS_IMAGECOUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VULKAN_RENDERERINTERNALS_DESCRIPTION"
+    },
+    "children": []
+}

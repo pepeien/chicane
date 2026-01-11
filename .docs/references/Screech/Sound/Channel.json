@@ -1,0 +1,623 @@
+{
+    "title": "Sound Channel",
+    "filename": "Channel",
+    "path": "Screech/Sound/Channel",
+    "source": {
+        "header": "Includes/Chicane/Screech/Sound/Channel.hpp",
+        "namespace": "Chicane::Screech::SoundChannel",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "None",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_NONE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mono",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_MONO_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontLeft",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_FRONTLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontRight",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_FRONTRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_FRONTCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "LFE",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_LFE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BackLeft",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_BACKLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BackRight",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_BACKRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontLeftCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_FRONTLEFTCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "FrontRightCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_FRONTRIGHTCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BackCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_BACKCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SideLeft",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_SIDELEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "SideRight",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_SIDERIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopFrontLeft",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPFRONTLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopFrontCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPFRONTCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopFrontRight",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPFRONTRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopBackLeft",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPBACKLEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopBackCenter",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPBACKCENTER_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TopBackRIght",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_TOPBACKRIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux0",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX0_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux1",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX1_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux2",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX2_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux3",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX3_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux4",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX4_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux5",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX5_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux6",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX6_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux7",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX7_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux8",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX8_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux9",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX9_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux10",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX10_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux11",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX11_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux12",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX12_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux13",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX13_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux14",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX14_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux15",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX15_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux16",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX16_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux17",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX17_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux18",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX18_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux19",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX19_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux20",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX20_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux21",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX21_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux22",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX22_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux23",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX23_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux24",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX24_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux25",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX25_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux26",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX26_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux27",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX27_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux28",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX28_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux29",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX29_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux30",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX30_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Aux31",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_AUX31_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Left",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_LEFT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Right",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_RIGHT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Count",
+                "description": "CHICANE_SCREECH_SOUNDCHANNEL_COUNT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SCREECH_SOUNDCHANNEL_DESCRIPTION"
+    },
+    "children": []
+}

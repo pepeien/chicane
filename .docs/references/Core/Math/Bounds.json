@@ -37,6 +37,24 @@
                             ]
                         },
                         "name": "inVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "std::uint32_t",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inIndices"
                     }
                 ],
                 "modifiers": [],
@@ -148,7 +166,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "contains",
+                "name": "intersects",
                 "parameters": [
                     {
                         "type": {
@@ -164,7 +182,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOUNDS_CONTAINS_DESCRIPTION"
+                "description": "CHICANE_BOUNDS_INTERSECTS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -176,7 +194,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "contains",
+                "name": "intersects",
                 "parameters": [
                     {
                         "type": {
@@ -192,7 +210,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOUNDS_CONTAINS_DESCRIPTION"
+                "description": "CHICANE_BOUNDS_INTERSECTS_DESCRIPTION"
             },
             {
                 "accessor": "public",

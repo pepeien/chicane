@@ -1,0 +1,73 @@
+{
+    "title": "Device Type",
+    "filename": "Type",
+    "path": "Screech/Device/Type",
+    "source": {
+        "header": "Includes/Chicane/Screech/Device/Type.hpp",
+        "namespace": "Chicane::Screech::DeviceType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Playback",
+                "description": "CHICANE_SCREECH_DEVICETYPE_PLAYBACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Capture",
+                "description": "CHICANE_SCREECH_DEVICETYPE_CAPTURE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Duplex",
+                "description": "CHICANE_SCREECH_DEVICETYPE_DUPLEX_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Loopback",
+                "description": "CHICANE_SCREECH_DEVICETYPE_LOOPBACK_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Unknown",
+                "description": "CHICANE_SCREECH_DEVICETYPE_UNKNOWN_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SCREECH_DEVICETYPE_DESCRIPTION"
+    },
+    "children": []
+}

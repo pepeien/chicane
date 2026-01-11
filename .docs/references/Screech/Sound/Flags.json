@@ -1,0 +1,117 @@
+{
+    "title": "Sound Flag",
+    "filename": "Flags",
+    "path": "Screech/Sound/Flags",
+    "source": {
+        "header": "Includes/Chicane/Screech/Sound/Flags.hpp",
+        "namespace": "Chicane::Screech::SoundFlag",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Stream",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_STREAM_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Decode",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_DECODE_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Async",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_ASYNC_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "WaitInit",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_WAITINIT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UnknownLength",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_UNKNOWNLENGTH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Looping",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_LOOPING_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DefaultAttachment",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_DEFAULTATTACHMENT_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NoPitch",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_NOPITCH_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint16_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "NoSpatialization",
+                "description": "CHICANE_SCREECH_SOUNDFLAG_NOSPATIALIZATION_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_SCREECH_SOUNDFLAG_DESCRIPTION"
+    },
+    "children": []
+}

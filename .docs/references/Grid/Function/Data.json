@@ -1,0 +1,52 @@
+{
+    "title": "Function Data",
+    "filename": "Data",
+    "path": "Grid/Function/Data",
+    "source": {
+        "header": "Includes/Chicane/Grid/Function/Data.hpp",
+        "namespace": "Chicane::Grid::FunctionData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "name",
+                "description": "CHICANE_GRID_FUNCTIONDATA_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Reference",
+                            "suffix": "",
+                            "path": "Core/Reference",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "params",
+                "description": "CHICANE_GRID_FUNCTIONDATA_PARAMS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_GRID_FUNCTIONDATA_DESCRIPTION"
+    },
+    "children": []
+}

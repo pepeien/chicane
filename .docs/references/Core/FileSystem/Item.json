@@ -16,9 +16,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Type",
+                    "name": "ItemType",
                     "suffix": "",
-                    "path": "Core/FileSystem/Item",
+                    "path": "Core/FileSystem/Item/Type",
                     "templates": []
                 },
                 "name": "type",

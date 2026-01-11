@@ -61,9 +61,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Component",
+                    "name": "class Component",
                     "suffix": "*",
-                    "path": "Grid/Component",
+                    "path": "",
                     "templates": []
                 },
                 "name": "createComponent",
@@ -81,42 +81,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_CREATECOMPONENT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "registerComponent",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inTag"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "Component::Compiler",
-                            "suffix": "",
-                            "path": "Grid/Component",
-                            "templates": []
-                        },
-                        "name": "inCompiler"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_REGISTERCOMPONENT_DESCRIPTION"
             },
             {
                 "accessor": "public",

@@ -1,0 +1,244 @@
+{
+    "title": "Device Id",
+    "filename": "Id",
+    "path": "Screech/Device/Id",
+    "source": {
+        "header": "Includes/Chicane/Screech/Device/Id.hpp",
+        "namespace": "Chicane::Screech::DeviceId",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DeviceId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_DEVICEID_DEVICEID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DeviceId",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_DEVICEID_DEVICEID_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "wasapi",
+                "description": "CHICANE_SCREECH_DEVICEID_WASAPI_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::array",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint8_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "16",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "dsound",
+                "description": "CHICANE_SCREECH_DEVICEID_DSOUND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "winmm",
+                "description": "CHICANE_SCREECH_DEVICEID_WINMM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "alsa",
+                "description": "CHICANE_SCREECH_DEVICEID_ALSA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "pulse",
+                "description": "CHICANE_SCREECH_DEVICEID_PULSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "jack",
+                "description": "CHICANE_SCREECH_DEVICEID_JACK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "coreaudio",
+                "description": "CHICANE_SCREECH_DEVICEID_COREAUDIO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "sndio",
+                "description": "CHICANE_SCREECH_DEVICEID_SNDIO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "audio4",
+                "description": "CHICANE_SCREECH_DEVICEID_AUDIO4_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "oss",
+                "description": "CHICANE_SCREECH_DEVICEID_OSS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::int32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "aaudio",
+                "description": "CHICANE_SCREECH_DEVICEID_AAUDIO_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "opensl",
+                "description": "CHICANE_SCREECH_DEVICEID_OPENSL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "webaudio",
+                "description": "CHICANE_SCREECH_DEVICEID_WEBAUDIO_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_SCREECH_DEVICEID_DESCRIPTION"
+    },
+    "children": []
+}
