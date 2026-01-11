@@ -1,6 +1,20 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Input/Device.hpp"
+#include "Chicane/Core/Input/Device/Type.hpp"
+#include "Chicane/Core/Input/Event/Events.hpp"
+#include "Chicane/Core/Input/Event/Pressable.hpp"
+#include "Chicane/Core/Input/Gamepad/Button.hpp"
+#include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
+#include "Chicane/Core/Input/Gamepad/MotionEvent.hpp"
+#include "Chicane/Core/Input/Keyboard/Button.hpp"
+#include "Chicane/Core/Input/Keyboard/Event.hpp"
+#include "Chicane/Core/Input/Mouse/ButtonEvent.hpp"
+#include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {
@@ -24,15 +38,15 @@ namespace Chicane
         // Lifecycle
         void activate();
 
-        template<class T = APawn>
+        template <class T = APawn>
         const T* getPawn() const
         {
             return dynamic_cast<T*>(m_pawn);
         }
 
         PawnSubscription watchAttachment(
-            PawnSubscription::NextCallback inNext,
-            PawnSubscription::ErrorCallback inError = nullptr,
+            PawnSubscription::NextCallback     inNext,
+            PawnSubscription::ErrorCallback    inError    = nullptr,
             PawnSubscription::CompleteCallback inComplete = nullptr
         );
 
@@ -42,25 +56,15 @@ namespace Chicane
 
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
-        void bindEvent(
-            Input::MouseButton inButton,
-            Input::Status inStatus,
-            Input::MouseButtonEventCallback inCallback
-        );
+        void bindEvent(Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback);
 
         // Keyboard Events
-        void bindEvent(
-            Input::KeyboardButton inButton,
-            Input::Status inStatus,
-            Input::KeyboardEventCallback inCallback
-        );
+        void bindEvent(Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback);
 
         // Controller Events
         void bindEvent(Input::GamepadMotionEventCallback inCallback);
         void bindEvent(
-            Input::GamepadButton inButton,
-            Input::Status inStatus,
-            Input::GamepadButtonEventCallback inCallback
+            Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inCallback
         );
 
         // Device
@@ -98,7 +102,7 @@ namespace Chicane
 
         // Mouse Events
         Input::Events<Input::MouseMotionEvent>        m_mouseMotionEvents;
-        Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;   
+        Input::PressableEvents<Input::MouseButton>    m_mouseButtonEvents;
 
         // Keyboard Events
         Input::PressableEvents<Input::KeyboardButton> m_keyboardKeyEvents;

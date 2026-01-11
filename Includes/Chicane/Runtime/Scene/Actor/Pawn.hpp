@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component/Physics.hpp"
 
@@ -20,7 +20,7 @@ namespace Chicane
 
     public:
         bool isControlled() const;
-        template<class T = Controller>
+        template <class T = Controller>
         T* getController() const
         {
             return dynamic_cast<T*>(m_controller);
@@ -31,8 +31,8 @@ namespace Chicane
         CPhysics* getPhysicsComponent() const;
 
     protected:
-        Controller*  m_controller;
+        Controller* m_controller;
 
-        CPhysics*    m_physicsComponent;
+        CPhysics*   m_physicsComponent;
     };
 }

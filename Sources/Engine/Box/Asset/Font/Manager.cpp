@@ -1,6 +1,5 @@
 #include "Chicane/Box/Asset/Font/Manager.hpp"
 
-#include "Chicane/Box/Asset/Font.hpp"
 #include "Chicane/Box/Asset/Font/TrueType.hpp"
 
 namespace Chicane
@@ -16,14 +15,9 @@ namespace Chicane
 
         bool FontManager::isFamilyAllocated(const String& inFamily) const
         {
-            return std::find_if(
-                m_datum.begin(),
-                m_datum.end(),
-                [inFamily](const std::pair<String, FontParsed>& pair)
-                {
-                    return inFamily.equals(pair.second.name);
-                }
-            ) != m_datum.end();
+            return std::find_if(m_datum.begin(), m_datum.end(), [inFamily](const std::pair<String, FontParsed>& pair) {
+                       return inFamily.equals(pair.second.name);
+                   }) != m_datum.end();
         }
 
         void FontManager::load(const String& inId, const Font& inFont)
@@ -39,8 +33,8 @@ namespace Chicane
             }
 
             FontExtracted instance = {};
-            instance.vendor = inFont.getVendor();
-            instance.data   = inFont.getData();
+            instance.vendor        = inFont.getVendor();
+            instance.data          = inFont.getData();
 
             Super::load(inId, instance);
 
@@ -95,14 +89,10 @@ namespace Chicane
                 return EMPTY_INSTANCE;
             }
 
-            auto found = std::find_if(
-                m_datum.begin(),
-                m_datum.end(),
-                [inFamily](const std::pair<String, FontParsed>& pair)
-                {
+            auto found =
+                std::find_if(m_datum.begin(), m_datum.end(), [inFamily](const std::pair<String, FontParsed>& pair) {
                     return inFamily.equals(pair.second.name);
-                }
-            );
+                });
 
             if (found == m_datum.end())
             {

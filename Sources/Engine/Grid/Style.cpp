@@ -7,13 +7,9 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleSource::List Style::parseSources(const pugi::xml_node &inNode)
+        StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
         {
-            return parseSources(
-                FileSystem::Path(
-                    Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()
-                )
-            );
+            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
         }
 
         StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
@@ -36,22 +32,8 @@ namespace Chicane
         StyleSource::List Style::parseSources(const String& inData)
         {
             String data = inData;
-            data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\n'
-                ),
-                data.cend()
-            );
-            data.erase(
-                std::remove(
-                    data.begin(),
-                    data.end(),
-                    '\r'
-                ),
-                data.cend()
-            );
+            data.erase(std::remove(data.begin(), data.end(), '\n'), data.cend());
+            data.erase(std::remove(data.begin(), data.end(), '\r'), data.cend());
 
             const std::vector<String> styles = data.split('}');
 
@@ -119,40 +101,38 @@ namespace Chicane
 
         Style::Style()
             : display(StyleDisplay::Block),
-            zIndex(0.0f),
-            width(0.0f),
-            height(0.0f),
-            flex({}),
-            position(StylePosition::Relative),
-            align(StyleAlignment::Start),
-            justify(StyleAlignment::Start),
-            margin(
-                Style::MARGIN_ATTRIBUTE_NAME,
-                Style::MARGIN_TOP_ATTRIBUTE_NAME,
-                Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                Style::MARGIN_LEFT_ATTRIBUTE_NAME,
-                Style::MARGIN_RIGHT_ATTRIBUTE_NAME
-            ), 
-            padding(
-                Style::PADDING_ATTRIBUTE_NAME,
-                Style::PADDING_TOP_ATTRIBUTE_NAME,
-                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
-                Style::PADDING_LEFT_ATTRIBUTE_NAME,
-                Style::PADDING_RIGHT_ATTRIBUTE_NAME
-            ),
-            gap(
-                Style::GAP_ATTRIBUTE_NAME,
-                Style::GAP_TOP_ATTRIBUTE_NAME,
-                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
-                Style::GAP_LEFT_ATTRIBUTE_NAME,
-                Style::GAP_RIGHT_ATTRIBUTE_NAME
-            ),
-            backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
-            foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
-            font(StyleFont()),
-            letterSpacing(0.0f),
-            m_properties({}),
-            m_parent(nullptr)
+              zIndex(0.0f),
+              width(0.0f),
+              height(0.0f),
+              flex({}),
+              position(StylePosition::Relative),
+              align(StyleAlignment::Start),
+              justify(StyleAlignment::Start),
+              margin(
+                  Style::MARGIN_ATTRIBUTE_NAME,
+                  Style::MARGIN_TOP_ATTRIBUTE_NAME,
+                  Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                  Style::MARGIN_LEFT_ATTRIBUTE_NAME,
+                  Style::MARGIN_RIGHT_ATTRIBUTE_NAME
+              ),
+              padding(
+                  Style::PADDING_ATTRIBUTE_NAME,
+                  Style::PADDING_TOP_ATTRIBUTE_NAME,
+                  Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                  Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                  Style::PADDING_RIGHT_ATTRIBUTE_NAME
+              ),
+              gap(Style::GAP_ATTRIBUTE_NAME,
+                  Style::GAP_TOP_ATTRIBUTE_NAME,
+                  Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                  Style::GAP_LEFT_ATTRIBUTE_NAME,
+                  Style::GAP_RIGHT_ATTRIBUTE_NAME),
+              backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
+              foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
+              font(StyleFont()),
+              letterSpacing(0.0f),
+              m_properties({}),
+              m_parent(nullptr)
         {}
 
         bool Style::isDisplay(StyleDisplay inValue) const
@@ -247,12 +227,12 @@ namespace Chicane
 
                 if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
                 {
-                    setProperty(flex.direction, StyleFlex::Direction::Column);
+                    setProperty(flex.direction, StyleFlexDirection::Column);
                 }
 
                 if (value.equals(FLEX_DIRECTION_TYPE_ROW))
                 {
-                    setProperty(flex.direction, StyleFlex::Direction::Row);
+                    setProperty(flex.direction, StyleFlexDirection::Row);
                 }
             }
         }
@@ -271,18 +251,12 @@ namespace Chicane
         {
             if (m_properties.find(HEIGHT_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(
-                    height,
-                    parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical)
-                );
+                setProperty(height, parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical));
             }
 
             if (m_properties.find(WIDTH_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(
-                    width,
-                    parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal)
-                );
+                setProperty(width, parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal));
             }
         }
 
@@ -330,15 +304,9 @@ namespace Chicane
 
         void Style::refreshMargin()
         {
-            if (
-                !margin.refresh(
-                    m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
-                        return parseSize(inValue, inDirection);
-                    }
-                )
-            )
+            if (!margin.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
+                    return parseSize(inValue, inDirection);
+                }))
             {
                 return;
             }
@@ -348,15 +316,9 @@ namespace Chicane
 
         void Style::refreshPadding()
         {
-            if (
-                !padding.refresh(
-                    m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
-                        return parseSize(inValue, inDirection);
-                    }
-                )
-            )
+            if (!padding.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
+                    return parseSize(inValue, inDirection);
+                }))
             {
                 return;
             }
@@ -366,15 +328,9 @@ namespace Chicane
 
         void Style::refreshGap()
         {
-            if (
-                !gap.refresh(
-                    m_properties,
-                    [this](const String& inValue, StyleDirection inDirection)
-                    {
-                        return parseSize(inValue, inDirection);
-                    }
-                )
-            )
+            if (!gap.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
+                    return parseSize(inValue, inDirection);
+                }))
             {
                 return;
             }
@@ -389,9 +345,7 @@ namespace Chicane
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(
-                m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)
-            );
+            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(foregroundColor, color))
             {
@@ -410,9 +364,7 @@ namespace Chicane
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(
-                m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)
-            );
+            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(backgroundColor, color))
             {
@@ -428,18 +380,12 @@ namespace Chicane
         {
             if (m_properties.find(FONT_FAMILY_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(
-                    font.family,
-                    parseText(m_properties.at(FONT_FAMILY_ATTRIBUTE_NAME))
-                );
+                setProperty(font.family, parseText(m_properties.at(FONT_FAMILY_ATTRIBUTE_NAME)));
             }
 
             if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(
-                    font.size,
-                    parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical)
-                );
+                setProperty(font.size, parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical));
             }
         }
 
@@ -462,14 +408,10 @@ namespace Chicane
 
             if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
             {
-                const String keyword = inValue.startsWith(RGBA_KEYWORD) ?
-                    RGBA_KEYWORD :
-                    RGB_KEYWORD;
+                const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
-                const std::vector<String> params = inValue.getBetween(
-                    FUNCTION_PARAMS_OPENING,
-                    FUNCTION_PARAMS_CLOSING
-                ).split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
+                                                       .split(FUNCTION_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
@@ -577,22 +519,18 @@ namespace Chicane
                 if (character == FUNCTION_PARAMS_OPENING)
                 {
                     parathesisCount++;
-    
+
                     continue;
                 }
 
                 if (character == FUNCTION_PARAMS_CLOSING)
                 {
                     parathesisCount--;
-    
+
                     continue;
                 }
 
-                const auto& iterator = std::find(
-                    CALCULATION_OPERATORS.begin(),
-                    CALCULATION_OPERATORS.end(),
-                    character
-                );
+                const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
 
                 if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
                 {
@@ -628,7 +566,6 @@ namespace Chicane
             return 0.0f;
         }
 
-
         float Style::parseEM(const String& inValue) const
         {
             if (!inValue.endsWith(EM_SIZE_UNIT))
@@ -658,17 +595,13 @@ namespace Chicane
         {
             const float value = inValue / 100;
 
-            if (
-                !hasParent() ||
-                !m_parent->hasRoot() || !m_parent->hasParent()
-            )
+            if (!hasParent() || !m_parent->hasRoot() || !m_parent->hasParent())
             {
                 return value;
             }
 
-            const Vec2& size = isPosition(StylePosition::Absolute) ?
-                m_parent->getRoot()->getSize() :
-                m_parent->getParent()->getAvailableSize();
+            const Vec2& size = isPosition(StylePosition::Absolute) ? m_parent->getRoot()->getSize()
+                                                                   : m_parent->getParent()->getAvailableSize();
 
             if (inDirection == StyleDirection::Horizontal)
             {
@@ -752,7 +685,7 @@ namespace Chicane
                 char* end;
                 return std::strtod(value.toChar(), &end);
             }
-            catch(...)
+            catch (...)
             {
                 return 0.0f;
             }

@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/List.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer/Status.hpp"
 
 namespace Chicane
@@ -24,7 +27,7 @@ namespace Chicane
         virtual void onRender(void* outData) { return; }
         virtual void onEvent(const WindowEvent& inEvent) { return; }
 
-    public:  
+    public:
         void init();
         void destroy();
         void rebuild();
@@ -41,7 +44,7 @@ namespace Chicane
     protected:
         void setStatus(RendererLayerStatus inStatus);
 
-        template<typename T>
+        template <typename T>
         bool hasLayer() const
         {
             for (const RendererLayer* layer : m_children)
@@ -57,11 +60,8 @@ namespace Chicane
             return false;
         }
 
-        template<typename Target, typename Anchor = RendererLayer, typename... Params>
-        void pushLayer(
-            ListPushStrategy inStrategy = ListPushStrategy::Back,
-            Params ...inParams
-        )
+        template <typename Target, typename Anchor = RendererLayer, typename... Params>
+        void pushLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
         {
             m_children.add(new Target(inParams...), inStrategy);
         }

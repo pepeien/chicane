@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -10,7 +10,7 @@ namespace Chicane
         struct CHICANE_CORE FolderDialog
         {
         public:
-            using Callback = std::function<void ()>;
+            using Callback = std::function<void()>;
 
         public:
             FolderDialog();

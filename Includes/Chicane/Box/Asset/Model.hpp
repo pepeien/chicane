@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
-#include "Chicane/Box/Asset/Model/Types.hpp"
+#include "Chicane/Box/Asset/Model/Raw.hpp"
 #include "Chicane/Box/Asset/Model/Vendor.hpp"
-#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -12,8 +12,8 @@ namespace Chicane
         class CHICANE_BOX Model : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION = ".bmdl";
-            static inline constexpr const char* TAG       = "Model";
+            static inline constexpr const char* EXTENSION             = ".bmdl";
+            static inline constexpr const char* TAG                   = "Model";
 
             static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Box/Essential.hpp"
+#include "Chicane/Box.hpp"
 
 namespace Chicane
 {
@@ -9,7 +9,7 @@ namespace Chicane
         enum class FontVendor : std::uint8_t
         {
             Undefined, // N/A
-            TrueType  // .ttf
+            TrueType   // .ttf
         };
     }
 }

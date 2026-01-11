@@ -111,9 +111,9 @@ namespace Chicane
 
     void Transform::refreshTransform(const QuatFloat& inOrientation)
     {
-        m_matrix  = glm::translate(BASE_MAT, m_translation); // Transalate
-        m_matrix *= glm::toMat4(inOrientation);              // Rotate
-        m_matrix  = glm::scale(m_matrix, m_scale);           // Scale
+        m_matrix = glm::translate(BASE_MAT, m_translation); // Transalate
+        m_matrix *= glm::toMat4(inOrientation);             // Rotate
+        m_matrix = glm::scale(m_matrix, m_scale);           // Scale
     }
 
     void Transform::refresh()

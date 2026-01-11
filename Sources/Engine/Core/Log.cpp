@@ -15,26 +15,18 @@ namespace Chicane
         static ListObservable g_logsObservable = {};
 
         ListSubscription watchLogs(
-            ListSubscription::NextCallback inNext,
-            ListSubscription::ErrorCallback inError,
+            ListSubscription::NextCallback     inNext,
+            ListSubscription::ErrorCallback    inError,
             ListSubscription::CompleteCallback inComplete
         )
         {
-            return g_logsObservable
-                .subscribe(inNext, inError, inComplete)
-                .next(g_logs);
+            return g_logsObservable.subscribe(inNext, inError, inComplete).next(g_logs);
         }
 
-        void emmit(
-            const String& inHexColor,
-            const String& inIdentifier,
-            const String& inMessage
-        )
+        void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
         {
-            const String message = (
-                inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage
-            ).trim();
-            const String color = inHexColor.toUpper();
+            const String message = (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
+            const String color   = inHexColor.toUpper();
 
             if (g_colors.find(color) == g_colors.end())
             {
@@ -43,10 +35,8 @@ namespace Chicane
                 g_colors.insert(
                     std::make_pair(
                         color,
-                        "38;2;" +
-                        std::to_string(rgbColor.r) + ";" +
-                        std::to_string(rgbColor.g) + ";" +
-                        std::to_string(rgbColor.b) + "m"
+                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) + ";" +
+                            std::to_string(rgbColor.b) + "m"
                     )
                 );
             }
@@ -71,38 +61,22 @@ namespace Chicane
 
         void info(const String& inMessage)
         {
-            emmit(
-                Color::HEX_COLOR_WHITE,
-                "INFO",
-                inMessage
-            );
+            emmit(Color::HEX_COLOR_WHITE, "INFO", inMessage);
         }
 
         void warning(const String& inMessage)
         {
-            emmit(
-                Color::HEX_COLOR_YELLOW,
-                "WARNING",
-                inMessage
-            );
+            emmit(Color::HEX_COLOR_YELLOW, "WARNING", inMessage);
         }
 
         void error(const String& inMessage)
         {
-            emmit(
-                Color::HEX_COLOR_ORANGE,
-                "ERROR",
-                inMessage
-            );
+            emmit(Color::HEX_COLOR_ORANGE, "ERROR", inMessage);
         }
 
         void critical(const String& inMessage)
         {
-            emmit(
-                Color::HEX_COLOR_RED,
-                "CRITICAL",
-                inMessage
-            );
+            emmit(Color::HEX_COLOR_RED, "CRITICAL", inMessage);
         }
     }
 }

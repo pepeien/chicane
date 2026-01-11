@@ -7,15 +7,8 @@ namespace Chicane
 {
     bool RendererViewFrustum::contains(const Transformable* inSubject) const
     {
-        const std::vector<RendererViewPlane> planes = {
-            m_top,
-            m_bottom,
-            m_near,
-            m_far,
-            m_right,
-            m_left
-        };
-        const std::vector<Vec3>& corners = inSubject->getBounds().getVertices();
+        const std::vector<RendererViewPlane> planes  = {m_top, m_bottom, m_near, m_far, m_right, m_left};
+        const std::vector<Vec3>&             corners = inSubject->getBounds().getVertices();
 
         for (const RendererViewPlane& plane : planes)
         {
@@ -56,7 +49,7 @@ namespace Chicane
         const float halfHorizontal = halfVertical * aspectRatio;
 
         const Vec3 nearCenter = translation + (nearClip * forward);
-        const Vec3 farCenter = translation + (farClip * forward);
+        const Vec3 farCenter  = translation + (farClip * forward);
 
         m_near.update(-forward, nearCenter);
         m_far.update(forward, farCenter);

@@ -102,7 +102,7 @@ namespace Chicane
     {
         return m_absolute;
     }
-    
+
     void SpatialTransform::addAbsoluteTransform(const Transform& inTransform)
     {
         addAbsoluteTranslation(inTransform.getTranslation());

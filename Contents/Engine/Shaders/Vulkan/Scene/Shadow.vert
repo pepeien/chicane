@@ -2,7 +2,6 @@
 
 struct MeshData {
     mat4 modelMatrix;
-    mat4 boundsMatrix;
     vec4 textureIndex;
 };
 

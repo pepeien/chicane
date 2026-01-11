@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Box/Essential.hpp"
+#include "Chicane/Box.hpp"
+#include "Chicane/Core/Math/Mat/Mat4.hpp"
 
 namespace Chicane
 {
@@ -10,7 +11,6 @@ namespace Chicane
         {
         public:
             Mat4          modelMatrix  = Mat4::One;
-            Mat4          boundsMatrix = Mat4::One;
             std::uint32_t textureIndex = 0;
 
             std::uint32_t _padding[3];

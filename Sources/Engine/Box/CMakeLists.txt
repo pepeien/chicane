@@ -60,11 +60,9 @@ target_link_libraries(
     ${BOX_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Core
 
     PRIVATE
-        # Vendors
         fast_obj
         freetype
 )

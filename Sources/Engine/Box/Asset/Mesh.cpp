@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Asset/Model.hpp"
 #include "Chicane/Box/Asset/Texture.hpp"
+#include "Chicane/Core/Xml.hpp"
 
 namespace Chicane
 {
@@ -40,15 +41,9 @@ namespace Chicane
 
             pugi::xml_node root = getXML();
 
-            if (
-                !Xml::isEmpty(
-                    root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar())
-                )
-            )
+            if (!Xml::isEmpty(root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar())))
             {
-                throw std::runtime_error(
-                    "A group with the ID " + inGroup.getId().toStandard() + " already exists"
-                );
+                throw std::runtime_error("A group with the ID " + inGroup.getId().toStandard() + " already exists");
             }
 
             pugi::xml_node groupNode = root.append_child(GROUP_TAG);
@@ -68,20 +63,13 @@ namespace Chicane
                 return;
             }
 
-            auto foundGroupEntry = std::find_if(
-                m_groups.begin(),
-                m_groups.end(),
-                [inGroup](const MeshGroup& inValue)
-                {
-                    return inGroup.getId().equals(inValue.getId());
-                }
-            );
+            auto foundGroupEntry = std::find_if(m_groups.begin(), m_groups.end(), [inGroup](const MeshGroup& inValue) {
+                return inGroup.getId().equals(inValue.getId());
+            });
 
             if (foundGroupEntry == m_groups.end())
             {
-                throw std::runtime_error(
-                    "The group " + inGroup.getId().toStandard() + " wasn't found"
-                );
+                throw std::runtime_error("The group " + inGroup.getId().toStandard() + " wasn't found");
             }
 
             m_groups[foundGroupEntry - m_groups.begin()] = inGroup;
@@ -89,10 +77,7 @@ namespace Chicane
             String id = inGroup.getId();
 
             pugi::xml_node root           = getXML();
-            pugi::xml_node foundGroupNode = root.find_child_by_attribute(
-                GROUP_ID_ATTRIBUTE_NAME,
-                id.toChar()
-            );
+            pugi::xml_node foundGroupNode = root.find_child_by_attribute(GROUP_ID_ATTRIBUTE_NAME, id.toChar());
 
             if (Xml::isEmpty(foundGroupNode))
             {

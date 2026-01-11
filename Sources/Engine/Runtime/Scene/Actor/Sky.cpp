@@ -4,8 +4,8 @@ namespace Chicane
 {
     ASky::ASky()
         : Super(),
-        m_asset(nullptr),
-        m_assetObservable({})
+          m_asset(nullptr),
+          m_assetObservable({})
     {}
 
     const Box::Sky* ASky::getSky() const
@@ -21,13 +21,11 @@ namespace Chicane
     }
 
     ASky::AssetSubscription ASky::watchSky(
-        AssetSubscription::NextCallback inNext,
-        AssetSubscription::ErrorCallback inError,
+        AssetSubscription::NextCallback     inNext,
+        AssetSubscription::ErrorCallback    inError,
         AssetSubscription::CompleteCallback inComplete
     )
     {
-        return m_assetObservable
-            .subscribe(inNext, inError, inComplete)
-            .next(m_asset);
+        return m_assetObservable.subscribe(inNext, inError, inComplete).next(m_asset);
     }
 }

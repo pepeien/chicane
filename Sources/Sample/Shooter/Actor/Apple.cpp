@@ -1,26 +1,16 @@
 #include "Actor/Apple.hpp"
 
-#include "Game.hpp"
 #include "Chicane/Core.hpp"
 #include "Chicane/Runtime/Application.hpp"
+#include "Game.hpp"
 
 Apple::Apple()
     : Chicane::Actor(),
-    m_rotateRate(
-        std::max(
-            0.1f,
-            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f
-        )
-    ),
-    m_fallRate(
-        std::max(
-            0.001f,
-            (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f
-        )
-    ),
-    m_startPosition(Chicane::Vec3::Zero),
-    m_meshComponent(nullptr),
-    m_physicsComponent(nullptr)
+      m_rotateRate(std::max(0.1f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.5f)),
+      m_fallRate(std::max(0.001f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f)),
+      m_startPosition(Chicane::Vec3::Zero),
+      m_meshComponent(nullptr),
+      m_physicsComponent(nullptr)
 {
     setCanTick(true);
     setCanCollide(true);

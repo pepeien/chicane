@@ -1,19 +1,16 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
     namespace Input
     {
-        template<typename E>
+        template <typename E>
         struct CHICANE_CORE Events
         {
         public:
-            void bind(std::function<void(const E&)> inExec)
-            {
-                m_execs.push_back(inExec);
-            }
+            void bind(std::function<void(const E&)> inExec) { m_execs.push_back(inExec); }
 
             void exec(const E& inEvent)
             {
@@ -23,10 +20,7 @@ namespace Chicane
                 }
             }
 
-            void clear()
-            {
-                m_execs.clear();
-            }
+            void clear() { m_execs.clear(); }
 
         private:
             std::vector<std::function<void(const E&)>> m_execs = {};

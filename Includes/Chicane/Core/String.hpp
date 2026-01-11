@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
@@ -10,19 +10,14 @@ namespace Chicane
         static constexpr const std::size_t npos = std::string::npos;
 
     public:
-        template<typename... T>
+        template <typename... T>
         static inline String sprint(const String& inValue, T... inParams)
         {
             const int bufferSize = static_cast<int>(inValue.size()) * 50;
 
-            char* buffer = new char[bufferSize];
+            char*     buffer     = new char[bufferSize];
 
-            int size = std::snprintf(
-                buffer,
-                bufferSize,
-                inValue.toChar(),
-                inParams...
-            );
+            int       size       = std::snprintf(buffer, bufferSize, inValue.toChar(), inParams...);
 
             if (size < 0 || size > bufferSize)
             {
@@ -39,10 +34,21 @@ namespace Chicane
         }
 
     public:
-        template<typename... T>
+        template <typename... T>
         String(T... inParams)
             : m_value(inParams...)
         {}
+
+        String(const short unsigned int* inValue)
+            : String()
+        {
+            if (inValue == nullptr)
+            {
+                return;
+            }
+
+            m_value = std::to_string(*inValue);
+        }
 
         String(char inValue)
             : m_value(1, inValue)
@@ -61,15 +67,9 @@ namespace Chicane
         {}
 
     public:
-        inline operator const char*() const
-        {
-            return m_value.c_str();
-        }
+        inline operator const char*() const { return m_value.c_str(); }
 
-        inline friend bool operator==(const String& inA, const String& inB)
-        {
-            return inA.equals(inB);
-        }
+        inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
 
         String& operator=(const String& other)
         {
@@ -131,10 +131,7 @@ namespace Chicane
             return lhs;
         }
 
-        inline bool operator<(const String& rhs) const
-        {
-            return m_value < rhs.m_value;
-        }
+        inline bool operator<(const String& rhs) const { return m_value < rhs.m_value; }
 
     public:
         bool isEmpty() const;
@@ -220,12 +217,9 @@ namespace Chicane
 
 namespace std
 {
-    template<>
+    template <>
     struct hash<Chicane::String>
     {
-        size_t operator()(const Chicane::String& s) const
-        {
-            return hash<string>()(s.toStandard());
-        }
+        size_t operator()(const Chicane::String& s) const { return hash<string>()(s.toStandard()); }
     };
 }

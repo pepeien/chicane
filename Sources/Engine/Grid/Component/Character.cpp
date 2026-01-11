@@ -1,5 +1,8 @@
 #include "Chicane/Grid/Component/Character.hpp"
 
+#include "Chicane/Box/Asset/Font/Manager.hpp"
+#include "Chicane/Core/Math/Curve.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -11,8 +14,8 @@ namespace Chicane
 
         Character::Character()
             : Super(TAG_ID),
-            m_bCanUpdate(false),
-            m_character(NULL_CHARACTER)
+              m_bCanUpdate(false),
+              m_character(NULL_CHARACTER)
         {}
 
         bool Character::isDrawable() const
@@ -30,7 +33,7 @@ namespace Chicane
             if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
             {
                 clearPrimitive();
-    
+
                 return;
             }
 
@@ -39,7 +42,7 @@ namespace Chicane
             const Box::FontGlyph& glyph = getGlyph();
 
             Primitive primitive = {};
-            primitive.indices = glyph.indices;
+            primitive.indices   = glyph.indices;
 
             Vertex vertex = {};
             vertex.color  = m_style.foregroundColor;
@@ -47,7 +50,7 @@ namespace Chicane
             for (const Vec3 position : glyph.vertices)
             {
                 vertex.position = position;
-    
+
                 primitive.vertices.push_back(vertex);
             }
 

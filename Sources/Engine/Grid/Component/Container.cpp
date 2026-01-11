@@ -6,7 +6,7 @@ namespace Chicane
     {
         Container::Container(const pugi::xml_node& inNode)
             : Super(inNode),
-            m_bCanUpdate(false)
+              m_bCanUpdate(false)
         {}
 
         void Container::onRefresh()
@@ -31,9 +31,9 @@ namespace Chicane
             m_bCanUpdate = false;
 
             Primitive primitive = {};
-            primitive.indices = { 0, 1, 2, 2, 3, 0 };
+            primitive.indices   = {0, 1, 2, 2, 3, 0};
 
-            Vertex vertex = {};
+            Vertex vertex  = {};
             vertex.color.r = m_color.r;
             vertex.color.g = m_color.g;
             vertex.color.b = m_color.b;
@@ -43,7 +43,7 @@ namespace Chicane
             vertex.position.y = -1.0f;
             primitive.vertices.push_back(vertex);
 
-            vertex.position.x =  1.0f;
+            vertex.position.x = 1.0f;
             vertex.position.y = -1.0f;
             primitive.vertices.push_back(vertex);
 
@@ -52,7 +52,7 @@ namespace Chicane
             primitive.vertices.push_back(vertex);
 
             vertex.position.x = -1.0f;
-            vertex.position.y =  1.0f;
+            vertex.position.y = 1.0f;
             primitive.vertices.push_back(vertex);
 
             setPrimitive(primitive);

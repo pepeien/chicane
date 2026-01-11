@@ -68,12 +68,10 @@ target_link_libraries(
     ${CORE_TARGET_NAME}
  
     PUBLIC
-        # Vendors
         glm::glm
         pugixml::pugixml
 
     PRIVATE
-        # Vendors
         base64
         earcut_hpp::earcut_hpp
         SDL3::SDL3

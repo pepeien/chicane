@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Core/FileSystem/Item/Type.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -10,15 +11,7 @@ namespace Chicane
         struct CHICANE_CORE Item
         {
         public:
-            enum class Type : std::uint8_t
-            {
-                Undefined,
-                Folder,
-                File
-            };
-
-        public:
-            Type          type       = Type::Undefined;
+            ItemType      type       = ItemType::Undefined;
             String        name       = "";
             String        path       = "";
 

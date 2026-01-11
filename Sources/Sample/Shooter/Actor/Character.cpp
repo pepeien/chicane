@@ -10,11 +10,11 @@ static inline constexpr const float MOVE_COEFFICIENT = 3.0f;
 
 Character::Character()
     : Chicane::ACharacter(),
-    m_camera(nullptr),
-    m_wand(nullptr),
-    m_body(nullptr),
-    m_hitAudio(nullptr),
-    m_victoryAudio(nullptr)
+      m_camera(nullptr),
+      m_wand(nullptr),
+      m_body(nullptr),
+      m_hitSound(nullptr),
+      m_victorySound(nullptr)
 {
     m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
     m_camera->setId("First Person");
@@ -37,29 +37,26 @@ Character::Character()
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
-    m_hitAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
-    m_hitAudio->attachTo(this);
-    m_hitAudio->load("Hit");
-    m_hitAudio->activate();
+    m_hitSound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_hitSound->attachTo(this);
+    m_hitSound->load("Hit");
+    m_hitSound->activate();
 
-    m_victoryAudio = Chicane::Application::getScene()->createComponent<Chicane::CAudio>();
-    m_victoryAudio->attachTo(this);
-    m_victoryAudio->load("Victory");
-    m_victoryAudio->activate();
+    m_victorySound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_victorySound->attachTo(this);
+    m_victorySound->load("Victory");
+    m_victorySound->activate();
 
-    Game::watchScore(
-        [this](std::uint32_t inScore)
+    Game::watchScore([this](std::uint32_t inScore) {
+        if (Game::didReachMaxScore())
         {
-            if (Game::didReachMaxScore())
-            {
-                m_victoryAudio->play();
+            m_victorySound->play();
 
-                return;
-            }
-
-            m_hitAudio->play();
+            return;
         }
-    );
+
+        m_hitSound->play();
+    });
 }
 
 void Character::onControlAttachment()
@@ -105,44 +102,24 @@ void Character::onControlAttachment()
         std::bind(&Character::onJump, this)
     );
 
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::F1,
-        Chicane::Input::Status::Pressed,
-        [this]()
-        {
-            m_camera->activate();
+    m_controller->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
+        m_camera->activate();
 
-            static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
-        }
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::F2,
-        Chicane::Input::Status::Pressed,
-        [this]()
-        {
-            static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
+        static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
+    });
+    m_controller->bindEvent(Chicane::Input::KeyboardButton::F2, Chicane::Input::Status::Pressed, [this]() {
+        static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
 
-            m_camera->deactivate();
-        }
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::F3,
-        Chicane::Input::Status::Pressed,
-        [this]()
-        {
-            static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
+        m_camera->deactivate();
+    });
+    m_controller->bindEvent(Chicane::Input::KeyboardButton::F3, Chicane::Input::Status::Pressed, [this]() {
+        static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
 
-            m_camera->deactivate();
-        }
-    );
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::F4,
-        Chicane::Input::Status::Pressed,
-        []()
-        {
-            static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera();
-        }
-    );
+        m_camera->deactivate();
+    });
+    m_controller->bindEvent(Chicane::Input::KeyboardButton::F4, Chicane::Input::Status::Pressed, []() {
+        static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera();
+    });
 
     // Gamepad
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
@@ -189,7 +166,7 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
         }
 
         break;
-    
+
     case Chicane::Input::GamepadAxis::RightX:
     case Chicane::Input::GamepadAxis::RightY:
         if (inEvent.axis == Chicane::Input::GamepadAxis::RightY)
@@ -282,15 +259,11 @@ void Character::onShoot()
         return;
     }
 
-    const Chicane::Vec3& origin     = m_camera->getTranslation();
-    const Chicane::Vec3 destination = origin + (m_camera->getForward() * m_camera->getFarClip());
+    const Chicane::Vec3& origin      = m_camera->getTranslation();
+    const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples = Chicane::Application::getScene()->traceLine<Apple>(
-        origin,
-        destination,
-        { this }
-    );
- 
+    std::vector<Apple*> hitApples = Chicane::Application::getScene()->traceLine<Apple>(origin, destination, {this});
+
     for (Apple* apple : hitApples)
     {
         apple->onHit(this);

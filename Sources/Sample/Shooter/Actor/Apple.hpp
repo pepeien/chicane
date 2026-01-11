@@ -20,10 +20,10 @@ public:
     void setInitialPosition(const Chicane::Vec3& inPosition);
 
 private:
-    float              m_rotateRate;
-    float              m_fallRate;
+    float m_rotateRate;
+    float m_fallRate;
 
-    Chicane::Vec3      m_startPosition;
+    Chicane::Vec3 m_startPosition;
 
     Chicane::CMesh*    m_meshComponent;
     Chicane::CPhysics* m_physicsComponent;

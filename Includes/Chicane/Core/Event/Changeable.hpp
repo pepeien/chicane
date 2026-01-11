@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 
@@ -19,12 +19,12 @@ namespace Chicane
     public:
         void emmitChanges();
         ChangesSubscription watchChanges(
-            ChangesSubscription::EmptyCallback inNext,
-            ChangesSubscription::ErrorCallback inError = nullptr,
+            ChangesSubscription::EmptyCallback    inNext,
+            ChangesSubscription::ErrorCallback    inError    = nullptr,
             ChangesSubscription::CompleteCallback inComplete = nullptr
         );
 
-        template<typename T>
+        template <typename T>
         void setProperty(T& outProperty, T inNewValue)
         {
             if (outProperty == inNewValue)

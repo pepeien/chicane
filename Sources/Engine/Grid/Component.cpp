@@ -17,18 +17,18 @@ namespace Chicane
 
         Component::Component(const String& inTag)
             : m_tag(inTag),
-            m_id(""),
-            m_class(""),
-            m_style(Style()),
-            m_functions({}),
-            m_root(nullptr),
-            m_parent(nullptr),
-            m_children({}),
-            m_childrenObservable({}),
-            m_size({}),
-            m_position({}),
-            m_cursor({}),
-            m_primitive({})
+              m_id(""),
+              m_class(""),
+              m_style(Style()),
+              m_functions({}),
+              m_root(nullptr),
+              m_parent(nullptr),
+              m_children({}),
+              m_childrenObservable({}),
+              m_size({}),
+              m_position({}),
+              m_cursor({}),
+              m_primitive({})
         {
             m_style.setParent(this);
         }
@@ -86,8 +86,8 @@ namespace Chicane
         bool Component::isVisible() const
         {
             const bool isParentVisible = isRoot() ? true : m_parent->isVisible();
-            const bool isDisplayable   = !m_style.isDisplay(StyleDisplay::None) &&
-                                         !m_style.isDisplay(StyleDisplay::Hidden);
+            const bool isDisplayable =
+                !m_style.isDisplay(StyleDisplay::None) && !m_style.isDisplay(StyleDisplay::Hidden);
 
             return isParentVisible && isDisplayable;
         }
@@ -131,7 +131,7 @@ namespace Chicane
         {
             setProperty(m_class, inClass);
         }
-        
+
         const Style& Component::getStyle() const
         {
             return m_style;
@@ -216,8 +216,8 @@ namespace Chicane
 
         bool Component::hasReference(const String& inId, bool isLocalOnly) const
         {
-            bool bWasFoundLocally = m_references.find(inId) != m_references.end() &&
-                                    m_references.at(inId) && !m_references.at(inId)->isEmpty();
+            bool bWasFoundLocally = m_references.find(inId) != m_references.end() && m_references.at(inId) &&
+                                    !m_references.at(inId)->isEmpty();
 
             if (isRoot() || !hasParent() || isLocalOnly)
             {
@@ -273,8 +273,8 @@ namespace Chicane
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            const bool bHasLocally = m_functions.find(id) != m_functions.end() &&
-                                     m_functions.at(id) && m_functions.at(id) != nullptr;
+            const bool bHasLocally =
+                m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
@@ -407,13 +407,11 @@ namespace Chicane
             const std::vector<Component*>& neighbours = m_parent->getChildren();
 
             std::uint32_t location = std::find_if(
-                neighbours.begin(),
-                neighbours.end(),
-                [&](Component* children)
-                {
-                    return children == this;
-                }
-            ) - neighbours.begin();
+                                         neighbours.begin(),
+                                         neighbours.end(),
+                                         [&](Component* children) { return children == this; }
+                                     ) -
+                                     neighbours.begin();
 
             return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
         }
@@ -457,14 +455,12 @@ namespace Chicane
         }
 
         Component::ChildrenSubscription Component::watchChildren(
-            ChildrenSubscription::NextCallback inNext,
-            ChildrenSubscription::ErrorCallback inError,
+            ChildrenSubscription::NextCallback     inNext,
+            ChildrenSubscription::ErrorCallback    inError,
             ChildrenSubscription::CompleteCallback inComplete
         )
         {
-            return m_childrenObservable
-                .subscribe(inNext, inError, inComplete)
-                .next(this);
+            return m_childrenObservable.subscribe(inNext, inError, inComplete).next(this);
         }
 
         const Vec2& Component::getCursor() const
@@ -489,7 +485,7 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            setProperty(m_cursor, { inX, inY });
+            setProperty(m_cursor, {inX, inY});
         }
 
         Vec2 Component::getAvailableSize() const
@@ -509,7 +505,7 @@ namespace Chicane
 
         void Component::setSize(float inWidth, float inHeight)
         {
-            setProperty(m_size, { inWidth, inHeight });
+            setProperty(m_size, {inWidth, inHeight});
         }
 
         const Vec2& Component::getPosition() const
@@ -534,7 +530,7 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            setProperty(m_position, { inX, inY });
+            setProperty(m_position, {inX, inY});
 
             setCursor(m_position);
         }
@@ -584,12 +580,16 @@ namespace Chicane
             setPosition(0.0f, 0.0f);
 
             Vec2 margin = Vec2(
-                m_style.margin.left == m_style.margin.right  ? m_style.margin.left : (m_style.margin.left - m_style.margin.right),
-                m_style.margin.top  == m_style.margin.bottom ? m_style.margin.top  : (m_style.margin.top  - m_style.margin.bottom)
+                m_style.margin.left == m_style.margin.right ? m_style.margin.left
+                                                            : (m_style.margin.left - m_style.margin.right),
+                m_style.margin.top == m_style.margin.bottom ? m_style.margin.top
+                                                            : (m_style.margin.top - m_style.margin.bottom)
             );
             Vec2 padding = Vec2(
-                m_style.padding.left == m_style.padding.right  ? m_style.padding.left : (m_style.padding.left - m_style.padding.right),
-                m_style.padding.top  == m_style.padding.bottom ? m_style.padding.top  : (m_style.padding.top  - m_style.padding.bottom)
+                m_style.padding.left == m_style.padding.right ? m_style.padding.left
+                                                              : (m_style.padding.left - m_style.padding.right),
+                m_style.padding.top == m_style.padding.bottom ? m_style.padding.top
+                                                              : (m_style.padding.top - m_style.padding.bottom)
             );
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
@@ -600,8 +600,8 @@ namespace Chicane
                 return;
             }
 
-            const Style& parentStyle = m_parent->getStyle();
-            const Vec2& parentCursor = m_parent->getCursor();
+            const Style& parentStyle  = m_parent->getStyle();
+            const Vec2&  parentCursor = m_parent->getCursor();
 
             const Vec2 addedSpacing  = margin;
             const Vec2 occupiedSpace = m_size + margin;
@@ -612,12 +612,12 @@ namespace Chicane
             switch (parentStyle.display)
             {
             case StyleDisplay::Flex:
-                if (parentStyle.flex.direction == StyleFlex::Direction::Row)
+                if (parentStyle.flex.direction == StyleFlexDirection::Row)
                 {
                     m_parent->addCursor(parentStyle.gap.left + occupiedSpace.x, 0.0f);
                 }
 
-                if (parentStyle.flex.direction == StyleFlex::Direction::Column)
+                if (parentStyle.flex.direction == StyleFlexDirection::Column)
                 {
                     m_parent->addCursor(0.0f, parentStyle.gap.top + occupiedSpace.y);
                 }
@@ -644,7 +644,7 @@ namespace Chicane
         }
 
         String Component::parseText(const String& inValue) const
-        {            
+        {
             if (inValue.isEmpty())
             {
                 return "";
@@ -709,7 +709,7 @@ namespace Chicane
 
             FunctionData data = parseFunction(inValue);
 
-            Event event = {};
+            Event event  = {};
             event.values = data.params;
 
             return getFunction(data.name)(event);
@@ -735,7 +735,7 @@ namespace Chicane
             const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
 
             FunctionData data = {};
-            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
+            data.name         = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
 
             for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {

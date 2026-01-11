@@ -1,11 +1,18 @@
 #include "Chicane/Core/Window.hpp"
 
-#include <SDL3/SDL.h>
-
 #include "Chicane/Core/Image.hpp"
-#include "Chicane/Core/Input.hpp"
+#include "Chicane/Core/Input/Device/Event.hpp"
+#include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
+#include "Chicane/Core/Input/Gamepad/MotionEvent.hpp"
+#include "Chicane/Core/Input/Keyboard/Button.hpp"
+#include "Chicane/Core/Input/Keyboard/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Button.hpp"
+#include "Chicane/Core/Input/Mouse/ButtonEvent.hpp"
+#include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
+
+#include <SDL3/SDL.h>
 
 namespace Chicane
 {
@@ -19,14 +26,14 @@ namespace Chicane
     void setupGamepadMotionEvent(Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
     {
         outEvent.device = inData.which;
-        outEvent.axis   = (Input::GamepadAxis) inData.axis;
+        outEvent.axis   = (Input::GamepadAxis)inData.axis;
         outEvent.value  = static_cast<float>(inData.value) / 32767.0f;
     }
 
     void setupGamepadButtonEvent(Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
     {
         outEvent.device = inData.which;
-        outEvent.button = (Input::GamepadButton) inData.button;
+        outEvent.button = (Input::GamepadButton)inData.button;
         outEvent.status = inData.down ? Input::Status::Pressed : Input::Status::Released;
     }
 
@@ -38,8 +45,8 @@ namespace Chicane
     void setupKeyboardEvent(Input::KeyboardEvent& outEvent, const SDL_KeyboardEvent& inData)
     {
         outEvent.device   = inData.which;
-        outEvent.button   = (Input::KeyboardButton) inData.scancode;
-        outEvent.modifier = (Input::KeyboardButtonModifier) inData.mod;
+        outEvent.button   = (Input::KeyboardButton)inData.scancode;
+        outEvent.modifier = (Input::KeyboardButtonModifier)inData.mod;
         outEvent.status   = inData.down ? Input::Status::Pressed : Input::Status::Released;
     }
 
@@ -51,7 +58,7 @@ namespace Chicane
     void setupMouseMotionEvent(Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
     {
         outEvent.device             = inData.which;
-        outEvent.status             = (Input::Status) inData.state;
+        outEvent.status             = (Input::Status)inData.state;
         outEvent.location.x         = inData.x;
         outEvent.location.y         = inData.y;
         outEvent.relativeLocation.x = inData.xrel;
@@ -61,7 +68,7 @@ namespace Chicane
     void setupMouseButtonEvent(Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
     {
         outEvent.device     = inData.which;
-        outEvent.button     = (Input::MouseButton) inData.button;
+        outEvent.button     = (Input::MouseButton)inData.button;
         outEvent.status     = inData.down ? Input::Status::Pressed : Input::Status::Released;
         outEvent.clicks     = inData.clicks;
         outEvent.location.x = inData.x;
@@ -70,21 +77,20 @@ namespace Chicane
 
     Window::Window()
         : m_instance(nullptr),
-        m_title(""),
-        m_icon(""),
-        m_size(Vec<2, int>(0)),
-        m_display(0),
-        m_type(WindowType::Fullscreen),
-        m_position({}),
-        m_bIsFocused(false),
-        m_bIsResizable(true),
-        m_bIsMinimized(false),
-        m_sizeObservable({})
+          m_title(""),
+          m_icon(""),
+          m_size(Vec<2, int>(0)),
+          m_display(0),
+          m_type(WindowType::Fullscreen),
+          m_position({}),
+          m_bIsFocused(false),
+          m_bIsResizable(true),
+          m_bIsMinimized(false),
+          m_sizeObservable({})
     {
         SDL_InitFlags initFlags = 0;
         initFlags |= SDL_INIT_GAMEPAD;
         initFlags |= SDL_INIT_HAPTIC;
-        initFlags |= SDL_INIT_AUDIO;
         initFlags |= SDL_INIT_VIDEO;
 
         if (!SDL_Init(initFlags))
@@ -163,8 +169,8 @@ namespace Chicane
 
             // Event
             WindowEvent event = {};
-            event.type = (WindowEventType) data.type;
-            event.data = nullptr;
+            event.type        = (WindowEventType)data.type;
+            event.data        = nullptr;
 
             switch (event.type)
             {
@@ -256,7 +262,7 @@ namespace Chicane
                 event.data = &mouseButtonEvent;
 
                 break;
-            
+
             default:
                 break;
             }
@@ -371,10 +377,7 @@ namespace Chicane
             image.getPitch()
         );
 
-        if (
-            !icon ||
-            !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon)
-        )
+        if (!icon || !SDL_SetWindowIcon(static_cast<SDL_Window*>(m_instance), icon))
         {
             emmitWarning("Failed to set the window icon");
 
@@ -388,8 +391,8 @@ namespace Chicane
 
     void Window::setDisplay(std::uint32_t inIndex)
     {
-        int displayCount = 0;
-        SDL_DisplayID* displays = SDL_GetDisplays(&displayCount);
+        int            displayCount = 0;
+        SDL_DisplayID* displays     = SDL_GetDisplays(&displayCount);
 
         int display = displays[std::min(static_cast<int>(inIndex), displayCount - 1)];
 
@@ -402,15 +405,9 @@ namespace Chicane
             emmitError("Error while setting the window display");
         }
 
-        setSize(
-            std::min(m_size.x, displaySettings->w),
-            std::min(m_size.y, displaySettings->h)
-        );
+        setSize(std::min(m_size.x, displaySettings->w), std::min(m_size.y, displaySettings->h));
 
-        setPosition(
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display),
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display)
-        );
+        setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }
 
     void Window::setType(WindowType inType)
@@ -592,8 +589,8 @@ namespace Chicane
     }
 
     Window::EventSubscription Window::watchEvent(
-        EventSubscription::NextCallback inNext,
-        EventSubscription::ErrorCallback inError,
+        EventSubscription::NextCallback     inNext,
+        EventSubscription::ErrorCallback    inError,
         EventSubscription::CompleteCallback inComplete
     )
     {
@@ -601,14 +598,12 @@ namespace Chicane
     }
 
     Window::SizeSubscription Window::watchSize(
-        SizeSubscription::NextCallback inNext,
-        SizeSubscription::ErrorCallback inError,
+        SizeSubscription::NextCallback     inNext,
+        SizeSubscription::ErrorCallback    inError,
         SizeSubscription::CompleteCallback inComplete
     )
     {
-        return m_sizeObservable
-            .subscribe(inNext, inError, inComplete)
-            .next(m_size);
+        return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_size);
     }
 
     void Window::refreshSize()

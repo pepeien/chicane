@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 

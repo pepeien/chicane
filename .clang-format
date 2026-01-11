@@ -1,0 +1,82 @@
+BasedOnStyle: LLVM
+Language: Cpp
+Standard: c++17
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+AccessModifierOffset: -4
+BracedInitializerIndentWidth: 4
+NamespaceIndentation: All
+
+# Line length
+ColumnLimit: 120
+
+# Braces (Allman style)
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  IndentBraces: false
+  SplitEmptyFunction: false
+InsertBraces: true
+
+# Parentheses spacing
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# Match `std::function<void ()>`
+SpaceInEmptyParentheses: false
+
+# Templates
+SpacesInAngles: false
+IncludeBlocks: Regroup
+BreakTemplateDeclarations: true
+BreakBeforeTemplateCloser: true
+
+# Pointer / reference alignment
+PointerAlignment: Left
+ReferenceAlignment: Left
+
+# Parameters & arguments
+AlignAfterOpenBracket: BlockIndent
+BinPackParameters: false
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: false
+SpacesInContainerLiterals: true
+
+# Functions
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortBlocksOnASingleLine: Never
+BreakAfterReturnType: Automatic
+PenaltyReturnTypeOnItsOwnLine: 2000
+AllowShortIfStatementsOnASingleLine: Never
+
+# Includes
+SortIncludes: true
+
+# Comments
+ReflowComments: false
+AlignTrailingComments: true
+
+# Misc
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
+  AtStartOfFile: false
+Cpp11BracedListStyle: true
+FixNamespaceComments: false
+AlignArrayOfStructures: Left
+PackConstructorInitializers: Never
+BreakStringLiterals: false
+IndentPPDirectives: AfterHash

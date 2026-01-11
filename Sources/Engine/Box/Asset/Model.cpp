@@ -1,11 +1,14 @@
 #include "Chicane/Box/Asset/Model.hpp"
 
+#include "Chicane/Core/Base64.hpp"
+#include "Chicane/Core/Xml.hpp"
+
 namespace Chicane
 {
     namespace Box
     {
-        static const std::unordered_map<String, ModelVendor> VENDOR_MAP {
-            { "OBJ", ModelVendor::Wavefront }
+        static const std::unordered_map<String, ModelVendor> VENDOR_MAP{
+            {"OBJ", ModelVendor::Wavefront}
         };
 
         Model::Model(const FileSystem::Path& inFilepath)
@@ -24,11 +27,9 @@ namespace Chicane
         {
             m_vendor = inVendor;
 
-            auto vendor = std::find_if(
-                VENDOR_MAP.begin(),
-                VENDOR_MAP.end(),
-                [inVendor](const auto& inPair) { return inPair.second == inVendor; }
-            );
+            auto vendor = std::find_if(VENDOR_MAP.begin(), VENDOR_MAP.end(), [inVendor](const auto& inPair) {
+                return inPair.second == inVendor;
+            });
 
             if (vendor == VENDOR_MAP.end())
             {
@@ -83,10 +84,7 @@ namespace Chicane
                 return;
             }
 
-            String vendor = Xml::getAttribute(
-                VENDOR_ATTRIBUTE_NAME,
-                getXML()
-            ).as_string();
+            String vendor = Xml::getAttribute(VENDOR_ATTRIBUTE_NAME, getXML()).as_string();
 
             if (VENDOR_MAP.find(vendor) == VENDOR_MAP.end())
             {

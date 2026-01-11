@@ -9,8 +9,6 @@ namespace Chicane
         {}
 
         void FileDialog::open(Callback inCallback) const
-        {
-
-        }
+        {}
     }
 }

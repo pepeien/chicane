@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Sky.hpp"
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 
 namespace Chicane
@@ -14,8 +14,8 @@ namespace Chicane
 
     public:
         ASky();
-        ASky(ASky&& other) = default;
-        virtual ~ASky() = default;
+        ASky(ASky&& other)            = default;
+        virtual ~ASky()               = default;
 
         ASky& operator=(ASky&& other) = default;
 
@@ -23,8 +23,8 @@ namespace Chicane
         const Box::Sky* getSky() const;
         void setSky(const Box::Sky* inSky);
         AssetSubscription watchSky(
-            AssetSubscription::NextCallback inNext,
-            AssetSubscription::ErrorCallback inError = nullptr,
+            AssetSubscription::NextCallback     inNext,
+            AssetSubscription::ErrorCallback    inError    = nullptr,
             AssetSubscription::CompleteCallback inComplete = nullptr
         );
 

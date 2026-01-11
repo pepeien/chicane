@@ -6,7 +6,7 @@ namespace Chicane
     {
         View::View(const String& inSource)
             : Super(TAG_ID),
-            m_styles({})
+              m_styles({})
         {
             if (inSource.isEmpty())
             {

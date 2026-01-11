@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
@@ -12,7 +12,7 @@ namespace Chicane
     public:
         // Transformation
         const Mat4& getMatrix() const;
-        void setMatrix(const Mat4&  inMatrix);
+        void setMatrix(const Mat4& inMatrix);
 
         void setTransform(const Transform& inTransform);
 

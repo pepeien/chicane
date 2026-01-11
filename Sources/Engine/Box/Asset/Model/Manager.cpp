@@ -17,11 +17,7 @@ namespace Chicane
         {
             const ModelExtracted& instance = getInstance(inId);
 
-            m_vertices.insert(
-                m_vertices.end(),
-                instance.vertices.begin(),
-                instance.vertices.end()
-            );
+            m_vertices.insert(m_vertices.end(), instance.vertices.begin(), instance.vertices.end());
 
             for (std::uint32_t index : instance.indices)
             {
@@ -40,7 +36,7 @@ namespace Chicane
                 data.firstIndex  = firstIndex;
 
                 firstVertex += data.vertexCount;
-                firstIndex  += data.indexCount;
+                firstIndex += data.indexCount;
             }
         }
 
@@ -128,13 +124,8 @@ namespace Chicane
                 throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
-            std::uint32_t result = static_cast<std::uint32_t>(
-                std::find(
-                    m_usedIds.begin(),
-                    m_usedIds.end(),
-                    inId
-                ) - m_usedIds.begin()
-            );
+            std::uint32_t result =
+                static_cast<std::uint32_t>(std::find(m_usedIds.begin(), m_usedIds.end(), inId) - m_usedIds.begin());
 
             return result;
         }

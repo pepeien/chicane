@@ -4,7 +4,7 @@ namespace Chicane
 {
     Transformable::Transformable()
         : m_transform({}),
-        m_bounds()
+          m_bounds()
     {}
 
     const SpatialTransform& Transformable::getTransform() const

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static inline constexpr const char* TAG_ID = "Popup";
+            static inline constexpr const char* TAG_ID                        = "Popup";
 
             // Attributes
             static inline constexpr const char* IS_OPEN_ATTRIBUTE_NAME        = "isOpen";

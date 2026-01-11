@@ -80,10 +80,7 @@ namespace Chicane
 
             m_header.version = inVersion;
 
-            m_xml
-            .first_child()
-            .attribute(VERSION_ATTRIBUTE_NAME)
-            .set_value(inVersion);
+            m_xml.first_child().attribute(VERSION_ATTRIBUTE_NAME).set_value(inVersion);
         }
 
         const String& Asset::getId() const
@@ -100,10 +97,7 @@ namespace Chicane
 
             m_header.id = inId;
 
-            m_xml
-            .first_child()
-            .attribute(ID_ATTRIBUTE_NAME)
-            .set_value(inId);
+            m_xml.first_child().attribute(ID_ATTRIBUTE_NAME).set_value(inId);
         }
 
         AssetType Asset::getType() const
@@ -118,7 +112,7 @@ namespace Chicane
 
         void Asset::saveXML()
         {
-            //Xml::save(m_xml, getFilepath().string());
+            Xml::save(m_xml, getFilepath().string());
         }
 
         pugi::xml_node Asset::getXML() const
@@ -135,9 +129,7 @@ namespace Chicane
 
             pugi::xml_node root = m_xml.append_child(TAG);
 
-            root
-            .append_attribute(VERSION_ATTRIBUTE_NAME)
-            .set_value(CURRENT_VERSION);
+            root.append_attribute(VERSION_ATTRIBUTE_NAME).set_value(CURRENT_VERSION);
         }
 
         void Asset::fetchXML(const FileSystem::Path& inFilepath)
@@ -158,11 +150,7 @@ namespace Chicane
 
             if (!name.equals(TAG))
             {
-                throw std::runtime_error(
-                    String::sprint(
-                        "Asset files root element must be have [%s] as a tag", TAG
-                    )
-                );
+                throw std::runtime_error(String::sprint("Asset files root element must be have [%s] as a tag", TAG));
             }
         }
     }

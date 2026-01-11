@@ -1,9 +1,8 @@
 #include "Level.hpp"
 
+#include "Actor.hpp"
 #include "Chicane/Runtime/Scene/Actor/Camera.hpp"
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
-
-#include "Actor.hpp"
 #include "Game.hpp"
 
 static inline constexpr const std::uint32_t APPLE_DEPTH_COUNT  = 2;
@@ -13,10 +12,10 @@ static inline constexpr const float         APPLE_STEP         = 20.0f;
 
 Level::Level()
     : Chicane::Scene(),
-    m_leftCamera(nullptr),
-    m_centerCamera(nullptr),
-    m_rightCamera(nullptr),
-    m_cameraObservable({})
+      m_leftCamera(nullptr),
+      m_centerCamera(nullptr),
+      m_rightCamera(nullptr),
+      m_cameraObservable({})
 {}
 
 void Level::onActivation()
@@ -68,8 +67,8 @@ void Level::disableCameras()
 }
 
 Level::CameraSubscription Level::watchActiveCamera(
-    CameraSubscription::NextCallback inNext,
-    CameraSubscription::ErrorCallback inError,
+    CameraSubscription::NextCallback     inNext,
+    CameraSubscription::ErrorCallback    inError,
     CameraSubscription::CompleteCallback inComplete
 )
 {
@@ -78,9 +77,7 @@ Level::CameraSubscription Level::watchActiveCamera(
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(
-        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky")
-    );
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky"));
 }
 
 void Level::spawnLights()
@@ -133,11 +130,11 @@ void Level::spawnApples()
                 position.x += APPLE_STEP;
             }
 
-            position.x  = startPosition.x;
+            position.x = startPosition.x;
             position.z += APPLE_STEP;
         }
 
         position.y += APPLE_STEP;
-        position.z  = startPosition.z;
+        position.z = startPosition.z;
     }
 }

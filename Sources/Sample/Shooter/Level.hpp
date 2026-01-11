@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor/Camera.hpp"
-#include "Essential.hpp"
 
 class Level : public Chicane::Scene
 {
@@ -21,8 +21,8 @@ public:
     void activateRightCamera();
     void disableCameras();
     CameraSubscription watchActiveCamera(
-        CameraSubscription::NextCallback inNext,
-        CameraSubscription::ErrorCallback inError = nullptr,
+        CameraSubscription::NextCallback     inNext,
+        CameraSubscription::ErrorCallback    inError    = nullptr,
         CameraSubscription::CompleteCallback inComplete = nullptr
     );
 

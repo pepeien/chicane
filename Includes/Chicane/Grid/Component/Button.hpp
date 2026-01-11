@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Chicane/Core/Xml.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
-#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {
@@ -11,7 +12,7 @@ namespace Chicane
         {
         public:
             // Header
-            static inline constexpr const char* TAG_ID = "Button";
+            static inline constexpr const char* TAG_ID                  = "Button";
 
             // Attributes
             static inline constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";

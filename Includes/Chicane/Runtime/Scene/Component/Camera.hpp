@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component/View.hpp"
 
 namespace Chicane
@@ -13,5 +13,5 @@ namespace Chicane
 
     protected:
         void onTransform() override;
-    }; 
+    };
 }

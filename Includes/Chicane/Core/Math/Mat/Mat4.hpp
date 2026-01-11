@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Mat.hpp"
+
+#include <glm/glm.hpp>
 
 namespace Chicane
 {
@@ -12,8 +15,8 @@ namespace Chicane
         static inline constexpr const Mat<4, float> One  = Mat<4, float>(1.0f);
 
     public:
-        template<typename... A>
-        constexpr Mat4(A ...args)
+        template <typename... A>
+        constexpr Mat4(A... args)
             : Mat<4, float>(args...)
         {}
     };

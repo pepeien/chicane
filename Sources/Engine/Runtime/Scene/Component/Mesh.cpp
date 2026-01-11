@@ -1,5 +1,9 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
+#include "Chicane/Box/Asset/Model/Extracted.hpp"
+#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Box/Asset/Model/Parsed.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
@@ -8,8 +12,8 @@ namespace Chicane
 
     CMesh::CMesh()
         : Super(),
-        m_bIsVisible(false),
-        m_mesh(nullptr)
+          m_bIsVisible(false),
+          m_mesh(nullptr)
     {}
 
     void CMesh::onActivation()
@@ -49,7 +53,7 @@ namespace Chicane
             return;
         }
 
-        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::ModelManager*   modelManager   = Box::getModelManager();
         Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
@@ -63,12 +67,12 @@ namespace Chicane
 
     void CMesh::hide()
     {
-        if (!m_bIsVisible  || !hasMesh())
+        if (!m_bIsVisible || !hasMesh())
         {
             return;
         }
 
-        Box::ModelManager* modelManager     = Box::getModelManager();
+        Box::ModelManager*   modelManager   = Box::getModelManager();
         Box::TextureManager* textureManager = Box::getTextureManager();
 
         for (const auto& group : m_mesh->getGroups())
@@ -131,26 +135,20 @@ namespace Chicane
 
         const Box::ModelManager* manager = Box::getModelManager();
 
-        std::vector<Vertex> vertices = {};
-
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
             const Box::ModelExtracted& model = manager->getInstance(group.getModel());
 
-            vertices.insert(
-                vertices.end(),
-                model.vertices.begin(),
-                model.vertices.end()
-            );
-        }
+            const Bounds bounds = Bounds(model.vertices, model.indices);
 
-        Bounds bounds = Bounds(vertices);
+            addBounds(bounds);
 
-        setBounds(bounds);
+            if (!isAttached())
+            {
+                continue;
+            }
 
-        if (isAttached())
-        {
-            m_parent->setBounds(bounds);
+            m_parent->addBounds(bounds);
         }
     }
 }

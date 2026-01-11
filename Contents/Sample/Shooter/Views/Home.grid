@@ -3,6 +3,7 @@
     <Text class="telemetry">{{ framesPerSecond }} FPS</Text>
     <Text class="telemetry">{{ frameTime }} ms</Text>
     <Text class="camera">{{ currentCamera }}</Text>
+    <Text class="score">Score {{ playerScore }}</Text>
     <Container class="crosshair">
         <Container class="crosshair__dot"></Container>
         <Container class="crosshair__top"></Container>

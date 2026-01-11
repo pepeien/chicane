@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
@@ -12,19 +12,16 @@ namespace Chicane
         public:
             Entry(const String& inText, const String& inColor)
                 : text(inText),
-                color(inColor)
+                  color(inColor)
             {}
 
             Entry()
                 : text(""),
-                color("")
+                  color("")
             {}
 
         public:
-            bool isEmpty() const
-            {
-                return text.isEmpty();
-            }
+            bool isEmpty() const { return text.isEmpty(); }
 
         public:
             String text;

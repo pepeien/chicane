@@ -16,6 +16,7 @@ file(
     # Sources
     ${SCREECH_SOURCE_DIR}/*.cpp
 )
+list(APPEND HEADERS ${CHICANE_SOURCES_DIR}/Screech.cpp)
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
@@ -59,8 +60,8 @@ target_link_libraries(
     ${SCREECH_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Core
+        Chicane::Box
     PRIVATE
         miniaudio
 )

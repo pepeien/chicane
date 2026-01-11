@@ -58,7 +58,6 @@ target_link_libraries(
     ${GRID_TARGET_NAME}
 
     PUBLIC
-        # Systems
         Chicane::Box
         Chicane::Core
 )

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {
     namespace Input
     {
+        // Extracted from `SDL3/SDL_GamepadButton`
         enum class GamepadButton : std::uint8_t
         {
             South,

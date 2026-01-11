@@ -1,18 +1,15 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/View/Plane.hpp"
 
 namespace Chicane
 {
-    class CView;
-    class Transformable;
-
     struct CHICANE_RUNTIME RendererViewFrustum
     {
     public:
-    	virtual bool contains(const Transformable* inSubject) const;
-        virtual void update(const CView* inView);
+        virtual bool contains(const class Transformable* inSubject) const;
+        virtual void update(const class CView* inView);
 
     protected:
         RendererViewPlane m_top    = {};

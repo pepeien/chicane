@@ -10,9 +10,9 @@ namespace Chicane
 {
     CPhysics::CPhysics()
         : Super(),
-        m_bIsApplyingForce(false),
-        m_forceDirection(Vec3::Zero),
-        m_forceVelocity(Vec3::Zero)
+          m_bIsApplyingForce(false),
+          m_forceDirection(Vec3::Zero),
+          m_forceVelocity(Vec3::Zero)
     {
         setCanTick(true);
     }
@@ -104,18 +104,9 @@ namespace Chicane
         attachment->setAbsoluteTranslation(attachment->getTranslation() + m_forceVelocity);
 
         m_forceVelocity -= m_forceDirection * FORCE_DEACCELERATION_COEFFICIENT;
-        m_forceVelocity.x = std::max(
-            m_forceVelocity.x,
-            -FORCE_MAX_VELOCITY
-        );
-        m_forceVelocity.y = std::max(
-            m_forceVelocity.y,
-            -FORCE_MAX_VELOCITY
-        );
-        m_forceVelocity.z = std::max(
-            m_forceVelocity.z,
-            -FORCE_MAX_VELOCITY
-        );
+        m_forceVelocity.x = std::max(m_forceVelocity.x, -FORCE_MAX_VELOCITY);
+        m_forceVelocity.y = std::max(m_forceVelocity.y, -FORCE_MAX_VELOCITY);
+        m_forceVelocity.z = std::max(m_forceVelocity.z, -FORCE_MAX_VELOCITY);
     }
 
     void CPhysics::resetForce()

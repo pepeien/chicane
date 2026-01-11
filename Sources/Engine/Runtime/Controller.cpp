@@ -1,26 +1,23 @@
 #include "Chicane/Runtime/Controller.hpp"
 
-#include <SDL3/SDL.h>
-
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
 
+#include <SDL3/SDL.h>
+
 namespace Chicane
 {
-    static const std::vector<String> DEFAULT_KEYBOARDS = {
-        "Keyboard",
-        "HID Keyboard Device (0x046d/0xc232)"
-    };
+    static const std::vector<String> DEFAULT_KEYBOARDS = {"Keyboard", "HID Keyboard Device (0x046d/0xc232)"};
 
     Controller::Controller()
         : m_pawn(nullptr),
-        m_pawnObservable({}),
-        m_mouseMotionEvents({}),
-        m_mouseButtonEvents({}),
-        m_keyboardKeyEvents({}),
-        m_gamepadMotionEvents({}),
-        m_gamepadButtonEvents({}),
-        m_devices({})
+          m_pawnObservable({}),
+          m_mouseMotionEvents({}),
+          m_mouseButtonEvents({}),
+          m_keyboardKeyEvents({}),
+          m_gamepadMotionEvents({}),
+          m_gamepadButtonEvents({}),
+          m_devices({})
     {
         setupEvents();
         setupDevices();
@@ -34,14 +31,12 @@ namespace Chicane
     }
 
     Controller::PawnSubscription Controller::watchAttachment(
-        PawnSubscription::NextCallback inNext,
-        PawnSubscription::ErrorCallback inError,
+        PawnSubscription::NextCallback     inNext,
+        PawnSubscription::ErrorCallback    inError,
         PawnSubscription::CompleteCallback inComplete
     )
     {
-        return m_pawnObservable
-            .subscribe(inNext, inError, inComplete)
-            .next(m_pawn);
+        return m_pawnObservable.subscribe(inNext, inError, inComplete).next(m_pawn);
     }
 
     bool Controller::isAttached() const
@@ -97,18 +92,14 @@ namespace Chicane
     }
 
     void Controller::bindEvent(
-        Input::MouseButton inButton,
-        Input::Status inStatus,
-        Input::MouseButtonEventCallback inEvent
+        Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inEvent
     )
     {
         m_mouseButtonEvents.bind(inButton, inStatus, inEvent);
     }
 
     void Controller::bindEvent(
-        Input::KeyboardButton inButton,
-        Input::Status inStatus,
-        Input::KeyboardEventCallback inEvent
+        Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inEvent
     )
     {
         m_keyboardKeyEvents.bind(inButton, inStatus, inEvent);
@@ -120,9 +111,7 @@ namespace Chicane
     }
 
     void Controller::bindEvent(
-        Input::GamepadButton inButton,
-        Input::Status inStatus,
-        Input::GamepadButtonEventCallback inEvent
+        Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inEvent
     )
     {
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);
@@ -238,71 +227,68 @@ namespace Chicane
 
     void Controller::setupEvents()
     {
-        Application::getWindow()->watchEvent(
-            [this](WindowEvent inEvent)
+        Application::getWindow()->watchEvent([this](WindowEvent inEvent) {
+            m_mouseButtonEvents.repeat();
+            m_keyboardKeyEvents.repeat();
+            m_gamepadButtonEvents.repeat();
+
+            switch (inEvent.type)
             {
-                m_mouseButtonEvents.repeat();
-                m_keyboardKeyEvents.repeat();
-                m_gamepadButtonEvents.repeat();
+            // Gamepad
+            case WindowEventType::GamepadAdded:
+            case WindowEventType::GamepadRemoved:
+                setupDefaultGamepad();
 
-                switch (inEvent.type)
-                {
-                // Gamepad
-                case WindowEventType::GamepadAdded:
-                case WindowEventType::GamepadRemoved:
-                    setupDefaultGamepad();
+                break;
 
-                    break;
+            case WindowEventType::GamepadAxisMotion:
+                onGamepadMotionEvent(inEvent.data);
 
-                case WindowEventType::GamepadAxisMotion:
-                    onGamepadMotionEvent(inEvent.data);
+                break;
 
-                    break;
+            case WindowEventType::GamepadButtonDown:
+            case WindowEventType::GamepadButtonUp:
+                onGamepadButtonEvent(inEvent.data);
 
-                case WindowEventType::GamepadButtonDown:
-                case WindowEventType::GamepadButtonUp:
-                    onGamepadButtonEvent(inEvent.data);
+                break;
 
-                    break;
+            // Keyboard
+            case WindowEventType::KeyboardAdded:
+            case WindowEventType::KeyboardRemoved:
+                setupDefaultKeyboard();
 
-                // Keyboard
-                case WindowEventType::KeyboardAdded:
-                case WindowEventType::KeyboardRemoved:
-                    setupDefaultKeyboard();
+                break;
 
-                    break;
+            case WindowEventType::KeyDown:
+            case WindowEventType::KeyUp:
+                onKeyboardButtonEvent(inEvent.data);
 
-                case WindowEventType::KeyDown:
-                case WindowEventType::KeyUp:
-                    onKeyboardButtonEvent(inEvent.data);
+                break;
 
-                    break;
+            // Mouse
+            case WindowEventType::MouseAdded:
+            case WindowEventType::MouseRemoved:
+                setupDefaultMouse();
 
-                // Mouse
-                case WindowEventType::MouseAdded:
-                case WindowEventType::MouseRemoved:
-                    setupDefaultMouse();
+                break;
 
-                    break;
+            case WindowEventType::MouseMotion:
+                onMouseMotionEvent(inEvent.data);
 
-                case WindowEventType::MouseMotion:
-                    onMouseMotionEvent(inEvent.data);
+                break;
 
-                    break;
+            case WindowEventType::MouseButtonDown:
+            case WindowEventType::MouseButtonUp:
+                onMouseButtonEvent(inEvent.data);
 
-                case WindowEventType::MouseButtonDown:
-                case WindowEventType::MouseButtonUp:
-                    onMouseButtonEvent(inEvent.data);
+                break;
 
-                    break;
-
-                default:
-                    break;
-                }
-
-                onEvent(inEvent);
+            default:
+                break;
             }
-        );
+
+            onEvent(inEvent);
+        });
     }
 
     void Controller::clearEvents()
@@ -322,7 +308,7 @@ namespace Chicane
         setupDefaultKeyboard();
         setupDefaultMouse();
     }
-    
+
     void Controller::setupDefaultGamepad()
     {
         disconnectFrom(Input::DeviceType::Gamepad);

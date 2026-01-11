@@ -1,15 +1,18 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "Chicane/Core.hpp"
+
+#include <glm/gtx/quaternion.hpp>
 
 namespace Chicane
 {
-    template<typename T, glm::qualifier Q = glm::packed_highp>
+    template <typename T, glm::qualifier Q = glm::packed_highp>
     struct CHICANE_CORE Quat : glm::qua<T, Q>
     {
     public:
-        template<typename... A>
-        constexpr Quat(A ...args)
+        template <typename... A>
+        constexpr Quat(A... args)
             : glm::qua<T, Q>(args...)
         {}
     };

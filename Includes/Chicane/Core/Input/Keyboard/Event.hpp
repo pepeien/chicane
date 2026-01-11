@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
-#include "Chicane/Core/Input/Device.hpp"
+#include "Chicane/Core.hpp"
+#include "Chicane/Core/Input/Device/Event.hpp"
 #include "Chicane/Core/Input/Keyboard/Button.hpp"
 #include "Chicane/Core/Input/Keyboard/ButtonModifier.hpp"
 #include "Chicane/Core/Input/Status.hpp"
@@ -17,6 +17,6 @@ namespace Chicane
             KeyboardButtonModifier modifier = KeyboardButtonModifier::None;
             Status                 status   = Status::Pressed;
         };
-        using KeyboardEventCallback = std::function<void ()>;
+        using KeyboardEventCallback = std::function<void()>;
     }
 }

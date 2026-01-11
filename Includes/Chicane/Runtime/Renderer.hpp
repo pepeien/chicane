@@ -1,6 +1,10 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Window.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Renderer/Viewport.hpp"
@@ -53,7 +57,7 @@ namespace Chicane
         void setWindow(Window* inWindow);
 
         // Layers
-        template<typename T>
+        template <typename T>
         bool hasLayer() const
         {
             for (const RendererLayer* layer : m_layers)
@@ -69,11 +73,8 @@ namespace Chicane
             return false;
         }
 
-        template<typename Target, typename Anchor = RendererLayer, typename... Params>
-        void pushLayer(
-            ListPushStrategy inStrategy = ListPushStrategy::Back,
-            Params ...inParams
-        )
+        template <typename Target, typename Anchor = RendererLayer, typename... Params>
+        void pushLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
         {
             m_layers.add(new Target(inParams...), inStrategy);
         }

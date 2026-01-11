@@ -1,7 +1,14 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Core/Event/Changeable.hpp"
+#include "Chicane/Core/Event/Observable.hpp"
+#include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Math/Vec/Vec2.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Function.hpp"
+#include "Chicane/Grid/Function/Data.hpp"
 #include "Chicane/Grid/Primitive.hpp"
 #include "Chicane/Grid/Style.hpp"
 
@@ -12,7 +19,7 @@ namespace Chicane
         class CHICANE_GRID Component : public Changeable
         {
         public:
-            using Compiler = std::function<Component* (const pugi::xml_node& inNode)>;
+            using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
 
             using ChildrenObservable   = Observable<Component*>;
             using ChildrenSubscription = Subscription<Component*>;
@@ -93,8 +100,8 @@ namespace Chicane
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
             ChildrenSubscription watchChildren(
-                ChildrenSubscription::NextCallback inNext,
-                ChildrenSubscription::ErrorCallback inError = nullptr,
+                ChildrenSubscription::NextCallback     inNext,
+                ChildrenSubscription::ErrorCallback    inError    = nullptr,
                 ChildrenSubscription::CompleteCallback inComplete = nullptr
             );
 

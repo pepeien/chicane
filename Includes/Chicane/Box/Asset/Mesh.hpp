@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset.hpp"
 #include "Chicane/Box/Asset/Mesh/Group.hpp"
-#include "Chicane/Box/Essential.hpp"
 
 namespace Chicane
 {
@@ -11,8 +11,8 @@ namespace Chicane
         class CHICANE_BOX Mesh : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION = ".bmsh";
-            static inline constexpr const char* TAG       = "Mesh";
+            static inline constexpr const char* EXTENSION               = ".bmsh";
+            static inline constexpr const char* TAG                     = "Mesh";
 
             static inline constexpr const char* GROUP_TAG               = "Group";
             static inline constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";

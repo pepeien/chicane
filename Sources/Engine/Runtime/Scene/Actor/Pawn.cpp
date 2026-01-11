@@ -7,8 +7,8 @@ namespace Chicane
 {
     APawn::APawn()
         : Super(),
-        m_controller(nullptr),
-        m_physicsComponent(nullptr)
+          m_controller(nullptr),
+          m_physicsComponent(nullptr)
     {
         setCanCollide(true);
 

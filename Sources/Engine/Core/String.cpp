@@ -36,11 +36,9 @@ namespace Chicane
             return false;
         }
 
-        return std::find_if(
-            m_value.begin(), 
-            m_value.end(),
-            [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
-        ) != m_value.end();
+        return std::find_if(m_value.begin(), m_value.end(), [](unsigned char c) {
+                   return !std::isdigit(c) && c != '.' && c != ',';
+               }) != m_value.end();
     }
 
     bool String::equals(const String& inValue) const
@@ -52,7 +50,7 @@ namespace Chicane
     {
         return strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
     }
-    
+
     bool String::contains(const String& inValue) const
     {
         return m_value.find(inValue.toChar()) != std::string::npos;
@@ -136,26 +134,15 @@ namespace Chicane
     String String::toUpper() const
     {
         std::string result = m_value;
-        std::transform(
-            result.begin(),
-            result.end(),
-            result.begin(),
-            ::toupper
-        );
+        std::transform(result.begin(), result.end(), result.begin(), ::toupper);
 
         return result;
-
     }
 
     String String::toLower() const
     {
         std::string result = m_value;
-        std::transform(
-            result.begin(),
-            result.end(),
-            result.begin(),
-            ::tolower
-        );
+        std::transform(result.begin(), result.end(), result.begin(), ::tolower);
 
         return result;
     }
@@ -306,7 +293,7 @@ namespace Chicane
 
     std::string::const_iterator String::cbegin() const
     {
-        return m_value.cbegin(); 
+        return m_value.cbegin();
     }
 
     std::string::iterator String::end()

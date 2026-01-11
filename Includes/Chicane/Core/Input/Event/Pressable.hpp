@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Essential.hpp"
+#include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Status.hpp"
 #include "Chicane/Core/Recorder.hpp"
@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Input
     {
-        template<typename B>
+        template <typename B>
         struct CHICANE_CORE PressableEvents : private Recorder
         {
         public:
@@ -20,8 +20,8 @@ namespace Chicane
         public:
             PressableEvents()
                 : Recorder(COOLDOWN_IN_MS),
-                m_pressed({}),
-                m_events({})
+                  m_pressed({}),
+                  m_events({})
             {}
 
         protected:
@@ -73,10 +73,7 @@ namespace Chicane
                 }
             }
 
-            void repeat()
-            {
-                end();
-            }
+            void repeat() { end(); }
 
             void clear()
             {
@@ -87,11 +84,7 @@ namespace Chicane
         private:
             void store(B inButton, Status inStatus)
             {
-                auto foundButton = std::find(
-                    m_pressed.begin(),
-                    m_pressed.end(),
-                    inButton
-                );
+                auto foundButton = std::find(m_pressed.begin(), m_pressed.end(), inButton);
 
                 if (inStatus == Status::Pressed)
                 {

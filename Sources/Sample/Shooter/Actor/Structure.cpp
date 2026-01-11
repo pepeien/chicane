@@ -4,7 +4,7 @@
 
 Strcuture::Strcuture()
     : Chicane::Actor(),
-    m_mesh(nullptr)
+      m_mesh(nullptr)
 {
     setCanCollide(true);
 

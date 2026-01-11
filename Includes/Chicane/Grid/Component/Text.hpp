@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component/Container.hpp"
-#include "Chicane/Grid/Essential.hpp"
 
 namespace Chicane
 {

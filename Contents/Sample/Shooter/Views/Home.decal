@@ -13,6 +13,16 @@
     color: green;
 }
 
+.score {
+    position: absolute;
+    width: 12em;
+    height: 3em;
+    margin: 0 12em 0 100%;
+    background-color: #3333335f;
+    font-size: 2em;
+    padding-left: 0.5em;
+}
+
 .crosshair__dot, .crosshair__top, .crosshair__bottom, .crosshair__left, .crosshair__right {
     position: absolute;
     background-color: rgba(var(crosshairColorR), var(crosshairColorG), var(crosshairColorB), var(crosshairColorA));

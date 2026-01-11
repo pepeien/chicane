@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Grid/Essential.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
@@ -23,10 +24,10 @@ namespace Chicane
             friend bool operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
             {
                 return (
-                    std::fabs(inLeft.top    - inRight.top)    < FLT_EPSILON &&
+                    std::fabs(inLeft.top - inRight.top) < FLT_EPSILON &&
                     std::fabs(inLeft.bottom - inRight.bottom) < FLT_EPSILON &&
-                    std::fabs(inLeft.left   - inRight.left)   < FLT_EPSILON &&
-                    std::fabs(inLeft.right  - inRight.right)  < FLT_EPSILON
+                    std::fabs(inLeft.left - inRight.left) < FLT_EPSILON &&
+                    std::fabs(inLeft.right - inRight.right) < FLT_EPSILON
                 );
             }
 
@@ -34,8 +35,7 @@ namespace Chicane
             void setAll(float inValue);
 
             bool refresh(
-                const StyleSource::Map &inSource,
-                std::function<float (const String&, StyleDirection)> inCalculator
+                const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
             );
 
         public:

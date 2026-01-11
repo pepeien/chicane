@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Core/Math/Bounds.hpp"
+#include "Chicane/Core/String.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Transformable.hpp"
 
 namespace Chicane
@@ -39,4 +41,4 @@ namespace Chicane
 
         String m_id;
     };
-} 
+}

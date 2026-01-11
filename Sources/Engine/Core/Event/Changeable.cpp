@@ -12,13 +12,11 @@ namespace Chicane
     }
 
     Changeable::ChangesSubscription Changeable::watchChanges(
-        ChangesSubscription::EmptyCallback inNext,
-        ChangesSubscription::ErrorCallback inError,
+        ChangesSubscription::EmptyCallback    inNext,
+        ChangesSubscription::ErrorCallback    inError,
         ChangesSubscription::CompleteCallback inComplete
     )
     {
-        return m_observable
-            .subscribe(inNext, inError, inComplete)
-            .next();
+        return m_observable.subscribe(inNext, inError, inComplete).next();
     }
 }

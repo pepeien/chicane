@@ -1,12 +1,17 @@
 #include "Chicane/Box.hpp"
 
 #include "Chicane/Box/Asset/Font.hpp"
+#include "Chicane/Box/Asset/Font/Manager.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Mesh.hpp"
 #include "Chicane/Box/Asset/Model.hpp"
-#include "Chicane/Box/Asset/Sound.hpp"
+#include "Chicane/Box/Asset/Model/Manager.hpp"
 #include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Asset/Sound.hpp"
+#include "Chicane/Box/Asset/Sound/Manager.hpp"
 #include "Chicane/Box/Asset/Texture.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -44,7 +49,7 @@ namespace Chicane
             return g_cache.find(inSource) != g_cache.end();
         }
 
-        template<class T = Asset>
+        template <class T = Asset>
         const T* getAsset(const FileSystem::Path& inSource)
         {
             if (!hasAsset(inSource))
@@ -55,7 +60,7 @@ namespace Chicane
             return dynamic_cast<const T*>(g_cache.at(inSource).get());
         }
 
-        template<class T = Asset>
+        template <class T = Asset>
         const T* addAsset(const FileSystem::Path& inSource)
         {
             if (!hasAsset(inSource))
@@ -66,7 +71,7 @@ namespace Chicane
             return getAsset<T>(inSource);
         }
 
-        const Sound* loadAudio(const FileSystem::Path& inFilePath)
+        const Sound* loadSound(const FileSystem::Path& inFilePath)
         {
             if (AssetHeader::getType(inFilePath) != AssetType::Sound)
             {
@@ -218,16 +223,36 @@ namespace Chicane
                 return loadMesh(inFilePath);
 
             case AssetType::Sound:
-                return loadAudio(inFilePath);
+                return loadSound(inFilePath);
 
             case AssetType::Sky:
                 return loadSky(inFilePath);
 
             case AssetType::Texture:
                 return loadTexture(inFilePath);
-            
+
             default:
                 return nullptr;
+            }
+        }
+
+        void init(const String& inPath)
+        {
+            for (const FileSystem::Item item : FileSystem::ls(inPath.toStandard()))
+            {
+                if (item.type != FileSystem::ItemType::File)
+                {
+                    init(item.path);
+
+                    continue;
+                }
+
+                if (!AssetHeader::isFileAsset(item.path.toStandard()))
+                {
+                    continue;
+                }
+
+                load(item.path.toStandard());
             }
         }
     }

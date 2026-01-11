@@ -4,10 +4,10 @@ namespace Chicane
 {
     Scene::Scene()
         : m_actors({}),
-        m_actorsObservable({}),
-        m_components({}),
-        m_componentsObservable({}),
-        m_defaultCamera(nullptr)
+          m_actorsObservable({}),
+          m_components({}),
+          m_componentsObservable({}),
+          m_defaultCamera(nullptr)
     {}
 
     Scene::~Scene()
@@ -66,14 +66,12 @@ namespace Chicane
     }
 
     Scene::ActorsSubscription Scene::watchActors(
-        ActorsSubscription::NextCallback inNext,
-        ActorsSubscription::ErrorCallback inError,
+        ActorsSubscription::NextCallback     inNext,
+        ActorsSubscription::ErrorCallback    inError,
         ActorsSubscription::CompleteCallback inComplete
     )
     {
-        return m_actorsObservable
-            .subscribe(inNext, inError, inComplete)
-            .next(m_actors);
+        return m_actorsObservable.subscribe(inNext, inError, inComplete).next(m_actors);
     }
 
     bool Scene::hasComponents() const
@@ -108,14 +106,12 @@ namespace Chicane
     }
 
     Scene::ComponentsSubscription Scene::watchComponents(
-        ComponentsSubscription::NextCallback inNext,
-        ComponentsSubscription::ErrorCallback inError,
+        ComponentsSubscription::NextCallback     inNext,
+        ComponentsSubscription::ErrorCallback    inError,
         ComponentsSubscription::CompleteCallback inComplete
     )
     {
-        return m_componentsObservable
-           .subscribe(inNext, inError, inComplete)
-           .next(m_components);
+        return m_componentsObservable.subscribe(inNext, inError, inComplete).next(m_components);
     }
 
     void Scene::tickActors(float inDeltaTime)

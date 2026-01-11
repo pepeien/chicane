@@ -10,10 +10,10 @@ namespace Chicane
         namespace ModelWavefront
         {
             void parseDataset(
-                ModelExtracted& outResult,
+                ModelExtracted&                            outResult,
                 std::unordered_map<String, std::uint32_t>& outMap,
-                const fastObjMesh* inMesh,
-                std::uint32_t inIndex
+                const fastObjMesh*                         inMesh,
+                std::uint32_t                              inIndex
             )
             {
                 const fastObjIndex& index = inMesh->indices[inIndex];
@@ -66,11 +66,11 @@ namespace Chicane
 
                 std::uint32_t indexPerFace = *mesh->face_vertices;
 
-                std::vector<std::uint32_t> vertexLayout = { 0, 1, 2 };
+                std::vector<std::uint32_t> vertexLayout = {0, 1, 2};
 
                 if (indexPerFace > 3) // is quad
                 {
-                    vertexLayout = { 0, 1, 2, 2, 3, 0 };
+                    vertexLayout = {0, 1, 2, 2, 3, 0};
                 }
 
                 std::unordered_map<String, std::uint32_t> map = {};

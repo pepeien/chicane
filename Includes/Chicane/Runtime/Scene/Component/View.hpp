@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Essential.hpp"
+#include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Renderer/View/Frustum.hpp"
 #include "Chicane/Runtime/Renderer/View/Settings.hpp"
@@ -57,5 +57,5 @@ namespace Chicane
         RendererViewFrustum  m_frustum;
         RendererView         m_data;
         Vec3                 m_focusPoint;
-    }; 
+    };
 }
