@@ -61,4 +61,7 @@ This project uses CMake to generate and build files, it should pretty straight f
 If you desire to check some examplary code, this repository hosts a sample located at `Sources/Sample`.
 
 ## Documentation
-Further documentation is hosted at [Chicane Engine Documentation](https://chicane.erickcaldeira.com), available in English (en-us), Japanese (ja-jp) and Brazillian Portuguese (pt-br).
+Further documentation is hosted at [Chicane Engine Documentation](https://chicane.erickcaldeira.com), available in:
+- [English](https://chicane.erickcaldeira.com/en-us);
+- [Japanese](https://chicane.erickcaldeira.com/ja-jp);
+- [Portuguese](https://chicane.erickcaldeira.com/pt-br).

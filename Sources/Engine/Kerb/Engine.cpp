@@ -1,6 +1,5 @@
 #include "Chicane/Kerb/Engine.hpp"
 
-#include "Chicane/Core/Log.hpp"
 #include "Chicane/Kerb/Layer/BroadPhase.hpp"
 #include "Chicane/Kerb/Layer/Object.hpp"
 

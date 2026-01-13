@@ -1,7 +1,6 @@
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Sky.hpp"
 
 #include "Chicane/Box/Asset/Sky/Parsed.hpp"
-#include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/Math/Vertex.hpp"
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
@@ -203,17 +202,18 @@ namespace Chicane
 
             for (Box::SkySide side : Box::Sky::ORDER)
             {
-                GLenum glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_X_EXT;
+                Image image = sides.at(side);
 
+                GLenum glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_X_EXT;
                 switch (side)
                 {
                 case Box::SkySide::Right:
-                    glSide = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+                    glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
                     break;
 
                 case Box::SkySide::Left:
-                    glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+                    glSide = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
 
                     break;
 
@@ -237,8 +237,6 @@ namespace Chicane
 
                     break;
                 }
-
-                const Image& image = sides.at(side);
 
                 glTexImage2D(
                     glSide,

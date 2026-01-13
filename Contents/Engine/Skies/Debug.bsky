@@ -1,0 +1,11 @@
+<Asset version="1" id="Debug">
+    <Sides>
+        <Texture side="Left">Contents/Engine/Textures/Debug/Left.btex</Texture>
+        <Texture side="Right">Contents/Engine/Textures/Debug/Right.btex</Texture>
+        <Texture side="Front">Contents/Engine/Textures/Debug/Front.btex</Texture>
+        <Texture side="Back">Contents/Engine/Textures/Debug/Back.btex</Texture>
+        <Texture side="Up">Contents/Engine/Textures/Debug/Up.btex</Texture>
+        <Texture side="Down">Contents/Engine/Textures/Debug/Down.btex</Texture>
+    </Sides>
+    <Model>Contents/Engine/Models/Skybox.bmdl</Model>
+</Asset>

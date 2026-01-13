@@ -1,0 +1,11 @@
+<Asset version="1" id="Green">
+    <Sides>
+        <Texture side="Left">Contents/Engine/Textures/Color/Green.btex</Texture>
+        <Texture side="Right">Contents/Engine/Textures/Color/Green.btex</Texture>
+        <Texture side="Front">Contents/Engine/Textures/Color/Green.btex</Texture>
+        <Texture side="Back">Contents/Engine/Textures/Color/Green.btex</Texture>
+        <Texture side="Up">Contents/Engine/Textures/Color/Green.btex</Texture>
+        <Texture side="Down">Contents/Engine/Textures/Color/Green.btex</Texture>
+    </Sides>
+    <Model>Contents/Engine/Models/Skybox.bmdl</Model>
+</Asset>
