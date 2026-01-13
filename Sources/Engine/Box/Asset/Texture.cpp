@@ -8,7 +8,8 @@ namespace Chicane
     namespace Box
     {
         static const std::unordered_map<String, ImageVendor> VENDOR_MAP{
-            {"PNG", ImageVendor::Png}
+            {"JPG", ImageVendor::Jpg},
+            {"PNG", ImageVendor::Png},
         };
 
         Texture::Texture(const FileSystem::Path& inFilepath)

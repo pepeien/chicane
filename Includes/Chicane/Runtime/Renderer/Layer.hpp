@@ -37,7 +37,6 @@ namespace Chicane
 
     public:
         bool is(RendererLayerStatus inStatus) const;
-        RendererLayerStatus getStatus() const;
 
         const String& getId() const;
 

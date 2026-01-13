@@ -165,11 +165,6 @@ namespace Chicane
         return m_status == inStatus;
     }
 
-    RendererLayerStatus RendererLayer::getStatus() const
-    {
-        return m_status;
-    }
-
     const String& RendererLayer::getId() const
     {
         return m_id;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Mesh/Parsed.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Resource.hpp"

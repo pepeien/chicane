@@ -24,7 +24,7 @@ project(
 
 ##################### Options #######################
 option(CHICANE_SHARED "Build a shared version of the library" ON)
-option(CHICANE_VULKAN "Enable Vulkan graphics API"            OFF)
+option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
 
 ##################### Values #######################

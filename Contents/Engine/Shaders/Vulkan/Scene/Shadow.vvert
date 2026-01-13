@@ -10,7 +10,6 @@ layout(set = 0, binding = 0) uniform LightData {
 
     mat4 view;
     mat4 projection;
-    mat4 viewProjection;
 
     vec4 forward;
     vec4 right;
@@ -31,5 +30,5 @@ layout(location = 3) in vec3 inNormal;
 void main() {
     MeshData mesh = meshes.data[gl_InstanceIndex];
 
-    gl_Position = light.viewProjection * mesh.modelMatrix * vec4(inPosition, 1.0);
+    gl_Position = light.view * light.projection * mesh.modelMatrix * vec4(inPosition, 1.0);
 }

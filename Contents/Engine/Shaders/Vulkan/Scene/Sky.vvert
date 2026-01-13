@@ -5,7 +5,6 @@ layout(set = 0, binding = 0) uniform CameraUBO {
 
     mat4 view;
     mat4 projection;
-    mat4 viewProjection;
 
     vec4 forward;
     vec4 right;
@@ -21,9 +20,9 @@ layout(location = 3) in vec3 inNormal;
 
 layout(location = 0) out vec3 outUV;
 
-void main() {
-    outUV     = inPosition;
-    outUV.xy *= -1.0;
+void main()
+{
+    outUV = inPosition;
 
-    gl_Position = (mat4(mat3(camera.viewProjection)) * vec4(inPosition, 1.0)).xyzz;
+    gl_Position = (mat4(mat3(camera.view * camera.projection)) * vec4(inPosition, 1.0)).xyzz;
 }

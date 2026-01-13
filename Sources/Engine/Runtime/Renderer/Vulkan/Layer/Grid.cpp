@@ -2,11 +2,11 @@
 
 #include "Chicane/Grid/Component/Character.hpp"
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 
 namespace Chicane
 {
@@ -120,11 +120,11 @@ namespace Chicane
         {
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Grid.vert";
+            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Grid.vvert";
             vertexShader.type                    = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path                    = "Contents/Engine/Shaders/Vulkan/Grid.frag";
+            fragmentShader.path                    = "Contents/Engine/Shaders/Vulkan/Grid.vfrag";
             fragmentShader.type                    = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

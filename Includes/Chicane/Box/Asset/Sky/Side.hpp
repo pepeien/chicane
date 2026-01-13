@@ -8,12 +8,12 @@ namespace Chicane
     {
         enum class SkySide : std::uint8_t
         {
-            Left,
-            Right,
-            Front,
-            Back,
-            Up,
-            Down
+            Left,  // X+
+            Right, // X-
+            Front, // Y+
+            Back,  // Y-
+            Up,    // Z+
+            Down   // Z-
         };
     }
 }

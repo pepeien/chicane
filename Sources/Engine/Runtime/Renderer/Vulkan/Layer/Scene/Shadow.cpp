@@ -1,10 +1,10 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Scene/Shadow.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 
 namespace Chicane
 {
@@ -223,7 +223,7 @@ namespace Chicane
 
             // Shader
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Shadow.vert";
+            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Shadow.vvert";
             vertexShader.type                    = vk::ShaderStageFlagBits::eVertex;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

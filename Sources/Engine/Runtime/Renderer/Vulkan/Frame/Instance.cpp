@@ -427,7 +427,6 @@ namespace Chicane
             {
                 RendererView result = inData;
                 result.projection[1][1] *= -1;
-                result.viewProjection = result.projection * result.view;
 
                 return result;
             }

@@ -85,7 +85,7 @@ namespace Chicane
 
             if (SIDE_MAP.find(value) == SIDE_MAP.end())
             {
-                return SkySide::Back;
+                return SkySide::Front;
             }
 
             return SIDE_MAP.at(value);

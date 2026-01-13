@@ -3,6 +3,10 @@
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Kerb.hpp"
 
+#if defined(CHICANE_OPENGL)
+    #include "Chicane/Runtime/Renderer/OpenGL/Renderer.hpp"
+#endif
+
 #if defined(CHICANE_VULKAN)
     #include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 #endif
@@ -65,6 +69,13 @@ namespace Chicane
 #if defined(CHICANE_VULKAN)
             case WindowRenderer::Vulkan:
                 g_renderer = std::make_unique<Vulkan::Renderer>();
+
+                break;
+#endif
+
+#if defined(CHICANE_OPENGL)
+            case WindowRenderer::OpenGL:
+                g_renderer = std::make_unique<OpenGL::Renderer>();
 
                 break;
 #endif

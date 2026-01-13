@@ -28,8 +28,10 @@ endif()
 
 if (CHICANE_OPENGL)
     find_package(OpenGL REQUIRED)
+    find_package(GLEW REQUIRED)
 
     list(APPEND GRAPHICS_LIBS OpenGL::GL)
+    list(APPEND GRAPHICS_LIBS GLEW)
 else()
     list(FILTER HEADERS EXCLUDE REGEX "Renderer/OpenGL")
     list(FILTER SOURCES EXCLUDE REGEX "Renderer/OpenGL")
@@ -47,6 +49,15 @@ if (CHICANE_VULKAN)
 
         PRIVATE
             CHICANE_VULKAN
+    )
+endif()
+
+if (CHICANE_OPENGL)
+    target_compile_definitions(
+        ${RUNTIME_TARGET_NAME}
+
+        PRIVATE
+            CHICANE_OPENGL
     )
 endif()
 

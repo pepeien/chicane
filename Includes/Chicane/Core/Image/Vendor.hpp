@@ -7,6 +7,7 @@ namespace Chicane
     enum class ImageVendor : std::uint8_t
     {
         Undefined, // N/A
-        Png        // .png
+        Jpg,       // .jpg
+        Png,       // .png
     };
 }

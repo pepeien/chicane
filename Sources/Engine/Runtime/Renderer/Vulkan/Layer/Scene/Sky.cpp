@@ -1,10 +1,10 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Layer/Scene/Sky.hpp"
 
 #include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 #include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 
@@ -256,11 +256,11 @@ namespace Chicane
             }
 
             Shader::StageCreateInfo vertexShader = {};
-            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vert";
+            vertexShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vvert";
             vertexShader.type                    = vk::ShaderStageFlagBits::eVertex;
 
             Shader::StageCreateInfo fragmentShader = {};
-            fragmentShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Sky.frag";
+            fragmentShader.path                    = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
             fragmentShader.type                    = vk::ShaderStageFlagBits::eFragment;
 
             std::vector<Shader::StageCreateInfo> shaders = {};

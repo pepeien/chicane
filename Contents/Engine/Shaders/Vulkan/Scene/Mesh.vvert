@@ -10,7 +10,6 @@ layout(set = 0, binding = 0) uniform CameraData {
 
     mat4 view;
     mat4 projection;
-    mat4 viewProjection;
 
     vec4 forward;
     vec4 right;
@@ -24,7 +23,6 @@ layout(set = 0, binding = 1) uniform LightData {
 
     mat4 view;
     mat4 projection;
-    mat4 viewProjection;
 
     vec4 forward;
     vec4 right;
@@ -68,7 +66,7 @@ void main() {
     outColor          = inColor;
     outViewPosition   = -inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.viewProjection * mesh.modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * mesh.modelMatrix) * position;
 
-    gl_Position = camera.viewProjection * mesh.modelMatrix * position;
+    gl_Position = camera.view * camera.projection * mesh.modelMatrix * position;
 }

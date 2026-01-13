@@ -115,6 +115,11 @@ namespace Chicane
         case WindowRenderer::OpenGL:
             flag = SDL_WINDOW_OPENGL;
 
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+
             break;
 
         case WindowRenderer::Vulkan:
@@ -620,11 +625,6 @@ namespace Chicane
         {
             emmitWarning("Failed to refresh the window size");
 
-            return;
-        }
-
-        if (m_size.x == width && m_size.y == height)
-        {
             return;
         }
 

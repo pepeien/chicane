@@ -63,7 +63,7 @@ PenaltyReturnTypeOnItsOwnLine: 2000
 AllowShortIfStatementsOnASingleLine: Never
 
 # Includes
-SortIncludes: true
+SortIncludes: false
 
 # Comments
 ReflowComments: false
