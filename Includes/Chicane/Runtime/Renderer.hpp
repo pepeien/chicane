@@ -21,6 +21,12 @@ namespace Chicane
         using ViewportObservable   = Observable<RendererViewport>;
         using ViewportSubscription = Subscription<RendererViewport>;
 
+        using SizeObservable       = Observable<const Vec2&>;
+        using SizeSubscription     = Subscription<const Vec2&>;
+
+        using PositionObservable   = Observable<const Vec2&>;
+        using PositionSubscription = Subscription<const Vec2&>;
+
     protected:
         using Super = Renderer;
 
@@ -47,10 +53,20 @@ namespace Chicane
         const Vec2& getSize() const;
         void setSize(const Vec2& inValue);
         void setSize(float inWidth, float inHeight);
+        SizeSubscription watchSize(
+            SizeObservable::NextCallback     inNext,
+            SizeObservable::ErrorCallback    inError    = nullptr,
+            SizeObservable::CompleteCallback inComplete = nullptr
+        );
 
         const Vec2& getPosition() const;
         void setPosition(const Vec2& inValue);
         void setPosition(float inX, float inY);
+        PositionSubscription watchPosition(
+            PositionObservable::NextCallback     inNext,
+            PositionObservable::ErrorCallback    inError    = nullptr,
+            PositionObservable::CompleteCallback inComplete = nullptr
+        );
 
         // Window
         Window* getWindow() const;
@@ -87,25 +103,29 @@ namespace Chicane
         void rebuildLayers();
         void deleteLayers();
 
+        void setupComponents();
+
     private:
         // Events
         void loadEvents();
-        void updateViewComponents();
 
     protected:
         // Settings
-        Vec2                  m_size;
-        Vec2                  m_position;
+        Vec2                 m_size;
+        SizeObservable       m_sizeOberservable;
+
+        Vec2                 m_position;
+        PositionObservable   m_positionOberservable;
 
         // Window
-        Window*               m_window;
+        Window*              m_window;
 
         // Layer
-        List<RendererLayer*>  m_layers;
+        List<RendererLayer*> m_layers;
 
-        // Game
-        std::vector<CCamera*> m_cameras;
-        std::vector<CLight*>  m_lights;
-        std::vector<CMesh*>   m_meshes;
+        // Scene
+        CCamera*             m_camera;
+        CLight*              m_light;
+        std::vector<CMesh*>  m_meshes;
     };
 }

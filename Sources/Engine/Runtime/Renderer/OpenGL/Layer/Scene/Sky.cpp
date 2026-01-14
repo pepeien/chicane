@@ -41,12 +41,21 @@ namespace Chicane
             return true;
         }
 
+        bool LSceneSky::onSetup()
+        {
+            return true;
+        }
+
         void LSceneSky::onRender(void* outData)
         {
             if (!is(RendererLayerStatus::Running))
             {
                 return;
             }
+
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
 
             glUseProgram(m_shaderProgram);
 
@@ -56,6 +65,10 @@ namespace Chicane
                 GL_UNSIGNED_INT,
                 0
             );
+
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneSky::loadEvents()
@@ -172,7 +185,6 @@ namespace Chicane
         void LSceneSky::buildTextureData()
         {
             glGenTextures(1, &m_textureBuffer);
-
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
 
             // Filters
@@ -222,11 +234,19 @@ namespace Chicane
                     image.getPixels()
                 );
             }
+
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         }
 
         void LSceneSky::destroyTextureData()
         {
             glDeleteTextures(1, &m_textureBuffer);
+        }
+
+        void LSceneSky::buildModelVertexArray()
+        {
+            glGenVertexArrays(1, &m_modelVertexArray);
+            glBindVertexArray(m_modelVertexArray);
         }
 
         void LSceneSky::buildModelVertexBuffer()
@@ -248,6 +268,8 @@ namespace Chicane
 
             glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
             glEnableVertexAttribArray(3);
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         void LSceneSky::buildModelIndexBuffer()
@@ -262,20 +284,20 @@ namespace Chicane
                 indices.data(),
                 GL_STATIC_DRAW
             );
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneSky::buildModelData()
         {
-            glGenVertexArrays(1, &m_vao);
-            glBindVertexArray(m_vao);
-
+            buildModelVertexArray();
             buildModelVertexBuffer();
             buildModelIndexBuffer();
         }
 
         void LSceneSky::destroyModelData()
         {
-            glDeleteVertexArrays(1, &m_vao);
+            glDeleteVertexArrays(1, &m_modelVertexArray);
             glDeleteBuffers(1, &m_modelVertexBuffer);
             glDeleteBuffers(1, &m_modelIndexBuffer);
         }

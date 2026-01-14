@@ -28,6 +28,11 @@ namespace Chicane
             return true;
         }
 
+        bool LSceneMesh::onSetup()
+        {
+            return true;
+        }
+
         void LSceneMesh::onRender(void* outData)
         {
             if (!is(RendererLayerStatus::Running))
@@ -35,22 +40,46 @@ namespace Chicane
                 return;
             }
 
+            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
+            glBindTextureUnit(0, m_textureBuffer);
+
             glUseProgram(m_shaderProgram);
+
+            for (const String& id : m_textureManager->getActiveIds())
+            {
+                glTextureSubImage3D(
+                    m_textureBuffer,
+                    0,
+                    0,
+                    0,
+                    m_textureManager->getIndex(id),
+                    512,
+                    512,
+                    1,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    m_textureManager->getData(id).getPixels()
+                );
+            }
 
             for (const String& id : m_modelManager->getActiveIds())
             {
                 const Box::ModelParsed& data = m_modelManager->getData(id);
 
                 glDrawElementsInstancedBaseVertexBaseInstance(
-                    GL_TRIANGLES,                              // or whatever your primitive is
-                    data.indexCount,                           // count
-                    GL_UNSIGNED_INT,                           // index type (or GL_UNSIGNED_SHORT)
-                    (void*)(data.firstIndex * sizeof(GLuint)), // indices offset
-                    m_modelManager->getUseCount(id),           // instanceCount
-                    0,                                         // baseVertex
-                    m_modelManager->getFirstUse(id)            // baseInstance
+                    GL_TRIANGLES,
+                    data.indexCount,
+                    GL_UNSIGNED_INT,
+                    (void*)(sizeof(uint32_t) * data.firstIndex),
+                    m_modelManager->getUseCount(id),
+                    data.firstVertex,
+                    m_modelManager->getFirstUse(id)
                 );
             }
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneMesh::loadEvents()
@@ -161,10 +190,21 @@ namespace Chicane
         }
 
         void LSceneMesh::buildTextureData()
-        {}
+        {
+            glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_textureBuffer);
+            glTextureStorage3D(m_textureBuffer, 1, GL_RGBA8, 512, 512, Box::Texture::MAX_COUNT);
+        }
 
         void LSceneMesh::destroyTextureData()
-        {}
+        {
+            glDeleteTextures(1, &m_textureBuffer);
+        }
+
+        void LSceneMesh::buildModelVertexArray()
+        {
+            glGenVertexArrays(1, &m_modelVertexArray);
+            glBindVertexArray(m_modelVertexArray);
+        }
 
         void LSceneMesh::buildModelVertexBuffer()
         {
@@ -172,7 +212,7 @@ namespace Chicane
 
             glGenBuffers(1, &m_modelVertexBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
 
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
             glEnableVertexAttribArray(0);
@@ -185,6 +225,8 @@ namespace Chicane
 
             glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
             glEnableVertexAttribArray(3);
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         void LSceneMesh::buildModelIndexBuffer()
@@ -195,24 +237,24 @@ namespace Chicane
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
             glBufferData(
                 GL_ELEMENT_ARRAY_BUFFER,
-                indices.size() * sizeof(std::uint32_t),
+                sizeof(std::uint32_t) * indices.size(),
                 indices.data(),
-                GL_STATIC_DRAW
+                GL_DYNAMIC_DRAW
             );
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneMesh::buildModelData()
         {
-            glGenVertexArrays(1, &m_vao);
-            glBindVertexArray(m_vao);
-
+            buildModelVertexArray();
             buildModelVertexBuffer();
             buildModelIndexBuffer();
         }
 
         void LSceneMesh::destroyModelData()
         {
-            glDeleteVertexArrays(1, &m_vao);
+            glDeleteVertexArrays(1, &m_modelVertexArray);
             glDeleteBuffers(1, &m_modelVertexBuffer);
             glDeleteBuffers(1, &m_modelIndexBuffer);
         }

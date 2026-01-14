@@ -20,6 +20,7 @@ namespace Chicane
 
         public:
             bool onInit() override;
+            bool onSetup() override;
             void onRender(void* outData) override;
 
         private:
@@ -35,6 +36,7 @@ namespace Chicane
             void destroyTextureData();
 
             // Model
+            void buildModelVertexArray();
             void buildModelVertexBuffer();
             void buildModelIndexBuffer();
             void buildModelData();
@@ -46,7 +48,7 @@ namespace Chicane
             GLuint               m_shaderProgram;
 
             // Model
-            GLuint               m_vao;
+            GLuint               m_modelVertexArray;
             GLuint               m_modelVertexBuffer;
             GLuint               m_modelIndexBuffer;
             Box::ModelManager*   m_modelManager;

@@ -124,10 +124,7 @@ namespace Chicane
                 throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
-            std::uint32_t result =
-                static_cast<std::uint32_t>(std::find(m_usedIds.begin(), m_usedIds.end(), inId) - m_usedIds.begin());
-
-            return result;
+            return static_cast<std::uint32_t>(std::find(m_usedIds.begin(), m_usedIds.end(), inId) - m_usedIds.begin());
         }
     }
 }

@@ -66,11 +66,11 @@ namespace Chicane
                 logicalDevice.destroySemaphore(renderSemaphore);
             }
 
-            void Instance::setupCameraData(const std::vector<CCamera*>& inCameras)
+            void Instance::setupCameraData(CCamera* inCamera)
             {
                 destroyCameraData();
 
-                if (inCameras.empty())
+                if (!inCamera)
                 {
                     return;
                 }
@@ -84,13 +84,13 @@ namespace Chicane
                 bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
                 cameraResource.setup(bufferCreateInfo);
 
-                const RendererView data = getActiveCameraData(inCameras);
+                const RendererView data = normalizeViewData(inCamera->getData());
                 cameraResource.copyToBuffer(&data);
             }
 
-            void Instance::updateCameraData(const std::vector<CCamera*>& inCameras)
+            void Instance::updateCameraData(CCamera* inCamera)
             {
-                if (inCameras.empty())
+                if (!inCamera)
                 {
                     destroyCameraData();
 
@@ -99,12 +99,12 @@ namespace Chicane
 
                 if (cameraResource.isDirty())
                 {
-                    setupCameraData(inCameras);
+                    setupCameraData(inCamera);
 
                     return;
                 }
 
-                const RendererView data = getActiveCameraData(inCameras);
+                const RendererView data = normalizeViewData(inCamera->getData());
                 cameraResource.copyToBuffer(&data);
             }
 
@@ -113,16 +113,14 @@ namespace Chicane
                 cameraResource.destroy(logicalDevice);
             }
 
-            void Instance::setupLightData(const std::vector<CLight*>& inLights)
+            void Instance::setupLightData(CLight* inLight)
             {
                 destroyLightData();
 
-                if (inLights.empty())
+                if (!inLight)
                 {
                     return;
                 }
-
-                const RendererView data = normalizeViewData(inLights.at(0)->getData());
 
                 BufferCreateInfo bufferCreateInfo = {};
                 bufferCreateInfo.logicalDevice    = logicalDevice;
@@ -131,14 +129,15 @@ namespace Chicane
                     vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
                 bufferCreateInfo.size  = sizeof(RendererView);
                 bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
-
                 lightResource.setup(bufferCreateInfo);
+
+                const RendererView data = normalizeViewData(inLight->getData());
                 lightResource.copyToBuffer(&data);
             }
 
-            void Instance::updateLightData(const std::vector<CLight*>& inLights)
+            void Instance::updateLightData(CLight* inLight)
             {
-                if (inLights.empty())
+                if (!inLight)
                 {
                     destroyLightData();
 
@@ -147,13 +146,12 @@ namespace Chicane
 
                 if (lightResource.isDirty())
                 {
-                    setupLightData(inLights);
+                    setupLightData(inLight);
 
                     return;
                 }
 
-                const RendererView data = normalizeViewData(inLights.at(0)->getData());
-
+                const RendererView data = normalizeViewData(inLight->getData());
                 lightResource.copyToBuffer(&data);
             }
 
@@ -408,21 +406,6 @@ namespace Chicane
                 logicalDevice.updateDescriptorSets(descriptorSetWrites, nullptr);
             }
 
-            RendererView Instance::getActiveCameraData(const std::vector<CCamera*>& inCameras)
-            {
-                for (const Chicane::CCamera* camera : inCameras)
-                {
-                    if (!camera->isActive())
-                    {
-                        continue;
-                    }
-
-                    return normalizeViewData(camera->getData());
-                }
-
-                return normalizeViewData(inCameras.at(0)->getData());
-            }
-
             RendererView Instance::normalizeViewData(const RendererView& inData)
             {
                 RendererView result = inData;
@@ -441,14 +424,9 @@ namespace Chicane
                 std::vector<Box::MeshParsed> meshes = {};
                 meshes.reserve(inMeshes.size());
 
-                std::vector<CMesh*> components = inMeshes;
-                std::sort(components.begin(), components.end(), [](CMesh* inA, CMesh* inB) {
-                    return inA->getModel().compare(inB->getModel()) > 0;
-                });
-
                 Box::TextureManager* textureManager = Box::getTextureManager();
 
-                for (const CMesh* mesh : components)
+                for (const CMesh* mesh : inMeshes)
                 {
                     Box::MeshParsed data = {};
                     data.modelMatrix     = mesh->getTransform().getMatrix();

@@ -1,5 +1,10 @@
 #version 450
 
+struct Mesh {
+    mat4 modelMatrix;
+    uint textureIndex;
+};
+
 layout(binding = 0) uniform Camera {
     vec4 clip;
 
@@ -26,10 +31,9 @@ layout(binding = 1) uniform Light {
     vec4 translation;
 } light;
 
-layout(binding = 2) uniform Mesh {
-    mat4 modelMatrix;
-    uint textureIndex;
-} meshes[10];
+layout(std430, binding = 2) buffer StorageBuffer {
+    Mesh data[];
+} meshes;
 
 layout(location = 0) out flat uint outTextureIndex;
 layout(location = 1) out vec2 outUV;
@@ -52,15 +56,17 @@ const mat4 biasMat = mat4(
 );
 
 void main() {
+    Mesh mesh = meshes.data[gl_InstanceID];
+
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = meshes[gl_InstanceID].textureIndex;
+    outTextureIndex   = 1;
     outUV             = inUV;
-    outNormal         = mat3(meshes[gl_InstanceID].modelMatrix) * inNormal;
+    outNormal         = mat3(mesh.modelMatrix) * inNormal;
     outColor          = inColor;
     outViewPosition   = -inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * meshes[gl_InstanceID].modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * mesh.modelMatrix) * position;
 
-    gl_Position = camera.view * camera.projection * meshes[gl_InstanceID].modelMatrix * position;
+    gl_Position = camera.view * camera.projection * mesh.modelMatrix * position;
 }

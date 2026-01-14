@@ -324,8 +324,8 @@ namespace Chicane
 
         void Renderer::setupFrame(Frame::Instance& outFrame)
         {
-            outFrame.updateCameraData(m_cameras);
-            outFrame.updateLightData(m_lights);
+            outFrame.updateCameraData(m_camera);
+            outFrame.updateLightData(m_light);
             outFrame.updateMeshData(m_meshes);
         }
 

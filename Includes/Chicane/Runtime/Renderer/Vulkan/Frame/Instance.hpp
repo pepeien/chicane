@@ -32,12 +32,12 @@ namespace Chicane
                 void destroySync();
 
                 // Resources
-                void setupCameraData(const std::vector<CCamera*>& inCameras);
-                void updateCameraData(const std::vector<CCamera*>& inCameras);
+                void setupCameraData(CCamera* inCamera);
+                void updateCameraData(CCamera* inCamera);
                 void destroyCameraData();
 
-                void setupLightData(const std::vector<CLight*>& inLights);
-                void updateLightData(const std::vector<CLight*>& inLights);
+                void setupLightData(CLight* inLight);
+                void updateLightData(CLight* inLight);
                 void destroyLightData();
 
                 void setupMeshData(const std::vector<CMesh*>& inMeshes);
@@ -65,7 +65,6 @@ namespace Chicane
                 void updateDescriptorSets();
 
             private:
-                RendererView getActiveCameraData(const std::vector<CCamera*>& inCameras);
                 RendererView normalizeViewData(const RendererView& inData);
 
                 void refreshMeshData(const std::vector<CMesh*>& inMeshes);

@@ -10,11 +10,13 @@ namespace Chicane
 {
     Renderer::Renderer()
         : m_size(Vec2::Zero),
+          m_sizeOberservable({}),
           m_position(Vec2::Zero),
+          m_positionOberservable({}),
           m_window(nullptr),
           m_layers({}),
-          m_cameras({}),
-          m_lights({}),
+          m_camera(nullptr),
+          m_light(nullptr),
           m_meshes({})
     {
         loadEvents();
@@ -52,6 +54,7 @@ namespace Chicane
     void Renderer::render()
     {
         setupLayers();
+        setupComponents();
 
         if (!canRender())
         {
@@ -83,7 +86,16 @@ namespace Chicane
 
         onResizing();
 
-        updateViewComponents();
+        m_sizeOberservable.next(m_size);
+    }
+
+    Renderer::SizeSubscription Renderer::watchSize(
+        SizeObservable::NextCallback     inNext,
+        SizeObservable::ErrorCallback    inError,
+        SizeObservable::CompleteCallback inComplete
+    )
+    {
+        return m_sizeOberservable.subscribe(inNext, inError, inComplete).next(m_size);
     }
 
     const Vec2& Renderer::getPosition() const
@@ -107,6 +119,17 @@ namespace Chicane
         m_position.y = inY;
 
         onRepositioning();
+
+        m_positionOberservable.next(m_position);
+    }
+
+    Renderer::PositionSubscription Renderer::watchPosition(
+        PositionObservable::NextCallback     inNext,
+        PositionObservable::ErrorCallback    inError,
+        PositionObservable::CompleteCallback inComplete
+    )
+    {
+        return m_positionOberservable.subscribe(inNext, inError, inComplete).next(m_position);
     }
 
     Window* Renderer::getWindow() const
@@ -179,6 +202,52 @@ namespace Chicane
         m_layers.clear();
     }
 
+    void Renderer::setupComponents()
+    {
+        m_camera = nullptr;
+        m_light  = nullptr;
+        m_meshes.clear();
+
+        for (Component* component : Application::getScene()->getComponents())
+        {
+            if (!component->isActive())
+            {
+                continue;
+            }
+
+            if (component->isType<CCamera>())
+            {
+                if (!m_camera)
+                {
+                    m_camera = static_cast<CCamera*>(component);
+                }
+
+                continue;
+            }
+
+            if (component->isType<CLight>())
+            {
+                if (!m_light)
+                {
+                    m_light = static_cast<CLight*>(component);
+                }
+
+                continue;
+            }
+
+            if (component->isType<CMesh>())
+            {
+                m_meshes.push_back(static_cast<CMesh*>(component));
+
+                continue;
+            }
+        }
+
+        std::sort(m_meshes.begin(), m_meshes.end(), [](CMesh* inA, CMesh* inB) {
+            return inA->getModel().compare(inB->getModel()) > 0;
+        });
+    }
+
     void Renderer::loadEvents()
     {
         Application::getWindow()->watchEvent([this](WindowEvent inEvent) {
@@ -194,61 +263,5 @@ namespace Chicane
                 layer->handle(inEvent);
             }
         });
-
-        Application::watchScene([this](Scene* inLevel) {
-            if (!inLevel)
-            {
-                return;
-            }
-
-            inLevel->watchComponents([this](const std::vector<Component*>& inComponents) {
-                m_cameras.clear();
-                m_lights.clear();
-                m_meshes.clear();
-
-                for (Component* component : inComponents)
-                {
-                    if (component->isType<CCamera>())
-                    {
-                        m_cameras.push_back(static_cast<CCamera*>(component));
-
-                        continue;
-                    }
-
-                    if (component->isType<CMesh>())
-                    {
-                        m_meshes.push_back(static_cast<CMesh*>(component));
-
-                        continue;
-                    }
-
-                    if (component->isType<CLight>())
-                    {
-                        m_lights.push_back(static_cast<CLight*>(component));
-
-                        continue;
-                    }
-                }
-
-                std::sort(m_meshes.begin(), m_meshes.end(), [](CMesh* inA, CMesh* inB) {
-                    return inA->getModel().compare(inB->getModel()) > 0;
-                });
-
-                updateViewComponents();
-            });
-        });
-    }
-
-    void Renderer::updateViewComponents()
-    {
-        for (CCamera* camera : m_cameras)
-        {
-            camera->setViewport(m_size);
-        }
-
-        for (CLight* light : m_lights)
-        {
-            light->setViewport(m_size);
-        }
     }
 }
