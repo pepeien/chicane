@@ -1,5 +1,6 @@
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene.hpp"
 
+#include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Sky.hpp"
 
 namespace Chicane
@@ -10,6 +11,7 @@ namespace Chicane
             : Super("Engine_Scene")
         {
             pushLayer<LSceneSky>();
+            pushLayer<LSceneMesh>();
 
             init();
         }

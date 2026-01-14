@@ -13,7 +13,7 @@ Application::Application()
     // Window
     createInfo.window.title    = "Shooter Sample";
     createInfo.window.size     = Chicane::Vec<2, int>(1600, 900);
-    createInfo.window.display  = 1;
+    createInfo.window.display  = 0;
     createInfo.window.type     = Chicane::WindowType::Windowed;
     createInfo.window.renderer = Chicane::WindowRenderer::OpenGL;
 

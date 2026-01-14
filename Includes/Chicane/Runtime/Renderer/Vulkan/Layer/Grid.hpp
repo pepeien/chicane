@@ -5,7 +5,7 @@
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer/Internals.hpp"
 
 #include <vulkan/vulkan.hpp>
 

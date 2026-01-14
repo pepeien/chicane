@@ -1,39 +1,26 @@
-#include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Sky.hpp"
-
-#include "Chicane/Box/Asset/Sky/Parsed.hpp"
-#include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Runtime/Application.hpp"
-#include "Chicane/Runtime/Renderer/View.hpp"
-#include "Chicane/Runtime/Scene.hpp"
-#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
+#include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Mesh.hpp"
 
 namespace Chicane
 {
     namespace OpenGL
     {
-        LSceneSky::LSceneSky()
-            : Super("Engine_Scene_Sky"),
-              m_asset(nullptr),
-              m_modelManager(Box::getModelManager()),
-              m_textureManager(Box::getTextureManager())
+        LSceneMesh::LSceneMesh()
+            : Super("Engine_Scene_Mesh"),
+              m_textureManager(Box::getTextureManager()),
+              m_modelManager(Box::getModelManager())
         {
             loadEvents();
         }
 
-        LSceneSky::~LSceneSky()
+        LSceneMesh::~LSceneMesh()
         {
             destroyTextureData();
             destroyModelData();
             destroyShaders();
         }
 
-        bool LSceneSky::onInit()
+        bool LSceneMesh::onInit()
         {
-            if (!m_asset)
-            {
-                return false;
-            }
-
             buildShaders();
             buildTextureData();
             buildModelData();
@@ -41,7 +28,7 @@ namespace Chicane
             return true;
         }
 
-        void LSceneSky::onRender(void* outData)
+        void LSceneMesh::onRender(void* outData)
         {
             if (!is(RendererLayerStatus::Running))
             {
@@ -50,58 +37,69 @@ namespace Chicane
 
             glUseProgram(m_shaderProgram);
 
-            glDrawElements(
-                GL_TRIANGLES,
-                static_cast<std::uint32_t>(m_modelManager->getInstance(m_asset->getModel()).indices.size()),
-                GL_UNSIGNED_INT,
-                0
-            );
+            for (const String& id : m_modelManager->getActiveIds())
+            {
+                const Box::ModelParsed& data = m_modelManager->getData(id);
+
+                glDrawElementsInstancedBaseVertexBaseInstance(
+                    GL_TRIANGLES,                              // or whatever your primitive is
+                    data.indexCount,                           // count
+                    GL_UNSIGNED_INT,                           // index type (or GL_UNSIGNED_SHORT)
+                    (void*)(data.firstIndex * sizeof(GLuint)), // indices offset
+                    m_modelManager->getUseCount(id),           // instanceCount
+                    0,                                         // baseVertex
+                    m_modelManager->getFirstUse(id)            // baseInstance
+                );
+            }
         }
 
-        void LSceneSky::loadEvents()
+        void LSceneMesh::loadEvents()
         {
             if (!is(RendererLayerStatus::Offline))
             {
                 return;
             }
 
-            Application::watchScene([this](Scene* inLevel) {
-                if (!inLevel)
+            m_textureManager->watchChanges([&](Box::ManagerEventType inEvent) {
+                if (inEvent != Box::ManagerEventType::Activation)
                 {
                     return;
                 }
 
-                inLevel->watchActors([this](const std::vector<Actor*>& inActors) {
-                    const std::vector<ASky*> skies = Application::getScene()->getActors<ASky>();
+                if (is(RendererLayerStatus::Offline))
+                {
+                    init();
 
-                    if (skies.empty())
-                    {
-                        destroy();
+                    return;
+                }
 
-                        return;
-                    }
+                buildTextureData();
+            });
 
-                    skies.front()->watchSky([this](const Chicane::Box::Sky* inSky) {
-                        if (!is(RendererLayerStatus::Offline) || !inSky)
-                        {
-                            return;
-                        }
+            m_modelManager->watchChanges([&](Box::ManagerEventType inEvent) {
+                if (inEvent != Box::ManagerEventType::Use)
+                {
+                    return;
+                }
 
-                        m_asset = inSky;
+                if (is(RendererLayerStatus::Offline))
+                {
+                    init();
 
-                        init();
-                    });
-                });
+                    return;
+                }
+
+                buildModelData();
             });
         }
 
-        void LSceneSky::buildShaders()
+        void LSceneMesh::buildShaders()
         {
             GLint result = GL_FALSE;
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.overt");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -115,8 +113,6 @@ namespace Chicane
             glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &result);
             if (!result)
             {
-                glDeleteShader(vertexShader);
-
                 throw std::runtime_error("Failed to load vertex shader");
             }
 
@@ -124,7 +120,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Sky.ofrag");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -138,8 +134,6 @@ namespace Chicane
             glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
             if (!result)
             {
-                glDeleteShader(fragmentShader);
-
                 throw std::runtime_error("Failed to load fragment shader");
             }
 
@@ -154,9 +148,6 @@ namespace Chicane
             glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
             if (!result)
             {
-                glDeleteShader(vertexShader);
-                glDeleteShader(fragmentShader);
-
                 throw std::runtime_error("Failed link shader program");
             }
 
@@ -164,74 +155,20 @@ namespace Chicane
             glDeleteShader(fragmentShader);
         }
 
-        void LSceneSky::destroyShaders()
+        void LSceneMesh::destroyShaders()
         {
             glDeleteProgram(m_shaderProgram);
         }
 
-        void LSceneSky::buildTextureData()
+        void LSceneMesh::buildTextureData()
+        {}
+
+        void LSceneMesh::destroyTextureData()
+        {}
+
+        void LSceneMesh::buildModelVertexBuffer()
         {
-            glGenTextures(1, &m_textureBuffer);
-
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
-
-            // Filters
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-            Box::SkyParsedSides sides = {};
-
-            for (const auto& [side, texture] : m_asset->getSides())
-            {
-                m_textureManager->activate(texture);
-
-                sides.insert(std::make_pair(side, m_textureManager->getInstance(texture)));
-            }
-
-            for (Box::SkySide side : Box::Sky::ORDER)
-            {
-                Image image = sides.at(side);
-
-                switch (side)
-                {
-                case Box::SkySide::Right:
-                    image.rotate(90.0f);
-
-                    break;
-
-                case Box::SkySide::Left:
-                    image.rotate(-90.0f);
-
-                    break;
-
-                case Box::SkySide::Front:
-                    image.rotate(180.0f);
-
-                    break;
-                }
-
-                glTexImage2D(
-                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + static_cast<int>(side),
-                    0,
-                    GL_RGB8,
-                    image.getWidth(),
-                    image.getHeight(),
-                    0,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    image.getPixels()
-                );
-            }
-        }
-
-        void LSceneSky::destroyTextureData()
-        {
-            glDeleteTextures(1, &m_textureBuffer);
-        }
-
-        void LSceneSky::buildModelVertexBuffer()
-        {
-            const std::vector<Vertex>& vertices = m_modelManager->getInstance(m_asset->getModel()).vertices;
+            const std::vector<Vertex>& vertices = m_modelManager->getVertices();
 
             glGenBuffers(1, &m_modelVertexBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
@@ -250,9 +187,9 @@ namespace Chicane
             glEnableVertexAttribArray(3);
         }
 
-        void LSceneSky::buildModelIndexBuffer()
+        void LSceneMesh::buildModelIndexBuffer()
         {
-            const std::vector<std::uint32_t>& indices = m_modelManager->getInstance(m_asset->getModel()).indices;
+            const std::vector<std::uint32_t>& indices = m_modelManager->getIndices();
 
             glGenBuffers(1, &m_modelIndexBuffer);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
@@ -264,7 +201,7 @@ namespace Chicane
             );
         }
 
-        void LSceneSky::buildModelData()
+        void LSceneMesh::buildModelData()
         {
             glGenVertexArrays(1, &m_vao);
             glBindVertexArray(m_vao);
@@ -273,14 +210,14 @@ namespace Chicane
             buildModelIndexBuffer();
         }
 
-        void LSceneSky::destroyModelData()
+        void LSceneMesh::destroyModelData()
         {
             glDeleteVertexArrays(1, &m_vao);
             glDeleteBuffers(1, &m_modelVertexBuffer);
             glDeleteBuffers(1, &m_modelIndexBuffer);
         }
 
-        void LSceneSky::rebuildModelData()
+        void LSceneMesh::rebuildModelData()
         {
             destroyModelData();
             buildModelData();

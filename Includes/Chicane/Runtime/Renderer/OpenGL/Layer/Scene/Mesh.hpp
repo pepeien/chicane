@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 
 #include "Chicane/Box/Asset/Model/Manager.hpp"
-#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Asset/Mesh.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
@@ -12,11 +12,11 @@ namespace Chicane
 {
     namespace OpenGL
     {
-        class CHICANE_RUNTIME LSceneSky : public RendererLayer
+        class CHICANE_RUNTIME LSceneMesh : public RendererLayer
         {
         public:
-            LSceneSky();
-            ~LSceneSky();
+            LSceneMesh();
+            ~LSceneMesh();
 
         public:
             bool onInit() override;
@@ -42,9 +42,6 @@ namespace Chicane
             void rebuildModelData();
 
         private:
-            // Texture
-            GLuint               m_textureBuffer;
-
             // Shader
             GLuint               m_shaderProgram;
 
@@ -52,11 +49,10 @@ namespace Chicane
             GLuint               m_vao;
             GLuint               m_modelVertexBuffer;
             GLuint               m_modelIndexBuffer;
-
-            // Box
-            const Box::Sky*      m_asset;
-
             Box::ModelManager*   m_modelManager;
+
+            // Texture
+            GLuint               m_textureBuffer;
             Box::TextureManager* m_textureManager;
         };
     }

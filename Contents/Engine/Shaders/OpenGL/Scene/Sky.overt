@@ -1,6 +1,6 @@
 #version 450
 
-layout(binding = 0) uniform CameraUBO {
+layout(binding = 0) uniform Camera {
     vec4 clip;
 
     mat4 view;

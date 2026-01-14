@@ -53,7 +53,7 @@ namespace Chicane
 
         RendererInternals Renderer::getInternals()
         {
-            RendererInternals internals{};
+            RendererInternals internals;
             internals.physicalDevice    = m_physicalDevice;
             internals.logicalDevice     = m_logicalDevice;
             internals.sufrace           = m_surface;

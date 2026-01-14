@@ -5,10 +5,15 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
+#include "Chicane/Box/Asset/Mesh/Parsed.hpp"
+#include "Chicane/Box/Asset/Texture/Manager.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/OpenGL/Debug.hpp"
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene.hpp"
+#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -24,6 +29,10 @@ namespace Chicane
 
         Renderer::~Renderer()
         {
+            destroyCameraData();
+            destroyLightData();
+            destroyMeshData();
+
             destroyContext();
         }
 
@@ -33,6 +42,10 @@ namespace Chicane
             buildGlew();
             buildDebugMessenger();
             buildLayers();
+
+            buildCameraData();
+            buildLightData();
+            buildMeshData();
         }
 
         void Renderer::onRender()
@@ -50,6 +63,36 @@ namespace Chicane
                 break;
             }
 
+            CLight* light = nullptr;
+            for (CLight* component : m_lights)
+            {
+                if (!component->isActive())
+                {
+                    continue;
+                }
+
+                light = component;
+
+                break;
+            }
+
+            std::vector<Box::MeshParsed> meshes = {};
+            meshes.reserve(m_meshes.size());
+
+            std::vector<CMesh*> components = m_meshes;
+            std::sort(components.begin(), components.end(), [](CMesh* inA, CMesh* inB) {
+                return inA->getModel().compare(inB->getModel()) > 0;
+            });
+
+            for (const CMesh* mesh : components)
+            {
+                Box::MeshParsed data = {};
+                data.modelMatrix     = mesh->getTransform().getMatrix();
+                data.textureIndex    = Box::getTextureManager()->getIndex(mesh->getTexture());
+
+                meshes.push_back(data);
+            }
+
             for (RendererLayer* layer : m_layers)
             {
                 if (!layer)
@@ -60,7 +103,16 @@ namespace Chicane
                 glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                layer->render(camera);
+                glBindBuffer(GL_UNIFORM_BUFFER, m_cameraBuffer);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(RendererView), &camera->getData());
+
+                glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(RendererView), &light->getData());
+
+                glBindBuffer(GL_UNIFORM_BUFFER, m_meshBuffer);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Box::MeshParsed) * 10, meshes.data());
+
+                layer->render(nullptr);
             }
 
             SDL_GL_SwapWindow(static_cast<SDL_Window*>(m_window->getInstance()));
@@ -69,6 +121,16 @@ namespace Chicane
         void Renderer::onResizing()
         {
             glViewport(0, 0, m_size.x, m_size.y);
+        }
+
+        RendererInternals Renderer::getInternals()
+        {
+            RendererInternals internals;
+            internals.meshBuffer   = m_meshBuffer;
+            internals.cameraBuffer = m_cameraBuffer;
+            internals.lightBuffer  = m_lightBuffer;
+
+            return internals;
         }
 
         void Renderer::buildContext()
@@ -132,6 +194,51 @@ namespace Chicane
         void Renderer::buildLayers()
         {
             pushLayer<LScene>();
+        }
+
+        void Renderer::buildCameraData()
+        {
+            glGenBuffers(1, &m_cameraBuffer);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_cameraBuffer);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(RendererView), NULL, GL_DYNAMIC_DRAW);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_cameraBuffer);
+        }
+
+        void Renderer::destroyCameraData()
+        {
+            glDeleteBuffers(1, &m_cameraBuffer);
+        }
+
+        void Renderer::buildLightData()
+        {
+            glGenBuffers(1, &m_lightBuffer);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(RendererView), NULL, GL_DYNAMIC_DRAW);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            glBindBufferBase(GL_UNIFORM_BUFFER, 1, m_lightBuffer);
+        }
+
+        void Renderer::destroyLightData()
+        {
+            glDeleteBuffers(1, &m_lightBuffer);
+        }
+
+        void Renderer::buildMeshData()
+        {
+            glGenBuffers(1, &m_meshBuffer);
+            glBindBuffer(GL_UNIFORM_BUFFER, m_meshBuffer);
+            glBufferData(GL_UNIFORM_BUFFER, sizeof(Box::MeshParsed) * 10, NULL, GL_DYNAMIC_DRAW);
+            glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+            glBindBufferBase(GL_UNIFORM_BUFFER, 2, m_meshBuffer);
+        }
+
+        void Renderer::destroyMeshData()
+        {
+            glDeleteBuffers(1, &m_meshBuffer);
         }
     }
 }

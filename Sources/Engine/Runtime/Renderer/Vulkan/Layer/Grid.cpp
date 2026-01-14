@@ -5,7 +5,7 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Buffer/CreateInfo.hpp"
-#include "Chicane/Runtime/Renderer/Vulkan/Internals.hpp"
+#include "Chicane/Runtime/Renderer/Vulkan/Renderer/Internals.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
 
 namespace Chicane
