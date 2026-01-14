@@ -208,11 +208,15 @@ namespace Chicane
                 switch (side)
                 {
                 case Box::SkySide::Right:
+                    image.rotate(90.0f);
+
                     glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
                     break;
 
                 case Box::SkySide::Left:
+                    image.rotate(-90.0f);
+
                     glSide = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
 
                     break;
@@ -228,6 +232,8 @@ namespace Chicane
                     break;
 
                 case Box::SkySide::Front:
+                    image.rotate(180.0f);
+
                     glSide = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
 
                     break;

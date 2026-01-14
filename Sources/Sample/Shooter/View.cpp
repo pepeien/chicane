@@ -7,7 +7,7 @@
 
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
-      m_didPlayerWin(true),
+      m_bDidPlayerWin(true),
       m_telemetry(Chicane::Application::getTelemetry()),
       m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
       m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate)),
@@ -39,7 +39,7 @@ View::View()
 
         if (Game::didReachMaxScore())
         {
-            m_didPlayerWin = true;
+            m_bDidPlayerWin = true;
 
             m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
         }

@@ -34,6 +34,8 @@ namespace Chicane
         int getPitch() const;
         int getSize() const;
 
+        void rotate(float inAngle);
+
     protected:
         ImageVendor m_type;
 

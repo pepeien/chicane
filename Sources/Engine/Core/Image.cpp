@@ -101,4 +101,41 @@ namespace Chicane
     {
         return m_width * m_height;
     }
+
+    void Image::rotate(float inAngle)
+    {
+        float angle = inAngle * (M_PI / 180.0f);
+
+        std::vector<unsigned char> src(m_pixels, m_pixels + m_width * m_height * m_channel);
+
+        int cx = m_width / 2;
+        int cy = m_height / 2;
+
+        for (int y = 0; y < m_height; y++)
+        {
+            for (int x = 0; x < m_width; x++)
+            {
+                float dx = x - cx;
+                float dy = y - cy;
+
+                float fx = std::cos(angle) * dx - std::sin(angle) * dy + cx;
+                float fy = std::sin(angle) * dx + std::cos(angle) * dy + cy;
+
+                int x2 = static_cast<int>(std::round(fx));
+                int y2 = static_cast<int>(std::round(fy));
+
+                unsigned char* dst = m_pixels + m_channel * (y * m_width + x);
+
+                if (x2 < 0 || x2 >= m_width || y2 < 0 || y2 >= m_height)
+                {
+                    std::fill(dst, dst + m_channel, 0);
+                }
+                else
+                {
+                    unsigned char* srcp = &src[m_channel * (y2 * m_width + x2)];
+                    std::copy(srcp, srcp + m_channel, dst);
+                }
+            }
+        }
+    }
 }

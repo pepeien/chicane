@@ -9,7 +9,7 @@ public:
     View();
 
 private:
-    bool m_didPlayerWin;
+    bool m_bDidPlayerWin;
 
     // Status
     const Chicane::Telemetry& m_telemetry;
