@@ -14,6 +14,7 @@
 #include "Chicane/Core/Input/Mouse/ButtonEvent.hpp"
 #include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+
 #include "Chicane/Runtime.hpp"
 
 namespace Chicane

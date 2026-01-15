@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include "Chicane/Box/Asset/Header.hpp"
+
 #include "Chicane/Kerb.hpp"
 
 #if defined(CHICANE_OPENGL)

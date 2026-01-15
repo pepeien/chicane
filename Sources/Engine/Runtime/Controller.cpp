@@ -1,9 +1,9 @@
 #include "Chicane/Runtime/Controller.hpp"
 
+#include <SDL3/SDL.h>
+
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
-
-#include <SDL3/SDL.h>
 
 namespace Chicane
 {

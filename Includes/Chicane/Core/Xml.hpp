@@ -1,9 +1,9 @@
 #pragma once
 
+#include <pugixml.hpp>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
-
-#include <pugixml.hpp>
 
 namespace Chicane
 {

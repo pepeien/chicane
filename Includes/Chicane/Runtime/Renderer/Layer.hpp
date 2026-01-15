@@ -25,6 +25,7 @@ namespace Chicane
         virtual bool onRebuild() { return true; }
         virtual bool onSetup() { return true; }
         virtual void onRender(void* outData) { return; }
+        virtual bool onCleanup() { return true; }
         virtual void onEvent(const WindowEvent& inEvent) { return; }
 
     public:
@@ -33,6 +34,7 @@ namespace Chicane
         void rebuild();
         void setup();
         void render(void* outData);
+        void cleanup();
         void handle(const WindowEvent& inEvent);
 
     public:

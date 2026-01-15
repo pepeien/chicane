@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Math/Vertex.hpp"
+
 #include "Chicane/Grid.hpp"
 
 namespace Chicane

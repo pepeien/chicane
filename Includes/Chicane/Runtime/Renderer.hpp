@@ -99,6 +99,7 @@ namespace Chicane
 
     protected:
         void setupLayers();
+        void cleanupLayers();
         void destroyLayers();
         void rebuildLayers();
         void deleteLayers();

@@ -1,5 +1,7 @@
 #include "Chicane/Core/Window.hpp"
 
+#include <SDL3/SDL.h>
+
 #include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Input/Device/Event.hpp"
 #include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
@@ -11,8 +13,6 @@
 #include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
-
-#include <SDL3/SDL.h>
 
 namespace Chicane
 {

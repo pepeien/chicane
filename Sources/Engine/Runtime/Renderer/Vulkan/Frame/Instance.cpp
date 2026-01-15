@@ -1,6 +1,7 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
+
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Descriptor.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/GraphicsPipeline.hpp"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box.hpp"
+
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane

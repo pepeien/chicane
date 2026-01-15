@@ -1,10 +1,9 @@
 #pragma once
 
-#include <GL/glew.h>
-
 #include "Chicane/Box/Asset/Model/Manager.hpp"
 #include "Chicane/Box/Asset/Sky.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 
@@ -22,6 +21,7 @@ namespace Chicane
             bool onInit() override;
             bool onSetup() override;
             void onRender(void* outData) override;
+            bool onCleanup() override;
 
         private:
             // Event
@@ -44,22 +44,19 @@ namespace Chicane
             void rebuildModelData();
 
         private:
-            // Texture
-            GLuint               m_textureBuffer;
-
             // Shader
-            GLuint               m_shaderProgram;
+            std::uint32_t        m_shaderProgram;
 
-            // Model
-            GLuint               m_modelVertexArray;
-            GLuint               m_modelVertexBuffer;
-            GLuint               m_modelIndexBuffer;
-
-            // Box
+            // Texture
+            std::uint32_t        m_textureBuffer;
+            Box::TextureManager* m_textureManager;
             const Box::Sky*      m_asset;
 
+            // Model
+            std::uint32_t        m_modelVertexArray;
+            std::uint32_t        m_modelVertexBuffer;
+            std::uint32_t        m_modelIndexBuffer;
             Box::ModelManager*   m_modelManager;
-            Box::TextureManager* m_textureManager;
         };
     }
 }

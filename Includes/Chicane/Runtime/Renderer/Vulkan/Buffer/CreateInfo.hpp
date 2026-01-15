@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime.hpp"
-
 #include <vulkan/vulkan.hpp>
+
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {

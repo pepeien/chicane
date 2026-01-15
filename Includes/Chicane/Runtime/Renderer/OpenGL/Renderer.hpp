@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Chicane/Runtime/Renderer.hpp"
-#include "Chicane/Runtime/Renderer/OpenGL/Renderer/Internals.hpp"
 
 namespace Chicane
 {
@@ -17,9 +16,6 @@ namespace Chicane
             void onInit() override;
             void onRender() override;
             void onResizing() override;
-
-        public:
-            RendererInternals getInternals();
 
         private:
             void buildContext();
@@ -39,11 +35,12 @@ namespace Chicane
             // Mesh
             void buildMeshData();
             void destroyMeshData();
+            void rebuildMeshData();
 
         private:
-            GLuint m_cameraBuffer;
-            GLuint m_lightBuffer;
-            GLuint m_meshBuffer;
+            std::uint32_t m_cameraBuffer;
+            std::uint32_t m_lightBuffer;
+            std::uint32_t m_meshBuffer;
         };
     }
 }

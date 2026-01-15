@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Runtime/Renderer/Vulkan/Queue.hpp"
 
 namespace Chicane

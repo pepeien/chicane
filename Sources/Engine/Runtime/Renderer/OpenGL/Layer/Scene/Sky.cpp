@@ -1,7 +1,11 @@
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Sky.hpp"
 
+#include <GL/glew.h>
+
 #include "Chicane/Box/Asset/Sky/Parsed.hpp"
+
 #include "Chicane/Core/Math/Vertex.hpp"
+
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Renderer/View.hpp"
 #include "Chicane/Runtime/Scene.hpp"
@@ -43,6 +47,17 @@ namespace Chicane
 
         bool LSceneSky::onSetup()
         {
+            // Depth Test
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LESS);
+
+            // Face Culling
+            glCullFace(GL_FRONT);
+            glFrontFace(GL_CCW);
+
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
+            glBindVertexArray(m_modelVertexArray);
+
             return true;
         }
 
@@ -53,10 +68,6 @@ namespace Chicane
                 return;
             }
 
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-
             glUseProgram(m_shaderProgram);
 
             glDrawElements(
@@ -65,10 +76,11 @@ namespace Chicane
                 GL_UNSIGNED_INT,
                 0
             );
+        }
 
-            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        bool LSceneSky::onCleanup()
+        {
+            return true;
         }
 
         void LSceneSky::loadEvents()
@@ -188,6 +200,9 @@ namespace Chicane
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureBuffer);
 
             // Filters
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -225,7 +240,7 @@ namespace Chicane
                 glTexImage2D(
                     GL_TEXTURE_CUBE_MAP_POSITIVE_X + static_cast<int>(side),
                     0,
-                    GL_RGB8,
+                    GL_RGBA8,
                     image.getWidth(),
                     image.getHeight(),
                     0,
@@ -234,8 +249,6 @@ namespace Chicane
                     image.getPixels()
                 );
             }
-
-            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         }
 
         void LSceneSky::destroyTextureData()
@@ -268,8 +281,6 @@ namespace Chicane
 
             glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
             glEnableVertexAttribArray(3);
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         void LSceneSky::buildModelIndexBuffer()
@@ -284,8 +295,6 @@ namespace Chicane
                 indices.data(),
                 GL_STATIC_DRAW
             );
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneSky::buildModelData()

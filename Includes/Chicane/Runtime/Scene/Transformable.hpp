@@ -4,6 +4,7 @@
 #include "Chicane/Core/Math/Bounds.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Transform/Spatial.hpp"
+
 #include "Chicane/Runtime.hpp"
 
 namespace Chicane

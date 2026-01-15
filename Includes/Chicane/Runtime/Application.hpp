@@ -2,7 +2,9 @@
 
 #include "Chicane/Core/Telemetry.hpp"
 #include "Chicane/Core/Window.hpp"
+
 #include "Chicane/Grid/Component/View.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Application/CreateInfo.hpp"
 #include "Chicane/Runtime/Controller.hpp"

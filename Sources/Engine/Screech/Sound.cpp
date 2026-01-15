@@ -1,9 +1,9 @@
 #include "Chicane/Screech/Sound.hpp"
 
+#include <miniaudio.h>
+
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Flags.hpp"
-
-#include <miniaudio.h>
 
 namespace Chicane
 {

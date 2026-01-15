@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
@@ -16,10 +18,11 @@ namespace Chicane
         }
 
         Component::Component(const String& inTag)
-            : m_tag(inTag),
+            : Changeable(),
+              m_tag(inTag),
               m_id(""),
               m_class(""),
-              m_style(Style()),
+              m_style({}),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
@@ -31,6 +34,7 @@ namespace Chicane
               m_primitive({})
         {
             m_style.setParent(this);
+            m_style.watchChanges([&] { refresh(); });
         }
 
         Component::~Component()
@@ -53,8 +57,6 @@ namespace Chicane
         {
             onTick(inDeltaTime);
 
-            refresh();
-
             for (Component* child : m_children)
             {
                 child->tick(inDeltaTime);
@@ -64,12 +66,6 @@ namespace Chicane
         void Component::refresh()
         {
             refreshStyle();
-
-            if (!isVisible())
-            {
-                return;
-            }
-
             refreshSize();
             refreshPosition();
             refreshPrimitive();
@@ -371,6 +367,7 @@ namespace Chicane
             }
 
             m_parent = inComponent;
+            m_parent->watchChanges([&]() { refreshStyle(); });
 
             onAdoption(inComponent);
         }
@@ -633,7 +630,7 @@ namespace Chicane
 
         void Component::refreshZIndex()
         {
-            const Style& parentStyle = getParent()->getStyle();
+            const Style& parentStyle = hasParent() ? getParent()->getStyle() : getStyle();
 
             if (m_style.zIndex > 0.0f || parentStyle.zIndex <= 0.0f)
             {

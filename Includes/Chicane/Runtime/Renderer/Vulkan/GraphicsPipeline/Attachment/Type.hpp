@@ -2,8 +2,6 @@
 
 #include "Chicane/Runtime.hpp"
 
-#include <vulkan/vulkan.hpp>
-
 namespace Chicane
 {
     namespace Vulkan

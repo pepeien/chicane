@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Asset/Sky.hpp"
 #include "Chicane/Box/Asset/Sky/Side.hpp"
+
 #include "Chicane/Runtime/Renderer/Vulkan/Image.hpp"
 
 namespace Chicane

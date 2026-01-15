@@ -1,5 +1,7 @@
 #include "Chicane/Runtime/Renderer/OpenGL/Layer/Scene/Mesh.hpp"
 
+#include <GL/glew.h>
+
 namespace Chicane
 {
     namespace OpenGL
@@ -30,6 +32,21 @@ namespace Chicane
 
         bool LSceneMesh::onSetup()
         {
+            // Depth Test
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LESS);
+
+            // Blend
+            glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+            glBlendEquation(GL_FUNC_ADD);
+
+            // Face Culling
+            glFrontFace(GL_CCW);
+            glCullFace(GL_BACK);
+
+            glBindTextureUnit(0, m_textureBuffer);
+            glBindVertexArray(m_modelVertexArray);
+
             return true;
         }
 
@@ -39,10 +56,6 @@ namespace Chicane
             {
                 return;
             }
-
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBindTextureUnit(0, m_textureBuffer);
 
             glUseProgram(m_shaderProgram);
 
@@ -73,13 +86,15 @@ namespace Chicane
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * data.firstIndex),
                     m_modelManager->getUseCount(id),
-                    data.firstVertex,
+                    0, // vertexOffset
                     m_modelManager->getFirstUse(id)
                 );
             }
+        }
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        bool LSceneMesh::onCleanup()
+        {
+            return true;
         }
 
         void LSceneMesh::loadEvents()
@@ -225,8 +240,6 @@ namespace Chicane
 
             glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
             glEnableVertexAttribArray(3);
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
         void LSceneMesh::buildModelIndexBuffer()
@@ -241,8 +254,6 @@ namespace Chicane
                 indices.data(),
                 GL_DYNAMIC_DRAW
             );
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         }
 
         void LSceneMesh::buildModelData()

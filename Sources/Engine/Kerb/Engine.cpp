@@ -3,6 +3,7 @@
 #include "Chicane/Kerb/Layer/BroadPhase.hpp"
 #include "Chicane/Kerb/Layer/Object.hpp"
 
+#include <Jolt/Jolt.h>
 #include <Jolt/Core/Factory.h>
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyInterface.h>

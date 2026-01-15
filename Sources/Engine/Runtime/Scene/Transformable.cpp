@@ -3,7 +3,8 @@
 namespace Chicane
 {
     Transformable::Transformable()
-        : m_transform({}),
+        : Changeable(),
+          m_transform({}),
           m_bounds()
     {}
 

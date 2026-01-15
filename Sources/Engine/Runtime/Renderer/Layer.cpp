@@ -145,6 +145,29 @@ namespace Chicane
         }
     }
 
+    void RendererLayer::cleanup()
+    {
+        if (is(RendererLayerStatus::Offline))
+        {
+            return;
+        }
+
+        if (!onCleanup())
+        {
+            return;
+        }
+
+        for (RendererLayer* child : m_children)
+        {
+            if (!child)
+            {
+                continue;
+            }
+
+            child->cleanup();
+        }
+    }
+
     void RendererLayer::handle(const WindowEvent& inEvent)
     {
         onEvent(inEvent);

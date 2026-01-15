@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Box/Asset/Sky.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 

@@ -2,6 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Sky/Side.hpp"
+
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane

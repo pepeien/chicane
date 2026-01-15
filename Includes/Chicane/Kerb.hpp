@@ -17,8 +17,6 @@
     #define CHICANE_KERB
 #endif
 
-#include <Jolt/Jolt.h>
-
 namespace Chicane
 {
     namespace Kerb

@@ -6,6 +6,7 @@
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Function.hpp"
 #include "Chicane/Grid/Function/Data.hpp"

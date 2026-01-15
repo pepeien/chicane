@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Style.hpp"
 
 #include "Chicane/Box/Asset/Font.hpp"
+
 #include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
@@ -100,7 +101,8 @@ namespace Chicane
         }
 
         Style::Style()
-            : display(StyleDisplay::Block),
+            : Changeable(),
+              display(StyleDisplay::Block),
               zIndex(0.0f),
               width(0.0f),
               height(0.0f),

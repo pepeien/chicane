@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
+
 #include "Chicane/Runtime.hpp"
 
 namespace Chicane

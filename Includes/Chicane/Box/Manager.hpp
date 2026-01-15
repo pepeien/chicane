@@ -2,6 +2,7 @@
 
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Manager/EventType.hpp"
+
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 

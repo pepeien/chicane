@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Math/Bounds.hpp"
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Transformable.hpp"
 

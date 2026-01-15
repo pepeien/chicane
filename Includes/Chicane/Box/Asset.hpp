@@ -3,6 +3,7 @@
 #include "Chicane/Box.hpp"
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Asset/Type.hpp"
+
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane

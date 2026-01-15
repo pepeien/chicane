@@ -24,5 +24,6 @@ void main()
 {
     outUV = inPosition;
 
-    gl_Position = (mat4(mat3(camera.view * camera.projection)) * vec4(inPosition, 1.0)).xyzz;
+    gl_Position = camera.view * mat4(mat3(camera.projection)) * vec4(inPosition, 1.0);
+    gl_Position.z = 0.0;  
 }

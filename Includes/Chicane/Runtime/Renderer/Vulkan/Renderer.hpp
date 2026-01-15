@@ -1,13 +1,14 @@
 #pragma once
 
+#include <vulkan/vulkan.hpp>
+
 #include "Chicane/Core/Window/Event.hpp"
+
 #include "Chicane/Runtime/Renderer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Data.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Frame/Instance.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Renderer/Internals.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/SwapChain.hpp"
-
-#include <vulkan/vulkan.hpp>
 
 namespace Chicane
 {

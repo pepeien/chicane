@@ -2,6 +2,7 @@
 
 #include "Chicane/Box/Asset/Model.hpp"
 #include "Chicane/Box/Asset/Texture.hpp"
+
 #include "Chicane/Core/Xml.hpp"
 
 namespace Chicane

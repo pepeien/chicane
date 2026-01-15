@@ -11,6 +11,7 @@
 #include "Chicane/Box/Asset/Sound/Manager.hpp"
 #include "Chicane/Box/Asset/Texture.hpp"
 #include "Chicane/Box/Asset/Texture/Manager.hpp"
+
 #include "Chicane/Core/Log.hpp"
 
 namespace Chicane

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Grid/Component/View.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Renderer/Layer.hpp"
 #include "Chicane/Runtime/Renderer/Vulkan/Buffer.hpp"

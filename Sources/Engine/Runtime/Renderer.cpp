@@ -165,6 +165,19 @@ namespace Chicane
         }
     }
 
+    void Renderer::cleanupLayers()
+    {
+        for (RendererLayer* layer : m_layers)
+        {
+            if (!layer)
+            {
+                continue;
+            }
+
+            layer->cleanup();
+        }
+    }
+
     void Renderer::destroyLayers()
     {
         for (RendererLayer* layer : m_layers)

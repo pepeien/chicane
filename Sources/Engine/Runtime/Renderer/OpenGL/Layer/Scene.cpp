@@ -10,8 +10,8 @@ namespace Chicane
         LScene::LScene()
             : Super("Engine_Scene")
         {
-            pushLayer<LSceneSky>();
             pushLayer<LSceneMesh>();
+            pushLayer<LSceneSky>();
 
             init();
         }

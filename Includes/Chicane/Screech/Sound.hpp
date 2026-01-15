@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/FileSystem.hpp"
+
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Status.hpp"
 #include "Chicane/Screech/Sound/Vendor.hpp"

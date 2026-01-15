@@ -1,5 +1,6 @@
 #include "Chicane/Kerb.hpp"
 
+#include <Jolt/Jolt.h>
 #include <Jolt/Core/Factory.h>
 #include <Jolt/RegisterTypes.h>
 

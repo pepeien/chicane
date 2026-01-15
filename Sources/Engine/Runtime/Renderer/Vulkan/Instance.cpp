@@ -1,9 +1,9 @@
 #include "Chicane/Runtime/Renderer/Vulkan/Instance.hpp"
 
+#include <SDL3/SDL_vulkan.h>
+
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
-
-#include <SDL3/SDL_vulkan.h>
 
 namespace Chicane
 {

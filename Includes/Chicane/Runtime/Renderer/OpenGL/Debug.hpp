@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Chicane/Runtime.hpp"
-
 #include <GL/glew.h>
+
+#include "Chicane/Runtime.hpp"
 
 namespace Chicane
 {

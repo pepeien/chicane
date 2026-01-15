@@ -1,9 +1,9 @@
 #pragma once
 
+#include <typeindex>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
-
-#include <typeindex>
 
 namespace Chicane
 {
