@@ -1,5 +1,9 @@
 #pragma once
 
+#include <cfloat>
+#include <cmath>
+#include <functional>
+
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"

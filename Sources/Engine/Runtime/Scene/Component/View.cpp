@@ -5,7 +5,7 @@
 namespace Chicane
 {
     CView::CView()
-        : Super(),
+        : Component(),
           m_settings({}),
           m_frustum({}),
           m_data({}),
@@ -36,7 +36,7 @@ namespace Chicane
 
         updateView();
 
-        Application::getRenderer()->watchSize([this](const Vec2& inSize) { setViewport(inSize); });
+        //Application::getRenderer()->watchSize([this](const Vec2& inSize) { setViewport(inSize); });
     }
 
     bool CView::canSee(const Transformable* inSubject) const
@@ -136,7 +136,7 @@ namespace Chicane
         updateView();
     }
 
-    const RendererView& CView::getData() const
+    const View& CView::getData() const
     {
         return m_data;
     }
@@ -149,13 +149,13 @@ namespace Chicane
         m_data.projection =
             glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
 
-        m_frustum.update(this);
+        m_frustum.update(this, m_settings);
     }
 
     void CView::updateView()
     {
         m_data.view = glm::lookAt(getTranslation(), m_focusPoint, getUp());
 
-        m_frustum.update(this);
+        m_frustum.update(this, m_settings);
     }
 }

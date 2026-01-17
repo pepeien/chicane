@@ -16,5 +16,3 @@
 #else
     #define CHICANE_RUNTIME
 #endif
-
-#include "Chicane/Core.hpp"

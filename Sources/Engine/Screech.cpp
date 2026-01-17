@@ -1,5 +1,7 @@
 #include "Chicane/Screech.hpp"
 
+#include <memory>
+
 #include "Chicane/Screech/Device.hpp"
 #include "Chicane/Screech/Manager.hpp"
 
@@ -18,11 +20,6 @@ namespace Chicane
         void* getEngine()
         {
             return g_manager->getEngine();
-        }
-
-        std::vector<Device> getDevices()
-        {
-            return g_manager->getDevices();
         }
     }
 }

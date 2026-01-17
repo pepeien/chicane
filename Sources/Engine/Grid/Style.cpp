@@ -1,6 +1,8 @@
 #include "Chicane/Grid/Style.hpp"
 
-#include "Chicane/Box/Asset/Font.hpp"
+#include <algorithm>
+
+#include "Chicane/Box/Font.hpp"
 
 #include "Chicane/Grid/Component.hpp"
 

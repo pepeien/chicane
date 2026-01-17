@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Sky.hpp"
+#include "Chicane/Box/Sky.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
@@ -10,8 +10,8 @@ namespace Chicane
     class CHICANE_RUNTIME ASky : public Actor
     {
     public:
-        using AssetObservable   = Observable<const Box::Sky*>;
-        using AssetSubscription = Subscription<const Box::Sky*>;
+        using AssetObservable   = EventObservable<const Box::Sky*>;
+        using AssetSubscription = EventSubscription<const Box::Sky*>;
 
     public:
         ASky();

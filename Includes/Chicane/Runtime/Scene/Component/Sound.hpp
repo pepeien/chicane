@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Sound/Manager.hpp"
+#include "Chicane/Box/Sound/Manager.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"

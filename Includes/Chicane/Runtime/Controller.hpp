@@ -24,8 +24,8 @@ namespace Chicane
     class CHICANE_RUNTIME Controller
     {
     public:
-        using PawnObservable   = Observable<APawn*>;
-        using PawnSubscription = Subscription<APawn*>;
+        using PawnObservable   = EventObservable<APawn*>;
+        using PawnSubscription = EventSubscription<APawn*>;
 
     public:
         Controller();

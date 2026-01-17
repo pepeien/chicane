@@ -1,5 +1,8 @@
 #pragma once
 
+#include <filesystem>
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem/Item.hpp"
 #include "Chicane/Core/String.hpp"

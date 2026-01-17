@@ -1,7 +1,10 @@
 #pragma once
 
+#include <algorithm>
+#include <map>
+
 #include "Chicane/Box.hpp"
-#include "Chicane/Box/Manager/EventType.hpp"
+#include "Chicane/Box/Manager/Event.hpp"
 
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
@@ -10,16 +13,12 @@ namespace Chicane
 {
     namespace Box
     {
+        using ManagerEventObservable   = EventObservable<ManagerEvent>;
+        using ManagerEventSubscription = EventSubscription<ManagerEvent>;
+
         template <typename I, typename E>
         class CHICANE_BOX Manager
         {
-        public:
-            using EventObservable   = Observable<ManagerEventType>;
-            using EventSubscription = Subscription<ManagerEventType>;
-
-        protected:
-            using Super = Manager;
-
         public:
             Manager()
                 : m_observable({})
@@ -84,7 +83,7 @@ namespace Chicane
 
                 onLoad(inId, inInstance);
 
-                m_observable.next(ManagerEventType::Load);
+                m_observable.next(ManagerEvent::Load);
             }
 
             void allocate(const String& inId, const E& inData)
@@ -98,7 +97,7 @@ namespace Chicane
 
                 onAllocation(inId, inData);
 
-                m_observable.next(ManagerEventType::Allocation);
+                m_observable.next(ManagerEvent::Allocation);
             }
 
             void deallocate(const String& inId)
@@ -112,7 +111,7 @@ namespace Chicane
 
                 onDeallocation(inId);
 
-                m_observable.next(ManagerEventType::Allocation);
+                m_observable.next(ManagerEvent::Allocation);
             }
 
             void activate(const String& inId)
@@ -127,7 +126,7 @@ namespace Chicane
                     return inA.compare(inB) > 0;
                 });
 
-                m_observable.next(ManagerEventType::Use);
+                m_observable.next(ManagerEvent::Use);
 
                 if (!isActive(inId))
                 {
@@ -138,7 +137,7 @@ namespace Chicane
 
                     onActivation(inId);
 
-                    m_observable.next(ManagerEventType::Activation);
+                    m_observable.next(ManagerEvent::Activation);
                 }
             }
 
@@ -155,7 +154,7 @@ namespace Chicane
                     return inA.compare(inB) > 0;
                 });
 
-                m_observable.next(ManagerEventType::Use);
+                m_observable.next(ManagerEvent::Use);
 
                 if (isUsing(inId))
                 {
@@ -168,25 +167,25 @@ namespace Chicane
                     return inA.compare(inB) > 0;
                 });
 
-                m_observable.next(ManagerEventType::Activation);
+                m_observable.next(ManagerEvent::Activation);
             }
 
             // Events
-            EventSubscription watchChanges(
-                EventSubscription::NextCallback     inNext,
-                EventSubscription::ErrorCallback    inError    = nullptr,
-                EventSubscription::CompleteCallback inComplete = nullptr
+            ManagerEventSubscription watchChanges(
+                ManagerEventSubscription::NextCallback     inNext,
+                ManagerEventSubscription::ErrorCallback    inError    = nullptr,
+                ManagerEventSubscription::CompleteCallback inComplete = nullptr
             )
             {
                 return m_observable.subscribe(inNext, inError, inComplete);
             }
 
         protected:
-            std::map<String, I> m_instances;
-            std::map<String, E> m_datum;
-            std::vector<String> m_activeIds;
-            std::vector<String> m_usedIds;
-            EventObservable     m_observable;
+            std::map<String, I>    m_instances;
+            std::map<String, E>    m_datum;
+            std::vector<String>    m_activeIds;
+            std::vector<String>    m_usedIds;
+            ManagerEventObservable m_observable;
         };
     }
 }

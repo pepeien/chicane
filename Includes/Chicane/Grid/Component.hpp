@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Event/Changeable.hpp"
+#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
@@ -22,11 +22,8 @@ namespace Chicane
         public:
             using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
 
-            using ChildrenObservable   = Observable<Component*>;
-            using ChildrenSubscription = Subscription<Component*>;
-
-        protected:
-            using Super = Component;
+            using ChildrenObservable   = Chicane::EventObservable<Component*>;
+            using ChildrenSubscription = Chicane::EventSubscription<Component*>;
 
         public:
             Component(const pugi::xml_node& inNode);

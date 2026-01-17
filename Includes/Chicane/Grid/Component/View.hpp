@@ -33,6 +33,7 @@ namespace Chicane
             void activate();
             void deactivate();
 
+            // Properties
             const String& getPath() const;
 
         protected:

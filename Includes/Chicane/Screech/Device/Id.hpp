@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
+
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Screech.hpp"

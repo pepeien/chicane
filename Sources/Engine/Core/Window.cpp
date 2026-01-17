@@ -593,19 +593,19 @@ namespace Chicane
         return m_bIsMinimized || (currentSize.x <= 0.0f || currentSize.y <= 0.0f);
     }
 
-    Window::EventSubscription Window::watchEvent(
-        EventSubscription::NextCallback     inNext,
-        EventSubscription::ErrorCallback    inError,
-        EventSubscription::CompleteCallback inComplete
+    WindowEventSubscription Window::watchEvent(
+        WindowEventSubscription::NextCallback     inNext,
+        WindowEventSubscription::ErrorCallback    inError,
+        WindowEventSubscription::CompleteCallback inComplete
     )
     {
         return m_eventObservable.subscribe(inNext, inError, inComplete);
     }
 
-    Window::SizeSubscription Window::watchSize(
-        SizeSubscription::NextCallback     inNext,
-        SizeSubscription::ErrorCallback    inError,
-        SizeSubscription::CompleteCallback inComplete
+    WindowSizeSubscription Window::watchSize(
+        WindowSizeSubscription::NextCallback     inNext,
+        WindowSizeSubscription::ErrorCallback    inError,
+        WindowSizeSubscription::CompleteCallback inComplete
     )
     {
         return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_size);

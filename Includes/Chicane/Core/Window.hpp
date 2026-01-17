@@ -11,15 +11,14 @@
 
 namespace Chicane
 {
+    using WindowEventObservable   = EventObservable<WindowEvent>;
+    using WindowEventSubscription = EventSubscription<WindowEvent>;
+
+    using WindowSizeObservable    = EventObservable<Vec<2, int>>;
+    using WindowSizeSubscription  = EventSubscription<Vec<2, int>>;
+
     class CHICANE_CORE Window
     {
-    public:
-        using EventObservable   = Observable<WindowEvent>;
-        using EventSubscription = Subscription<WindowEvent>;
-
-        using SizeObservable    = Observable<Vec<2, int>>;
-        using SizeSubscription  = Subscription<Vec<2, int>>;
-
     public:
         Window();
         ~Window();
@@ -65,15 +64,15 @@ namespace Chicane
         bool isMinimized();
 
         // Event
-        EventSubscription watchEvent(
-            EventSubscription::NextCallback     inNext,
-            EventSubscription::ErrorCallback    inError    = nullptr,
-            EventSubscription::CompleteCallback inComplete = nullptr
+        WindowEventSubscription watchEvent(
+            WindowEventSubscription::NextCallback     inNext,
+            WindowEventSubscription::ErrorCallback    inError    = nullptr,
+            WindowEventSubscription::CompleteCallback inComplete = nullptr
         );
-        SizeSubscription watchSize(
-            SizeSubscription::NextCallback     inNext,
-            SizeSubscription::ErrorCallback    inError    = nullptr,
-            SizeSubscription::CompleteCallback inComplete = nullptr
+        WindowSizeSubscription watchSize(
+            WindowSizeSubscription::NextCallback     inNext,
+            WindowSizeSubscription::ErrorCallback    inError    = nullptr,
+            WindowSizeSubscription::CompleteCallback inComplete = nullptr
         );
 
     private:
@@ -86,21 +85,20 @@ namespace Chicane
         void emmitError(const String& inMessage);
 
     private:
-        void*            m_instance;
+        void*                 m_instance;
 
-        String           m_title;
-        FileSystem::Path m_icon;
-        Vec<2, int>      m_size;
-        int              m_display;
-        WindowType       m_type;
-        Vec<2, int>      m_position;
+        String                m_title;
+        FileSystem::Path      m_icon;
+        Vec<2, int>           m_size;
+        int                   m_display;
+        WindowType            m_type;
+        Vec<2, int>           m_position;
 
-        bool             m_bIsFocused;
-        bool             m_bIsResizable;
-        bool             m_bIsMinimized; // Only takes effect when the type is
-                                         // `WindowType::Windowed`
+        bool                  m_bIsFocused;
+        bool                  m_bIsResizable;
+        bool                  m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
-        EventObservable  m_eventObservable;
-        SizeObservable   m_sizeObservable;
+        WindowEventObservable m_eventObservable;
+        WindowSizeObservable  m_sizeObservable;
     };
 }

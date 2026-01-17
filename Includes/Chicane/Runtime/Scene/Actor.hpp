@@ -1,18 +1,15 @@
 #pragma once
 
 #include "Chicane/Core/Math/Bounds.hpp"
+#include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Runtime.hpp"
-#include "Chicane/Runtime/Scene/Transformable.hpp"
 
 namespace Chicane
 {
     class CHICANE_RUNTIME Actor : public Transformable
     {
-    protected:
-        using Super = Actor;
-
     public:
         Actor();
         virtual ~Actor() = default;

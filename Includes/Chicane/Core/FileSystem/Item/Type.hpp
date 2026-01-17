@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Core.hpp"
 
 namespace Chicane

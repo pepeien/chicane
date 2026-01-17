@@ -9,7 +9,7 @@ static inline constexpr const float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
 namespace Chicane
 {
     CPhysics::CPhysics()
-        : Super(),
+        : Component(),
           m_bIsApplyingForce(false),
           m_forceDirection(Vec3::Zero),
           m_forceVelocity(Vec3::Zero)

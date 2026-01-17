@@ -1,5 +1,8 @@
 #include "Chicane/Core/String.hpp"
 
+#include <algorithm>
+#include <cstring>
+
 namespace Chicane
 {
     String formatSplittedBlock(const String& inValue, const String inDelimeter)
@@ -43,12 +46,12 @@ namespace Chicane
 
     bool String::equals(const String& inValue) const
     {
-        return strcmp(toChar(), inValue.toChar()) == 0;
+        return std::strcmp(toChar(), inValue.toChar()) == 0;
     }
 
     bool String::equals(char inValue) const
     {
-        return strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
+        return std::strcmp(toChar(), std::string(1, inValue).c_str()) == 0;
     }
 
     bool String::contains(const String& inValue) const
@@ -73,7 +76,7 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(m_value.substr(0, inValue.size()).c_str(), inValue.toChar()) == 0;
+        return std::strcmp(m_value.substr(0, inValue.size()).c_str(), inValue.toChar()) == 0;
     }
 
     bool String::startsWith(char inValue) const
@@ -98,7 +101,7 @@ namespace Chicane
             return false;
         }
 
-        return strcmp(m_value.substr(size() - inValue.size()).c_str(), inValue.toChar()) == 0;
+        return std::strcmp(m_value.substr(size() - inValue.size()).c_str(), inValue.toChar()) == 0;
     }
 
     bool String::endsWith(char inValue) const
@@ -128,7 +131,7 @@ namespace Chicane
 
     int String::compare(const String& inValue) const
     {
-        return strcmp(toChar(), inValue.toChar());
+        return std::strcmp(toChar(), inValue.toChar());
     }
 
     String String::toUpper() const

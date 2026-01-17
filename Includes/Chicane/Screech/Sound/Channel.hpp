@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Screech.hpp"
 
 namespace Chicane

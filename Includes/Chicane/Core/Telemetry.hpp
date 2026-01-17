@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdio>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Recorder.hpp"
 

@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Core/Log.hpp"
 
 #include "Chicane/Grid.hpp"
@@ -55,6 +57,8 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
+            refreshStyle();
+
             onTick(inDeltaTime);
 
             for (Component* child : m_children)

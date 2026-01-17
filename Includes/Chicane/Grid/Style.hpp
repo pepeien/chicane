@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Color.hpp"
-#include "Chicane/Core/Event/Changeable.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
 

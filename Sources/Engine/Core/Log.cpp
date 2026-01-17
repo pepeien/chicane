@@ -1,5 +1,7 @@
 #include "Chicane/Core/Log.hpp"
 
+#include <iostream>
+
 namespace Chicane
 {
     namespace Log

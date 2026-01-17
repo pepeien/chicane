@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Image/Vendor.hpp"
@@ -11,9 +13,6 @@ namespace Chicane
     public:
         using Raw    = std::vector<unsigned char>;
         using Pixels = unsigned char*;
-
-    protected:
-        using Super = Image;
 
     public:
         Image(const FileSystem::Path& inFilepath);

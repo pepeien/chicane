@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Color
     {
-        static std::unordered_map<String, Rgba> g_colors{
+        static std::unordered_map<String, Rgba> g_colors = {
             {HEX_COLOR_TRANSPARENT,  Rgba(0U,   0U,   0U,   0U)  },
             {HEX_COLOR_RED,          Rgba(255U, 0U,   0U,   255U)},
             {HEX_COLOR_GREEN,        Rgba(0U,   255U, 0U,   255U)},

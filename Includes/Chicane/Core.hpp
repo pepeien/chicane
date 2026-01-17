@@ -34,38 +34,3 @@
 #else
     #define CHICANE_CORE
 #endif
-
-// System
-#include <algorithm>
-#include <array>
-#include <atomic>
-#include <chrono>
-#include <condition_variable>
-#include <cstdlib>
-#include <cstring>
-#include <deque>
-#include <execution>
-#include <filesystem>
-#include <float.h>
-#include <fstream>
-#include <functional>
-#include <future>
-#include <iostream>
-#include <map>
-#include <math.h>
-#include <memory>
-#include <mutex>
-#include <optional>
-#include <ostream>
-#include <set>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <thread>
-#include <type_traits>
-#include <unordered_map>
-#include <vector>
-
-// Settings
-static inline constexpr const char* APPLICATION_NAME = "Chicane Engine";
-static inline constexpr const char* ENGINE_NAME      = "Chicane";

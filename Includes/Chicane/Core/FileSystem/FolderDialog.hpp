@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
 

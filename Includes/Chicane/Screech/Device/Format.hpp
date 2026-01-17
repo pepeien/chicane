@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Channel.hpp"
 #include "Chicane/Screech/Sound/Format.hpp"

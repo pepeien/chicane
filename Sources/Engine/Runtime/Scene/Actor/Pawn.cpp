@@ -6,7 +6,7 @@
 namespace Chicane
 {
     APawn::APawn()
-        : Super(),
+        : Actor(),
           m_controller(nullptr),
           m_physicsComponent(nullptr)
     {

@@ -1,6 +1,6 @@
 #include "Chicane/Grid/Component/Character.hpp"
 
-#include "Chicane/Box/Asset/Font/Manager.hpp"
+#include "Chicane/Box/Font/Manager.hpp"
 
 #include "Chicane/Core/Math/Curve.hpp"
 
@@ -14,7 +14,7 @@ namespace Chicane
         static const Box::FontGlyph  EMPTY_GLYPH = {};
 
         Character::Character()
-            : Super(TAG_ID),
+            : Component(TAG_ID),
               m_bCanUpdate(false),
               m_character(NULL_CHARACTER)
         {}

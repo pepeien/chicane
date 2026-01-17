@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/FileSystem/Item/Type.hpp"
 #include "Chicane/Core/String.hpp"

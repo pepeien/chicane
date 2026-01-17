@@ -1,5 +1,10 @@
 #pragma once
 
+#include <algorithm>
+#include <functional>
+#include <vector>
+#include <unordered_map>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Status.hpp"

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Line.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"

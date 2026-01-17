@@ -5,7 +5,7 @@
 namespace Chicane
 {
     ACamera::ACamera()
-        : Super(),
+        : Actor(),
           m_camera(nullptr)
     {
         m_camera = Application::getScene()->createComponent<CCamera>();

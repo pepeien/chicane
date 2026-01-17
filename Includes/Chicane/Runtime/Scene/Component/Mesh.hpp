@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Mesh.hpp"
+#include "Chicane/Box/Mesh.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"

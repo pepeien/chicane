@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Model.hpp"
-#include "Chicane/Box/Asset/Model/Extracted.hpp"
+#include "Chicane/Box/Model.hpp"
+#include "Chicane/Box/Model/Extracted.hpp"
 
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"

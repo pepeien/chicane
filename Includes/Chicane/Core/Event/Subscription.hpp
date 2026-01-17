@@ -1,12 +1,14 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     template <typename T = void*>
-    class Subscription
+    class CHICANE_CORE EventSubscription
     {
     public:
         using EmptyCallback    = std::function<void()>;
@@ -15,18 +17,18 @@ namespace Chicane
         using CompleteCallback = std::function<void()>;
 
     public:
-        Subscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
-            : Subscription([inNext](T inValue) { inNext(); }, inError, inComplete)
+        EventSubscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+            : EventSubscription([inNext](T inValue) { inNext(); }, inError, inComplete)
         {}
 
-        Subscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+        EventSubscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
             : m_bIsCompleted(false),
               m_next(inNext),
               m_error(inError),
               m_complete(inComplete)
         {}
 
-        Subscription()
+        EventSubscription()
             : m_bIsCompleted(false),
               m_next(nullptr),
               m_error(nullptr),
@@ -34,9 +36,9 @@ namespace Chicane
         {}
 
     public:
-        Subscription<T> next() { return next(nullptr); }
+        EventSubscription<T> next() { return next(nullptr); }
 
-        Subscription<T> next(T inData)
+        EventSubscription<T> next(T inData)
         {
             if (isCompleted())
             {
@@ -51,7 +53,7 @@ namespace Chicane
             return *this;
         }
 
-        Subscription<T> error(const String& inMessage)
+        EventSubscription<T> error(const String& inMessage)
         {
             if (isCompleted())
             {
@@ -68,7 +70,7 @@ namespace Chicane
 
         bool isCompleted() const { return m_bIsCompleted; }
 
-        Subscription<T> complete()
+        EventSubscription<T> complete()
         {
             if (isCompleted())
             {

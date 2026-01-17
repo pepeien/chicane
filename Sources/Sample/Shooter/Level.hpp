@@ -6,8 +6,8 @@
 class Level : public Chicane::Scene
 {
 public:
-    using CameraObservable   = Chicane::Observable<Chicane::ACamera*>;
-    using CameraSubscription = Chicane::Subscription<Chicane::ACamera*>;
+    using CameraObservable   = Chicane::EventObservable<Chicane::ACamera*>;
+    using CameraSubscription = Chicane::EventSubscription<Chicane::ACamera*>;
 
 public:
     Level();
@@ -34,8 +34,8 @@ private:
     void spawnApples();
 
 private:
-    Chicane::ACamera*                      m_leftCamera;
-    Chicane::ACamera*                      m_centerCamera;
-    Chicane::ACamera*                      m_rightCamera;
-    Chicane::Observable<Chicane::ACamera*> m_cameraObservable;
+    Chicane::ACamera*                           m_leftCamera;
+    Chicane::ACamera*                           m_centerCamera;
+    Chicane::ACamera*                           m_rightCamera;
+    Chicane::EventObservable<Chicane::ACamera*> m_cameraObservable;
 };

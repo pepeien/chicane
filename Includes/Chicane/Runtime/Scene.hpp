@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
@@ -12,11 +14,11 @@ namespace Chicane
     class CHICANE_RUNTIME Scene
     {
     public:
-        using ActorsObservable       = Observable<std::vector<Actor*>>;
-        using ActorsSubscription     = Subscription<std::vector<Actor*>>;
+        using ActorsObservable       = EventObservable<std::vector<Actor*>>;
+        using ActorsSubscription     = EventSubscription<std::vector<Actor*>>;
 
-        using ComponentsObservable   = Observable<std::vector<Component*>>;
-        using ComponentsSubscription = Subscription<std::vector<Component*>>;
+        using ComponentsObservable   = EventObservable<std::vector<Component*>>;
+        using ComponentsSubscription = EventSubscription<std::vector<Component*>>;
 
     public:
         Scene();

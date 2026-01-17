@@ -12,9 +12,6 @@ namespace Chicane
     {
         class CHICANE_BOX Asset
         {
-        protected:
-            using Super = Asset;
-
         public:
             static inline constexpr const char*         TAG                    = "Asset";
 

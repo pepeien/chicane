@@ -1,5 +1,9 @@
 #pragma once
 
+#include <algorithm>
+#include <functional>
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/List/PushStrategy.hpp"
 

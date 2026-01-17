@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 

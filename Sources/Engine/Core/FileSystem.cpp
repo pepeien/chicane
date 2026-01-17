@@ -1,5 +1,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
+#include <fstream>
+
 #include "Chicane/Core/FileSystem/Item/Type.hpp"
 
 namespace Chicane

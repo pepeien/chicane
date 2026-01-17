@@ -3,7 +3,7 @@
 namespace Chicane
 {
     ASky::ASky()
-        : Super(),
+        : Actor(),
           m_asset(nullptr),
           m_assetObservable({})
     {}

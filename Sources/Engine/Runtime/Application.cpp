@@ -4,13 +4,7 @@
 
 #include "Chicane/Kerb.hpp"
 
-#if defined(CHICANE_OPENGL)
-    #include "Chicane/Runtime/Renderer/OpenGL/Renderer.hpp"
-#endif
-
-#if defined(CHICANE_VULKAN)
-    #include "Chicane/Runtime/Renderer/Vulkan/Renderer.hpp"
-#endif
+#include "Chicane/Renderer/Instance.hpp"
 
 namespace Chicane
 {
@@ -30,64 +24,48 @@ namespace Chicane
         static ViewObservable g_viewObservable = {};
 
         // Window
-        static WindowCreateInfo        g_windowInfo = {};
-        static std::unique_ptr<Window> g_window     = nullptr;
+        static std::unique_ptr<Window> g_window = nullptr;
 
         // Renderer
-        static std::unique_ptr<Renderer> g_renderer = nullptr;
+        static std::unique_ptr<Renderer::Instance> g_renderer = nullptr;
 
-        void initWindow()
+        void initWindow(const WindowCreateInfo& inCreateInfo)
         {
-            if (!hasWindow())
+            if (hasWindow())
             {
-                g_window = std::make_unique<Window>();
-                g_window->watchSize([&](const Vec<2, int>& inSize) {
-                    if (!g_view)
-                    {
-                        return;
-                    }
+                return;
+            }
 
+            g_window = std::make_unique<Window>();
+            g_window->init(inCreateInfo);
+            g_window->watchSize([&](const Vec<2, int>& inSize) {
+                if (hasView())
+                {
                     g_view->setSize(inSize.x, inSize.y);
-                });
-            }
-            else
-            {
-                g_window->destroy();
-            }
+                }
 
-            g_window->init(g_windowInfo);
+                if (hasRenderer())
+                {
+                    g_renderer->setSize(inSize.x, inSize.y);
+                }
+            });
+            g_window->watchEvent([&](WindowEvent inEvent) {
+                if (hasRenderer())
+                {
+                    g_renderer->handle(inEvent);
+                }
+            });
         }
 
         void initRenderer()
         {
-            if (!hasRenderer())
+            if (hasRenderer())
             {
-                g_renderer.release();
+                return;
             }
 
-            switch (g_windowInfo.renderer)
-            {
-#if defined(CHICANE_VULKAN)
-            case WindowRenderer::Vulkan:
-                g_renderer = std::make_unique<Vulkan::Renderer>();
-
-                break;
-#endif
-
-#if defined(CHICANE_OPENGL)
-            case WindowRenderer::OpenGL:
-                g_renderer = std::make_unique<OpenGL::Renderer>();
-
-                break;
-#endif
-
-            default:
-                g_renderer = std::make_unique<Renderer>();
-
-                break;
-            }
-
-            g_renderer->init(g_window.get());
+            g_renderer = std::make_unique<Renderer::Instance>();
+            g_renderer->init(getWindow());
         }
 
         void render()
@@ -110,12 +88,11 @@ namespace Chicane
 
         void run(const ApplicationCreateInfo& inCreateInfo)
         {
-            g_windowInfo = inCreateInfo.window;
-
-            initWindow();
-            initRenderer();
             Box::init();
             Kerb::init();
+
+            initWindow(inCreateInfo.window);
+            initRenderer();
 
             if (inCreateInfo.onSetup)
             {
@@ -125,7 +102,9 @@ namespace Chicane
             while (g_window->run())
             {
                 g_telemetry.start();
+
                 render();
+
                 g_telemetry.end();
             }
         }
@@ -261,7 +240,7 @@ namespace Chicane
             return g_renderer && g_renderer.get() != nullptr;
         }
 
-        Renderer* getRenderer()
+        Renderer::Instance* getRenderer()
         {
             if (!hasRenderer())
             {
@@ -269,14 +248,6 @@ namespace Chicane
             }
 
             return g_renderer.get();
-        }
-
-        void setRenderer(WindowRenderer inRenderer)
-        {
-            g_windowInfo.renderer = inRenderer;
-
-            initWindow();
-            initRenderer();
         }
     }
 }

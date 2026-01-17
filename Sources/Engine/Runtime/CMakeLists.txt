@@ -17,48 +17,10 @@ file(
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
 
 ##################### Setup #######################
-if (CHICANE_VULKAN)
-    find_package(Vulkan REQUIRED)
-
-    list(APPEND GRAPHICS_LIBS Vulkan::Vulkan)
-else()
-    list(FILTER HEADERS EXCLUDE REGEX "Renderer/Vulkan")
-    list(FILTER SOURCES EXCLUDE REGEX "Renderer/Vulkan")
-endif()
-
-if (CHICANE_OPENGL)
-    find_package(OpenGL REQUIRED)
-    find_package(GLEW REQUIRED)
-
-    list(APPEND GRAPHICS_LIBS OpenGL::GL)
-    list(APPEND GRAPHICS_LIBS GLEW)
-else()
-    list(FILTER HEADERS EXCLUDE REGEX "Renderer/OpenGL")
-    list(FILTER SOURCES EXCLUDE REGEX "Renderer/OpenGL")
-endif()
-
 if (CHICANE_SHARED)
     add_library(${RUNTIME_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
     add_library(${RUNTIME_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
-endif()
-
-if (CHICANE_VULKAN)
-    target_compile_definitions(
-        ${RUNTIME_TARGET_NAME}
-
-        PRIVATE
-            CHICANE_VULKAN
-    )
-endif()
-
-if (CHICANE_OPENGL)
-    target_compile_definitions(
-        ${RUNTIME_TARGET_NAME}
-
-        PRIVATE
-            CHICANE_OPENGL
-    )
 endif()
 
 add_library(
@@ -99,6 +61,7 @@ target_link_libraries(
         Chicane::Core
         Chicane::Grid
         Chicane::Kerb
+        Chicane::Renderer
         Chicane::Screech
 
         ${GRAPHICS_LIBS}

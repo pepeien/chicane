@@ -17,14 +17,11 @@
     #define CHICANE_SCREECH
 #endif
 
-#include "Chicane/Core.hpp"
-
 namespace Chicane
 {
     namespace Screech
     {
         CHICANE_SCREECH void* getContext();
         CHICANE_SCREECH void* getEngine();
-        CHICANE_SCREECH std::vector<class Device> getDevices();
     }
 }
