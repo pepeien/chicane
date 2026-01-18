@@ -58,7 +58,14 @@ namespace Chicane
                 if (g_colors.find(color) == g_colors.end())
                 {
                     Rgba result = Rgba(0U);
-                    sscanf(color.toChar(), "%02hhx%02hhx%02hhx%02hhx", &result.r, &result.g, &result.b, &result.a);
+                    sscanf(
+                        color.toChar(),
+                        "%02hhx%02hhx%02hhx%02hhx",
+                        &result.r,
+                        &result.g,
+                        &result.b,
+                        &result.a
+                    );
                     g_colors.insert(std::make_pair(color, result));
 
                     return result;

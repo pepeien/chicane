@@ -34,7 +34,7 @@ namespace Chicane
 
         public:
             JPH::Body* createBodyFromMesh(
-                const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices
+                const Vertex::List& inVertices, const Vertex::Indices& inIndices
             );
 
         private:

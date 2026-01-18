@@ -25,7 +25,8 @@ namespace Chicane
         inline friend bool operator==(const Vec3& inLeft, const Vec3& inRight)
         {
             return (
-                std::fabs(inLeft.x - inRight.x) < FLT_EPSILON && std::fabs(inLeft.y - inRight.y) < FLT_EPSILON &&
+                std::fabs(inLeft.x - inRight.x) < FLT_EPSILON &&
+                std::fabs(inLeft.y - inRight.y) < FLT_EPSILON &&
                 std::fabs(inLeft.z - inRight.z) < FLT_EPSILON
             );
         }

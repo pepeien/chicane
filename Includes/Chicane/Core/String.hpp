@@ -75,7 +75,10 @@ namespace Chicane
     public:
         inline operator const char*() const { return m_value.c_str(); }
 
-        inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
+        inline friend bool operator==(const String& inA, const String& inB)
+        {
+            return inA.equals(inB);
+        }
 
         String& operator=(const String& other)
         {

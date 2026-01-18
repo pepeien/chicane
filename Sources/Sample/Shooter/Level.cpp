@@ -1,8 +1,12 @@
 #include "Level.hpp"
 
-#include "Actor.hpp"
-#include "Chicane/Runtime/Scene/Actor/Camera.hpp"
-#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
+#include <Chicane/Runtime/Scene/Actor/Camera.hpp>
+#include <Chicane/Runtime/Scene/Actor/Sky.hpp>
+
+#include "Actor/Apple.hpp"
+#include "Actor/Structure.hpp"
+#include "Actor/Sun.hpp"
+
 #include "Game.hpp"
 
 static inline constexpr const std::uint32_t APPLE_DEPTH_COUNT  = 2;
@@ -77,7 +81,9 @@ Level::CameraSubscription Level::watchActiveCamera(
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky"));
+    createActor<Chicane::ASky>()->setSky(
+        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky")
+    );
 }
 
 void Level::spawnLights()
@@ -87,20 +93,20 @@ void Level::spawnLights()
 
 void Level::spawnCameras()
 {
-    m_leftCamera = createActor<Chicane::ACamera>();
-    m_leftCamera->setId("Left");
-    m_leftCamera->setAbsoluteTranslation(-500.0f, -500.0f, 100.0f);
-    m_leftCamera->setAbsoluteRotation(-20.0f, 0.0f, -45.0f);
+    //m_leftCamera = createActor<Chicane::ACamera>();
+    //m_leftCamera->setId("Left");
+    //m_leftCamera->setAbsoluteTranslation(-500.0f, -500.0f, 100.0f);
+    //m_leftCamera->setAbsoluteRotation(-20.0f, 0.0f, -45.0f);
 
-    m_centerCamera = createActor<Chicane::ACamera>();
-    m_centerCamera->setId("Center");
-    m_centerCamera->setAbsoluteTranslation(0.0f, -500.0f, 100.0f);
-    m_centerCamera->setAbsoluteRotation(-20.0f, 0.0f, 0.0f);
+    //m_centerCamera = createActor<Chicane::ACamera>();
+    //m_centerCamera->setId("Center");
+    //m_centerCamera->setAbsoluteTranslation(0.0f, -500.0f, 100.0f);
+    //m_centerCamera->setAbsoluteRotation(-20.0f, 0.0f, 0.0f);
 
-    m_rightCamera = createActor<Chicane::ACamera>();
-    m_rightCamera->setId("Right");
-    m_rightCamera->setAbsoluteTranslation(500.0f, -500.0f, 100.0f);
-    m_rightCamera->setAbsoluteRotation(-20.0f, 0.0f, 45.0f);
+    //m_rightCamera = createActor<Chicane::ACamera>();
+    //m_rightCamera->setId("Right");
+    //m_rightCamera->setAbsoluteTranslation(500.0f, -500.0f, 100.0f);
+    //m_rightCamera->setAbsoluteRotation(-20.0f, 0.0f, 45.0f);
 }
 
 void Level::spawnStructures()

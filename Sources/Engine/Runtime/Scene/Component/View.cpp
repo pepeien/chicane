@@ -36,7 +36,7 @@ namespace Chicane
 
         updateView();
 
-        //Application::getRenderer()->watchSize([this](const Vec2& inSize) { setViewport(inSize); });
+        Application::getWindow()->watchSize([this](const Vec2& inSize) { setViewport(inSize); });
     }
 
     bool CView::canSee(const Transformable* inSubject) const
@@ -146,8 +146,12 @@ namespace Chicane
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
 
-        m_data.projection =
-            glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
+        m_data.projection = glm::perspective(
+            glm::radians(getFieldOfView()),
+            m_settings.aspectRatio,
+            m_data.clip.x,
+            m_data.clip.y
+        );
 
         m_frustum.update(this, m_settings);
     }

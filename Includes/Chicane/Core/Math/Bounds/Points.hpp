@@ -9,7 +9,7 @@ namespace Chicane
     struct CHICANE_CORE BoundsPoints
     {
     public:
-        BoundsPoints(const std::vector<Vertex>& inVertices);
+        BoundsPoints(const Vertex::List& inVertices);
         BoundsPoints();
 
     public:

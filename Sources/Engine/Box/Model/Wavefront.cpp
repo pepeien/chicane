@@ -66,7 +66,7 @@ namespace Chicane
 
                 std::uint32_t indexPerFace = *mesh->face_vertices;
 
-                std::vector<std::uint32_t> vertexLayout = {0, 1, 2};
+                Vertex::Indices vertexLayout = {0, 1, 2};
 
                 if (indexPerFace > 3) // is quad
                 {

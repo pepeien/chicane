@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Runtime/Scene.hpp"
-#include "Chicane/Runtime/Scene/Actor/Camera.hpp"
+#include <Chicane/Runtime/Scene.hpp>
+#include <Chicane/Runtime/Scene/Actor/Camera.hpp>
 
 class Level : public Chicane::Scene
 {

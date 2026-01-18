@@ -12,7 +12,7 @@ BracedInitializerIndentWidth: 4
 NamespaceIndentation: All
 
 # Line length
-ColumnLimit: 120
+ColumnLimit: 100
 
 # Braces (Allman style)
 BreakBeforeBraces: Custom

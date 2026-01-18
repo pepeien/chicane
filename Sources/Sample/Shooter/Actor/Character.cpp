@@ -1,8 +1,10 @@
 #include "Actor/Character.hpp"
 
-#include "Actor/Apple.hpp"
 #include "Chicane/Core.hpp"
+
 #include "Chicane/Runtime/Application.hpp"
+
+#include "Actor/Apple.hpp"
 #include "Game.hpp"
 #include "Level.hpp"
 
@@ -102,24 +104,29 @@ void Character::onControlAttachment()
         std::bind(&Character::onJump, this)
     );
 
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
-        m_camera->activate();
+    m_controller
+        ->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
+            m_camera->activate();
 
-        static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F2, Chicane::Input::Status::Pressed, [this]() {
-        static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
+            static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
+        });
+    m_controller
+        ->bindEvent(Chicane::Input::KeyboardButton::F2, Chicane::Input::Status::Pressed, [this]() {
+            static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
 
-        m_camera->deactivate();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F3, Chicane::Input::Status::Pressed, [this]() {
-        static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
+            m_camera->deactivate();
+        });
+    m_controller
+        ->bindEvent(Chicane::Input::KeyboardButton::F3, Chicane::Input::Status::Pressed, [this]() {
+            static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
 
-        m_camera->deactivate();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F4, Chicane::Input::Status::Pressed, []() {
-        static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera();
-    });
+            m_camera->deactivate();
+        });
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F4,
+        Chicane::Input::Status::Pressed,
+        []() { static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera(); }
+    );
 
     // Gamepad
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
@@ -262,7 +269,8 @@ void Character::onShoot()
     const Chicane::Vec3& origin      = m_camera->getTranslation();
     const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples = Chicane::Application::getScene()->traceLine<Apple>(origin, destination, {this});
+    std::vector<Apple*> hitApples =
+        Chicane::Application::getScene()->traceLine<Apple>(origin, destination, {this});
 
     for (Apple* apple : hitApples)
     {

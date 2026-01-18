@@ -51,18 +51,22 @@ namespace Chicane
 
                     return 0;
                 };
-                funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData) {
-                    Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
+                funcs.conic_to =
+                    [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData) {
+                        Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
-                    if (!curve)
-                    {
+                        if (!curve)
+                        {
+                            return 0;
+                        }
+
+                        curve->addQuadraticPoint(
+                            Vec2(inControl->x, inControl->y),
+                            Vec2(inPoint->x, inPoint->y)
+                        );
+
                         return 0;
-                    }
-
-                    curve->addQuadraticPoint(Vec2(inControl->x, inControl->y), Vec2(inPoint->x, inPoint->y));
-
-                    return 0;
-                };
+                    };
                 funcs.cubic_to = [](const FT_Vector* inControlA,
                                     const FT_Vector* inControlB,
                                     const FT_Vector* inPoint,
@@ -97,10 +101,16 @@ namespace Chicane
                 FontGlyph result = {};
                 result.code      = inCode;
                 result.units     = inGlyph->face->units_per_EM;
-                result.box       = {inGlyph->advance.x, inGlyph->face->ascender + inGlyph->face->descender};
-                result.line      = {inGlyph->face->size->metrics.x_ppem, inGlyph->face->size->metrics.y_ppem};
-                result.vertices  = Curve::getTriangleVertices(contours);
-                result.indices   = Curve::getTriangleIndices(contours);
+                result.box       = {
+                    inGlyph->advance.x,
+                    inGlyph->face->ascender + inGlyph->face->descender
+                };
+                result.line = {
+                    inGlyph->face->size->metrics.x_ppem,
+                    inGlyph->face->size->metrics.y_ppem
+                };
+                result.vertices = Curve::getTriangleVertices(contours);
+                result.indices  = Curve::getTriangleIndices(contours);
 
                 return result;
             }

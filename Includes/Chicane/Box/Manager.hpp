@@ -38,9 +38,15 @@ namespace Chicane
             // Status
             bool isEmpty() const { return m_instances.empty() || m_datum.empty(); }
 
-            bool isLoaded(const String& inId) const { return m_instances.find(inId) != m_instances.end(); }
+            bool isLoaded(const String& inId) const
+            {
+                return m_instances.find(inId) != m_instances.end();
+            }
 
-            bool isAllocated(const String& inId) const { return m_datum.find(inId) != m_datum.end(); }
+            bool isAllocated(const String& inId) const
+            {
+                return m_datum.find(inId) != m_datum.end();
+            }
 
             bool isActive(const String& inId) const
             {
@@ -57,7 +63,10 @@ namespace Chicane
 
             const std::vector<String>& getUsedIds() const { return m_usedIds; }
 
-            std::uint32_t getActiveCount() const { return static_cast<std::uint32_t>(m_activeIds.size()); }
+            std::uint32_t getActiveCount() const
+            {
+                return static_cast<std::uint32_t>(m_activeIds.size());
+            }
 
             std::uint32_t getUsedCount() const { return m_usedIds.size(); }
 
@@ -68,7 +77,9 @@ namespace Chicane
                     return 0;
                 }
 
-                return static_cast<std::uint32_t>(std::count(m_usedIds.begin(), m_usedIds.end(), inId));
+                return static_cast<std::uint32_t>(
+                    std::count(m_usedIds.begin(), m_usedIds.end(), inId)
+                );
             }
 
             // Lifecycle
@@ -122,18 +133,22 @@ namespace Chicane
                 }
 
                 m_usedIds.push_back(inId);
-                std::sort(m_usedIds.begin(), m_usedIds.end(), [](const String& inA, const String& inB) {
-                    return inA.compare(inB) > 0;
-                });
+                std::sort(
+                    m_usedIds.begin(),
+                    m_usedIds.end(),
+                    [](const String& inA, const String& inB) { return inA.compare(inB) > 0; }
+                );
 
                 m_observable.next(ManagerEvent::Use);
 
                 if (!isActive(inId))
                 {
                     m_activeIds.push_back(inId);
-                    std::sort(m_activeIds.begin(), m_activeIds.end(), [](const String& inA, const String& inB) {
-                        return inA.compare(inB) > 0;
-                    });
+                    std::sort(
+                        m_activeIds.begin(),
+                        m_activeIds.end(),
+                        [](const String& inA, const String& inB) { return inA.compare(inB) > 0; }
+                    );
 
                     onActivation(inId);
 
@@ -150,9 +165,11 @@ namespace Chicane
 
                 m_usedIds.erase(std::find(m_usedIds.begin(), m_usedIds.end(), inId));
                 m_usedIds.shrink_to_fit();
-                std::sort(m_usedIds.begin(), m_usedIds.end(), [](const String& inA, const String& inB) {
-                    return inA.compare(inB) > 0;
-                });
+                std::sort(
+                    m_usedIds.begin(),
+                    m_usedIds.end(),
+                    [](const String& inA, const String& inB) { return inA.compare(inB) > 0; }
+                );
 
                 m_observable.next(ManagerEvent::Use);
 
@@ -163,9 +180,11 @@ namespace Chicane
 
                 m_activeIds.erase(std::find(m_activeIds.begin(), m_activeIds.end(), inId));
                 m_activeIds.shrink_to_fit();
-                std::sort(m_activeIds.begin(), m_activeIds.end(), [](const String& inA, const String& inB) {
-                    return inA.compare(inB) > 0;
-                });
+                std::sort(
+                    m_activeIds.begin(),
+                    m_activeIds.end(),
+                    [](const String& inA, const String& inB) { return inA.compare(inB) > 0; }
+                );
 
                 m_observable.next(ManagerEvent::Activation);
             }

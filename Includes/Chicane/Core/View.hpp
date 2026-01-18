@@ -1,12 +1,17 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core/Math/Mat/Mat4.hpp"
 #include "Chicane/Core/Math/Vec/Vec4.hpp"
 
 namespace Chicane
 {
-    struct CHICANE_RUNTIME View
+    struct CHICANE_CORE View
     {
+    public:
+        using List = std::vector<View>;
+
     public:
         // Settings
         Vec4 clip        = Vec4(0.1f, 1000.0f, 0.0f, 0.0f);

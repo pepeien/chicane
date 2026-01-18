@@ -26,24 +26,24 @@ namespace Chicane
         using ViewSubscription       = EventSubscription<Grid::View*>;
 
         // Lifecycle
-        void CHICANE_RUNTIME run(const ApplicationCreateInfo& inCreateInfo);
+        CHICANE_RUNTIME void run(const ApplicationCreateInfo& inCreateInfo);
 
         // Telemetry
-        const CHICANE_RUNTIME Telemetry& getTelemetry();
+        CHICANE_RUNTIME const Telemetry& getTelemetry();
 
         // Game
-        bool CHICANE_RUNTIME hasController();
-        Controller* getController();
-        void CHICANE_RUNTIME setController(Controller* inController);
-        ControllerSubscription CHICANE_RUNTIME watchController(
+        CHICANE_RUNTIME bool hasController();
+        CHICANE_RUNTIME Controller* getController();
+        CHICANE_RUNTIME void setController(Controller* inController);
+        CHICANE_RUNTIME ControllerSubscription watchController(
             ControllerSubscription::NextCallback     inNext,
             ControllerSubscription::ErrorCallback    inError    = nullptr,
             ControllerSubscription::CompleteCallback inComplete = nullptr
         );
 
-        bool CHICANE_RUNTIME hasScene();
-        void CHICANE_RUNTIME setScene(Scene* inScene);
-        Scene* getScene();
+        CHICANE_RUNTIME bool hasScene();
+        CHICANE_RUNTIME void setScene(Scene* inScene);
+        CHICANE_RUNTIME Scene* getScene();
         template <class T>
         T* getScene()
         {
@@ -54,28 +54,28 @@ namespace Chicane
 
             return static_cast<T*>(getScene());
         }
-        SceneSubscription CHICANE_RUNTIME watchScene(
+        CHICANE_RUNTIME SceneSubscription watchScene(
             SceneSubscription::NextCallback     inNext,
             SceneSubscription::ErrorCallback    inError    = nullptr,
             SceneSubscription::CompleteCallback inComplete = nullptr
         );
 
         // UI
-        bool CHICANE_RUNTIME hasView();
-        Grid::View* getView();
-        void CHICANE_RUNTIME setView(Grid::View* inView);
-        ViewSubscription CHICANE_RUNTIME watchView(
+        CHICANE_RUNTIME bool hasView();
+        CHICANE_RUNTIME Grid::View* getView();
+        CHICANE_RUNTIME void setView(Grid::View* inView);
+        CHICANE_RUNTIME ViewSubscription watchView(
             ViewSubscription::NextCallback     inNext,
             ViewSubscription::ErrorCallback    inError    = nullptr,
             ViewSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Window
-        bool CHICANE_RUNTIME hasWindow();
-        Window* getWindow();
+        CHICANE_RUNTIME bool hasWindow();
+        CHICANE_RUNTIME Window* getWindow();
 
         // Renderer
-        bool CHICANE_RUNTIME hasRenderer();
-        Renderer::Instance* getRenderer();
+        CHICANE_RUNTIME bool hasRenderer();
+        CHICANE_RUNTIME Renderer::Instance* getRenderer();
     }
 }

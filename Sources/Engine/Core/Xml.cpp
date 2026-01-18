@@ -24,7 +24,8 @@ namespace Chicane
             inDocument.save_file(
                 inFilepath.c_str(),
                 "    ",
-                pugi::format_default | pugi::format_no_empty_element_tags | pugi::format_no_declaration
+                pugi::format_default | pugi::format_no_empty_element_tags |
+                    pugi::format_no_declaration
             );
         }
 
@@ -38,7 +39,9 @@ namespace Chicane
             pugi::xml_document result;
             if (!result.load_file(inFilepath.c_str(), pugi::parse_default | pugi::parse_fragment))
             {
-                throw std::runtime_error("Failed to read the XML document [" + inFilepath.string() + "]");
+                throw std::runtime_error(
+                    "Failed to read the XML document [" + inFilepath.string() + "]"
+                );
             }
 
             return result;

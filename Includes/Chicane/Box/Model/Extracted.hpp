@@ -11,8 +11,8 @@ namespace Chicane
         struct CHICANE_BOX ModelExtracted
         {
         public:
-            std::vector<Vertex>        vertices = {};
-            std::vector<std::uint32_t> indices  = {};
+            Vertex::List    vertices = {};
+            Vertex::Indices indices  = {};
         };
     }
 }

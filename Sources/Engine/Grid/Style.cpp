@@ -12,7 +12,9 @@ namespace Chicane
     {
         StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
         {
-            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
+            return parseSources(
+                FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string())
+            );
         }
 
         StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
@@ -51,7 +53,8 @@ namespace Chicane
                     continue;
                 }
 
-                std::vector<String> selectors = splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
+                std::vector<String> selectors =
+                    splittedStyle.at(0).trim().split(Style::SELECTOR_SEPARATOR);
 
                 for (String& selector : selectors)
                 {
@@ -255,12 +258,18 @@ namespace Chicane
         {
             if (m_properties.find(HEIGHT_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(height, parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setProperty(
+                    height,
+                    parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                );
             }
 
             if (m_properties.find(WIDTH_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(width, parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal));
+                setProperty(
+                    width,
+                    parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                );
             }
         }
 
@@ -308,9 +317,12 @@ namespace Chicane
 
         void Style::refreshMargin()
         {
-            if (!margin.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!margin.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection) {
+                        return parseSize(inValue, inDirection);
+                    }
+                ))
             {
                 return;
             }
@@ -320,9 +332,12 @@ namespace Chicane
 
         void Style::refreshPadding()
         {
-            if (!padding.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!padding.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection) {
+                        return parseSize(inValue, inDirection);
+                    }
+                ))
             {
                 return;
             }
@@ -332,9 +347,12 @@ namespace Chicane
 
         void Style::refreshGap()
         {
-            if (!gap.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!gap.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection) {
+                        return parseSize(inValue, inDirection);
+                    }
+                ))
             {
                 return;
             }
@@ -349,7 +367,8 @@ namespace Chicane
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
+            const Vec<4, std::uint32_t> color =
+                parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(foregroundColor, color))
             {
@@ -368,7 +387,8 @@ namespace Chicane
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
+            const Vec<4, std::uint32_t> color =
+                parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
 
             if (Color::areEquals(backgroundColor, color))
             {
@@ -389,7 +409,10 @@ namespace Chicane
 
             if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(font.size, parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setProperty(
+                    font.size,
+                    parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                );
             }
         }
 
@@ -402,7 +425,10 @@ namespace Chicane
 
             setProperty(
                 letterSpacing,
-                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                parseSize(
+                    m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME),
+                    StyleDirection::Horizontal
+                )
             );
         }
 
@@ -412,10 +438,12 @@ namespace Chicane
 
             if (inValue.startsWith(RGB_KEYWORD) || inValue.startsWith(RGBA_KEYWORD))
             {
-                const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
+                const String keyword =
+                    inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
-                const std::vector<String> params = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
-                                                       .split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params =
+                    inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
+                        .split(FUNCTION_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
@@ -512,7 +540,8 @@ namespace Chicane
                 return 0.0f;
             }
 
-            const String operation = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
+            const String operation =
+                inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
 
             std::uint32_t parathesisCount = 0;
 
@@ -534,7 +563,11 @@ namespace Chicane
                     continue;
                 }
 
-                const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
+                const auto& iterator = std::find(
+                    CALCULATION_OPERATORS.begin(),
+                    CALCULATION_OPERATORS.end(),
+                    character
+                );
 
                 if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
                 {
@@ -604,8 +637,9 @@ namespace Chicane
                 return value;
             }
 
-            const Vec2& size = isPosition(StylePosition::Absolute) ? m_parent->getRoot()->getSize()
-                                                                   : m_parent->getParent()->getAvailableSize();
+            const Vec2& size = isPosition(StylePosition::Absolute)
+                                   ? m_parent->getRoot()->getSize()
+                                   : m_parent->getParent()->getAvailableSize();
 
             if (inDirection == StyleDirection::Horizontal)
             {

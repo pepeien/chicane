@@ -15,9 +15,13 @@ namespace Chicane
 
         bool FontManager::isFamilyAllocated(const String& inFamily) const
         {
-            return std::find_if(m_datum.begin(), m_datum.end(), [inFamily](const std::pair<String, FontParsed>& pair) {
-                       return inFamily.equals(pair.second.name);
-                   }) != m_datum.end();
+            return std::find_if(
+                       m_datum.begin(),
+                       m_datum.end(),
+                       [inFamily](const std::pair<String, FontParsed>& pair) {
+                           return inFamily.equals(pair.second.name);
+                       }
+                   ) != m_datum.end();
         }
 
         void FontManager::load(const String& inId, const Font& inFont)
@@ -89,10 +93,13 @@ namespace Chicane
                 return EMPTY_INSTANCE;
             }
 
-            auto found =
-                std::find_if(m_datum.begin(), m_datum.end(), [inFamily](const std::pair<String, FontParsed>& pair) {
+            auto found = std::find_if(
+                m_datum.begin(),
+                m_datum.end(),
+                [inFamily](const std::pair<String, FontParsed>& pair) {
                     return inFamily.equals(pair.second.name);
-                });
+                }
+            );
 
             if (found == m_datum.end())
             {

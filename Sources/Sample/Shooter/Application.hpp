@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Runtime/Controller.hpp"
+#include <Chicane/Runtime/Controller.hpp>
+
 #include "Level.hpp"
 #include "View.hpp"
 

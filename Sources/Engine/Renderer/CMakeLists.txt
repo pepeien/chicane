@@ -98,8 +98,6 @@ target_link_libraries(
         Chicane::Core
 
         ${GRAPHICS_LIBS}
-    PRIVATE
-        SDL3::SDL3
 )
 
 CH_ADD_COMPILER(${RENDERER_TARGET_NAME})

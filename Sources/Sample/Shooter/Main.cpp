@@ -1,7 +1,8 @@
 #include "Main.hpp"
 
+#include <Chicane/Core/Log.hpp>
+
 #include "Application.hpp"
-#include "Chicane/Core/Log.hpp"
 
 int main(int argc, char* argv[])
 {

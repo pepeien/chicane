@@ -13,13 +13,14 @@ namespace Chicane
     namespace Grid
     {
         static std::unordered_map<String, Component::Compiler> g_components = {
-            {Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); }     },
-            {Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); }  },
-            {List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); }       },
-            {Popup::TAG_ID,       [](const pugi::xml_node& inNode) { return new Popup(inNode); }      },
-            {ProgressBar::TAG_ID, [](const pugi::xml_node& inNode) { return new ProgressBar(inNode); }},
-            {Text::TAG_ID,        [](const pugi::xml_node& inNode) { return new Text(inNode); }       },
-            {TextInput::TAG_ID,   [](const pugi::xml_node& inNode) { return new TextInput(inNode); }  }
+            {Button::TAG_ID,      [](const pugi::xml_node& inNode) { return new Button(inNode); }   },
+            {Container::TAG_ID,   [](const pugi::xml_node& inNode) { return new Container(inNode); }},
+            {List::TAG_ID,        [](const pugi::xml_node& inNode) { return new List(inNode); }     },
+            {Popup::TAG_ID,       [](const pugi::xml_node& inNode) { return new Popup(inNode); }    },
+            {ProgressBar::TAG_ID,
+             [](const pugi::xml_node& inNode) { return new ProgressBar(inNode); }                   },
+            {Text::TAG_ID,        [](const pugi::xml_node& inNode) { return new Text(inNode); }     },
+            {TextInput::TAG_ID,   [](const pugi::xml_node& inNode) { return new TextInput(inNode); }}
         };
 
         Component* createComponent(const pugi::xml_node& inNode)

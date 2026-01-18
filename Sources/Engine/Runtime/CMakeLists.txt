@@ -63,16 +63,6 @@ target_link_libraries(
         Chicane::Kerb
         Chicane::Renderer
         Chicane::Screech
-
-        ${GRAPHICS_LIBS}
-
-    PRIVATE
-        SDL3::SDL3
 )
 
-add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
-
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
-
-##################### Directories #######################
-add_subdirectory(Vendor)

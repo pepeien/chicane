@@ -31,13 +31,13 @@ namespace Chicane
             // Data
             const ModelExtracted& getInstance(const String& inId) const;
             const ModelParsed& getData(const String& inId) const;
-            const std::vector<Vertex>& getVertices() const;
-            const std::vector<std::uint32_t>& getIndices() const;
+            const Vertex::List& getVertices() const;
+            const Vertex::Indices& getIndices() const;
             std::uint32_t getFirstUse(const String& inId) const;
 
         private:
-            std::vector<Vertex>        m_vertices;
-            std::vector<std::uint32_t> m_indices;
+            Vertex::List    m_vertices;
+            Vertex::Indices m_indices;
         };
     }
 }

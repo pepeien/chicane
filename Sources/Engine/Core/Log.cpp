@@ -27,8 +27,9 @@ namespace Chicane
 
         void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
         {
-            const String message = (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
-            const String color   = inHexColor.toUpper();
+            const String message =
+                (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
+            const String color = inHexColor.toUpper();
 
             if (g_colors.find(color) == g_colors.end())
             {
@@ -37,8 +38,8 @@ namespace Chicane
                 g_colors.insert(
                     std::make_pair(
                         color,
-                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) + ";" +
-                            std::to_string(rgbColor.b) + "m"
+                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) +
+                            ";" + std::to_string(rgbColor.b) + "m"
                     )
                 );
             }

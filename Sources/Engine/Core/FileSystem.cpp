@@ -44,7 +44,8 @@ namespace Chicane
 
                 if (item.type == ItemType::Folder)
                 {
-                    item.childCount = static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
+                    item.childCount =
+                        static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
                 }
 
                 result.push_back(item);
@@ -67,11 +68,16 @@ namespace Chicane
 
         std::vector<unsigned char> readUnsigned(const Path& inFilepath)
         {
-            std::basic_ifstream<unsigned char> file(inFilepath.string(), std::ios::ate | std::ios::binary);
+            std::basic_ifstream<unsigned char> file(
+                inFilepath.string(),
+                std::ios::ate | std::ios::binary
+            );
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             std::vector<unsigned char> result = {};
@@ -109,7 +115,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             size_t            fileSize = (size_t)file.tellg();
@@ -141,7 +149,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             file.write((const char*)inData.data(), sizeof(unsigned char) * inData.size());
@@ -160,7 +170,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             file.write(inData.data(), sizeof(char) * inData.size());

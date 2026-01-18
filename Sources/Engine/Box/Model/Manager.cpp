@@ -107,12 +107,12 @@ namespace Chicane
             return m_datum.at(inId);
         }
 
-        const std::vector<Vertex>& ModelManager::getVertices() const
+        const Vertex::List& ModelManager::getVertices() const
         {
             return m_vertices;
         }
 
-        const std::vector<std::uint32_t>& ModelManager::getIndices() const
+        const Vertex::Indices& ModelManager::getIndices() const
         {
             return m_indices;
         }
@@ -124,7 +124,9 @@ namespace Chicane
                 throw std::runtime_error("The Model [" + inId + "] does not exist");
             }
 
-            return static_cast<std::uint32_t>(std::find(m_usedIds.begin(), m_usedIds.end(), inId) - m_usedIds.begin());
+            return static_cast<std::uint32_t>(
+                std::find(m_usedIds.begin(), m_usedIds.end(), inId) - m_usedIds.begin()
+            );
         }
     }
 }

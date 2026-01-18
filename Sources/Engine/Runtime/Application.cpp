@@ -1,10 +1,15 @@
 #include "Chicane/Runtime/Application.hpp"
 
 #include "Chicane/Box/Asset/Header.hpp"
+#include "Chicane/Box/Model/Manager.hpp"
 
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Renderer/Instance.hpp"
+
+#include "Chicane/Runtime/Scene/Component/Camera.hpp"
+#include "Chicane/Runtime/Scene/Component/Light.hpp"
+#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
 namespace Chicane
 {
@@ -82,6 +87,20 @@ namespace Chicane
 
             if (hasRenderer())
             {
+                g_renderer->useCamera(g_scene->getActiveComponents<CCamera>().at(0)->getData());
+                g_renderer->addLight(g_scene->getActiveComponents<CLight>().at(0)->getData());
+
+                CMesh*              mesh  = g_scene->getActiveComponents<CMesh>().at(0);
+                Box::ModelExtracted model = Box::getModelManager()->getInstance(
+                    mesh->getMesh()->getGroups().at(0).getModel()
+                );
+                Renderer::DrawData3D draw = {};
+                draw.indices              = model.indices;
+                draw.vertices             = model.vertices;
+                draw.model                = mesh->getTransform().getMatrix();
+
+                g_renderer->draw(draw);
+
                 g_renderer->render();
             }
         }

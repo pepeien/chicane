@@ -22,7 +22,9 @@ namespace Chicane
 
             if (document.empty() || document.children().empty())
             {
-                throw std::runtime_error("UI document " + inSource + " does not have any components");
+                throw std::runtime_error(
+                    "UI document " + inSource + " does not have any components"
+                );
             }
 
             const pugi::xml_node& node = document.first_child();
