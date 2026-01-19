@@ -1,11 +1,12 @@
 #include "Chicane/Runtime/Application.hpp"
 
+#include <iostream>
+#include <thread>
+
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Model/Manager.hpp"
 
 #include "Chicane/Kerb.hpp"
-
-#include "Chicane/Renderer/Instance.hpp"
 
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
@@ -13,260 +14,188 @@
 
 namespace Chicane
 {
-    namespace Application
+    Application::Application()
+        : m_bIsRunning(true),
+          m_telemetry({}),
+          m_controller(nullptr),
+          m_controllerObservable({}),
+          m_scene(nullptr),
+          m_sceneObservable({}),
+          m_view(nullptr),
+          m_viewObservable({}),
+          m_window(nullptr),
+          m_renderer(nullptr)
+    {}
+
+    Application::~Application()
+    {}
+
+    void Application::run(const ApplicationCreateInfo& inCreateInfo)
     {
-        // Runtime
-        static Telemetry g_telemetry = {};
+        Box::init();
+        Kerb::init();
 
-        static Controller*          g_controller           = nullptr;
-        static ControllerObservable g_controllerObservable = {};
+        initWindow(inCreateInfo.window);
+        initRenderer(inCreateInfo.window.renderer);
 
-        static Scene*          g_scene           = nullptr;
-        static SceneObservable g_sceneObservable = {};
-
-        // Grid
-        static Grid::View*    g_view           = nullptr;
-        static ViewObservable g_viewObservable = {};
-
-        // Window
-        static std::unique_ptr<Window> g_window = nullptr;
-
-        // Renderer
-        static std::unique_ptr<Renderer::Instance> g_renderer = nullptr;
-
-        void initWindow(const WindowCreateInfo& inCreateInfo)
+        if (inCreateInfo.onSetup)
         {
-            if (hasWindow())
-            {
-                return;
-            }
-
-            g_window = std::make_unique<Window>();
-            g_window->init(inCreateInfo);
-            g_window->watchSize([&](const Vec<2, int>& inSize) {
-                if (hasView())
-                {
-                    g_view->setSize(inSize.x, inSize.y);
-                }
-
-                if (hasRenderer())
-                {
-                    g_renderer->setSize(inSize.x, inSize.y);
-                }
-            });
-            g_window->watchEvent([&](WindowEvent inEvent) {
-                if (hasRenderer())
-                {
-                    g_renderer->handle(inEvent);
-                }
-            });
+            inCreateInfo.onSetup();
         }
 
-        void initRenderer()
+        while (m_window->run())
         {
-            if (hasRenderer())
+            m_telemetry.start();
+
+            m_scene->tick(m_telemetry.delta);
+
+            m_view->tick(m_telemetry.delta);
+
+            m_renderer->useCamera(m_scene->getActiveComponents<CCamera>().at(0)->getData());
+            m_renderer->addLight(m_scene->getActiveComponents<CLight>().at(0)->getData());
+
+            for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
             {
-                return;
+                for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+                {
+                    const Box::ModelExtracted& model =
+                        Box::getModelManager()->getInstance(group.getModel());
+
+                    Renderer::DrawData3D draw;
+                    draw.vertices = model.vertices;
+                    draw.indices  = model.indices;
+                    draw.model    = mesh->getTransform().getMatrix();
+
+                    m_renderer->draw(draw);
+                }
             }
 
-            g_renderer = std::make_unique<Renderer::Instance>();
-            g_renderer->init(getWindow());
+            m_renderer->render();
+
+            m_telemetry.end();
+        }
+    }
+
+    const Telemetry& Application::getTelemetry() const
+    {
+        return m_telemetry;
+    }
+
+    bool Application::hasController()
+    {
+        return m_controller != nullptr;
+    }
+
+    Controller* Application::getController()
+    {
+        return m_controller;
+    }
+
+    void Application::setController(Controller* inController)
+    {
+        if (inController == m_controller)
+        {
+            return;
         }
 
-        void render()
-        {
-            if (hasScene())
-            {
-                g_scene->tick(g_telemetry.delta);
-            }
+        m_controller = inController;
 
+        m_controllerObservable.next(m_controller);
+    }
+
+    Application::ControllerSubscription Application::watchController(
+        ControllerSubscription::NextCallback     inNext,
+        ControllerSubscription::ErrorCallback    inError,
+        ControllerSubscription::CompleteCallback inComplete
+    )
+    {
+        return m_controllerObservable.subscribe(inNext, inError, inComplete).next(m_controller);
+    }
+
+    bool Application::hasScene()
+    {
+        return m_scene && m_scene.get() != nullptr;
+    }
+
+    Application::SceneSubscription Application::watchScene(
+        SceneSubscription::NextCallback     inNext,
+        SceneSubscription::ErrorCallback    inError,
+        SceneSubscription::CompleteCallback inComplete
+    )
+    {
+        return m_sceneObservable.subscribe(inNext, inError, inComplete).next(m_scene.get());
+    }
+
+    bool Application::hasView()
+    {
+        return m_view != nullptr;
+    }
+
+    Application::ViewSubscription Application::watchView(
+        ViewSubscription::NextCallback     inNext,
+        ViewSubscription::ErrorCallback    inError,
+        ViewSubscription::CompleteCallback inComplete
+    )
+    {
+        return m_viewObservable.subscribe(inNext, inError, inComplete).next(m_view.get());
+    }
+
+    bool Application::hasWindow()
+    {
+        return m_window && m_window.get() != nullptr;
+    }
+
+    Window* Application::getWindow()
+    {
+        if (!hasWindow())
+        {
+            return nullptr;
+        }
+
+        return m_window.get();
+    }
+
+    bool Application::hasRenderer()
+    {
+        return m_renderer && m_renderer.get() != nullptr;
+    }
+
+    Renderer::Instance* Application::getRenderer()
+    {
+        if (!hasRenderer())
+        {
+            return nullptr;
+        }
+
+        return m_renderer.get();
+    }
+
+    void Application::initWindow(const WindowCreateInfo& inCreateInfo)
+    {
+        if (hasWindow())
+        {
+            return;
+        }
+
+        m_window = std::make_unique<Window>();
+        m_window->init(inCreateInfo);
+        m_window->watchSize([&](const Vec<2, int>& inSize) {
             if (hasView())
             {
-                g_view->tick(g_telemetry.delta);
+                m_view->setSize(inSize.x, inSize.y);
             }
+        });
+    }
 
-            if (hasRenderer())
-            {
-                g_renderer->useCamera(g_scene->getActiveComponents<CCamera>().at(0)->getData());
-                g_renderer->addLight(g_scene->getActiveComponents<CLight>().at(0)->getData());
-
-                CMesh*              mesh  = g_scene->getActiveComponents<CMesh>().at(0);
-                Box::ModelExtracted model = Box::getModelManager()->getInstance(
-                    mesh->getMesh()->getGroups().at(0).getModel()
-                );
-                Renderer::DrawData3D draw = {};
-                draw.indices              = model.indices;
-                draw.vertices             = model.vertices;
-                draw.model                = mesh->getTransform().getMatrix();
-
-                g_renderer->draw(draw);
-
-                g_renderer->render();
-            }
-        }
-
-        void run(const ApplicationCreateInfo& inCreateInfo)
+    void Application::initRenderer(WindowRenderer inBackend)
+    {
+        if (hasRenderer())
         {
-            Box::init();
-            Kerb::init();
-
-            initWindow(inCreateInfo.window);
-            initRenderer();
-
-            if (inCreateInfo.onSetup)
-            {
-                inCreateInfo.onSetup();
-            }
-
-            while (g_window->run())
-            {
-                g_telemetry.start();
-
-                render();
-
-                g_telemetry.end();
-            }
+            return;
         }
 
-        const Telemetry& getTelemetry()
-        {
-            return g_telemetry;
-        }
-
-        bool hasController()
-        {
-            return g_controller != nullptr;
-        }
-
-        Controller* getController()
-        {
-            return g_controller;
-        }
-
-        void setController(Controller* inController)
-        {
-            if (inController == g_controller)
-            {
-                return;
-            }
-
-            g_controller = inController;
-
-            g_controllerObservable.next(g_controller);
-        }
-
-        ControllerSubscription watchController(
-            ControllerSubscription::NextCallback     inNext,
-            ControllerSubscription::ErrorCallback    inError,
-            ControllerSubscription::CompleteCallback inComplete
-        )
-        {
-            return g_controllerObservable.subscribe(inNext, inError, inComplete).next(g_controller);
-        }
-
-        bool hasScene()
-        {
-            return g_scene != nullptr;
-        }
-
-        Scene* getScene()
-        {
-            return g_scene;
-        }
-
-        void setScene(Scene* inScene)
-        {
-            if (inScene == g_scene)
-            {
-                return;
-            }
-
-            if (hasScene())
-            {
-                g_scene->deactivate();
-            }
-
-            g_scene = inScene;
-            g_scene->activate();
-
-            g_sceneObservable.next(inScene);
-        }
-
-        SceneSubscription watchScene(
-            SceneSubscription::NextCallback     inNext,
-            SceneSubscription::ErrorCallback    inError,
-            SceneSubscription::CompleteCallback inComplete
-        )
-        {
-            return g_sceneObservable.subscribe(inNext, inError, inComplete).next(g_scene);
-        }
-
-        bool hasView()
-        {
-            return g_view != nullptr;
-        }
-
-        Grid::View* getView()
-        {
-            return g_view;
-        }
-
-        void setView(Grid::View* inView)
-        {
-            if (inView == g_view)
-            {
-                return;
-            }
-
-            if (hasView())
-            {
-                g_view->deactivate();
-            }
-
-            g_view = inView;
-            g_view->setSize(g_window->getSize());
-            g_view->activate();
-
-            g_viewObservable.next(g_view);
-        }
-
-        ViewSubscription watchView(
-            ViewSubscription::NextCallback     inNext,
-            ViewSubscription::ErrorCallback    inError,
-            ViewSubscription::CompleteCallback inComplete
-        )
-        {
-            return g_viewObservable.subscribe(inNext, inError, inComplete).next(g_view);
-        }
-
-        bool hasWindow()
-        {
-            return g_window && g_window.get() != nullptr;
-        }
-
-        Window* getWindow()
-        {
-            if (!hasWindow())
-            {
-                return nullptr;
-            }
-
-            return g_window.get();
-        }
-
-        bool hasRenderer()
-        {
-            return g_renderer && g_renderer.get() != nullptr;
-        }
-
-        Renderer::Instance* getRenderer()
-        {
-            if (!hasRenderer())
-            {
-                return nullptr;
-            }
-
-            return g_renderer.get();
-        }
+        m_renderer = std::make_unique<Renderer::Instance>();
+        m_renderer->init(getWindow());
+        m_renderer->setBackend(inBackend);
     }
 }

@@ -9,8 +9,9 @@ namespace Chicane
     struct CHICANE_CORE Vertex
     {
     public:
-        using List    = Vertex::List;
-        using Indices = std::vector<std::uint32_t>;
+        using List    = std::vector<Vertex>;
+        using Index   = std::uint32_t;
+        using Indices = std::vector<Index>;
 
     public:
         friend bool operator==(const Vertex& inLeft, const Vertex& inRight)

@@ -25,22 +25,22 @@ Application::Application()
         initView();
     };
 
-    Chicane::Application::run(createInfo);
+    Chicane::Application::getInstance().run(createInfo);
 }
 
 void Application::initLevel()
 {
-    m_level = std::make_unique<Level>();
-
-    Chicane::Application::setScene(m_level.get());
+    Chicane::Application::getInstance().setScene<Level>();
 }
 
 void Application::initCharacter()
 {
-    m_controller = std::make_unique<Chicane::Controller>();
-    Chicane::Application::setController(m_controller.get());
+    Chicane::Application& application = Chicane::Application::getInstance();
 
-    Character* character = m_level->createActor<Character>();
+    m_controller = std::make_unique<Chicane::Controller>();
+    application.setController(m_controller.get());
+
+    Character* character = application.getScene<Level>()->createActor<Character>();
     character->setAbsoluteTranslation(Chicane::Vec3(0.0f, -150.0f, 20.0f));
 
     m_controller->attachTo(character);
@@ -48,6 +48,5 @@ void Application::initCharacter()
 
 void Application::initView()
 {
-    m_view = std::make_unique<View>();
-    Chicane::Application::setView(m_view.get());
+    Chicane::Application::getInstance().setView<View>();
 }

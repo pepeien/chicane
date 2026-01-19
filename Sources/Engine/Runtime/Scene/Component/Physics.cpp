@@ -30,7 +30,7 @@ namespace Chicane
 
     bool CPhysics::canCollide() const
     {
-        return isAttached() && Application::hasScene();
+        return isAttached() && Application::getInstance().hasScene();
     }
 
     void CPhysics::addForce(const Vec3& inDirection, float inForce)
@@ -59,7 +59,7 @@ namespace Chicane
             return;
         }
 
-        for (Actor* actor : Application::getScene()->getActors())
+        for (Actor* actor : Application::getInstance().getScene()->getActors())
         {
             if (actor == attachment || !actor->canCollide() || !actor->isCollidingWith(attachment))
             {

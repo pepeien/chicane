@@ -5,6 +5,7 @@
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Layer/Status.hpp"
 
 namespace Chicane
@@ -23,18 +24,20 @@ namespace Chicane
             virtual bool onInit() { return true; }
             virtual bool onDestroy() { return true; }
             virtual bool onRebuild() { return true; }
-            virtual bool onSetup() { return true; }
-            virtual void onRender(void* outData) { return; }
+            virtual bool onSetup(const Frame& inFrame) { return true; }
+            virtual void onRender(const Frame& inFrame) { return; }
             virtual bool onCleanup() { return true; }
+
             virtual void onEvent(const WindowEvent& inEvent) { return; }
 
         public:
             void init();
             void destroy();
             void rebuild();
-            void setup();
-            void render(void* outData);
+            void setup(const Frame& inFrame);
+            void render(const Frame& inFrame);
             void cleanup();
+
             void handle(const WindowEvent& inEvent);
 
         public:
@@ -62,7 +65,7 @@ namespace Chicane
             }
 
             template <typename Target, typename Anchor = Layer, typename... Params>
-            void pushLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
+            void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
             {
                 m_children.add(new Target(inParams...), inStrategy);
             }

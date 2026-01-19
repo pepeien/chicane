@@ -15,7 +15,7 @@ namespace Chicane
 
         setFocusPoint(getTranslation() + getForward());
 
-        for (CMesh* mesh : Application::getScene()->getComponents<CMesh>())
+        for (CMesh* mesh : Application::getInstance().getScene()->getComponents<CMesh>())
         {
             if (canSee(mesh))
             {

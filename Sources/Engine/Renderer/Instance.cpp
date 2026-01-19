@@ -1,11 +1,11 @@
 #include "Chicane/Renderer/Instance.hpp"
 
 #if defined(CHICANE_OPENGL)
-//#include "Chicane/Renderer/Backend/OpenGL.hpp"
+    #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
 
 #if defined(CHICANE_VULKAN)
-//#include "Chicane/Renderer/Backend/Vulkan.hpp"
+    #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #endif
 
 namespace Chicane
@@ -14,29 +14,14 @@ namespace Chicane
     {
         Instance::Instance()
             : m_window(nullptr),
-              m_draws2D({}),
-              m_vertices2D({}),
-              m_indices2D({}),
-              m_draws3D({}),
-              m_vertices3D({}),
-              m_indices3D({}),
-              m_camera({}),
-              m_lights({}),
-              m_size(Vec2::Zero),
-              m_sizeOberservable({}),
-              m_position(Vec2::Zero),
-              m_positionOberservable({})
+              m_frames({}),
+              m_currentFrame(0U),
+              m_viewport({}),
+              m_backend(nullptr)
         {}
 
         Instance::~Instance()
-        {
-            destroy();
-        }
-
-        bool Instance::canRender() const
-        {
-            return !areDrawsEmpty();
-        }
+        {}
 
         void Instance::init(Window* inWindow)
         {
@@ -45,132 +30,109 @@ namespace Chicane
                 return;
             }
 
-            setSize(Vec2::Zero);
-            setPosition(Vec2::Zero);
+            setViewport(Vec2::Zero, Vec2::Zero);
             setWindow(inWindow);
         }
 
         void Instance::render()
         {
-            if (!canRender())
+            if (!m_backend)
             {
-                reset();
-
                 return;
             }
 
-            reset();
+            Frame& currentFrame = getCurrentFrame();
+            m_backend->setup(currentFrame);
+            m_backend->render(currentFrame);
+            m_backend->cleanup();
+            currentFrame.reset();
+
+            m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
         }
 
-        void Instance::destroy()
+        const Frame& Instance::getCurrentFrame() const
         {
-            resetViews();
-            resetDraws();
+            return m_frames.at(m_currentFrame);
+        }
+
+        Frame& Instance::getCurrentFrame()
+        {
+            return m_frames.at(m_currentFrame);
         }
 
         void Instance::useCamera(const View& inData)
         {
-            m_camera = inData;
+            getCurrentFrame().useCamera(inData);
+        }
+
+        void Instance::addLight(const View::List& inData)
+        {
+            getCurrentFrame().addLights(inData);
         }
 
         void Instance::addLight(const View& inData)
         {
-            m_lights.push_back(inData);
+            getCurrentFrame().addLight(inData);
         }
 
         void Instance::draw(const DrawData2D& inData)
         {
-            Draw2D draw      = {};
-            draw.vertexStart = m_vertices2D.size() - 1;
-            draw.vertexCount = inData.vertices.size();
-            draw.indexStart  = m_indices2D.size() - 1;
-            draw.indexCount  = inData.indices.size();
-            draw.position    = inData.position;
-            draw.size        = inData.size;
-            m_draws2D.push_back(draw);
-
-            m_vertices2D.insert(m_vertices2D.end(), inData.vertices.begin(), inData.vertices.end());
-            m_indices2D.insert(m_indices2D.end(), inData.indices.begin(), inData.indices.end());
+            getCurrentFrame().addDraw(inData);
         }
 
         void Instance::draw(const DrawData3D& inData)
         {
-            Draw3D draw      = {};
-            draw.vertexStart = m_vertices3D.size() - 1;
-            draw.vertexCount = inData.vertices.size();
-            draw.indexStart  = m_indices3D.size() - 1;
-            draw.indexCount  = inData.indices.size();
-            draw.model       = inData.model;
-            m_draws3D.push_back(draw);
-
-            m_vertices3D.insert(m_vertices3D.end(), inData.vertices.begin(), inData.vertices.end());
-            m_indices3D.insert(m_indices3D.end(), inData.indices.begin(), inData.indices.end());
+            getCurrentFrame().addDraw(inData);
         }
 
-        const Vec2& Instance::getSize() const
+        const Viewport& Instance::getViewport() const
         {
-            return m_size;
+            return m_viewport;
         }
 
-        void Instance::setSize(const Vec2& inValue)
+        void Instance::setViewport(const Viewport& inValue)
         {
-            setSize(inValue.x, inValue.y);
+            setViewport(inValue.position, inValue.size);
         }
 
-        void Instance::setSize(float inWidth, float inHeight)
+        void Instance::setViewport(const Vec2& inPosition, const Vec2& inSize)
         {
-            if (std::fabs(m_size.x - inWidth) < FLT_EPSILON &&
-                std::fabs(m_size.y - inHeight) < FLT_EPSILON)
+            setViewportPosition(inPosition);
+            setViewportSize(inSize);
+        }
+
+        void Instance::setViewportPosition(const Vec2& inPosition)
+        {
+            setViewportPosition(inPosition.x, inPosition.y);
+        }
+
+        void Instance::setViewportPosition(float inX, float inY)
+        {
+            if (std::fabs(m_viewport.position.x - inX) < FLT_EPSILON &&
+                std::fabs(m_viewport.position.y - inY) < FLT_EPSILON)
             {
                 return;
             }
 
-            m_size.x = inWidth;
-            m_size.y = inHeight;
-
-            m_sizeOberservable.next(m_size);
+            m_viewport.position.x = inX;
+            m_viewport.position.y = inY;
         }
 
-        Instance::SizeSubscription Instance::watchSize(
-            SizeObservable::NextCallback     inNext,
-            SizeObservable::ErrorCallback    inError,
-            SizeObservable::CompleteCallback inComplete
-        )
+        void Instance::setViewportSize(const Vec2& inSize)
         {
-            return m_sizeOberservable.subscribe(inNext, inError, inComplete).next(m_size);
+            setViewportSize(inSize.x, inSize.y);
         }
 
-        const Vec2& Instance::getPosition() const
+        void Instance::setViewportSize(float inWidth, float inHeight)
         {
-            return m_position;
-        }
-
-        void Instance::setPosition(const Vec2& inValue)
-        {
-            setPosition(inValue.x, inValue.y);
-        }
-
-        void Instance::setPosition(float inX, float inY)
-        {
-            if (std::fabs(m_position.x - inX) < FLT_EPSILON &&
-                std::fabs(m_position.y - inY) < FLT_EPSILON)
+            if (std::fabs(m_viewport.size.x - inWidth) < FLT_EPSILON &&
+                std::fabs(m_viewport.size.y - inHeight) < FLT_EPSILON)
             {
                 return;
             }
 
-            m_position.x = inX;
-            m_position.y = inY;
-
-            m_positionOberservable.next(m_position);
-        }
-
-        Instance::PositionSubscription Instance::watchPosition(
-            PositionObservable::NextCallback     inNext,
-            PositionObservable::ErrorCallback    inError,
-            PositionObservable::CompleteCallback inComplete
-        )
-        {
-            return m_positionOberservable.subscribe(inNext, inError, inComplete).next(m_position);
+            m_viewport.size.x = inWidth;
+            m_viewport.size.y = inHeight;
         }
 
         Window* Instance::getWindow() const
@@ -186,66 +148,57 @@ namespace Chicane
             }
 
             m_window = inWindow;
+            m_window->watchSize([&](const Vec<2, int>& inSize) {
+                setViewportSize(inSize.x, inSize.y);
+            });
+            m_window->watchEvent([&](WindowEvent inEvent) { handle(inEvent); });
         }
 
-        void Instance::handle(WindowEvent inEvent)
-        {}
-
-        void Instance::reset()
+        void Instance::handle(const WindowEvent& inEvent)
         {
-            resetViews();
-            resetDraws();
+            if (!hasBackend())
+            {
+                return;
+            }
+
+            m_backend->handle(inEvent);
         }
 
-        void Instance::resetViews()
+        bool Instance::hasBackend() const
         {
-            resetCamera();
-            resetLights();
+            return m_backend && m_backend.get() != nullptr;
         }
 
-        void Instance::resetCamera()
+        void Instance::setBackend(WindowRenderer inType)
         {
-            m_camera = {};
-        }
+            if (hasBackend())
+            {
+                m_backend.reset();
+            }
 
-        void Instance::resetLights()
-        {
-            m_lights.clear();
-        }
+            switch (inType)
+            {
+#if defined(CHICANE_OPENGL)
+            case WindowRenderer::OpenGL:
+                m_backend = std::make_unique<OpenGLBackend>(this);
 
-        bool Instance::areDrawsEmpty() const
-        {
-            return areDraws2DEmpty() && areDraws3DEmpty();
-        }
+                break;
+#endif
 
-        void Instance::resetDraws()
-        {
-            resetDraws2D();
-            resetDraws3D();
-        }
+#if defined(CHICANE_VULKAN)
+            case WindowRenderer::Vulkan:
+                //m_backend = std::make_unique<VulkanBackend>();
 
-        bool Instance::areDraws2DEmpty() const
-        {
-            return m_vertices2D.empty() || m_indices2D.empty() || m_draws2D.empty();
-        }
+                break;
+#endif
 
-        void Instance::resetDraws2D()
-        {
-            m_vertices2D.clear();
-            m_indices2D.clear();
-            m_draws2D.clear();
-        }
+            default:
+                m_backend = std::make_unique<Backend>(this);
 
-        bool Instance::areDraws3DEmpty() const
-        {
-            return m_vertices3D.empty() || m_indices3D.empty() || m_draws3D.empty();
-        }
+                break;
+            }
 
-        void Instance::resetDraws3D()
-        {
-            m_vertices3D.clear();
-            m_indices3D.clear();
-            m_draws3D.clear();
+            m_backend->init();
         }
     }
 }

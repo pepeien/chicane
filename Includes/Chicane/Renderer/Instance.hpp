@@ -5,12 +5,13 @@
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/Window/Renderer.hpp"
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Draw/Draw2D.hpp"
-#include "Chicane/Renderer/Draw/Draw3D.hpp"
+#include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Draw/Data/Data2D.hpp"
 #include "Chicane/Renderer/Draw/Data/Data3D.hpp"
+#include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -23,96 +24,59 @@ namespace Chicane
             using ViewportObservable   = EventObservable<Viewport>;
             using ViewportSubscription = EventSubscription<Viewport>;
 
-            using SizeObservable       = EventObservable<const Vec2&>;
-            using SizeSubscription     = EventSubscription<const Vec2&>;
-
-            using PositionObservable   = EventObservable<const Vec2&>;
-            using PositionSubscription = EventSubscription<const Vec2&>;
+        public:
+            static inline constexpr std::uint32_t FRAME_COUNT = 3;
 
         public:
             Instance();
             ~Instance();
 
         public:
-            // Status
-            bool canRender() const;
-
             // Lifecycle
             void init(Window* inWindow);
             void render();
-            void destroy();
 
             // Render
+            const Frame& getCurrentFrame() const;
+            Frame& getCurrentFrame();
+
             void useCamera(const View& inData);
-
             void addLight(const View& inData);
-
+            void addLight(const View::List& inData);
             void draw(const DrawData2D& inData);
-
             void draw(const DrawData3D& inData);
 
             // Settings
-            const Vec2& getSize() const;
-            void setSize(const Vec2& inValue);
-            void setSize(float inWidth, float inHeight);
-            SizeSubscription watchSize(
-                SizeObservable::NextCallback     inNext,
-                SizeObservable::ErrorCallback    inError    = nullptr,
-                SizeObservable::CompleteCallback inComplete = nullptr
-            );
-
-            const Vec2& getPosition() const;
-            void setPosition(const Vec2& inValue);
-            void setPosition(float inX, float inY);
-            PositionSubscription watchPosition(
-                PositionObservable::NextCallback     inNext,
-                PositionObservable::ErrorCallback    inError    = nullptr,
-                PositionObservable::CompleteCallback inComplete = nullptr
-            );
+            const Viewport& getViewport() const;
+            void setViewport(const Viewport& inValue);
+            void setViewport(const Vec2& inPosition, const Vec2& inSize);
+            void setViewportPosition(const Vec2& inPosition);
+            void setViewportPosition(float inX, float inY);
+            void setViewportSize(const Vec2& inSize);
+            void setViewportSize(float inWidth, float inHeight);
 
             // Window
             Window* getWindow() const;
             void setWindow(Window* inWindow);
-            void handle(WindowEvent inEvent);
+            void handle(const WindowEvent& inEvent);
 
-        private:
-            void reset();
-
-            void resetViews();
-            void resetCamera();
-            void resetLights();
-
-            bool areDrawsEmpty() const;
-            void resetDraws();
-
-            bool areDraws2DEmpty() const;
-            void resetDraws2D();
-
-            bool areDraws3DEmpty() const;
-            void resetDraws3D();
+            // Backend
+            bool hasBackend() const;
+            void setBackend(WindowRenderer inType);
 
         private:
             // Window
-            Window*            m_window;
+            Window*                        m_window;
 
             // Draws
-            Draw2D::List       m_draws2D;
-            Vertex::List       m_vertices2D;
-            Vertex::Indices    m_indices2D;
-
-            Draw3D::List       m_draws3D;
-            Vertex::List       m_vertices3D;
-            Vertex::Indices    m_indices3D;
-
-            View               m_camera;
-            View::List         m_lights;
+            std::array<Frame, FRAME_COUNT> m_frames;
+            std::uint32_t                  m_currentFrame;
 
             // Settings
-            Vec2               m_size;
-            SizeObservable     m_sizeOberservable;
+            Viewport                       m_viewport;
 
-            Vec2               m_position;
-            PositionObservable m_positionOberservable;
+            // Backend
+            std::unique_ptr<Backend>       m_backend;
         };
     }
 }

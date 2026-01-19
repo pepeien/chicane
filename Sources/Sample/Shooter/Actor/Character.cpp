@@ -18,13 +18,13 @@ Character::Character()
       m_hitSound(nullptr),
       m_victorySound(nullptr)
 {
-    m_camera = Chicane::Application::getScene()->createComponent<Chicane::CCamera>();
+    m_camera = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CCamera>();
     m_camera->setId("First Person");
     m_camera->attachTo(this);
     m_camera->setRelativeTranslation(0.0f, 0.0f, 15.0f);
     m_camera->activate();
 
-    m_wand = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
+    m_wand = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
     m_wand->attachTo(m_camera);
     m_wand->setMesh("Contents/Engine/Meshes/Cube.bmsh");
     m_wand->setRelativeTranslation(0.15f, 0.4f, -0.1f);
@@ -32,19 +32,20 @@ Character::Character()
     m_wand->setRelativeScale(0.015f, 0.2f, 0.015f);
     m_wand->activate();
 
-    m_body = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
+    m_body = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
     m_body->setMesh("Contents/Engine/Meshes/Cube.bmsh");
     m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
-    m_hitSound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_hitSound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
     m_hitSound->attachTo(this);
     m_hitSound->load("Hit");
     m_hitSound->activate();
 
-    m_victorySound = Chicane::Application::getScene()->createComponent<Chicane::CSound>();
+    m_victorySound =
+        Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
     m_victorySound->attachTo(this);
     m_victorySound->load("Victory");
     m_victorySound->activate();
@@ -108,25 +109,27 @@ void Character::onControlAttachment()
         ->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
             m_camera->activate();
 
-            static_cast<Level*>(Chicane::Application::getScene())->disableCameras();
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())->disableCameras();
         });
     m_controller
         ->bindEvent(Chicane::Input::KeyboardButton::F2, Chicane::Input::Status::Pressed, [this]() {
-            static_cast<Level*>(Chicane::Application::getScene())->activateLeftCamera();
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())
+                ->activateLeftCamera();
 
             m_camera->deactivate();
         });
     m_controller
         ->bindEvent(Chicane::Input::KeyboardButton::F3, Chicane::Input::Status::Pressed, [this]() {
-            static_cast<Level*>(Chicane::Application::getScene())->activateCenterCamera();
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())
+                ->activateCenterCamera();
 
             m_camera->deactivate();
         });
-    m_controller->bindEvent(
-        Chicane::Input::KeyboardButton::F4,
-        Chicane::Input::Status::Pressed,
-        []() { static_cast<Level*>(Chicane::Application::getScene())->activateRightCamera(); }
-    );
+    m_controller
+        ->bindEvent(Chicane::Input::KeyboardButton::F4, Chicane::Input::Status::Pressed, []() {
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())
+                ->activateRightCamera();
+        });
 
     // Gamepad
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
@@ -199,9 +202,9 @@ void Character::onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEven
 
 void Character::onLeftClick()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
-        Chicane::Application::getWindow()->focus();
+        Chicane::Application::getInstance().getWindow()->focus();
 
         return;
     }
@@ -211,17 +214,17 @@ void Character::onLeftClick()
 
 void Character::onRightClick()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
 
-    Chicane::Application::getWindow()->blur();
+    Chicane::Application::getInstance().getWindow()->blur();
 }
 
 void Character::onMoveForward()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -231,7 +234,7 @@ void Character::onMoveForward()
 
 void Character::onMoveBackward()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -241,7 +244,7 @@ void Character::onMoveBackward()
 
 void Character::onMoveLeft()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -251,7 +254,7 @@ void Character::onMoveLeft()
 
 void Character::onMoveRight()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -261,7 +264,7 @@ void Character::onMoveRight()
 
 void Character::onShoot()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -269,8 +272,9 @@ void Character::onShoot()
     const Chicane::Vec3& origin      = m_camera->getTranslation();
     const Chicane::Vec3  destination = origin + (m_camera->getForward() * m_camera->getFarClip());
 
-    std::vector<Apple*> hitApples =
-        Chicane::Application::getScene()->traceLine<Apple>(origin, destination, {this});
+    std::vector<Apple*> hitApples = Chicane::Application::getInstance()
+                                        .getScene()
+                                        ->traceLine<Apple>(origin, destination, {this});
 
     for (Apple* apple : hitApples)
     {
@@ -280,7 +284,7 @@ void Character::onShoot()
 
 void Character::onLook(float inX, float inY)
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }
@@ -291,7 +295,7 @@ void Character::onLook(float inX, float inY)
 
 void Character::onJump()
 {
-    if (!Chicane::Application::getWindow()->isFocused())
+    if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
         return;
     }

@@ -36,7 +36,9 @@ namespace Chicane
 
         updateView();
 
-        Application::getWindow()->watchSize([this](const Vec2& inSize) { setViewport(inSize); });
+        Application::getInstance().getWindow()->watchSize([this](const Vec2& inSize) {
+            setViewport(inSize);
+        });
     }
 
     bool CView::canSee(const Transformable* inSubject) const

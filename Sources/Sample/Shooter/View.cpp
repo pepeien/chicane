@@ -9,7 +9,7 @@
 View::View()
     : Chicane::Grid::View("Contents/Sample/Shooter/Views/Home.grid"),
       m_bDidPlayerWin(true),
-      m_telemetry(Chicane::Application::getTelemetry()),
+      m_telemetry(Chicane::Application::getInstance().getTelemetry()),
       m_uiFrameTime(Chicane::Reference::fromValue<const float>(&m_telemetry.delta)),
       m_uiFramesPerSecond(Chicane::Reference::fromValue<const std::uint32_t>(&m_telemetry.rate)),
       m_victoryVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
@@ -48,7 +48,7 @@ View::View()
         }
     });
 
-    Chicane::Application::getScene<Level>()->watchActiveCamera(
+    Chicane::Application::getInstance().getScene<Level>()->watchActiveCamera(
         [this](Chicane::ACamera* inCamera) {
             if (inCamera == nullptr)
             {

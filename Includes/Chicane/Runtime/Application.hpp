@@ -14,8 +14,9 @@
 
 namespace Chicane
 {
-    namespace Application
+    class CHICANE_RUNTIME Application
     {
+    public:
         using ControllerObservable   = EventObservable<Controller*>;
         using ControllerSubscription = EventSubscription<Controller*>;
 
@@ -25,26 +26,58 @@ namespace Chicane
         using ViewObservable         = EventObservable<Grid::View*>;
         using ViewSubscription       = EventSubscription<Grid::View*>;
 
+    public:
+        static Application& getInstance()
+        {
+            static Application instance;
+
+            return instance;
+        }
+
+    public:
+        Application(const Application&)            = delete;
+        Application& operator=(const Application&) = delete;
+
+        Application(Application&&)                 = delete;
+        Application& operator=(Application&&)      = delete;
+
+    private:
+        Application();
+        ~Application();
+
+    public:
         // Lifecycle
-        CHICANE_RUNTIME void run(const ApplicationCreateInfo& inCreateInfo);
+        void run(const ApplicationCreateInfo& inCreateInfo);
 
         // Telemetry
-        CHICANE_RUNTIME const Telemetry& getTelemetry();
+        const Telemetry& getTelemetry() const;
 
         // Game
-        CHICANE_RUNTIME bool hasController();
-        CHICANE_RUNTIME Controller* getController();
-        CHICANE_RUNTIME void setController(Controller* inController);
-        CHICANE_RUNTIME ControllerSubscription watchController(
+        bool hasController();
+        Controller* getController();
+        void setController(Controller* inController);
+        ControllerSubscription watchController(
             ControllerSubscription::NextCallback     inNext,
             ControllerSubscription::ErrorCallback    inError    = nullptr,
             ControllerSubscription::CompleteCallback inComplete = nullptr
         );
 
-        CHICANE_RUNTIME bool hasScene();
-        CHICANE_RUNTIME void setScene(Scene* inScene);
-        CHICANE_RUNTIME Scene* getScene();
-        template <class T>
+        bool hasScene();
+        template <class T = Scene, typename... Params>
+        void setScene(Params... inParams)
+        {
+            if (hasScene())
+            {
+                m_scene->deactivate();
+                m_scene.reset();
+            }
+
+            m_scene = std::make_unique<T>(inParams...);
+            m_scene->activate();
+
+            m_sceneObservable.next(m_scene.get());
+        }
+        template <class T = Scene>
         T* getScene()
         {
             if (!hasScene())
@@ -52,30 +85,80 @@ namespace Chicane
                 return nullptr;
             }
 
-            return static_cast<T*>(getScene());
+            return static_cast<T*>(m_scene.get());
         }
-        CHICANE_RUNTIME SceneSubscription watchScene(
+        SceneSubscription watchScene(
             SceneSubscription::NextCallback     inNext,
             SceneSubscription::ErrorCallback    inError    = nullptr,
             SceneSubscription::CompleteCallback inComplete = nullptr
         );
 
         // UI
-        CHICANE_RUNTIME bool hasView();
-        CHICANE_RUNTIME Grid::View* getView();
-        CHICANE_RUNTIME void setView(Grid::View* inView);
-        CHICANE_RUNTIME ViewSubscription watchView(
+        bool hasView();
+        template <class T = Scene>
+        T* getView()
+        {
+            if (!hasScene())
+            {
+                return nullptr;
+            }
+
+            return static_cast<T*>(m_scene.get());
+        }
+        template <class T = Grid::View, typename... Params>
+        void setView(Params... inParams)
+        {
+            if (hasView())
+            {
+                m_view->deactivate();
+                m_view.reset();
+            }
+
+            m_view = std::make_unique<T>(inParams...);
+            m_view->setSize(m_window->getSize());
+            m_view->activate();
+
+            m_viewObservable.next(m_view.get());
+        }
+        ViewSubscription watchView(
             ViewSubscription::NextCallback     inNext,
             ViewSubscription::ErrorCallback    inError    = nullptr,
             ViewSubscription::CompleteCallback inComplete = nullptr
         );
 
         // Window
-        CHICANE_RUNTIME bool hasWindow();
-        CHICANE_RUNTIME Window* getWindow();
+        bool hasWindow();
+        Window* getWindow();
 
         // Renderer
-        CHICANE_RUNTIME bool hasRenderer();
-        CHICANE_RUNTIME Renderer::Instance* getRenderer();
-    }
+        bool hasRenderer();
+        Renderer::Instance* getRenderer();
+
+    private:
+        void initWindow(const WindowCreateInfo& inCreateInfo);
+        void initRenderer(WindowRenderer inBackend);
+
+    private:
+        // Status
+        bool                                m_bIsRunning;
+
+        Telemetry                           m_telemetry;
+
+        // Scene
+        Controller*                         m_controller;
+        ControllerObservable                m_controllerObservable;
+
+        std::unique_ptr<Scene>              m_scene;
+        SceneObservable                     m_sceneObservable;
+
+        // Grid
+        std::unique_ptr<Grid::View>         m_view;
+        ViewObservable                      m_viewObservable;
+
+        // Window
+        std::unique_ptr<Window>             m_window;
+
+        // Renderer
+        std::unique_ptr<Renderer::Instance> m_renderer;
+    };
 }

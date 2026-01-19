@@ -17,6 +17,4 @@ private:
 
 private:
     std::unique_ptr<Chicane::Controller> m_controller;
-    std::unique_ptr<Level>               m_level;
-    std::unique_ptr<View>                m_view;
 };

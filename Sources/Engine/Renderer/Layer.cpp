@@ -102,14 +102,14 @@ namespace Chicane
             }
         }
 
-        void Layer::setup()
+        void Layer::setup(const Frame& inFrame)
         {
             if (is(LayerStatus::Offline))
             {
                 return;
             }
 
-            if (!onSetup())
+            if (!onSetup(inFrame))
             {
                 return;
             }
@@ -123,18 +123,18 @@ namespace Chicane
                     continue;
                 }
 
-                child->setup();
+                child->setup(inFrame);
             }
         }
 
-        void Layer::render(void* outData)
+        void Layer::render(const Frame& inFrame)
         {
             if (!is(LayerStatus::Running))
             {
                 return;
             }
 
-            onRender(outData);
+            onRender(inFrame);
 
             for (Layer* child : m_children)
             {
@@ -143,21 +143,18 @@ namespace Chicane
                     continue;
                 }
 
-                child->render(outData);
+                child->render(inFrame);
             }
         }
 
         void Layer::cleanup()
         {
-            if (is(LayerStatus::Offline))
+            if (!is(LayerStatus::Running))
             {
                 return;
             }
 
-            if (!onCleanup())
-            {
-                return;
-            }
+            onCleanup();
 
             for (Layer* child : m_children)
             {

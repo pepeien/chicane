@@ -32,15 +32,14 @@ namespace Chicane
             Engine(Engine&&)                 = delete;
             Engine& operator=(Engine&&)      = delete;
 
+        private:
+            Engine();
+            ~Engine();
+
         public:
             JPH::Body* createBodyFromMesh(
                 const Vertex::List& inVertices, const Vertex::Indices& inIndices
             );
-
-        private:
-            Engine();
-
-            ~Engine();
 
         private:
             JPH::JobSystemThreadPool                m_threadPool;

@@ -2,8 +2,6 @@
 
 #include <algorithm>
 
-#include "Chicane/Core/Log.hpp"
-
 #include "Chicane/Grid.hpp"
 
 namespace Chicane

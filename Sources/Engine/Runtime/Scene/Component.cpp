@@ -20,7 +20,7 @@ namespace Chicane
 
     void Component::activate()
     {
-        if (!Application::hasScene())
+        if (!Application::getInstance().hasScene())
         {
             return;
         }
@@ -32,7 +32,7 @@ namespace Chicane
 
     void Component::deactivate()
     {
-        if (!Application::hasScene())
+        if (!Application::getInstance().hasScene())
         {
             return;
         }

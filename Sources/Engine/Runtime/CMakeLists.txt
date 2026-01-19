@@ -65,4 +65,6 @@ target_link_libraries(
         Chicane::Screech
 )
 
+add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
+
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})

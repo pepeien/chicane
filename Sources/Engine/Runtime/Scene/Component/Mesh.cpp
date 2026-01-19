@@ -39,7 +39,7 @@ namespace Chicane
 
     bool CMesh::isDrawable() const
     {
-        if (!Application::hasScene())
+        if (!Application::getInstance().hasScene())
         {
             return false;
         }

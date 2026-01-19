@@ -27,7 +27,7 @@ namespace Chicane
 
     void Controller::activate()
     {
-        Application::setController(this);
+        Application::getInstance().setController(this);
 
         onActivation();
     }
@@ -231,7 +231,7 @@ namespace Chicane
 
     void Controller::setupEvents()
     {
-        Application::getWindow()->watchEvent([this](WindowEvent inEvent) {
+        Application::getInstance().getWindow()->watchEvent([this](WindowEvent inEvent) {
             m_mouseButtonEvents.repeat();
             m_keyboardKeyEvents.repeat();
             m_gamepadButtonEvents.repeat();

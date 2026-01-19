@@ -13,6 +13,7 @@ namespace Chicane
     public:
         using Raw    = std::vector<unsigned char>;
         using Pixels = unsigned char*;
+        using List   = std::vector<Image>;
 
     public:
         Image(const FileSystem::Path& inFilepath);

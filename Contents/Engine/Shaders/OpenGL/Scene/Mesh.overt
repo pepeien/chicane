@@ -3,7 +3,6 @@
 
 struct Mesh {
     mat4 modelMatrix;
-    uint textureIndex;
 };
 
 layout(binding = 0) uniform Camera {
@@ -61,7 +60,7 @@ void main() {
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = mesh.textureIndex;
+    outTextureIndex   = 0;
     outUV             = inUV;
     outNormal         = mat3(mesh.modelMatrix) * inNormal;
     outColor          = inColor;
