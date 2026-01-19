@@ -214,8 +214,8 @@ namespace Chicane
 
         bool Component::hasReference(const String& inId, bool isLocalOnly) const
         {
-            bool bWasFoundLocally = m_references.find(inId) != m_references.end() &&
-                                    m_references.at(inId) && !m_references.at(inId)->isEmpty();
+            bool bWasFoundLocally = m_references.find(inId) != m_references.end() && m_references.at(inId) &&
+                                    !m_references.at(inId)->isEmpty();
 
             if (isRoot() || !hasParent() || isLocalOnly)
             {
@@ -271,8 +271,8 @@ namespace Chicane
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            const bool bHasLocally = m_functions.find(id) != m_functions.end() &&
-                                     m_functions.at(id) && m_functions.at(id) != nullptr;
+            const bool bHasLocally = m_functions.find(id) != m_functions.end() && m_functions.at(id) &&
+                                     m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
@@ -413,11 +413,7 @@ namespace Chicane
                                      neighbours.begin();
 
             return neighbours.at(
-                std::clamp(
-                    location + inJumps,
-                    0U,
-                    static_cast<std::uint32_t>(neighbours.size() - 1)
-                )
+                std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1))
             );
         }
 
@@ -585,20 +581,17 @@ namespace Chicane
             setPosition(0.0f, 0.0f);
 
             Vec2 margin = Vec2(
-                m_style.margin.left == m_style.margin.right
-                    ? m_style.margin.left
-                    : (m_style.margin.left - m_style.margin.right),
-                m_style.margin.top == m_style.margin.bottom
-                    ? m_style.margin.top
-                    : (m_style.margin.top - m_style.margin.bottom)
+                m_style.margin.left == m_style.margin.right ? m_style.margin.left
+                                                            : (m_style.margin.left - m_style.margin.right),
+                m_style.margin.top == m_style.margin.bottom ? m_style.margin.top
+                                                            : (m_style.margin.top - m_style.margin.bottom)
             );
             Vec2 padding = Vec2(
                 m_style.padding.left == m_style.padding.right
                     ? m_style.padding.left
                     : (m_style.padding.left - m_style.padding.right),
-                m_style.padding.top == m_style.padding.bottom
-                    ? m_style.padding.top
-                    : (m_style.padding.top - m_style.padding.bottom)
+                m_style.padding.top == m_style.padding.bottom ? m_style.padding.top
+                                                              : (m_style.padding.top - m_style.padding.bottom)
             );
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
@@ -741,11 +734,10 @@ namespace Chicane
                 return {};
             }
 
-            const String params =
-                inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
+            const String params = inRefValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING);
 
             FunctionData data = {};
-            data.name = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
+            data.name         = trimmedValue.substr(0, inRefValue.firstOf(FUNCTION_PARAMS_OPENING) + 1);
 
             for (const String& value : params.split(FUNCTION_PARAMS_SEPARATOR))
             {

@@ -18,9 +18,8 @@ namespace Chicane
             {
                 m_frame.init(inCreateInfo);
 
-                m_allocationSize = inCreateInfo.size;
-                m_writeLocation =
-                    inCreateInfo.logicalDevice.mapMemory(m_frame.memory, 0, m_allocationSize);
+                m_allocationSize  = inCreateInfo.size;
+                m_writeLocation   = inCreateInfo.logicalDevice.mapMemory(m_frame.memory, 0, m_allocationSize);
 
                 bufferInfo.buffer = m_frame.instance;
                 bufferInfo.offset = 0;

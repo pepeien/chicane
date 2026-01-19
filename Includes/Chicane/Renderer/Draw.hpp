@@ -3,9 +3,6 @@
 #include <cstdlib>
 #include <vector>
 
-#include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Core/String.hpp"
-
 #include "Chicane/Renderer.hpp"
 
 namespace Chicane
@@ -15,9 +12,13 @@ namespace Chicane
         struct CHICANE_RENDERER Draw
         {
         public:
-            using Id = std::uint32_t;
+            using Id = int;
 
         public:
+            static inline constexpr const Id UNKNOWN_ID = -1;
+
+        public:
+            Id            id          = UNKNOWN_ID;
             std::uint32_t vertexStart = 0U;
             std::uint32_t vertexCount = 0U;
             std::uint32_t indexStart  = 0U;

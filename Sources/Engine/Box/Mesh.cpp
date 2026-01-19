@@ -75,9 +75,7 @@ namespace Chicane
 
             if (foundGroupEntry == m_groups.end())
             {
-                throw std::runtime_error(
-                    "The group " + inGroup.getId().toStandard() + " wasn't found"
-                );
+                throw std::runtime_error("The group " + inGroup.getId().toStandard() + " wasn't found");
             }
 
             m_groups[foundGroupEntry - m_groups.begin()] = inGroup;

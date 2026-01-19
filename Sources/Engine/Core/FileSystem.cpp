@@ -44,8 +44,7 @@ namespace Chicane
 
                 if (item.type == ItemType::Folder)
                 {
-                    item.childCount =
-                        static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
+                    item.childCount = static_cast<std::uint32_t>(ls(item.path.toStandard(), 1).size());
                 }
 
                 result.push_back(item);
@@ -68,10 +67,7 @@ namespace Chicane
 
         std::vector<unsigned char> readUnsigned(const Path& inFilepath)
         {
-            std::basic_ifstream<unsigned char> file(
-                inFilepath.string(),
-                std::ios::ate | std::ios::binary
-            );
+            std::basic_ifstream<unsigned char> file(inFilepath.string(), std::ios::ate | std::ios::binary);
 
             if (!file)
             {

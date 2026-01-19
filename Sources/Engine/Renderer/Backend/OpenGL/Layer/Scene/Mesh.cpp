@@ -67,19 +67,20 @@ namespace Chicane
 
         void OpenGLLSceneMesh::onRender(const Frame& inFrame)
         {
-            std::uint32_t instance = 0U;
+            std::uint32_t instanceStart = 0U;
             for (const Draw3D& draw : inFrame.getDraws3D())
             {
-                glDrawElementsInstancedBaseInstance(
+                glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * draw.indexStart),
-                    1,
-                    instance
+                    draw.instances.size(),
+                    draw.vertexStart,
+                    instanceStart
                 );
 
-                instance++;
+                instanceStart += draw.instances.size();
             }
         }
 
@@ -172,34 +173,13 @@ namespace Chicane
             );
             glEnableVertexAttribArray(0);
 
-            glVertexAttribPointer(
-                1,
-                4,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (void*)offsetof(Vertex, color)
-            );
+            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
             glEnableVertexAttribArray(1);
 
-            glVertexAttribPointer(
-                2,
-                2,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (void*)offsetof(Vertex, uv)
-            );
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
             glEnableVertexAttribArray(2);
 
-            glVertexAttribPointer(
-                3,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (void*)offsetof(Vertex, normal)
-            );
+            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
             glEnableVertexAttribArray(3);
         }
 
@@ -207,12 +187,7 @@ namespace Chicane
         {
             glGenBuffers(1, &m_modelIndexBuffer);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBufferData(
-                GL_ELEMENT_ARRAY_BUFFER,
-                sizeof(std::uint32_t) * 2000000,
-                NULL,
-                GL_DYNAMIC_DRAW
-            );
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 2000000, NULL, GL_DYNAMIC_DRAW);
         }
 
         void OpenGLLSceneMesh::destroyModelData()

@@ -25,8 +25,7 @@ namespace Chicane
             return;
         }
 
-        for (CCollision* collider :
-             Application::getInstance().getScene()->getComponents<CCollision>())
+        for (CCollision* collider : Application::getInstance().getScene()->getComponents<CCollision>())
         {
             if (!isColliding(collider))
             {

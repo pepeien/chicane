@@ -18,7 +18,6 @@ namespace Chicane
         public:
             Vertex::List    vertices = {};
             Vertex::Indices indices  = {};
-            Image           material = {};
         };
     }
 }

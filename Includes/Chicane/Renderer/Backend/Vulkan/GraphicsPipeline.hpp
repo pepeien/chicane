@@ -19,9 +19,7 @@ namespace Chicane
                 const Vec<2, std::uint32_t>& inSize     = Vec<2, std::uint32_t>(0),
                 const Vec2&                  inPosition = Vec2::Zero
             );
-            static vk::Rect2D createScissor(
-                const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0)
-            );
+            static vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
             static vk::PipelineVertexInputStateCreateInfo createVertexInputState();
             static vk::PipelineInputAssemblyStateCreateInfo createInputAssemblyState();
             static vk::PipelineViewportStateCreateInfo createViewportState(
@@ -64,9 +62,7 @@ namespace Chicane
         public:
             void bind(vk::CommandBuffer& inCommandBuffer);
             void bindDescriptorSet(
-                vk::CommandBuffer& inCommandBuffer,
-                std::uint32_t      inIndex,
-                vk::DescriptorSet  inDescriptorSet
+                vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
             );
 
         public:

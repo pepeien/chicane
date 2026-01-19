@@ -25,8 +25,7 @@ namespace Chicane
         {}
 
         bool StyleCorners::refresh(
-            const StyleSource::Map&                             inSource,
-            std::function<float(const String&, StyleDirection)> inCalculator
+            const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
         )
         {
             if (inSource.empty())
@@ -64,8 +63,7 @@ namespace Chicane
             }
             else
             {
-                const std::vector<String> values =
-                    splitOneliner(inSource.at(m_onelineAttributeName));
+                const std::vector<String> values = splitOneliner(inSource.at(m_onelineAttributeName));
 
                 if (values.size() == 1) // SINGLE
                 {
@@ -134,8 +132,7 @@ namespace Chicane
                 bottom *= 0.5f;
             }
 
-            if ((lastTop != top) || (lastRight != right) || (lastBottom != bottom) ||
-                (lastLeft != left))
+            if ((lastTop != top) || (lastRight != right) || (lastBottom != bottom) || (lastLeft != left))
             {
                 return true;
             }

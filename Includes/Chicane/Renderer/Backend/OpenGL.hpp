@@ -25,25 +25,8 @@ namespace Chicane
             void buildGlew();
             void enableFeatures();
 
-            // Camera
-            void buildCameraData();
-            void destroyCameraData();
-
-            // Light
-            void buildLightData();
-            void destroyLightData();
-
-            // Mesh
-            void buildMeshData();
-            void destroyMeshData();
-
             // Layer
             void buildLayers();
-
-        private:
-            std::uint32_t m_cameraBuffer;
-            std::uint32_t m_lightBuffer;
-            std::uint32_t m_meshBuffer;
         };
     }
 }

@@ -15,6 +15,11 @@ namespace Chicane
 
         setFocusPoint(getTranslation() + getForward());
 
+        if (!isActive())
+        {
+            return;
+        }
+
         for (CMesh* mesh : Application::getInstance().getScene()->getComponents<CMesh>())
         {
             if (canSee(mesh))
@@ -23,7 +28,7 @@ namespace Chicane
             }
             else
             {
-                // mesh->hide();
+                mesh->hide();
             }
         }
     }

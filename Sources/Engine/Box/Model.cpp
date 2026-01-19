@@ -30,10 +30,9 @@ namespace Chicane
         {
             m_vendor = inVendor;
 
-            auto vendor =
-                std::find_if(VENDOR_MAP.begin(), VENDOR_MAP.end(), [inVendor](const auto& inPair) {
-                    return inPair.second == inVendor;
-                });
+            auto vendor = std::find_if(VENDOR_MAP.begin(), VENDOR_MAP.end(), [inVendor](const auto& inPair) {
+                return inPair.second == inVendor;
+            });
 
             if (vendor == VENDOR_MAP.end())
             {

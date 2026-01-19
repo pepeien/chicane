@@ -23,10 +23,7 @@ namespace Chicane
 
         std::vector<unsigned char> encodeToUnsigned(const std::vector<unsigned char>& inDecoded)
         {
-            return base64::decode_into<std::vector<unsigned char>>(
-                inDecoded.begin(),
-                inDecoded.end()
-            );
+            return base64::decode_into<std::vector<unsigned char>>(inDecoded.begin(), inDecoded.end());
         }
 
         std::vector<unsigned char> encodeToUnsigned(const String& inDecoded)

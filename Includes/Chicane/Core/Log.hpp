@@ -27,9 +27,7 @@ namespace Chicane
             const String& inHexColor, const String& inIdentifier, const String& inMessage
         );
         template <typename... T>
-        void emmit(
-            const String& inHexColor, const String& inIdentifier, String inMessage, T... inParams
-        )
+        void emmit(const String& inHexColor, const String& inIdentifier, String inMessage, T... inParams)
         {
             emmit(inHexColor, inIdentifier, String::sprint(inMessage, inParams...));
         }

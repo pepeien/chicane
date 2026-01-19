@@ -21,12 +21,7 @@ namespace Chicane
             static inline constexpr const char*      TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
 
             static inline const std::vector<SkySide> ORDER                       = {
-                SkySide::Right,
-                SkySide::Left,
-                SkySide::Front,
-                SkySide::Back,
-                SkySide::Up,
-                SkySide::Down
+                SkySide::Right, SkySide::Left, SkySide::Front, SkySide::Back, SkySide::Up, SkySide::Down
             };
 
             static inline const std::map<String, SkySide> SIDE_MAP = {

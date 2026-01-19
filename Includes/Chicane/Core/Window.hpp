@@ -85,18 +85,18 @@ namespace Chicane
         void emmitError(const String& inMessage);
 
     private:
-        void*            m_instance;
+        void*                 m_instance;
 
-        String           m_title;
-        FileSystem::Path m_icon;
-        Vec<2, int>      m_size;
-        int              m_display;
-        WindowType       m_type;
-        Vec<2, int>      m_position;
+        String                m_title;
+        FileSystem::Path      m_icon;
+        Vec<2, int>           m_size;
+        int                   m_display;
+        WindowType            m_type;
+        Vec<2, int>           m_position;
 
-        bool             m_bIsFocused;
-        bool             m_bIsResizable;
-        bool m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
+        bool                  m_bIsFocused;
+        bool                  m_bIsResizable;
+        bool                  m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
         WindowEventObservable m_eventObservable;
         WindowSizeObservable  m_sizeObservable;

@@ -26,9 +26,7 @@ namespace Chicane
         public:
             bool isPlaying() const;
             bool play(
-                float                 inVolume   = 0.7f,
-                float                 inSpeed    = 1.0f,
-                std::function<void()> inCallback = nullptr
+                float inVolume = 0.7f, float inSpeed = 1.0f, std::function<void()> inCallback = nullptr
             );
 
             bool isPaused() const;

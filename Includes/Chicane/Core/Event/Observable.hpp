@@ -23,9 +23,7 @@ namespace Chicane
 
     public:
         EventSubscription<T> subscribe(
-            EmptyCallback    inNext,
-            ErrorCallback    inError    = nullptr,
-            CompleteCallback inComplete = nullptr
+            EmptyCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
             m_subscriptions.push_back(EventSubscription<T>(inNext, inError, inComplete));
@@ -34,9 +32,7 @@ namespace Chicane
         }
 
         EventSubscription<T> subscribe(
-            NextCallback     inNext,
-            ErrorCallback    inError    = nullptr,
-            CompleteCallback inComplete = nullptr
+            NextCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
             m_subscriptions.push_back(EventSubscription<T>(inNext, inError, inComplete));

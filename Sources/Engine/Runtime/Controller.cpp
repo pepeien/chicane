@@ -7,9 +7,7 @@
 
 namespace Chicane
 {
-    static const std::vector<String> DEFAULT_KEYBOARDS = {
-        "Keyboard", "HID Keyboard Device (0x046d/0xc232)"
-    };
+    static const std::vector<String> DEFAULT_KEYBOARDS = {"Keyboard", "HID Keyboard Device (0x046d/0xc232)"};
 
     Controller::Controller()
         : m_pawn(nullptr),
@@ -113,9 +111,7 @@ namespace Chicane
     }
 
     void Controller::bindEvent(
-        Input::GamepadButton              inButton,
-        Input::Status                     inStatus,
-        Input::GamepadButtonEventCallback inEvent
+        Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inEvent
     )
     {
         m_gamepadButtonEvents.bind(inButton, inStatus, inEvent);

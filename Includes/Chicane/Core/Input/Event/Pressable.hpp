@@ -20,8 +20,8 @@ namespace Chicane
         struct CHICANE_CORE PressableEvents : private Recorder
         {
         public:
-            using Events = std::
-                unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
+            using Events =
+                std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
             PressableEvents()

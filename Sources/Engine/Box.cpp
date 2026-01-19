@@ -18,13 +18,10 @@ namespace Chicane
 {
     namespace Box
     {
-        static const std::unique_ptr<SoundManager> g_soundManager =
-            std::make_unique<SoundManager>();
-        static const std::unique_ptr<FontManager>  g_fontManager = std::make_unique<FontManager>();
-        static const std::unique_ptr<ModelManager> g_modelManager =
-            std::make_unique<ModelManager>();
-        static const std::unique_ptr<TextureManager> g_textureManager =
-            std::make_unique<TextureManager>();
+        static const std::unique_ptr<SoundManager>   g_soundManager   = std::make_unique<SoundManager>();
+        static const std::unique_ptr<FontManager>    g_fontManager    = std::make_unique<FontManager>();
+        static const std::unique_ptr<ModelManager>   g_modelManager   = std::make_unique<ModelManager>();
+        static const std::unique_ptr<TextureManager> g_textureManager = std::make_unique<TextureManager>();
 
         static std::unordered_map<FileSystem::Path, std::unique_ptr<const Asset>> g_cache = {};
 

@@ -16,8 +16,7 @@ namespace Chicane
                 const VulkanCommandBufferCreateInfo& inCreateInfo
             );
             CHICANE_RENDERER void init(
-                vk::CommandBuffer&                   outCommandBuffer,
-                const VulkanCommandBufferCreateInfo& inCreateInfo
+                vk::CommandBuffer& outCommandBuffer, const VulkanCommandBufferCreateInfo& inCreateInfo
             );
         }
     }

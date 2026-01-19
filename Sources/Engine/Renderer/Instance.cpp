@@ -42,9 +42,11 @@ namespace Chicane
             }
 
             Frame& currentFrame = getCurrentFrame();
+
             m_backend->setup(currentFrame);
             m_backend->render(currentFrame);
             m_backend->cleanup();
+
             currentFrame.reset();
 
             m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
@@ -148,9 +150,7 @@ namespace Chicane
             }
 
             m_window = inWindow;
-            m_window->watchSize([&](const Vec<2, int>& inSize) {
-                setViewportSize(inSize.x, inSize.y);
-            });
+            m_window->watchSize([&](const Vec<2, int>& inSize) { setViewportSize(inSize.x, inSize.y); });
             m_window->watchEvent([&](WindowEvent inEvent) { handle(inEvent); });
         }
 

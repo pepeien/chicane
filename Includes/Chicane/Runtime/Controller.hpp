@@ -58,16 +58,12 @@ namespace Chicane
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
         void bindEvent(
-            Input::MouseButton              inButton,
-            Input::Status                   inStatus,
-            Input::MouseButtonEventCallback inCallback
+            Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback
         );
 
         // Keyboard Events
         void bindEvent(
-            Input::KeyboardButton        inButton,
-            Input::Status                inStatus,
-            Input::KeyboardEventCallback inCallback
+            Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback
         );
 
         // Controller Events

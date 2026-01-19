@@ -23,9 +23,7 @@ namespace Chicane
             );
 
             CHICANE_RENDERER void initLogicalDevice(
-                vk::Device&               outDevice,
-                const vk::PhysicalDevice& inDevice,
-                const vk::SurfaceKHR&     inSurface
+                vk::Device& outDevice, const vk::PhysicalDevice& inDevice, const vk::SurfaceKHR& inSurface
             );
 
             CHICANE_RENDERER std::uint32_t findMemoryTypeIndex(

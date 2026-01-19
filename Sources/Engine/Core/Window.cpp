@@ -23,27 +23,21 @@ namespace Chicane
         outEvent.device = inData.which;
     }
 
-    void setupGamepadMotionEvent(
-        Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData
-    )
+    void setupGamepadMotionEvent(Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
     {
         outEvent.device = inData.which;
         outEvent.axis   = (Input::GamepadAxis)inData.axis;
         outEvent.value  = static_cast<float>(inData.value) / 32767.0f;
     }
 
-    void setupGamepadButtonEvent(
-        Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData
-    )
+    void setupGamepadButtonEvent(Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
     {
         outEvent.device = inData.which;
         outEvent.button = (Input::GamepadButton)inData.button;
         outEvent.status = inData.down ? Input::Status::Pressed : Input::Status::Released;
     }
 
-    void setupKeyboardDeviceEvent(
-        Input::DeviceEvent& outEvent, const SDL_KeyboardDeviceEvent& inData
-    )
+    void setupKeyboardDeviceEvent(Input::DeviceEvent& outEvent, const SDL_KeyboardDeviceEvent& inData)
     {
         outEvent.device = inData.which;
     }
@@ -61,9 +55,7 @@ namespace Chicane
         outEvent.device = inData.which;
     }
 
-    void setupMouseMotionEvent(
-        Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData
-    )
+    void setupMouseMotionEvent(Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
     {
         outEvent.device             = inData.which;
         outEvent.status             = (Input::Status)inData.state;
@@ -73,9 +65,7 @@ namespace Chicane
         outEvent.relativeLocation.y = inData.yrel;
     }
 
-    void setupMouseButtonEvent(
-        Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData
-    )
+    void setupMouseButtonEvent(Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
     {
         outEvent.device     = inData.which;
         outEvent.button     = (Input::MouseButton)inData.button;
@@ -422,10 +412,7 @@ namespace Chicane
 
         setSize(std::min(m_size.x, displaySettings->w), std::min(m_size.y, displaySettings->h));
 
-        setPosition(
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display),
-            SDL_WINDOWPOS_CENTERED_DISPLAY(display)
-        );
+        setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }
 
     void Window::setType(WindowType inType)

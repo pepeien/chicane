@@ -11,25 +11,45 @@ namespace Chicane
         {
         public:
             OpenGLLScene();
+            ~OpenGLLScene();
 
         public:
             bool onInit() override;
             bool onSetup(const Frame& inFrame) override;
 
         private:
+            // View
+            void buildCameraData();
+            void destroyCameraData();
+
+            void buildLightData();
+            void destroyLightData();
+
             // Model
             void buildModelVertexArray();
             void buildModelVertexBuffer();
             void buildModelIndexBuffer();
+            void destroyModelData();
+
+            // Mesh
+            void buildMeshData();
+            void destroyMeshData();
 
             // Layer
             void buildLayers();
 
         private:
+            // View
+            std::uint32_t m_cameraBuffer;
+            std::uint32_t m_lightBuffer;
+
             // Model
             std::uint32_t m_modelVertexArray;
             std::uint32_t m_modelVertexBuffer;
             std::uint32_t m_modelIndexBuffer;
+
+            // Meshe
+            std::uint32_t m_meshBuffer;
         };
     }
 }

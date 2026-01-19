@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Chicane/Core/Math/Mat/Mat4.hpp"
-
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Draw3D/Instance.hpp"
 
 namespace Chicane
 {
@@ -15,7 +14,7 @@ namespace Chicane
             using List = std::vector<Draw3D>;
 
         public:
-            Mat4 model = Mat4::Zero;
+            Draw3DInstance::List instances = {};
         };
     }
 }

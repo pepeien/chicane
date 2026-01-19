@@ -37,9 +37,7 @@ namespace Chicane
             ~Engine();
 
         public:
-            JPH::Body* createBodyFromMesh(
-                const Vertex::List& inVertices, const Vertex::Indices& inIndices
-            );
+            JPH::Body* createBodyFromMesh(const Vertex::List& inVertices, const Vertex::Indices& inIndices);
 
         private:
             JPH::JobSystemThreadPool                m_threadPool;

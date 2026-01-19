@@ -2,6 +2,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Draw2D/Instance.hpp"
 
 namespace Chicane
 {
@@ -13,8 +14,7 @@ namespace Chicane
             using List = std::vector<Draw2D>;
 
         public:
-            Vec3 position = Vec3::Zero;
-            Vec2 size     = Vec2::Zero;
+            Draw2DInstance::List instances = {};
         };
     }
 }

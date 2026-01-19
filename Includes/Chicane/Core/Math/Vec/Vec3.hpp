@@ -26,8 +26,7 @@ namespace Chicane
         {
             return (
                 std::fabs(inLeft.x - inRight.x) < FLT_EPSILON &&
-                std::fabs(inLeft.y - inRight.y) < FLT_EPSILON &&
-                std::fabs(inLeft.z - inRight.z) < FLT_EPSILON
+                std::fabs(inLeft.y - inRight.y) < FLT_EPSILON && std::fabs(inLeft.z - inRight.z) < FLT_EPSILON
             );
         }
     };

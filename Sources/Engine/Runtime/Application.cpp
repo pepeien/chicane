@@ -48,7 +48,6 @@ namespace Chicane
             m_telemetry.start();
 
             m_scene->tick(m_telemetry.delta);
-
             m_view->tick(m_telemetry.delta);
 
             m_renderer->useCamera(m_scene->getActiveComponents<CCamera>().at(0)->getData());
@@ -56,10 +55,14 @@ namespace Chicane
 
             for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
             {
+                if (!mesh->isDrawable())
+                {
+                    continue;
+                }
+
                 for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
                 {
-                    const Box::ModelExtracted& model =
-                        Box::getModelManager()->getInstance(group.getModel());
+                    const Box::ModelExtracted& model = Box::getModelManager()->getInstance(group.getModel());
 
                     Renderer::DrawData3D draw;
                     draw.vertices = model.vertices;

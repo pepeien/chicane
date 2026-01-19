@@ -38,8 +38,8 @@ namespace Chicane
                 g_colors.insert(
                     std::make_pair(
                         color,
-                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) +
-                            ";" + std::to_string(rgbColor.b) + "m"
+                        "38;2;" + std::to_string(rgbColor.r) + ";" + std::to_string(rgbColor.g) + ";" +
+                            std::to_string(rgbColor.b) + "m"
                     )
                 );
             }

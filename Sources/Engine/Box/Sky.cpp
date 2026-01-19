@@ -49,10 +49,9 @@ namespace Chicane
 
             m_sides[inSide] = filepath;
 
-            auto side =
-                std::find_if(SIDE_MAP.begin(), SIDE_MAP.end(), [inSide](const auto& inPair) {
-                    return inPair.second == inSide;
-                });
+            auto side = std::find_if(SIDE_MAP.begin(), SIDE_MAP.end(), [inSide](const auto& inPair) {
+                return inPair.second == inSide;
+            });
 
             if (side == SIDE_MAP.end())
             {
@@ -109,9 +108,8 @@ namespace Chicane
 
             for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
             {
-                SkySide side = getSideFromString(
-                    Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture).as_string()
-                );
+                SkySide side =
+                    getSideFromString(Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture).as_string());
 
                 if (m_sides.find(side) != m_sides.end())
                 {

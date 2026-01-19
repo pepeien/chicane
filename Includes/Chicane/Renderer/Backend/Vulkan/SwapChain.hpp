@@ -27,8 +27,7 @@ namespace Chicane
                 const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             );
             CHICANE_RENDERER void pickPresentMode(
-                vk::PresentModeKHR&                    outPresentMode,
-                const std::vector<vk::PresentModeKHR>& inPresentModes
+                vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes
             );
 
             CHICANE_RENDERER void init(

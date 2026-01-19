@@ -39,7 +39,11 @@ namespace Chicane
         protected:
             void resetCamera();
             void resetLights();
+
+            Draw::Id findDraw(const DrawData2D& inData) const;
             void resetDraw2D();
+
+            Draw::Id findDraw(const DrawData3D& inData) const;
             void resetDraw3D();
 
         protected:

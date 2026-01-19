@@ -173,9 +173,7 @@ namespace Chicane
         // Helper
         template <typename T = Actor>
         std::vector<T*> traceLine(
-            const Vec3&                inOrigin,
-            const Vec3&                inDestination,
-            const std::vector<Actor*>& inIgnoredActors
+            const Vec3& inOrigin, const Vec3& inDestination, const std::vector<Actor*>& inIgnoredActors
         ) const
         {
             if (!hasActors())
@@ -212,11 +210,9 @@ namespace Chicane
                         continue;
                     }
 
-                    bool bWillIgnored =
-                        std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) !=
-                        inIgnoredActors.end();
-                    bool bWasTraced =
-                        std::find(result.begin(), result.end(), actor) != result.end();
+                    bool bWillIgnored = std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) !=
+                                        inIgnoredActors.end();
+                    bool bWasTraced = std::find(result.begin(), result.end(), actor) != result.end();
 
                     if (bWillIgnored || bWasTraced)
                     {
