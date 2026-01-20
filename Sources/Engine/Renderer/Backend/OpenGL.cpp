@@ -38,12 +38,11 @@ namespace Chicane
             const Viewport& viewport = m_renderer->getViewport();
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             glClearDepth(1.0);
             glClearStencil(0);
             glDepthRange(0.0f, 1.0f);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         }
 
         void OpenGLBackend::onCleanup()
@@ -115,10 +114,6 @@ namespace Chicane
 
         void OpenGLBackend::enableFeatures()
         {
-            glEnable(GL_BLEND);
-            glEnable(GL_DEPTH_TEST);
-            glEnable(GL_CULL_FACE);
-
             if (IS_DEBUGGING)
             {
                 glEnable(GL_DEBUG_OUTPUT);
@@ -129,7 +124,7 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            //addLayer<OpenGLLScene>();
+            addLayer<OpenGLLScene>();
             addLayer<OpenGLLGrid>();
         }
     }

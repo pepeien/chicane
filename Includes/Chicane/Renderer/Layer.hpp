@@ -26,7 +26,7 @@ namespace Chicane
             virtual bool onRebuild() { return true; }
             virtual bool onSetup(const Frame& inFrame) { return true; }
             virtual void onRender(const Frame& inFrame) { return; }
-            virtual bool onCleanup() { return true; }
+            virtual void onCleanup() { return; }
 
             virtual void onEvent(const WindowEvent& inEvent) { return; }
 

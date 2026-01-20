@@ -2,7 +2,7 @@
 
 #extension GL_ARB_shader_draw_parameters : require
 
-struct Mesh {
+struct Instance {
     mat4 modelMatrix;
 };
 
@@ -32,9 +32,9 @@ layout(binding = 1) uniform Light {
     vec4 translation;
 } light;
 
-layout(std430, binding = 2) buffer StorageBuffer {
-    Mesh data[];
-} meshes;
+layout(std430, binding = 2) buffer MeshBuffer {
+    Instance data[];
+} instances;
 
 layout(location = 0) out flat uint outTextureIndex;
 layout(location = 1) out vec2 outUV;
@@ -57,17 +57,17 @@ const mat4 biasMat = mat4(
 );
 
 void main() {
-    Mesh mesh = meshes.data[gl_InstanceID + gl_BaseInstance];
+    Instance instance = instances.data[gl_InstanceID + gl_BaseInstance];
 
     vec4 position = vec4(inPosition, 1.0);
 
     outTextureIndex   = 0;
     outUV             = inUV;
-    outNormal         = mat3(mesh.modelMatrix) * inNormal;
+    outNormal         = mat3(instance.modelMatrix) * inNormal;
     outColor          = inColor;
     outViewPosition   = -inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * mesh.modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * instance.modelMatrix) * position;
 
-    gl_Position = camera.view * camera.projection * mesh.modelMatrix * position;
+    gl_Position = camera.view * camera.projection * instance.modelMatrix * position;
 }

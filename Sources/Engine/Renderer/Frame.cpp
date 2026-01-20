@@ -4,6 +4,14 @@ namespace Chicane
 {
     namespace Renderer
     {
+        void Frame::reset()
+        {
+            resetCamera();
+            resetLights();
+            resetDraw2D();
+            resetDraw3D();
+        }
+
         const View& Frame::getCamera() const
         {
             return m_camera;
@@ -85,14 +93,6 @@ namespace Chicane
             instance.model = inData.model;
 
             m_draws3D.add(inData, instance);
-        }
-
-        void Frame::reset()
-        {
-            resetCamera();
-            resetLights();
-            resetDraw2D();
-            resetDraw3D();
         }
 
         void Frame::resetCamera()

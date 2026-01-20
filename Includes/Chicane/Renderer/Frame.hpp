@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/Thread/Pool.hpp"
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
@@ -20,6 +21,9 @@ namespace Chicane
         struct CHICANE_RENDERER Frame
         {
         public:
+            // Lifecycle
+            void reset();
+
             const View& getCamera() const;
             void useCamera(const View& inData);
 
@@ -38,8 +42,6 @@ namespace Chicane
             const Vertex::Indices& getIndices3D() const;
             const DrawBundle<Draw3DInstance>::DrawInstances getInstances3D() const;
             void addDraw(const DrawData3D& inData);
-
-            void reset();
 
         protected:
             void resetCamera();

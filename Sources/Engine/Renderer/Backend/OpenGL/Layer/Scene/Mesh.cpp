@@ -15,58 +15,30 @@ namespace Chicane
         }
 
         OpenGLLSceneMesh::~OpenGLLSceneMesh()
-        {
-            destroyShader();
-            destroyModelData();
-        }
+        {}
 
         bool OpenGLLSceneMesh::onInit()
         {
             buildShader();
-
-            buildModelVertexArray();
-            buildModelVertexBuffer();
-            buildModelIndexBuffer();
-
-            return true;
-        }
-
-        bool OpenGLLSceneMesh::onSetup(const Frame& inFrame)
-        {
-            // Depth Test
-            glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LESS);
-
-            // Blend
-            glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-            glBlendEquation(GL_FUNC_ADD);
-
-            // Face Culling
-            glFrontFace(GL_CCW);
-            glCullFace(GL_BACK);
-
-            const Vertex::List& vertices = inFrame.getVertices3D();
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), vertices.data());
-
-            const Vertex::Indices& indices = inFrame.getIndices3D();
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBufferSubData(
-                GL_ELEMENT_ARRAY_BUFFER,
-                0,
-                sizeof(Vertex::Index) * indices.size(),
-                indices.data()
-            );
-
-            glBindVertexArray(m_modelVertexArray);
-
-            glUseProgram(m_shaderProgram);
 
             return true;
         }
 
         void OpenGLLSceneMesh::onRender(const Frame& inFrame)
         {
+            glUseProgram(m_shaderProgram);
+
+            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LESS);
+
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CCW);
+            glCullFace(GL_BACK);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
             std::uint32_t instanceStart = 0U;
             for (const Draw<Draw3DInstance>& draw : inFrame.getDraws3D())
             {
@@ -82,6 +54,13 @@ namespace Chicane
 
                 instanceStart += draw.instances.size();
             }
+        }
+
+        void OpenGLLSceneMesh::onCleanup()
+        {
+            glDisable(GL_DEPTH_TEST);
+            glDisable(GL_CULL_FACE);
+            glDisable(GL_BLEND);
         }
 
         void OpenGLLSceneMesh::buildShader()
@@ -149,52 +128,6 @@ namespace Chicane
         void OpenGLLSceneMesh::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
-        }
-
-        void OpenGLLSceneMesh::buildModelVertexArray()
-        {
-            glGenVertexArrays(1, &m_modelVertexArray);
-            glBindVertexArray(m_modelVertexArray);
-        }
-
-        void OpenGLLSceneMesh::buildModelVertexBuffer()
-        {
-            glGenBuffers(1, &m_modelVertexBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 2000000, NULL, GL_DYNAMIC_DRAW);
-
-            glVertexAttribPointer(
-                0,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                sizeof(Vertex),
-                (void*)offsetof(Vertex, position)
-            );
-            glEnableVertexAttribArray(0);
-
-            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-            glEnableVertexAttribArray(1);
-
-            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-            glEnableVertexAttribArray(2);
-
-            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-            glEnableVertexAttribArray(3);
-        }
-
-        void OpenGLLSceneMesh::buildModelIndexBuffer()
-        {
-            glGenBuffers(1, &m_modelIndexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 2000000, NULL, GL_DYNAMIC_DRAW);
-        }
-
-        void OpenGLLSceneMesh::destroyModelData()
-        {
-            glDeleteVertexArrays(1, &m_modelVertexArray);
-            glDeleteBuffers(1, &m_modelVertexBuffer);
-            glDeleteBuffers(1, &m_modelIndexBuffer);
         }
     }
 }

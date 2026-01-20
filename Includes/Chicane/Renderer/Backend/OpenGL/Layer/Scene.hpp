@@ -15,7 +15,7 @@ namespace Chicane
 
         public:
             bool onInit() override;
-            bool onSetup(const Frame& inFrame) override;
+            void onRender(const Frame& inFrame) override;
 
         private:
             // View
@@ -31,9 +31,9 @@ namespace Chicane
             void buildModelIndexBuffer();
             void destroyModelData();
 
-            // Mesh
-            void buildMeshData();
-            void destroyMeshData();
+            // Instance
+            void buildInstanceData();
+            void destroyInstanceData();
 
             // Layer
             void buildLayers();
@@ -48,8 +48,8 @@ namespace Chicane
             std::uint32_t m_modelVertexBuffer;
             std::uint32_t m_modelIndexBuffer;
 
-            // Meshe
-            std::uint32_t m_meshBuffer;
+            // Instance
+            std::uint32_t m_instanceBuffer;
         };
     }
 }

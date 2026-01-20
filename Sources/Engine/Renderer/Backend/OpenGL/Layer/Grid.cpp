@@ -18,7 +18,7 @@ namespace Chicane
         {
             destroyShader();
             destroyPrimitiveData();
-            destroySizeData();
+            destroyInstanceData();
         }
 
         bool OpenGLLGrid::onInit()
@@ -28,43 +28,46 @@ namespace Chicane
             buildPrimitiveVertexArray();
             buildPrimitiveVertexBuffer();
             buildPrimitiveIndexBuffer();
-            buildSizeData();
-
-            return true;
-        }
-
-        bool OpenGLLGrid::onSetup(const Frame& inFrame)
-        {
-            const Vertex::List& vertices = inFrame.getVertices2D();
-            glBindBuffer(GL_ARRAY_BUFFER, m_primitiveVertexBuffer);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), vertices.data());
-
-            const Vertex::Indices& indices = inFrame.getIndices2D();
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_primitiveIndexBuffer);
-            glBufferSubData(
-                GL_ELEMENT_ARRAY_BUFFER,
-                0,
-                sizeof(Vertex::Index) * indices.size(),
-                indices.data()
-            );
-
-            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_sizeBuffer);
-            glBufferSubData(
-                GL_SHADER_STORAGE_BUFFER,
-                0,
-                sizeof(Draw2DInstance) * inFrame.getInstances2D().size(),
-                inFrame.getInstances2D().data()
-            );
-
-            glBindVertexArray(m_primitiveVertexArray);
-
-            glUseProgram(m_shaderProgram);
+            buildInstanceData();
 
             return true;
         }
 
         void OpenGLLGrid::onRender(const Frame& inFrame)
         {
+            glUseProgram(m_shaderProgram);
+
+            glClear(GL_DEPTH_BUFFER_BIT);
+
+            glDisable(GL_DEPTH_TEST);
+            glDepthMask(GL_FALSE);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            glBindVertexArray(m_primitiveVertexArray);
+            glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
+            glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
+
+            glNamedBufferSubData(
+                m_primitiveVertexBuffer,
+                0,
+                sizeof(Vertex) * inFrame.getVertices2D().size(),
+                inFrame.getVertices2D().data()
+            );
+            glNamedBufferSubData(
+                m_primitiveIndexBuffer,
+                0,
+                sizeof(Vertex::Index) * inFrame.getIndices2D().size(),
+                inFrame.getIndices2D().data()
+            );
+            glNamedBufferSubData(
+                m_instanceBuffer,
+                0,
+                sizeof(Draw2DInstance) * inFrame.getInstances2D().size(),
+                inFrame.getInstances2D().data()
+            );
+
             std::uint32_t instanceStart = 0U;
             for (const Draw<Draw2DInstance>& draw : inFrame.getDraws2D())
             {
@@ -80,6 +83,11 @@ namespace Chicane
 
                 instanceStart += draw.instances.size();
             }
+        }
+
+        void OpenGLLGrid::onCleanup()
+        {
+            glDisable(GL_BLEND);
         }
 
         void OpenGLLGrid::buildShader()
@@ -151,41 +159,65 @@ namespace Chicane
 
         void OpenGLLGrid::buildPrimitiveVertexArray()
         {
-            glGenVertexArrays(1, &m_primitiveVertexArray);
-            glBindVertexArray(m_primitiveVertexArray);
+            glCreateVertexArrays(1, &m_primitiveVertexArray);
         }
 
         void OpenGLLGrid::buildPrimitiveVertexBuffer()
         {
-            glGenBuffers(1, &m_primitiveVertexBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, m_primitiveVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 10000, NULL, GL_DYNAMIC_DRAW);
+            glCreateBuffers(1, &m_primitiveVertexBuffer);
+            glNamedBufferData(m_primitiveVertexBuffer, sizeof(Vertex) * 10000, nullptr, GL_DYNAMIC_DRAW);
 
-            glVertexAttribPointer(
+            // Position
+            glEnableVertexArrayAttrib(m_primitiveVertexArray, 0);
+            glVertexArrayAttribFormat(
+                m_primitiveVertexArray,
                 0,
                 3,
                 GL_FLOAT,
                 GL_FALSE,
-                sizeof(Vertex),
-                (void*)offsetof(Vertex, position)
+                offsetof(Vertex, position)
             );
-            glEnableVertexAttribArray(0);
+            glVertexArrayAttribBinding(m_primitiveVertexArray, 0, 0);
 
-            glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-            glEnableVertexAttribArray(1);
+            // Color
+            glEnableVertexArrayAttrib(m_primitiveVertexArray, 1);
+            glVertexArrayAttribFormat(
+                m_primitiveVertexArray,
+                1,
+                4,
+                GL_FLOAT,
+                GL_FALSE,
+                offsetof(Vertex, color)
+            );
+            glVertexArrayAttribBinding(m_primitiveVertexArray, 1, 0);
 
-            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-            glEnableVertexAttribArray(2);
+            // UV
+            glEnableVertexArrayAttrib(m_primitiveVertexArray, 2);
+            glVertexArrayAttribFormat(m_primitiveVertexArray, 2, 2, GL_FLOAT, GL_FALSE, offsetof(Vertex, uv));
+            glVertexArrayAttribBinding(m_primitiveVertexArray, 2, 0);
 
-            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-            glEnableVertexAttribArray(3);
+            // Normal
+            glEnableVertexArrayAttrib(m_primitiveVertexArray, 3);
+            glVertexArrayAttribFormat(
+                m_primitiveVertexArray,
+                3,
+                3,
+                GL_FLOAT,
+                GL_FALSE,
+                offsetof(Vertex, normal)
+            );
+            glVertexArrayAttribBinding(m_primitiveVertexArray, 3, 0);
         }
 
         void OpenGLLGrid::buildPrimitiveIndexBuffer()
         {
-            glGenBuffers(1, &m_primitiveIndexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_primitiveIndexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 10000, NULL, GL_DYNAMIC_DRAW);
+            glCreateBuffers(1, &m_primitiveIndexBuffer);
+            glNamedBufferData(
+                m_primitiveIndexBuffer,
+                sizeof(std::uint32_t) * 10000,
+                nullptr,
+                GL_DYNAMIC_DRAW
+            );
         }
 
         void OpenGLLGrid::destroyPrimitiveData()
@@ -195,17 +227,17 @@ namespace Chicane
             glDeleteBuffers(1, &m_primitiveIndexBuffer);
         }
 
-        void OpenGLLGrid::buildSizeData()
+        void OpenGLLGrid::buildInstanceData()
         {
-            glGenBuffers(1, &m_sizeBuffer);
-            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_sizeBuffer);
-            glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Draw3DInstance) * 10000, NULL, GL_DYNAMIC_DRAW);
-            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, m_sizeBuffer);
+            glCreateBuffers(1, &m_instanceBuffer);
+            glNamedBufferData(m_instanceBuffer, sizeof(Draw2DInstance) * 10000, nullptr, GL_DYNAMIC_DRAW);
+
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, m_instanceBuffer);
         }
 
-        void OpenGLLGrid::destroySizeData()
+        void OpenGLLGrid::destroyInstanceData()
         {
-            glDeleteBuffers(1, &m_sizeBuffer);
+            glDeleteBuffers(1, &m_instanceBuffer);
         }
     }
 }

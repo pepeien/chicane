@@ -15,7 +15,7 @@ layout(location = 1) in vec4 inColor;
 layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
-layout(std430, binding = 1) buffer StorageBuffer {
+layout(std430, binding = 3) buffer GridBuffer {
     Instance data[];
 } instances;
 
@@ -31,8 +31,9 @@ void main() {
     position.xy /= instance.screen;     // Normalize to screen size
     position.xy *= 2.0;                 // Normalize to NDC
     position.xy -= 1.0;                 // Normalize to NDC
+    position.y  *= -1.0;                // Flips Y
     position.z  /= 999.9;
-    position.z   = clamp(abs(position.z - 1.0), 0.0, 0.9999);
+    position.z   = clamp(abs(position.z - 1.0), 0.0, 1.0);
 
     outColor = inColor / 255.0;
 

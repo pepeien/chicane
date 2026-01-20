@@ -15,8 +15,8 @@ namespace Chicane
 
         public:
             bool onInit() override;
-            bool onSetup(const Frame& inFrame) override;
             void onRender(const Frame& inFrame) override;
+            void onCleanup() override;
 
         private:
             // Shader
@@ -30,8 +30,8 @@ namespace Chicane
             void destroyPrimitiveData();
 
             // Size
-            void buildSizeData();
-            void destroySizeData();
+            void buildInstanceData();
+            void destroyInstanceData();
 
         private:
             // Shader
@@ -42,8 +42,8 @@ namespace Chicane
             std::uint32_t m_primitiveVertexBuffer;
             std::uint32_t m_primitiveIndexBuffer;
 
-            // Size
-            std::uint32_t m_sizeBuffer;
+            // Instance
+            std::uint32_t m_instanceBuffer;
         };
     }
 }

@@ -236,7 +236,7 @@ namespace Chicane
 
         for (Grid::Component* component : m_view->getChildrenFlat())
         {
-            if (!component->hasPrimitive())
+            if (!component->isDrawable())
             {
                 continue;
             }
