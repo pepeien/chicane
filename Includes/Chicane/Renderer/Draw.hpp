@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdlib>
+#include <cstdint>
 #include <vector>
 
 #include "Chicane/Renderer.hpp"
@@ -9,20 +9,19 @@ namespace Chicane
 {
     namespace Renderer
     {
+        template <typename I>
         struct CHICANE_RENDERER Draw
         {
         public:
-            using Id = int;
+            using List      = std::vector<Draw<I>>;
+            using Instances = std::vector<I>;
 
         public:
-            static inline constexpr const Id UNKNOWN_ID = -1;
-
-        public:
-            Id            id          = UNKNOWN_ID;
             std::uint32_t vertexStart = 0U;
             std::uint32_t vertexCount = 0U;
             std::uint32_t indexStart  = 0U;
             std::uint32_t indexCount  = 0U;
+            Instances     instances   = {};
         };
     }
 }

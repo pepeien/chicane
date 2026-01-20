@@ -95,6 +95,7 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
+            std::vector<Component*> getChildrenFlat() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
             ChildrenSubscription watchChildren(

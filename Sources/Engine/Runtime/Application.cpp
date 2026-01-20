@@ -15,8 +15,7 @@
 namespace Chicane
 {
     Application::Application()
-        : m_bIsRunning(true),
-          m_telemetry({}),
+        : m_telemetry({}),
           m_controller(nullptr),
           m_controllerObservable({}),
           m_scene(nullptr),
@@ -47,36 +46,18 @@ namespace Chicane
         {
             m_telemetry.start();
 
-            m_scene->tick(m_telemetry.delta);
-            m_view->tick(m_telemetry.delta);
-
-            m_renderer->useCamera(m_scene->getActiveComponents<CCamera>().at(0)->getData());
-            m_renderer->addLight(m_scene->getActiveComponents<CLight>().at(0)->getData());
-
-            for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
-            {
-                if (!mesh->isDrawable())
-                {
-                    continue;
-                }
-
-                for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
-                {
-                    const Box::ModelExtracted& model = Box::getModelManager()->getInstance(group.getModel());
-
-                    Renderer::DrawData3D draw;
-                    draw.vertices = model.vertices;
-                    draw.indices  = model.indices;
-                    draw.model    = mesh->getTransform().getMatrix();
-
-                    m_renderer->draw(draw);
-                }
-            }
-
-            m_renderer->render();
+            render();
 
             m_telemetry.end();
         }
+    }
+
+    void Application::render()
+    {
+        renderScene();
+        renderView();
+
+        m_renderer->render();
     }
 
     const Telemetry& Application::getTelemetry() const
@@ -198,7 +179,78 @@ namespace Chicane
         }
 
         m_renderer = std::make_unique<Renderer::Instance>();
-        m_renderer->init(getWindow());
-        m_renderer->setBackend(inBackend);
+        m_renderer->init(getWindow(), inBackend);
+    }
+
+    void Application::renderScene()
+    {
+        if (!hasScene())
+        {
+            return;
+        }
+
+        m_scene->tick(m_telemetry.delta);
+
+        for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
+        {
+            camera->setViewport(m_renderer->getViewport().size);
+
+            m_renderer->useCamera(camera->getData());
+        }
+
+        for (CLight* light : m_scene->getActiveComponents<CLight>())
+        {
+            light->setViewport(m_renderer->getViewport().size);
+
+            m_renderer->addLight(light->getData());
+        }
+
+        for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
+        {
+            if (!mesh->hasMesh() || !mesh->isActive())
+            {
+                continue;
+            }
+
+            const Box::ModelExtracted& model = Box::getModelManager()->getInstance(mesh->getModel());
+
+            Renderer::DrawData3D draw;
+            draw.vertices = model.vertices;
+            draw.indices  = model.indices;
+            draw.model    = mesh->getTransform().getMatrix();
+
+            m_renderer->draw(draw);
+        }
+    }
+
+    void Application::renderView()
+    {
+        if (!hasView())
+        {
+            return;
+        }
+
+        m_view->tick(m_telemetry.delta);
+
+        const Vec2& viewSize = m_view->getSize();
+
+        for (Grid::Component* component : m_view->getChildrenFlat())
+        {
+            if (!component->hasPrimitive())
+            {
+                continue;
+            }
+
+            const Grid::Primitive& primitive = component->getPrimitive();
+
+            Renderer::DrawData2D draw;
+            draw.vertices = primitive.vertices;
+            draw.indices  = primitive.indices;
+            draw.screen   = viewSize;
+            draw.size     = component->getSize();
+            draw.position = Vec3(component->getPosition(), component->getStyle().zIndex);
+
+            m_renderer->draw(draw);
+        }
     }
 }

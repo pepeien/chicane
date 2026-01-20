@@ -7,6 +7,7 @@
 
 #include "Chicane/Renderer/Instance.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Debug.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene.hpp"
 
 namespace Chicane
@@ -128,7 +129,8 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            addLayer<OpenGLLScene>();
+            //addLayer<OpenGLLScene>();
+            addLayer<OpenGLLGrid>();
         }
     }
 }

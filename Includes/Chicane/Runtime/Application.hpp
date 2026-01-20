@@ -135,13 +135,17 @@ namespace Chicane
         Renderer::Instance* getRenderer();
 
     private:
+        // Initialization
         void initWindow(const WindowCreateInfo& inCreateInfo);
         void initRenderer(WindowRenderer inBackend);
 
+        // Lifecycle
+        void render();
+        void renderScene();
+        void renderView();
+
     private:
         // Status
-        bool                                m_bIsRunning;
-
         Telemetry                           m_telemetry;
 
         // Scene

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/View.hpp"
@@ -9,8 +11,8 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Draw/Data/Data2D.hpp"
-#include "Chicane/Renderer/Draw/Data/Data3D.hpp"
+#include "Chicane/Renderer/Draw/2D/Data.hpp"
+#include "Chicane/Renderer/Draw/3D/Data.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -25,7 +27,7 @@ namespace Chicane
             using ViewportSubscription = EventSubscription<Viewport>;
 
         public:
-            static inline constexpr std::uint32_t FRAME_COUNT = 3;
+            static inline constexpr const std::uint32_t FRAME_COUNT = 2;
 
         public:
             Instance();
@@ -33,7 +35,7 @@ namespace Chicane
 
         public:
             // Lifecycle
-            void init(Window* inWindow);
+            void init(Window* inWindow, WindowRenderer inBackend);
             void render();
 
             // Render

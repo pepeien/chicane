@@ -427,6 +427,26 @@ namespace Chicane
             return m_children;
         }
 
+        std::vector<Component*> Component::getChildrenFlat() const
+        {
+            std::vector<Component*> result;
+
+            for (Component* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                result.push_back(child);
+
+                std::vector<Component*> sub = child->getChildrenFlat();
+                result.insert(result.end(), sub.begin(), sub.end());
+            }
+
+            return result;
+        }
+
         void Component::addChildren(const pugi::xml_node& inNode)
         {
             if (inNode.empty())

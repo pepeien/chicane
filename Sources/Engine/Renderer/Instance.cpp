@@ -23,7 +23,7 @@ namespace Chicane
         Instance::~Instance()
         {}
 
-        void Instance::init(Window* inWindow)
+        void Instance::init(Window* inWindow, WindowRenderer inBackend)
         {
             if (!inWindow)
             {
@@ -32,6 +32,7 @@ namespace Chicane
 
             setViewport(Vec2::Zero, Vec2::Zero);
             setWindow(inWindow);
+            setBackend(inBackend);
         }
 
         void Instance::render()

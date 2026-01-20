@@ -10,8 +10,9 @@ namespace Chicane
         struct CHICANE_RENDERER DrawData2D : DrawData
         {
         public:
-            Vec3 position = Vec3::Zero;
+            Vec2 screen   = Vec2::Zero;
             Vec2 size     = Vec2::Zero;
+            Vec3 position = Vec3::Zero;
         };
     }
 }

@@ -11,9 +11,6 @@ namespace Chicane
         struct CHICANE_RENDERER Draw3DInstance
         {
         public:
-            using List = std::vector<Draw3DInstance>;
-
-        public:
             Mat4 model = Mat4::Zero;
         };
     }

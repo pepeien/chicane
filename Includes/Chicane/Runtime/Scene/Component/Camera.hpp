@@ -10,8 +10,5 @@ namespace Chicane
     public:
         CCamera();
         virtual ~CCamera() = default;
-
-    protected:
-        void onTransform() override;
     };
 }

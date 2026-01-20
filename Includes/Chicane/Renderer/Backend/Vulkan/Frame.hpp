@@ -7,7 +7,8 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
-#include "Chicane/Renderer/Draw/Draw3D.hpp"
+#include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/3D/Instance.hpp"
 
 namespace Chicane
 {
@@ -83,7 +84,7 @@ namespace Chicane
             // Resources
             VulkanFrameResource<View>                     cameraResource;
             VulkanFrameResource<View>                     lightResource;
-            VulkanFrameResource<Draw3D>                   meshResource;
+            VulkanFrameResource<Draw<Draw3DInstance>>     meshResource;
 
             std::unordered_map<String, vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet>           descriptorSetWrites;

@@ -5,7 +5,6 @@
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
 
 static inline constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
 
@@ -81,8 +80,6 @@ namespace Chicane
 
             m_actorsObservable.next(m_actors);
 
-            refreshDefaultCamera();
-
             return static_cast<T*>(m_actors.back());
         }
 
@@ -156,8 +153,6 @@ namespace Chicane
             m_components.push_back(new T());
 
             m_componentsObservable.next(m_components);
-
-            refreshDefaultCamera();
 
             return static_cast<T*>(m_components.back());
         }
@@ -244,17 +239,11 @@ namespace Chicane
         void tickComponents(float inDeltaTime);
         void deleteComponents();
 
-        void createDefaultCamera();
-        void removeDefaultCamera();
-        void refreshDefaultCamera();
-
     private:
         std::vector<Actor*>     m_actors;
         ActorsObservable        m_actorsObservable;
 
         std::vector<Component*> m_components;
         ComponentsObservable    m_componentsObservable;
-
-        CCamera*                m_defaultCamera;
     };
 }

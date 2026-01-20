@@ -14,14 +14,10 @@ namespace Chicane
         virtual ~CMesh() = default;
 
     protected:
-        void onActivation() override;
-        void onDeactivation() override;
         void onAttachment(Transformable* inRoot) override;
 
     public:
         bool isDrawable() const;
-        void show();
-        void hide();
 
         bool hasMesh() const;
         void setMesh(const String& inMesh);

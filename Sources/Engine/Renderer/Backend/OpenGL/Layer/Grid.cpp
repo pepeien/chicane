@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Grid.hpp"
 
 #include <GL/glew.h>
 
@@ -8,49 +8,39 @@ namespace Chicane
 {
     namespace Renderer
     {
-        OpenGLLSceneMesh::OpenGLLSceneMesh()
-            : Layer("Engine_Scene_Mesh")
+        OpenGLLGrid::OpenGLLGrid()
+            : Layer("Engine_Grid")
         {
             init();
         }
 
-        OpenGLLSceneMesh::~OpenGLLSceneMesh()
+        OpenGLLGrid::~OpenGLLGrid()
         {
             destroyShader();
-            destroyModelData();
+            destroyPrimitiveData();
+            destroySizeData();
         }
 
-        bool OpenGLLSceneMesh::onInit()
+        bool OpenGLLGrid::onInit()
         {
             buildShader();
 
-            buildModelVertexArray();
-            buildModelVertexBuffer();
-            buildModelIndexBuffer();
+            buildPrimitiveVertexArray();
+            buildPrimitiveVertexBuffer();
+            buildPrimitiveIndexBuffer();
+            buildSizeData();
 
             return true;
         }
 
-        bool OpenGLLSceneMesh::onSetup(const Frame& inFrame)
+        bool OpenGLLGrid::onSetup(const Frame& inFrame)
         {
-            // Depth Test
-            glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LESS);
-
-            // Blend
-            glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-            glBlendEquation(GL_FUNC_ADD);
-
-            // Face Culling
-            glFrontFace(GL_CCW);
-            glCullFace(GL_BACK);
-
-            const Vertex::List& vertices = inFrame.getVertices3D();
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
+            const Vertex::List& vertices = inFrame.getVertices2D();
+            glBindBuffer(GL_ARRAY_BUFFER, m_primitiveVertexBuffer);
             glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), vertices.data());
 
-            const Vertex::Indices& indices = inFrame.getIndices3D();
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
+            const Vertex::Indices& indices = inFrame.getIndices2D();
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_primitiveIndexBuffer);
             glBufferSubData(
                 GL_ELEMENT_ARRAY_BUFFER,
                 0,
@@ -58,17 +48,25 @@ namespace Chicane
                 indices.data()
             );
 
-            glBindVertexArray(m_modelVertexArray);
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_sizeBuffer);
+            glBufferSubData(
+                GL_SHADER_STORAGE_BUFFER,
+                0,
+                sizeof(Draw2DInstance) * inFrame.getInstances2D().size(),
+                inFrame.getInstances2D().data()
+            );
+
+            glBindVertexArray(m_primitiveVertexArray);
 
             glUseProgram(m_shaderProgram);
 
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame)
+        void OpenGLLGrid::onRender(const Frame& inFrame)
         {
             std::uint32_t instanceStart = 0U;
-            for (const Draw<Draw3DInstance>& draw : inFrame.getDraws3D())
+            for (const Draw<Draw2DInstance>& draw : inFrame.getDraws2D())
             {
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
@@ -84,13 +82,13 @@ namespace Chicane
             }
         }
 
-        void OpenGLLSceneMesh::buildShader()
+        void OpenGLLGrid::buildShader()
         {
             GLint result = GL_FALSE;
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.overt");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -111,7 +109,7 @@ namespace Chicane
 
             // Fragment
             const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -146,22 +144,22 @@ namespace Chicane
             glDeleteShader(fragmentShader);
         }
 
-        void OpenGLLSceneMesh::destroyShader()
+        void OpenGLLGrid::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
         }
 
-        void OpenGLLSceneMesh::buildModelVertexArray()
+        void OpenGLLGrid::buildPrimitiveVertexArray()
         {
-            glGenVertexArrays(1, &m_modelVertexArray);
-            glBindVertexArray(m_modelVertexArray);
+            glGenVertexArrays(1, &m_primitiveVertexArray);
+            glBindVertexArray(m_primitiveVertexArray);
         }
 
-        void OpenGLLSceneMesh::buildModelVertexBuffer()
+        void OpenGLLGrid::buildPrimitiveVertexBuffer()
         {
-            glGenBuffers(1, &m_modelVertexBuffer);
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 2000000, NULL, GL_DYNAMIC_DRAW);
+            glGenBuffers(1, &m_primitiveVertexBuffer);
+            glBindBuffer(GL_ARRAY_BUFFER, m_primitiveVertexBuffer);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, NULL, GL_DYNAMIC_DRAW);
 
             glVertexAttribPointer(
                 0,
@@ -183,18 +181,31 @@ namespace Chicane
             glEnableVertexAttribArray(3);
         }
 
-        void OpenGLLSceneMesh::buildModelIndexBuffer()
+        void OpenGLLGrid::buildPrimitiveIndexBuffer()
         {
-            glGenBuffers(1, &m_modelIndexBuffer);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 2000000, NULL, GL_DYNAMIC_DRAW);
+            glGenBuffers(1, &m_primitiveIndexBuffer);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_primitiveIndexBuffer);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 1000, NULL, GL_DYNAMIC_DRAW);
         }
 
-        void OpenGLLSceneMesh::destroyModelData()
+        void OpenGLLGrid::destroyPrimitiveData()
         {
-            glDeleteVertexArrays(1, &m_modelVertexArray);
-            glDeleteBuffers(1, &m_modelVertexBuffer);
-            glDeleteBuffers(1, &m_modelIndexBuffer);
+            glDeleteVertexArrays(1, &m_primitiveVertexArray);
+            glDeleteBuffers(1, &m_primitiveVertexBuffer);
+            glDeleteBuffers(1, &m_primitiveIndexBuffer);
+        }
+
+        void OpenGLLGrid::buildSizeData()
+        {
+            glGenBuffers(1, &m_sizeBuffer);
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_sizeBuffer);
+            glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Draw3DInstance) * 1000, NULL, GL_DYNAMIC_DRAW);
+            glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, m_sizeBuffer);
+        }
+
+        void OpenGLLGrid::destroySizeData()
+        {
+            glDeleteBuffers(1, &m_sizeBuffer);
         }
     }
 }

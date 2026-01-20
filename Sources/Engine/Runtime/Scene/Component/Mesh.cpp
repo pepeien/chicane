@@ -3,9 +3,6 @@
 #include "Chicane/Box/Model/Extracted.hpp"
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Model/Parsed.hpp"
-#include "Chicane/Box/Texture/Manager.hpp"
-
-#include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
 {
@@ -16,16 +13,6 @@ namespace Chicane
           m_bIsVisible(false),
           m_mesh(nullptr)
     {}
-
-    void CMesh::onActivation()
-    {
-        show();
-    }
-
-    void CMesh::onDeactivation()
-    {
-        hide();
-    }
 
     void CMesh::onAttachment(Transformable* inRoot)
     {
@@ -39,50 +26,7 @@ namespace Chicane
 
     bool CMesh::isDrawable() const
     {
-        if (!Application::getInstance().hasScene())
-        {
-            return false;
-        }
-
         return hasMesh() && isActive() && m_bIsVisible;
-    }
-
-    void CMesh::show()
-    {
-        if (m_bIsVisible || !hasMesh())
-        {
-            return;
-        }
-
-        Box::ModelManager*   modelManager   = Box::getModelManager();
-        Box::TextureManager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            modelManager->activate(group.getModel());
-            textureManager->activate(group.getTexture());
-        }
-
-        m_bIsVisible = true;
-    }
-
-    void CMesh::hide()
-    {
-        if (!m_bIsVisible || !hasMesh())
-        {
-            return;
-        }
-
-        Box::ModelManager*   modelManager   = Box::getModelManager();
-        Box::TextureManager* textureManager = Box::getTextureManager();
-
-        for (const auto& group : m_mesh->getGroups())
-        {
-            modelManager->deactivate(group.getModel());
-            textureManager->deactivate(group.getTexture());
-        }
-
-        m_bIsVisible = false;
     }
 
     bool CMesh::hasMesh() const

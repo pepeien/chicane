@@ -41,21 +41,7 @@ namespace Chicane
             glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), &inFrame.getCamera());
 
             glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
-            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), &inFrame.getLights().at(0));
-
-            Draw3DInstance::List meshes = {};
-            for (const Draw3D& draw : inFrame.getDraws3D())
-            {
-                meshes.insert(meshes.end(), draw.instances.begin(), draw.instances.end());
-            }
-
-            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_meshBuffer);
-            glBufferSubData(
-                GL_SHADER_STORAGE_BUFFER,
-                0,
-                sizeof(Draw3DInstance) * meshes.size(),
-                meshes.data()
-            );
+            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), inFrame.getLights().data());
 
             const Vertex::List& vertices = inFrame.getVertices3D();
             glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
@@ -71,6 +57,14 @@ namespace Chicane
             );
 
             glBindVertexArray(m_modelVertexArray);
+
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_meshBuffer);
+            glBufferSubData(
+                GL_SHADER_STORAGE_BUFFER,
+                0,
+                sizeof(Draw3DInstance) * inFrame.getInstances3D().size(),
+                inFrame.getInstances3D().data()
+            );
 
             return true;
         }

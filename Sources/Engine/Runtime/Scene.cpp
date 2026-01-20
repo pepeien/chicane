@@ -6,8 +6,7 @@ namespace Chicane
         : m_actors({}),
           m_actorsObservable({}),
           m_components({}),
-          m_componentsObservable({}),
-          m_defaultCamera(nullptr)
+          m_componentsObservable({})
     {}
 
     Scene::~Scene()
@@ -61,8 +60,6 @@ namespace Chicane
         m_actors.erase(found);
 
         m_actorsObservable.next(m_actors);
-
-        refreshDefaultCamera();
     }
 
     Scene::ActorsSubscription Scene::watchActors(
@@ -101,8 +98,6 @@ namespace Chicane
         m_components.erase(found);
 
         m_componentsObservable.next(m_components);
-
-        refreshDefaultCamera();
     }
 
     Scene::ComponentsSubscription Scene::watchComponents(
@@ -148,58 +143,5 @@ namespace Chicane
             component = nullptr;
         }
         m_components.clear();
-    }
-
-    void Scene::createDefaultCamera()
-    {
-        if (m_defaultCamera != nullptr)
-        {
-            return;
-        }
-
-        m_defaultCamera = new CCamera();
-        m_defaultCamera->activate();
-
-        m_components.push_back(m_defaultCamera);
-
-        m_componentsObservable.next(m_components);
-    }
-
-    void Scene::removeDefaultCamera()
-    {
-        if (!m_defaultCamera)
-        {
-            return;
-        }
-
-        removeComponent(m_defaultCamera);
-
-        m_defaultCamera = nullptr;
-    }
-
-    void Scene::refreshDefaultCamera()
-    {
-        bool hasUserCamera = false;
-
-        for (CCamera* camera : getComponents<CCamera>())
-        {
-            if (camera == m_defaultCamera || !camera->isActive())
-            {
-                continue;
-            }
-
-            hasUserCamera = true;
-
-            break;
-        }
-
-        if (hasUserCamera)
-        {
-            removeDefaultCamera();
-
-            return;
-        }
-
-        createDefaultCamera();
     }
 }

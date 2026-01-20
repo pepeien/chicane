@@ -1,7 +1,5 @@
 #include "Chicane/Runtime/Scene/Component/View.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
-
 namespace Chicane
 {
     CView::CView()
@@ -36,9 +34,7 @@ namespace Chicane
 
         updateView();
 
-        Application::getInstance().getWindow()->watchSize([this](const Vec2& inSize) {
-            setViewport(inSize);
-        });
+        setFocusPoint(getTranslation() + getForward());
     }
 
     bool CView::canSee(const Transformable* inSubject) const
