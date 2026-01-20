@@ -12,9 +12,11 @@ namespace Chicane
         struct CHICANE_RENDERER Draw2DInstance
         {
         public:
-            Vec2 screen   = Vec2::Zero;
-            Vec2 size     = Vec2::Zero;
-            Vec3 position = Vec3::Zero;
+            Vec2  screen   = Vec2::Zero;
+            Vec2  size     = Vec2::Zero;
+            Vec3  position = Vec3::Zero;
+
+            float _padding[1];
         };
     }
 }

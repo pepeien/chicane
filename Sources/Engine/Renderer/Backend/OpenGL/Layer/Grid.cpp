@@ -159,7 +159,7 @@ namespace Chicane
         {
             glGenBuffers(1, &m_primitiveVertexBuffer);
             glBindBuffer(GL_ARRAY_BUFFER, m_primitiveVertexBuffer);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 1000, NULL, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 10000, NULL, GL_DYNAMIC_DRAW);
 
             glVertexAttribPointer(
                 0,
@@ -185,7 +185,7 @@ namespace Chicane
         {
             glGenBuffers(1, &m_primitiveIndexBuffer);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_primitiveIndexBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 1000, NULL, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * 10000, NULL, GL_DYNAMIC_DRAW);
         }
 
         void OpenGLLGrid::destroyPrimitiveData()
@@ -199,7 +199,7 @@ namespace Chicane
         {
             glGenBuffers(1, &m_sizeBuffer);
             glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_sizeBuffer);
-            glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Draw3DInstance) * 1000, NULL, GL_DYNAMIC_DRAW);
+            glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Draw3DInstance) * 10000, NULL, GL_DYNAMIC_DRAW);
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, m_sizeBuffer);
         }
 
