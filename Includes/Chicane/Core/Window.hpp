@@ -5,8 +5,8 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
-#include "Chicane/Core/Window/CreateInfo.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/Window/Settings.hpp"
 #include "Chicane/Core/Window/Type.hpp"
 
 namespace Chicane
@@ -25,8 +25,9 @@ namespace Chicane
 
     public:
         // Lifecycle
-        void init(const WindowCreateInfo& inCreateInfo);
+        void init(const WindowSettings& inSettings);
         bool run();
+        void restart();
 
         // Settings
         void setTitle(const String& inTitle);
@@ -40,17 +41,21 @@ namespace Chicane
         void setPosition(const Vec<2, int>& inValue);
         void setPosition(int inX, int inY);
 
+        std::uint32_t getDisplay() const;
         void setDisplay(std::uint32_t inIndex);
 
-        void setType(WindowType inType);
         WindowType getType() const;
+        void setType(WindowType inType);
+
+        WindowBackend getBackend() const;
+        void setBackend(WindowBackend inBackend);
+
+        bool hasInstance() const;
+        void initInstance();
+        void* getInstance() const; // SDL_Window*
+        void destroyInstance();
 
         // Status
-        void* getInstance() const;
-
-        bool wasCreated() const;
-        void destroy();
-
         bool isFocused() const;
         void switchFocus();
         void focus();
@@ -58,8 +63,7 @@ namespace Chicane
 
         bool isResizable();
         void enableResizing();  // Only takes effect when the type is `Type::Windowed`
-        void disableResizing(); // Only takes effect when the type is
-                                // `Type::Windowed`
+        void disableResizing(); // Only takes effect when the type is `Type::Windowed`
 
         bool isMinimized();
 
@@ -87,12 +91,7 @@ namespace Chicane
     private:
         void*                 m_instance;
 
-        String                m_title;
-        FileSystem::Path      m_icon;
-        Vec<2, int>           m_size;
-        int                   m_display;
-        WindowType            m_type;
-        Vec<2, int>           m_position;
+        WindowSettings        m_settings;
 
         bool                  m_bIsFocused;
         bool                  m_bIsResizable;

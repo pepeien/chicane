@@ -35,7 +35,7 @@ namespace Chicane
         Kerb::init();
 
         initWindow(inCreateInfo.window);
-        initRenderer(inCreateInfo.window.renderer);
+        initRenderer(inCreateInfo.window.backend);
 
         if (inCreateInfo.onSetup)
         {
@@ -154,7 +154,20 @@ namespace Chicane
         return m_renderer.get();
     }
 
-    void Application::initWindow(const WindowCreateInfo& inCreateInfo)
+    void Application::setRenderer(WindowBackend inBackend)
+    {
+        if (!hasWindow() || !hasRenderer())
+        {
+            return;
+        }
+
+        m_renderer->destroy();
+
+        m_window->setBackend(inBackend);
+        m_renderer->setBackend(inBackend);
+    }
+
+    void Application::initWindow(const WindowSettings& inCreateInfo)
     {
         if (hasWindow())
         {
@@ -171,7 +184,7 @@ namespace Chicane
         });
     }
 
-    void Application::initRenderer(WindowRenderer inBackend)
+    void Application::initRenderer(WindowBackend inBackend)
     {
         if (hasRenderer())
         {

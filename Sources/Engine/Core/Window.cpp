@@ -77,12 +77,7 @@ namespace Chicane
 
     Window::Window()
         : m_instance(nullptr),
-          m_title(""),
-          m_icon(""),
-          m_size(Vec<2, int>(0)),
-          m_display(0),
-          m_type(WindowType::Fullscreen),
-          m_position({}),
+          m_settings({}),
           m_bIsFocused(false),
           m_bIsResizable(true),
           m_bIsMinimized(false),
@@ -101,60 +96,19 @@ namespace Chicane
 
     Window::~Window()
     {
-        destroy();
+        destroyInstance();
 
         SDL_Quit();
     }
 
-    void Window::init(const WindowCreateInfo& inCreateInfo)
+    void Window::init(const WindowSettings& inSettings)
     {
-        SDL_WindowFlags flag = 0;
-
-        switch (inCreateInfo.renderer)
-        {
-        case WindowRenderer::OpenGL:
-            flag = SDL_WINDOW_OPENGL;
-
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-            if (IS_DEBUGGING)
-            {
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-            }
-
-            break;
-
-        case WindowRenderer::Vulkan:
-            flag = SDL_WINDOW_VULKAN;
-
-            break;
-
-        default:
-            flag = SDL_WINDOW_HIDDEN;
-
-            break;
-        };
-
-        if (wasCreated())
-        {
-            destroy();
-        }
-
-        m_instance = SDL_CreateWindow("", 0, 0, flag);
-
-        if (!m_instance)
-        {
-            emmitError("Error creating window");
-        }
-
-        setTitle(inCreateInfo.title);
-        setIcon(inCreateInfo.icon);
-        setSize(inCreateInfo.size);
-        setDisplay(inCreateInfo.display);
-        setType(inCreateInfo.type);
+        setBackend(inSettings.backend);
+        setTitle(inSettings.title);
+        setIcon(inSettings.icon);
+        setSize(inSettings.size);
+        setDisplay(inSettings.display);
+        setType(inSettings.type);
     }
 
     bool Window::run()
@@ -283,6 +237,18 @@ namespace Chicane
         return true;
     }
 
+    void Window::restart()
+    {
+        destroyInstance();
+        initInstance();
+
+        setTitle(m_settings.title);
+        setIcon(m_settings.icon);
+        setSize(m_settings.size);
+        setDisplay(m_settings.display);
+        setType(m_settings.type);
+    }
+
     const Vec<2, int>& Window::getSize() const
     {
         if (m_bIsMinimized)
@@ -290,7 +256,7 @@ namespace Chicane
             return VEC2_ZERO;
         }
 
-        return m_size;
+        return m_settings.size;
     }
 
     void Window::setSize(const Vec<2, int>& inValue)
@@ -300,7 +266,7 @@ namespace Chicane
 
     void Window::setSize(int inWidth, int inHeight)
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -312,15 +278,15 @@ namespace Chicane
             return;
         }
 
-        m_size.x = inWidth;
-        m_size.y = inHeight;
+        m_settings.size.x = inWidth;
+        m_settings.size.y = inHeight;
 
-        m_sizeObservable.next(m_size);
+        m_sizeObservable.next(m_settings.size);
     }
 
     const Vec<2, int>& Window::getPosition() const
     {
-        return m_position;
+        return m_settings.position;
     }
 
     void Window::setPosition(const Vec<2, int>& inValue)
@@ -330,7 +296,7 @@ namespace Chicane
 
     void Window::setPosition(int inX, int inY)
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -342,13 +308,13 @@ namespace Chicane
             return;
         }
 
-        m_position.x = inX;
-        m_position.y = inY;
+        m_settings.position.x = inX;
+        m_settings.position.y = inY;
     }
 
     void Window::setTitle(const String& inTitle)
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -362,7 +328,7 @@ namespace Chicane
             return;
         }
 
-        m_title = title;
+        m_settings.title = title;
     }
 
     void Window::setIcon(const FileSystem::Path& inPath)
@@ -394,9 +360,14 @@ namespace Chicane
             return;
         }
 
-        m_icon = inPath;
+        m_settings.icon = inPath;
 
         SDL_DestroySurface(icon);
+    }
+
+    std::uint32_t Window::getDisplay() const
+    {
+        return m_settings.display;
     }
 
     void Window::setDisplay(std::uint32_t inIndex)
@@ -415,19 +386,27 @@ namespace Chicane
             emmitError("Error while setting the window display");
         }
 
-        setSize(std::min(m_size.x, displaySettings->w), std::min(m_size.y, displaySettings->h));
+        setSize(
+            std::min(m_settings.size.x, displaySettings->w),
+            std::min(m_settings.size.y, displaySettings->h)
+        );
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }
 
+    WindowType Window::getType() const
+    {
+        return m_settings.type;
+    }
+
     void Window::setType(WindowType inType)
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
 
-        m_type = inType;
+        m_settings.type = inType;
 
         switch (inType)
         {
@@ -461,9 +440,78 @@ namespace Chicane
         }
     }
 
-    WindowType Window::getType() const
+    WindowBackend Window::getBackend() const
     {
-        return m_type;
+        return m_settings.backend;
+    }
+
+    void Window::setBackend(WindowBackend inBackend)
+    {
+        if (m_settings.backend == inBackend)
+        {
+            return;
+        }
+
+        m_settings.backend = inBackend;
+
+        if (!hasInstance())
+        {
+            initInstance();
+
+            return;
+        }
+
+        restart();
+    }
+
+    bool Window::hasInstance() const
+    {
+        return m_instance != nullptr;
+    }
+
+    void Window::initInstance()
+    {
+        if (hasInstance())
+        {
+            return;
+        }
+
+        SDL_WindowFlags flag = 0;
+
+        switch (m_settings.backend)
+        {
+        case WindowBackend::OpenGL:
+            flag = SDL_WINDOW_OPENGL;
+
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+            SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+            if (IS_DEBUGGING)
+            {
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+            }
+
+            break;
+
+        case WindowBackend::Vulkan:
+            flag = SDL_WINDOW_VULKAN;
+
+            break;
+
+        default:
+            flag = SDL_WINDOW_HIDDEN;
+
+            break;
+        };
+
+        m_instance = SDL_CreateWindow("", 0, 0, flag);
+
+        if (!m_instance)
+        {
+            emmitError("Error creating window");
+        }
     }
 
     void* Window::getInstance() const
@@ -471,19 +519,15 @@ namespace Chicane
         return m_instance;
     }
 
-    bool Window::wasCreated() const
+    void Window::destroyInstance()
     {
-        return m_instance != nullptr;
-    }
-
-    void Window::destroy()
-    {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
 
         SDL_DestroyWindow(static_cast<SDL_Window*>(m_instance));
+        m_instance = nullptr;
     }
 
     bool Window::isFocused() const
@@ -493,7 +537,7 @@ namespace Chicane
 
     void Window::focus()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -510,7 +554,7 @@ namespace Chicane
 
     void Window::switchFocus()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -527,7 +571,7 @@ namespace Chicane
 
     void Window::blur()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -549,12 +593,12 @@ namespace Chicane
 
     void Window::enableResizing()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
 
-        if (m_type != WindowType::Windowed)
+        if (m_settings.type != WindowType::Windowed)
         {
             return;
         }
@@ -571,7 +615,7 @@ namespace Chicane
 
     void Window::disableResizing()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -588,7 +632,7 @@ namespace Chicane
 
     bool Window::isMinimized()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return m_bIsMinimized;
         }
@@ -613,12 +657,12 @@ namespace Chicane
         WindowSizeSubscription::CompleteCallback inComplete
     )
     {
-        return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_size);
+        return m_sizeObservable.subscribe(inNext, inError, inComplete).next(m_settings.size);
     }
 
     void Window::refreshSize()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -633,15 +677,15 @@ namespace Chicane
             return;
         }
 
-        m_size.x = width;
-        m_size.y = height;
+        m_settings.size.x = width;
+        m_settings.size.y = height;
 
-        m_sizeObservable.next(m_size);
+        m_sizeObservable.next(m_settings.size);
     }
 
     void Window::refreshPosition()
     {
-        if (!wasCreated())
+        if (!hasInstance())
         {
             return;
         }
@@ -656,8 +700,8 @@ namespace Chicane
             return;
         }
 
-        m_position.x = x;
-        m_position.y = y;
+        m_settings.position.x = x;
+        m_settings.position.y = y;
     }
 
     void Window::emmitWarning(const String& inMessage)

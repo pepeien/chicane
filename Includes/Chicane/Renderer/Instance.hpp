@@ -6,8 +6,8 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/View.hpp"
 #include "Chicane/Core/Window.hpp"
+#include "Chicane/Core/Window/Backend.hpp"
 #include "Chicane/Core/Window/Event.hpp"
-#include "Chicane/Core/Window/Renderer.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
@@ -35,8 +35,9 @@ namespace Chicane
 
         public:
             // Lifecycle
-            void init(Window* inWindow, WindowRenderer inBackend);
+            void init(Window* inWindow, WindowBackend inBackend);
             void render();
+            void destroy();
 
             // Render
             const Frame& getCurrentFrame() const;
@@ -64,7 +65,7 @@ namespace Chicane
 
             // Backend
             bool hasBackend() const;
-            void setBackend(WindowRenderer inType);
+            void setBackend(WindowBackend inType);
 
         private:
             // Window

@@ -6,7 +6,7 @@
 
 namespace Chicane
 {
-    enum class WindowRenderer : std::uint8_t
+    enum class WindowBackend : std::uint8_t
     {
         Undefined,
         OpenGL,

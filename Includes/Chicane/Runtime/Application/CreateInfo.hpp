@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Window/CreateInfo.hpp"
+#include "Chicane/Core/Window/Settings.hpp"
 
 #include "Chicane/Runtime.hpp"
 
@@ -10,7 +10,7 @@ namespace Chicane
     {
     public:
         // Window
-        WindowCreateInfo      window  = {};
+        WindowSettings        window  = {};
 
         // Callbacks
         std::function<void()> onSetup = nullptr;

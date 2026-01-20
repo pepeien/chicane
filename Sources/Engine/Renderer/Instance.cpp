@@ -21,9 +21,11 @@ namespace Chicane
         {}
 
         Instance::~Instance()
-        {}
+        {
+            destroy();
+        }
 
-        void Instance::init(Window* inWindow, WindowRenderer inBackend)
+        void Instance::init(Window* inWindow, WindowBackend inBackend)
         {
             if (!inWindow)
             {
@@ -37,7 +39,7 @@ namespace Chicane
 
         void Instance::render()
         {
-            if (!m_backend)
+            if (!hasBackend())
             {
                 return;
             }
@@ -51,6 +53,11 @@ namespace Chicane
             currentFrame.reset();
 
             m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
+        }
+
+        void Instance::destroy()
+        {
+            m_backend.reset();
         }
 
         const Frame& Instance::getCurrentFrame() const
@@ -170,7 +177,7 @@ namespace Chicane
             return m_backend && m_backend.get() != nullptr;
         }
 
-        void Instance::setBackend(WindowRenderer inType)
+        void Instance::setBackend(WindowBackend inType)
         {
             if (hasBackend())
             {
@@ -180,17 +187,17 @@ namespace Chicane
             switch (inType)
             {
 #if defined(CHICANE_OPENGL)
-            case WindowRenderer::OpenGL:
+            case WindowBackend::OpenGL:
                 m_backend = std::make_unique<OpenGLBackend>(this);
 
                 break;
 #endif
 
 #if defined(CHICANE_VULKAN)
-            case WindowRenderer::Vulkan:
+            case WindowBackend::Vulkan:
                 //m_backend = std::make_unique<VulkanBackend>();
 
-                break;
+                //break;
 #endif
 
             default:

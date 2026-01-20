@@ -133,11 +133,12 @@ namespace Chicane
         // Renderer
         bool hasRenderer();
         Renderer::Instance* getRenderer();
+        void setRenderer(WindowBackend inBackend);
 
     private:
         // Initialization
-        void initWindow(const WindowCreateInfo& inCreateInfo);
-        void initRenderer(WindowRenderer inBackend);
+        void initWindow(const WindowSettings& inCreateInfo);
+        void initRenderer(WindowBackend inBackend);
 
         // Lifecycle
         void render();
