@@ -15,7 +15,7 @@ namespace Chicane
 
         protected:
             void onInit() override;
-            void onSetup(const Frame& inFrame, const DrawResource::Map& inResources) override;
+            void onSetup(const Frame& inFrame) override;
             void onCleanup() override;
 
         private:

@@ -26,7 +26,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
+        void OpenGLLSceneMesh::onRender(const Frame& inFrame)
         {
             glUseProgram(m_shaderProgram);
 
@@ -41,7 +41,7 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            const DrawResource resource = inResources.at(DrawType::e3D);
+            const DrawResource resource = inFrame.getResources3D();
 
             for (const Draw& draw : resource.getDraws())
             {

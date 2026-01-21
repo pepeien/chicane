@@ -25,8 +25,8 @@ namespace Chicane
             virtual bool onInit() { return true; }
             virtual bool onDestroy() { return true; }
             virtual bool onRebuild() { return true; }
-            virtual bool onSetup(const Frame& inFrame, const DrawResource::Map& inResources) { return true; }
-            virtual void onRender(const Frame& inFrame, const DrawResource::Map& inResources) { return; }
+            virtual bool onSetup(const Frame& inFrame) { return true; }
+            virtual void onRender(const Frame& inFrame) { return; }
             virtual void onCleanup() { return; }
 
             virtual void onEvent(const WindowEvent& inEvent) { return; }
@@ -35,8 +35,8 @@ namespace Chicane
             void init();
             void destroy();
             void rebuild();
-            void setup(const Frame& inFrame, const DrawResource::Map& inResources);
-            void render(const Frame& inFrame, const DrawResource::Map& inResources);
+            void setup(const Frame& inFrame);
+            void render(const Frame& inFrame);
             void cleanup();
 
             void handle(const WindowEvent& inEvent);

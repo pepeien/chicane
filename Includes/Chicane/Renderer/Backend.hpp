@@ -20,16 +20,16 @@ namespace Chicane
 
         protected:
             virtual void onInit() {}
-            virtual void onSetup(const Frame& inFrame, const DrawResource::Map& inResources) {}
-            virtual void onRender(const Frame& inFrame, const DrawResource::Map& inResources) {}
+            virtual void onSetup(const Frame& inFrame) {}
+            virtual void onRender(const Frame& inFrame) {}
             virtual void onCleanup() {}
 
             virtual void onHandle(const WindowEvent& inEvent) {}
 
         public:
             void init();
-            void setup(const Frame& inFrame, const DrawResource::Map& inResources);
-            void render(const Frame& inFrame, const DrawResource::Map& inResources);
+            void setup(const Frame& inFrame);
+            void render(const Frame& inFrame);
             void handle(const WindowEvent& inEvent);
             void cleanup();
 

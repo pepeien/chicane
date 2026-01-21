@@ -35,9 +35,9 @@ namespace Chicane
             }
         }
 
-        void Backend::setup(const Frame& inFrame, const DrawResource::Map& inResources)
+        void Backend::setup(const Frame& inFrame)
         {
-            onSetup(inFrame, inResources);
+            onSetup(inFrame);
 
             for (Layer* layer : m_layers)
             {
@@ -46,13 +46,13 @@ namespace Chicane
                     continue;
                 }
 
-                layer->setup(inFrame, inResources);
+                layer->setup(inFrame);
             }
         }
 
-        void Backend::render(const Frame& inFrame, const DrawResource::Map& inResources)
+        void Backend::render(const Frame& inFrame)
         {
-            onRender(inFrame, inResources);
+            onRender(inFrame);
 
             for (Layer* layer : m_layers)
             {
@@ -61,7 +61,7 @@ namespace Chicane
                     continue;
                 }
 
-                layer->render(inFrame, inResources);
+                layer->render(inFrame);
             }
         }
 

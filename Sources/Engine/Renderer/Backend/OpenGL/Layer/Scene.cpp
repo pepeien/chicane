@@ -35,14 +35,14 @@ namespace Chicane
             return true;
         }
 
-        bool OpenGLLScene::onSetup(const Frame& inFrame, const DrawResource::Map& inResources)
+        bool OpenGLLScene::onSetup(const Frame& inFrame)
         {
-            if (inFrame.getInstances3D().size() <= 0)
+            if (inFrame.getInstances3D().empty())
             {
                 return false;
             }
 
-            if (inResources.find(DrawType::e3D) == inResources.end())
+            if (inFrame.getResources3D().isEmpty())
             {
                 return false;
             }
@@ -50,7 +50,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLScene::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
+        void OpenGLLScene::onRender(const Frame& inFrame)
         {
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
@@ -62,7 +62,7 @@ namespace Chicane
             glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
             glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), inFrame.getLights().data());
 
-            const DrawResource& resource = inResources.at(DrawType::e3D);
+            const DrawResource& resource = inFrame.getResources3D();
 
             glNamedBufferSubData(
                 m_modelVertexBuffer,

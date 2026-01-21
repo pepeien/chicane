@@ -45,9 +45,10 @@ namespace Chicane
             }
 
             Frame& currentFrame = getCurrentFrame();
+            currentFrame.setup(m_drawResources);
 
-            m_backend->setup(currentFrame, m_drawResources);
-            m_backend->render(currentFrame, m_drawResources);
+            m_backend->setup(currentFrame);
+            m_backend->render(currentFrame);
             m_backend->cleanup();
 
             currentFrame.reset();

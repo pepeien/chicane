@@ -18,6 +18,8 @@ namespace Chicane
             using Map = std::map<DrawType, DrawResource>;
 
         public:
+            inline bool isEmpty() const { return m_draws.empty() || m_vertices.empty() || m_indices.empty(); }
+
             inline const Draw::List& getDraws() const { return m_draws; }
 
             inline const Vertex::List& getVertices() const { return m_vertices; }

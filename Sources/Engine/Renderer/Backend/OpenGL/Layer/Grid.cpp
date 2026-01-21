@@ -33,14 +33,14 @@ namespace Chicane
             return true;
         }
 
-        bool OpenGLLGrid::onSetup(const Frame& inFrame, const DrawResource::Map& inResources)
+        bool OpenGLLGrid::onSetup(const Frame& inFrame)
         {
-            if (inFrame.getInstances2D().size() <= 0)
+            if (inFrame.getInstances2D().empty())
             {
                 return false;
             }
 
-            if (inResources.find(DrawType::e2D) == inResources.end())
+            if (inFrame.getResources2D().isEmpty())
             {
                 return false;
             }
@@ -48,7 +48,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLGrid::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
+        void OpenGLLGrid::onRender(const Frame& inFrame)
         {
             glUseProgram(m_shaderProgram);
 
@@ -64,7 +64,7 @@ namespace Chicane
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
 
-            const DrawResource& resource = inResources.at(DrawType::e2D);
+            const DrawResource& resource = inFrame.getResources2D();
 
             glNamedBufferSubData(
                 m_primitiveVertexBuffer,

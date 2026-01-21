@@ -6,10 +6,19 @@ namespace Chicane
     {
         void Frame::reset()
         {
+            // View
             resetCamera();
             resetLights();
+
+            // Draw
+            resetDrawResources();
             resetDraw2D();
             resetDraw3D();
+        }
+
+        void Frame::setup(const DrawResource::Map& inResources)
+        {
+            m_drawResources = inResources;
         }
 
         const View& Frame::getCamera() const
@@ -35,6 +44,11 @@ namespace Chicane
         void Frame::addLight(const View& inData)
         {
             m_lights.push_back(std::move(inData));
+        }
+
+        const DrawResource& Frame::getResources2D() const
+        {
+            return m_drawResources.at(DrawType::e2D);
         }
 
         const Draw2DInstance::List Frame::getInstances2D() const
@@ -79,6 +93,11 @@ namespace Chicane
         void Frame::use(Draw::Id inId, const Draw2DInstance& inInstance)
         {
             m_draws2D[inId].push_back(inInstance);
+        }
+
+        const DrawResource& Frame::getResources3D() const
+        {
+            return m_drawResources.at(DrawType::e3D);
         }
 
         const Draw3DInstance::List Frame::getInstances3D() const
@@ -133,6 +152,11 @@ namespace Chicane
         void Frame::resetLights()
         {
             m_lights.clear();
+        }
+
+        void Frame::resetDrawResources()
+        {
+            m_drawResources.clear();
         }
 
         void Frame::resetDraw2D()
