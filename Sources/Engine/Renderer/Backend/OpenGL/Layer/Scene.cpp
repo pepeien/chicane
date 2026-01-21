@@ -35,7 +35,22 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLScene::onRender(const Frame& inFrame)
+        bool OpenGLLScene::onSetup(const Frame& inFrame, const DrawResource::Map& inResources)
+        {
+            if (inFrame.getInstances3D().size() <= 0)
+            {
+                return false;
+            }
+
+            if (inResources.find(DrawType::e3D) == inResources.end())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        void OpenGLLScene::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
         {
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
@@ -47,26 +62,24 @@ namespace Chicane
             glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
             glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), inFrame.getLights().data());
 
-            const Vertex::List& vertices = inFrame.getVertices3D();
-            glBindBuffer(GL_ARRAY_BUFFER, m_modelVertexBuffer);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * vertices.size(), vertices.data());
+            const DrawResource& resource = inResources.at(DrawType::e3D);
 
-            const Vertex::Indices& indices = inFrame.getIndices3D();
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_modelIndexBuffer);
-            glBufferSubData(
-                GL_ELEMENT_ARRAY_BUFFER,
+            glNamedBufferSubData(
+                m_modelVertexBuffer,
                 0,
-                sizeof(Vertex::Index) * indices.size(),
-                indices.data()
+                sizeof(Vertex) * resource.getVertices().size(),
+                resource.getVertices().data()
             );
-
-            glBindVertexArray(m_modelVertexArray);
-
-            glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_instanceBuffer);
-            glBufferSubData(
-                GL_SHADER_STORAGE_BUFFER,
+            glNamedBufferSubData(
+                m_modelIndexBuffer,
                 0,
-                sizeof(Draw3DInstance) * inFrame.getInstances3D().size(),
+                sizeof(Vertex::Index) * resource.getIndices().size(),
+                resource.getIndices().data()
+            );
+            glNamedBufferSubData(
+                m_instanceBuffer,
+                0,
+                sizeof(Draw2DInstance) * inFrame.getInstances3D().size(),
                 inFrame.getInstances3D().data()
             );
         }

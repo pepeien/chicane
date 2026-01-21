@@ -84,7 +84,7 @@ namespace Chicane
             // Resources
             VulkanFrameResource<View>                     cameraResource;
             VulkanFrameResource<View>                     lightResource;
-            VulkanFrameResource<Draw<Draw3DInstance>>     meshResource;
+            VulkanFrameResource<Draw3DInstance>           meshResource;
 
             std::unordered_map<String, vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet>           descriptorSetWrites;

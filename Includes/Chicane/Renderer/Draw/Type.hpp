@@ -8,9 +8,9 @@ namespace Chicane
     {
         enum class DrawType : std::uint8_t
         {
-            TwoDimensional,
-            ThreeDimensional,
-            Particles
+            e2D,
+            e3D,
+            eParticles
         };
     }
 }

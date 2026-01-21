@@ -37,62 +37,92 @@ namespace Chicane
             m_lights.push_back(std::move(inData));
         }
 
-        const DrawBundle<Draw2DInstance>::DrawList& Frame::getDraws2D() const
+        const Draw2DInstance::List Frame::getInstances2D() const
         {
-            return m_draws2D.getDraws();
+            Draw2DInstance::List result;
+
+            for (const auto& [id, instances] : m_draws2D)
+            {
+                result.insert(result.end(), instances.begin(), instances.end());
+            }
+
+            return result;
         }
 
-        const Vertex::List& Frame::getVertices2D() const
+        const std::uint32_t Frame::getInstance2DStart(Draw::Id inId) const
         {
-            return m_draws2D.getVertices();
+            std::uint32_t result = 0U;
+
+            for (const auto& [id, instance] : m_draws2D)
+            {
+                if (id == inId)
+                {
+                    break;
+                }
+
+                result += instance.size();
+            }
+
+            return result;
         }
 
-        const Vertex::Indices& Frame::getIndices2D() const
+        const std::uint32_t Frame::getInstance2DCount(Draw::Id inId) const
         {
-            return m_draws2D.getIndices();
+            if (m_draws2D.find(inId) == m_draws2D.end())
+            {
+                return 0U;
+            }
+
+            return m_draws2D.at(inId).size();
         }
 
-        const DrawBundle<Draw2DInstance>::DrawInstances Frame::getInstances2D() const
+        void Frame::use(Draw::Id inId, const Draw2DInstance& inInstance)
         {
-            return m_draws2D.getInstances();
+            m_draws2D[inId].push_back(inInstance);
         }
 
-        void Frame::addDraw(const DrawData2D& inData)
+        const Draw3DInstance::List Frame::getInstances3D() const
         {
-            Draw2DInstance instance;
-            instance.screen   = inData.screen;
-            instance.size     = inData.size;
-            instance.position = inData.position;
+            Draw3DInstance::List result;
 
-            m_draws2D.add(inData, instance);
+            for (const auto& [id, instance] : m_draws3D)
+            {
+                result.insert(result.end(), instance.begin(), instance.end());
+            }
+
+            return result;
         }
 
-        const DrawBundle<Draw3DInstance>::DrawList& Frame::getDraws3D() const
+        const std::uint32_t Frame::getInstance3DStart(Draw::Id inId) const
         {
-            return m_draws3D.getDraws();
+            std::uint32_t result = 0U;
+
+            for (const auto& [id, instance] : m_draws3D)
+            {
+                if (id == inId)
+                {
+                    break;
+                }
+
+                result += instance.size();
+            }
+
+            return result;
         }
 
-        const Vertex::List& Frame::getVertices3D() const
+        const std::uint32_t Frame::getInstance3DCount(Draw::Id inId) const
         {
-            return m_draws3D.getVertices();
+            if (m_draws3D.find(inId) == m_draws3D.end())
+            {
+                return 0U;
+            }
+
+            return m_draws3D.at(inId).size();
         }
 
-        const Vertex::Indices& Frame::getIndices3D() const
+        void Frame::use(Draw::Id inId, const Draw3DInstance& inInstance)
         {
-            return m_draws3D.getIndices();
-        }
-
-        const DrawBundle<Draw3DInstance>::DrawInstances Frame::getInstances3D() const
-        {
-            return m_draws3D.getInstances();
-        }
-
-        void Frame::addDraw(const DrawData3D& inData)
-        {
-            Draw3DInstance instance;
-            instance.model = inData.model;
-
-            m_draws3D.add(inData, instance);
+            m_draws3D[inId].push_back(inInstance);
         }
 
         void Frame::resetCamera()
@@ -107,12 +137,12 @@ namespace Chicane
 
         void Frame::resetDraw2D()
         {
-            m_draws2D.reset();
+            m_draws2D.clear();
         }
 
         void Frame::resetDraw3D()
         {
-            m_draws3D.reset();
+            m_draws3D.clear();
         }
     }
 }

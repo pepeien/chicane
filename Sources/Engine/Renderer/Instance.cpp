@@ -46,11 +46,13 @@ namespace Chicane
 
             Frame& currentFrame = getCurrentFrame();
 
-            m_backend->setup(currentFrame);
-            m_backend->render(currentFrame);
+            m_backend->setup(currentFrame, m_drawResources);
+            m_backend->render(currentFrame, m_drawResources);
             m_backend->cleanup();
 
             currentFrame.reset();
+
+            m_drawResources[DrawType::e2D].clear();
 
             m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
         }
@@ -58,11 +60,6 @@ namespace Chicane
         void Instance::destroy()
         {
             m_backend.reset();
-        }
-
-        const Frame& Instance::getCurrentFrame() const
-        {
-            return m_frames.at(m_currentFrame);
         }
 
         Frame& Instance::getCurrentFrame()
@@ -85,14 +82,24 @@ namespace Chicane
             getCurrentFrame().addLight(inData);
         }
 
-        void Instance::draw(const DrawData2D& inData)
+        const Draw::List& Instance::getDraws(DrawType inType) const
         {
-            getCurrentFrame().addDraw(inData);
+            return getResource(inType).getDraws();
         }
 
-        void Instance::draw(const DrawData3D& inData)
+        const Vertex::List& Instance::getVertices(DrawType inType) const
         {
-            getCurrentFrame().addDraw(inData);
+            return getResource(inType).getVertices();
+        }
+
+        const Vertex::Indices& Instance::getIndices(DrawType inType) const
+        {
+            return getResource(inType).getIndices();
+        }
+
+        Draw::Id Instance::load(DrawType inType, const DrawData& inData)
+        {
+            return getResource(inType).add(inData);
         }
 
         const Viewport& Instance::getViewport() const
@@ -207,6 +214,16 @@ namespace Chicane
             }
 
             m_backend->init();
+        }
+
+        DrawResource& Instance::getResource(DrawType inType)
+        {
+            return m_drawResources[inType];
+        }
+
+        const DrawResource& Instance::getResource(DrawType inType) const
+        {
+            return m_drawResources.at(inType);
         }
     }
 }

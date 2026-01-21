@@ -139,6 +139,7 @@ namespace Chicane
         // Initialization
         void initWindow(const WindowSettings& inCreateInfo);
         void initRenderer(WindowBackend inBackend);
+        void initBox();
 
         // Lifecycle
         void render();

@@ -4,6 +4,8 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
+#include "Chicane/Renderer/Draw/Type.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -24,7 +26,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame)
+        void OpenGLLSceneMesh::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
         {
             glUseProgram(m_shaderProgram);
 
@@ -39,20 +41,28 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            std::uint32_t instanceStart = 0U;
-            for (const Draw<Draw3DInstance>& draw : inFrame.getDraws3D())
+            const DrawResource resource = inResources.at(DrawType::e3D);
+
+            for (const Draw& draw : resource.getDraws())
             {
+                const std::uint32_t count = inFrame.getInstance3DCount(draw.id);
+
+                if (count <= 0)
+                {
+                    continue;
+                }
+
+                const std::uint32_t start = inFrame.getInstance3DStart(draw.id);
+
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * draw.indexStart),
-                    draw.instances.size(),
+                    count,
                     draw.vertexStart,
-                    instanceStart
+                    start
                 );
-
-                instanceStart += draw.instances.size();
             }
         }
 

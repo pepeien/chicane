@@ -33,7 +33,22 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLGrid::onRender(const Frame& inFrame)
+        bool OpenGLLGrid::onSetup(const Frame& inFrame, const DrawResource::Map& inResources)
+        {
+            if (inFrame.getInstances2D().size() <= 0)
+            {
+                return false;
+            }
+
+            if (inResources.find(DrawType::e2D) == inResources.end())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        void OpenGLLGrid::onRender(const Frame& inFrame, const DrawResource::Map& inResources)
         {
             glUseProgram(m_shaderProgram);
 
@@ -49,17 +64,19 @@ namespace Chicane
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
 
+            const DrawResource& resource = inResources.at(DrawType::e2D);
+
             glNamedBufferSubData(
                 m_primitiveVertexBuffer,
                 0,
-                sizeof(Vertex) * inFrame.getVertices2D().size(),
-                inFrame.getVertices2D().data()
+                sizeof(Vertex) * resource.getVertices().size(),
+                resource.getVertices().data()
             );
             glNamedBufferSubData(
                 m_primitiveIndexBuffer,
                 0,
-                sizeof(Vertex::Index) * inFrame.getIndices2D().size(),
-                inFrame.getIndices2D().data()
+                sizeof(Vertex::Index) * resource.getIndices().size(),
+                resource.getIndices().data()
             );
             glNamedBufferSubData(
                 m_instanceBuffer,
@@ -68,20 +85,25 @@ namespace Chicane
                 inFrame.getInstances2D().data()
             );
 
-            std::uint32_t instanceStart = 0U;
-            for (const Draw<Draw2DInstance>& draw : inFrame.getDraws2D())
+            for (const Draw& draw : resource.getDraws())
             {
+                const std::uint32_t count = inFrame.getInstance2DCount(draw.id);
+                const std::uint32_t start = inFrame.getInstance2DStart(draw.id);
+
+                if (count <= 0)
+                {
+                    continue;
+                }
+
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * draw.indexStart),
-                    draw.instances.size(),
+                    count,
                     draw.vertexStart,
-                    instanceStart
+                    start
                 );
-
-                instanceStart += draw.instances.size();
             }
         }
 

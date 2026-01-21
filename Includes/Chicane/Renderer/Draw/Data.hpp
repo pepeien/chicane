@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Math/Vertex.hpp"
+#include "Chicane/Core/String.hpp"
 
 #include "Chicane/Renderer.hpp"
 
@@ -11,8 +12,9 @@ namespace Chicane
         struct CHICANE_RENDERER DrawData
         {
         public:
-            Vertex::List    vertices = {};
-            Vertex::Indices indices  = {};
+            String          reference = "";
+            Vertex::List    vertices  = {};
+            Vertex::Indices indices   = {};
         };
     }
 }

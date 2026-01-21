@@ -13,15 +13,24 @@ namespace Chicane
 {
     namespace Box
     {
-        using ManagerEventObservable   = EventObservable<ManagerEvent>;
-        using ManagerEventSubscription = EventSubscription<ManagerEvent>;
-
         template <typename I, typename E>
         class CHICANE_BOX Manager
         {
         public:
+            using InstancesObservable   = EventObservable<I>;
+            using InstancesSubscription = EventSubscription<I>;
+
+            using DatumObservable       = EventObservable<E>;
+            using DatumSubscription     = EventSubscription<E>;
+
+        public:
             Manager()
-                : m_observable({})
+                : m_instances({}),
+                  m_instancesObservable({}),
+                  m_datum({}),
+                  m_datumObservable({}),
+                  m_activeIds({}),
+                  m_usedIds({})
             {}
 
             virtual ~Manager() = default;
@@ -71,6 +80,9 @@ namespace Chicane
                 return static_cast<std::uint32_t>(std::count(m_usedIds.begin(), m_usedIds.end(), inId));
             }
 
+            const std::map<String, I>& getInstances() const { return m_instances; }
+            const std::map<String, E>& getDatum() const { return m_datum; }
+
             // Lifecycle
             void load(const String& inId, const I& inInstance)
             {
@@ -83,7 +95,7 @@ namespace Chicane
 
                 onLoad(inId, inInstance);
 
-                m_observable.next(ManagerEvent::Load);
+                m_instancesObservable.next(m_instances.at(inId));
             }
 
             void allocate(const String& inId, const E& inData)
@@ -97,7 +109,7 @@ namespace Chicane
 
                 onAllocation(inId, inData);
 
-                m_observable.next(ManagerEvent::Allocation);
+                m_datumObservable.next(m_datum.at(inId));
             }
 
             void deallocate(const String& inId)
@@ -110,8 +122,6 @@ namespace Chicane
                 m_datum.erase(inId);
 
                 onDeallocation(inId);
-
-                m_observable.next(ManagerEvent::Allocation);
             }
 
             void activate(const String& inId)
@@ -126,8 +136,6 @@ namespace Chicane
                     return inA.compare(inB) > 0;
                 });
 
-                m_observable.next(ManagerEvent::Use);
-
                 if (!isActive(inId))
                 {
                     m_activeIds.push_back(inId);
@@ -138,8 +146,6 @@ namespace Chicane
                     );
 
                     onActivation(inId);
-
-                    m_observable.next(ManagerEvent::Activation);
                 }
             }
 
@@ -156,8 +162,6 @@ namespace Chicane
                     return inA.compare(inB) > 0;
                 });
 
-                m_observable.next(ManagerEvent::Use);
-
                 if (isUsing(inId))
                 {
                     return;
@@ -168,26 +172,36 @@ namespace Chicane
                 std::sort(m_activeIds.begin(), m_activeIds.end(), [](const String& inA, const String& inB) {
                     return inA.compare(inB) > 0;
                 });
-
-                m_observable.next(ManagerEvent::Activation);
             }
 
             // Events
-            ManagerEventSubscription watchChanges(
-                ManagerEventSubscription::NextCallback     inNext,
-                ManagerEventSubscription::ErrorCallback    inError    = nullptr,
-                ManagerEventSubscription::CompleteCallback inComplete = nullptr
+            InstancesSubscription watchInstances(
+                typename InstancesSubscription::NextCallback     inNext,
+                typename InstancesSubscription::ErrorCallback    inError    = nullptr,
+                typename InstancesSubscription::CompleteCallback inComplete = nullptr
             )
             {
-                return m_observable.subscribe(inNext, inError, inComplete);
+                return m_instancesObservable.subscribe(inNext, inError, inComplete);
+            }
+
+            DatumSubscription watchDatum(
+                typename DatumSubscription::NextCallback     inNext,
+                typename DatumSubscription::ErrorCallback    inError    = nullptr,
+                typename DatumSubscription::CompleteCallback inComplete = nullptr
+            )
+            {
+                return m_datumObservable.subscribe(inNext, inError, inComplete);
             }
 
         protected:
-            std::map<String, I>    m_instances;
-            std::map<String, E>    m_datum;
-            std::vector<String>    m_activeIds;
-            std::vector<String>    m_usedIds;
-            ManagerEventObservable m_observable;
+            std::map<String, I> m_instances;
+            InstancesObservable m_instancesObservable;
+
+            std::map<String, E> m_datum;
+            DatumObservable     m_datumObservable;
+
+            std::vector<String> m_activeIds;
+            std::vector<String> m_usedIds;
         };
     }
 }

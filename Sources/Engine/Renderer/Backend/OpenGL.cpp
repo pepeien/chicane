@@ -33,7 +33,7 @@ namespace Chicane
             buildLayers();
         }
 
-        void OpenGLBackend::onSetup(const Frame& inFrame)
+        void OpenGLBackend::onSetup(const Frame& inFrame, const DrawResource::Map& inResources)
         {
             const Viewport& viewport = m_renderer->getViewport();
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);

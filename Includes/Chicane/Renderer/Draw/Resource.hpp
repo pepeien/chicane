@@ -1,45 +1,32 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
 #include "Chicane/Renderer/Draw/Data.hpp"
+#include "Chicane/Renderer/Draw/Type.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
-        template <typename I>
-        struct CHICANE_RENDERER DrawBundle
+        struct CHICANE_RENDERER DrawResource
         {
         public:
-            using List          = std::vector<DrawBundle>;
-            using DrawList      = std::vector<Draw<I>>;
-            using DrawInstances = std::vector<I>;
+            using Map = std::map<DrawType, DrawResource>;
 
         public:
-            inline const DrawList& getDraws() const { return m_draws; }
+            inline const Draw::List& getDraws() const { return m_draws; }
 
             inline const Vertex::List& getVertices() const { return m_vertices; }
 
             inline const Vertex::Indices& getIndices() const { return m_indices; }
 
-            inline DrawInstances getInstances() const
+            inline Draw::Id find(const DrawData& inData)
             {
-                DrawInstances result = {};
-
-                for (const Draw<I>& draw : m_draws)
-                {
-                    result.insert(result.end(), draw.instances.begin(), draw.instances.end());
-                }
-
-                return result;
-            }
-
-            inline Draw<I>* find(const DrawData& inData)
-            {
-                for (Draw<I>& draw : m_draws)
+                for (Draw& draw : m_draws)
                 {
                     if (draw.vertexCount != inData.vertices.size() ||
                         draw.indexCount != inData.indices.size())
@@ -70,27 +57,43 @@ namespace Chicane
                         continue;
                     }
 
-                    return &draw;
+                    return draw.id;
                 }
 
-                return nullptr;
+                return Draw::UnknownId;
             }
 
-            inline void add(const DrawData& inData, const I& inInstance)
+            inline Draw::Id find(const String& inReference)
             {
-                if (Draw<I>* draw = find(inData))
+                for (const Draw& draw : m_draws)
                 {
-                    draw->instances.push_back(inInstance);
+                    if (!draw.reference.equals(inReference))
+                    {
+                        continue;
+                    }
 
-                    return;
+                    return draw.id;
                 }
 
-                Draw<I> draw     = {};
+                return Draw::UnknownId;
+            }
+
+            inline Draw::Id add(const DrawData& inData)
+            {
+                Draw::Id drawId = find(inData);
+
+                if (drawId > Draw::UnknownId)
+                {
+                    return drawId;
+                }
+
+                Draw draw        = {};
+                draw.id          = m_draws.size();
+                draw.reference   = inData.reference;
                 draw.vertexStart = m_vertices.empty() ? 0U : m_vertices.size();
                 draw.vertexCount = inData.vertices.size();
                 draw.indexStart  = m_indices.empty() ? 0U : m_indices.size();
                 draw.indexCount  = inData.indices.size();
-                draw.instances.push_back(inInstance);
                 m_draws.push_back(draw);
 
                 m_vertices.reserve(m_vertices.size() + inData.vertices.size());
@@ -98,9 +101,11 @@ namespace Chicane
 
                 m_indices.reserve(m_indices.size() + inData.indices.size());
                 m_indices.insert(m_indices.end(), inData.indices.begin(), inData.indices.end());
+
+                return draw.id;
             }
 
-            void reset()
+            void clear()
             {
                 m_draws.clear();
                 m_vertices.clear();
@@ -108,7 +113,7 @@ namespace Chicane
             }
 
         private:
-            DrawList        m_draws    = {};
+            Draw::List      m_draws    = {};
             Vertex::List    m_vertices = {};
             Vertex::Indices m_indices  = {};
         };

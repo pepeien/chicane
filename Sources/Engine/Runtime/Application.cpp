@@ -31,11 +31,10 @@ namespace Chicane
 
     void Application::run(const ApplicationCreateInfo& inCreateInfo)
     {
-        Box::init();
-        Kerb::init();
-
         initWindow(inCreateInfo.window);
         initRenderer(inCreateInfo.window.backend);
+        initBox();
+        Kerb::init();
 
         if (inCreateInfo.onSetup)
         {
@@ -195,6 +194,23 @@ namespace Chicane
         m_renderer->init(getWindow(), inBackend);
     }
 
+    void Application::initBox()
+    {
+        Box::getModelManager()->watchInstances([&](const Box::ModelExtracted& inModel) {
+            for (const auto& [id, instance] : Box::getModelManager()->getInstances())
+            {
+                Renderer::DrawData data;
+                data.reference = id;
+                data.vertices  = instance.vertices;
+                data.indices   = instance.indices;
+
+                m_renderer->load(Renderer::DrawType::e3D, data);
+            }
+        });
+
+        Box::init();
+    }
+
     void Application::renderScene()
     {
         if (!hasScene())
@@ -225,14 +241,13 @@ namespace Chicane
                 continue;
             }
 
-            const Box::ModelExtracted& model = Box::getModelManager()->getInstance(mesh->getModel());
+            Renderer::Draw3DInstance draw;
+            draw.model = mesh->getTransform().getMatrix();
 
-            Renderer::DrawData3D draw;
-            draw.vertices = model.vertices;
-            draw.indices  = model.indices;
-            draw.model    = mesh->getTransform().getMatrix();
-
-            m_renderer->draw(draw);
+            for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
+            {
+                m_renderer->draw(Renderer::DrawType::e3D, group.getModel(), draw);
+            }
         }
     }
 
@@ -256,14 +271,16 @@ namespace Chicane
 
             const Grid::Primitive& primitive = component->getPrimitive();
 
-            Renderer::DrawData2D draw;
-            draw.vertices = primitive.vertices;
-            draw.indices  = primitive.indices;
+            Renderer::DrawData data;
+            data.vertices = primitive.vertices;
+            data.indices  = primitive.indices;
+
+            Renderer::Draw2DInstance draw;
             draw.screen   = viewSize;
             draw.size     = component->getSize();
             draw.position = Vec3(component->getPosition(), component->getStyle().zIndex);
 
-            m_renderer->draw(draw);
+            m_renderer->draw(m_renderer->load(Renderer::DrawType::e2D, data), draw);
         }
     }
 }

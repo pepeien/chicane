@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
@@ -11,8 +12,7 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Draw/2D/Data.hpp"
-#include "Chicane/Renderer/Draw/3D/Data.hpp"
+#include "Chicane/Renderer/Draw/Type.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -39,15 +39,40 @@ namespace Chicane
             void render();
             void destroy();
 
-            // Render
+            // Frame
             const Frame& getCurrentFrame() const;
             Frame& getCurrentFrame();
 
+            // View
             void useCamera(const View& inData);
             void addLight(const View& inData);
             void addLight(const View::List& inData);
-            void draw(const DrawData2D& inData);
-            void draw(const DrawData3D& inData);
+
+            // Render
+            const Draw::List& getDraws(DrawType inType) const;
+            const Vertex::List& getVertices(DrawType inType) const;
+            const Vertex::Indices& getIndices(DrawType inType) const;
+
+            Draw::Id load(DrawType inType, const DrawData& inData);
+
+            template <typename T>
+            inline void draw(DrawType inType, const String& inReference, const T& inInstance)
+            {
+                Draw::Id id = getResource(inType).find(inReference);
+
+                if (id <= Draw::UnknownId)
+                {
+                    return;
+                }
+
+                draw(id, inInstance);
+            }
+
+            template <typename T>
+            inline void draw(Draw::Id inId, const T& inInstance)
+            {
+                getCurrentFrame().use(inId, inInstance);
+            }
 
             // Settings
             const Viewport& getViewport() const;
@@ -68,12 +93,19 @@ namespace Chicane
             void setBackend(WindowBackend inType);
 
         private:
+            DrawResource& getResource(DrawType inType);
+            const DrawResource& getResource(DrawType inType) const;
+
+        private:
             // Window
             Window*                        m_window;
 
-            // Draws
+            // Frame
             std::array<Frame, FRAME_COUNT> m_frames;
             std::uint32_t                  m_currentFrame;
+
+            // Draw
+            DrawResource::Map              m_drawResources;
 
             // Settings
             Viewport                       m_viewport;
