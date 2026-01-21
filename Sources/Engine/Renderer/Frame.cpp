@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Frame.hpp"
 
+#include <algorithm>
+
 namespace Chicane
 {
     namespace Renderer
@@ -11,14 +13,24 @@ namespace Chicane
             resetLights();
 
             // Draw
-            resetDrawResources();
-            resetDraw2D();
-            resetDraw3D();
+            reset2DDraws();
+            reset3DDraws();
         }
 
-        void Frame::setup(const DrawResource::Map& inResources)
+        void Frame::setup(const DrawPolyResource::Map& inResources)
         {
-            m_drawResources = inResources;
+            for (const auto& [type, resource] : inResources)
+            {
+                DrawPoly::List& draws = m_draws[type];
+                draws.insert(draws.end(), resource.getDraws().begin(), resource.getDraws().end());
+
+                std::sort(draws.begin(), draws.end(), [](const Draw& inA, const Draw& inB) {
+                    return inA.id <= inB.id;
+                });
+            }
+
+            refresh2DDraws();
+            refresh3DDraws();
         }
 
         const View& Frame::getCamera() const
@@ -46,16 +58,16 @@ namespace Chicane
             m_lights.push_back(std::move(inData));
         }
 
-        const DrawResource& Frame::getResources2D() const
+        const DrawPoly::List& Frame::get2DDraws() const
         {
-            return m_drawResources.at(DrawType::e2D);
+            return m_draws.at(DrawPolyType::e2D);
         }
 
-        const Draw2DInstance::List Frame::getInstances2D() const
+        const DrawPoly2DInstance::List Frame::getInstances2D() const
         {
-            Draw2DInstance::List result;
+            DrawPoly2DInstance::List result;
 
-            for (const auto& [id, instances] : m_draws2D)
+            for (const auto& [id, instances] : m_2DDrawInstances)
             {
                 result.insert(result.end(), instances.begin(), instances.end());
             }
@@ -63,48 +75,23 @@ namespace Chicane
             return result;
         }
 
-        const std::uint32_t Frame::getInstance2DStart(Draw::Id inId) const
+        void Frame::use(Draw::Id inId, const DrawPoly2DInstance& inInstance)
         {
-            std::uint32_t result = 0U;
+            m_2DDrawInstances[inId].push_back(inInstance);
 
-            for (const auto& [id, instance] : m_draws2D)
-            {
-                if (id == inId)
-                {
-                    break;
-                }
-
-                result += instance.size();
-            }
-
-            return result;
+            refresh2DDraws();
         }
 
-        const std::uint32_t Frame::getInstance2DCount(Draw::Id inId) const
+        const DrawPoly::List& Frame::get3DDraws() const
         {
-            if (m_draws2D.find(inId) == m_draws2D.end())
-            {
-                return 0U;
-            }
-
-            return m_draws2D.at(inId).size();
+            return m_draws.at(DrawPolyType::e3D);
         }
 
-        void Frame::use(Draw::Id inId, const Draw2DInstance& inInstance)
+        const DrawPoly3DInstance::List Frame::getInstances3D() const
         {
-            m_draws2D[inId].push_back(inInstance);
-        }
+            DrawPoly3DInstance::List result;
 
-        const DrawResource& Frame::getResources3D() const
-        {
-            return m_drawResources.at(DrawType::e3D);
-        }
-
-        const Draw3DInstance::List Frame::getInstances3D() const
-        {
-            Draw3DInstance::List result;
-
-            for (const auto& [id, instance] : m_draws3D)
+            for (const auto& [id, instance] : m_3DDrawInstances)
             {
                 result.insert(result.end(), instance.begin(), instance.end());
             }
@@ -112,36 +99,11 @@ namespace Chicane
             return result;
         }
 
-        const std::uint32_t Frame::getInstance3DStart(Draw::Id inId) const
+        void Frame::use(Draw::Id inId, const DrawPoly3DInstance& inInstance)
         {
-            std::uint32_t result = 0U;
+            m_3DDrawInstances[inId].push_back(inInstance);
 
-            for (const auto& [id, instance] : m_draws3D)
-            {
-                if (id == inId)
-                {
-                    break;
-                }
-
-                result += instance.size();
-            }
-
-            return result;
-        }
-
-        const std::uint32_t Frame::getInstance3DCount(Draw::Id inId) const
-        {
-            if (m_draws3D.find(inId) == m_draws3D.end())
-            {
-                return 0U;
-            }
-
-            return m_draws3D.at(inId).size();
-        }
-
-        void Frame::use(Draw::Id inId, const Draw3DInstance& inInstance)
-        {
-            m_draws3D[inId].push_back(inInstance);
+            refresh3DDraws();
         }
 
         void Frame::resetCamera()
@@ -154,19 +116,66 @@ namespace Chicane
             m_lights.clear();
         }
 
-        void Frame::resetDrawResources()
+        void Frame::refresh2DDraws()
         {
-            m_drawResources.clear();
+            std::uint32_t start = 0U;
+            for (const auto& [id, instances] : m_2DDrawInstances)
+            {
+                if (instances.empty())
+                {
+                    continue;
+                }
+
+                for (DrawPoly& draw : m_draws[DrawPolyType::e2D])
+                {
+                    if (draw.id != id)
+                    {
+                        continue;
+                    }
+
+                    draw.instanceStart = start;
+                    draw.instanceCount = instances.size();
+                }
+
+                start += instances.size();
+            }
         }
 
-        void Frame::resetDraw2D()
+        void Frame::reset2DDraws()
         {
-            m_draws2D.clear();
+            m_draws[DrawPolyType::e2D].clear();
+            m_2DDrawInstances.clear();
         }
 
-        void Frame::resetDraw3D()
+        void Frame::refresh3DDraws()
         {
-            m_draws3D.clear();
+            std::uint32_t start = 0U;
+            for (const auto& [id, instances] : m_3DDrawInstances)
+            {
+                if (instances.empty())
+                {
+                    continue;
+                }
+
+                for (DrawPoly& draw : m_draws[DrawPolyType::e3D])
+                {
+                    if (draw.id != id)
+                    {
+                        continue;
+                    }
+
+                    draw.instanceStart = start;
+                    draw.instanceCount = instances.size();
+                }
+
+                start += instances.size();
+            }
+        }
+
+        void Frame::reset3DDraws()
+        {
+            m_draws[DrawPolyType::e3D].clear();
+            m_3DDrawInstances.clear();
         }
     }
 }

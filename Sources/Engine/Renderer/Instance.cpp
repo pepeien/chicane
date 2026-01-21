@@ -1,11 +1,13 @@
 #include "Chicane/Renderer/Instance.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 #if defined(CHICANE_OPENGL)
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
 
 #if defined(CHICANE_VULKAN)
-    #include "Chicane/Renderer/Backend/Vulkan.hpp"
+//#include "Chicane/Renderer/Backend/Vulkan.hpp"
 #endif
 
 namespace Chicane
@@ -45,7 +47,7 @@ namespace Chicane
             }
 
             Frame& currentFrame = getCurrentFrame();
-            currentFrame.setup(m_drawResources);
+            currentFrame.setup(m_polyResources);
 
             m_backend->setup(currentFrame);
             m_backend->render(currentFrame);
@@ -53,7 +55,7 @@ namespace Chicane
 
             currentFrame.reset();
 
-            m_drawResources[DrawType::e2D].clear();
+            getPolyResource(DrawPolyType::e2D).reset();
 
             m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
         }
@@ -61,11 +63,6 @@ namespace Chicane
         void Instance::destroy()
         {
             m_backend.reset();
-        }
-
-        Frame& Instance::getCurrentFrame()
-        {
-            return m_frames.at(m_currentFrame);
         }
 
         void Instance::useCamera(const View& inData)
@@ -83,24 +80,64 @@ namespace Chicane
             getCurrentFrame().addLight(inData);
         }
 
-        const Draw::List& Instance::getDraws(DrawType inType) const
+        Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
         {
-            return getResource(inType).getDraws();
+            const Draw::Id id = getPolyResource(inType).add(inData);
+
+            if (hasBackend())
+            {
+                m_backend->load(inType, getPolyResource(inType));
+            }
+
+            return id;
         }
 
-        const Vertex::List& Instance::getVertices(DrawType inType) const
+        Draw::Id Instance::findTexture(const String& inReference)
         {
-            return getResource(inType).getVertices();
+            const auto& found = std::find_if(
+                m_textureResources.begin(),
+                m_textureResources.end(),
+                [inReference](const DrawTexture& inTexture) {
+                    return inTexture.reference.equals(inReference);
+                }
+            );
+
+            if (found == m_textureResources.end())
+            {
+                return Draw::UnknownId;
+            }
+
+            return found->id;
         }
 
-        const Vertex::Indices& Instance::getIndices(DrawType inType) const
+        Draw::Id Instance::loadTexture(const DrawTextureData& inData)
         {
-            return getResource(inType).getIndices();
-        }
+            const auto& found = std::find_if(
+                m_textureResources.begin(),
+                m_textureResources.end(),
+                [inData](const DrawTexture& inTexture) {
+                    return inTexture.reference.equals(inData.reference);
+                }
+            );
 
-        Draw::Id Instance::load(DrawType inType, const DrawData& inData)
-        {
-            return getResource(inType).add(inData);
+            if (found != m_textureResources.end())
+            {
+                return found->id;
+            }
+
+            DrawTexture texture;
+            texture.id        = m_textureResources.size();
+            texture.reference = inData.reference;
+            texture.image     = inData.image;
+
+            m_textureResources.push_back(texture);
+
+            if (hasBackend())
+            {
+                m_backend->load(m_textureResources);
+            }
+
+            return texture.id;
         }
 
         const Viewport& Instance::getViewport() const
@@ -215,16 +252,23 @@ namespace Chicane
             }
 
             m_backend->init();
+
+            for (const auto& [type, resource] : m_polyResources)
+            {
+                m_backend->load(type, resource);
+            }
+
+            m_backend->load(m_textureResources);
         }
 
-        DrawResource& Instance::getResource(DrawType inType)
+        Frame& Instance::getCurrentFrame()
         {
-            return m_drawResources[inType];
+            return m_frames.at(m_currentFrame);
         }
 
-        const DrawResource& Instance::getResource(DrawType inType) const
+        DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
         {
-            return m_drawResources.at(inType);
+            return m_polyResources[inType];
         }
     }
 }

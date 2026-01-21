@@ -29,6 +29,7 @@ namespace Chicane
             }
 
             Manager::load(inId, inAsset.getData());
+            Manager::activate(inId);
         }
 
         const Image::Raw& TextureManager::getInstance(const String& inId) const

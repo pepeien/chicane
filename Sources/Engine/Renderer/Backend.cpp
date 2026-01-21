@@ -35,6 +35,36 @@ namespace Chicane
             }
         }
 
+        void Backend::load(DrawPolyType inType, const DrawPolyResource& inResource)
+        {
+            onLoad(inType, inResource);
+
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->load(inType, inResource);
+            }
+        }
+
+        void Backend::load(const DrawTexture::List& inResources)
+        {
+            onLoad(inResources);
+
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->load(inResources);
+            }
+        }
+
         void Backend::setup(const Frame& inFrame)
         {
             onSetup(inFrame);

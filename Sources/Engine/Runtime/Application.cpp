@@ -5,6 +5,9 @@
 
 #include "Chicane/Box/Asset/Header.hpp"
 #include "Chicane/Box/Model/Manager.hpp"
+#include "Chicane/Box/Texture/Manager.hpp"
+
+#include "Chicane/Core/Log.hpp"
 
 #include "Chicane/Kerb.hpp"
 
@@ -34,7 +37,7 @@ namespace Chicane
         initWindow(inCreateInfo.window);
         initRenderer(inCreateInfo.window.backend);
         initBox();
-        Kerb::init();
+        initKerb();
 
         if (inCreateInfo.onSetup)
         {
@@ -197,18 +200,33 @@ namespace Chicane
     void Application::initBox()
     {
         Box::getModelManager()->watchInstances([&](const Box::ModelExtracted& inModel) {
-            for (const auto& [id, instance] : Box::getModelManager()->getInstances())
+            for (const auto& [id, poly] : Box::getModelManager()->getInstances())
             {
-                Renderer::DrawData data;
+                Renderer::DrawPolyData data;
                 data.reference = id;
-                data.vertices  = instance.vertices;
-                data.indices   = instance.indices;
+                data.vertices  = poly.vertices;
+                data.indices   = poly.indices;
 
-                m_renderer->load(Renderer::DrawType::e3D, data);
+                m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+            }
+        });
+        Box::getTextureManager()->watchDatum([&](const Image& inTexture) {
+            for (const auto& [id, texture] : Box::getTextureManager()->getDatum())
+            {
+                Renderer::DrawTextureData data;
+                data.reference = id;
+                data.image     = texture;
+
+                m_renderer->loadTexture(data);
             }
         });
 
         Box::init();
+    }
+
+    void Application::initKerb()
+    {
+        Kerb::init();
     }
 
     void Application::renderScene()
@@ -241,12 +259,14 @@ namespace Chicane
                 continue;
             }
 
-            Renderer::Draw3DInstance draw;
+            Renderer::DrawPoly3DInstance draw;
             draw.model = mesh->getTransform().getMatrix();
 
             for (const Box::MeshGroup& group : mesh->getMesh()->getGroups())
             {
-                m_renderer->draw(Renderer::DrawType::e3D, group.getModel(), draw);
+                draw.texture = m_renderer->findTexture(group.getTexture());
+
+                m_renderer->drawPoly(Renderer::DrawPolyType::e3D, group.getModel(), draw);
             }
         }
     }
@@ -271,16 +291,18 @@ namespace Chicane
 
             const Grid::Primitive& primitive = component->getPrimitive();
 
-            Renderer::DrawData data;
-            data.vertices = primitive.vertices;
-            data.indices  = primitive.indices;
+            Renderer::DrawPolyData data;
+            data.vertices         = primitive.vertices;
+            data.indices          = primitive.indices;
+            Renderer::Draw::Id id = m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
 
-            Renderer::Draw2DInstance draw;
-            draw.screen   = viewSize;
-            draw.size     = component->getSize();
-            draw.position = Vec3(component->getPosition(), component->getStyle().zIndex);
-
-            m_renderer->draw(m_renderer->load(Renderer::DrawType::e2D, data), draw);
+            Renderer::DrawPoly2DInstance draw;
+            draw.screen     = viewSize;
+            draw.size       = component->getSize();
+            draw.position.x = component->getPosition().x;
+            draw.position.y = component->getPosition().y;
+            draw.position.z = component->getStyle().zIndex;
+            m_renderer->drawPoly(id, draw);
         }
     }
 }

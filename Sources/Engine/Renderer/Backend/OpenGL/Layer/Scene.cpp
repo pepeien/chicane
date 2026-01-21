@@ -35,6 +35,25 @@ namespace Chicane
             return true;
         }
 
+        void OpenGLLScene::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
+        {
+            if (inType == DrawPolyType::e3D)
+            {
+                glNamedBufferSubData(
+                    m_modelVertexBuffer,
+                    0,
+                    sizeof(Vertex) * inResource.getVertices().size(),
+                    inResource.getVertices().data()
+                );
+                glNamedBufferSubData(
+                    m_modelIndexBuffer,
+                    0,
+                    sizeof(Vertex::Index) * inResource.getIndices().size(),
+                    inResource.getIndices().data()
+                );
+            }
+        }
+
         bool OpenGLLScene::onSetup(const Frame& inFrame)
         {
             if (inFrame.getInstances3D().empty())
@@ -42,7 +61,7 @@ namespace Chicane
                 return false;
             }
 
-            if (inFrame.getResources3D().isEmpty())
+            if (inFrame.get3DDraws().empty())
             {
                 return false;
             }
@@ -62,24 +81,10 @@ namespace Chicane
             glBindBuffer(GL_UNIFORM_BUFFER, m_lightBuffer);
             glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(View), inFrame.getLights().data());
 
-            const DrawResource& resource = inFrame.getResources3D();
-
-            glNamedBufferSubData(
-                m_modelVertexBuffer,
-                0,
-                sizeof(Vertex) * resource.getVertices().size(),
-                resource.getVertices().data()
-            );
-            glNamedBufferSubData(
-                m_modelIndexBuffer,
-                0,
-                sizeof(Vertex::Index) * resource.getIndices().size(),
-                resource.getIndices().data()
-            );
             glNamedBufferSubData(
                 m_instanceBuffer,
                 0,
-                sizeof(Draw2DInstance) * inFrame.getInstances3D().size(),
+                sizeof(DrawPoly3DInstance) * inFrame.getInstances3D().size(),
                 inFrame.getInstances3D().data()
             );
         }
@@ -164,7 +169,7 @@ namespace Chicane
         void OpenGLLScene::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(Draw3DInstance) * 1000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly3DInstance) * 1000, nullptr, GL_DYNAMIC_DRAW);
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, m_instanceBuffer);
         }

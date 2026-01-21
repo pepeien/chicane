@@ -12,7 +12,10 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Backend.hpp"
-#include "Chicane/Renderer/Draw/Type.hpp"
+#include "Chicane/Renderer/Draw/Poly/Data.hpp"
+#include "Chicane/Renderer/Draw/Poly/Type.hpp"
+#include "Chicane/Renderer/Draw/Texture/Data.hpp"
+#include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -39,40 +42,35 @@ namespace Chicane
             void render();
             void destroy();
 
-            // Frame
-            const Frame& getCurrentFrame() const;
-            Frame& getCurrentFrame();
-
             // View
             void useCamera(const View& inData);
             void addLight(const View& inData);
             void addLight(const View::List& inData);
 
             // Render
-            const Draw::List& getDraws(DrawType inType) const;
-            const Vertex::List& getVertices(DrawType inType) const;
-            const Vertex::Indices& getIndices(DrawType inType) const;
-
-            Draw::Id load(DrawType inType, const DrawData& inData);
+            Draw::Id loadPoly(DrawPolyType inType, const DrawPolyData& inData);
 
             template <typename T>
-            inline void draw(DrawType inType, const String& inReference, const T& inInstance)
+            inline void drawPoly(DrawPolyType inType, const String& inReference, const T& inInstance)
             {
-                Draw::Id id = getResource(inType).find(inReference);
+                Draw::Id id = getPolyResource(inType).find(inReference);
 
                 if (id <= Draw::UnknownId)
                 {
                     return;
                 }
 
-                draw(id, inInstance);
+                drawPoly(id, inInstance);
             }
 
             template <typename T>
-            inline void draw(Draw::Id inId, const T& inInstance)
+            inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
                 getCurrentFrame().use(inId, inInstance);
             }
+
+            Draw::Id findTexture(const String& inReference);
+            Draw::Id loadTexture(const DrawTextureData& inData);
 
             // Settings
             const Viewport& getViewport() const;
@@ -93,8 +91,11 @@ namespace Chicane
             void setBackend(WindowBackend inType);
 
         private:
-            DrawResource& getResource(DrawType inType);
-            const DrawResource& getResource(DrawType inType) const;
+            // Frame
+            Frame& getCurrentFrame();
+
+            // Draw
+            DrawPolyResource& getPolyResource(DrawPolyType inType);
 
         private:
             // Window
@@ -105,7 +106,8 @@ namespace Chicane
             std::uint32_t                  m_currentFrame;
 
             // Draw
-            DrawResource::Map              m_drawResources;
+            DrawPolyResource::Map          m_polyResources;
+            DrawTexture::List              m_textureResources;
 
             // Settings
             Viewport                       m_viewport;

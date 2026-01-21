@@ -4,8 +4,6 @@
 
 #include "Chicane/Core/FileSystem.hpp"
 
-#include "Chicane/Renderer/Draw/Type.hpp"
-
 namespace Chicane
 {
     namespace Renderer
@@ -41,27 +39,21 @@ namespace Chicane
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-            const DrawResource resource = inFrame.getResources3D();
-
-            for (const Draw& draw : resource.getDraws())
+            for (const DrawPoly& draw : inFrame.get3DDraws())
             {
-                const std::uint32_t count = inFrame.getInstance3DCount(draw.id);
-
-                if (count <= 0)
+                if (draw.instanceCount == 0)
                 {
                     continue;
                 }
-
-                const std::uint32_t start = inFrame.getInstance3DStart(draw.id);
 
                 glDrawElementsInstancedBaseVertexBaseInstance(
                     GL_TRIANGLES,
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * draw.indexStart),
-                    count,
+                    draw.instanceCount,
                     draw.vertexStart,
-                    start
+                    draw.instanceStart
                 );
             }
         }

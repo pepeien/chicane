@@ -102,6 +102,46 @@ namespace Chicane
             }
         }
 
+        void Layer::load(DrawPolyType inType, const DrawPolyResource& inResource)
+        {
+            if (is(LayerStatus::Offline))
+            {
+                return;
+            }
+
+            onLoad(inType, inResource);
+
+            for (Layer* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                child->load(inType, inResource);
+            }
+        }
+
+        void Layer::load(const DrawTexture::List& inResources)
+        {
+            if (is(LayerStatus::Offline))
+            {
+                return;
+            }
+
+            onLoad(inResources);
+
+            for (Layer* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                child->load(inResources);
+            }
+        }
+
         void Layer::setup(const Frame& inFrame)
         {
             if (is(LayerStatus::Offline))

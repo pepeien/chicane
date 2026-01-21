@@ -6,7 +6,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        enum class DrawType : std::uint8_t
+        enum class DrawPolyType : std::uint8_t
         {
             e2D,
             e3D

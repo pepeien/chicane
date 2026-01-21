@@ -33,6 +33,25 @@ namespace Chicane
             return true;
         }
 
+        void OpenGLLGrid::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
+        {
+            if (inType == DrawPolyType::e2D)
+            {
+                glNamedBufferSubData(
+                    m_primitiveVertexBuffer,
+                    0,
+                    sizeof(Vertex) * inResource.getVertices().size(),
+                    inResource.getVertices().data()
+                );
+                glNamedBufferSubData(
+                    m_primitiveIndexBuffer,
+                    0,
+                    sizeof(Vertex::Index) * inResource.getIndices().size(),
+                    inResource.getIndices().data()
+                );
+            }
+        }
+
         bool OpenGLLGrid::onSetup(const Frame& inFrame)
         {
             if (inFrame.getInstances2D().empty())
@@ -40,7 +59,7 @@ namespace Chicane
                 return false;
             }
 
-            if (inFrame.getResources2D().isEmpty())
+            if (inFrame.get2DDraws().empty())
             {
                 return false;
             }
@@ -64,33 +83,16 @@ namespace Chicane
             glVertexArrayElementBuffer(m_primitiveVertexArray, m_primitiveIndexBuffer);
             glVertexArrayVertexBuffer(m_primitiveVertexArray, 0, m_primitiveVertexBuffer, 0, sizeof(Vertex));
 
-            const DrawResource& resource = inFrame.getResources2D();
-
-            glNamedBufferSubData(
-                m_primitiveVertexBuffer,
-                0,
-                sizeof(Vertex) * resource.getVertices().size(),
-                resource.getVertices().data()
-            );
-            glNamedBufferSubData(
-                m_primitiveIndexBuffer,
-                0,
-                sizeof(Vertex::Index) * resource.getIndices().size(),
-                resource.getIndices().data()
-            );
             glNamedBufferSubData(
                 m_instanceBuffer,
                 0,
-                sizeof(Draw2DInstance) * inFrame.getInstances2D().size(),
+                sizeof(DrawPoly2DInstance) * inFrame.getInstances2D().size(),
                 inFrame.getInstances2D().data()
             );
 
-            for (const Draw& draw : resource.getDraws())
+            for (const DrawPoly& draw : inFrame.get2DDraws())
             {
-                const std::uint32_t count = inFrame.getInstance2DCount(draw.id);
-                const std::uint32_t start = inFrame.getInstance2DStart(draw.id);
-
-                if (count <= 0)
+                if (draw.instanceCount == 0)
                 {
                     continue;
                 }
@@ -100,9 +102,9 @@ namespace Chicane
                     draw.indexCount,
                     GL_UNSIGNED_INT,
                     (void*)(sizeof(uint32_t) * draw.indexStart),
-                    count,
+                    draw.instanceCount,
                     draw.vertexStart,
-                    start
+                    draw.instanceStart
                 );
             }
         }
@@ -252,7 +254,7 @@ namespace Chicane
         void OpenGLLGrid::buildInstanceData()
         {
             glCreateBuffers(1, &m_instanceBuffer);
-            glNamedBufferData(m_instanceBuffer, sizeof(Draw2DInstance) * 10000, nullptr, GL_DYNAMIC_DRAW);
+            glNamedBufferData(m_instanceBuffer, sizeof(DrawPoly2DInstance) * 10000, nullptr, GL_DYNAMIC_DRAW);
 
             glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, m_instanceBuffer);
         }

@@ -22,6 +22,7 @@ namespace Chicane
 
         OpenGLBackend::~OpenGLBackend()
         {
+            destroyTextureData();
             destroyContext();
         }
 
@@ -30,7 +31,28 @@ namespace Chicane
             buildContext();
             buildGlew();
             enableFeatures();
+            buildTextureData();
             buildLayers();
+        }
+
+        void OpenGLBackend::onLoad(const DrawTexture::List& inResources)
+        {
+            for (const DrawTexture& texture : inResources)
+            {
+                glTextureSubImage3D(
+                    m_texturesBuffer,
+                    0,
+                    0,
+                    0,
+                    texture.id,
+                    512,
+                    512,
+                    1,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    texture.image.getPixels()
+                );
+            }
         }
 
         void OpenGLBackend::onSetup(const Frame& inFrame)
@@ -43,6 +65,8 @@ namespace Chicane
             glDepthRange(0.0f, 1.0f);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+            glBindTextureUnit(0, m_texturesBuffer);
         }
 
         void OpenGLBackend::onCleanup()
@@ -120,6 +144,17 @@ namespace Chicane
                 glEnable(GL_DEBUG_CALLBACK_FUNCTION_ARB);
                 glDebugMessageCallback(OpenGLDebugCallback, nullptr);
             }
+        }
+
+        void OpenGLBackend::buildTextureData()
+        {
+            glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, 512);
+        }
+
+        void OpenGLBackend::destroyTextureData()
+        {
+            glDeleteTextures(1, &m_texturesBuffer);
         }
 
         void OpenGLBackend::buildLayers()

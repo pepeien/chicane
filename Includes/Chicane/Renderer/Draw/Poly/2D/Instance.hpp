@@ -13,10 +13,10 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER Draw2DInstance
+        struct CHICANE_RENDERER DrawPoly2DInstance
         {
         public:
-            using List = std::vector<Draw2DInstance>;
+            using List = std::vector<DrawPoly2DInstance>;
             using Map  = std::map<Draw::Id, List>;
 
         public:

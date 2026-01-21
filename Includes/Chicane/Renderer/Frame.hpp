@@ -3,13 +3,13 @@
 #include <unordered_map>
 
 #include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Core/Thread/Pool.hpp"
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Draw/2D/Instance.hpp"
-#include "Chicane/Renderer/Draw/3D/Instance.hpp"
-#include "Chicane/Renderer/Draw/Resource.hpp"
+#include "Chicane/Renderer/Draw/Poly.hpp"
+#include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
+#include "Chicane/Renderer/Draw/Poly/Resource.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -21,7 +21,7 @@ namespace Chicane
         public:
             // Lifecycle
             void reset();
-            void setup(const DrawResource::Map& inResources);
+            void setup(const DrawPolyResource::Map& inResources);
 
             // Properties
             const View& getCamera() const;
@@ -31,36 +31,33 @@ namespace Chicane
             void addLights(const View::List& inData);
             void addLight(const View& inData);
 
-            const DrawResource& getResources2D() const;
-            const Draw2DInstance::List getInstances2D() const;
-            const std::uint32_t getInstance2DStart(Draw::Id inId) const;
-            const std::uint32_t getInstance2DCount(Draw::Id inId) const;
-            void use(Draw::Id inId, const Draw2DInstance& inInstance);
+            const DrawPoly::List& get2DDraws() const;
+            const DrawPoly2DInstance::List getInstances2D() const;
+            void use(Draw::Id inId, const DrawPoly2DInstance& inInstance);
 
-            const DrawResource& getResources3D() const;
-            const Draw3DInstance::List getInstances3D() const;
-            const std::uint32_t getInstance3DStart(Draw::Id inId) const;
-            const std::uint32_t getInstance3DCount(Draw::Id inId) const;
-            void use(Draw::Id inId, const Draw3DInstance& inInstance);
+            const DrawPoly::List& get3DDraws() const;
+            const DrawPoly3DInstance::List getInstances3D() const;
+            void use(Draw::Id inId, const DrawPoly3DInstance& inInstance);
 
         protected:
             void resetCamera();
             void resetLights();
 
-            void resetDrawResources();
-            void resetDraw2D();
-            void resetDraw3D();
+            void refresh2DDraws();
+            void reset2DDraws();
+
+            void refresh3DDraws();
+            void reset3DDraws();
 
         protected:
             // View
-            View                m_camera = {};
-            View::List          m_lights = {};
+            View                    m_camera          = {};
+            View::List              m_lights          = {};
 
-            // Draw
-            DrawResource::Map   m_drawResources;
-
-            Draw2DInstance::Map m_draws2D = {};
-            Draw3DInstance::Map m_draws3D = {};
+            // Poly
+            DrawPoly::Map           m_draws           = {};
+            DrawPoly2DInstance::Map m_2DDrawInstances = {};
+            DrawPoly3DInstance::Map m_3DDrawInstances = {};
         };
     }
 }
