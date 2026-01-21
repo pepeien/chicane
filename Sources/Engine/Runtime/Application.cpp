@@ -218,7 +218,7 @@ namespace Chicane
             return;
         }
 
-        //m_scene->tick(m_telemetry.delta);
+        m_scene->tick(m_telemetry.delta);
 
         for (CCamera* camera : m_scene->getActiveComponents<CCamera>())
         {
