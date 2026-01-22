@@ -143,32 +143,11 @@ def split_template_args(args_str: str):
     
     return [parse_type(arg) for arg in args if arg.strip()]
 
-def pascal_to_spaced(text, character = " "):
+def pascal_to_spaced(text, character=" "):
     if not text:
         return ""
 
-    if len(text) > 1 and text[0].isupper() and text[1].isupper():
-        prefix_end = 0
-        for i in range(len(text) - 1):
-            if text[i].isupper() and text[i + 1].islower():
-                prefix_end = i
-                break
-            elif text[i].isupper() and i + 1 < len(text) - 1 and text[i + 1].isupper() and text[i + 2].islower():
-                prefix_end = i + 1
-                break
-        
-        if prefix_end > 0:
-            prefix = text[:prefix_end + 1]
-            remainder = text[prefix_end + 1:]
-
-            if not remainder or not re.search(r'[A-Z]', remainder[1:]):
-                return text
-
-            spaced_remainder = re.sub(r'(?<!^)(?=[A-Z])', character, remainder)
-
-            return prefix + spaced_remainder
-
-    return re.sub(r'(?<!^)(?=[A-Z])', character, text)
+    return text;
 
 def namespace_to_snake(text, character = "_"):
     if not text:
