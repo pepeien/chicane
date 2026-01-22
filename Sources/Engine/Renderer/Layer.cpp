@@ -4,7 +4,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        Layer::Layer(const String& inId)
+        Layer::Layer(const Id& inId)
             : m_id(inId),
               m_status(LayerStatus::Offline),
               m_children({})
@@ -162,6 +162,26 @@ namespace Chicane
             }
         }
 
+        void Layer::load(const DrawSky& inResource)
+        {
+            if (is(LayerStatus::Offline))
+            {
+                return;
+            }
+
+            onLoad(inResource);
+
+            for (Layer* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                child->load(inResource);
+            }
+        }
+
         void Layer::setup(const Frame& inFrame)
         {
             if (is(LayerStatus::Offline))
@@ -247,7 +267,7 @@ namespace Chicane
             return m_status == inStatus;
         }
 
-        const String& Layer::getId() const
+        const Layer::Id& Layer::getId() const
         {
             return m_id;
         }

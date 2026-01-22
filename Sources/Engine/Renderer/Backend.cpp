@@ -80,6 +80,21 @@ namespace Chicane
             }
         }
 
+        void Backend::load(const DrawSky& inResource)
+        {
+            onLoad(inResource);
+
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->load(inResource);
+            }
+        }
+
         void Backend::setup(const Frame& inFrame)
         {
             onSetup(inFrame);

@@ -18,7 +18,10 @@ namespace Chicane
         }
 
         OpenGLLSceneShadow::~OpenGLLSceneShadow()
-        {}
+        {
+            destroyShader();
+            destroyShadowMap();
+        }
 
         bool OpenGLLSceneShadow::onInit()
         {

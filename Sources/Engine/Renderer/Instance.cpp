@@ -46,6 +46,7 @@ namespace Chicane
 
             Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
+            currentFrame.setup(m_skyResource);
 
             m_backend->setup(currentFrame);
             m_backend->render(currentFrame);
@@ -90,7 +91,7 @@ namespace Chicane
             return id;
         }
 
-        Draw::Id Instance::findTexture(const String& inReference)
+        Draw::Id Instance::findTexture(const Draw::Reference& inReference)
         {
             const auto& found = std::find_if(
                 m_textureResources.begin(),
@@ -136,6 +137,55 @@ namespace Chicane
             }
 
             return texture.id;
+        }
+
+        Draw::Id Instance::findSky(const Draw::Reference& inReference)
+        {
+            return m_skyResource.id;
+        }
+
+        Draw::Id Instance::loadSky(const DrawSkyData& inData)
+        {
+            if (m_skyResource.reference.equals(inData.reference))
+            {
+                return m_skyResource.id;
+            }
+
+            DrawSky sky;
+            sky.id        = 1;
+            sky.reference = inData.reference;
+
+            for (const Draw::Reference& texture : inData.textures)
+            {
+                const auto& found = std::find_if(
+                    m_textureResources.begin(),
+                    m_textureResources.end(),
+                    [texture](const DrawTexture& resource) { return resource.reference.equals(texture); }
+                );
+
+                if (found == m_textureResources.end())
+                {
+                    return Draw::UnknownId;
+                }
+
+                sky.textures.push_back(*found);
+            }
+
+            sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
+
+            if (sky.model.id == Draw::UnknownId)
+            {
+                return Draw::UnknownId;
+            }
+
+            m_skyResource = sky;
+
+            if (hasBackend())
+            {
+                m_backend->load(m_skyResource);
+            }
+
+            return m_skyResource.id;
         }
 
         const Viewport& Instance::getViewport() const

@@ -25,8 +25,11 @@ namespace Chicane
             const Vertex::List& getVertices() const;
             const Vertex::Indices& getIndices() const;
 
-            Draw::Id find(const DrawPolyData& inData);
-            Draw::Id find(const String& inReference);
+            Draw::Id findId(const DrawPolyData& inData);
+            Draw::Id findId(const Draw::Reference& inReference);
+
+            const DrawPoly& getDraw(const Draw::Reference& inReference);
+            const DrawPoly& getDraw(Draw::Id inId);
 
             Draw::Id add(const DrawPolyData& inData);
 

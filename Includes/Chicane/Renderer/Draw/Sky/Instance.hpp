@@ -2,15 +2,16 @@
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Poly.hpp"
 
 namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER DrawData
+        struct CHICANE_RENDERER DrawSkyInstance
         {
         public:
-            Draw::Reference reference = "";
+            DrawPoly model = {};
         };
     }
 }

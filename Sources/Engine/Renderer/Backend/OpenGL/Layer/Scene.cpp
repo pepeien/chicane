@@ -4,6 +4,7 @@
 
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
 
 namespace Chicane
 {
@@ -182,6 +183,7 @@ namespace Chicane
 
         void OpenGLLScene::buildLayers()
         {
+            addLayer<OpenGLLSceneSky>();
             addLayer<OpenGLLSceneShadow>();
             addLayer<OpenGLLSceneMesh>();
         }

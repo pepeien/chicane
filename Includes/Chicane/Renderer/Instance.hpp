@@ -16,6 +16,8 @@
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Texture/Data.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
+#include "Chicane/Renderer/Draw/Sky/Data.hpp"
+#include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
@@ -51,9 +53,9 @@ namespace Chicane
             Draw::Id loadPoly(DrawPolyType inType, const DrawPolyData& inData);
 
             template <typename T>
-            inline void drawPoly(DrawPolyType inType, const String& inReference, const T& inInstance)
+            inline void drawPoly(DrawPolyType inType, const Draw::Reference& inReference, const T& inInstance)
             {
-                Draw::Id id = getPolyResource(inType).find(inReference);
+                Draw::Id id = getPolyResource(inType).findId(inReference);
 
                 if (id <= Draw::UnknownId)
                 {
@@ -69,8 +71,11 @@ namespace Chicane
                 getCurrentFrame().use(inId, inInstance);
             }
 
-            Draw::Id findTexture(const String& inReference);
+            Draw::Id findTexture(const Draw::Reference& inReference);
             Draw::Id loadTexture(const DrawTextureData& inData);
+
+            Draw::Id findSky(const Draw::Reference& inReference);
+            Draw::Id loadSky(const DrawSkyData& inData);
 
             // Settings
             const Viewport& getViewport() const;
@@ -111,6 +116,7 @@ namespace Chicane
             // Draw
             DrawPolyResource::Map          m_polyResources;
             DrawTexture::List              m_textureResources;
+            DrawSky                        m_skyResource;
 
             // Settings
             Viewport                       m_viewport;

@@ -7,6 +7,7 @@
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
 #include "Chicane/Renderer/Draw/Poly/Resource.hpp"
+#include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Frame.hpp"
 #include "Chicane/Renderer/Layer/Status.hpp"
@@ -18,7 +19,10 @@ namespace Chicane
         class CHICANE_RENDERER Layer
         {
         public:
-            Layer(const String& inId);
+            using Id = String;
+
+        public:
+            Layer(const Id& inId);
             Layer();
 
             virtual ~Layer();
@@ -30,6 +34,7 @@ namespace Chicane
             virtual void onResize(const Viewport& inViewport) { return; }
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             virtual void onLoad(const DrawTexture::List& inResources) { return; }
+            virtual void onLoad(const DrawSky& inResource) { return; }
             virtual bool onSetup(const Frame& inFrame) { return true; }
             virtual void onRender(const Frame& inFrame) { return; }
             virtual void onCleanup() { return; }
@@ -43,6 +48,7 @@ namespace Chicane
             void resize(const Viewport& inViewport);
             void load(DrawPolyType inType, const DrawPolyResource& inResource);
             void load(const DrawTexture::List& inResources);
+            void load(const DrawSky& inResource);
             void setup(const Frame& inFrame);
             void render(const Frame& inFrame);
             void cleanup();
@@ -52,7 +58,7 @@ namespace Chicane
         public:
             bool is(LayerStatus inStatus) const;
 
-            const String& getId() const;
+            const Id& getId() const;
 
         protected:
             void setStatus(LayerStatus inStatus);
@@ -80,7 +86,7 @@ namespace Chicane
             }
 
         protected:
-            String       m_id;
+            Id           m_id;
             LayerStatus  m_status;
             List<Layer*> m_children;
         };

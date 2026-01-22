@@ -12,8 +12,7 @@ namespace Chicane
         struct CHICANE_RENDERER DrawTextureData : DrawData
         {
         public:
-            String reference = "";
-            Image  image     = {};
+            Image image = {};
         };
     }
 }

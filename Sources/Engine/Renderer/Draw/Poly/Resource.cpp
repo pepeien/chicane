@@ -4,6 +4,8 @@ namespace Chicane
 {
     namespace Renderer
     {
+        static const DrawPoly EMPTY_DRAW = {};
+
         bool DrawPolyResource::isEmpty() const
         {
             return m_draws.empty() || m_vertices.empty() || m_indices.empty();
@@ -24,7 +26,7 @@ namespace Chicane
             return m_indices;
         }
 
-        Draw::Id DrawPolyResource::find(const DrawPolyData& inData)
+        Draw::Id DrawPolyResource::findId(const DrawPolyData& inData)
         {
             for (const DrawPoly& draw : m_draws)
             {
@@ -62,7 +64,7 @@ namespace Chicane
             return Draw::UnknownId;
         }
 
-        Draw::Id DrawPolyResource::find(const String& inReference)
+        Draw::Id DrawPolyResource::findId(const Draw::Reference& inReference)
         {
             for (const DrawPoly& draw : m_draws)
             {
@@ -77,9 +79,36 @@ namespace Chicane
             return Draw::UnknownId;
         }
 
+        const DrawPoly& DrawPolyResource::getDraw(const Draw::Reference& inReference)
+        {
+            const Draw::Id id = findId(inReference);
+
+            if (id <= Draw::UnknownId)
+            {
+                return EMPTY_DRAW;
+            }
+
+            return getDraw(id);
+        }
+
+        const DrawPoly& DrawPolyResource::getDraw(Draw::Id inId)
+        {
+            for (const DrawPoly& draw : m_draws)
+            {
+                if (draw.id != inId)
+                {
+                    continue;
+                }
+
+                return draw;
+            }
+
+            return EMPTY_DRAW;
+        }
+
         Draw::Id DrawPolyResource::add(const DrawPolyData& inData)
         {
-            Draw::Id drawId = find(inData);
+            Draw::Id drawId = findId(inData);
 
             if (drawId > Draw::UnknownId)
             {

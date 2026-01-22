@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core/Image.hpp"
 
 #include "Chicane/Renderer.hpp"

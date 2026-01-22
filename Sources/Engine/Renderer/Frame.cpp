@@ -33,6 +33,11 @@ namespace Chicane
             refresh3DDraws();
         }
 
+        void Frame::setup(const DrawSky& inResource)
+        {
+            m_skyInstance.model = inResource.model;
+        }
+
         const View& Frame::getCamera() const
         {
             return m_camera;
@@ -67,7 +72,7 @@ namespace Chicane
         {
             DrawPoly2DInstance::List result;
 
-            for (const auto& [id, instances] : m_2DDrawInstances)
+            for (const auto& [id, instances] : m_2DInstances)
             {
                 result.insert(result.end(), instances.begin(), instances.end());
             }
@@ -77,7 +82,7 @@ namespace Chicane
 
         void Frame::use(Draw::Id inId, const DrawPoly2DInstance& inInstance)
         {
-            m_2DDrawInstances[inId].push_back(inInstance);
+            m_2DInstances[inId].push_back(inInstance);
 
             refresh2DDraws();
         }
@@ -91,7 +96,7 @@ namespace Chicane
         {
             DrawPoly3DInstance::List result;
 
-            for (const auto& [id, instance] : m_3DDrawInstances)
+            for (const auto& [id, instance] : m_3DInstances)
             {
                 result.insert(result.end(), instance.begin(), instance.end());
             }
@@ -101,9 +106,14 @@ namespace Chicane
 
         void Frame::use(Draw::Id inId, const DrawPoly3DInstance& inInstance)
         {
-            m_3DDrawInstances[inId].push_back(inInstance);
+            m_3DInstances[inId].push_back(inInstance);
 
             refresh3DDraws();
+        }
+
+        const DrawSkyInstance& Frame::getSkyInstance() const
+        {
+            return m_skyInstance;
         }
 
         void Frame::resetCamera()
@@ -119,7 +129,7 @@ namespace Chicane
         void Frame::refresh2DDraws()
         {
             std::uint32_t start = 0U;
-            for (const auto& [id, instances] : m_2DDrawInstances)
+            for (const auto& [id, instances] : m_2DInstances)
             {
                 if (instances.empty())
                 {
@@ -144,13 +154,13 @@ namespace Chicane
         void Frame::reset2DDraws()
         {
             m_draws[DrawPolyType::e2D].clear();
-            m_2DDrawInstances.clear();
+            m_2DInstances.clear();
         }
 
         void Frame::refresh3DDraws()
         {
             std::uint32_t start = 0U;
-            for (const auto& [id, instances] : m_3DDrawInstances)
+            for (const auto& [id, instances] : m_3DInstances)
             {
                 if (instances.empty())
                 {
@@ -175,7 +185,7 @@ namespace Chicane
         void Frame::reset3DDraws()
         {
             m_draws[DrawPolyType::e3D].clear();
-            m_3DDrawInstances.clear();
+            m_3DInstances.clear();
         }
     }
 }

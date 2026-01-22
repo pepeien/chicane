@@ -9,6 +9,7 @@
 
 #include "Chicane/Kerb.hpp"
 
+#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
@@ -266,6 +267,22 @@ namespace Chicane
 
                 m_renderer->drawPoly(Renderer::DrawPolyType::e3D, group.getModel(), draw);
             }
+        }
+
+        for (ASky* sky : m_scene->getActors<ASky>())
+        {
+            const Box::Sky* asset = sky->getSky();
+
+            Renderer::DrawSkyData data;
+            data.reference = asset->getFilepath().string();
+            data.model     = asset->getModel();
+
+            for (Box::SkySide side : Box::Sky::ORDER)
+            {
+                data.textures.push_back(asset->getSide(side));
+            }
+
+            m_renderer->loadSky(data);
         }
     }
 
