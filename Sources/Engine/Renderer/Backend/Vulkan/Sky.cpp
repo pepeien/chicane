@@ -19,13 +19,6 @@ namespace Chicane
               m_queue(inCreateInfo.queue),
               m_descriptor({})
         {
-            if (m_images.size() < Box::Sky::ORDER.size())
-            {
-                throw std::runtime_error(
-                    "Every cube map must have " + std::to_string(Box::Sky::ORDER.size()) + " images."
-                );
-            }
-
             m_descriptor.setLayout = inCreateInfo.descriptorSetLayout;
             m_descriptor.set       = nullptr;
             m_descriptor.pool      = inCreateInfo.descriptorPool;
@@ -63,7 +56,7 @@ namespace Chicane
             VulkanImageCreateInfo instanceCreateInfo;
             instanceCreateInfo.width  = m_image.getWidth();
             instanceCreateInfo.height = m_image.getHeight();
-            instanceCreateInfo.count  = static_cast<std::uint32_t>(Box::Sky::ORDER.size());
+            instanceCreateInfo.count  = static_cast<std::uint32_t>(m_images.size());
             instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
             instanceCreateInfo.flags  = vk::ImageCreateFlagBits::eCubeCompatible;
             instanceCreateInfo.usage =
@@ -103,33 +96,18 @@ namespace Chicane
             createInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
             createInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
-            createInfo.size  = pixelCount * Box::Sky::ORDER.size();
+            createInfo.size  = pixelCount * m_images.size();
 
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            for (std::uint32_t i = 0; i < Box::Sky::ORDER.size(); i++)
+            m_images.at(0).rotate(90.0f);
+            m_images.at(1).rotate(-90.0f);
+            m_images.at(2).rotate(180.0f);
+
+            for (std::uint32_t i = 0; i < m_images.size(); i++)
             {
-                const Box::SkySide side = Box::Sky::ORDER.at(i);
-
                 Image image = m_images.at(i);
-
-                switch (side)
-                {
-                case Box::SkySide::Right:
-                    image.rotate(90.0f);
-
-                    break;
-                case Box::SkySide::Left:
-                    image.rotate(-90.0f);
-
-                    break;
-
-                case Box::SkySide::Front:
-                    image.rotate(180.0f);
-
-                    break;
-                }
 
                 void* writeLocation =
                     m_logicalDevice.mapMemory(stagingBuffer.memory, pixelCount * i, pixelCount);
@@ -145,7 +123,7 @@ namespace Chicane
                 m_image.instance,
                 vk::ImageLayout::eUndefined,
                 vk::ImageLayout::eTransferDstOptimal,
-                static_cast<std::uint32_t>(Box::Sky::ORDER.size())
+                static_cast<std::uint32_t>(m_images.size())
             );
 
             VulkanImage::copyBufferToImage(
@@ -155,7 +133,7 @@ namespace Chicane
                 m_image.instance,
                 m_image.getWidth(),
                 m_image.getHeight(),
-                static_cast<std::uint32_t>(Box::Sky::ORDER.size())
+                static_cast<std::uint32_t>(m_images.size())
             );
 
             VulkanImage::transitionLayout(
@@ -164,7 +142,7 @@ namespace Chicane
                 m_image.instance,
                 vk::ImageLayout::eTransferDstOptimal,
                 vk::ImageLayout::eShaderReadOnlyOptimal,
-                static_cast<std::uint32_t>(Box::Sky::ORDER.size())
+                static_cast<std::uint32_t>(m_images.size())
             );
 
             stagingBuffer.destroy(m_logicalDevice);

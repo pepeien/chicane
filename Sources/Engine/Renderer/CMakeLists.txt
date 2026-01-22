@@ -95,7 +95,6 @@ target_link_libraries(
     ${RENDERER_TARGET_NAME}
 
     PUBLIC
-        Chicane::Box
         Chicane::Core
 
         ${GRAPHICS_LIBS}
