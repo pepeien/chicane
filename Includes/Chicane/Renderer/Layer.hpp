@@ -27,6 +27,7 @@ namespace Chicane
             virtual bool onInit() { return true; }
             virtual bool onDestroy() { return true; }
             virtual bool onRebuild() { return true; }
+            virtual void onResize(const Viewport& inViewport) { return; }
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             virtual void onLoad(const DrawTexture::List& inResources) { return; }
             virtual bool onSetup(const Frame& inFrame) { return true; }
@@ -39,6 +40,7 @@ namespace Chicane
             void init();
             void destroy();
             void rebuild();
+            void resize(const Viewport& inViewport);
             void load(DrawPolyType inType, const DrawPolyResource& inResource);
             void load(const DrawTexture::List& inResources);
             void setup(const Frame& inFrame);

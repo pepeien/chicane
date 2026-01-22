@@ -1,7 +1,5 @@
 #include "Chicane/Renderer/Instance.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 #if defined(CHICANE_OPENGL)
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
@@ -171,6 +169,8 @@ namespace Chicane
 
             m_viewport.position.x = inX;
             m_viewport.position.y = inY;
+
+            propagateResize();
         }
 
         void Instance::setViewportSize(const Vec2& inSize)
@@ -188,6 +188,8 @@ namespace Chicane
 
             m_viewport.size.x = inWidth;
             m_viewport.size.y = inHeight;
+
+            propagateResize();
         }
 
         Window* Instance::getWindow() const
@@ -252,6 +254,7 @@ namespace Chicane
             }
 
             m_backend->init();
+            m_backend->resize(m_viewport);
 
             for (const auto& [type, resource] : m_polyResources)
             {
@@ -269,6 +272,14 @@ namespace Chicane
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
         {
             return m_polyResources[inType];
+        }
+
+        void Instance::propagateResize()
+        {
+            if (hasBackend())
+            {
+                m_backend->resize(m_viewport);
+            }
         }
     }
 }

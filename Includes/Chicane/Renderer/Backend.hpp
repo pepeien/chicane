@@ -23,6 +23,7 @@ namespace Chicane
 
         protected:
             virtual void onInit() { return; }
+            virtual void onResize(const Viewport& inViewport) { return; }
             virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
             virtual void onLoad(const DrawTexture::List& inResources) { return; }
             virtual void onSetup(const Frame& inFrame) { return; }
@@ -33,6 +34,7 @@ namespace Chicane
 
         public:
             void init();
+            void resize(const Viewport& inViewport);
             void load(DrawPolyType inType, const DrawPolyResource& inResource);
             void load(const DrawTexture::List& inResources);
             void setup(const Frame& inFrame);

@@ -1,6 +1,6 @@
 #version 450
 
-struct Mesh {
+struct Instance {
     mat4 modelMatrix;
     uint textureIndex;
 };
@@ -32,8 +32,8 @@ layout(set = 0, binding = 1) uniform Light {
 } light;
 
 layout(std140, set = 0, binding = 2) readonly buffer StorageBuffer {
-    Mesh data[];
-} meshes;
+    Instance data[];
+} instances;
 
 layout(location = 0) out flat uint outTextureIndex;
 layout(location = 1) out vec2 outUV;
@@ -56,17 +56,17 @@ const mat4 biasMat = mat4(
 );
 
 void main() {
-    Mesh mesh = meshes.data[gl_InstanceIndex];
+    Instance instance = instances.data[gl_InstanceIndex];
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = mesh.textureIndex;
+    outTextureIndex   = instance.textureIndex;
     outUV             = inUV;
-    outNormal         = mat3(mesh.modelMatrix) * inNormal;
+    outNormal         = mat3(instance.modelMatrix) * inNormal;
     outColor          = inColor;
     outViewPosition   = -inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * mesh.modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * instance.modelMatrix) * position;
 
-    gl_Position = camera.view * camera.projection * mesh.modelMatrix * position;
+    gl_Position = camera.view * camera.projection * instance.modelMatrix * position;
 }

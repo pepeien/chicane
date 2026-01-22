@@ -35,6 +35,21 @@ namespace Chicane
             }
         }
 
+        void Backend::resize(const Viewport& inViewport)
+        {
+            onResize(inViewport);
+
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->resize(inViewport);
+            }
+        }
+
         void Backend::load(DrawPolyType inType, const DrawPolyResource& inResource)
         {
             onLoad(inType, inResource);

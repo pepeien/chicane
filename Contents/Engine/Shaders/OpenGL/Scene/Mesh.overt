@@ -64,9 +64,9 @@ void main() {
 
     outTextureIndex   = instance.texture;
     outUV             = inUV;
-    outNormal         = mat3(instance.modelMatrix) * inNormal;
+    outNormal         = transpose(inverse(mat3(instance.modelMatrix))) * inNormal;
     outColor          = inColor;
-    outViewPosition   = -inPosition.xyz;
+    outViewPosition   = inPosition.xyz;
     outLightPosition  = normalize(light.translation.xyz - inPosition);
     outShadowPosition = (biasMat * light.view * light.projection * instance.modelMatrix) * position;
 

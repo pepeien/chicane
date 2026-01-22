@@ -102,6 +102,26 @@ namespace Chicane
             }
         }
 
+        void Layer::resize(const Viewport& inViewport)
+        {
+            if (is(LayerStatus::Offline))
+            {
+                return;
+            }
+
+            onResize(inViewport);
+
+            for (Layer* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                child->resize(inViewport);
+            }
+        }
+
         void Layer::load(DrawPolyType inType, const DrawPolyResource& inResource)
         {
             if (is(LayerStatus::Offline))

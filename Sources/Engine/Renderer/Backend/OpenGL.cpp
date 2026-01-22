@@ -60,10 +60,6 @@ namespace Chicane
             const Viewport& viewport = m_renderer->getViewport();
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
-            glClearDepth(1.0);
-            glClearStencil(0);
-            glDepthRange(0.0f, 1.0f);
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             glBindTextureUnit(0, m_texturesBuffer);
@@ -160,7 +156,7 @@ namespace Chicane
         void OpenGLBackend::buildLayers()
         {
             addLayer<OpenGLLScene>();
-            addLayer<OpenGLLGrid>();
+            //addLayer<OpenGLLGrid>();
         }
     }
 }

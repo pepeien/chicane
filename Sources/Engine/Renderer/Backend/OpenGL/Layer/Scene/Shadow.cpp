@@ -1,4 +1,4 @@
-#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
+#include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 
 #include <GL/glew.h>
 
@@ -8,25 +8,31 @@ namespace Chicane
 {
     namespace Renderer
     {
-        OpenGLLSceneMesh::OpenGLLSceneMesh()
-            : Layer("Engine_Scene_Mesh")
+        OpenGLLSceneShadow::OpenGLLSceneShadow()
+            : Layer("Engine_Scene_Shadow"),
+              m_viewport({})
         {
+            m_viewport.size = Vec2(1024, 1024);
+
             init();
         }
 
-        OpenGLLSceneMesh::~OpenGLLSceneMesh()
+        OpenGLLSceneShadow::~OpenGLLSceneShadow()
         {}
 
-        bool OpenGLLSceneMesh::onInit()
+        bool OpenGLLSceneShadow::onInit()
         {
             buildShader();
+            buildShadowMap();
 
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame)
+        void OpenGLLSceneShadow::onRender(const Frame& inFrame)
         {
             glUseProgram(m_shaderProgram);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
 
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
@@ -36,10 +42,7 @@ namespace Chicane
             glFrontFace(GL_CCW);
             glCullFace(GL_BACK);
 
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_DEPTH_BUFFER_BIT);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -58,22 +61,26 @@ namespace Chicane
                     draw.instanceStart
                 );
             }
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, m_depthMapBuffer);
         }
 
-        void OpenGLLSceneMesh::onCleanup()
+        void OpenGLLSceneShadow::onCleanup()
         {
             glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
-            glDisable(GL_BLEND);
         }
 
-        void OpenGLLSceneMesh::buildShader()
+        void OpenGLLSceneShadow::buildShader()
         {
             GLint result = GL_FALSE;
 
             // Vertex
             const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.overt");
+                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Shadow.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -92,31 +99,9 @@ namespace Chicane
 
             result = GL_FALSE;
 
-            // Fragment
-            const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Scene/Mesh.ofrag");
-
-            GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderBinary(
-                1,
-                &fragmentShader,
-                GL_SHADER_BINARY_FORMAT_SPIR_V,
-                fragmentShaderCode.data(),
-                fragmentShaderCode.size()
-            );
-            glSpecializeShader(fragmentShader, "main", 0, nullptr, nullptr);
-            glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &result);
-            if (!result)
-            {
-                throw std::runtime_error("Failed to load fragment shader");
-            }
-
-            result = GL_FALSE;
-
             // Shader Program
             m_shaderProgram = glCreateProgram();
             glAttachShader(m_shaderProgram, vertexShader);
-            glAttachShader(m_shaderProgram, fragmentShader);
             glLinkProgram(m_shaderProgram);
 
             glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
@@ -126,12 +111,45 @@ namespace Chicane
             }
 
             glDeleteShader(vertexShader);
-            glDeleteShader(fragmentShader);
         }
 
-        void OpenGLLSceneMesh::destroyShader()
+        void OpenGLLSceneShadow::destroyShader()
         {
             glDeleteProgram(m_shaderProgram);
+        }
+
+        void OpenGLLSceneShadow::buildShadowMap()
+        {
+            // Framebuffer
+            glCreateFramebuffers(1, &m_shadowFramebuffer);
+
+            // Depth Map
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_depthMapBuffer);
+            glTextureStorage2D(
+                m_depthMapBuffer,
+                1,
+                GL_DEPTH_COMPONENT24,
+                m_viewport.size.x,
+                m_viewport.size.y
+            );
+            glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+            glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+            // Attach
+            glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthMapBuffer, 0);
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
+        void OpenGLLSceneShadow::destroyShadowMap()
+        {
+            glDeleteTextures(1, &m_depthMapBuffer);
+            glDeleteFramebuffers(1, &m_shadowFramebuffer);
         }
     }
 }

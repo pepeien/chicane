@@ -7,8 +7,6 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
@@ -57,7 +55,7 @@ namespace Chicane
     void Application::render()
     {
         renderScene();
-        renderView();
+        //renderView();
 
         m_renderer->render();
     }
