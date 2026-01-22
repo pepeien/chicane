@@ -156,7 +156,7 @@ namespace Chicane
         void OpenGLBackend::buildLayers()
         {
             addLayer<OpenGLLScene>();
-            //addLayer<OpenGLLGrid>();
+            addLayer<OpenGLLGrid>();
         }
     }
 }

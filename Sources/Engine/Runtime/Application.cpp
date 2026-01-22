@@ -55,7 +55,7 @@ namespace Chicane
     void Application::render()
     {
         renderScene();
-        //renderView();
+        renderView();
 
         m_renderer->render();
     }
