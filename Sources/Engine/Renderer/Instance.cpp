@@ -5,7 +5,7 @@
 #endif
 
 #if defined(CHICANE_VULKAN)
-//#include "Chicane/Renderer/Backend/Vulkan.hpp"
+    #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #endif
 
 namespace Chicane
@@ -292,9 +292,9 @@ namespace Chicane
 
 #if defined(CHICANE_VULKAN)
             case WindowBackend::Vulkan:
-                //m_backend = std::make_unique<VulkanBackend>();
+                m_backend = std::make_unique<VulkanBackend>(this);
 
-                //break;
+                break;
 #endif
 
             default:

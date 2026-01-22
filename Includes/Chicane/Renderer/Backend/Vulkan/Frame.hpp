@@ -5,10 +5,11 @@
 #include "Chicane/Core/View.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
 #include "Chicane/Renderer/Draw.hpp"
-#include "Chicane/Renderer/Draw/3D/Instance.hpp"
+#include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 
 namespace Chicane
 {
@@ -22,22 +23,12 @@ namespace Chicane
             void reset(const vk::Device& inLogicalDevice);
             void destroy();
 
+            // Buffer
+            void addBuffer(const VulkanFrameCreateInfo& inCreateInfo);
+
             // Sychronization
             void setupSync();
             void destroySync();
-
-            // Resources
-            void setupCameraData();
-            void updateCameraData();
-            void destroyCameraData();
-
-            void setupLightData();
-            void updateLightData();
-            void destroyLightData();
-
-            void setupMeshData();
-            void updateMeshData();
-            void destroyMeshData();
 
             // Image
             void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
@@ -58,9 +49,6 @@ namespace Chicane
 
             void addWriteDescriptorSet(const vk::WriteDescriptorSet& inWriteDescriptorSet);
             void updateDescriptorSets();
-
-        private:
-            View normalizeViewData(const View& inData);
 
         public:
             vk::Device                                    logicalDevice;
@@ -84,7 +72,7 @@ namespace Chicane
             // Resources
             VulkanFrameResource<View>                     cameraResource;
             VulkanFrameResource<View>                     lightResource;
-            VulkanFrameResource<Draw3DInstance>           meshResource;
+            VulkanFrameResource<DrawPoly3DInstance>       meshResource;
 
             std::unordered_map<String, vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet>           descriptorSetWrites;

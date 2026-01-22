@@ -19,7 +19,7 @@ namespace Chicane
             bool                                          bHasBlending;
 
             // Shader
-            std::vector<Shader::StageCreateInfo>          shaders;
+            std::vector<VulkanShaderStageCreateInfo>      shaders;
 
             // Viewport
             vk::Extent2D                                  extent;

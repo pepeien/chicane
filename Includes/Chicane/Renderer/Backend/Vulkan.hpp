@@ -17,8 +17,15 @@ namespace Chicane
         class CHICANE_RENDERER VulkanBackend : public Backend
         {
         public:
-            VulkanBackend();
+            VulkanBackend(const Instance* inRenderer);
             virtual ~VulkanBackend();
+
+        protected:
+            void onInit() override;
+            void onResize(const Viewport& inViewport) override;
+            void onRender(const Frame& inFrame) override;
+
+            void onHandle(const WindowEvent& inEvent) override;
 
         private:
             void buildInstance();
@@ -50,9 +57,9 @@ namespace Chicane
             void rebuildFrames();
             void setupFrame(VulkanFrame& outFrame);
 
-            void buildLayers();
-            void setupLayers();
-            void renderLayers(VulkanFrame& outFrame, const vk::CommandBuffer& inCommandBuffer);
+            //void buildLayers();
+            //void setupLayers();
+            //void renderLayers(VulkanFrame& outFrame, const vk::CommandBuffer& inCommandBuffer);
 
         private:
             // Instance

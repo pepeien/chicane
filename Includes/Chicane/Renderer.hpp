@@ -16,3 +16,9 @@
 #else
     #define CHICANE_RENDERER
 #endif
+
+namespace Chicane
+{
+    static inline constexpr const char* APPLICATION_NAME = "Chicane Engine";
+    static inline constexpr const char* ENGINE_NAME      = "Chicane";
+}

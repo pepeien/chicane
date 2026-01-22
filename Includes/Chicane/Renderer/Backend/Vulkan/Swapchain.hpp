@@ -31,7 +31,7 @@ namespace Chicane
             );
 
             CHICANE_RENDERER void init(
-                VulkanSawpChainBundle&    outSwapchain,
+                VulkanSwapchainBundle&    outSwapchain,
                 const vk::PhysicalDevice& inPhysicalDevice,
                 const vk::Device&         inLogicalDevice,
                 const vk::SurfaceKHR&     inSurface

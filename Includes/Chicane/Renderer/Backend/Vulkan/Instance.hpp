@@ -2,6 +2,7 @@
 
 #include <vulkan/vulkan.hpp>
 
+#include "Chicane/Core.hpp"
 #include "Chicane/Renderer.hpp"
 
 namespace Chicane
