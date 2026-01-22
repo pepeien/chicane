@@ -34,7 +34,7 @@ namespace Chicane
               m_primitive({})
         {
             m_style.setParent(this);
-            //m_style.watchChanges([&] { refresh(); });
+            m_style.watchChanges([&] { refresh(); });
         }
 
         Component::~Component()
@@ -55,7 +55,7 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            refresh();
+            refreshStyle();
 
             onTick(inDeltaTime);
 
@@ -369,7 +369,6 @@ namespace Chicane
             }
 
             m_parent = inComponent;
-            //m_parent->watchChanges([&]() { refreshStyle(); });
 
             onAdoption(inComponent);
         }
