@@ -14,6 +14,7 @@ namespace Chicane
 
         OpenGLLSceneSky::~OpenGLLSceneSky()
         {
+            deleteChildren();
             destroyShader();
             destroyTextureData();
         }

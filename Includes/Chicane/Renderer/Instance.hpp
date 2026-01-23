@@ -23,10 +23,14 @@
 
 namespace Chicane
 {
+    class Application;
+
     namespace Renderer
     {
         class CHICANE_RENDERER Instance
         {
+            friend Application;
+
         public:
             using ViewportObservable   = EventObservable<Viewport>;
             using ViewportSubscription = EventSubscription<Viewport>;
@@ -93,6 +97,8 @@ namespace Chicane
 
             // Backend
             bool hasBackend() const;
+
+        protected:
             void setBackend(WindowBackend inType);
 
         private:

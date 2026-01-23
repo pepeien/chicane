@@ -14,7 +14,6 @@ namespace Chicane
         public:
             VulkanFrame       frame;
             vk::CommandBuffer commandBuffer;
-            vk::Extent2D      swapChainExtent;
         };
     }
 }

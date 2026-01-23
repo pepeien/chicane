@@ -1,5 +1,6 @@
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp"
 
+#include "Chicane/Renderer/Backend/Vulkan.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
@@ -10,17 +11,18 @@ namespace Chicane
 {
     namespace Renderer
     {
-        VulkanLGrid::VulkanLGrid(VulkanBackend* inBackend)
+        VulkanLGrid::VulkanLGrid()
             : Layer("Engine_Grid"),
-              m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)}),
-              m_backend(inBackend)
-        {
-            init();
-        }
+              m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
+        {}
 
         VulkanLGrid::~VulkanLGrid()
         {
+            deleteChildren();
+            destroyFrameResources();
             destroyPrimitiveData();
+
+            m_graphicsPipeline.reset();
         }
 
         bool VulkanLGrid::onInit()
@@ -30,8 +32,8 @@ namespace Chicane
             initGraphicsPipeline();
             initFramebuffers();
 
-            buildPrimtiveVertexBuffer();
-            buildPrimtiveIndexBuffer();
+            buildPrimitiveVertexBuffer();
+            buildPrimitiveIndexBuffer();
 
             return true;
         }
@@ -77,7 +79,7 @@ namespace Chicane
             vk::RenderPassBeginInfo beginInfo;
             beginInfo.renderPass        = m_graphicsPipeline->renderPass;
             beginInfo.framebuffer       = frame.getFramebuffer(m_id);
-            beginInfo.renderArea.extent = m_backend->swapchain.extent;
+            beginInfo.renderArea.extent = getBackend<VulkanBackend>()->swapchain.extent;
             beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
             beginInfo.pClearValues      = m_clear.data();
 
@@ -134,27 +136,32 @@ namespace Chicane
             bidings.counts.push_back(1);
             bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
 
-            VulkanDescriptorSetLayout::init(m_frameDescriptor.setLayout, m_backend->logicalDevice, bidings);
+            VulkanDescriptorSetLayout::init(
+                m_frameDescriptor.setLayout,
+                getBackend<VulkanBackend>()->logicalDevice,
+                bidings
+            );
 
             VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-            descriptorPoolCreateInfo.maxSets = static_cast<std::uint32_t>(m_backend->swapchain.frames.size());
+            descriptorPoolCreateInfo.maxSets =
+                static_cast<std::uint32_t>(getBackend<VulkanBackend>()->swapchain.frames.size());
             descriptorPoolCreateInfo.sizes.push_back(
                 {vk::DescriptorType::eStorageBuffer, descriptorPoolCreateInfo.maxSets}
             );
 
             VulkanDescriptorPool::init(
                 m_frameDescriptor.pool,
-                m_backend->logicalDevice,
+                getBackend<VulkanBackend>()->logicalDevice,
                 descriptorPoolCreateInfo
             );
 
-            for (VulkanFrame& frame : m_backend->swapchain.frames)
+            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
             {
                 vk::DescriptorSet descriptorSet;
 
                 VulkanDescriptorSetLayout::allocate(
                     descriptorSet,
-                    m_backend->logicalDevice,
+                    getBackend<VulkanBackend>()->logicalDevice,
                     m_frameDescriptor.setLayout,
                     m_frameDescriptor.pool
                 );
@@ -173,8 +180,10 @@ namespace Chicane
 
         void VulkanLGrid::destroyFrameResources()
         {
-            m_backend->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
-            m_backend->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
+                m_frameDescriptor.setLayout
+            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
         void VulkanLGrid::initGraphicsPipeline()
@@ -195,14 +204,14 @@ namespace Chicane
             // Attachments
             VulkanGraphicsPipelineAttachment colorAttachment;
             colorAttachment.type          = VulkanGraphicsPipelineAttachmentType::Color;
-            colorAttachment.format        = m_backend->swapchain.colorFormat;
-            colorAttachment.loadOp        = vk::AttachmentLoadOp::eDontCare;
-            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.format        = getBackend<VulkanBackend>()->swapchain.colorFormat;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
+            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             VulkanGraphicsPipelineAttachment depthAttachment;
             depthAttachment.type          = VulkanGraphicsPipelineAttachmentType::Depth;
-            depthAttachment.format        = m_backend->swapchain.depthFormat;
+            depthAttachment.format        = getBackend<VulkanBackend>()->swapchain.depthFormat;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
@@ -217,11 +226,12 @@ namespace Chicane
 
             VulkanGraphicsPipelineCreateInfo createInfo;
             createInfo.bHasVertices         = true;
-            createInfo.bHasDepthWrite       = true;
+            createInfo.bHasDepthTest        = true;
+            createInfo.bHasDepthWrite       = false;
             createInfo.bHasBlending         = true;
-            createInfo.logicalDevice        = m_backend->logicalDevice;
+            createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.shaders              = shaders;
-            createInfo.extent               = m_backend->swapchain.extent;
+            createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;
             createInfo.descriptorSetLayouts = setLayouts;
             createInfo.attachments          = attachments;
             createInfo.rasterizaterizationState =
@@ -232,13 +242,13 @@ namespace Chicane
 
         void VulkanLGrid::initFramebuffers()
         {
-            for (VulkanFrame& frame : m_backend->swapchain.frames)
+            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
             {
                 VulkanFrameCreateInfo createInfo;
                 createInfo.id            = m_id;
-                createInfo.logicalDevice = m_backend->logicalDevice;
+                createInfo.logicalDevice = getBackend<VulkanBackend>()->logicalDevice;
                 createInfo.renderPass    = m_graphicsPipeline->renderPass;
-                createInfo.extent        = m_backend->swapchain.extent;
+                createInfo.extent        = getBackend<VulkanBackend>()->swapchain.extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
                 createInfo.attachments.push_back(frame.depthImage.view);
 
@@ -246,11 +256,11 @@ namespace Chicane
             }
         }
 
-        void VulkanLGrid::buildPrimtiveVertexBuffer()
+        void VulkanLGrid::buildPrimitiveVertexBuffer()
         {
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = m_backend->physicalDevice;
-            createInfo.logicalDevice  = m_backend->logicalDevice;
+            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.size           = sizeof(Vertex) * 2000000;
             createInfo.usage = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -260,9 +270,14 @@ namespace Chicane
 
         void VulkanLGrid::buildPrimitiveVertexData(const Vertex::List& inVertices)
         {
+            if (inVertices.empty())
+            {
+                return;
+            }
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = m_backend->physicalDevice;
-            createInfo.logicalDevice  = m_backend->logicalDevice;
+            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.size           = sizeof(Vertex) * inVertices.size();
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties =
@@ -271,25 +286,25 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation =
-                m_backend->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation = getBackend<VulkanBackend>()
+                                      ->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inVertices.data(), createInfo.size);
-            m_backend->logicalDevice.unmapMemory(stagingBuffer.memory);
+            getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
 
             stagingBuffer.copy(
                 m_primitiveVertexBuffer,
                 createInfo.size,
-                m_backend->graphicsQueue,
-                m_backend->mainCommandBuffer
+                getBackend<VulkanBackend>()->graphicsQueue,
+                getBackend<VulkanBackend>()->mainCommandBuffer
             );
-            stagingBuffer.destroy(m_backend->logicalDevice);
+            stagingBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
         }
 
-        void VulkanLGrid::buildPrimtiveIndexBuffer()
+        void VulkanLGrid::buildPrimitiveIndexBuffer()
         {
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = m_backend->physicalDevice;
-            createInfo.logicalDevice  = m_backend->logicalDevice;
+            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.size           = sizeof(Vertex::Index) * 2000000;
             createInfo.usage = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
@@ -299,9 +314,14 @@ namespace Chicane
 
         void VulkanLGrid::buildPrimitiveIndexData(const Vertex::Indices& inIndices)
         {
+            if (inIndices.empty())
+            {
+                return;
+            }
+
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = m_backend->physicalDevice;
-            createInfo.logicalDevice  = m_backend->logicalDevice;
+            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.size           = sizeof(Vertex::Index) * inIndices.size();
             createInfo.usage          = vk::BufferUsageFlagBits::eTransferSrc;
             createInfo.memoryProperties =
@@ -310,27 +330,26 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation =
-                m_backend->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation = getBackend<VulkanBackend>()
+                                      ->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inIndices.data(), createInfo.size);
-            m_backend->logicalDevice.unmapMemory(stagingBuffer.memory);
+            getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
 
             stagingBuffer.copy(
                 m_primitiveIndexBuffer,
                 createInfo.size,
-                m_backend->graphicsQueue,
-                m_backend->mainCommandBuffer
+                getBackend<VulkanBackend>()->graphicsQueue,
+                getBackend<VulkanBackend>()->mainCommandBuffer
             );
-            stagingBuffer.destroy(m_backend->logicalDevice);
+            stagingBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
         }
 
         void VulkanLGrid::destroyPrimitiveData()
         {
-            m_backend->logicalDevice.waitIdle();
+            getBackend<VulkanBackend>()->logicalDevice.waitIdle();
 
-            m_primitiveVertexBuffer.destroy(m_backend->logicalDevice);
-            m_primitiveIndexBuffer.destroy(m_backend->logicalDevice);
+            m_primitiveVertexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+            m_primitiveIndexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
         }
-
     }
 }

@@ -7,25 +7,18 @@ namespace Chicane
         Layer::Layer(const Id& inId)
             : m_id(inId),
               m_status(LayerStatus::Offline),
+              m_backend(nullptr),
+              m_parent(nullptr),
               m_children({})
         {}
 
         Layer::Layer()
             : m_id("Undefined"),
               m_status(LayerStatus::Offline),
+              m_backend(nullptr),
+              m_parent(nullptr),
               m_children({})
         {}
-
-        Layer::~Layer()
-        {
-            for (Layer* child : m_children)
-            {
-                delete child;
-                child = nullptr;
-            }
-
-            m_children.clear();
-        }
 
         void Layer::init()
         {
@@ -39,7 +32,7 @@ namespace Chicane
                 return;
             }
 
-            setStatus(LayerStatus::Initialized);
+            setStatus(LayerStatus::Running);
 
             for (Layer* child : m_children)
             {
@@ -89,7 +82,7 @@ namespace Chicane
                 return;
             }
 
-            setStatus(LayerStatus::Initialized);
+            setStatus(LayerStatus::Running);
 
             for (Layer* child : m_children)
             {
@@ -184,7 +177,7 @@ namespace Chicane
 
         void Layer::setup(const Frame& inFrame)
         {
-            if (is(LayerStatus::Offline))
+            if (!is(LayerStatus::Running))
             {
                 return;
             }
@@ -267,14 +260,20 @@ namespace Chicane
             return m_status == inStatus;
         }
 
-        const Layer::Id& Layer::getId() const
-        {
-            return m_id;
-        }
-
         void Layer::setStatus(LayerStatus inStatus)
         {
             m_status = inStatus;
+        }
+
+        void Layer::deleteChildren()
+        {
+            for (Layer* child : m_children)
+            {
+                delete child;
+                child = nullptr;
+            }
+
+            m_children.clear();
         }
     }
 }

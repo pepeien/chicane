@@ -9,17 +9,6 @@ namespace Chicane
               m_layers({})
         {}
 
-        Backend::~Backend()
-        {
-            for (Layer* layer : m_layers)
-            {
-                delete layer;
-                layer = nullptr;
-            }
-
-            m_layers.clear();
-        }
-
         void Backend::onInit()
         {
             for (Layer* layer : m_layers)
@@ -135,6 +124,17 @@ namespace Chicane
 
                 layer->cleanup();
             }
+        }
+
+        void Backend::deleteLayers()
+        {
+            for (Layer* layer : m_layers)
+            {
+                delete layer;
+                layer = nullptr;
+            }
+
+            m_layers.clear();
         }
 
         void Backend::destroyLayers()

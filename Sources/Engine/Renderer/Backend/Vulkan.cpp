@@ -8,6 +8,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
@@ -31,6 +32,7 @@ namespace Chicane
             // Vulkan
             destroyCommandPool();
             destroySwapchain();
+            deleteLayers();
 
             destroyDevices();
             destroySurface();
@@ -116,7 +118,7 @@ namespace Chicane
 
             lastFrame.commandBuffer.reset();
             lastFrame.commandBuffer.begin(commandBufferBegin);
-            renderViewport(lastFrame.commandBuffer);
+            renderViewport(data.commandBuffer);
             renderLayers(inFrame, &data);
             lastFrame.commandBuffer.end();
 
@@ -300,7 +302,8 @@ namespace Chicane
 
         void VulkanBackend::buildLayers()
         {
-            addLayer<VulkanLGrid>(ListPushStrategy::Back, this);
+            addLayer<VulkanLScene>();
+            addLayer<VulkanLGrid>();
         }
 
         void VulkanBackend::renderLayers(const Frame& inFrame, void* inData)

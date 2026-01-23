@@ -10,12 +10,11 @@ namespace Chicane
     {
         OpenGLLGrid::OpenGLLGrid()
             : Layer("Engine_Grid")
-        {
-            init();
-        }
+        {}
 
         OpenGLLGrid::~OpenGLLGrid()
         {
+            deleteChildren();
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();

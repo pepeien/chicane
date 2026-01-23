@@ -10,12 +10,11 @@ namespace Chicane
     {
         OpenGLLSceneMesh::OpenGLLSceneMesh()
             : Layer("Engine_Scene_Mesh")
-        {
-            init();
-        }
+        {}
 
         OpenGLLSceneMesh::~OpenGLLSceneMesh()
         {
+            deleteChildren();
             destroyShader();
         }
 

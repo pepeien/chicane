@@ -17,8 +17,12 @@ namespace Chicane
     using WindowSizeObservable    = EventObservable<Vec<2, int>>;
     using WindowSizeSubscription  = EventSubscription<Vec<2, int>>;
 
+    class Application;
+
     class CHICANE_CORE Window
     {
+        friend Application;
+
     public:
         Window();
         ~Window();
@@ -48,7 +52,6 @@ namespace Chicane
         void setType(WindowType inType);
 
         WindowBackend getBackend() const;
-        void setBackend(WindowBackend inBackend);
 
         bool hasInstance() const;
         void initInstance();
@@ -78,6 +81,9 @@ namespace Chicane
             WindowSizeSubscription::ErrorCallback    inError    = nullptr,
             WindowSizeSubscription::CompleteCallback inComplete = nullptr
         );
+
+    protected:
+        void setBackend(WindowBackend inBackend);
 
     private:
         // Settings

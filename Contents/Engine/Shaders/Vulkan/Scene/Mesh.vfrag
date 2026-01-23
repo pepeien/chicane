@@ -1,4 +1,4 @@
-#version 450
+#version 460
 
 #extension GL_EXT_nonuniform_qualifier : enable
 
@@ -8,7 +8,7 @@ layout(set = 0, binding = 3) uniform sampler2D shadowMap;
 
 layout(set = 1, binding = 0) uniform sampler2D textures[];
 
-layout(location = 0) in flat uint inTextureIndex;
+layout(location = 0) in flat int inTextureIndex;
 layout(location = 1) in vec2 inUV;
 layout(location = 2) in vec3 inNormal;
 layout(location = 3) in vec4 inColor;
@@ -16,7 +16,7 @@ layout(location = 4) in vec3 inViewPosition;
 layout(location = 5) in vec3 inLightPosition;
 layout(location = 8) in vec4 inShadowPosition; 
 
-#define ambient 0.1
+#define ambient 1.0
 
 float textureProj(vec4 shadowCoord, vec2 off)
 {

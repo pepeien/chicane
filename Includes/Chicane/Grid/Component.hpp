@@ -137,7 +137,6 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
-            void refreshZIndex();
 
             bool isReference(const String& inValue) const;
             Reference parseReference(const String& inValue) const;

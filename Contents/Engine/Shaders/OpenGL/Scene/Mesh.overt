@@ -3,7 +3,7 @@
 #extension GL_ARB_shader_draw_parameters : require
 
 struct Instance {
-    mat4 modelMatrix;
+    mat4 model;
     int texture;
 };
 
@@ -64,11 +64,11 @@ void main() {
 
     outTextureIndex   = instance.texture;
     outUV             = inUV;
-    outNormal         = transpose(inverse(mat3(instance.modelMatrix))) * inNormal;
+    outNormal         = transpose(inverse(mat3(instance.model))) * inNormal;
     outColor          = inColor;
-    outViewPosition   = inPosition.xyz;
+    outViewPosition   = normalize(camera.translation.xyz - inPosition);
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * instance.modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * instance.model) * position;
 
-    gl_Position = camera.view * camera.projection * instance.modelMatrix * position;
+    gl_Position = camera.view * camera.projection * instance.model * position;
 }

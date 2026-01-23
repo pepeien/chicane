@@ -12,12 +12,11 @@ namespace Chicane
     {
         OpenGLLScene::OpenGLLScene()
             : Layer("Engine_Scene")
-        {
-            init();
-        }
+        {}
 
         OpenGLLScene::~OpenGLLScene()
         {
+            deleteChildren();
             destroyCameraData();
             destroyLightData();
             destroyModelData();

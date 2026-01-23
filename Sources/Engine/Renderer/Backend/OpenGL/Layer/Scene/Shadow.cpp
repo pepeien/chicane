@@ -13,12 +13,11 @@ namespace Chicane
               m_viewport({})
         {
             m_viewport.size = Vec2(1024, 1024);
-
-            init();
         }
 
         OpenGLLSceneShadow::~OpenGLLSceneShadow()
         {
+            deleteChildren();
             destroyShader();
             destroyShadowMap();
         }

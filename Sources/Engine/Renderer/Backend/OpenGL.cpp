@@ -22,6 +22,10 @@ namespace Chicane
 
         OpenGLBackend::~OpenGLBackend()
         {
+            // Layers
+            deleteLayers();
+
+            // OpenGL
             destroyTextureData();
             destroyContext();
         }

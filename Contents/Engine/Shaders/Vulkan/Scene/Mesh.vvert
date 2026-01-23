@@ -1,8 +1,8 @@
 #version 450
 
 struct Instance {
-    mat4 modelMatrix;
-    uint textureIndex;
+    mat4 model;
+    int texture;
 };
 
 layout(set = 0, binding = 0) uniform Camera {
@@ -31,11 +31,11 @@ layout(set = 0, binding = 1) uniform Light {
     vec4 translation;
 } light;
 
-layout(std140, set = 0, binding = 2) readonly buffer StorageBuffer {
+layout(std140, set = 0, binding = 2) readonly buffer Mesh {
     Instance data[];
 } instances;
 
-layout(location = 0) out flat uint outTextureIndex;
+layout(location = 0) out flat int outTextureIndex;
 layout(location = 1) out vec2 outUV;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec4 outColor;
@@ -60,13 +60,13 @@ void main() {
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = instance.textureIndex;
+    outTextureIndex   = instance.texture;
     outUV             = inUV;
-    outNormal         = mat3(instance.modelMatrix) * inNormal;
+    outNormal         = mat3(instance.model) * inNormal;
     outColor          = inColor;
-    outViewPosition   = -inPosition.xyz;
+    outViewPosition   = normalize(camera.translation.xyz - inPosition);
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * instance.modelMatrix) * position;
+    outShadowPosition = (biasMat * light.view * light.projection * instance.model) * position;
 
-    gl_Position = camera.view * camera.projection * instance.modelMatrix * position;
+    gl_Position = camera.view * camera.projection * instance.model * position;
 }

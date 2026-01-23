@@ -97,7 +97,9 @@ namespace Chicane
                 setupCameraData();
             }
 
-            cameraResource.copyToBuffer(&inData, sizeof(View));
+            View data = inData;
+            data.projection[1][1] *= -1;
+            cameraResource.copyToBuffer(&data, sizeof(View));
         }
 
         void VulkanFrame::destroyCameraData()
@@ -132,7 +134,9 @@ namespace Chicane
                 setupLightData();
             }
 
-            lightResource.copyToBuffer(&inData.at(0), sizeof(View));
+            View data = inData.at(0);
+            data.projection[1][1] *= -1;
+            lightResource.copyToBuffer(&data, sizeof(View));
         }
 
         void VulkanFrame::destroyLightData()

@@ -16,6 +16,8 @@ namespace Chicane
 {
     namespace Renderer
     {
+        class Backend;
+
         class CHICANE_RENDERER Layer
         {
         public:
@@ -25,7 +27,7 @@ namespace Chicane
             Layer(const Id& inId);
             Layer();
 
-            virtual ~Layer();
+            virtual ~Layer() = default;
 
         protected:
             virtual bool onInit() { return true; }
@@ -57,37 +59,43 @@ namespace Chicane
 
         public:
             bool is(LayerStatus inStatus) const;
-
-            const Id& getId() const;
-
-        protected:
             void setStatus(LayerStatus inStatus);
 
-            template <typename T>
-            bool hasLayer() const
+            template <typename T = Backend>
+            T* getBackend()
             {
-                for (const Layer* layer : m_children)
-                {
-                    if (typeid(T) != typeid(*layer))
-                    {
-                        continue;
-                    }
-
-                    return true;
-                }
-
-                return false;
+                return static_cast<T*>(m_backend);
             }
+            void setBackend(Backend* inBackend) { m_backend = inBackend; }
 
-            template <typename Target, typename Anchor = Layer, typename... Params>
+            template <typename Target = Layer, typename Anchor = Layer, typename... Params>
             void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
             {
-                m_children.add(new Target(inParams...), inStrategy);
+                Target* layer = new Target(inParams...);
+                layer->setBackend(m_backend);
+                layer->setParent(this);
+                layer->init();
+
+                m_children.add(layer, inStrategy);
             }
+
+            template <typename T = Layer>
+            T* getParent()
+            {
+                return static_cast<T*>(m_parent);
+            }
+            void setParent(Layer* inLayer) { m_parent = inLayer; }
+
+        protected:
+            void deleteChildren();
 
         protected:
             Id           m_id;
             LayerStatus  m_status;
+
+            Backend*     m_backend;
+
+            Layer*       m_parent;
             List<Layer*> m_children;
         };
     }

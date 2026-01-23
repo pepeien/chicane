@@ -1,0 +1,299 @@
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene/Sky.hpp"
+
+#include "Chicane/Renderer/Backend/Vulkan.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
+
+namespace Chicane
+{
+    namespace Renderer
+    {
+        VulkanLSceneSky::VulkanLSceneSky()
+            : Layer("Engine_Scene_Sky"),
+              m_graphicsPipeline(nullptr),
+              m_frameDescriptor({}),
+              m_textureDescriptor({}),
+              m_sky(nullptr),
+              m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f)})
+        {}
+
+        VulkanLSceneSky::~VulkanLSceneSky()
+        {
+            deleteChildren();
+            destroyFrameResources();
+            destroyTextureData();
+
+            m_sky.reset();
+
+            m_graphicsPipeline.reset();
+        }
+
+        bool VulkanLSceneSky::onInit()
+        {
+            initFrameResources();
+
+            buildTextureDescriptor();
+
+            initGraphicsPipeline();
+            initFramebuffers();
+
+            return true;
+        }
+
+        bool VulkanLSceneSky::onDestroy()
+        {
+            destroyFrameResources();
+
+            return true;
+        }
+
+        bool VulkanLSceneSky::onRebuild()
+        {
+            initFrameResources();
+            initFramebuffers();
+
+            return true;
+        }
+
+        void VulkanLSceneSky::onLoad(const DrawSky& inResource)
+        {
+            buildTextureData(inResource);
+        }
+
+        bool VulkanLSceneSky::onSetup(const Frame& inFrame)
+        {
+            return true;
+        }
+
+        void VulkanLSceneSky::onRender(const Frame& inFrame, void* outData)
+        {
+            if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
+            {
+                return;
+            }
+
+            if (!m_sky)
+            {
+                return;
+            }
+
+            VulkanBackendData* data          = (VulkanBackendData*)outData;
+            vk::CommandBuffer& commandBuffer = data->commandBuffer;
+            VulkanFrame&       frame         = data->frame;
+
+            vk::RenderPassBeginInfo beginInfo;
+            beginInfo.renderPass        = m_graphicsPipeline->renderPass;
+            beginInfo.framebuffer       = frame.getFramebuffer(m_id);
+            beginInfo.renderArea.extent = getBackend<VulkanBackend>()->swapchain.extent;
+            beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
+            beginInfo.pClearValues      = m_clear.data();
+
+            commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+            // Pipeline
+            m_graphicsPipeline->bind(commandBuffer);
+
+            // Frame
+            m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+
+            // Texture
+            m_sky->bind(commandBuffer, m_graphicsPipeline->layout);
+
+            // Draw
+            vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
+            vk::DeviceSize offsets[]       = {0};
+
+            commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
+
+            commandBuffer.bindIndexBuffer(
+                getParent<VulkanLScene>()->modelIndexBuffer.instance,
+                0,
+                vk::IndexType::eUint32
+            );
+
+            const DrawPoly& draw = inFrame.getSkyInstance().model;
+
+            commandBuffer.drawIndexed(draw.indexCount, 1, draw.indexStart, draw.vertexStart, 0);
+
+            commandBuffer.endRenderPass();
+        }
+
+        void VulkanLSceneSky::initFrameResources()
+        {
+            VulkanDescriptorSetLayoutBidingsCreateInfo bidings;
+            bidings.count = 1;
+
+            // Camera
+            bidings.indices.push_back(0);
+            bidings.types.push_back(vk::DescriptorType::eUniformBuffer);
+            bidings.counts.push_back(1);
+            bidings.stages.push_back(vk::ShaderStageFlagBits::eVertex);
+
+            VulkanDescriptorSetLayout::init(
+                m_frameDescriptor.setLayout,
+                getBackend<VulkanBackend>()->logicalDevice,
+                bidings
+            );
+
+            VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets =
+                static_cast<std::uint32_t>(getBackend<VulkanBackend>()->swapchain.frames.size());
+            descriptorPoolCreateInfo.sizes.push_back(
+                {vk::DescriptorType::eUniformBuffer, descriptorPoolCreateInfo.maxSets}
+            );
+
+            VulkanDescriptorPool::init(
+                m_frameDescriptor.pool,
+                getBackend<VulkanBackend>()->logicalDevice,
+                descriptorPoolCreateInfo
+            );
+
+            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
+            {
+                vk::DescriptorSet descriptorSet;
+
+                VulkanDescriptorSetLayout::allocate(
+                    descriptorSet,
+                    getBackend<VulkanBackend>()->logicalDevice,
+                    m_frameDescriptor.setLayout,
+                    m_frameDescriptor.pool
+                );
+                frame.addDescriptorSet(m_id, descriptorSet);
+
+                vk::WriteDescriptorSet cameraWriteInfo;
+                cameraWriteInfo.dstSet          = descriptorSet;
+                cameraWriteInfo.dstBinding      = 0;
+                cameraWriteInfo.dstArrayElement = 0;
+                cameraWriteInfo.descriptorCount = 1;
+                cameraWriteInfo.descriptorType  = vk::DescriptorType::eUniformBuffer;
+                cameraWriteInfo.pBufferInfo     = &frame.cameraResource.bufferInfo;
+                frame.addWriteDescriptorSet(cameraWriteInfo);
+            }
+        }
+
+        void VulkanLSceneSky::destroyFrameResources()
+        {
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
+                m_frameDescriptor.setLayout
+            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
+        }
+
+        void VulkanLSceneSky::initGraphicsPipeline()
+        {
+            VulkanShaderStageCreateInfo vertexShader;
+            vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vvert";
+            vertexShader.type = vk::ShaderStageFlagBits::eVertex;
+
+            VulkanShaderStageCreateInfo fragmentShader;
+            fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
+            fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
+
+            std::vector<VulkanShaderStageCreateInfo> shaders = {};
+            shaders.push_back(vertexShader);
+            shaders.push_back(fragmentShader);
+
+            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts = {};
+            descriptorSetLayouts.push_back(m_frameDescriptor.setLayout);
+            descriptorSetLayouts.push_back(m_textureDescriptor.setLayout);
+
+            VulkanGraphicsPipelineAttachment colorAttachment;
+            colorAttachment.type          = VulkanGraphicsPipelineAttachmentType::Color;
+            colorAttachment.format        = getBackend<VulkanBackend>()->swapchain.colorFormat;
+            colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+
+            std::vector<VulkanGraphicsPipelineAttachment> attachments = {};
+            attachments.push_back(colorAttachment);
+
+            VulkanGraphicsPipelineCreateInfo createInfo;
+            createInfo.bHasVertices         = true;
+            createInfo.bHasDepthTest        = false;
+            createInfo.bHasDepthWrite       = false;
+            createInfo.bHasBlending         = false;
+            createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.shaders              = shaders;
+            createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;
+            createInfo.descriptorSetLayouts = descriptorSetLayouts;
+            createInfo.attachments          = attachments;
+            createInfo.rasterizaterizationState =
+                VulkanGraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+
+            m_graphicsPipeline = std::make_unique<VulkanGraphicsPipeline>(createInfo);
+        }
+
+        void VulkanLSceneSky::initFramebuffers()
+        {
+            for (VulkanFrame& frame : getBackend<VulkanBackend>()->swapchain.frames)
+            {
+                VulkanFrameCreateInfo createInfo;
+                createInfo.id            = m_id;
+                createInfo.logicalDevice = getBackend<VulkanBackend>()->logicalDevice;
+                createInfo.renderPass    = m_graphicsPipeline->renderPass;
+                createInfo.extent        = getBackend<VulkanBackend>()->swapchain.extent;
+                createInfo.attachments.push_back(frame.colorImage.view);
+
+                frame.addBuffer(createInfo);
+            }
+        }
+
+        void VulkanLSceneSky::buildTextureDescriptor()
+        {
+            VulkanDescriptorSetLayoutBidingsCreateInfo layoutBidings;
+            layoutBidings.count = 1;
+
+            layoutBidings.indices.push_back(0);
+            layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            layoutBidings.counts.push_back(1);
+            layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            VulkanDescriptorSetLayout::init(
+                m_textureDescriptor.setLayout,
+                getBackend<VulkanBackend>()->logicalDevice,
+                layoutBidings
+            );
+
+            VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets = 1;
+            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 1});
+
+            VulkanDescriptorPool::init(
+                m_textureDescriptor.pool,
+                getBackend<VulkanBackend>()->logicalDevice,
+                descriptorPoolCreateInfo
+            );
+        }
+
+        void VulkanLSceneSky::buildTextureData(const DrawSky& inData)
+        {
+            VulkanSkyCreateInfo createInfo;
+            createInfo.images              = {};
+            createInfo.logicalDevice       = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.physicalDevice      = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.commandBuffer       = getBackend<VulkanBackend>()->mainCommandBuffer;
+            createInfo.queue               = getBackend<VulkanBackend>()->graphicsQueue;
+            createInfo.descriptorPool      = m_textureDescriptor.pool;
+            createInfo.descriptorSetLayout = m_textureDescriptor.setLayout;
+
+            for (const DrawTexture& texture : inData.textures)
+            {
+                createInfo.images.push_back(texture.image);
+            }
+
+            m_sky.reset();
+            m_sky = std::make_unique<VulkanSky>(createInfo);
+        }
+
+        void VulkanLSceneSky::destroyTextureData()
+        {
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
+                m_textureDescriptor.setLayout
+            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
+        }
+    }
+}

@@ -15,6 +15,7 @@ namespace Chicane
         public:
             // Modifiers
             bool                                          bHasVertices;
+            bool                                          bHasDepthTest;
             bool                                          bHasDepthWrite;
             bool                                          bHasBlending;
 

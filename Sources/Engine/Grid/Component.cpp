@@ -34,7 +34,7 @@ namespace Chicane
               m_primitive({})
         {
             m_style.setParent(this);
-            //m_style.watchChanges([&] { refresh(); });
+            m_style.watchChanges([&] { refresh(); });
         }
 
         Component::~Component()
@@ -55,7 +55,7 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            refresh();
+            refreshStyle();
 
             onTick(inDeltaTime);
 
@@ -71,7 +71,6 @@ namespace Chicane
             refreshSize();
             refreshPosition();
             refreshPrimitive();
-            refreshZIndex();
 
             onRefresh();
         }
@@ -650,18 +649,6 @@ namespace Chicane
 
                 break;
             }
-        }
-
-        void Component::refreshZIndex()
-        {
-            const Style& parentStyle = hasParent() ? getParent()->getStyle() : getStyle();
-
-            if (m_style.zIndex > 0.0f || parentStyle.zIndex <= 0.0f)
-            {
-                return;
-            }
-
-            m_style.zIndex = parentStyle.zIndex + 0.001f;
         }
 
         String Component::parseText(const String& inValue) const

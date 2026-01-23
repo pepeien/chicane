@@ -20,7 +20,7 @@ namespace Chicane
         {
         public:
             Backend(const Instance* inRenderer);
-            virtual ~Backend();
+            virtual ~Backend() = default;
 
         public:
             virtual void onInit();
@@ -36,13 +36,18 @@ namespace Chicane
 
         public:
             // Layer
-            template <typename Target, typename Anchor = Layer, typename... Params>
+            template <typename Target = Layer, typename Anchor = Layer, typename... Params>
             void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
             {
-                m_layers.add(new Target(inParams...), inStrategy);
+                Target* layer = new Target(inParams...);
+                layer->setBackend(this);
+                layer->init();
+
+                m_layers.add(layer, inStrategy);
             }
 
         protected:
+            void deleteLayers();
             void destroyLayers();
             void rebuildLayers();
 

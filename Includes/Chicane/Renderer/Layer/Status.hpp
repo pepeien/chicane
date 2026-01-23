@@ -9,7 +9,6 @@ namespace Chicane
         enum class LayerStatus : std::uint8_t
         {
             Offline,
-            Initialized,
             Running
         };
     }
