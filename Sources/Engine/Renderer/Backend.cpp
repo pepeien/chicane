@@ -20,10 +20,8 @@ namespace Chicane
             m_layers.clear();
         }
 
-        void Backend::init()
+        void Backend::onInit()
         {
-            onInit();
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -35,10 +33,8 @@ namespace Chicane
             }
         }
 
-        void Backend::resize(const Viewport& inViewport)
+        void Backend::onResize(const Viewport& inViewport)
         {
-            onResize(inViewport);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -50,10 +46,8 @@ namespace Chicane
             }
         }
 
-        void Backend::load(DrawPolyType inType, const DrawPolyResource& inResource)
+        void Backend::onLoad(DrawPolyType inType, const DrawPolyResource& inResource)
         {
-            onLoad(inType, inResource);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -65,10 +59,8 @@ namespace Chicane
             }
         }
 
-        void Backend::load(const DrawTexture::List& inResources)
+        void Backend::onLoad(const DrawTexture::List& inResources)
         {
-            onLoad(inResources);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -80,10 +72,8 @@ namespace Chicane
             }
         }
 
-        void Backend::load(const DrawSky& inResource)
+        void Backend::onLoad(const DrawSky& inResource)
         {
-            onLoad(inResource);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -95,10 +85,8 @@ namespace Chicane
             }
         }
 
-        void Backend::setup(const Frame& inFrame)
+        void Backend::onSetup(const Frame& inFrame)
         {
-            onSetup(inFrame);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -110,10 +98,8 @@ namespace Chicane
             }
         }
 
-        void Backend::render(const Frame& inFrame)
+        void Backend::onRender(const Frame& inFrame)
         {
-            onRender(inFrame);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -125,10 +111,8 @@ namespace Chicane
             }
         }
 
-        void Backend::handle(const WindowEvent& inEvent)
+        void Backend::onHandle(const WindowEvent& inEvent)
         {
-            onHandle(inEvent);
-
             for (Layer* layer : m_layers)
             {
                 if (!layer)
@@ -140,7 +124,7 @@ namespace Chicane
             }
         }
 
-        void Backend::cleanup()
+        void Backend::onCleanup()
         {
             for (Layer* layer : m_layers)
             {
@@ -151,8 +135,32 @@ namespace Chicane
 
                 layer->cleanup();
             }
+        }
 
-            onCleanup();
+        void Backend::destroyLayers()
+        {
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->destroy();
+            }
+        }
+
+        void Backend::rebuildLayers()
+        {
+            for (Layer* layer : m_layers)
+            {
+                if (!layer)
+                {
+                    continue;
+                }
+
+                layer->rebuild();
+            }
         }
     }
 }

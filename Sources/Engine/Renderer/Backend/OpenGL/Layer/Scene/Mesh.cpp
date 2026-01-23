@@ -26,7 +26,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLSceneMesh::onRender(const Frame& inFrame)
+        void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
             glUseProgram(m_shaderProgram);
 

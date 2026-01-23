@@ -54,41 +54,46 @@ namespace Chicane
 
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
-            void rebuildFrames();
-            void setupFrame(VulkanFrame& outFrame);
+            void buildLayers();
+            void renderLayers(const Frame& inFrame, void* inData);
 
-            //void buildLayers();
-            //void setupLayers();
-            //void renderLayers(VulkanFrame& outFrame, const vk::CommandBuffer& inCommandBuffer);
+        public:
+            // Instance
+            vk::Instance          instance;
+
+            // Devices
+            vk::PhysicalDevice    physicalDevice;
+            vk::Device            logicalDevice;
+
+            // Surface
+            vk::SurfaceKHR        surface;
+
+            // Queues
+            vk::Queue             graphicsQueue;
+
+            // Command
+            vk::CommandBuffer     mainCommandBuffer;
+
+            // Swap Chain
+            VulkanSwapchainBundle swapchain;
+
+            // Frame
+            int                   imageCount;
 
         private:
             // Instance
-            vk::Instance                      m_instance;
             vk::detail::DispatchLoaderDynamic m_dispatcher;
 
             // Debug
             vk::DebugUtilsMessengerEXT        m_debugMessenger;
 
-            // Surface
-            vk::SurfaceKHR                    m_surface;
-
-            // Devices
-            vk::PhysicalDevice                m_physicalDevice;
-            vk::Device                        m_logicalDevice;
-
             // Queues
-            vk::Queue                         m_graphicsQueue;
             vk::Queue                         m_presentQueue;
-
-            // Swap Chain
-            VulkanSwapchainBundle             m_swapchain;
 
             // Command
             vk::CommandPool                   m_mainCommandPool;
-            vk::CommandBuffer                 m_mainCommandBuffer;
 
             // Frame
-            int                               m_imageCount;
             int                               m_currentImageIndex;
 
             // Viewport

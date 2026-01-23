@@ -67,7 +67,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLGrid::onRender(const Frame& inFrame)
+        void OpenGLLGrid::onRender(const Frame& inFrame, void* inData)
         {
             glUseProgram(m_shaderProgram);
 

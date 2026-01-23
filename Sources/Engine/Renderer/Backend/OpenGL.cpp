@@ -33,6 +33,8 @@ namespace Chicane
             enableFeatures();
             buildTextureData();
             buildLayers();
+
+            Backend::onInit();
         }
 
         void OpenGLBackend::onLoad(const DrawTexture::List& inResources)
@@ -53,6 +55,8 @@ namespace Chicane
                     texture.image.getPixels()
                 );
             }
+
+            Backend::onLoad(inResources);
         }
 
         void OpenGLBackend::onSetup(const Frame& inFrame)
@@ -63,6 +67,8 @@ namespace Chicane
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             glBindTextureUnit(0, m_texturesBuffer);
+
+            Backend::onSetup(inFrame);
         }
 
         void OpenGLBackend::onCleanup()
@@ -75,6 +81,8 @@ namespace Chicane
                     std::string("Failed to swawp window frame buffer [") + SDL_GetError() + "]"
                 );
             }
+
+            Backend::onCleanup();
         }
 
         void OpenGLBackend::buildContext()

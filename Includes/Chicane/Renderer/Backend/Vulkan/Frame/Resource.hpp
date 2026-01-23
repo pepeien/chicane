@@ -32,7 +32,7 @@ namespace Chicane
             {
                 m_bIsDirty = true;
 
-                if (!m_frame.memory)
+                if (isEmpty())
                 {
                     return;
                 }
@@ -46,12 +46,14 @@ namespace Chicane
 
             void setAsDirty() { m_bIsDirty = true; }
 
-            void copyToBuffer(const T* inData)
+            void copyToBuffer(const T* inData, std::size_t inSize)
             {
-                memcpy(m_writeLocation, inData, m_allocationSize);
+                memcpy(m_writeLocation, inData, inSize);
 
                 m_bIsDirty = false;
             }
+
+            bool isEmpty() { return !m_frame.memory; }
 
         public:
             vk::DescriptorBufferInfo bufferInfo = {};
@@ -61,7 +63,7 @@ namespace Chicane
             bool         m_bIsDirty       = true;
 
             // Memory
-            size_t       m_allocationSize = 0;
+            std::size_t  m_allocationSize = 0;
             void*        m_writeLocation  = nullptr;
             VulkanBuffer m_frame          = {};
         };

@@ -7,6 +7,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Layer/Grid.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Surface.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain.hpp"
 
@@ -16,8 +17,8 @@ namespace Chicane
     {
         VulkanBackend::VulkanBackend(const Instance* inRenderer)
             : Backend(inRenderer),
-              m_swapchain({}),
-              m_imageCount(0),
+              swapchain({}),
+              imageCount(0),
               m_currentImageIndex(0),
               m_vkViewport({}),
               m_vkScissor(vk::Rect2D())
@@ -25,12 +26,11 @@ namespace Chicane
 
         VulkanBackend::~VulkanBackend()
         {
-            m_logicalDevice.waitIdle();
+            logicalDevice.waitIdle();
 
             // Vulkan
             destroyCommandPool();
             destroySwapchain();
-            //deleteLayers();
 
             destroyDevices();
             destroySurface();
@@ -54,7 +54,9 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
-            //buildLayers();
+            buildLayers();
+
+            Backend::onInit();
         }
 
         void VulkanBackend::onResize(const Viewport& inViewport)
@@ -69,21 +71,18 @@ namespace Chicane
             // Scissor
             m_vkScissor.extent.width  = inViewport.size.x;
             m_vkScissor.extent.height = inViewport.size.y;
+
+            Backend::onResize(inViewport);
         }
 
         void VulkanBackend::onRender(const Frame& inFrame)
         {
-            VulkanFrame&       currentImage         = m_swapchain.frames.at(m_currentImageIndex);
-            vk::CommandBuffer& currentCommandBuffer = currentImage.commandBuffer;
+            VulkanFrame& lastFrame = swapchain.frames.at(m_currentImageIndex);
+            lastFrame.wait(logicalDevice);
 
-            currentImage.wait(m_logicalDevice);
-
-            vk::ResultValue<std::uint32_t> acquireResult = m_logicalDevice.acquireNextImageKHR(
-                m_swapchain.instance,
-                UINT64_MAX,
-                currentImage.presentSemaphore,
-                nullptr
-            );
+            vk::ResultValue<std::uint32_t> acquireResult =
+                logicalDevice
+                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
             {
@@ -97,36 +96,42 @@ namespace Chicane
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            currentImage.reset(m_logicalDevice);
+            lastFrame.reset(logicalDevice);
 
-            std::uint32_t nextImageIndex = acquireResult.value;
-            VulkanFrame&  nextImage      = m_swapchain.frames.at(nextImageIndex);
+            std::uint32_t frameIndex = acquireResult.value;
+            VulkanFrame&  frame      = swapchain.frames.at(frameIndex);
 
-            vk::CommandBufferBeginInfo commandBufferBegin = {};
-            commandBufferBegin.flags                      = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
-            currentCommandBuffer.reset();
+            frame.updateCameraData(inFrame.getCamera());
+            frame.updateLightData(inFrame.getLights());
+            frame.update2DData(inFrame.getInstances2D());
+            frame.update3DData(inFrame.getInstances3D());
+            frame.updateDescriptorSets();
 
-            setupFrame(nextImage);
+            vk::CommandBufferBeginInfo commandBufferBegin;
+            commandBufferBegin.flags = vk::CommandBufferUsageFlagBits::eOneTimeSubmit;
 
-            nextImage.updateDescriptorSets();
+            VulkanBackendData data;
+            data.frame         = frame;
+            data.commandBuffer = lastFrame.commandBuffer;
 
-            currentCommandBuffer.begin(commandBufferBegin);
-            renderViewport(currentCommandBuffer);
-            //renderLayers(nextImage, currentCommandBuffer);
-            currentCommandBuffer.end();
+            lastFrame.commandBuffer.reset();
+            lastFrame.commandBuffer.begin(commandBufferBegin);
+            renderViewport(lastFrame.commandBuffer);
+            renderLayers(inFrame, &data);
+            lastFrame.commandBuffer.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
             vk::SubmitInfo submitInfo       = {};
             submitInfo.waitSemaphoreCount   = 1;
-            submitInfo.pWaitSemaphores      = &currentImage.presentSemaphore;
+            submitInfo.pWaitSemaphores      = &lastFrame.presentSemaphore;
             submitInfo.commandBufferCount   = 1;
-            submitInfo.pCommandBuffers      = &currentCommandBuffer;
+            submitInfo.pCommandBuffers      = &lastFrame.commandBuffer;
             submitInfo.signalSemaphoreCount = 1;
-            submitInfo.pSignalSemaphores    = &currentImage.renderSemaphore;
+            submitInfo.pSignalSemaphores    = &lastFrame.renderSemaphore;
             submitInfo.pWaitDstStageMask    = waitStages;
 
-            vk::Result submitResult = m_graphicsQueue.submit(1, &submitInfo, currentImage.renderFence);
+            vk::Result submitResult = graphicsQueue.submit(1, &submitInfo, lastFrame.renderFence);
 
             if (submitResult != vk::Result::eSuccess)
             {
@@ -135,10 +140,10 @@ namespace Chicane
 
             vk::PresentInfoKHR presentInfo = {};
             presentInfo.waitSemaphoreCount = 1;
-            presentInfo.pWaitSemaphores    = &currentImage.renderSemaphore;
+            presentInfo.pWaitSemaphores    = &lastFrame.renderSemaphore;
             presentInfo.swapchainCount     = 1;
-            presentInfo.pSwapchains        = &m_swapchain.instance;
-            presentInfo.pImageIndices      = &nextImageIndex;
+            presentInfo.pSwapchains        = &swapchain.instance;
+            presentInfo.pImageIndices      = &frameIndex;
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
@@ -152,7 +157,7 @@ namespace Chicane
                 throw std::runtime_error("Error while presenting the image");
             }
 
-            m_currentImageIndex = (m_currentImageIndex + 1) % m_imageCount;
+            m_currentImageIndex = (m_currentImageIndex + 1) % imageCount;
         }
 
         void VulkanBackend::onHandle(const WindowEvent& inEvent)
@@ -161,67 +166,69 @@ namespace Chicane
             {
                 rebuildSwapchain();
             }
+
+            Backend::onHandle(inEvent);
         }
 
         void VulkanBackend::buildInstance()
         {
-            VulkanInstance::init(m_instance, m_dispatcher);
+            VulkanInstance::init(instance, m_dispatcher);
         }
 
         void VulkanBackend::destroyInstance()
         {
-            m_instance.destroy();
+            instance.destroy();
         }
 
         void VulkanBackend::buildDebugMessenger()
         {
-            VulkanDebug::initMessenger(m_debugMessenger, m_instance, m_dispatcher);
+            VulkanDebug::initMessenger(m_debugMessenger, instance, m_dispatcher);
         }
 
         void VulkanBackend::destroyDebugMessenger()
         {
-            VulkanDebug::destroyMessenger(m_debugMessenger, m_instance, m_dispatcher);
+            VulkanDebug::destroyMessenger(m_debugMessenger, instance, m_dispatcher);
         }
 
         void VulkanBackend::buildSurface()
         {
-            VulkanSurface::init(m_surface, m_instance, m_renderer->getWindow()->getInstance());
+            VulkanSurface::init(surface, instance, m_renderer->getWindow()->getInstance());
         }
 
         void VulkanBackend::destroySurface()
         {
-            m_instance.destroySurfaceKHR(m_surface);
+            instance.destroySurfaceKHR(surface);
         }
 
         void VulkanBackend::buildQueues()
         {
-            VulkanQueue::initGraphicsQueue(m_graphicsQueue, m_physicalDevice, m_logicalDevice, m_surface);
-            VulkanQueue::initPresentQueue(m_presentQueue, m_physicalDevice, m_logicalDevice, m_surface);
+            VulkanQueue::initGraphicsQueue(graphicsQueue, physicalDevice, logicalDevice, surface);
+            VulkanQueue::initPresentQueue(m_presentQueue, physicalDevice, logicalDevice, surface);
         }
 
         void VulkanBackend::buildDevices()
         {
-            VulkanDevice::pickPhysicalDevice(m_physicalDevice, m_instance);
-            VulkanDevice::initLogicalDevice(m_logicalDevice, m_physicalDevice, m_surface);
+            VulkanDevice::pickPhysicalDevice(physicalDevice, instance);
+            VulkanDevice::initLogicalDevice(logicalDevice, physicalDevice, surface);
         }
 
         void VulkanBackend::destroyDevices()
         {
-            m_logicalDevice.destroy();
+            logicalDevice.destroy();
         }
 
         void VulkanBackend::buildSwapchain()
         {
-            VulkanSwapchain::init(m_swapchain, m_physicalDevice, m_logicalDevice, m_surface);
+            VulkanSwapchain::init(swapchain, physicalDevice, logicalDevice, surface);
 
-            m_imageCount = static_cast<int>(m_swapchain.frames.size());
+            imageCount = static_cast<int>(swapchain.frames.size());
 
-            for (VulkanFrame& frame : m_swapchain.frames)
+            for (VulkanFrame& frame : swapchain.frames)
             {
                 // Images
-                frame.setupColorImage(m_swapchain.colorFormat, m_swapchain.extent);
-                frame.setupDepthImage(m_swapchain.depthFormat, m_swapchain.extent);
-                frame.setupShadowImage(m_swapchain.depthFormat, m_swapchain.extent);
+                frame.setupColorImage(swapchain.colorFormat, swapchain.extent);
+                frame.setupDepthImage(swapchain.depthFormat, swapchain.extent);
+                frame.setupShadowImage(swapchain.depthFormat, swapchain.extent);
 
                 // Sync
                 frame.setupSync();
@@ -230,16 +237,16 @@ namespace Chicane
 
         void VulkanBackend::destroySwapchain()
         {
-            for (VulkanFrame& frame : m_swapchain.frames)
+            for (VulkanFrame& frame : swapchain.frames)
             {
                 frame.destroy();
             }
 
-            m_swapchain.frames.clear();
+            swapchain.frames.clear();
 
-            m_logicalDevice.destroySwapchainKHR(m_swapchain.instance);
+            logicalDevice.destroySwapchainKHR(swapchain.instance);
 
-            //destroyLayers();
+            destroyLayers();
         }
 
         void VulkanBackend::rebuildSwapchain()
@@ -249,38 +256,37 @@ namespace Chicane
                 return;
             }
 
-            m_logicalDevice.waitIdle();
+            logicalDevice.waitIdle();
 
             destroySwapchain();
             buildSwapchain();
 
             buildFramesCommandBuffers();
 
-            rebuildFrames();
-            //rebuildLayers();
+            rebuildLayers();
         }
 
         void VulkanBackend::buildCommandPool()
         {
-            VulkanCommandBufferPool::init(m_mainCommandPool, m_logicalDevice, m_physicalDevice, m_surface);
+            VulkanCommandBufferPool::init(m_mainCommandPool, logicalDevice, physicalDevice, surface);
         }
 
         void VulkanBackend::destroyCommandPool()
         {
-            m_logicalDevice.destroyCommandPool(m_mainCommandPool);
+            logicalDevice.destroyCommandPool(m_mainCommandPool);
         }
 
         void VulkanBackend::buildMainCommandBuffer()
         {
-            VulkanCommandBufferCreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
-            VulkanCommandBuffer::init(m_mainCommandBuffer, createInfo);
+            VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
+            VulkanCommandBuffer::init(mainCommandBuffer, createInfo);
         }
 
         void VulkanBackend::buildFramesCommandBuffers()
         {
-            VulkanCommandBufferCreateInfo createInfo = {m_logicalDevice, m_mainCommandPool};
+            VulkanCommandBufferCreateInfo createInfo = {logicalDevice, m_mainCommandPool};
 
-            for (VulkanFrame& frame : m_swapchain.frames)
+            for (VulkanFrame& frame : swapchain.frames)
             {
                 VulkanCommandBuffer::init(frame.commandBuffer, createInfo);
             }
@@ -292,15 +298,17 @@ namespace Chicane
             inCommandBuffer.setScissor(0, 1, &m_vkScissor);
         }
 
-        void VulkanBackend::rebuildFrames()
+        void VulkanBackend::buildLayers()
         {
-            for (VulkanFrame& frame : m_swapchain.frames)
-            {
-                setupFrame(frame);
-            }
+            addLayer<VulkanLGrid>(ListPushStrategy::Back, this);
         }
 
-        void VulkanBackend::setupFrame(VulkanFrame& outFrame)
-        {}
+        void VulkanBackend::renderLayers(const Frame& inFrame, void* inData)
+        {
+            for (Layer* layer : m_layers)
+            {
+                layer->render(inFrame, inData);
+            }
+        }
     }
 }

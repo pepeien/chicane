@@ -48,9 +48,9 @@ namespace Chicane
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_backend->setup(currentFrame);
-            m_backend->render(currentFrame);
-            m_backend->cleanup();
+            m_backend->onSetup(currentFrame);
+            m_backend->onRender(currentFrame);
+            m_backend->onCleanup();
 
             currentFrame.reset();
 
@@ -85,7 +85,7 @@ namespace Chicane
 
             if (hasBackend())
             {
-                m_backend->load(inType, getPolyResource(inType));
+                m_backend->onLoad(inType, getPolyResource(inType));
             }
 
             return id;
@@ -133,7 +133,7 @@ namespace Chicane
 
             if (hasBackend())
             {
-                m_backend->load(m_textureResources);
+                m_backend->onLoad(m_textureResources);
             }
 
             return texture.id;
@@ -182,7 +182,7 @@ namespace Chicane
 
             if (hasBackend())
             {
-                m_backend->load(m_skyResource);
+                m_backend->onLoad(m_skyResource);
             }
 
             return m_skyResource.id;
@@ -266,7 +266,7 @@ namespace Chicane
                 return;
             }
 
-            m_backend->handle(inEvent);
+            m_backend->onHandle(inEvent);
         }
 
         bool Instance::hasBackend() const
@@ -303,15 +303,15 @@ namespace Chicane
                 break;
             }
 
-            m_backend->init();
-            m_backend->resize(m_viewport);
+            m_backend->onInit();
+            m_backend->onResize(m_viewport);
 
             for (const auto& [type, resource] : m_polyResources)
             {
-                m_backend->load(type, resource);
+                m_backend->onLoad(type, resource);
             }
 
-            m_backend->load(m_textureResources);
+            m_backend->onLoad(m_textureResources);
         }
 
         Frame& Instance::getCurrentFrame()
@@ -328,7 +328,7 @@ namespace Chicane
         {
             if (hasBackend())
             {
-                m_backend->resize(m_viewport);
+                m_backend->onResize(m_viewport);
             }
         }
     }

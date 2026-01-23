@@ -8,6 +8,8 @@
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Renderer
@@ -42,6 +44,8 @@ namespace Chicane
             destroyColorImage();
             destroyDepthImage();
             destroyShadowImage();
+            destroy2DData();
+            destroy3DData();
             destroySync();
         }
 
@@ -71,6 +75,139 @@ namespace Chicane
             logicalDevice.destroyFence(renderFence);
             logicalDevice.destroySemaphore(presentSemaphore);
             logicalDevice.destroySemaphore(renderSemaphore);
+        }
+
+        void VulkanFrame::setupCameraData()
+        {
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.size  = sizeof(View);
+            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
+
+            cameraResource.setup(bufferCreateInfo);
+        }
+
+        void VulkanFrame::updateCameraData(const View& inData)
+        {
+            if (cameraResource.isEmpty())
+            {
+                setupCameraData();
+            }
+
+            cameraResource.copyToBuffer(&inData, sizeof(View));
+        }
+
+        void VulkanFrame::destroyCameraData()
+        {
+            cameraResource.destroy(logicalDevice);
+        }
+
+        void VulkanFrame::setupLightData()
+        {
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.size  = sizeof(View);
+            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eUniformBuffer;
+
+            lightResource.setup(bufferCreateInfo);
+        }
+
+        void VulkanFrame::updateLightData(const View::List& inData)
+        {
+            if (inData.empty())
+            {
+                destroyLightData();
+
+                return;
+            }
+
+            if (lightResource.isEmpty())
+            {
+                setupLightData();
+            }
+
+            lightResource.copyToBuffer(&inData.at(0), sizeof(View));
+        }
+
+        void VulkanFrame::destroyLightData()
+        {
+            lightResource.destroy(logicalDevice);
+        }
+
+        void VulkanFrame::setup2DData()
+        {
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.size  = sizeof(DrawPoly2DInstance) * 1000;
+            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
+
+            poly2DResource.setup(bufferCreateInfo);
+        }
+
+        void VulkanFrame::update2DData(const DrawPoly2DInstance::List& inData)
+        {
+            if (inData.empty())
+            {
+                destroy2DData();
+
+                return;
+            }
+
+            if (poly2DResource.isEmpty())
+            {
+                setup2DData();
+            }
+
+            poly2DResource.copyToBuffer(inData.data(), sizeof(DrawPoly2DInstance) * inData.size());
+        }
+
+        void VulkanFrame::destroy2DData()
+        {
+            poly2DResource.destroy(logicalDevice);
+        }
+
+        void VulkanFrame::setup3DData()
+        {
+            VulkanBufferCreateInfo bufferCreateInfo;
+            bufferCreateInfo.logicalDevice  = logicalDevice;
+            bufferCreateInfo.physicalDevice = physicalDevice;
+            bufferCreateInfo.memoryProperties =
+                vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent;
+            bufferCreateInfo.size  = sizeof(DrawPoly3DInstance) * 1000;
+            bufferCreateInfo.usage = vk::BufferUsageFlagBits::eStorageBuffer;
+
+            poly3DResource.setup(bufferCreateInfo);
+        }
+
+        void VulkanFrame::update3DData(const DrawPoly3DInstance::List& inData)
+        {
+            if (inData.empty())
+            {
+                destroy3DData();
+
+                return;
+            }
+
+            if (poly3DResource.isEmpty())
+            {
+                setup3DData();
+            }
+
+            poly3DResource.copyToBuffer(inData.data(), sizeof(DrawPoly3DInstance) * inData.size());
+        }
+
+        void VulkanFrame::destroy3DData()
+        {
+            poly3DResource.destroy(logicalDevice);
         }
 
         void VulkanFrame::setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent)

@@ -9,7 +9,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        struct CHICANE_RENDERER VulkanRendererData
+        struct CHICANE_RENDERER VulkanBackendData
         {
         public:
             VulkanFrame       frame;

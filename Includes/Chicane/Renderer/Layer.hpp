@@ -36,7 +36,7 @@ namespace Chicane
             virtual void onLoad(const DrawTexture::List& inResources) { return; }
             virtual void onLoad(const DrawSky& inResource) { return; }
             virtual bool onSetup(const Frame& inFrame) { return true; }
-            virtual void onRender(const Frame& inFrame) { return; }
+            virtual void onRender(const Frame& inFrame, void* inData = nullptr) { return; }
             virtual void onCleanup() { return; }
 
             virtual void onEvent(const WindowEvent& inEvent) { return; }
@@ -50,7 +50,7 @@ namespace Chicane
             void load(const DrawTexture::List& inResources);
             void load(const DrawSky& inResource);
             void setup(const Frame& inFrame);
-            void render(const Frame& inFrame);
+            void render(const Frame& inFrame, void* inData = nullptr);
             void cleanup();
 
             void handle(const WindowEvent& inEvent);

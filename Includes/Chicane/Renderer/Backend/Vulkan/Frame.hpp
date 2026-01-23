@@ -9,6 +9,7 @@
 #include "Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Image/Data.hpp"
 #include "Chicane/Renderer/Draw.hpp"
+#include "Chicane/Renderer/Draw/Poly/2D/Instance.hpp"
 #include "Chicane/Renderer/Draw/Poly/3D/Instance.hpp"
 
 namespace Chicane
@@ -29,6 +30,23 @@ namespace Chicane
             // Sychronization
             void setupSync();
             void destroySync();
+
+            // Resources
+            void setupCameraData();
+            void updateCameraData(const View& inData);
+            void destroyCameraData();
+
+            void setupLightData();
+            void updateLightData(const View::List& inData);
+            void destroyLightData();
+
+            void setup2DData();
+            void update2DData(const DrawPoly2DInstance::List& inData);
+            void destroy2DData();
+
+            void setup3DData();
+            void update3DData(const DrawPoly3DInstance::List& inData);
+            void destroy3DData();
 
             // Image
             void setupColorImage(vk::Format inFormat, const vk::Extent2D& inExtent);
@@ -72,7 +90,8 @@ namespace Chicane
             // Resources
             VulkanFrameResource<View>                     cameraResource;
             VulkanFrameResource<View>                     lightResource;
-            VulkanFrameResource<DrawPoly3DInstance>       meshResource;
+            VulkanFrameResource<DrawPoly2DInstance>       poly2DResource;
+            VulkanFrameResource<DrawPoly3DInstance>       poly3DResource;
 
             std::unordered_map<String, vk::DescriptorSet> descriptorSets;
             std::vector<vk::WriteDescriptorSet>           descriptorSetWrites;

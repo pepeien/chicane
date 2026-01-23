@@ -207,14 +207,14 @@ namespace Chicane
             }
         }
 
-        void Layer::render(const Frame& inFrame)
+        void Layer::render(const Frame& inFrame, void* inData)
         {
             if (!is(LayerStatus::Running))
             {
                 return;
             }
 
-            onRender(inFrame);
+            onRender(inFrame, inData);
 
             for (Layer* child : m_children)
             {
@@ -223,7 +223,7 @@ namespace Chicane
                     continue;
                 }
 
-                child->render(inFrame);
+                child->render(inFrame, inData);
             }
         }
 

@@ -17,7 +17,7 @@ namespace Chicane
             bool onInit() override;
             void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) override;
             bool onSetup(const Frame& inFrame) override;
-            void onRender(const Frame& inFrame) override;
+            void onRender(const Frame& inFrame, void* inData) override;
 
         private:
             // View

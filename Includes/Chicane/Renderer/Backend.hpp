@@ -22,28 +22,17 @@ namespace Chicane
             Backend(const Instance* inRenderer);
             virtual ~Backend();
 
-        protected:
-            virtual void onInit() { return; }
-            virtual void onResize(const Viewport& inViewport) { return; }
-            virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
-            virtual void onLoad(const DrawTexture::List& inResources) { return; }
-            virtual void onLoad(const DrawSky& inResource) { return; }
-            virtual void onSetup(const Frame& inFrame) { return; }
-            virtual void onRender(const Frame& inFrame) { return; }
-            virtual void onCleanup() { return; }
-
-            virtual void onHandle(const WindowEvent& inEvent) {}
-
         public:
-            void init();
-            void resize(const Viewport& inViewport);
-            void load(DrawPolyType inType, const DrawPolyResource& inResource);
-            void load(const DrawTexture::List& inResources);
-            void load(const DrawSky& inResource);
-            void setup(const Frame& inFrame);
-            void render(const Frame& inFrame);
-            void handle(const WindowEvent& inEvent);
-            void cleanup();
+            virtual void onInit();
+            virtual void onResize(const Viewport& inViewport);
+            virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource);
+            virtual void onLoad(const DrawTexture::List& inResources);
+            virtual void onLoad(const DrawSky& inResource);
+            virtual void onSetup(const Frame& inFrame);
+            virtual void onRender(const Frame& inFrame);
+            virtual void onCleanup();
+
+            virtual void onHandle(const WindowEvent& inEvent);
 
         public:
             // Layer
@@ -52,6 +41,10 @@ namespace Chicane
             {
                 m_layers.add(new Target(inParams...), inStrategy);
             }
+
+        protected:
+            void destroyLayers();
+            void rebuildLayers();
 
         protected:
             const Instance* m_renderer;

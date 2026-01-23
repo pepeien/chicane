@@ -69,7 +69,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLSceneSky::onRender(const Frame& inFrame)
+        void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
         {
             glUseProgram(m_shaderProgram);
 

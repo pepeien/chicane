@@ -71,7 +71,7 @@ namespace Chicane
             return true;
         }
 
-        void OpenGLLScene::onRender(const Frame& inFrame)
+        void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
