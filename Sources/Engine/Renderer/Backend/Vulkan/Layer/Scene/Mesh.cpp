@@ -262,7 +262,7 @@ namespace Chicane
             createInfo.bHasVertices         = true;
             createInfo.bHasDepthTest        = true;
             createInfo.bHasDepthWrite       = true;
-            createInfo.bHasBlending         = false;
+            createInfo.bHasBlending         = true;
             createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.shaders              = shaders;
             createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;
