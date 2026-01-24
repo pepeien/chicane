@@ -1,11 +1,11 @@
 #include "Chicane/Runtime/Scene/Component/Sound.hpp"
 
-#include "Chicane/Box/Asset/Sound/Manager.hpp"
+#include "Chicane/Box/Sound/Manager.hpp"
 
 namespace Chicane
 {
     CSound::CSound()
-        : Super(),
+        : Component(),
           m_sound(),
           m_manager(Box::getSoundManager())
     {}

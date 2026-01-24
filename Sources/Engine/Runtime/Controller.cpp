@@ -1,9 +1,9 @@
 #include "Chicane/Runtime/Controller.hpp"
 
+#include <SDL3/SDL.h>
+
 #include "Chicane/Runtime/Application.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn.hpp"
-
-#include <SDL3/SDL.h>
 
 namespace Chicane
 {
@@ -25,7 +25,7 @@ namespace Chicane
 
     void Controller::activate()
     {
-        Application::setController(this);
+        Application::getInstance().setController(this);
 
         onActivation();
     }
@@ -227,7 +227,7 @@ namespace Chicane
 
     void Controller::setupEvents()
     {
-        Application::getWindow()->watchEvent([this](WindowEvent inEvent) {
+        Application::getInstance().getWindow()->watchEvent([this](WindowEvent inEvent) {
             m_mouseButtonEvents.repeat();
             m_keyboardKeyEvents.repeat();
             m_gamepadButtonEvents.repeat();

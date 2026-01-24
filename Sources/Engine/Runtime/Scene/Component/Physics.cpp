@@ -9,7 +9,7 @@ static inline constexpr const float FORCE_DEACCELERATION_COEFFICIENT = 0.0009f;
 namespace Chicane
 {
     CPhysics::CPhysics()
-        : Super(),
+        : Component(),
           m_bIsApplyingForce(false),
           m_forceDirection(Vec3::Zero),
           m_forceVelocity(Vec3::Zero)
@@ -30,7 +30,7 @@ namespace Chicane
 
     bool CPhysics::canCollide() const
     {
-        return isAttached() && Application::hasScene();
+        return isAttached() && Application::getInstance().hasScene();
     }
 
     void CPhysics::addForce(const Vec3& inDirection, float inForce)
@@ -59,7 +59,7 @@ namespace Chicane
             return;
         }
 
-        for (Actor* actor : Application::getScene()->getActors())
+        for (Actor* actor : Application::getInstance().getScene()->getActors())
         {
             if (actor == attachment || !actor->canCollide() || !actor->isCollidingWith(attachment))
             {

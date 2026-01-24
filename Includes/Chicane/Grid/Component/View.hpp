@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Component.hpp"
 
@@ -32,6 +33,7 @@ namespace Chicane
             void activate();
             void deactivate();
 
+            // Properties
             const String& getPath() const;
 
         protected:

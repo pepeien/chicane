@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Chicane/Core/Event/Changeable.hpp"
+#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Function.hpp"
 #include "Chicane/Grid/Function/Data.hpp"
@@ -21,11 +22,8 @@ namespace Chicane
         public:
             using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
 
-            using ChildrenObservable   = Observable<Component*>;
-            using ChildrenSubscription = Subscription<Component*>;
-
-        protected:
-            using Super = Component;
+            using ChildrenObservable   = Chicane::EventObservable<Component*>;
+            using ChildrenSubscription = Chicane::EventSubscription<Component*>;
 
         public:
             Component(const pugi::xml_node& inNode);
@@ -97,6 +95,7 @@ namespace Chicane
 
             bool hasChildren() const;
             const std::vector<Component*>& getChildren() const;
+            std::vector<Component*> getChildrenFlat() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
             ChildrenSubscription watchChildren(
@@ -138,7 +137,6 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
-            void refreshZIndex();
 
             bool isReference(const String& inValue) const;
             Reference parseReference(const String& inValue) const;

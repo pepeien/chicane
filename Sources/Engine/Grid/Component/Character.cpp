@@ -1,6 +1,7 @@
 #include "Chicane/Grid/Component/Character.hpp"
 
-#include "Chicane/Box/Asset/Font/Manager.hpp"
+#include "Chicane/Box/Font/Manager.hpp"
+
 #include "Chicane/Core/Math/Curve.hpp"
 
 namespace Chicane
@@ -13,7 +14,7 @@ namespace Chicane
         static const Box::FontGlyph  EMPTY_GLYPH = {};
 
         Character::Character()
-            : Super(TAG_ID),
+            : Component(TAG_ID),
               m_bCanUpdate(false),
               m_character(NULL_CHARACTER)
         {}
@@ -141,6 +142,7 @@ namespace Chicane
 
             m_style.width  = glyph.line.x * scale;
             m_style.height = glyph.line.y * scale;
+            m_style.zIndex = 999.0f;
 
             m_style.margin.top = glyph.box.y * units;
 

@@ -1,5 +1,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
+#include <fstream>
+
 #include "Chicane/Core/FileSystem/Item/Type.hpp"
 
 namespace Chicane
@@ -69,7 +71,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             std::vector<unsigned char> result = {};
@@ -107,7 +111,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to open the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             size_t            fileSize = (size_t)file.tellg();
@@ -139,7 +145,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             file.write((const char*)inData.data(), sizeof(unsigned char) * inData.size());
@@ -158,7 +166,9 @@ namespace Chicane
 
             if (!file)
             {
-                throw std::runtime_error(String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar());
+                throw std::runtime_error(
+                    String::sprint("Failed to write the file [%s]", inFilepath.c_str()).toChar()
+                );
             }
 
             file.write(inData.data(), sizeof(char) * inData.size());

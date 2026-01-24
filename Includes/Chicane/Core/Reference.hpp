@@ -1,9 +1,10 @@
 #pragma once
 
+#include <typeindex>
+#include <unordered_map>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/String.hpp"
-
-#include <typeindex>
 
 namespace Chicane
 {

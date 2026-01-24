@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Box/Asset/Mesh.hpp"
+#include "Chicane/Box/Mesh.hpp"
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
@@ -13,14 +14,10 @@ namespace Chicane
         virtual ~CMesh() = default;
 
     protected:
-        void onActivation() override;
-        void onDeactivation() override;
         void onAttachment(Transformable* inRoot) override;
 
     public:
         bool isDrawable() const;
-        void show();
-        void hide();
 
         bool hasMesh() const;
         void setMesh(const String& inMesh);

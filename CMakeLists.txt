@@ -24,6 +24,8 @@ project(
 
 ##################### Options #######################
 option(CHICANE_SHARED "Build a shared version of the library" ON)
+option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
+option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
 
 ##################### Values #######################
 if (CHICANE_SHARED)
@@ -81,6 +83,11 @@ set(GRID_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Grid")
 set(KERB_TARGET_NAME "${NAME}-Kerb")
 set(KERB_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Kerb")
 set(KERB_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Kerb")
+
+## Renderer
+set(RENDERER_TARGET_NAME "${NAME}-Renderer")
+set(RENDERER_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Renderer")
+set(RENDERER_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Renderer")
 
 ## Runtime
 set(RUNTIME_TARGET_NAME "${NAME}-Runtime")

@@ -1,8 +1,12 @@
 #include "Level.hpp"
 
-#include "Actor.hpp"
-#include "Chicane/Runtime/Scene/Actor/Camera.hpp"
-#include "Chicane/Runtime/Scene/Actor/Sky.hpp"
+#include <Chicane/Runtime/Scene/Actor/Camera.hpp>
+#include <Chicane/Runtime/Scene/Actor/Sky.hpp>
+
+#include "Actor/Apple.hpp"
+#include "Actor/Structure.hpp"
+#include "Actor/Sun.hpp"
+
 #include "Game.hpp"
 
 static inline constexpr const std::uint32_t APPLE_DEPTH_COUNT  = 2;
@@ -77,7 +81,9 @@ Level::CameraSubscription Level::watchActiveCamera(
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Gray.bsky"));
+    createActor<Chicane::ASky>()->setSky(
+        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky")
+    );
 }
 
 void Level::spawnLights()

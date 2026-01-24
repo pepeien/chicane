@@ -1,5 +1,7 @@
 #include "Chicane/Core/Log.hpp"
 
+#include <iostream>
+
 namespace Chicane
 {
     namespace Log
@@ -25,8 +27,9 @@ namespace Chicane
 
         void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
         {
-            const String message = (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
-            const String color   = inHexColor.toUpper();
+            const String message =
+                (inIdentifier.isEmpty() ? inMessage : "[" + inIdentifier + "] " + inMessage).trim();
+            const String color = inHexColor.toUpper();
 
             if (g_colors.find(color) == g_colors.end())
             {

@@ -1,12 +1,12 @@
 #include "Chicane/Runtime/Scene/Component/Collision.hpp"
 
-#include "Chicane/Box/Asset/Model/Manager.hpp"
+#include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Runtime/Application.hpp"
 
 namespace Chicane
 {
     CCollision::CCollision()
-        : Super(),
+        : Component(),
           m_bCanCollide(true),
           m_shape({})
     {}
@@ -25,7 +25,7 @@ namespace Chicane
             return;
         }
 
-        for (CCollision* collider : Application::getScene()->getComponents<CCollision>())
+        for (CCollision* collider : Application::getInstance().getScene()->getComponents<CCollision>())
         {
             if (!isColliding(collider))
             {

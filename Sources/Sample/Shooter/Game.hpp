@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
+#include <cstdint>
+#include <functional>
 
 namespace Game
 {

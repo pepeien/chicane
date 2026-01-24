@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+#include <unordered_map>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Device/Type.hpp"
 

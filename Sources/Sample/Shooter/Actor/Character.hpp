@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+
 #include "Chicane/Runtime/Controller.hpp"
-#include "Chicane/Runtime/Scene.hpp"
 #include "Chicane/Runtime/Scene/Actor/Pawn/Character.hpp"
 #include "Chicane/Runtime/Scene/Component/Camera.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"

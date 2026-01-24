@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Color.hpp"
-#include "Chicane/Core/Event/Changeable.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
@@ -50,7 +51,10 @@ namespace Chicane
             static inline constexpr const char    CALCULATION_OPERATOR_MUL  = '*';
             static inline constexpr const char    CALCULATION_OPERATOR_DIV  = '/';
             static inline const std::vector<char> CALCULATION_OPERATORS     = {
-                CALCULATION_OPERATOR_SUM, CALCULATION_OPERATOR_SUB, CALCULATION_OPERATOR_MUL, CALCULATION_OPERATOR_DIV
+                CALCULATION_OPERATOR_SUM,
+                CALCULATION_OPERATOR_SUB,
+                CALCULATION_OPERATOR_MUL,
+                CALCULATION_OPERATOR_DIV
             };
 
             // Separator
@@ -89,7 +93,7 @@ namespace Chicane
 
             // Color
             static inline constexpr const char* BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
-            static inline constexpr const char* BACKGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_TRANSPARENT;
+            static inline constexpr const char* BACKGROUND_COLOR_DEFAULT_COLOR = Color::HEX_COLOR_TRANSPARENT;
 
             static inline constexpr const char* FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
             static inline constexpr const char* FOREGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_WHITE;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Device.hpp"
 

@@ -1,5 +1,7 @@
 #include "Chicane/Grid/Component.hpp"
 
+#include <algorithm>
+
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
@@ -16,10 +18,11 @@ namespace Chicane
         }
 
         Component::Component(const String& inTag)
-            : m_tag(inTag),
+            : Changeable(),
+              m_tag(inTag),
               m_id(""),
               m_class(""),
-              m_style(Style()),
+              m_style({}),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
@@ -31,6 +34,7 @@ namespace Chicane
               m_primitive({})
         {
             m_style.setParent(this);
+            m_style.watchChanges([&] { refresh(); });
         }
 
         Component::~Component()
@@ -51,9 +55,9 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            onTick(inDeltaTime);
+            refreshStyle();
 
-            refresh();
+            onTick(inDeltaTime);
 
             for (Component* child : m_children)
             {
@@ -64,16 +68,9 @@ namespace Chicane
         void Component::refresh()
         {
             refreshStyle();
-
-            if (!isVisible())
-            {
-                return;
-            }
-
             refreshSize();
             refreshPosition();
             refreshPrimitive();
-            refreshZIndex();
 
             onRefresh();
         }
@@ -273,8 +270,8 @@ namespace Chicane
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            const bool bHasLocally =
-                m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
+            const bool bHasLocally = m_functions.find(id) != m_functions.end() && m_functions.at(id) &&
+                                     m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
@@ -413,7 +410,9 @@ namespace Chicane
                                      ) -
                                      neighbours.begin();
 
-            return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
+            return neighbours.at(
+                std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1))
+            );
         }
 
         bool Component::hasChildren() const
@@ -424,6 +423,26 @@ namespace Chicane
         const std::vector<Component*>& Component::getChildren() const
         {
             return m_children;
+        }
+
+        std::vector<Component*> Component::getChildrenFlat() const
+        {
+            std::vector<Component*> result;
+
+            for (Component* child : m_children)
+            {
+                if (!child)
+                {
+                    continue;
+                }
+
+                result.push_back(child);
+
+                std::vector<Component*> sub = child->getChildrenFlat();
+                result.insert(result.end(), sub.begin(), sub.end());
+            }
+
+            return result;
         }
 
         void Component::addChildren(const pugi::xml_node& inNode)
@@ -586,8 +605,9 @@ namespace Chicane
                                                             : (m_style.margin.top - m_style.margin.bottom)
             );
             Vec2 padding = Vec2(
-                m_style.padding.left == m_style.padding.right ? m_style.padding.left
-                                                              : (m_style.padding.left - m_style.padding.right),
+                m_style.padding.left == m_style.padding.right
+                    ? m_style.padding.left
+                    : (m_style.padding.left - m_style.padding.right),
                 m_style.padding.top == m_style.padding.bottom ? m_style.padding.top
                                                               : (m_style.padding.top - m_style.padding.bottom)
             );
@@ -629,18 +649,6 @@ namespace Chicane
 
                 break;
             }
-        }
-
-        void Component::refreshZIndex()
-        {
-            const Style& parentStyle = getParent()->getStyle();
-
-            if (m_style.zIndex > 0.0f || parentStyle.zIndex <= 0.0f)
-            {
-                return;
-            }
-
-            m_style.zIndex = parentStyle.zIndex + 0.001f;
         }
 
         String Component::parseText(const String& inValue) const

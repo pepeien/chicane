@@ -12,7 +12,7 @@ BracedInitializerIndentWidth: 4
 NamespaceIndentation: All
 
 # Line length
-ColumnLimit: 120
+ColumnLimit: 110
 
 # Braces (Allman style)
 BreakBeforeBraces: Custom
@@ -63,7 +63,7 @@ PenaltyReturnTypeOnItsOwnLine: 2000
 AllowShortIfStatementsOnASingleLine: Never
 
 # Includes
-SortIncludes: true
+SortIncludes: false
 
 # Comments
 ReflowComments: false
@@ -79,4 +79,4 @@ FixNamespaceComments: false
 AlignArrayOfStructures: Left
 PackConstructorInitializers: Never
 BreakStringLiterals: false
-IndentPPDirectives: AfterHash
+IndentPPDirectives: BeforeHash

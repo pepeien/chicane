@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "Chicane/Core.hpp"
 
 namespace Chicane

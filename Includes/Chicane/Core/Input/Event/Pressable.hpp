@@ -1,5 +1,10 @@
 #pragma once
 
+#include <algorithm>
+#include <functional>
+#include <vector>
+#include <unordered_map>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Status.hpp"
@@ -15,7 +20,8 @@ namespace Chicane
         struct CHICANE_CORE PressableEvents : private Recorder
         {
         public:
-            using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
+            using Events =
+                std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
             PressableEvents()

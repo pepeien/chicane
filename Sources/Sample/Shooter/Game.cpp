@@ -1,9 +1,11 @@
-#include "Chicane/Runtime/Scene.hpp"
+#include "Game.hpp"
+
+#include <Chicane/Core/Event/Observable.hpp>
 
 std::uint32_t m_score    = 0;
 std::uint32_t m_maxScore = 0;
 
-Chicane::Observable<std::uint32_t> m_scoreObservable = Chicane::Observable<std::uint32_t>();
+Chicane::EventObservable<std::uint32_t> m_scoreObservable = Chicane::EventObservable<std::uint32_t>();
 
 namespace Game
 {

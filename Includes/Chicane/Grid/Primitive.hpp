@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/Math/Vertex.hpp"
+
 #include "Chicane/Grid.hpp"
 
 namespace Chicane
@@ -25,8 +26,8 @@ namespace Chicane
             }
 
         public:
-            std::vector<Vertex>        vertices = {};
-            std::vector<std::uint32_t> indices  = {};
+            Vertex::List    vertices = {};
+            Vertex::Indices indices  = {};
         };
     }
 }

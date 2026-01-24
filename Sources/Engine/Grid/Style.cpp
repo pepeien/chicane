@@ -1,6 +1,9 @@
 #include "Chicane/Grid/Style.hpp"
 
-#include "Chicane/Box/Asset/Font.hpp"
+#include <algorithm>
+
+#include "Chicane/Box/Font.hpp"
+
 #include "Chicane/Grid/Component.hpp"
 
 namespace Chicane
@@ -9,7 +12,9 @@ namespace Chicane
     {
         StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
         {
-            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
+            return parseSources(
+                FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string())
+            );
         }
 
         StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
@@ -100,7 +105,8 @@ namespace Chicane
         }
 
         Style::Style()
-            : display(StyleDisplay::Block),
+            : Changeable(),
+              display(StyleDisplay::Block),
               zIndex(0.0f),
               width(0.0f),
               height(0.0f),
@@ -251,12 +257,18 @@ namespace Chicane
         {
             if (m_properties.find(HEIGHT_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(height, parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setProperty(
+                    height,
+                    parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                );
             }
 
             if (m_properties.find(WIDTH_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(width, parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal));
+                setProperty(
+                    width,
+                    parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal)
+                );
             }
         }
 
@@ -385,7 +397,10 @@ namespace Chicane
 
             if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(font.size, parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setProperty(
+                    font.size,
+                    parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical)
+                );
             }
         }
 
@@ -410,8 +425,9 @@ namespace Chicane
             {
                 const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
-                const std::vector<String> params = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
-                                                       .split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params =
+                    inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
+                        .split(FUNCTION_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
@@ -530,7 +546,8 @@ namespace Chicane
                     continue;
                 }
 
-                const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
+                const auto& iterator =
+                    std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
 
                 if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
                 {
@@ -600,8 +617,9 @@ namespace Chicane
                 return value;
             }
 
-            const Vec2& size = isPosition(StylePosition::Absolute) ? m_parent->getRoot()->getSize()
-                                                                   : m_parent->getParent()->getAvailableSize();
+            const Vec2& size = isPosition(StylePosition::Absolute)
+                                   ? m_parent->getRoot()->getSize()
+                                   : m_parent->getParent()->getAvailableSize();
 
             if (inDirection == StyleDirection::Horizontal)
             {

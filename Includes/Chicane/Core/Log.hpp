@@ -1,5 +1,7 @@
 #pragma once
 
+#include <deque>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
@@ -12,8 +14,8 @@ namespace Chicane
     namespace Log
     {
         using List             = std::deque<Entry>;
-        using ListObservable   = Observable<List>;
-        using ListSubscription = Subscription<List>;
+        using ListObservable   = EventObservable<List>;
+        using ListSubscription = EventSubscription<List>;
 
         CHICANE_CORE ListSubscription watchLogs(
             ListSubscription::NextCallback     inNext,
@@ -21,7 +23,9 @@ namespace Chicane
             ListSubscription::CompleteCallback inComplete = nullptr
         );
 
-        CHICANE_CORE void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage);
+        CHICANE_CORE void emmit(
+            const String& inHexColor, const String& inIdentifier, const String& inMessage
+        );
         template <typename... T>
         void emmit(const String& inHexColor, const String& inIdentifier, String inMessage, T... inParams)
         {

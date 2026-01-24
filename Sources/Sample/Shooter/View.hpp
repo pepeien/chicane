@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Chicane/Core/Telemetry.hpp"
-#include "Chicane/Grid/Component/View.hpp"
+#include <Chicane/Core/Telemetry.hpp>
+#include <Chicane/Grid/Component/View.hpp>
 
 class View : public Chicane::Grid::View
 {
@@ -9,7 +9,7 @@ public:
     View();
 
 private:
-    bool m_didPlayerWin;
+    bool m_bDidPlayerWin;
 
     // Status
     const Chicane::Telemetry& m_telemetry;

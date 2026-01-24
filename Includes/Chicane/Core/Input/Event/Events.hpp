@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <vector>
+
 #include "Chicane/Core.hpp"
 
 namespace Chicane

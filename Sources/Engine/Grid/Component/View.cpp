@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         View::View(const String& inSource)
-            : Super(TAG_ID),
+            : Component(TAG_ID),
               m_styles({})
         {
             if (inSource.isEmpty())

@@ -5,20 +5,23 @@
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/FileSystem.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
-#include "Chicane/Core/Window/CreateInfo.hpp"
 #include "Chicane/Core/Window/Event.hpp"
+#include "Chicane/Core/Window/Settings.hpp"
 #include "Chicane/Core/Window/Type.hpp"
 
 namespace Chicane
 {
+    using WindowEventObservable   = EventObservable<WindowEvent>;
+    using WindowEventSubscription = EventSubscription<WindowEvent>;
+
+    using WindowSizeObservable    = EventObservable<Vec<2, int>>;
+    using WindowSizeSubscription  = EventSubscription<Vec<2, int>>;
+
+    class Application;
+
     class CHICANE_CORE Window
     {
-    public:
-        using EventObservable   = Observable<WindowEvent>;
-        using EventSubscription = Subscription<WindowEvent>;
-
-        using SizeObservable    = Observable<Vec<2, int>>;
-        using SizeSubscription  = Subscription<Vec<2, int>>;
+        friend Application;
 
     public:
         Window();
@@ -26,8 +29,9 @@ namespace Chicane
 
     public:
         // Lifecycle
-        void init(const WindowCreateInfo& inCreateInfo);
+        void init(const WindowSettings& inSettings);
         bool run();
+        void restart();
 
         // Settings
         void setTitle(const String& inTitle);
@@ -41,17 +45,20 @@ namespace Chicane
         void setPosition(const Vec<2, int>& inValue);
         void setPosition(int inX, int inY);
 
+        std::uint32_t getDisplay() const;
         void setDisplay(std::uint32_t inIndex);
 
-        void setType(WindowType inType);
         WindowType getType() const;
+        void setType(WindowType inType);
+
+        WindowBackend getBackend() const;
+
+        bool hasInstance() const;
+        void initInstance();
+        void* getInstance() const; // SDL_Window*
+        void destroyInstance();
 
         // Status
-        void* getInstance() const;
-
-        bool wasCreated() const;
-        void destroy();
-
         bool isFocused() const;
         void switchFocus();
         void focus();
@@ -59,22 +66,24 @@ namespace Chicane
 
         bool isResizable();
         void enableResizing();  // Only takes effect when the type is `Type::Windowed`
-        void disableResizing(); // Only takes effect when the type is
-                                // `Type::Windowed`
+        void disableResizing(); // Only takes effect when the type is `Type::Windowed`
 
         bool isMinimized();
 
         // Event
-        EventSubscription watchEvent(
-            EventSubscription::NextCallback     inNext,
-            EventSubscription::ErrorCallback    inError    = nullptr,
-            EventSubscription::CompleteCallback inComplete = nullptr
+        WindowEventSubscription watchEvent(
+            WindowEventSubscription::NextCallback     inNext,
+            WindowEventSubscription::ErrorCallback    inError    = nullptr,
+            WindowEventSubscription::CompleteCallback inComplete = nullptr
         );
-        SizeSubscription watchSize(
-            SizeSubscription::NextCallback     inNext,
-            SizeSubscription::ErrorCallback    inError    = nullptr,
-            SizeSubscription::CompleteCallback inComplete = nullptr
+        WindowSizeSubscription watchSize(
+            WindowSizeSubscription::NextCallback     inNext,
+            WindowSizeSubscription::ErrorCallback    inError    = nullptr,
+            WindowSizeSubscription::CompleteCallback inComplete = nullptr
         );
+
+    protected:
+        void setBackend(WindowBackend inBackend);
 
     private:
         // Settings
@@ -86,21 +95,15 @@ namespace Chicane
         void emmitError(const String& inMessage);
 
     private:
-        void*            m_instance;
+        void*                 m_instance;
 
-        String           m_title;
-        FileSystem::Path m_icon;
-        Vec<2, int>      m_size;
-        int              m_display;
-        WindowType       m_type;
-        Vec<2, int>      m_position;
+        WindowSettings        m_settings;
 
-        bool             m_bIsFocused;
-        bool             m_bIsResizable;
-        bool             m_bIsMinimized; // Only takes effect when the type is
-                                         // `WindowType::Windowed`
+        bool                  m_bIsFocused;
+        bool                  m_bIsResizable;
+        bool                  m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
-        EventObservable  m_eventObservable;
-        SizeObservable   m_sizeObservable;
+        WindowEventObservable m_eventObservable;
+        WindowSizeObservable  m_sizeObservable;
     };
 }

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <array>
+#include <cstdint>
+
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Channel.hpp"
 #include "Chicane/Screech/Sound/Format.hpp"

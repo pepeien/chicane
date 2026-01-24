@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Transform/Spatial.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
@@ -10,7 +12,7 @@ namespace Chicane
     struct CHICANE_CORE Bounds
     {
     public:
-        Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices);
+        Bounds(const Vertex::List& inVertices, const Vertex::Indices& inIndices);
         Bounds();
 
     public:
@@ -40,28 +42,28 @@ namespace Chicane
         const Vec3& getBaseBottom() const;
 
         const std::vector<Vec3>& getVertices() const;
-        const std::vector<std::uint32_t>& getIndices() const;
+        const Vertex::Indices& getIndices() const;
 
     private:
         void refresh();
 
     private:
-        Vec3                       m_min;
-        Vec3                       m_baseMin;
+        Vec3              m_min;
+        Vec3              m_baseMin;
 
-        Vec3                       m_max;
-        Vec3                       m_baseMax;
+        Vec3              m_max;
+        Vec3              m_baseMax;
 
-        Vec3                       m_top;
-        Vec3                       m_baseTop;
+        Vec3              m_top;
+        Vec3              m_baseTop;
 
-        Vec3                       m_center;
-        Vec3                       m_baseCenter;
+        Vec3              m_center;
+        Vec3              m_baseCenter;
 
-        Vec3                       m_bottom;
-        Vec3                       m_baseBottom;
+        Vec3              m_bottom;
+        Vec3              m_baseBottom;
 
-        std::vector<Vec3>          m_vertices;
-        std::vector<std::uint32_t> m_indices;
+        std::vector<Vec3> m_vertices;
+        Vertex::Indices   m_indices;
     };
 }

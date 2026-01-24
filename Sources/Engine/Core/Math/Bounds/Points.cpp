@@ -2,7 +2,7 @@
 
 namespace Chicane
 {
-    BoundsPoints::BoundsPoints(const std::vector<Vertex>& inVertices)
+    BoundsPoints::BoundsPoints(const Vertex::List& inVertices)
         : BoundsPoints()
     {
         m_min = Vec3(FLT_MAX);

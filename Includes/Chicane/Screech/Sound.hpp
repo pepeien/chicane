@@ -1,6 +1,9 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core/FileSystem.hpp"
+
 #include "Chicane/Screech.hpp"
 #include "Chicane/Screech/Sound/Status.hpp"
 #include "Chicane/Screech/Sound/Vendor.hpp"
@@ -22,7 +25,9 @@ namespace Chicane
 
         public:
             bool isPlaying() const;
-            bool play(float inVolume = 0.7f, float inSpeed = 1.0f, std::function<void()> inCallback = nullptr);
+            bool play(
+                float inVolume = 0.7f, float inSpeed = 1.0f, std::function<void()> inCallback = nullptr
+            );
 
             bool isPaused() const;
             bool pause();

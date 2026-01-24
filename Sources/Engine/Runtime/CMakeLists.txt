@@ -1,22 +1,17 @@
-##################### Vendors #######################
-find_package(Vulkan REQUIRED)
-
 ##################### Files #######################
 file(
     GLOB_RECURSE
     HEADERS
 
-    # Headers
+    ${CHICANE_INCLUDES_DIR}/Runtime.hpp
     ${RUNTIME_HEADER_DIR}/*.hpp
 )
-list(APPEND HEADERS ${CHICANE_INCLUDES_DIR}/Runtime.hpp)
 list(FILTER HEADERS EXCLUDE REGEX "Vendor/.*")
 
 file(
     GLOB_RECURSE
     SOURCES
 
-    # Sources
     ${RUNTIME_SOURCE_DIR}/*.cpp
 )
 list(FILTER SOURCES EXCLUDE REGEX "Vendor/.*")
@@ -56,9 +51,6 @@ target_include_directories(
         # Alias
         $<BUILD_INTERFACE:${BUILD_INTERFACE_DIR}>
         $<INSTALL_INTERFACE:${INSTALL_INTERFACE_DIR}>
-
-        # Vendors
-        ${Vulkan_INCLUDE_DIRS}
 )
 
 target_link_libraries(
@@ -69,17 +61,10 @@ target_link_libraries(
         Chicane::Core
         Chicane::Grid
         Chicane::Kerb
+        Chicane::Renderer
         Chicane::Screech
-
-        Vulkan::Vulkan
-
-    PRIVATE
-        SDL3::SDL3
 )
 
 add_dependencies(${RUNTIME_TARGET_NAME} ${CONTENTS_TARGET_NAME})
 
 CH_ADD_COMPILER(${RUNTIME_TARGET_NAME})
-
-##################### Directories #######################
-add_subdirectory(Vendor)

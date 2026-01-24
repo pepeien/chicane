@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <vector>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
 #include "Chicane/Core/String.hpp"
@@ -7,7 +10,7 @@
 namespace Chicane
 {
     template <typename T = void*>
-    class Observable
+    class CHICANE_CORE EventObservable
     {
     public:
         using EmptyCallback    = std::function<void()>;
@@ -16,23 +19,23 @@ namespace Chicane
         using CompleteCallback = std::function<void()>;
 
     public:
-        ~Observable() { m_subscriptions.clear(); }
+        ~EventObservable() { m_subscriptions.clear(); }
 
     public:
-        Subscription<T> subscribe(
+        EventSubscription<T> subscribe(
             EmptyCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
+            m_subscriptions.push_back(EventSubscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }
 
-        Subscription<T> subscribe(
+        EventSubscription<T> subscribe(
             NextCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
-            m_subscriptions.push_back(Subscription<T>(inNext, inError, inComplete));
+            m_subscriptions.push_back(EventSubscription<T>(inNext, inError, inComplete));
 
             return m_subscriptions.back();
         }
@@ -41,7 +44,7 @@ namespace Chicane
 
         void next(T inData)
         {
-            for (Subscription<T>& subscription : m_subscriptions)
+            for (EventSubscription<T>& subscription : m_subscriptions)
             {
                 subscription.next(inData);
             }
@@ -49,7 +52,7 @@ namespace Chicane
 
         void error(const String& inMessage)
         {
-            for (Subscription<T>& subscription : m_subscriptions)
+            for (EventSubscription<T>& subscription : m_subscriptions)
             {
                 subscription.error(inMessage);
             }
@@ -57,13 +60,13 @@ namespace Chicane
 
         void complete()
         {
-            for (Subscription<T>& subscription : m_subscriptions)
+            for (EventSubscription<T>& subscription : m_subscriptions)
             {
                 subscription.complete();
             }
         }
 
     private:
-        std::vector<Subscription<T>> m_subscriptions;
+        std::vector<EventSubscription<T>> m_subscriptions;
     };
 }

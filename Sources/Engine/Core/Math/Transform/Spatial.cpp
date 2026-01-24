@@ -48,7 +48,7 @@ namespace Chicane
 
     void SpatialTransform::addRelativeTranslation(const Vec3& inTranslation)
     {
-        m_relative.addRotation(inTranslation);
+        m_relative.addTranslation(inTranslation);
 
         refresh();
     }

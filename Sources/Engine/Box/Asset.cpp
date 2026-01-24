@@ -1,7 +1,5 @@
 #include "Chicane/Box/Asset.hpp"
 
-#include "Chicane/Box/Asset/Header.hpp"
-
 namespace Chicane
 {
     namespace Box
@@ -150,7 +148,9 @@ namespace Chicane
 
             if (!name.equals(TAG))
             {
-                throw std::runtime_error(String::sprint("Asset files root element must be have [%s] as a tag", TAG));
+                throw std::runtime_error(
+                    String::sprint("Asset files root element must be have [%s] as a tag", TAG)
+                );
             }
         }
     }

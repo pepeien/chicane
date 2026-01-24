@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Device/Event.hpp"
 #include "Chicane/Core/Input/Gamepad/Button.hpp"

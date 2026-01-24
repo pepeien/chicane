@@ -1,6 +1,11 @@
 #pragma once
 
+#include <cfloat>
+#include <cmath>
+#include <functional>
+
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
@@ -35,7 +40,8 @@ namespace Chicane
             void setAll(float inValue);
 
             bool refresh(
-                const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
+                const StyleSource::Map&                             inSource,
+                std::function<float(const String&, StyleDirection)> inCalculator
             );
 
         public:

@@ -1,0 +1,39 @@
+#version 460
+
+struct Instance {
+    vec2 screen;
+    vec2 size;
+    vec3 position;
+};
+
+layout(location = 1) out vec4 outColor;
+
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec4 inColor;
+layout(location = 2) in vec2 inUV;
+layout(location = 3) in vec3 inNormal;
+
+layout(std430, set = 0, binding = 0) readonly buffer GridBuffer {
+    Instance data[];
+} instances;
+
+void main() {
+    Instance instance = instances.data[gl_InstanceIndex];
+
+    vec2 vertex = inPosition.xy;
+    vertex   *= instance.size;   // Scale vertex to UI size
+    vertex   /= instance.screen; // Normalize to screen size
+    vertex.y *= -1.0;            // Flips Y
+
+    vec3 position = instance.position;
+    position.xy += instance.size * 0.5; // Account for component offset
+    position.xy /= instance.screen;     // Normalize to screen size
+    position.xy *= 2.0;                 // Normalize to NDC
+    position.xy -= 1.0;                 // Normalize to NDC
+    position.z  /= 999.9;
+    position.z   = clamp(abs(position.z - 1.0), 0.0, 1.0);
+
+    outColor = inColor / 255.0;
+
+    gl_Position  = vec4(vertex + position.xy, position.z, 1.0);
+}

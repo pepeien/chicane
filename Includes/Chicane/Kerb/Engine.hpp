@@ -1,13 +1,15 @@
 #pragma once
 
-#include "Chicane/Core/Math/Vertex.hpp"
-#include "Chicane/Kerb.hpp"
-
+#include <Jolt/Jolt.h>
 #include <Jolt/Core/JobSystemThreadPool.h>
 #include <Jolt/Physics/Collision/BroadPhase/BroadPhaseLayerInterfaceTable.h>
 #include <Jolt/Physics/Collision/BroadPhase/ObjectVsBroadPhaseLayerFilterTable.h>
 #include <Jolt/Physics/Collision/ObjectLayerPairFilterTable.h>
 #include <Jolt/Physics/PhysicsSystem.h>
+
+#include "Chicane/Core/Math/Vertex.hpp"
+
+#include "Chicane/Kerb.hpp"
 
 namespace Chicane
 {
@@ -30,15 +32,12 @@ namespace Chicane
             Engine(Engine&&)                 = delete;
             Engine& operator=(Engine&&)      = delete;
 
-        public:
-            JPH::Body* createBodyFromMesh(
-                const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices
-            );
-
         private:
             Engine();
-
             ~Engine();
+
+        public:
+            JPH::Body* createBodyFromMesh(const Vertex::List& inVertices, const Vertex::Indices& inIndices);
 
         private:
             JPH::JobSystemThreadPool                m_threadPool;

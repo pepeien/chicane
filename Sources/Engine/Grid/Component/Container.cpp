@@ -5,7 +5,7 @@ namespace Chicane
     namespace Grid
     {
         Container::Container(const pugi::xml_node& inNode)
-            : Super(inNode),
+            : Component(inNode),
               m_bCanUpdate(false)
         {}
 

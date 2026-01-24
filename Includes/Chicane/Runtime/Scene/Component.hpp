@@ -1,17 +1,15 @@
 #pragma once
 
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Runtime.hpp"
-#include "Chicane/Runtime/Scene/Transformable.hpp"
 
 namespace Chicane
 {
     class CHICANE_RUNTIME Component : public Transformable
     {
-    protected:
-        using Super = Component;
-
     public:
         Component();
         virtual ~Component() = default;
@@ -50,12 +48,12 @@ namespace Chicane
         void attachTo(Transformable* inParent);
 
     public:
-        bool           m_bCanTick;
-        bool           m_bIsActive;
+        bool                m_bCanTick;
+        bool                m_bIsActive;
 
-        String         m_id;
+        String              m_id;
 
-        Transformable* m_parent;
-        Subscription<> m_parentSubscription;
+        Transformable*      m_parent;
+        EventSubscription<> m_parentSubscription;
     };
 }

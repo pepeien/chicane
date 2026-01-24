@@ -17,12 +17,12 @@
 [submodule "Sources/Engine/Core/Vendor/pugixml"]
 	path = Sources/Engine/Core/Vendor/pugixml
 	url = https://github.com/pepeien/pugixml.git
+[submodule "Sources/Engine/Core/Vendor/SDL"]
+	path = Sources/Engine/Core/Vendor/SDL
+	url = https://github.com/pepeien/SDL.git
 [submodule "Sources/Engine/Kerb/Vendor/JoltPhysics"]
 	path = Sources/Engine/Kerb/Vendor/JoltPhysics
 	url = https://github.com/pepeien/JoltPhysics
-[submodule "Sources/Engine/Runtime/Vendor/SDL"]
-	path = Sources/Engine/Runtime/Vendor/SDL
-	url = https://github.com/pepeien/SDL.git
 [submodule "Sources/Engine/Screech/Vendor/miniaudio"]
 	path = Sources/Engine/Screech/Vendor/miniaudio
 	url = https://github.com/pepeien/miniaudio.git

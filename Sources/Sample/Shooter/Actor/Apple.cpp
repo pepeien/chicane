@@ -1,7 +1,9 @@
 #include "Actor/Apple.hpp"
 
 #include "Chicane/Core.hpp"
+
 #include "Chicane/Runtime/Application.hpp"
+
 #include "Game.hpp"
 
 Apple::Apple()
@@ -15,12 +17,12 @@ Apple::Apple()
     setCanTick(true);
     setCanCollide(true);
 
-    m_meshComponent = Chicane::Application::getScene()->createComponent<Chicane::CMesh>();
+    m_meshComponent = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
     m_meshComponent->setMesh("Contents/Sample/Shooter/Meshes/Apple.bmsh");
     m_meshComponent->attachTo(this);
     m_meshComponent->activate();
 
-    m_physicsComponent = Chicane::Application::getScene()->createComponent<Chicane::CPhysics>();
+    m_physicsComponent = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CPhysics>();
     m_physicsComponent->attachTo(this);
     m_physicsComponent->activate();
 }
@@ -47,7 +49,7 @@ void Apple::onHit(const Chicane::Actor* inSubject)
 
     m_meshComponent->deactivate();
 
-    Chicane::Application::getScene()->removeComponent(m_meshComponent);
+    Chicane::Application::getInstance().getScene()->removeComponent(m_meshComponent);
 
     Game::incrementScore(1);
 }

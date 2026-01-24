@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
+
+#include "Chicane/Core.hpp"
 
 namespace Chicane
 {

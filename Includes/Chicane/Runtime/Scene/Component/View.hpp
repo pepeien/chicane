@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Chicane/Runtime.hpp"
-#include "Chicane/Runtime/Renderer/View.hpp"
-#include "Chicane/Runtime/Renderer/View/Frustum.hpp"
-#include "Chicane/Runtime/Renderer/View/Settings.hpp"
+#include "Chicane/Core/View.hpp"
+#include "Chicane/Core/View/Frustum.hpp"
+#include "Chicane/Core/View/Settings.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
 namespace Chicane
@@ -42,7 +42,7 @@ namespace Chicane
         void setClip(float inNearClip, float inFarClip);
 
         // Data
-        const RendererView& getData() const;
+        const View& getData() const;
 
         // Focus
         const Vec3& getFocusPoint() const;
@@ -53,9 +53,9 @@ namespace Chicane
         void updateView();
 
     protected:
-        RendererViewSettings m_settings;
-        RendererViewFrustum  m_frustum;
-        RendererView         m_data;
-        Vec3                 m_focusPoint;
+        ViewSettings m_settings;
+        ViewFrustum  m_frustum;
+        View         m_data;
+        Vec3         m_focusPoint;
     };
 }

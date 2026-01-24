@@ -1,0 +1,104 @@
+#pragma once
+
+#include <vulkan/vulkan.hpp>
+
+#include "Chicane/Core/Window/Event.hpp"
+
+#include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
+
+namespace Chicane
+{
+    namespace Renderer
+    {
+        class CHICANE_RENDERER VulkanBackend : public Backend
+        {
+        public:
+            VulkanBackend(const Instance* inRenderer);
+            virtual ~VulkanBackend();
+
+        protected:
+            void onInit() override;
+            void onResize(const Viewport& inViewport) override;
+            void onRender(const Frame& inFrame) override;
+
+            void onHandle(const WindowEvent& inEvent) override;
+
+        private:
+            void buildInstance();
+            void destroyInstance();
+
+            void buildDebugMessenger();
+            void destroyDebugMessenger();
+
+            void buildSurface();
+            void destroySurface();
+
+            void buildQueues();
+
+            void buildDevices();
+            void destroyDevices();
+
+            void buildSwapchain();
+            void destroySwapchain();
+            void rebuildSwapchain();
+
+            void buildCommandPool();
+            void destroyCommandPool();
+
+            void buildMainCommandBuffer();
+            void buildFramesCommandBuffers();
+
+            void renderViewport(const vk::CommandBuffer& inCommandBuffer);
+
+            void buildLayers();
+            void renderLayers(const Frame& inFrame, void* inData);
+
+        public:
+            // Instance
+            vk::Instance          instance;
+
+            // Devices
+            vk::PhysicalDevice    physicalDevice;
+            vk::Device            logicalDevice;
+
+            // Surface
+            vk::SurfaceKHR        surface;
+
+            // Queues
+            vk::Queue             graphicsQueue;
+
+            // Command
+            vk::CommandBuffer     mainCommandBuffer;
+
+            // Swap Chain
+            VulkanSwapchainBundle swapchain;
+
+            // Frame
+            int                   imageCount;
+
+        private:
+            // Instance
+            vk::detail::DispatchLoaderDynamic m_dispatcher;
+
+            // Debug
+            vk::DebugUtilsMessengerEXT        m_debugMessenger;
+
+            // Queues
+            vk::Queue                         m_presentQueue;
+
+            // Command
+            vk::CommandPool                   m_mainCommandPool;
+
+            // Frame
+            int                               m_currentImageIndex;
+
+            // Viewport
+            vk::Viewport                      m_vkViewport;
+            vk::Rect2D                        m_vkScissor;
+        };
+    }
+}

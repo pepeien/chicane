@@ -6,7 +6,7 @@ constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(const std::vector<Vertex>& inVertices, const std::vector<std::uint32_t>& inIndices)
+    Bounds::Bounds(const Vertex::List& inVertices, const Vertex::Indices& inIndices)
         : Bounds()
     {
         for (std::uint32_t index : inIndices)
@@ -285,7 +285,7 @@ namespace Chicane
         return m_vertices;
     }
 
-    const std::vector<std::uint32_t>& Bounds::getIndices() const
+    const Vertex::Indices& Bounds::getIndices() const
     {
         return m_indices;
     }

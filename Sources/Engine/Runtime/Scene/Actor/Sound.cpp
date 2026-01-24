@@ -5,10 +5,10 @@
 namespace Chicane
 {
     ASound::ASound()
-        : Super(),
+        : Actor(),
           m_sound(nullptr)
     {
-        m_sound = Application::getScene()->createComponent<CSound>();
+        m_sound = Application::getInstance().getScene()->createComponent<CSound>();
         m_sound->attachTo(this);
     }
 

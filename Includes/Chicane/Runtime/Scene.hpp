@@ -1,9 +1,10 @@
 #pragma once
 
+#include <algorithm>
+
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
-#include "Chicane/Runtime/Scene/Component/Camera.hpp"
 
 static inline constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
 
@@ -12,11 +13,11 @@ namespace Chicane
     class CHICANE_RUNTIME Scene
     {
     public:
-        using ActorsObservable       = Observable<std::vector<Actor*>>;
-        using ActorsSubscription     = Subscription<std::vector<Actor*>>;
+        using ActorsObservable       = EventObservable<std::vector<Actor*>>;
+        using ActorsSubscription     = EventSubscription<std::vector<Actor*>>;
 
-        using ComponentsObservable   = Observable<std::vector<Component*>>;
-        using ComponentsSubscription = Subscription<std::vector<Component*>>;
+        using ComponentsObservable   = EventObservable<std::vector<Component*>>;
+        using ComponentsSubscription = EventSubscription<std::vector<Component*>>;
 
     public:
         Scene();
@@ -79,8 +80,6 @@ namespace Chicane
 
             m_actorsObservable.next(m_actors);
 
-            refreshDefaultCamera();
-
             return static_cast<T*>(m_actors.back());
         }
 
@@ -130,6 +129,23 @@ namespace Chicane
 
             return result;
         }
+        template <class T>
+        std::vector<T*> getActiveComponents() const
+        {
+            std::vector<T*> result{};
+
+            for (Component* component : getComponents())
+            {
+                if (typeid(*component) != typeid(T) || !component->isActive())
+                {
+                    continue;
+                }
+
+                result.push_back(static_cast<T*>(component));
+            }
+
+            return result;
+        }
 
         template <class T = Component>
         T* createComponent()
@@ -137,8 +153,6 @@ namespace Chicane
             m_components.push_back(new T());
 
             m_componentsObservable.next(m_components);
-
-            refreshDefaultCamera();
 
             return static_cast<T*>(m_components.back());
         }
@@ -191,8 +205,8 @@ namespace Chicane
                         continue;
                     }
 
-                    bool bWillIgnored =
-                        std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) != inIgnoredActors.end();
+                    bool bWillIgnored = std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) !=
+                                        inIgnoredActors.end();
                     bool bWasTraced = std::find(result.begin(), result.end(), actor) != result.end();
 
                     if (bWillIgnored || bWasTraced)
@@ -207,9 +221,12 @@ namespace Chicane
                 point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
                 point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
 
-                bHasXReachedDestination = bIsXPositive ? point.x >= inDestination.x : point.x <= inDestination.x;
-                bHasYReachedDestination = bIsYPositive ? point.y >= inDestination.y : point.y <= inDestination.y;
-                bHasZReachedDestination = bIsZPositive ? point.z >= inDestination.z : point.z <= inDestination.z;
+                bHasXReachedDestination =
+                    bIsXPositive ? point.x >= inDestination.x : point.x <= inDestination.x;
+                bHasYReachedDestination =
+                    bIsYPositive ? point.y >= inDestination.y : point.y <= inDestination.y;
+                bHasZReachedDestination =
+                    bIsZPositive ? point.z >= inDestination.z : point.z <= inDestination.z;
             }
 
             return result;
@@ -222,17 +239,11 @@ namespace Chicane
         void tickComponents(float inDeltaTime);
         void deleteComponents();
 
-        void createDefaultCamera();
-        void removeDefaultCamera();
-        void refreshDefaultCamera();
-
     private:
         std::vector<Actor*>     m_actors;
         ActorsObservable        m_actorsObservable;
 
         std::vector<Component*> m_components;
         ComponentsObservable    m_componentsObservable;
-
-        CCamera*                m_defaultCamera;
     };
 }

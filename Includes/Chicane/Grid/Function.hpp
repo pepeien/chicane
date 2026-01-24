@@ -2,6 +2,7 @@
 
 #include "Chicane/Core/Reference.hpp"
 #include "Chicane/Core/String.hpp"
+
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Event.hpp"
 

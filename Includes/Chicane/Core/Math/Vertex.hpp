@@ -9,11 +9,16 @@ namespace Chicane
     struct CHICANE_CORE Vertex
     {
     public:
+        using List    = std::vector<Vertex>;
+        using Index   = std::uint32_t;
+        using Indices = std::vector<Index>;
+
+    public:
         friend bool operator==(const Vertex& inLeft, const Vertex& inRight)
         {
             return (
-                inLeft.position == inRight.position && inLeft.color == inRight.color && inLeft.uv == inRight.uv &&
-                inLeft.normal == inRight.normal
+                inLeft.position == inRight.position && inLeft.color == inRight.color &&
+                inLeft.uv == inRight.uv && inLeft.normal == inRight.normal
             );
         }
 

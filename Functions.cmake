@@ -70,20 +70,27 @@ function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
     endforeach(ITEM)
 endfunction()
 
-function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
+function(
+    _CH_COMPILE_SHADERS
+    TARGET_NAME
+    SOURCE_PATH
+    OUTPUT_PATH
+    FRAG_SHADER_EXTENSION
+    VERT_SHADER_EXTENSION
+    SHADER_VERSION
+)
     file(
         GLOB_RECURSE
 
-        SOURCES
-            "${SOURCE_PATH}/*.frag"
-            "${SOURCE_PATH}/*.vert"
+        VULKAN_SOURCES
+            "${SOURCE_PATH}/*.${FRAG_SHADER_EXTENSION}"
+            "${SOURCE_PATH}/*.${VERT_SHADER_EXTENSION}"
     )
 
-    find_program(GLSL_VALIDATOR glslangValidator REQUIRED)
-
-    foreach(GLSL ${SOURCES})
-        get_filename_component(FILE_DIR  ${GLSL} DIRECTORY)
-        get_filename_component(FILE_NAME ${GLSL} NAME)
+    foreach(GLSL ${VULKAN_SOURCES})
+        get_filename_component(FILE_DIR       ${GLSL} DIRECTORY)
+        get_filename_component(FILE_NAME      ${GLSL} NAME)
+        get_filename_component(FILE_EXTENSION ${GLSL} EXT)
 
         set(SPIRV_DIR "${FILE_DIR}")
         string(REPLACE "${SOURCE_PATH}" "" SPIRV_DIR ${SPIRV_DIR})
@@ -96,14 +103,32 @@ function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
         set(SPIRV "${SPIRV_DIR}/${FILE_NAME}")
         string(REPLACE "//" "/" SPIRV ${SPIRV})
 
-        add_custom_command(
-            TARGET
-                ${TARGET_NAME}
-            POST_BUILD
-            COMMAND
-                ${GLSL_VALIDATOR} -V ${GLSL} -o ${SPIRV}
-        )
+        if(FILE_EXTENSION STREQUAL ".${FRAG_SHADER_EXTENSION}")
+            message("${GLSL_VALIDATOR} -S frag -${SHADER_VERSION} ${GLSL} -o ${SPIRV}")
+            add_custom_command(
+                TARGET
+                    ${TARGET_NAME}
+                POST_BUILD
+                COMMAND
+                    ${GLSL_VALIDATOR} -S frag -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
+            )
+        elseif (FILE_EXTENSION STREQUAL ".${VERT_SHADER_EXTENSION}")
+            add_custom_command(
+                TARGET
+                    ${TARGET_NAME}
+                POST_BUILD
+                COMMAND
+                    ${GLSL_VALIDATOR} -S vert -${SHADER_VERSION} ${GLSL} -o ${SPIRV}
+            )
+        endif()
     endforeach(GLSL)
+endfunction()
+
+function(CH_COMPILE_SHADERS TARGET_NAME SOURCE_PATH OUTPUT_PATH)
+    find_program(GLSL_VALIDATOR glslangValidator REQUIRED)
+
+    _CH_COMPILE_SHADERS(${TARGET_NAME} ${SOURCE_PATH} ${OUTPUT_PATH} "vfrag" "vvert" "V")
+    _CH_COMPILE_SHADERS(${TARGET_NAME} ${SOURCE_PATH} ${OUTPUT_PATH} "ofrag" "overt" "G")
 endfunction()
 
 function(CH_INSTALL_FILES SOURCES SOURCE_DIR OUTPUT_DIR)
