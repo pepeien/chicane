@@ -37,15 +37,23 @@
                 "description": "CHICANE_IMAGE_PIXELS_DESCRIPTION"
             },
             {
-                "name": "Super",
+                "name": "List",
                 "type": {
                     "prefix": "",
-                    "name": "Image",
+                    "name": "std::vector",
                     "suffix": "",
-                    "path": "Core/Image",
-                    "templates": []
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Image",
+                            "suffix": "",
+                            "path": "Core/Image",
+                            "templates": []
+                        }
+                    ]
                 },
-                "description": "CHICANE_IMAGE_SUPER_DESCRIPTION"
+                "description": "CHICANE_IMAGE_LIST_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -280,6 +288,32 @@
                     "const"
                 ],
                 "description": "CHICANE_IMAGE_GETSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rotate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAngle"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_IMAGE_ROTATE_DESCRIPTION"
             }
         ],
         "members": [

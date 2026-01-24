@@ -29,7 +29,7 @@
                 "name": "ChildrenObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "Chicane::EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -48,7 +48,7 @@
                 "name": "ChildrenSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "Chicane::EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -62,17 +62,6 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_CHILDRENSUBSCRIPTION_DESCRIPTION"
-            },
-            {
-                "name": "Super",
-                "type": {
-                    "prefix": "",
-                    "name": "Component",
-                    "suffix": "",
-                    "path": "Grid/Component",
-                    "templates": []
-                },
-                "description": "CHICANE_GRID_COMPONENT_SUPER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -1011,6 +1000,31 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenFlat",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETCHILDRENFLAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -1792,21 +1806,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFRESHPOSITION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshZIndex",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_REFRESHZINDEX_DESCRIPTION"
             },
             {
                 "accessor": "protected",

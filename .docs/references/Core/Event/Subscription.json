@@ -1,10 +1,10 @@
 {
-    "title": "Subscription",
+    "title": "EventSubscription",
     "filename": "Subscription",
     "path": "Core/Event/Subscription",
     "source": {
         "header": "Includes/Chicane/Core/Event/Subscription.hpp",
-        "namespace": "Chicane::Subscription",
+        "namespace": "Chicane::EventSubscription",
         "types": [
             {
                 "name": "EmptyCallback",
@@ -23,7 +23,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_SUBSCRIPTION_EMPTYCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_EMPTYCALLBACK_DESCRIPTION"
             },
             {
                 "name": "NextCallback",
@@ -42,7 +42,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_SUBSCRIPTION_NEXTCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_NEXTCALLBACK_DESCRIPTION"
             },
             {
                 "name": "ErrorCallback",
@@ -61,7 +61,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_SUBSCRIPTION_ERRORCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_ERRORCALLBACK_DESCRIPTION"
             },
             {
                 "name": "CompleteCallback",
@@ -80,7 +80,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_SUBSCRIPTION_COMPLETECALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_COMPLETECALLBACK_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -95,7 +95,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Subscription",
+                "name": "EventSubscription",
                 "parameters": [
                     {
                         "type": {
@@ -131,7 +131,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_SUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_EVENTSUBSCRIPTION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -143,7 +143,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Subscription",
+                "name": "EventSubscription",
                 "parameters": [
                     {
                         "type": {
@@ -179,7 +179,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_SUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_EVENTSUBSCRIPTION_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -191,12 +191,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Subscription",
+                "name": "EventSubscription",
                 "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_SUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_EVENTSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -206,7 +206,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -224,14 +224,14 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_NEXT_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_NEXT_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -260,14 +260,14 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_NEXT_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_NEXT_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -296,7 +296,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_ERROR_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_ERROR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -314,14 +314,14 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_ISCOMPLETED_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_ISCOMPLETED_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -339,7 +339,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_SUBSCRIPTION_COMPLETE_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_COMPLETE_DESCRIPTION"
             }
         ],
         "members": [
@@ -354,7 +354,7 @@
                     "templates": []
                 },
                 "name": "m_bIsCompleted",
-                "description": "CHICANE_SUBSCRIPTION_M_BISCOMPLETED_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_M_BISCOMPLETED_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -367,7 +367,7 @@
                     "templates": []
                 },
                 "name": "m_next",
-                "description": "CHICANE_SUBSCRIPTION_M_NEXT_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_M_NEXT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -380,7 +380,7 @@
                     "templates": []
                 },
                 "name": "m_error",
-                "description": "CHICANE_SUBSCRIPTION_M_ERROR_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_M_ERROR_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -393,10 +393,10 @@
                     "templates": []
                 },
                 "name": "m_complete",
-                "description": "CHICANE_SUBSCRIPTION_M_COMPLETE_DESCRIPTION"
+                "description": "CHICANE_EVENTSUBSCRIPTION_M_COMPLETE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_SUBSCRIPTION_DESCRIPTION"
+        "description": "CHICANE_EVENTSUBSCRIPTION_DESCRIPTION"
     },
     "children": []
 }

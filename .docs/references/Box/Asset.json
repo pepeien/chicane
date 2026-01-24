@@ -5,19 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Box/Asset.hpp",
         "namespace": "Chicane::Box::Asset",
-        "types": [
-            {
-                "name": "Super",
-                "type": {
-                    "prefix": "",
-                    "name": "Asset",
-                    "suffix": "",
-                    "path": "Box/Asset",
-                    "templates": []
-                },
-                "description": "CHICANE_BOX_ASSET_SUPER_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {

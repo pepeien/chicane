@@ -1,0 +1,159 @@
+{
+    "title": "VulkanTexture",
+    "filename": "Texture",
+    "path": "Renderer/Backend/Vulkan/Texture",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Texture.hpp",
+        "namespace": "Chicane::Renderer::VulkanTexture",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VulkanTexture",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanTextureCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Texture/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_VULKANTEXTURE_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~VulkanTexture",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_~VULKANTEXTURE_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "VulkanImageData",
+                    "suffix": "&",
+                    "path": "Renderer/Backend/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "getImage",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_GETIMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "populate",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_POPULATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanImageData",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Image/Data",
+                    "templates": []
+                },
+                "name": "m_image",
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_M_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_M_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_physicalDevice",
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_M_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_commandBuffer",
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_M_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_queue",
+                "description": "CHICANE_RENDERER_VULKANTEXTURE_M_QUEUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANTEXTURE_DESCRIPTION"
+    },
+    "children": []
+}

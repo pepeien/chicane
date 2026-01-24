@@ -1,0 +1,273 @@
+{
+    "title": "Mesh",
+    "filename": "Mesh",
+    "path": "Box/Mesh",
+    "source": {
+        "header": "Includes/Chicane/Box/Mesh.hpp",
+        "namespace": "Chicane::Box::Mesh",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Mesh",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "FileSystem::Path",
+                            "suffix": "&",
+                            "path": "Core/FileSystem",
+                            "templates": []
+                        },
+                        "name": "inFilepath"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_MESH_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Mesh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_~MESH_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "MeshGroup",
+                            "suffix": "",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getGroups",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MESH_GETGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setGroups",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "MeshGroup",
+                                    "suffix": "",
+                                    "path": "Box/Mesh/Group",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inGroups"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_SETGROUPS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "appendGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "MeshGroup",
+                            "suffix": "&",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_APPENDGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "updateGroup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "MeshGroup",
+                            "suffix": "&",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        },
+                        "name": "inGroup"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_UPDATEGROUP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "fetchGroups",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MESH_FETCHGROUPS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EXTENSION",
+                "description": "CHICANE_BOX_MESH_EXTENSION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TAG",
+                "description": "CHICANE_BOX_MESH_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GROUP_TAG",
+                "description": "CHICANE_BOX_MESH_GROUP_TAG_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "GROUP_ID_ATTRIBUTE_NAME",
+                "description": "CHICANE_BOX_MESH_GROUP_ID_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "MeshGroup",
+                            "suffix": "",
+                            "path": "Box/Mesh/Group",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_groups",
+                "description": "CHICANE_BOX_MESH_M_GROUPS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_MESH_DESCRIPTION"
+    },
+    "children": []
+}

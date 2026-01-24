@@ -1,6 +1,6 @@
 {
-    "title": "Gamepad Motion Event",
-    "filename": "Motion Event",
+    "title": "GamepadMotionEvent",
+    "filename": "MotionEvent",
     "path": "Core/Input/Gamepad/MotionEvent",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",

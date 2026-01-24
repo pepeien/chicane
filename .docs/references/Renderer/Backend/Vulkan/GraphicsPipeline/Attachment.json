@@ -1,0 +1,83 @@
+{
+    "title": "VulkanGraphicsPipelineAttachment",
+    "filename": "Attachment",
+    "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Attachment.hpp",
+        "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachment",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanGraphicsPipelineAttachmentType",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::AttachmentLoadOp",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "loadOp",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_LOADOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initialLayout",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_INITIALLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "finalLayout",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_FINALLAYOUT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENT_DESCRIPTION"
+    },
+    "children": []
+}

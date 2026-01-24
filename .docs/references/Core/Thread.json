@@ -1,0 +1,16 @@
+{
+    "title": "Thread",
+    "filename": "Thread",
+    "path": "Core/Thread",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

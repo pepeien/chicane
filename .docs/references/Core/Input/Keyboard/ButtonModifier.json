@@ -1,6 +1,6 @@
 {
-    "title": "Keyboard Button Modifier",
-    "filename": "Button Modifier",
+    "title": "KeyboardButtonModifier",
+    "filename": "ButtonModifier",
     "path": "Core/Input/Keyboard/ButtonModifier",
     "source": {
         "header": "Includes/Chicane/Core/Input/Keyboard/ButtonModifier.hpp",

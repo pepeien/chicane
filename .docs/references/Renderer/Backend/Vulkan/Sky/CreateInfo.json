@@ -1,0 +1,109 @@
+{
+    "title": "VulkanSkyCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Sky/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Sky/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanSkyCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image::List",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "images",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_IMAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "physicalDevice",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commandBuffer",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "queue",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_QUEUE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorSetLayout",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "descriptorSetLayout",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_DESCRIPTORSETLAYOUT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorPool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "descriptorPool",
+                "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_DESCRIPTORPOOL_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANSKYCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

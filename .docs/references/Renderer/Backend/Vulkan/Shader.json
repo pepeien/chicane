@@ -1,0 +1,54 @@
+{
+    "title": "VulkanShader",
+    "filename": "Shader",
+    "path": "Renderer/Backend/Vulkan/Shader",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Shader.hpp",
+        "namespace": "Chicane::Renderer::VulkanShader",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER vk::PipelineShaderStageCreateInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initShaderStage",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanShaderStageCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Shader/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSHADER_INITSHADERSTAGE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANSHADER_DESCRIPTION"
+    },
+    "children": []
+}

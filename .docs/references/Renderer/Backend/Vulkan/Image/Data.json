@@ -1,0 +1,158 @@
+{
+    "title": "VulkanImageData",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/Image/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanImageData",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VulkanImageData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Image",
+                            "suffix": "&",
+                            "path": "Core/Image",
+                            "templates": []
+                        },
+                        "name": "inImage"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_VULKANIMAGEDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VulkanImageData",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_VULKANIMAGEDATA_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~VulkanImageData",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_~VULKANIMAGEDATA_DESCRIPTION"
+            }
+        ],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Image",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instance",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_INSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageView",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "view",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DeviceMemory",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "memory",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_MEMORY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Sampler",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "sampler",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_SAMPLER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extent",
+                "description": "CHICANE_RENDERER_VULKANIMAGEDATA_EXTENT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANIMAGEDATA_DESCRIPTION"
+    },
+    "children": []
+}

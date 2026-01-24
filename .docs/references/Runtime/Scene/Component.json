@@ -5,19 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Runtime/Scene/Component.hpp",
         "namespace": "Chicane::Component",
-        "types": [
-            {
-                "name": "Super",
-                "type": {
-                    "prefix": "",
-                    "name": "Component",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Component",
-                    "templates": []
-                },
-                "description": "CHICANE_COMPONENT_SUPER_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -283,7 +271,7 @@
                             "prefix": "",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Transformable",
+                            "path": "Core/Transformable",
                             "templates": []
                         },
                         "name": "inParent"
@@ -343,7 +331,7 @@
                             "prefix": "",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Transformable",
+                            "path": "Core/Transformable",
                             "templates": []
                         },
                         "name": "inParent"
@@ -447,7 +435,7 @@
                     "prefix": "",
                     "name": "Transformable",
                     "suffix": "*",
-                    "path": "Runtime/Scene/Transformable",
+                    "path": "Core/Transformable",
                     "templates": []
                 },
                 "name": "m_parent",
@@ -458,7 +446,7 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": []

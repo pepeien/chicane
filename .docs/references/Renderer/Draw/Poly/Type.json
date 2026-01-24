@@ -1,0 +1,40 @@
+{
+    "title": "DrawPolyType",
+    "filename": "Type",
+    "path": "Renderer/Draw/Poly/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/Type.hpp",
+        "namespace": "Chicane::Renderer::DrawPolyType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "e2D",
+                "description": "CHICANE_RENDERER_DRAWPOLYTYPE_E2D_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "e3D",
+                "description": "CHICANE_RENDERER_DRAWPOLYTYPE_E3D_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_DRAWPOLYTYPE_DESCRIPTION"
+    },
+    "children": []
+}

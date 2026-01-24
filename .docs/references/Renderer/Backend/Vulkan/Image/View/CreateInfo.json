@@ -1,0 +1,83 @@
+{
+    "title": "VulkanImageViewCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Image/View/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Image/View/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanImageViewCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "count",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageViewType",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ImageAspectFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "aspect",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_ASPECT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Format",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "format",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_FORMAT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANIMAGEVIEWCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

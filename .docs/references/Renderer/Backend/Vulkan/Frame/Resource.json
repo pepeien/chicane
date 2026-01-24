@@ -1,0 +1,230 @@
+{
+    "title": "VulkanFrameResource",
+    "filename": "Resource",
+    "path": "Renderer/Backend/Vulkan/Frame/Resource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/Resource.hpp",
+        "namespace": "Chicane::Renderer::VulkanFrameResource",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanBufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Buffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_SETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "destroy",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_DESTROY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isDirty",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_ISDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAsDirty",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_SETASDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "copyToBuffer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "T",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::size_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSize"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_COPYTOBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_ISEMPTY_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorBufferInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bufferInfo",
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_BUFFERINFO_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_bIsDirty",
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_M_BISDIRTY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::size_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_allocationSize",
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_M_ALLOCATIONSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "m_writeLocation",
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_M_WRITELOCATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanBuffer",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Buffer",
+                    "templates": []
+                },
+                "name": "m_frame",
+                "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_M_FRAME_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANFRAMERESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

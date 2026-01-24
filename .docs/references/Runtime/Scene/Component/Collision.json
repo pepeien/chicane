@@ -92,7 +92,7 @@
                     "prefix": "const ",
                     "name": "Box::ModelExtracted",
                     "suffix": "&",
-                    "path": "Box/Asset/Model/Extracted",
+                    "path": "Box/Model/Extracted",
                     "templates": []
                 },
                 "name": "getShape",
@@ -119,7 +119,7 @@
                             "prefix": "const ",
                             "name": "Box::Model",
                             "suffix": "*",
-                            "path": "Box/Asset/Model",
+                            "path": "Box/Model",
                             "templates": []
                         },
                         "name": "inAsset"
@@ -230,7 +230,7 @@
                     "prefix": "",
                     "name": "Box::ModelExtracted",
                     "suffix": "",
-                    "path": "Box/Asset/Model/Extracted",
+                    "path": "Box/Model/Extracted",
                     "templates": []
                 },
                 "name": "m_shape",

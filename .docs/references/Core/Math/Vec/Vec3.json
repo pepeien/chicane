@@ -170,37 +170,6 @@
                         }
                     ]
                 },
-                "name": "Up",
-                "description": "CHICANE_VEC3_UP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "3",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
                 "name": "Right",
                 "description": "CHICANE_VEC3_RIGHT_DESCRIPTION"
             },
@@ -234,6 +203,37 @@
                 },
                 "name": "Forward",
                 "description": "CHICANE_VEC3_FORWARD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "3",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "Up",
+                "description": "CHICANE_VEC3_UP_DESCRIPTION"
             }
         ],
         "description": "CHICANE_VEC3_DESCRIPTION"

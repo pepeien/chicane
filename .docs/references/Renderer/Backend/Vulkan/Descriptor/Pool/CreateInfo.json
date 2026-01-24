@@ -1,0 +1,57 @@
+{
+    "title": "VulkanDescriptorPoolCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanDescriptorPoolCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorPoolCreateFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flags",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLCREATEINFO_FLAGS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "maxSets",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLCREATEINFO_MAXSETS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanDescriptorPoolSizeCreateInfo::List",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
+                    "templates": []
+                },
+                "name": "sizes",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLCREATEINFO_SIZES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

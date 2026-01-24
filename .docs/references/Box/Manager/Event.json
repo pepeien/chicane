@@ -1,0 +1,62 @@
+{
+    "title": "ManagerEvent",
+    "filename": "Event",
+    "path": "Box/Manager/Event",
+    "source": {
+        "header": "Includes/Chicane/Box/Manager/Event.hpp",
+        "namespace": "Chicane::Box::ManagerEvent",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Load",
+                "description": "CHICANE_BOX_MANAGEREVENT_LOAD_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Allocation",
+                "description": "CHICANE_BOX_MANAGEREVENT_ALLOCATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Activation",
+                "description": "CHICANE_BOX_MANAGEREVENT_ACTIVATION_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Use",
+                "description": "CHICANE_BOX_MANAGEREVENT_USE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_MANAGEREVENT_DESCRIPTION"
+    },
+    "children": []
+}

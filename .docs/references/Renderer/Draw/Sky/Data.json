@@ -1,0 +1,44 @@
+{
+    "title": "DrawSkyData",
+    "filename": "Data",
+    "path": "Renderer/Draw/Sky/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Sky/Data.hpp",
+        "namespace": "Chicane::Renderer::DrawSkyData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "model",
+                "description": "CHICANE_RENDERER_DRAWSKYDATA_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::ReferenceList",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "textures",
+                "description": "CHICANE_RENDERER_DRAWSKYDATA_TEXTURES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWSKYDATA_DESCRIPTION"
+    },
+    "children": []
+}

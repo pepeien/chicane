@@ -1,0 +1,44 @@
+{
+    "title": "FontExtracted",
+    "filename": "Extracted",
+    "path": "Box/Font/Extracted",
+    "source": {
+        "header": "Includes/Chicane/Box/Font/Extracted.hpp",
+        "namespace": "Chicane::Box::FontExtracted",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FontVendor",
+                    "suffix": "",
+                    "path": "Box/Font/Vendor",
+                    "templates": []
+                },
+                "name": "vendor",
+                "description": "CHICANE_BOX_FONTEXTRACTED_VENDOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "FontRaw",
+                    "suffix": "",
+                    "path": "Box",
+                    "templates": []
+                },
+                "name": "data",
+                "description": "CHICANE_BOX_FONTEXTRACTED_DATA_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOX_FONTEXTRACTED_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,6 +1,6 @@
 {
-    "title": "Mouse Button Event",
-    "filename": "Button Event",
+    "title": "MouseButtonEvent",
+    "filename": "ButtonEvent",
     "path": "Core/Input/Mouse/ButtonEvent",
     "source": {
         "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",

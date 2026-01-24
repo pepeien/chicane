@@ -5,114 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Core/Window.hpp",
         "namespace": "Chicane::Window",
-        "types": [
-            {
-                "name": "EventObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "Observable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "WindowEvent",
-                            "suffix": "",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_WINDOW_EVENTOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "EventSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "Subscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "WindowEvent",
-                            "suffix": "",
-                            "path": "Core/Window/Event",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_WINDOW_EVENTSUBSCRIPTION_DESCRIPTION"
-            },
-            {
-                "name": "SizeObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "Observable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec",
-                            "suffix": "",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "int",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "description": "CHICANE_WINDOW_SIZEOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "SizeSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "Subscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Vec",
-                            "suffix": "",
-                            "path": "Core/Math/Vec",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "2",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "int",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "description": "CHICANE_WINDOW_SIZESUBSCRIPTION_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {
@@ -164,12 +57,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "WindowCreateInfo",
+                            "name": "WindowSettings",
                             "suffix": "&",
-                            "path": "Core/Window/CreateInfo",
+                            "path": "Core/Window/Settings",
                             "templates": []
                         },
-                        "name": "inCreateInfo"
+                        "name": "inSettings"
                     }
                 ],
                 "modifiers": [],
@@ -189,6 +82,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_RUN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "restart",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_RESTART_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -465,6 +373,23 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getDisplay",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WINDOW_GETDISPLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -485,6 +410,23 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_SETDISPLAY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "WindowType",
+                    "suffix": "",
+                    "path": "Core/Window/Type",
+                    "templates": []
+                },
+                "name": "getType",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WINDOW_GETTYPE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -517,17 +459,49 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "WindowType",
+                    "name": "WindowBackend",
                     "suffix": "",
-                    "path": "Core/Window/Type",
+                    "path": "Core/Window/Backend",
                     "templates": []
                 },
-                "name": "getType",
+                "name": "getBackend",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_WINDOW_GETTYPE_DESCRIPTION"
+                "description": "CHICANE_WINDOW_GETBACKEND_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "hasInstance",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_WINDOW_HASINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initInstance",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_INITINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -551,32 +525,15 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "wasCreated",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_WINDOW_WASCREATED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "destroy",
+                "name": "destroyInstance",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_WINDOW_DESTROY_DESCRIPTION"
+                "description": "CHICANE_WINDOW_DESTROYINSTANCE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -705,9 +662,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "EventSubscription",
+                    "name": "WindowEventSubscription",
                     "suffix": "",
-                    "path": "Core/Window",
+                    "path": "Box",
                     "templates": []
                 },
                 "name": "watchEvent",
@@ -715,7 +672,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::NextCallback",
+                            "name": "WindowEventSubscription::NextCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -725,7 +682,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::ErrorCallback",
+                            "name": "WindowEventSubscription::ErrorCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -735,7 +692,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::CompleteCallback",
+                            "name": "WindowEventSubscription::CompleteCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -751,9 +708,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "SizeSubscription",
+                    "name": "WindowSizeSubscription",
                     "suffix": "",
-                    "path": "Core/Window",
+                    "path": "Box",
                     "templates": []
                 },
                 "name": "watchSize",
@@ -761,7 +718,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SizeSubscription::NextCallback",
+                            "name": "WindowSizeSubscription::NextCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -771,7 +728,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SizeSubscription::ErrorCallback",
+                            "name": "WindowSizeSubscription::ErrorCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -781,7 +738,7 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SizeSubscription::CompleteCallback",
+                            "name": "WindowSizeSubscription::CompleteCallback",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": []
@@ -791,6 +748,32 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_WINDOW_WATCHSIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setBackend",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_WINDOW_SETBACKEND_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -881,6 +864,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "friend",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "description": "CHICANE_WINDOW_APPLICATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "void",
                     "suffix": "*",
                     "path": "",
@@ -894,108 +890,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "String",
+                    "name": "WindowSettings",
                     "suffix": "",
-                    "path": "Core/String",
+                    "path": "Core/Window/Settings",
                     "templates": []
                 },
-                "name": "m_title",
-                "description": "CHICANE_WINDOW_M_TITLE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "FileSystem::Path",
-                    "suffix": "",
-                    "path": "Core/FileSystem",
-                    "templates": []
-                },
-                "name": "m_icon",
-                "description": "CHICANE_WINDOW_M_ICON_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_size",
-                "description": "CHICANE_WINDOW_M_SIZE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "int",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_display",
-                "description": "CHICANE_WINDOW_M_DISPLAY_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "WindowType",
-                    "suffix": "",
-                    "path": "Core/Window/Type",
-                    "templates": []
-                },
-                "name": "m_type",
-                "description": "CHICANE_WINDOW_M_TYPE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec",
-                    "suffix": "",
-                    "path": "Core/Math/Vec",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "2",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "int",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_position",
-                "description": "CHICANE_WINDOW_M_POSITION_DESCRIPTION"
+                "name": "m_settings",
+                "description": "CHICANE_WINDOW_M_SETTINGS_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1041,9 +942,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "EventObservable",
+                    "name": "WindowEventObservable",
                     "suffix": "",
-                    "path": "Core/Window",
+                    "path": "Box",
                     "templates": []
                 },
                 "name": "m_eventObservable",
@@ -1054,9 +955,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "SizeObservable",
+                    "name": "WindowSizeObservable",
                     "suffix": "",
-                    "path": "Core/Window",
+                    "path": "Box",
                     "templates": []
                 },
                 "name": "m_sizeObservable",

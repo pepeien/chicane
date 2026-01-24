@@ -1,0 +1,44 @@
+{
+    "title": "ModelWavefront",
+    "filename": "Wavefront",
+    "path": "Box/Model/Wavefront",
+    "source": {
+        "header": "Includes/Chicane/Box/Model/Wavefront.hpp",
+        "namespace": "Chicane::Box::ModelWavefront",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "ModelExtracted",
+                    "suffix": "",
+                    "path": "Box/Model/Extracted",
+                    "templates": []
+                },
+                "name": "parse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ModelRaw",
+                            "suffix": "&",
+                            "path": "Box",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODELWAVEFRONT_PARSE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_BOX_MODELWAVEFRONT_DESCRIPTION"
+    },
+    "children": []
+}

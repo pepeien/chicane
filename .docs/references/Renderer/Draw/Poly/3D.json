@@ -1,0 +1,16 @@
+{
+    "title": "3D",
+    "filename": "3D",
+    "path": "Renderer/Draw/Poly/3D",
+    "source": {
+        "header": null,
+        "namespace": null,
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": []
+    },
+    "children": []
+}

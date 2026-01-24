@@ -135,36 +135,20 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Vertex::List",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Vertex",
-                                    "suffix": "",
-                                    "path": "Core/Math/Vertex",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Core/Math/Vertex",
+                            "templates": []
                         },
                         "name": "inVertices"
                     },
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Vertex::Indices",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Core/Math/Vertex",
+                            "templates": []
                         },
                         "name": "inIndices"
                     }

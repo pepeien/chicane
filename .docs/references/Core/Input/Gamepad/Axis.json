@@ -1,5 +1,5 @@
 {
-    "title": "Gamepad Axis",
+    "title": "GamepadAxis",
     "filename": "Axis",
     "path": "Core/Input/Gamepad/Axis",
     "source": {

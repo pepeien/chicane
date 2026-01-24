@@ -1,0 +1,113 @@
+{
+    "title": "VulkanQueueFamilyIndices",
+    "filename": "FamilyIndices",
+    "path": "Renderer/Backend/Vulkan/Queue/FamilyIndices",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Queue/FamilyIndices.hpp",
+        "namespace": "Chicane::Renderer::VulkanQueueFamilyIndices",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "VulkanQueueFamilyIndices",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPhysicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::SurfaceKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSurface"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANQUEUEFAMILYINDICES_VULKANQUEUEFAMILYINDICES_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isComplete",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANQUEUEFAMILYINDICES_ISCOMPLETE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "graphicsFamily",
+                "description": "CHICANE_RENDERER_VULKANQUEUEFAMILYINDICES_GRAPHICSFAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::optional",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "presentFamily",
+                "description": "CHICANE_RENDERER_VULKANQUEUEFAMILYINDICES_PRESENTFAMILY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANQUEUEFAMILYINDICES_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,6 +1,6 @@
 {
-    "title": "Folder Dialog",
-    "filename": "Folder Dialog",
+    "title": "FolderDialog",
+    "filename": "FolderDialog",
     "path": "Core/FileSystem/FolderDialog",
     "source": {
         "header": "Includes/Chicane/Core/FileSystem/FolderDialog.hpp",

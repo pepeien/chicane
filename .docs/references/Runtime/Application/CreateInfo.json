@@ -1,6 +1,6 @@
 {
-    "title": "Application Create Info",
-    "filename": "Create Info",
+    "title": "ApplicationCreateInfo",
+    "filename": "CreateInfo",
     "path": "Runtime/Application/CreateInfo",
     "source": {
         "header": "Includes/Chicane/Runtime/Application/CreateInfo.hpp",
@@ -16,9 +16,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "WindowCreateInfo",
+                    "name": "WindowSettings",
                     "suffix": "",
-                    "path": "Core/Window/CreateInfo",
+                    "path": "Core/Window/Settings",
                     "templates": []
                 },
                 "name": "window",

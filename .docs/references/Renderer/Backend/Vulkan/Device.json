@@ -1,0 +1,219 @@
+{
+    "title": "VulkanDevice",
+    "filename": "Device",
+    "path": "Renderer/Backend/Vulkan/Device",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Device.hpp",
+        "namespace": "Chicane::Renderer::VulkanDevice",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isPhysicalDeviceSuitable",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDEVICE_ISPHYSICALDEVICESUITABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "pickPhysicalDevice",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Instance",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDEVICE_PICKPHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initLogicalDevice",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::SurfaceKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSurface"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDEVICE_INITLOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "findMemoryTypeIndex",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSupportedMemoryIndices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::MemoryPropertyFlags",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRequestMemoryProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDEVICE_FINDMEMORYTYPEINDEX_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "LAYERS",
+                "description": "CHICANE_RENDERER_VULKANDEVICE_LAYERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "EXTENSIONS",
+                "description": "CHICANE_RENDERER_VULKANDEVICE_EXTENSIONS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANDEVICE_DESCRIPTION"
+    },
+    "children": []
+}

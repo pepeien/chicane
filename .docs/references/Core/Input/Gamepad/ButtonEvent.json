@@ -1,6 +1,6 @@
 {
-    "title": "Gamepad Button Event",
-    "filename": "Button Event",
+    "title": "GamepadButtonEvent",
+    "filename": "ButtonEvent",
     "path": "Core/Input/Gamepad/ButtonEvent",
     "source": {
         "header": "Includes/Chicane/Core/Input/Gamepad/ButtonEvent.hpp",

@@ -10,7 +10,7 @@
                 "name": "AssetObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -18,7 +18,7 @@
                             "prefix": "const ",
                             "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky",
+                            "path": "Box/Sky",
                             "templates": []
                         }
                     ]
@@ -29,7 +29,7 @@
                 "name": "AssetSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -37,7 +37,7 @@
                             "prefix": "const ",
                             "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky",
+                            "path": "Box/Sky",
                             "templates": []
                         }
                     ]
@@ -140,7 +140,7 @@
                     "prefix": "const ",
                     "name": "Box::Sky",
                     "suffix": "*",
-                    "path": "Box/Asset/Sky",
+                    "path": "Box/Sky",
                     "templates": []
                 },
                 "name": "getSky",
@@ -167,7 +167,7 @@
                             "prefix": "const ",
                             "name": "Box::Sky",
                             "suffix": "*",
-                            "path": "Box/Asset/Sky",
+                            "path": "Box/Sky",
                             "templates": []
                         },
                         "name": "inSky"
@@ -231,7 +231,7 @@
                     "prefix": "const ",
                     "name": "Box::Sky",
                     "suffix": "*",
-                    "path": "Box/Asset/Sky",
+                    "path": "Box/Sky",
                     "templates": []
                 },
                 "name": "m_asset",

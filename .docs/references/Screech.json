@@ -39,29 +39,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_SCREECH_GETENGINE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "class Device",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getDevices",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SCREECH_GETDEVICES_DESCRIPTION"
             }
         ],
         "members": [],

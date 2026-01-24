@@ -1,5 +1,5 @@
 {
-    "title": "Device Event",
+    "title": "DeviceEvent",
     "filename": "Event",
     "path": "Core/Input/Device/Event",
     "source": {

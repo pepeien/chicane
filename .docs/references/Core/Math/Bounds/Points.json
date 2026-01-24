@@ -1,5 +1,5 @@
 {
-    "title": "Bounds Points",
+    "title": "BoundsPoints",
     "filename": "Points",
     "path": "Core/Math/Bounds/Points",
     "source": {
@@ -23,18 +23,10 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Vertex::List",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Vertex",
-                                    "suffix": "",
-                                    "path": "Core/Math/Vertex",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Core/Math/Vertex",
+                            "templates": []
                         },
                         "name": "inVertices"
                     }

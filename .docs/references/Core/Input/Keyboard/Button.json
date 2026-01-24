@@ -1,5 +1,5 @@
 {
-    "title": "Keyboard Button",
+    "title": "KeyboardButton",
     "filename": "Button",
     "path": "Core/Input/Keyboard/Button",
     "source": {

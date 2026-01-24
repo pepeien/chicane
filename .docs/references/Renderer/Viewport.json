@@ -1,0 +1,44 @@
+{
+    "title": "Viewport",
+    "filename": "Viewport",
+    "path": "Renderer/Viewport",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Viewport.hpp",
+        "namespace": "Chicane::Renderer::Viewport",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_VIEWPORT_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_RENDERER_VIEWPORT_POSITION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VIEWPORT_DESCRIPTION"
+    },
+    "children": []
+}

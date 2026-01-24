@@ -1,0 +1,40 @@
+{
+    "title": "ModelVendor",
+    "filename": "Vendor",
+    "path": "Box/Model/Vendor",
+    "source": {
+        "header": "Includes/Chicane/Box/Model/Vendor.hpp",
+        "namespace": "Chicane::Box::ModelVendor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_BOX_MODELVENDOR_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Wavefront",
+                "description": "CHICANE_BOX_MODELVENDOR_WAVEFRONT_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_MODELVENDOR_DESCRIPTION"
+    },
+    "children": []
+}

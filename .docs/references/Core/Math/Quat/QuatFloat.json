@@ -1,6 +1,6 @@
 {
-    "title": "Quat Float",
-    "filename": "Quat Float",
+    "title": "QuatFloat",
+    "filename": "QuatFloat",
     "path": "Core/Math/Quat/QuatFloat",
     "source": {
         "header": "Includes/Chicane/Core/Math/Quat/QuatFloat.hpp",

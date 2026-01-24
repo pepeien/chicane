@@ -1,5 +1,5 @@
 {
-    "title": "Gamepad Button",
+    "title": "GamepadButton",
     "filename": "Button",
     "path": "Core/Input/Gamepad/Button",
     "source": {

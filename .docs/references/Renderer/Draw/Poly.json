@@ -1,0 +1,142 @@
+{
+    "title": "DrawPoly",
+    "filename": "Poly",
+    "path": "Renderer/Draw/Poly",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY_LIST_DESCRIPTION"
+            },
+            {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "List",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY_MAP_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexStart",
+                "description": "CHICANE_RENDERER_DRAWPOLY_VERTEXSTART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "vertexCount",
+                "description": "CHICANE_RENDERER_DRAWPOLY_VERTEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexStart",
+                "description": "CHICANE_RENDERER_DRAWPOLY_INDEXSTART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "indexCount",
+                "description": "CHICANE_RENDERER_DRAWPOLY_INDEXCOUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instanceStart",
+                "description": "CHICANE_RENDERER_DRAWPOLY_INSTANCESTART_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "instanceCount",
+                "description": "CHICANE_RENDERER_DRAWPOLY_INSTANCECOUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY_DESCRIPTION"
+    },
+    "children": []
+}

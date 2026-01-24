@@ -23,36 +23,20 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Vertex::List",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "Vertex",
-                                    "suffix": "",
-                                    "path": "Core/Math/Vertex",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Core/Math/Vertex",
+                            "templates": []
                         },
                         "name": "inVertices"
                     },
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "std::vector",
+                            "name": "Vertex::Indices",
                             "suffix": "&",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "std::uint32_t",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
+                            "path": "Core/Math/Vertex",
+                            "templates": []
                         },
                         "name": "inIndices"
                     }
@@ -440,18 +424,10 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "std::vector",
+                    "name": "Vertex::Indices",
                     "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Vertex",
+                    "templates": []
                 },
                 "name": "getIndices",
                 "parameters": [],
@@ -633,18 +609,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::vector",
+                    "name": "Vertex::Indices",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::uint32_t",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Core/Math/Vertex",
+                    "templates": []
                 },
                 "name": "m_indices",
                 "description": "CHICANE_BOUNDS_M_INDICES_DESCRIPTION"

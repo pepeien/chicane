@@ -1,0 +1,104 @@
+{
+    "title": "Renderer",
+    "filename": "Backend",
+    "path": "Renderer/Backend",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend.hpp",
+        "namespace": "Chicane::Renderer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OpenGLDebugCallback",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "unsigned int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "source"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "unsigned int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "type"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "unsigned int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "id"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "unsigned int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "severity"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "length"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "char",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "message"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "userParam"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_OPENGLDEBUGCALLBACK_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_DESCRIPTION"
+    },
+    "children": []
+}

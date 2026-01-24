@@ -1,0 +1,44 @@
+{
+    "title": "VulkanBackendData",
+    "filename": "Data",
+    "path": "Renderer/Backend/Vulkan/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Data.hpp",
+        "namespace": "Chicane::Renderer::VulkanBackendData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "VulkanFrame",
+                    "suffix": "",
+                    "path": "Renderer/Backend/Vulkan/Frame",
+                    "templates": []
+                },
+                "name": "frame",
+                "description": "CHICANE_RENDERER_VULKANBACKENDDATA_FRAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commandBuffer",
+                "description": "CHICANE_RENDERER_VULKANBACKENDDATA_COMMANDBUFFER_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANBACKENDDATA_DESCRIPTION"
+    },
+    "children": []
+}

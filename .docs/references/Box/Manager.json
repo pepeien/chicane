@@ -7,53 +7,80 @@
         "namespace": "Chicane::Box::Manager",
         "types": [
             {
-                "name": "EventObservable",
+                "name": "InstancesObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ManagerEventType",
+                            "name": "I",
                             "suffix": "",
-                            "path": "Box/Manager/EventType",
+                            "path": "",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_BOX_MANAGER_EVENTOBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_INSTANCESOBSERVABLE_DESCRIPTION"
             },
             {
-                "name": "EventSubscription",
+                "name": "InstancesSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "ManagerEventType",
+                            "name": "I",
                             "suffix": "",
-                            "path": "Box/Manager/EventType",
+                            "path": "",
                             "templates": []
                         }
                     ]
                 },
-                "description": "CHICANE_BOX_MANAGER_EVENTSUBSCRIPTION_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_INSTANCESSUBSCRIPTION_DESCRIPTION"
             },
             {
-                "name": "Super",
+                "name": "DatumObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Manager",
+                    "name": "EventObservable",
                     "suffix": "",
-                    "path": "Box/Manager",
-                    "templates": []
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "E",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
-                "description": "CHICANE_BOX_MANAGER_SUPER_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_DATUMOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "DatumSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "E",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MANAGER_DATUMSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -349,6 +376,72 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "std::map",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "I",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getInstances",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MANAGER_GETINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::map",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "E",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getDatum",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_BOX_MANAGER_GETDATUM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "void",
                     "suffix": "",
@@ -510,19 +603,19 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "EventSubscription",
+                    "name": "InstancesSubscription",
                     "suffix": "",
                     "path": "Box/Manager",
                     "templates": []
                 },
-                "name": "watchChanges",
+                "name": "watchInstances",
                 "parameters": [
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::NextCallback",
+                            "name": "typename InstancesSubscription::NextCallback",
                             "suffix": "",
-                            "path": "Core/Event/Subscription",
+                            "path": "",
                             "templates": []
                         },
                         "name": "inNext"
@@ -530,9 +623,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::ErrorCallback",
+                            "name": "typename InstancesSubscription::ErrorCallback",
                             "suffix": "",
-                            "path": "Core/Event/Subscription",
+                            "path": "",
                             "templates": []
                         },
                         "name": "inError"
@@ -540,9 +633,9 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "EventSubscription::CompleteCallback",
+                            "name": "typename InstancesSubscription::CompleteCallback",
                             "suffix": "",
-                            "path": "Core/Event/Subscription",
+                            "path": "",
                             "templates": []
                         },
                         "name": "inComplete"
@@ -551,7 +644,55 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_MANAGER_WATCHCHANGES_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_WATCHINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DatumSubscription",
+                    "suffix": "",
+                    "path": "Box/Manager",
+                    "templates": []
+                },
+                "name": "watchDatum",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "typename DatumSubscription::NextCallback",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inNext"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "typename DatumSubscription::ErrorCallback",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inError"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "typename DatumSubscription::CompleteCallback",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inComplete"
+                    }
+                ],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_MANAGER_WATCHDATUM_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -748,6 +889,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "InstancesObservable",
+                    "suffix": "",
+                    "path": "Box/Manager",
+                    "templates": []
+                },
+                "name": "m_instancesObservable",
+                "description": "CHICANE_BOX_MANAGER_M_INSTANCESOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::map",
                     "suffix": "",
                     "path": "",
@@ -770,6 +924,19 @@
                 },
                 "name": "m_datum",
                 "description": "CHICANE_BOX_MANAGER_M_DATUM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DatumObservable",
+                    "suffix": "",
+                    "path": "Box/Manager",
+                    "templates": []
+                },
+                "name": "m_datumObservable",
+                "description": "CHICANE_BOX_MANAGER_M_DATUMOBSERVABLE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -812,19 +979,6 @@
                 },
                 "name": "m_usedIds",
                 "description": "CHICANE_BOX_MANAGER_M_USEDIDS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Box/Manager",
-                    "templates": []
-                },
-                "name": "m_observable",
-                "description": "CHICANE_BOX_MANAGER_M_OBSERVABLE_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_MANAGER_DESCRIPTION"

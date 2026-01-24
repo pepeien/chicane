@@ -1,0 +1,64 @@
+{
+    "title": "VulkanDescriptorPool",
+    "filename": "Pool",
+    "path": "Renderer/Backend/Vulkan/Descriptor/Pool",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp",
+        "namespace": "Chicane::Renderer::VulkanDescriptorPool",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DescriptorPool",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outDescriptorPool"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanDescriptorPoolCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOL_INIT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOL_DESCRIPTION"
+    },
+    "children": []
+}

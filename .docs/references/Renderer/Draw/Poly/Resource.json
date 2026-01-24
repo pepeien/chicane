@@ -1,0 +1,298 @@
+{
+    "title": "DrawPolyResource",
+    "filename": "Resource",
+    "path": "Renderer/Draw/Poly/Resource",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/Resource.hpp",
+        "namespace": "Chicane::Renderer::DrawPolyResource",
+        "types": [
+            {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPolyType",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Type",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "DrawPolyResource",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/Resource",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_MAP_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "isEmpty",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_ISEMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly::List",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::List",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::Indices",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "findId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyData",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Data",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_FINDID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "findId",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_FINDID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getDraw",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Draw::Reference",
+                            "suffix": "&",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inReference"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETDRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "getDraw",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_GETDRAW_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyData",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Data",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_RESET_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "m_draws",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_DRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_vertices",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_indices",
+                "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_M_INDICES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLYRESOURCE_DESCRIPTION"
+    },
+    "children": []
+}

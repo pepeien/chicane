@@ -1,0 +1,136 @@
+{
+    "title": "VulkanDescriptorSetLayoutBidingsCreateInfo",
+    "filename": "BidingsCreateInfo",
+    "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanDescriptorSetLayoutBidingsCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "count",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_COUNT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "indices",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_INDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorType",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "types",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_TYPES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "std::uint32_t",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "counts",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_COUNTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::ShaderStageFlags",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "stages",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_STAGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorBindingFlags",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "bindingFlags",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_BINDINGFLAGS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUTBIDINGSCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

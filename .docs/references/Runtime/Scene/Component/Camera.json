@@ -41,23 +41,7 @@
                 "description": "CHICANE_CCAMERA_~CCAMERA_DESCRIPTION"
             }
         ],
-        "functions": [
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onTransform",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CCAMERA_ONTRANSFORM_DESCRIPTION"
-            }
-        ],
+        "functions": [],
         "members": [],
         "description": "CHICANE_CCAMERA_DESCRIPTION"
     },

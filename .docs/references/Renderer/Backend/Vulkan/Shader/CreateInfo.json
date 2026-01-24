@@ -1,0 +1,44 @@
+{
+    "title": "VulkanShaderStageCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Shader/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Shader/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanShaderStageCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "path",
+                "description": "CHICANE_RENDERER_VULKANSHADERSTAGECREATEINFO_PATH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::ShaderStageFlagBits",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_VULKANSHADERSTAGECREATEINFO_TYPE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANSHADERSTAGECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

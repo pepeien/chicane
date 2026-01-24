@@ -142,7 +142,7 @@
                     "prefix": "const ",
                     "name": "Box::FontParsed",
                     "suffix": "&",
-                    "path": "Box/Asset/Font/Parsed",
+                    "path": "Box/Font/Parsed",
                     "templates": []
                 },
                 "name": "getFont",
@@ -176,7 +176,7 @@
                     "prefix": "const ",
                     "name": "Box::FontGlyph",
                     "suffix": "&",
-                    "path": "Box/Asset/Font/Glyph",
+                    "path": "Box/Font/Glyph",
                     "templates": []
                 },
                 "name": "getGlyph",

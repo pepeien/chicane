@@ -1,0 +1,44 @@
+{
+    "title": "DrawSky",
+    "filename": "Sky",
+    "path": "Renderer/Draw/Sky",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Sky.hpp",
+        "namespace": "Chicane::Renderer::DrawSky",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "model",
+                "description": "CHICANE_RENDERER_DRAWSKY_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawTexture::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Texture",
+                    "templates": []
+                },
+                "name": "textures",
+                "description": "CHICANE_RENDERER_DRAWSKY_TEXTURES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWSKY_DESCRIPTION"
+    },
+    "children": []
+}

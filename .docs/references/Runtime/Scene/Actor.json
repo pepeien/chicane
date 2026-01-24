@@ -5,19 +5,7 @@
     "source": {
         "header": "Includes/Chicane/Runtime/Scene/Actor.hpp",
         "namespace": "Chicane::Actor",
-        "types": [
-            {
-                "name": "Super",
-                "type": {
-                    "prefix": "",
-                    "name": "Actor",
-                    "suffix": "",
-                    "path": "Runtime/Scene/Actor",
-                    "templates": []
-                },
-                "description": "CHICANE_ACTOR_SUPER_DESCRIPTION"
-            }
-        ],
+        "types": [],
         "enums": [],
         "constructors": [
             {

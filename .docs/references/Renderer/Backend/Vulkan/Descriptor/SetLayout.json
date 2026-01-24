@@ -1,0 +1,120 @@
+{
+    "title": "VulkanDescriptorSetLayout",
+    "filename": "SetLayout",
+    "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp",
+        "namespace": "Chicane::Renderer::VulkanDescriptorSetLayout",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DescriptorSetLayout",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outDescriptorSetLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanDescriptorSetLayoutBidingsCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo",
+                            "templates": []
+                        },
+                        "name": "inBidingsCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUT_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "allocate",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::DescriptorSet",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outDescriptorSet"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorSetLayout",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLayout"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::DescriptorPool",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPool"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUT_ALLOCATE_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORSETLAYOUT_DESCRIPTION"
+    },
+    "children": []
+}

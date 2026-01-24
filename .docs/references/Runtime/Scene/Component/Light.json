@@ -41,23 +41,7 @@
                 "description": "CHICANE_CLIGHT_~CLIGHT_DESCRIPTION"
             }
         ],
-        "functions": [
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onTransform",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CLIGHT_ONTRANSFORM_DESCRIPTION"
-            }
-        ],
+        "functions": [],
         "members": [],
         "description": "CHICANE_CLIGHT_DESCRIPTION"
     },

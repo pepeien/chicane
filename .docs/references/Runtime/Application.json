@@ -10,7 +10,7 @@
                 "name": "ControllerObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -29,7 +29,7 @@
                 "name": "ControllerSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -48,7 +48,7 @@
                 "name": "SceneObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -67,7 +67,7 @@
                 "name": "SceneSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -86,7 +86,7 @@
                 "name": "ViewObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -105,7 +105,7 @@
                 "name": "ViewSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -122,9 +122,119 @@
             }
         ],
         "enums": [],
-        "constructors": [],
-        "destructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_APPLICATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_APPLICATION_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Application",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_APPLICATION_DESCRIPTION"
+            }
+        ],
+        "destructors": [
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~Application",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_~APPLICATION_DESCRIPTION"
+            }
+        ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Application",
+                    "suffix": "&",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "getInstance",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_APPLICATION_GETINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Application",
+                    "suffix": "&",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_OPERATOR=_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Application",
+                    "suffix": "&",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "operator=",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_OPERATOR=_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -163,7 +273,9 @@
                 },
                 "name": "getTelemetry",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_APPLICATION_GETTELEMETRY_DESCRIPTION"
             },
             {
@@ -298,31 +410,18 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Scene",
-                            "suffix": "*",
-                            "path": "Runtime/Scene",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inScene"
+                        "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_APPLICATION_SETSCENE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "Scene",
-                    "suffix": "*",
-                    "path": "Runtime/Scene",
-                    "templates": []
-                },
-                "name": "getScene",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -336,7 +435,9 @@
                 },
                 "name": "getScene",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_APPLICATION_GETSCENE_DESCRIPTION"
             },
             {
@@ -405,14 +506,16 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Grid::View",
+                    "name": "T",
                     "suffix": "*",
-                    "path": "Grid/Component/View",
+                    "path": "",
                     "templates": []
                 },
                 "name": "getView",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_APPLICATION_GETVIEW_DESCRIPTION"
             },
             {
@@ -430,15 +533,17 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "Grid::View",
-                            "suffix": "*",
-                            "path": "Grid/Component/View",
+                            "name": "Params...",
+                            "suffix": "",
+                            "path": "",
                             "templates": []
                         },
-                        "name": "inView"
+                        "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_APPLICATION_SETVIEW_DESCRIPTION"
             },
             {
@@ -522,21 +627,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "T",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getWindow",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETWINDOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -546,6 +636,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_HASRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Renderer::Instance",
+                    "suffix": "*",
+                    "path": "Renderer/Instance",
+                    "templates": []
+                },
+                "name": "getRenderer",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -562,49 +667,296 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "WindowRenderer",
+                            "name": "WindowBackend",
                             "suffix": "",
-                            "path": "Core/Window/Renderer",
+                            "path": "Core/Window/Backend",
                             "templates": []
                         },
-                        "name": "inType"
+                        "name": "inBackend"
                     }
                 ],
                 "modifiers": [],
                 "description": "CHICANE_APPLICATION_SETRENDERER_DESCRIPTION"
             },
             {
-                "accessor": "public",
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Renderer",
-                    "suffix": "*",
-                    "path": "Runtime/Renderer",
-                    "templates": []
-                },
-                "name": "getRenderer",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "T",
-                    "suffix": "*",
+                    "name": "void",
+                    "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "getRenderer",
+                "name": "initWindow",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "WindowSettings",
+                            "suffix": "&",
+                            "path": "Core/Window/Settings",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITWINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initRenderer",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        },
+                        "name": "inBackend"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITRENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initBox",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_APPLICATION_GETRENDERER_DESCRIPTION"
+                "description": "CHICANE_APPLICATION_INITBOX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "initKerb",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_INITKERB_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "render",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_RENDER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderScene",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_RENDERSCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderView",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_APPLICATION_RENDERVIEW_DESCRIPTION"
             }
         ],
-        "members": [],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Telemetry",
+                    "suffix": "",
+                    "path": "Core/Telemetry",
+                    "templates": []
+                },
+                "name": "m_telemetry",
+                "description": "CHICANE_APPLICATION_M_TELEMETRY_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Controller",
+                    "suffix": "*",
+                    "path": "Runtime/Controller",
+                    "templates": []
+                },
+                "name": "m_controller",
+                "description": "CHICANE_APPLICATION_M_CONTROLLER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ControllerObservable",
+                    "suffix": "",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "m_controllerObservable",
+                "description": "CHICANE_APPLICATION_M_CONTROLLEROBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Scene",
+                            "suffix": "",
+                            "path": "Runtime/Scene",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_scene",
+                "description": "CHICANE_APPLICATION_M_SCENE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "SceneObservable",
+                    "suffix": "",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "m_sceneObservable",
+                "description": "CHICANE_APPLICATION_M_SCENEOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Grid::View",
+                            "suffix": "",
+                            "path": "Grid/Component/View",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_view",
+                "description": "CHICANE_APPLICATION_M_VIEW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewObservable",
+                    "suffix": "",
+                    "path": "Runtime/Application",
+                    "templates": []
+                },
+                "name": "m_viewObservable",
+                "description": "CHICANE_APPLICATION_M_VIEWOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Window",
+                            "suffix": "",
+                            "path": "Core/Window",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_window",
+                "description": "CHICANE_APPLICATION_M_WINDOW_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Renderer::Instance",
+                            "suffix": "",
+                            "path": "Renderer/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_renderer",
+                "description": "CHICANE_APPLICATION_M_RENDERER_DESCRIPTION"
+            }
+        ],
         "description": "CHICANE_APPLICATION_DESCRIPTION"
     },
     "children": []

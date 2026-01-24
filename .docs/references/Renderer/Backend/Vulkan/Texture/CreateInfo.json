@@ -1,0 +1,83 @@
+{
+    "title": "VulkanTextureCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Texture/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Texture/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanTextureCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_IMAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "physicalDevice",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::CommandBuffer",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "commandBuffer",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_COMMANDBUFFER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Queue",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "queue",
+                "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_QUEUE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANTEXTURECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,6 +1,6 @@
 {
-    "title": "Progress Bar",
-    "filename": "Progress Bar",
+    "title": "ProgressBar",
+    "filename": "ProgressBar",
     "path": "Grid/Component/ProgressBar",
     "source": {
         "header": "Includes/Chicane/Grid/Component/ProgressBar.hpp",

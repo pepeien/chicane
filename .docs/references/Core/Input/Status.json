@@ -10,7 +10,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []
@@ -21,7 +21,7 @@
             {
                 "type": {
                     "prefix": "",
-                    "name": "",
+                    "name": "std::uint8_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

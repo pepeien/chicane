@@ -1,6 +1,6 @@
 {
-    "title": "Broad Phase Layer",
-    "filename": "Broad Phase",
+    "title": "BroadPhaseLayer",
+    "filename": "BroadPhase",
     "path": "Kerb/Layer/BroadPhase",
     "source": {
         "header": "Includes/Chicane/Kerb/Layer/BroadPhase.hpp",

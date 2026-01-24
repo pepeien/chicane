@@ -1,0 +1,83 @@
+{
+    "title": "VulkanBufferCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Buffer/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Buffer/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanBufferCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DeviceSize",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::BufferUsageFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "usage",
+                "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_USAGE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PhysicalDevice",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "physicalDevice",
+                "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_PHYSICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::MemoryPropertyFlags",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "memoryProperties",
+                "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_MEMORYPROPERTIES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANBUFFERCREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

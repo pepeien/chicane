@@ -1,0 +1,44 @@
+{
+    "title": "DrawPolyData",
+    "filename": "Data",
+    "path": "Renderer/Draw/Poly/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/Data.hpp",
+        "namespace": "Chicane::Renderer::DrawPolyData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::List",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "vertices",
+                "description": "CHICANE_RENDERER_DRAWPOLYDATA_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "indices",
+                "description": "CHICANE_RENDERER_DRAWPOLYDATA_INDICES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLYDATA_DESCRIPTION"
+    },
+    "children": []
+}

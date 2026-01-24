@@ -1,0 +1,51 @@
+{
+    "title": "DrawTexture",
+    "filename": "Texture",
+    "path": "Renderer/Draw/Texture",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Texture.hpp",
+        "namespace": "Chicane::Renderer::DrawTexture",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawTexture",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Texture",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWTEXTURE_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Image",
+                    "suffix": "",
+                    "path": "Core/Image",
+                    "templates": []
+                },
+                "name": "image",
+                "description": "CHICANE_RENDERER_DRAWTEXTURE_IMAGE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWTEXTURE_DESCRIPTION"
+    },
+    "children": []
+}

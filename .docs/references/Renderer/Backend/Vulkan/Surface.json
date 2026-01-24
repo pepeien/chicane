@@ -1,0 +1,64 @@
+{
+    "title": "VulkanSurface",
+    "filename": "Surface",
+    "path": "Renderer/Backend/Vulkan/Surface",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Surface.hpp",
+        "namespace": "Chicane::Renderer::VulkanSurface",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::SurfaceKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outSurface"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Instance",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inWindow"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANSURFACE_INIT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANSURFACE_DESCRIPTION"
+    },
+    "children": []
+}

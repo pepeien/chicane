@@ -59,7 +59,7 @@
                             "prefix": "const ",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Transformable",
+                            "path": "Core/Transformable",
                             "templates": []
                         },
                         "name": "inSubject"
@@ -366,9 +366,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "RendererView",
+                    "name": "View",
                     "suffix": "&",
-                    "path": "Runtime/Renderer/View",
+                    "path": "Core/View",
                     "templates": []
                 },
                 "name": "getData",
@@ -473,9 +473,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "RendererViewSettings",
+                    "name": "ViewSettings",
                     "suffix": "",
-                    "path": "Runtime/Renderer/View/Settings",
+                    "path": "Core/View/Settings",
                     "templates": []
                 },
                 "name": "m_settings",
@@ -486,9 +486,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "RendererViewFrustum",
+                    "name": "ViewFrustum",
                     "suffix": "",
-                    "path": "Runtime/Renderer/View/Frustum",
+                    "path": "Core/View/Frustum",
                     "templates": []
                 },
                 "name": "m_frustum",
@@ -499,9 +499,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "RendererView",
+                    "name": "View",
                     "suffix": "",
-                    "path": "Runtime/Renderer/View",
+                    "path": "Core/View",
                     "templates": []
                 },
                 "name": "m_data",

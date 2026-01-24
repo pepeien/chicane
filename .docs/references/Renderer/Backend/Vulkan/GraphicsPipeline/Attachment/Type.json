@@ -1,0 +1,40 @@
+{
+    "title": "VulkanGraphicsPipelineAttachmentType",
+    "filename": "Type",
+    "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Attachment/Type.hpp",
+        "namespace": "Chicane::Renderer::VulkanGraphicsPipelineAttachmentType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Color",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENTTYPE_COLOR_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Depth",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENTTYPE_DEPTH_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINEATTACHMENTTYPE_DESCRIPTION"
+    },
+    "children": []
+}

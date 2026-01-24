@@ -64,36 +64,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "show",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CMESH_SHOW_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hide",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CMESH_HIDE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",
@@ -139,7 +109,7 @@
                     "prefix": "const ",
                     "name": "Box::Mesh",
                     "suffix": "*",
-                    "path": "Box/Asset/Mesh",
+                    "path": "Box/Mesh",
                     "templates": []
                 },
                 "name": "getMesh",
@@ -193,36 +163,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onActivation",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CMESH_ONACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeactivation",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_CMESH_ONDEACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "onAttachment",
                 "parameters": [
                     {
@@ -230,7 +170,7 @@
                             "prefix": "",
                             "name": "Transformable",
                             "suffix": "*",
-                            "path": "Runtime/Scene/Transformable",
+                            "path": "Core/Transformable",
                             "templates": []
                         },
                         "name": "inRoot"
@@ -276,7 +216,7 @@
                     "prefix": "const ",
                     "name": "Box::Mesh",
                     "suffix": "*",
-                    "path": "Box/Asset/Mesh",
+                    "path": "Box/Mesh",
                     "templates": []
                 },
                 "name": "m_mesh",

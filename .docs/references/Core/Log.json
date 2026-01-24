@@ -29,7 +29,7 @@
                 "name": "ListObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -48,7 +48,7 @@
                 "name": "ListSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [

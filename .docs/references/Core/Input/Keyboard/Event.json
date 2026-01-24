@@ -1,5 +1,5 @@
 {
-    "title": "Keyboard Event",
+    "title": "KeyboardEvent",
     "filename": "Event",
     "path": "Core/Input/Keyboard/Event",
     "source": {

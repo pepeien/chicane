@@ -1,0 +1,118 @@
+{
+    "title": "Draw",
+    "filename": "Draw",
+    "path": "Renderer/Draw",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw.hpp",
+        "namespace": "Chicane::Renderer::Draw",
+        "types": [
+            {
+                "name": "Id",
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_RENDERER_DRAW_ID_DESCRIPTION"
+            },
+            {
+                "name": "Reference",
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "description": "CHICANE_RENDERER_DRAW_REFERENCE_DESCRIPTION"
+            },
+            {
+                "name": "ReferenceList",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Reference",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAW_REFERENCELIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "UnknownId",
+                "description": "CHICANE_RENDERER_DRAW_UNKNOWNID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "UnknownReference",
+                "description": "CHICANE_RENDERER_DRAW_UNKNOWNREFERENCE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_RENDERER_DRAW_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "reference",
+                "description": "CHICANE_RENDERER_DRAW_REFERENCE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAW_DESCRIPTION"
+    },
+    "children": []
+}

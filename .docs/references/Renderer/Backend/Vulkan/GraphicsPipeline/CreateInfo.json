@@ -1,0 +1,193 @@
+{
+    "title": "VulkanGraphicsPipelineCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanGraphicsPipelineCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasVertices",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_BHASVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepthTest",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_BHASDEPTHTEST_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasDepthWrite",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_BHASDEPTHWRITE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bHasBlending",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_BHASBLENDING_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanShaderStageCreateInfo",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/Shader/CreateInfo",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "shaders",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_SHADERS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extent",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_EXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanGraphicsPipelineAttachment",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Attachment",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "attachments",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_ATTACHMENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::PipelineRasterizationStateCreateInfo",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "rasterizaterizationState",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_RASTERIZATERIZATIONSTATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::DescriptorSetLayout",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "descriptorSetLayouts",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_DESCRIPTORSETLAYOUTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::PushConstantRange",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "pushConstantRanges",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_PUSHCONSTANTRANGES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

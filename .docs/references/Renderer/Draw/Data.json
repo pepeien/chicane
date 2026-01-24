@@ -1,0 +1,31 @@
+{
+    "title": "DrawData",
+    "filename": "Data",
+    "path": "Renderer/Draw/Data",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Data.hpp",
+        "namespace": "Chicane::Renderer::DrawData",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Reference",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "reference",
+                "description": "CHICANE_RENDERER_DRAWDATA_REFERENCE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWDATA_DESCRIPTION"
+    },
+    "children": []
+}

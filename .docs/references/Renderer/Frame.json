@@ -1,0 +1,523 @@
+{
+    "title": "Frame",
+    "filename": "Frame",
+    "path": "Renderer/Frame",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Frame.hpp",
+        "namespace": "Chicane::Renderer::Frame",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_RESET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPolyResource::Map",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/Resource",
+                            "templates": []
+                        },
+                        "name": "inResources"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_SETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setup",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawSky",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Sky",
+                            "templates": []
+                        },
+                        "name": "inResource"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_SETUP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "View",
+                    "suffix": "&",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "getCamera",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETCAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "useCamera",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "View",
+                            "suffix": "&",
+                            "path": "Core/View",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_USECAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "View::List",
+                    "suffix": "&",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "getLights",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETLIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addLights",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "View::List",
+                            "suffix": "&",
+                            "path": "Core/View",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_ADDLIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addLight",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "View",
+                            "suffix": "&",
+                            "path": "Core/View",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_ADDLIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly::List",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "get2DDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GET2DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly2DInstance::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/2D/Instance",
+                    "templates": []
+                },
+                "name": "getInstances2D",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETINSTANCES2D_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "use",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPoly2DInstance",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/2D/Instance",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_USE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly::List",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "get3DDraws",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GET3DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly3DInstance::List",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "templates": []
+                },
+                "name": "getInstances3D",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETINSTANCES3D_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "use",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "DrawPoly3DInstance",
+                            "suffix": "&",
+                            "path": "Renderer/Draw/Poly/3D/Instance",
+                            "templates": []
+                        },
+                        "name": "inInstance"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_USE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawSkyInstance",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Sky/Instance",
+                    "templates": []
+                },
+                "name": "getSkyInstance",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_RENDERER_FRAME_GETSKYINSTANCE_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resetCamera",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_RESETCAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "resetLights",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_RESETLIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh2DDraws",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_REFRESH2DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset2DDraws",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_RESET2DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh3DDraws",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_REFRESH3DDRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "reset3DDraws",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_FRAME_RESET3DDRAWS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "View",
+                    "suffix": "",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "m_camera",
+                "description": "CHICANE_RENDERER_FRAME_M_CAMERA_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "View::List",
+                    "suffix": "",
+                    "path": "Core/View",
+                    "templates": []
+                },
+                "name": "m_lights",
+                "description": "CHICANE_RENDERER_FRAME_M_LIGHTS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly::Map",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "m_draws",
+                "description": "CHICANE_RENDERER_FRAME_M_DRAWS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly2DInstance::Map",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/2D/Instance",
+                    "templates": []
+                },
+                "name": "m_2DInstances",
+                "description": "CHICANE_RENDERER_FRAME_M_2DINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawPoly3DInstance::Map",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Poly/3D/Instance",
+                    "templates": []
+                },
+                "name": "m_3DInstances",
+                "description": "CHICANE_RENDERER_FRAME_M_3DINSTANCES_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "DrawSkyInstance",
+                    "suffix": "",
+                    "path": "Renderer/Draw/Sky/Instance",
+                    "templates": []
+                },
+                "name": "m_skyInstance",
+                "description": "CHICANE_RENDERER_FRAME_M_SKYINSTANCE_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_FRAME_DESCRIPTION"
+    },
+    "children": []
+}

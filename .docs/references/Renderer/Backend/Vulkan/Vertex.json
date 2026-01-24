@@ -1,0 +1,56 @@
+{
+    "title": "VulkanVertex",
+    "filename": "Vertex",
+    "path": "Renderer/Backend/Vulkan/Vertex",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Vertex.hpp",
+        "namespace": "Chicane::Renderer::VulkanVertex",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER vk::VertexInputBindingDescription",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "getBindingDescription",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANVERTEX_GETBINDINGDESCRIPTION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::VertexInputAttributeDescription",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getAttributeDescriptions",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANVERTEX_GETATTRIBUTEDESCRIPTIONS_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANVERTEX_DESCRIPTION"
+    },
+    "children": []
+}

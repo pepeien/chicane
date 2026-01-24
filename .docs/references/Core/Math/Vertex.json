@@ -5,7 +5,57 @@
     "source": {
         "header": "Includes/Chicane/Core/Math/Vertex.hpp",
         "namespace": "Chicane::Vertex",
-        "types": [],
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vertex",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_VERTEX_LIST_DESCRIPTION"
+            },
+            {
+                "name": "Index",
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "description": "CHICANE_VERTEX_INDEX_DESCRIPTION"
+            },
+            {
+                "name": "Indices",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Index",
+                            "suffix": "",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_VERTEX_INDICES_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],

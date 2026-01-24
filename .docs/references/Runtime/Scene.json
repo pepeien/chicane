@@ -10,7 +10,7 @@
                 "name": "ActorsObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -37,7 +37,7 @@
                 "name": "ActorsSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -64,7 +64,7 @@
                 "name": "ComponentsObservable",
                 "type": {
                     "prefix": "",
-                    "name": "Observable",
+                    "name": "EventObservable",
                     "suffix": "",
                     "path": "Core/Event/Observable",
                     "templates": [
@@ -91,7 +91,7 @@
                 "name": "ComponentsSubscription",
                 "type": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -535,6 +535,32 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "T",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getActiveComponents",
+                "parameters": [],
+                "modifiers": [
+                    "inline",
+                    "const"
+                ],
+                "description": "CHICANE_SCENE_GETACTIVECOMPONENTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
                     "name": "T",
                     "suffix": "*",
                     "path": "",
@@ -765,51 +791,6 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_SCENE_DELETECOMPONENTS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "createDefaultCamera",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SCENE_CREATEDEFAULTCAMERA_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "removeDefaultCamera",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SCENE_REMOVEDEFAULTCAMERA_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshDefaultCamera",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_SCENE_REFRESHDEFAULTCAMERA_DESCRIPTION"
             }
         ],
         "members": [
@@ -880,19 +861,6 @@
                 },
                 "name": "m_componentsObservable",
                 "description": "CHICANE_SCENE_M_COMPONENTSOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "CCamera",
-                    "suffix": "*",
-                    "path": "Runtime/Scene/Component/Camera",
-                    "templates": []
-                },
-                "name": "m_defaultCamera",
-                "description": "CHICANE_SCENE_M_DEFAULTCAMERA_DESCRIPTION"
             }
         ],
         "description": "CHICANE_SCENE_DESCRIPTION"

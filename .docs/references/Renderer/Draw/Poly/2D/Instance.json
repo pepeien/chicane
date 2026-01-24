@@ -1,0 +1,116 @@
+{
+    "title": "DrawPoly2DInstance",
+    "filename": "Instance",
+    "path": "Renderer/Draw/Poly/2D/Instance",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/2D/Instance.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly2DInstance",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly2DInstance",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/2D/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_LIST_DESCRIPTION"
+            },
+            {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "List",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/2D/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_MAP_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "screen",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_SCREEN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec2",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec2",
+                    "templates": []
+                },
+                "name": "size",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_SIZE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "position",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_POSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_padding",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

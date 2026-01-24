@@ -1,0 +1,40 @@
+{
+    "title": "FontVendor",
+    "filename": "Vendor",
+    "path": "Box/Font/Vendor",
+    "source": {
+        "header": "Includes/Chicane/Box/Font/Vendor.hpp",
+        "namespace": "Chicane::Box::FontVendor",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Undefined",
+                "description": "CHICANE_BOX_FONTVENDOR_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "TrueType",
+                "description": "CHICANE_BOX_FONTVENDOR_TRUETYPE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_BOX_FONTVENDOR_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,6 +1,6 @@
 {
-    "title": "File System",
-    "filename": "File System",
+    "title": "FileSystem",
+    "filename": "FileSystem",
     "path": "Core/FileSystem",
     "source": {
         "header": "Includes/Chicane/Core/FileSystem.hpp",

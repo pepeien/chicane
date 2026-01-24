@@ -1,0 +1,161 @@
+{
+    "title": "ViewFrustum",
+    "filename": "Frustum",
+    "path": "Core/View/Frustum",
+    "source": {
+        "header": "Includes/Chicane/Core/View/Frustum.hpp",
+        "namespace": "Chicane::ViewFrustum",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contains",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Transformable",
+                            "suffix": "*",
+                            "path": "Core/Transformable",
+                            "templates": []
+                        },
+                        "name": "inSubject"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_VIEWFRUSTUM_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "update",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Transformable",
+                            "suffix": "*",
+                            "path": "Core/Transformable",
+                            "templates": []
+                        },
+                        "name": "inView"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "ViewSettings",
+                            "suffix": "&",
+                            "path": "Core/View/Settings",
+                            "templates": []
+                        },
+                        "name": "inSettings"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_VIEWFRUSTUM_UPDATE_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_top",
+                "description": "CHICANE_VIEWFRUSTUM_M_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_bottom",
+                "description": "CHICANE_VIEWFRUSTUM_M_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_left",
+                "description": "CHICANE_VIEWFRUSTUM_M_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_right",
+                "description": "CHICANE_VIEWFRUSTUM_M_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_near",
+                "description": "CHICANE_VIEWFRUSTUM_M_NEAR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ViewPlane",
+                    "suffix": "",
+                    "path": "Core/View/Plane",
+                    "templates": []
+                },
+                "name": "m_far",
+                "description": "CHICANE_VIEWFRUSTUM_M_FAR_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_VIEWFRUSTUM_DESCRIPTION"
+    },
+    "children": []
+}

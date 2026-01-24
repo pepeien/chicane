@@ -1,0 +1,91 @@
+{
+    "title": "VulkanFrameCreateInfo",
+    "filename": "CreateInfo",
+    "path": "Renderer/Backend/Vulkan/Frame/CreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Frame/CreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanFrameCreateInfo",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "String",
+                    "suffix": "",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "id",
+                "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_ID_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Device",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "logicalDevice",
+                "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_LOGICALDEVICE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::RenderPass",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "renderPass",
+                "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_RENDERPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::Extent2D",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "extent",
+                "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_EXTENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "vk::ImageView",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "attachments",
+                "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_ATTACHMENTS_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANFRAMECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

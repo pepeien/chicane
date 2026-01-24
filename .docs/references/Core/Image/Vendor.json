@@ -1,5 +1,5 @@
 {
-    "title": "Image Vendor",
+    "title": "ImageVendor",
     "filename": "Vendor",
     "path": "Core/Image/Vendor",
     "source": {
@@ -17,6 +17,17 @@
                 },
                 "name": "Undefined",
                 "description": "CHICANE_IMAGEVENDOR_UNDEFINED_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Jpg",
+                "description": "CHICANE_IMAGEVENDOR_JPG_DESCRIPTION"
             },
             {
                 "type": {

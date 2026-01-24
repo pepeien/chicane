@@ -67,7 +67,7 @@
                             "prefix": "",
                             "name": "SkySide",
                             "suffix": "",
-                            "path": "Box/Asset/Sky/Side",
+                            "path": "Box/Sky/Side",
                             "templates": []
                         },
                         {
@@ -104,7 +104,7 @@
                             "prefix": "",
                             "name": "SkySide",
                             "suffix": "",
-                            "path": "Box/Asset/Sky/Side",
+                            "path": "Box/Sky/Side",
                             "templates": []
                         },
                         {

@@ -1,6 +1,6 @@
 {
-    "title": "List Push Strategy",
-    "filename": "Push Strategy",
+    "title": "ListPushStrategy",
+    "filename": "PushStrategy",
     "path": "Core/List/PushStrategy",
     "source": {
         "header": "Includes/Chicane/Core/List/PushStrategy.hpp",

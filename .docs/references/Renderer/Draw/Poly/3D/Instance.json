@@ -1,0 +1,103 @@
+{
+    "title": "DrawPoly3DInstance",
+    "filename": "Instance",
+    "path": "Renderer/Draw/Poly/3D/Instance",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Draw/Poly/3D/Instance.hpp",
+        "namespace": "Chicane::Renderer::DrawPoly3DInstance",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "DrawPoly3DInstance",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_LIST_DESCRIPTION"
+            },
+            {
+                "name": "Map",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Draw::Id",
+                            "suffix": "",
+                            "path": "Renderer/Draw",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "List",
+                            "suffix": "",
+                            "path": "Renderer/Draw/Poly/3D/Instance",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_MAP_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Mat4",
+                    "suffix": "",
+                    "path": "Core/Math/Mat/Mat4",
+                    "templates": []
+                },
+                "name": "model",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_MODEL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "int",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_padding",
+                "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE__PADDING_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_DRAWPOLY3DINSTANCE_DESCRIPTION"
+    },
+    "children": []
+}

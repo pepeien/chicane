@@ -1,0 +1,74 @@
+{
+    "title": "VulkanCommandBufferPool",
+    "filename": "Pool",
+    "path": "Renderer/Backend/Vulkan/CommandBuffer/Pool",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp",
+        "namespace": "Chicane::Renderer::VulkanCommandBufferPool",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandPool",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outCommandPool"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::PhysicalDevice",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPhysicalDevice"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::SurfaceKHR",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inSurface"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERPOOL_INIT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFERPOOL_DESCRIPTION"
+    },
+    "children": []
+}

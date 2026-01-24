@@ -1,0 +1,64 @@
+{
+    "title": "VulkanDescriptorPoolSizeCreateInfo",
+    "filename": "SizeCreateInfo",
+    "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo.hpp",
+        "namespace": "Chicane::Renderer::VulkanDescriptorPoolSizeCreateInfo",
+        "types": [
+            {
+                "name": "List",
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "VulkanDescriptorPoolSizeCreateInfo",
+                            "suffix": "",
+                            "path": "Renderer/Backend/Vulkan/Descriptor/Pool/SizeCreateInfo",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_LIST_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "vk::DescriptorType",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "type",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_TYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint32_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "descriptorCount",
+                "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_DESCRIPTORCOUNT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_VULKANDESCRIPTORPOOLSIZECREATEINFO_DESCRIPTION"
+    },
+    "children": []
+}

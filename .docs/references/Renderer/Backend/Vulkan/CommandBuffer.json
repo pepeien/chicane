@@ -1,0 +1,98 @@
+{
+    "title": "VulkanCommandBuffer",
+    "filename": "CommandBuffer",
+    "path": "Renderer/Backend/Vulkan/CommandBuffer",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp",
+        "namespace": "Chicane::Renderer::VulkanCommandBuffer",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "vk::CommandBuffer",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "outCommandBuffers"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanCommandBufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/CommandBuffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_INIT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "CHICANE_RENDERER void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "vk::CommandBuffer",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "outCommandBuffer"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "VulkanCommandBufferCreateInfo",
+                            "suffix": "&",
+                            "path": "Renderer/Backend/Vulkan/CommandBuffer/CreateInfo",
+                            "templates": []
+                        },
+                        "name": "inCreateInfo"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_INIT_DESCRIPTION"
+            }
+        ],
+        "members": [],
+        "description": "CHICANE_RENDERER_VULKANCOMMANDBUFFER_DESCRIPTION"
+    },
+    "children": []
+}

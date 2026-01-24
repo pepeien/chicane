@@ -1,10 +1,10 @@
 {
-    "title": "Observable",
+    "title": "EventObservable",
     "filename": "Observable",
     "path": "Core/Event/Observable",
     "source": {
         "header": "Includes/Chicane/Core/Event/Observable.hpp",
-        "namespace": "Chicane::Observable",
+        "namespace": "Chicane::EventObservable",
         "types": [
             {
                 "name": "EmptyCallback",
@@ -23,7 +23,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_OBSERVABLE_EMPTYCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_EMPTYCALLBACK_DESCRIPTION"
             },
             {
                 "name": "NextCallback",
@@ -42,7 +42,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_OBSERVABLE_NEXTCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_NEXTCALLBACK_DESCRIPTION"
             },
             {
                 "name": "ErrorCallback",
@@ -61,7 +61,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_OBSERVABLE_ERRORCALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_ERRORCALLBACK_DESCRIPTION"
             },
             {
                 "name": "CompleteCallback",
@@ -80,7 +80,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_OBSERVABLE_COMPLETECALLBACK_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_COMPLETECALLBACK_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -96,12 +96,12 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "~Observable",
+                "name": "~EventObservable",
                 "parameters": [],
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_~OBSERVABLE_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_~EVENTOBSERVABLE_DESCRIPTION"
             }
         ],
         "functions": [
@@ -110,7 +110,7 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -159,14 +159,14 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_SUBSCRIBE_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_SUBSCRIBE_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "Subscription",
+                    "name": "EventSubscription",
                     "suffix": "",
                     "path": "Core/Event/Subscription",
                     "templates": [
@@ -215,7 +215,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_SUBSCRIBE_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_SUBSCRIBE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -232,7 +232,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_NEXT_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_NEXT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -260,7 +260,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_NEXT_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_NEXT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -288,7 +288,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_ERROR_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_ERROR_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -305,7 +305,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_OBSERVABLE_COMPLETE_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_COMPLETE_DESCRIPTION"
             }
         ],
         "members": [
@@ -320,7 +320,7 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "Subscription",
+                            "name": "EventSubscription",
                             "suffix": "",
                             "path": "Core/Event/Subscription",
                             "templates": [
@@ -336,10 +336,10 @@
                     ]
                 },
                 "name": "m_subscriptions",
-                "description": "CHICANE_OBSERVABLE_M_SUBSCRIPTIONS_DESCRIPTION"
+                "description": "CHICANE_EVENTOBSERVABLE_M_SUBSCRIPTIONS_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_OBSERVABLE_DESCRIPTION"
+        "description": "CHICANE_EVENTOBSERVABLE_DESCRIPTION"
     },
     "children": []
 }
