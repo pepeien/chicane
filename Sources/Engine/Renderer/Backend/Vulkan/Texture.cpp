@@ -69,7 +69,7 @@ namespace Chicane
             stagingBufferCreateInfo.memoryProperties =
                 vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostVisible;
             stagingBufferCreateInfo.usage = vk::BufferUsageFlagBits::eTransferSrc;
-            stagingBufferCreateInfo.size  = sizeof(float) * (m_image.getSize());
+            stagingBufferCreateInfo.size  = sizeof(float) * m_image.getSize();
 
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(stagingBufferCreateInfo);

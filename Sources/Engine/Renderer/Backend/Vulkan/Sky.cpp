@@ -66,7 +66,7 @@ namespace Chicane
             VulkanImage::initInstance(m_image.instance, instanceCreateInfo);
 
             VulkanImageSamplerCreateInfo samplerCreateInfo;
-            samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eRepeat;
+            samplerCreateInfo.addressMode   = vk::SamplerAddressMode::eClampToEdge;
             samplerCreateInfo.borderColor   = vk::BorderColor::eIntTransparentBlack;
             samplerCreateInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initSampler(m_image.sampler, samplerCreateInfo);
@@ -100,10 +100,6 @@ namespace Chicane
 
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
-
-            m_images.at(0).rotate(90.0f);
-            m_images.at(1).rotate(-90.0f);
-            m_images.at(2).rotate(180.0f);
 
             for (std::uint32_t i = 0; i < m_images.size(); i++)
             {

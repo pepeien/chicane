@@ -108,7 +108,7 @@ namespace Chicane
             createInfo.alphaToCoverageEnable = VK_FALSE;
             createInfo.alphaToOneEnable      = VK_FALSE;
             createInfo.rasterizationSamples  = vk::SampleCountFlagBits::e1;
-            createInfo.minSampleShading      = 1.0;
+            createInfo.minSampleShading      = 1.0f;
 
             return createInfo;
         }

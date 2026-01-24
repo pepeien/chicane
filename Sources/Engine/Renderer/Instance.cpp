@@ -171,6 +171,10 @@ namespace Chicane
                 sky.textures.push_back(*found);
             }
 
+            sky.textures.at(0).image.rotate(90.0f);  // Right
+            sky.textures.at(1).image.rotate(-90.0f); // Left
+            sky.textures.at(2).image.rotate(180.0f); // Front
+
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
 
             if (sky.model.id == Draw::UnknownId)
@@ -306,12 +310,7 @@ namespace Chicane
             m_backend->onInit();
             m_backend->onResize(m_viewport);
 
-            for (const auto& [type, resource] : m_polyResources)
-            {
-                m_backend->onLoad(type, resource);
-            }
-
-            m_backend->onLoad(m_textureResources);
+            reloadResources();
         }
 
         Frame& Instance::getCurrentFrame()
@@ -322,6 +321,22 @@ namespace Chicane
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
         {
             return m_polyResources[inType];
+        }
+
+        void Instance::reloadResources()
+        {
+            if (!hasBackend())
+            {
+                return;
+            }
+
+            for (const auto& [type, resource] : m_polyResources)
+            {
+                m_backend->onLoad(type, resource);
+            }
+
+            m_backend->onLoad(m_textureResources);
+            m_backend->onLoad(m_skyResource);
         }
 
         void Instance::propagateResize()

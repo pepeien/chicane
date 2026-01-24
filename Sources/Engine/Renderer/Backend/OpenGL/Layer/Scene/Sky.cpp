@@ -34,13 +34,8 @@ namespace Chicane
                 return;
             }
 
-            DrawTexture::List textures = inResource.textures;
-            textures.at(0).image.rotate(90.0f);  // Right
-            textures.at(1).image.rotate(-90.0f); // Left
-            textures.at(2).image.rotate(180.0f); // Front
-
             int side = 0;
-            for (const DrawTexture& texture : textures)
+            for (const DrawTexture& texture : inResource.textures)
             {
                 glTextureSubImage3D(
                     m_texturesBuffer,
@@ -60,18 +55,13 @@ namespace Chicane
             }
         }
 
-        bool OpenGLLSceneSky::onSetup(const Frame& inFrame)
+        void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
         {
             if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
             {
-                return false;
+                return;
             }
 
-            return true;
-        }
-
-        void OpenGLLSceneSky::onRender(const Frame& inFrame, void* inData)
-        {
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_DEPTH_TEST);

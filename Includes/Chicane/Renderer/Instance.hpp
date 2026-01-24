@@ -107,6 +107,7 @@ namespace Chicane
 
             // Draw
             DrawPolyResource& getPolyResource(DrawPolyType inType);
+            void reloadResources();
 
             // Settings
             void propagateResize();

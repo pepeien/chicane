@@ -61,22 +61,17 @@ namespace Chicane
 
         void VulkanLSceneSky::onLoad(const DrawSky& inResource)
         {
-            buildTextureData(inResource);
-        }
-
-        bool VulkanLSceneSky::onSetup(const Frame& inFrame)
-        {
-            return true;
-        }
-
-        void VulkanLSceneSky::onRender(const Frame& inFrame, void* outData)
-        {
-            if (inFrame.getSkyInstance().model.id == Draw::UnknownId)
+            if (inResource.textures.empty() || inResource.model.id == Draw::UnknownId)
             {
                 return;
             }
 
-            if (!m_sky)
+            buildTextureData(inResource);
+        }
+
+        void VulkanLSceneSky::onRender(const Frame& inFrame, void* outData)
+        {
+            if (inFrame.getSkyInstance().model.id == Draw::UnknownId || !m_sky)
             {
                 return;
             }
@@ -222,6 +217,7 @@ namespace Chicane
             createInfo.attachments          = attachments;
             createInfo.rasterizaterizationState =
                 VulkanGraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+            createInfo.rasterizaterizationState.cullMode = vk::CullModeFlagBits::eFront;
 
             m_graphicsPipeline = std::make_unique<VulkanGraphicsPipeline>(createInfo);
         }
