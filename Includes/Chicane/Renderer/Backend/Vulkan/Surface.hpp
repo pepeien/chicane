@@ -10,9 +10,7 @@ namespace Chicane
     {
         namespace VulkanSurface
         {
-            CHICANE_RENDERER void init(
-                vk::SurfaceKHR& outSurface, const vk::Instance& inInstance, void* inWindow
-            );
+            CHICANE_RENDERER void init(vk::SurfaceKHR& outSurface, const vk::Instance& inInstance, void* inWindow);
         }
     }
 }

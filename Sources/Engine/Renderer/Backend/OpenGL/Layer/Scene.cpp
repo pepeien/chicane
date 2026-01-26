@@ -128,14 +128,7 @@ namespace Chicane
 
             // Position
             glEnableVertexArrayAttrib(m_modelVertexArray, 0);
-            glVertexArrayAttribFormat(
-                m_modelVertexArray,
-                0,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                offsetof(Vertex, position)
-            );
+            glVertexArrayAttribFormat(m_modelVertexArray, 0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
             glVertexArrayAttribBinding(m_modelVertexArray, 0, 0);
 
             // Color

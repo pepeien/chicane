@@ -34,9 +34,6 @@ namespace Chicane
             char getCharacter() const;
             void setCharacter(char inValue);
 
-            bool hasFont() const;
-            const Box::FontParsed& getFont() const;
-
             bool hasGlyph() const;
             const Box::FontGlyph& getGlyph() const;
 
@@ -44,9 +41,11 @@ namespace Chicane
             void refreshFont();
 
         private:
-            bool m_bCanUpdate;
+            bool           m_bCanUpdatePrimitive;
 
-            char m_character;
+            char           m_character;
+
+            Box::FontGlyph m_glyph;
         };
     }
 }

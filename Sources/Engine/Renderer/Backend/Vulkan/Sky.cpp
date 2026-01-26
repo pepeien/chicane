@@ -38,29 +38,21 @@ namespace Chicane
             m_logicalDevice.destroySampler(m_image.sampler);
         }
 
-        void VulkanSky::bind(
-            const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout
-        )
+        void VulkanSky::bind(const vk::CommandBuffer& inCommandBuffer, const vk::PipelineLayout& inPipelineLayout)
         {
-            inCommandBuffer.bindDescriptorSets(
-                vk::PipelineBindPoint::eGraphics,
-                inPipelineLayout,
-                1,
-                m_descriptor.set,
-                nullptr
-            );
+            inCommandBuffer
+                .bindDescriptorSets(vk::PipelineBindPoint::eGraphics, inPipelineLayout, 1, m_descriptor.set, nullptr);
         }
 
         void VulkanSky::initImage()
         {
             VulkanImageCreateInfo instanceCreateInfo;
-            instanceCreateInfo.width  = m_image.getWidth();
-            instanceCreateInfo.height = m_image.getHeight();
-            instanceCreateInfo.count  = static_cast<std::uint32_t>(m_images.size());
-            instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
-            instanceCreateInfo.flags  = vk::ImageCreateFlagBits::eCubeCompatible;
-            instanceCreateInfo.usage =
-                vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+            instanceCreateInfo.width         = m_image.getWidth();
+            instanceCreateInfo.height        = m_image.getHeight();
+            instanceCreateInfo.count         = static_cast<std::uint32_t>(m_images.size());
+            instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+            instanceCreateInfo.flags         = vk::ImageCreateFlagBits::eCubeCompatible;
+            instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
             instanceCreateInfo.format        = vk::Format::eR8G8B8A8Unorm;
             instanceCreateInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initInstance(m_image.instance, instanceCreateInfo);
@@ -105,8 +97,7 @@ namespace Chicane
             {
                 Image image = m_images.at(i);
 
-                void* writeLocation =
-                    m_logicalDevice.mapMemory(stagingBuffer.memory, pixelCount * i, pixelCount);
+                void* writeLocation = m_logicalDevice.mapMemory(stagingBuffer.memory, pixelCount * i, pixelCount);
 
                 memcpy(writeLocation, image.getPixels(), pixelCount);
 

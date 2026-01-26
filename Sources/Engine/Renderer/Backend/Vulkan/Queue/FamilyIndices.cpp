@@ -8,8 +8,7 @@ namespace Chicane
             const vk::PhysicalDevice& inPhysicalDevice, const vk::SurfaceKHR& inSurface
         )
         {
-            std::vector<vk::QueueFamilyProperties> queueFamilies =
-                inPhysicalDevice.getQueueFamilyProperties();
+            std::vector<vk::QueueFamilyProperties> queueFamilies = inPhysicalDevice.getQueueFamilyProperties();
 
             for (int i = 0; i < queueFamilies.size(); i++)
             {

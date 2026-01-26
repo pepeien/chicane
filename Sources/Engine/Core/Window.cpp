@@ -386,10 +386,7 @@ namespace Chicane
             emmitError("Error while setting the window display");
         }
 
-        setSize(
-            std::min(m_settings.size.x, displaySettings->w),
-            std::min(m_settings.size.y, displaySettings->h)
-        );
+        setSize(std::min(m_settings.size.x, displaySettings->w), std::min(m_settings.size.y, displaySettings->h));
 
         setPosition(SDL_WINDOWPOS_CENTERED_DISPLAY(display), SDL_WINDOWPOS_CENTERED_DISPLAY(display));
     }

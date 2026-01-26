@@ -3,6 +3,7 @@
 #include "Chicane/Box/Font/Manager.hpp"
 
 #include "Chicane/Core/Math/Curve.hpp"
+#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
@@ -10,14 +11,14 @@ namespace Chicane
     {
         static inline constexpr const char NULL_CHARACTER = '\0';
 
-        static const Box::FontParsed EMPTY_FONT  = {};
-        static const Box::FontGlyph  EMPTY_GLYPH = {};
-
         Character::Character()
             : Component(TAG_ID),
-              m_bCanUpdate(false),
-              m_character(NULL_CHARACTER)
-        {}
+              m_bCanUpdatePrimitive(false),
+              m_character(NULL_CHARACTER),
+              m_glyph({})
+        {
+            Box::getFontManager()->watchInstances([&](const Box::FontManager::Instances& inData) { refreshFont(); });
+        }
 
         bool Character::isDrawable() const
         {
@@ -26,7 +27,7 @@ namespace Chicane
 
         void Character::refreshPrimitive()
         {
-            if (!m_bCanUpdate)
+            if (!m_bCanUpdatePrimitive)
             {
                 return;
             }
@@ -38,7 +39,7 @@ namespace Chicane
                 return;
             }
 
-            m_bCanUpdate = false;
+            m_bCanUpdatePrimitive = false;
 
             const Box::FontGlyph& glyph = getGlyph();
 
@@ -60,7 +61,12 @@ namespace Chicane
 
         void Character::onRefresh()
         {
-            refreshFont();
+            if (!hasParent() || !hasGlyph())
+            {
+                return;
+            }
+
+            m_parent->addCursor(m_glyph.box.x * ((m_style.font.size / m_glyph.units) * 1.25f), 0.0f);
         }
 
         void Character::disable()
@@ -86,41 +92,41 @@ namespace Chicane
             }
 
             setProperty(m_character, inValue);
-        }
 
-        bool Character::hasFont() const
-        {
-            return Box::getFontManager()->isFamilyAllocated(m_style.font.family);
-        }
-
-        const Box::FontParsed& Character::getFont() const
-        {
-            if (!hasFont())
-            {
-                return EMPTY_FONT;
-            }
-
-            return Box::getFontManager()->getByFamily(m_style.font.family);
+            refreshFont();
         }
 
         bool Character::hasGlyph() const
         {
-            return hasCharacter() && hasFont() && getFont().hasGlyph(m_character);
+            return m_glyph.indices.size() > 0;
         }
 
         const Box::FontGlyph& Character::getGlyph() const
         {
-            if (!hasGlyph())
-            {
-                return EMPTY_GLYPH;
-            }
-
-            return getFont().getGlyph(m_character);
+            return m_glyph;
         }
 
         void Character::refreshFont()
         {
             if (!hasParent())
+            {
+                m_glyph = {};
+
+                return;
+            }
+
+            const Box::FontParsed& font = Box::getFontManager()->getByFamily(m_style.font.family);
+
+            if (!font.hasGlyph(m_character))
+            {
+                m_glyph = {};
+
+                return;
+            }
+
+            m_glyph = font.getGlyph(m_character);
+
+            if (!hasGlyph())
             {
                 return;
             }
@@ -130,25 +136,16 @@ namespace Chicane
             m_style.foregroundColor = parentStyle.foregroundColor;
             m_style.font            = parentStyle.font;
 
-            if (!hasGlyph())
-            {
-                return;
-            }
-
-            const Box::FontGlyph& glyph = getGlyph();
-
             const float scale = m_style.font.size / Curve::FIXED_POINT / 2.0f;
-            const float units = (m_style.font.size / glyph.units) * 1.25f;
+            const float units = (m_style.font.size / m_glyph.units) * 1.25f;
 
-            m_style.width  = glyph.line.x * scale;
-            m_style.height = glyph.line.y * scale;
-            m_style.zIndex = 999.0f;
+            m_style.width  = m_glyph.line.x * scale;
+            m_style.height = m_glyph.line.y * scale;
+            m_style.zIndex = parentStyle.zIndex + 0.1f;
 
-            m_style.margin.top = glyph.box.y * units;
+            m_style.margin.top = m_glyph.box.y * units;
 
-            m_parent->addCursor(glyph.box.x * units, 0.0f);
-
-            m_bCanUpdate = true;
+            m_bCanUpdatePrimitive = true;
         }
     }
 }

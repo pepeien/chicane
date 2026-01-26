@@ -18,8 +18,7 @@ namespace Chicane
                 VulkanQueueFamilyIndices queueFamilyIndices(inPhysicalDevice, inSurface);
 
                 vk::CommandPoolCreateInfo poolInfo = {};
-                poolInfo.flags =
-                    vk::CommandPoolCreateFlags() | vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
+                poolInfo.flags = vk::CommandPoolCreateFlags() | vk::CommandPoolCreateFlagBits::eResetCommandBuffer;
                 poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
                 outCommandPool = inLogicalDevice.createCommandPool(poolInfo);

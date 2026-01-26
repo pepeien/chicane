@@ -20,9 +20,7 @@ namespace Chicane
 
             CHICANE_RENDERER bool isPhysicalDeviceSuitable(const vk::PhysicalDevice& inDevice);
 
-            CHICANE_RENDERER void pickPhysicalDevice(
-                vk::PhysicalDevice& outDevice, const vk::Instance& inInstance
-            );
+            CHICANE_RENDERER void pickPhysicalDevice(vk::PhysicalDevice& outDevice, const vk::Instance& inInstance);
 
             CHICANE_RENDERER void initLogicalDevice(
                 vk::Device& outDevice, const vk::PhysicalDevice& inDevice, const vk::SurfaceKHR& inSurface

@@ -200,8 +200,8 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::getModelManager()->watchInstances([&](const Box::ModelExtracted& inModel) {
-            for (const auto& [id, poly] : Box::getModelManager()->getInstances())
+        Box::getModelManager()->watchInstances([&](const Box::ModelManager::Instances& inInstances) {
+            for (const auto& [id, poly] : inInstances)
             {
                 Renderer::DrawPolyData data;
                 data.reference = id;
@@ -211,8 +211,8 @@ namespace Chicane
                 m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
             }
         });
-        Box::getTextureManager()->watchDatum([&](const Image& inTexture) {
-            for (const auto& [id, texture] : Box::getTextureManager()->getDatum())
+        Box::getTextureManager()->watchDatum([&](const Box::TextureManager::Datum& inDatum) {
+            for (const auto& [id, texture] : inDatum)
             {
                 Renderer::DrawTextureData data;
                 data.reference = id;
@@ -255,7 +255,7 @@ namespace Chicane
 
         for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
         {
-            if (!mesh->hasMesh() || !mesh->isActive())
+            if (!mesh->hasMesh())
             {
                 continue;
             }

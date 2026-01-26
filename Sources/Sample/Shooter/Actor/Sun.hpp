@@ -8,6 +8,5 @@ public:
     Sun();
 
 private:
-    int   m_switch;
     float m_distance;
 };

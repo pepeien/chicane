@@ -83,8 +83,7 @@ namespace Chicane
             lastFrame.wait(logicalDevice);
 
             vk::ResultValue<std::uint32_t> acquireResult =
-                logicalDevice
-                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
+                logicalDevice.acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
             {
@@ -92,8 +91,7 @@ namespace Chicane
 
                 return;
             }
-            else if (acquireResult.result != vk::Result::eSuccess &&
-                     acquireResult.result != vk::Result::eSuboptimalKHR)
+            else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
@@ -149,8 +147,7 @@ namespace Chicane
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-            if (presentResult == vk::Result::eErrorOutOfDateKHR ||
-                presentResult == vk::Result::eSuboptimalKHR)
+            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
             }

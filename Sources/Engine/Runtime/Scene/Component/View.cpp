@@ -144,12 +144,8 @@ namespace Chicane
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
 
-        m_data.projection = glm::perspective(
-            glm::radians(getFieldOfView()),
-            m_settings.aspectRatio,
-            m_data.clip.x,
-            m_data.clip.y
-        );
+        m_data.projection =
+            glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
 
         m_frustum.update(this, m_settings);
     }

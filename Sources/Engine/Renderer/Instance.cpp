@@ -96,9 +96,7 @@ namespace Chicane
             const auto& found = std::find_if(
                 m_textureResources.begin(),
                 m_textureResources.end(),
-                [inReference](const DrawTexture& inTexture) {
-                    return inTexture.reference.equals(inReference);
-                }
+                [inReference](const DrawTexture& inTexture) { return inTexture.reference.equals(inReference); }
             );
 
             if (found == m_textureResources.end())
@@ -114,9 +112,7 @@ namespace Chicane
             const auto& found = std::find_if(
                 m_textureResources.begin(),
                 m_textureResources.end(),
-                [inData](const DrawTexture& inTexture) {
-                    return inTexture.reference.equals(inData.reference);
-                }
+                [inData](const DrawTexture& inTexture) { return inTexture.reference.equals(inData.reference); }
             );
 
             if (found != m_textureResources.end())

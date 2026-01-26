@@ -17,8 +17,8 @@ namespace Chicane
         friend bool operator==(const Vertex& inLeft, const Vertex& inRight)
         {
             return (
-                inLeft.position == inRight.position && inLeft.color == inRight.color &&
-                inLeft.uv == inRight.uv && inLeft.normal == inRight.normal
+                inLeft.position == inRight.position && inLeft.color == inRight.color && inLeft.uv == inRight.uv &&
+                inLeft.normal == inRight.normal
             );
         }
 

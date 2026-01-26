@@ -24,10 +24,7 @@ namespace Chicane
 
                 for (const String& unsupportedExtension : extensions)
                 {
-                    Log::warning(
-                        "The vulkan device extension [%s] is not supported",
-                        unsupportedExtension.toChar()
-                    );
+                    Log::warning("The vulkan device extension [%s] is not supported", unsupportedExtension.toChar());
                 }
 
                 return extensions.empty();
@@ -51,9 +48,7 @@ namespace Chicane
             }
 
             void initLogicalDevice(
-                vk::Device&               outDevice,
-                const vk::PhysicalDevice& inPhysicalDevice,
-                const vk::SurfaceKHR&     inSurface
+                vk::Device& outDevice, const vk::PhysicalDevice& inPhysicalDevice, const vk::SurfaceKHR& inSurface
             )
             {
                 VulkanQueueFamilyIndices familyIndices(inPhysicalDevice, inSurface);

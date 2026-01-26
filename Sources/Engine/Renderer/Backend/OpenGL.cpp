@@ -81,9 +81,7 @@ namespace Chicane
 
             if (!SDL_GL_SwapWindow(window))
             {
-                throw std::runtime_error(
-                    std::string("Failed to swawp window frame buffer [") + SDL_GetError() + "]"
-                );
+                throw std::runtime_error(std::string("Failed to swawp window frame buffer [") + SDL_GetError() + "]");
             }
 
             Backend::onCleanup();
@@ -97,16 +95,12 @@ namespace Chicane
 
             if (!g_context)
             {
-                throw std::runtime_error(
-                    std::string("Failed to instantiate context [") + SDL_GetError() + "]"
-                );
+                throw std::runtime_error(std::string("Failed to instantiate context [") + SDL_GetError() + "]");
             }
 
             if (!SDL_GL_MakeCurrent(window, g_context))
             {
-                throw std::runtime_error(
-                    std::string("Failed to initialize context [") + SDL_GetError() + "]"
-                );
+                throw std::runtime_error(std::string("Failed to initialize context [") + SDL_GetError() + "]");
             }
 
             if (!SDL_GL_SetSwapInterval(0))

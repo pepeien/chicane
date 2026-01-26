@@ -17,7 +17,6 @@ namespace Chicane
             vk::Format               colorFormat;
             vk::Format               depthFormat;
             vk::Extent2D             extent;
-            vk::Extent2D             midPoints;
         };
     }
 }

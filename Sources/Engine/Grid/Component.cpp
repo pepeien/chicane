@@ -34,7 +34,6 @@ namespace Chicane
               m_primitive({})
         {
             m_style.setParent(this);
-            m_style.watchChanges([&] { refresh(); });
         }
 
         Component::~Component()
@@ -55,7 +54,7 @@ namespace Chicane
 
         void Component::tick(float inDeltaTime)
         {
-            refreshStyle();
+            refresh();
 
             onTick(inDeltaTime);
 
@@ -270,8 +269,8 @@ namespace Chicane
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            const bool bHasLocally = m_functions.find(id) != m_functions.end() && m_functions.at(id) &&
-                                     m_functions.at(id) != nullptr;
+            const bool bHasLocally =
+                m_functions.find(id) != m_functions.end() && m_functions.at(id) && m_functions.at(id) != nullptr;
 
             if (!hasParent() || isRoot() || isLocalOnly)
             {
@@ -410,9 +409,7 @@ namespace Chicane
                                      ) -
                                      neighbours.begin();
 
-            return neighbours.at(
-                std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1))
-            );
+            return neighbours.at(std::clamp(location + inJumps, 0U, static_cast<std::uint32_t>(neighbours.size() - 1)));
         }
 
         bool Component::hasChildren() const
@@ -605,9 +602,8 @@ namespace Chicane
                                                             : (m_style.margin.top - m_style.margin.bottom)
             );
             Vec2 padding = Vec2(
-                m_style.padding.left == m_style.padding.right
-                    ? m_style.padding.left
-                    : (m_style.padding.left - m_style.padding.right),
+                m_style.padding.left == m_style.padding.right ? m_style.padding.left
+                                                              : (m_style.padding.left - m_style.padding.right),
                 m_style.padding.top == m_style.padding.bottom ? m_style.padding.top
                                                               : (m_style.padding.top - m_style.padding.bottom)
             );

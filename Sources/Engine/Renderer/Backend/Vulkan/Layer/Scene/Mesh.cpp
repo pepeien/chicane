@@ -71,8 +71,7 @@ namespace Chicane
             m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
-            m_graphicsPipeline
-                ->bindDescriptorSet(commandBuffer, 1, getParent<VulkanLScene>()->textureDescriptor.set);
+            m_graphicsPipeline->bindDescriptorSet(commandBuffer, 1, getParent<VulkanLScene>()->textureDescriptor.set);
 
             // Draw
             vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
@@ -80,11 +79,8 @@ namespace Chicane
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer.bindIndexBuffer(
-                getParent<VulkanLScene>()->modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            commandBuffer
+                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -213,9 +209,7 @@ namespace Chicane
 
         void VulkanLSceneMesh::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
@@ -262,7 +256,7 @@ namespace Chicane
             createInfo.bHasVertices         = true;
             createInfo.bHasDepthTest        = true;
             createInfo.bHasDepthWrite       = true;
-            createInfo.bHasBlending         = true;
+            createInfo.bHasBlending         = false;
             createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.shaders              = shaders;
             createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;

@@ -14,8 +14,6 @@ namespace Chicane
     {
         namespace VulkanSwapchain
         {
-            static inline constexpr const std::uint32_t MAX_IMAGE_COUNT = 3;
-
             CHICANE_RENDERER void querySupport(
                 VulkanSwapchainSupportDetails& outSupportDetails,
                 const vk::PhysicalDevice&      inPhysicalDevice,
@@ -23,8 +21,7 @@ namespace Chicane
             );
 
             CHICANE_RENDERER void pickSurfaceFormat(
-                vk::SurfaceFormatKHR&                    outSurfaceFormat,
-                const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                vk::SurfaceFormatKHR& outSurfaceFormat, const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             );
             CHICANE_RENDERER void pickPresentMode(
                 vk::PresentModeKHR& outPresentMode, const std::vector<vk::PresentModeKHR>& inPresentModes

@@ -17,11 +17,13 @@ namespace Chicane
         class CHICANE_BOX Manager
         {
         public:
-            using InstancesObservable   = EventObservable<I>;
-            using InstancesSubscription = EventSubscription<I>;
+            using Instances             = std::map<String, I>;
+            using InstancesObservable   = EventObservable<Instances>;
+            using InstancesSubscription = EventSubscription<Instances>;
 
-            using DatumObservable       = EventObservable<E>;
-            using DatumSubscription     = EventSubscription<E>;
+            using Datum                 = std::map<String, E>;
+            using DatumObservable       = EventObservable<Datum>;
+            using DatumSubscription     = EventSubscription<Datum>;
 
         public:
             Manager()
@@ -80,8 +82,8 @@ namespace Chicane
                 return static_cast<std::uint32_t>(std::count(m_usedIds.begin(), m_usedIds.end(), inId));
             }
 
-            const std::map<String, I>& getInstances() const { return m_instances; }
-            const std::map<String, E>& getDatum() const { return m_datum; }
+            const Instances& getInstances() const { return m_instances; }
+            const Datum& getDatum() const { return m_datum; }
 
             // Lifecycle
             void load(const String& inId, const I& inInstance)
@@ -95,7 +97,7 @@ namespace Chicane
 
                 onLoad(inId, inInstance);
 
-                m_instancesObservable.next(m_instances.at(inId));
+                m_instancesObservable.next(m_instances);
             }
 
             void allocate(const String& inId, const E& inData)
@@ -109,7 +111,7 @@ namespace Chicane
 
                 onAllocation(inId, inData);
 
-                m_datumObservable.next(m_datum.at(inId));
+                m_datumObservable.next(m_datum);
             }
 
             void deallocate(const String& inId)
@@ -139,11 +141,9 @@ namespace Chicane
                 if (!isActive(inId))
                 {
                     m_activeIds.push_back(inId);
-                    std::sort(
-                        m_activeIds.begin(),
-                        m_activeIds.end(),
-                        [](const String& inA, const String& inB) { return inA.compare(inB) > 0; }
-                    );
+                    std::sort(m_activeIds.begin(), m_activeIds.end(), [](const String& inA, const String& inB) {
+                        return inA.compare(inB) > 0;
+                    });
 
                     onActivation(inId);
                 }
@@ -181,7 +181,7 @@ namespace Chicane
                 typename InstancesSubscription::CompleteCallback inComplete = nullptr
             )
             {
-                return m_instancesObservable.subscribe(inNext, inError, inComplete);
+                return m_instancesObservable.subscribe(inNext, inError, inComplete).next(m_instances);
             }
 
             DatumSubscription watchDatum(
@@ -190,14 +190,14 @@ namespace Chicane
                 typename DatumSubscription::CompleteCallback inComplete = nullptr
             )
             {
-                return m_datumObservable.subscribe(inNext, inError, inComplete);
+                return m_datumObservable.subscribe(inNext, inError, inComplete).next(m_datum);
             }
 
         protected:
-            std::map<String, I> m_instances;
+            Instances           m_instances;
             InstancesObservable m_instancesObservable;
 
-            std::map<String, E> m_datum;
+            Datum               m_datum;
             DatumObservable     m_datumObservable;
 
             std::vector<String> m_activeIds;

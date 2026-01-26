@@ -223,6 +223,9 @@ namespace Chicane
             case AssetType::Mesh:
                 return loadMesh(inFilePath);
 
+            case AssetType::Model:
+                return loadModel(inFilePath);
+
             case AssetType::Sound:
                 return loadSound(inFilePath);
 

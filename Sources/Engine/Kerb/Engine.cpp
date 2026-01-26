@@ -24,16 +24,10 @@ namespace Chicane
             : m_threadPool({}),
               m_broadLayer(ObjectLayer::Count, BroadPhaseLayer::Count),
               m_objectLayer(ObjectLayer::Count),
-              m_objectVsBroadPhaseLayer(
-                  m_broadLayer, BroadPhaseLayer::Count, m_objectLayer, ObjectLayer::Count
-              ),
+              m_objectVsBroadPhaseLayer(m_broadLayer, BroadPhaseLayer::Count, m_objectLayer, ObjectLayer::Count),
               m_system({})
         {
-            m_threadPool.Init(
-                JPH::cMaxPhysicsJobs,
-                JPH::cMaxPhysicsBarriers,
-                std::thread::hardware_concurrency() - 1
-            );
+            m_threadPool.Init(JPH::cMaxPhysicsJobs, JPH::cMaxPhysicsBarriers, std::thread::hardware_concurrency() - 1);
             m_system.Init(
                 MAX_BODIES,
                 MAX_BODY_MUTEXES,
@@ -50,9 +44,7 @@ namespace Chicane
             exit();
         }
 
-        JPH::Body* Engine::createBodyFromMesh(
-            const Vertex::List& inVertices, const Vertex::Indices& inIndices
-        )
+        JPH::Body* Engine::createBodyFromMesh(const Vertex::List& inVertices, const Vertex::Indices& inIndices)
         {
             JPH::VertexList vertices;
             vertices.resize(inVertices.size());
@@ -69,8 +61,7 @@ namespace Chicane
 
             for (std::uint32_t i = 0; i < inIndices.size(); i += 3)
             {
-                indices[i / 3] =
-                    JPH::IndexedTriangle(inIndices.at(i), inIndices.at(i + 1), inIndices.at(i + 2));
+                indices[i / 3] = JPH::IndexedTriangle(inIndices.at(i), inIndices.at(i + 1), inIndices.at(i + 2));
             }
 
             JPH::MeshShapeSettings shapeSettings = JPH::MeshShapeSettings(vertices, indices);

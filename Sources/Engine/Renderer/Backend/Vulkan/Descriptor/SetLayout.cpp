@@ -34,8 +34,7 @@ namespace Chicane
                 if (!inBidingsCreateInfo.bindingFlags.empty())
                 {
                     vk::DescriptorSetLayoutBindingFlagsCreateInfo bidingFlagsInfo{};
-                    bidingFlagsInfo.bindingCount =
-                        static_cast<std::uint32_t>(inBidingsCreateInfo.bindingFlags.size());
+                    bidingFlagsInfo.bindingCount  = static_cast<std::uint32_t>(inBidingsCreateInfo.bindingFlags.size());
                     bidingFlagsInfo.pBindingFlags = inBidingsCreateInfo.bindingFlags.data();
 
                     setLayoutCreateInfo.pNext = &bidingFlagsInfo;

@@ -205,8 +205,8 @@ namespace Chicane
                         continue;
                     }
 
-                    bool bWillIgnored = std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) !=
-                                        inIgnoredActors.end();
+                    bool bWillIgnored =
+                        std::find(inIgnoredActors.begin(), inIgnoredActors.end(), actor) != inIgnoredActors.end();
                     bool bWasTraced = std::find(result.begin(), result.end(), actor) != result.end();
 
                     if (bWillIgnored || bWasTraced)
@@ -221,12 +221,9 @@ namespace Chicane
                 point.y += bHasYReachedDestination ? 0.0f : direction.y * LINE_TRACE_STEP_SIZE;
                 point.z += bHasZReachedDestination ? 0.0f : direction.z * LINE_TRACE_STEP_SIZE;
 
-                bHasXReachedDestination =
-                    bIsXPositive ? point.x >= inDestination.x : point.x <= inDestination.x;
-                bHasYReachedDestination =
-                    bIsYPositive ? point.y >= inDestination.y : point.y <= inDestination.y;
-                bHasZReachedDestination =
-                    bIsZPositive ? point.z >= inDestination.z : point.z <= inDestination.z;
+                bHasXReachedDestination = bIsXPositive ? point.x >= inDestination.x : point.x <= inDestination.x;
+                bHasYReachedDestination = bIsYPositive ? point.y >= inDestination.y : point.y <= inDestination.y;
+                bHasZReachedDestination = bIsZPositive ? point.z >= inDestination.z : point.z <= inDestination.z;
             }
 
             return result;

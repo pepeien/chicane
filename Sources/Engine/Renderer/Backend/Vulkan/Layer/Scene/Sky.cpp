@@ -103,11 +103,8 @@ namespace Chicane
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer.bindIndexBuffer(
-                getParent<VulkanLScene>()->modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            commandBuffer
+                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
 
@@ -171,9 +168,7 @@ namespace Chicane
 
         void VulkanLSceneSky::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
@@ -286,9 +281,7 @@ namespace Chicane
 
         void VulkanLSceneSky::destroyTextureData()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_textureDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
         }
     }

@@ -98,7 +98,9 @@ namespace Chicane
             }
 
             View data = inData;
-            data.projection[1][1] *= -1;
+            data.flipY();
+            data.depthToZeroOne();
+
             cameraResource.copyToBuffer(&data, sizeof(View));
         }
 
@@ -135,7 +137,9 @@ namespace Chicane
             }
 
             View data = inData.at(0);
-            data.projection[1][1] *= -1;
+            data.flipY();
+            data.depthToZeroOne();
+
             lightResource.copyToBuffer(&data, sizeof(View));
         }
 

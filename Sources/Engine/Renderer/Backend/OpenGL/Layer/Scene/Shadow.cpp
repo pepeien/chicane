@@ -41,8 +41,8 @@ namespace Chicane
             glDepthFunc(GL_LESS);
 
             glEnable(GL_CULL_FACE);
-            glFrontFace(GL_CCW);
-            glCullFace(GL_BACK);
+            glFrontFace(GL_CW);
+            glCullFace(GL_FRONT);
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -127,13 +127,7 @@ namespace Chicane
 
             // Depth Map
             glCreateTextures(GL_TEXTURE_2D, 1, &m_depthMapBuffer);
-            glTextureStorage2D(
-                m_depthMapBuffer,
-                1,
-                GL_DEPTH_COMPONENT24,
-                m_viewport.size.x,
-                m_viewport.size.y
-            );
+            glTextureStorage2D(m_depthMapBuffer, 1, GL_DEPTH_COMPONENT24, m_viewport.size.x, m_viewport.size.y);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTextureParameteri(m_depthMapBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);

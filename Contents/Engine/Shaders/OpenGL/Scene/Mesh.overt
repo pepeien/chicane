@@ -64,11 +64,11 @@ void main() {
 
     outTextureIndex   = instance.texture;
     outUV             = inUV;
-    outNormal         = transpose(inverse(mat3(instance.model))) * inNormal;
+    outNormal         = mat3(instance.model) * inNormal;
     outColor          = inColor;
     outViewPosition   = normalize(camera.translation.xyz - inPosition);
     outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * instance.model) * position;
+    outShadowPosition = (light.view * light.projection * instance.model) * position;
 
     gl_Position = camera.view * camera.projection * instance.model * position;
 }

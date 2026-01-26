@@ -76,11 +76,8 @@ namespace Chicane
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer.bindIndexBuffer(
-                getParent<VulkanLScene>()->modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            commandBuffer
+                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -173,9 +170,7 @@ namespace Chicane
 
         void VulkanLSceneShadow::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
@@ -183,17 +178,17 @@ namespace Chicane
         {
             // Rasterizer
             vk::PipelineRasterizationStateCreateInfo rasterizeCreateInfo = {};
-            rasterizeCreateInfo.flags                   = vk::PipelineRasterizationStateCreateFlags();
-            rasterizeCreateInfo.depthClampEnable        = VK_FALSE;
-            rasterizeCreateInfo.rasterizerDiscardEnable = VK_FALSE;
-            rasterizeCreateInfo.depthBiasEnable         = VK_TRUE;
-            rasterizeCreateInfo.depthBiasClamp          = 0.0f;
-            rasterizeCreateInfo.polygonMode             = vk::PolygonMode::eFill;
-            rasterizeCreateInfo.cullMode                = vk::CullModeFlagBits::eBack;
-            rasterizeCreateInfo.frontFace               = vk::FrontFace::eClockwise;
-            rasterizeCreateInfo.lineWidth               = 1.0f;
-            rasterizeCreateInfo.depthBiasConstantFactor = 1.25f;
-            rasterizeCreateInfo.depthBiasSlopeFactor    = 1.75f;
+            rasterizeCreateInfo.flags                                    = vk::PipelineRasterizationStateCreateFlags();
+            rasterizeCreateInfo.depthClampEnable                         = VK_FALSE;
+            rasterizeCreateInfo.rasterizerDiscardEnable                  = VK_FALSE;
+            rasterizeCreateInfo.depthBiasEnable                          = VK_TRUE;
+            rasterizeCreateInfo.depthBiasClamp                           = 0.0f;
+            rasterizeCreateInfo.polygonMode                              = vk::PolygonMode::eFill;
+            rasterizeCreateInfo.cullMode                                 = vk::CullModeFlagBits::eBack;
+            rasterizeCreateInfo.frontFace                                = vk::FrontFace::eClockwise;
+            rasterizeCreateInfo.lineWidth                                = 1.0f;
+            rasterizeCreateInfo.depthBiasConstantFactor                  = 1.25f;
+            rasterizeCreateInfo.depthBiasSlopeFactor                     = 1.75f;
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;

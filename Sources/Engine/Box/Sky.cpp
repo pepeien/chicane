@@ -60,8 +60,7 @@ namespace Chicane
 
             String sideID = side->first;
 
-            pugi::xml_node sideNode =
-                getXML().find_child_by_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME, sideID.toChar());
+            pugi::xml_node sideNode = getXML().find_child_by_attribute(TEXTURE_SIDE_ATTRIBUTE_NAME, sideID.toChar());
 
             if (Xml::isEmpty(sideNode))
             {
@@ -108,14 +107,11 @@ namespace Chicane
 
             for (const auto& texture : root.child(SIDES_TAG_NAME).children(Texture::TAG))
             {
-                SkySide side =
-                    getSideFromString(Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture).as_string());
+                SkySide side = getSideFromString(Xml::getAttribute(TEXTURE_SIDE_ATTRIBUTE_NAME, texture).as_string());
 
                 if (m_sides.find(side) != m_sides.end())
                 {
-                    throw std::runtime_error(
-                        "There are duplicated sides inside the " + m_header.id + " cube map"
-                    );
+                    throw std::runtime_error("There are duplicated sides inside the " + m_header.id + " cube map");
                 }
 
                 const String textureName = texture.child_value();

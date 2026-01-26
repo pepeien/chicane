@@ -8,9 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        vk::Viewport VulkanGraphicsPipeline::createViewport(
-            const Vec<2, std::uint32_t>& inSize, const Vec2& inPosition
-        )
+        vk::Viewport VulkanGraphicsPipeline::createViewport(const Vec<2, std::uint32_t>& inSize, const Vec2& inPosition)
         {
             vk::Viewport viewport;
             viewport.x        = inPosition.x;
@@ -224,15 +222,15 @@ namespace Chicane
         vk::SubpassDependency VulkanGraphicsPipeline::createDepthSubpassDepedency()
         {
             vk::SubpassDependency subpassDepedency;
-            subpassDepedency.srcSubpass   = VK_SUBPASS_EXTERNAL;
-            subpassDepedency.dstSubpass   = 0;
-            subpassDepedency.srcStageMask = vk::PipelineStageFlagBits::eEarlyFragmentTests |
-                                            vk::PipelineStageFlagBits::eLateFragmentTests;
-            subpassDepedency.dstStageMask = vk::PipelineStageFlagBits::eEarlyFragmentTests |
-                                            vk::PipelineStageFlagBits::eLateFragmentTests;
+            subpassDepedency.srcSubpass = VK_SUBPASS_EXTERNAL;
+            subpassDepedency.dstSubpass = 0;
+            subpassDepedency.srcStageMask =
+                vk::PipelineStageFlagBits::eEarlyFragmentTests | vk::PipelineStageFlagBits::eLateFragmentTests;
+            subpassDepedency.dstStageMask =
+                vk::PipelineStageFlagBits::eEarlyFragmentTests | vk::PipelineStageFlagBits::eLateFragmentTests;
             subpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;
-            subpassDepedency.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentRead |
-                                             vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+            subpassDepedency.dstAccessMask =
+                vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite;
 
             return subpassDepedency;
         }
@@ -291,7 +289,7 @@ namespace Chicane
             // Vertex Input
             vk::PipelineVertexInputStateCreateInfo vertexInputState = createVertexInputState();
 
-            vk::VertexInputBindingDescription bindingDescription = VulkanVertex::getBindingDescription();
+            vk::VertexInputBindingDescription                bindingDescription = VulkanVertex::getBindingDescription();
             std::vector<vk::VertexInputAttributeDescription> attributeDescriptions =
                 VulkanVertex::getAttributeDescriptions();
 
@@ -314,10 +312,7 @@ namespace Chicane
                 createViewportState(createViewport(size), createScissor(size));
 
             // Dynamic State
-            std::vector<vk::DynamicState> dynamicStates = {
-                vk::DynamicState::eViewport,
-                vk::DynamicState::eScissor
-            };
+            std::vector<vk::DynamicState> dynamicStates     = {vk::DynamicState::eViewport, vk::DynamicState::eScissor};
             vk::PipelineDynamicStateCreateInfo dynamicState = createDynamicState(dynamicStates);
 
             // Shader Stage
@@ -340,7 +335,7 @@ namespace Chicane
 
             // Depthning
             vk::PipelineDepthStencilStateCreateInfo depthStencilState = createDepthStencilState();
-            depthStencilState.depthTestEnable  = inCreateInfo.bHasDepthTest ? VK_TRUE : VK_FALSE;
+            depthStencilState.depthTestEnable                         = inCreateInfo.bHasDepthTest ? VK_TRUE : VK_FALSE;
             depthStencilState.depthWriteEnable = inCreateInfo.bHasDepthWrite ? VK_TRUE : VK_FALSE;
 
             // Attachment
@@ -370,11 +365,8 @@ namespace Chicane
             pipelineInfo.pMultisampleState   = &multisampleState;
             pipelineInfo.pColorBlendState    = &colorBlendState;
             pipelineInfo.pDepthStencilState  = &depthStencilState;
-            pipelineInfo.layout              = createLayout(
-                inCreateInfo.descriptorSetLayouts,
-                inCreateInfo.pushConstantRanges,
-                m_logicalDevice
-            );
+            pipelineInfo.layout =
+                createLayout(inCreateInfo.descriptorSetLayouts, inCreateInfo.pushConstantRanges, m_logicalDevice);
             pipelineInfo.renderPass = createRendepass(
                 attachments,
                 m_logicalDevice,
@@ -424,13 +416,8 @@ namespace Chicane
             vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet
         )
         {
-            inCommandBuffer.bindDescriptorSets(
-                vk::PipelineBindPoint::eGraphics,
-                layout,
-                inIndex,
-                inDescriptorSet,
-                nullptr
-            );
+            inCommandBuffer
+                .bindDescriptorSets(vk::PipelineBindPoint::eGraphics, layout, inIndex, inDescriptorSet, nullptr);
         }
     }
 }

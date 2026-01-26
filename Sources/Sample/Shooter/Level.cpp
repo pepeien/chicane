@@ -81,9 +81,7 @@ Level::CameraSubscription Level::watchActiveCamera(
 
 void Level::spawnSky()
 {
-    createActor<Chicane::ASky>()->setSky(
-        Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky")
-    );
+    createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky"));
 }
 
 void Level::spawnLights()

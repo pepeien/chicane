@@ -16,8 +16,7 @@ namespace Chicane
         {
         public:
             static vk::Viewport createViewport(
-                const Vec<2, std::uint32_t>& inSize     = Vec<2, std::uint32_t>(0),
-                const Vec2&                  inPosition = Vec2::Zero
+                const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0), const Vec2& inPosition = Vec2::Zero
             );
             static vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
             static vk::PipelineVertexInputStateCreateInfo createVertexInputState();
@@ -28,9 +27,7 @@ namespace Chicane
             static vk::PipelineDynamicStateCreateInfo createDynamicState(
                 const std::vector<vk::DynamicState>& inDynamicStates
             );
-            static vk::PipelineRasterizationStateCreateInfo createRasterizationState(
-                vk::PolygonMode inPolygonMode
-            );
+            static vk::PipelineRasterizationStateCreateInfo createRasterizationState(vk::PolygonMode inPolygonMode);
             static vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
             static vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
             static vk::PipelineColorBlendStateCreateInfo createColorBlendState();

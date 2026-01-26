@@ -180,9 +180,7 @@ namespace Chicane
 
         void VulkanLGrid::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
@@ -262,7 +260,7 @@ namespace Chicane
             createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
             createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
             createInfo.size           = sizeof(Vertex) * 2000000;
-            createInfo.usage = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
+            createInfo.usage          = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eVertexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             m_primitiveVertexBuffer.init(createInfo);
@@ -286,8 +284,8 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation = getBackend<VulkanBackend>()
-                                      ->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation =
+                getBackend<VulkanBackend>()->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inVertices.data(), createInfo.size);
             getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
 
@@ -303,10 +301,10 @@ namespace Chicane
         void VulkanLGrid::buildPrimitiveIndexBuffer()
         {
             VulkanBufferCreateInfo createInfo;
-            createInfo.physicalDevice = getBackend<VulkanBackend>()->physicalDevice;
-            createInfo.logicalDevice  = getBackend<VulkanBackend>()->logicalDevice;
-            createInfo.size           = sizeof(Vertex::Index) * 2000000;
-            createInfo.usage = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
+            createInfo.physicalDevice   = getBackend<VulkanBackend>()->physicalDevice;
+            createInfo.logicalDevice    = getBackend<VulkanBackend>()->logicalDevice;
+            createInfo.size             = sizeof(Vertex::Index) * 2000000;
+            createInfo.usage            = vk::BufferUsageFlagBits::eTransferDst | vk::BufferUsageFlagBits::eIndexBuffer;
             createInfo.memoryProperties = vk::MemoryPropertyFlagBits::eDeviceLocal;
 
             m_primitiveIndexBuffer.init(createInfo);
@@ -330,8 +328,8 @@ namespace Chicane
             VulkanBuffer stagingBuffer;
             stagingBuffer.init(createInfo);
 
-            void* writeLocation = getBackend<VulkanBackend>()
-                                      ->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
+            void* writeLocation =
+                getBackend<VulkanBackend>()->logicalDevice.mapMemory(stagingBuffer.memory, 0, createInfo.size);
             memcpy(writeLocation, inIndices.data(), createInfo.size);
             getBackend<VulkanBackend>()->logicalDevice.unmapMemory(stagingBuffer.memory);
 

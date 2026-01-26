@@ -20,9 +20,8 @@ namespace Chicane
                 {
                     vk::FormatProperties properties = inPhysicalDevice.getFormatProperties(format);
 
-                    bool bIsTilingLinear = inTiling == vk::ImageTiling::eLinear;
-                    bool bDoesFeatureSupportLinearTiling =
-                        (properties.linearTilingFeatures & inFeatures) == inFeatures;
+                    bool bIsTilingLinear                 = inTiling == vk::ImageTiling::eLinear;
+                    bool bDoesFeatureSupportLinearTiling = (properties.linearTilingFeatures & inFeatures) == inFeatures;
 
                     if (bIsTilingLinear && bDoesFeatureSupportLinearTiling)
                     {
@@ -89,8 +88,7 @@ namespace Chicane
                 const VulkanImageMemoryCreateInfo& inCreateInfo
             )
             {
-                vk::MemoryRequirements requirements =
-                    inCreateInfo.logicalDevice.getImageMemoryRequirements(inInstance);
+                vk::MemoryRequirements requirements = inCreateInfo.logicalDevice.getImageMemoryRequirements(inInstance);
 
                 vk::MemoryAllocateInfo allocationInfo;
                 allocationInfo.allocationSize  = requirements.size;
@@ -106,9 +104,7 @@ namespace Chicane
             }
 
             void initView(
-                vk::ImageView&                   outView,
-                const vk::Image&                 inInstance,
-                const VulkanImageViewCreateInfo& inCreateInfo
+                vk::ImageView& outView, const vk::Image& inInstance, const VulkanImageViewCreateInfo& inCreateInfo
             )
             {
                 vk::ImageViewCreateInfo createInfo         = {};
@@ -156,8 +152,7 @@ namespace Chicane
                 vk::PipelineStageFlags sourceStage      = vk::PipelineStageFlagBits::eTransfer;
                 vk::PipelineStageFlags destinationStage = vk::PipelineStageFlagBits::eFragmentShader;
 
-                if (inOldLayout == vk::ImageLayout::eUndefined &&
-                    inNewLayout == vk::ImageLayout::eTransferDstOptimal)
+                if (inOldLayout == vk::ImageLayout::eUndefined && inNewLayout == vk::ImageLayout::eTransferDstOptimal)
                 {
                     barrier.srcAccessMask = vk::AccessFlagBits::eNoneKHR;
                     barrier.dstAccessMask = vk::AccessFlagBits::eTransferWrite;
@@ -166,14 +161,8 @@ namespace Chicane
                     destinationStage = vk::PipelineStageFlagBits::eTransfer;
                 }
 
-                inCommandBuffer.pipelineBarrier(
-                    sourceStage,
-                    destinationStage,
-                    vk::DependencyFlags(),
-                    nullptr,
-                    nullptr,
-                    barrier
-                );
+                inCommandBuffer
+                    .pipelineBarrier(sourceStage, destinationStage, vk::DependencyFlags(), nullptr, nullptr, barrier);
 
                 VulkanCommandBufferWorker::endJob(inCommandBuffer, inQueue, "Transition Image Layout");
             }

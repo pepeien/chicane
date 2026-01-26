@@ -13,6 +13,10 @@ namespace Chicane
         using List = std::vector<View>;
 
     public:
+        void flipY();
+        void depthToZeroOne();
+
+    public:
         // Settings
         Vec4 clip        = Vec4(0.1f, 1000.0f, 0.0f, 0.0f);
 
