@@ -21,8 +21,8 @@ namespace Chicane
         Vec4 clip        = Vec4(0.1f, 1000.0f, 0.0f, 0.0f);
 
         // Matrices
-        Mat4 projection  = Mat4::One;
         Mat4 view        = Mat4::One;
+        Mat4 projection  = Mat4::One;
 
         // Orientantion
         Vec4 up          = Vec4::Up;

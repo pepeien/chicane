@@ -1,11 +1,8 @@
 #version 460
 
-#extension GL_ARB_shader_draw_parameters : require
+#extension GL_ARB_shading_language_include : require
 
-struct Instance {
-    mat4 modelMatrix;
-    int texture;
-};
+#include "../../Common/Poly/3D.glsl"
 
 layout(binding = 1) uniform Light {
     vec4 clip;
@@ -13,16 +10,16 @@ layout(binding = 1) uniform Light {
     mat4 view;
     mat4 projection;
 
-    vec4 forward;
-    vec4 right;
     vec4 up;
+    vec4 right;
+    vec4 forward;
 
     vec4 translation;
 } light;
 
-layout(std430, binding = 2) buffer MeshBuffer {
-    Instance data[];
-} instances;
+layout(std430, binding = 2) readonly buffer MeshBuffer {
+    PolyInstance3D meshes[];
+} instance;
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
@@ -30,7 +27,7 @@ layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
 void main() {
-    Instance instance = instances.data[gl_InstanceID + gl_BaseInstance];
+    PolyInstance3D mesh = instance.meshes[gl_InstanceID + gl_BaseInstance];
 
-    gl_Position = light.projection * light.view * instance.modelMatrix * vec4(inPosition, 1.0);
+    gl_Position = light.projection * light.view * mesh.model * vec4(inPosition, 1.0);
 }
