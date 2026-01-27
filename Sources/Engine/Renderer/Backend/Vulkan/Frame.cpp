@@ -8,8 +8,6 @@
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Renderer

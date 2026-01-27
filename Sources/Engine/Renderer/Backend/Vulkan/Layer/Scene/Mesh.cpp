@@ -64,6 +64,7 @@ namespace Chicane
             beginInfo.pClearValues            = m_clear.data();
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
+
             // Pipeline
             m_graphicsPipeline->bind(commandBuffer);
 

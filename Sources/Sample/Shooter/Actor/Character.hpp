@@ -38,7 +38,7 @@ private:
     void onJump();
 
 private:
-    // Camera
+    // View
     Chicane::CCamera* m_camera;
 
     // Mesh

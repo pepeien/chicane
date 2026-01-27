@@ -6,4 +6,6 @@ Sun::Sun()
 {
     setAbsoluteTranslation(0.0f, 0.0f, m_distance);
     setAbsoluteRotation(-90.0f, 0.0f, 0.0f);
+
+    m_light->setFarClip(m_distance);
 }

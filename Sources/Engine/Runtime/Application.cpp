@@ -7,8 +7,6 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
