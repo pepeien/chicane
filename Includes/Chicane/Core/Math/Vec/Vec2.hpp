@@ -3,6 +3,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
 #include "Chicane/Core/Math/Vec/Vec3.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -26,5 +27,9 @@ namespace Chicane
         {
             return (std::fabs(inLeft.x - inRight.x) < FLT_EPSILON && std::fabs(inLeft.y - inRight.y) < FLT_EPSILON);
         }
+
+        inline operator String() const { return toString(); }
+
+        inline String toString() const { return String::sprint("[%.2f, %.2f]", x, y); }
     };
 }

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Chicane/Core.hpp"
+#include "Chicane/Core/Math/Quat/QuatFloat.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
@@ -29,5 +31,11 @@ namespace Chicane
                 std::fabs(inLeft.z - inRight.z) < FLT_EPSILON
             );
         }
+
+        inline operator String() const { return toString(); }
+
+        inline String toString() const { return String::sprint("[%.2f, %.2f, %.2f]", x, y, z); }
+
+        inline QuatFloat toQuat() const { return glm::quat(glm::radians(glm::vec3(x, y, z))); }
     };
 }

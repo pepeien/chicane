@@ -3,7 +3,6 @@
 #include "Chicane/Box/Font/Manager.hpp"
 
 #include "Chicane/Core/Math/Curve.hpp"
-#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {

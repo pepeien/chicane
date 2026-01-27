@@ -14,7 +14,7 @@ namespace Chicane
 
     const Vec3& SpatialTransform::getRotation() const
     {
-        return m_rotation;
+        return m_rotation.getVector();
     }
 
     const Vec3& SpatialTransform::getScale() const
@@ -176,28 +176,32 @@ namespace Chicane
 
     const Vec3& SpatialTransform::getRight() const
     {
-        return m_right;
+        return m_rotation.getRight();
     }
 
     const Vec3& SpatialTransform::getForward() const
     {
-        return m_forward;
+        return m_rotation.getForward();
     }
 
     const Vec3& SpatialTransform::getUp() const
     {
-        return m_up;
+        return m_rotation.getUp();
     }
 
     void SpatialTransform::refresh()
     {
-        // Transformation
-        m_matrix = m_absolute.getMatrix() * m_relative.getMatrix();
+        const QuatFloat& absRot   = m_absolute.getOrientation();
+        const QuatFloat& relRot   = m_relative.getOrientation();
+        const QuatFloat  worldRot = absRot * relRot;
 
-        m_translation = m_absolute.getTranslation() + m_relative.getTranslation();
-        m_rotation    = m_absolute.getRotation() + m_relative.getRotation();
+        Vec3 localOffset   = m_relative.getTranslation() * m_absolute.getScale();
+        Vec3 rotatedOffset = absRot * localOffset;
+
+        m_rotation.setOrientation(worldRot);
+        m_translation = m_absolute.getTranslation() + rotatedOffset;
         m_scale       = m_absolute.getScale() * m_relative.getScale();
 
-        refreshOrientation(glm::quat_cast(m_matrix));
+        Transform::refresh();
     }
 }
