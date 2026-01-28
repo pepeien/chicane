@@ -29,10 +29,7 @@ namespace Chicane
             buildTextureDescriptor();
             buildModelVertexBuffer();
             buildModelIndexBuffer();
-
-            addLayer<VulkanLSceneSky>();
-            addLayer<VulkanLSceneShadow>();
-            addLayer<VulkanLSceneMesh>();
+            buildLayers();
 
             return true;
         }
@@ -229,6 +226,13 @@ namespace Chicane
 
             modelVertexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
             modelIndexBuffer.destroy(getBackend<VulkanBackend>()->logicalDevice);
+        }
+
+        void VulkanLScene::buildLayers()
+        {
+            addLayer<VulkanLSceneSky>();
+            addLayer<VulkanLSceneShadow>();
+            addLayer<VulkanLSceneMesh>();
         }
     }
 }

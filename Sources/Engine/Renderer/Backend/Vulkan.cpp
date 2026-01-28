@@ -21,8 +21,8 @@ namespace Chicane
               swapchain({}),
               imageCount(0),
               m_currentImageIndex(0),
-              m_vkViewport({}),
-              m_vkScissor(vk::Rect2D())
+              viewport({}),
+              scissor(vk::Rect2D())
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -64,15 +64,18 @@ namespace Chicane
         void VulkanBackend::onResize(const Viewport& inViewport)
         {
             // Viewport
-            m_vkViewport.width  = inViewport.size.x;
-            m_vkViewport.height = inViewport.size.y;
+            viewport.width  = inViewport.size.x;
+            viewport.height = inViewport.size.y;
 
-            m_vkViewport.x = inViewport.position.x;
-            m_vkViewport.y = inViewport.position.y;
+            viewport.x = inViewport.position.x;
+            viewport.y = inViewport.position.y;
+
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
 
             // Scissor
-            m_vkScissor.extent.width  = inViewport.size.x;
-            m_vkScissor.extent.height = inViewport.size.y;
+            scissor.extent.width  = inViewport.size.x;
+            scissor.extent.height = inViewport.size.y;
 
             Backend::onResize(inViewport);
         }
@@ -293,8 +296,8 @@ namespace Chicane
 
         void VulkanBackend::renderViewport(const vk::CommandBuffer& inCommandBuffer)
         {
-            inCommandBuffer.setViewport(0, 1, &m_vkViewport);
-            inCommandBuffer.setScissor(0, 1, &m_vkScissor);
+            inCommandBuffer.setViewport(0, 1, &viewport);
+            inCommandBuffer.setScissor(0, 1, &scissor);
         }
 
         void VulkanBackend::buildLayers()

@@ -38,6 +38,9 @@ namespace Chicane
             void buildModelIndexData(const Vertex::Indices& inIndices);
             void destroyModelData();
 
+            // Layer
+            void buildLayers();
+
         public:
             VulkanDescriptorBundle                      textureDescriptor;
             std::vector<std::unique_ptr<VulkanTexture>> textures;

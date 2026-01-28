@@ -97,7 +97,6 @@ namespace Chicane
 
             View data = inData;
             data.flipY();
-            data.depthToZeroOne();
 
             cameraResource.copyToBuffer(&data, sizeof(View));
         }
@@ -136,7 +135,6 @@ namespace Chicane
 
             View data = inData.at(0);
             data.flipY();
-            data.depthToZeroOne();
 
             lightResource.copyToBuffer(&data, sizeof(View));
         }
@@ -264,7 +262,6 @@ namespace Chicane
             samplerCreateInfo.anisotropyEnable        = false;
             samplerCreateInfo.maxAnisotropy           = 1.0f;
             samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
-            samplerCreateInfo.unnormalizedCoordinates = false;
             samplerCreateInfo.compareEnable           = true;
             samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
             samplerCreateInfo.minLod                  = 0.0f;
@@ -326,7 +323,7 @@ namespace Chicane
             samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
             samplerCreateInfo.unnormalizedCoordinates = false;
             samplerCreateInfo.compareEnable           = true;
-            samplerCreateInfo.compareOp               = vk::CompareOp::eLessOrEqual;
+            samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
             samplerCreateInfo.minLod                  = 0.0f;
             samplerCreateInfo.maxLod                  = 1.0f;
             samplerCreateInfo.unnormalizedCoordinates = false;

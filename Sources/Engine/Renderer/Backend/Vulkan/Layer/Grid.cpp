@@ -6,6 +6,8 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {
@@ -21,8 +23,6 @@ namespace Chicane
             deleteChildren();
             destroyFrameResources();
             destroyPrimitiveData();
-
-            m_graphicsPipeline.reset();
         }
 
         bool VulkanLGrid::onInit()
@@ -77,7 +77,7 @@ namespace Chicane
             vk::CommandBuffer  commandBuffer = data->commandBuffer;
 
             vk::RenderPassBeginInfo beginInfo;
-            beginInfo.renderPass        = m_graphicsPipeline->renderPass;
+            beginInfo.renderPass        = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer       = frame.getFramebuffer(m_id);
             beginInfo.renderArea.extent = getBackend<VulkanBackend>()->swapchain.extent;
             beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
@@ -86,10 +86,10 @@ namespace Chicane
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
 
             // Pipeline
-            m_graphicsPipeline->bind(commandBuffer);
+            m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Draw
             vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
@@ -186,6 +186,9 @@ namespace Chicane
 
         void VulkanLGrid::initGraphicsPipeline()
         {
+            // Backend
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
             vertexShader.path = "Contents/Engine/Shaders/Vulkan/Grid.vvert";
@@ -195,47 +198,104 @@ namespace Chicane
             fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Grid.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            std::vector<VulkanShaderStageCreateInfo> shaders = {};
-            shaders.push_back(vertexShader);
-            shaders.push_back(fragmentShader);
+            // Depth
+            vk::PipelineDepthStencilStateCreateInfo depth;
+            depth.flags                 = vk::PipelineDepthStencilStateCreateFlags();
+            depth.depthBoundsTestEnable = VK_FALSE;
+            depth.stencilTestEnable     = VK_FALSE;
+            depth.depthWriteEnable      = VK_TRUE;
+            depth.depthTestEnable       = VK_TRUE;
+            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
+            depth.minDepthBounds        = 0.0f;
+            depth.maxDepthBounds        = 1.0f;
 
-            // Attachments
-            VulkanGraphicsPipelineAttachment colorAttachment;
-            colorAttachment.type          = VulkanGraphicsPipelineAttachmentType::Color;
-            colorAttachment.format        = getBackend<VulkanBackend>()->swapchain.colorFormat;
+            // Render pass
+            vk::AttachmentDescription colorAttachment;
+            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
+            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
-            colorAttachment.initialLayout = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
+            colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
             colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
-            VulkanGraphicsPipelineAttachment depthAttachment;
-            depthAttachment.type          = VulkanGraphicsPipelineAttachmentType::Depth;
-            depthAttachment.format        = getBackend<VulkanBackend>()->swapchain.depthFormat;
+            vk::AttachmentReference colorReference;
+            colorReference.attachment = 0;
+            colorReference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
+
+            vk::SubpassDependency colorSubpassDepedency;
+            colorSubpassDepedency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+            colorSubpassDepedency.dstSubpass    = 0;
+            colorSubpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;
+            colorSubpassDepedency.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
+
+            vk::AttachmentDescription depthAttachment;
+            depthAttachment.flags         = vk::AttachmentDescriptionFlags();
+            depthAttachment.format        = backend->swapchain.depthFormat;
+            depthAttachment.samples       = vk::SampleCountFlagBits::e1;
             depthAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            depthAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             depthAttachment.initialLayout = vk::ImageLayout::eUndefined;
             depthAttachment.finalLayout   = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
-            std::vector<VulkanGraphicsPipelineAttachment> attachments = {};
-            attachments.push_back(colorAttachment);
-            attachments.push_back(depthAttachment);
+            vk::AttachmentReference depthReference;
+            depthReference.attachment = 1;
+            depthReference.layout     = vk::ImageLayout::eDepthStencilAttachmentOptimal;
 
-            // Set Layouts
-            std::vector<vk::DescriptorSetLayout> setLayouts = {};
-            setLayouts.push_back(m_frameDescriptor.setLayout);
+            vk::SubpassDependency depthSubpassDepedency;
+            depthSubpassDepedency.srcSubpass = 0;
+            depthSubpassDepedency.dstSubpass = VK_SUBPASS_EXTERNAL;
+            depthSubpassDepedency.srcStageMask =
+                vk::PipelineStageFlagBits::eEarlyFragmentTests | vk::PipelineStageFlagBits::eLateFragmentTests;
+            depthSubpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eEarlyFragmentTests;
+            depthSubpassDepedency.srcAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+            depthSubpassDepedency.dstAccessMask = vk::AccessFlagBits::eDepthStencilAttachmentRead;
 
-            VulkanGraphicsPipelineCreateInfo createInfo;
-            createInfo.bHasVertices         = true;
-            createInfo.bHasDepthTest        = true;
-            createInfo.bHasDepthWrite       = false;
-            createInfo.bHasBlending         = true;
-            createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
-            createInfo.shaders              = shaders;
-            createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;
-            createInfo.descriptorSetLayouts = setLayouts;
-            createInfo.attachments          = attachments;
-            createInfo.rasterizaterizationState =
-                VulkanGraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
+            vk::SubpassDescription subpass;
+            subpass.flags                   = vk::SubpassDescriptionFlags();
+            subpass.pipelineBindPoint       = vk::PipelineBindPoint::eGraphics;
+            subpass.colorAttachmentCount    = 1;
+            subpass.pColorAttachments       = &colorReference;
+            subpass.pDepthStencilAttachment = &depthReference;
 
-            m_graphicsPipeline = std::make_unique<VulkanGraphicsPipeline>(createInfo);
+            // Rasterizer
+            vk::PipelineRasterizationStateCreateInfo rasterization;
+            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
+            rasterization.depthClampEnable        = VK_FALSE;
+            rasterization.depthBiasEnable         = VK_FALSE;
+            rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.polygonMode             = vk::PolygonMode::eFill;
+            rasterization.cullMode                = vk::CullModeFlagBits::eBack;
+            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
+            rasterization.lineWidth               = 1.0f;
+            rasterization.depthBiasConstantFactor = 0.0f;
+            rasterization.depthBiasClamp          = 0.0f;
+            rasterization.depthBiasSlopeFactor    = 0.0f;
+
+            // Build
+            VulkanGraphicsPipelineBuilder()
+                .addVertexBinding(VulkanVertex::getBindingDescription())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
+                .addViewport(backend->viewport)
+                .addDynamicState(vk::DynamicState::eViewport)
+                .addScissor(backend->scissor)
+                .addDynamicState(vk::DynamicState::eScissor)
+                .addShaderStage(vertexShader, backend->logicalDevice)
+                .addShaderStage(fragmentShader, backend->logicalDevice)
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState())
+                .addAttachment(colorAttachment)
+                .addSubpassDependecy(colorSubpassDepedency)
+                .setDepthStencil(depth)
+                .addAttachment(depthAttachment)
+                .addSubpassDependecy(depthSubpassDepedency)
+                .addSubpass(subpass)
+                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .setRasterization(rasterization)
+                .build(m_graphicsPipeline, backend->logicalDevice);
         }
 
         void VulkanLGrid::initFramebuffers()
@@ -245,7 +305,7 @@ namespace Chicane
                 VulkanFrameCreateInfo createInfo;
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = getBackend<VulkanBackend>()->logicalDevice;
-                createInfo.renderPass    = m_graphicsPipeline->renderPass;
+                createInfo.renderPass    = m_graphicsPipeline.renderPass;
                 createInfo.extent        = getBackend<VulkanBackend>()->swapchain.extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
                 createInfo.attachments.push_back(frame.depthImage.view);

@@ -80,6 +80,10 @@ namespace Chicane
             // Frame
             int                   imageCount;
 
+            // Viewport
+            vk::Viewport          viewport;
+            vk::Rect2D            scissor;
+
         private:
             // Instance
             vk::detail::DispatchLoaderDynamic m_dispatcher;
@@ -95,10 +99,6 @@ namespace Chicane
 
             // Frame
             int                               m_currentImageIndex;
-
-            // Viewport
-            vk::Viewport                      m_vkViewport;
-            vk::Rect2D                        m_vkScissor;
         };
     }
 }

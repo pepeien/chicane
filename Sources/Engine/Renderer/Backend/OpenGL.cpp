@@ -153,12 +153,12 @@ namespace Chicane
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
             glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, 512);
 
-            // Filter
-            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_REPEAT);
         }
 
         void OpenGLBackend::destroyTextureData()
