@@ -1,5 +1,4 @@
-float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 lightDirection)
-{
+float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 lightDirection) {
     vec3 projCoords = projection.xyz / projection.w;
 
     #ifdef OPENGL
@@ -7,8 +6,16 @@ float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 
     #endif
 
     #ifdef VULKAN
-        projCoords.y = 1.0 - projCoords.y;
+        projCoords.xy = projCoords.xy * 0.5 + 0.5;
     #endif
+
+    if (
+        projCoords.x < 0.0 || projCoords.x > 1.0 ||
+        projCoords.y < 0.0 || projCoords.y > 1.0 ||
+        projCoords.z < 0.0 || projCoords.z > 1.0
+    ) {
+        return 0.0;
+    }
 
     float closestDepth = texture(shadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
@@ -21,6 +28,7 @@ float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 
     for (int x = -1; x <= 1; ++x) {
         for (int y = -1; y <= 1; ++y) {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+
             shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
         }
     }

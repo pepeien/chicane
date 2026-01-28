@@ -236,7 +236,7 @@ namespace Chicane
             depth.stencilTestEnable     = VK_FALSE;
             depth.depthWriteEnable      = VK_TRUE;
             depth.depthTestEnable       = VK_TRUE;
-            depth.depthCompareOp        = vk::CompareOp::eLess;
+            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 

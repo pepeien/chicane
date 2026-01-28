@@ -191,7 +191,7 @@ namespace Chicane
             depth.stencilTestEnable     = VK_FALSE;
             depth.depthWriteEnable      = VK_TRUE;
             depth.depthTestEnable       = VK_TRUE;
-            depth.depthCompareOp        = vk::CompareOp::eLess;
+            depth.depthCompareOp        = vk::CompareOp::eLessOrEqual;
             depth.minDepthBounds        = 0.0f;
             depth.maxDepthBounds        = 1.0f;
 
@@ -230,8 +230,8 @@ namespace Chicane
             rasterization.depthBiasEnable         = VK_TRUE;
             rasterization.depthBiasClamp          = 0.0f;
             rasterization.polygonMode             = vk::PolygonMode::eFill;
-            rasterization.cullMode                = vk::CullModeFlagBits::eBack;
-            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
+            rasterization.cullMode                = vk::CullModeFlagBits::eFront;
+            rasterization.frontFace               = vk::FrontFace::eClockwise;
             rasterization.lineWidth               = 1.0f;
             rasterization.depthBiasConstantFactor = 1.25f;
             rasterization.depthBiasSlopeFactor    = 1.75f;
