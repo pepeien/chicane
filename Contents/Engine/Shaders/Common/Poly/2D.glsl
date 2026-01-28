@@ -21,7 +21,7 @@ vec3 get2DScreenPosition(PolyInstance2D inInstance, vec2 inMultipliers) {
     position.xy -= 1.0;                   // Normalize to NDC
     position.xy *= inMultipliers;
     position.z  /= 999.9;
-    position.z   = clamp(abs(position.z - 1.0), 0.0, 1.0);
+    position.z   = clamp(abs(position.z - 1.0), 0.0001, 0.9999);
 
     return position;
 }

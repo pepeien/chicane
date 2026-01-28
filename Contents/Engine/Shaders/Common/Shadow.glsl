@@ -2,13 +2,13 @@ float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 
 {
     vec3 projCoords = projection.xyz / projection.w;
 
-    if (
-        projCoords.x < 0.0 || projCoords.x > 1.0 ||
-        projCoords.y < 0.0 || projCoords.y > 1.0 ||
-        projCoords.z < 0.0 || projCoords.z > 1.0
-    ) {
-        return 0.0;
-    }
+    #ifdef OPENGL
+        projCoords = projCoords * 0.5 + 0.5; 
+    #endif
+
+    #ifdef VULKAN
+        projCoords.y = 1.0 - projCoords.y;
+    #endif
 
     float closestDepth = texture(shadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;

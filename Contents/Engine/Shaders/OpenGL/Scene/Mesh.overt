@@ -32,7 +32,7 @@ layout(binding = 1) uniform Light {
     vec4 translation;
 } light;
 
-layout(std430, binding = 2) readonly buffer MeshBuffer {
+layout(std430, binding = 2) readonly buffer Scene {
     PolyInstance3D meshes[];
 } instance;
 
@@ -57,14 +57,14 @@ void main() {
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outData.textureIndex    = mesh.texture;
-    outData.UV              = inUV;
-    outData.normal          = transpose(inverse(mat3(mesh.model))) * inNormal;
-    outData.color           = inColor;
-    outData.meshPosition    = vec3(mesh.model * position);
-    outData.shadowPosition  = (SHADOW_BIAS * light.projection * light.view) * vec4(outData.meshPosition, 1.0);
-    outData.lightPosition   = light.translation.xyz;
-    outData.cameraPosition  = camera.translation.xyz;
+    outData.textureIndex   = mesh.texture;
+    outData.UV             = inUV;
+    outData.normal         = transpose(mat3(mesh.model)) * inNormal;
+    outData.color          = inColor;
+    outData.meshPosition   = vec3(mesh.model * position);
+    outData.shadowPosition = light.projection * light.view * vec4(outData.meshPosition, 1.0);
+    outData.lightPosition  = light.translation.xyz;
+    outData.cameraPosition = camera.translation.xyz;
 
     gl_Position = camera.projection * camera.view * mesh.model * position;
 }

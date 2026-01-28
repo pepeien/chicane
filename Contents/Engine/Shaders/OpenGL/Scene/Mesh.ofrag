@@ -1,5 +1,9 @@
 #version 460
 
+#ifndef OPENGL
+    #define OPENGL
+#endif
+
 #extension GL_ARB_shading_language_include : require
 
 #include "../../Common/Shadow.glsl"
@@ -15,31 +19,30 @@ layout(location = 0) in Data {
     vec2 UV;
     vec3 normal;
     vec4 color;
-    vec3 meshPosition; 
+    vec3 meshPosition;
     vec4 shadowPosition; 
     vec3 lightPosition; 
     vec3 cameraPosition; 
 } inData;
 
 void main()
-{           
+{
     vec3 color = texture(textures, vec3(inData.UV, inData.textureIndex)).rgb;
-    vec3 normal = normalize(inData.normal);
     vec3 lightColor = vec3(0.3);
 
     vec3 ambient = 0.3 * lightColor;
 
     vec3 lightDirection   = normalize(inData.lightPosition - inData.meshPosition);
     vec3 viewDirection    = normalize(inData.cameraPosition - inData.meshPosition);
-    vec3 reflectDirection = reflect(-lightDirection, normal);
+    vec3 reflectDirection = reflect(-lightDirection, inData.normal);
     vec3 halfwayDirection = normalize(lightDirection + viewDirection);
 
-    vec3 diffuse  = max(dot(lightDirection, normal), 0.0) * lightColor;
-    vec3 specular = pow(max(dot(normal, halfwayDirection), 0.0), 64.0) * lightColor;   
+    vec3 diffuse  = max(dot(lightDirection, inData.normal), 0.0) * lightColor;
+    vec3 specular = pow(max(dot(inData.normal, halfwayDirection), 0.0), 64.0) * lightColor;   
 
-    float shadow = ShadowCalculation(shadowMap, inData.shadowPosition, normalize(inData.normal), lightDirection);
+    float shadow = ShadowCalculation(shadowMap, inData.shadowPosition, inData.normal, lightDirection);
 
-    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;
 
     outColor = vec4(lighting, 1.0);
 }
