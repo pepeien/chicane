@@ -303,8 +303,8 @@ namespace Chicane
                 break;
             }
 
-            m_backend->onInit();
             m_backend->onResize(m_viewport);
+            m_backend->onInit();
 
             reloadResources();
         }

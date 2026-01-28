@@ -36,7 +36,7 @@ namespace Chicane
             using ViewportSubscription = EventSubscription<Viewport>;
 
         public:
-            static inline constexpr const std::uint32_t FRAME_COUNT = 2;
+            static inline constexpr const std::uint32_t FRAME_COUNT = 4;
 
         public:
             Instance();
