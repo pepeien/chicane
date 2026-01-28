@@ -48,6 +48,10 @@ namespace Chicane
         const Vec3& getFocusPoint() const;
         void setFocusPoint(const Vec3& inPoint);
 
+        // Type
+        const ViewProjectionType getProjectionType() const;
+        void setProjectionType(ViewProjectionType inType);
+
     protected:
         void updateProjection();
         void updateView();

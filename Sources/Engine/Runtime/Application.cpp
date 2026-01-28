@@ -246,8 +246,6 @@ namespace Chicane
 
         for (CLight* light : m_scene->getActiveComponents<CLight>())
         {
-            light->setViewport(m_renderer->getViewport().size);
-
             m_renderer->addLight(light->getData());
         }
 

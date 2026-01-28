@@ -14,7 +14,6 @@ namespace Chicane
 
     public:
         void flipY();
-        void depthToZeroOne();
 
     public:
         // Settings

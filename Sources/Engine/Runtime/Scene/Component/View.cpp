@@ -134,6 +134,18 @@ namespace Chicane
         updateView();
     }
 
+    const ViewProjectionType CView::getProjectionType() const
+    {
+        return m_settings.projection;
+    }
+
+    void CView::setProjectionType(ViewProjectionType inType)
+    {
+        m_settings.projection = inType;
+
+        updateProjection();
+    }
+
     const View& CView::getData() const
     {
         return m_data;
@@ -144,8 +156,29 @@ namespace Chicane
         m_data.clip.x = getNearClip();
         m_data.clip.y = getFarClip();
 
-        m_data.projection =
-            glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
+        switch (m_settings.projection)
+        {
+        case ViewProjectionType::Orthographic:
+            m_data.projection = glm::ortho(
+                -static_cast<float>(m_settings.viewport.x),
+                static_cast<float>(m_settings.viewport.x),
+                -static_cast<float>(m_settings.viewport.y),
+                static_cast<float>(m_settings.viewport.y),
+                m_data.clip.x,
+                m_data.clip.y
+            );
+
+            break;
+
+        case ViewProjectionType::Perspective:
+            m_data.projection =
+                glm::perspective(glm::radians(getFieldOfView()), m_settings.aspectRatio, m_data.clip.x, m_data.clip.y);
+
+            break;
+
+        default:
+            break;
+        }
 
         m_frustum.update(this, m_settings);
     }
