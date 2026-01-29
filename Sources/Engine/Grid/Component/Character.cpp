@@ -16,7 +16,7 @@ namespace Chicane
               m_character(NULL_CHARACTER),
               m_glyph({})
         {
-            Box::getFontManager()->watchInstances([&](const Box::FontManager::Instances& inData) { refreshFont(); });
+            Box::getFontManager()->watch([&](const Box::FontManager::Instances& inData) { refreshFont(); });
         }
 
         bool Character::isDrawable() const
@@ -116,7 +116,7 @@ namespace Chicane
                 return;
             }
 
-            const Box::FontParsed& font = Box::getFontManager()->getByFamily(m_style.font.family);
+            const Box::FontParsed& font = Box::getFontManager()->getFamily(m_style.font.family);
 
             if (!font.hasGlyph(m_character))
             {

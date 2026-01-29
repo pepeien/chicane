@@ -83,7 +83,7 @@ namespace Chicane
             {
                 const Sound* asset = addAsset<Sound>(inFilePath);
 
-                g_soundManager->load(*asset);
+                g_soundManager->load(inFilePath.string(), *asset);
 
                 return asset;
             }

@@ -35,18 +35,17 @@ Character::Character()
     m_body = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CMesh>();
     m_body->attachTo(this);
     m_body->setMesh("Contents/Sample/Shooter/Meshes/Character/Body.bmsh");
-    m_body->setRelativeTranslation(0.0f, -3.0f, 0.0f);
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
     m_hitSound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
     m_hitSound->attachTo(this);
-    m_hitSound->load("Hit");
+    m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
     m_hitSound->activate();
 
     m_victorySound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
     m_victorySound->attachTo(this);
-    m_victorySound->load("Victory");
+    m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
     m_victorySound->activate();
 
     Game::watchScore([this](std::uint32_t inScore) {

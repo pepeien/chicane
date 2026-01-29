@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Box/Font/Extracted.hpp"
 #include "Chicane/Box/Font/Parsed.hpp"
 
 #include "Chicane/Grid.hpp"

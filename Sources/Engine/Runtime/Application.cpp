@@ -198,7 +198,7 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::getModelManager()->watchInstances([&](const Box::ModelManager::Instances& inInstances) {
+        Box::getModelManager()->watch([&](const Box::ModelManager::Instances& inInstances) {
             for (const auto& [id, poly] : inInstances)
             {
                 Renderer::DrawPolyData data;
@@ -209,8 +209,8 @@ namespace Chicane
                 m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
             }
         });
-        Box::getTextureManager()->watchDatum([&](const Box::TextureManager::Datum& inDatum) {
-            for (const auto& [id, texture] : inDatum)
+        Box::getTextureManager()->watch([&](const Box::TextureManager::Instances& inInstances) {
+            for (const auto& [id, texture] : inInstances)
             {
                 Renderer::DrawTextureData data;
                 data.reference = id;

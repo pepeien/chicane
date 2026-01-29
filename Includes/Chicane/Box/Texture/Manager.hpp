@@ -8,24 +8,14 @@ namespace Chicane
 {
     namespace Box
     {
-        class CHICANE_BOX TextureManager : public Box::Manager<Image::Raw, Image>
+        class CHICANE_BOX TextureManager : public Box::Manager<Texture, Image>
         {
         public:
             TextureManager();
             virtual ~TextureManager() = default;
 
         protected:
-            void onActivation(const String& inId) override;
-            void onDeactivation(const String& inId) override;
-
-        public:
-            // Setup
-            void load(const String& inId, const Texture& inAsset);
-
-            // Data
-            const Image::Raw& getInstance(const String& inId) const;
-            const Image& getData(const String& inId) const;
-            std::uint32_t getIndex(const String& inId) const;
+            void onLoad(const String& inId, const Texture& inData) override;
         };
     }
 }

@@ -1,6 +1,5 @@
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
-#include "Chicane/Box/Model/Extracted.hpp"
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Model/Parsed.hpp"
 
@@ -82,7 +81,7 @@ namespace Chicane
 
         for (const Box::MeshGroup& group : m_mesh->getGroups())
         {
-            const Box::ModelExtracted& model = manager->getInstance(group.getModel());
+            const Box::ModelParsed model = manager->get(group.getModel());
 
             const Bounds bounds = Bounds(model.vertices, model.indices);
 

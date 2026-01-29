@@ -17,9 +17,7 @@ namespace Chicane
             return;
         }
 
-        m_manager->activate(inSound);
-
-        m_sound = Screech::Sound(m_manager->getData(inSound));
+        m_sound = Screech::Sound(m_manager->get(inSound));
     }
 
     void CSound::play()

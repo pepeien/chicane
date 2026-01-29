@@ -2,9 +2,9 @@
 
 Sun::Sun()
     : Chicane::ALight(),
-      m_distance(80.0f)
+      m_distance(200.0f)
 {
-    setAbsoluteTranslation(0.0f, 0.0f, m_distance);
+    setAbsoluteTranslation(0.0f, 50.0f, m_distance);
     setAbsoluteRotation(-90.0f, 0.0f, 0.0f);
 
     m_light->setFarClip(m_distance);

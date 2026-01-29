@@ -10,7 +10,7 @@ namespace Chicane
         namespace ModelWavefront
         {
             void parseDataset(
-                ModelExtracted&                            outResult,
+                ModelParsed&                               outResult,
                 std::unordered_map<String, std::uint32_t>& outMap,
                 const fastObjMesh*                         inMesh,
                 std::uint32_t                              inIndex
@@ -55,9 +55,9 @@ namespace Chicane
                 outMap.insert(std::make_pair(dataSet, currentIndex));
             }
 
-            ModelExtracted parse(const ModelRaw& inData)
+            ModelParsed parse(const ModelRaw& inData)
             {
-                ModelExtracted result = {};
+                ModelParsed result = {};
 
                 String data = String(inData.begin(), inData.end());
                 data.append('\n');

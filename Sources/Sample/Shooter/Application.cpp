@@ -16,7 +16,7 @@ Application::Application()
     createInfo.window.size    = Chicane::Vec<2, int>(1600, 900);
     createInfo.window.display = 0;
     createInfo.window.type    = Chicane::WindowType::Windowed;
-    createInfo.window.backend = Chicane::WindowBackend::Vulkan;
+    createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
     // Setup
     createInfo.onSetup = [this]() {
