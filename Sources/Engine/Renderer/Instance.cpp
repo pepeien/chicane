@@ -167,9 +167,10 @@ namespace Chicane
                 sky.textures.push_back(*found);
             }
 
-            sky.textures.at(0).image.rotate(90.0f);  // Right
-            sky.textures.at(1).image.rotate(-90.0f); // Left
-            sky.textures.at(2).image.rotate(180.0f); // Front
+            sky.textures.at(0).image.rotate(-90.0f);  // Right
+            sky.textures.at(1).image.rotate(90.0f);   // Left
+            sky.textures.at(3).image.rotate(-180.0f); // Back
+            sky.textures.at(4).image.rotate(180.0f);  // Up
 
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
 

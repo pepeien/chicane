@@ -72,6 +72,8 @@ namespace Chicane
 
         void VulkanLGrid::onRender(const Frame& inFrame, void* inData)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+
             VulkanBackendData* data          = (VulkanBackendData*)inData;
             VulkanFrame        frame         = data->frame;
             vk::CommandBuffer  commandBuffer = data->commandBuffer;
@@ -90,6 +92,9 @@ namespace Chicane
 
             // Frame
             m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+
+            // Texture
+            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 1, backend->textureDescriptor.set);
 
             // Draw
             vk::Buffer     vertexBuffers[] = {m_primitiveVertexBuffer.instance};
@@ -294,6 +299,7 @@ namespace Chicane
                 .addSubpassDependecy(depthSubpassDepedency)
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .addDescriptorSetLayout(backend->textureDescriptor.setLayout)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

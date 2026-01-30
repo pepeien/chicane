@@ -72,8 +72,9 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            glDisable(GL_DEPTH_TEST);
-            glDepthMask(GL_FALSE);
+            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LEQUAL);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

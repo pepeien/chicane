@@ -65,6 +65,8 @@ namespace Chicane
                 return;
             }
 
+            m_style.background.color = m_parent->getStyle().foregroundColor;
+
             m_parent->addCursor(m_glyph.box.x * ((m_style.font.size / m_glyph.units) * 1.25f), 0.0f);
 
             m_style.zIndex = getParent()->getStyle().zIndex + 0.1f;

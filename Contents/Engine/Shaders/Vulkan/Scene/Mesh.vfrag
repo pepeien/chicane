@@ -26,8 +26,7 @@ layout(location = 0) in Data {
     vec3 cameraPosition; 
 } inData;
 
-void main()
-{
+void main() {
     vec3 color = texture(textures[inData.textureIndex], inData.UV).rgb;
     vec3 lightColor = vec3(0.3);
 

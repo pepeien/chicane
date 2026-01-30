@@ -66,8 +66,7 @@ namespace Chicane
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-            glActiveTexture(GL_TEXTURE3);
-            glBindTexture(GL_TEXTURE_2D, m_depthMapBuffer);
+            glBindTextureUnit(2, m_depthMapBuffer);
         }
 
         void OpenGLLSceneShadow::onCleanup()

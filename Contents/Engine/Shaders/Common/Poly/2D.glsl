@@ -2,6 +2,8 @@ struct PolyInstance2D {
     vec2 screen;
     vec2 size;
     vec3 position;
+    vec4 color;
+    int textureIndex;
 };
 
 vec2 get2DVertexPosition(PolyInstance2D inInstance, vec2 inPosition, vec2 inMultipliers) {

@@ -251,7 +251,6 @@ namespace Chicane
                 .addSubpassDependecy(depthSubpassDepedency)
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
-                .addDescriptorSetLayout(parent->textureDescriptor.setLayout)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

@@ -17,19 +17,6 @@ namespace Chicane
 
         public:
             Container(const pugi::xml_node& inNode);
-
-        protected:
-            void onRefresh() override;
-
-            void refreshPrimitive() override;
-
-        protected:
-            void refreshColor();
-
-        protected:
-            bool        m_bCanUpdate;
-
-            Color::Rgba m_color;
         };
     }
 }

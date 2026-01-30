@@ -1,10 +1,6 @@
 float ShadowCalculation(sampler2D shadowMap, vec4 projection, vec3 normal, vec3 lightDirection) {
     vec3 projCoords = projection.xyz / projection.w;
 
-    #ifdef OPENGL
-        projCoords = projCoords * 0.5 + 0.5; 
-    #endif
-
     #ifdef VULKAN
         projCoords.xy = projCoords.xy * 0.5 + 0.5;
     #endif

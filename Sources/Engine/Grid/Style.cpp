@@ -131,8 +131,9 @@ namespace Chicane
                   Style::GAP_BOTTOM_ATTRIBUTE_NAME,
                   Style::GAP_LEFT_ATTRIBUTE_NAME,
                   Style::GAP_RIGHT_ATTRIBUTE_NAME),
-              backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
+              background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
+              opacity(OPACITY_DEFAULT_VALUE),
               font(StyleFont()),
               letterSpacing(0.0f),
               m_properties({}),
@@ -192,8 +193,9 @@ namespace Chicane
             refreshPadding();
             refreshGap();
             refreshAlignment();
+            refreshBackground();
             refreshForegroundColor();
-            refreshBackgroundColor();
+            refreshOpacity();
             refreshFont();
             refreshLetterSpacing();
         }
@@ -342,6 +344,19 @@ namespace Chicane
             emmitChanges();
         }
 
+        void Style::refreshBackground()
+        {
+            if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) != m_properties.end())
+            {
+                setProperty(background.color, parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)));
+            }
+
+            if (m_properties.find(BACKGROUND_IMAGE_ATTRIBUTE_NAME) != m_properties.end())
+            {
+                setProperty(background.image, parseText(m_properties.at(BACKGROUND_IMAGE_ATTRIBUTE_NAME)));
+            }
+        }
+
         void Style::refreshForegroundColor()
         {
             if (m_properties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
@@ -349,35 +364,17 @@ namespace Chicane
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
-
-            if (Color::areEquals(foregroundColor, color))
-            {
-                return;
-            }
-
-            foregroundColor = color;
-
-            emmitChanges();
+            setProperty(foregroundColor, parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)));
         }
 
-        void Style::refreshBackgroundColor()
+        void Style::refreshOpacity()
         {
-            if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
+            if (m_properties.find(OPACITY_ATTRIBUTE_NAME) == m_properties.end())
             {
                 return;
             }
 
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
-
-            if (Color::areEquals(backgroundColor, color))
-            {
-                return;
-            }
-
-            backgroundColor = color;
-
-            emmitChanges();
+            setProperty(opacity, parseNumber(m_properties.at(OPACITY_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshFont()

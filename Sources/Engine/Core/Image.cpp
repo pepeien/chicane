@@ -45,7 +45,9 @@ namespace Chicane
           m_channel(0),
           m_format(0),
           m_pixels(nullptr)
-    {}
+    {
+        stbi_set_flip_vertically_on_load(1);
+    }
 
     Image::Image(const Image& inImage)
         : m_width(inImage.m_width),

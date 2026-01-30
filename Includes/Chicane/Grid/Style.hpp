@@ -7,6 +7,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Alignment.hpp"
+#include "Chicane/Grid/Style/Background.hpp"
 #include "Chicane/Grid/Style/Corners.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
 #include "Chicane/Grid/Style/Display.hpp"
@@ -88,12 +89,19 @@ namespace Chicane
             static inline constexpr const char* POSITION_TYPE_ABSOLUTE          = "absolute";
             static inline constexpr const char* POSITION_TYPE_RELATIVE          = "relative";
 
-            // Color
+            // Background
             static inline constexpr const char* BACKGROUND_COLOR_ATTRIBUTE_NAME = "background-color";
             static inline constexpr const char* BACKGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_TRANSPARENT;
 
+            static inline constexpr const char* BACKGROUND_IMAGE_ATTRIBUTE_NAME = "background-image";
+            static inline constexpr const char* BACKGROUND_IMAGE_DEFAULT_COLOR  = "";
+
+            // Color
             static inline constexpr const char* FOREGROUND_COLOR_ATTRIBUTE_NAME = "color";
             static inline constexpr const char* FOREGROUND_COLOR_DEFAULT_COLOR  = Color::HEX_COLOR_WHITE;
+
+            static inline constexpr const char* OPACITY_ATTRIBUTE_NAME          = "opacity";
+            static inline constexpr const float OPACITY_DEFAULT_VALUE           = 1.0f;
 
             // Corner
             static inline constexpr const char* CORNER_DEFAULT_VALUE            = "0px";
@@ -185,8 +193,9 @@ namespace Chicane
             void refreshMargin();
             void refreshPadding();
             void refreshGap();
+            void refreshBackground();
             void refreshForegroundColor();
-            void refreshBackgroundColor();
+            void refreshOpacity();
             void refreshFont();
             void refreshLetterSpacing();
 
@@ -215,31 +224,34 @@ namespace Chicane
 
         public:
             // Visiblity
-            StyleDisplay   display;
-            float          zIndex; // [0.0f, 999.9f]
+            StyleDisplay    display;
+            float           zIndex; // [0.0f, 999.9f]
 
             // Size
-            float          width;
-            float          height;
+            float           width;
+            float           height;
 
             // Flex
-            StyleFlex      flex;
+            StyleFlex       flex;
 
             // Positioning
-            StylePosition  position;
-            StyleAlignment align;
-            StyleAlignment justify;
-            StyleCorners   margin;
-            StyleCorners   padding;
-            StyleCorners   gap;
+            StylePosition   position;
+            StyleAlignment  align;
+            StyleAlignment  justify;
+            StyleCorners    margin;
+            StyleCorners    padding;
+            StyleCorners    gap;
+
+            // Background
+            StyleBackground background;
 
             // Color
-            Color::Rgba    backgroundColor;
-            Color::Rgba    foregroundColor;
+            Color::Rgba     foregroundColor;
+            float           opacity;
 
             // Text
-            StyleFont      font;
-            float          letterSpacing;
+            StyleFont       font;
+            float           letterSpacing;
 
         private:
             StyleSource::Map m_properties;

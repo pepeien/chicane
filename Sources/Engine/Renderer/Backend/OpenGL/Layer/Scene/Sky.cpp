@@ -29,6 +29,8 @@ namespace Chicane
 
         void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
         {
+            glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
             if (inResource.textures.empty() || inResource.model.id == Draw::UnknownId)
             {
                 return;
@@ -74,7 +76,7 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_texturesBuffer);
+            glBindTextureUnit(1, m_texturesBuffer);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
             glDrawElementsBaseVertex(

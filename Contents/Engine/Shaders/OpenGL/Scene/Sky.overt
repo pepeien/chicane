@@ -20,8 +20,7 @@ layout(location = 3) in vec3 inNormal;
 
 layout(location = 0) out vec3 outUV;
 
-void main()
-{
+void main() {
     outUV = inPosition;
 
     gl_Position = camera.projection * mat4(mat3(camera.view)) * vec4(inPosition, 1.0);

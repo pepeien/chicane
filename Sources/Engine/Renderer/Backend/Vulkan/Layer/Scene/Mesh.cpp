@@ -52,6 +52,9 @@ namespace Chicane
 
         void VulkanLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = getParent<VulkanLScene>();
+
             VulkanBackendData* data          = (VulkanBackendData*)inData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             VulkanFrame&       frame         = data->frame;
@@ -59,7 +62,7 @@ namespace Chicane
             vk::RenderPassBeginInfo beginInfo = {};
             beginInfo.renderPass              = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer             = frame.getFramebuffer(m_id);
-            beginInfo.renderArea.extent       = getBackend<VulkanBackend>()->swapchain.extent;
+            beginInfo.renderArea.extent       = backend->swapchain.extent;
             beginInfo.clearValueCount         = static_cast<std::uint32_t>(m_clear.size());
             beginInfo.pClearValues            = m_clear.data();
 
@@ -72,16 +75,15 @@ namespace Chicane
             m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
-            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 1, getParent<VulkanLScene>()->textureDescriptor.set);
+            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 1, backend->textureDescriptor.set);
 
             // Draw
-            vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
+            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
             vk::DeviceSize offsets[]       = {0};
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer
-                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -322,7 +324,7 @@ namespace Chicane
                 .addSubpassDependecy(depthSubpassDepedency)
                 .addSubpass(subpass)
                 .addDescriptorSetLayout(m_frameDescriptor.setLayout)
-                .addDescriptorSetLayout(parent->textureDescriptor.setLayout)
+                .addDescriptorSetLayout(backend->textureDescriptor.setLayout)
                 .setRasterization(rasterization)
                 .build(m_graphicsPipeline, backend->logicalDevice);
         }

@@ -1,10 +1,24 @@
 #version 460
 
+#extension GL_EXT_nonuniform_qualifier : enable
+
 layout(location = 0) out vec4 outColor;
 
-layout(location = 1) in vec4 inColor;
+layout(location = 0) in Data {
+    flat int textureIndex;
+    vec2 UV;
+    vec3 normal;
+    vec4 color;
+} inData;
 
-void main() 
-{
-	outColor = inColor.rgba;
+layout(set = 1, binding = 0) uniform sampler2D textures[];
+
+void main() {
+    vec4 color = inData.color.rgba;
+
+    if (inData.textureIndex >= 0) {
+        color.rgb = texture(textures[inData.textureIndex], inData.UV).rgb;
+    }
+
+	outColor = color;
 }

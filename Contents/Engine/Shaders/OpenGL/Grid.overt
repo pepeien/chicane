@@ -5,7 +5,12 @@
 
 #include "../Common/Poly/2D.glsl"
 
-layout(location = 1) out vec4 outColor;
+layout(location = 0) out Data {
+    flat int textureIndex;
+    vec2 UV;
+    vec3 normal;
+    vec4 color;
+} outData;
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
@@ -22,7 +27,10 @@ void main() {
     vec2 vertexPosition = get2DVertexPosition(component, inPosition.xy, vec2(1.0));
     vec3 screenPosition = get2DScreenPosition(component, vec2(1.0, -1.0));
 
-    outColor = normalize2DColor(inColor);
+    outData.textureIndex = component.textureIndex;
+    outData.UV           = inUV;
+    outData.normal       = inNormal;
+    outData.color        = normalize2DColor(component.color);
 
     gl_Position  = vec4(vertexPosition + screenPosition.xy, screenPosition.z, 1.0);
 }

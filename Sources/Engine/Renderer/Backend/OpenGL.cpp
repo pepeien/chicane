@@ -43,6 +43,11 @@ namespace Chicane
 
         void OpenGLBackend::onLoad(const DrawTexture::List& inResources)
         {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+            GLubyte zero[4] = {0, 0, 0, 0};
+            glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, zero);
+
             for (const DrawTexture& texture : inResources)
             {
                 glTextureSubImage3D(
@@ -143,7 +148,7 @@ namespace Chicane
             if (IS_DEBUGGING)
             {
                 glEnable(GL_DEBUG_OUTPUT);
-                glEnable(GL_DEBUG_CALLBACK_FUNCTION_ARB);
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
                 glDebugMessageCallback(OpenGLDebugCallback, nullptr);
             }
         }
@@ -151,7 +156,7 @@ namespace Chicane
         void OpenGLBackend::buildTextureData()
         {
             glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &m_texturesBuffer);
-            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, 512);
+            glTextureStorage3D(m_texturesBuffer, 1, GL_RGBA8, 512, 512, 64);
 
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
