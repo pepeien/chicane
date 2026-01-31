@@ -13,9 +13,9 @@ namespace Chicane
         class CHICANE_BOX Asset
         {
         public:
-            static inline constexpr const char*         TAG                    = "Asset";
+            static inline constexpr const char*         TAG = "Asset";
 
-            static inline constexpr const std::uint32_t CURRENT_VERSION        = 1;
+            static inline constexpr const std::uint32_t CURRENT_VERSION = 1;
 
             static inline constexpr const char*         VERSION_ATTRIBUTE_NAME = "version";
             static inline constexpr const char*         ID_ATTRIBUTE_NAME      = "id";

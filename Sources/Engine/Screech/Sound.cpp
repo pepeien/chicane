@@ -9,22 +9,40 @@ namespace Chicane
 {
     namespace Screech
     {
-        struct _Data
+        class _Data
         {
         public:
             ma_decoder decoder;
             ma_sound   sound;
+            Sound::Raw data;
         };
 
-        Sound::Sound(const Raw& inData)
-            : Sound()
+        Sound::Sound()
+            : m_status(SoundStatus::Stopped),
+              m_data(std::make_unique<_Data>())
+        {}
+
+        Sound::~Sound()
         {
-            if (inData.size() <= 0 || inData.data() == nullptr)
+            ma_sound_uninit(&m_data->sound);
+            ma_decoder_uninit(&m_data->decoder);
+        }
+
+        void Sound::setData(const Raw& inValue)
+        {
+            if (!stop())
+            {
+                return;
+            }
+
+            if (inValue.size() <= 0 || inValue.data() == nullptr)
             {
                 throw std::runtime_error("Sound source is empty");
             }
 
-            if (ma_decoder_init_memory(inData.data(), inData.size(), NULL, &m_data->decoder) != MA_SUCCESS)
+            m_data->data = inValue;
+
+            if (ma_decoder_init_memory(m_data->data.data(), m_data->data.size(), NULL, &m_data->decoder) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to initialize sound decoder");
             }
@@ -32,23 +50,13 @@ namespace Chicane
             if (ma_sound_init_from_data_source(
                     (ma_engine*)getEngine(),
                     &m_data->decoder,
-                    MA_SOUND_FLAG_DECODE | MA_SOUND_FLAG_ASYNC,
+                    MA_SOUND_FLAG_DECODE,
                     NULL,
                     &m_data->sound
                 ) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to initialize sound from decoder");
             }
-        }
-
-        Sound::Sound()
-            : m_status(SoundStatus::Stopped),
-              m_data(new _Data())
-        {}
-
-        Sound::~Sound()
-        {
-            stop();
         }
 
         bool Sound::isPlaying() const
@@ -58,31 +66,28 @@ namespace Chicane
 
         bool Sound::play(float inVolume, float inSpeed, std::function<void()> inCallback)
         {
-            if (isPlaying())
+            if (!stop())
             {
-                if (!stop())
-                {
-                    return false;
-                }
+                return false;
             }
 
             ma_sound_set_volume(&m_data->sound, inVolume);
             ma_sound_set_pitch(&m_data->sound, inSpeed);
             ma_sound_set_end_callback(
                 &m_data->sound,
-                [](void* pUserData, ma_sound* pSound) {
-                    Sound* context = (Sound*)pUserData;
-                    context->stop();
+                [](void* pUserData, ma_sound*) {
+                    Sound* context    = (Sound*)pUserData;
+                    context->m_status = SoundStatus::Stopped;
                 },
                 this
             );
-
-            m_status = SoundStatus::Playing;
 
             if (ma_sound_start(&m_data->sound) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to start the sound playback");
             }
+
+            m_status = SoundStatus::Playing;
 
             return true;
         }
@@ -97,6 +102,11 @@ namespace Chicane
             if (isPaused())
             {
                 return true;
+            }
+
+            if (ma_sound_stop(&m_data->sound) != MA_SUCCESS)
+            {
+                throw std::runtime_error("Failed to pause the sound playback");
             }
 
             m_status = SoundStatus::Paused;
@@ -116,12 +126,12 @@ namespace Chicane
                 return true;
             }
 
-            m_status = SoundStatus::Stopped;
-
             if (ma_sound_stop(&m_data->sound) != MA_SUCCESS)
             {
                 throw std::runtime_error("Failed to stop the sound playback");
             }
+
+            m_status = SoundStatus::Stopped;
 
             return true;
         }

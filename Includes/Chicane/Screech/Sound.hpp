@@ -18,12 +18,12 @@ namespace Chicane
             using Raw = std::vector<unsigned char>;
 
         public:
-            Sound(const Raw& inData);
             Sound();
-
             ~Sound();
 
         public:
+            void setData(const Raw& inValue);
+
             bool isPlaying() const;
             bool play(float inVolume = 0.7f, float inSpeed = 1.0f, std::function<void()> inCallback = nullptr);
 
@@ -34,9 +34,9 @@ namespace Chicane
             bool stop();
 
         private:
-            SoundStatus   m_status;
+            SoundStatus                  m_status;
 
-            struct _Data* m_data;
+            std::unique_ptr<class _Data> m_data;
         };
     }
 }

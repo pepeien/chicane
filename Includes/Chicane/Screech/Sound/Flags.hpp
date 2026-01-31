@@ -12,13 +12,13 @@ namespace Chicane
         enum class SoundFlag : std::uint16_t
         {
             /* Resource manager flags. */
-            Stream            = 0x00000001, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_STREAM */
-            Decode            = 0x00000002, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_DECODE */
-            Async             = 0x00000004, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_ASYNC */
-            WaitInit          = 0x00000008, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT */
-            UnknownLength     = 0x00000010, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_UNKNOWN_LENGTH
+            Stream        = 0x00000001, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_STREAM */
+            Decode        = 0x00000002, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_DECODE */
+            Async         = 0x00000004, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_ASYNC */
+            WaitInit      = 0x00000008, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT */
+            UnknownLength = 0x00000010, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_UNKNOWN_LENGTH
                                              */
-            Looping           = 0x00000020, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_LOOPING */
+            Looping       = 0x00000020, /* MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_LOOPING */
 
             /* ma_sound specific flags. */
             DefaultAttachment = 0x00001000, /* Do not attach to the endpoint by default.

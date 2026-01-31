@@ -12,8 +12,8 @@ namespace Chicane
         class CHICANE_BOX Model : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION             = ".bmdl";
-            static inline constexpr const char* TAG                   = "Model";
+            static inline constexpr const char* EXTENSION = ".bmdl";
+            static inline constexpr const char* TAG       = "Model";
 
             static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
