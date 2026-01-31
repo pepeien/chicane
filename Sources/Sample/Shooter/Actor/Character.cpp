@@ -1,8 +1,6 @@
 #include "Actor/Character.hpp"
 
-#include "Chicane/Core.hpp"
-
-#include "Chicane/Runtime/Application.hpp"
+#include <Chicane/Runtime/Application.hpp>
 
 #include "Actor/Apple.hpp"
 #include "Game.hpp"
@@ -15,7 +13,6 @@ Character::Character()
       m_camera(nullptr),
       m_wand(nullptr),
       m_body(nullptr),
-      m_hitSound(nullptr),
       m_victorySound(nullptr)
 {
     m_camera = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CCamera>();
@@ -38,11 +35,6 @@ Character::Character()
     m_body->setRelativeScale(1.0f, 1.0f, 10.0f);
     m_body->activate();
 
-    m_hitSound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
-    m_hitSound->attachTo(this);
-    m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
-    m_hitSound->activate();
-
     m_victorySound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
     m_victorySound->attachTo(this);
     m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
@@ -55,8 +47,6 @@ Character::Character()
 
             return;
         }
-
-        m_hitSound->play();
     });
 }
 
@@ -72,7 +62,7 @@ void Character::onControlAttachment()
     );
     m_controller->bindEvent(
         Chicane::Input::MouseButton::Right,
-        Chicane::Input::Status::Pressed,
+        Chicane::Input::Status::Released,
         std::bind(&Character::onRightClick, this)
     );
 
@@ -195,8 +185,6 @@ void Character::onLeftClick()
 {
     if (!Chicane::Application::getInstance().getWindow()->isFocused())
     {
-        Chicane::Application::getInstance().getWindow()->focus();
-
         return;
     }
 
@@ -205,12 +193,7 @@ void Character::onLeftClick()
 
 void Character::onRightClick()
 {
-    if (!Chicane::Application::getInstance().getWindow()->isFocused())
-    {
-        return;
-    }
-
-    Chicane::Application::getInstance().getWindow()->blur();
+    Chicane::Application::getInstance().getWindow()->switchFocus();
 }
 
 void Character::onMoveForward()

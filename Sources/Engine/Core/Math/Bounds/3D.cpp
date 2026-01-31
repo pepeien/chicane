@@ -40,17 +40,15 @@ namespace Chicane
           m_indices({})
     {}
 
-    bool Bounds3D::intersects(const Bounds3D& inBounds) const
+    bool Bounds3D::intersects(const Bounds3D& inOther) const
     {
-        for (const Vec3& corner : inBounds.getVertices())
-        {
-            if (intersects(corner))
-            {
-                return true;
-            }
-        }
+        const Vec3& aMin = getMin();
+        const Vec3& aMax = getMax();
+        const Vec3& bMin = inOther.getMin();
+        const Vec3& bMax = inOther.getMax();
 
-        return false;
+        return (aMin.x <= bMax.x && aMax.x >= bMin.x) && (aMin.y <= bMax.y && aMax.y >= bMin.y) &&
+               (aMin.z <= bMax.z && aMax.z >= bMin.z);
     }
 
     bool Bounds3D::intersects(const Vec3& inPoint) const

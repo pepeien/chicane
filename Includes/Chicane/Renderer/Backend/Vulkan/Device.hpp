@@ -12,7 +12,7 @@ namespace Chicane
     {
         namespace VulkanDevice
         {
-            static const std::vector<const char*> LAYERS     = {};
+            static const std::vector<const char*> LAYERS = {};
 
             static const std::vector<const char*> EXTENSIONS = {
                 VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_ROBUSTNESS_2_EXTENSION_NAME

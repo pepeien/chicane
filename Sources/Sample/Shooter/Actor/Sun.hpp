@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Runtime/Scene/Actor/Light.hpp"
+#include <Chicane/Runtime/Scene/Actor/Light.hpp>
 
 class Sun : public Chicane::ALight
 {

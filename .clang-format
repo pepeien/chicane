@@ -57,10 +57,8 @@ SpacesInContainerLiterals: true
 
 # Functions
 AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortBlocksOnASingleLine: Never
 BreakAfterReturnType: Automatic
-PenaltyReturnTypeOnItsOwnLine: 2000
-AllowShortIfStatementsOnASingleLine: Never
+PenaltyReturnTypeOnItsOwnLine: 1000000
 
 # Includes
 SortIncludes: false

@@ -1,19 +1,17 @@
 #include "Chicane/Core/Recorder.hpp"
 
-static inline constexpr const float COOLDOWN_IN_MS = 10.0f; // 0.1 Seconds
-
 namespace Chicane
 {
-    Recorder::Recorder(float inUpdateRate)
+    Recorder::Recorder(float inUpdateRateInMs)
         : Recorder()
     {
-        m_cooldown = inUpdateRate;
+        m_cooldownInMs = inUpdateRateInMs;
     }
 
     Recorder::Recorder()
         : m_begin(Time::Clock::now()),
           m_end(Time::Clock::now()),
-          m_cooldown(COOLDOWN_IN_MS)
+          m_cooldownInMs(100.0f) // 0.1 Seconds
     {}
 
     void Recorder::start()
@@ -23,20 +21,20 @@ namespace Chicane
 
     void Recorder::end()
     {
-        m_end = Time::Clock::now();
+        auto now = Time::Clock::now();
 
-        if (Time::miliseconds(m_end.point - m_begin.point) < m_cooldown)
+        if (Time::miliseconds(now - m_end.point) < m_cooldownInMs)
         {
             return;
         }
 
-        onTime();
+        m_end = now;
 
-        m_begin = m_end;
+        onTime();
     }
 
     void Recorder::setUpdateRate(float inValue)
     {
-        m_cooldown = inValue;
+        m_cooldownInMs = inValue;
     }
 }

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Chicane/Core.hpp"
-
-#include "Chicane/Runtime/Scene/Actor.hpp"
-#include "Chicane/Runtime/Scene/Component/Mesh.hpp"
-#include "Chicane/Runtime/Scene/Component/Physics.hpp"
+#include <Chicane/Runtime/Scene/Actor.hpp>
+#include <Chicane/Runtime/Scene/Component/Mesh.hpp>
+#include <Chicane/Runtime/Scene/Component/Physics.hpp>
+#include <Chicane/Runtime/Scene/Component/Sound.hpp>
 
 class Apple : public Chicane::Actor
 {
@@ -28,4 +27,5 @@ private:
 
     Chicane::CMesh*    m_meshComponent;
     Chicane::CPhysics* m_physicsComponent;
+    Chicane::CSound*   m_hitSound;
 };

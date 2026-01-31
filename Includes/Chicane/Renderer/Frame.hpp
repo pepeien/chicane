@@ -60,7 +60,7 @@ namespace Chicane
             View::List    m_lights = {};
 
             // Poly
-            DrawPoly::Map m_draws  = {
+            DrawPoly::Map m_draws = {
                 {DrawPolyType::e2D, {}},
                 {DrawPolyType::e3D, {}}
             };

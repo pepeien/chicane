@@ -18,14 +18,14 @@ namespace Chicane
             {
                 m_frame.init(inCreateInfo);
 
-                m_allocationSize  = inCreateInfo.size;
-                m_writeLocation   = inCreateInfo.logicalDevice.mapMemory(m_frame.memory, 0, m_allocationSize);
+                m_allocationSize = inCreateInfo.size;
+                m_writeLocation  = inCreateInfo.logicalDevice.mapMemory(m_frame.memory, 0, m_allocationSize);
 
                 bufferInfo.buffer = m_frame.instance;
                 bufferInfo.offset = 0;
                 bufferInfo.range  = m_allocationSize;
 
-                m_bIsDirty        = false;
+                m_bIsDirty = false;
             }
 
             void destroy(const vk::Device& inLogicalDevice)
@@ -60,7 +60,7 @@ namespace Chicane
 
         private:
             // Status
-            bool         m_bIsDirty       = true;
+            bool         m_bIsDirty = true;
 
             // Memory
             std::size_t  m_allocationSize = 0;
