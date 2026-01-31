@@ -21,7 +21,7 @@ namespace Chicane
 
         void update(const SpatialTransform& inTransform);
 
-        bool intersects(const Bounds3D& inBounds) const;
+        bool intersects(const Bounds3D& inOther) const;
         bool intersects(const Vec3& inPoint) const;
 
         Vec3 getOverlap(const Bounds3D& inBounds) const;

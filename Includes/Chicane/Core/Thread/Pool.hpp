@@ -65,7 +65,7 @@ namespace Chicane
         {
             using ReturnType = std::invoke_result_t<Func, Args...>;
 
-            auto task        = std::make_shared<std::packaged_task<ReturnType()>>(
+            auto task = std::make_shared<std::packaged_task<ReturnType()>>(
                 std::bind(std::forward<Func>(func), std::forward<Args>(args)...)
             );
 

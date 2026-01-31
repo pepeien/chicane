@@ -211,17 +211,17 @@ namespace Chicane
 
             if (value.equals(DISPLAY_TYPE_BLOCK))
             {
-                setProperty(display, StyleDisplay::Block);
+                setValue(display, StyleDisplay::Block);
             }
 
             if (value.equals(DISPLAY_TYPE_FLEX))
             {
-                setProperty(display, StyleDisplay::Flex);
+                setValue(display, StyleDisplay::Flex);
             }
 
             if (value.equals(DISPLAY_TYPE_HIDDEN))
             {
-                setProperty(display, StyleDisplay::Hidden);
+                setValue(display, StyleDisplay::Hidden);
             }
         }
 
@@ -233,12 +233,12 @@ namespace Chicane
 
                 if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
                 {
-                    setProperty(flex.direction, StyleFlexDirection::Column);
+                    setValue(flex.direction, StyleFlexDirection::Column);
                 }
 
                 if (value.equals(FLEX_DIRECTION_TYPE_ROW))
                 {
-                    setProperty(flex.direction, StyleFlexDirection::Row);
+                    setValue(flex.direction, StyleFlexDirection::Row);
                 }
             }
         }
@@ -250,19 +250,19 @@ namespace Chicane
                 return;
             }
 
-            setProperty(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
+            setValue(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshSize()
         {
             if (m_properties.find(HEIGHT_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(height, parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setValue(height, parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical));
             }
 
             if (m_properties.find(WIDTH_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(width, parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal));
+                setValue(width, parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal));
             }
         }
 
@@ -277,12 +277,12 @@ namespace Chicane
 
             if (value.startsWith(POSITION_TYPE_ABSOLUTE))
             {
-                setProperty(position, StylePosition::Absolute);
+                setValue(position, StylePosition::Absolute);
 
                 return;
             }
 
-            setProperty(position, StylePosition::Relative);
+            setValue(position, StylePosition::Relative);
         }
 
         void Style::refreshAlignment()
@@ -304,8 +304,8 @@ namespace Chicane
                 return;
             }
 
-            setProperty(align, toAlignment(values.at(0)));
-            setProperty(justify, values.size() == 1 ? align : toAlignment(values.at(1)));
+            setValue(align, toAlignment(values.at(0)));
+            setValue(justify, values.size() == 1 ? align : toAlignment(values.at(1)));
         }
 
         void Style::refreshMargin()
@@ -348,12 +348,12 @@ namespace Chicane
         {
             if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(background.color, parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)));
+                setValue(background.color, parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME)));
             }
 
             if (m_properties.find(BACKGROUND_IMAGE_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(background.image, parseText(m_properties.at(BACKGROUND_IMAGE_ATTRIBUTE_NAME)));
+                setValue(background.image, parseText(m_properties.at(BACKGROUND_IMAGE_ATTRIBUTE_NAME)));
             }
         }
 
@@ -364,7 +364,7 @@ namespace Chicane
                 return;
             }
 
-            setProperty(foregroundColor, parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)));
+            setValue(foregroundColor, parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshOpacity()
@@ -374,19 +374,19 @@ namespace Chicane
                 return;
             }
 
-            setProperty(opacity, parseNumber(m_properties.at(OPACITY_ATTRIBUTE_NAME)));
+            setValue(opacity, parseNumber(m_properties.at(OPACITY_ATTRIBUTE_NAME)));
         }
 
         void Style::refreshFont()
         {
             if (m_properties.find(FONT_FAMILY_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(font.family, parseText(m_properties.at(FONT_FAMILY_ATTRIBUTE_NAME)));
+                setValue(font.family, parseText(m_properties.at(FONT_FAMILY_ATTRIBUTE_NAME)));
             }
 
             if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
             {
-                setProperty(font.size, parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical));
+                setValue(font.size, parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical));
             }
         }
 
@@ -397,7 +397,7 @@ namespace Chicane
                 return;
             }
 
-            setProperty(
+            setValue(
                 letterSpacing,
                 parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
             );

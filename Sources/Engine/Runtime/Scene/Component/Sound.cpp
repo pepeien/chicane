@@ -6,7 +6,7 @@ namespace Chicane
 {
     CSound::CSound()
         : Component(),
-          m_sound(),
+          m_sound({}),
           m_manager(Box::getSoundManager())
     {}
 
@@ -17,7 +17,7 @@ namespace Chicane
             return;
         }
 
-        m_sound = Screech::Sound(m_manager->get(inSound));
+        m_sound.setData(m_manager->get(inSound));
     }
 
     void CSound::play()

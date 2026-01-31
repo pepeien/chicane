@@ -13,12 +13,12 @@ namespace Chicane
         struct CHICANE_CORE Item
         {
         public:
-            ItemType      type       = ItemType::Undefined;
-            String        name       = "";
-            String        path       = "";
+            ItemType      type = ItemType::Undefined;
+            String        name = "";
+            String        path = "";
 
             // File only
-            String        extension  = "";
+            String        extension = "";
 
             // Folder only
             std::uint32_t childCount = 0;

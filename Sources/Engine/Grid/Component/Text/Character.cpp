@@ -79,7 +79,7 @@ namespace Chicane
                 return;
             }
 
-            setProperty(m_character, inValue);
+            setValue(m_character, inValue);
 
             refreshFont();
         }

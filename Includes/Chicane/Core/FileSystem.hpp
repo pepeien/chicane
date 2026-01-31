@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace FileSystem
     {
-        using Path                                   = std::filesystem::path;
+        using Path = std::filesystem::path;
 
         static inline constexpr const auto SEPARATOR = Path::preferred_separator;
 

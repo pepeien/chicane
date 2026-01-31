@@ -10,8 +10,8 @@ namespace Chicane
     struct CHICANE_CORE Vec3 : public Vec<3, float>
     {
     public:
-        static inline constexpr const Vec<3, float> Zero    = Vec<3, float>(0.0f);
-        static inline constexpr const Vec<3, float> One     = Vec<3, float>(1.0f);
+        static inline constexpr const Vec<3, float> Zero = Vec<3, float>(0.0f);
+        static inline constexpr const Vec<3, float> One  = Vec<3, float>(1.0f);
 
         static inline constexpr const Vec<3, float> Right   = Vec<3, float>(1.0f, 0.0f, 0.0f);
         static inline constexpr const Vec<3, float> Forward = Vec<3, float>(0.0f, 1.0f, 0.0f);

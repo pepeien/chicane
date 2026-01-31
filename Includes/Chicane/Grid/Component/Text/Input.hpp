@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static inline constexpr const char* TAG_ID                  = "TextInput";
+            static inline constexpr const char* TAG_ID = "TextInput";
 
             // Attributes
             static inline constexpr const char* LABEL_ATTRIBUTE_NAME    = "label";

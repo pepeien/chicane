@@ -11,11 +11,7 @@ namespace Chicane
         Component::Component(const pugi::xml_node& inNode)
             : Component(inNode.name())
         {
-            setId(Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
-            setClass(Xml::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
-
-            m_onHover = Xml::getAttribute(ON_HOVER_ATTRIBUTE_NAME, inNode).as_string();
-            m_onClick = Xml::getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string();
+            m_attributes = Xml::getAttributes(inNode);
 
             addChildren(inNode);
         }
@@ -23,20 +19,16 @@ namespace Chicane
         Component::Component(const String& inTag)
             : Changeable(),
               m_tag(inTag),
-              m_id(""),
-              m_class(""),
               m_style({}),
               m_functions({}),
               m_root(nullptr),
               m_parent(nullptr),
               m_children({}),
-              m_childrenObservable({}),
               m_size({}),
               m_position({}),
               m_bounds({}),
-              m_onHover(""),
-              m_onClick(""),
               m_cursor({}),
+              m_attributes({}),
               m_primitive({})
         {
             m_style.setParent(this);
@@ -103,12 +95,14 @@ namespace Chicane
         {
             onHover();
 
-            if (m_onHover.isEmpty())
+            String onHoverAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
+
+            if (onHoverAttribute.isEmpty())
             {
                 return;
             }
 
-            String functionName = parseText(m_onHover);
+            String functionName = parseText(onHoverAttribute);
 
             if (!hasFunction(functionName))
             {
@@ -123,12 +117,14 @@ namespace Chicane
         {
             onClick();
 
-            if (m_onClick.isEmpty())
+            String onClickAttribute = getAttribute(ON_HOVER_ATTRIBUTE_NAME);
+
+            if (onClickAttribute.isEmpty())
             {
                 return;
             }
 
-            String functionName = parseText(m_onClick);
+            String functionName = parseText(onClickAttribute);
 
             if (!hasFunction(functionName))
             {
@@ -144,34 +140,29 @@ namespace Chicane
             return m_tag;
         }
 
-        void Component::setTag(const String& inTag)
+        String Component::getId() const
         {
-            setProperty(m_tag, inTag);
+            return getAttribute(ID_ATTRIBUTE_NAME);
         }
 
-        const String& Component::getId() const
+        std::vector<String> Component::getClasses() const
         {
-            return m_id;
+            return getClass().split(Style::CLASS_SEPARATOR);
         }
 
-        void Component::setId(const String& inId)
+        String Component::getClass() const
         {
-            setProperty(m_id, inId);
+            return getAttribute(CLASS_ATTRIBUTE_NAME);
         }
 
-        const std::vector<String> Component::getClasses() const
+        String Component::getAttribute(const String& inName) const
         {
-            return m_class.split(Style::CLASS_SEPARATOR);
-        }
+            if (m_attributes.find(inName) == m_attributes.end())
+            {
+                return "";
+            }
 
-        const String& Component::getClass() const
-        {
-            return m_class;
-        }
-
-        void Component::setClass(const String& inClass)
-        {
-            setProperty(m_class, inClass);
+            return m_attributes.at(inName);
         }
 
         const Style& Component::getStyle() const
@@ -202,9 +193,9 @@ namespace Chicane
                         continue;
                     }
 
-                    if (!m_tag.isEmpty())
+                    if (!getTag().isEmpty())
                     {
-                        if (selector.equals(m_tag))
+                        if (selector.equals(getTag()))
                         {
                             setStyle(source.properties);
 
@@ -212,7 +203,7 @@ namespace Chicane
                         }
                     }
 
-                    if (!m_class.isEmpty())
+                    if (!getClass().isEmpty())
                     {
                         for (const String& className : getClasses())
                         {
@@ -229,11 +220,11 @@ namespace Chicane
                         }
                     }
 
-                    if (!m_id.isEmpty())
+                    if (!getId().isEmpty())
                     {
                         String formattedId = "";
                         formattedId.append(Style::ID_SELECTOR);
-                        formattedId.append(m_id);
+                        formattedId.append(getId());
 
                         if (formattedId.equals(selector))
                         {
@@ -387,7 +378,7 @@ namespace Chicane
                 return;
             }
 
-            setProperty(m_root, inComponent);
+            setValue(m_root, inComponent);
 
             for (Component* child : m_children)
             {
@@ -516,15 +507,6 @@ namespace Chicane
             onAdopted(inComponent);
         }
 
-        Component::ChildrenSubscription Component::watchChildren(
-            ChildrenSubscription::NextCallback     inNext,
-            ChildrenSubscription::ErrorCallback    inError,
-            ChildrenSubscription::CompleteCallback inComplete
-        )
-        {
-            return m_childrenObservable.subscribe(inNext, inError, inComplete).next(this);
-        }
-
         Vec2 Component::getAvailableSize() const
         {
             return m_size - m_cursor;
@@ -542,7 +524,7 @@ namespace Chicane
 
         void Component::setSize(float inWidth, float inHeight)
         {
-            setProperty(m_size, {inWidth, inHeight});
+            setValue(m_size, {inWidth, inHeight});
         }
 
         const Vec2& Component::getPosition() const
@@ -567,7 +549,7 @@ namespace Chicane
 
         void Component::setPosition(float inX, float inY)
         {
-            setProperty(m_position, {inX, inY});
+            setValue(m_position, {inX, inY});
 
             setCursor(m_position);
         }
@@ -594,7 +576,7 @@ namespace Chicane
 
         void Component::setCursor(float inX, float inY)
         {
-            setProperty(m_cursor, {inX, inY});
+            setValue(m_cursor, {inX, inY});
         }
 
         const Bounds2D& Component::getBounds() const
@@ -614,12 +596,12 @@ namespace Chicane
 
         void Component::clearPrimitive()
         {
-            setProperty(m_primitive, {});
+            setValue(m_primitive, {});
         }
 
         void Component::setPrimitive(const Primitive& inPrimitive)
         {
-            setProperty(m_primitive, inPrimitive);
+            setValue(m_primitive, inPrimitive);
         }
 
         void Component::refreshStyle()

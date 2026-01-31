@@ -42,6 +42,6 @@ namespace Chicane
         Rotator m_rotation    = {};
         Vec3    m_scale       = Vec3::One;
 
-        Mat4    m_matrix      = Mat4::One;
+        Mat4    m_matrix = Mat4::One;
     };
 }

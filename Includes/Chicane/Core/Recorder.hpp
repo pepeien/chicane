@@ -8,7 +8,7 @@ namespace Chicane
     struct CHICANE_CORE Recorder
     {
     public:
-        Recorder(float inUpdateRate);
+        Recorder(float inUpdateRateInMs);
         Recorder();
 
     protected:
@@ -24,6 +24,6 @@ namespace Chicane
         Time  m_begin;
         Time  m_end;
 
-        float m_cooldown;
+        float m_cooldownInMs;
     };
 }

@@ -44,6 +44,18 @@ namespace Chicane
             return result;
         }
 
+        Attribute getAttributes(const pugi::xml_node& inNode)
+        {
+            Attribute result;
+
+            for (pugi::xml_attribute attribute : inNode.attributes())
+            {
+                result.insert(std::make_pair(attribute.name(), attribute.as_string()));
+            }
+
+            return result;
+        }
+
         pugi::xml_attribute getAttribute(const String& inName, const pugi::xml_node& inNode)
         {
             return inNode.attribute(inName.toChar());

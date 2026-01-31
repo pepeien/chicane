@@ -12,7 +12,7 @@ namespace Chicane
         First = 0,
 
         // Application events
-        Quit  = 0x100,
+        Quit = 0x100,
         Terminating,
         LowMemory,
         WillEnterBackground,
@@ -111,7 +111,7 @@ namespace Chicane
         ClipboardUpdate = 0x900,
 
         // Drag and drop events
-        DropFile        = 0x1000,
+        DropFile = 0x1000,
         DropText,
         DropBegin,
         DropComplete,
@@ -123,7 +123,7 @@ namespace Chicane
         AudioDeviceFormatChanged,
 
         // Sensor events
-        SensorUpdate   = 0x1200,
+        SensorUpdate = 0x1200,
 
         // Pen events
         PenProximityIn = 0x1300,
@@ -156,9 +156,9 @@ namespace Chicane
         PollSentinel = 0x7F00,
 
         // User-defined
-        User         = 0x8000,
+        User = 0x8000,
 
         // Bounds
-        Last         = 0xFFFF
+        Last = 0xFFFF
     };
 }

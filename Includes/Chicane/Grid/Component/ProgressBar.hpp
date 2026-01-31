@@ -11,7 +11,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static inline constexpr const char* TAG_ID                    = "ProgressBar";
+            static inline constexpr const char* TAG_ID = "ProgressBar";
 
             // Attributes
             static inline constexpr const char* PERCENTAGE_ATTRIBUTE_NAME = "percentage"; // Goes from `0.0` to `100.0`

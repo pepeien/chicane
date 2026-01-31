@@ -21,15 +21,10 @@ namespace Chicane
         class CHICANE_GRID Component : public Changeable
         {
         public:
-            using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
-
-            using ParentSubscription   = Changeable::ChangesSubscription;
-
-            using ChildrenObservable   = Chicane::EventObservable<Component*>;
-            using ChildrenSubscription = Chicane::EventSubscription<Component*>;
+            using Compiler = std::function<Component*(const pugi::xml_node& inNode)>;
 
         public:
-            static inline constexpr const char* EVENT_KEYWORD           = "$event";
+            static inline constexpr const char* EVENT_KEYWORD = "$event";
 
             static inline constexpr const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
             static inline constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
@@ -75,19 +70,20 @@ namespace Chicane
 
             // Properties
             const String& getTag() const;
-            void setTag(const String& inTag);
 
-            const String& getId() const;
-            void setId(const String& inId);
+            String getId() const;
 
-            const std::vector<String> getClasses() const;
-            const String& getClass() const;
-            void setClass(const String& inClass);
+            std::vector<String> getClasses() const;
+            String getClass() const;
 
+            String getAttribute(const String& inName) const;
+
+            // Style
             const Style& getStyle() const;
             void setStyle(const StyleSource::List& inSources);
             void setStyle(const StyleSource::Map& inSource);
 
+            // Reference
             bool hasReference(const String& inId, bool isLocalOnly = false) const;
             Reference* getReference(const String& inId) const;
             void addReference(const Reference::Map& inReference);
@@ -100,6 +96,7 @@ namespace Chicane
             void addFunction(const String& inId, Function inFunction);
             void removeFunction(const String& inId);
 
+            // Hierarchy
             bool hasRoot() const;
             Component* getRoot() const;
             void setRoot(Component* inComponent);
@@ -116,11 +113,6 @@ namespace Chicane
             std::vector<Component*> getChildrenFlat() const;
             void addChildren(const pugi::xml_node& inNode);
             void addChild(Component* inComponent);
-            ChildrenSubscription watchChildren(
-                ChildrenSubscription::NextCallback     inNext,
-                ChildrenSubscription::ErrorCallback    inError    = nullptr,
-                ChildrenSubscription::CompleteCallback inComplete = nullptr
-            );
 
             // Positioning
             Vec2 getAvailableSize() const;
@@ -165,8 +157,6 @@ namespace Chicane
 
         protected:
             String                  m_tag;
-            String                  m_id;
-            String                  m_class;
             Style                   m_style;
 
             Reference::Map          m_references;
@@ -175,15 +165,13 @@ namespace Chicane
             Component*              m_root;
             Component*              m_parent;
             std::vector<Component*> m_children;
-            ChildrenObservable      m_childrenObservable;
 
             Vec2                    m_size;
             Vec2                    m_position;
             Vec2                    m_cursor;
             Bounds2D                m_bounds;
 
-            String                  m_onHover;
-            String                  m_onClick;
+            Xml::Attribute          m_attributes;
 
             Primitive               m_primitive;
         };
