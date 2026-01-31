@@ -13,11 +13,16 @@ namespace Chicane
         struct CHICANE_CORE MouseButtonEvent : public DeviceEvent
         {
         public:
-            MouseButton  button   = MouseButton::Left;
-            Status       status   = Status::Pressed;
-            std::uint8_t clicks   = 0;
-            Vec2         location = Vec2::Zero;
+            MouseButtonEvent(void* inData); // From `SDL_MouseButtonEvent`
+            MouseButtonEvent();
+
+        public:
+            MouseButton  button;
+            Status       status;
+            std::uint8_t clicks;
+            Vec2         location;
         };
+
         using MouseButtonEventCallback = std::function<void()>;
     }
 }

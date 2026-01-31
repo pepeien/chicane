@@ -1,13 +1,11 @@
-#include "Chicane/Core/Math/Bounds.hpp"
-
-#include "Chicane/Core.hpp"
+#include "Chicane/Core/Math/Bounds/3D.hpp"
 
 constexpr float BOUND_SCAN_STEP_SIZE = 0.5f;
 
 namespace Chicane
 {
-    Bounds::Bounds(const Vertex::List& inVertices, const Vertex::Indices& inIndices)
-        : Bounds()
+    Bounds3D::Bounds3D(const Vertex::List& inVertices, const Vertex::Indices& inIndices)
+        : Bounds3D()
     {
         for (std::uint32_t index : inIndices)
         {
@@ -27,7 +25,7 @@ namespace Chicane
         refresh();
     }
 
-    Bounds::Bounds()
+    Bounds3D::Bounds3D()
         : m_min(Vec3::Zero),
           m_baseMin(Vec3(FLT_MAX)),
           m_max(Vec3::Zero),
@@ -42,7 +40,7 @@ namespace Chicane
           m_indices({})
     {}
 
-    bool Bounds::intersects(const Bounds& inBounds) const
+    bool Bounds3D::intersects(const Bounds3D& inBounds) const
     {
         for (const Vec3& corner : inBounds.getVertices())
         {
@@ -55,7 +53,7 @@ namespace Chicane
         return false;
     }
 
-    bool Bounds::intersects(const Vec3& inPoint) const
+    bool Bounds3D::intersects(const Vec3& inPoint) const
     {
         const Vec3& min = getMin();
         const Vec3& max = getMax();
@@ -67,7 +65,7 @@ namespace Chicane
         return bIsWithinX && bIsWithinY && bIsWithinZ;
     }
 
-    Vec3 Bounds::getOverlap(const Bounds& inOther) const
+    Vec3 Bounds3D::getOverlap(const Bounds3D& inOther) const
     {
         const Vec3& min = getMin();
         const Vec3& max = getMax();
@@ -102,7 +100,7 @@ namespace Chicane
         return result;
     }
 
-    void Bounds::set(const Bounds& inBounds)
+    void Bounds3D::set(const Bounds3D& inBounds)
     {
         m_baseMin = inBounds.getBaseMin();
         m_baseMax = inBounds.getBaseMax();
@@ -110,7 +108,7 @@ namespace Chicane
         refresh();
     }
 
-    void Bounds::add(const Bounds& inBounds)
+    void Bounds3D::add(const Bounds3D& inBounds)
     {
         const Vec3& min = inBounds.getBaseMin();
         m_baseMin.x     = std::min(m_baseMin.x, min.x);
@@ -125,7 +123,7 @@ namespace Chicane
         refresh();
     }
 
-    void Bounds::update(const SpatialTransform& inTransform)
+    void Bounds3D::update(const SpatialTransform& inTransform)
     {
         const Vec3& scale       = inTransform.getScale();
         const Vec3& translation = inTransform.getTranslation();
@@ -230,67 +228,67 @@ namespace Chicane
         };
     }
 
-    const Vec3& Bounds::getMin() const
+    const Vec3& Bounds3D::getMin() const
     {
         return m_min;
     }
 
-    const Vec3& Bounds::getBaseMin() const
+    const Vec3& Bounds3D::getBaseMin() const
     {
         return m_baseMin;
     }
 
-    const Vec3& Bounds::getMax() const
+    const Vec3& Bounds3D::getMax() const
     {
         return m_max;
     }
 
-    const Vec3& Bounds::getBaseMax() const
+    const Vec3& Bounds3D::getBaseMax() const
     {
         return m_baseMax;
     }
 
-    const Vec3& Bounds::getTop() const
+    const Vec3& Bounds3D::getTop() const
     {
         return m_top;
     }
 
-    const Vec3& Bounds::getBaseTop() const
+    const Vec3& Bounds3D::getBaseTop() const
     {
         return m_baseTop;
     }
 
-    const Vec3& Bounds::getCenter() const
+    const Vec3& Bounds3D::getCenter() const
     {
         return m_center;
     }
 
-    const Vec3& Bounds::getBaseCenter() const
+    const Vec3& Bounds3D::getBaseCenter() const
     {
         return m_baseCenter;
     }
 
-    const Vec3& Bounds::getBottom() const
+    const Vec3& Bounds3D::getBottom() const
     {
         return m_bottom;
     }
 
-    const Vec3& Bounds::getBaseBottom() const
+    const Vec3& Bounds3D::getBaseBottom() const
     {
         return m_baseBottom;
     }
 
-    const std::vector<Vec3>& Bounds::getVertices() const
+    const std::vector<Vec3>& Bounds3D::getVertices() const
     {
         return m_vertices;
     }
 
-    const Vertex::Indices& Bounds::getIndices() const
+    const Vertex::Indices& Bounds3D::getIndices() const
     {
         return m_indices;
     }
 
-    void Bounds::refresh()
+    void Bounds3D::refresh()
     {
         m_baseCenter.x = (m_baseMin.x + m_baseMax.x) * 0.5f;
         m_baseCenter.y = (m_baseMin.y + m_baseMax.y) * 0.5f;

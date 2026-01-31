@@ -9,22 +9,22 @@
 
 namespace Chicane
 {
-    struct CHICANE_CORE Bounds
+    struct CHICANE_CORE Bounds3D
     {
     public:
-        Bounds(const Vertex::List& inVertices, const Vertex::Indices& inIndices);
-        Bounds();
+        Bounds3D(const Vertex::List& inVertices, const Vertex::Indices& inIndices);
+        Bounds3D();
 
     public:
-        void set(const Bounds& inBounds);
-        void add(const Bounds& inBounds);
+        void set(const Bounds3D& inBounds);
+        void add(const Bounds3D& inBounds);
 
         void update(const SpatialTransform& inTransform);
 
-        bool intersects(const Bounds& inBounds) const;
+        bool intersects(const Bounds3D& inBounds) const;
         bool intersects(const Vec3& inPoint) const;
 
-        Vec3 getOverlap(const Bounds& inBounds) const;
+        Vec3 getOverlap(const Bounds3D& inBounds) const;
 
         const Vec3& getMin() const;
         const Vec3& getBaseMin() const;

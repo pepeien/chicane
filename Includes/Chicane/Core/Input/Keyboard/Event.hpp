@@ -5,7 +5,7 @@
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Device/Event.hpp"
 #include "Chicane/Core/Input/Keyboard/Button.hpp"
-#include "Chicane/Core/Input/Keyboard/ButtonModifier.hpp"
+#include "Chicane/Core/Input/Keyboard/Button/Modifier.hpp"
 #include "Chicane/Core/Input/Status.hpp"
 
 namespace Chicane
@@ -15,10 +15,15 @@ namespace Chicane
         struct CHICANE_CORE KeyboardEvent : public DeviceEvent
         {
         public:
-            KeyboardButton         button   = KeyboardButton::Escape;
-            KeyboardButtonModifier modifier = KeyboardButtonModifier::None;
-            Status                 status   = Status::Pressed;
+            KeyboardEvent(void* inData); // From `SDL_KeyboardEvent`
+            KeyboardEvent();
+
+        public:
+            KeyboardButton         button;
+            KeyboardButtonModifier modifier;
+            Status                 status;
         };
+
         using KeyboardEventCallback = std::function<void()>;
     }
 }

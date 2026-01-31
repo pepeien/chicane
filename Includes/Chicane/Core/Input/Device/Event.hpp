@@ -1,7 +1,5 @@
 #pragma once
 
-#include <limits>
-
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Input/Device.hpp"
 
@@ -12,7 +10,15 @@ namespace Chicane
         struct CHICANE_CORE DeviceEvent
         {
         public:
-            DeviceID device = std::numeric_limits<std::uint32_t>::max();
+            static DeviceEvent fromMouse(void* inData);    // From `SDL_MouseDeviceEvent`
+            static DeviceEvent fromKeyboard(void* inData); // From `SDL_KeyboardDeviceEvent`
+            static DeviceEvent fromGamepad(void* inData);  // From `SDL_GamepadDeviceEvent`
+
+        public:
+            DeviceEvent();
+
+        public:
+            DeviceID device;
         };
     }
 }

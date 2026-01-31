@@ -5,13 +5,7 @@ namespace Chicane
     namespace Grid
     {
         Button::Button(const pugi::xml_node& inNode)
-            : Component(inNode)
-        {
-            addFunction(ON_CLICK_ATTRIBUTE_NAME, [this](const Event& inEvent) {
-                onClick(inEvent);
-
-                return Reference();
-            });
-        }
+            : Container(inNode)
+        {}
     }
 }

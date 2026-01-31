@@ -14,9 +14,14 @@ namespace Chicane
         struct CHICANE_CORE GamepadButtonEvent : public DeviceEvent
         {
         public:
-            GamepadButton button = GamepadButton::Start;
-            Status        status = Status::Pressed;
+            GamepadButtonEvent(void* inData); // From `SDL_GamepadButtonEvent`
+            GamepadButtonEvent();
+
+        public:
+            GamepadButton button;
+            Status        status;
         };
+
         using GamepadButtonEventCallback = std::function<void()>;
     }
 }

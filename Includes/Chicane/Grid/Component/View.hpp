@@ -33,8 +33,12 @@ namespace Chicane
             void activate();
             void deactivate();
 
-            // Properties
-            const String& getPath() const;
+            // Event
+            void handle(WindowEvent inEvent);
+
+            // Children
+            std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
+            std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
 
         protected:
             String            m_path;

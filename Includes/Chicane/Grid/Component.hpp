@@ -3,6 +3,7 @@
 #include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Event/Observable.hpp"
 #include "Chicane/Core/Event/Subscription.hpp"
+#include "Chicane/Core/Math/Bounds/2D.hpp"
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Window/Event.hpp"
@@ -22,8 +23,16 @@ namespace Chicane
         public:
             using Compiler             = std::function<Component*(const pugi::xml_node& inNode)>;
 
+            using ParentSubscription   = Changeable::ChangesSubscription;
+
             using ChildrenObservable   = Chicane::EventObservable<Component*>;
             using ChildrenSubscription = Chicane::EventSubscription<Component*>;
+
+        public:
+            static inline constexpr const char* EVENT_KEYWORD           = "$event";
+
+            static inline constexpr const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
+            static inline constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
 
         public:
             Component(const pugi::xml_node& inNode);
@@ -35,13 +44,18 @@ namespace Chicane
             // Status
             virtual bool isDrawable() const;
 
+        public:
         protected:
-            // Events
+            // Lifescycle Events
             virtual void onEvent(const WindowEvent& inEvent) { return; }
             virtual void onTick(float inDeltaTime) { return; }
             virtual void onRefresh() { return; }
             virtual void onAdoption(Component* inChild) { return; }
             virtual void onAdopted(Component* inParent) { return; }
+
+            // Mouse Events
+            virtual void onHover() { return; }
+            virtual void onClick() { return; }
 
             virtual void refreshPrimitive() { return; }
 
@@ -51,7 +65,11 @@ namespace Chicane
             bool isVisible() const;
             bool isValidChild(Component* inComponent) const;
 
-            // Lifecycle
+            // Mouse Events
+            void hover();
+            void click();
+
+            // Lifecycle Events
             void tick(float inDelta);
             void refresh();
 
@@ -77,7 +95,7 @@ namespace Chicane
             void removeReference(const String& inId);
 
             bool hasFunction(const String& inId, bool isLocalOnly = false) const;
-            const Function getFunction(const String& inId) const;
+            const Function getFunction(const String& inId, bool isLocalOnly = false) const;
             void addFunction(const Functions& inFunctions);
             void addFunction(const String& inId, Function inFunction);
             void removeFunction(const String& inId);
@@ -105,12 +123,6 @@ namespace Chicane
             );
 
             // Positioning
-            const Vec2& getCursor() const;
-            void addCursor(const Vec2& inCursor);
-            void addCursor(float inX, float inY);
-            void setCursor(const Vec2& inCursor);
-            void setCursor(float inX, float inY);
-
             Vec2 getAvailableSize() const;
             const Vec2& getSize() const;
             void setSize(const Vec2& inSize);
@@ -122,7 +134,13 @@ namespace Chicane
             void setPosition(const Vec2& inPosition);
             void setPosition(float inX, float inY);
 
-            Vec2 getCenter() const;
+            const Vec2& getCursor() const;
+            void addCursor(const Vec2& inCursor);
+            void addCursor(float inX, float inY);
+            void setCursor(const Vec2& inCursor);
+            void setCursor(float inX, float inY);
+
+            const Bounds2D& getBounds() const;
 
             // Draw
             bool hasPrimitive() const;
@@ -137,6 +155,7 @@ namespace Chicane
             void refreshStyle();
             void refreshSize();
             void refreshPosition();
+            void refreshBounds();
 
             bool isReference(const String& inValue) const;
             Reference parseReference(const String& inValue) const;
@@ -161,6 +180,10 @@ namespace Chicane
             Vec2                    m_size;
             Vec2                    m_position;
             Vec2                    m_cursor;
+            Bounds2D                m_bounds;
+
+            String                  m_onHover;
+            String                  m_onClick;
 
             Primitive               m_primitive;
         };

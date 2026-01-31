@@ -4,76 +4,17 @@
 
 #include "Chicane/Core/Image.hpp"
 #include "Chicane/Core/Input/Device/Event.hpp"
-#include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
-#include "Chicane/Core/Input/Gamepad/MotionEvent.hpp"
-#include "Chicane/Core/Input/Keyboard/Button.hpp"
+#include "Chicane/Core/Input/Gamepad/Button/Event.hpp"
+#include "Chicane/Core/Input/Gamepad/Motion/Event.hpp"
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
-#include "Chicane/Core/Input/Mouse/Button.hpp"
-#include "Chicane/Core/Input/Mouse/ButtonEvent.hpp"
-#include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
+#include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Log.hpp"
 #include "Chicane/Core/String.hpp"
 
 namespace Chicane
 {
     const Chicane::Vec<2, int> VEC2_ZERO(0);
-
-    void setupGamepadDeviceEvent(Input::DeviceEvent& outEvent, const SDL_GamepadDeviceEvent& inData)
-    {
-        outEvent.device = inData.which;
-    }
-
-    void setupGamepadMotionEvent(Input::GamepadMotionEvent& outEvent, const SDL_GamepadAxisEvent& inData)
-    {
-        outEvent.device = inData.which;
-        outEvent.axis   = (Input::GamepadAxis)inData.axis;
-        outEvent.value  = static_cast<float>(inData.value) / 32767.0f;
-    }
-
-    void setupGamepadButtonEvent(Input::GamepadButtonEvent& outEvent, const SDL_GamepadButtonEvent& inData)
-    {
-        outEvent.device = inData.which;
-        outEvent.button = (Input::GamepadButton)inData.button;
-        outEvent.status = inData.down ? Input::Status::Pressed : Input::Status::Released;
-    }
-
-    void setupKeyboardDeviceEvent(Input::DeviceEvent& outEvent, const SDL_KeyboardDeviceEvent& inData)
-    {
-        outEvent.device = inData.which;
-    }
-
-    void setupKeyboardEvent(Input::KeyboardEvent& outEvent, const SDL_KeyboardEvent& inData)
-    {
-        outEvent.device   = inData.which;
-        outEvent.button   = (Input::KeyboardButton)inData.scancode;
-        outEvent.modifier = (Input::KeyboardButtonModifier)inData.mod;
-        outEvent.status   = inData.down ? Input::Status::Pressed : Input::Status::Released;
-    }
-
-    void setupMouseDeviceEvent(Input::DeviceEvent& outEvent, const SDL_MouseDeviceEvent& inData)
-    {
-        outEvent.device = inData.which;
-    }
-
-    void setupMouseMotionEvent(Input::MouseMotionEvent& outEvent, const SDL_MouseMotionEvent& inData)
-    {
-        outEvent.device             = inData.which;
-        outEvent.status             = (Input::Status)inData.state;
-        outEvent.location.x         = inData.x;
-        outEvent.location.y         = inData.y;
-        outEvent.relativeLocation.x = inData.xrel;
-        outEvent.relativeLocation.y = inData.yrel;
-    }
-
-    void setupMouseButtonEvent(Input::MouseButtonEvent& outEvent, const SDL_MouseButtonEvent& inData)
-    {
-        outEvent.device     = inData.which;
-        outEvent.button     = (Input::MouseButton)inData.button;
-        outEvent.status     = inData.down ? Input::Status::Pressed : Input::Status::Released;
-        outEvent.clicks     = inData.clicks;
-        outEvent.location.x = inData.x;
-        outEvent.location.y = inData.y;
-    }
 
     Window::Window()
         : m_instance(nullptr),
@@ -173,57 +114,57 @@ namespace Chicane
             // Gamepad
             case WindowEventType::GamepadAdded:
             case WindowEventType::GamepadRemoved:
-                setupGamepadDeviceEvent(deviceEvent, data.gdevice);
-                event.data = &deviceEvent;
+                deviceEvent = Input::DeviceEvent::fromGamepad(&data.gdevice);
+                event.data  = &deviceEvent;
 
                 break;
 
             case WindowEventType::GamepadAxisMotion:
-                setupGamepadMotionEvent(gamepadMotionEvent, data.gaxis);
-                event.data = &gamepadMotionEvent;
+                gamepadMotionEvent = Input::GamepadMotionEvent(&data.gaxis);
+                event.data         = &gamepadMotionEvent;
 
                 break;
 
             case WindowEventType::GamepadButtonDown:
             case WindowEventType::GamepadButtonUp:
-                setupGamepadButtonEvent(gamepadButtonEvent, data.gbutton);
-                event.data = &gamepadButtonEvent;
+                gamepadButtonEvent = Input::GamepadButtonEvent(&data.gbutton);
+                event.data         = &gamepadButtonEvent;
 
                 break;
 
             // Keyboard
             case WindowEventType::KeyboardAdded:
             case WindowEventType::KeyboardRemoved:
-                setupKeyboardDeviceEvent(deviceEvent, data.kdevice);
-                event.data = &deviceEvent;
+                deviceEvent = Input::DeviceEvent::fromKeyboard(&data.kdevice);
+                event.data  = &deviceEvent;
 
                 break;
 
             case WindowEventType::KeyDown:
             case WindowEventType::KeyUp:
-                setupKeyboardEvent(keyboardEvent, data.key);
-                event.data = &keyboardEvent;
+                keyboardEvent = Input::KeyboardEvent(&data.key);
+                event.data    = &keyboardEvent;
 
                 break;
 
             // Mouse
             case WindowEventType::MouseAdded:
             case WindowEventType::MouseRemoved:
-                setupMouseDeviceEvent(deviceEvent, data.mdevice);
-                event.data = &deviceEvent;
+                deviceEvent = Input::DeviceEvent::fromMouse(&data.mdevice);
+                event.data  = &deviceEvent;
 
                 break;
 
             case WindowEventType::MouseMotion:
-                setupMouseMotionEvent(mouseMotionEvent, data.motion);
-                event.data = &mouseMotionEvent;
+                mouseMotionEvent = Input::MouseMotionEvent(&data.motion);
+                event.data       = &mouseMotionEvent;
 
                 break;
 
             case WindowEventType::MouseButtonDown:
             case WindowEventType::MouseButtonUp:
-                setupMouseButtonEvent(mouseButtonEvent, data.button);
-                event.data = &mouseButtonEvent;
+                mouseButtonEvent = Input::MouseButtonEvent(&data.button);
+                event.data       = &mouseButtonEvent;
 
                 break;
 

@@ -2,7 +2,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Changeable.hpp"
-#include "Chicane/Core/Math/Bounds.hpp"
+#include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Math/Transform.hpp"
 #include "Chicane/Core/Math/Transform/Spatial.hpp"
 
@@ -82,9 +82,9 @@ namespace Chicane
         void setAbsoluteScale(const Vec3& inScale);
 
         // Bounds
-        const Bounds& getBounds() const;
-        void addBounds(const Bounds& inBounds);
-        void setBounds(const Bounds& inBounds);
+        const Bounds3D& getBounds() const;
+        void addBounds(const Bounds3D& inBounds);
+        void setBounds(const Bounds3D& inBounds);
 
         const Vec3& getTop() const;
         const Vec3& getCenter() const;
@@ -98,6 +98,6 @@ namespace Chicane
         SpatialTransform m_transform;
 
         // Bounds
-        Bounds           m_bounds;
+        Bounds3D         m_bounds;
     };
 }

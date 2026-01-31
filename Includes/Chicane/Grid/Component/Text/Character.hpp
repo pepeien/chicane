@@ -9,14 +9,14 @@ namespace Chicane
 {
     namespace Grid
     {
-        class CHICANE_GRID Character : public Component
+        class CHICANE_GRID TextCharacter : public Component
         {
         public:
             // Tag
             static inline constexpr const char* TAG_ID = "Character";
 
         public:
-            Character();
+            TextCharacter();
 
         public:
             bool isDrawable() const override;
@@ -40,8 +40,6 @@ namespace Chicane
             void refreshFont();
 
         private:
-            bool           m_bCanUpdatePrimitive;
-
             char           m_character;
 
             Box::FontGlyph m_glyph;

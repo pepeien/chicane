@@ -301,18 +301,18 @@ namespace Chicane
         refresh();
     }
 
-    const Bounds& Transformable::getBounds() const
+    const Bounds3D& Transformable::getBounds() const
     {
         return m_bounds;
     }
 
-    void Transformable::addBounds(const Bounds& inBounds)
+    void Transformable::addBounds(const Bounds3D& inBounds)
     {
         m_bounds.add(inBounds);
         m_bounds.update(m_transform);
     }
 
-    void Transformable::setBounds(const Bounds& inBounds)
+    void Transformable::setBounds(const Bounds3D& inBounds)
     {
         m_bounds.set(inBounds);
         m_bounds.update(m_transform);

@@ -183,6 +183,12 @@ namespace Chicane
                 m_view->setSize(inSize.x, inSize.y);
             }
         });
+        m_window->watchEvent([&](WindowEvent inEvent) {
+            if (hasView())
+            {
+                m_view->handle(inEvent);
+            }
+        });
     }
 
     void Application::initRenderer(WindowBackend inBackend)

@@ -14,6 +14,9 @@ namespace Chicane
             setId(Xml::getAttribute(ID_ATTRIBUTE_NAME, inNode).as_string());
             setClass(Xml::getAttribute(CLASS_ATTRIBUTE_NAME, inNode).as_string());
 
+            m_onHover = Xml::getAttribute(ON_HOVER_ATTRIBUTE_NAME, inNode).as_string();
+            m_onClick = Xml::getAttribute(ON_CLICK_ATTRIBUTE_NAME, inNode).as_string();
+
             addChildren(inNode);
         }
 
@@ -30,6 +33,9 @@ namespace Chicane
               m_childrenObservable({}),
               m_size({}),
               m_position({}),
+              m_bounds({}),
+              m_onHover(""),
+              m_onClick(""),
               m_cursor({}),
               m_primitive({})
         {
@@ -69,7 +75,7 @@ namespace Chicane
             refreshStyle();
             refreshSize();
             refreshPosition();
-            refreshPrimitive();
+            refreshBounds();
 
             onRefresh();
         }
@@ -91,6 +97,46 @@ namespace Chicane
         bool Component::isValidChild(Component* inComponent) const
         {
             return inComponent != nullptr && inComponent != this;
+        }
+
+        void Component::hover()
+        {
+            onHover();
+
+            if (m_onHover.isEmpty())
+            {
+                return;
+            }
+
+            String functionName = parseText(m_onHover);
+
+            if (!hasFunction(functionName))
+            {
+                return;
+            }
+
+            Event event;
+            getFunction(functionName)(event);
+        }
+
+        void Component::click()
+        {
+            onClick();
+
+            if (m_onClick.isEmpty())
+            {
+                return;
+            }
+
+            String functionName = parseText(m_onClick);
+
+            if (!hasFunction(functionName))
+            {
+                return;
+            }
+
+            Event event;
+            getFunction(functionName)(event);
         }
 
         const String& Component::getTag() const
@@ -280,11 +326,11 @@ namespace Chicane
             return bHasLocally || m_parent->hasFunction(id);
         }
 
-        const Function Component::getFunction(const String& inId) const
+        const Function Component::getFunction(const String& inId, bool isLocalOnly) const
         {
             const String id = inId.split(FUNCTION_PARAMS_OPENING).front().trim();
 
-            if (!hasParent() || isRoot())
+            if (!hasParent() || isRoot() || isLocalOnly)
             {
                 return hasFunction(id, true) ? m_functions.at(id) : nullptr;
             }
@@ -479,31 +525,6 @@ namespace Chicane
             return m_childrenObservable.subscribe(inNext, inError, inComplete).next(this);
         }
 
-        const Vec2& Component::getCursor() const
-        {
-            return m_cursor;
-        }
-
-        void Component::addCursor(const Vec2& inCursor)
-        {
-            addCursor(inCursor.x, inCursor.y);
-        }
-
-        void Component::addCursor(float inX, float inY)
-        {
-            setCursor(m_cursor.x + inX, m_cursor.y + inY);
-        }
-
-        void Component::setCursor(const Vec2& inCursor)
-        {
-            setCursor(inCursor.x, inCursor.y);
-        }
-
-        void Component::setCursor(float inX, float inY)
-        {
-            setProperty(m_cursor, {inX, inY});
-        }
-
         Vec2 Component::getAvailableSize() const
         {
             return m_size - m_cursor;
@@ -551,9 +572,34 @@ namespace Chicane
             setCursor(m_position);
         }
 
-        Vec2 Component::getCenter() const
+        const Vec2& Component::getCursor() const
         {
-            return m_size * 0.5f;
+            return m_cursor;
+        }
+
+        void Component::addCursor(const Vec2& inCursor)
+        {
+            addCursor(inCursor.x, inCursor.y);
+        }
+
+        void Component::addCursor(float inX, float inY)
+        {
+            setCursor(m_cursor.x + inX, m_cursor.y + inY);
+        }
+
+        void Component::setCursor(const Vec2& inCursor)
+        {
+            setCursor(inCursor.x, inCursor.y);
+        }
+
+        void Component::setCursor(float inX, float inY)
+        {
+            setProperty(m_cursor, {inX, inY});
+        }
+
+        const Bounds2D& Component::getBounds() const
+        {
+            return m_bounds;
         }
 
         bool Component::hasPrimitive() const
@@ -645,6 +691,14 @@ namespace Chicane
 
                 break;
             }
+        }
+
+        void Component::refreshBounds()
+        {
+            m_bounds.top    = m_position.y;
+            m_bounds.bottom = m_bounds.top + m_size.y;
+            m_bounds.left   = m_position.x;
+            m_bounds.right  = m_bounds.left + m_size.x;
         }
 
         String Component::parseText(const String& inValue) const

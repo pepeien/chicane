@@ -83,7 +83,7 @@ namespace Chicane
         {
             const Box::ModelParsed model = manager->get(group.getModel());
 
-            const Bounds bounds = Bounds(model.vertices, model.indices);
+            const Bounds3D bounds = Bounds3D(model.vertices, model.indices);
 
             addBounds(bounds);
 

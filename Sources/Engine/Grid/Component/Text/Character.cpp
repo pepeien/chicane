@@ -1,4 +1,4 @@
-#include "Chicane/Grid/Component/Character.hpp"
+#include "Chicane/Grid/Component/Text/Character.hpp"
 
 #include "Chicane/Box/Font/Manager.hpp"
 
@@ -10,36 +10,21 @@ namespace Chicane
     {
         static inline constexpr const char NULL_CHARACTER = '\0';
 
-        Character::Character()
+        TextCharacter::TextCharacter()
             : Component(TAG_ID),
-              m_bCanUpdatePrimitive(false),
               m_character(NULL_CHARACTER),
               m_glyph({})
         {
             Box::getFontManager()->watch([&](const Box::FontManager::Instances& inData) { refreshFont(); });
         }
 
-        bool Character::isDrawable() const
+        bool TextCharacter::isDrawable() const
         {
             return m_parent->isVisible() && hasGlyph() && hasPrimitive();
         }
 
-        void Character::refreshPrimitive()
+        void TextCharacter::refreshPrimitive()
         {
-            if (!m_bCanUpdatePrimitive)
-            {
-                return;
-            }
-
-            if (!hasGlyph() || !Color::isVisible(m_style.foregroundColor))
-            {
-                clearPrimitive();
-
-                return;
-            }
-
-            m_bCanUpdatePrimitive = false;
-
             const Box::FontGlyph& glyph = getGlyph();
 
             Primitive primitive = {};
@@ -58,7 +43,7 @@ namespace Chicane
             setPrimitive(primitive);
         }
 
-        void Character::onRefresh()
+        void TextCharacter::onRefresh()
         {
             if (!hasParent() || !hasGlyph())
             {
@@ -72,22 +57,22 @@ namespace Chicane
             m_style.zIndex = getParent()->getStyle().zIndex + 0.1f;
         }
 
-        void Character::disable()
+        void TextCharacter::disable()
         {
             setCharacter(NULL_CHARACTER);
         }
 
-        bool Character::hasCharacter() const
+        bool TextCharacter::hasCharacter() const
         {
             return m_character != NULL_CHARACTER;
         }
 
-        char Character::getCharacter() const
+        char TextCharacter::getCharacter() const
         {
             return m_character;
         }
 
-        void Character::setCharacter(char inValue)
+        void TextCharacter::setCharacter(char inValue)
         {
             if (m_character == inValue)
             {
@@ -99,20 +84,22 @@ namespace Chicane
             refreshFont();
         }
 
-        bool Character::hasGlyph() const
+        bool TextCharacter::hasGlyph() const
         {
             return m_glyph.indices.size() > 0;
         }
 
-        const Box::FontGlyph& Character::getGlyph() const
+        const Box::FontGlyph& TextCharacter::getGlyph() const
         {
             return m_glyph;
         }
 
-        void Character::refreshFont()
+        void TextCharacter::refreshFont()
         {
             if (!hasParent())
             {
+                clearPrimitive();
+
                 m_glyph = {};
 
                 return;
@@ -122,6 +109,8 @@ namespace Chicane
 
             if (!font.hasGlyph(m_character))
             {
+                clearPrimitive();
+
                 m_glyph = {};
 
                 return;
@@ -129,15 +118,9 @@ namespace Chicane
 
             m_glyph = font.getGlyph(m_character);
 
-            if (!hasGlyph())
-            {
-                return;
-            }
-
             const Style& parentStyle = m_parent->getStyle();
 
-            m_style.foregroundColor = parentStyle.foregroundColor;
-            m_style.font            = parentStyle.font;
+            m_style.font = parentStyle.font;
 
             const float scale = m_style.font.size / Curve::FIXED_POINT / 2.0f;
             const float units = (m_style.font.size / m_glyph.units) * 1.25f;
@@ -147,7 +130,7 @@ namespace Chicane
 
             m_style.margin.top = m_glyph.box.y * units;
 
-            m_bCanUpdatePrimitive = true;
+            refreshPrimitive();
         }
     }
 }

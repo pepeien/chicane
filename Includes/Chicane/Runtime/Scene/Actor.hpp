@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chicane/Core/Math/Bounds.hpp"
+#include "Chicane/Core/Math/Bounds/3D.hpp"
 #include "Chicane/Core/Transformable.hpp"
 #include "Chicane/Core/String.hpp"
 
@@ -26,7 +26,7 @@ namespace Chicane
         bool canCollide() const;
         void setCanCollide(bool inCanCollide);
         bool isCollidingWith(const Actor* inSubject) const;
-        bool isCollidingWith(const Bounds& inBounds) const;
+        bool isCollidingWith(const Bounds3D& inBounds) const;
         bool isCollidingWith(const Vec3& inPoint) const;
         void collideWith(const Actor* inSubject);
 

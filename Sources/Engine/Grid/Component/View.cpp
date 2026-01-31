@@ -1,5 +1,11 @@
 #include "Chicane/Grid/Component/View.hpp"
 
+#include <algorithm>
+
+#include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
+#include "Chicane/Core/Log.hpp"
+
 namespace Chicane
 {
     namespace Grid
@@ -66,9 +72,75 @@ namespace Chicane
             onDeactivation();
         }
 
-        const String& View::getPath() const
+        void View::handle(WindowEvent inEvent)
         {
-            return m_path;
+            if (inEvent.type == WindowEventType::MouseButtonDown)
+            {
+                Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+
+                for (Component* contender : getChildrenOn(event.location))
+                {
+                    contender->click();
+                }
+            }
+
+            if (inEvent.type == WindowEventType::MouseMotion)
+            {
+                Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+
+                for (Component* contender : getChildrenOn(event.location))
+                {
+                    contender->hover();
+                }
+            }
+        }
+
+        std::vector<Component*> View::getFlatChildren(const Component* inParent) const
+        {
+            const Component* parent = inParent;
+
+            if (!parent)
+            {
+                parent = this;
+            }
+
+            std::vector<Component*> result;
+
+            for (Component* child : parent->getChildren())
+            {
+                result.push_back(child);
+
+                std::vector<Component*> subChildren = getFlatChildren(child);
+
+                result.insert(result.end(), subChildren.begin(), subChildren.end());
+            }
+
+            return result;
+        }
+
+        std::vector<Component*> View::getChildrenOn(const Vec2& inLocation) const
+        {
+            std::vector<Component*> contenders = {};
+            for (Component* child : getFlatChildren())
+            {
+                if (!child->isDrawable())
+                {
+                    continue;
+                }
+
+                if (!child->getBounds().contains(inLocation))
+                {
+                    continue;
+                }
+
+                contenders.push_back(child);
+            }
+
+            std::sort(contenders.begin(), contenders.end(), [](Component* inA, Component* inB) {
+                return inA->getStyle().zIndex > inB->getStyle().zIndex;
+            });
+
+            return contenders;
         }
     }
 }

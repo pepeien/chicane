@@ -49,7 +49,7 @@ namespace Chicane
         return isCollidingWith(inSubject->getTranslation());
     }
 
-    bool Actor::isCollidingWith(const Bounds& inBounds) const
+    bool Actor::isCollidingWith(const Bounds3D& inBounds) const
     {
         return getBounds().intersects(inBounds);
     }
