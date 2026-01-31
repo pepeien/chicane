@@ -19,6 +19,7 @@ namespace Chicane
 
         Sound::Sound()
             : m_status(SoundStatus::Stopped),
+              m_settings({}),
               m_data(std::make_unique<_Data>())
         {}
 
@@ -64,18 +65,19 @@ namespace Chicane
             return m_status == SoundStatus::Playing;
         }
 
-        bool Sound::play(float inVolume, float inSpeed, std::function<void()> inCallback)
+        bool Sound::play(std::function<void()> inCallback)
         {
             if (!stop())
             {
                 return false;
             }
 
-            ma_sound_set_volume(&m_data->sound, inVolume);
-            ma_sound_set_pitch(&m_data->sound, inSpeed);
+            ma_sound_set_volume(&m_data->sound, m_settings.volume);
+            ma_sound_set_pitch(&m_data->sound, m_settings.speed);
             ma_sound_set_end_callback(
                 &m_data->sound,
-                [](void* pUserData, ma_sound*) {
+                [](void* pUserData, ma_sound*)
+                {
                     Sound* context    = (Sound*)pUserData;
                     context->m_status = SoundStatus::Stopped;
                 },

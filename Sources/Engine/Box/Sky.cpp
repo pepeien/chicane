@@ -49,9 +49,11 @@ namespace Chicane
 
             m_sides[inSide] = filepath;
 
-            auto side = std::find_if(SIDE_MAP.begin(), SIDE_MAP.end(), [inSide](const auto& inPair) {
-                return inPair.second == inSide;
-            });
+            auto side = std::find_if(
+                SIDE_MAP.begin(),
+                SIDE_MAP.end(),
+                [inSide](const auto& inPair) { return inPair.second == inSide; }
+            );
 
             if (side == SIDE_MAP.end())
             {

@@ -28,6 +28,7 @@ BraceWrapping:
   BeforeElse: true
   IndentBraces: false
   SplitEmptyFunction: false
+  BeforeLambdaBody: true
 InsertBraces: true
 
 # Parentheses spacing
@@ -54,6 +55,9 @@ BinPackParameters: false
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
 SpacesInContainerLiterals: true
+AllowAllParametersOfDeclarationOnNextLine: true
+PenaltyBreakBeforeFirstCallParameter: 10
+BreakBeforeBinaryOperators: None
 
 # Functions
 AllowShortFunctionsOnASingleLine: InlineOnly

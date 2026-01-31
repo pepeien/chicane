@@ -177,18 +177,24 @@ namespace Chicane
 
         m_window = std::make_unique<Window>();
         m_window->init(inCreateInfo);
-        m_window->watchSize([&](const Vec<2, int>& inSize) {
-            if (hasView())
+        m_window->watchSize(
+            [&](const Vec<2, int>& inSize)
             {
-                m_view->setSize(inSize.x, inSize.y);
+                if (hasView())
+                {
+                    m_view->setSize(inSize.x, inSize.y);
+                }
             }
-        });
-        m_window->watchEvent([&](WindowEvent inEvent) {
-            if (hasView())
+        );
+        m_window->watchEvent(
+            [&](WindowEvent inEvent)
             {
-                m_view->handle(inEvent);
+                if (hasView())
+                {
+                    m_view->handle(inEvent);
+                }
             }
-        });
+        );
     }
 
     void Application::initRenderer(WindowBackend inBackend)
@@ -204,27 +210,33 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::getModelManager()->watch([&](const Box::ModelManager::Instances& inInstances) {
-            for (const auto& [id, poly] : inInstances)
+        Box::getModelManager()->watch(
+            [&](const Box::ModelManager::Instances& inInstances)
             {
-                Renderer::DrawPolyData data;
-                data.reference = id;
-                data.vertices  = poly.vertices;
-                data.indices   = poly.indices;
+                for (const auto& [id, poly] : inInstances)
+                {
+                    Renderer::DrawPolyData data;
+                    data.reference = id;
+                    data.vertices  = poly.vertices;
+                    data.indices   = poly.indices;
 
-                m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                    m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                }
             }
-        });
-        Box::getTextureManager()->watch([&](const Box::TextureManager::Instances& inInstances) {
-            for (const auto& [id, texture] : inInstances)
+        );
+        Box::getTextureManager()->watch(
+            [&](const Box::TextureManager::Instances& inInstances)
             {
-                Renderer::DrawTextureData data;
-                data.reference = id;
-                data.image     = texture;
+                for (const auto& [id, texture] : inInstances)
+                {
+                    Renderer::DrawTextureData data;
+                    data.reference = id;
+                    data.image     = texture;
 
-                m_renderer->loadTexture(data);
+                    m_renderer->loadTexture(data);
+                }
             }
-        });
+        );
 
         Box::init();
     }

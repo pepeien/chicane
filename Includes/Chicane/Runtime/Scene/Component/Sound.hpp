@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Chicane/Box/Sound/Manager.hpp"
-
 #include "Chicane/Runtime.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
+
 #include "Chicane/Screech/Sound.hpp"
 
 namespace Chicane
@@ -20,8 +19,5 @@ namespace Chicane
 
     protected:
         Screech::Sound m_sound;
-
-    private:
-        Box::SoundManager* m_manager;
     };
 }

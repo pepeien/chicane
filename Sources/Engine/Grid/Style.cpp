@@ -310,9 +310,11 @@ namespace Chicane
 
         void Style::refreshMargin()
         {
-            if (!margin.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!margin.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    { return parseSize(inValue, inDirection); }
+                ))
             {
                 return;
             }
@@ -322,9 +324,11 @@ namespace Chicane
 
         void Style::refreshPadding()
         {
-            if (!padding.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!padding.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    { return parseSize(inValue, inDirection); }
+                ))
             {
                 return;
             }
@@ -334,9 +338,11 @@ namespace Chicane
 
         void Style::refreshGap()
         {
-            if (!gap.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
+            if (!gap.refresh(
+                    m_properties,
+                    [this](const String& inValue, StyleDirection inDirection)
+                    { return parseSize(inValue, inDirection); }
+                ))
             {
                 return;
             }

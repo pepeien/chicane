@@ -19,7 +19,8 @@ Application::Application()
     createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
     // Setup
-    createInfo.onSetup = [this]() {
+    createInfo.onSetup = [this]()
+    {
         initLevel();
         initCharacter();
         initView();

@@ -35,19 +35,23 @@ View::View()
       m_playerScore(0U),
       m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore))
 {
-    Game::watchScore([this](std::uint32_t inScore) {
-        m_playerScore++;
-
-        if (Game::didReachMaxScore())
+    Game::watchScore(
+        [this](std::uint32_t inScore)
         {
-            m_bDidPlayerWin = true;
+            m_playerScore++;
 
-            m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
+            if (Game::didReachMaxScore())
+            {
+                m_bDidPlayerWin = true;
+
+                m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
+            }
         }
-    });
+    );
 
     Chicane::Application::getInstance().getScene<Level>()->watchActiveCamera(
-        [this](Chicane::ACamera* inCamera) {
+        [this](Chicane::ACamera* inCamera)
+        {
             if (inCamera == nullptr)
             {
                 m_currentCamera = "First Person";

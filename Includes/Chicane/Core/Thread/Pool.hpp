@@ -27,34 +27,37 @@ namespace Chicane
 
             for (size_t i = 0; i < threadCount; ++i)
             {
-                m_workers.emplace_back([this] {
-                    for (;;)
+                m_workers.emplace_back(
+                    [this]
                     {
-                        std::function<void()> task;
-
+                        for (;;)
                         {
-                            std::unique_lock<std::mutex> lock(m_mutex);
-                            m_cv.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
+                            std::function<void()> task;
 
-                            if (m_stop && m_tasks.empty())
                             {
-                                return;
+                                std::unique_lock<std::mutex> lock(m_mutex);
+                                m_cv.wait(lock, [this] { return m_stop || !m_tasks.empty(); });
+
+                                if (m_stop && m_tasks.empty())
+                                {
+                                    return;
+                                }
+
+                                task = std::move(m_tasks.front());
+                                m_tasks.pop();
+                                ++m_activeTasks;
                             }
 
-                            task = std::move(m_tasks.front());
-                            m_tasks.pop();
-                            ++m_activeTasks;
-                        }
+                            task();
 
-                        task();
-
-                        {
-                            std::lock_guard<std::mutex> lock(m_mutex);
-                            --m_activeTasks;
+                            {
+                                std::lock_guard<std::mutex> lock(m_mutex);
+                                --m_activeTasks;
+                            }
+                            m_doneCv.notify_all();
                         }
-                        m_doneCv.notify_all();
                     }
-                });
+                );
             }
         }
 

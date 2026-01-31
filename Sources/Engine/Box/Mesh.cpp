@@ -66,9 +66,11 @@ namespace Chicane
                 return;
             }
 
-            auto foundGroupEntry = std::find_if(m_groups.begin(), m_groups.end(), [inGroup](const MeshGroup& inValue) {
-                return inGroup.getId().equals(inValue.getId());
-            });
+            auto foundGroupEntry = std::find_if(
+                m_groups.begin(),
+                m_groups.end(),
+                [inGroup](const MeshGroup& inValue) { return inGroup.getId().equals(inValue.getId()); }
+            );
 
             if (foundGroupEntry == m_groups.end())
             {

@@ -24,9 +24,11 @@ namespace Chicane
                 DrawPoly::List& draws = m_draws[type];
                 draws.insert(draws.end(), resource.getDraws().begin(), resource.getDraws().end());
 
-                std::sort(draws.begin(), draws.end(), [](const Draw& inA, const Draw& inB) {
-                    return inA.id <= inB.id;
-                });
+                std::sort(
+                    draws.begin(),
+                    draws.end(),
+                    [](const Draw& inA, const Draw& inB) { return inA.id <= inB.id; }
+                );
             }
 
             refresh2DDraws();

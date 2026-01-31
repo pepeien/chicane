@@ -40,14 +40,17 @@ Character::Character()
     m_victorySound->load("Contents/Sample/Shooter/Sounds/Victory.bsnd");
     m_victorySound->activate();
 
-    Game::watchScore([this](std::uint32_t inScore) {
-        if (Game::didReachMaxScore())
+    Game::watchScore(
+        [this](std::uint32_t inScore)
         {
-            m_victorySound->play();
+            if (Game::didReachMaxScore())
+            {
+                m_victorySound->play();
 
-            return;
+                return;
+            }
         }
-    });
+    );
 }
 
 void Character::onControlAttachment()
@@ -93,24 +96,41 @@ void Character::onControlAttachment()
         std::bind(&Character::onJump, this)
     );
 
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F1, Chicane::Input::Status::Pressed, [this]() {
-        m_camera->activate();
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F1,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            m_camera->activate();
 
-        static_cast<Level*>(Chicane::Application::getInstance().getScene())->disableCameras();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F2, Chicane::Input::Status::Pressed, [this]() {
-        static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateLeftCamera();
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())->disableCameras();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F2,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateLeftCamera();
 
-        m_camera->deactivate();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F3, Chicane::Input::Status::Pressed, [this]() {
-        static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateCenterCamera();
+            m_camera->deactivate();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F3,
+        Chicane::Input::Status::Pressed,
+        [this]()
+        {
+            static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateCenterCamera();
 
-        m_camera->deactivate();
-    });
-    m_controller->bindEvent(Chicane::Input::KeyboardButton::F4, Chicane::Input::Status::Pressed, []() {
-        static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateRightCamera();
-    });
+            m_camera->deactivate();
+        }
+    );
+    m_controller->bindEvent(
+        Chicane::Input::KeyboardButton::F4,
+        Chicane::Input::Status::Pressed,
+        []() { static_cast<Level*>(Chicane::Application::getInstance().getScene())->activateRightCamera(); }
+    );
 
     // Gamepad
     m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
