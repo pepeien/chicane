@@ -4,7 +4,6 @@
 
 #include "Chicane/Core/Input/Mouse/Button/Event.hpp"
 #include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
-#include "Chicane/Core/Log.hpp"
 
 namespace Chicane
 {
