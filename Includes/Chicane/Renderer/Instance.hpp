@@ -19,6 +19,7 @@
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -27,13 +28,12 @@ namespace Chicane
 
     namespace Renderer
     {
+        using ResolutionObservable   = EventObservable<Vec<2, int>>;
+        using ResolutionSubscription = EventSubscription<Vec<2, int>>;
+
         class CHICANE_RENDERER Instance
         {
             friend Application;
-
-        public:
-            using ViewportObservable   = EventObservable<Viewport>;
-            using ViewportSubscription = EventSubscription<Viewport>;
 
         public:
             static inline constexpr const std::uint32_t FRAME_COUNT = 2;
@@ -44,7 +44,7 @@ namespace Chicane
 
         public:
             // Lifecycle
-            void init(Window* inWindow, WindowBackend inBackend);
+            void init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings);
             void render();
             void destroy();
 
@@ -82,6 +82,14 @@ namespace Chicane
             Draw::Id loadSky(const DrawSkyData& inData);
 
             // Settings
+            const Vec<2, int>& getResolution() const;
+            void setResolution(const Vec<2, int>& inValue);
+            ResolutionSubscription watchResolution(
+                ResolutionSubscription::NextCallback     inNext,
+                ResolutionSubscription::ErrorCallback    inError    = nullptr,
+                ResolutionSubscription::CompleteCallback inComplete = nullptr
+            );
+
             const Viewport& getViewport() const;
             void setViewport(const Viewport& inValue);
             void setViewport(const Vec2& inPosition, const Vec2& inSize);
@@ -110,6 +118,7 @@ namespace Chicane
             void reloadResources();
 
             // Settings
+            void refreshViewport();
             void propagateResize();
 
         private:
@@ -126,6 +135,9 @@ namespace Chicane
             DrawSky                        m_skyResource;
 
             // Settings
+            Vec<2, int>                    m_resolution;
+            ResolutionObservable           m_resolutionObservable;
+
             Viewport                       m_viewport;
 
             // Backend

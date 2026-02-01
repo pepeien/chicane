@@ -16,6 +16,8 @@ namespace Chicane
             : m_window(nullptr),
               m_frames({}),
               m_currentFrame(0U),
+              m_resolution(Vec<2, int>(0)),
+              m_resolutionObservable({}),
               m_viewport({}),
               m_backend(nullptr)
         {}
@@ -25,15 +27,18 @@ namespace Chicane
             destroy();
         }
 
-        void Instance::init(Window* inWindow, WindowBackend inBackend)
+        void Instance::init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings)
         {
             if (!inWindow)
             {
                 return;
             }
 
-            setViewport(Vec2::Zero, Vec2::Zero);
+            // Window
             setWindow(inWindow);
+
+            // Renderer
+            setResolution(inSettings.resolution);
             setBackend(inBackend);
         }
 
@@ -189,6 +194,34 @@ namespace Chicane
             return m_skyResource.id;
         }
 
+        const Vec<2, int>& Instance::getResolution() const
+        {
+            return m_resolution;
+        }
+
+        void Instance::setResolution(const Vec<2, int>& inValue)
+        {
+            if (m_resolution == inValue)
+            {
+                return;
+            }
+
+            m_resolution = inValue;
+
+            m_resolutionObservable.next(m_resolution);
+
+            refreshViewport();
+        }
+
+        ResolutionSubscription Instance::watchResolution(
+            ResolutionSubscription::NextCallback     inNext,
+            ResolutionSubscription::ErrorCallback    inError,
+            ResolutionSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_resolutionObservable.subscribe(inNext, inError, inComplete).next(m_resolution);
+        }
+
         const Viewport& Instance::getViewport() const
         {
             return m_viewport;
@@ -256,7 +289,7 @@ namespace Chicane
             }
 
             m_window = inWindow;
-            m_window->watchSize([&](const Vec<2, int>& inSize) { setViewportSize(inSize.x, inSize.y); });
+            m_window->watchSize([&](const Vec<2, int>& inSize) { refreshViewport(); });
             m_window->watchEvent([&](WindowEvent inEvent) { handle(inEvent); });
         }
 
@@ -334,6 +367,27 @@ namespace Chicane
 
             m_backend->onLoad(m_textureResources);
             m_backend->onLoad(m_skyResource);
+        }
+
+        void Instance::refreshViewport()
+        {
+            if (m_resolution.x == 0 || m_resolution.y == 0)
+            {
+                return;
+            }
+
+            Vec<2, int> windowSize   = getWindow()->getSize();
+            Vec<2, int> rendererSize = m_resolution;
+
+            if (windowSize.x < rendererSize.x || windowSize.y < rendererSize.y)
+            {
+                rendererSize = windowSize;
+            }
+
+            int scale = std::min(windowSize.x / rendererSize.x, windowSize.y / rendererSize.y);
+
+            setViewportSize(rendererSize * scale);
+            setViewportPosition((windowSize - rendererSize) / 2);
         }
 
         void Instance::propagateResize()

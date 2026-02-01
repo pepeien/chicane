@@ -68,19 +68,22 @@ namespace Chicane
 
         void VulkanBackend::onResize(const Viewport& inViewport)
         {
-            // Viewport
-            viewport.width  = inViewport.size.x;
-            viewport.height = inViewport.size.y;
+            float x = inViewport.position.x;
+            float y = inViewport.position.y;
+            float w = inViewport.size.x;
+            float h = inViewport.size.y;
 
-            viewport.x = inViewport.position.x;
-            viewport.y = inViewport.position.y;
-
+            viewport.x        = x;
+            viewport.y        = y;
+            viewport.width    = w;
+            viewport.height   = h;
             viewport.minDepth = 0.0f;
             viewport.maxDepth = 1.0f;
 
-            // Scissor
-            scissor.extent.width  = inViewport.size.x;
-            scissor.extent.height = inViewport.size.y;
+            scissor.offset.x      = static_cast<int32_t>(x);
+            scissor.offset.y      = static_cast<int32_t>(y);
+            scissor.extent.width  = static_cast<uint32_t>(w);
+            scissor.extent.height = static_cast<uint32_t>(h);
 
             Backend::onResize(inViewport);
         }

@@ -137,8 +137,8 @@ namespace Chicane
 
     private:
         // Initialization
-        void initWindow(const WindowSettings& inCreateInfo);
-        void initRenderer(WindowBackend inBackend);
+        void initWindow(const WindowSettings& inSettings);
+        void initRenderer(WindowBackend inBackend, const Renderer::Settings& inSettings);
         void initBox();
         void initKerb();
 
