@@ -24,7 +24,23 @@
                 "description": "CHICANE_BOX_FONTMANAGER_FONTMANAGER_DESCRIPTION"
             }
         ],
-        "destructors": [],
+        "destructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~FontManager",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_FONTMANAGER_~FONTMANAGER_DESCRIPTION"
+            }
+        ],
         "functions": [
             {
                 "accessor": "public",
@@ -36,7 +52,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "isFamilyAllocated",
+                "name": "containsFamily",
                 "parameters": [
                     {
                         "type": {
@@ -46,17 +62,45 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inFamily"
+                        "name": "inName"
                     }
                 ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_BOX_FONTMANAGER_ISFAMILYALLOCATED_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_CONTAINSFAMILY_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FontParsed",
+                    "suffix": "&",
+                    "path": "Box/Font/Parsed",
+                    "templates": []
+                },
+                "name": "getFamily",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inName"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOX_FONTMANAGER_GETFAMILY_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -64,7 +108,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "load",
+                "name": "onLoad",
                 "parameters": [
                     {
                         "type": {
@@ -84,121 +128,11 @@
                             "path": "Box/Font",
                             "templates": []
                         },
-                        "name": "inFont"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_FONTMANAGER_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "allocate",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_FONTMANAGER_ALLOCATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "FontExtracted",
-                    "suffix": "&",
-                    "path": "Box/Font/Extracted",
-                    "templates": []
-                },
-                "name": "getData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_FONTMANAGER_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "FontParsed",
-                    "suffix": "&",
-                    "path": "Box/Font/Parsed",
-                    "templates": []
-                },
-                "name": "getParsed",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_FONTMANAGER_GETPARSED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "FontParsed",
-                    "suffix": "&",
-                    "path": "Box/Font/Parsed",
-                    "templates": []
-                },
-                "name": "getByFamily",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inFamily"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_FONTMANAGER_GETBYFAMILY_DESCRIPTION"
+                "description": "CHICANE_BOX_FONTMANAGER_ONLOAD_DESCRIPTION"
             }
         ],
         "members": [],

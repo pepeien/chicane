@@ -37,32 +37,6 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setMatrix",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Mat4",
-                            "suffix": "&",
-                            "path": "Core/Math/Mat/Mat4",
-                            "templates": []
-                        },
-                        "name": "inMatrix"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORM_SETMATRIX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
                 "name": "setTransform",
                 "parameters": [
                     {
@@ -338,56 +312,21 @@
                 "description": "CHICANE_TRANSFORM_GETUP_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
+                    "prefix": "const ",
+                    "name": "QuatFloat",
+                    "suffix": "&",
+                    "path": "Core/Math/Quat/QuatFloat",
                     "templates": []
                 },
-                "name": "refreshOrientation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "QuatFloat",
-                            "suffix": "&",
-                            "path": "Core/Math/Quat/QuatFloat",
-                            "templates": []
-                        },
-                        "name": "inOrientation"
-                    }
+                "name": "getOrientation",
+                "parameters": [],
+                "modifiers": [
+                    "const"
                 ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORM_REFRESHORIENTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshTransform",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "QuatFloat",
-                            "suffix": "&",
-                            "path": "Core/Math/Quat/QuatFloat",
-                            "templates": []
-                        },
-                        "name": "inOrientation"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORM_REFRESHTRANSFORM_DESCRIPTION"
+                "description": "CHICANE_TRANSFORM_GETORIENTATION_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -411,19 +350,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Mat4",
-                    "suffix": "",
-                    "path": "Core/Math/Mat/Mat4",
-                    "templates": []
-                },
-                "name": "m_matrix",
-                "description": "CHICANE_TRANSFORM_M_MATRIX_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "Vec3",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec3",
@@ -437,9 +363,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "Rotator",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Core/Math/Rotator",
                     "templates": []
                 },
                 "name": "m_rotation",
@@ -463,39 +389,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Vec3",
+                    "name": "Mat4",
                     "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Core/Math/Mat/Mat4",
                     "templates": []
                 },
-                "name": "m_forward",
-                "description": "CHICANE_TRANSFORM_M_FORWARD_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "m_up",
-                "description": "CHICANE_TRANSFORM_M_UP_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "m_right",
-                "description": "CHICANE_TRANSFORM_M_RIGHT_DESCRIPTION"
+                "name": "m_matrix",
+                "description": "CHICANE_TRANSFORM_M_MATRIX_DESCRIPTION"
             }
         ],
         "description": "CHICANE_TRANSFORM_DESCRIPTION"

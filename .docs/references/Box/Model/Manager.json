@@ -24,11 +24,27 @@
                 "description": "CHICANE_BOX_MODELMANAGER_MODELMANAGER_DESCRIPTION"
             }
         ],
-        "destructors": [],
-        "functions": [
+        "destructors": [
             {
                 "accessor": "public",
                 "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "~ModelManager",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOX_MODELMANAGER_~MODELMANAGER_DESCRIPTION"
+            }
+        ],
+        "functions": [
+            {
+                "accessor": "protected",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -36,7 +52,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "load",
+                "name": "onLoad",
                 "parameters": [
                     {
                         "type": {
@@ -56,273 +72,14 @@
                             "path": "Box/Model",
                             "templates": []
                         },
-                        "name": "inModel"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "ModelExtracted",
-                    "suffix": "&",
-                    "path": "Box/Model/Extracted",
-                    "templates": []
-                },
-                "name": "getInstance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MODELMANAGER_GETINSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "ModelParsed",
-                    "suffix": "&",
-                    "path": "Box/Model/Parsed",
-                    "templates": []
-                },
-                "name": "getData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MODELMANAGER_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vertex::List",
-                    "suffix": "&",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "getVertices",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MODELMANAGER_GETVERTICES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vertex::Indices",
-                    "suffix": "&",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "getIndices",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MODELMANAGER_GETINDICES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getFirstUse",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MODELMANAGER_GETFIRSTUSE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onAllocation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "ModelParsed",
-                            "suffix": "&",
-                            "path": "Box/Model/Parsed",
-                            "templates": []
-                        },
                         "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_ONALLOCATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeallocation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_ONDEALLOCATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onActivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_ONACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeactivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_MODELMANAGER_ONLOAD_DESCRIPTION"
             }
         ],
-        "members": [
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vertex::List",
-                    "suffix": "",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "m_vertices",
-                "description": "CHICANE_BOX_MODELMANAGER_M_VERTICES_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vertex::Indices",
-                    "suffix": "",
-                    "path": "Core/Math/Vertex",
-                    "templates": []
-                },
-                "name": "m_indices",
-                "description": "CHICANE_BOX_MODELMANAGER_M_INDICES_DESCRIPTION"
-            }
-        ],
+        "members": [],
         "description": "CHICANE_BOX_MODELMANAGER_DESCRIPTION"
     },
     "children": []

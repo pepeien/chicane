@@ -422,6 +422,49 @@
                 "description": "CHICANE_CVIEW_SETFOCUSPOINT_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "ViewProjectionType",
+                    "suffix": "",
+                    "path": "Core/View/Projection/Type",
+                    "templates": []
+                },
+                "name": "getProjectionType",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_CVIEW_GETPROJECTIONTYPE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProjectionType",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "ViewProjectionType",
+                            "suffix": "",
+                            "path": "Core/View/Projection/Type",
+                            "templates": []
+                        },
+                        "name": "inType"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_CVIEW_SETPROJECTIONTYPE_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "override",
                 "return": {

@@ -136,7 +136,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "setProperty",
+                "name": "setValue",
                 "parameters": [
                     {
                         "type": {
@@ -162,7 +162,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_CHANGEABLE_SETPROPERTY_DESCRIPTION"
+                "description": "CHICANE_CHANGEABLE_SETVALUE_DESCRIPTION"
             }
         ],
         "members": [

@@ -87,18 +87,99 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
-                    "name": "String",
-                    "suffix": "&",
-                    "path": "Core/String",
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
                     "templates": []
                 },
-                "name": "getPath",
-                "parameters": [],
+                "name": "handle",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "WindowEvent",
+                            "suffix": "",
+                            "path": "Core/Window/Event",
+                            "templates": []
+                        },
+                        "name": "inEvent"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_VIEW_HANDLE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getFlatChildren",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        },
+                        "name": "inParent"
+                    }
+                ],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_VIEW_GETPATH_DESCRIPTION"
+                "description": "CHICANE_GRID_VIEW_GETFLATCHILDREN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Component",
+                            "suffix": "*",
+                            "path": "Grid/Component",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getChildrenOn",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inLocation"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_VIEW_GETCHILDRENON_DESCRIPTION"
             },
             {
                 "accessor": "protected",

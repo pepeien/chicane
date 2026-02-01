@@ -83,19 +83,6 @@
                 },
                 "name": "extent",
                 "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_EXTENT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "vk::Extent2D",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "midPoints",
-                "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_MIDPOINTS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_VULKANSWAPCHAINBUNDLE_DESCRIPTION"

@@ -49,16 +49,6 @@
                 },
                 "children": [
                     {
-                        "title": "FontExtracted",
-                        "filename": "Extracted",
-                        "path": "Box/Font/Extracted",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Font/Extracted.hpp",
-                            "namespace": "Chicane::Box::FontExtracted"
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "FontGlyph",
                         "filename": "Glyph",
                         "path": "Box/Font/Glyph",
@@ -171,16 +161,6 @@
                     "namespace": "Chicane::Box::Model"
                 },
                 "children": [
-                    {
-                        "title": "ModelExtracted",
-                        "filename": "Extracted",
-                        "path": "Box/Model/Extracted",
-                        "source": {
-                            "header": "Includes/Chicane/Box/Model/Extracted.hpp",
-                            "namespace": "Chicane::Box::ModelExtracted"
-                        },
-                        "children": []
-                    },
                     {
                         "title": "ModelManager",
                         "filename": "Manager",
@@ -498,27 +478,39 @@
                                     "header": "Includes/Chicane/Core/Input/Gamepad/Button.hpp",
                                     "namespace": "Chicane::Input::GamepadButton"
                                 },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "GamepadButtonEvent",
+                                        "filename": "Event",
+                                        "path": "Core/Input/Gamepad/Button/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Gamepad/Button/Event.hpp",
+                                            "namespace": "Chicane::Input::GamepadButtonEvent"
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
-                                "title": "GamepadButtonEvent",
-                                "filename": "ButtonEvent",
-                                "path": "Core/Input/Gamepad/ButtonEvent",
+                                "title": "Motion",
+                                "filename": "Motion",
+                                "path": "Core/Input/Gamepad/Motion",
                                 "source": {
-                                    "header": "Includes/Chicane/Core/Input/Gamepad/ButtonEvent.hpp",
-                                    "namespace": "Chicane::Input::GamepadButtonEvent"
+                                    "header": null,
+                                    "namespace": null
                                 },
-                                "children": []
-                            },
-                            {
-                                "title": "GamepadMotionEvent",
-                                "filename": "MotionEvent",
-                                "path": "Core/Input/Gamepad/MotionEvent",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",
-                                    "namespace": "Chicane::Input::GamepadMotionEvent"
-                                },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "GamepadMotionEvent",
+                                        "filename": "Event",
+                                        "path": "Core/Input/Gamepad/Motion/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
+                                            "namespace": "Chicane::Input::GamepadMotionEvent"
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -570,17 +562,18 @@
                                     "header": "Includes/Chicane/Core/Input/Keyboard/Button.hpp",
                                     "namespace": "Chicane::Input::KeyboardButton"
                                 },
-                                "children": []
-                            },
-                            {
-                                "title": "KeyboardButtonModifier",
-                                "filename": "ButtonModifier",
-                                "path": "Core/Input/Keyboard/ButtonModifier",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Keyboard/ButtonModifier.hpp",
-                                    "namespace": "Chicane::Input::KeyboardButtonModifier"
-                                },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "KeyboardButtonModifier",
+                                        "filename": "Modifier",
+                                        "path": "Core/Input/Keyboard/Button/Modifier",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Keyboard/Button/Modifier.hpp",
+                                            "namespace": "Chicane::Input::KeyboardButtonModifier"
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             },
                             {
                                 "title": "KeyboardEvent",
@@ -604,6 +597,27 @@
                         },
                         "children": [
                             {
+                                "title": "Motion",
+                                "filename": "Motion",
+                                "path": "Core/Input/Mouse/Motion",
+                                "source": {
+                                    "header": null,
+                                    "namespace": null
+                                },
+                                "children": [
+                                    {
+                                        "title": "MouseMotionEvent",
+                                        "filename": "Event",
+                                        "path": "Core/Input/Mouse/Motion/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Mouse/Motion/Event.hpp",
+                                            "namespace": "Chicane::Input::MouseMotionEvent"
+                                        },
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
                                 "title": "MouseButton",
                                 "filename": "Button",
                                 "path": "Core/Input/Mouse/Button",
@@ -611,27 +625,18 @@
                                     "header": "Includes/Chicane/Core/Input/Mouse/Button.hpp",
                                     "namespace": "Chicane::Input::MouseButton"
                                 },
-                                "children": []
-                            },
-                            {
-                                "title": "MouseButtonEvent",
-                                "filename": "ButtonEvent",
-                                "path": "Core/Input/Mouse/ButtonEvent",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",
-                                    "namespace": "Chicane::Input::MouseButtonEvent"
-                                },
-                                "children": []
-                            },
-                            {
-                                "title": "MouseMotionEvent",
-                                "filename": "MotionEvent",
-                                "path": "Core/Input/Mouse/MotionEvent",
-                                "source": {
-                                    "header": "Includes/Chicane/Core/Input/Mouse/MotionEvent.hpp",
-                                    "namespace": "Chicane::Input::MouseMotionEvent"
-                                },
-                                "children": []
+                                "children": [
+                                    {
+                                        "title": "MouseButtonEvent",
+                                        "filename": "Event",
+                                        "path": "Core/Input/Mouse/Button/Event",
+                                        "source": {
+                                            "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
+                                            "namespace": "Chicane::Input::MouseButtonEvent"
+                                        },
+                                        "children": []
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -703,17 +708,27 @@
                         "filename": "Bounds",
                         "path": "Core/Math/Bounds",
                         "source": {
-                            "header": "Includes/Chicane/Core/Math/Bounds.hpp",
-                            "namespace": "Chicane::Bounds"
+                            "header": null,
+                            "namespace": null
                         },
                         "children": [
                             {
-                                "title": "BoundsPoints",
-                                "filename": "Points",
-                                "path": "Core/Math/Bounds/Points",
+                                "title": "Bounds2D",
+                                "filename": "2D",
+                                "path": "Core/Math/Bounds/2D",
                                 "source": {
-                                    "header": "Includes/Chicane/Core/Math/Bounds/Points.hpp",
-                                    "namespace": "Chicane::BoundsPoints"
+                                    "header": "Includes/Chicane/Core/Math/Bounds/2D.hpp",
+                                    "namespace": "Chicane::Bounds2D"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "Bounds3D",
+                                "filename": "3D",
+                                "path": "Core/Math/Bounds/3D",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/Math/Bounds/3D.hpp",
+                                    "namespace": "Chicane::Bounds3D"
                                 },
                                 "children": []
                             }
@@ -780,6 +795,16 @@
                                 "children": []
                             }
                         ]
+                    },
+                    {
+                        "title": "Rotator",
+                        "filename": "Rotator",
+                        "path": "Core/Math/Rotator",
+                        "source": {
+                            "header": "Includes/Chicane/Core/Math/Rotator.hpp",
+                            "namespace": "Chicane::Rotator"
+                        },
+                        "children": []
                     },
                     {
                         "title": "Transform",
@@ -946,6 +971,27 @@
                 },
                 "children": [
                     {
+                        "title": "Projection",
+                        "filename": "Projection",
+                        "path": "Core/View/Projection",
+                        "source": {
+                            "header": null,
+                            "namespace": null
+                        },
+                        "children": [
+                            {
+                                "title": "ViewProjectionType",
+                                "filename": "Type",
+                                "path": "Core/View/Projection/Type",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/View/Projection/Type.hpp",
+                                    "namespace": "Chicane::ViewProjectionType"
+                                },
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "title": "ViewFrustum",
                         "filename": "Frustum",
                         "path": "Core/View/Frustum",
@@ -1080,16 +1126,6 @@
                         "children": []
                     },
                     {
-                        "title": "Character",
-                        "filename": "Character",
-                        "path": "Grid/Component/Character",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/Character.hpp",
-                            "namespace": "Chicane::Grid::Character"
-                        },
-                        "children": []
-                    },
-                    {
                         "title": "Container",
                         "filename": "Container",
                         "path": "Grid/Component/Container",
@@ -1137,17 +1173,28 @@
                             "header": "Includes/Chicane/Grid/Component/Text.hpp",
                             "namespace": "Chicane::Grid::Text"
                         },
-                        "children": []
-                    },
-                    {
-                        "title": "TextInput",
-                        "filename": "TextInput",
-                        "path": "Grid/Component/TextInput",
-                        "source": {
-                            "header": "Includes/Chicane/Grid/Component/TextInput.hpp",
-                            "namespace": "Chicane::Grid::TextInput"
-                        },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "TextCharacter",
+                                "filename": "Character",
+                                "path": "Grid/Component/Text/Character",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Text/Character.hpp",
+                                    "namespace": "Chicane::Grid::TextCharacter"
+                                },
+                                "children": []
+                            },
+                            {
+                                "title": "TextInput",
+                                "filename": "Input",
+                                "path": "Grid/Component/Text/Input",
+                                "source": {
+                                    "header": "Includes/Chicane/Grid/Component/Text/Input.hpp",
+                                    "namespace": "Chicane::Grid::TextInput"
+                                },
+                                "children": []
+                            }
+                        ]
                     },
                     {
                         "title": "View",
@@ -1222,6 +1269,16 @@
                         "children": []
                     },
                     {
+                        "title": "StyleBackground",
+                        "filename": "Background",
+                        "path": "Grid/Style/Background",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Background.hpp",
+                            "namespace": "Chicane::Grid::StyleBackground"
+                        },
+                        "children": []
+                    },
+                    {
                         "title": "StyleCorners",
                         "filename": "Corners",
                         "path": "Grid/Style/Corners",
@@ -1289,6 +1346,16 @@
                         "source": {
                             "header": "Includes/Chicane/Grid/Style/Position.hpp",
                             "namespace": "Chicane::Grid::StylePosition"
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "StyleProperty",
+                        "filename": "Property",
+                        "path": "Grid/Style/Property",
+                        "source": {
+                            "header": "Includes/Chicane/Grid/Style/Property.hpp",
+                            "namespace": "Chicane::Grid::StyleProperty"
                         },
                         "children": []
                     },
@@ -1944,12 +2011,12 @@
                                         ]
                                     },
                                     {
-                                        "title": "VulkanGraphicsPipelineCreateInfo",
-                                        "filename": "CreateInfo",
-                                        "path": "Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo",
+                                        "title": "VulkanGraphicsPipelineBuilder",
+                                        "filename": "Builder",
+                                        "path": "Renderer/Backend/Vulkan/GraphicsPipeline/Builder",
                                         "source": {
-                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo.hpp",
-                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineCreateInfo"
+                                            "header": "Includes/Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp",
+                                            "namespace": "Chicane::Renderer::VulkanGraphicsPipelineBuilder"
                                         },
                                         "children": []
                                     }
@@ -2361,16 +2428,6 @@
                                 "children": []
                             },
                             {
-                                "title": "CCollision",
-                                "filename": "Collision",
-                                "path": "Runtime/Scene/Component/Collision",
-                                "source": {
-                                    "header": "Includes/Chicane/Runtime/Scene/Component/Collision.hpp",
-                                    "namespace": "Chicane::CCollision"
-                                },
-                                "children": []
-                            },
-                            {
                                 "title": "CLight",
                                 "filename": "Light",
                                 "path": "Runtime/Scene/Component/Light",
@@ -2522,6 +2579,16 @@
                         "source": {
                             "header": "Includes/Chicane/Screech/Sound/Format.hpp",
                             "namespace": "Chicane::Screech::SoundFormat"
+                        },
+                        "children": []
+                    },
+                    {
+                        "title": "SoundSettings",
+                        "filename": "Settings",
+                        "path": "Screech/Sound/Settings",
+                        "source": {
+                            "header": "Includes/Chicane/Screech/Sound/Settings.hpp",
+                            "namespace": "Chicane::Screech::SoundSettings"
                         },
                         "children": []
                     },

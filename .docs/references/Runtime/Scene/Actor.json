@@ -197,9 +197,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Bounds",
+                            "name": "Bounds3D",
                             "suffix": "&",
-                            "path": "Core/Math/Bounds",
+                            "path": "Core/Math/Bounds/3D",
                             "templates": []
                         },
                         "name": "inBounds"

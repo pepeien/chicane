@@ -24,44 +24,6 @@
                     ]
                 },
                 "description": "CHICANE_GRID_COMPONENT_COMPILER_DESCRIPTION"
-            },
-            {
-                "name": "ChildrenObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "Chicane::EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_COMPONENT_CHILDRENOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "ChildrenSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "Chicane::EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "Component",
-                            "suffix": "*",
-                            "path": "Grid/Component",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_COMPONENT_CHILDRENSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -226,6 +188,36 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "hover",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_HOVER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "click",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_CLICK_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "tick",
                 "parameters": [
                     {
@@ -279,34 +271,8 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setTag",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inTag"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETTAG_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
                     "name": "String",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/String",
                     "templates": []
                 },
@@ -322,32 +288,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setId",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETID_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
                     "name": "std::vector",
                     "suffix": "",
                     "path": "",
@@ -372,9 +312,9 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "String",
-                    "suffix": "&",
+                    "suffix": "",
                     "path": "Core/String",
                     "templates": []
                 },
@@ -390,12 +330,12 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
+                    "name": "String",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/String",
                     "templates": []
                 },
-                "name": "setClass",
+                "name": "getAttribute",
                 "parameters": [
                     {
                         "type": {
@@ -405,11 +345,13 @@
                             "path": "Core/String",
                             "templates": []
                         },
-                        "name": "inClass"
+                        "name": "inName"
                     }
                 ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETCLASS_DESCRIPTION"
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETATTRIBUTE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -693,6 +635,16 @@
                             "templates": []
                         },
                         "name": "inId"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "isLocalOnly"
                     }
                 ],
                 "modifiers": [
@@ -1077,193 +1029,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ChildrenSubscription",
-                    "suffix": "",
-                    "path": "Grid/Component",
-                    "templates": []
-                },
-                "name": "watchChildren",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ChildrenSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ChildrenSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ChildrenSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_WATCHCHILDREN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vec2",
-                    "suffix": "&",
-                    "path": "Core/Math/Vec/Vec2",
-                    "templates": []
-                },
-                "name": "getCursor",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_COMPONENT_GETCURSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addCursor",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inCursor"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDCURSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "addCursor",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inY"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_ADDCURSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setCursor",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec2",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec2",
-                            "templates": []
-                        },
-                        "name": "inCursor"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETCURSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setCursor",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inX"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inY"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_COMPONENT_SETCURSOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -1500,18 +1265,159 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
+                    "prefix": "const ",
                     "name": "Vec2",
-                    "suffix": "",
+                    "suffix": "&",
                     "path": "Core/Math/Vec/Vec2",
                     "templates": []
                 },
-                "name": "getCenter",
+                "name": "getCursor",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_COMPONENT_GETCENTER_DESCRIPTION"
+                "description": "CHICANE_GRID_COMPONENT_GETCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inCursor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_ADDCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inCursor"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setCursor",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inX"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inY"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_SETCURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Bounds2D",
+                    "suffix": "&",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "getBounds",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_GETBOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -1755,6 +1661,40 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "onHover",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ONHOVER_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onClick",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_GRID_COMPONENT_ONCLICK_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshPrimitive",
                 "parameters": [],
                 "modifiers": [
@@ -1806,6 +1746,21 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_GRID_COMPONENT_REFRESHPOSITION_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refreshBounds",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_COMPONENT_REFRESHBOUNDS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -1922,6 +1877,54 @@
         ],
         "members": [
             {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "EVENT_KEYWORD",
+                "description": "CHICANE_GRID_COMPONENT_EVENT_KEYWORD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_HOVER_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_ON_HOVER_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "ON_CLICK_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_COMPONENT_ON_CLICK_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "modifiers": [],
                 "type": {
@@ -1933,32 +1936,6 @@
                 },
                 "name": "m_tag",
                 "description": "CHICANE_GRID_COMPONENT_M_TAG_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_id",
-                "description": "CHICANE_GRID_COMPONENT_M_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_class",
-                "description": "CHICANE_GRID_COMPONENT_M_CLASS_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -2051,19 +2028,6 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "ChildrenObservable",
-                    "suffix": "",
-                    "path": "Grid/Component",
-                    "templates": []
-                },
-                "name": "m_childrenObservable",
-                "description": "CHICANE_GRID_COMPONENT_M_CHILDRENOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
                     "name": "Vec2",
                     "suffix": "",
                     "path": "Core/Math/Vec/Vec2",
@@ -2097,6 +2061,32 @@
                 },
                 "name": "m_cursor",
                 "description": "CHICANE_GRID_COMPONENT_M_CURSOR_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Bounds2D",
+                    "suffix": "",
+                    "path": "Core/Math/Bounds/2D",
+                    "templates": []
+                },
+                "name": "m_bounds",
+                "description": "CHICANE_GRID_COMPONENT_M_BOUNDS_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Xml::Attribute",
+                    "suffix": "",
+                    "path": "Core/Xml",
+                    "templates": []
+                },
+                "name": "m_attributes",
+                "description": "CHICANE_GRID_COMPONENT_M_ATTRIBUTES_DESCRIPTION"
             },
             {
                 "accessor": "protected",

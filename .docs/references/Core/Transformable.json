@@ -1514,9 +1514,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Bounds",
+                    "name": "Bounds3D",
                     "suffix": "&",
-                    "path": "Core/Math/Bounds",
+                    "path": "Core/Math/Bounds/3D",
                     "templates": []
                 },
                 "name": "getBounds",
@@ -1541,9 +1541,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Bounds",
+                            "name": "Bounds3D",
                             "suffix": "&",
-                            "path": "Core/Math/Bounds",
+                            "path": "Core/Math/Bounds/3D",
                             "templates": []
                         },
                         "name": "inBounds"
@@ -1567,9 +1567,9 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Bounds",
+                            "name": "Bounds3D",
                             "suffix": "&",
-                            "path": "Core/Math/Bounds",
+                            "path": "Core/Math/Bounds/3D",
                             "templates": []
                         },
                         "name": "inBounds"
@@ -1664,9 +1664,9 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Bounds",
+                    "name": "Bounds3D",
                     "suffix": "",
-                    "path": "Core/Math/Bounds",
+                    "path": "Core/Math/Bounds/3D",
                     "templates": []
                 },
                 "name": "m_bounds",

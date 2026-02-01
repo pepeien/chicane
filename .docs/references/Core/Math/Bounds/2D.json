@@ -1,0 +1,143 @@
+{
+    "title": "Bounds2D",
+    "filename": "2D",
+    "path": "Core/Math/Bounds/2D",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Bounds/2D.hpp",
+        "namespace": "Chicane::Bounds2D",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds2D",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS2D_BOUNDS2D_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "contains",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec2",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec2",
+                            "templates": []
+                        },
+                        "name": "inPoint"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS2D_CONTAINS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "overlaps",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds2D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/2D",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS2D_OVERLAPS_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "top",
+                "description": "CHICANE_BOUNDS2D_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "bottom",
+                "description": "CHICANE_BOUNDS2D_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "left",
+                "description": "CHICANE_BOUNDS2D_LEFT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "right",
+                "description": "CHICANE_BOUNDS2D_RIGHT_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOUNDS2D_DESCRIPTION"
+    },
+    "children": []
+}

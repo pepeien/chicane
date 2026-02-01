@@ -36,53 +36,7 @@
             }
         ],
         "destructors": [],
-        "functions": [
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onRefresh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_CONTAINER_ONREFRESH_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshPrimitive",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_CONTAINER_REFRESHPRIMITIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refreshColor",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_CONTAINER_REFRESHCOLOR_DESCRIPTION"
-            }
-        ],
+        "functions": [],
         "members": [
             {
                 "accessor": "public",
@@ -99,32 +53,6 @@
                 },
                 "name": "TAG_ID",
                 "description": "CHICANE_GRID_CONTAINER_TAG_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bCanUpdate",
-                "description": "CHICANE_GRID_CONTAINER_M_BCANUPDATE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Color::Rgba",
-                    "suffix": "",
-                    "path": "Core/Color",
-                    "templates": []
-                },
-                "name": "m_color",
-                "description": "CHICANE_GRID_CONTAINER_M_COLOR_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_CONTAINER_DESCRIPTION"

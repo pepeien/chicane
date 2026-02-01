@@ -19,18 +19,7 @@
                     "templates": []
                 },
                 "name": "VulkanGraphicsPipeline",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "VulkanGraphicsPipelineCreateInfo",
-                            "suffix": "&",
-                            "path": "Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo",
-                            "templates": []
-                        },
-                        "name": "inCreateInfo"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_VULKANGRAPHICSPIPELINE_DESCRIPTION"
             }
@@ -313,7 +302,18 @@
                     "templates": []
                 },
                 "name": "createBlendAttachmentState",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "bool",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "bInIsEnabled"
+                    }
+                ],
                 "modifiers": [
                     "static"
                 ],
@@ -540,6 +540,70 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "vk::SubpassDependency",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inSubpassDepedencies"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "std::vector",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "vk::SubpassDescription",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inSubpasses"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "vk::Device",
+                            "suffix": "&",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inLogicalDevice"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_CREATERENDEPASS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "init",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "vk::Device",
                             "suffix": "&",
                             "path": "",
@@ -549,29 +613,17 @@
                     },
                     {
                         "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
+                            "prefix": "const ",
+                            "name": "vk::GraphicsPipelineCreateInfo",
+                            "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "bInHasColor"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "bool",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "bInHasDepth"
+                        "name": "inCreateInfo"
                     }
                 ],
-                "modifiers": [
-                    "static"
-                ],
-                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_CREATERENDEPASS_DESCRIPTION"
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANGRAPHICSPIPELINE_INIT_DESCRIPTION"
             },
             {
                 "accessor": "public",

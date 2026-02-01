@@ -43,8 +43,8 @@
         ],
         "functions": [
             {
-                "accessor": "public",
-                "type": "standard",
+                "accessor": "protected",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -52,7 +52,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "load",
+                "name": "onLoad",
                 "parameters": [
                     {
                         "type": {
@@ -72,147 +72,11 @@
                             "path": "Box/Texture",
                             "templates": []
                         },
-                        "name": "inAsset"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Image::Raw",
-                    "suffix": "&",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "getInstance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_GETINSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Image",
-                    "suffix": "&",
-                    "path": "Core/Image",
-                    "templates": []
-                },
-                "name": "getData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getIndex",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_GETINDEX_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onActivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_ONACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeactivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_TEXTUREMANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_TEXTUREMANAGER_ONLOAD_DESCRIPTION"
             }
         ],
         "members": [],

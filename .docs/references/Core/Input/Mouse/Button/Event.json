@@ -1,13 +1,55 @@
 {
     "title": "MouseButtonEvent",
-    "filename": "ButtonEvent",
-    "path": "Core/Input/Mouse/ButtonEvent",
+    "filename": "Event",
+    "path": "Core/Input/Mouse/Button/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Input/Mouse/ButtonEvent.hpp",
+        "header": "Includes/Chicane/Core/Input/Mouse/Button/Event.hpp",
         "namespace": "Chicane::Input::MouseButtonEvent",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MouseButtonEvent",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_MOUSEBUTTONEVENT_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "MouseButtonEvent",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INPUT_MOUSEBUTTONEVENT_MOUSEBUTTONEVENT_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [],
         "members": [

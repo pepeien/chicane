@@ -1,10 +1,10 @@
 {
-    "title": "Character",
+    "title": "TextCharacter",
     "filename": "Character",
-    "path": "Grid/Component/Character",
+    "path": "Grid/Component/Text/Character",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/Character.hpp",
-        "namespace": "Chicane::Grid::Character",
+        "header": "Includes/Chicane/Grid/Component/Text/Character.hpp",
+        "namespace": "Chicane::Grid::TextCharacter",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,10 +18,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Character",
+                "name": "TextCharacter",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_CHARACTER_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_TEXTCHARACTER_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -41,7 +41,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_CHARACTER_ISDRAWABLE_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_ISDRAWABLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -56,7 +56,7 @@
                 "name": "disable",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_DISABLE_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_DISABLE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -73,7 +73,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_CHARACTER_HASCHARACTER_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_HASCHARACTER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -90,7 +90,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_CHARACTER_GETCHARACTER_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_GETCHARACTER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -116,41 +116,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_SETCHARACTER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasFont",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_CHARACTER_HASFONT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Box::FontParsed",
-                    "suffix": "&",
-                    "path": "Box/Font/Parsed",
-                    "templates": []
-                },
-                "name": "getFont",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_CHARACTER_GETFONT_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_SETCHARACTER_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -167,7 +133,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_CHARACTER_HASGLYPH_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_HASGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -184,7 +150,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_CHARACTER_GETGLYPH_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_GETGLYPH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -199,7 +165,7 @@
                 "name": "refreshPrimitive",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_REFRESHPRIMITIVE_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHPRIMITIVE_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -214,7 +180,7 @@
                 "name": "onRefresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_ONREFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_ONREFRESH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -229,7 +195,7 @@
                 "name": "refreshFont",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_CHARACTER_REFRESHFONT_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_REFRESHFONT_DESCRIPTION"
             }
         ],
         "members": [
@@ -247,20 +213,7 @@
                     "templates": []
                 },
                 "name": "TAG_ID",
-                "description": "CHICANE_GRID_CHARACTER_TAG_ID_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "m_bCanUpdate",
-                "description": "CHICANE_GRID_CHARACTER_M_BCANUPDATE_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_TAG_ID_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -273,10 +226,23 @@
                     "templates": []
                 },
                 "name": "m_character",
-                "description": "CHICANE_GRID_CHARACTER_M_CHARACTER_DESCRIPTION"
+                "description": "CHICANE_GRID_TEXTCHARACTER_M_CHARACTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Box::FontGlyph",
+                    "suffix": "",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "m_glyph",
+                "description": "CHICANE_GRID_TEXTCHARACTER_M_GLYPH_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_CHARACTER_DESCRIPTION"
+        "description": "CHICANE_GRID_TEXTCHARACTER_DESCRIPTION"
     },
     "children": []
 }

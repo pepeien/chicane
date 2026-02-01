@@ -28,7 +28,7 @@
                             "path": "",
                             "templates": []
                         },
-                        "name": "inUpdateRate"
+                        "name": "inUpdateRateInMs"
                     }
                 ],
                 "modifiers": [],
@@ -163,8 +163,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "m_cooldown",
-                "description": "CHICANE_RECORDER_M_COOLDOWN_DESCRIPTION"
+                "name": "m_cooldownInMs",
+                "description": "CHICANE_RECORDER_M_COOLDOWNINMS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RECORDER_DESCRIPTION"

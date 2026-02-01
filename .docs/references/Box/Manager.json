@@ -7,6 +7,32 @@
         "namespace": "Chicane::Box::Manager",
         "types": [
             {
+                "name": "Instances",
+                "type": {
+                    "prefix": "",
+                    "name": "std::map",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "String",
+                            "suffix": "",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "Instance",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_BOX_MANAGER_INSTANCES_DESCRIPTION"
+            },
+            {
                 "name": "InstancesObservable",
                 "type": {
                     "prefix": "",
@@ -16,9 +42,9 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "I",
+                            "name": "Instances",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Manager",
                             "templates": []
                         }
                     ]
@@ -35,52 +61,14 @@
                     "templates": [
                         {
                             "prefix": "",
-                            "name": "I",
+                            "name": "Instances",
                             "suffix": "",
-                            "path": "",
+                            "path": "Box/Manager",
                             "templates": []
                         }
                     ]
                 },
                 "description": "CHICANE_BOX_MANAGER_INSTANCESSUBSCRIPTION_DESCRIPTION"
-            },
-            {
-                "name": "DatumObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "E",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_MANAGER_DATUMOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "DatumSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "E",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_BOX_MANAGER_DATUMSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -173,12 +161,12 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
+                    "name": "Instance",
                     "suffix": "",
                     "path": "",
                     "templates": []
                 },
-                "name": "isAllocated",
+                "name": "get",
                 "parameters": [
                     {
                         "type": {
@@ -195,248 +183,7 @@
                     "inline",
                     "const"
                 ],
-                "description": "CHICANE_BOX_MANAGER_ISALLOCATED_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isActive",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ISACTIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "isUsing",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ISUSING_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "std::vector",
-                    "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getActiveIds",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETACTIVEIDS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "std::vector",
-                    "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getUsedIds",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETUSEDIDS_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getActiveCount",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETACTIVECOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getUsedCount",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETUSEDCOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "getUseCount",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETUSECOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "std::map",
-                    "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "I",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getInstances",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETINSTANCES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "std::map",
-                    "suffix": "&",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "E",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "getDatum",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_BOX_MANAGER_GETDATUM_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_GET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -463,12 +210,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "I",
+                            "name": "Data",
                             "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inInstance"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [
@@ -481,134 +228,12 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "allocate",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    },
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "E",
-                            "suffix": "&",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ALLOCATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "deallocate",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_DEALLOCATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "activate",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ACTIVATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "deactivate",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_DEACTIVATE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "InstancesSubscription",
                     "suffix": "",
                     "path": "Box/Manager",
                     "templates": []
                 },
-                "name": "watchInstances",
+                "name": "watch",
                 "parameters": [
                     {
                         "type": {
@@ -644,55 +269,7 @@
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_MANAGER_WATCHINSTANCES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "DatumSubscription",
-                    "suffix": "",
-                    "path": "Box/Manager",
-                    "templates": []
-                },
-                "name": "watchDatum",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "typename DatumSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "typename DatumSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "typename DatumSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inComplete"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_WATCHDATUM_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_WATCH_DESCRIPTION"
             },
             {
                 "accessor": "protected",
@@ -719,12 +296,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "I",
+                            "name": "Data",
                             "suffix": "&",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inInstance"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [
@@ -734,7 +311,7 @@
             },
             {
                 "accessor": "protected",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -742,7 +319,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "onAllocation",
+                "name": "add",
                 "parameters": [
                     {
                         "type": {
@@ -756,103 +333,19 @@
                     },
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "E",
-                            "suffix": "&",
+                            "prefix": "",
+                            "name": "Instance",
+                            "suffix": "",
                             "path": "",
                             "templates": []
                         },
-                        "name": "inData"
+                        "name": "inInstance"
                     }
                 ],
                 "modifiers": [
                     "inline"
                 ],
-                "description": "CHICANE_BOX_MANAGER_ONALLOCATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeallocation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ONDEALLOCATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onActivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ONACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeactivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_BOX_MANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_MANAGER_ADD_DESCRIPTION"
             }
         ],
         "members": [
@@ -861,25 +354,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::map",
+                    "name": "Instances",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "I",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Box/Manager",
+                    "templates": []
                 },
                 "name": "m_instances",
                 "description": "CHICANE_BOX_MANAGER_M_INSTANCES_DESCRIPTION"
@@ -896,89 +374,6 @@
                 },
                 "name": "m_instancesObservable",
                 "description": "CHICANE_BOX_MANAGER_M_INSTANCESOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::map",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        {
-                            "prefix": "",
-                            "name": "E",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_datum",
-                "description": "CHICANE_BOX_MANAGER_M_DATUM_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "DatumObservable",
-                    "suffix": "",
-                    "path": "Box/Manager",
-                    "templates": []
-                },
-                "name": "m_datumObservable",
-                "description": "CHICANE_BOX_MANAGER_M_DATUMOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_activeIds",
-                "description": "CHICANE_BOX_MANAGER_M_ACTIVEIDS_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "String",
-                            "suffix": "",
-                            "path": "Core/String",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "m_usedIds",
-                "description": "CHICANE_BOX_MANAGER_M_USEDIDS_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_MANAGER_DESCRIPTION"

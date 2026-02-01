@@ -7,9 +7,110 @@
         "namespace": "Chicane::Input::DeviceEvent",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "DeviceEvent",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_INPUT_DEVICEEVENT_DEVICEEVENT_DESCRIPTION"
+            }
+        ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DeviceEvent",
+                    "suffix": "",
+                    "path": "Core/Input/Device/Event",
+                    "templates": []
+                },
+                "name": "fromMouse",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_INPUT_DEVICEEVENT_FROMMOUSE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DeviceEvent",
+                    "suffix": "",
+                    "path": "Core/Input/Device/Event",
+                    "templates": []
+                },
+                "name": "fromKeyboard",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_INPUT_DEVICEEVENT_FROMKEYBOARD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "DeviceEvent",
+                    "suffix": "",
+                    "path": "Core/Input/Device/Event",
+                    "templates": []
+                },
+                "name": "fromGamepad",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "void",
+                            "suffix": "*",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inData"
+                    }
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "description": "CHICANE_INPUT_DEVICEEVENT_FROMGAMEPAD_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

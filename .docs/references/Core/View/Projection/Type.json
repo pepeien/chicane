@@ -1,0 +1,40 @@
+{
+    "title": "ViewProjectionType",
+    "filename": "Type",
+    "path": "Core/View/Projection/Type",
+    "source": {
+        "header": "Includes/Chicane/Core/View/Projection/Type.hpp",
+        "namespace": "Chicane::ViewProjectionType",
+        "types": [],
+        "enums": [
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Orthographic",
+                "description": "CHICANE_VIEWPROJECTIONTYPE_ORTHOGRAPHIC_DESCRIPTION"
+            },
+            {
+                "type": {
+                    "prefix": "",
+                    "name": "std::uint8_t",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Perspective",
+                "description": "CHICANE_VIEWPROJECTIONTYPE_PERSPECTIVE_DESCRIPTION"
+            }
+        ],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [],
+        "description": "CHICANE_VIEWPROJECTIONTYPE_DESCRIPTION"
+    },
+    "children": []
+}

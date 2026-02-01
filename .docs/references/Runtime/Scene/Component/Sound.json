@@ -97,19 +97,6 @@
                 },
                 "name": "m_sound",
                 "description": "CHICANE_CSOUND_M_SOUND_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Box::SoundManager",
-                    "suffix": "*",
-                    "path": "Box/Sound/Manager",
-                    "templates": []
-                },
-                "name": "m_manager",
-                "description": "CHICANE_CSOUND_M_MANAGER_DESCRIPTION"
             }
         ],
         "description": "CHICANE_CSOUND_DESCRIPTION"

@@ -15,9 +15,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "ModelExtracted",
+                    "name": "ModelParsed",
                     "suffix": "",
-                    "path": "Box/Model/Extracted",
+                    "path": "Box/Model/Parsed",
                     "templates": []
                 },
                 "name": "parse",

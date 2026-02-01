@@ -1,13 +1,32 @@
 {
-    "title": "StyleFont",
-    "filename": "Font",
-    "path": "Grid/Style/Font",
+    "title": "StyleBackground",
+    "filename": "Background",
+    "path": "Grid/Style/Background",
     "source": {
-        "header": "Includes/Chicane/Grid/Style/Font.hpp",
-        "namespace": "Chicane::Grid::StyleFont",
+        "header": "Includes/Chicane/Grid/Style/Background.hpp",
+        "namespace": "Chicane::Grid::StyleBackground",
         "types": [
             {
-                "name": "FamilyParser",
+                "name": "ColorParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEBACKGROUND_COLORPARSER_DESCRIPTION"
+            },
+            {
+                "name": "ImageParser",
                 "type": {
                     "prefix": "",
                     "name": "StyleProperty",
@@ -23,26 +42,7 @@
                         }
                     ]
                 },
-                "description": "CHICANE_GRID_STYLEFONT_FAMILYPARSER_DESCRIPTION"
-            },
-            {
-                "name": "SizeParser",
-                "type": {
-                    "prefix": "",
-                    "name": "StyleProperty",
-                    "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_GRID_STYLEFONT_SIZEPARSER_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBACKGROUND_IMAGEPARSER_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -57,10 +57,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "StyleFont",
+                "name": "StyleBackground",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLEFONT_STYLEFONT_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBACKGROUND_STYLEBACKGROUND_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -78,7 +78,7 @@
                 "name": "refresh",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLEFONT_REFRESH_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBACKGROUND_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -104,7 +104,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLEFONT_SETPROPERTIES_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBACKGROUND_SETPROPERTIES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -121,29 +121,50 @@
                     {
                         "type": {
                             "prefix": "",
-                            "name": "FamilyParser",
+                            "name": "ColorParser",
                             "suffix": "",
-                            "path": "Grid/Style/Font",
+                            "path": "Grid/Style/Background",
                             "templates": []
                         },
-                        "name": "inFamilyParser"
+                        "name": "inColorParser"
                     },
                     {
                         "type": {
                             "prefix": "",
-                            "name": "SizeParser",
+                            "name": "ImageParser",
                             "suffix": "",
-                            "path": "Grid/Style/Font",
+                            "path": "Grid/Style/Background",
                             "templates": []
                         },
-                        "name": "inSizeParser"
+                        "name": "inImageParser"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLEFONT_PARSEWITH_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLEBACKGROUND_PARSEWITH_DESCRIPTION"
             }
         ],
         "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "color",
+                "description": "CHICANE_GRID_STYLEBACKGROUND_COLOR_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "modifiers": [],
@@ -162,32 +183,11 @@
                         }
                     ]
                 },
-                "name": "family",
-                "description": "CHICANE_GRID_STYLEFONT_FAMILY_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleProperty",
-                    "suffix": "",
-                    "path": "Grid/Style/Property",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        }
-                    ]
-                },
-                "name": "size",
-                "description": "CHICANE_GRID_STYLEFONT_SIZE_DESCRIPTION"
+                "name": "image",
+                "description": "CHICANE_GRID_STYLEBACKGROUND_IMAGE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_GRID_STYLEFONT_DESCRIPTION"
+        "description": "CHICANE_GRID_STYLEBACKGROUND_DESCRIPTION"
     },
     "children": []
 }

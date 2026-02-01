@@ -1,0 +1,624 @@
+{
+    "title": "Bounds3D",
+    "filename": "3D",
+    "path": "Core/Math/Bounds/3D",
+    "source": {
+        "header": "Includes/Chicane/Core/Math/Bounds/3D.hpp",
+        "namespace": "Chicane::Bounds3D",
+        "types": [],
+        "enums": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds3D",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::List",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inVertices"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vertex::Indices",
+                            "suffix": "&",
+                            "path": "Core/Math/Vertex",
+                            "templates": []
+                        },
+                        "name": "inIndices"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_BOUNDS3D_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Bounds3D",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_BOUNDS3D_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "set",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_SET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "add",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_ADD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "update",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "SpatialTransform",
+                            "suffix": "&",
+                            "path": "Core/Math/Transform/Spatial",
+                            "templates": []
+                        },
+                        "name": "inTransform"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_UPDATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intersects",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inOther"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_INTERSECTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "bool",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "intersects",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inPoint"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_INTERSECTS_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getOverlap",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Bounds3D",
+                            "suffix": "&",
+                            "path": "Core/Math/Bounds/3D",
+                            "templates": []
+                        },
+                        "name": "inBounds"
+                    }
+                ],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETOVERLAP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getMin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBaseMin",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBASEMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getMax",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBaseMax",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBASEMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETCENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBaseCenter",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBASECENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getTop",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETTOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBaseTop",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBASETOP_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBottom",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getBaseBottom",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETBASEBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "std::vector",
+                    "suffix": "&",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec3",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "getVertices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETVERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vertex::Indices",
+                    "suffix": "&",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "getIndices",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_BOUNDS3D_GETINDICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_BOUNDS3D_REFRESH_DESCRIPTION"
+            }
+        ],
+        "members": [
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_min",
+                "description": "CHICANE_BOUNDS3D_M_MIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_baseMin",
+                "description": "CHICANE_BOUNDS3D_M_BASEMIN_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_max",
+                "description": "CHICANE_BOUNDS3D_M_MAX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_baseMax",
+                "description": "CHICANE_BOUNDS3D_M_BASEMAX_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_top",
+                "description": "CHICANE_BOUNDS3D_M_TOP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_baseTop",
+                "description": "CHICANE_BOUNDS3D_M_BASETOP_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_center",
+                "description": "CHICANE_BOUNDS3D_M_CENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_baseCenter",
+                "description": "CHICANE_BOUNDS3D_M_BASECENTER_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_bottom",
+                "description": "CHICANE_BOUNDS3D_M_BOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_baseBottom",
+                "description": "CHICANE_BOUNDS3D_M_BASEBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::vector",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec3",
+                            "suffix": "",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "m_vertices",
+                "description": "CHICANE_BOUNDS3D_M_VERTICES_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vertex::Indices",
+                    "suffix": "",
+                    "path": "Core/Math/Vertex",
+                    "templates": []
+                },
+                "name": "m_indices",
+                "description": "CHICANE_BOUNDS3D_M_INDICES_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_BOUNDS3D_DESCRIPTION"
+    },
+    "children": []
+}

@@ -1,10 +1,10 @@
 {
-    "title": "GamepadMotionEvent",
-    "filename": "MotionEvent",
-    "path": "Core/Input/Gamepad/MotionEvent",
+    "title": "SoundSettings",
+    "filename": "Settings",
+    "path": "Screech/Sound/Settings",
     "source": {
-        "header": "Includes/Chicane/Core/Input/Gamepad/MotionEvent.hpp",
-        "namespace": "Chicane::Input::GamepadMotionEvent",
+        "header": "Includes/Chicane/Screech/Sound/Settings.hpp",
+        "namespace": "Chicane::Screech::SoundSettings",
         "types": [],
         "enums": [],
         "constructors": [],
@@ -16,13 +16,13 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "GamepadAxis",
+                    "name": "float",
                     "suffix": "",
-                    "path": "Core/Input/Gamepad/Axis",
+                    "path": "",
                     "templates": []
                 },
-                "name": "axis",
-                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_AXIS_DESCRIPTION"
+                "name": "volume",
+                "description": "CHICANE_SCREECH_SOUNDSETTINGS_VOLUME_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -34,11 +34,11 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "value",
-                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_VALUE_DESCRIPTION"
+                "name": "speed",
+                "description": "CHICANE_SCREECH_SOUNDSETTINGS_SPEED_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_DESCRIPTION"
+        "description": "CHICANE_SCREECH_SOUNDSETTINGS_DESCRIPTION"
     },
     "children": []
 }

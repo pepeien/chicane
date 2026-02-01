@@ -71,32 +71,6 @@
                 "parameters": [
                     {
                         "type": {
-                            "prefix": "const ",
-                            "name": "DrawTexture::List",
-                            "suffix": "&",
-                            "path": "Renderer/Draw/Texture",
-                            "templates": []
-                        },
-                        "name": "inResources"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_ONLOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onLoad",
-                "parameters": [
-                    {
-                        "type": {
                             "prefix": "",
                             "name": "DrawPolyType",
                             "suffix": "",
@@ -144,62 +118,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENE_ONSETUP_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "buildTextureDescriptor",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_BUILDTEXTUREDESCRIPTOR_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "buildTextureData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "DrawTexture::List",
-                            "suffix": "&",
-                            "path": "Renderer/Draw/Texture",
-                            "templates": []
-                        },
-                        "name": "inTextures"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_BUILDTEXTUREDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "destroyTextureData",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENE_DESTROYTEXTUREDATA_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -297,51 +215,24 @@
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANLSCENE_DESTROYMODELDATA_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "buildLayers",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_RENDERER_VULKANLSCENE_BUILDLAYERS_DESCRIPTION"
             }
         ],
         "members": [
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "VulkanDescriptorBundle",
-                    "suffix": "",
-                    "path": "Renderer/Backend/Vulkan/Descriptor/Bundle",
-                    "templates": []
-                },
-                "name": "textureDescriptor",
-                "description": "CHICANE_RENDERER_VULKANLSCENE_TEXTUREDESCRIPTOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::vector",
-                    "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "std::unique_ptr",
-                            "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "VulkanTexture",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "name": "textures",
-                "description": "CHICANE_RENDERER_VULKANLSCENE_TEXTURES_DESCRIPTION"
-            },
             {
                 "accessor": "public",
                 "modifiers": [],

@@ -1,10 +1,10 @@
 {
-    "title": "KeyboardEvent",
+    "title": "GamepadMotionEvent",
     "filename": "Event",
-    "path": "Core/Input/Keyboard/Event",
+    "path": "Core/Input/Gamepad/Motion/Event",
     "source": {
-        "header": "Includes/Chicane/Core/Input/Keyboard/Event.hpp",
-        "namespace": "Chicane::Input::KeyboardEvent",
+        "header": "Includes/Chicane/Core/Input/Gamepad/Motion/Event.hpp",
+        "namespace": "Chicane::Input::GamepadMotionEvent",
         "types": [],
         "enums": [],
         "constructors": [
@@ -18,7 +18,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "KeyboardEvent",
+                "name": "GamepadMotionEvent",
                 "parameters": [
                     {
                         "type": {
@@ -32,7 +32,7 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_INPUT_KEYBOARDEVENT_KEYBOARDEVENT_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_GAMEPADMOTIONEVENT_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -44,10 +44,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "KeyboardEvent",
+                "name": "GamepadMotionEvent",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_INPUT_KEYBOARDEVENT_KEYBOARDEVENT_DESCRIPTION"
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_GAMEPADMOTIONEVENT_DESCRIPTION"
             }
         ],
         "destructors": [],
@@ -58,42 +58,29 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "KeyboardButton",
+                    "name": "GamepadAxis",
                     "suffix": "",
-                    "path": "Core/Input/Keyboard/Button",
+                    "path": "Core/Input/Gamepad/Axis",
                     "templates": []
                 },
-                "name": "button",
-                "description": "CHICANE_INPUT_KEYBOARDEVENT_BUTTON_DESCRIPTION"
+                "name": "axis",
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_AXIS_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "KeyboardButtonModifier",
+                    "name": "float",
                     "suffix": "",
-                    "path": "Core/Input/Keyboard/Button/Modifier",
+                    "path": "",
                     "templates": []
                 },
-                "name": "modifier",
-                "description": "CHICANE_INPUT_KEYBOARDEVENT_MODIFIER_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Status",
-                    "suffix": "",
-                    "path": "Core/Input/Status",
-                    "templates": []
-                },
-                "name": "status",
-                "description": "CHICANE_INPUT_KEYBOARDEVENT_STATUS_DESCRIPTION"
+                "name": "value",
+                "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_VALUE_DESCRIPTION"
             }
         ],
-        "description": "CHICANE_INPUT_KEYBOARDEVENT_DESCRIPTION"
+        "description": "CHICANE_INPUT_GAMEPADMOTIONEVENT_DESCRIPTION"
     },
     "children": []
 }

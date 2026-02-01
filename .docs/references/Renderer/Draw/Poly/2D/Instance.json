@@ -106,8 +106,47 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "_padding",
-                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING_DESCRIPTION"
+                "name": "_padding0",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING0_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec4",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec4",
+                    "templates": []
+                },
+                "name": "color",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Draw::Id",
+                    "suffix": "",
+                    "path": "Renderer/Draw",
+                    "templates": []
+                },
+                "name": "texture",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_TEXTURE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "_padding1",
+                "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE__PADDING1_DESCRIPTION"
             }
         ],
         "description": "CHICANE_RENDERER_DRAWPOLY2DINSTANCE_DESCRIPTION"

@@ -19,7 +19,50 @@
                     "templates": []
                 },
                 "name": "StyleCorners",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLECORNERS_STYLECORNERS_DESCRIPTION"
+            }
+        ],
+        "destructors": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLECORNERS_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperties",
                 "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleSource::Map",
+                            "suffix": "&",
+                            "path": "Grid/Style/Source",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    },
                     {
                         "type": {
                             "prefix": "const ",
@@ -72,11 +115,49 @@
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_STYLECORNERS_DESCRIPTION"
-            }
-        ],
-        "destructors": [],
-        "functions": [
+                "description": "CHICANE_GRID_STYLECORNERS_SETPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "std::function",
+                            "suffix": "",
+                            "path": "",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "float(const String",
+                                    "suffix": "&",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "StyleDirection)",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        },
+                        "name": "inParser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLECORNERS_PARSEWITH_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -102,57 +183,6 @@
                 ],
                 "modifiers": [],
                 "description": "CHICANE_GRID_STYLECORNERS_SETALL_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "refresh",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "StyleSource::Map",
-                            "suffix": "&",
-                            "path": "Grid/Style/Source",
-                            "templates": []
-                        },
-                        "name": "inSource"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "std::function",
-                            "suffix": "",
-                            "path": "",
-                            "templates": [
-                                {
-                                    "prefix": "",
-                                    "name": "float(const String",
-                                    "suffix": "&",
-                                    "path": "",
-                                    "templates": []
-                                },
-                                {
-                                    "prefix": "",
-                                    "name": "StyleDirection)",
-                                    "suffix": "",
-                                    "path": "",
-                                    "templates": []
-                                }
-                            ]
-                        },
-                        "name": "inCalculator"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_GRID_STYLECORNERS_REFRESH_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -191,6 +221,32 @@
                     "inline"
                 ],
                 "description": "CHICANE_GRID_STYLECORNERS_OPERATOR==_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setOnelinerAttribute",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLECORNERS_SETONELINERATTRIBUTE_DESCRIPTION"
             }
         ],
         "members": [
@@ -199,10 +255,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "top",
                 "description": "CHICANE_GRID_STYLECORNERS_TOP_DESCRIPTION"
@@ -212,10 +276,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "bottom",
                 "description": "CHICANE_GRID_STYLECORNERS_BOTTOM_DESCRIPTION"
@@ -225,10 +297,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "left",
                 "description": "CHICANE_GRID_STYLECORNERS_LEFT_DESCRIPTION"
@@ -238,78 +318,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "right",
                 "description": "CHICANE_GRID_STYLECORNERS_RIGHT_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_onelineAttributeName",
-                "description": "CHICANE_GRID_STYLECORNERS_M_ONELINEATTRIBUTENAME_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_topAttributeName",
-                "description": "CHICANE_GRID_STYLECORNERS_M_TOPATTRIBUTENAME_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_bottomAttributeName",
-                "description": "CHICANE_GRID_STYLECORNERS_M_BOTTOMATTRIBUTENAME_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_leftAttributeName",
-                "description": "CHICANE_GRID_STYLECORNERS_M_LEFTATTRIBUTENAME_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "String",
-                    "suffix": "",
-                    "path": "Core/String",
-                    "templates": []
-                },
-                "name": "m_rightAttributeName",
-                "description": "CHICANE_GRID_STYLECORNERS_M_RIGHTATTRIBUTENAME_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_STYLECORNERS_DESCRIPTION"

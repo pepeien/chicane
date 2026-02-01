@@ -1,9 +1,9 @@
 {
     "title": "TextInput",
-    "filename": "TextInput",
-    "path": "Grid/Component/TextInput",
+    "filename": "Input",
+    "path": "Grid/Component/Text/Input",
     "source": {
-        "header": "Includes/Chicane/Grid/Component/TextInput.hpp",
+        "header": "Includes/Chicane/Grid/Component/Text/Input.hpp",
         "namespace": "Chicane::Grid::TextInput",
         "types": [],
         "enums": [],
@@ -103,22 +103,6 @@
                 },
                 "name": "ON_INPUT_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_TEXTINPUT_ON_INPUT_ATTRIBUTE_NAME_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "char",
-                    "suffix": "*",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "ON_INPUT_EVENT_KEYWORD",
-                "description": "CHICANE_GRID_TEXTINPUT_ON_INPUT_EVENT_KEYWORD_DESCRIPTION"
             }
         ],
         "description": "CHICANE_GRID_TEXTINPUT_DESCRIPTION"

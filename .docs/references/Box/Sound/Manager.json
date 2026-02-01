@@ -27,7 +27,7 @@
         "destructors": [
             {
                 "accessor": "public",
-                "type": "virtual",
+                "type": "standard",
                 "return": {
                     "prefix": "",
                     "name": "",
@@ -43,8 +43,8 @@
         ],
         "functions": [
             {
-                "accessor": "public",
-                "type": "standard",
+                "accessor": "protected",
+                "type": "override",
                 "return": {
                     "prefix": "",
                     "name": "void",
@@ -52,8 +52,18 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "load",
+                "name": "onLoad",
                 "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "String",
+                            "suffix": "&",
+                            "path": "Core/String",
+                            "templates": []
+                        },
+                        "name": "inId"
+                    },
                     {
                         "type": {
                             "prefix": "const ",
@@ -62,119 +72,11 @@
                             "path": "Box/Sound",
                             "templates": []
                         },
-                        "name": "inAsset"
+                        "name": "inData"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_BOX_SOUNDMANAGER_LOAD_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Sound::Raw",
-                    "suffix": "&",
-                    "path": "Box/Sound",
-                    "templates": []
-                },
-                "name": "getInstance",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_SOUNDMANAGER_GETINSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Sound::Raw",
-                    "suffix": "&",
-                    "path": "Box/Sound",
-                    "templates": []
-                },
-                "name": "getData",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_BOX_SOUNDMANAGER_GETDATA_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onActivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUNDMANAGER_ONACTIVATION_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "override",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onDeactivation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "String",
-                            "suffix": "&",
-                            "path": "Core/String",
-                            "templates": []
-                        },
-                        "name": "inId"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_BOX_SOUNDMANAGER_ONDEACTIVATION_DESCRIPTION"
+                "description": "CHICANE_BOX_SOUNDMANAGER_ONLOAD_DESCRIPTION"
             }
         ],
         "members": [],

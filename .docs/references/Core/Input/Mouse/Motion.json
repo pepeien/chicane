@@ -1,7 +1,7 @@
 {
-    "title": "Bounds",
-    "filename": "Bounds",
-    "path": "Core/Math/Bounds",
+    "title": "Motion",
+    "filename": "Motion",
+    "path": "Core/Input/Mouse/Motion",
     "source": {
         "header": null,
         "namespace": null,

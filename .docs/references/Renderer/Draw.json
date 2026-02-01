@@ -10,7 +10,7 @@
                 "name": "Id",
                 "type": {
                     "prefix": "",
-                    "name": "int",
+                    "name": "std::int32_t",
                     "suffix": "",
                     "path": "",
                     "templates": []

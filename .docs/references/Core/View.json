@@ -29,7 +29,23 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "flipY",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_VIEW_FLIPY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
@@ -54,8 +70,8 @@
                     "path": "Core/Math/Mat/Mat4",
                     "templates": []
                 },
-                "name": "projection",
-                "description": "CHICANE_VIEW_PROJECTION_DESCRIPTION"
+                "name": "view",
+                "description": "CHICANE_VIEW_VIEW_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -67,8 +83,8 @@
                     "path": "Core/Math/Mat/Mat4",
                     "templates": []
                 },
-                "name": "view",
-                "description": "CHICANE_VIEW_VIEW_DESCRIPTION"
+                "name": "projection",
+                "description": "CHICANE_VIEW_PROJECTION_DESCRIPTION"
             },
             {
                 "accessor": "public",

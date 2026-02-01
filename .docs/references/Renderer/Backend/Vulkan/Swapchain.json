@@ -201,24 +201,7 @@
                 "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_INIT_DESCRIPTION"
             }
         ],
-        "members": [
-            {
-                "accessor": "public",
-                "modifiers": [
-                    "static",
-                    "constexpr"
-                ],
-                "type": {
-                    "prefix": "const ",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "MAX_IMAGE_COUNT",
-                "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_MAX_IMAGE_COUNT_DESCRIPTION"
-            }
-        ],
+        "members": [],
         "description": "CHICANE_RENDERER_VULKANSWAPCHAIN_DESCRIPTION"
     },
     "children": []

@@ -39,32 +39,6 @@
                     "templates": []
                 },
                 "name": "Sound",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Raw",
-                            "suffix": "&",
-                            "path": "Screech/Sound",
-                            "templates": []
-                        },
-                        "name": "inData"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_SCREECH_SOUND_SOUND_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Sound",
                 "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_SCREECH_SOUND_SOUND_DESCRIPTION"
@@ -88,6 +62,32 @@
             }
         ],
         "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setData",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Raw",
+                            "suffix": "&",
+                            "path": "Screech/Sound",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_SCREECH_SOUND_SETDATA_DESCRIPTION"
+            },
             {
                 "accessor": "public",
                 "type": "standard",
@@ -117,26 +117,6 @@
                 },
                 "name": "play",
                 "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inVolume"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "float",
-                            "suffix": "",
-                            "path": "",
-                            "templates": []
-                        },
-                        "name": "inSpeed"
-                    },
                     {
                         "type": {
                             "prefix": "",
@@ -243,10 +223,31 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "struct _Data",
-                    "suffix": "*",
-                    "path": "",
+                    "name": "SoundSettings",
+                    "suffix": "",
+                    "path": "Screech/Sound/Settings",
                     "templates": []
+                },
+                "name": "m_settings",
+                "description": "CHICANE_SCREECH_SOUND_M_SETTINGS_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "std::unique_ptr",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "class _Data",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "m_data",
                 "description": "CHICANE_SCREECH_SOUND_M_DATA_DESCRIPTION"

@@ -16,65 +16,26 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "Vertex::List",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "vertexCount",
-                "description": "CHICANE_BOX_MODELPARSED_VERTEXCOUNT_DESCRIPTION"
+                "name": "vertices",
+                "description": "CHICANE_BOX_MODELPARSED_VERTICES_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::uint32_t",
+                    "name": "Vertex::Indices",
                     "suffix": "",
-                    "path": "",
+                    "path": "Core/Math/Vertex",
                     "templates": []
                 },
-                "name": "firstVertex",
-                "description": "CHICANE_BOX_MODELPARSED_FIRSTVERTEX_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "firstInstance",
-                "description": "CHICANE_BOX_MODELPARSED_FIRSTINSTANCE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "indexCount",
-                "description": "CHICANE_BOX_MODELPARSED_INDEXCOUNT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint32_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "firstIndex",
-                "description": "CHICANE_BOX_MODELPARSED_FIRSTINDEX_DESCRIPTION"
+                "name": "indices",
+                "description": "CHICANE_BOX_MODELPARSED_INDICES_DESCRIPTION"
             }
         ],
         "description": "CHICANE_BOX_MODELPARSED_DESCRIPTION"

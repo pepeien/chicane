@@ -235,23 +235,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "bool",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "hasProperties",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_GRID_STYLE_HASPROPERTIES_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "void",
                     "suffix": "",
                     "path": "",
@@ -476,6 +459,21 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "refreshBackground",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLE_REFRESHBACKGROUND_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "refreshForegroundColor",
                 "parameters": [],
                 "modifiers": [],
@@ -491,10 +489,10 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "refreshBackgroundColor",
+                "name": "refreshOpacity",
                 "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_GRID_STYLE_REFRESHBACKGROUNDCOLOR_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLE_REFRESHOPACITY_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -940,7 +938,7 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "parseNumber",
+                "name": "parseNumberUnit",
                 "parameters": [
                     {
                         "type": {
@@ -966,7 +964,7 @@
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_GRID_STYLE_PARSENUMBER_DESCRIPTION"
+                "description": "CHICANE_GRID_STYLE_PARSENUMBERUNIT_DESCRIPTION"
             },
             {
                 "accessor": "private",
@@ -1658,6 +1656,38 @@
                     "path": "",
                     "templates": []
                 },
+                "name": "BACKGROUND_IMAGE_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_BACKGROUND_IMAGE_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "BACKGROUND_IMAGE_DEFAULT_COLOR",
+                "description": "CHICANE_GRID_STYLE_BACKGROUND_IMAGE_DEFAULT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
                 "name": "FOREGROUND_COLOR_ATTRIBUTE_NAME",
                 "description": "CHICANE_GRID_STYLE_FOREGROUND_COLOR_ATTRIBUTE_NAME_DESCRIPTION"
             },
@@ -1676,6 +1706,38 @@
                 },
                 "name": "FOREGROUND_COLOR_DEFAULT_COLOR",
                 "description": "CHICANE_GRID_STYLE_FOREGROUND_COLOR_DEFAULT_COLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "char",
+                    "suffix": "*",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OPACITY_ATTRIBUTE_NAME",
+                "description": "CHICANE_GRID_STYLE_OPACITY_ATTRIBUTE_NAME_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [
+                    "static",
+                    "constexpr"
+                ],
+                "type": {
+                    "prefix": "const ",
+                    "name": "float",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "OPACITY_DEFAULT_VALUE",
+                "description": "CHICANE_GRID_STYLE_OPACITY_DEFAULT_VALUE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2082,10 +2144,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleDisplay",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "Grid/Style/Display",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleDisplay",
+                            "suffix": "",
+                            "path": "Grid/Style/Display",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "display",
                 "description": "CHICANE_GRID_STYLE_DISPLAY_DESCRIPTION"
@@ -2095,10 +2165,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "zIndex",
                 "description": "CHICANE_GRID_STYLE_ZINDEX_DESCRIPTION"
@@ -2108,10 +2186,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "width",
                 "description": "CHICANE_GRID_STYLE_WIDTH_DESCRIPTION"
@@ -2121,10 +2207,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "height",
                 "description": "CHICANE_GRID_STYLE_HEIGHT_DESCRIPTION"
@@ -2147,10 +2241,18 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StylePosition",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "Grid/Style/Position",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StylePosition",
+                            "suffix": "",
+                            "path": "Grid/Style/Position",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "position",
                 "description": "CHICANE_GRID_STYLE_POSITION_DESCRIPTION"
@@ -2160,26 +2262,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleAlignment",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "Grid/Style/Alignment",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleAlignment",
+                            "suffix": "",
+                            "path": "Grid/Style/Alignment",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "align",
                 "description": "CHICANE_GRID_STYLE_ALIGN_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleAlignment",
-                    "suffix": "",
-                    "path": "Grid/Style/Alignment",
-                    "templates": []
-                },
-                "name": "justify",
-                "description": "CHICANE_GRID_STYLE_JUSTIFY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2225,26 +2322,55 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Color::Rgba",
+                    "name": "StyleBackground",
                     "suffix": "",
-                    "path": "Core/Color",
+                    "path": "Grid/Style/Background",
                     "templates": []
                 },
-                "name": "backgroundColor",
-                "description": "CHICANE_GRID_STYLE_BACKGROUNDCOLOR_DESCRIPTION"
+                "name": "background",
+                "description": "CHICANE_GRID_STYLE_BACKGROUND_DESCRIPTION"
             },
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "Color::Rgba",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "Core/Color",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Color::Rgba",
+                            "suffix": "",
+                            "path": "Core/Color",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "foregroundColor",
                 "description": "CHICANE_GRID_STYLE_FOREGROUNDCOLOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "opacity",
+                "description": "CHICANE_GRID_STYLE_OPACITY_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -2264,26 +2390,21 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "float",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "letterSpacing",
                 "description": "CHICANE_GRID_STYLE_LETTERSPACING_DESCRIPTION"
-            },
-            {
-                "accessor": "private",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "StyleSource::Map",
-                    "suffix": "",
-                    "path": "Grid/Style/Source",
-                    "templates": []
-                },
-                "name": "m_properties",
-                "description": "CHICANE_GRID_STYLE_M_PROPERTIES_DESCRIPTION"
             },
             {
                 "accessor": "private",

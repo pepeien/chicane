@@ -5,21 +5,133 @@
     "source": {
         "header": "Includes/Chicane/Grid/Style/Flex.hpp",
         "namespace": "Chicane::Grid::StyleFlex",
-        "types": [],
+        "types": [
+            {
+                "name": "DirectionParser",
+                "type": {
+                    "prefix": "",
+                    "name": "StyleProperty",
+                    "suffix": "",
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleFlexDirection",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex/Direction",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_GRID_STYLEFLEX_DIRECTIONPARSER_DESCRIPTION"
+            }
+        ],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "StyleFlex",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFLEX_STYLEFLEX_DESCRIPTION"
+            }
+        ],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "refresh",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFLEX_REFRESH_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setProperties",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "StyleSource::Map",
+                            "suffix": "&",
+                            "path": "Grid/Style/Source",
+                            "templates": []
+                        },
+                        "name": "inProperties"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFLEX_SETPROPERTIES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "parseWith",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "DirectionParser",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex",
+                            "templates": []
+                        },
+                        "name": "directionParser"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_GRID_STYLEFLEX_PARSEWITH_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "StyleFlexDirection",
+                    "name": "StyleProperty",
                     "suffix": "",
-                    "path": "Grid/Style/Flex/Direction",
-                    "templates": []
+                    "path": "Grid/Style/Property",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "StyleFlexDirection",
+                            "suffix": "",
+                            "path": "Grid/Style/Flex/Direction",
+                            "templates": []
+                        }
+                    ]
                 },
                 "name": "direction",
                 "description": "CHICANE_GRID_STYLEFLEX_DIRECTION_DESCRIPTION"

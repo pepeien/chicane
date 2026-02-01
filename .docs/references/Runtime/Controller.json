@@ -842,7 +842,7 @@
                             "prefix": "",
                             "name": "Input::MouseMotionEvent",
                             "suffix": "",
-                            "path": "Core/Input/Mouse/MotionEvent",
+                            "path": "Core/Input/Mouse/Motion/Event",
                             "templates": []
                         }
                     ]
@@ -905,7 +905,7 @@
                             "prefix": "",
                             "name": "Input::GamepadMotionEvent",
                             "suffix": "",
-                            "path": "Core/Input/Gamepad/MotionEvent",
+                            "path": "Core/Input/Gamepad/Motion/Event",
                             "templates": []
                         }
                     ]

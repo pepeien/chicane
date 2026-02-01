@@ -190,18 +190,10 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
-                    "name": "std::unique_ptr",
+                    "name": "VulkanGraphicsPipeline",
                     "suffix": "",
-                    "path": "",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "VulkanGraphicsPipeline",
-                            "suffix": "",
-                            "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
-                            "templates": []
-                        }
-                    ]
+                    "path": "Renderer/Backend/Vulkan/GraphicsPipeline",
+                    "templates": []
                 },
                 "name": "m_graphicsPipeline",
                 "description": "CHICANE_RENDERER_VULKANLSCENEMESH_M_GRAPHICSPIPELINE_DESCRIPTION"
