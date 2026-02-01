@@ -5,6 +5,7 @@
 #include "Chicane/Core/FileSystem.hpp"
 
 #include "Chicane/Screech.hpp"
+#include "Chicane/Screech/Sound/Settings.hpp"
 #include "Chicane/Screech/Sound/Status.hpp"
 #include "Chicane/Screech/Sound/Vendor.hpp"
 
@@ -18,16 +19,14 @@ namespace Chicane
             using Raw = std::vector<unsigned char>;
 
         public:
-            Sound(const Raw& inData);
             Sound();
-
             ~Sound();
 
         public:
+            void setData(const Raw& inValue);
+
             bool isPlaying() const;
-            bool play(
-                float inVolume = 0.7f, float inSpeed = 1.0f, std::function<void()> inCallback = nullptr
-            );
+            bool play(std::function<void()> inCallback = nullptr);
 
             bool isPaused() const;
             bool pause();
@@ -36,9 +35,9 @@ namespace Chicane
             bool stop();
 
         private:
-            SoundStatus   m_status;
-
-            struct _Data* m_data;
+            SoundStatus                  m_status;
+            SoundSettings                m_settings;
+            std::unique_ptr<class _Data> m_data;
         };
     }
 }

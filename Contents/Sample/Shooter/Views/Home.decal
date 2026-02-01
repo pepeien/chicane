@@ -7,9 +7,11 @@
     background-color: #333333;
     font-size: 5vw;
     padding-left: 0.5em;
+    z-index: 2;
 }
 
 .telemetry, .camera {
+    width: 12em;
     color: green;
 }
 
@@ -39,7 +41,7 @@
 }
 
 .crosshair__dot {
-    display: var(crosshairGapDisplay);
+    display: var(crosshairDotDisplay);
     margin: 50% calc(var(crosshairThickness)vh * 0.5) calc(var(crosshairThickness)vh * 0.5) 50%;
     height: var(crosshairThickness)vh;
     width: var(crosshairThickness)vh;

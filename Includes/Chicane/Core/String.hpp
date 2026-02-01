@@ -21,9 +21,9 @@ namespace Chicane
         {
             const int bufferSize = static_cast<int>(inValue.size()) * 50;
 
-            char*     buffer     = new char[bufferSize];
+            char*     buffer = new char[bufferSize];
 
-            int       size       = std::snprintf(buffer, bufferSize, inValue.toChar(), inParams...);
+            int       size = std::snprintf(buffer, bufferSize, inValue.toChar(), inParams...);
 
             if (size < 0 || size > bufferSize)
             {

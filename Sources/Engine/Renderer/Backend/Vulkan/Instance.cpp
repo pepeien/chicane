@@ -24,10 +24,7 @@ namespace Chicane
 
                 for (const String& unsupportedExtension : extensions)
                 {
-                    Log::warning(
-                        "The vulkan instance extension [%s] is not supported",
-                        unsupportedExtension.toChar()
-                    );
+                    Log::warning("The vulkan instance extension [%s] is not supported", unsupportedExtension.toChar());
                 }
 
                 return extensions.empty();
@@ -44,10 +41,7 @@ namespace Chicane
 
                 for (const String& unsupportedLayer : layers)
                 {
-                    Log::warning(
-                        "The vulkan instance layer [%s] is not supported",
-                        unsupportedLayer.toChar()
-                    );
+                    Log::warning("The vulkan instance layer [%s] is not supported", unsupportedLayer.toChar());
                 }
 
                 return layers.empty();

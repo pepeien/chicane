@@ -39,9 +39,11 @@ namespace Chicane
             return false;
         }
 
-        return std::find_if(m_value.begin(), m_value.end(), [](unsigned char c) {
-                   return !std::isdigit(c) && c != '.' && c != ',';
-               }) != m_value.end();
+        return std::find_if(
+                   m_value.begin(),
+                   m_value.end(),
+                   [](unsigned char c) { return !std::isdigit(c) && c != '.' && c != ','; }
+               ) != m_value.end();
     }
 
     bool String::equals(const String& inValue) const

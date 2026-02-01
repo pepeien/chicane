@@ -39,14 +39,14 @@ namespace Chicane
             void destroyTextureData();
 
         private:
-            std::unique_ptr<VulkanGraphicsPipeline> m_graphicsPipeline;
+            VulkanGraphicsPipeline      m_graphicsPipeline;
 
-            VulkanDescriptorBundle                  m_textureDescriptor;
-            VulkanDescriptorBundle                  m_frameDescriptor;
+            VulkanDescriptorBundle      m_textureDescriptor;
+            VulkanDescriptorBundle      m_frameDescriptor;
 
-            std::unique_ptr<VulkanSky>              m_sky;
+            std::unique_ptr<VulkanSky>  m_sky;
 
-            std::vector<vk::ClearValue>             m_clear;
+            std::vector<vk::ClearValue> m_clear;
         };
     }
 }

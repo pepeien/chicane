@@ -96,9 +96,7 @@ namespace Chicane
             const auto& found = std::find_if(
                 m_textureResources.begin(),
                 m_textureResources.end(),
-                [inReference](const DrawTexture& inTexture) {
-                    return inTexture.reference.equals(inReference);
-                }
+                [inReference](const DrawTexture& inTexture) { return inTexture.reference.equals(inReference); }
             );
 
             if (found == m_textureResources.end())
@@ -114,9 +112,7 @@ namespace Chicane
             const auto& found = std::find_if(
                 m_textureResources.begin(),
                 m_textureResources.end(),
-                [inData](const DrawTexture& inTexture) {
-                    return inTexture.reference.equals(inData.reference);
-                }
+                [inData](const DrawTexture& inTexture) { return inTexture.reference.equals(inData.reference); }
             );
 
             if (found != m_textureResources.end())
@@ -171,9 +167,10 @@ namespace Chicane
                 sky.textures.push_back(*found);
             }
 
-            sky.textures.at(0).image.rotate(90.0f);  // Right
-            sky.textures.at(1).image.rotate(-90.0f); // Left
-            sky.textures.at(2).image.rotate(180.0f); // Front
+            sky.textures.at(0).image.rotate(-90.0f);  // Right
+            sky.textures.at(1).image.rotate(90.0f);   // Left
+            sky.textures.at(3).image.rotate(-180.0f); // Back
+            sky.textures.at(4).image.rotate(180.0f);  // Up
 
             sky.model = getPolyResource(DrawPolyType::e3D).getDraw(inData.model);
 
@@ -307,8 +304,8 @@ namespace Chicane
                 break;
             }
 
-            m_backend->onInit();
             m_backend->onResize(m_viewport);
+            m_backend->onInit();
 
             reloadResources();
         }

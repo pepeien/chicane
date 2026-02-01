@@ -6,7 +6,7 @@
 #include "Chicane/Grid/Component/Popup.hpp"
 #include "Chicane/Grid/Component/ProgressBar.hpp"
 #include "Chicane/Grid/Component/Text.hpp"
-#include "Chicane/Grid/Component/TextInput.hpp"
+#include "Chicane/Grid/Component/Text/Input.hpp"
 
 namespace Chicane
 {

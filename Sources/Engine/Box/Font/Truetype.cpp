@@ -21,7 +21,8 @@ namespace Chicane
                 FT_Outline_Funcs funcs;
                 funcs.shift   = 0;
                 funcs.delta   = 0;
-                funcs.move_to = [](const FT_Vector* inPoint, void* inData) {
+                funcs.move_to = [](const FT_Vector* inPoint, void* inData)
+                {
                     std::vector<Curve>* contours = static_cast<std::vector<Curve>*>(inData);
 
                     if (!contours->empty() && contours->back().isEmpty())
@@ -39,7 +40,8 @@ namespace Chicane
 
                     return 0;
                 };
-                funcs.line_to = [](const FT_Vector* inPoint, void* inData) {
+                funcs.line_to = [](const FT_Vector* inPoint, void* inData)
+                {
                     Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)
@@ -51,7 +53,8 @@ namespace Chicane
 
                     return 0;
                 };
-                funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData) {
+                funcs.conic_to = [](const FT_Vector* inControl, const FT_Vector* inPoint, void* inData)
+                {
                     Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)
@@ -63,10 +66,9 @@ namespace Chicane
 
                     return 0;
                 };
-                funcs.cubic_to = [](const FT_Vector* inControlA,
-                                    const FT_Vector* inControlB,
-                                    const FT_Vector* inPoint,
-                                    void*            inData) {
+                funcs.cubic_to =
+                    [](const FT_Vector* inControlA, const FT_Vector* inControlB, const FT_Vector* inPoint, void* inData)
+                {
                     Curve* curve = &static_cast<std::vector<Curve>*>(inData)->back();
 
                     if (!curve)

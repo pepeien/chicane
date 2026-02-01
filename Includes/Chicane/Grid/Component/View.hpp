@@ -12,7 +12,7 @@ namespace Chicane
         class CHICANE_GRID View : public Component
         {
         public:
-            static inline constexpr const char* TAG_ID              = "View";
+            static inline constexpr const char* TAG_ID = "View";
 
             static inline constexpr const char* PATH_ATTRIBUTE_NAME = "path";
 
@@ -33,8 +33,12 @@ namespace Chicane
             void activate();
             void deactivate();
 
-            // Properties
-            const String& getPath() const;
+            // Event
+            void handle(WindowEvent inEvent);
+
+            // Children
+            std::vector<Component*> getFlatChildren(const Component* inParent = nullptr) const;
+            std::vector<Component*> getChildrenOn(const Vec2& inLocation) const;
 
         protected:
             String            m_path;

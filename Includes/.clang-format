@@ -3,11 +3,14 @@ BasedOnStyle: InheritParentConfig
 # Alignment
 AlignConsecutiveAssignments:
   Enabled: true
-  AcrossEmptyLines: true
-  AcrossComments: true
+  AcrossEmptyLines: false
+  AcrossComments: false
 
 AlignConsecutiveDeclarations:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
   AlignFunctionDeclarations: false
+
+AllowShortBlocksOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: Never

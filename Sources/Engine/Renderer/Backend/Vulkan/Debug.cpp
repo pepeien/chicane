@@ -72,16 +72,14 @@ namespace Chicane
                         vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
 
                     // Type
-                    vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
-                        vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
+                    vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral | vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation |
                         vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance,
 
                     // Callback
                     callback
                 );
 
-                outDebugMessenger =
-                    inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDispatcher);
+                outDebugMessenger = inInstance.createDebugUtilsMessengerEXT(createInfo, nullptr, inDispatcher);
             }
 
             void destroyMessenger(

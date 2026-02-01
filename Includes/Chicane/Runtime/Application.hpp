@@ -20,11 +20,11 @@ namespace Chicane
         using ControllerObservable   = EventObservable<Controller*>;
         using ControllerSubscription = EventSubscription<Controller*>;
 
-        using SceneObservable        = EventObservable<Scene*>;
-        using SceneSubscription      = EventSubscription<Scene*>;
+        using SceneObservable   = EventObservable<Scene*>;
+        using SceneSubscription = EventSubscription<Scene*>;
 
-        using ViewObservable         = EventObservable<Grid::View*>;
-        using ViewSubscription       = EventSubscription<Grid::View*>;
+        using ViewObservable   = EventObservable<Grid::View*>;
+        using ViewSubscription = EventSubscription<Grid::View*>;
 
     public:
         static Application& getInstance()
@@ -38,8 +38,8 @@ namespace Chicane
         Application(const Application&)            = delete;
         Application& operator=(const Application&) = delete;
 
-        Application(Application&&)                 = delete;
-        Application& operator=(Application&&)      = delete;
+        Application(Application&&)            = delete;
+        Application& operator=(Application&&) = delete;
 
     private:
         Application();

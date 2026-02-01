@@ -24,19 +24,19 @@ namespace Chicane
     namespace Grid
     {
         // Ref Value
-        static inline constexpr const char* REFERENCE_VALUE_OPENING    = "{{";
-        static inline constexpr const char* REFERENCE_VALUE_CLOSING    = "}}";
+        static inline constexpr const char* REFERENCE_VALUE_OPENING = "{{";
+        static inline constexpr const char* REFERENCE_VALUE_CLOSING = "}}";
 
-        static inline constexpr const char  FUNCTION_PARAMS_OPENING    = '(';
-        static inline constexpr const char  FUNCTION_PARAMS_SEPARATOR  = ',';
-        static inline constexpr const char  FUNCTION_PARAMS_CLOSING    = ')';
+        static inline constexpr const char  FUNCTION_PARAMS_OPENING   = '(';
+        static inline constexpr const char  FUNCTION_PARAMS_SEPARATOR = ',';
+        static inline constexpr const char  FUNCTION_PARAMS_CLOSING   = ')';
 
         // Value attributes
-        static inline constexpr const char* ID_ATTRIBUTE_NAME          = "id";
-        static inline constexpr const char* CLASS_ATTRIBUTE_NAME       = "class";
+        static inline constexpr const char* ID_ATTRIBUTE_NAME    = "id";
+        static inline constexpr const char* CLASS_ATTRIBUTE_NAME = "class";
 
         // Lifecycle attributes
-        static inline constexpr const char* ON_TICK_ATTRIBUTE          = "onTick";
+        static inline constexpr const char* ON_TICK_ATTRIBUTE = "onTick";
 
         // List
         static inline constexpr const char* ITEMS_ATTRIBUTE_NAME       = "items";

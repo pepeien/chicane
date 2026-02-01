@@ -29,6 +29,8 @@ namespace Chicane
 
         void OpenGLLSceneSky::onLoad(const DrawSky& inResource)
         {
+            glClearTexImage(m_texturesBuffer, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
             if (inResource.textures.empty() || inResource.model.id == Draw::UnknownId)
             {
                 return;
@@ -74,7 +76,7 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            glBindTexture(GL_TEXTURE_CUBE_MAP, m_texturesBuffer);
+            glBindTextureUnit(1, m_texturesBuffer);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
             glDrawElementsBaseVertex(
@@ -171,12 +173,12 @@ namespace Chicane
             glCreateTextures(GL_TEXTURE_CUBE_MAP, 1, &m_texturesBuffer);
             glTextureStorage2D(m_texturesBuffer, 1, GL_RGBA8, 512, 512);
 
-            // Filters
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTextureParameteri(m_texturesBuffer, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         }
 
         void OpenGLLSceneSky::destroyTextureData()

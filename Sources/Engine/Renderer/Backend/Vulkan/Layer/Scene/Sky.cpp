@@ -6,7 +6,9 @@
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool/CreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Builder.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Layer/Scene.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Vertex.hpp"
 
 namespace Chicane
 {
@@ -14,7 +16,6 @@ namespace Chicane
     {
         VulkanLSceneSky::VulkanLSceneSky()
             : Layer("Engine_Scene_Sky"),
-              m_graphicsPipeline(nullptr),
               m_frameDescriptor({}),
               m_textureDescriptor({}),
               m_sky(nullptr),
@@ -28,8 +29,6 @@ namespace Chicane
             destroyTextureData();
 
             m_sky.reset();
-
-            m_graphicsPipeline.reset();
         }
 
         bool VulkanLSceneSky::onInit()
@@ -81,7 +80,7 @@ namespace Chicane
             VulkanFrame&       frame         = data->frame;
 
             vk::RenderPassBeginInfo beginInfo;
-            beginInfo.renderPass        = m_graphicsPipeline->renderPass;
+            beginInfo.renderPass        = m_graphicsPipeline.renderPass;
             beginInfo.framebuffer       = frame.getFramebuffer(m_id);
             beginInfo.renderArea.extent = getBackend<VulkanBackend>()->swapchain.extent;
             beginInfo.clearValueCount   = static_cast<std::uint32_t>(m_clear.size());
@@ -89,13 +88,13 @@ namespace Chicane
 
             commandBuffer.beginRenderPass(&beginInfo, vk::SubpassContents::eInline);
             // Pipeline
-            m_graphicsPipeline->bind(commandBuffer);
+            m_graphicsPipeline.bind(commandBuffer);
 
             // Frame
-            m_graphicsPipeline->bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
+            m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Texture
-            m_sky->bind(commandBuffer, m_graphicsPipeline->layout);
+            m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
 
             // Draw
             vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
@@ -103,11 +102,8 @@ namespace Chicane
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer.bindIndexBuffer(
-                getParent<VulkanLScene>()->modelIndexBuffer.instance,
-                0,
-                vk::IndexType::eUint32
-            );
+            commandBuffer
+                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
 
@@ -171,14 +167,17 @@ namespace Chicane
 
         void VulkanLSceneSky::destroyFrameResources()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_frameDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_frameDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_frameDescriptor.pool);
         }
 
         void VulkanLSceneSky::initGraphicsPipeline()
         {
+            // Backend
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = getParent<VulkanLScene>();
+
+            // Shader
             VulkanShaderStageCreateInfo vertexShader;
             vertexShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vvert";
             vertexShader.type = vk::ShaderStageFlagBits::eVertex;
@@ -187,39 +186,66 @@ namespace Chicane
             fragmentShader.path = "Contents/Engine/Shaders/Vulkan/Scene/Sky.vfrag";
             fragmentShader.type = vk::ShaderStageFlagBits::eFragment;
 
-            std::vector<VulkanShaderStageCreateInfo> shaders = {};
-            shaders.push_back(vertexShader);
-            shaders.push_back(fragmentShader);
-
-            std::vector<vk::DescriptorSetLayout> descriptorSetLayouts = {};
-            descriptorSetLayouts.push_back(m_frameDescriptor.setLayout);
-            descriptorSetLayouts.push_back(m_textureDescriptor.setLayout);
-
-            VulkanGraphicsPipelineAttachment colorAttachment;
-            colorAttachment.type          = VulkanGraphicsPipelineAttachmentType::Color;
-            colorAttachment.format        = getBackend<VulkanBackend>()->swapchain.colorFormat;
+            // Attachments
+            vk::AttachmentDescription colorAttachment;
+            colorAttachment.flags         = vk::AttachmentDescriptionFlags();
+            colorAttachment.format        = backend->swapchain.colorFormat;
+            colorAttachment.samples       = vk::SampleCountFlagBits::e1;
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eClear;
+            colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eUndefined;
-            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
+            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
 
-            std::vector<VulkanGraphicsPipelineAttachment> attachments = {};
-            attachments.push_back(colorAttachment);
+            vk::AttachmentReference colorReference;
+            colorReference.attachment = 0;
+            colorReference.layout     = vk::ImageLayout::eColorAttachmentOptimal;
 
-            VulkanGraphicsPipelineCreateInfo createInfo;
-            createInfo.bHasVertices         = true;
-            createInfo.bHasDepthTest        = false;
-            createInfo.bHasDepthWrite       = false;
-            createInfo.bHasBlending         = false;
-            createInfo.logicalDevice        = getBackend<VulkanBackend>()->logicalDevice;
-            createInfo.shaders              = shaders;
-            createInfo.extent               = getBackend<VulkanBackend>()->swapchain.extent;
-            createInfo.descriptorSetLayouts = descriptorSetLayouts;
-            createInfo.attachments          = attachments;
-            createInfo.rasterizaterizationState =
-                VulkanGraphicsPipeline::createRasterizationState(vk::PolygonMode::eFill);
-            createInfo.rasterizaterizationState.cullMode = vk::CullModeFlagBits::eFront;
+            vk::SubpassDependency colorSubpassDepedency;
+            colorSubpassDepedency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+            colorSubpassDepedency.dstSubpass    = 0;
+            colorSubpassDepedency.srcStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.dstStageMask  = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+            colorSubpassDepedency.srcAccessMask = vk::AccessFlagBits::eNone;
+            colorSubpassDepedency.dstAccessMask =
+                vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite;
 
-            m_graphicsPipeline = std::make_unique<VulkanGraphicsPipeline>(createInfo);
+            vk::SubpassDescription subpass;
+            subpass.flags                = vk::SubpassDescriptionFlags();
+            subpass.pipelineBindPoint    = vk::PipelineBindPoint::eGraphics;
+            subpass.colorAttachmentCount = 1;
+            subpass.pColorAttachments    = &colorReference;
+
+            // Rasterizer
+            vk::PipelineRasterizationStateCreateInfo rasterization;
+            rasterization.flags                   = vk::PipelineRasterizationStateCreateFlags();
+            rasterization.depthClampEnable        = VK_FALSE;
+            rasterization.rasterizerDiscardEnable = VK_FALSE;
+            rasterization.lineWidth               = 1.0f;
+            rasterization.depthBiasEnable         = VK_TRUE;
+            rasterization.depthBiasClamp          = 0.0f;
+            rasterization.polygonMode             = vk::PolygonMode::eFill;
+            rasterization.cullMode                = vk::CullModeFlagBits::eFront;
+            rasterization.frontFace               = vk::FrontFace::eCounterClockwise;
+
+            // Build
+            VulkanGraphicsPipelineBuilder()
+                .addVertexBinding(VulkanVertex::getBindingDescription())
+                .addVertexAttributes(VulkanVertex::getAttributeDescriptions())
+                .setInputAssembly(VulkanGraphicsPipeline::createInputAssemblyState())
+                .addViewport(backend->viewport)
+                .addDynamicState(vk::DynamicState::eViewport)
+                .addScissor(backend->scissor)
+                .addDynamicState(vk::DynamicState::eScissor)
+                .addShaderStage(vertexShader, backend->logicalDevice)
+                .addShaderStage(fragmentShader, backend->logicalDevice)
+                .addColorBlendingAttachment(VulkanGraphicsPipeline::createBlendAttachmentState())
+                .addAttachment(colorAttachment)
+                .addSubpassDependecy(colorSubpassDepedency)
+                .addSubpass(subpass)
+                .addDescriptorSetLayout(m_frameDescriptor.setLayout)
+                .addDescriptorSetLayout(m_textureDescriptor.setLayout)
+                .setRasterization(rasterization)
+                .build(m_graphicsPipeline, backend->logicalDevice);
         }
 
         void VulkanLSceneSky::initFramebuffers()
@@ -229,7 +255,7 @@ namespace Chicane
                 VulkanFrameCreateInfo createInfo;
                 createInfo.id            = m_id;
                 createInfo.logicalDevice = getBackend<VulkanBackend>()->logicalDevice;
-                createInfo.renderPass    = m_graphicsPipeline->renderPass;
+                createInfo.renderPass    = m_graphicsPipeline.renderPass;
                 createInfo.extent        = getBackend<VulkanBackend>()->swapchain.extent;
                 createInfo.attachments.push_back(frame.colorImage.view);
 
@@ -286,9 +312,7 @@ namespace Chicane
 
         void VulkanLSceneSky::destroyTextureData()
         {
-            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(
-                m_textureDescriptor.setLayout
-            );
+            getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorSetLayout(m_textureDescriptor.setLayout);
             getBackend<VulkanBackend>()->logicalDevice.destroyDescriptorPool(m_textureDescriptor.pool);
         }
     }

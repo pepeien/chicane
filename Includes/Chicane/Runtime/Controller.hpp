@@ -7,12 +7,12 @@
 #include "Chicane/Core/Input/Event/Events.hpp"
 #include "Chicane/Core/Input/Event/Pressable.hpp"
 #include "Chicane/Core/Input/Gamepad/Button.hpp"
-#include "Chicane/Core/Input/Gamepad/ButtonEvent.hpp"
-#include "Chicane/Core/Input/Gamepad/MotionEvent.hpp"
+#include "Chicane/Core/Input/Gamepad/Button/Event.hpp"
+#include "Chicane/Core/Input/Gamepad/Motion/Event.hpp"
 #include "Chicane/Core/Input/Keyboard/Button.hpp"
 #include "Chicane/Core/Input/Keyboard/Event.hpp"
-#include "Chicane/Core/Input/Mouse/ButtonEvent.hpp"
-#include "Chicane/Core/Input/Mouse/MotionEvent.hpp"
+#include "Chicane/Core/Input/Mouse/Button/Event.hpp"
+#include "Chicane/Core/Input/Mouse/Motion/Event.hpp"
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Runtime.hpp"
@@ -57,21 +57,15 @@ namespace Chicane
 
         // Mouse Events
         void bindEvent(Input::MouseMotionEventCallback inCallback);
-        void bindEvent(
-            Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback
-        );
+        void bindEvent(Input::MouseButton inButton, Input::Status inStatus, Input::MouseButtonEventCallback inCallback);
 
         // Keyboard Events
-        void bindEvent(
-            Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback
-        );
+        void bindEvent(Input::KeyboardButton inButton, Input::Status inStatus, Input::KeyboardEventCallback inCallback);
 
         // Controller Events
         void bindEvent(Input::GamepadMotionEventCallback inCallback);
         void bindEvent(
-            Input::GamepadButton              inButton,
-            Input::Status                     inStatus,
-            Input::GamepadButtonEventCallback inCallback
+            Input::GamepadButton inButton, Input::Status inStatus, Input::GamepadButtonEventCallback inCallback
         );
 
         // Device

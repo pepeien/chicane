@@ -3,7 +3,7 @@
 namespace Chicane
 {
     Telemetry::Telemetry()
-        : Recorder(0.0f),
+        : Recorder(10.0f),
           delta(0.0f),
           rate(0U)
     {}

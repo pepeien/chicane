@@ -4,6 +4,9 @@
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/CommandBuffer/Pool.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Debug.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Pool.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/SetLayout/BidingsCreateInfo.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Device.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Queue.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Instance.hpp"
@@ -21,8 +24,8 @@ namespace Chicane
               swapchain({}),
               imageCount(0),
               m_currentImageIndex(0),
-              m_vkViewport({}),
-              m_vkScissor(vk::Rect2D())
+              viewport({}),
+              scissor(vk::Rect2D())
         {}
 
         VulkanBackend::~VulkanBackend()
@@ -32,6 +35,7 @@ namespace Chicane
             // Vulkan
             destroyCommandPool();
             destroySwapchain();
+            destroyTextureData();
             deleteLayers();
 
             destroyDevices();
@@ -56,6 +60,7 @@ namespace Chicane
             buildCommandPool();
             buildMainCommandBuffer();
             buildFramesCommandBuffers();
+            buildTextureDescriptor();
             buildLayers();
 
             Backend::onInit();
@@ -64,17 +69,25 @@ namespace Chicane
         void VulkanBackend::onResize(const Viewport& inViewport)
         {
             // Viewport
-            m_vkViewport.width  = inViewport.size.x;
-            m_vkViewport.height = inViewport.size.y;
+            viewport.width  = inViewport.size.x;
+            viewport.height = inViewport.size.y;
 
-            m_vkViewport.x = inViewport.position.x;
-            m_vkViewport.y = inViewport.position.y;
+            viewport.x = inViewport.position.x;
+            viewport.y = inViewport.position.y;
+
+            viewport.minDepth = 0.0f;
+            viewport.maxDepth = 1.0f;
 
             // Scissor
-            m_vkScissor.extent.width  = inViewport.size.x;
-            m_vkScissor.extent.height = inViewport.size.y;
+            scissor.extent.width  = inViewport.size.x;
+            scissor.extent.height = inViewport.size.y;
 
             Backend::onResize(inViewport);
+        }
+
+        void VulkanBackend::onLoad(const DrawTexture::List& inResources)
+        {
+            buildTextureData(inResources);
         }
 
         void VulkanBackend::onRender(const Frame& inFrame)
@@ -83,8 +96,7 @@ namespace Chicane
             lastFrame.wait(logicalDevice);
 
             vk::ResultValue<std::uint32_t> acquireResult =
-                logicalDevice
-                    .acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
+                logicalDevice.acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
 
             if (acquireResult.result == vk::Result::eErrorOutOfDateKHR)
             {
@@ -92,8 +104,7 @@ namespace Chicane
 
                 return;
             }
-            else if (acquireResult.result != vk::Result::eSuccess &&
-                     acquireResult.result != vk::Result::eSuboptimalKHR)
+            else if (acquireResult.result != vk::Result::eSuccess && acquireResult.result != vk::Result::eSuboptimalKHR)
             {
                 throw std::runtime_error("Error while acquiring the next image");
             }
@@ -149,8 +160,7 @@ namespace Chicane
 
             vk::Result presentResult = m_presentQueue.presentKHR(presentInfo);
 
-            if (presentResult == vk::Result::eErrorOutOfDateKHR ||
-                presentResult == vk::Result::eSuboptimalKHR)
+            if (presentResult == vk::Result::eErrorOutOfDateKHR || presentResult == vk::Result::eSuboptimalKHR)
             {
                 rebuildSwapchain();
             }
@@ -296,8 +306,8 @@ namespace Chicane
 
         void VulkanBackend::renderViewport(const vk::CommandBuffer& inCommandBuffer)
         {
-            inCommandBuffer.setViewport(0, 1, &m_vkViewport);
-            inCommandBuffer.setScissor(0, 1, &m_vkScissor);
+            inCommandBuffer.setViewport(0, 1, &viewport);
+            inCommandBuffer.setScissor(0, 1, &scissor);
         }
 
         void VulkanBackend::buildLayers()
@@ -312,6 +322,77 @@ namespace Chicane
             {
                 layer->render(inFrame, inData);
             }
+        }
+
+        void VulkanBackend::buildTextureDescriptor()
+        {
+            VulkanDescriptorSetLayoutBidingsCreateInfo layoutBidings;
+            layoutBidings.count = 1;
+
+            layoutBidings.indices.push_back(0);
+            layoutBidings.types.push_back(vk::DescriptorType::eCombinedImageSampler);
+            layoutBidings.counts.push_back(512);
+            layoutBidings.stages.push_back(vk::ShaderStageFlagBits::eFragment);
+
+            VulkanDescriptorSetLayout::init(textureDescriptor.setLayout, logicalDevice, layoutBidings);
+
+            VulkanDescriptorPoolCreateInfo descriptorPoolCreateInfo;
+            descriptorPoolCreateInfo.maxSets = 1;
+            descriptorPoolCreateInfo.sizes.push_back({vk::DescriptorType::eCombinedImageSampler, 512});
+
+            VulkanDescriptorPool::init(textureDescriptor.pool, logicalDevice, descriptorPoolCreateInfo);
+
+            VulkanDescriptorSetLayout::allocate(
+                textureDescriptor.set,
+                logicalDevice,
+                textureDescriptor.setLayout,
+                textureDescriptor.pool
+            );
+        }
+
+        void VulkanBackend::buildTextureData(const DrawTexture::List& inTextures)
+        {
+            if (inTextures.empty())
+            {
+                return;
+            }
+
+            VulkanTextureCreateInfo createInfo;
+            createInfo.logicalDevice  = logicalDevice;
+            createInfo.physicalDevice = physicalDevice;
+            createInfo.commandBuffer  = mainCommandBuffer;
+            createInfo.queue          = graphicsQueue;
+
+            std::vector<vk::DescriptorImageInfo> infos = {};
+            for (const DrawTexture& texture : inTextures)
+            {
+                createInfo.image = texture.image;
+                textures.push_back(std::make_unique<VulkanTexture>(createInfo));
+
+                vk::DescriptorImageInfo info;
+                info.imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
+                info.imageView   = textures.back()->getImage().view;
+                info.sampler     = textures.back()->getImage().sampler;
+                infos.push_back(info);
+            }
+
+            vk::WriteDescriptorSet set;
+            set.dstSet          = textureDescriptor.set;
+            set.dstBinding      = 0;
+            set.dstArrayElement = 0;
+            set.descriptorCount = static_cast<std::uint32_t>(infos.size());
+            set.descriptorType  = vk::DescriptorType::eCombinedImageSampler;
+            set.pImageInfo      = infos.data();
+
+            logicalDevice.updateDescriptorSets(set, nullptr);
+        }
+
+        void VulkanBackend::destroyTextureData()
+        {
+            textures.clear();
+
+            logicalDevice.destroyDescriptorSetLayout(textureDescriptor.setLayout);
+            logicalDevice.destroyDescriptorPool(textureDescriptor.pool);
         }
     }
 }

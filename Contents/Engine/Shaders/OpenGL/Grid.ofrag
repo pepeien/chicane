@@ -2,9 +2,21 @@
 
 layout(location = 0) out vec4 outColor;
 
-layout(location = 1) in vec4 inColor;
+layout(location = 0) in Data {
+    flat int textureIndex;
+    vec2 UV;
+    vec3 normal;
+    vec4 color;
+} inData;
 
-void main() 
-{
-	outColor = inColor.rgba;
+layout(location = 0) uniform sampler2DArray textures;
+
+void main() {
+    vec4 color = inData.color.rgba;
+
+    if (inData.textureIndex >= 0) {
+        color.rgb = texture(textures, vec3(inData.UV, inData.textureIndex)).rgb;
+    }
+
+	outColor = color;
 }

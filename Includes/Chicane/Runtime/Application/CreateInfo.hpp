@@ -10,7 +10,7 @@ namespace Chicane
     {
     public:
         // Window
-        WindowSettings        window  = {};
+        WindowSettings        window = {};
 
         // Callbacks
         std::function<void()> onSetup = nullptr;

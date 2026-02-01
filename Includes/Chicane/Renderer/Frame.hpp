@@ -56,11 +56,14 @@ namespace Chicane
 
         protected:
             // View
-            View                    m_camera      = {};
-            View::List              m_lights      = {};
+            View          m_camera = {};
+            View::List    m_lights = {};
 
             // Poly
-            DrawPoly::Map           m_draws       = {};
+            DrawPoly::Map m_draws = {
+                {DrawPolyType::e2D, {}},
+                {DrawPolyType::e3D, {}}
+            };
             DrawPoly2DInstance::Map m_2DInstances = {};
             DrawPoly3DInstance::Map m_3DInstances = {};
 

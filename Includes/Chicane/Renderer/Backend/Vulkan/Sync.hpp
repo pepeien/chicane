@@ -10,9 +10,7 @@ namespace Chicane
     {
         namespace VulkanSync
         {
-            CHICANE_RENDERER void initSempahore(
-                vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice
-            );
+            CHICANE_RENDERER void initSempahore(vk::Semaphore& outSemaphore, const vk::Device& inLogicalDevice);
             CHICANE_RENDERER void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice);
         }
     }

@@ -6,9 +6,9 @@ layout(set = 0, binding = 0) uniform Camera {
     mat4 view;
     mat4 projection;
 
-    vec4 forward;
-    vec4 right;
     vec4 up;
+    vec4 right;
+    vec4 forward;
 
     vec4 translation;
 } camera;
@@ -20,10 +20,8 @@ layout(location = 3) in vec3 inNormal;
 
 layout(location = 0) out vec3 outUV;
 
-void main()
-{
+void main() {
     outUV = inPosition;
 
-    gl_Position = camera.view * mat4(mat3(camera.projection)) * vec4(inPosition, 1.0);
-    gl_Position.z = 0.0;
+    gl_Position = camera.projection * mat4(mat3(camera.view)) * vec4(inPosition, 1.0);
 }

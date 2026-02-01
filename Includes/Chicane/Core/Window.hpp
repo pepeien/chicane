@@ -14,8 +14,8 @@ namespace Chicane
     using WindowEventObservable   = EventObservable<WindowEvent>;
     using WindowEventSubscription = EventSubscription<WindowEvent>;
 
-    using WindowSizeObservable    = EventObservable<Vec<2, int>>;
-    using WindowSizeSubscription  = EventSubscription<Vec<2, int>>;
+    using WindowSizeObservable   = EventObservable<Vec<2, int>>;
+    using WindowSizeSubscription = EventSubscription<Vec<2, int>>;
 
     class Application;
 

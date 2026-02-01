@@ -8,8 +8,6 @@
 #include "Chicane/Runtime/Scene/Component/Light.hpp"
 #include "Chicane/Runtime/Scene/Component/Mesh.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 namespace Chicane
 {
     namespace Renderer
@@ -98,7 +96,8 @@ namespace Chicane
             }
 
             View data = inData;
-            data.projection[1][1] *= -1;
+            data.flipY();
+
             cameraResource.copyToBuffer(&data, sizeof(View));
         }
 
@@ -135,7 +134,8 @@ namespace Chicane
             }
 
             View data = inData.at(0);
-            data.projection[1][1] *= -1;
+            data.flipY();
+
             lightResource.copyToBuffer(&data, sizeof(View));
         }
 
@@ -262,7 +262,6 @@ namespace Chicane
             samplerCreateInfo.anisotropyEnable        = false;
             samplerCreateInfo.maxAnisotropy           = 1.0f;
             samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
-            samplerCreateInfo.unnormalizedCoordinates = false;
             samplerCreateInfo.compareEnable           = true;
             samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
             samplerCreateInfo.minLod                  = 0.0f;
@@ -324,7 +323,7 @@ namespace Chicane
             samplerCreateInfo.borderColor             = vk::BorderColor::eFloatOpaqueWhite;
             samplerCreateInfo.unnormalizedCoordinates = false;
             samplerCreateInfo.compareEnable           = true;
-            samplerCreateInfo.compareOp               = vk::CompareOp::eLessOrEqual;
+            samplerCreateInfo.compareOp               = vk::CompareOp::eLess;
             samplerCreateInfo.minLod                  = 0.0f;
             samplerCreateInfo.maxLod                  = 1.0f;
             samplerCreateInfo.unnormalizedCoordinates = false;

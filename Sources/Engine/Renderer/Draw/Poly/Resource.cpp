@@ -40,8 +40,7 @@ namespace Chicane
                 for (std::uint32_t index = 0; index < draw.indexCount; index++)
                 {
                     const Vertex& incoming = inData.vertices.at(inData.indices.at(index));
-                    const Vertex& stored =
-                        m_vertices.at(draw.vertexStart + m_indices.at(draw.indexStart + index));
+                    const Vertex& stored   = m_vertices.at(draw.vertexStart + m_indices.at(draw.indexStart + index));
 
                     if (incoming == stored)
                     {

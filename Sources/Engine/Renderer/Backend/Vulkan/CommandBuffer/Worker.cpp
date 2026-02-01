@@ -16,11 +16,7 @@ namespace Chicane
                 inCommandBuffer.begin(commandBufferBegin);
             }
 
-            void endJob(
-                const vk::CommandBuffer& inCommandBuffer,
-                const vk::Queue&         inQueue,
-                const String&            inDescription
-            )
+            void endJob(const vk::CommandBuffer& inCommandBuffer, const vk::Queue& inQueue, const String& inDescription)
             {
                 vk::SubmitInfo submitInfo;
                 submitInfo.commandBufferCount = 1;
@@ -29,9 +25,7 @@ namespace Chicane
                 endJob(inQueue, submitInfo, inDescription);
             }
 
-            void endJob(
-                const vk::Queue& inQueue, const vk::SubmitInfo& inSubmitInfo, const String& inDescription
-            )
+            void endJob(const vk::Queue& inQueue, const vk::SubmitInfo& inSubmitInfo, const String& inDescription)
             {
                 for (std::uint32_t i = 0; i < inSubmitInfo.commandBufferCount; i++)
                 {

@@ -1,6 +1,0 @@
-<Asset version="1" id="Cube">
-    <Group id="Body">
-        <Model>Contents/Engine/Models/Cube.bmdl</Model>
-        <Texture>Contents/Engine/Textures/Color/Gray.btex</Texture>
-    </Group>
-</Asset>

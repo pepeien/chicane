@@ -15,12 +15,11 @@ namespace Chicane
               m_queue(inCreateInfo.queue)
         {
             VulkanImageCreateInfo instanceCreateInfo;
-            instanceCreateInfo.width  = m_image.getWidth();
-            instanceCreateInfo.height = m_image.getHeight();
-            instanceCreateInfo.count  = 1;
-            instanceCreateInfo.tiling = vk::ImageTiling::eOptimal;
-            instanceCreateInfo.usage =
-                vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
+            instanceCreateInfo.width         = m_image.getWidth();
+            instanceCreateInfo.height        = m_image.getHeight();
+            instanceCreateInfo.count         = 1;
+            instanceCreateInfo.tiling        = vk::ImageTiling::eOptimal;
+            instanceCreateInfo.usage         = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled;
             instanceCreateInfo.format        = vk::Format::eR8G8B8A8Unorm;
             instanceCreateInfo.logicalDevice = m_logicalDevice;
             VulkanImage::initInstance(m_image.instance, instanceCreateInfo);

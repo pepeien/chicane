@@ -6,58 +6,18 @@ namespace Chicane
 {
     namespace Box
     {
-        static const FontExtracted EMPTY_DATA     = {};
-        static const FontParsed    EMPTY_INSTANCE = {};
+        static const FontParsed EMPTY_INSTANCE = {};
 
         FontManager::FontManager()
             : Manager()
         {}
 
-        bool FontManager::isFamilyAllocated(const String& inFamily) const
+        void FontManager::onLoad(const String& inId, const Font& inData)
         {
-            return std::find_if(
-                       m_datum.begin(),
-                       m_datum.end(),
-                       [inFamily](const std::pair<String, FontParsed>& pair) {
-                           return inFamily.equals(pair.second.name);
-                       }
-                   ) != m_datum.end();
-        }
-
-        void FontManager::load(const String& inId, const Font& inFont)
-        {
-            if (isLoaded(inId))
-            {
-                return;
-            }
-
-            if (inFont.isEmpty())
-            {
-                return;
-            }
-
-            FontExtracted instance = {};
-            instance.vendor        = inFont.getVendor();
-            instance.data          = inFont.getData();
-
-            Manager::load(inId, instance);
-
-            allocate(inId);
-        }
-
-        void FontManager::allocate(const String& inId)
-        {
-            if (isAllocated(inId))
-            {
-                return;
-            }
-
-            const FontExtracted& instance = getData(inId);
-
-            switch (instance.vendor)
+            switch (inData.getVendor())
             {
             case FontVendor::TrueType:
-                Manager::allocate(inId, FontTrueType::parse(instance.data));
+                add(inId, FontTrueType::parse(inData.getData()));
 
                 break;
 
@@ -66,45 +26,27 @@ namespace Chicane
             }
         }
 
-        const FontExtracted& FontManager::getData(const String& inId) const
+        bool FontManager::containsFamily(const String& inName) const
         {
-            if (!isLoaded(inId))
-            {
-                return EMPTY_DATA;
-            }
-
-            return m_instances.at(inId);
+            return std::find_if(
+                       m_instances.begin(),
+                       m_instances.end(),
+                       [inName](const std::pair<String, FontParsed>& pair) { return inName.equals(pair.second.name); }
+                   ) != m_instances.end();
         }
 
-        const FontParsed& FontManager::getParsed(const String& inId) const
+        const FontParsed& FontManager::getFamily(const String& inName) const
         {
-            if (!isAllocated(inId))
-            {
-                return EMPTY_INSTANCE;
-            }
-
-            return m_datum.at(inId);
-        }
-
-        const FontParsed& FontManager::getByFamily(const String& inFamily) const
-        {
-            if (!isFamilyAllocated(inFamily))
+            if (!containsFamily(inName))
             {
                 return EMPTY_INSTANCE;
             }
 
             auto found = std::find_if(
-                m_datum.begin(),
-                m_datum.end(),
-                [inFamily](const std::pair<String, FontParsed>& pair) {
-                    return inFamily.equals(pair.second.name);
-                }
+                m_instances.begin(),
+                m_instances.end(),
+                [inName](const std::pair<String, FontParsed>& pair) { return inName.equals(pair.second.name); }
             );
-
-            if (found == m_datum.end())
-            {
-                return EMPTY_INSTANCE;
-            }
 
             return found->second;
         }

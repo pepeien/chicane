@@ -1,6 +1,6 @@
 #include "Chicane/Grid/Component/Text.hpp"
 
-#include "Chicane/Grid/Component/Character.hpp"
+#include "Chicane/Grid/Component/Text/Character.hpp"
 
 namespace Chicane
 {
@@ -15,7 +15,8 @@ namespace Chicane
             setStyle({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
                 {Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW},
-                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         }
+                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         },
+                {Style::HEIGHT_ATTRIBUTE_NAME,         Style::FONT_SIZE_DEFAULT_VALUE}
             });
         }
 
@@ -25,8 +26,7 @@ namespace Chicane
 
             refreshText();
 
-            m_style.height = m_style.font.size;
-            m_style.gap.setAll(m_style.letterSpacing);
+            m_style.gap.setAll(m_style.letterSpacing.get());
         }
 
         const String& Text::getText() const
@@ -59,29 +59,29 @@ namespace Chicane
             {
                 if (i >= m_children.size())
                 {
-                    addChild(new Character());
+                    addChild(new TextCharacter());
                 }
 
                 Component* child = m_children.at(i);
 
-                if (typeid(*child) != typeid(Character))
+                if (typeid(*child) != typeid(TextCharacter))
                 {
                     continue;
                 }
 
-                static_cast<Character*>(child)->setCharacter(m_parsedText.at(i));
+                static_cast<TextCharacter*>(child)->setCharacter(m_parsedText.at(i));
             }
 
             for (std::uint32_t i = m_parsedText.size(); i < m_children.size(); i++)
             {
                 Component* child = m_children.at(i);
 
-                if (typeid(*child) != typeid(Character))
+                if (typeid(*child) != typeid(TextCharacter))
                 {
                     continue;
                 }
 
-                static_cast<Character*>(child)->disable();
+                static_cast<TextCharacter*>(child)->disable();
             }
         }
     }

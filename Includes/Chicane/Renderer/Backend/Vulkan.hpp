@@ -5,10 +5,13 @@
 #include "Chicane/Core/Window/Event.hpp"
 
 #include "Chicane/Renderer.hpp"
+#include "Chicane/Renderer/Draw/Texture.hpp"
 #include "Chicane/Renderer/Backend.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Data.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Descriptor/Bundle.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Frame.hpp"
 #include "Chicane/Renderer/Backend/Vulkan/Swapchain/Bundle.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/Texture.hpp"
 
 namespace Chicane
 {
@@ -23,6 +26,7 @@ namespace Chicane
         protected:
             void onInit() override;
             void onResize(const Viewport& inViewport) override;
+            void onLoad(const DrawTexture::List& inResources) override;
             void onRender(const Frame& inFrame) override;
 
             void onHandle(const WindowEvent& inEvent) override;
@@ -57,28 +61,40 @@ namespace Chicane
             void buildLayers();
             void renderLayers(const Frame& inFrame, void* inData);
 
+            void buildTextureDescriptor();
+            void buildTextureData(const DrawTexture::List& inTextures);
+            void destroyTextureData();
+
         public:
             // Instance
-            vk::Instance          instance;
+            vk::Instance                                instance;
 
             // Devices
-            vk::PhysicalDevice    physicalDevice;
-            vk::Device            logicalDevice;
+            vk::PhysicalDevice                          physicalDevice;
+            vk::Device                                  logicalDevice;
 
             // Surface
-            vk::SurfaceKHR        surface;
+            vk::SurfaceKHR                              surface;
 
             // Queues
-            vk::Queue             graphicsQueue;
+            vk::Queue                                   graphicsQueue;
 
             // Command
-            vk::CommandBuffer     mainCommandBuffer;
+            vk::CommandBuffer                           mainCommandBuffer;
 
             // Swap Chain
-            VulkanSwapchainBundle swapchain;
+            VulkanSwapchainBundle                       swapchain;
 
             // Frame
-            int                   imageCount;
+            int                                         imageCount;
+
+            // Viewport
+            vk::Viewport                                viewport;
+            vk::Rect2D                                  scissor;
+
+            // Textures
+            VulkanDescriptorBundle                      textureDescriptor;
+            std::vector<std::unique_ptr<VulkanTexture>> textures;
 
         private:
             // Instance
@@ -95,10 +111,6 @@ namespace Chicane
 
             // Frame
             int                               m_currentImageIndex;
-
-            // Viewport
-            vk::Viewport                      m_vkViewport;
-            vk::Rect2D                        m_vkScissor;
         };
     }
 }

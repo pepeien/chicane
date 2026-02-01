@@ -7,8 +7,6 @@
 #include "Chicane/Box/Model/Manager.hpp"
 #include "Chicane/Box/Texture/Manager.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
 #include "Chicane/Kerb.hpp"
 
 #include "Chicane/Runtime/Scene/Actor/Sky.hpp"
@@ -179,12 +177,24 @@ namespace Chicane
 
         m_window = std::make_unique<Window>();
         m_window->init(inCreateInfo);
-        m_window->watchSize([&](const Vec<2, int>& inSize) {
-            if (hasView())
+        m_window->watchSize(
+            [&](const Vec<2, int>& inSize)
             {
-                m_view->setSize(inSize.x, inSize.y);
+                if (hasView())
+                {
+                    m_view->setSize(inSize.x, inSize.y);
+                }
             }
-        });
+        );
+        m_window->watchEvent(
+            [&](WindowEvent inEvent)
+            {
+                if (hasView())
+                {
+                    m_view->handle(inEvent);
+                }
+            }
+        );
     }
 
     void Application::initRenderer(WindowBackend inBackend)
@@ -200,27 +210,33 @@ namespace Chicane
 
     void Application::initBox()
     {
-        Box::getModelManager()->watchInstances([&](const Box::ModelExtracted& inModel) {
-            for (const auto& [id, poly] : Box::getModelManager()->getInstances())
+        Box::getModelManager()->watch(
+            [&](const Box::ModelManager::Instances& inInstances)
             {
-                Renderer::DrawPolyData data;
-                data.reference = id;
-                data.vertices  = poly.vertices;
-                data.indices   = poly.indices;
+                for (const auto& [id, poly] : inInstances)
+                {
+                    Renderer::DrawPolyData data;
+                    data.reference = id;
+                    data.vertices  = poly.vertices;
+                    data.indices   = poly.indices;
 
-                m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                    m_renderer->loadPoly(Renderer::DrawPolyType::e3D, data);
+                }
             }
-        });
-        Box::getTextureManager()->watchDatum([&](const Image& inTexture) {
-            for (const auto& [id, texture] : Box::getTextureManager()->getDatum())
+        );
+        Box::getTextureManager()->watch(
+            [&](const Box::TextureManager::Instances& inInstances)
             {
-                Renderer::DrawTextureData data;
-                data.reference = id;
-                data.image     = texture;
+                for (const auto& [id, texture] : inInstances)
+                {
+                    Renderer::DrawTextureData data;
+                    data.reference = id;
+                    data.image     = texture;
 
-                m_renderer->loadTexture(data);
+                    m_renderer->loadTexture(data);
+                }
             }
-        });
+        );
 
         Box::init();
     }
@@ -248,14 +264,12 @@ namespace Chicane
 
         for (CLight* light : m_scene->getActiveComponents<CLight>())
         {
-            light->setViewport(m_renderer->getViewport().size);
-
             m_renderer->addLight(light->getData());
         }
 
         for (CMesh* mesh : m_scene->getActiveComponents<CMesh>())
         {
-            if (!mesh->hasMesh() || !mesh->isActive())
+            if (!mesh->hasMesh())
             {
                 continue;
             }
@@ -313,12 +327,22 @@ namespace Chicane
             data.indices          = primitive.indices;
             Renderer::Draw::Id id = m_renderer->loadPoly(Renderer::DrawPolyType::e2D, data);
 
+            const Vec2&        position = component->getPosition();
+            const Grid::Style& style    = component->getStyle();
+
+            const Color::Rgba backgroundColor = style.background.color.get();
+
             Renderer::DrawPoly2DInstance draw;
-            draw.screen     = viewSize;
-            draw.size       = component->getSize();
-            draw.position.x = component->getPosition().x;
-            draw.position.y = component->getPosition().y;
-            draw.position.z = component->getStyle().zIndex;
+            draw.screen   = viewSize;
+            draw.size     = component->getSize();
+            draw.position = {position.x, position.y, style.zIndex.get()};
+            draw.texture  = m_renderer->findTexture(style.background.image.get());
+            draw.color    = {
+                backgroundColor.r,
+                backgroundColor.g,
+                backgroundColor.b,
+                (draw.texture >= 0 ? 255.0f : backgroundColor.a) * style.opacity.get()
+            };
             m_renderer->drawPoly(id, draw);
         }
     }

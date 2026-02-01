@@ -2,6 +2,8 @@
 
 #include "Chicane/Box.hpp"
 
+#include "Chicane/Core/Math/Vertex.hpp"
+
 namespace Chicane
 {
     namespace Box
@@ -9,11 +11,8 @@ namespace Chicane
         struct CHICANE_BOX ModelParsed
         {
         public:
-            std::uint32_t vertexCount   = 0;
-            std::uint32_t firstVertex   = 0;
-            std::uint32_t firstInstance = 0;
-            std::uint32_t indexCount    = 0;
-            std::uint32_t firstIndex    = 0;
+            Vertex::List    vertices = {};
+            Vertex::Indices indices  = {};
         };
     }
 }

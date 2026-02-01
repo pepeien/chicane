@@ -17,7 +17,7 @@ namespace Chicane
             using List = std::vector<DrawTexture>;
 
         public:
-            Image image;
+            Image image = {};
         };
     }
 }

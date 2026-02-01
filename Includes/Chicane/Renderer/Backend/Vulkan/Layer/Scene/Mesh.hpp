@@ -32,11 +32,11 @@ namespace Chicane
             void initFramebuffers();
 
         private:
-            std::unique_ptr<VulkanGraphicsPipeline> m_graphicsPipeline;
+            VulkanGraphicsPipeline      m_graphicsPipeline;
 
-            VulkanDescriptorBundle                  m_frameDescriptor;
+            VulkanDescriptorBundle      m_frameDescriptor;
 
-            std::vector<vk::ClearValue>             m_clear;
+            std::vector<vk::ClearValue> m_clear;
         };
     }
 }

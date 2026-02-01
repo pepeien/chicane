@@ -14,9 +14,7 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanQueueFamilyIndices
         {
         public:
-            VulkanQueueFamilyIndices(
-                const vk::PhysicalDevice& inPhysicalDevice, const vk::SurfaceKHR& inSurface
-            );
+            VulkanQueueFamilyIndices(const vk::PhysicalDevice& inPhysicalDevice, const vk::SurfaceKHR& inSurface);
 
         public:
             bool isComplete();

@@ -72,8 +72,9 @@ namespace Chicane
 
             glClear(GL_DEPTH_BUFFER_BIT);
 
-            glDisable(GL_DEPTH_TEST);
-            glDepthMask(GL_FALSE);
+            glEnable(GL_DEPTH_TEST);
+            glDepthMask(GL_TRUE);
+            glDepthFunc(GL_LEQUAL);
 
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -118,8 +119,7 @@ namespace Chicane
             GLint result = GL_FALSE;
 
             // Vertex
-            const std::vector<char> vertexShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.overt");
+            const std::vector<char> vertexShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.overt");
 
             GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderBinary(
@@ -139,8 +139,7 @@ namespace Chicane
             result = GL_FALSE;
 
             // Fragment
-            const std::vector<char> fragmentShaderCode =
-                FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.ofrag");
+            const std::vector<char> fragmentShaderCode = FileSystem::read("Contents/Engine/Shaders/OpenGL/Grid.ofrag");
 
             GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderBinary(
@@ -192,26 +191,12 @@ namespace Chicane
 
             // Position
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 0);
-            glVertexArrayAttribFormat(
-                m_primitiveVertexArray,
-                0,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                offsetof(Vertex, position)
-            );
+            glVertexArrayAttribFormat(m_primitiveVertexArray, 0, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, position));
             glVertexArrayAttribBinding(m_primitiveVertexArray, 0, 0);
 
             // Color
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 1);
-            glVertexArrayAttribFormat(
-                m_primitiveVertexArray,
-                1,
-                4,
-                GL_FLOAT,
-                GL_FALSE,
-                offsetof(Vertex, color)
-            );
+            glVertexArrayAttribFormat(m_primitiveVertexArray, 1, 4, GL_FLOAT, GL_FALSE, offsetof(Vertex, color));
             glVertexArrayAttribBinding(m_primitiveVertexArray, 1, 0);
 
             // UV
@@ -221,26 +206,14 @@ namespace Chicane
 
             // Normal
             glEnableVertexArrayAttrib(m_primitiveVertexArray, 3);
-            glVertexArrayAttribFormat(
-                m_primitiveVertexArray,
-                3,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                offsetof(Vertex, normal)
-            );
+            glVertexArrayAttribFormat(m_primitiveVertexArray, 3, 3, GL_FLOAT, GL_FALSE, offsetof(Vertex, normal));
             glVertexArrayAttribBinding(m_primitiveVertexArray, 3, 0);
         }
 
         void OpenGLLGrid::buildPrimitiveIndexBuffer()
         {
             glCreateBuffers(1, &m_primitiveIndexBuffer);
-            glNamedBufferData(
-                m_primitiveIndexBuffer,
-                sizeof(std::uint32_t) * 10000,
-                nullptr,
-                GL_DYNAMIC_DRAW
-            );
+            glNamedBufferData(m_primitiveIndexBuffer, sizeof(std::uint32_t) * 10000, nullptr, GL_DYNAMIC_DRAW);
         }
 
         void OpenGLLGrid::destroyPrimitiveData()

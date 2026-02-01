@@ -1,6 +1,6 @@
 #include "Actor/Structure.hpp"
 
-#include "Chicane/Runtime/Application.hpp"
+#include <Chicane/Runtime/Application.hpp>
 
 Strcuture::Strcuture()
     : Chicane::Actor(),

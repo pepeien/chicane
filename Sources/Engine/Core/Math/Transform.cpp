@@ -9,16 +9,13 @@ namespace Chicane
         return m_matrix;
     }
 
-    void Transform::setMatrix(const Mat4& inMatrix)
-    {
-        m_matrix = inMatrix;
-    }
-
     void Transform::setTransform(const Transform& inTransform)
     {
-        setTranslation(inTransform.getTranslation());
-        setRotation(inTransform.getRotation());
-        setScale(inTransform.getScale());
+        m_translation = inTransform.m_translation;
+        m_rotation    = inTransform.m_rotation;
+        m_scale       = inTransform.m_scale;
+
+        refresh();
     }
 
     const Vec3& Transform::getTranslation() const
@@ -40,32 +37,17 @@ namespace Chicane
 
     const Vec3& Transform::getRotation() const
     {
-        return m_rotation;
+        return m_rotation.getVector();
     }
 
     void Transform::addRotation(const Vec3& inRotation)
     {
-        setRotation(m_rotation + inRotation);
+        m_rotation.add(inRotation);
     }
 
     void Transform::setRotation(const Vec3& inRotation)
     {
-        m_rotation = inRotation;
-
-        if (std::abs(m_rotation.x) > 360.0f)
-        {
-            m_rotation.x = 0.0f;
-        }
-
-        if (std::abs(m_rotation.y) > 360.0f)
-        {
-            m_rotation.y = 0.0f;
-        }
-
-        if (std::abs(m_rotation.z) > 360.0f)
-        {
-            m_rotation.z = 0.0f;
-        }
+        m_rotation.set(inRotation);
 
         refresh();
     }
@@ -89,42 +71,29 @@ namespace Chicane
 
     const Vec3& Transform::getRight() const
     {
-        return m_right;
+        return m_rotation.getRight();
     }
 
     const Vec3& Transform::getForward() const
     {
-        return m_forward;
+        return m_rotation.getForward();
     }
 
     const Vec3& Transform::getUp() const
     {
-        return m_up;
+        return m_rotation.getUp();
     }
 
-    void Transform::refreshOrientation(const QuatFloat& inOrientation)
+    const QuatFloat& Transform::getOrientation() const
     {
-        m_forward = glm::rotate(inOrientation, Vec3::Forward);
-        m_right   = glm::rotate(inOrientation, Vec3::Right);
-        m_up      = glm::rotate(inOrientation, Vec3::Up);
-    }
-
-    void Transform::refreshTransform(const QuatFloat& inOrientation)
-    {
-        m_matrix = glm::translate(BASE_MAT, m_translation); // Transalate
-        m_matrix *= glm::toMat4(inOrientation);             // Rotate
-        m_matrix = glm::scale(m_matrix, m_scale);           // Scale
+        return m_rotation.getOrientation();
     }
 
     void Transform::refresh()
     {
-        QuatFloat orientation = glm::normalize(
-            glm::angleAxis(glm::radians(m_rotation.z), Vec3::Up) *    // Yaw
-            glm::angleAxis(glm::radians(m_rotation.x), Vec3::Right) * // Pitch
-            glm::angleAxis(glm::radians(m_rotation.y), Vec3::Forward) // Roll
-        );
-
-        refreshOrientation(orientation);
-        refreshTransform(orientation);
+        m_matrix = glm::translate(Mat4::One, m_translation);
+        m_matrix *= glm::toMat4(m_rotation.getOrientation());
+        m_matrix = glm::scale(m_matrix, m_scale);
     }
+
 }

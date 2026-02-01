@@ -22,9 +22,7 @@ namespace Chicane
                 const vk::FormatFeatureFlags&  inFeatures
             );
 
-            CHICANE_RENDERER void initInstance(
-                vk::Image& outInstance, const VulkanImageCreateInfo& inCreateInfo
-            );
+            CHICANE_RENDERER void initInstance(vk::Image& outInstance, const VulkanImageCreateInfo& inCreateInfo);
             CHICANE_RENDERER void initSampler(
                 vk::Sampler& outSampler, const VulkanImageSamplerCreateInfo& inCreateInfo
             );
@@ -34,9 +32,7 @@ namespace Chicane
                 const VulkanImageMemoryCreateInfo& inCreateInfo
             );
             CHICANE_RENDERER void initView(
-                vk::ImageView&                   outImageView,
-                const vk::Image&                 inInstance,
-                const VulkanImageViewCreateInfo& inCreateInfo
+                vk::ImageView& outImageView, const vk::Image& inInstance, const VulkanImageViewCreateInfo& inCreateInfo
             );
 
             CHICANE_RENDERER void transitionLayout(

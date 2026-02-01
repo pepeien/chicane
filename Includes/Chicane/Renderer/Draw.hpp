@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_RENDERER Draw
         {
         public:
-            using Id            = int;
+            using Id            = std::int32_t;
             using Reference     = String;
             using ReferenceList = std::vector<Reference>;
 

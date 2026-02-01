@@ -84,21 +84,25 @@ namespace Chicane
             return;
         }
 
+        if (isAttached())
+        {
+            m_parentSubscription.complete();
+        }
+
         m_parent = inParent;
 
         if (isAttached())
         {
-            m_parentSubscription.complete();
-            m_parentSubscription = m_parent->watchChanges([&]() {
-                Transform transform = {};
-                transform.setTranslation(m_parent->getTranslation());
-                transform.setRotation(m_parent->getRotation());
-                transform.setScale(m_parent->getScale());
+            m_parentSubscription = m_parent->watchChanges(
+                [this]()
+                {
+                    setAbsoluteTranslation(m_parent->getTranslation());
+                    setAbsoluteRotation(m_parent->getRotation());
+                    setAbsoluteScale(m_parent->getScale());
 
-                setAbsolute(transform);
-
-                onTransform();
-            });
+                    onTransform();
+                }
+            );
         }
 
         onAttachment(inParent);

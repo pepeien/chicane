@@ -20,8 +20,7 @@ namespace Chicane
             }
 
             void pickSurfaceFormat(
-                vk::SurfaceFormatKHR&                    outSurfaceFormat,
-                const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
+                vk::SurfaceFormatKHR& outSurfaceFormat, const std::vector<vk::SurfaceFormatKHR>& inSurfaceFormats
             )
             {
                 if (inSurfaceFormats.empty())
@@ -99,23 +98,7 @@ namespace Chicane
 
                 vk::Extent2D extent = supportDetails.capabilities.currentExtent;
 
-                std::uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
-
-                if (supportDetails.capabilities.maxImageCount > 0)
-                {
-                    if (imageCount > supportDetails.capabilities.maxImageCount)
-                    {
-                        imageCount = supportDetails.capabilities.maxImageCount;
-                    }
-                    else
-                    {
-                        imageCount = std::min(supportDetails.capabilities.maxImageCount, MAX_IMAGE_COUNT);
-                    }
-                }
-                else
-                {
-                    imageCount = std::max(supportDetails.capabilities.minImageCount, MAX_IMAGE_COUNT);
-                }
+                std::uint32_t imageCount = supportDetails.capabilities.minImageCount;
 
                 vk::SwapchainCreateInfoKHR createInfo = {};
                 createInfo.surface                    = inSurface;
@@ -148,12 +131,10 @@ namespace Chicane
                 createInfo.clipped        = VK_TRUE;
                 createInfo.oldSwapchain   = vk::SwapchainKHR(nullptr);
 
-                outSwapChain.instance         = inLogicalDevice.createSwapchainKHR(createInfo);
-                outSwapChain.colorFormat      = surfaceFormat.format;
-                outSwapChain.depthFormat      = depthFormat;
-                outSwapChain.extent           = extent;
-                outSwapChain.midPoints.width  = extent.width / 2;
-                outSwapChain.midPoints.height = extent.height / 2;
+                outSwapChain.instance    = inLogicalDevice.createSwapchainKHR(createInfo);
+                outSwapChain.colorFormat = surfaceFormat.format;
+                outSwapChain.depthFormat = depthFormat;
+                outSwapChain.extent      = extent;
 
                 std::vector<vk::Image> images = inLogicalDevice.getSwapchainImagesKHR(outSwapChain.instance);
                 outSwapChain.frames.resize(images.size());

@@ -227,68 +227,71 @@ namespace Chicane
 
     void Controller::setupEvents()
     {
-        Application::getInstance().getWindow()->watchEvent([this](WindowEvent inEvent) {
-            m_mouseButtonEvents.repeat();
-            m_keyboardKeyEvents.repeat();
-            m_gamepadButtonEvents.repeat();
-
-            switch (inEvent.type)
+        Application::getInstance().getWindow()->watchEvent(
+            [this](WindowEvent inEvent)
             {
-            // Gamepad
-            case WindowEventType::GamepadAdded:
-            case WindowEventType::GamepadRemoved:
-                setupDefaultGamepad();
+                m_mouseButtonEvents.repeat();
+                m_keyboardKeyEvents.repeat();
+                m_gamepadButtonEvents.repeat();
 
-                break;
+                switch (inEvent.type)
+                {
+                // Gamepad
+                case WindowEventType::GamepadAdded:
+                case WindowEventType::GamepadRemoved:
+                    setupDefaultGamepad();
 
-            case WindowEventType::GamepadAxisMotion:
-                onGamepadMotionEvent(inEvent.data);
+                    break;
 
-                break;
+                case WindowEventType::GamepadAxisMotion:
+                    onGamepadMotionEvent(inEvent.data);
 
-            case WindowEventType::GamepadButtonDown:
-            case WindowEventType::GamepadButtonUp:
-                onGamepadButtonEvent(inEvent.data);
+                    break;
 
-                break;
+                case WindowEventType::GamepadButtonDown:
+                case WindowEventType::GamepadButtonUp:
+                    onGamepadButtonEvent(inEvent.data);
 
-            // Keyboard
-            case WindowEventType::KeyboardAdded:
-            case WindowEventType::KeyboardRemoved:
-                setupDefaultKeyboard();
+                    break;
 
-                break;
+                // Keyboard
+                case WindowEventType::KeyboardAdded:
+                case WindowEventType::KeyboardRemoved:
+                    setupDefaultKeyboard();
 
-            case WindowEventType::KeyDown:
-            case WindowEventType::KeyUp:
-                onKeyboardButtonEvent(inEvent.data);
+                    break;
 
-                break;
+                case WindowEventType::KeyDown:
+                case WindowEventType::KeyUp:
+                    onKeyboardButtonEvent(inEvent.data);
 
-            // Mouse
-            case WindowEventType::MouseAdded:
-            case WindowEventType::MouseRemoved:
-                setupDefaultMouse();
+                    break;
 
-                break;
+                // Mouse
+                case WindowEventType::MouseAdded:
+                case WindowEventType::MouseRemoved:
+                    setupDefaultMouse();
 
-            case WindowEventType::MouseMotion:
-                onMouseMotionEvent(inEvent.data);
+                    break;
 
-                break;
+                case WindowEventType::MouseMotion:
+                    onMouseMotionEvent(inEvent.data);
 
-            case WindowEventType::MouseButtonDown:
-            case WindowEventType::MouseButtonUp:
-                onMouseButtonEvent(inEvent.data);
+                    break;
 
-                break;
+                case WindowEventType::MouseButtonDown:
+                case WindowEventType::MouseButtonUp:
+                    onMouseButtonEvent(inEvent.data);
 
-            default:
-                break;
+                    break;
+
+                default:
+                    break;
+                }
+
+                onEvent(inEvent);
             }
-
-            onEvent(inEvent);
-        });
+        );
     }
 
     void Controller::clearEvents()

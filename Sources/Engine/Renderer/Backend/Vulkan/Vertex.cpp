@@ -10,7 +10,7 @@ namespace Chicane
         {
             vk::VertexInputBindingDescription getBindingDescription()
             {
-                vk::VertexInputBindingDescription bindingDescription{};
+                vk::VertexInputBindingDescription bindingDescription;
                 bindingDescription.binding   = 0;
                 bindingDescription.stride    = sizeof(Chicane::Vertex);
                 bindingDescription.inputRate = vk::VertexInputRate::eVertex;

@@ -1,11 +1,10 @@
 #version 460
 
+#extension GL_ARB_shading_language_include : require
 #extension GL_ARB_shader_draw_parameters : require
 
-struct Instance {
-    mat4 model;
-    int texture;
-};
+#include "../../Common/Constant.glsl"
+#include "../../Common/Poly/3D.glsl"
 
 layout(binding = 0) uniform Camera {
     vec4 clip;
@@ -13,9 +12,9 @@ layout(binding = 0) uniform Camera {
     mat4 view;
     mat4 projection;
 
-    vec4 forward;
-    vec4 right;
     vec4 up;
+    vec4 right;
+    vec4 forward;
 
     vec4 translation;
 } camera;
@@ -26,49 +25,46 @@ layout(binding = 1) uniform Light {
     mat4 view;
     mat4 projection;
 
-    vec4 forward;
-    vec4 right;
     vec4 up;
+    vec4 right;
+    vec4 forward;
 
     vec4 translation;
 } light;
 
-layout(std430, binding = 2) buffer MeshBuffer {
-    Instance data[];
-} instances;
+layout(std430, binding = 2) readonly buffer Scene {
+    PolyInstance3D meshes[];
+} instance;
 
-layout(location = 0) out flat int outTextureIndex;
-layout(location = 1) out vec2 outUV;
-layout(location = 2) out vec3 outNormal;
-layout(location = 3) out vec4 outColor;
-layout(location = 4) out vec3 outViewPosition;
-layout(location = 5) out vec3 outLightPosition;
-layout(location = 8) out vec4 outShadowPosition; 
+layout(location = 0) out Data {
+    flat int textureIndex;
+    vec2 UV;
+    vec3 normal;
+    vec4 color;
+    vec3 meshPosition;
+    vec4 shadowPosition;
+    vec3 lightPosition;
+    vec3 cameraPosition;
+} outData;
 
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec4 inColor;
 layout(location = 2) in vec2 inUV;
 layout(location = 3) in vec3 inNormal;
 
-const mat4 biasMat = mat4( 
-	0.5, 0.0, 0.0, 0.0,
-	0.0, 0.5, 0.0, 0.0,
-	0.0, 0.0, 1.0, 0.0,
-	0.5, 0.5, 0.0, 1.0
-);
-
 void main() {
-    Instance instance = instances.data[gl_InstanceID + gl_BaseInstance];
+    PolyInstance3D mesh = instance.meshes[gl_InstanceID + gl_BaseInstance];
 
     vec4 position = vec4(inPosition, 1.0);
 
-    outTextureIndex   = instance.texture;
-    outUV             = inUV;
-    outNormal         = transpose(inverse(mat3(instance.model))) * inNormal;
-    outColor          = inColor;
-    outViewPosition   = normalize(camera.translation.xyz - inPosition);
-    outLightPosition  = normalize(light.translation.xyz - inPosition);
-    outShadowPosition = (biasMat * light.view * light.projection * instance.model) * position;
+    outData.textureIndex   = mesh.texture;
+    outData.UV             = inUV;
+    outData.normal         = transpose(mat3(mesh.model)) * inNormal;
+    outData.color          = inColor;
+    outData.meshPosition   = vec3(mesh.model * position);
+    outData.shadowPosition = light.projection * light.view * vec4(outData.meshPosition, 1.0);
+    outData.lightPosition  = light.translation.xyz;
+    outData.cameraPosition = camera.translation.xyz;
 
-    gl_Position = camera.view * camera.projection * instance.model * position;
+    gl_Position = camera.projection * camera.view * mesh.model * position;
 }

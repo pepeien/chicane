@@ -8,6 +8,7 @@
 
 #include "Chicane/Grid.hpp"
 #include "Chicane/Grid/Style/Direction.hpp"
+#include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
@@ -17,45 +18,43 @@ namespace Chicane
         struct CHICANE_GRID StyleCorners
         {
         public:
-            StyleCorners(
-                const String& inOnelineAttributeName,
-                const String& inTopAttributeName,
-                const String& inBottomAttributeName,
-                const String& inLeftAttributeName,
-                const String& inRightAttributeName
-            );
+            StyleCorners();
 
         public:
             friend bool operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
             {
                 return (
-                    std::fabs(inLeft.top - inRight.top) < FLT_EPSILON &&
-                    std::fabs(inLeft.bottom - inRight.bottom) < FLT_EPSILON &&
-                    std::fabs(inLeft.left - inRight.left) < FLT_EPSILON &&
-                    std::fabs(inLeft.right - inRight.right) < FLT_EPSILON
+                    std::fabs(inLeft.top.get() - inRight.top.get()) < FLT_EPSILON &&
+                    std::fabs(inLeft.bottom.get() - inRight.bottom.get()) < FLT_EPSILON &&
+                    std::fabs(inLeft.left.get() - inRight.left.get()) < FLT_EPSILON &&
+                    std::fabs(inLeft.right.get() - inRight.right.get()) < FLT_EPSILON
                 );
             }
 
         public:
-            void setAll(float inValue);
+            void refresh();
 
-            bool refresh(
-                const StyleSource::Map&                             inSource,
-                std::function<float(const String&, StyleDirection)> inCalculator
+            void setProperties(
+                const StyleSource::Map& inProperties,
+                const String&           inOnelineAttributeName,
+                const String&           inTopAttributeName,
+                const String&           inBottomAttributeName,
+                const String&           inLeftAttributeName,
+                const String&           inRightAttributeName
             );
 
-        public:
-            float top;
-            float bottom;
-            float left;
-            float right;
+            void parseWith(std::function<float(const String&, StyleDirection)> inParser);
+
+            void setAll(float inValue);
 
         private:
-            String m_onelineAttributeName;
-            String m_topAttributeName;
-            String m_bottomAttributeName;
-            String m_leftAttributeName;
-            String m_rightAttributeName;
+            void setOnelinerAttribute(const String& inValue);
+
+        public:
+            StyleProperty<float> top;
+            StyleProperty<float> bottom;
+            StyleProperty<float> left;
+            StyleProperty<float> right;
         };
     }
 }

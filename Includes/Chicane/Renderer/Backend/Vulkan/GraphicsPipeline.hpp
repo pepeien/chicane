@@ -6,7 +6,7 @@
 #include "Chicane/Core/Math/Vec/Vec2.hpp"
 
 #include "Chicane/Renderer.hpp"
-#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/CreateInfo.hpp"
+#include "Chicane/Renderer/Backend/Vulkan/GraphicsPipeline/Attachment.hpp"
 
 namespace Chicane
 {
@@ -16,8 +16,7 @@ namespace Chicane
         {
         public:
             static vk::Viewport createViewport(
-                const Vec<2, std::uint32_t>& inSize     = Vec<2, std::uint32_t>(0),
-                const Vec2&                  inPosition = Vec2::Zero
+                const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0), const Vec2& inPosition = Vec2::Zero
             );
             static vk::Rect2D createScissor(const Vec<2, std::uint32_t>& inSize = Vec<2, std::uint32_t>(0));
             static vk::PipelineVertexInputStateCreateInfo createVertexInputState();
@@ -29,10 +28,10 @@ namespace Chicane
                 const std::vector<vk::DynamicState>& inDynamicStates
             );
             static vk::PipelineRasterizationStateCreateInfo createRasterizationState(
-                vk::PolygonMode inPolygonMode
+                vk::PolygonMode inPolygonMode = vk::PolygonMode::eFill
             );
             static vk::PipelineMultisampleStateCreateInfo createMulitsampleState();
-            static vk::PipelineColorBlendAttachmentState createBlendAttachmentState();
+            static vk::PipelineColorBlendAttachmentState createBlendAttachmentState(bool bInIsEnabled = true);
             static vk::PipelineColorBlendStateCreateInfo createColorBlendState();
             static vk::PipelineDepthStencilStateCreateInfo createDepthStencilState();
             static vk::PipelineLayout createLayout(
@@ -50,16 +49,17 @@ namespace Chicane
             static vk::SubpassDependency createDepthSubpassDepedency();
             static vk::RenderPass createRendepass(
                 const std::vector<vk::AttachmentDescription>& inAttachments,
-                const vk::Device&                             inLogicalDevice,
-                bool                                          bInHasColor,
-                bool                                          bInHasDepth
+                const std::vector<vk::SubpassDependency>&     inSubpassDepedencies,
+                const std::vector<vk::SubpassDescription>&    inSubpasses,
+                const vk::Device&                             inLogicalDevice
             );
 
         public:
-            VulkanGraphicsPipeline(const VulkanGraphicsPipelineCreateInfo& inCreateInfo);
+            VulkanGraphicsPipeline() = default;
             ~VulkanGraphicsPipeline();
 
         public:
+            void init(const vk::Device& inLogicalDevice, const vk::GraphicsPipelineCreateInfo& inCreateInfo);
             void bind(vk::CommandBuffer& inCommandBuffer);
             void bindDescriptorSet(
                 vk::CommandBuffer& inCommandBuffer, std::uint32_t inIndex, vk::DescriptorSet inDescriptorSet

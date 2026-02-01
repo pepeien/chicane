@@ -17,7 +17,7 @@ namespace Chicane
             void initFence(vk::Fence& outFence, const vk::Device& inLogicalDevice)
             {
                 vk::FenceCreateInfo fenceCreateInfo = {};
-                fenceCreateInfo.flags = vk::FenceCreateFlags() | vk::FenceCreateFlagBits::eSignaled;
+                fenceCreateInfo.flags               = vk::FenceCreateFlags() | vk::FenceCreateFlagBits::eSignaled;
 
                 outFence = inLogicalDevice.createFence(fenceCreateInfo);
             }

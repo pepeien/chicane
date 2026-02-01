@@ -4,6 +4,7 @@
 
 #include "Chicane/Core.hpp"
 #include "Chicane/Core/Math/Vec.hpp"
+#include "Chicane/Core/View/Projection/Type.hpp"
 
 namespace Chicane
 {
@@ -15,5 +16,6 @@ namespace Chicane
         float                 fieldOfView = 45.0f;
         float                 nearClip    = 0.1f;
         float                 farClip     = 1000.0f;
+        ViewProjectionType    projection  = ViewProjectionType::Perspective;
     };
 }

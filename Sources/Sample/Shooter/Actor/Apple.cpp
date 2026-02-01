@@ -1,8 +1,6 @@
 #include "Actor/Apple.hpp"
 
-#include "Chicane/Core.hpp"
-
-#include "Chicane/Runtime/Application.hpp"
+#include <Chicane/Runtime/Application.hpp>
 
 #include "Game.hpp"
 
@@ -12,7 +10,8 @@ Apple::Apple()
       m_fallRate(std::max(0.001f, (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 0.02f)),
       m_startPosition(Chicane::Vec3::Zero),
       m_meshComponent(nullptr),
-      m_physicsComponent(nullptr)
+      m_physicsComponent(nullptr),
+      m_hitSound(nullptr)
 {
     setCanTick(true);
     setCanCollide(true);
@@ -25,6 +24,11 @@ Apple::Apple()
     m_physicsComponent = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CPhysics>();
     m_physicsComponent->attachTo(this);
     m_physicsComponent->activate();
+
+    m_hitSound = Chicane::Application::getInstance().getScene()->createComponent<Chicane::CSound>();
+    m_hitSound->load("Contents/Sample/Shooter/Sounds/Hit.bsnd");
+    m_hitSound->attachTo(this);
+    m_hitSound->activate();
 }
 
 void Apple::onTick(float inDeltaTime)
@@ -52,6 +56,8 @@ void Apple::onHit(const Chicane::Actor* inSubject)
     Chicane::Application::getInstance().getScene()->removeComponent(m_meshComponent);
 
     Game::incrementScore(1);
+
+    m_hitSound->play();
 }
 
 void Apple::setInitialPosition(const Chicane::Vec3& inPosition)

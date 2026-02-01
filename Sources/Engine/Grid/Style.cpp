@@ -12,9 +12,7 @@ namespace Chicane
     {
         StyleSource::List Style::parseSources(const pugi::xml_node& inNode)
         {
-            return parseSources(
-                FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string())
-            );
+            return parseSources(FileSystem::Path(Xml::getAttribute(Style::ATTRIBUTE_NAME, inNode).as_string()));
         }
 
         StyleSource::List Style::parseSources(const FileSystem::Path& inFilePath)
@@ -100,68 +98,216 @@ namespace Chicane
         Style::Style(const StyleSource::Map& inProperties, Component* inParent)
             : Style()
         {
-            setProperties(inProperties);
             setParent(inParent);
+            setProperties(inProperties);
         }
 
         Style::Style()
-            : Changeable(),
-              display(StyleDisplay::Block),
+            : display(StyleDisplay::Block),
               zIndex(0.0f),
               width(0.0f),
               height(0.0f),
               flex({}),
               position(StylePosition::Relative),
               align(StyleAlignment::Start),
-              justify(StyleAlignment::Start),
-              margin(
-                  Style::MARGIN_ATTRIBUTE_NAME,
-                  Style::MARGIN_TOP_ATTRIBUTE_NAME,
-                  Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
-                  Style::MARGIN_LEFT_ATTRIBUTE_NAME,
-                  Style::MARGIN_RIGHT_ATTRIBUTE_NAME
-              ),
-              padding(
-                  Style::PADDING_ATTRIBUTE_NAME,
-                  Style::PADDING_TOP_ATTRIBUTE_NAME,
-                  Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
-                  Style::PADDING_LEFT_ATTRIBUTE_NAME,
-                  Style::PADDING_RIGHT_ATTRIBUTE_NAME
-              ),
-              gap(Style::GAP_ATTRIBUTE_NAME,
-                  Style::GAP_TOP_ATTRIBUTE_NAME,
-                  Style::GAP_BOTTOM_ATTRIBUTE_NAME,
-                  Style::GAP_LEFT_ATTRIBUTE_NAME,
-                  Style::GAP_RIGHT_ATTRIBUTE_NAME),
-              backgroundColor(Color::toRgba(Color::TEXT_COLOR_TRANSPARENT)),
+              margin({}),
+              padding({}),
+              gap({}),
+              background({}),
               foregroundColor(Color::toRgba(Color::TEXT_COLOR_WHITE)),
-              font(StyleFont()),
+              opacity(OPACITY_DEFAULT_VALUE),
+              font({}),
               letterSpacing(0.0f),
-              m_properties({}),
               m_parent(nullptr)
-        {}
+        {
+            display.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    if (value.equals(DISPLAY_TYPE_NONE))
+                    {
+                        return StyleDisplay::None;
+                    }
+
+                    if (value.equals(DISPLAY_TYPE_FLEX))
+                    {
+                        return StyleDisplay::Flex;
+                    }
+
+                    if (value.equals(DISPLAY_TYPE_HIDDEN))
+                    {
+                        return StyleDisplay::Hidden;
+                    }
+
+                    return StyleDisplay::Block;
+                }
+            );
+
+            zIndex.parseWith([this](const String& inValue) { return parseNumber(inValue); });
+
+            width.parseWith([this](const String& inValue) { return parseSize(inValue, StyleDirection::Horizontal); });
+
+            height.parseWith([this](const String& inValue) { return parseSize(inValue, StyleDirection::Vertical); });
+
+            flex.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
+                    {
+                        return StyleFlexDirection::Column;
+                    }
+
+                    return StyleFlexDirection::Row;
+                }
+            );
+
+            position.parseWith(
+                [this](const String& inValue)
+                {
+                    const String value = parseText(inValue);
+
+                    if (value.equals(POSITION_TYPE_ABSOLUTE))
+                    {
+                        return StylePosition::Absolute;
+                    }
+
+                    return StylePosition::Relative;
+                }
+            );
+
+            align.parseWith(
+                [this](const String& inValue)
+                {
+                    std::vector<String> values = {};
+
+                    for (const String& block : splitOneliner(inValue))
+                    {
+                        values.push_back(parseText(block));
+                    }
+
+                    if (values.empty())
+                    {
+                        return StyleAlignment::Start;
+                    }
+
+                    return toAlignment(values.at(0));
+                }
+            );
+
+            margin.parseWith([this](const String& inValue, StyleDirection inDirection)
+                             { return parseSize(inValue, inDirection); });
+
+            padding.parseWith([this](const String& inValue, StyleDirection inDirection)
+                              { return parseSize(inValue, inDirection); });
+
+            gap.parseWith([this](const String& inValue, StyleDirection inDirection)
+                          { return parseSize(inValue, inDirection); });
+
+            background.parseWith(
+                [this](const String& inValue) { return parseColor(inValue); },
+                [this](const String& inValue) { return parseText(inValue); }
+            );
+
+            foregroundColor.parseWith([this](const String& inValue) { return parseColor(inValue); });
+
+            opacity.parseWith([this](const String& inValue) { return parseNumber(inValue); });
+
+            font.parseWith(
+                [this](const String& inValue) { return parseText(inValue); },
+                [this](const String& inValue) { return parseSize(inValue, StyleDirection::Vertical); }
+            );
+
+            letterSpacing.parseWith([this](const String& inValue)
+                                    { return parseSize(inValue, StyleDirection::Horizontal); });
+        }
 
         bool Style::isDisplay(StyleDisplay inValue) const
         {
-            return display == inValue;
+            return display.get() == inValue;
         }
 
         bool Style::isPosition(StylePosition inValue) const
         {
-            return position == inValue;
-        }
-
-        bool Style::hasProperties() const
-        {
-            return !m_properties.empty();
+            return position.get() == inValue;
         }
 
         void Style::setProperties(const StyleSource::Map& inProperties)
         {
-            for (const auto& [name, value] : inProperties)
+            if (inProperties.find(DISPLAY_ATTRIBUTE_NAME) != inProperties.end())
             {
-                m_properties[name] = value;
+                display.setRaw(inProperties.at(DISPLAY_ATTRIBUTE_NAME));
             }
+
+            if (inProperties.find(Z_INDEX_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                zIndex.setRaw(inProperties.at(Z_INDEX_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(WIDTH_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                width.setRaw(inProperties.at(WIDTH_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(HEIGHT_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                height.setRaw(inProperties.at(HEIGHT_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(POSITION_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                position.setRaw(inProperties.at(POSITION_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(ALIGNMENT_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                align.setRaw(inProperties.at(ALIGNMENT_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                foregroundColor.setRaw(inProperties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
+            }
+
+            if (inProperties.find(LETTER_SPACING_ATTRIBUTE_NAME) != inProperties.end())
+            {
+                letterSpacing.setRaw(inProperties.at(LETTER_SPACING_ATTRIBUTE_NAME));
+            }
+
+            flex.setProperties(inProperties);
+
+            background.setProperties(inProperties);
+
+            font.setProperties(inProperties);
+
+            margin.setProperties(
+                inProperties,
+                Style::MARGIN_ATTRIBUTE_NAME,
+                Style::MARGIN_TOP_ATTRIBUTE_NAME,
+                Style::MARGIN_BOTTOM_ATTRIBUTE_NAME,
+                Style::MARGIN_LEFT_ATTRIBUTE_NAME,
+                Style::MARGIN_RIGHT_ATTRIBUTE_NAME
+            );
+
+            padding.setProperties(
+                inProperties,
+                Style::PADDING_ATTRIBUTE_NAME,
+                Style::PADDING_TOP_ATTRIBUTE_NAME,
+                Style::PADDING_BOTTOM_ATTRIBUTE_NAME,
+                Style::PADDING_LEFT_ATTRIBUTE_NAME,
+                Style::PADDING_RIGHT_ATTRIBUTE_NAME
+            );
+
+            gap.setProperties(
+                inProperties,
+                Style::GAP_ATTRIBUTE_NAME,
+                Style::GAP_TOP_ATTRIBUTE_NAME,
+                Style::GAP_BOTTOM_ATTRIBUTE_NAME,
+                Style::GAP_LEFT_ATTRIBUTE_NAME,
+                Style::GAP_RIGHT_ATTRIBUTE_NAME
+            );
 
             refresh();
         }
@@ -194,227 +340,82 @@ namespace Chicane
             refreshPadding();
             refreshGap();
             refreshAlignment();
+            refreshBackground();
             refreshForegroundColor();
-            refreshBackgroundColor();
+            refreshOpacity();
             refreshFont();
             refreshLetterSpacing();
         }
 
         void Style::refreshDisplay()
         {
-            if (m_properties.find(DISPLAY_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            const String value = parseText(m_properties.at(DISPLAY_ATTRIBUTE_NAME));
-
-            if (value.equals(DISPLAY_TYPE_BLOCK))
-            {
-                setProperty(display, StyleDisplay::Block);
-            }
-
-            if (value.equals(DISPLAY_TYPE_FLEX))
-            {
-                setProperty(display, StyleDisplay::Flex);
-            }
-
-            if (value.equals(DISPLAY_TYPE_HIDDEN))
-            {
-                setProperty(display, StyleDisplay::Hidden);
-            }
+            display.refresh();
         }
 
         void Style::refreshFlex()
         {
-            if (m_properties.find(FLEX_DIRECTION_ATTRIBUTE_NAME) != m_properties.end())
-            {
-                const String value = parseText(m_properties.at(FLEX_DIRECTION_ATTRIBUTE_NAME));
-
-                if (value.equals(FLEX_DIRECTION_TYPE_COLUMN))
-                {
-                    setProperty(flex.direction, StyleFlexDirection::Column);
-                }
-
-                if (value.equals(FLEX_DIRECTION_TYPE_ROW))
-                {
-                    setProperty(flex.direction, StyleFlexDirection::Row);
-                }
-            }
+            flex.refresh();
         }
 
         void Style::refreshZIndex()
         {
-            if (m_properties.find(Z_INDEX_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            setProperty(zIndex, parseNumber(m_properties.at(Z_INDEX_ATTRIBUTE_NAME)));
+            zIndex.refresh();
         }
 
         void Style::refreshSize()
         {
-            if (m_properties.find(HEIGHT_ATTRIBUTE_NAME) != m_properties.end())
-            {
-                setProperty(
-                    height,
-                    parseSize(m_properties.at(HEIGHT_ATTRIBUTE_NAME), StyleDirection::Vertical)
-                );
-            }
-
-            if (m_properties.find(WIDTH_ATTRIBUTE_NAME) != m_properties.end())
-            {
-                setProperty(
-                    width,
-                    parseSize(m_properties.at(WIDTH_ATTRIBUTE_NAME), StyleDirection::Horizontal)
-                );
-            }
+            width.refresh();
+            height.refresh();
         }
 
         void Style::refreshPosition()
         {
-            if (m_properties.find(POSITION_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            const String value = parseText(m_properties.at(POSITION_ATTRIBUTE_NAME));
-
-            if (value.startsWith(POSITION_TYPE_ABSOLUTE))
-            {
-                setProperty(position, StylePosition::Absolute);
-
-                return;
-            }
-
-            setProperty(position, StylePosition::Relative);
+            position.refresh();
         }
 
         void Style::refreshAlignment()
         {
-            if (m_properties.find(ALIGNMENT_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            std::vector<String> values = {};
-
-            for (const String& block : splitOneliner(m_properties.at(ALIGNMENT_ATTRIBUTE_NAME)))
-            {
-                values.push_back(parseText(block));
-            }
-
-            if (values.empty())
-            {
-                return;
-            }
-
-            setProperty(align, toAlignment(values.at(0)));
-            setProperty(justify, values.size() == 1 ? align : toAlignment(values.at(1)));
+            align.refresh();
         }
 
         void Style::refreshMargin()
         {
-            if (!margin.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
-            {
-                return;
-            }
-
-            emmitChanges();
+            margin.refresh();
         }
 
         void Style::refreshPadding()
         {
-            if (!padding.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
-            {
-                return;
-            }
-
-            emmitChanges();
+            padding.refresh();
         }
 
         void Style::refreshGap()
         {
-            if (!gap.refresh(m_properties, [this](const String& inValue, StyleDirection inDirection) {
-                    return parseSize(inValue, inDirection);
-                }))
-            {
-                return;
-            }
+            gap.refresh();
+        }
 
-            emmitChanges();
+        void Style::refreshBackground()
+        {
+            background.refresh();
         }
 
         void Style::refreshForegroundColor()
         {
-            if (m_properties.find(FOREGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(FOREGROUND_COLOR_ATTRIBUTE_NAME));
-
-            if (Color::areEquals(foregroundColor, color))
-            {
-                return;
-            }
-
-            foregroundColor = color;
-
-            emmitChanges();
+            foregroundColor.refresh();
         }
 
-        void Style::refreshBackgroundColor()
+        void Style::refreshOpacity()
         {
-            if (m_properties.find(BACKGROUND_COLOR_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            const Vec<4, std::uint32_t> color = parseColor(m_properties.at(BACKGROUND_COLOR_ATTRIBUTE_NAME));
-
-            if (Color::areEquals(backgroundColor, color))
-            {
-                return;
-            }
-
-            backgroundColor = color;
-
-            emmitChanges();
+            opacity.refresh();
         }
 
         void Style::refreshFont()
         {
-            if (m_properties.find(FONT_FAMILY_ATTRIBUTE_NAME) != m_properties.end())
-            {
-                setProperty(font.family, parseText(m_properties.at(FONT_FAMILY_ATTRIBUTE_NAME)));
-            }
-
-            if (m_properties.find(FONT_SIZE_ATTRIBUTE_NAME) != m_properties.end())
-            {
-                setProperty(
-                    font.size,
-                    parseSize(m_properties.at(FONT_SIZE_ATTRIBUTE_NAME), StyleDirection::Vertical)
-                );
-            }
+            font.refresh();
         }
 
         void Style::refreshLetterSpacing()
         {
-            if (m_properties.find(LETTER_SPACING_ATTRIBUTE_NAME) == m_properties.end())
-            {
-                return;
-            }
-
-            setProperty(
-                letterSpacing,
-                parseSize(m_properties.at(LETTER_SPACING_ATTRIBUTE_NAME), StyleDirection::Horizontal)
-            );
+            letterSpacing.refresh();
         }
 
         Color::Rgba Style::parseColor(const String& inValue) const
@@ -425,9 +426,8 @@ namespace Chicane
             {
                 const String keyword = inValue.startsWith(RGBA_KEYWORD) ? RGBA_KEYWORD : RGB_KEYWORD;
 
-                const std::vector<String> params =
-                    inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
-                        .split(FUNCTION_PARAMS_SEPARATOR);
+                const std::vector<String> params = inValue.getBetween(FUNCTION_PARAMS_OPENING, FUNCTION_PARAMS_CLOSING)
+                                                       .split(FUNCTION_PARAMS_SEPARATOR);
 
                 if (params.empty())
                 {
@@ -546,8 +546,7 @@ namespace Chicane
                     continue;
                 }
 
-                const auto& iterator =
-                    std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
+                const auto& iterator = std::find(CALCULATION_OPERATORS.begin(), CALCULATION_OPERATORS.end(), character);
 
                 if (iterator == CALCULATION_OPERATORS.end() || parathesisCount > 0)
                 {
@@ -590,7 +589,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseEM(parseNumber(inValue, EM_SIZE_UNIT));
+            return parseEM(parseNumberUnit(inValue, EM_SIZE_UNIT));
         }
 
         float Style::parseEM(float inValue) const
@@ -605,7 +604,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parsePercentage(parseNumber(inValue, PERCENTAGE_SIZE_UNIT), inDirection);
+            return parsePercentage(parseNumberUnit(inValue, PERCENTAGE_SIZE_UNIT), inDirection);
         }
 
         float Style::parsePercentage(float inValue, StyleDirection inDirection) const
@@ -617,9 +616,8 @@ namespace Chicane
                 return value;
             }
 
-            const Vec2& size = isPosition(StylePosition::Absolute)
-                                   ? m_parent->getRoot()->getSize()
-                                   : m_parent->getParent()->getAvailableSize();
+            const Vec2& size = isPosition(StylePosition::Absolute) ? m_parent->getRoot()->getSize()
+                                                                   : m_parent->getParent()->getAvailableSize();
 
             if (inDirection == StyleDirection::Horizontal)
             {
@@ -636,7 +634,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseViewportHeight(parseNumber(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
+            return parseViewportHeight(parseNumberUnit(inValue, VIEWPORT_HEIGHT_SIZE_UNIT));
         }
 
         float Style::parseViewportHeight(float inValue) const
@@ -656,7 +654,7 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseViewportWidth(parseNumber(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
+            return parseViewportWidth(parseNumberUnit(inValue, VIEWPORT_WIDTH_SIZE_UNIT));
         }
 
         float Style::parseViewportWidth(float inValue) const
@@ -676,10 +674,10 @@ namespace Chicane
                 return 0.0f;
             }
 
-            return parseNumber(inValue, PIXEL_SIZE_UNIT);
+            return parseNumberUnit(inValue, PIXEL_SIZE_UNIT);
         }
 
-        float Style::parseNumber(const String& inValue, const String& inUnit) const
+        float Style::parseNumberUnit(const String& inValue, const String& inUnit) const
         {
             if (inValue.isEmpty() || inValue.size() < inUnit.size())
             {

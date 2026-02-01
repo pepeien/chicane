@@ -16,7 +16,7 @@ View::View()
       m_uiVictoryVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_victoryVisibility)),
       m_currentCamera("None"),
       m_uiCurrentCamera(Chicane::Reference::fromValue<Chicane::String>(&m_currentCamera)),
-      m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_HIDDEN),
+      m_crosshairDotVisibility(Chicane::Grid::Style::DISPLAY_TYPE_BLOCK),
       m_uiCrosshairDotVisibility(Chicane::Reference::fromValue<Chicane::String>(&m_crosshairDotVisibility)),
       m_crosshairSize(1.5f),
       m_uiCrosshairSize(Chicane::Reference::fromValue<float>(&m_crosshairSize)),
@@ -35,19 +35,23 @@ View::View()
       m_playerScore(0U),
       m_uiPlayerScore(Chicane::Reference::fromValue<std::uint32_t>(&m_playerScore))
 {
-    Game::watchScore([this](std::uint32_t inScore) {
-        m_playerScore++;
-
-        if (Game::didReachMaxScore())
+    Game::watchScore(
+        [this](std::uint32_t inScore)
         {
-            m_bDidPlayerWin = true;
+            m_playerScore++;
 
-            m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
+            if (Game::didReachMaxScore())
+            {
+                m_bDidPlayerWin = true;
+
+                m_victoryVisibility = Chicane::Grid::Style::DISPLAY_TYPE_FLEX;
+            }
         }
-    });
+    );
 
     Chicane::Application::getInstance().getScene<Level>()->watchActiveCamera(
-        [this](Chicane::ACamera* inCamera) {
+        [this](Chicane::ACamera* inCamera)
+        {
             if (inCamera == nullptr)
             {
                 m_currentCamera = "First Person";
