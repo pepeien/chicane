@@ -616,7 +616,7 @@ namespace Chicane
                 return;
             }
 
-            setSize(m_style.width, m_style.height);
+            setSize(m_style.width.get(), m_style.height.get());
         }
 
         void Component::refreshPosition()
@@ -624,16 +624,20 @@ namespace Chicane
             setPosition(0.0f, 0.0f);
 
             Vec2 margin = Vec2(
-                m_style.margin.left == m_style.margin.right ? m_style.margin.left
-                                                            : (m_style.margin.left - m_style.margin.right),
-                m_style.margin.top == m_style.margin.bottom ? m_style.margin.top
-                                                            : (m_style.margin.top - m_style.margin.bottom)
+                m_style.margin.left.get() == m_style.margin.right.get()
+                    ? m_style.margin.left.get()
+                    : (m_style.margin.left.get() - m_style.margin.right.get()),
+                m_style.margin.top.get() == m_style.margin.bottom.get()
+                    ? m_style.margin.top.get()
+                    : (m_style.margin.top.get() - m_style.margin.bottom.get())
             );
             Vec2 padding = Vec2(
-                m_style.padding.left == m_style.padding.right ? m_style.padding.left
-                                                              : (m_style.padding.left - m_style.padding.right),
-                m_style.padding.top == m_style.padding.bottom ? m_style.padding.top
-                                                              : (m_style.padding.top - m_style.padding.bottom)
+                m_style.padding.left.get() == m_style.padding.right.get()
+                    ? m_style.padding.left.get()
+                    : (m_style.padding.left.get() - m_style.padding.right.get()),
+                m_style.padding.top.get() == m_style.padding.bottom.get()
+                    ? m_style.padding.top.get()
+                    : (m_style.padding.top.get() - m_style.padding.bottom.get())
             );
 
             if (isRoot() || m_style.isPosition(StylePosition::Absolute))
@@ -653,17 +657,17 @@ namespace Chicane
             setPosition(parentCursor + addedSpacing);
             addCursor(padding);
 
-            switch (parentStyle.display)
+            switch (parentStyle.display.get())
             {
             case StyleDisplay::Flex:
                 if (parentStyle.flex.direction == StyleFlexDirection::Row)
                 {
-                    m_parent->addCursor(parentStyle.gap.left + occupiedSpace.x, 0.0f);
+                    m_parent->addCursor(parentStyle.gap.left.get() + occupiedSpace.x, 0.0f);
                 }
 
                 if (parentStyle.flex.direction == StyleFlexDirection::Column)
                 {
-                    m_parent->addCursor(0.0f, parentStyle.gap.top + occupiedSpace.y);
+                    m_parent->addCursor(0.0f, parentStyle.gap.top.get() + occupiedSpace.y);
                 }
 
                 break;

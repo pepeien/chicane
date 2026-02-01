@@ -139,7 +139,8 @@ namespace Chicane
             std::sort(
                 contenders.begin(),
                 contenders.end(),
-                [](Component* inA, Component* inB) { return inA->getStyle().zIndex > inB->getStyle().zIndex; }
+                [](Component* inA, Component* inB)
+                { return inA->getStyle().zIndex.get() > inB->getStyle().zIndex.get(); }
             );
 
             return contenders;

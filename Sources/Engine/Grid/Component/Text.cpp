@@ -15,7 +15,8 @@ namespace Chicane
             setStyle({
                 {Style::DISPLAY_ATTRIBUTE_NAME,        Style::DISPLAY_TYPE_FLEX      },
                 {Style::FLEX_DIRECTION_ATTRIBUTE_NAME, Style::FLEX_DIRECTION_TYPE_ROW},
-                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         }
+                {Style::WIDTH_ATTRIBUTE_NAME,          Style::AUTO_SIZE_UNIT         },
+                {Style::HEIGHT_ATTRIBUTE_NAME,         Style::FONT_SIZE_DEFAULT_VALUE}
             });
         }
 
@@ -25,8 +26,7 @@ namespace Chicane
 
             refreshText();
 
-            m_style.height = m_style.font.size;
-            m_style.gap.setAll(m_style.letterSpacing);
+            m_style.gap.setAll(m_style.letterSpacing.get());
         }
 
         const String& Text::getText() const

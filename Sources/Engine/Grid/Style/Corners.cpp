@@ -6,146 +6,135 @@ namespace Chicane
 {
     namespace Grid
     {
-        StyleCorners::StyleCorners(
-            const String& inOnelineAttributeName,
-            const String& inTopAttributeName,
-            const String& inBottomAttributeName,
-            const String& inLeftAttributeName,
-            const String& inRightAttributeName
-        )
+        StyleCorners::StyleCorners()
             : top(0.0f),
               bottom(0.0f),
               left(0.0f),
-              right(0.0f),
-              m_onelineAttributeName(inOnelineAttributeName),
-              m_topAttributeName(inTopAttributeName),
-              m_bottomAttributeName(inBottomAttributeName),
-              m_leftAttributeName(inLeftAttributeName),
-              m_rightAttributeName(inRightAttributeName)
+              right(0.0f)
         {}
 
-        bool StyleCorners::refresh(
-            const StyleSource::Map& inSource, std::function<float(const String&, StyleDirection)> inCalculator
-        )
+        void StyleCorners::refresh()
         {
-            if (inSource.empty())
+            top.refresh();
+            left.refresh();
+            bottom.refresh();
+            right.refresh();
+
+            if (left.getRaw().equals(Style::AUTO_SIZE_UNIT) && right.getRaw().equals(Style::AUTO_SIZE_UNIT))
             {
-                return false;
+                right.set(right.get() * 0.5f);
             }
 
+            if (top.getRaw().equals(Style::AUTO_SIZE_UNIT) && bottom.getRaw().equals(Style::AUTO_SIZE_UNIT))
+            {
+                bottom.set(bottom.get() * 0.5f);
+            }
+        }
+
+        void StyleCorners::setProperties(
+            const StyleSource::Map& inProperties,
+            const String&           inOnelineAttributeName,
+            const String&           inTopAttributeName,
+            const String&           inBottomAttributeName,
+            const String&           inLeftAttributeName,
+            const String&           inRightAttributeName
+        )
+        {
+            if (inProperties.find(inOnelineAttributeName) != inProperties.end())
+            {
+                setOnelinerAttribute(inProperties.at(inOnelineAttributeName));
+            }
+
+            if (inProperties.find(inTopAttributeName) != inProperties.end())
+            {
+                top.setRaw(inProperties.at(inTopAttributeName));
+            }
+
+            if (inProperties.find(inBottomAttributeName) != inProperties.end())
+            {
+                bottom.setRaw(inProperties.at(inBottomAttributeName));
+            }
+
+            if (inProperties.find(inLeftAttributeName) != inProperties.end())
+            {
+                left.setRaw(inProperties.at(inLeftAttributeName));
+            }
+
+            if (inProperties.find(inRightAttributeName) != inProperties.end())
+            {
+                right.setRaw(inProperties.at(inRightAttributeName));
+            }
+        }
+
+        void StyleCorners::parseWith(std::function<float(const String&, StyleDirection)> inParser)
+        {
+            top.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Vertical); });
+            left.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Horizontal); });
+            bottom.parseWith([inParser](const String& inValue) { return inParser(inValue, StyleDirection::Vertical); });
+            right.parseWith([inParser](const String& inValue)
+                            { return inParser(inValue, StyleDirection::Horizontal); });
+        }
+
+        void StyleCorners::setAll(float inValue)
+        {
+            top.set(inValue);
+            bottom.set(inValue);
+            left.set(inValue);
+            right.set(inValue);
+        }
+
+        void StyleCorners::setOnelinerAttribute(const String& inValue)
+        {
             String topValue    = Style::CORNER_DEFAULT_VALUE;
             String rightValue  = Style::CORNER_DEFAULT_VALUE;
             String bottomValue = Style::CORNER_DEFAULT_VALUE;
             String leftValue   = Style::CORNER_DEFAULT_VALUE;
 
-            if (inSource.find(m_onelineAttributeName) == inSource.end() ||
-                inSource.at(m_onelineAttributeName).isEmpty())
+            const std::vector<String> values = splitOneliner(inValue);
+
+            if (values.size() == 1) // SINGLE
             {
-                if (inSource.find(m_topAttributeName) != inSource.end())
-                {
-                    topValue = inSource.at(m_topAttributeName);
-                }
+                const String& value = values.at(0);
 
-                if (inSource.find(m_rightAttributeName) != inSource.end())
-                {
-                    rightValue = inSource.at(m_rightAttributeName);
-                }
-
-                if (inSource.find(m_bottomAttributeName) != inSource.end())
-                {
-                    bottomValue = inSource.at(m_bottomAttributeName);
-                }
-
-                if (inSource.find(m_leftAttributeName) != inSource.end())
-                {
-                    leftValue = inSource.at(m_leftAttributeName);
-                }
-            }
-            else
-            {
-                const std::vector<String> values = splitOneliner(inSource.at(m_onelineAttributeName));
-
-                if (values.size() == 1) // SINGLE
-                {
-                    const String& value = values.at(0);
-
-                    topValue    = value;
-                    rightValue  = value;
-                    bottomValue = value;
-                    leftValue   = value;
-                }
-
-                if (values.size() == 2) // VERTICAL HORIZONTAL
-                {
-                    const String& vertical   = values.at(0);
-                    const String& horizontal = values.at(1);
-
-                    topValue    = vertical;
-                    bottomValue = vertical;
-                    rightValue  = horizontal;
-                    leftValue   = horizontal;
-                }
-
-                if (values.size() == 3) // TOP BOTTOM HORIZONTAL
-                {
-                    const String& horizontal = values.at(2);
-
-                    topValue    = values.at(0);
-                    bottomValue = values.at(1);
-                    rightValue  = horizontal;
-                    leftValue   = horizontal;
-                }
-
-                if (values.size() >= 4) // TOP RIGHT BOTTOM LEFT
-                {
-                    topValue    = values.at(0);
-                    rightValue  = values.at(1);
-                    bottomValue = values.at(2);
-                    leftValue   = values.at(3);
-                }
+                topValue    = value;
+                rightValue  = value;
+                bottomValue = value;
+                leftValue   = value;
             }
 
-            topValue    = topValue.trim();
-            rightValue  = rightValue.trim();
-            bottomValue = bottomValue.trim();
-            leftValue   = leftValue.trim();
-
-            const float lastTop = top;
-            top                 = inCalculator(topValue, StyleDirection::Vertical);
-
-            const float lastRight = right;
-            right                 = inCalculator(rightValue, StyleDirection::Horizontal);
-
-            const float lastBottom = bottom;
-            bottom                 = inCalculator(bottomValue, StyleDirection::Vertical);
-
-            const float lastLeft = left;
-            left                 = inCalculator(leftValue, StyleDirection::Horizontal);
-
-            if (leftValue.equals(Style::AUTO_SIZE_UNIT) && rightValue.equals(Style::AUTO_SIZE_UNIT))
+            if (values.size() == 2) // VERTICAL HORIZONTAL
             {
-                right *= 0.5f;
+                const String& vertical   = values.at(0);
+                const String& horizontal = values.at(1);
+
+                topValue    = vertical;
+                bottomValue = vertical;
+                rightValue  = horizontal;
+                leftValue   = horizontal;
             }
 
-            if (topValue.equals(Style::AUTO_SIZE_UNIT) && bottomValue.equals(Style::AUTO_SIZE_UNIT))
+            if (values.size() == 3) // TOP BOTTOM HORIZONTAL
             {
-                bottom *= 0.5f;
+                const String& horizontal = values.at(2);
+
+                topValue    = values.at(0);
+                bottomValue = values.at(1);
+                rightValue  = horizontal;
+                leftValue   = horizontal;
             }
 
-            if ((lastTop != top) || (lastRight != right) || (lastBottom != bottom) || (lastLeft != left))
+            if (values.size() >= 4) // TOP RIGHT BOTTOM LEFT
             {
-                return true;
+                topValue    = values.at(0);
+                rightValue  = values.at(1);
+                bottomValue = values.at(2);
+                leftValue   = values.at(3);
             }
 
-            return false;
-        }
-
-        void StyleCorners::setAll(float inValue)
-        {
-            top    = inValue;
-            right  = inValue;
-            bottom = inValue;
-            left   = inValue;
+            top.setRaw(topValue.trim());
+            bottom.setRaw(bottomValue.trim());
+            left.setRaw(leftValue.trim());
+            right.setRaw(rightValue.trim());
         }
     }
 }

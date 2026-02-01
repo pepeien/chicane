@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Chicane/Core/Changeable.hpp"
 #include "Chicane/Core/Color.hpp"
 #include "Chicane/Core/String.hpp"
 #include "Chicane/Core/Xml.hpp"
@@ -14,6 +13,7 @@
 #include "Chicane/Grid/Style/Flex.hpp"
 #include "Chicane/Grid/Style/Font.hpp"
 #include "Chicane/Grid/Style/Position.hpp"
+#include "Chicane/Grid/Style/Property.hpp"
 #include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
@@ -22,7 +22,7 @@ namespace Chicane
     {
         class Component;
 
-        struct CHICANE_GRID Style : public Changeable
+        struct CHICANE_GRID Style
         {
         public:
             // Extension
@@ -175,7 +175,6 @@ namespace Chicane
             bool isDisplay(StyleDisplay inValue) const;
             bool isPosition(StylePosition inValue) const;
 
-            bool hasProperties() const;
             void setProperties(const StyleSource::Map& inProperties);
 
             bool hasParent() const;
@@ -219,44 +218,41 @@ namespace Chicane
 
             float parsePixel(const String& inValue) const;
 
-            float parseNumber(const String& inValue, const String& inUnit) const;
+            float parseNumberUnit(const String& inValue, const String& inUnit) const;
             float parseNumber(const String& inValue) const;
 
         public:
             // Visiblity
-            StyleDisplay    display;
-            float           zIndex; // [0.0f, 999.9f]
+            StyleProperty<StyleDisplay>   display;
+            StyleProperty<float>          zIndex; // [0.0f, 999.9f]
 
             // Size
-            float           width;
-            float           height;
+            StyleProperty<float>          width;
+            StyleProperty<float>          height;
 
             // Flex
-            StyleFlex       flex;
+            StyleFlex                     flex;
 
             // Positioning
-            StylePosition   position;
-            StyleAlignment  align;
-            StyleAlignment  justify;
-            StyleCorners    margin;
-            StyleCorners    padding;
-            StyleCorners    gap;
+            StyleProperty<StylePosition>  position;
+            StyleProperty<StyleAlignment> align;
+            StyleCorners                  margin;
+            StyleCorners                  padding;
+            StyleCorners                  gap;
 
             // Background
-            StyleBackground background;
+            StyleBackground               background;
 
             // Color
-            Color::Rgba     foregroundColor;
-            float           opacity;
+            StyleProperty<Color::Rgba>    foregroundColor;
+            StyleProperty<float>          opacity;
 
             // Text
-            StyleFont       font;
-            float           letterSpacing;
+            StyleFont                     font;
+            StyleProperty<float>          letterSpacing;
 
         private:
-            StyleSource::Map m_properties;
-
-            Component*       m_parent;
+            Component* m_parent;
         };
 
         CHICANE_GRID String variableToReference(const String& inValue);

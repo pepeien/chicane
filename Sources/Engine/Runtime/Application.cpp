@@ -330,16 +330,18 @@ namespace Chicane
             const Vec2&        position = component->getPosition();
             const Grid::Style& style    = component->getStyle();
 
+            const Color::Rgba backgroundColor = style.background.color.get();
+
             Renderer::DrawPoly2DInstance draw;
             draw.screen   = viewSize;
             draw.size     = component->getSize();
-            draw.position = {position.x, position.y, style.zIndex};
-            draw.texture  = m_renderer->findTexture(style.background.image);
+            draw.position = {position.x, position.y, style.zIndex.get()};
+            draw.texture  = m_renderer->findTexture(style.background.image.get());
             draw.color    = {
-                style.background.color.r,
-                style.background.color.g,
-                style.background.color.b,
-                (draw.texture >= 0 ? 255.0f : style.background.color.a) * style.opacity
+                backgroundColor.r,
+                backgroundColor.g,
+                backgroundColor.b,
+                (draw.texture >= 0 ? 255.0f : backgroundColor.a) * style.opacity.get()
             };
             m_renderer->drawPoly(id, draw);
         }

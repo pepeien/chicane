@@ -4,6 +4,8 @@
 #include "Chicane/Core/String.hpp"
 
 #include "Chicane/Grid.hpp"
+#include "Chicane/Grid/Style/Property.hpp"
+#include "Chicane/Grid/Style/Source.hpp"
 
 namespace Chicane
 {
@@ -12,8 +14,22 @@ namespace Chicane
         struct CHICANE_GRID StyleBackground
         {
         public:
-            String      image = "";
-            Color::Rgba color = Color::toRgba(Color::TEXT_COLOR_TRANSPARENT);
+            using ColorParser = StyleProperty<Color::Rgba>::Parser;
+            using ImageParser = StyleProperty<String>::Parser;
+
+        public:
+            StyleBackground();
+
+        public:
+            void refresh();
+
+            void setProperties(const StyleSource::Map& inProperties);
+
+            void parseWith(ColorParser inColorParser, ImageParser inImageParser);
+
+        public:
+            StyleProperty<Color::Rgba> color;
+            StyleProperty<String>      image;
         };
     }
 }
