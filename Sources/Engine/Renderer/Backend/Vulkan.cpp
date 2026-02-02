@@ -26,7 +26,9 @@ namespace Chicane
               m_currentImageIndex(0),
               viewport({}),
               scissor(vk::Rect2D())
-        {}
+        {
+            m_type = WindowBackend::Vulkan;
+        }
 
         VulkanBackend::~VulkanBackend()
         {

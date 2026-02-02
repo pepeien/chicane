@@ -16,18 +16,13 @@ namespace Editor
     {
         spawnSky();
         spawnLights();
-
-        Chicane::Actor* actor = createActor<Chicane::Actor>();
-
-        Chicane::CMesh* mesh = createComponent<Chicane::CMesh>();
-        mesh->setMesh("Contents/Engine/Meshes/Shape/Cube.bmsh");
-        mesh->attachTo(actor);
-        mesh->activate();
     }
 
     void Scene::spawnSky()
     {
-        createActor<Chicane::ASky>()->setSky(Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Debug.bsky"));
+        createActor<Chicane::ASky>()->setSky(
+            Chicane::Box::load<Chicane::Box::Sky>("Contents/Engine/Skies/Color/Black.bsky")
+        );
     }
 
     void Scene::spawnLights()

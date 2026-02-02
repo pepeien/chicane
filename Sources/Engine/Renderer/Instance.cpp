@@ -325,6 +325,15 @@ namespace Chicane
             return m_backend.get();
         }
 
+        BackendSubscription Instance::watchBackend(
+            BackendSubscription::NextCallback     inNext,
+            BackendSubscription::ErrorCallback    inError,
+            BackendSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_backend->getType());
+        }
+
         void Instance::setBackend(WindowBackend inType)
         {
             if (hasBackend())
@@ -356,6 +365,8 @@ namespace Chicane
 
             m_backend->onResize(m_viewport);
             m_backend->onInit();
+
+            m_backendObservable.next(inType);
 
             reloadResources();
         }

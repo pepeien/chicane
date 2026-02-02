@@ -15,6 +15,7 @@ namespace Editor
         void initScene();
         void initCharacter();
         void initView();
+        void initLayers();
 
     private:
         std::unique_ptr<Chicane::Controller> m_controller;

@@ -63,9 +63,7 @@ function(CH_COPY_FILES TARGET_NAME SOURCE_PATH OUTPUT_PATH FILTER_VALUE)
                 ${TARGET_NAME}
             POST_BUILD
             COMMAND
-                ${CMAKE_COMMAND} -E copy
-                    ${ITEM}
-                    ${ITEM_FILE}
+                ${CMAKE_COMMAND} -E copy_if_different ${ITEM} ${ITEM_FILE}
         )
     endforeach(ITEM)
 endfunction()

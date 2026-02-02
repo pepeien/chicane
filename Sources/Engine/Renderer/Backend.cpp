@@ -6,6 +6,7 @@ namespace Chicane
     {
         Backend::Backend(const Instance* inRenderer)
             : m_renderer(inRenderer),
+              m_type(WindowBackend::Undefined),
               m_layers({})
         {}
 
@@ -124,6 +125,11 @@ namespace Chicane
 
                 layer->cleanup();
             }
+        }
+
+        WindowBackend Backend::getType() const
+        {
+            return m_type;
         }
 
         void Backend::deleteLayers()

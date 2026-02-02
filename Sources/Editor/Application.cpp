@@ -34,27 +34,7 @@ namespace Editor
             initScene();
             initCharacter();
             initView();
-
-            Chicane::ListPush<Chicane::Renderer::Layer*> settings;
-            settings.strategy  = Chicane::ListPushStrategy::After;
-            settings.predicate = [](Chicane::Renderer::Layer* inLayer)
-            { return inLayer->getId().equals("Engine_Scene_Mesh"); };
-
-            switch (createInfo.window.backend)
-            {
-            case Chicane::WindowBackend::OpenGL:
-                Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<OpenGLLGrid>(settings);
-
-                break;
-
-            case Chicane::WindowBackend::Vulkan:
-                Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<VulkanLGrid>(settings);
-
-                break;
-
-            default:
-                break;
-            }
+            initLayers();
         };
 
         Chicane::Application::getInstance().run(createInfo);
@@ -81,5 +61,34 @@ namespace Editor
     void Application::initView()
     {
         Chicane::Application::getInstance().setView<View>();
+    }
+
+    void Application::initLayers()
+    {
+        Chicane::Application::getInstance().getRenderer()->watchBackend(
+            [](Chicane::WindowBackend inValue)
+            {
+                Chicane::ListPush<Chicane::Renderer::Layer*> settings;
+                settings.strategy  = Chicane::ListPushStrategy::After;
+                settings.predicate = [](Chicane::Renderer::Layer* inLayer)
+                { return inLayer->getId().equals("Engine_Scene_Mesh"); };
+
+                switch (inValue)
+                {
+                case Chicane::WindowBackend::OpenGL:
+                    Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<OpenGLLGrid>(settings);
+
+                    break;
+
+                case Chicane::WindowBackend::Vulkan:
+                    Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<VulkanLGrid>(settings);
+
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        );
     }
 }

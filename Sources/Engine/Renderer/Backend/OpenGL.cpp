@@ -18,7 +18,9 @@ namespace Chicane
 
         OpenGLBackend::OpenGLBackend(const Instance* inRenderer)
             : Backend(inRenderer)
-        {}
+        {
+            m_type = WindowBackend::OpenGL;
+        }
 
         OpenGLBackend::~OpenGLBackend()
         {
@@ -72,6 +74,9 @@ namespace Chicane
         {
             const Viewport& viewport = m_renderer->getViewport();
             glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClearDepth(1);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 

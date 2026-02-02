@@ -31,6 +31,16 @@ namespace Chicane
 
         void OpenGLLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
+            if (inFrame.getInstances3D().empty())
+            {
+                return;
+            }
+
+            if (inFrame.get3DDraws().empty())
+            {
+                return;
+            }
+
             glUseProgram(m_shaderProgram);
 
             glBindFramebuffer(GL_FRAMEBUFFER, m_shadowFramebuffer);
@@ -42,8 +52,6 @@ namespace Chicane
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);
             glCullFace(GL_FRONT);
-
-            glClear(GL_DEPTH_BUFFER_BIT);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {

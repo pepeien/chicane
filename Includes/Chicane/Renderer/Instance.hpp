@@ -34,6 +34,9 @@ namespace Chicane
         using ViewportObservable   = EventObservable<Viewport>;
         using ViewportSubscription = EventSubscription<Viewport>;
 
+        using BackendObservable   = EventObservable<WindowBackend>;
+        using BackendSubscription = EventSubscription<WindowBackend>;
+
         class CHICANE_RENDERER Instance
         {
             friend Application;
@@ -114,6 +117,11 @@ namespace Chicane
             // Backend
             bool hasBackend() const;
             Backend* getBackend();
+            BackendSubscription watchBackend(
+                BackendSubscription::NextCallback     inNext,
+                BackendSubscription::ErrorCallback    inError    = nullptr,
+                BackendSubscription::CompleteCallback inComplete = nullptr
+            );
 
         protected:
             void setBackend(WindowBackend inType);
@@ -152,6 +160,7 @@ namespace Chicane
 
             // Backend
             std::unique_ptr<Backend>       m_backend;
+            BackendObservable              m_backendObservable;
         };
     }
 }

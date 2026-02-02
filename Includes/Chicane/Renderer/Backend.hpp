@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Chicane/Core/List.hpp"
+#include "Chicane/Core/Window/Backend.hpp"
 
 #include "Chicane/Renderer.hpp"
 #include "Chicane/Renderer/Draw/Poly/Type.hpp"
@@ -35,6 +36,9 @@ namespace Chicane
             virtual void onHandle(const WindowEvent& inEvent);
 
         public:
+            // Settings
+            WindowBackend getType() const;
+
             // Layer
             template <typename Target = Layer>
             Target* getLayer()
@@ -66,7 +70,7 @@ namespace Chicane
 
         protected:
             const Instance* m_renderer;
-
+            WindowBackend   m_type;
             List<Layer*>    m_layers;
         };
     }
