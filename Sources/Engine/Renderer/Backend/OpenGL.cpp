@@ -173,8 +173,13 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            addLayer<OpenGLLScene>();
-            addLayer<OpenGLLGrid>();
+            ListPush<Layer*> settings;
+
+            settings.strategy = ListPushStrategy::Front;
+            addLayer<OpenGLLScene>(settings);
+
+            settings.strategy = ListPushStrategy::Back;
+            addLayer<OpenGLLGrid>(settings);
         }
     }
 }

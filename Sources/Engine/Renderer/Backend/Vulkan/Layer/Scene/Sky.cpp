@@ -24,7 +24,6 @@ namespace Chicane
 
         VulkanLSceneSky::~VulkanLSceneSky()
         {
-            deleteChildren();
             destroyFrameResources();
             destroyTextureData();
 
@@ -75,6 +74,10 @@ namespace Chicane
                 return;
             }
 
+            // Backend
+            VulkanBackend* backend = getBackend<VulkanBackend>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
+
             VulkanBackendData* data          = (VulkanBackendData*)outData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             VulkanFrame&       frame         = data->frame;
@@ -97,13 +100,12 @@ namespace Chicane
             m_sky->bind(commandBuffer, m_graphicsPipeline.layout);
 
             // Draw
-            vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
+            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
             vk::DeviceSize offsets[]       = {0};
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer
-                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             const DrawPoly& draw = inFrame.getSkyInstance().model;
 
@@ -175,7 +177,7 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = getParent<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;

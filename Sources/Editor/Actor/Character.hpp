@@ -1,23 +1,27 @@
 #pragma once
 
-#include "Base.hpp"
+#include <Chicane/Runtime/Controller.hpp>
+#include <Chicane/Runtime/Scene/Actor/Pawn/Character.hpp>
+#include <Chicane/Runtime/Scene/Component/Camera.hpp>
 
-namespace Chicane
+namespace Editor
 {
-    class AEditorCharacter : public ACharacter
+    class Character : public Chicane::ACharacter
     {
     public:
-        AEditorCharacter();
+        Character();
 
     protected:
         void onControlAttachment() override;
 
     private:
-        void onLook(const Controller::Mouse::MotionEvent& inEvent);
+        // Gamepad
+        void onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent);
 
-        void onLeftClick();
-        void onRightClick();
+        // Mouse
+        void onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent);
 
+        // Keyboard
         void onMoveForward();
         void onMoveBackward();
         void onMoveLeft();
@@ -25,7 +29,9 @@ namespace Chicane
         void onMoveUp();
         void onMoveDown();
 
+        void onLook(float inX, float inY);
+
     private:
-        CCamera* m_cameraComponent;
+        Chicane::CCamera* m_camera;
     };
 }

@@ -7,17 +7,13 @@ namespace Chicane
         Layer::Layer(const Id& inId)
             : m_id(inId),
               m_status(LayerStatus::Offline),
-              m_backend(nullptr),
-              m_parent(nullptr),
-              m_children({})
+              m_backend(nullptr)
         {}
 
         Layer::Layer()
             : m_id("Undefined"),
               m_status(LayerStatus::Offline),
-              m_backend(nullptr),
-              m_parent(nullptr),
-              m_children({})
+              m_backend(nullptr)
         {}
 
         void Layer::init()
@@ -33,16 +29,6 @@ namespace Chicane
             }
 
             setStatus(LayerStatus::Running);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->init();
-            }
         }
 
         void Layer::destroy()
@@ -58,16 +44,6 @@ namespace Chicane
             }
 
             setStatus(LayerStatus::Offline);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->destroy();
-            }
         }
 
         void Layer::rebuild()
@@ -83,16 +59,6 @@ namespace Chicane
             }
 
             setStatus(LayerStatus::Running);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->rebuild();
-            }
         }
 
         void Layer::resize(const Viewport& inViewport)
@@ -103,16 +69,6 @@ namespace Chicane
             }
 
             onResize(inViewport);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->resize(inViewport);
-            }
         }
 
         void Layer::load(DrawPolyType inType, const DrawPolyResource& inResource)
@@ -123,16 +79,6 @@ namespace Chicane
             }
 
             onLoad(inType, inResource);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->load(inType, inResource);
-            }
         }
 
         void Layer::load(const DrawTexture::List& inResources)
@@ -143,16 +89,6 @@ namespace Chicane
             }
 
             onLoad(inResources);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->load(inResources);
-            }
         }
 
         void Layer::load(const DrawSky& inResource)
@@ -163,16 +99,6 @@ namespace Chicane
             }
 
             onLoad(inResource);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->load(inResource);
-            }
         }
 
         void Layer::setup(const Frame& inFrame)
@@ -188,16 +114,6 @@ namespace Chicane
             }
 
             setStatus(LayerStatus::Running);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->setup(inFrame);
-            }
         }
 
         void Layer::render(const Frame& inFrame, void* inData)
@@ -208,16 +124,6 @@ namespace Chicane
             }
 
             onRender(inFrame, inData);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->render(inFrame, inData);
-            }
         }
 
         void Layer::cleanup()
@@ -228,31 +134,11 @@ namespace Chicane
             }
 
             onCleanup();
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->cleanup();
-            }
         }
 
         void Layer::handle(const WindowEvent& inEvent)
         {
             onEvent(inEvent);
-
-            for (Layer* child : m_children)
-            {
-                if (!child)
-                {
-                    continue;
-                }
-
-                child->onEvent(inEvent);
-            }
         }
 
         bool Layer::is(LayerStatus inStatus) const
@@ -265,15 +151,9 @@ namespace Chicane
             m_status = inStatus;
         }
 
-        void Layer::deleteChildren()
+        const String& Layer::getId() const
         {
-            for (Layer* child : m_children)
-            {
-                delete child;
-                child = nullptr;
-            }
-
-            m_children.clear();
+            return m_id;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace Chicane
 
         VulkanLSceneShadow::~VulkanLSceneShadow()
         {
-            deleteChildren();
             destroyFrameResources();
         }
 
@@ -52,6 +51,18 @@ namespace Chicane
 
         void VulkanLSceneShadow::onRender(const Frame& inFrame, void* inData)
         {
+            if (inFrame.getInstances3D().empty())
+            {
+                return;
+            }
+
+            if (inFrame.get3DDraws().empty())
+            {
+                return;
+            }
+
+            VulkanLScene* parent = m_backend->getLayer<VulkanLScene>();
+
             VulkanBackendData* data          = (VulkanBackendData*)inData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
             VulkanFrame&       frame         = data->frame;
@@ -71,13 +82,12 @@ namespace Chicane
             m_graphicsPipeline.bindDescriptorSet(commandBuffer, 0, frame.getDescriptorSet(m_id));
 
             // Draw
-            vk::Buffer     vertexBuffers[] = {getParent<VulkanLScene>()->modelVertexBuffer.instance};
+            vk::Buffer     vertexBuffers[] = {parent->modelVertexBuffer.instance};
             vk::DeviceSize offsets[]       = {0};
 
             commandBuffer.bindVertexBuffers(0, 1, vertexBuffers, offsets);
 
-            commandBuffer
-                .bindIndexBuffer(getParent<VulkanLScene>()->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
+            commandBuffer.bindIndexBuffer(parent->modelIndexBuffer.instance, 0, vk::IndexType::eUint32);
 
             for (const DrawPoly& draw : inFrame.get3DDraws())
             {
@@ -177,7 +187,7 @@ namespace Chicane
         void VulkanLSceneShadow::initGraphicsPipeline()
         { // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = getParent<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;

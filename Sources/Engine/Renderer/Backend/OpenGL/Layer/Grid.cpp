@@ -14,7 +14,6 @@ namespace Chicane
 
         OpenGLLGrid::~OpenGLLGrid()
         {
-            deleteChildren();
             destroyShader();
             destroyPrimitiveData();
             destroyInstanceData();

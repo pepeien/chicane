@@ -10,7 +10,7 @@ namespace Chicane
     {
         Front,
         Back,
-        Before, // Require to have the `Anchor` `typename`
-        After   // Require to have the `Anchor` `typename`
+        Before,
+        After
     };
 }

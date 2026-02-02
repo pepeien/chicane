@@ -17,7 +17,6 @@ namespace Chicane
 
         OpenGLLSceneShadow::~OpenGLLSceneShadow()
         {
-            deleteChildren();
             destroyShader();
             destroyShadowMap();
         }
@@ -38,7 +37,7 @@ namespace Chicane
 
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LESS);
+            glDepthFunc(GL_LEQUAL);
 
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CW);

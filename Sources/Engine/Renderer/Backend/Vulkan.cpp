@@ -315,8 +315,13 @@ namespace Chicane
 
         void VulkanBackend::buildLayers()
         {
-            addLayer<VulkanLScene>();
-            addLayer<VulkanLGrid>();
+            ListPush<Layer*> settings;
+
+            settings.strategy = ListPushStrategy::Front;
+            addLayer<VulkanLScene>(settings);
+
+            settings.strategy = ListPushStrategy::Back;
+            addLayer<VulkanLGrid>(settings);
         }
 
         void VulkanBackend::renderLayers(const Frame& inFrame, void* inData)

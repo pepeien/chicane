@@ -19,7 +19,6 @@ namespace Chicane
 
         VulkanLScene::~VulkanLScene()
         {
-            deleteChildren();
             destroyModelData();
         }
 
@@ -144,9 +143,12 @@ namespace Chicane
 
         void VulkanLScene::buildLayers()
         {
-            addLayer<VulkanLSceneSky>();
-            addLayer<VulkanLSceneShadow>();
-            addLayer<VulkanLSceneMesh>();
+            ListPush<Layer*> settings;
+            settings.strategy = ListPushStrategy::Back;
+
+            getBackend()->addLayer<VulkanLSceneSky>(settings);
+            getBackend()->addLayer<VulkanLSceneShadow>(settings);
+            getBackend()->addLayer<VulkanLSceneMesh>(settings);
         }
     }
 }

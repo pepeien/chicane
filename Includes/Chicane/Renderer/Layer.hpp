@@ -61,6 +61,8 @@ namespace Chicane
             bool is(LayerStatus inStatus) const;
             void setStatus(LayerStatus inStatus);
 
+            const String& getId() const;
+
             template <typename T = Backend>
             T* getBackend()
             {
@@ -68,35 +70,11 @@ namespace Chicane
             }
             void setBackend(Backend* inBackend) { m_backend = inBackend; }
 
-            template <typename Target = Layer, typename Anchor = Layer, typename... Params>
-            void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
-            {
-                Target* layer = new Target(inParams...);
-                layer->setBackend(m_backend);
-                layer->setParent(this);
-                layer->init();
-
-                m_children.add(layer, inStrategy);
-            }
-
-            template <typename T = Layer>
-            T* getParent()
-            {
-                return static_cast<T*>(m_parent);
-            }
-            void setParent(Layer* inLayer) { m_parent = inLayer; }
-
         protected:
-            void deleteChildren();
+            Id          m_id;
+            LayerStatus m_status;
 
-        protected:
-            Id           m_id;
-            LayerStatus  m_status;
-
-            Backend*     m_backend;
-
-            Layer*       m_parent;
-            List<Layer*> m_children;
+            Backend*    m_backend;
         };
     }
 }

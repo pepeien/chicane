@@ -1,5 +1,7 @@
 #include "Chicane/Renderer/Instance.hpp"
 
+#include "Chicane/Core/Log.hpp"
+
 #if defined(CHICANE_OPENGL)
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
@@ -19,6 +21,7 @@ namespace Chicane
               m_resolution(Vec<2, int>(0)),
               m_resolutionObservable({}),
               m_viewport({}),
+              m_viewportObservable({}),
               m_backend(nullptr)
         {}
 
@@ -276,6 +279,15 @@ namespace Chicane
             propagateResize();
         }
 
+        ViewportSubscription Instance::watchViewport(
+            ViewportSubscription::NextCallback     inNext,
+            ViewportSubscription::ErrorCallback    inError,
+            ViewportSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_viewportObservable.subscribe(inNext, inError, inComplete).next(m_viewport);
+        }
+
         Window* Instance::getWindow() const
         {
             return m_window;
@@ -306,6 +318,11 @@ namespace Chicane
         bool Instance::hasBackend() const
         {
             return m_backend && m_backend.get() != nullptr;
+        }
+
+        Backend* Instance::getBackend()
+        {
+            return m_backend.get();
         }
 
         void Instance::setBackend(WindowBackend inType)
@@ -379,7 +396,10 @@ namespace Chicane
             Vec<2, int> windowSize   = getWindow()->getSize();
             Vec<2, int> rendererSize = m_resolution;
 
-            if (windowSize.x < rendererSize.x || windowSize.y < rendererSize.y)
+            bool bIsRenderingScalable = rendererSize.x <= 0.0f || rendererSize.y <= 0.0f;
+            bool bIsRenderingUp       = windowSize.x < rendererSize.x || windowSize.y < rendererSize.y;
+
+            if (bIsRenderingUp || bIsRenderingScalable)
             {
                 rendererSize = windowSize;
             }
@@ -392,6 +412,8 @@ namespace Chicane
 
         void Instance::propagateResize()
         {
+            m_viewportObservable.next(m_viewport);
+
             if (hasBackend())
             {
                 m_backend->onResize(m_viewport);

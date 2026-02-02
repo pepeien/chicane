@@ -230,6 +230,11 @@ namespace Chicane
         Application::getInstance().getWindow()->watchEvent(
             [this](WindowEvent inEvent)
             {
+                if (!isAttached())
+                {
+                    return;
+                }
+
                 m_mouseButtonEvents.repeat();
                 m_keyboardKeyEvents.repeat();
                 m_gamepadButtonEvents.repeat();

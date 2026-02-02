@@ -31,6 +31,9 @@ namespace Chicane
         using ResolutionObservable   = EventObservable<Vec<2, int>>;
         using ResolutionSubscription = EventSubscription<Vec<2, int>>;
 
+        using ViewportObservable   = EventObservable<Viewport>;
+        using ViewportSubscription = EventSubscription<Viewport>;
+
         class CHICANE_RENDERER Instance
         {
             friend Application;
@@ -97,6 +100,11 @@ namespace Chicane
             void setViewportPosition(float inX, float inY);
             void setViewportSize(const Vec2& inSize);
             void setViewportSize(float inWidth, float inHeight);
+            ViewportSubscription watchViewport(
+                ViewportSubscription::NextCallback     inNext,
+                ViewportSubscription::ErrorCallback    inError    = nullptr,
+                ViewportSubscription::CompleteCallback inComplete = nullptr
+            );
 
             // Window
             Window* getWindow() const;
@@ -105,6 +113,7 @@ namespace Chicane
 
             // Backend
             bool hasBackend() const;
+            Backend* getBackend();
 
         protected:
             void setBackend(WindowBackend inType);
@@ -139,6 +148,7 @@ namespace Chicane
             ResolutionObservable           m_resolutionObservable;
 
             Viewport                       m_viewport;
+            ViewportObservable             m_viewportObservable;
 
             // Backend
             std::unique_ptr<Backend>       m_backend;

@@ -36,14 +36,27 @@ namespace Chicane
 
         public:
             // Layer
-            template <typename Target = Layer, typename Anchor = Layer, typename... Params>
-            void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
+            template <typename Target = Layer>
+            Target* getLayer()
+            {
+                auto found = m_layers.find([](Layer* inLayer) { return typeid(*inLayer) == typeid(Target); });
+
+                if (found == m_layers.end())
+                {
+                    return nullptr;
+                }
+
+                return static_cast<Target*>(*found);
+            }
+
+            template <typename Target = Layer, typename... Params>
+            void addLayer(const ListPush<Layer*>& inSettings, Params... inParams)
             {
                 Target* layer = new Target(inParams...);
                 layer->setBackend(this);
                 layer->init();
 
-                m_layers.add(layer, inStrategy);
+                m_layers.add(layer, inSettings);
             }
 
         protected:

@@ -197,12 +197,12 @@ namespace Chicane
 
         m_renderer = std::make_unique<Renderer::Instance>();
         m_renderer->init(getWindow(), inBackend, inSettings);
-        m_renderer->watchResolution(
-            [&](const Vec<2, int>& inResolution)
+        m_renderer->watchViewport(
+            [&](const Renderer::Viewport& inViewport)
             {
                 if (hasView())
                 {
-                    m_view->setSize(inResolution.x, inResolution.y);
+                    m_view->setSize(inViewport.size.x, inViewport.size.y);
                 }
             }
         );

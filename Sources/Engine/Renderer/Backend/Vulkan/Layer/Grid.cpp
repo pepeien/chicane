@@ -20,7 +20,6 @@ namespace Chicane
 
         VulkanLGrid::~VulkanLGrid()
         {
-            deleteChildren();
             destroyFrameResources();
             destroyPrimitiveData();
         }
@@ -72,6 +71,16 @@ namespace Chicane
 
         void VulkanLGrid::onRender(const Frame& inFrame, void* inData)
         {
+            if (inFrame.getInstances2D().empty())
+            {
+                return;
+            }
+
+            if (inFrame.get2DDraws().empty())
+            {
+                return;
+            }
+
             VulkanBackend* backend = getBackend<VulkanBackend>();
 
             VulkanBackendData* data          = (VulkanBackendData*)inData;

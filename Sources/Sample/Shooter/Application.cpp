@@ -18,9 +18,6 @@ Application::Application()
     createInfo.window.type    = Chicane::WindowType::Windowed;
     createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
-    // Renderer
-    createInfo.renderer.resolution = createInfo.window.size;
-
     // Setup
     createInfo.onSetup = [this]()
     {
