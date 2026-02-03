@@ -9,8 +9,13 @@
 #include "Scene.hpp"
 #include "View.hpp"
 
-#include "Layer/Vulkan/Grid.hpp"
-#include "Layer/OpenGL/Grid.hpp"
+#if CHICANE_OPENGL
+    #include "Layer/OpenGL/Grid.hpp"
+#endif
+
+#if CHICANE_VULKAN
+    #include "Layer/Vulkan/Grid.hpp"
+#endif
 
 namespace Editor
 {
@@ -68,15 +73,19 @@ namespace Editor
 
                 switch (inValue)
                 {
+#if CHICANE_OPENGL
                 case Chicane::WindowBackend::OpenGL:
                     Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<OpenGLLGrid>(settings);
 
                     break;
+#endif
 
+#if CHICANE_VULKAN
                 case Chicane::WindowBackend::Vulkan:
                     Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<VulkanLGrid>(settings);
 
                     break;
+#endif
 
                 default:
                     break;

@@ -12,6 +12,16 @@ file(
 
     ${CMAKE_CURRENT_LIST_DIR}/*.cpp
 )
+##################### Setup #######################
+if (NOT CHICANE_VULKAN)
+    list(FILTER HEADERS EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/Layer/Vulkan")
+    list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/Layer/Vulkan")
+endif()
+
+if (NOT CHICANE_OPENGL)
+    list(FILTER HEADERS EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/Layer/OpenGL")
+    list(FILTER SOURCES EXCLUDE REGEX "${CMAKE_CURRENT_LIST_DIR}/Layer/OpenGL")
+endif()
 
 ##################### Directories #######################
 add_executable(${EDITOR_TARGET_NAME} ${HEADERS} ${SOURCES})

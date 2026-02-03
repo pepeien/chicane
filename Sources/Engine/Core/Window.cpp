@@ -418,6 +418,7 @@ namespace Chicane
 
         switch (m_settings.backend)
         {
+#if CHICANE_OPENGL
         case WindowBackend::OpenGL:
             flag = SDL_WINDOW_OPENGL;
 
@@ -432,11 +433,14 @@ namespace Chicane
             }
 
             break;
+#endif
 
+#if CHICANE_VULKAN
         case WindowBackend::Vulkan:
             flag = SDL_WINDOW_VULKAN;
 
             break;
+#endif
 
         default:
             flag = SDL_WINDOW_HIDDEN;

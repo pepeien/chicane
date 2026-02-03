@@ -34,3 +34,15 @@
 #else
     #define CHICANE_CORE
 #endif
+
+#if defined(BUILD_OPENGL)
+    #define CHICANE_OPENGL true
+#else
+    #define CHICANE_OPENGL false
+#endif
+
+#if defined(BUILD_VULKAN)
+    #define CHICANE_VULKAN true
+#else
+    #define CHICANE_VULKAN false
+#endif

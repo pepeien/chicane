@@ -1,12 +1,10 @@
 #include "Chicane/Renderer/Instance.hpp"
 
-#include "Chicane/Core/Log.hpp"
-
-#if defined(CHICANE_OPENGL)
+#if CHICANE_OPENGL
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
 
-#if defined(CHICANE_VULKAN)
+#if CHICANE_VULKAN
     #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #endif
 
@@ -343,14 +341,14 @@ namespace Chicane
 
             switch (inType)
             {
-#if defined(CHICANE_OPENGL)
+#if CHICANE_OPENGL
             case WindowBackend::OpenGL:
                 m_backend = std::make_unique<OpenGLBackend>(this);
 
                 break;
 #endif
 
-#if defined(CHICANE_VULKAN)
+#if CHICANE_VULKAN
             case WindowBackend::Vulkan:
                 m_backend = std::make_unique<VulkanBackend>(this);
 

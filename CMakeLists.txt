@@ -24,12 +24,20 @@ project(
 
 ##################### Options #######################
 option(CHICANE_SHARED "Build a shared version of the library" ON)
-option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
+option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 
 ##################### Values #######################
 if (CHICANE_SHARED)
     add_definitions(-DBUILD_SHARED)
+endif()
+
+if (CHICANE_OPENGL)
+    add_definitions(-DBUILD_OPENGL)
+endif()
+
+if (CHICANE_VULKAN)
+    add_definitions(-DBUILD_VULKAN)
 endif()
 
 if (NOT DEFINED BUILD_DIR)
