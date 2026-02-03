@@ -169,8 +169,7 @@ namespace Editor
         }
 
         m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
-
-        addYaw(inX);
+        addAbsoluteRotation(0.0f, 0.0f, inX);
     }
 
     void Character::onMoveUp()

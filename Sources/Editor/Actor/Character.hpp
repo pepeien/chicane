@@ -14,7 +14,7 @@ namespace Editor
     protected:
         void onControlAttachment() override;
 
-    private:
+    public:
         // Gamepad
         void onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent);
 

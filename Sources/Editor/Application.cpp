@@ -6,7 +6,6 @@
 #include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Application/CreateInfo.hpp>
 
-#include "Actor/Character.hpp"
 #include "Scene.hpp"
 #include "View.hpp"
 
@@ -31,8 +30,8 @@ namespace Editor
         // Setup
         createInfo.onSetup = [&]()
         {
+            initController();
             initScene();
-            initCharacter();
             initView();
             initLayers();
         };
@@ -40,22 +39,16 @@ namespace Editor
         Chicane::Application::getInstance().run(createInfo);
     }
 
+    void Application::initController()
+    {
+        m_controller = std::make_unique<Chicane::Controller>();
+
+        Chicane::Application::getInstance().setController(m_controller.get());
+    }
+
     void Application::initScene()
     {
         Chicane::Application::getInstance().setScene<Scene>();
-    }
-
-    void Application::initCharacter()
-    {
-        Chicane::Application& application = Chicane::Application::getInstance();
-
-        m_controller = std::make_unique<Chicane::Controller>();
-        application.setController(m_controller.get());
-
-        Character* character = application.getScene<Scene>()->createActor<Character>();
-        character->setAbsoluteTranslation(10.0f, -10.0f, 10.0f);
-
-        m_controller->attachTo(character);
     }
 
     void Application::initView()

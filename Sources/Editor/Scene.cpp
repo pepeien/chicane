@@ -1,9 +1,11 @@
 #include "Scene.hpp"
 
+#include <Chicane/Runtime/Application.hpp>
 #include <Chicane/Runtime/Scene/Actor.hpp>
 #include <Chicane/Runtime/Scene/Actor/Sky.hpp>
 #include <Chicane/Runtime/Scene/Component/Mesh.hpp>
 
+#include "Actor/Character.hpp"
 #include "Actor/Sun.hpp"
 
 namespace Editor
@@ -16,6 +18,7 @@ namespace Editor
     {
         spawnSky();
         spawnLights();
+        spawnCharacter();
     }
 
     void Scene::spawnSky()
@@ -28,5 +31,13 @@ namespace Editor
     void Scene::spawnLights()
     {
         createActor<Sun>();
+    }
+
+    void Scene::spawnCharacter()
+    {
+        Character* character = createActor<Character>();
+        character->setAbsoluteTranslation(10.0f, -10.0f, 10.0f);
+
+        Chicane::Application::getInstance().getController()->attachTo(character);
     }
 }

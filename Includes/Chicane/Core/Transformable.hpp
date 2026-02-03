@@ -13,12 +13,15 @@ namespace Chicane
     public:
         Transformable();
 
+    protected:
+        virtual void onTransform() { return; }
+
     public:
         // Transform
         const SpatialTransform& getTransform() const;
 
         const Vec3& getTranslation() const;
-        const Vec3& getRotation() const;
+        const Rotator& getRotation() const;
         const Vec3& getScale() const;
 
         const Vec3& getForward() const;
@@ -26,9 +29,6 @@ namespace Chicane
         const Vec3& getUp() const;
 
         // Relative
-        const Transform& getRelative() const;
-        void setRelative(const Transform& inTransform);
-
         const Vec3& getRelativeTranslation() const;
         void addRelativeTranslation(float inValue);
         void addRelativeTranslation(float inX, float inY, float inZ);
@@ -37,13 +37,15 @@ namespace Chicane
         void setRelativeTranslation(float inX, float inY, float inZ);
         void setRelativeTranslation(const Vec3& inTranslation);
 
-        const Vec3& getRelativeRotation() const;
+        const Rotator& getRelativeRotation() const;
         void addRelativeRotation(float inValue);
         void addRelativeRotation(float inPitch, float inRoll, float inYaw);
-        void addRelativeRotation(const Vec3& inRotation);
+        void addRelativeRotation(const Vec3& inAngles);
+        void addRelativeRotation(const Rotator& inRotation);
         void setRelativeRotation(float inValue);
         void setRelativeRotation(float inPitch, float inRoll, float inYaw);
         void setRelativeRotation(const Vec3& inRotation);
+        void setRelativeRotation(const Rotator& inRotation);
 
         const Vec3& getRelativeScale() const;
         void addRelativeScale(float inValue);
@@ -54,9 +56,6 @@ namespace Chicane
         void setRelativeScale(const Vec3& inScale);
 
         // Absolute
-        const Transform& getAbsolute() const;
-        void setAbsolute(const Transform& inTransform);
-
         const Vec3& getAbsoluteTranslation() const;
         void addAbsoluteTranslation(float inValue);
         void addAbsoluteTranslation(float inX, float inY, float inZ);
@@ -65,13 +64,15 @@ namespace Chicane
         void setAbsoluteTranslation(float inX, float inY, float inZ);
         void setAbsoluteTranslation(const Vec3& inTranslation);
 
-        const Vec3& getAbsoluteRotation() const;
+        const Rotator& getAbsoluteRotation() const;
         void addAbsoluteRotation(float inValue);
         void addAbsoluteRotation(float inPitch, float inRoll, float inYaw);
-        void addAbsoluteRotation(const Vec3& inRotation);
+        void addAbsoluteRotation(const Vec3& inAngles);
+        void addAbsoluteRotation(const Rotator& inRotation);
         void setAbsoluteRotation(float inValue);
         void setAbsoluteRotation(float inPitch, float inRoll, float inYaw);
-        void setAbsoluteRotation(const Vec3& inRotation);
+        void setAbsoluteRotation(const Vec3& inAngles);
+        void setAbsoluteRotation(const Rotator& inRotation);
 
         const Vec3& getAbsoluteScale() const;
         void addAbsoluteScale(float inValue);

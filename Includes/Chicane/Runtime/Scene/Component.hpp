@@ -18,7 +18,6 @@ namespace Chicane
         virtual void onActivation() { return; }
         virtual void onDeactivation() { return; }
         virtual void onAttachment(Transformable* inParent) { return; }
-        virtual void onTransform() { return; }
         virtual void onTick(float inDeltaTime) { return; }
 
     public:
@@ -46,6 +45,7 @@ namespace Chicane
             return static_cast<T*>(m_parent);
         }
         void attachTo(Transformable* inParent);
+        void detach();
 
     public:
         bool                m_bCanTick;

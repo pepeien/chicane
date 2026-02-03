@@ -289,7 +289,7 @@ namespace Chicane
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
             image.getWidth(),
             image.getHeight(),
-            SDL_PIXELFORMAT_ARGB8888,
+            SDL_PIXELFORMAT_RGBA8888,
             image.getPixels(),
             image.getPitch()
         );

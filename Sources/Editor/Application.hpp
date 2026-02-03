@@ -12,8 +12,8 @@ namespace Editor
         Application();
 
     private:
+        void initController();
         void initScene();
-        void initCharacter();
         void initView();
         void initLayers();
 

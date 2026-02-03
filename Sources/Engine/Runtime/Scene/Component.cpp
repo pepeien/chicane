@@ -79,32 +79,39 @@ namespace Chicane
 
     void Component::attachTo(Transformable* inParent)
     {
-        if (inParent == this)
+        if (!inParent || inParent == this)
         {
             return;
         }
 
         if (isAttached())
         {
-            m_parentSubscription.complete();
+            detach();
         }
 
         m_parent = inParent;
 
-        if (isAttached())
-        {
-            m_parentSubscription = m_parent->watchChanges(
-                [this]()
-                {
-                    setAbsoluteTranslation(m_parent->getTranslation());
-                    setAbsoluteRotation(m_parent->getRotation());
-                    setAbsoluteScale(m_parent->getScale());
-
-                    onTransform();
-                }
-            );
-        }
+        m_parentSubscription = m_parent->watchChanges(
+            [this]()
+            {
+                setAbsoluteTranslation(m_parent->getTranslation());
+                setAbsoluteRotation(m_parent->getRotation());
+                setAbsoluteScale(m_parent->getScale());
+            }
+        );
 
         onAttachment(inParent);
+    }
+
+    void Component::detach()
+    {
+        if (!isAttached())
+        {
+            return;
+        }
+
+        m_parentSubscription.complete();
+
+        m_parent = nullptr;
     }
 }

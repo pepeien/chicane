@@ -15,7 +15,7 @@ namespace Chicane
         virtual ~CView() = default;
 
     protected:
-        virtual void onTransform();
+        void onTransform() override;
 
     public:
         // Frustum

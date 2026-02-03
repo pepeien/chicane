@@ -15,5 +15,6 @@ namespace Editor
     private:
         void spawnSky();
         void spawnLights();
+        void spawnCharacter();
     };
 }

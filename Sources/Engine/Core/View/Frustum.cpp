@@ -32,10 +32,12 @@ namespace Chicane
 
     void ViewFrustum::update(const Transformable* inView, const ViewSettings& inSettings)
     {
-        const Vec3& up          = inView->getUp();
-        const Vec3& right       = inView->getRight();
-        const Vec3& forward     = inView->getForward();
-        const Vec3& translation = inView->getTranslation();
+        const Rotator& rotation    = inView->getRotation();
+        const Vec3&    translation = inView->getTranslation();
+
+        const Vec3& up      = rotation.getUp();
+        const Vec3& right   = rotation.getRight();
+        const Vec3& forward = rotation.getForward();
 
         const float aspectRatio = inSettings.aspectRatio;
         const float fieldOfView = inSettings.fieldOfView;

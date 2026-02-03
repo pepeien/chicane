@@ -18,7 +18,7 @@ namespace Chicane
         return m_transform.getTranslation();
     }
 
-    const Vec3& Transformable::getRotation() const
+    const Rotator& Transformable::getRotation() const
     {
         return m_transform.getRotation();
     }
@@ -30,29 +30,17 @@ namespace Chicane
 
     const Vec3& Transformable::getForward() const
     {
-        return m_transform.getForward();
+        return m_transform.getRotation().getForward();
     }
 
     const Vec3& Transformable::getRight() const
     {
-        return m_transform.getRight();
+        return m_transform.getRotation().getRight();
     }
 
     const Vec3& Transformable::getUp() const
     {
-        return m_transform.getUp();
-    }
-
-    const Transform& Transformable::getRelative() const
-    {
-        return m_transform.getRelativeTransform();
-    }
-
-    void Transformable::setRelative(const Transform& inTransform)
-    {
-        m_transform.setRelativeTransform(inTransform);
-
-        refresh();
+        return m_transform.getRotation().getUp();
     }
 
     const Vec3& Transformable::getRelativeTranslation() const
@@ -94,22 +82,27 @@ namespace Chicane
         refresh();
     }
 
-    const Vec3& Transformable::getRelativeRotation() const
+    const Rotator& Transformable::getRelativeRotation() const
     {
         return m_transform.getRelativeRotation();
     }
 
     void Transformable::addRelativeRotation(float inRotation)
     {
-        addRelativeRotation(Vec3(inRotation));
+        addRelativeRotation(Rotator(inRotation));
     }
 
     void Transformable::addRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        addRelativeRotation(Vec3(inPitch, inRoll, inYaw));
+        addRelativeRotation(Rotator(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::addRelativeRotation(const Vec3& inRotation)
+    void Transformable::addRelativeRotation(const Vec3& inAngles)
+    {
+        addRelativeRotation(Rotator(inAngles));
+    }
+
+    void Transformable::addRelativeRotation(const Rotator& inRotation)
     {
         m_transform.addRelativeRotation(inRotation);
 
@@ -118,15 +111,20 @@ namespace Chicane
 
     void Transformable::setRelativeRotation(float inRotation)
     {
-        setRelativeRotation(Vec3(inRotation));
+        setRelativeRotation(Rotator(inRotation));
     }
 
     void Transformable::setRelativeRotation(float inPitch, float inRoll, float inYaw)
     {
-        setRelativeRotation(Vec3(inPitch, inRoll, inYaw));
+        setRelativeRotation(Rotator(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setRelativeRotation(const Vec3& inRotation)
+    void Transformable::setRelativeRotation(const Vec3& inAngles)
+    {
+        setRelativeRotation(Rotator(inAngles));
+    }
+
+    void Transformable::setRelativeRotation(const Rotator& inRotation)
     {
         m_transform.setRelativeRotation(inRotation);
 
@@ -172,18 +170,6 @@ namespace Chicane
         refresh();
     }
 
-    const Transform& Transformable::getAbsolute() const
-    {
-        return m_transform.getAbsoluteTransform();
-    }
-
-    void Transformable::setAbsolute(const Transform& inTransform)
-    {
-        m_transform.setAbsoluteTransform(inTransform);
-
-        refresh();
-    }
-
     const Vec3& Transformable::getAbsoluteTranslation() const
     {
         return m_transform.getAbsoluteTranslation();
@@ -223,39 +209,49 @@ namespace Chicane
         refresh();
     }
 
-    const Vec3& Transformable::getAbsoluteRotation() const
+    const Rotator& Transformable::getAbsoluteRotation() const
     {
         return m_transform.getAbsoluteRotation();
     }
 
     void Transformable::addAbsoluteRotation(float inRotation)
     {
-        addAbsoluteRotation(Vec3(inRotation));
+        addAbsoluteRotation(Rotator(inRotation));
     }
 
     void Transformable::addAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
-        addAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
+        addAbsoluteRotation(Rotator(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::addAbsoluteRotation(const Vec3& inRotation)
+    void Transformable::addAbsoluteRotation(const Vec3& inAngles)
+    {
+        addAbsoluteRotation(Rotator(inAngles));
+    }
+
+    void Transformable::addAbsoluteRotation(const Rotator& inRotation)
     {
         m_transform.addAbsoluteRotation(inRotation);
 
         refresh();
     }
 
-    void Transformable::setAbsoluteRotation(float inRotation)
+    void Transformable::setAbsoluteRotation(float inAngle)
     {
-        setAbsoluteRotation(Vec3(inRotation));
+        setAbsoluteRotation(Rotator(inAngle));
     }
 
     void Transformable::setAbsoluteRotation(float inPitch, float inRoll, float inYaw)
     {
-        setAbsoluteRotation(Vec3(inPitch, inRoll, inYaw));
+        setAbsoluteRotation(Rotator(inPitch, inRoll, inYaw));
     }
 
-    void Transformable::setAbsoluteRotation(const Vec3& inRotation)
+    void Transformable::setAbsoluteRotation(const Vec3& inAngles)
+    {
+        setAbsoluteRotation(Rotator(inAngles));
+    }
+
+    void Transformable::setAbsoluteRotation(const Rotator& inRotation)
     {
         m_transform.setAbsoluteRotation(inRotation);
 
@@ -336,6 +332,8 @@ namespace Chicane
     void Transformable::refresh()
     {
         m_bounds.update(m_transform);
+
+        onTransform();
 
         emmitChanges();
     }
