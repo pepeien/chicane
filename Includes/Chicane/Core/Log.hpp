@@ -13,15 +13,9 @@ namespace Chicane
 {
     namespace Log
     {
-        using List             = std::deque<Entry>;
-        using ListObservable   = EventObservable<List>;
-        using ListSubscription = EventSubscription<List>;
+        using List = std::deque<Entry>;
 
-        CHICANE_CORE ListSubscription watchLogs(
-            ListSubscription::NextCallback     inNext,
-            ListSubscription::ErrorCallback    inError    = nullptr,
-            ListSubscription::CompleteCallback inComplete = nullptr
-        );
+        CHICANE_CORE const List& getLogs();
 
         CHICANE_CORE void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage);
         template <typename... T>
