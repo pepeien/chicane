@@ -14,7 +14,6 @@ namespace Chicane
         {
         public:
             VulkanLSceneShadow();
-            ~VulkanLSceneShadow();
 
         protected:
             bool onInit() override;

@@ -42,7 +42,7 @@ namespace Chicane
             friend Application;
 
         public:
-            static inline constexpr const std::uint32_t FRAME_COUNT = 2;
+            static constexpr inline const std::uint32_t FRAME_COUNT = 2;
 
         public:
             Instance();

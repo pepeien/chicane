@@ -19,11 +19,6 @@ namespace Chicane
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        VulkanLSceneMesh::~VulkanLSceneMesh()
-        {
-            destroyFrameResources();
-        }
-
         bool VulkanLSceneMesh::onInit()
         {
             initFrameResources();

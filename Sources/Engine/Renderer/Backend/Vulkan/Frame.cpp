@@ -42,6 +42,8 @@ namespace Chicane
             destroyColorImage();
             destroyDepthImage();
             destroyShadowImage();
+            destroyCameraData();
+            destroyLightData();
             destroy2DData();
             destroy3DData();
             destroySync();

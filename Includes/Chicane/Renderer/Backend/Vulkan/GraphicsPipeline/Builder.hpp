@@ -211,6 +211,11 @@ namespace Chicane
                 createInfo.basePipelineHandle = nullptr;
 
                 outGraphicsPipeline.init(inLogicalDevice, createInfo);
+
+                for (vk::PipelineShaderStageCreateInfo& shader : m_shaders)
+                {
+                    inLogicalDevice.destroyShaderModule(shader.module);
+                }
             }
 
         private:

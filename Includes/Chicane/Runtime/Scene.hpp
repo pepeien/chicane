@@ -6,7 +6,7 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
-static constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
+constexpr inline float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {

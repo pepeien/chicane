@@ -2,7 +2,7 @@
 
 #include <Chicane/Runtime/Application.hpp>
 
-static inline constexpr const float MOVE_COEFFICIENT = 1.0f;
+static constexpr inline const float MOVE_COEFFICIENT = 1.0f;
 
 namespace Editor
 {
@@ -62,9 +62,25 @@ namespace Editor
             Chicane::Input::Status::Pressed,
             std::bind(&Character::onMoveDown, this)
         );
+        m_controller->bindEvent(
+            Chicane::Input::KeyboardButton::F1,
+            Chicane::Input::Status::Released,
+            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::Vulkan); }
+        );
+        m_controller->bindEvent(
+            Chicane::Input::KeyboardButton::F2,
+            Chicane::Input::Status::Released,
+            []() { Chicane::Application::getInstance().setRenderer(Chicane::WindowBackend::OpenGL); }
+        );
 
         // Gamepad
         m_controller->bindEvent(std::bind(&Character::onGamepadMotion, this, std::placeholders::_1));
+    }
+
+    void Character::look(float inX, float inY)
+    {
+        m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
+        addAbsoluteRotation(0.0f, 0.0f, inX);
     }
 
     void Character::onMouseMotion(const Chicane::Input::MouseMotionEvent& inEvent)
@@ -168,8 +184,7 @@ namespace Editor
             return;
         }
 
-        m_camera->addRelativeRotation(inY, 0.0f, 0.0f);
-        addAbsoluteRotation(0.0f, 0.0f, inX);
+        look(inX, inY);
     }
 
     void Character::onMoveUp()

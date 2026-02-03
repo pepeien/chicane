@@ -20,7 +20,6 @@ namespace Chicane
 
         VulkanLGrid::~VulkanLGrid()
         {
-            destroyFrameResources();
             destroyPrimitiveData();
         }
 

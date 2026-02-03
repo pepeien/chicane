@@ -13,7 +13,15 @@ namespace Chicane
     struct CHICANE_CORE String
     {
     public:
-        static constexpr const std::size_t npos = std::string::npos;
+        static constexpr inline std::size_t npos = std::string::npos;
+
+    public:
+        static const String& empty()
+        {
+            static const String result;
+
+            return result;
+        }
 
     public:
         template <typename... T>

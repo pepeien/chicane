@@ -4,8 +4,6 @@ namespace Chicane
 {
     namespace Box
     {
-        static const FontGlyph EMPTY_GLYPH = {};
-
         bool FontParsed::hasGlyph(char inCharacter) const
         {
             return hasGlyph(static_cast<std::uint32_t>(inCharacter));
@@ -25,7 +23,7 @@ namespace Chicane
         {
             if (!hasGlyph(inCode))
             {
-                return EMPTY_GLYPH;
+                return FontGlyph::empty();
             }
 
             return glyphs.at(inCode);

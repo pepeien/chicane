@@ -19,6 +19,6 @@
 
 namespace Chicane
 {
-    static inline constexpr const char* APPLICATION_NAME = "Chicane Engine";
-    static inline constexpr const char* ENGINE_NAME      = "Chicane";
+    static constexpr inline const char* APPLICATION_NAME = "Chicane Engine";
+    static constexpr inline const char* ENGINE_NAME      = "Chicane";
 }

@@ -14,7 +14,6 @@ namespace Chicane
         {
         public:
             VulkanLSceneMesh();
-            ~VulkanLSceneMesh();
 
         protected:
             bool onInit() override;

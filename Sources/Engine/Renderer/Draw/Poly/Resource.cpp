@@ -4,8 +4,6 @@ namespace Chicane
 {
     namespace Renderer
     {
-        static const DrawPoly EMPTY_DRAW = {};
-
         bool DrawPolyResource::isEmpty() const
         {
             return m_draws.empty() || m_vertices.empty() || m_indices.empty();
@@ -84,7 +82,7 @@ namespace Chicane
 
             if (id <= Draw::UnknownId)
             {
-                return EMPTY_DRAW;
+                return DrawPoly::empty();
             }
 
             return getDraw(id);
@@ -102,7 +100,7 @@ namespace Chicane
                 return draw;
             }
 
-            return EMPTY_DRAW;
+            return DrawPoly::empty();
         }
 
         Draw::Id DrawPolyResource::add(const DrawPolyData& inData)

@@ -5,8 +5,6 @@
 
 namespace Chicane
 {
-    static const String EMPTY_STRING = "";
-
     CMesh::CMesh()
         : Component(),
           m_bIsVisible(false),
@@ -54,7 +52,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return EMPTY_STRING;
+            return String::empty();
         }
 
         return m_mesh->getGroups().at(0).getModel();
@@ -64,7 +62,7 @@ namespace Chicane
     {
         if (!hasMesh())
         {
-            return EMPTY_STRING;
+            return String::empty();
         }
 
         return m_mesh->getGroups().at(0).getTexture();

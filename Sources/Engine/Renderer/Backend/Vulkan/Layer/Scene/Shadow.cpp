@@ -19,11 +19,6 @@ namespace Chicane
               m_clear({vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        VulkanLSceneShadow::~VulkanLSceneShadow()
-        {
-            destroyFrameResources();
-        }
-
         bool VulkanLSceneShadow::onInit()
         {
             initFrameResources();

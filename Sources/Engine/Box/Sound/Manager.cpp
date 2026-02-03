@@ -4,8 +4,6 @@ namespace Chicane
 {
     namespace Box
     {
-        static const Sound::Raw EMPTY_RAW_DATA = {};
-
         SoundManager::SoundManager()
             : Manager()
         {}

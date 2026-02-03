@@ -15,6 +15,9 @@ namespace Editor
         void onControlAttachment() override;
 
     public:
+        void look(float inX, float inY);
+
+    protected:
         // Gamepad
         void onGamepadMotion(const Chicane::Input::GamepadMotionEvent& inEvent);
 

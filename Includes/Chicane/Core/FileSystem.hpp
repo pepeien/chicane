@@ -13,7 +13,7 @@ namespace Chicane
     {
         using Path = std::filesystem::path;
 
-        static inline constexpr const auto SEPARATOR = Path::preferred_separator;
+        static constexpr inline const auto SEPARATOR = Path::preferred_separator;
 
         CHICANE_CORE bool exists(const Path& inPath);
         CHICANE_CORE std::vector<Item> ls(const Path& inDir = ".", std::uint32_t inDepth = 0);

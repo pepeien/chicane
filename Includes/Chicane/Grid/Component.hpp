@@ -24,10 +24,10 @@ namespace Chicane
             using Compiler = std::function<Component*(const pugi::xml_node& inNode)>;
 
         public:
-            static inline constexpr const char* EVENT_KEYWORD = "$event";
+            static constexpr inline const char* EVENT_KEYWORD = "$event";
 
-            static inline constexpr const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
-            static inline constexpr const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
+            static constexpr inline const char* ON_HOVER_ATTRIBUTE_NAME = "onHover";
+            static constexpr inline const char* ON_CLICK_ATTRIBUTE_NAME = "onClick";
 
         public:
             Component(const pugi::xml_node& inNode);

@@ -15,10 +15,10 @@ namespace Chicane
 {
     namespace Kerb
     {
-        static constexpr std::uint32_t MAX_BODIES              = 65536;
-        static constexpr std::uint32_t MAX_BODY_MUTEXES        = 0;
-        static constexpr std::uint32_t MAX_BODY_PAIRS          = MAX_BODIES;
-        static constexpr std::uint32_t MAX_CONTACT_CONSTRAINTS = 10240;
+        constexpr inline std::uint32_t MAX_BODIES              = 65536;
+        constexpr inline std::uint32_t MAX_BODY_MUTEXES        = 0;
+        constexpr inline std::uint32_t MAX_BODY_PAIRS          = MAX_BODIES;
+        constexpr inline std::uint32_t MAX_CONTACT_CONSTRAINTS = 10240;
 
         Engine::Engine()
             : m_threadPool({}),

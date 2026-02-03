@@ -13,7 +13,7 @@ namespace Chicane
         {
         public:
             // Tag
-            static inline constexpr const char* TAG_ID = "Character";
+            static constexpr inline const char* TAG_ID = "Character";
 
         public:
             TextCharacter();

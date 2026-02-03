@@ -12,12 +12,12 @@ namespace Chicane
         class CHICANE_BOX Font : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION = ".bfon";
-            static inline constexpr const char* TAG       = "Font";
+            static constexpr inline const char* EXTENSION = ".bfon";
+            static constexpr inline const char* TAG       = "Font";
 
-            static inline constexpr const char* VENDOR_ATTRIBUTE_NAME = "vendor";
+            static constexpr inline const char* VENDOR_ATTRIBUTE_NAME = "vendor";
 
-            static inline constexpr const float BASE_SIZE = 16.0f;
+            static constexpr inline const float BASE_SIZE = 16.0f;
 
         public:
             Font(const FileSystem::Path& inFilepath);

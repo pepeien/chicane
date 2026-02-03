@@ -13,7 +13,6 @@ namespace Editor
     {
     public:
         VulkanLGrid();
-        ~VulkanLGrid();
 
     protected:
         bool onInit() override;

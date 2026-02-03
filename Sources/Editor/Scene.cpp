@@ -37,6 +37,7 @@ namespace Editor
     {
         Character* character = createActor<Character>();
         character->setAbsoluteTranslation(10.0f, -10.0f, 10.0f);
+        character->look(45.0f, -35.0f);
 
         Chicane::Application::getInstance().getController()->attachTo(character);
     }

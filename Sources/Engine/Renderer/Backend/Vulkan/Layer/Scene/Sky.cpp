@@ -24,7 +24,6 @@ namespace Chicane
 
         VulkanLSceneSky::~VulkanLSceneSky()
         {
-            destroyFrameResources();
             destroyTextureData();
 
             m_sky.reset();

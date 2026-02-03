@@ -11,11 +11,11 @@ namespace Chicane
         {
         public:
             // Tag
-            static inline constexpr const char* TAG_ID = "List";
+            static constexpr inline const char* TAG_ID = "List";
 
             // Attributes
-            static inline constexpr const char* ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";
-            static inline constexpr const char* ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
+            static constexpr inline const char* ITEM_WIDTH_ATTRIBUTE_NAME  = "itemWidth";
+            static constexpr inline const char* ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
 
         public:
             List(const pugi::xml_node& inNode)

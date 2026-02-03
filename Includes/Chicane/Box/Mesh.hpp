@@ -11,11 +11,11 @@ namespace Chicane
         class CHICANE_BOX Mesh : public Asset
         {
         public:
-            static inline constexpr const char* EXTENSION = ".bmsh";
-            static inline constexpr const char* TAG       = "Mesh";
+            static constexpr inline const char* EXTENSION = ".bmsh";
+            static constexpr inline const char* TAG       = "Mesh";
 
-            static inline constexpr const char* GROUP_TAG               = "Group";
-            static inline constexpr const char* GROUP_ID_ATTRIBUTE_NAME = "id";
+            static constexpr inline const char* GROUP_TAG               = "Group";
+            static constexpr inline const char* GROUP_ID_ATTRIBUTE_NAME = "id";
 
         public:
             Mesh(const FileSystem::Path& inFilepath);

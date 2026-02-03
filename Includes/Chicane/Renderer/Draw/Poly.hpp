@@ -15,6 +15,14 @@ namespace Chicane
         struct CHICANE_RENDERER DrawPoly : Draw
         {
         public:
+            static const DrawPoly& empty()
+            {
+                static const DrawPoly result;
+
+                return result;
+            }
+
+        public:
             using List = std::vector<DrawPoly>;
             using Map  = std::map<DrawPolyType, List>;
 
