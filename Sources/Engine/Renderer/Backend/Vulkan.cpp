@@ -19,8 +19,8 @@ namespace Chicane
 {
     namespace Renderer
     {
-        VulkanBackend::VulkanBackend(const Window* inWindow)
-            : Backend<Frame>(inWindow),
+        VulkanBackend::VulkanBackend()
+            : Backend<Frame>(),
               swapchain({}),
               imageCount(0),
               m_currentImageIndex(0),
@@ -51,6 +51,8 @@ namespace Chicane
 
         void VulkanBackend::onInit()
         {
+            setFrameCount(2);
+
             buildInstance();
             buildDebugMessenger();
             buildSurface();
@@ -66,26 +68,21 @@ namespace Chicane
             Backend::onInit();
         }
 
-        void VulkanBackend::onResize(const Viewport& inViewport)
+        void VulkanBackend::onResize(const Vec<2, std::uint32_t>& inResolution)
         {
-            float x = inViewport.position.x;
-            float y = inViewport.position.y;
-            float w = inViewport.size.x;
-            float h = inViewport.size.y;
-
-            viewport.x        = x;
-            viewport.y        = y;
-            viewport.width    = w;
-            viewport.height   = h;
+            viewport.x        = 0.0f;
+            viewport.y        = 0.0f;
+            viewport.width    = inResolution.x;
+            viewport.height   = inResolution.y;
             viewport.minDepth = 0.0f;
             viewport.maxDepth = 1.0f;
 
-            scissor.offset.x      = static_cast<int32_t>(x);
-            scissor.offset.y      = static_cast<int32_t>(y);
-            scissor.extent.width  = static_cast<uint32_t>(w);
-            scissor.extent.height = static_cast<uint32_t>(h);
+            scissor.offset.x      = 0U;
+            scissor.offset.y      = 0U;
+            scissor.extent.width  = static_cast<uint32_t>(viewport.width);
+            scissor.extent.height = static_cast<uint32_t>(viewport.height);
 
-            Backend::onResize(inViewport);
+            Backend::onResize(inResolution);
         }
 
         void VulkanBackend::onLoad(const DrawTexture::List& inResources)

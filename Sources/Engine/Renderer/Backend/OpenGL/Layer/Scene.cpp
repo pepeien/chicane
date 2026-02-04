@@ -72,6 +72,8 @@ namespace Chicane
 
         void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
+            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
+
             glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 
             glBindVertexArray(m_modelVertexArray);

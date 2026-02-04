@@ -14,8 +14,11 @@ namespace Chicane
     using WindowEventObservable   = EventObservable<WindowEvent>;
     using WindowEventSubscription = EventSubscription<WindowEvent>;
 
-    using WindowSizeObservable   = EventObservable<Vec<2, int>>;
-    using WindowSizeSubscription = EventSubscription<Vec<2, int>>;
+    using WindowSizeObservable   = EventObservable<Vec<2, std::uint32_t>>;
+    using WindowSizeSubscription = EventSubscription<Vec<2, std::uint32_t>>;
+
+    using WindowBackendObservable   = EventObservable<WindowBackend>;
+    using WindowBackendSubscription = EventSubscription<WindowBackend>;
 
     class Application;
 
@@ -37,12 +40,12 @@ namespace Chicane
         void setTitle(const String& inTitle);
         void setIcon(const FileSystem::Path& inPath);
 
-        const Vec<2, int>& getSize() const;
-        void setSize(const Vec<2, int>& inValue);
+        const Vec<2, std::uint32_t>& getSize() const;
+        void setSize(const Vec<2, std::uint32_t>& inValue);
         void setSize(int inWidth, int inHeight);
 
-        const Vec<2, int>& getPosition() const;
-        void setPosition(const Vec<2, int>& inValue);
+        const Vec<2, std::uint32_t>& getPosition() const;
+        void setPosition(const Vec<2, std::uint32_t>& inValue);
         void setPosition(int inX, int inY);
 
         std::uint32_t getDisplay() const;
@@ -81,6 +84,11 @@ namespace Chicane
             WindowSizeSubscription::ErrorCallback    inError    = nullptr,
             WindowSizeSubscription::CompleteCallback inComplete = nullptr
         );
+        WindowBackendSubscription watchBackend(
+            WindowBackendSubscription::NextCallback     inNext,
+            WindowBackendSubscription::ErrorCallback    inError    = nullptr,
+            WindowBackendSubscription::CompleteCallback inComplete = nullptr
+        );
 
     protected:
         void setBackend(WindowBackend inBackend);
@@ -95,15 +103,16 @@ namespace Chicane
         void emmitError(const String& inMessage);
 
     private:
-        void*                 m_instance;
+        void*                   m_instance;
 
-        WindowSettings        m_settings;
+        WindowSettings          m_settings;
 
-        bool                  m_bIsFocused;
-        bool                  m_bIsResizable;
-        bool                  m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
+        bool                    m_bIsFocused;
+        bool                    m_bIsResizable;
+        bool                    m_bIsMinimized; // Only takes effect when the type is `WindowType::Windowed`
 
-        WindowEventObservable m_eventObservable;
-        WindowSizeObservable  m_sizeObservable;
+        WindowEventObservable   m_eventObservable;
+        WindowSizeObservable    m_sizeObservable;
+        WindowBackendObservable m_backendObservable;
     };
 }

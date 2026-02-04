@@ -11,7 +11,7 @@ namespace Chicane
         class CHICANE_RENDERER OpenGLBackend : public Backend<Frame>
         {
         public:
-            OpenGLBackend(const Window* inWindow);
+            OpenGLBackend();
             virtual ~OpenGLBackend();
 
         protected:

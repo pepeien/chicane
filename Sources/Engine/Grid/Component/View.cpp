@@ -11,6 +11,9 @@ namespace Chicane
     {
         View::View(const String& inSource)
             : Component(TAG_ID),
+              m_window(nullptr),
+              m_windowEventSubscription({}),
+              m_path(""),
               m_styles({})
         {
             if (inSource.isEmpty())
@@ -71,27 +74,18 @@ namespace Chicane
             onDeactivation();
         }
 
-        void View::handle(WindowEvent inEvent)
+        void View::setWindow(Window* inWindow)
         {
-            if (inEvent.type == WindowEventType::MouseButtonDown)
-            {
-                Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+            m_windowEventSubscription.complete();
 
-                for (Component* contender : getChildrenOn(event.location))
-                {
-                    contender->click();
-                }
+            m_window = inWindow;
+
+            if (!m_window)
+            {
+                return;
             }
 
-            if (inEvent.type == WindowEventType::MouseMotion)
-            {
-                Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
-
-                for (Component* contender : getChildrenOn(event.location))
-                {
-                    contender->hover();
-                }
-            }
+            m_windowEventSubscription = inWindow->watchEvent([this](WindowEvent inEvent) { handle(inEvent); });
         }
 
         std::vector<Component*> View::getFlatChildren(const Component* inParent) const
@@ -143,6 +137,29 @@ namespace Chicane
             );
 
             return contenders;
+        }
+
+        void View::handle(const WindowEvent& inEvent)
+        {
+            if (inEvent.type == WindowEventType::MouseButtonDown)
+            {
+                Input::MouseButtonEvent event = *static_cast<Input::MouseButtonEvent*>(inEvent.data);
+
+                for (Component* contender : getChildrenOn(event.location))
+                {
+                    contender->click();
+                }
+            }
+
+            if (inEvent.type == WindowEventType::MouseMotion)
+            {
+                Input::MouseMotionEvent event = *static_cast<Input::MouseMotionEvent*>(inEvent.data);
+
+                for (Component* contender : getChildrenOn(event.location))
+                {
+                    contender->hover();
+                }
+            }
         }
     }
 }

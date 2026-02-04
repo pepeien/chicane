@@ -16,11 +16,9 @@ namespace Chicane
     {
         static SDL_GLContext g_context;
 
-        OpenGLBackend::OpenGLBackend(const Window* inWindow)
-            : Backend<Frame>(inWindow)
-        {
-            setFrameCount(2);
-        }
+        OpenGLBackend::OpenGLBackend()
+            : Backend<Frame>()
+        {}
 
         OpenGLBackend::~OpenGLBackend()
         {
@@ -34,6 +32,8 @@ namespace Chicane
 
         void OpenGLBackend::onInit()
         {
+            setFrameCount(2);
+
             buildContext();
             buildGlew();
             enableFeatures();
@@ -72,9 +72,6 @@ namespace Chicane
 
         void OpenGLBackend::onSetup()
         {
-            //const Viewport& viewport = m_renderer->getViewport();
-            //glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
-
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
 

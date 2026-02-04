@@ -9,5 +9,8 @@ namespace Chicane
     {
     public:
         CCamera();
+
+    public:
+        void onResize(const Vec<2, std::uint32_t>& inSize) override;
     };
 }

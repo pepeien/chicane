@@ -20,12 +20,12 @@ namespace Chicane
         class CHICANE_RENDERER VulkanBackend : public Backend<Frame>
         {
         public:
-            VulkanBackend(const Window* inWindow);
+            VulkanBackend();
             virtual ~VulkanBackend();
 
         protected:
             void onInit() override;
-            void onResize(const Viewport& inViewport) override;
+            void onResize(const Vec<2, std::uint32_t>& inResolution) override;
             void onLoad(const DrawTexture::List& inResources) override;
             void onRender() override;
 

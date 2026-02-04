@@ -67,6 +67,8 @@ namespace Chicane
 
         void OpenGLLGrid::onRender(const Frame& inFrame, void* inData)
         {
+            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
+
             glUseProgram(m_shaderProgram);
 
             glClear(GL_DEPTH_BUFFER_BIT);

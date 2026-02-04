@@ -19,8 +19,8 @@ namespace Chicane
         class CHICANE_RENDERER Backend
         {
         public:
-            inline Backend(const Window* inWindow)
-                : m_window(inWindow),
+            inline Backend()
+                : m_window(nullptr),
                   m_frames({}),
                   m_currentFrame(0U),
                   m_layers({})
@@ -29,7 +29,9 @@ namespace Chicane
             inline virtual ~Backend() = default;
 
         public:
-            inline virtual void onInit()
+            inline virtual void onInit() { return; }
+
+            inline virtual void onResize(const Vec<2, std::uint32_t>& inResolution)
             {
                 for (Layer<F>* layer : m_layers)
                 {
@@ -38,20 +40,15 @@ namespace Chicane
                         continue;
                     }
 
-                    layer->init();
-                }
-            }
-
-            inline virtual void onResize(const Viewport& inViewport)
-            {
-                for (Layer<F>* layer : m_layers)
-                {
-                    if (!layer)
+                    if (inResolution.x > 0 && inResolution.y > 0)
                     {
-                        continue;
+                        Viewport viewport = layer->getViewport();
+                        viewport.size     = inResolution;
+
+                        layer->setViewport(viewport);
                     }
 
-                    layer->resize(inViewport);
+                    layer->resize(inResolution);
                 }
             }
 
@@ -149,6 +146,9 @@ namespace Chicane
             }
 
         public:
+            // Window
+            inline void setWindow(const Window* inWindow) { m_window = inWindow; }
+
             // Frame
             inline F& getCurrentFrame() { return m_frames.at(m_currentFrame); }
 

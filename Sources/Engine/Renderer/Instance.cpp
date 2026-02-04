@@ -13,34 +13,14 @@ namespace Chicane
     namespace Renderer
     {
         Instance::Instance()
-            : m_window(nullptr),
-              m_resolution(Vec<2, int>(0)),
+            : m_resolution(Vec<2, std::uint32_t>(0)),
               m_resolutionObservable({}),
-              m_viewport({}),
-              m_viewportObservable({}),
-              m_backend(nullptr),
-              m_backendType(WindowBackend::Undefined),
-              m_backendObservable({})
+              m_backend(nullptr)
         {}
 
-        Instance::~Instance()
+        void Instance::init(const Settings& inSettings)
         {
-            destroy();
-        }
-
-        void Instance::init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings)
-        {
-            if (!inWindow)
-            {
-                return;
-            }
-
-            // Window
-            setWindow(inWindow);
-
-            // Renderer
             setResolution(inSettings.resolution);
-            setBackend(inBackend);
         }
 
         void Instance::render()
@@ -61,11 +41,6 @@ namespace Chicane
             currentFrame.reset();
 
             getPolyResource(DrawPolyType::e2D).reset();
-        }
-
-        void Instance::destroy()
-        {
-            m_backend.reset();
         }
 
         void Instance::useCamera(const View& inData)
@@ -193,12 +168,12 @@ namespace Chicane
             return m_skyResource.id;
         }
 
-        const Vec<2, int>& Instance::getResolution() const
+        const Vec<2, std::uint32_t>& Instance::getResolution() const
         {
             return m_resolution;
         }
 
-        void Instance::setResolution(const Vec<2, int>& inValue)
+        void Instance::setResolution(const Vec<2, std::uint32_t>& inValue)
         {
             if (m_resolution == inValue)
             {
@@ -207,9 +182,12 @@ namespace Chicane
 
             m_resolution = inValue;
 
-            m_resolutionObservable.next(m_resolution);
+            if (hasBackend())
+            {
+                m_backend->onResize(m_resolution);
+            }
 
-            refreshViewport();
+            m_resolutionObservable.next(m_resolution);
         }
 
         ResolutionSubscription Instance::watchResolution(
@@ -221,160 +199,52 @@ namespace Chicane
             return m_resolutionObservable.subscribe(inNext, inError, inComplete).next(m_resolution);
         }
 
-        const Viewport& Instance::getViewport() const
-        {
-            return m_viewport;
-        }
-
-        void Instance::setViewport(const Viewport& inValue)
-        {
-            setViewport(inValue.position, inValue.size);
-        }
-
-        void Instance::setViewport(const Vec2& inPosition, const Vec2& inSize)
-        {
-            setViewportPosition(inPosition);
-            setViewportSize(inSize);
-        }
-
-        void Instance::setViewportPosition(const Vec2& inPosition)
-        {
-            setViewportPosition(inPosition.x, inPosition.y);
-        }
-
-        void Instance::setViewportPosition(float inX, float inY)
-        {
-            if (std::fabs(m_viewport.position.x - inX) < FLT_EPSILON &&
-                std::fabs(m_viewport.position.y - inY) < FLT_EPSILON)
-            {
-                return;
-            }
-
-            m_viewport.position.x = inX;
-            m_viewport.position.y = inY;
-
-            propagateResize();
-        }
-
-        void Instance::setViewportSize(const Vec2& inSize)
-        {
-            setViewportSize(inSize.x, inSize.y);
-        }
-
-        void Instance::setViewportSize(float inWidth, float inHeight)
-        {
-            if (std::fabs(m_viewport.size.x - inWidth) < FLT_EPSILON &&
-                std::fabs(m_viewport.size.y - inHeight) < FLT_EPSILON)
-            {
-                return;
-            }
-
-            m_viewport.size.x = inWidth;
-            m_viewport.size.y = inHeight;
-
-            propagateResize();
-        }
-
-        ViewportSubscription Instance::watchViewport(
-            ViewportSubscription::NextCallback     inNext,
-            ViewportSubscription::ErrorCallback    inError,
-            ViewportSubscription::CompleteCallback inComplete
-        )
-        {
-            return m_viewportObservable.subscribe(inNext, inError, inComplete).next(m_viewport);
-        }
-
-        Window* Instance::getWindow() const
-        {
-            return m_window;
-        }
-
-        void Instance::setWindow(Window* inWindow)
-        {
-            if (inWindow == m_window)
-            {
-                return;
-            }
-
-            m_window = inWindow;
-            m_window->watchSize([&](const Vec<2, int>& inSize) { refreshViewport(); });
-            m_window->watchEvent([&](WindowEvent inEvent) { handle(inEvent); });
-        }
-
-        void Instance::handle(const WindowEvent& inEvent)
-        {
-            if (!hasBackend())
-            {
-                return;
-            }
-
-            m_backend->onHandle(inEvent);
-        }
-
         bool Instance::hasBackend() const
         {
             return m_backend && m_backend.get() != nullptr;
         }
 
-        BackendSubscription Instance::watchBackend(
-            BackendSubscription::NextCallback     inNext,
-            BackendSubscription::ErrorCallback    inError,
-            BackendSubscription::CompleteCallback inComplete
-        )
+        void Instance::handle(const WindowEvent& inEvent)
         {
-            return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_backendType);
+            if (hasBackend())
+            {
+                m_backend->onHandle(inEvent);
+            }
         }
 
-        void Instance::setBackend(WindowBackend inType)
+        void Instance::reloadBackend(const Window* inWindow)
         {
             if (hasBackend())
             {
                 m_backend.reset();
             }
 
-            switch (inType)
+            switch (inWindow->getBackend())
             {
 #if CHICANE_OPENGL
             case WindowBackend::OpenGL:
-                m_backend = std::make_unique<OpenGLBackend>(m_window);
+                m_backend = std::make_unique<OpenGLBackend>();
 
                 break;
 #endif
 
 #if CHICANE_VULKAN
             case WindowBackend::Vulkan:
-                m_backend = std::make_unique<VulkanBackend>(m_window);
+                m_backend = std::make_unique<VulkanBackend>();
 
                 break;
 #endif
 
             default:
-                m_backend = std::make_unique<Backend<>>(m_window);
+                m_backend = std::make_unique<Backend<>>();
 
                 break;
             }
 
-            m_backend->onResize(m_viewport);
+            m_backend->setWindow(inWindow);
+
             m_backend->onInit();
-
-            m_backendType = inType;
-
-            m_backendObservable.next(m_backendType);
-
-            reloadResources();
-        }
-
-        DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
-        {
-            return m_polyResources[inType];
-        }
-
-        void Instance::reloadResources()
-        {
-            if (!hasBackend())
-            {
-                return;
-            }
+            m_backend->onResize(m_resolution);
 
             for (const auto& [type, resource] : m_polyResources)
             {
@@ -385,38 +255,9 @@ namespace Chicane
             m_backend->onLoad(m_skyResource);
         }
 
-        void Instance::refreshViewport()
+        DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
         {
-            if (m_resolution.x == 0 || m_resolution.y == 0)
-            {
-                return;
-            }
-
-            Vec<2, int> windowSize   = getWindow()->getSize();
-            Vec<2, int> rendererSize = m_resolution;
-
-            bool bIsRenderingScalable = rendererSize.x <= 0.0f || rendererSize.y <= 0.0f;
-            bool bIsRenderingUp       = windowSize.x < rendererSize.x || windowSize.y < rendererSize.y;
-
-            if (bIsRenderingUp || bIsRenderingScalable)
-            {
-                rendererSize = windowSize;
-            }
-
-            int scale = std::min(windowSize.x / rendererSize.x, windowSize.y / rendererSize.y);
-
-            setViewportSize(rendererSize * scale);
-            setViewportPosition((windowSize - rendererSize) / 2);
-        }
-
-        void Instance::propagateResize()
-        {
-            m_viewportObservable.next(m_viewport);
-
-            if (hasBackend())
-            {
-                m_backend->onResize(m_viewport);
-            }
+            return m_polyResources[inType];
         }
     }
 }

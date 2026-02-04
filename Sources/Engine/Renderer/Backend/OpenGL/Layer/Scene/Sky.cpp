@@ -63,6 +63,8 @@ namespace Chicane
                 return;
             }
 
+            glViewport(m_viewport.position.x, m_viewport.position.y, m_viewport.size.x, m_viewport.size.y);
+
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_CULL_FACE);
