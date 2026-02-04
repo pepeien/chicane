@@ -289,7 +289,7 @@ namespace Chicane
         SDL_Surface* icon = SDL_CreateSurfaceFrom(
             image.getWidth(),
             image.getHeight(),
-            SDL_PIXELFORMAT_ARGB8888,
+            SDL_PIXELFORMAT_RGBA8888,
             image.getPixels(),
             image.getPitch()
         );
@@ -418,6 +418,7 @@ namespace Chicane
 
         switch (m_settings.backend)
         {
+#if CHICANE_OPENGL
         case WindowBackend::OpenGL:
             flag = SDL_WINDOW_OPENGL;
 
@@ -432,11 +433,14 @@ namespace Chicane
             }
 
             break;
+#endif
 
+#if CHICANE_VULKAN
         case WindowBackend::Vulkan:
             flag = SDL_WINDOW_VULKAN;
 
             break;
+#endif
 
         default:
             flag = SDL_WINDOW_HIDDEN;
@@ -524,7 +528,7 @@ namespace Chicane
         m_bIsFocused = false;
     }
 
-    bool Window::isResizable()
+    bool Window::isResizable() const
     {
         return m_bIsResizable;
     }
@@ -568,7 +572,7 @@ namespace Chicane
         m_bIsResizable = false;
     }
 
-    bool Window::isMinimized()
+    bool Window::isMinimized() const
     {
         if (!hasInstance())
         {

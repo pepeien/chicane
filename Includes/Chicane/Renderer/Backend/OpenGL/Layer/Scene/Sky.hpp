@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneSky : public Layer
+        class CHICANE_RENDERER OpenGLLSceneSky : public Layer<Frame>
         {
         public:
             OpenGLLSceneSky();

@@ -10,7 +10,6 @@ namespace Chicane
     {
     public:
         ASound();
-        virtual ~ASound() = default;
 
     public:
         void load(const String& inSound);

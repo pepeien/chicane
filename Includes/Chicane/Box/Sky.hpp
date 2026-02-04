@@ -14,11 +14,11 @@ namespace Chicane
         class CHICANE_BOX Sky : public Asset
         {
         public:
-            static inline constexpr const char*      EXTENSION = ".bsky";
-            static inline constexpr const char*      TAG       = "Sky";
+            static constexpr inline const char*      EXTENSION = ".bsky";
+            static constexpr inline const char*      TAG       = "Sky";
 
-            static inline constexpr const char*      SIDES_TAG_NAME              = "Sides";
-            static inline constexpr const char*      TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
+            static constexpr inline const char*      SIDES_TAG_NAME              = "Sides";
+            static constexpr inline const char*      TEXTURE_SIDE_ATTRIBUTE_NAME = "side";
 
             static inline const std::vector<SkySide> ORDER = {
                 SkySide::Right, SkySide::Left, SkySide::Front, SkySide::Back, SkySide::Up, SkySide::Down

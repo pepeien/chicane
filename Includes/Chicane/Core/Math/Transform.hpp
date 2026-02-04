@@ -11,7 +11,6 @@ namespace Chicane
     struct CHICANE_CORE Transform
     {
     public:
-        // Transformation
         const Mat4& getMatrix() const;
         void setTransform(const Transform& inTransform);
 
@@ -19,20 +18,14 @@ namespace Chicane
         void addTranslation(const Vec3& inTranslation);
         void setTranslation(const Vec3& inTranslation);
 
-        const Vec3& getRotation() const;
-        void addRotation(const Vec3& inRotation);
-        void setRotation(const Vec3& inRotation);
+        const Rotator& getRotation() const;
+        void addLocalRotation(const Rotator& inRotation);
+        void addWorldRotation(const Rotator& inRotation);
+        void setRotation(const Rotator& inRotation);
 
         const Vec3& getScale() const;
         void addScale(const Vec3& inScale);
         void setScale(const Vec3& inScale);
-
-        // Orientation
-        const Vec3& getRight() const;
-        const Vec3& getForward() const;
-        const Vec3& getUp() const;
-
-        const QuatFloat& getOrientation() const;
 
     protected:
         void refresh();

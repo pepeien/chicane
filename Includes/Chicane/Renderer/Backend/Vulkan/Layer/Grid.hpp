@@ -12,7 +12,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLGrid : public Layer
+        class CHICANE_RENDERER VulkanLGrid : public Layer<Frame>
         {
         public:
             VulkanLGrid();

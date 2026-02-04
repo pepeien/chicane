@@ -19,12 +19,6 @@ namespace Chicane
               m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 1.0f), vk::ClearDepthStencilValue(1.0f, 0)})
         {}
 
-        VulkanLSceneMesh::~VulkanLSceneMesh()
-        {
-            deleteChildren();
-            destroyFrameResources();
-        }
-
         bool VulkanLSceneMesh::onInit()
         {
             initFrameResources();
@@ -52,8 +46,18 @@ namespace Chicane
 
         void VulkanLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
+            if (inFrame.getInstances3D().empty())
+            {
+                return;
+            }
+
+            if (inFrame.get3DDraws().empty())
+            {
+                return;
+            }
+
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = getParent<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
 
             VulkanBackendData* data          = (VulkanBackendData*)inData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;
@@ -220,7 +224,7 @@ namespace Chicane
         {
             // Backend
             VulkanBackend* backend = getBackend<VulkanBackend>();
-            VulkanLScene*  parent  = getParent<VulkanLScene>();
+            VulkanLScene*  parent  = backend->getLayer<VulkanLScene>();
 
             // Shader
             VulkanShaderStageCreateInfo vertexShader;
@@ -250,7 +254,7 @@ namespace Chicane
             colorAttachment.loadOp        = vk::AttachmentLoadOp::eLoad;
             colorAttachment.storeOp       = vk::AttachmentStoreOp::eStore;
             colorAttachment.initialLayout = vk::ImageLayout::eColorAttachmentOptimal;
-            colorAttachment.finalLayout   = vk::ImageLayout::eColorAttachmentOptimal;
+            colorAttachment.finalLayout   = vk::ImageLayout::ePresentSrcKHR;
 
             vk::AttachmentReference colorReference;
             colorReference.attachment = 0;

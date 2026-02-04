@@ -25,7 +25,7 @@ namespace Chicane
         );
 
         template <typename T>
-        void setValue(T& outProperty, T inNewValue)
+        inline void setValue(T& outProperty, T inNewValue)
         {
             if (outProperty == inNewValue)
             {

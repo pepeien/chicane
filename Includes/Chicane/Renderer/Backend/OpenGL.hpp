@@ -8,16 +8,16 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLBackend : public Backend
+        class CHICANE_RENDERER OpenGLBackend : public Backend<Frame>
         {
         public:
-            OpenGLBackend(const Instance* inRenderer);
+            OpenGLBackend(const Window* inWindow);
             virtual ~OpenGLBackend();
 
         protected:
             void onInit() override;
             void onLoad(const DrawTexture::List& inResources) override;
-            void onSetup(const Frame& inFrame) override;
+            void onSetup() override;
             void onCleanup() override;
 
         private:

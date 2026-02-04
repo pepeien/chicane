@@ -64,11 +64,11 @@ namespace Chicane
         void focus();
         void blur();
 
-        bool isResizable();
+        bool isResizable() const;
         void enableResizing();  // Only takes effect when the type is `Type::Windowed`
         void disableResizing(); // Only takes effect when the type is `Type::Windowed`
 
-        bool isMinimized();
+        bool isMinimized() const;
 
         // Event
         WindowEventSubscription watchEvent(

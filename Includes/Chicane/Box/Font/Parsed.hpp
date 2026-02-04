@@ -12,6 +12,14 @@ namespace Chicane
         struct CHICANE_BOX FontParsed
         {
         public:
+            static const FontParsed& empty()
+            {
+                static const FontParsed result;
+
+                return result;
+            }
+
+        public:
             bool hasGlyph(char inCharacter) const;
             bool hasGlyph(std::uint32_t inCode) const;
 

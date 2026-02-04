@@ -8,9 +8,9 @@ namespace Chicane
     {
         namespace BroadPhaseLayer
         {
-            static constexpr std::uint16_t NonMoving = 0;
-            static constexpr std::uint16_t Moving    = 1;
-            static constexpr std::uint16_t Count     = 2;
+            constexpr inline std::uint16_t NonMoving = 0;
+            constexpr inline std::uint16_t Moving    = 1;
+            constexpr inline std::uint16_t Count     = 2;
         }
     }
 }

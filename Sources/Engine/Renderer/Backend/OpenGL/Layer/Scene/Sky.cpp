@@ -14,7 +14,6 @@ namespace Chicane
 
         OpenGLLSceneSky::~OpenGLLSceneSky()
         {
-            deleteChildren();
             destroyShader();
             destroyTextureData();
         }
@@ -66,15 +65,9 @@ namespace Chicane
 
             glUseProgram(m_shaderProgram);
 
-            glEnable(GL_DEPTH_TEST);
-            glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LESS);
-
             glEnable(GL_CULL_FACE);
             glCullFace(GL_FRONT);
             glFrontFace(GL_CCW);
-
-            glClear(GL_DEPTH_BUFFER_BIT);
 
             glBindTextureUnit(1, m_texturesBuffer);
 
@@ -90,7 +83,6 @@ namespace Chicane
 
         void OpenGLLSceneSky::onCleanup()
         {
-            glDisable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
         }
 

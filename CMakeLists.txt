@@ -24,12 +24,20 @@ project(
 
 ##################### Options #######################
 option(CHICANE_SHARED "Build a shared version of the library" ON)
-option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 option(CHICANE_OPENGL "Enable OpenGL graphics API"            ON)
+option(CHICANE_VULKAN "Enable Vulkan graphics API"            ON)
 
 ##################### Values #######################
 if (CHICANE_SHARED)
     add_definitions(-DBUILD_SHARED)
+endif()
+
+if (CHICANE_OPENGL)
+    add_definitions(-DBUILD_OPENGL)
+endif()
+
+if (CHICANE_VULKAN)
+    add_definitions(-DBUILD_VULKAN)
 endif()
 
 if (NOT DEFINED BUILD_DIR)
@@ -98,6 +106,14 @@ set(RUNTIME_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Runtime")
 set(SCREECH_TARGET_NAME "${NAME}-Screech")
 set(SCREECH_HEADER_DIR  "${CHICANE_INCLUDES_DIR}/Screech")
 set(SCREECH_SOURCE_DIR  "${CHICANE_SOURCES_DIR}/Screech")
+
+## Editor
+set(EDITOR_TARGET_NAME "${NAME}-Editor")
+set(EDITOR_HEADER_DIR  "${SOURCES_DIR}/Editor")
+set(EDITOR_SOURCE_DIR  "${SOURCES_DIR}/Editor")
+
+set(EDITOR_CONTENT_TARGET_NAME "${EDITOR_TARGET_NAME}-Content")
+set(EDITOR_CONTENT_SOURCE_DIR  "${CONTENTS_DIR}/Editor")
 
 ## Sample
 set(SAMPLE_TARGET_NAME "${NAME}-Sample")

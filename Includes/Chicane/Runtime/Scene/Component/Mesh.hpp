@@ -11,7 +11,6 @@ namespace Chicane
     {
     public:
         CMesh();
-        virtual ~CMesh() = default;
 
     protected:
         void onAttachment(Transformable* inRoot) override;

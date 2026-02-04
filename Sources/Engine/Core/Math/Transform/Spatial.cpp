@@ -12,33 +12,14 @@ namespace Chicane
         return m_translation;
     }
 
-    const Vec3& SpatialTransform::getRotation() const
+    const Rotator& SpatialTransform::getRotation() const
     {
-        return m_rotation.getVector();
+        return m_rotation;
     }
 
     const Vec3& SpatialTransform::getScale() const
     {
         return m_scale;
-    }
-
-    const Transform& SpatialTransform::getRelativeTransform() const
-    {
-        return m_relative;
-    }
-
-    void SpatialTransform::addRelativeTransform(const Transform& inTransform)
-    {
-        addRelativeTranslation(inTransform.getTranslation());
-        addRelativeRotation(inTransform.getRotation());
-        addRelativeScale(inTransform.getScale());
-    }
-
-    void SpatialTransform::setRelativeTransform(const Transform& inTransform)
-    {
-        m_relative.setTransform(inTransform);
-
-        refresh();
     }
 
     const Vec3& SpatialTransform::getRelativeTranslation() const
@@ -60,19 +41,19 @@ namespace Chicane
         refresh();
     }
 
-    const Vec3& SpatialTransform::getRelativeRotation() const
+    const Rotator& SpatialTransform::getRelativeRotation() const
     {
         return m_relative.getRotation();
     }
 
-    void SpatialTransform::addRelativeRotation(const Vec3& inRotation)
+    void SpatialTransform::addRelativeRotation(const Rotator& inRotation)
     {
-        m_relative.addRotation(inRotation);
+        m_relative.addLocalRotation(inRotation);
 
         refresh();
     }
 
-    void SpatialTransform::setRelativeRotation(const Vec3& inRotation)
+    void SpatialTransform::setRelativeRotation(const Rotator& inRotation)
     {
         m_relative.setRotation(inRotation);
 
@@ -98,25 +79,6 @@ namespace Chicane
         refresh();
     }
 
-    const Transform& SpatialTransform::getAbsoluteTransform() const
-    {
-        return m_absolute;
-    }
-
-    void SpatialTransform::addAbsoluteTransform(const Transform& inTransform)
-    {
-        addAbsoluteTranslation(inTransform.getTranslation());
-        addAbsoluteRotation(inTransform.getRotation());
-        addAbsoluteScale(inTransform.getScale());
-    }
-
-    void SpatialTransform::setAbsoluteTransform(const Transform& inTransform)
-    {
-        m_absolute.setTransform(inTransform);
-
-        refresh();
-    }
-
     const Vec3& SpatialTransform::getAbsoluteTranslation() const
     {
         return m_absolute.getTranslation();
@@ -136,19 +98,19 @@ namespace Chicane
         refresh();
     }
 
-    const Vec3& SpatialTransform::getAbsoluteRotation() const
+    const Rotator& SpatialTransform::getAbsoluteRotation() const
     {
         return m_absolute.getRotation();
     }
 
-    void SpatialTransform::addAbsoluteRotation(const Vec3& inRotation)
+    void SpatialTransform::addAbsoluteRotation(const Rotator& inRotation)
     {
-        m_absolute.addRotation(inRotation);
+        m_absolute.addWorldRotation(inRotation);
 
         refresh();
     }
 
-    void SpatialTransform::setAbsoluteRotation(const Vec3& inRotation)
+    void SpatialTransform::setAbsoluteRotation(const Rotator& inRotation)
     {
         m_absolute.setRotation(inRotation);
 
@@ -174,31 +136,16 @@ namespace Chicane
         refresh();
     }
 
-    const Vec3& SpatialTransform::getRight() const
-    {
-        return m_rotation.getRight();
-    }
-
-    const Vec3& SpatialTransform::getForward() const
-    {
-        return m_rotation.getForward();
-    }
-
-    const Vec3& SpatialTransform::getUp() const
-    {
-        return m_rotation.getUp();
-    }
-
     void SpatialTransform::refresh()
     {
-        const QuatFloat& absRot   = m_absolute.getOrientation();
-        const QuatFloat& relRot   = m_relative.getOrientation();
-        const QuatFloat  worldRot = absRot * relRot;
+        const QuatFloat& absoluteRotation = m_absolute.getRotation().get();
+        const QuatFloat& relativeRotation = m_relative.getRotation().get();
+        const QuatFloat  worldRot         = absoluteRotation * relativeRotation;
 
         Vec3 localOffset   = m_relative.getTranslation() * m_absolute.getScale();
-        Vec3 rotatedOffset = absRot * localOffset;
+        Vec3 rotatedOffset = absoluteRotation * localOffset;
 
-        m_rotation.setOrientation(worldRot);
+        m_rotation.set(worldRot);
         m_translation = m_absolute.getTranslation() + rotatedOffset;
         m_scale       = m_absolute.getScale() * m_relative.getScale();
 

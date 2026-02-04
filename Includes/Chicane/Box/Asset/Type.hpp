@@ -11,10 +11,10 @@ namespace Chicane
             Undefined, // N/A
             Sound,     // Sound
             Font,      // Text Font
-            Mesh,      // Two entries [Model, Texture] both being refNames
+            Mesh,      // Two entries [`Model`, `Texture`] both being references
             Model,     // 3D Model
-            Sky, // 6 entries all being images [Positive X, Negative X, Positive Y, Negative Y, Positive Z, Negative Z]
-            Texture, // Image
+            Texture,   // Image
+            Sky,       // `Texture`s compilation with a `Model` shape that produces a sky
         };
     }
 }

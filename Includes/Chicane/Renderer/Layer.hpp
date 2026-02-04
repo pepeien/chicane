@@ -16,87 +16,184 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class Backend;
-
+        template <typename F = Frame>
         class CHICANE_RENDERER Layer
         {
         public:
             using Id = String;
 
         public:
-            Layer(const Id& inId);
-            Layer();
+            inline Layer(const Id& inId)
+                : m_id(inId),
+                  m_status(LayerStatus::Offline),
+                  m_backend(nullptr)
+            {}
 
-            virtual ~Layer() = default;
+            inline Layer()
+                : m_id("Undefined"),
+                  m_status(LayerStatus::Offline),
+                  m_backend(nullptr)
+            {}
+
+            inline virtual ~Layer() = default;
 
         protected:
-            virtual bool onInit() { return true; }
-            virtual bool onDestroy() { return true; }
-            virtual bool onRebuild() { return true; }
-            virtual void onResize(const Viewport& inViewport) { return; }
-            virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
-            virtual void onLoad(const DrawTexture::List& inResources) { return; }
-            virtual void onLoad(const DrawSky& inResource) { return; }
-            virtual bool onSetup(const Frame& inFrame) { return true; }
-            virtual void onRender(const Frame& inFrame, void* inData = nullptr) { return; }
-            virtual void onCleanup() { return; }
+            inline virtual bool onInit() { return true; }
+            inline virtual bool onDestroy() { return true; }
+            inline virtual bool onRebuild() { return true; }
+            inline virtual void onResize(const Viewport& inViewport) { return; }
+            inline virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
+            inline virtual void onLoad(const DrawTexture::List& inResources) { return; }
+            inline virtual void onLoad(const DrawSky& inResource) { return; }
+            inline virtual bool onSetup(const F& inFrame) { return true; }
+            inline virtual void onRender(const F& inFrame, void* inData = nullptr) { return; }
+            inline virtual void onCleanup() { return; }
 
-            virtual void onEvent(const WindowEvent& inEvent) { return; }
-
-        public:
-            void init();
-            void destroy();
-            void rebuild();
-            void resize(const Viewport& inViewport);
-            void load(DrawPolyType inType, const DrawPolyResource& inResource);
-            void load(const DrawTexture::List& inResources);
-            void load(const DrawSky& inResource);
-            void setup(const Frame& inFrame);
-            void render(const Frame& inFrame, void* inData = nullptr);
-            void cleanup();
-
-            void handle(const WindowEvent& inEvent);
+            inline virtual void onEvent(const WindowEvent& inEvent) { return; }
 
         public:
-            bool is(LayerStatus inStatus) const;
-            void setStatus(LayerStatus inStatus);
+            inline void init()
+            {
+                if (!is(LayerStatus::Offline))
+                {
+                    return;
+                }
 
-            template <typename T = Backend>
-            T* getBackend()
+                if (!onInit())
+                {
+                    return;
+                }
+
+                setStatus(LayerStatus::Running);
+            }
+
+            inline void destroy()
+            {
+                if (is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                if (!onDestroy())
+                {
+                    return;
+                }
+
+                setStatus(LayerStatus::Offline);
+            }
+
+            inline void rebuild()
+            {
+                if (!is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                if (!onRebuild())
+                {
+                    return;
+                }
+
+                setStatus(LayerStatus::Running);
+            }
+
+            inline void resize(const Viewport& inViewport)
+            {
+                if (is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                onResize(inViewport);
+            }
+
+            inline void load(DrawPolyType inType, const DrawPolyResource& inResource)
+            {
+                if (is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                onLoad(inType, inResource);
+            }
+
+            inline void load(const DrawTexture::List& inResources)
+            {
+                if (is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                onLoad(inResources);
+            }
+
+            inline void load(const DrawSky& inResource)
+            {
+                if (is(LayerStatus::Offline))
+                {
+                    return;
+                }
+
+                onLoad(inResource);
+            }
+
+            inline void setup(const F& inFrame)
+            {
+                if (!is(LayerStatus::Running))
+                {
+                    return;
+                }
+
+                if (!onSetup(inFrame))
+                {
+                    return;
+                }
+
+                setStatus(LayerStatus::Running);
+            }
+
+            inline void render(const F& inFrame, void* inData = nullptr)
+            {
+                if (!is(LayerStatus::Running))
+                {
+                    return;
+                }
+
+                onRender(inFrame, inData);
+            }
+
+            inline void cleanup()
+            {
+                if (!is(LayerStatus::Running))
+                {
+                    return;
+                }
+
+                onCleanup();
+            }
+
+            inline void handle(const WindowEvent& inEvent) { onEvent(inEvent); }
+
+        public:
+            inline bool is(LayerStatus inStatus) const { return m_status == inStatus; }
+
+            inline void setStatus(LayerStatus inStatus) { m_status = inStatus; }
+
+            inline const String& getId() const { return m_id; }
+
+            template <typename T>
+            inline T* getBackend()
             {
                 return static_cast<T*>(m_backend);
             }
-            void setBackend(Backend* inBackend) { m_backend = inBackend; }
 
-            template <typename Target = Layer, typename Anchor = Layer, typename... Params>
-            void addLayer(ListPushStrategy inStrategy = ListPushStrategy::Back, Params... inParams)
-            {
-                Target* layer = new Target(inParams...);
-                layer->setBackend(m_backend);
-                layer->setParent(this);
-                layer->init();
-
-                m_children.add(layer, inStrategy);
-            }
-
-            template <typename T = Layer>
-            T* getParent()
-            {
-                return static_cast<T*>(m_parent);
-            }
-            void setParent(Layer* inLayer) { m_parent = inLayer; }
+            inline void setBackend(void* inBackend) { m_backend = inBackend; }
 
         protected:
-            void deleteChildren();
+            Id          m_id;
+            LayerStatus m_status;
 
-        protected:
-            Id           m_id;
-            LayerStatus  m_status;
-
-            Backend*     m_backend;
-
-            Layer*       m_parent;
-            List<Layer*> m_children;
+            void*       m_backend;
         };
     }
 }

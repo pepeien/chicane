@@ -15,6 +15,14 @@ namespace Chicane
             using Map = std::unordered_map<std::uint32_t, FontGlyph>;
 
         public:
+            static const FontGlyph& empty()
+            {
+                static const FontGlyph result;
+
+                return result;
+            }
+
+        public:
             std::uint32_t              code     = 0U;
             std::uint32_t              units    = 0U;
             Vec2                       scale    = {};

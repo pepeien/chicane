@@ -18,7 +18,7 @@ namespace Chicane
         class CHICANE_KERB Engine
         {
         public:
-            static Engine& getInstance()
+            static inline Engine& getInstance()
             {
                 static Engine instance;
 

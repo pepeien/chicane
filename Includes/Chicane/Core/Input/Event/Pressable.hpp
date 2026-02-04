@@ -10,7 +10,7 @@
 #include "Chicane/Core/Input/Status.hpp"
 #include "Chicane/Core/Recorder.hpp"
 
-static inline constexpr const float COOLDOWN_IN_MS = 30.0f;
+static constexpr inline const float COOLDOWN_IN_MS = 30.0f;
 
 namespace Chicane
 {
@@ -23,14 +23,14 @@ namespace Chicane
             using Events = std::unordered_map<B, std::unordered_map<Status, std::vector<std::function<void()>>>>;
 
         public:
-            PressableEvents()
+            inline PressableEvents()
                 : Recorder(COOLDOWN_IN_MS),
                   m_pressed({}),
                   m_events({})
             {}
 
         protected:
-            void onTime() override
+            inline void onTime() override
             {
                 for (B button : m_pressed)
                 {
@@ -39,7 +39,7 @@ namespace Chicane
             }
 
         public:
-            void bind(B inButton, Status inStatus, std::function<void()> inExec)
+            inline void bind(B inButton, Status inStatus, std::function<void()> inExec)
             {
                 if (m_events.find(inButton) == m_events.end())
                 {
@@ -56,7 +56,7 @@ namespace Chicane
                 events.at(inStatus).push_back(inExec);
             }
 
-            void exec(B inButton, Status inStatus)
+            inline void exec(B inButton, Status inStatus)
             {
                 store(inButton, inStatus);
 
@@ -78,16 +78,16 @@ namespace Chicane
                 }
             }
 
-            void repeat() { end(); }
+            inline void repeat() { end(); }
 
-            void clear()
+            inline void clear()
             {
                 m_pressed.clear();
                 m_events.clear();
             }
 
         private:
-            void store(B inButton, Status inStatus)
+            inline void store(B inButton, Status inStatus)
             {
                 auto foundButton = std::find(m_pressed.begin(), m_pressed.end(), inButton);
 

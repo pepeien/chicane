@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
@@ -16,7 +17,6 @@ namespace Chicane
 
         OpenGLLScene::~OpenGLLScene()
         {
-            deleteChildren();
             destroyCameraData();
             destroyLightData();
             destroyModelData();
@@ -72,6 +72,8 @@ namespace Chicane
 
         void OpenGLLScene::onRender(const Frame& inFrame, void* inData)
         {
+            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+
             glBindVertexArray(m_modelVertexArray);
             glVertexArrayElementBuffer(m_modelVertexArray, m_modelIndexBuffer);
             glVertexArrayVertexBuffer(m_modelVertexArray, 0, m_modelVertexBuffer, 0, sizeof(Vertex));
@@ -175,9 +177,12 @@ namespace Chicane
 
         void OpenGLLScene::buildLayers()
         {
-            addLayer<OpenGLLSceneSky>();
-            addLayer<OpenGLLSceneShadow>();
-            addLayer<OpenGLLSceneMesh>();
+            ListPush<Layer*> settings;
+            settings.strategy = ListPushStrategy::Back;
+
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneSky>(settings);
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneShadow>(settings);
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneMesh>(settings);
         }
     }
 }

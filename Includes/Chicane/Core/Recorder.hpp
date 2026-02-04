@@ -12,7 +12,7 @@ namespace Chicane
         Recorder();
 
     protected:
-        virtual void onTime() { return; }
+        inline virtual void onTime() { return; }
 
     public:
         void start();

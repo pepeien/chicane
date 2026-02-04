@@ -10,7 +10,6 @@ namespace Chicane
     {
     public:
         ALight();
-        virtual ~ALight() = default;
 
     protected:
         CLight* m_light;

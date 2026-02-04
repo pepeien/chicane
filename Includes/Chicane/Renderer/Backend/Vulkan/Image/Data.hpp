@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanImageData : public Image
         {
         public:
-            VulkanImageData(const Image& inImage)
+            inline VulkanImageData(const Image& inImage)
                 : Image()
             {
                 m_width   = inImage.getWidth();
@@ -23,11 +23,11 @@ namespace Chicane
                 m_pixels  = inImage.getPixels();
             }
 
-            VulkanImageData()
+            inline VulkanImageData()
                 : Image()
             {}
 
-            ~VulkanImageData() = default;
+            inline ~VulkanImageData() = default;
 
         public:
             vk::Image        instance;

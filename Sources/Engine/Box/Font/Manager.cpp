@@ -6,8 +6,6 @@ namespace Chicane
 {
     namespace Box
     {
-        static const FontParsed EMPTY_INSTANCE = {};
-
         FontManager::FontManager()
             : Manager()
         {}
@@ -39,7 +37,7 @@ namespace Chicane
         {
             if (!containsFamily(inName))
             {
-                return EMPTY_INSTANCE;
+                return FontParsed::empty();
             }
 
             auto found = std::find_if(

@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer
+        class CHICANE_RENDERER OpenGLLSceneShadow : public Layer<Frame>
         {
         public:
             OpenGLLSceneShadow();

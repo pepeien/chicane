@@ -1,10 +1,10 @@
 #include "Chicane/Renderer/Instance.hpp"
 
-#if defined(CHICANE_OPENGL)
+#if CHICANE_OPENGL
     #include "Chicane/Renderer/Backend/OpenGL.hpp"
 #endif
 
-#if defined(CHICANE_VULKAN)
+#if CHICANE_VULKAN
     #include "Chicane/Renderer/Backend/Vulkan.hpp"
 #endif
 
@@ -14,10 +14,13 @@ namespace Chicane
     {
         Instance::Instance()
             : m_window(nullptr),
-              m_frames({}),
-              m_currentFrame(0U),
+              m_resolution(Vec<2, int>(0)),
+              m_resolutionObservable({}),
               m_viewport({}),
-              m_backend(nullptr)
+              m_viewportObservable({}),
+              m_backend(nullptr),
+              m_backendType(WindowBackend::Undefined),
+              m_backendObservable({})
         {}
 
         Instance::~Instance()
@@ -25,15 +28,18 @@ namespace Chicane
             destroy();
         }
 
-        void Instance::init(Window* inWindow, WindowBackend inBackend)
+        void Instance::init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings)
         {
             if (!inWindow)
             {
                 return;
             }
 
-            setViewport(Vec2::Zero, Vec2::Zero);
+            // Window
             setWindow(inWindow);
+
+            // Renderer
+            setResolution(inSettings.resolution);
             setBackend(inBackend);
         }
 
@@ -44,19 +50,17 @@ namespace Chicane
                 return;
             }
 
-            Frame& currentFrame = getCurrentFrame();
+            Frame& currentFrame = m_backend->getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_backend->onSetup(currentFrame);
-            m_backend->onRender(currentFrame);
+            m_backend->onSetup();
+            m_backend->onRender();
             m_backend->onCleanup();
 
             currentFrame.reset();
 
             getPolyResource(DrawPolyType::e2D).reset();
-
-            m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
         }
 
         void Instance::destroy()
@@ -66,17 +70,17 @@ namespace Chicane
 
         void Instance::useCamera(const View& inData)
         {
-            getCurrentFrame().useCamera(inData);
+            m_backend->useCamera(inData);
         }
 
         void Instance::addLight(const View::List& inData)
         {
-            getCurrentFrame().addLights(inData);
+            m_backend->addLight(inData);
         }
 
         void Instance::addLight(const View& inData)
         {
-            getCurrentFrame().addLight(inData);
+            m_backend->addLight(inData);
         }
 
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
@@ -189,6 +193,34 @@ namespace Chicane
             return m_skyResource.id;
         }
 
+        const Vec<2, int>& Instance::getResolution() const
+        {
+            return m_resolution;
+        }
+
+        void Instance::setResolution(const Vec<2, int>& inValue)
+        {
+            if (m_resolution == inValue)
+            {
+                return;
+            }
+
+            m_resolution = inValue;
+
+            m_resolutionObservable.next(m_resolution);
+
+            refreshViewport();
+        }
+
+        ResolutionSubscription Instance::watchResolution(
+            ResolutionSubscription::NextCallback     inNext,
+            ResolutionSubscription::ErrorCallback    inError,
+            ResolutionSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_resolutionObservable.subscribe(inNext, inError, inComplete).next(m_resolution);
+        }
+
         const Viewport& Instance::getViewport() const
         {
             return m_viewport;
@@ -243,6 +275,15 @@ namespace Chicane
             propagateResize();
         }
 
+        ViewportSubscription Instance::watchViewport(
+            ViewportSubscription::NextCallback     inNext,
+            ViewportSubscription::ErrorCallback    inError,
+            ViewportSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_viewportObservable.subscribe(inNext, inError, inComplete).next(m_viewport);
+        }
+
         Window* Instance::getWindow() const
         {
             return m_window;
@@ -256,7 +297,7 @@ namespace Chicane
             }
 
             m_window = inWindow;
-            m_window->watchSize([&](const Vec<2, int>& inSize) { setViewportSize(inSize.x, inSize.y); });
+            m_window->watchSize([&](const Vec<2, int>& inSize) { refreshViewport(); });
             m_window->watchEvent([&](WindowEvent inEvent) { handle(inEvent); });
         }
 
@@ -275,6 +316,15 @@ namespace Chicane
             return m_backend && m_backend.get() != nullptr;
         }
 
+        BackendSubscription Instance::watchBackend(
+            BackendSubscription::NextCallback     inNext,
+            BackendSubscription::ErrorCallback    inError,
+            BackendSubscription::CompleteCallback inComplete
+        )
+        {
+            return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_backendType);
+        }
+
         void Instance::setBackend(WindowBackend inType)
         {
             if (hasBackend())
@@ -284,22 +334,22 @@ namespace Chicane
 
             switch (inType)
             {
-#if defined(CHICANE_OPENGL)
+#if CHICANE_OPENGL
             case WindowBackend::OpenGL:
-                m_backend = std::make_unique<OpenGLBackend>(this);
+                m_backend = std::make_unique<OpenGLBackend>(m_window);
 
                 break;
 #endif
 
-#if defined(CHICANE_VULKAN)
+#if CHICANE_VULKAN
             case WindowBackend::Vulkan:
-                m_backend = std::make_unique<VulkanBackend>(this);
+                m_backend = std::make_unique<VulkanBackend>(m_window);
 
                 break;
 #endif
 
             default:
-                m_backend = std::make_unique<Backend>(this);
+                m_backend = std::make_unique<Backend<>>(m_window);
 
                 break;
             }
@@ -307,12 +357,11 @@ namespace Chicane
             m_backend->onResize(m_viewport);
             m_backend->onInit();
 
-            reloadResources();
-        }
+            m_backendType = inType;
 
-        Frame& Instance::getCurrentFrame()
-        {
-            return m_frames.at(m_currentFrame);
+            m_backendObservable.next(m_backendType);
+
+            reloadResources();
         }
 
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)
@@ -336,8 +385,34 @@ namespace Chicane
             m_backend->onLoad(m_skyResource);
         }
 
+        void Instance::refreshViewport()
+        {
+            if (m_resolution.x == 0 || m_resolution.y == 0)
+            {
+                return;
+            }
+
+            Vec<2, int> windowSize   = getWindow()->getSize();
+            Vec<2, int> rendererSize = m_resolution;
+
+            bool bIsRenderingScalable = rendererSize.x <= 0.0f || rendererSize.y <= 0.0f;
+            bool bIsRenderingUp       = windowSize.x < rendererSize.x || windowSize.y < rendererSize.y;
+
+            if (bIsRenderingUp || bIsRenderingScalable)
+            {
+                rendererSize = windowSize;
+            }
+
+            int scale = std::min(windowSize.x / rendererSize.x, windowSize.y / rendererSize.y);
+
+            setViewportSize(rendererSize * scale);
+            setViewportPosition((windowSize - rendererSize) / 2);
+        }
+
         void Instance::propagateResize()
         {
+            m_viewportObservable.next(m_viewport);
+
             if (hasBackend())
             {
                 m_backend->onResize(m_viewport);

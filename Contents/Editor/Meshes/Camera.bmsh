@@ -1,0 +1,6 @@
+<Asset version="1" id="Camera">
+    <Group id="Body">
+        <Model>Contents/Editor/Models/Camera.bmdl</Model>
+        <Texture>Contents/Engine/Textures/Color/Gray.btex</Texture>
+    </Group>
+</Asset>

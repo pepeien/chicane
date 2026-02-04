@@ -9,27 +9,38 @@ namespace Chicane
     struct CHICANE_CORE Rotator
     {
     public:
-        const QuatFloat& getOrientation() const;
-        void setOrientation(const QuatFloat& inValue);
+        Rotator(float inAngle);
+        Rotator(float inPitch, float inRoll, float inYaw);
+        Rotator(const Vec3& inAngles);
+        Rotator(const QuatFloat& inOrientation);
+        Rotator();
 
-        const Vec3& getVector() const;
-        void add(const Vec3& inRotation);
-        void set(const Vec3& inRotation);
+    public:
+        // Orientation
+        const QuatFloat& get() const;
+        void set(const QuatFloat& inValue);
+        void addLocal(const QuatFloat& inDelta);
+        void addWorld(const QuatFloat& inDelta);
 
+        // Euler
+        const Vec3& getAngles() const;
+        void setAngles(const Vec3& inAngles);
+
+        // Axis
         const Vec3& getRight() const;
         const Vec3& getForward() const;
         const Vec3& getUp() const;
 
-    protected:
+    private:
         void refresh();
 
-    protected:
-        QuatFloat m_orientation = QuatFloat(1, 0, 0, 0);
+    private:
+        QuatFloat m_orientation;
 
-        Vec3      m_euler = Vec3::Zero;
+        Vec3      m_angles;
 
-        Vec3      m_forward = Vec3::Forward;
-        Vec3      m_up      = Vec3::Up;
-        Vec3      m_right   = Vec3::Right;
+        Vec3      m_right;
+        Vec3      m_forward;
+        Vec3      m_up;
     };
 }

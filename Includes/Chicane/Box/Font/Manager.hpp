@@ -15,7 +15,6 @@ namespace Chicane
         {
         public:
             FontManager();
-            ~FontManager() = default;
 
         protected:
             void onLoad(const String& inId, const Font& inData) override;

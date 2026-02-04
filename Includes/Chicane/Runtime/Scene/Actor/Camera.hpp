@@ -10,7 +10,6 @@ namespace Chicane
     {
     public:
         ACamera();
-        virtual ~ACamera() = default;
 
     public:
         void activate();

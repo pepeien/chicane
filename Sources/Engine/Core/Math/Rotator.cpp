@@ -2,37 +2,69 @@
 
 namespace Chicane
 {
-    const QuatFloat& Rotator::getOrientation() const
+    Rotator::Rotator(float inAngle)
+        : Rotator(inAngle, inAngle, inAngle)
+    {}
+
+    Rotator::Rotator(float inPitch, float inRoll, float inYaw)
+        : Rotator(Vec3(inPitch, inRoll, inYaw))
+    {}
+
+    Rotator::Rotator(const Vec3& inAngles)
+        : Rotator()
+    {
+        setAngles(inAngles);
+    }
+
+    Rotator::Rotator(const QuatFloat& inOrientation)
+        : Rotator()
+    {
+        set(inOrientation);
+    }
+
+    Rotator::Rotator()
+        : m_orientation(QuatFloat(1, 0, 0, 0)),
+          m_angles(Vec3::Zero),
+          m_right(Vec3::Right),
+          m_forward(Vec3::Forward),
+          m_up(Vec3::Up)
+    {}
+
+    const QuatFloat& Rotator::get() const
     {
         return m_orientation;
     }
 
-    void Rotator::setOrientation(const QuatFloat& inValue)
+    void Rotator::set(const QuatFloat& inValue)
     {
         m_orientation = inValue;
 
         refresh();
     }
 
-    const Vec3& Rotator::getVector() const
+    void Rotator::addLocal(const QuatFloat& inDelta)
     {
-        return m_euler;
+        set(glm::normalize(m_orientation * inDelta));
     }
 
-    void Rotator::add(const Vec3& inRotation)
+    void Rotator::addWorld(const QuatFloat& inDelta)
     {
-        QuatFloat delta = inRotation.toQuat();
-
-        m_orientation = m_orientation * delta;
-
-        refresh();
+        set(glm::normalize(inDelta * m_orientation));
     }
 
-    void Rotator::set(const Vec3& inRotation)
+    const Vec3& Rotator::getAngles() const
     {
-        m_orientation = inRotation.toQuat();
+        return m_angles;
+    }
 
-        refresh();
+    void Rotator::setAngles(const Vec3& inAngles)
+    {
+        set(glm::quat(glm::radians(glm::vec3(inAngles.x, inAngles.y, inAngles.z))));
+    }
+
+    const Vec3& Rotator::getRight() const
+    {
+        return m_right;
     }
 
     const Vec3& Rotator::getForward() const
@@ -45,19 +77,12 @@ namespace Chicane
         return m_up;
     }
 
-    const Vec3& Rotator::getRight() const
-    {
-        return m_right;
-    }
-
     void Rotator::refresh()
     {
-        m_orientation = glm::normalize(m_orientation);
+        m_angles = glm::degrees(glm::eulerAngles(m_orientation));
 
-        m_euler = glm::degrees(glm::eulerAngles(m_orientation));
-
+        m_right   = m_orientation * Vec3::Right;
         m_forward = m_orientation * Vec3::Forward;
         m_up      = m_orientation * Vec3::Up;
-        m_right   = m_orientation * Vec3::Right;
     }
 }

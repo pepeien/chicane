@@ -11,7 +11,6 @@ namespace Chicane
     {
     public:
         CPhysics();
-        virtual ~CPhysics() = default;
 
     protected:
         void onTick(float inDeltaTime) override;

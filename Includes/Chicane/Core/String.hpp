@@ -13,7 +13,15 @@ namespace Chicane
     struct CHICANE_CORE String
     {
     public:
-        static constexpr const std::size_t npos = std::string::npos;
+        static constexpr inline std::size_t npos = std::string::npos;
+
+    public:
+        static inline const String& empty()
+        {
+            static const String result;
+
+            return result;
+        }
 
     public:
         template <typename... T>
@@ -41,11 +49,11 @@ namespace Chicane
 
     public:
         template <typename... T>
-        String(T... inParams)
+        inline String(T... inParams)
             : m_value(inParams...)
         {}
 
-        String(const short unsigned int* inValue)
+        inline String(const short unsigned int* inValue)
             : String()
         {
             if (inValue == nullptr)
@@ -56,19 +64,19 @@ namespace Chicane
             m_value = std::to_string(*inValue);
         }
 
-        String(char inValue)
+        inline String(char inValue)
             : m_value(1, inValue)
         {}
 
-        String(const String& inValue)
+        inline String(const String& inValue)
             : m_value(inValue.m_value)
         {}
 
-        String(String&& inValue) noexcept
+        inline String(String&& inValue) noexcept
             : m_value(std::move(inValue.m_value))
         {}
 
-        String()
+        inline String()
             : m_value("")
         {}
 
@@ -77,13 +85,13 @@ namespace Chicane
 
         inline friend bool operator==(const String& inA, const String& inB) { return inA.equals(inB); }
 
-        String& operator=(const String& other)
+        inline String& operator=(const String& other)
         {
             m_value = other.m_value;
             return *this;
         }
 
-        String& operator=(String&& other) noexcept
+        inline String& operator=(String&& other) noexcept
         {
             m_value = std::move(other.m_value);
             return *this;

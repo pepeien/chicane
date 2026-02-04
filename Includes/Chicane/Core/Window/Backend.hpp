@@ -9,7 +9,11 @@ namespace Chicane
     enum class WindowBackend : std::uint8_t
     {
         Undefined,
+#if CHICANE_OPENGL
         OpenGL,
-        Vulkan
+#endif
+#if CHICANE_VULKAN
+        Vulkan,
+#endif
     };
 }

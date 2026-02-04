@@ -1,12 +1,14 @@
 #include "Main.hpp"
 
-#include "Editor.hpp"
+#include <Chicane/Core/Log.hpp>
 
-int main(int argc, char *argv[])
+#include "Application.hpp"
+
+int main(int argc, char* argv[])
 {
     try
     {
-        Chicane::Editor::run();
+        Editor::Application();
     }
     catch (const std::exception& e)
     {

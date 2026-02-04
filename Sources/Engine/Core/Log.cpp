@@ -6,23 +6,18 @@ namespace Chicane
 {
     namespace Log
     {
-        static inline constexpr const char* LOG_COLOR_START = "\33[";
-        static inline constexpr const char* LOG_COLOR_END   = "\33[0m\n";
+        static constexpr inline const char* LOG_COLOR_START = "\33[";
+        static constexpr inline const char* LOG_COLOR_END   = "\33[0m\n";
 
-        static inline constexpr const std::uint32_t MAX_LOG_COUNT = 500;
+        static constexpr inline const std::uint32_t MAX_LOG_COUNT = 500;
 
-        static std::unordered_map<String, String> g_colors = {};
+        static inline std::unordered_map<String, String> g_colors = {};
 
-        static List           g_logs           = {};
-        static ListObservable g_logsObservable = {};
+        static inline List g_logs = {};
 
-        ListSubscription watchLogs(
-            ListSubscription::NextCallback     inNext,
-            ListSubscription::ErrorCallback    inError,
-            ListSubscription::CompleteCallback inComplete
-        )
+        const List& getLogs()
         {
-            return g_logsObservable.subscribe(inNext, inError, inComplete).next(g_logs);
+            return g_logs;
         }
 
         void emmit(const String& inHexColor, const String& inIdentifier, const String& inMessage)
@@ -57,8 +52,6 @@ namespace Chicane
             }
 
             g_logs.emplace_back(message, color);
-
-            g_logsObservable.next(g_logs);
         }
 
         void info(const String& inMessage)

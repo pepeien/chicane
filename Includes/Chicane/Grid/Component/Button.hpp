@@ -13,7 +13,7 @@ namespace Chicane
         {
         public:
             // Header
-            static inline constexpr const char* TAG_ID = "Button";
+            static constexpr inline const char* TAG_ID = "Button";
 
         public:
             Button(const pugi::xml_node& inNode);

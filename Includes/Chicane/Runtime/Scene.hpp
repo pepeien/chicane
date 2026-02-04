@@ -6,7 +6,7 @@
 #include "Chicane/Runtime/Scene/Actor.hpp"
 #include "Chicane/Runtime/Scene/Component.hpp"
 
-static constexpr const float LINE_TRACE_STEP_SIZE = 0.1f;
+constexpr inline float LINE_TRACE_STEP_SIZE = 0.1f;
 
 namespace Chicane
 {
@@ -24,9 +24,9 @@ namespace Chicane
         virtual ~Scene();
 
     public:
-        virtual void onActivation() { return; }
-        virtual void onTick(float inDeltaTime) { return; }
-        virtual void onDeactivation() { return; }
+        inline virtual void onActivation() { return; }
+        inline virtual void onTick(float inDeltaTime) { return; }
+        inline virtual void onDeactivation() { return; }
 
     public:
         // Lifecycle
@@ -38,7 +38,7 @@ namespace Chicane
         bool hasActors() const;
 
         template <class T>
-        bool hasActors() const
+        inline bool hasActors() const
         {
             for (Actor* actor : getActors())
             {
@@ -56,7 +56,7 @@ namespace Chicane
         const std::vector<Actor*>& getActors() const;
 
         template <class T>
-        std::vector<T*> getActors() const
+        inline std::vector<T*> getActors() const
         {
             std::vector<T*> result{};
 
@@ -74,7 +74,7 @@ namespace Chicane
         }
 
         template <class T = Actor>
-        T* createActor()
+        inline T* createActor()
         {
             m_actors.push_back(new T());
 
@@ -95,7 +95,7 @@ namespace Chicane
         bool hasComponents() const;
 
         template <class T>
-        bool hasComponents() const
+        inline bool hasComponents() const
         {
             for (Component* component : getComponents())
             {
@@ -113,7 +113,7 @@ namespace Chicane
         const std::vector<Component*>& getComponents() const;
 
         template <class T>
-        std::vector<T*> getComponents() const
+        inline std::vector<T*> getComponents() const
         {
             std::vector<T*> result{};
 
@@ -131,7 +131,7 @@ namespace Chicane
         }
 
         template <class T>
-        std::vector<T*> getActiveComponents() const
+        inline std::vector<T*> getActiveComponents() const
         {
             std::vector<T*> result{};
 
@@ -149,7 +149,7 @@ namespace Chicane
         }
 
         template <class T = Component>
-        T* createComponent()
+        inline T* createComponent()
         {
             m_components.push_back(new T());
 
@@ -168,7 +168,7 @@ namespace Chicane
 
         // Helper
         template <typename T = Actor>
-        std::vector<T*> traceLine(
+        inline std::vector<T*> traceLine(
             const Vec3& inOrigin, const Vec3& inDestination, const std::vector<Actor*>& inIgnoredActors
         ) const
         {

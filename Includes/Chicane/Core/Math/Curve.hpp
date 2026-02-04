@@ -16,8 +16,8 @@ namespace Chicane
         using Polygon = std::vector<std::array<float, 2>>;
 
     public:
-        static constexpr const float FIXED_POINT = 64.0f;
-        static constexpr const float FIXED_SCALE = 1.0f / FIXED_POINT;
+        static constexpr inline float FIXED_POINT = 64.0f;
+        static constexpr inline float FIXED_SCALE = 1.0f / FIXED_POINT;
 
     public:
         static Polygon getPolygon(const std::vector<Curve>& inContours);

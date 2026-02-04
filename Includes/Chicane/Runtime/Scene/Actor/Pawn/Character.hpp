@@ -10,7 +10,6 @@ namespace Chicane
     {
     public:
         ACharacter();
-        virtual ~ACharacter() = default;
 
     public:
         void move(const Vec3& inDirection, float inScale);

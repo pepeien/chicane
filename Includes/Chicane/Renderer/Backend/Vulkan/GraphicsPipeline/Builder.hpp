@@ -13,7 +13,7 @@ namespace Chicane
         struct CHICANE_RENDERER VulkanGraphicsPipelineBuilder
         {
         public:
-            VulkanGraphicsPipelineBuilder()
+            inline VulkanGraphicsPipelineBuilder()
                 : m_vertexBindings({}),
                   m_vertexAttributes({}),
                   m_inputAssemby(vk::PipelineInputAssemblyStateCreateInfo()),
@@ -32,56 +32,58 @@ namespace Chicane
             {}
 
         public:
-            VulkanGraphicsPipelineBuilder addVertexBinding(vk::VertexInputBindingDescription inValue)
+            inline VulkanGraphicsPipelineBuilder addVertexBinding(vk::VertexInputBindingDescription inValue)
             {
                 m_vertexBindings.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addVertexAttributes(std::vector<vk::VertexInputAttributeDescription> inValues)
+            inline VulkanGraphicsPipelineBuilder addVertexAttributes(
+                std::vector<vk::VertexInputAttributeDescription> inValues
+            )
             {
                 m_vertexAttributes.insert(m_vertexAttributes.end(), inValues.begin(), inValues.end());
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addVertexAttribute(vk::VertexInputAttributeDescription inValue)
+            inline VulkanGraphicsPipelineBuilder addVertexAttribute(vk::VertexInputAttributeDescription inValue)
             {
                 m_vertexAttributes.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder setInputAssembly(vk::PipelineInputAssemblyStateCreateInfo inValue)
+            inline VulkanGraphicsPipelineBuilder setInputAssembly(vk::PipelineInputAssemblyStateCreateInfo inValue)
             {
                 m_inputAssemby = inValue;
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addViewport(vk::Viewport inValue)
+            inline VulkanGraphicsPipelineBuilder addViewport(vk::Viewport inValue)
             {
                 m_viewports.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addScissor(vk::Rect2D inValue)
+            inline VulkanGraphicsPipelineBuilder addScissor(vk::Rect2D inValue)
             {
                 m_scissors.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addDynamicState(vk::DynamicState inValue)
+            inline VulkanGraphicsPipelineBuilder addDynamicState(vk::DynamicState inValue)
             {
                 m_dynamicStates.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addShaderStage(
+            inline VulkanGraphicsPipelineBuilder addShaderStage(
                 const VulkanShaderStageCreateInfo& inValue, const vk::Device& inLogicalDevice
             )
             {
@@ -90,70 +92,72 @@ namespace Chicane
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder setRasterization(vk::PipelineRasterizationStateCreateInfo inValue)
+            inline VulkanGraphicsPipelineBuilder setRasterization(vk::PipelineRasterizationStateCreateInfo inValue)
             {
                 m_rasterization = inValue;
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder setMultisample(vk::PipelineMultisampleStateCreateInfo inValue)
+            inline VulkanGraphicsPipelineBuilder setMultisample(vk::PipelineMultisampleStateCreateInfo inValue)
             {
                 m_multisample = inValue;
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addColorBlendingAttachment(vk::PipelineColorBlendAttachmentState inValue)
+            inline VulkanGraphicsPipelineBuilder addColorBlendingAttachment(
+                vk::PipelineColorBlendAttachmentState inValue
+            )
             {
                 m_colorBlendings.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder setDepthStencil(vk::PipelineDepthStencilStateCreateInfo inValue)
+            inline VulkanGraphicsPipelineBuilder setDepthStencil(vk::PipelineDepthStencilStateCreateInfo inValue)
             {
                 m_depthStencil = inValue;
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addAttachment(vk::AttachmentDescription inValue)
+            inline VulkanGraphicsPipelineBuilder addAttachment(vk::AttachmentDescription inValue)
             {
                 m_attachments.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addSubpassDependecy(vk::SubpassDependency inValue)
+            inline VulkanGraphicsPipelineBuilder addSubpassDependecy(vk::SubpassDependency inValue)
             {
                 m_subpassDepedencies.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addSubpass(vk::SubpassDescription inValue)
+            inline VulkanGraphicsPipelineBuilder addSubpass(vk::SubpassDescription inValue)
             {
                 m_subpasses.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addDescriptorSetLayout(vk::DescriptorSetLayout inValue)
+            inline VulkanGraphicsPipelineBuilder addDescriptorSetLayout(vk::DescriptorSetLayout inValue)
             {
                 m_descriptorSetLayouts.push_back(inValue);
 
                 return *this;
             }
 
-            VulkanGraphicsPipelineBuilder addPushConstant(vk::PushConstantRange inValue)
+            inline VulkanGraphicsPipelineBuilder addPushConstant(vk::PushConstantRange inValue)
             {
                 m_pushConstants.push_back(inValue);
 
                 return *this;
             }
 
-            void build(VulkanGraphicsPipeline& outGraphicsPipeline, const vk::Device& inLogicalDevice)
+            inline void build(VulkanGraphicsPipeline& outGraphicsPipeline, const vk::Device& inLogicalDevice)
             {
                 // Vertex Input
                 vk::PipelineVertexInputStateCreateInfo vertexInput;
@@ -211,6 +215,11 @@ namespace Chicane
                 createInfo.basePipelineHandle = nullptr;
 
                 outGraphicsPipeline.init(inLogicalDevice, createInfo);
+
+                for (vk::PipelineShaderStageCreateInfo& shader : m_shaders)
+                {
+                    inLogicalDevice.destroyShaderModule(shader.module);
+                }
             }
 
         private:

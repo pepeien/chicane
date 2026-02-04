@@ -8,7 +8,7 @@ namespace Chicane
 {
     namespace Grid
     {
-        static inline constexpr const char NULL_CHARACTER = '\0';
+        static constexpr inline const char NULL_CHARACTER = '\0';
 
         TextCharacter::TextCharacter()
             : Component(TAG_ID),

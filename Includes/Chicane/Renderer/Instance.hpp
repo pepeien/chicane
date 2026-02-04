@@ -19,6 +19,7 @@
 #include "Chicane/Renderer/Draw/Sky/Data.hpp"
 #include "Chicane/Renderer/Draw/Sky.hpp"
 #include "Chicane/Renderer/Frame.hpp"
+#include "Chicane/Renderer/Settings.hpp"
 #include "Chicane/Renderer/Viewport.hpp"
 
 namespace Chicane
@@ -27,16 +28,18 @@ namespace Chicane
 
     namespace Renderer
     {
+        using ResolutionObservable   = EventObservable<Vec<2, int>>;
+        using ResolutionSubscription = EventSubscription<Vec<2, int>>;
+
+        using ViewportObservable   = EventObservable<Viewport>;
+        using ViewportSubscription = EventSubscription<Viewport>;
+
+        using BackendObservable   = EventObservable<WindowBackend>;
+        using BackendSubscription = EventSubscription<WindowBackend>;
+
         class CHICANE_RENDERER Instance
         {
             friend Application;
-
-        public:
-            using ViewportObservable   = EventObservable<Viewport>;
-            using ViewportSubscription = EventSubscription<Viewport>;
-
-        public:
-            static inline constexpr const std::uint32_t FRAME_COUNT = 2;
 
         public:
             Instance();
@@ -44,7 +47,7 @@ namespace Chicane
 
         public:
             // Lifecycle
-            void init(Window* inWindow, WindowBackend inBackend);
+            void init(Window* inWindow, WindowBackend inBackend, const Settings& inSettings);
             void render();
             void destroy();
 
@@ -72,7 +75,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
-                getCurrentFrame().use(inId, inInstance);
+                m_backend->drawPoly(inId, inInstance);
             }
 
             Draw::Id findTexture(const Draw::Reference& inReference);
@@ -82,6 +85,14 @@ namespace Chicane
             Draw::Id loadSky(const DrawSkyData& inData);
 
             // Settings
+            const Vec<2, int>& getResolution() const;
+            void setResolution(const Vec<2, int>& inValue);
+            ResolutionSubscription watchResolution(
+                ResolutionSubscription::NextCallback     inNext,
+                ResolutionSubscription::ErrorCallback    inError    = nullptr,
+                ResolutionSubscription::CompleteCallback inComplete = nullptr
+            );
+
             const Viewport& getViewport() const;
             void setViewport(const Viewport& inValue);
             void setViewport(const Vec2& inPosition, const Vec2& inSize);
@@ -89,6 +100,11 @@ namespace Chicane
             void setViewportPosition(float inX, float inY);
             void setViewportSize(const Vec2& inSize);
             void setViewportSize(float inWidth, float inHeight);
+            ViewportSubscription watchViewport(
+                ViewportSubscription::NextCallback     inNext,
+                ViewportSubscription::ErrorCallback    inError    = nullptr,
+                ViewportSubscription::CompleteCallback inComplete = nullptr
+            );
 
             // Window
             Window* getWindow() const;
@@ -98,38 +114,50 @@ namespace Chicane
             // Backend
             bool hasBackend() const;
 
+            template <typename Target = Layer<>, typename... Params>
+            inline void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
+            {
+                m_backend->addLayer<Target>(inSettings, inParams...);
+            }
+
+            BackendSubscription watchBackend(
+                BackendSubscription::NextCallback     inNext,
+                BackendSubscription::ErrorCallback    inError    = nullptr,
+                BackendSubscription::CompleteCallback inComplete = nullptr
+            );
+
         protected:
             void setBackend(WindowBackend inType);
 
         private:
-            // Frame
-            Frame& getCurrentFrame();
-
             // Draw
             DrawPolyResource& getPolyResource(DrawPolyType inType);
             void reloadResources();
 
             // Settings
+            void refreshViewport();
             void propagateResize();
 
         private:
             // Window
-            Window*                        m_window;
-
-            // Frame
-            std::array<Frame, FRAME_COUNT> m_frames;
-            std::uint32_t                  m_currentFrame;
+            Window*                    m_window;
 
             // Draw
-            DrawPolyResource::Map          m_polyResources;
-            DrawTexture::List              m_textureResources;
-            DrawSky                        m_skyResource;
+            DrawPolyResource::Map      m_polyResources;
+            DrawTexture::List          m_textureResources;
+            DrawSky                    m_skyResource;
 
             // Settings
-            Viewport                       m_viewport;
+            Vec<2, int>                m_resolution;
+            ResolutionObservable       m_resolutionObservable;
+
+            Viewport                   m_viewport;
+            ViewportObservable         m_viewportObservable;
 
             // Backend
-            std::unique_ptr<Backend>       m_backend;
+            std::unique_ptr<Backend<>> m_backend;
+            WindowBackend              m_backendType;
+            BackendObservable          m_backendObservable;
         };
     }
 }

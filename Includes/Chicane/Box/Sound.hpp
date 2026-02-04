@@ -13,8 +13,8 @@ namespace Chicane
             using Raw = std::vector<unsigned char>;
 
         public:
-            static inline constexpr const char* EXTENSION = ".bsnd";
-            static inline constexpr const char* TAG       = "Sound";
+            static constexpr inline const char* EXTENSION = ".bsnd";
+            static constexpr inline const char* TAG       = "Sound";
 
         public:
             Sound(const Raw& inData);

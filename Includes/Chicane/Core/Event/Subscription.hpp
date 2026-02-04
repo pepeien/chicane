@@ -17,18 +17,18 @@ namespace Chicane
         using CompleteCallback = std::function<void()>;
 
     public:
-        EventSubscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+        inline EventSubscription(EmptyCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
             : EventSubscription([inNext](T inValue) { inNext(); }, inError, inComplete)
         {}
 
-        EventSubscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
+        inline EventSubscription(NextCallback inNext, ErrorCallback inError, CompleteCallback inComplete)
             : m_bIsCompleted(false),
               m_next(inNext),
               m_error(inError),
               m_complete(inComplete)
         {}
 
-        EventSubscription()
+        inline EventSubscription()
             : m_bIsCompleted(false),
               m_next(nullptr),
               m_error(nullptr),
@@ -36,9 +36,9 @@ namespace Chicane
         {}
 
     public:
-        EventSubscription<T> next() { return next(nullptr); }
+        inline EventSubscription<T> next() { return next(nullptr); }
 
-        EventSubscription<T> next(T inData)
+        inline EventSubscription<T> next(T inData)
         {
             if (isCompleted())
             {
@@ -53,7 +53,7 @@ namespace Chicane
             return *this;
         }
 
-        EventSubscription<T> error(const String& inMessage)
+        inline EventSubscription<T> error(const String& inMessage)
         {
             if (isCompleted())
             {
@@ -68,9 +68,9 @@ namespace Chicane
             return *this;
         }
 
-        bool isCompleted() const { return m_bIsCompleted; }
+        inline bool isCompleted() const { return m_bIsCompleted; }
 
-        EventSubscription<T> complete()
+        inline EventSubscription<T> complete()
         {
             if (isCompleted())
             {

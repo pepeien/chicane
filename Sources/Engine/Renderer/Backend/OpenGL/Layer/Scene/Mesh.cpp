@@ -14,7 +14,6 @@ namespace Chicane
 
         OpenGLLSceneMesh::~OpenGLLSceneMesh()
         {
-            deleteChildren();
             destroyShader();
         }
 
@@ -27,11 +26,21 @@ namespace Chicane
 
         void OpenGLLSceneMesh::onRender(const Frame& inFrame, void* inData)
         {
+            if (inFrame.getInstances3D().empty())
+            {
+                return;
+            }
+
+            if (inFrame.get3DDraws().empty())
+            {
+                return;
+            }
+
             glUseProgram(m_shaderProgram);
 
             glEnable(GL_DEPTH_TEST);
             glDepthMask(GL_TRUE);
-            glDepthFunc(GL_LESS);
+            glDepthFunc(GL_LEQUAL);
 
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CCW);

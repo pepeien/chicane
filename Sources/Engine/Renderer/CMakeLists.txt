@@ -22,8 +22,8 @@ if (CHICANE_VULKAN)
 
     list(APPEND GRAPHICS_LIBS Vulkan::Vulkan)
 else()
-    list(FILTER HEADERS EXCLUDE REGEX "Renderer/Vulkan")
-    list(FILTER SOURCES EXCLUDE REGEX "Renderer/Vulkan")
+    list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/Vulkan")
+    list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/Vulkan")
 endif()
 
 if (CHICANE_OPENGL)
@@ -33,32 +33,14 @@ if (CHICANE_OPENGL)
     list(APPEND GRAPHICS_LIBS OpenGL::GL)
     list(APPEND GRAPHICS_LIBS GLEW)
 else()
-    list(FILTER HEADERS EXCLUDE REGEX "Renderer/OpenGL")
-    list(FILTER SOURCES EXCLUDE REGEX "Renderer/OpenGL")
+    list(FILTER HEADERS EXCLUDE REGEX "${RENDERER_HEADER_DIR}/Backend/OpenGL")
+    list(FILTER SOURCES EXCLUDE REGEX "${RENDERER_SOURCE_DIR}/Backend/OpenGL")
 endif()
 
 if (CHICANE_SHARED)
     add_library(${RENDERER_TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 else()
     add_library(${RENDERER_TARGET_NAME} STATIC ${HEADERS} ${SOURCES})
-endif()
-
-if (CHICANE_VULKAN)
-    target_compile_definitions(
-        ${RENDERER_TARGET_NAME}
-
-        PRIVATE
-            CHICANE_VULKAN
-    )
-endif()
-
-if (CHICANE_OPENGL)
-    target_compile_definitions(
-        ${RENDERER_TARGET_NAME}
-
-        PRIVATE
-            CHICANE_OPENGL
-    )
 endif()
 
 add_library(

@@ -12,25 +12,11 @@ namespace Chicane
 
     void CView::onTransform()
     {
-        const Vec3& forward = getForward();
-        m_data.forward.x    = forward.x;
-        m_data.forward.y    = forward.y;
-        m_data.forward.z    = forward.z;
+        m_data.forward = Vec4(getForward(), 0.0f);
+        m_data.right   = Vec4(getRight(), 0.0f);
+        m_data.up      = Vec4(getUp(), 0.0f);
 
-        const Vec3& right = getRight();
-        m_data.right.x    = right.x;
-        m_data.right.y    = right.y;
-        m_data.right.z    = right.z;
-
-        const Vec3& up = getUp();
-        m_data.up.x    = up.x;
-        m_data.up.y    = up.y;
-        m_data.up.z    = up.z;
-
-        const Vec3& translation = getTranslation();
-        m_data.translation.x    = translation.x;
-        m_data.translation.y    = translation.y;
-        m_data.translation.z    = translation.z;
+        m_data.translation = Vec4(getTranslation(), 0.0f);
 
         updateView();
 
