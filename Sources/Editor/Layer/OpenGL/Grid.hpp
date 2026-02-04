@@ -5,7 +5,7 @@
 
 namespace Editor
 {
-    class OpenGLLGrid : public Chicane::Renderer::Layer
+    class OpenGLLGrid : public Chicane::Renderer::Layer<>
     {
     public:
         OpenGLLGrid();

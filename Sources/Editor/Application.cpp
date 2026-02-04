@@ -30,7 +30,7 @@ namespace Editor
         createInfo.window.size    = Chicane::Vec<2, int>(1600, 900);
         createInfo.window.display = 0;
         createInfo.window.type    = Chicane::WindowType::Windowed;
-        createInfo.window.backend = Chicane::WindowBackend::Vulkan;
+        createInfo.window.backend = Chicane::WindowBackend::OpenGL;
 
         // Setup
         createInfo.onSetup = [&]()
@@ -66,23 +66,23 @@ namespace Editor
         Chicane::Application::getInstance().getRenderer()->watchBackend(
             [](Chicane::WindowBackend inValue)
             {
-                Chicane::ListPush<Chicane::Renderer::Layer*> settings;
+                Chicane::ListPush<Chicane::Renderer::Layer<>*> settings;
                 settings.strategy  = Chicane::ListPushStrategy::After;
-                settings.predicate = [](Chicane::Renderer::Layer* inLayer)
+                settings.predicate = [](Chicane::Renderer::Layer<>* inLayer)
                 { return inLayer->getId().equals("Engine_Scene_Mesh"); };
 
                 switch (inValue)
                 {
 #if CHICANE_OPENGL
                 case Chicane::WindowBackend::OpenGL:
-                    Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<OpenGLLGrid>(settings);
+                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<OpenGLLGrid>(settings);
 
                     break;
 #endif
 
 #if CHICANE_VULKAN
                 case Chicane::WindowBackend::Vulkan:
-                    Chicane::Application::getInstance().getRenderer()->getBackend()->addLayer<VulkanLGrid>(settings);
+                    Chicane::Application::getInstance().getRenderer()->addBackendLayer<VulkanLGrid>(settings);
 
                     break;
 #endif

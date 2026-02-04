@@ -9,7 +9,7 @@
 
 namespace Editor
 {
-    class VulkanLGrid : public Chicane::Renderer::Layer
+    class VulkanLGrid : public Chicane::Renderer::Layer<>
     {
     public:
         VulkanLGrid();

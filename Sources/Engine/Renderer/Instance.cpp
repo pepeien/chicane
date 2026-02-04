@@ -14,13 +14,13 @@ namespace Chicane
     {
         Instance::Instance()
             : m_window(nullptr),
-              m_frames({}),
-              m_currentFrame(0U),
               m_resolution(Vec<2, int>(0)),
               m_resolutionObservable({}),
               m_viewport({}),
               m_viewportObservable({}),
-              m_backend(nullptr)
+              m_backend(nullptr),
+              m_backendType(WindowBackend::Undefined),
+              m_backendObservable({})
         {}
 
         Instance::~Instance()
@@ -50,19 +50,17 @@ namespace Chicane
                 return;
             }
 
-            Frame& currentFrame = getCurrentFrame();
+            Frame& currentFrame = m_backend->getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
-            m_backend->onSetup(currentFrame);
-            m_backend->onRender(currentFrame);
+            m_backend->onSetup();
+            m_backend->onRender();
             m_backend->onCleanup();
 
             currentFrame.reset();
 
             getPolyResource(DrawPolyType::e2D).reset();
-
-            m_currentFrame = (m_currentFrame + 1) % FRAME_COUNT;
         }
 
         void Instance::destroy()
@@ -72,17 +70,17 @@ namespace Chicane
 
         void Instance::useCamera(const View& inData)
         {
-            getCurrentFrame().useCamera(inData);
+            m_backend->useCamera(inData);
         }
 
         void Instance::addLight(const View::List& inData)
         {
-            getCurrentFrame().addLights(inData);
+            m_backend->addLight(inData);
         }
 
         void Instance::addLight(const View& inData)
         {
-            getCurrentFrame().addLight(inData);
+            m_backend->addLight(inData);
         }
 
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
@@ -318,18 +316,13 @@ namespace Chicane
             return m_backend && m_backend.get() != nullptr;
         }
 
-        Backend* Instance::getBackend()
-        {
-            return m_backend.get();
-        }
-
         BackendSubscription Instance::watchBackend(
             BackendSubscription::NextCallback     inNext,
             BackendSubscription::ErrorCallback    inError,
             BackendSubscription::CompleteCallback inComplete
         )
         {
-            return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_backend->getType());
+            return m_backendObservable.subscribe(inNext, inError, inComplete).next(m_backendType);
         }
 
         void Instance::setBackend(WindowBackend inType)
@@ -343,20 +336,20 @@ namespace Chicane
             {
 #if CHICANE_OPENGL
             case WindowBackend::OpenGL:
-                m_backend = std::make_unique<OpenGLBackend>(this);
+                m_backend = std::make_unique<OpenGLBackend>(m_window);
 
                 break;
 #endif
 
 #if CHICANE_VULKAN
             case WindowBackend::Vulkan:
-                m_backend = std::make_unique<VulkanBackend>(this);
+                m_backend = std::make_unique<VulkanBackend>(m_window);
 
                 break;
 #endif
 
             default:
-                m_backend = std::make_unique<Backend>(this);
+                m_backend = std::make_unique<Backend<>>(m_window);
 
                 break;
             }
@@ -364,14 +357,11 @@ namespace Chicane
             m_backend->onResize(m_viewport);
             m_backend->onInit();
 
-            m_backendObservable.next(inType);
+            m_backendType = inType;
+
+            m_backendObservable.next(m_backendType);
 
             reloadResources();
-        }
-
-        Frame& Instance::getCurrentFrame()
-        {
-            return m_frames.at(m_currentFrame);
         }
 
         DrawPolyResource& Instance::getPolyResource(DrawPolyType inType)

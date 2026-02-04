@@ -146,9 +146,9 @@ namespace Chicane
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            getBackend()->addLayer<VulkanLSceneSky>(settings);
-            getBackend()->addLayer<VulkanLSceneShadow>(settings);
-            getBackend()->addLayer<VulkanLSceneMesh>(settings);
+            getBackend<VulkanBackend>()->addLayer<VulkanLSceneSky>(settings);
+            getBackend<VulkanBackend>()->addLayer<VulkanLSceneShadow>(settings);
+            getBackend<VulkanBackend>()->addLayer<VulkanLSceneMesh>(settings);
         }
     }
 }

@@ -19,16 +19,14 @@ namespace Chicane
 {
     namespace Renderer
     {
-        VulkanBackend::VulkanBackend(const Instance* inRenderer)
-            : Backend(inRenderer),
+        VulkanBackend::VulkanBackend(const Window* inWindow)
+            : Backend<Frame>(inWindow),
               swapchain({}),
               imageCount(0),
               m_currentImageIndex(0),
               viewport({}),
               scissor(vk::Rect2D())
-        {
-            m_type = WindowBackend::Vulkan;
-        }
+        {}
 
         VulkanBackend::~VulkanBackend()
         {
@@ -95,7 +93,7 @@ namespace Chicane
             buildTextureData(inResources);
         }
 
-        void VulkanBackend::onRender(const Frame& inFrame)
+        void VulkanBackend::onRender()
         {
             VulkanFrame& lastFrame = swapchain.frames.at(m_currentImageIndex);
             lastFrame.wait(logicalDevice);
@@ -119,10 +117,10 @@ namespace Chicane
             std::uint32_t frameIndex = acquireResult.value;
             VulkanFrame&  frame      = swapchain.frames.at(frameIndex);
 
-            frame.updateCameraData(inFrame.getCamera());
-            frame.updateLightData(inFrame.getLights());
-            frame.update2DData(inFrame.getInstances2D());
-            frame.update3DData(inFrame.getInstances3D());
+            frame.updateCameraData(getCurrentFrame().getCamera());
+            frame.updateLightData(getCurrentFrame().getLights());
+            frame.update2DData(getCurrentFrame().getInstances2D());
+            frame.update3DData(getCurrentFrame().getInstances3D());
             frame.updateDescriptorSets();
 
             vk::CommandBufferBeginInfo commandBufferBegin;
@@ -135,7 +133,7 @@ namespace Chicane
             lastFrame.commandBuffer.reset();
             lastFrame.commandBuffer.begin(commandBufferBegin);
             renderViewport(data.commandBuffer);
-            renderLayers(inFrame, &data);
+            renderLayers(&data);
             lastFrame.commandBuffer.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -209,7 +207,7 @@ namespace Chicane
 
         void VulkanBackend::buildSurface()
         {
-            VulkanSurface::init(surface, instance, m_renderer->getWindow()->getInstance());
+            VulkanSurface::init(surface, instance, m_window->getInstance());
         }
 
         void VulkanBackend::destroySurface()
@@ -268,7 +266,7 @@ namespace Chicane
 
         void VulkanBackend::rebuildSwapchain()
         {
-            if (m_renderer->getWindow()->isMinimized())
+            if (m_window->isMinimized())
             {
                 return;
             }
@@ -317,7 +315,7 @@ namespace Chicane
 
         void VulkanBackend::buildLayers()
         {
-            ListPush<Layer*> settings;
+            ListPush<Layer<Frame>*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<VulkanLScene>(settings);
@@ -326,11 +324,11 @@ namespace Chicane
             addLayer<VulkanLGrid>(settings);
         }
 
-        void VulkanBackend::renderLayers(const Frame& inFrame, void* inData)
+        void VulkanBackend::renderLayers(void* inData)
         {
-            for (Layer* layer : m_layers)
+            for (Layer<Frame>* layer : m_layers)
             {
-                layer->render(inFrame, inData);
+                layer->render(getCurrentFrame(), inData);
             }
         }
 

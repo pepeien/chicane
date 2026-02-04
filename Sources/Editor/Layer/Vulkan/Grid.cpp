@@ -13,7 +13,7 @@
 namespace Editor
 {
     VulkanLGrid::VulkanLGrid()
-        : Layer("Editor_Scene_Grid"),
+        : Layer<>("Editor_Scene_Grid"),
           m_clear({vk::ClearColorValue(0.0f, 0.0f, 0.0f, 0.0f), vk::ClearDepthStencilValue(1.0f, 0)})
     {}
 

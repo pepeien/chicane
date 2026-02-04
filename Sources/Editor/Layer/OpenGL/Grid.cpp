@@ -7,7 +7,7 @@
 namespace Editor
 {
     OpenGLLGrid::OpenGLLGrid()
-        : Layer("Editor_Scene_Grid")
+        : Layer<>("Editor_Scene_Grid")
     {}
 
     OpenGLLGrid::~OpenGLLGrid()

@@ -528,7 +528,7 @@ namespace Chicane
         m_bIsFocused = false;
     }
 
-    bool Window::isResizable()
+    bool Window::isResizable() const
     {
         return m_bIsResizable;
     }
@@ -572,7 +572,7 @@ namespace Chicane
         m_bIsResizable = false;
     }
 
-    bool Window::isMinimized()
+    bool Window::isMinimized() const
     {
         if (!hasInstance())
         {

@@ -16,10 +16,10 @@ namespace Chicane
     {
         static SDL_GLContext g_context;
 
-        OpenGLBackend::OpenGLBackend(const Instance* inRenderer)
-            : Backend(inRenderer)
+        OpenGLBackend::OpenGLBackend(const Window* inWindow)
+            : Backend<Frame>(inWindow)
         {
-            m_type = WindowBackend::OpenGL;
+            setFrameCount(2);
         }
 
         OpenGLBackend::~OpenGLBackend()
@@ -70,10 +70,10 @@ namespace Chicane
             Backend::onLoad(inResources);
         }
 
-        void OpenGLBackend::onSetup(const Frame& inFrame)
+        void OpenGLBackend::onSetup()
         {
-            const Viewport& viewport = m_renderer->getViewport();
-            glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
+            //const Viewport& viewport = m_renderer->getViewport();
+            //glViewport(viewport.position.x, viewport.position.y, viewport.size.x, viewport.size.y);
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClearDepth(1);
@@ -82,12 +82,12 @@ namespace Chicane
 
             glBindTextureUnit(0, m_texturesBuffer);
 
-            Backend::onSetup(inFrame);
+            Backend::onSetup();
         }
 
         void OpenGLBackend::onCleanup()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_renderer->getWindow()->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
 
             if (!SDL_GL_SwapWindow(window))
             {
@@ -99,7 +99,7 @@ namespace Chicane
 
         void OpenGLBackend::buildContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_renderer->getWindow()->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
 
             g_context = SDL_GL_CreateContext(window);
 
@@ -121,7 +121,7 @@ namespace Chicane
 
         void OpenGLBackend::destroyContext()
         {
-            SDL_Window* window = static_cast<SDL_Window*>(m_renderer->getWindow()->getInstance());
+            SDL_Window* window = static_cast<SDL_Window*>(m_window->getInstance());
 
             if (!SDL_GL_MakeCurrent(window, nullptr))
             {
@@ -178,7 +178,7 @@ namespace Chicane
 
         void OpenGLBackend::buildLayers()
         {
-            ListPush<Layer*> settings;
+            ListPush<Layer<Frame>*> settings;
 
             settings.strategy = ListPushStrategy::Front;
             addLayer<OpenGLLScene>(settings);

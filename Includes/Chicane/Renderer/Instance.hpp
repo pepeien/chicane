@@ -42,9 +42,6 @@ namespace Chicane
             friend Application;
 
         public:
-            static constexpr inline const std::uint32_t FRAME_COUNT = 2;
-
-        public:
             Instance();
             ~Instance();
 
@@ -78,7 +75,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
-                getCurrentFrame().use(inId, inInstance);
+                m_backend->drawPoly(inId, inInstance);
             }
 
             Draw::Id findTexture(const Draw::Reference& inReference);
@@ -116,7 +113,13 @@ namespace Chicane
 
             // Backend
             bool hasBackend() const;
-            Backend* getBackend();
+
+            template <typename Target = Layer<>, typename... Params>
+            void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
+            {
+                m_backend->addLayer<Target>(inSettings, inParams...);
+            }
+
             BackendSubscription watchBackend(
                 BackendSubscription::NextCallback     inNext,
                 BackendSubscription::ErrorCallback    inError    = nullptr,
@@ -127,9 +130,6 @@ namespace Chicane
             void setBackend(WindowBackend inType);
 
         private:
-            // Frame
-            Frame& getCurrentFrame();
-
             // Draw
             DrawPolyResource& getPolyResource(DrawPolyType inType);
             void reloadResources();
@@ -140,27 +140,24 @@ namespace Chicane
 
         private:
             // Window
-            Window*                        m_window;
-
-            // Frame
-            std::array<Frame, FRAME_COUNT> m_frames;
-            std::uint32_t                  m_currentFrame;
+            Window*                    m_window;
 
             // Draw
-            DrawPolyResource::Map          m_polyResources;
-            DrawTexture::List              m_textureResources;
-            DrawSky                        m_skyResource;
+            DrawPolyResource::Map      m_polyResources;
+            DrawTexture::List          m_textureResources;
+            DrawSky                    m_skyResource;
 
             // Settings
-            Vec<2, int>                    m_resolution;
-            ResolutionObservable           m_resolutionObservable;
+            Vec<2, int>                m_resolution;
+            ResolutionObservable       m_resolutionObservable;
 
-            Viewport                       m_viewport;
-            ViewportObservable             m_viewportObservable;
+            Viewport                   m_viewport;
+            ViewportObservable         m_viewportObservable;
 
             // Backend
-            std::unique_ptr<Backend>       m_backend;
-            BackendObservable              m_backendObservable;
+            std::unique_ptr<Backend<>> m_backend;
+            WindowBackend              m_backendType;
+            BackendObservable          m_backendObservable;
         };
     }
 }

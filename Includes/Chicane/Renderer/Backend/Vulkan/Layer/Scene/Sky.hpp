@@ -11,7 +11,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLSceneSky : public Layer
+        class CHICANE_RENDERER VulkanLSceneSky : public Layer<Frame>
         {
         public:
             VulkanLSceneSky();

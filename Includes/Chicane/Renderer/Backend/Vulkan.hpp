@@ -17,17 +17,17 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanBackend : public Backend
+        class CHICANE_RENDERER VulkanBackend : public Backend<Frame>
         {
         public:
-            VulkanBackend(const Instance* inRenderer);
+            VulkanBackend(const Window* inWindow);
             virtual ~VulkanBackend();
 
         protected:
             void onInit() override;
             void onResize(const Viewport& inViewport) override;
             void onLoad(const DrawTexture::List& inResources) override;
-            void onRender(const Frame& inFrame) override;
+            void onRender() override;
 
             void onHandle(const WindowEvent& inEvent) override;
 
@@ -59,7 +59,7 @@ namespace Chicane
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
             void buildLayers();
-            void renderLayers(const Frame& inFrame, void* inData);
+            void renderLayers(void* inData);
 
             void buildTextureDescriptor();
             void buildTextureData(const DrawTexture::List& inTextures);

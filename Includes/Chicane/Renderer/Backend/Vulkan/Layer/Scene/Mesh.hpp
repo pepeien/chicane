@@ -10,7 +10,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER VulkanLSceneMesh : public Layer
+        class CHICANE_RENDERER VulkanLSceneMesh : public Layer<Frame>
         {
         public:
             VulkanLSceneMesh();

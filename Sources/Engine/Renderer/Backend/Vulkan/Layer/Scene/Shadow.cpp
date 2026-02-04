@@ -56,7 +56,7 @@ namespace Chicane
                 return;
             }
 
-            VulkanLScene* parent = m_backend->getLayer<VulkanLScene>();
+            VulkanLScene* parent = getBackend<VulkanBackend>()->getLayer<VulkanLScene>();
 
             VulkanBackendData* data          = (VulkanBackendData*)inData;
             vk::CommandBuffer& commandBuffer = data->commandBuffer;

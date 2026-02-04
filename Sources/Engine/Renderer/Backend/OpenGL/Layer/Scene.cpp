@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "Chicane/Renderer/Backend.hpp"
+#include "Chicane/Renderer/Backend/OpenGL.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Mesh.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Shadow.hpp"
 #include "Chicane/Renderer/Backend/OpenGL/Layer/Scene/Sky.hpp"
@@ -180,9 +180,9 @@ namespace Chicane
             ListPush<Layer*> settings;
             settings.strategy = ListPushStrategy::Back;
 
-            getBackend()->addLayer<OpenGLLSceneSky>(settings);
-            getBackend()->addLayer<OpenGLLSceneShadow>(settings);
-            getBackend()->addLayer<OpenGLLSceneMesh>(settings);
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneSky>(settings);
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneShadow>(settings);
+            getBackend<OpenGLBackend>()->addLayer<OpenGLLSceneMesh>(settings);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Chicane
 {
     namespace Renderer
     {
-        class CHICANE_RENDERER OpenGLLGrid : public Layer
+        class CHICANE_RENDERER OpenGLLGrid : public Layer<Frame>
         {
         public:
             OpenGLLGrid();
