@@ -11,7 +11,6 @@ namespace Chicane
     {
     public:
         CSound();
-        virtual ~CSound() = default;
 
     public:
         void load(const String& inSound);

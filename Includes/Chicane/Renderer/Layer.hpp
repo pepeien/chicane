@@ -23,36 +23,36 @@ namespace Chicane
             using Id = String;
 
         public:
-            Layer(const Id& inId)
+            inline Layer(const Id& inId)
                 : m_id(inId),
                   m_status(LayerStatus::Offline),
                   m_backend(nullptr)
             {}
 
-            Layer()
+            inline Layer()
                 : m_id("Undefined"),
                   m_status(LayerStatus::Offline),
                   m_backend(nullptr)
             {}
 
-            virtual ~Layer() = default;
+            inline virtual ~Layer() = default;
 
         protected:
-            virtual bool onInit() { return true; }
-            virtual bool onDestroy() { return true; }
-            virtual bool onRebuild() { return true; }
-            virtual void onResize(const Viewport& inViewport) { return; }
-            virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
-            virtual void onLoad(const DrawTexture::List& inResources) { return; }
-            virtual void onLoad(const DrawSky& inResource) { return; }
-            virtual bool onSetup(const F& inFrame) { return true; }
-            virtual void onRender(const F& inFrame, void* inData = nullptr) { return; }
-            virtual void onCleanup() { return; }
+            inline virtual bool onInit() { return true; }
+            inline virtual bool onDestroy() { return true; }
+            inline virtual bool onRebuild() { return true; }
+            inline virtual void onResize(const Viewport& inViewport) { return; }
+            inline virtual void onLoad(DrawPolyType inType, const DrawPolyResource& inResource) { return; }
+            inline virtual void onLoad(const DrawTexture::List& inResources) { return; }
+            inline virtual void onLoad(const DrawSky& inResource) { return; }
+            inline virtual bool onSetup(const F& inFrame) { return true; }
+            inline virtual void onRender(const F& inFrame, void* inData = nullptr) { return; }
+            inline virtual void onCleanup() { return; }
 
-            virtual void onEvent(const WindowEvent& inEvent) { return; }
+            inline virtual void onEvent(const WindowEvent& inEvent) { return; }
 
         public:
-            void init()
+            inline void init()
             {
                 if (!is(LayerStatus::Offline))
                 {
@@ -67,7 +67,7 @@ namespace Chicane
                 setStatus(LayerStatus::Running);
             }
 
-            void destroy()
+            inline void destroy()
             {
                 if (is(LayerStatus::Offline))
                 {
@@ -82,7 +82,7 @@ namespace Chicane
                 setStatus(LayerStatus::Offline);
             }
 
-            void rebuild()
+            inline void rebuild()
             {
                 if (!is(LayerStatus::Offline))
                 {
@@ -97,7 +97,7 @@ namespace Chicane
                 setStatus(LayerStatus::Running);
             }
 
-            void resize(const Viewport& inViewport)
+            inline void resize(const Viewport& inViewport)
             {
                 if (is(LayerStatus::Offline))
                 {
@@ -107,7 +107,7 @@ namespace Chicane
                 onResize(inViewport);
             }
 
-            void load(DrawPolyType inType, const DrawPolyResource& inResource)
+            inline void load(DrawPolyType inType, const DrawPolyResource& inResource)
             {
                 if (is(LayerStatus::Offline))
                 {
@@ -117,7 +117,7 @@ namespace Chicane
                 onLoad(inType, inResource);
             }
 
-            void load(const DrawTexture::List& inResources)
+            inline void load(const DrawTexture::List& inResources)
             {
                 if (is(LayerStatus::Offline))
                 {
@@ -127,7 +127,7 @@ namespace Chicane
                 onLoad(inResources);
             }
 
-            void load(const DrawSky& inResource)
+            inline void load(const DrawSky& inResource)
             {
                 if (is(LayerStatus::Offline))
                 {
@@ -137,7 +137,7 @@ namespace Chicane
                 onLoad(inResource);
             }
 
-            void setup(const F& inFrame)
+            inline void setup(const F& inFrame)
             {
                 if (!is(LayerStatus::Running))
                 {
@@ -152,7 +152,7 @@ namespace Chicane
                 setStatus(LayerStatus::Running);
             }
 
-            void render(const F& inFrame, void* inData = nullptr)
+            inline void render(const F& inFrame, void* inData = nullptr)
             {
                 if (!is(LayerStatus::Running))
                 {
@@ -162,7 +162,7 @@ namespace Chicane
                 onRender(inFrame, inData);
             }
 
-            void cleanup()
+            inline void cleanup()
             {
                 if (!is(LayerStatus::Running))
                 {
@@ -172,22 +172,22 @@ namespace Chicane
                 onCleanup();
             }
 
-            void handle(const WindowEvent& inEvent) { onEvent(inEvent); }
+            inline void handle(const WindowEvent& inEvent) { onEvent(inEvent); }
 
         public:
-            bool is(LayerStatus inStatus) const { return m_status == inStatus; }
+            inline bool is(LayerStatus inStatus) const { return m_status == inStatus; }
 
-            void setStatus(LayerStatus inStatus) { m_status = inStatus; }
+            inline void setStatus(LayerStatus inStatus) { m_status = inStatus; }
 
-            const String& getId() const { return m_id; }
+            inline const String& getId() const { return m_id; }
 
             template <typename T>
-            T* getBackend()
+            inline T* getBackend()
             {
                 return static_cast<T*>(m_backend);
             }
 
-            void setBackend(void* inBackend) { m_backend = inBackend; }
+            inline void setBackend(void* inBackend) { m_backend = inBackend; }
 
         protected:
             Id          m_id;

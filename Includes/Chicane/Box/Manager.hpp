@@ -22,22 +22,22 @@ namespace Chicane
             using InstancesSubscription = EventSubscription<Instances>;
 
         public:
-            Manager()
+            inline Manager()
                 : m_instances({}),
                   m_instancesObservable({})
             {}
 
-            virtual ~Manager() = default;
+            inline virtual ~Manager() = default;
 
         protected:
-            virtual void onLoad(const String& inId, const Data& inData) { return; }
+            inline virtual void onLoad(const String& inId, const Data& inData) { return; }
 
         public:
-            bool isEmpty() const { return m_instances.empty(); }
+            inline bool isEmpty() const { return m_instances.empty(); }
 
-            bool isLoaded(const String& inId) const { return m_instances.find(inId) != m_instances.end(); }
+            inline bool isLoaded(const String& inId) const { return m_instances.find(inId) != m_instances.end(); }
 
-            Instance get(const String& inId) const
+            inline Instance get(const String& inId) const
             {
                 if (!isLoaded(inId))
                 {
@@ -47,7 +47,7 @@ namespace Chicane
                 return m_instances.at(inId);
             }
 
-            void load(const String& inId, const Data& inData)
+            inline void load(const String& inId, const Data& inData)
             {
                 if (isLoaded(inId))
                 {
@@ -57,7 +57,7 @@ namespace Chicane
                 onLoad(inId, inData);
             }
 
-            InstancesSubscription watch(
+            inline InstancesSubscription watch(
                 typename InstancesSubscription::NextCallback     inNext,
                 typename InstancesSubscription::ErrorCallback    inError    = nullptr,
                 typename InstancesSubscription::CompleteCallback inComplete = nullptr
@@ -67,7 +67,7 @@ namespace Chicane
             }
 
         protected:
-            void add(const String& inId, Instance inInstance)
+            inline void add(const String& inId, Instance inInstance)
             {
                 if (isLoaded(inId))
                 {

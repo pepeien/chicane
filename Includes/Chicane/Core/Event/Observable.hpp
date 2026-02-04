@@ -19,10 +19,14 @@ namespace Chicane
         using CompleteCallback = std::function<void()>;
 
     public:
-        ~EventObservable() { m_subscriptions.clear(); }
+        inline EventObservable()
+            : m_subscriptions({})
+        {}
+
+        inline ~EventObservable() { m_subscriptions.clear(); }
 
     public:
-        EventSubscription<T> subscribe(
+        inline EventSubscription<T> subscribe(
             EmptyCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
@@ -31,7 +35,7 @@ namespace Chicane
             return m_subscriptions.back();
         }
 
-        EventSubscription<T> subscribe(
+        inline EventSubscription<T> subscribe(
             NextCallback inNext, ErrorCallback inError = nullptr, CompleteCallback inComplete = nullptr
         )
         {
@@ -40,9 +44,9 @@ namespace Chicane
             return m_subscriptions.back();
         }
 
-        void next() { next(nullptr); }
+        inline void next() { next(nullptr); }
 
-        void next(T inData)
+        inline void next(T inData)
         {
             for (EventSubscription<T>& subscription : m_subscriptions)
             {
@@ -50,7 +54,7 @@ namespace Chicane
             }
         }
 
-        void error(const String& inMessage)
+        inline void error(const String& inMessage)
         {
             for (EventSubscription<T>& subscription : m_subscriptions)
             {
@@ -58,7 +62,7 @@ namespace Chicane
             }
         }
 
-        void complete()
+        inline void complete()
         {
             for (EventSubscription<T>& subscription : m_subscriptions)
             {

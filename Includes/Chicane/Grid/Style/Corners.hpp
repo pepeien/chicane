@@ -21,7 +21,7 @@ namespace Chicane
             StyleCorners();
 
         public:
-            friend bool operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
+            friend inline bool operator==(const StyleCorners& inLeft, const StyleCorners& inRight)
             {
                 return (
                     std::fabs(inLeft.top.get() - inRight.top.get()) < FLT_EPSILON &&

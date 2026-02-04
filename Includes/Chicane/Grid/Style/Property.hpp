@@ -18,7 +18,7 @@ namespace Chicane
 
         public:
             template <typename... A>
-            StyleProperty(A... args)
+            inline StyleProperty(A... args)
                 : m_raw(""),
                   m_parsed(args...)
             {}
@@ -32,9 +32,9 @@ namespace Chicane
             inline friend bool operator==(const StyleProperty& inA, const T& inB) { return inA.get() == inB; }
 
         public:
-            bool isRaw(const String& inValue) const { return m_raw.equals(inValue); }
-            const String& getRaw() const { return m_raw; }
-            void setRaw(const String& inValue)
+            inline bool isRaw(const String& inValue) const { return m_raw.equals(inValue); }
+            inline const String& getRaw() const { return m_raw; }
+            inline void setRaw(const String& inValue)
             {
                 if (inValue.isEmpty())
                 {
@@ -44,11 +44,11 @@ namespace Chicane
                 m_raw = inValue;
             }
 
-            T get() const { return m_parsed; }
-            void set(const StyleProperty<T>& inProperty) { m_parsed = inProperty.get(); }
-            void set(T inValue) { m_parsed = inValue; }
+            inline T get() const { return m_parsed; }
+            inline void set(const StyleProperty<T>& inProperty) { m_parsed = inProperty.get(); }
+            inline void set(T inValue) { m_parsed = inValue; }
 
-            void refresh()
+            inline void refresh()
             {
                 if (m_raw.isEmpty() || !m_parser)
                 {
@@ -58,7 +58,7 @@ namespace Chicane
                 set(m_parser(m_raw));
             }
 
-            void parseWith(std::function<T(const String&)> inParser) { m_parser = inParser; }
+            inline void parseWith(std::function<T(const String&)> inParser) { m_parser = inParser; }
 
         private:
             String m_raw;

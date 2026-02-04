@@ -12,17 +12,16 @@ namespace Chicane
     {
     public:
         Component();
-        virtual ~Component() = default;
 
     protected:
-        virtual void onActivation() { return; }
-        virtual void onDeactivation() { return; }
-        virtual void onAttachment(Transformable* inParent) { return; }
-        virtual void onTick(float inDeltaTime) { return; }
+        inline virtual void onActivation() { return; }
+        inline virtual void onDeactivation() { return; }
+        inline virtual void onAttachment(Transformable* inParent) { return; }
+        inline virtual void onTick(float inDeltaTime) { return; }
 
     public:
         template <class T>
-        bool isType() const
+        inline bool isType() const
         {
             return typeid(*this) == typeid(T);
         }
@@ -40,7 +39,7 @@ namespace Chicane
 
         bool isAttached() const;
         template <class T = Transformable>
-        T* getParent() const
+        inline T* getParent() const
         {
             return static_cast<T*>(m_parent);
         }

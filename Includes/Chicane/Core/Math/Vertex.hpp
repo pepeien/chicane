@@ -14,7 +14,7 @@ namespace Chicane
         using Indices = std::vector<Index>;
 
     public:
-        friend bool operator==(const Vertex& inLeft, const Vertex& inRight)
+        friend inline bool operator==(const Vertex& inLeft, const Vertex& inRight)
         {
             return (
                 inLeft.position == inRight.position && inLeft.color == inRight.color && inLeft.uv == inRight.uv &&

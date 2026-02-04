@@ -11,15 +11,15 @@ namespace Chicane
         struct CHICANE_GRID Primitive
         {
         public:
-            friend bool operator==(const Primitive& inLeft, const Primitive& inRight)
+            friend inline bool operator==(const Primitive& inLeft, const Primitive& inRight)
             {
                 return (inLeft.vertices == inRight.vertices && inLeft.indices == inRight.indices);
             }
 
         public:
-            bool isEmpty() const { return vertices.empty() || indices.empty(); }
+            inline bool isEmpty() const { return vertices.empty() || indices.empty(); }
 
-            void clear()
+            inline void clear()
             {
                 vertices.clear();
                 indices.clear();

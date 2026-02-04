@@ -9,6 +9,5 @@ namespace Chicane
     {
     public:
         CLight();
-        virtual ~CLight() = default;
     };
 }

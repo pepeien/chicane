@@ -19,8 +19,6 @@ namespace Chicane
         public:
             View(const String& inSource);
 
-            virtual ~View() = default;
-
         protected:
             virtual void onActivation() { return; }
             virtual void onDeactivation() { return; }

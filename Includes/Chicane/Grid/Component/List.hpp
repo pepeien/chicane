@@ -18,7 +18,7 @@ namespace Chicane
             static constexpr inline const char* ITEM_HEIGHT_ATTRIBUTE_NAME = "itemHeight";
 
         public:
-            List(const pugi::xml_node& inNode)
+            inline List(const pugi::xml_node& inNode)
                 : Component(inNode)
             {}
         };

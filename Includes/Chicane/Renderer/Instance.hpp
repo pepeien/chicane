@@ -115,7 +115,7 @@ namespace Chicane
             bool hasBackend() const;
 
             template <typename Target = Layer<>, typename... Params>
-            void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
+            inline void addBackendLayer(const ListPush<Layer<>*>& inSettings, Params... inParams)
             {
                 m_backend->addLayer<Target>(inSettings, inParams...);
             }

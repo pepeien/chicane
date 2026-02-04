@@ -9,6 +9,5 @@ namespace Chicane
     {
     public:
         CCamera();
-        virtual ~CCamera() = default;
     };
 }

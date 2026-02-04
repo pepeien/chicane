@@ -15,7 +15,6 @@ namespace Chicane
         {
         public:
             ModelManager();
-            ~ModelManager() = default;
 
         protected:
             void onLoad(const String& inId, const Model& inData) override;

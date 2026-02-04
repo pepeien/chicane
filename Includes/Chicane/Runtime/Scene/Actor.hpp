@@ -12,11 +12,10 @@ namespace Chicane
     {
     public:
         Actor();
-        virtual ~Actor() = default;
 
     protected:
-        virtual void onTick(float inDeltaTime) { return; }
-        virtual void onCollision(const Actor* inSubject) { return; }
+        inline virtual void onTick(float inDeltaTime) { return; }
+        inline virtual void onCollision(const Actor* inSubject) { return; }
 
     public:
         bool canTick() const;

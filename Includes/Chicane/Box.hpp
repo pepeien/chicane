@@ -30,7 +30,7 @@ namespace Chicane
 
         CHICANE_BOX const class Asset* load(const FileSystem::Path& inFilePath);
         template <typename T>
-        const T* load(const FileSystem::Path& inFilePath)
+        inline const T* load(const FileSystem::Path& inFilePath)
         {
             return static_cast<const T*>(load(inFilePath));
         }

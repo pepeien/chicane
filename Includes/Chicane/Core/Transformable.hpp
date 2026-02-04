@@ -14,7 +14,7 @@ namespace Chicane
         Transformable();
 
     protected:
-        virtual void onTransform() { return; }
+        inline virtual void onTransform() { return; }
 
     public:
         // Transform

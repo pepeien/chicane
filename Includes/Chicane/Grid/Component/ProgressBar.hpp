@@ -18,7 +18,7 @@ namespace Chicane
             static constexpr inline const char* OVERLAY_ATTRIBUTE_NAME    = "overlay";    // Text that goes inside
 
         public:
-            ProgressBar(const pugi::xml_node& inNode)
+            inline ProgressBar(const pugi::xml_node& inNode)
                 : Component(inNode)
             {}
         };

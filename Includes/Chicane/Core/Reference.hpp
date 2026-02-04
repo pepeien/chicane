@@ -15,7 +15,7 @@ namespace Chicane
 
     public:
         template <typename T>
-        static Reference fromValue(T* inValue)
+        static inline Reference fromValue(T* inValue)
         {
             Reference result = Reference();
             result.setValue<T>(inValue);
@@ -25,7 +25,6 @@ namespace Chicane
 
     public:
         Reference();
-        ~Reference() = default;
 
     public:
         bool isEmpty() const;
@@ -33,7 +32,7 @@ namespace Chicane
         String toString() const;
 
         template <typename T>
-        bool isType() const
+        inline bool isType() const
         {
             if (isEmpty())
             {
@@ -44,7 +43,7 @@ namespace Chicane
         }
 
         template <typename T>
-        void setValue(T* inValue)
+        inline void setValue(T* inValue)
         {
             if (!inValue)
             {
@@ -56,7 +55,7 @@ namespace Chicane
         }
 
         template <typename T>
-        const T* getValue() const
+        inline const T* getValue() const
         {
             if (!isType<T>())
             {

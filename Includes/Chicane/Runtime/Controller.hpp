@@ -32,15 +32,15 @@ namespace Chicane
         virtual ~Controller() = default;
 
     protected:
-        virtual void onActivation() { return; }
-        virtual void onEvent(const WindowEvent& inEvent) { return; }
+        inline virtual void onActivation() { return; }
+        inline virtual void onEvent(const WindowEvent& inEvent) { return; }
 
     public:
         // Lifecycle
         void activate();
 
         template <class T = APawn>
-        const T* getPawn() const
+        inline const T* getPawn() const
         {
             return dynamic_cast<T*>(m_pawn);
         }

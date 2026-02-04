@@ -27,7 +27,7 @@ namespace Chicane
         using ViewSubscription = EventSubscription<Grid::View*>;
 
     public:
-        static Application& getInstance()
+        static inline Application& getInstance()
         {
             static Application instance;
 

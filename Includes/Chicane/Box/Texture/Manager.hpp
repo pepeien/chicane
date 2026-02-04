@@ -12,7 +12,6 @@ namespace Chicane
         {
         public:
             TextureManager();
-            virtual ~TextureManager() = default;
 
         protected:
             void onLoad(const String& inId, const Texture& inData) override;

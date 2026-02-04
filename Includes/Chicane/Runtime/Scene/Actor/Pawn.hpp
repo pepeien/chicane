@@ -12,7 +12,6 @@ namespace Chicane
     {
     public:
         APawn();
-        virtual ~APawn() = default;
 
     protected:
         virtual void onControlAttachment() { return; }

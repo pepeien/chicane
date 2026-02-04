@@ -19,8 +19,10 @@ namespace Chicane
         class CHICANE_RENDERER Backend
         {
         public:
-            Backend(const Window* inWindow)
+            inline Backend(const Window* inWindow)
                 : m_window(inWindow),
+                  m_frames({}),
+                  m_currentFrame(0U),
                   m_layers({})
             {}
 
@@ -233,12 +235,12 @@ namespace Chicane
             // Window
             const Window*   m_window;
 
-            // Layer
-            List<Layer<F>*> m_layers;
-
             // Frame
             std::vector<F>  m_frames;
             std::uint32_t   m_currentFrame;
+
+            // Layer
+            List<Layer<F>*> m_layers;
         };
     }
 }

@@ -19,7 +19,7 @@ namespace Chicane
             static constexpr inline const char* ON_INPUT_ATTRIBUTE_NAME = "onInput";
 
         public:
-            TextInput(const pugi::xml_node& inNode)
+            inline TextInput(const pugi::xml_node& inNode)
                 : Component(inNode)
             {}
         };

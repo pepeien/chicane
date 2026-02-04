@@ -12,7 +12,6 @@ namespace Chicane
         {
         public:
             SoundManager();
-            ~SoundManager() = default;
 
         protected:
             void onLoad(const String& inId, const Sound& inData) override;

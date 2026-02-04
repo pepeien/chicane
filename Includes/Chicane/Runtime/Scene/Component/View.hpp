@@ -12,7 +12,6 @@ namespace Chicane
     {
     public:
         CView();
-        virtual ~CView() = default;
 
     protected:
         void onTransform() override;

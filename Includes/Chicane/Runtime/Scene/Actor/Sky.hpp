@@ -15,10 +15,6 @@ namespace Chicane
 
     public:
         ASky();
-        ASky(ASky&& other) = default;
-        virtual ~ASky()    = default;
-
-        ASky& operator=(ASky&& other) = default;
 
     public:
         const Box::Sky* getSky() const;
