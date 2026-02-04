@@ -609,7 +609,9 @@
                 },
                 "name": "isResizable",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_WINDOW_ISRESIZABLE_DESCRIPTION"
             },
             {
@@ -654,7 +656,9 @@
                 },
                 "name": "isMinimized",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "const"
+                ],
                 "description": "CHICANE_WINDOW_ISMINIMIZED_DESCRIPTION"
             },
             {

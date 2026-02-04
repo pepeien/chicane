@@ -36,7 +36,26 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "FontGlyph",
+                    "suffix": "&",
+                    "path": "Box/Font/Glyph",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_BOX_FONTGLYPH_EMPTY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

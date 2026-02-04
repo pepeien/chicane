@@ -81,24 +81,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "",
-                    "name": "QuatFloat",
-                    "suffix": "",
-                    "path": "Core/Math/Quat/QuatFloat",
-                    "templates": []
-                },
-                "name": "toQuat",
-                "parameters": [],
-                "modifiers": [
-                    "inline",
-                    "const"
-                ],
-                "description": "CHICANE_VEC3_TOQUAT_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
                     "name": "bool",
                     "suffix": "",
                     "path": "",

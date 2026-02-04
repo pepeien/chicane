@@ -7,7 +7,147 @@
         "namespace": "Chicane::Rotator",
         "types": [],
         "enums": [],
-        "constructors": [],
+        "constructors": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inAngle"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inPitch"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inRoll"
+                    },
+                    {
+                        "type": {
+                            "prefix": "",
+                            "name": "float",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        "name": "inYaw"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Vec3",
+                            "suffix": "&",
+                            "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inAngles"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotator",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inOrientation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ROTATOR_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "Rotator",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ROTATOR_DESCRIPTION"
+            }
+        ],
         "destructors": [],
         "functions": [
             {
@@ -20,81 +160,12 @@
                     "path": "Core/Math/Quat/QuatFloat",
                     "templates": []
                 },
-                "name": "getOrientation",
+                "name": "get",
                 "parameters": [],
                 "modifiers": [
                     "const"
                 ],
-                "description": "CHICANE_ROTATOR_GETORIENTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setOrientation",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "QuatFloat",
-                            "suffix": "&",
-                            "path": "Core/Math/Quat/QuatFloat",
-                            "templates": []
-                        },
-                        "name": "inValue"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_ROTATOR_SETORIENTATION_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Vec3",
-                    "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "getVector",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_ROTATOR_GETVECTOR_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "add",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Vec3",
-                            "suffix": "&",
-                            "path": "Core/Math/Vec/Vec3",
-                            "templates": []
-                        },
-                        "name": "inRotation"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_ROTATOR_ADD_DESCRIPTION"
+                "description": "CHICANE_ROTATOR_GET_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -111,16 +182,111 @@
                     {
                         "type": {
                             "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inValue"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_SET_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addLocal",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ADDLOCAL_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addWorld",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "QuatFloat",
+                            "suffix": "&",
+                            "path": "Core/Math/Quat/QuatFloat",
+                            "templates": []
+                        },
+                        "name": "inDelta"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_ROTATOR_ADDWORLD_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "Vec3",
+                    "suffix": "&",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "getAngles",
+                "parameters": [],
+                "modifiers": [
+                    "const"
+                ],
+                "description": "CHICANE_ROTATOR_GETANGLES_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAngles",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
-                        "name": "inRotation"
+                        "name": "inAngles"
                     }
                 ],
                 "modifiers": [],
-                "description": "CHICANE_ROTATOR_SET_DESCRIPTION"
+                "description": "CHICANE_ROTATOR_SETANGLES_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -174,7 +340,7 @@
                 "description": "CHICANE_ROTATOR_GETUP_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "type": "standard",
                 "return": {
                     "prefix": "",
@@ -191,7 +357,7 @@
         ],
         "members": [
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -204,7 +370,7 @@
                 "description": "CHICANE_ROTATOR_M_ORIENTATION_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -213,11 +379,24 @@
                     "path": "Core/Math/Vec/Vec3",
                     "templates": []
                 },
-                "name": "m_euler",
-                "description": "CHICANE_ROTATOR_M_EULER_DESCRIPTION"
+                "name": "m_angles",
+                "description": "CHICANE_ROTATOR_M_ANGLES_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec3",
+                    "suffix": "",
+                    "path": "Core/Math/Vec/Vec3",
+                    "templates": []
+                },
+                "name": "m_right",
+                "description": "CHICANE_ROTATOR_M_RIGHT_DESCRIPTION"
+            },
+            {
+                "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -230,7 +409,7 @@
                 "description": "CHICANE_ROTATOR_M_FORWARD_DESCRIPTION"
             },
             {
-                "accessor": "protected",
+                "accessor": "private",
                 "modifiers": [],
                 "type": {
                     "prefix": "",
@@ -241,19 +420,6 @@
                 },
                 "name": "m_up",
                 "description": "CHICANE_ROTATOR_M_UP_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "modifiers": [],
-                "type": {
-                    "prefix": "",
-                    "name": "Vec3",
-                    "suffix": "",
-                    "path": "Core/Math/Vec/Vec3",
-                    "templates": []
-                },
-                "name": "m_right",
-                "description": "CHICANE_ROTATOR_M_RIGHT_DESCRIPTION"
             }
         ],
         "description": "CHICANE_ROTATOR_DESCRIPTION"

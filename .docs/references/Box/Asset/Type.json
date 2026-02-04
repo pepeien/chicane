@@ -70,8 +70,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Sky",
-                "description": "CHICANE_BOX_ASSETTYPE_SKY_DESCRIPTION"
+                "name": "Texture",
+                "description": "CHICANE_BOX_ASSETTYPE_TEXTURE_DESCRIPTION"
             },
             {
                 "type": {
@@ -81,8 +81,8 @@
                     "path": "",
                     "templates": []
                 },
-                "name": "Texture",
-                "description": "CHICANE_BOX_ASSETTYPE_TEXTURE_DESCRIPTION"
+                "name": "Sky",
+                "description": "CHICANE_BOX_ASSETTYPE_SKY_DESCRIPTION"
             }
         ],
         "constructors": [],

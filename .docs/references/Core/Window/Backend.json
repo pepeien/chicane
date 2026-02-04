@@ -17,28 +17,6 @@
                 },
                 "name": "Undefined",
                 "description": "CHICANE_WINDOWBACKEND_UNDEFINED_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "OpenGL",
-                "description": "CHICANE_WINDOWBACKEND_OPENGL_DESCRIPTION"
-            },
-            {
-                "type": {
-                    "prefix": "",
-                    "name": "std::uint8_t",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "Vulkan",
-                "description": "CHICANE_WINDOWBACKEND_VULKAN_DESCRIPTION"
             }
         ],
         "constructors": [],

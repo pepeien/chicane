@@ -1,0 +1,64 @@
+{
+    "title": "ListPush",
+    "filename": "Push",
+    "path": "Core/List/Push",
+    "source": {
+        "header": "Includes/Chicane/Core/List/Push.hpp",
+        "namespace": "Chicane::ListPush",
+        "types": [
+            {
+                "name": "Predicate",
+                "type": {
+                    "prefix": "",
+                    "name": "std::function",
+                    "suffix": "",
+                    "path": "",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "bool(T)",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_LISTPUSH_PREDICATE_DESCRIPTION"
+            }
+        ],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Predicate",
+                    "suffix": "",
+                    "path": "Core/List/Push",
+                    "templates": []
+                },
+                "name": "predicate",
+                "description": "CHICANE_LISTPUSH_PREDICATE_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "ListPushStrategy",
+                    "suffix": "",
+                    "path": "Core/List/Push/Strategy",
+                    "templates": []
+                },
+                "name": "strategy",
+                "description": "CHICANE_LISTPUSH_STRATEGY_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_LISTPUSH_DESCRIPTION"
+    },
+    "children": []
+}

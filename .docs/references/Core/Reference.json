@@ -51,23 +51,7 @@
                 "description": "CHICANE_REFERENCE_REFERENCE_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Reference",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_REFERENCE_~REFERENCE_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",

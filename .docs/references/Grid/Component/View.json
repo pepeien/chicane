@@ -35,23 +35,7 @@
                 "description": "CHICANE_GRID_VIEW_VIEW_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~View",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_GRID_VIEW_~VIEW_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",

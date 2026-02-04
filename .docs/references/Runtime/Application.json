@@ -698,7 +698,7 @@
                             "path": "Core/Window/Settings",
                             "templates": []
                         },
-                        "name": "inCreateInfo"
+                        "name": "inSettings"
                     }
                 ],
                 "modifiers": [],
@@ -725,6 +725,16 @@
                             "templates": []
                         },
                         "name": "inBackend"
+                    },
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Renderer::Settings",
+                            "suffix": "&",
+                            "path": "Renderer/Settings",
+                            "templates": []
+                        },
+                        "name": "inSettings"
                     }
                 ],
                 "modifiers": [],

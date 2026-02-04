@@ -24,23 +24,7 @@
                 "description": "CHICANE_BOX_MODELMANAGER_MODELMANAGER_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~ModelManager",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_MODELMANAGER_~MODELMANAGER_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "protected",

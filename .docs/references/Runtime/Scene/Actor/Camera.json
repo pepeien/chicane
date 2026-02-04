@@ -24,23 +24,7 @@
                 "description": "CHICANE_ACAMERA_ACAMERA_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~ACamera",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_ACAMERA_~ACAMERA_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",

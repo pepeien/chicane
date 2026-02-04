@@ -172,6 +172,24 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
+                    "prefix": "const ",
+                    "name": "String",
+                    "suffix": "&",
+                    "path": "Core/String",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_STRING_EMPTY_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
                     "prefix": "",
                     "name": "String",
                     "suffix": "",
@@ -1785,7 +1803,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "std::size_t",
                     "suffix": "",
                     "path": "",

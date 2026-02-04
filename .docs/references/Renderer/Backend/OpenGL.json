@@ -23,12 +23,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Instance",
+                            "name": "Window",
                             "suffix": "*",
-                            "path": "Renderer/Instance",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inRenderer"
+                        "name": "inWindow"
                     }
                 ],
                 "modifiers": [],
@@ -105,18 +105,7 @@
                     "templates": []
                 },
                 "name": "onSetup",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Frame",
-                            "suffix": "&",
-                            "path": "Renderer/Frame",
-                            "templates": []
-                        },
-                        "name": "inFrame"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_OPENGLBACKEND_ONSETUP_DESCRIPTION"
             },

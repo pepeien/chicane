@@ -104,7 +104,9 @@
                 },
                 "name": "~Manager",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_BOX_MANAGER_~MANAGER_DESCRIPTION"
             }
         ],

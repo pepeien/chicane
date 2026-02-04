@@ -232,7 +232,9 @@
                         "name": "inFilePath"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_BOX_LOAD_DESCRIPTION"
             },
             {

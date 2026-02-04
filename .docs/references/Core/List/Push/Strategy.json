@@ -1,9 +1,9 @@
 {
     "title": "ListPushStrategy",
-    "filename": "PushStrategy",
-    "path": "Core/List/PushStrategy",
+    "filename": "Strategy",
+    "path": "Core/List/Push/Strategy",
     "source": {
-        "header": "Includes/Chicane/Core/List/PushStrategy.hpp",
+        "header": "Includes/Chicane/Core/List/Push/Strategy.hpp",
         "namespace": "Chicane::ListPushStrategy",
         "types": [],
         "enums": [

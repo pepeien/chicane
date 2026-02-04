@@ -1,0 +1,46 @@
+{
+    "title": "Settings",
+    "filename": "Settings",
+    "path": "Renderer/Settings",
+    "source": {
+        "header": "Includes/Chicane/Renderer/Settings.hpp",
+        "namespace": "Chicane::Renderer::Settings",
+        "types": [],
+        "enums": [],
+        "constructors": [],
+        "destructors": [],
+        "functions": [],
+        "members": [
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
+                    "name": "Vec",
+                    "suffix": "",
+                    "path": "Core/Math/Vec",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "2",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        },
+                        {
+                            "prefix": "",
+                            "name": "int",
+                            "suffix": "",
+                            "path": "",
+                            "templates": []
+                        }
+                    ]
+                },
+                "name": "resolution",
+                "description": "CHICANE_RENDERER_SETTINGS_RESOLUTION_DESCRIPTION"
+            }
+        ],
+        "description": "CHICANE_RENDERER_SETTINGS_DESCRIPTION"
+    },
+    "children": []
+}

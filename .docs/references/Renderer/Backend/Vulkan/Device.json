@@ -168,9 +168,7 @@
         "members": [
             {
                 "accessor": "public",
-                "modifiers": [
-                    "static"
-                ],
+                "modifiers": [],
                 "type": {
                     "prefix": "const ",
                     "name": "std::vector",
@@ -191,9 +189,7 @@
             },
             {
                 "accessor": "public",
-                "modifiers": [
-                    "static"
-                ],
+                "modifiers": [],
                 "type": {
                     "prefix": "const ",
                     "name": "std::vector",

@@ -23,12 +23,12 @@
                     {
                         "type": {
                             "prefix": "const ",
-                            "name": "Instance",
+                            "name": "Window",
                             "suffix": "*",
-                            "path": "Renderer/Instance",
+                            "path": "Core/Window",
                             "templates": []
                         },
-                        "name": "inRenderer"
+                        "name": "inWindow"
                     }
                 ],
                 "modifiers": [],
@@ -131,18 +131,7 @@
                     "templates": []
                 },
                 "name": "onRender",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Frame",
-                            "suffix": "&",
-                            "path": "Renderer/Frame",
-                            "templates": []
-                        },
-                        "name": "inFrame"
-                    }
-                ],
+                "parameters": [],
                 "modifiers": [],
                 "description": "CHICANE_RENDERER_VULKANBACKEND_ONRENDER_DESCRIPTION"
             },
@@ -465,16 +454,6 @@
                 },
                 "name": "renderLayers",
                 "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Frame",
-                            "suffix": "&",
-                            "path": "Renderer/Frame",
-                            "templates": []
-                        },
-                        "name": "inFrame"
-                    },
                     {
                         "type": {
                             "prefix": "",

@@ -14,7 +14,6 @@
             {
                 "accessor": "public",
                 "modifiers": [
-                    "static",
                     "constexpr"
                 ],
                 "type": {
@@ -30,7 +29,6 @@
             {
                 "accessor": "public",
                 "modifiers": [
-                    "static",
                     "constexpr"
                 ],
                 "type": {
@@ -46,7 +44,6 @@
             {
                 "accessor": "public",
                 "modifiers": [
-                    "static",
                     "constexpr"
                 ],
                 "type": {

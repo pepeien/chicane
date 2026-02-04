@@ -67,7 +67,9 @@
                 },
                 "name": "~VulkanImageData",
                 "parameters": [],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_RENDERER_VULKANIMAGEDATA_~VULKANIMAGEDATA_DESCRIPTION"
             }
         ],

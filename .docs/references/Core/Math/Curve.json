@@ -347,7 +347,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",
@@ -363,7 +363,7 @@
                     "constexpr"
                 ],
                 "type": {
-                    "prefix": "const ",
+                    "prefix": "",
                     "name": "float",
                     "suffix": "",
                     "path": "",

@@ -662,14 +662,25 @@
                 },
                 "children": [
                     {
-                        "title": "ListPushStrategy",
-                        "filename": "PushStrategy",
-                        "path": "Core/List/PushStrategy",
+                        "title": "ListPush",
+                        "filename": "Push",
+                        "path": "Core/List/Push",
                         "source": {
-                            "header": "Includes/Chicane/Core/List/PushStrategy.hpp",
-                            "namespace": "Chicane::ListPushStrategy"
+                            "header": "Includes/Chicane/Core/List/Push.hpp",
+                            "namespace": "Chicane::ListPush"
                         },
-                        "children": []
+                        "children": [
+                            {
+                                "title": "ListPushStrategy",
+                                "filename": "Strategy",
+                                "path": "Core/List/Push/Strategy",
+                                "source": {
+                                    "header": "Includes/Chicane/Core/List/Push/Strategy.hpp",
+                                    "namespace": "Chicane::ListPushStrategy"
+                                },
+                                "children": []
+                            }
+                        ]
                     }
                 ]
             },
@@ -2274,6 +2285,16 @@
                         ]
                     }
                 ]
+            },
+            {
+                "title": "Settings",
+                "filename": "Settings",
+                "path": "Renderer/Settings",
+                "source": {
+                    "header": "Includes/Chicane/Renderer/Settings.hpp",
+                    "namespace": "Chicane::Renderer::Settings"
+                },
+                "children": []
             },
             {
                 "title": "Viewport",

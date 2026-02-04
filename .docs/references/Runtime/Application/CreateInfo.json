@@ -29,6 +29,19 @@
                 "modifiers": [],
                 "type": {
                     "prefix": "",
+                    "name": "Renderer::Settings",
+                    "suffix": "",
+                    "path": "Renderer/Settings",
+                    "templates": []
+                },
+                "name": "renderer",
+                "description": "CHICANE_APPLICATIONCREATEINFO_RENDERER_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "modifiers": [],
+                "type": {
+                    "prefix": "",
                     "name": "std::function",
                     "suffix": "",
                     "path": "",

@@ -24,23 +24,7 @@
                 "description": "CHICANE_BOX_FONTMANAGER_FONTMANAGER_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~FontManager",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_BOX_FONTMANAGER_~FONTMANAGER_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",

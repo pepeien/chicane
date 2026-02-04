@@ -24,23 +24,7 @@
                 "description": "CHICANE_COMPONENT_COMPONENT_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~Component",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_COMPONENT_~COMPONENT_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "public",
@@ -281,6 +265,21 @@
                 "description": "CHICANE_COMPONENT_ATTACHTO_DESCRIPTION"
             },
             {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "detach",
+                "parameters": [],
+                "modifiers": [],
+                "description": "CHICANE_COMPONENT_DETACH_DESCRIPTION"
+            },
+            {
                 "accessor": "protected",
                 "type": "virtual",
                 "return": {
@@ -341,23 +340,6 @@
                     "inline"
                 ],
                 "description": "CHICANE_COMPONENT_ONATTACHMENT_DESCRIPTION"
-            },
-            {
-                "accessor": "protected",
-                "type": "virtual",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "onTransform",
-                "parameters": [],
-                "modifiers": [
-                    "inline"
-                ],
-                "description": "CHICANE_COMPONENT_ONTRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "protected",

@@ -5,7 +5,152 @@
     "source": {
         "header": "Includes/Chicane/Renderer/Backend.hpp",
         "namespace": "Chicane::Renderer",
-        "types": [],
+        "types": [
+            {
+                "name": "ResolutionObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec",
+                            "suffix": "",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "int",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_RESOLUTIONOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ResolutionSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Vec",
+                            "suffix": "",
+                            "path": "Core/Math/Vec",
+                            "templates": [
+                                {
+                                    "prefix": "",
+                                    "name": "2",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                },
+                                {
+                                    "prefix": "",
+                                    "name": "int",
+                                    "suffix": "",
+                                    "path": "",
+                                    "templates": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_RESOLUTIONSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "ViewportObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Viewport",
+                            "suffix": "",
+                            "path": "Renderer/Viewport",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VIEWPORTOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "ViewportSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "Viewport",
+                            "suffix": "",
+                            "path": "Renderer/Viewport",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_VIEWPORTSUBSCRIPTION_DESCRIPTION"
+            },
+            {
+                "name": "BackendObservable",
+                "type": {
+                    "prefix": "",
+                    "name": "EventObservable",
+                    "suffix": "",
+                    "path": "Core/Event/Observable",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_BACKENDOBSERVABLE_DESCRIPTION"
+            },
+            {
+                "name": "BackendSubscription",
+                "type": {
+                    "prefix": "",
+                    "name": "EventSubscription",
+                    "suffix": "",
+                    "path": "Core/Event/Subscription",
+                    "templates": [
+                        {
+                            "prefix": "",
+                            "name": "WindowBackend",
+                            "suffix": "",
+                            "path": "Core/Window/Backend",
+                            "templates": []
+                        }
+                    ]
+                },
+                "description": "CHICANE_RENDERER_BACKENDSUBSCRIPTION_DESCRIPTION"
+            }
+        ],
         "enums": [],
         "constructors": [],
         "destructors": [],

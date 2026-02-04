@@ -55,7 +55,26 @@
         "enums": [],
         "constructors": [],
         "destructors": [],
-        "functions": [],
+        "functions": [
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "const ",
+                    "name": "DrawPoly",
+                    "suffix": "&",
+                    "path": "Renderer/Draw/Poly",
+                    "templates": []
+                },
+                "name": "empty",
+                "parameters": [],
+                "modifiers": [
+                    "static",
+                    "inline"
+                ],
+                "description": "CHICANE_RENDERER_DRAWPOLY_EMPTY_DESCRIPTION"
+            }
+        ],
         "members": [
             {
                 "accessor": "public",

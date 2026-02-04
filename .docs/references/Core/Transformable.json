@@ -65,9 +65,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Vec3",
+                    "name": "Rotator",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Core/Math/Rotator",
                     "templates": []
                 },
                 "name": "getRotation",
@@ -144,49 +144,6 @@
                     "const"
                 ],
                 "description": "CHICANE_TRANSFORMABLE_GETUP_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
-                    "name": "Transform",
-                    "suffix": "&",
-                    "path": "Core/Math/Transform",
-                    "templates": []
-                },
-                "name": "getRelative",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_TRANSFORMABLE_GETRELATIVE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setRelative",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Transform",
-                            "suffix": "&",
-                            "path": "Core/Math/Transform",
-                            "templates": []
-                        },
-                        "name": "inTransform"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORMABLE_SETRELATIVE_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -406,9 +363,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Vec3",
+                    "name": "Rotator",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Core/Math/Rotator",
                     "templates": []
                 },
                 "name": "getRelativeRotation",
@@ -510,6 +467,32 @@
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
+                        "name": "inAngles"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORMABLE_ADDRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Rotator",
+                            "suffix": "&",
+                            "path": "Core/Math/Rotator",
+                            "templates": []
+                        },
                         "name": "inRotation"
                     }
                 ],
@@ -606,6 +589,32 @@
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inRotation"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORMABLE_SETRELATIVEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setRelativeRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Rotator",
+                            "suffix": "&",
+                            "path": "Core/Math/Rotator",
                             "templates": []
                         },
                         "name": "inRotation"
@@ -832,49 +841,6 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Transform",
-                    "suffix": "&",
-                    "path": "Core/Math/Transform",
-                    "templates": []
-                },
-                "name": "getAbsolute",
-                "parameters": [],
-                "modifiers": [
-                    "const"
-                ],
-                "description": "CHICANE_TRANSFORMABLE_GETABSOLUTE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "void",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "setAbsolute",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "const ",
-                            "name": "Transform",
-                            "suffix": "&",
-                            "path": "Core/Math/Transform",
-                            "templates": []
-                        },
-                        "name": "inTransform"
-                    }
-                ],
-                "modifiers": [],
-                "description": "CHICANE_TRANSFORMABLE_SETABSOLUTE_DESCRIPTION"
-            },
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "const ",
                     "name": "Vec3",
                     "suffix": "&",
                     "path": "Core/Math/Vec/Vec3",
@@ -1088,9 +1054,9 @@
                 "type": "standard",
                 "return": {
                     "prefix": "const ",
-                    "name": "Vec3",
+                    "name": "Rotator",
                     "suffix": "&",
-                    "path": "Core/Math/Vec/Vec3",
+                    "path": "Core/Math/Rotator",
                     "templates": []
                 },
                 "name": "getAbsoluteRotation",
@@ -1192,6 +1158,32 @@
                             "path": "Core/Math/Vec/Vec3",
                             "templates": []
                         },
+                        "name": "inAngles"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORMABLE_ADDABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "addAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Rotator",
+                            "suffix": "&",
+                            "path": "Core/Math/Rotator",
+                            "templates": []
+                        },
                         "name": "inRotation"
                     }
                 ],
@@ -1288,6 +1280,32 @@
                             "name": "Vec3",
                             "suffix": "&",
                             "path": "Core/Math/Vec/Vec3",
+                            "templates": []
+                        },
+                        "name": "inAngles"
+                    }
+                ],
+                "modifiers": [],
+                "description": "CHICANE_TRANSFORMABLE_SETABSOLUTEROTATION_DESCRIPTION"
+            },
+            {
+                "accessor": "public",
+                "type": "standard",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "setAbsoluteRotation",
+                "parameters": [
+                    {
+                        "type": {
+                            "prefix": "const ",
+                            "name": "Rotator",
+                            "suffix": "&",
+                            "path": "Core/Math/Rotator",
                             "templates": []
                         },
                         "name": "inRotation"
@@ -1628,6 +1646,23 @@
                     "const"
                 ],
                 "description": "CHICANE_TRANSFORMABLE_GETBOTTOM_DESCRIPTION"
+            },
+            {
+                "accessor": "protected",
+                "type": "virtual",
+                "return": {
+                    "prefix": "",
+                    "name": "void",
+                    "suffix": "",
+                    "path": "",
+                    "templates": []
+                },
+                "name": "onTransform",
+                "parameters": [],
+                "modifiers": [
+                    "inline"
+                ],
+                "description": "CHICANE_TRANSFORMABLE_ONTRANSFORM_DESCRIPTION"
             },
             {
                 "accessor": "private",

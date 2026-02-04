@@ -24,44 +24,6 @@
                     ]
                 },
                 "description": "CHICANE_LOG_LIST_DESCRIPTION"
-            },
-            {
-                "name": "ListObservable",
-                "type": {
-                    "prefix": "",
-                    "name": "EventObservable",
-                    "suffix": "",
-                    "path": "Core/Event/Observable",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "List",
-                            "suffix": "",
-                            "path": "Core/Log",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_LOG_LISTOBSERVABLE_DESCRIPTION"
-            },
-            {
-                "name": "ListSubscription",
-                "type": {
-                    "prefix": "",
-                    "name": "EventSubscription",
-                    "suffix": "",
-                    "path": "Core/Event/Subscription",
-                    "templates": [
-                        {
-                            "prefix": "",
-                            "name": "List",
-                            "suffix": "",
-                            "path": "Core/Log",
-                            "templates": []
-                        }
-                    ]
-                },
-                "description": "CHICANE_LOG_LISTSUBSCRIPTION_DESCRIPTION"
             }
         ],
         "enums": [],
@@ -72,47 +34,16 @@
                 "accessor": "public",
                 "type": "standard",
                 "return": {
-                    "prefix": "",
-                    "name": "ListSubscription",
-                    "suffix": "",
+                    "prefix": "const ",
+                    "name": "List",
+                    "suffix": "&",
                     "path": "Core/Log",
                     "templates": []
                 },
-                "name": "watchLogs",
-                "parameters": [
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ListSubscription::NextCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inNext"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ListSubscription::ErrorCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inError"
-                    },
-                    {
-                        "type": {
-                            "prefix": "",
-                            "name": "ListSubscription::CompleteCallback",
-                            "suffix": "",
-                            "path": "Core/Event/Subscription",
-                            "templates": []
-                        },
-                        "name": "inComplete"
-                    }
-                ],
+                "name": "getLogs",
+                "parameters": [],
                 "modifiers": [],
-                "description": "CHICANE_LOG_WATCHLOGS_DESCRIPTION"
+                "description": "CHICANE_LOG_GETLOGS_DESCRIPTION"
             },
             {
                 "accessor": "public",
@@ -213,7 +144,9 @@
                         "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_LOG_EMMIT_DESCRIPTION"
             },
             {
@@ -275,7 +208,9 @@
                         "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_LOG_INFO_DESCRIPTION"
             },
             {
@@ -337,7 +272,9 @@
                         "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_LOG_WARNING_DESCRIPTION"
             },
             {
@@ -399,7 +336,9 @@
                         "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_LOG_ERROR_DESCRIPTION"
             },
             {
@@ -461,7 +400,9 @@
                         "name": "inParams"
                     }
                 ],
-                "modifiers": [],
+                "modifiers": [
+                    "inline"
+                ],
                 "description": "CHICANE_LOG_CRITICAL_DESCRIPTION"
             }
         ],

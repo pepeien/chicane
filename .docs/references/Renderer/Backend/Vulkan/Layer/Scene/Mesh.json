@@ -24,23 +24,7 @@
                 "description": "CHICANE_RENDERER_VULKANLSCENEMESH_VULKANLSCENEMESH_DESCRIPTION"
             }
         ],
-        "destructors": [
-            {
-                "accessor": "public",
-                "type": "standard",
-                "return": {
-                    "prefix": "",
-                    "name": "",
-                    "suffix": "",
-                    "path": "",
-                    "templates": []
-                },
-                "name": "~VulkanLSceneMesh",
-                "parameters": [],
-                "modifiers": [],
-                "description": "CHICANE_RENDERER_VULKANLSCENEMESH_~VULKANLSCENEMESH_DESCRIPTION"
-            }
-        ],
+        "destructors": [],
         "functions": [
             {
                 "accessor": "protected",
