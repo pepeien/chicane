@@ -32,8 +32,6 @@ namespace Chicane
 
         void OpenGLBackend::onInit()
         {
-            setFrameCount(2);
-
             buildContext();
             buildGlew();
             enableFeatures();
@@ -77,9 +75,14 @@ namespace Chicane
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            glBindTextureUnit(0, m_texturesBuffer);
+            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
 
-            Backend::onSetup();
+            glBindTextureUnit(0, m_texturesBuffer);
+        }
+
+        void OpenGLBackend::onRender(const Frame& inFrame)
+        {
+            renderLayers(inFrame);
         }
 
         void OpenGLBackend::onCleanup()
@@ -90,8 +93,6 @@ namespace Chicane
             {
                 throw std::runtime_error(std::string("Failed to swawp window frame buffer [") + SDL_GetError() + "]");
             }
-
-            Backend::onCleanup();
         }
 
         void OpenGLBackend::buildContext()

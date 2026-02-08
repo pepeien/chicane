@@ -48,6 +48,10 @@ namespace Chicane
             void addLight(const View& inData);
             void addLight(const View::List& inData);
 
+            // Frame
+            void setFrameCount(std::uint32_t inValue);
+            Frame& getCurrentFrame();
+
             // Render
             Draw::Id loadPoly(DrawPolyType inType, const DrawPolyData& inData);
 
@@ -67,7 +71,7 @@ namespace Chicane
             template <typename T>
             inline void drawPoly(Draw::Id inId, const T& inInstance)
             {
-                m_backend->drawPoly(inId, inInstance);
+                getCurrentFrame().use(inId, inInstance);
             }
 
             Draw::Id findTexture(const Draw::Reference& inReference);
@@ -105,14 +109,18 @@ namespace Chicane
             DrawPolyResource& getPolyResource(DrawPolyType inType);
 
         private:
+            // Settings
+            Vec<2, std::uint32_t>      m_resolution;
+            ResolutionObservable       m_resolutionObservable;
+
+            // Frame
+            std::vector<Frame>         m_frames;
+            std::uint32_t              m_currentFrame;
+
             // Draw
             DrawPolyResource::Map      m_polyResources;
             DrawTexture::List          m_textureResources;
             DrawSky                    m_skyResource;
-
-            // Settings
-            Vec<2, std::uint32_t>      m_resolution;
-            ResolutionObservable       m_resolutionObservable;
 
             // Backend
             std::unique_ptr<Backend<>> m_backend;

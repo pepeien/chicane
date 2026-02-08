@@ -112,6 +112,7 @@ namespace Chicane
 
         void OpenGLLGrid::onCleanup()
         {
+            glDisable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);
         }
 

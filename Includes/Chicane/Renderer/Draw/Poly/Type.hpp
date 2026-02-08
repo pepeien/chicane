@@ -9,7 +9,8 @@ namespace Chicane
         enum class DrawPolyType : std::uint8_t
         {
             e2D,
-            e3D
+            e3D,
+            eParticle
         };
     }
 }

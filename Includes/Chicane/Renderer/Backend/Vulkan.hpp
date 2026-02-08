@@ -27,7 +27,7 @@ namespace Chicane
             void onInit() override;
             void onResize(const Vec<2, std::uint32_t>& inResolution) override;
             void onLoad(const DrawTexture::List& inResources) override;
-            void onRender() override;
+            void onRender(const Frame& inFrame) override;
 
             void onHandle(const WindowEvent& inEvent) override;
 
@@ -59,7 +59,6 @@ namespace Chicane
             void renderViewport(const vk::CommandBuffer& inCommandBuffer);
 
             void buildLayers();
-            void renderLayers(void* inData);
 
             void buildTextureDescriptor();
             void buildTextureData(const DrawTexture::List& inTextures);

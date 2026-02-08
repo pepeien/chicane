@@ -21,17 +21,15 @@ namespace Chicane
         struct CHICANE_RENDERER Frame
         {
         public:
-            // Lifecycle
             void reset();
             void setup(const DrawPolyResource::Map& inResources);
             void setup(const DrawSky& inResource);
 
-            // Properties
             const View& getCamera() const;
             void useCamera(const View& inData);
 
             const View::List& getLights() const;
-            void addLights(const View::List& inData);
+            void addLight(const View::List& inData);
             void addLight(const View& inData);
 
             const DrawPoly::List& get2DDraws() const;
@@ -61,12 +59,14 @@ namespace Chicane
 
             // Poly
             DrawPoly::Map m_draws = {
-                {DrawPolyType::e2D, {}},
-                {DrawPolyType::e3D, {}}
+                {DrawPolyType::e2D,       {}},
+                {DrawPolyType::e3D,       {}},
+                {DrawPolyType::eParticle, {}}
             };
+
+            // Instances
             DrawPoly2DInstance::Map m_2DInstances = {};
             DrawPoly3DInstance::Map m_3DInstances = {};
-
             DrawSkyInstance         m_skyInstance = {};
         };
     }

@@ -12,9 +12,9 @@ namespace Chicane
 {
     namespace Renderer
     {
-        void VulkanFrame::wait(const vk::Device& inLogicalDevice)
+        void VulkanFrame::wait()
         {
-            vk::Result result = inLogicalDevice.waitForFences(1, &renderFence, VK_TRUE, UINT64_MAX);
+            vk::Result result = logicalDevice.waitForFences(1, &renderFence, VK_TRUE, UINT64_MAX);
 
             if (result != vk::Result::eSuccess && result != vk::Result::eTimeout)
             {
@@ -22,9 +22,9 @@ namespace Chicane
             }
         }
 
-        void VulkanFrame::reset(const vk::Device& inLogicalDevice)
+        void VulkanFrame::reset()
         {
-            vk::Result result = inLogicalDevice.resetFences(1, &renderFence);
+            vk::Result result = logicalDevice.resetFences(1, &renderFence);
 
             if (result != vk::Result::eSuccess)
             {

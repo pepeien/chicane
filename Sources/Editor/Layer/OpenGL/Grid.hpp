@@ -20,8 +20,14 @@ namespace Editor
         void buildShader();
         void destroyShader();
 
+        void buildVertexArray();
+        void destroyVertexArray();
+
     private:
         // Shader
         std::uint32_t m_shaderProgram;
+
+        // Buffer
+        std::uint32_t m_vertexArray;
     };
 }

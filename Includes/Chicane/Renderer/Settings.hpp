@@ -13,7 +13,8 @@ namespace Chicane
         struct CHICANE_RENDERER Settings
         {
         public:
-            Vec<2, std::uint32_t> resolution = Vec<2, std::uint32_t>(0U);
+            Vec<2, std::uint32_t> resolution  = Vec<2, std::uint32_t>(0U);
+            std::uint32_t         bufferCount = 2;
         };
     }
 }

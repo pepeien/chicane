@@ -51,8 +51,6 @@ namespace Chicane
 
         void VulkanBackend::onInit()
         {
-            setFrameCount(2);
-
             buildInstance();
             buildDebugMessenger();
             buildSurface();
@@ -90,10 +88,10 @@ namespace Chicane
             buildTextureData(inResources);
         }
 
-        void VulkanBackend::onRender()
+        void VulkanBackend::onRender(const Frame& inFrame)
         {
             VulkanFrame& lastFrame = swapchain.frames.at(m_currentImageIndex);
-            lastFrame.wait(logicalDevice);
+            lastFrame.wait();
 
             vk::ResultValue<std::uint32_t> acquireResult =
                 logicalDevice.acquireNextImageKHR(swapchain.instance, UINT64_MAX, lastFrame.presentSemaphore, nullptr);
@@ -109,15 +107,15 @@ namespace Chicane
                 throw std::runtime_error("Error while acquiring the next image");
             }
 
-            lastFrame.reset(logicalDevice);
+            lastFrame.reset();
 
             std::uint32_t frameIndex = acquireResult.value;
             VulkanFrame&  frame      = swapchain.frames.at(frameIndex);
 
-            frame.updateCameraData(getCurrentFrame().getCamera());
-            frame.updateLightData(getCurrentFrame().getLights());
-            frame.update2DData(getCurrentFrame().getInstances2D());
-            frame.update3DData(getCurrentFrame().getInstances3D());
+            frame.updateCameraData(inFrame.getCamera());
+            frame.updateLightData(inFrame.getLights());
+            frame.update2DData(inFrame.getInstances2D());
+            frame.update3DData(inFrame.getInstances3D());
             frame.updateDescriptorSets();
 
             vk::CommandBufferBeginInfo commandBufferBegin;
@@ -130,7 +128,7 @@ namespace Chicane
             lastFrame.commandBuffer.reset();
             lastFrame.commandBuffer.begin(commandBufferBegin);
             renderViewport(data.commandBuffer);
-            renderLayers(&data);
+            renderLayers(inFrame, &data);
             lastFrame.commandBuffer.end();
 
             vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -319,14 +317,6 @@ namespace Chicane
 
             settings.strategy = ListPushStrategy::Back;
             addLayer<VulkanLGrid>(settings);
-        }
-
-        void VulkanBackend::renderLayers(void* inData)
-        {
-            for (Layer<Frame>* layer : m_layers)
-            {
-                layer->render(getCurrentFrame(), inData);
-            }
         }
 
         void VulkanBackend::buildTextureDescriptor()

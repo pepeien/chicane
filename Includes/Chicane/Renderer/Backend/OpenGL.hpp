@@ -18,6 +18,7 @@ namespace Chicane
             void onInit() override;
             void onLoad(const DrawTexture::List& inResources) override;
             void onSetup() override;
+            void onRender(const Frame& inFrame);
             void onCleanup() override;
 
         private:

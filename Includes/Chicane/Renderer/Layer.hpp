@@ -137,19 +137,21 @@ namespace Chicane
                 onLoad(inResource);
             }
 
-            inline void setup(const F& inFrame)
+            inline bool setup(const F& inFrame)
             {
                 if (!is(LayerStatus::Running))
                 {
-                    return;
+                    return false;
                 }
 
                 if (!onSetup(inFrame))
                 {
-                    return;
+                    return false;
                 }
 
                 setStatus(LayerStatus::Running);
+
+                return true;
             }
 
             inline void render(const F& inFrame, void* inData = nullptr)

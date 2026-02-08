@@ -21,8 +21,6 @@ namespace Chicane
         public:
             inline Backend()
                 : m_window(nullptr),
-                  m_frames({}),
-                  m_currentFrame(0U),
                   m_layers({})
             {}
 
@@ -91,46 +89,11 @@ namespace Chicane
                 }
             }
 
-            inline virtual void onSetup()
-            {
-                for (Layer<F>* layer : m_layers)
-                {
-                    if (!layer)
-                    {
-                        continue;
-                    }
+            inline virtual void onSetup() { return; }
 
-                    layer->setup(getCurrentFrame());
-                }
-            }
+            inline virtual void onRender(const Frame& inFrame) { return; }
 
-            inline virtual void onRender()
-            {
-                for (Layer<F>* layer : m_layers)
-                {
-                    if (!layer)
-                    {
-                        continue;
-                    }
-
-                    layer->render(getCurrentFrame());
-                }
-
-                m_currentFrame = (m_currentFrame + 1) % m_frames.size();
-            }
-
-            inline virtual void onCleanup()
-            {
-                for (Layer<F>* layer : m_layers)
-                {
-                    if (!layer)
-                    {
-                        continue;
-                    }
-
-                    layer->cleanup();
-                }
-            }
+            inline virtual void onCleanup() { return; }
 
             inline virtual void onHandle(const WindowEvent& inEvent)
             {
@@ -148,22 +111,6 @@ namespace Chicane
         public:
             // Window
             inline void setWindow(const Window* inWindow) { m_window = inWindow; }
-
-            // Frame
-            inline F& getCurrentFrame() { return m_frames.at(m_currentFrame); }
-
-            // Render
-            inline void useCamera(const View& inData) { getCurrentFrame().useCamera(inData); }
-
-            inline void addLight(const View& inData) { getCurrentFrame().addLight(inData); }
-
-            inline void addLight(const View::List& inData) { getCurrentFrame().addLights(inData); }
-
-            template <typename T>
-            inline void drawPoly(Draw::Id inId, const T& inInstance)
-            {
-                getCurrentFrame().use(inId, inInstance);
-            }
 
             // Layer
             template <typename Target = Layer<F>>
@@ -190,10 +137,26 @@ namespace Chicane
             }
 
         protected:
-            // Frame
-            inline void setFrameCount(std::uint32_t inValue) { m_frames.resize(inValue); }
-
             // Layer
+            inline void renderLayers(const F& inFrame, void* inData = nullptr)
+            {
+                for (Layer<F>* layer : m_layers)
+                {
+                    if (!layer)
+                    {
+                        continue;
+                    }
+
+                    if (!layer->setup(inFrame))
+                    {
+                        continue;
+                    }
+
+                    layer->render(inFrame, inData);
+                    layer->cleanup();
+                }
+            }
+
             inline void destroyLayers()
             {
                 for (Layer<F>* layer : m_layers)
@@ -234,10 +197,6 @@ namespace Chicane
         protected:
             // Window
             const Window*   m_window;
-
-            // Frame
-            std::vector<F>  m_frames;
-            std::uint32_t   m_currentFrame;
 
             // Layer
             List<Layer<F>*> m_layers;

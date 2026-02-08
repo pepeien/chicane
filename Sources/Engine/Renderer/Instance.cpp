@@ -15,11 +15,17 @@ namespace Chicane
         Instance::Instance()
             : m_resolution(Vec<2, std::uint32_t>(0)),
               m_resolutionObservable({}),
+              m_frames({}),
+              m_currentFrame(0U),
+              m_polyResources({}),
+              m_textureResources({}),
+              m_skyResource({}),
               m_backend(nullptr)
         {}
 
         void Instance::init(const Settings& inSettings)
         {
+            setFrameCount(inSettings.bufferCount);
             setResolution(inSettings.resolution);
         }
 
@@ -30,32 +36,44 @@ namespace Chicane
                 return;
             }
 
-            Frame& currentFrame = m_backend->getCurrentFrame();
+            Frame& currentFrame = getCurrentFrame();
             currentFrame.setup(m_polyResources);
             currentFrame.setup(m_skyResource);
 
             m_backend->onSetup();
-            m_backend->onRender();
+            m_backend->onRender(currentFrame);
             m_backend->onCleanup();
 
             currentFrame.reset();
 
             getPolyResource(DrawPolyType::e2D).reset();
+
+            m_currentFrame = (m_currentFrame + 1) % m_frames.size();
         }
 
         void Instance::useCamera(const View& inData)
         {
-            m_backend->useCamera(inData);
+            getCurrentFrame().useCamera(inData);
         }
 
         void Instance::addLight(const View::List& inData)
         {
-            m_backend->addLight(inData);
+            getCurrentFrame().addLight(inData);
         }
 
         void Instance::addLight(const View& inData)
         {
-            m_backend->addLight(inData);
+            getCurrentFrame().addLight(inData);
+        }
+
+        void Instance::setFrameCount(std::uint32_t inValue)
+        {
+            m_frames.resize(inValue);
+        }
+
+        Frame& Instance::getCurrentFrame()
+        {
+            return m_frames.at(m_currentFrame);
         }
 
         Draw::Id Instance::loadPoly(DrawPolyType inType, const DrawPolyData& inData)
